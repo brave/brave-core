@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 #include "base/strings/string_number_conversions.h"
@@ -253,8 +253,8 @@ TEST(HDKeyEd25519UnitTest, SignAndVerify) {
   auto key = HDKeyEd25519::GenerateFromSeed(bytes);
   const std::vector<uint8_t> msg_a(32, 0x00);
   const std::vector<uint8_t> msg_b(32, 0x08);
-  const std::vector<uint8_t> sig_a = key->Sign(msg_a, nullptr);
-  const std::vector<uint8_t> sig_b = key->Sign(msg_b, nullptr);
+  const std::vector<uint8_t> sig_a = key->Sign(msg_a);
+  const std::vector<uint8_t> sig_b = key->Sign(msg_b);
 
   EXPECT_TRUE(key->Verify(msg_a, sig_a));
   EXPECT_TRUE(key->Verify(msg_b, sig_b));

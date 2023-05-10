@@ -25,50 +25,50 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace uphold {
 
 class UpholdUtilTest : public testing::Test {};
 
 TEST_F(UpholdUtilTest, GetClientId) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = uphold::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(UPHOLD_CLIENT_ID));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = uphold::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(UPHOLD_STAGING_CLIENT_ID));
 }
 
 TEST_F(UpholdUtilTest, GetClientSecret) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = uphold::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(UPHOLD_CLIENT_SECRET));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = uphold::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(UPHOLD_STAGING_CLIENT_SECRET));
 }
 
 TEST_F(UpholdUtilTest, GetFeeAddress) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = uphold::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressProduction);
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = uphold::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
 TEST_F(UpholdUtilTest, GetLoginUrl) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = uphold::GetLoginUrl("rdfdsfsdfsdf");
   ASSERT_EQ(
       result,
@@ -79,7 +79,7 @@ TEST_F(UpholdUtilTest, GetLoginUrl) {
            "transactions:transfer:others&intention=login&state=rdfdsfsdfsdf"}));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = uphold::GetLoginUrl("rdfdsfsdfsdf");
   ASSERT_EQ(
       result,
@@ -97,13 +97,13 @@ TEST_F(UpholdUtilTest, GetActivityUrl) {
   ASSERT_EQ(result, "");
 
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   result = uphold::GetActivityUrl("9324i5i32459i");
   ASSERT_EQ(result,
             "https://uphold.com/dashboard/cards/9324i5i32459i/activity");
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = uphold::GetActivityUrl("9324i5i32459i");
   ASSERT_EQ(result,
             "https://wallet-sandbox.uphold.com/dashboard/cards/9324i5i32459i/"
@@ -152,19 +152,19 @@ TEST_F(UpholdUtilTest, GetWallet) {
 
 TEST_F(UpholdUtilTest, GenerateRandomHexString) {
   // string for testing
-  ledger::is_testing = true;
-  auto result = ledger::util::GenerateRandomHexString();
+  is_testing = true;
+  auto result = util::GenerateRandomHexString();
   ASSERT_EQ(result, "123456789");
 
   // random string
-  ledger::is_testing = false;
-  ledger::_environment = mojom::Environment::STAGING;
-  result = ledger::util::GenerateRandomHexString();
+  is_testing = false;
+  _environment = mojom::Environment::STAGING;
+  result = util::GenerateRandomHexString();
   ASSERT_EQ(result.length(), 64u);
 }
 
 TEST_F(UpholdUtilTest, GenerateLinks) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
 
   auto wallet = mojom::ExternalWallet::New();
 
@@ -212,4 +212,4 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
 }
 
 }  // namespace uphold
-}  // namespace ledger
+}  // namespace brave_rewards::internal

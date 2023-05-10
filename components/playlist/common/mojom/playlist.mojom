@@ -132,4 +132,12 @@ interface PlaylistServiceObserver {
       int64 received_bytes,
       int8 percent_complete,
       string time_remaining);
+
+  OnMediaFilesUpdated(
+      url.mojom.Url page_url,
+      array<PlaylistItem> items);
+};
+
+interface PlaylistRenderFrameBrowserClient {
+  OnMediaUpdatedFromRenderFrame();
 };

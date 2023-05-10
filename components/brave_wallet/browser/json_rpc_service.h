@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
@@ -409,6 +409,14 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                            mojom::ProviderError error,
                            const std::string& error_message);
 
+  void GetEthTokenSymbol(const std::string& contract_address,
+                         const std::string& chain_id,
+                         GetEthTokenSymbolCallback callback) override;
+
+  void GetEthTokenDecimals(const std::string& contract_address,
+                           const std::string& chain_id,
+                           GetEthTokenDecimalsCallback callback) override;
+
   using SwitchEthereumChainRequestCallback =
       base::OnceCallback<void(mojom::ProviderError error,
                               const std::string& error_message)>;
@@ -492,6 +500,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& error_message)>;
   void GetSolanaTokenAccountsByOwner(
       const SolanaAddress& pubkey,
+      const std::string& chain_id,
       GetSolanaTokenAccountsByOwnerCallback callback);
 
  private:
@@ -630,6 +639,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetSupportsInterface(GetSupportsInterfaceCallback callback,
                               APIRequestResult api_request_result);
 
+  void OnGetEthTokenSymbol(GetEthTokenSymbolCallback callback,
+                           APIRequestResult api_request_result);
+
+  void OnGetEthTokenDecimals(GetEthTokenDecimalsCallback callback,
+                             APIRequestResult api_request_result);
   // Solana
   void OnGetSolanaBalance(GetSolanaBalanceCallback callback,
                           APIRequestResult api_request_result);

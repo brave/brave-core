@@ -26,7 +26,7 @@
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/get_uphold_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/uphold_transfer.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace uphold {
@@ -46,7 +46,7 @@ class Uphold {
   void StartContribution(const std::string& contribution_id,
                          mojom::ServerPublisherInfoPtr info,
                          double amount,
-                         ledger::LegacyResultCallback callback);
+                         LegacyResultCallback callback);
 
   void FetchBalance(FetchBalanceCallback);
 
@@ -56,9 +56,9 @@ class Uphold {
                      LegacyResultCallback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
-                     ledger::ConnectExternalWalletCallback);
+                     ConnectExternalWalletCallback);
 
-  void GetWallet(ledger::GetExternalWalletCallback);
+  void GetWallet(GetExternalWalletCallback);
 
   void CreateCard(const std::string& access_token, CreateCardCallback);
 
@@ -80,7 +80,7 @@ class Uphold {
   [[nodiscard]] bool LogOutWallet(const std::string& notification = "");
 
  private:
-  void ContributionCompleted(ledger::LegacyResultCallback,
+  void ContributionCompleted(LegacyResultCallback,
                              const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,
@@ -114,5 +114,5 @@ class Uphold {
 };
 
 }  // namespace uphold
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_H_

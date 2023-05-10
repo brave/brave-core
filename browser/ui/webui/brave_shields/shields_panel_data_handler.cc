@@ -75,6 +75,8 @@ void ShieldsPanelDataHandler::GetSiteSettings(
       active_shields_data_controller_->GetHttpsUpgradeMode();
   settings.is_noscript_enabled =
       active_shields_data_controller_->GetNoScriptEnabled();
+  settings.is_forget_first_party_storage_enabled =
+      active_shields_data_controller_->GetForgetFirstPartyStorageEnabled();
 
   std::move(callback).Run(settings.Clone());
 }
@@ -147,6 +149,16 @@ void ShieldsPanelDataHandler::SetBraveShieldsEnabled(bool is_enabled) {
   active_shields_data_controller_->SetBraveShieldsEnabled(is_enabled);
 }
 
+void ShieldsPanelDataHandler::SetForgetFirstPartyStorageEnabled(
+    bool is_enabled) {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+
+  active_shields_data_controller_->SetForgetFirstPartyStorageEnabled(
+      is_enabled);
+}
+
 void ShieldsPanelDataHandler::OpenWebCompatWindow() {
   if (!active_shields_data_controller_)
     return;
@@ -190,9 +202,6 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_->GetBraveShieldsEnabled();
   site_block_info_.is_brave_shields_managed =
       active_shields_data_controller_->IsBraveShieldsManaged();
-  site_block_info_.is_forget_first_party_storage_feature_enabled =
-      active_shields_data_controller_
-          ->IsForgetFirstPartyStorageFeatureEnabled();
 
   // This method gets called from various callsites. Constantly updating favicon
   // url will replace the hashed version too. So, we update this once only

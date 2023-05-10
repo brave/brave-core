@@ -36,7 +36,7 @@ const int kSaltLength = 64;
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace util {
 
 std::string Security::GetBase64(const std::vector<uint8_t>& data) {
@@ -87,8 +87,7 @@ std::string Security::Sign(
     return "";
   }
 
-  return braveledger_bat_helper::sign(header_keys, header_values, key_id,
-                                      new_secret_key);
+  return sign(header_keys, header_values, key_id, new_secret_key);
 }
 
 std::vector<uint8_t> Security::GenerateSeed() {
@@ -173,4 +172,4 @@ std::string Security::GetPublicKeyHexFromSeed(
 }
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::internal

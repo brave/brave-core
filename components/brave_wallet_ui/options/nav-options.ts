@@ -14,16 +14,16 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     route: WalletRoutes.FundWalletPageStart
   },
   {
-    id: 'swap',
-    name: 'braveWalletSwap',
-    icon: 'currency-exchange',
-    route: WalletRoutes.Swap
-  },
-  {
     id: 'send',
     name: 'braveWalletSend',
     icon: 'send',
     route: WalletRoutes.Send
+  },
+  {
+    id: 'swap',
+    name: 'braveWalletSwap',
+    icon: 'currency-exchange',
+    route: WalletRoutes.Swap
   },
   {
     id: 'deposit',
@@ -40,9 +40,32 @@ const ActivityNavOption: NavOption = {
   route: WalletRoutes.Activity
 }
 
-export const PanelNavOptions: NavOption[] = [
+// We can remove this once we go live with Panel 2.0
+export const PanelNavOptionsOld: NavOption[] = [
   ...BuySendSwapDepositOptions,
   ActivityNavOption
+]
+
+export const PanelNavOptions: NavOption[] = [
+  {
+    id: 'portfolio',
+    name: 'braveWalletTopNavPortfolio',
+    icon: 'coins',
+    route: WalletRoutes.Portfolio
+  },
+  ActivityNavOption,
+  {
+    id: 'accounts',
+    name: 'braveWalletTopNavAccounts',
+    icon: 'user-accounts',
+    route: WalletRoutes.Accounts
+  },
+  {
+    id: 'market',
+    name: 'braveWalletTopNavMarket',
+    icon: 'discover',
+    route: WalletRoutes.Market
+  }
 ]
 
 export const NavOptions: NavOption[] = [
@@ -51,12 +74,6 @@ export const NavOptions: NavOption[] = [
     name: 'braveWalletTopNavPortfolio',
     icon: 'coins',
     route: WalletRoutes.Portfolio
-  },
-  {
-    id: 'nfts',
-    name: 'braveWalletTopNavNFTS',
-    icon: 'grid04',
-    route: WalletRoutes.Nfts
   },
   ActivityNavOption,
   {
@@ -77,4 +94,19 @@ export const AllNavOptions: NavOption[] = [
   ...NavOptions,
   ...BuySendSwapDepositOptions,
   ActivityNavOption
+]
+
+export const PortfolioNavOptions: NavOption[] = [
+  {
+    id: 'assets',
+    name: 'braveWalletAccountsAssets',
+    icon: 'coins',
+    route: WalletRoutes.PortfolioAssets
+  },
+  {
+    id: 'nfts',
+    name: 'braveWalletTopNavNFTS',
+    icon: 'grid04',
+    route: WalletRoutes.PortfolioNFTs
+  },
 ]

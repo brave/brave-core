@@ -4,8 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 import { ArrowUpIcon } from 'brave-ui/components/icons'
-import { AssetIconProps, AssetIconFactory, WalletButton } from '../../../shared/style'
+import { AssetIconProps, AssetIconFactory, WalletButton, Row } from '../../../shared/style'
 import More from '../../../extension/assets/actions.svg'
 
 export const StyledWrapper = styled.div`
@@ -25,19 +27,27 @@ export const TopRow = styled.div`
   width: 100%;
 `
 
-export const BalanceTitle = styled.span`
-  font-family: Poppins;
-  font-size: 15px;
-  font-weight: normal;
-  color: ${(p) => p.theme.color.text03};
-`
-
 export const BalanceText = styled.span`
   font-family: Poppins;
-  font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: ${(p) => p.theme.color.text01};
+  font-style: normal;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 54px;
+  color: ${leo.color.text.primary};
+`
+
+export const FiatChange = styled.span<{ isDown?: boolean }>`
+  font-family: Poppins;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  margin-right: 8px;
+  color: ${(p) =>
+    p.isDown
+      ? leo.color.systemfeedback.errorIcon
+      : leo.color.systemfeedback.successIcon
+  };
 `
 
 export const PriceText = styled.span`
@@ -50,13 +60,22 @@ export const PriceText = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const ButtonRow = styled.div<{ noMargin?: boolean }>`
+export const ButtonRow = styled.div<
+  {
+    noMargin?: boolean,
+    horizontalPadding?: number
+  }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
   margin: ${(p) => p.noMargin ? '0px' : '20px 0px'};
+  padding: 0px ${(p) =>
+    p.horizontalPadding !== undefined
+      ? p.horizontalPadding
+      : 0
+  }px;
 `
 
 export const BalanceRow = styled.div<{ gap?: string }>`
@@ -153,20 +172,23 @@ export const DividerText = styled.span`
 
 export const PercentBubble = styled.div<{ isDown?: boolean }>`
   display: flex;
-  align-items: center;
-  justify-conent: center;
-  flex-direction: row;
   padding: 4px 8px;
-  border-radius: 8px;
-  background-color: ${(p) => p.isDown ? '#EE6374' : '#2AC194'};
-`
-
-export const PercentText = styled.span`
+  border-radius: 4px;
+  background-color: ${(p) =>
+    p.isDown
+      ? leo.color.red[10]
+      : leo.color.green[10]
+  };
   font-family: Poppins;
   font-size: 11px;
-  line-height: 17px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  color: ${(p) =>
+    p.isDown
+      ? leo.color.red[50]
+      : leo.color.green[50]
+  };
 `
 
 export const ArrowIcon = styled(ArrowUpIcon) <{ isDown?: boolean }>`
@@ -174,7 +196,7 @@ export const ArrowIcon = styled(ArrowUpIcon) <{ isDown?: boolean }>`
   height: 12px;
   margin-right: 2px;
   transform: ${(p) => p.isDown ? 'rotate(270deg)' : 'rotate(90deg)'};
-  color: ${(p) => p.theme.palette.white};
+  color: inherit;
 `
 
 export const EmptyTransactionContainer = styled.div`
@@ -228,12 +250,20 @@ export const CoinGeckoText = styled.span`
   margin: 15px 0px;
 `
 
-export const FilterTokenRow = styled.div`
+export const FilterTokenRow = styled.div<
+  {
+    horizontalPadding?: number
+  }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
   gap: 14px;
+  padding: 0px ${(p) =>
+    p.horizontalPadding !== undefined
+      ? p.horizontalPadding
+      : 0
+  }px;
 `
 
 export const NftMultimedia = styled.iframe<{ visible?: boolean }>`
@@ -245,7 +275,10 @@ export const NftMultimedia = styled.iframe<{ visible?: boolean }>`
   margin-top: 16px;
 `
 
-export const BridgeToAuroraButton = styled(WalletButton)`
+export const BridgeToAuroraButton = styled(WalletButton) <
+  {
+    noBottomMargin?: boolean
+  }>`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -263,7 +296,7 @@ export const BridgeToAuroraButton = styled(WalletButton)`
   background-color: ${(p) => p.theme.palette.blurple500};
   color: ${(p) => p.theme.palette.white};
   border: none;
-  margin-bottom: 32px;
+  margin-bottom: ${(p) => p.noBottomMargin ? 0 : 32}px;
   margin-right: 10px;
 `
 
@@ -282,4 +315,50 @@ export const MoreButton = styled(WalletButton)`
   -webkit-mask-image: url(${More});
   mask-image: url(${More});
   mask-size: cover;
+`
+
+export const SelectTimelineWrapper = styled.div`
+  position: relative;
+`
+
+export const SelectTimelinButton = styled(WalletButton)`
+  --button-border: ${leo.color.primary[20]};
+  @media (prefers-color-scheme: dark) {
+    --button-border: ${leo.color.primary[50]};
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border-radius: 48px;
+  padding: 6px 10px 6px 18px;
+  border: 1px solid var(--button-border);
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  color: ${leo.color.text.interactive};
+`
+
+export const SelectTimelinButtonIcon = styled(Icon) <
+  {
+    isOpen: boolean
+  }>`
+  --leo-icon-size: 16px;
+  color: ${leo.color.icon.interactive};
+  margin-left: 8px;
+  transition-duration: 0.3s;
+  transform: ${(p) =>
+    p.isOpen
+      ? 'rotate(180deg)'
+      : 'unset'
+  };
+`
+
+export const ControlsRow = styled(Row)`
+  box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.02);
+  border-radius: 16px;
 `

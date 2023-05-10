@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 
 GeminiServer::GeminiServer(LedgerImpl& ledger)
@@ -19,4 +19,4 @@ GeminiServer::GeminiServer(LedgerImpl& ledger)
 GeminiServer::~GeminiServer() = default;
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

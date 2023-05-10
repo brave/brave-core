@@ -10,8 +10,8 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time_to_iso8601.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 #include "net/http/http_request_headers.h"
@@ -28,18 +28,17 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
                                        .As<network::DataElementBytes>()
                                        .AsStringPiece());
 
-  base::Value req_parsed_val = *base::JSONReader::Read(request_string);
+  base::Value::Dict req_parsed_val = base::test::ParseJsonDict(request_string);
 
-  EXPECT_EQ(*req_parsed_val.FindIntKey("epoch"), expected_epoch);
+  EXPECT_EQ(*req_parsed_val.FindInt("epoch"), expected_epoch);
 
   rust::Vec<constellation::VecU8> req_points_rust;
-  base::Value::List& points_list =
-      req_parsed_val.FindListKey("points")->GetList();
+  const base::Value::List* points_list = req_parsed_val.FindList("points");
 
-  EXPECT_EQ(points_list.size(), 8U);
+  EXPECT_EQ(points_list->size(), 8U);
 
   std::transform(
-      points_list.cbegin(), points_list.cend(),
+      points_list->begin(), points_list->end(),
       std::back_inserter(req_points_rust), [](const base::Value& val) {
         constellation::VecU8 point_dec_rust;
         std::vector<uint8_t> point_dec = *base::Base64Decode(val.GetString());

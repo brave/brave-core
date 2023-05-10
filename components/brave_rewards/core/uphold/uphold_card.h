@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace uphold {
@@ -50,5 +50,5 @@ class UpholdCard {
 };
 
 }  // namespace uphold
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_CARD_H_

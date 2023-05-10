@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -27,7 +28,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
 
   // Act
-  SaveCreativeAds({});
+  database::SaveCreativeNotificationAds({});
 
   // Assert
 }
@@ -39,7 +40,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
       BuildCreativeNotificationAds(/*count*/ 2);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -61,7 +62,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
       BuildCreativeNotificationAds(/*count*/ 3);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -79,10 +80,10 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   const CreativeNotificationAdList creative_ads =
       BuildCreativeNotificationAds(/*count*/ 1);
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -114,7 +115,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetForSegments) {
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
 
@@ -139,7 +140,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   const CreativeNotificationAdList creative_ads =
       BuildCreativeNotificationAds(/*count*/ 1);
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
 
@@ -158,7 +159,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
   // Arrange
   const CreativeNotificationAdList creative_ads =
       BuildCreativeNotificationAds(/*count*/ 1);
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
 
@@ -192,7 +193,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
   creative_ad_3.segment = "automobiles";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
 
@@ -229,7 +230,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
   creative_ad_2.end_at = DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
   AdvanceClockBy(base::Hours(1));
@@ -262,7 +263,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
 

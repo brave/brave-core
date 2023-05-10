@@ -43,7 +43,7 @@ NotificationAdManager& NotificationAdManager::GetInstance() {
 absl::optional<NotificationAdInfo>
 NotificationAdManager::MaybeGetForPlacementId(
     const std::string& placement_id) const {
-  DCHECK(!placement_id.empty());
+  CHECK(!placement_id.empty());
 
   const auto iter =
       base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
@@ -57,7 +57,7 @@ NotificationAdManager::MaybeGetForPlacementId(
 }
 
 void NotificationAdManager::Add(const NotificationAdInfo& ad) {
-  DCHECK(ad.IsValid());
+  CHECK(ad.IsValid());
 
   ads_.push_back(ad);
 
@@ -75,7 +75,7 @@ void NotificationAdManager::Add(const NotificationAdInfo& ad) {
 }
 
 bool NotificationAdManager::Remove(const std::string& placement_id) {
-  DCHECK(!placement_id.empty());
+  CHECK(!placement_id.empty());
 
   const auto iter =
       base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
@@ -107,7 +107,7 @@ void NotificationAdManager::CloseAll() {
 }
 
 bool NotificationAdManager::Exists(const std::string& placement_id) const {
-  DCHECK(!placement_id.empty());
+  CHECK(!placement_id.empty());
 
   return base::ranges::find(ads_, placement_id,
                             &NotificationAdInfo::placement_id) != ads_.cend();

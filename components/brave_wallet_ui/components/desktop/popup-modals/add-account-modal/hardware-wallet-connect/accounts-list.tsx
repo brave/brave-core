@@ -25,7 +25,7 @@ import {
   HardwareWalletDerivationPathsMapping,
   SolHardwareWalletDerivationPathLocaleMapping
 } from './types'
-import { FilecoinNetwork } from '../../../../../common/hardware/types'
+import { FilecoinNetwork, SolDerivationPaths } from '../../../../../common/hardware/types'
 import { BraveWallet, WalletAccountType, CreateAccountOptionsType } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
@@ -260,7 +260,7 @@ export const HardwareWalletAccountsList = ({
           text={isLoadingMore ? getLocale('braveWalletLoadingMoreAccountsHardwareWallet')
             : getLocale('braveWalletLoadMoreAccountsHardwareWallet')}
           buttonType='primary'
-          disabled={isLoadingMore || accounts.length === 0}
+          disabled={isLoadingMore || accounts.length === 0 || selectedDerivationScheme === SolDerivationPaths.Bip44Root}
         />
         <NavButton
           onSubmit={onAddAccounts}
@@ -307,7 +307,6 @@ function AccountListItem({
           contractAddress: balanceAsset?.contractAddress || '',
           isErc721: balanceAsset?.isErc721 || false,
           isNft: balanceAsset?.isNft || false,
-          symbol: balanceAsset?.symbol || '',
           tokenId: balanceAsset?.tokenId || ''
         }
       },

@@ -26,14 +26,14 @@ void PromotedContentAd::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   event_handler_.FireEvent(placement_id, creative_instance_id, event_type);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void PromotedContentAd::OnPromotedContentAdViewed(
+void PromotedContentAd::OnDidFirePromotedContentAdViewedEvent(
     const PromotedContentAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
@@ -41,7 +41,7 @@ void PromotedContentAd::OnPromotedContentAdViewed(
                     ConfirmationType::kViewed);
 }
 
-void PromotedContentAd::OnPromotedContentAdClicked(
+void PromotedContentAd::OnDidFirePromotedContentAdClickedEvent(
     const PromotedContentAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 

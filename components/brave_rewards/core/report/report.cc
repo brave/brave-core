@@ -16,7 +16,7 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace report {
 
 Report::Report(LedgerImpl& ledger) : ledger_(ledger) {}
@@ -25,7 +25,7 @@ Report::~Report() = default;
 
 void Report::GetMonthly(const mojom::ActivityMonth month,
                         const int year,
-                        ledger::GetMonthlyReportCallback callback) {
+                        GetMonthlyReportCallback callback) {
   auto balance_callback =
       std::bind(&Report::OnBalance, this, _1, _2, month, year, callback);
 
@@ -36,7 +36,7 @@ void Report::OnBalance(const mojom::Result result,
                        mojom::BalanceReportInfoPtr balance_report,
                        const mojom::ActivityMonth month,
                        const uint32_t year,
-                       ledger::GetMonthlyReportCallback callback) {
+                       GetMonthlyReportCallback callback) {
   if (result != mojom::Result::LEDGER_OK || !balance_report) {
     BLOG(0, "Could not get balance report");
     callback(result, nullptr);
@@ -59,7 +59,7 @@ void Report::OnTransactions(
     const mojom::ActivityMonth month,
     const uint32_t year,
     std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-    ledger::GetMonthlyReportCallback callback) {
+    GetMonthlyReportCallback callback) {
   if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
     callback(mojom::Result::LEDGER_ERROR, nullptr);
@@ -78,7 +78,7 @@ void Report::OnTransactions(
 void Report::OnContributions(
     std::vector<mojom::ContributionReportInfoPtr> contribution_report,
     std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-    ledger::GetMonthlyReportCallback callback) {
+    GetMonthlyReportCallback callback) {
   if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
     callback(mojom::Result::LEDGER_ERROR, nullptr);
@@ -112,7 +112,7 @@ bool CompareReportIds(const std::string& id_1, const std::string& id_2) {
   return id_1_year > id_2_year;
 }
 
-void Report::GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback) {
+void Report::GetAllMonthlyIds(GetAllMonthlyReportIdsCallback callback) {
   auto balance_reports_callback =
       std::bind(&Report::OnGetAllBalanceReports, this, _1, callback);
 
@@ -121,7 +121,7 @@ void Report::GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback) {
 
 void Report::OnGetAllBalanceReports(
     std::vector<mojom::BalanceReportInfoPtr> reports,
-    ledger::GetAllMonthlyReportIdsCallback callback) {
+    GetAllMonthlyReportIdsCallback callback) {
   if (reports.empty()) {
     callback({});
     return;
@@ -139,4 +139,4 @@ void Report::OnGetAllBalanceReports(
 }
 
 }  // namespace report
-}  // namespace ledger
+}  // namespace brave_rewards::internal

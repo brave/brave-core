@@ -1,0 +1,27 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
+
+brave_browser_request_otr_sources = []
+brave_browser_request_otr_deps = []
+
+if (enable_request_otr) {
+  brave_browser_request_otr_sources += [
+    "//brave/browser/request_otr/request_otr_service_factory.cc",
+    "//brave/browser/request_otr/request_otr_service_factory.h",
+    "//brave/browser/request_otr/request_otr_tab_helper.cc",
+    "//brave/browser/request_otr/request_otr_tab_helper.h",
+  ]
+
+  brave_browser_request_otr_deps += [
+    "//base",
+    "//brave/components/request_otr/browser",
+    "//brave/components/request_otr/common",
+    "//brave/extensions:common",
+    "//chrome/common",
+    "//components/keyed_service/content",
+  ]
+}

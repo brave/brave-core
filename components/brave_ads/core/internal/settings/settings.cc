@@ -5,30 +5,22 @@
 
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
-#include <cstdint>
-
-#include "base/cxx17_backports.h"
-#include "brave/components/brave_ads/common/constants.h"
+#include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
-namespace brave_ads::settings {
+namespace brave_ads {
 
-int GetMaximumNotificationAdsPerHour() {
-  int64_t ads_per_hour = AdsClientHelper::GetInstance()->GetInt64Pref(
-      prefs::kMaximumNotificationAdsPerHour);
+int GetMaximumNotificationAdsPerHourSetting() {
+  int ads_per_hour =
+      static_cast<int>(AdsClientHelper::GetInstance()->GetInt64Pref(
+          prefs::kMaximumNotificationAdsPerHour));
 
   if (ads_per_hour == -1) {
-    ads_per_hour =
-        static_cast<int64_t>(notification_ads::kDefaultAdsPerHour.Get());
+    ads_per_hour = kDefaultNotificationAdsPerHour.Get();
   }
 
-  const int64_t clamped_ads_per_hour = base::clamp(
-      ads_per_hour, static_cast<int64_t>(kMinimumNotificationAdsPerHour),
-      static_cast<int64_t>(kMaximumNotificationAdsPerHour));
-
-  return static_cast<int>(clamped_ads_per_hour);
+  return ads_per_hour;
 }
 
-}  // namespace brave_ads::settings
+}  // namespace brave_ads

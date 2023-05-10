@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 namespace {
 
@@ -63,4 +63,4 @@ SegmentList GetTopSegments(const UserModelInfo& user_model,
   return segments;
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

@@ -13,14 +13,14 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 StateMigrationV1::StateMigrationV1(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV1::~StateMigrationV1() = default;
 
-void StateMigrationV1::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV1::Migrate(LegacyResultCallback callback) {
   legacy_publisher_ =
       std::make_unique<publisher::LegacyPublisherState>(*ledger_);
 
@@ -31,7 +31,7 @@ void StateMigrationV1::Migrate(ledger::LegacyResultCallback callback) {
 }
 
 void StateMigrationV1::OnLoadState(mojom::Result result,
-                                   ledger::LegacyResultCallback callback) {
+                                   LegacyResultCallback callback) {
   if (result == mojom::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
     ledger_->publisher()->CalcScoreConsts(
@@ -60,9 +60,6 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
   ledger_->SetState(
       kMinVisits, static_cast<int>(legacy_publisher_->GetPublisherMinVisits()));
 
-  ledger_->SetState(kAllowNonVerified,
-                    legacy_publisher_->GetPublisherAllowNonVerified());
-
   std::vector<mojom::BalanceReportInfoPtr> reports;
   legacy_publisher_->GetAllBalanceReports(&reports);
   if (!reports.empty()) {
@@ -74,9 +71,8 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
   }
 }
 
-void StateMigrationV1::BalanceReportsSaved(
-    mojom::Result result,
-    ledger::LegacyResultCallback callback) {
+void StateMigrationV1::BalanceReportsSaved(mojom::Result result,
+                                           LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Balance report save failed");
     callback(result);
@@ -86,4 +82,4 @@ void StateMigrationV1::BalanceReportsSaved(
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal

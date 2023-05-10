@@ -24,7 +24,7 @@ using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -187,4 +187,4 @@ TEST_P(GetWalletTest, Paths) {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

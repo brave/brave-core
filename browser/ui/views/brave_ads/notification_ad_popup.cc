@@ -15,13 +15,13 @@
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_widget.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_view.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_view_factory.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
-#include "ui/accessibility/ax_enums.mojom.h"
+#include "ui/accessibility/ax_enums.mojom-forward.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -70,11 +70,10 @@ SkColor GetLightModeBackgroundColor() {
 
 SkColor GetDarkModeBackgroundColor() {
   const std::string color_param =
-      features::NotificationAdDarkModeBackgroundColor();
+      kCustomNotificationAdDarkModeBackgroundColor.Get();
 
   SkColor bg_color;
   if (!RgbStringToSkColor(color_param, &bg_color)) {
-    NOTREACHED();
     return SkColorSetRGB(0x20, 0x23, 0x27);
   }
 
@@ -91,7 +90,7 @@ NotificationAdPopup::NotificationAdPopup(
     : profile_(profile),
       notification_ad_(notification_ad),
       animation_(std::make_unique<gfx::LinearAnimation>(this)) {
-  DCHECK(profile_);
+  CHECK(profile_);
 
   CreatePopup(browser_native_window, browser_native_view);
 
@@ -120,7 +119,7 @@ void NotificationAdPopup::SetDisableFadeInAnimationForTesting(bool disable) {
 void NotificationAdPopup::AdjustBoundsAndSnapToFitWorkAreaForWidget(
     views::Widget* widget,
     const gfx::Rect& bounds) {
-  DCHECK(widget);
+  CHECK(widget);
 
   gfx::Rect fit_bounds = bounds;
   AdjustBoundsAndSnapToFitWorkAreaForNativeView(widget, &fit_bounds);
@@ -165,7 +164,7 @@ void NotificationAdPopup::OnWorkAreaChanged() {
 }
 
 void NotificationAdPopup::OnPaintBackground(gfx::Canvas* canvas) {
-  DCHECK(canvas);
+  CHECK(canvas);
 
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(-GetShadowMargin());
@@ -241,9 +240,9 @@ void NotificationAdPopup::OnMouseReleased(const ui::MouseEvent& event) {
 }
 
 void NotificationAdPopup::OnWidgetDestroyed(views::Widget* widget) {
-  DCHECK(widget);
+  CHECK(widget);
 
-  DCHECK(widget_observation_.IsObservingSource(widget));
+  CHECK(widget_observation_.IsObservingSource(widget));
   widget_observation_.Reset();
 
   // Remove current popup from global visible notification ad popups collection.
@@ -252,7 +251,7 @@ void NotificationAdPopup::OnWidgetDestroyed(views::Widget* widget) {
 
 void NotificationAdPopup::OnWidgetBoundsChanged(views::Widget* widget,
                                                 const gfx::Rect& new_bounds) {
-  DCHECK(widget);
+  CHECK(widget);
   if (!inside_adjust_bounds_) {
     return AdjustBoundsAndSnapToFitWorkAreaForWidget(widget, CalculateBounds());
   }
@@ -315,7 +314,7 @@ void NotificationAdPopup::CreatePopup(gfx::NativeWindow browser_native_window,
   AddChildView(container_view);
 
   // Ad notification
-  DCHECK(!notification_ad_view_);
+  CHECK(!notification_ad_view_);
   notification_ad_view_ = container_view->AddChildView(
       NotificationAdViewFactory::Create(notification_ad_));
 
@@ -336,13 +335,13 @@ gfx::Point NotificationAdPopup::GetDefaultOriginForSize(const gfx::Size& size) {
   // Calculate position
   const double width = static_cast<double>(display_bounds.width());
   const double normalized_display_coordinate_x =
-      features::NotificationAdNormalizedDisplayCoordinateX();
+      kCustomNotificationAdNormalizedDisplayCoordinateX.Get();
   int x = static_cast<int>(width * normalized_display_coordinate_x);
   x -= size.width() / 2.0;
 
   const double height = static_cast<double>(display_bounds.height());
   const double normalized_display_coordinate_y =
-      features::NotificationAdNormalizedDisplayCoordinateY();
+      kCustomNotificationAdNormalizedDisplayCoordinateY.Get();
   int y = static_cast<int>(height * normalized_display_coordinate_y);
   y -= size.height() / 2.0;
 
@@ -353,8 +352,8 @@ gfx::Point NotificationAdPopup::GetDefaultOriginForSize(const gfx::Size& size) {
   bounds.AdjustToFit(display_work_area);
 
   // Apply insets
-  const gfx::Vector2d insets(features::NotificationAdInsetX(),
-                             features::NotificationAdInsetY());
+  const gfx::Vector2d insets(kCustomNotificationAdInsetX.Get(),
+                             kCustomNotificationAdInsetY.Get());
   bounds += insets;
 
   // Adjust to fit display work area
@@ -386,9 +385,9 @@ void NotificationAdPopup::SaveOrigin(const gfx::Point& origin) const {
 }
 
 gfx::Size NotificationAdPopup::CalculateViewSize() const {
-  DCHECK(notification_ad_view_);
+  CHECK(notification_ad_view_);
   gfx::Size size = notification_ad_view_->size();
-  DCHECK(!size.IsEmpty());
+  CHECK(!size.IsEmpty());
 
   size += gfx::Size(-GetShadowMargin().width(), -GetShadowMargin().height());
   return size;
@@ -462,7 +461,7 @@ void NotificationAdPopup::FadeIn() {
   animation_state_ = AnimationState::kFadeIn;
 
   const base::TimeDelta fade_duration =
-      base::Milliseconds(features::NotificationAdFadeDuration());
+      base::Milliseconds(kCustomNotificationAdFadeDuration.Get());
   animation_->SetDuration(fade_duration);
 
   StartAnimation();
@@ -472,7 +471,7 @@ void NotificationAdPopup::FadeOut() {
   animation_state_ = AnimationState::kFadeOut;
 
   const base::TimeDelta fade_duration =
-      base::Milliseconds(features::NotificationAdFadeDuration());
+      base::Milliseconds(kCustomNotificationAdFadeDuration.Get());
   animation_->SetDuration(fade_duration);
 
   StartAnimation();
@@ -483,11 +482,11 @@ void NotificationAdPopup::StartAnimation() {
 
   UpdateAnimation();
 
-  DCHECK(animation_->is_animating());
+  CHECK(animation_->is_animating());
 }
 
 void NotificationAdPopup::UpdateAnimation() {
-  DCHECK_NE(animation_state_, AnimationState::kIdle);
+  CHECK_NE(animation_state_, AnimationState::kIdle);
 
   if (!IsWidgetValid()) {
     return;

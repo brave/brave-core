@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
@@ -495,8 +495,9 @@ std::vector<mojom::NetworkInfoPtr> MergeKnownAndCustomChains(
 
   // Put all remaining custom chains to result.
   for (auto& custom_chain : custom_chains) {
-    if (custom_chain)
+    if (custom_chain) {
       result.push_back(std::move(custom_chain));
+    }
   }
 
   return result;
@@ -524,8 +525,9 @@ GURL AddInfuraProjectId(const GURL& url) {
 }
 
 GURL MaybeAddInfuraProjectId(const GURL& url) {
-  if (!url.is_valid())
+  if (!url.is_valid()) {
     return GURL();
+  }
   for (const auto& infura_chain_id : kInfuraChains) {
     if (GetInfuraURLForKnownChainId(infura_chain_id) == url) {
       return AddInfuraProjectId(url);
@@ -539,8 +541,9 @@ mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
                                     mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
     for (const auto* network : GetKnownEthNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0) {
         continue;
+      }
 
       auto result = network->Clone();
       if (result->rpc_endpoints.empty()) {
@@ -559,15 +562,17 @@ mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
   }
   if (coin == mojom::CoinType::FIL) {
     for (const auto* network : GetKnownFilNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return network->Clone();
+      }
     }
     return nullptr;
   }
   if (coin == mojom::CoinType::SOL) {
     for (const auto* network : GetKnownSolNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return network->Clone();
+      }
     }
     return nullptr;
   }
@@ -579,13 +584,15 @@ mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
                                      const std::string& chain_id,
                                      mojom::CoinType coin) {
   const base::Value::List* custom_list = GetCustomNetworksList(prefs, coin);
-  if (!custom_list)
+  if (!custom_list) {
     return nullptr;
+  }
   for (const auto& it : *custom_list) {
     if (auto opt_chain_id =
             brave_wallet::ExtractChainIdFromValue(it.GetIfDict())) {
-      if (base::CompareCaseInsensitiveASCII(chain_id, *opt_chain_id) == 0)
+      if (base::CompareCaseInsensitiveASCII(chain_id, *opt_chain_id) == 0) {
         return brave_wallet::ValueToNetworkInfo(it);
+      }
     }
   }
   return nullptr;
@@ -609,12 +616,14 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
 
 GURL GetInfuraURLForKnownChainId(const std::string& chain_id) {
   auto endpoint = brave_wallet::GetInfuraEndpointForKnownChainId(chain_id);
-  if (!endpoint.empty())
+  if (!endpoint.empty()) {
     return GURL(endpoint);
+  }
 
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
-  if (subdomain.empty())
+  if (subdomain.empty()) {
     return GURL();
+  }
   return GURL(
       base::StringPrintf("https://%s-infura.brave.com/", subdomain.c_str()));
 }
@@ -622,29 +631,33 @@ GURL GetInfuraURLForKnownChainId(const std::string& chain_id) {
 std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id) {
   const auto& endpoints = GetInfuraChainEndpoints();
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (endpoints.contains(chain_id_lower))
+  if (endpoints.contains(chain_id_lower)) {
     return endpoints.at(chain_id_lower);
+  }
   return std::string();
 }
 
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (kInfuraSubdomains.contains(chain_id_lower))
+  if (kInfuraSubdomains.contains(chain_id_lower)) {
     return kInfuraSubdomains.at(chain_id_lower);
+  }
   return std::string();
 }
 
 std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (kSolanaSubdomains.contains(chain_id_lower))
+  if (kSolanaSubdomains.contains(chain_id_lower)) {
     return kSolanaSubdomains.at(chain_id_lower);
+  }
   return std::string();
 }
 
 std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (kFilecoinSubdomains.contains(chain_id_lower))
+  if (kFilecoinSubdomains.contains(chain_id_lower)) {
     return kFilecoinSubdomains.at(chain_id_lower);
+  }
   return std::string();
 }
 
@@ -652,8 +665,9 @@ std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(PrefService* prefs,
                                                       mojom::CoinType coin) {
   std::vector<mojom::NetworkInfoPtr> result;
   auto* custom_list = GetCustomNetworksList(prefs, coin);
-  if (!custom_list)
+  if (!custom_list) {
     return result;
+  }
 
   for (const auto& it : *custom_list) {
     mojom::NetworkInfoPtr chain = ValueToNetworkInfo(it);
@@ -669,17 +683,22 @@ std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(PrefService* prefs,
 bool KnownChainExists(const std::string& chain_id, mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
     for (const auto* network : GetKnownEthNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return true;
+      }
     }
   } else if (coin == mojom::CoinType::SOL) {
-    for (const auto* network : GetKnownSolNetworks())
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
+    for (const auto* network : GetKnownSolNetworks()) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return true;
+      }
+    }
   } else if (coin == mojom::CoinType::FIL) {
-    for (const auto* network : GetKnownFilNetworks())
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0)
+    for (const auto* network : GetKnownFilNetworks()) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return true;
+      }
+    }
   } else {
     NOTREACHED() << coin;
   }
@@ -690,12 +709,14 @@ bool CustomChainExists(PrefService* prefs,
                        const std::string& custom_chain_id,
                        mojom::CoinType coin) {
   const base::Value::List* custom_list = GetCustomNetworksList(prefs, coin);
-  if (!custom_list)
+  if (!custom_list) {
     return false;
+  }
   for (const auto& it : *custom_list) {
     if (auto chain_id = ExtractChainIdFromValue(it.GetIfDict())) {
-      if (base::CompareCaseInsensitiveASCII(*chain_id, custom_chain_id) == 0)
+      if (base::CompareCaseInsensitiveASCII(*chain_id, custom_chain_id) == 0) {
         return true;
+      }
     }
   }
   return false;
@@ -748,14 +769,16 @@ bool IsBitcoinEnabled() {
 std::vector<brave_wallet::mojom::NetworkInfoPtr>
 GetAllKnownNetworksForTesting() {
   std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
-  for (const auto* network : GetKnownEthNetworks())
+  for (const auto* network : GetKnownEthNetworks()) {
     result.push_back(network->Clone());
+  }
   return result;
 }
 
 std::string GenerateMnemonic(size_t entropy_size) {
-  if (!IsValidEntropySize(entropy_size))
+  if (!IsValidEntropySize(entropy_size)) {
     return "";
+  }
 
   std::vector<uint8_t> entropy(entropy_size);
   crypto::RandBytes(&entropy[0], entropy.size());
@@ -771,8 +794,9 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy) {
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
     const std::string& passphrase) {
-  if (!IsValidMnemonic(mnemonic))
+  if (!IsValidMnemonic(mnemonic)) {
     return nullptr;
+  }
 
   std::unique_ptr<std::vector<uint8_t>> seed =
       std::make_unique<std::vector<uint8_t>>(64);
@@ -786,8 +810,9 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
 
 std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
     const std::string& mnemonic) {
-  if (!IsValidMnemonic(mnemonic))
+  if (!IsValidMnemonic(mnemonic)) {
     return nullptr;
+  }
 
   const std::vector<std::string> words = SplitString(
       mnemonic, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
@@ -835,8 +860,9 @@ bool IsValidMnemonic(const std::string& mnemonic) {
 }
 
 bool EncodeString(const std::string& input, std::string* output) {
-  if (!base::IsStringUTF8(input))
+  if (!base::IsStringUTF8(input)) {
     return false;
+  }
 
   if (input.empty()) {
     *output =
@@ -847,8 +873,9 @@ bool EncodeString(const std::string& input, std::string* output) {
   // Encode count for this string
   bool success =
       PadHexEncodedParameter(Uint256ValueToHex(input.size()), output);
-  if (!success)
+  if (!success) {
     return false;
+  }
 
   // Encode string.
   *output += base::ToLowerASCII(base::HexEncode(input.data(), input.size()));
@@ -869,16 +896,18 @@ bool EncodeStringArray(const std::vector<std::string>& input,
   // Write count of elements.
   bool success = PadHexEncodedParameter(
       Uint256ValueToHex(static_cast<uint256_t>(input.size())), output);
-  if (!success)
+  if (!success) {
     return false;
+  }
 
   // Write offsets to array elements.
   size_t data_offset = input.size() * 32;  // Offset to first element.
   std::string encoded_offset;
   success =
       PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
-  if (!success)
+  if (!success) {
     return false;
+  }
   *output += encoded_offset.substr(2);
 
   for (size_t i = 1; i < input.size(); i++) {
@@ -891,8 +920,9 @@ bool EncodeStringArray(const std::vector<std::string>& input,
 
     success = PadHexEncodedParameter(Uint256ValueToHex(data_offset),
                                      &encoded_offset_for_element);
-    if (!success)
+    if (!success) {
       return false;
+    }
     *output += encoded_offset_for_element.substr(2);
   }
 
@@ -900,8 +930,9 @@ bool EncodeStringArray(const std::vector<std::string>& input,
   for (const auto& entry : input) {
     std::string encoded_string;
     success = EncodeString(entry, &encoded_string);
-    if (!success)
+    if (!success) {
       return false;
+    }
     *output += encoded_string.substr(2);
   }
 
@@ -911,8 +942,9 @@ bool EncodeStringArray(const std::vector<std::string>& input,
 bool DecodeString(size_t offset,
                   const std::string& input,
                   std::string* output) {
-  if (!output->empty())
+  if (!output->empty()) {
     return false;
+  }
 
   // Decode count.
   uint256_t count = 0;
@@ -967,72 +999,87 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value::Dict& value) {
   TransactionReceipt tx_receipt;
   const std::string* transaction_hash = value.FindString("transaction_hash");
-  if (!transaction_hash)
+  if (!transaction_hash) {
     return absl::nullopt;
+  }
   tx_receipt.transaction_hash = *transaction_hash;
 
   const std::string* transaction_index = value.FindString("transaction_index");
-  if (!transaction_index)
+  if (!transaction_index) {
     return absl::nullopt;
+  }
   uint256_t transaction_index_uint;
-  if (!HexValueToUint256(*transaction_index, &transaction_index_uint))
+  if (!HexValueToUint256(*transaction_index, &transaction_index_uint)) {
     return absl::nullopt;
+  }
   tx_receipt.transaction_index = transaction_index_uint;
 
   const std::string* block_hash = value.FindString("block_hash");
-  if (!block_hash)
+  if (!block_hash) {
     return absl::nullopt;
+  }
   tx_receipt.block_hash = *block_hash;
 
   const std::string* block_number = value.FindString("block_number");
-  if (!block_number)
+  if (!block_number) {
     return absl::nullopt;
+  }
   uint256_t block_number_uint;
-  if (!HexValueToUint256(*block_number, &block_number_uint))
+  if (!HexValueToUint256(*block_number, &block_number_uint)) {
     return absl::nullopt;
+  }
   tx_receipt.block_number = block_number_uint;
 
   const std::string* from = value.FindString("from");
-  if (!from)
+  if (!from) {
     return absl::nullopt;
+  }
   tx_receipt.from = *from;
 
   const std::string* to = value.FindString("to");
-  if (!to)
+  if (!to) {
     return absl::nullopt;
+  }
   tx_receipt.to = *to;
 
   const std::string* cumulative_gas_used =
       value.FindString("cumulative_gas_used");
-  if (!cumulative_gas_used)
+  if (!cumulative_gas_used) {
     return absl::nullopt;
+  }
   uint256_t cumulative_gas_used_uint;
-  if (!HexValueToUint256(*cumulative_gas_used, &cumulative_gas_used_uint))
+  if (!HexValueToUint256(*cumulative_gas_used, &cumulative_gas_used_uint)) {
     return absl::nullopt;
+  }
   tx_receipt.cumulative_gas_used = cumulative_gas_used_uint;
 
   const std::string* gas_used = value.FindString("gas_used");
-  if (!gas_used)
+  if (!gas_used) {
     return absl::nullopt;
+  }
   uint256_t gas_used_uint;
-  if (!HexValueToUint256(*gas_used, &gas_used_uint))
+  if (!HexValueToUint256(*gas_used, &gas_used_uint)) {
     return absl::nullopt;
+  }
   tx_receipt.gas_used = gas_used_uint;
 
   const std::string* contract_address = value.FindString("contract_address");
-  if (!contract_address)
+  if (!contract_address) {
     return absl::nullopt;
+  }
   tx_receipt.contract_address = *contract_address;
 
   // TODO(darkdh): logs
   const std::string* logs_bloom = value.FindString("logs_bloom");
-  if (!logs_bloom)
+  if (!logs_bloom) {
     return absl::nullopt;
+  }
   tx_receipt.logs_bloom = *logs_bloom;
 
   absl::optional<bool> status = value.FindBool("status");
-  if (!status)
+  if (!status) {
     return absl::nullopt;
+  }
   tx_receipt.status = *status;
 
   return tx_receipt;
@@ -1053,14 +1100,16 @@ std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
   }
 
   if (coin == mojom::CoinType::SOL) {
-    for (const auto* network : GetKnownSolNetworks())
+    for (const auto* network : GetKnownSolNetworks()) {
       result.push_back(network->Clone());
+    }
     return result;
   }
 
   if (coin == mojom::CoinType::FIL) {
-    for (const auto* network : GetKnownFilNetworks())
+    for (const auto* network : GetKnownFilNetworks()) {
       result.push_back(network->Clone());
+    }
     return result;
   }
 
@@ -1089,8 +1138,9 @@ std::vector<std::string> GetAllKnownSolNetworkIds() {
   std::vector<std::string> network_ids;
   for (const auto* network : GetKnownSolNetworks()) {
     std::string network_id = GetKnownSolNetworkId(network->chain_id);
-    if (!network_id.empty())
+    if (!network_id.empty()) {
       network_ids.push_back(network_id);
+    }
   }
   return network_ids;
 }
@@ -1099,8 +1149,9 @@ std::vector<std::string> GetAllKnownFilNetworkIds() {
   std::vector<std::string> network_ids;
   for (const auto* network : GetKnownFilNetworks()) {
     std::string network_id = GetKnownFilNetworkId(network->chain_id);
-    if (!network_id.empty())
+    if (!network_id.empty()) {
       network_ids.push_back(network_id);
+    }
   }
   return network_ids;
 }
@@ -1109,26 +1160,30 @@ std::vector<std::string> GetAllKnownEthNetworkIds() {
   std::vector<std::string> network_ids;
   for (const auto* network : GetKnownEthNetworks()) {
     std::string network_id = GetKnownEthNetworkId(network->chain_id);
-    if (!network_id.empty())
+    if (!network_id.empty()) {
       network_ids.push_back(network_id);
+    }
   }
   return network_ids;
 }
 
 std::string GetKnownEthNetworkId(const std::string& chain_id) {
   auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id);
-  if (!subdomain.empty())
+  if (!subdomain.empty()) {
     return subdomain;
+  }
 
   // For known networks not in kInfuraSubdomains:
   //   localhost: Use the first RPC URL.
   //   other: Use chain ID like other custom networks.
   for (const auto* network : GetKnownEthNetworks()) {
-    if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0)
+    if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0) {
       continue;
+    }
     if (base::CompareCaseInsensitiveASCII(chain_id, mojom::kLocalhostChainId) ==
-        0)
+        0) {
       return network->rpc_endpoints.front().spec();
+    }
     return base::ToLowerASCII(chain_id);
   }
 
@@ -1137,8 +1192,9 @@ std::string GetKnownEthNetworkId(const std::string& chain_id) {
 
 std::string GetKnownSolNetworkId(const std::string& chain_id) {
   auto subdomain = GetSolanaSubdomainForKnownChainId(chain_id);
-  if (!subdomain.empty())
+  if (!subdomain.empty()) {
     return subdomain;
+  }
 
   // Separate check for localhost in known networks as it is predefined but
   // does not have predefined subdomain.
@@ -1156,8 +1212,9 @@ std::string GetKnownSolNetworkId(const std::string& chain_id) {
 
 std::string GetKnownFilNetworkId(const std::string& chain_id) {
   auto subdomain = GetFilecoinSubdomainForKnownChainId(chain_id);
-  if (!subdomain.empty())
+  if (!subdomain.empty()) {
     return subdomain;
+  }
 
   // Separate check for localhost in known networks as it is predefined but
   // does not have predefined subdomain.
@@ -1175,31 +1232,37 @@ std::string GetKnownFilNetworkId(const std::string& chain_id) {
 
 std::string GetKnownNetworkId(mojom::CoinType coin,
                               const std::string& chain_id) {
-  if (coin == mojom::CoinType::ETH)
+  if (coin == mojom::CoinType::ETH) {
     return GetKnownEthNetworkId(chain_id);
-  if (coin == mojom::CoinType::SOL)
+  }
+  if (coin == mojom::CoinType::SOL) {
     return GetKnownSolNetworkId(chain_id);
-  if (coin == mojom::CoinType::FIL)
+  }
+  if (coin == mojom::CoinType::FIL) {
     return GetKnownFilNetworkId(chain_id);
+  }
   return "";
 }
 
 std::string GetNetworkId(PrefService* prefs,
                          mojom::CoinType coin,
                          const std::string& chain_id) {
-  if (chain_id.empty())
+  if (chain_id.empty()) {
     return "";
+  }
 
   std::string id = GetKnownNetworkId(coin, chain_id);
-  if (!id.empty())
+  if (!id.empty()) {
     return id;
+  }
 
   DCHECK(prefs);
   if (coin == mojom::CoinType::ETH) {
     for (const auto& network :
          GetAllCustomChains(prefs, mojom::CoinType::ETH)) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0)
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0) {
         continue;
+      }
       id = chain_id;
       break;
     }
@@ -1302,8 +1365,10 @@ GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (kUnstoppableDomainsProxyReaderContractAddressMap.contains(chain_id_lower))
+  if (kUnstoppableDomainsProxyReaderContractAddressMap.contains(
+          chain_id_lower)) {
     return kUnstoppableDomainsProxyReaderContractAddressMap.at(chain_id_lower);
+  }
   return "";
 }
 
@@ -1334,8 +1399,9 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
         ->Append(NetworkInfoToValue(chain));
   }
 
-  if (chain.coin != mojom::CoinType::ETH)
+  if (chain.coin != mojom::CoinType::ETH) {
     return;
+  }
 
   const std::string network_id =
       GetNetworkId(prefs, mojom::CoinType::ETH, chain.chain_id);
@@ -1371,13 +1437,15 @@ void RemoveCustomNetwork(PrefService* prefs,
 
   ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
   base::Value::List* list = update->FindList(GetPrefKeyForCoinType(coin));
-  if (!list)
+  if (!list) {
     return;
+  }
   list->EraseIf([&chain_id_to_remove](const base::Value& v) {
     DCHECK(v.is_dict());
     auto* chain_id_value = v.GetDict().FindString("chainId");
-    if (!chain_id_value)
+    if (!chain_id_value) {
       return false;
+    }
     return base::CompareCaseInsensitiveASCII(*chain_id_value,
                                              chain_id_to_remove) == 0;
   });
@@ -1390,8 +1458,9 @@ std::vector<std::string> GetHiddenNetworks(PrefService* prefs,
 
   auto* hidden_networks_list =
       hidden_networks.FindList(GetPrefKeyForCoinType(coin));
-  if (!hidden_networks_list)
+  if (!hidden_networks_list) {
     return result;
+  }
 
   for (const auto& it : *hidden_networks_list) {
     if (auto* chain_id = it.GetIfString()) {
@@ -1418,12 +1487,14 @@ void RemoveHiddenNetwork(PrefService* prefs,
                          const std::string& chain_id) {
   ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
   base::Value::List* list = update->FindList(GetPrefKeyForCoinType(coin));
-  if (!list)
+  if (!list) {
     return;
+  }
   list->EraseIf([&](const base::Value& v) {
     auto* chain_id_string = v.GetIfString();
-    if (!chain_id_string)
+    if (!chain_id_string) {
       return false;
+    }
     return base::CompareCaseInsensitiveASCII(*chain_id_string, chain_id) == 0;
   });
 }
@@ -1528,6 +1599,31 @@ bool IsFilecoinKeyringId(const std::string& keyring_id) {
          keyring_id == mojom::kFilecoinTestnetKeyringId;
 }
 
+bool IsBitcoinKeyring(const std::string& keyring_id) {
+  return keyring_id == mojom::kBitcoinKeyring84Id ||
+         keyring_id == mojom::kBitcoinKeyring84TestId;
+}
+
+bool IsBitcoinNetwork(const std::string& network_id) {
+  return network_id == mojom::kBitcoinMainnet ||
+         network_id == mojom::kBitcoinTestnet;
+}
+
+bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
+                                      const std::string& keyring_id) {
+  if (!IsBitcoinKeyring(keyring_id) || !IsBitcoinNetwork(network_id)) {
+    return false;
+  }
+
+  if (network_id == mojom::kBitcoinMainnet) {
+    return keyring_id == mojom::kBitcoinKeyring84Id;
+  } else if (network_id == mojom::kBitcoinTestnet) {
+    return keyring_id == mojom::kBitcoinKeyring84TestId;
+  }
+  NOTREACHED();
+  return false;
+}
+
 std::string GetFilecoinKeyringId(const std::string& network) {
   if (network == mojom::kFilecoinMainnet) {
     return mojom::kFilecoinKeyringId;
@@ -1554,7 +1650,7 @@ mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
     return mojom::CoinType::FIL;
   } else if (keyring_id == mojom::kSolanaKeyringId) {
     return mojom::CoinType::SOL;
-  } else if (keyring_id == mojom::kBitcoinKeyringId) {
+  } else if (IsBitcoinKeyring(keyring_id)) {
     return mojom::CoinType::BTC;
   }
 

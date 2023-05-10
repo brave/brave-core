@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 
@@ -88,8 +88,7 @@ std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChildFromPath(
   return std::make_unique<HDKeyEd25519>(path, std::move(child_private_key));
 }
 
-std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg,
-                                        int* recid) {
+std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg) {
   auto signature_result = private_key_->unwrap().sign(
       rust::Slice<const uint8_t>{msg.data(), msg.size()});
   if (!signature_result->is_ok()) {

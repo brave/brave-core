@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
-
 namespace brave_ads {
 
 ConfirmationInfo::ConfirmationInfo() = default;
@@ -27,7 +25,7 @@ bool operator==(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs) {
   return lhs.transaction_id == rhs.transaction_id &&
          lhs.creative_instance_id == rhs.creative_instance_id &&
          lhs.type == rhs.type && lhs.ad_type == rhs.ad_type &&
-         DoubleEquals(lhs.created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
+         lhs.created_at == rhs.created_at &&
          lhs.was_created == rhs.was_created && lhs.opted_in == rhs.opted_in;
 }
 

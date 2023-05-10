@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/common/mojom/ledger_database.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 inline const auto db_error_response = [] {
   auto response = mojom::DBCommandResponse::New();
@@ -144,6 +144,6 @@ class MockLedgerClient : public mojom::LedgerClient {
                      DecryptStringCallback callback) override;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_CLIENT_MOCK_H_

@@ -24,36 +24,27 @@ class TimeDelta;
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
+class AntiTargetingResource;
+class EligibleNotificationAdsBase;
 class SubdivisionTargeting;
 struct NotificationAdInfo;
+struct UserModelInfo;
 
-namespace notification_ads {
-
-class EligibleAdsBase;
-
-class Serving final : public AdsClientNotifierObserver {
+class NotificationAdServing final : public AdsClientNotifierObserver {
  public:
-  Serving(const SubdivisionTargeting& subdivision_targeting,
-          const resource::AntiTargeting& anti_targeting_resource);
+  NotificationAdServing(const SubdivisionTargeting& subdivision_targeting,
+                        const AntiTargetingResource& anti_targeting_resource);
 
-  Serving(const Serving&) = delete;
-  Serving& operator=(const Serving&) = delete;
+  NotificationAdServing(const NotificationAdServing&) = delete;
+  NotificationAdServing& operator=(const NotificationAdServing&) = delete;
 
-  Serving(Serving&&) noexcept = delete;
-  Serving& operator=(Serving&&) noexcept = delete;
+  NotificationAdServing(NotificationAdServing&&) noexcept = delete;
+  NotificationAdServing& operator=(NotificationAdServing&&) noexcept = delete;
 
-  ~Serving() override;
+  ~NotificationAdServing() override;
 
-  void SetDelegate(ServingDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+  void SetDelegate(NotificationAdServingDelegate* delegate) {
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 
@@ -61,18 +52,18 @@ class Serving final : public AdsClientNotifierObserver {
   void StopServingAdsAtRegularIntervals();
 
   void MaybeServeAd();
+  void MaybeServeAdAtNextRegularInterval();
 
  private:
-  bool IsSupported() const { return static_cast<bool>(eligible_ads_); }
+  bool IsSupported() const { return bool{eligible_ads_}; }
 
-  void OnBuildUserModel(const targeting::UserModelInfo& user_model);
-  void OnGetForUserModel(const targeting::UserModelInfo& user_model,
-                         bool had_opportunity,
-                         const CreativeNotificationAdList& creative_ads);
+  void BuildUserModelCallback(const UserModelInfo& user_model);
+  void GetForUserModelCallback(const UserModelInfo& user_model,
+                               bool had_opportunity,
+                               const CreativeNotificationAdList& creative_ads);
 
   void OnAdsPerHourPrefChanged();
 
-  void MaybeServeAdAtNextRegularInterval();
   void RetryServingAdAtNextInterval();
   base::Time MaybeServeAdAfter(base::TimeDelta delay);
 
@@ -82,18 +73,17 @@ class Serving final : public AdsClientNotifierObserver {
   // AdsClientNotifierObserver:
   void OnNotifyPrefDidChange(const std::string& path) override;
 
-  raw_ptr<ServingDelegate> delegate_ = nullptr;
+  raw_ptr<NotificationAdServingDelegate> delegate_ = nullptr;
 
   bool is_serving_ = false;
 
   Timer timer_;
 
-  std::unique_ptr<EligibleAdsBase> eligible_ads_;
+  std::unique_ptr<EligibleNotificationAdsBase> eligible_ads_;
 
-  base::WeakPtrFactory<Serving> weak_factory_{this};
+  base::WeakPtrFactory<NotificationAdServing> weak_factory_{this};
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_NOTIFICATION_AD_SERVING_H_

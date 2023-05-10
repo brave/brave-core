@@ -8,7 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
@@ -37,11 +37,11 @@ class Catalog final : public DatabaseManagerObserver {
 
  private:
   void Fetch();
-  void OnFetch(const mojom::UrlResponseInfo& url_response);
+  void FetchCallback(const mojom::UrlResponseInfo& url_response);
   void FetchAfterDelay();
 
   void Retry();
-  void OnRetry();
+  void RetryCallback();
 
   void NotifyDidUpdateCatalog(const CatalogInfo& catalog) const;
   void NotifyFailedToUpdateCatalog() const;
@@ -51,7 +51,7 @@ class Catalog final : public DatabaseManagerObserver {
 
   base::ObserverList<CatalogObserver> observers_;
 
-  bool is_processing_ = false;
+  bool is_fetching_ = false;
 
   Timer timer_;
   BackoffTimer retry_timer_;

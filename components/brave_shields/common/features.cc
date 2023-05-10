@@ -73,6 +73,11 @@ BASE_FEATURE(kBraveExtensionNetworkBlocking,
 BASE_FEATURE(kBraveReduceLanguage,
              "BraveReduceLanguage",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// when enabled, brave will prompt for permission on sites which want to connect
+// to localhost.
+BASE_FEATURE(kBraveLocalhostAccessPermission,
+             "BraveLocalhostAccessPermission",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will always report Light in Fingerprinting: Strict mode
 BASE_FEATURE(kBraveDarkModeBlock,
              "BraveDarkModeBlock",

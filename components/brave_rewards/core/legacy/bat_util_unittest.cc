@@ -8,44 +8,48 @@
 
 // npm run test -- brave_unit_tests --filter=BatUtilTest.*
 
+namespace brave_rewards::internal {
+
 class BatUtilTest : public testing::Test {};
 
 TEST(BatUtilTest, ConvertToProbi) {
   // empty string
-  std::string result = braveledger_bat_util::ConvertToProbi("");
+  std::string result = ConvertToProbi("");
   ASSERT_EQ(result, "0");
 
   // single dig int
-  result = braveledger_bat_util::ConvertToProbi("5");
+  result = ConvertToProbi("5");
   ASSERT_EQ(result, "5000000000000000000");
 
   // two dig int
-  result = braveledger_bat_util::ConvertToProbi("15");
+  result = ConvertToProbi("15");
   ASSERT_EQ(result, "15000000000000000000");
 
   // single dig decimal
-  result = braveledger_bat_util::ConvertToProbi("5.4");
+  result = ConvertToProbi("5.4");
   ASSERT_EQ(result, "5400000000000000000");
 
   // two dig decimal
-  result = braveledger_bat_util::ConvertToProbi("5.45");
+  result = ConvertToProbi("5.45");
   ASSERT_EQ(result, "5450000000000000000");
 }
 
 TEST(BatUtilTest, ProbiToDouble) {
   // empty string
-  double result = braveledger_bat_util::ProbiToDouble("");
+  double result = ProbiToDouble("");
   ASSERT_EQ(result, 0);
 
   // wrong probi
-  result = braveledger_bat_util::ProbiToDouble("10");
+  result = ProbiToDouble("10");
   ASSERT_EQ(result, 0);
 
   // full number probi
-  result = braveledger_bat_util::ProbiToDouble("5000000000000000000");
+  result = ProbiToDouble("5000000000000000000");
   ASSERT_EQ(result, 5.0);
 
   // full number probi
-  result = braveledger_bat_util::ProbiToDouble("1125600000000000000000");
+  result = ProbiToDouble("1125600000000000000000");
   ASSERT_EQ(result, 1125.6);
 }
+
+}  // namespace brave_rewards::internal

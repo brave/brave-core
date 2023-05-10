@@ -7,7 +7,7 @@
 
 #include "base/guid.h"
 #include "base/notreached.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/notification_ad_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -64,8 +64,7 @@ absl::optional<base::Value::Dict> GetReminder(const mojom::ReminderType type) {
     }
   }
 
-  NOTREACHED() << "Unexpected value for mojom::ReminderType: " << type;
-  return absl::nullopt;
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::ReminderType: " << type;
 }
 
 }  // namespace brave_ads

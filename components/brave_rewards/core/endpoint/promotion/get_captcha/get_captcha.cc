@@ -14,7 +14,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -78,7 +78,7 @@ void GetCaptcha::Request(const std::string& captcha_id,
 void GetCaptcha::OnRequest(GetCaptchaCallback callback,
                            mojom::UrlResponsePtr response) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response, true);
+  LogUrlResponse(__func__, *response, true);
 
   std::string image;
   mojom::Result result = CheckStatusCode(response->status_code);
@@ -94,4 +94,4 @@ void GetCaptcha::OnRequest(GetCaptchaCallback callback,
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

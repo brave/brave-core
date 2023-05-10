@@ -15,13 +15,13 @@ namespace brave_ads {
 namespace {
 
 std::string Strip(const std::string& value, const std::string& pattern) {
-  DCHECK(!pattern.empty());
+  CHECK(!pattern.empty());
 
   if (value.empty()) {
     return {};
   }
 
-  std::string stripped_value = value;
+  std::string stripped_value(value);
 
   RE2::GlobalReplace(&stripped_value, pattern, " ");
 

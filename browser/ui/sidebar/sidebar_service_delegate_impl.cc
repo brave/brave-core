@@ -27,6 +27,11 @@ void SidebarServiceDelegateImpl::MoveSidebarToRightTemporarily() {
            ->IsDefaultValue())
     return;
 
+  if (changing_sidebar_alignment_temporarily_) {
+    // We already changed the alignment.
+    return;
+  }
+
   base::AutoReset<bool> resetter(&changing_sidebar_alignment_temporarily_,
                                  true);
   prefs_->SetBoolean(prefs::kSidePanelHorizontalAlignment,

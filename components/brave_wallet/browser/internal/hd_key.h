@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_H_
@@ -19,6 +19,8 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
+
+constexpr size_t kCompactSignatureSize = 64;
 
 using SecureVector = std::vector<uint8_t, SecureZeroAllocator<uint8_t>>;
 
@@ -62,7 +64,7 @@ class HDKey : public HDKeyBase {
   std::vector<uint8_t> GetPublicKeyBytes() const override;
   std::string GetPublicExtendedKey(
       ExtendedKeyVersion version = ExtendedKeyVersion::kXpub) const;
-  std::string GetSegwitAddress() const;
+  std::string GetSegwitAddress(bool testnet) const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;
   std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
   absl::optional<std::vector<uint8_t>>
@@ -82,12 +84,18 @@ class HDKey : public HDKeyBase {
   // If path is invalid, nullptr will be returned
   std::unique_ptr<HDKeyBase> DeriveChildFromPath(
       const std::string& path) override;
+  // TODO(apaymyshev): make arg and return types fixed size spans and arrays
+  // where possible.
 
   // Sign the message using private key. The msg has to be exactly 32 bytes
   // Return 64 bytes ECDSA signature when succeed, otherwise empty vector
   // if recid is not null, recovery id will be filled.
-  std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg,
-                            int* recid = nullptr) override;
+  std::vector<uint8_t> SignCompact(const std::vector<uint8_t>& msg, int* recid);
+
+  // Sign the message using private key and return it in DER format.
+  absl::optional<std::vector<uint8_t>> SignDer(
+      base::span<const uint8_t, 32> msg);
+
   // Verify the ECDSA signature using public key. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return true when successfully verified, false otherwise.
@@ -97,10 +105,10 @@ class HDKey : public HDKeyBase {
   // Recover public key from signature and message. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return valid public key when succeed, all zero vector otherwise
-  std::vector<uint8_t> Recover(bool compressed,
-                               const std::vector<uint8_t>& msg,
-                               const std::vector<uint8_t>& sig,
-                               int recid);
+  std::vector<uint8_t> RecoverCompact(bool compressed,
+                                      const std::vector<uint8_t>& msg,
+                                      const std::vector<uint8_t>& sig,
+                                      int recid);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(Eip1559TransactionUnitTest,

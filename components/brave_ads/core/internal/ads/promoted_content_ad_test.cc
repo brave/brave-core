@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
@@ -28,8 +29,7 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
-        {// Fetch catalog request
-         "/v9/catalog",
+        {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
            /*response_body*/ "/catalog_with_promoted_content_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
@@ -48,12 +48,12 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
       mojom::PromotedContentAdEventType::kViewed);
 
   // Assert
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kServed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
-  EXPECT_EQ(1, GetHistoryItemCount());
-  EXPECT_EQ(1, GetTransactionCount());
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetHistoryItemCount());
+  EXPECT_EQ(1U, GetTransactionCount());
 }
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
@@ -71,14 +71,14 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
       mojom::PromotedContentAdEventType::kClicked);
 
   // Assert
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kServed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kClicked));
-  EXPECT_EQ(2, GetHistoryItemCount());
-  EXPECT_EQ(2, GetTransactionCount());
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kClicked));
+  EXPECT_EQ(2U, GetHistoryItemCount());
+  EXPECT_EQ(2U, GetTransactionCount());
 }
 
 }  // namespace brave_ads

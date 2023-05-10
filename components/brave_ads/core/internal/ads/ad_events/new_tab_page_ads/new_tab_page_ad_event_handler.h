@@ -11,7 +11,7 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 
@@ -20,22 +20,21 @@ namespace brave_ads {
 struct CreativeNewTabPageAdInfo;
 struct NewTabPageAdInfo;
 
-namespace new_tab_page_ads {
-
-class EventHandler final : public EventHandlerDelegate {
+class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
  public:
-  EventHandler();
+  NewTabPageAdEventHandler();
 
-  EventHandler(const EventHandler&) = delete;
-  EventHandler& operator=(const EventHandler&) = delete;
+  NewTabPageAdEventHandler(const NewTabPageAdEventHandler&) = delete;
+  NewTabPageAdEventHandler& operator=(const NewTabPageAdEventHandler&) = delete;
 
-  EventHandler(EventHandler&&) noexcept = delete;
-  EventHandler& operator=(EventHandler&&) noexcept = delete;
+  NewTabPageAdEventHandler(NewTabPageAdEventHandler&&) noexcept = delete;
+  NewTabPageAdEventHandler& operator=(NewTabPageAdEventHandler&&) noexcept =
+      delete;
 
-  ~EventHandler() override;
+  ~NewTabPageAdEventHandler() override;
 
-  void SetDelegate(EventHandlerDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+  void SetDelegate(NewTabPageAdEventHandlerDelegate* delegate) {
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 
@@ -44,18 +43,19 @@ class EventHandler final : public EventHandlerDelegate {
                  mojom::NewTabPageAdEventType event_type);
 
  private:
-  void OnGetForCreativeInstanceId(const std::string& placement_id,
-                                  mojom::NewTabPageAdEventType event_type,
-                                  bool success,
-                                  const std::string& creative_instance_id,
-                                  const CreativeNewTabPageAdInfo& creative_ad);
+  void GetForCreativeInstanceIdCallback(
+      const std::string& placement_id,
+      mojom::NewTabPageAdEventType event_type,
+      bool success,
+      const std::string& creative_instance_id,
+      const CreativeNewTabPageAdInfo& creative_ad);
 
   void FireEvent(const NewTabPageAdInfo& ad,
                  mojom::NewTabPageAdEventType event_type);
-  void OnGetAdEvents(const NewTabPageAdInfo& ad,
-                     mojom::NewTabPageAdEventType event_type,
-                     bool success,
-                     const AdEventList& ad_events);
+  void GetAdEventsCallback(const NewTabPageAdInfo& ad,
+                           mojom::NewTabPageAdEventType event_type,
+                           bool success,
+                           const AdEventList& ad_events);
 
   void SuccessfullyFiredEvent(const NewTabPageAdInfo& ad,
                               mojom::NewTabPageAdEventType event_type) const;
@@ -63,12 +63,11 @@ class EventHandler final : public EventHandlerDelegate {
                          const std::string& creative_instance_id,
                          mojom::NewTabPageAdEventType event_type) const;
 
-  raw_ptr<EventHandlerDelegate> delegate_ = nullptr;
+  raw_ptr<NewTabPageAdEventHandlerDelegate> delegate_ = nullptr;
 
-  base::WeakPtrFactory<EventHandler> weak_factory_{this};
+  base::WeakPtrFactory<NewTabPageAdEventHandler> weak_factory_{this};
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_HANDLER_H_

@@ -3,19 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 
 assert(!is_android)
-
-declare_args() {
-  webcompat_report_api_endpoint = "https://webcompat.brave.com/1/webcompat"
-}
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "WEBCOMPAT_REPORT_ENDPOINT=\"$webcompat_report_api_endpoint\"" ]
-}
 
 static_library("browser") {
   sources = [
@@ -24,11 +14,11 @@ static_library("browser") {
   ]
 
   deps = [
-    ":buildflags",
     "//base",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
+    "//brave/components/webcompat_reporter/buildflags",
     "//content/public/browser",
     "//net",
     "//services/network/public/cpp",

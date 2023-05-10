@@ -29,7 +29,6 @@ void PurgeStaleTextEmbeddingHtmlEvents(
 
 void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback);
-
 void OnGetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback,
     bool success,

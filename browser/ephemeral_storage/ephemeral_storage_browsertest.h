@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/thread_annotations.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -45,10 +46,11 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
     bool HasHttpRequestWithCookie(const GURL& url,
                                   const std::string& cookie_value) const;
     int GetHttpRequestsCount(const GURL& url) const;
-    void Clear() { http_requests_.clear(); }
+    void Clear();
 
    private:
-    std::vector<net::test_server::HttpRequest> http_requests_;
+    mutable base::Lock lock_;
+    std::vector<net::test_server::HttpRequest> http_requests_ GUARDED_BY(lock_);
   };
 
   EphemeralStorageBrowserTest();

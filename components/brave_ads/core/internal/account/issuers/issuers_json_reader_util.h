@@ -12,8 +12,8 @@
 
 namespace brave_ads::json::reader {
 
-absl::optional<int> ParsePing(const base::Value& value);
-absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& value);
+absl::optional<int> ParsePing(const base::Value::Dict& dict);
+absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& dict);
 
 }  // namespace brave_ads::json::reader
 

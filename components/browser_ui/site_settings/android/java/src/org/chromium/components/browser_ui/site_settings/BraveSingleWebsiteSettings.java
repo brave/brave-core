@@ -37,9 +37,15 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
         preference.setKey(getPreferenceKey(ContentSettingsType.AUTOPLAY));
         setUpAutoplayPreference(preference);
 
+        // Google Sign In
         preference = new ChromeSwitchPreference(getStyledContext());
         preference.setKey(getPreferenceKey(ContentSettingsType.BRAVE_GOOGLE_SIGN_IN));
         setUpGoogleSignInPreference(preference);
+
+        // Localhost
+        preference = new ChromeSwitchPreference(getStyledContext());
+        preference.setKey(getPreferenceKey(ContentSettingsType.BRAVE_LOCALHOST_ACCESS));
+        setUpLocalhostPreference(preference);
 
         // SingleWebsiteSettings.setupContentSettingsPreferences has its own for loop
         BraveReflectionUtil.InvokeMethod(
@@ -79,6 +85,25 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
         if (currentValue == null) {
             currentValue = WebsitePreferenceBridge.isCategoryEnabled(
                                    browserContextHandle, ContentSettingsType.BRAVE_GOOGLE_SIGN_IN)
+                    ? ContentSettingValues.ASK
+                    : ContentSettingValues.BLOCK;
+        }
+        BraveReflectionUtil.InvokeMethod(SingleWebsiteSettings.class, this,
+                "setupContentSettingsPreference", Preference.class, preference, Integer.class,
+                currentValue, boolean.class, false);
+    }
+
+    private void setUpLocalhostPreference(Preference preference) {
+        BrowserContextHandle browserContextHandle =
+                getSiteSettingsDelegate().getBrowserContextHandle();
+        @Nullable
+        Website mSite =
+                (Website) BraveReflectionUtil.getField(SingleWebsiteSettings.class, "mSite", this);
+        Integer currentValue = mSite.getContentSetting(
+                browserContextHandle, ContentSettingsType.BRAVE_LOCALHOST_ACCESS);
+        if (currentValue == null) {
+            currentValue = WebsitePreferenceBridge.isCategoryEnabled(
+                                   browserContextHandle, ContentSettingsType.BRAVE_LOCALHOST_ACCESS)
                     ? ContentSettingValues.ASK
                     : ContentSettingValues.BLOCK;
         }

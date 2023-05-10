@@ -8,11 +8,14 @@ import * as React from 'react'
 import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper'
 import SignPanel from '.'
 import { mockAccounts } from '../../../stories/mock-data/mock-wallet-accounts'
-import { mockNetworks } from '../../../stories/mock-data/mock-networks'
-import { BraveWallet } from '../../../constants/types'
+
+import {
+  BraveWallet,
+  SerializableSignMessageRequest
+} from '../../../constants/types'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 
-const signMessageData = {
+const signMessageData: SerializableSignMessageRequest = {
   id: 0,
   address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
   message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
@@ -22,7 +25,8 @@ const signMessageData = {
   domainHash: '',
   domain: '',
   primaryHash: '',
-  messageBytes: undefined
+  messageBytes: undefined,
+  chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
 const evilUnicodeMessage = 'Sign into \u202E EVIL'
@@ -38,7 +42,6 @@ export const _SignPanel = () => {
       accounts={mockAccounts}
       onCancel={() => alert('')}
       onSign={() => alert('')}
-      selectedNetwork={mockNetworks[0]}
       showWarning={true}
       signMessageData={[evilUnicodeSignMessageData, signMessageData]}
     />

@@ -76,6 +76,10 @@ bool BaseLocalDataFilesBrowserTest::InstallMockExtension() {
   if (!mock_extension)
     return false;
 
+  if (!service()) {
+    return false;
+  }
+
   service()->OnComponentReady(mock_extension->id(), mock_extension->path(), "");
   WaitForService();
 

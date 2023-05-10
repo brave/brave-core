@@ -83,15 +83,17 @@ bool BraveRewardsNativeWorker::IsSupportedSkipRegionCheck(JNIEnv* env) {
 }
 
 std::string BraveRewardsNativeWorker::StringifyResult(
-    ledger::mojom::CreateRewardsWalletResult result) {
+    brave_rewards::mojom::CreateRewardsWalletResult result) {
   switch (result) {
-    case ledger::mojom::CreateRewardsWalletResult::kSuccess:
+    case brave_rewards::mojom::CreateRewardsWalletResult::kSuccess:
       return "success";
-    case ledger::mojom::CreateRewardsWalletResult::kWalletGenerationDisabled:
+    case brave_rewards::mojom::CreateRewardsWalletResult::
+        kWalletGenerationDisabled:
       return "wallet-generation-disabled";
-    case ledger::mojom::CreateRewardsWalletResult::kGeoCountryAlreadyDeclared:
+    case brave_rewards::mojom::CreateRewardsWalletResult::
+        kGeoCountryAlreadyDeclared:
       return "country-already-declared";
-    case ledger::mojom::CreateRewardsWalletResult::kUnexpected:
+    case brave_rewards::mojom::CreateRewardsWalletResult::kUnexpected:
       return "unexpected-error";
   }
 }
@@ -108,7 +110,7 @@ void BraveRewardsNativeWorker::CreateRewardsWallet(
 }
 
 void BraveRewardsNativeWorker::OnCreateRewardsWallet(
-    ledger::mojom::CreateRewardsWalletResult result) {
+    brave_rewards::mojom::CreateRewardsWalletResult result) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onCreateRewardsWallet(
       env, weak_java_brave_rewards_native_worker_.get(env),
@@ -125,7 +127,7 @@ void BraveRewardsNativeWorker::GetRewardsParameters(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::OnGetRewardsParameters(
     brave_rewards::RewardsService* rewards_service,
-    ledger::mojom::RewardsParametersPtr parameters) {
+    brave_rewards::mojom::RewardsParametersPtr parameters) {
   if (parameters) {
     parameters_ = std::move(parameters);
   }
@@ -154,7 +156,7 @@ void BraveRewardsNativeWorker::GetUserType(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::OnGetUserType(
-    const ledger::mojom::UserType user_type) {
+    const brave_rewards::mojom::UserType user_type) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onGetUserType(
       env, weak_java_brave_rewards_native_worker_.get(env),
@@ -169,8 +171,8 @@ void BraveRewardsNativeWorker::FetchBalance(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::OnBalance(
-    base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>
-        result) {
+    base::expected<brave_rewards::mojom::BalancePtr,
+                   brave_rewards::mojom::FetchBalanceError> result) {
   if (result.has_value()) {
     balance_ = *result.value();
   }
@@ -192,13 +194,13 @@ void BraveRewardsNativeWorker::GetPublisherInfo(
 
 void BraveRewardsNativeWorker::OnPanelPublisherInfo(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const ledger::mojom::PublisherInfo* info,
+    const brave_rewards::mojom::Result result,
+    const brave_rewards::mojom::PublisherInfo* info,
     uint64_t tabId) {
   if (!info) {
     return;
   }
-  ledger::mojom::PublisherInfoPtr pi = info->Clone();
+  brave_rewards::mojom::PublisherInfoPtr pi = info->Clone();
   map_publishers_info_[tabId] = std::move(pi);
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnPublisherInfo(env,
@@ -214,11 +216,11 @@ void BraveRewardsNativeWorker::OnUnblindedTokensReady(
 
 void BraveRewardsNativeWorker::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
+    const brave_rewards::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::mojom::RewardsType type,
-    const ledger::mojom::ContributionProcessor processor) {
+    const brave_rewards::mojom::RewardsType type,
+    const brave_rewards::mojom::ContributionProcessor processor) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onReconcileComplete(
       env, weak_java_brave_rewards_native_worker_.get(env),
@@ -227,7 +229,7 @@ void BraveRewardsNativeWorker::OnReconcileComplete(
 
 void BraveRewardsNativeWorker::OnPendingContributionSaved(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
+    const brave_rewards::mojom::Result result) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnPendingContributionSaved(
       env, weak_java_brave_rewards_native_worker_.get(env),
@@ -319,14 +321,16 @@ bool BraveRewardsNativeWorker::GetPublisherExcluded(JNIEnv* env,
 
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
-    res = iter->second->excluded == ledger::mojom::PublisherExclude::EXCLUDED;
+    res = iter->second->excluded ==
+          brave_rewards::mojom::PublisherExclude::EXCLUDED;
   }
 
   return res;
 }
 
 int BraveRewardsNativeWorker::GetPublisherStatus(JNIEnv* env, uint64_t tabId) {
-  int res = static_cast<int>(ledger::mojom::PublisherStatus::NOT_VERIFIED);
+  int res =
+      static_cast<int>(brave_rewards::mojom::PublisherStatus::NOT_VERIFIED);
   PublishersInfoMap::const_iterator iter = map_publishers_info_.find(tabId);
   if (iter != map_publishers_info_.end()) {
     res = static_cast<int>(iter->second->status);
@@ -340,9 +344,9 @@ void BraveRewardsNativeWorker::IncludeInAutoContribution(JNIEnv* env,
   PublishersInfoMap::iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
     if (exclude) {
-      iter->second->excluded = ledger::mojom::PublisherExclude::EXCLUDED;
+      iter->second->excluded = brave_rewards::mojom::PublisherExclude::EXCLUDED;
     } else {
-      iter->second->excluded = ledger::mojom::PublisherExclude::INCLUDED;
+      iter->second->excluded = brave_rewards::mojom::PublisherExclude::INCLUDED;
     }
     if (brave_rewards_service_) {
       brave_rewards_service_->SetPublisherExclude(iter->second->id, exclude);
@@ -470,8 +474,8 @@ void BraveRewardsNativeWorker::GetCurrentBalanceReport(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    ledger::mojom::BalanceReportInfoPtr report) {
+    const brave_rewards::mojom::Result result,
+    brave_rewards::mojom::BalanceReportInfoPtr report) {
   base::android::ScopedJavaLocalRef<jdoubleArray> java_array;
   JNIEnv* env = base::android::AttachCurrentThread();
   if (report) {
@@ -501,7 +505,8 @@ void BraveRewardsNativeWorker::Donate(
   }
 }
 
-void BraveRewardsNativeWorker::OnOneTimeTip(ledger::mojom::Result result) {
+void BraveRewardsNativeWorker::OnOneTimeTip(
+    brave_rewards::mojom::Result result) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnOneTimeTip(
       env, weak_java_brave_rewards_native_worker_.get(env),
@@ -545,8 +550,8 @@ void BraveRewardsNativeWorker::GetGrant(JNIEnv* env,
 }
 
 void BraveRewardsNativeWorker::OnClaimPromotion(
-    const ledger::mojom::Result result,
-    ledger::mojom::PromotionPtr promotion) {
+    const brave_rewards::mojom::Result result,
+    brave_rewards::mojom::PromotionPtr promotion) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnClaimPromotion(env,
       weak_java_brave_rewards_native_worker_.get(env),
@@ -589,7 +594,7 @@ void BraveRewardsNativeWorker::GetRecurringDonations(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::OnGetRecurringTips(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   map_recurrent_publishers_.clear();
   for (const auto& item : list) {
     map_recurrent_publishers_[item->id] = item->Clone();
@@ -617,7 +622,7 @@ void BraveRewardsNativeWorker::GetAutoContributeProperties(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::OnGetAutoContributeProperties(
-    ledger::mojom::AutoContributePropertiesPtr properties) {
+    brave_rewards::mojom::AutoContributePropertiesPtr properties) {
   if (properties) {
     auto_contrib_properties_ = std::move(properties);
   }
@@ -759,8 +764,8 @@ void BraveRewardsNativeWorker::OnNotificationDeleted(
 
 void BraveRewardsNativeWorker::OnPromotionFinished(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    ledger::mojom::PromotionPtr promotion) {
+    const brave_rewards::mojom::Result result,
+    brave_rewards::mojom::PromotionPtr promotion) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
   Java_BraveRewardsNativeWorker_OnGrantFinish(env,
@@ -869,7 +874,7 @@ void BraveRewardsNativeWorker::GetPublisherBanner(
 }
 
 void BraveRewardsNativeWorker::onPublisherBanner(
-    ledger::mojom::PublisherBannerPtr banner) {
+    brave_rewards::mojom::PublisherBannerPtr banner) {
   std::string json_banner_info;
   if (!banner) {
     json_banner_info = "";
@@ -900,8 +905,8 @@ void BraveRewardsNativeWorker::onPublisherBanner(
 }
 
 void BraveRewardsNativeWorker::OnGetExternalWallet(
-    base::expected<ledger::mojom::ExternalWalletPtr,
-                   ledger::mojom::GetExternalWalletError> result) {
+    base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                   brave_rewards::mojom::GetExternalWalletError> result) {
   auto wallet = std::move(result).value_or(nullptr);
   std::string json_wallet;
   if (!wallet) {
@@ -972,7 +977,7 @@ void BraveRewardsNativeWorker::RefreshPublisher(
 }
 
 void BraveRewardsNativeWorker::OnRefreshPublisher(
-    const ledger::mojom::PublisherStatus status,
+    const brave_rewards::mojom::PublisherStatus status,
     const std::string& publisher_key) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnRefreshPublisher(

@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 
@@ -19,11 +19,11 @@ constexpr char kGroupNameKey[] = "group";
 
 }  // namespace
 
-base::Value::Dict GetStudies() {
+base::Value::Dict BuildStudiesUserData() {
   base::Value::List list;
 
   const base::FieldTrial::ActiveGroups active_field_trial_groups =
-      GetActiveFieldTrialGroupsForActiveStudies();
+      GetActiveFieldTrialStudyGroups();
   for (const auto& active_field_trial_group : active_field_trial_groups) {
     base::Value::Dict dict;
     dict.Set(kTrialNameKey, active_field_trial_group.trial_name);
@@ -38,4 +38,4 @@ base::Value::Dict GetStudies() {
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

@@ -216,8 +216,8 @@ void NftMetadataFetcher::FetchMetadata(
   auto internal_callback =
       base::BindOnce(&NftMetadataFetcher::OnGetTokenMetadataPayload,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_->Request("GET", url, "", "", true,
-                               std::move(internal_callback));
+  api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
+                               {}, {.auto_retry_on_network_change = true});
 }
 
 void NftMetadataFetcher::OnSanitizeTokenMetadata(
@@ -263,8 +263,9 @@ void NftMetadataFetcher::CompleteGetEthTokenMetadata(
     int error,
     const std::string& error_message) {
   mojom::ProviderError mojo_err = static_cast<mojom::ProviderError>(error);
-  if (!mojom::IsKnownEnumValue(mojo_err))
+  if (!mojom::IsKnownEnumValue(mojo_err)) {
     mojo_err = mojom::ProviderError::kUnknown;
+  }
   std::move(callback).Run(uri.spec(), response, mojo_err, error_message);
 }
 
@@ -329,8 +330,9 @@ void NftMetadataFetcher::CompleteGetSolTokenMetadata(
     const std::string& error_message) {
   mojom::SolanaProviderError mojo_err =
       static_cast<mojom::SolanaProviderError>(error);
-  if (!mojom::IsKnownEnumValue(mojo_err))
+  if (!mojom::IsKnownEnumValue(mojo_err)) {
     mojo_err = mojom::SolanaProviderError::kUnknown;
+  }
   std::move(callback).Run(uri.spec(), response, mojo_err, error_message);
 }
 

@@ -210,6 +210,26 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (bookmarkItem != null && currentTab != null) {
             updateBookmarkMenuItemShortcut(bookmarkItem, currentTab, /*fromCCT=*/false);
         }
+
+        // Remove unused dividers. This needs to be done after the visibility of all the items is
+        // set.
+        boolean hasItemBetweenDividers = false;
+        for (int i = 0; i < menu.size(); ++i) {
+            MenuItem item = menu.getItem(i);
+            if (item.getItemId() == R.id.divider_line_id) {
+                if (!hasItemBetweenDividers) {
+                    // If there isn't any visible menu items between the two divider lines, mark
+                    // this line invisible.
+                    item.setVisible(false);
+                } else {
+                    hasItemBetweenDividers = false;
+                }
+            } else if (!hasItemBetweenDividers && item.isVisible()) {
+                // When the item isn't a divider line and is visible, we set hasItemBetweenDividers
+                // to be true.
+                hasItemBetweenDividers = true;
+            }
+        }
     }
 
     @Override

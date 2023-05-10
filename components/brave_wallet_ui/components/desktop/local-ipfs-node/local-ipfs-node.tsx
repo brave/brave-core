@@ -36,13 +36,11 @@ import {
   Description,
   ActionButton,
   CheckNftsButton,
-  BenefitHeading,
   LeftWrapper,
   RightWrapper,
-  BenefitsList,
   NftIllustration
 } from './local-ipfs-node.styles'
-import { getLocale } from '../../../../common/locale'
+import { getLocale, splitStringForTag } from '../../../../common/locale'
 
 interface Props {
   onClose: () => void
@@ -58,6 +56,8 @@ export const LocalIpfsNodeScreen = (props: Props) => {
   const dispatch = useDispatch()
   const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
 
+  const { beforeTag, afterTag } = splitStringForTag(getLocale('braveWalletNftPinningRunNodeDescription'))
+
   // methods
   const onClickCheckNfts = React.useCallback(() => {
     history.push(WalletRoutes.InspectNfts)
@@ -67,7 +67,7 @@ export const LocalIpfsNodeScreen = (props: Props) => {
     if (!isAutoPinEnabled) {
       dispatch(WalletPageActions.setAutoPinEnabled(true))
     }
-    history.push(WalletRoutes.Nfts)
+    history.push(WalletRoutes.PortfolioNFTs)
   }, [isAutoPinEnabled])
 
   return (
@@ -89,7 +89,10 @@ export const LocalIpfsNodeScreen = (props: Props) => {
           </LeftWrapper>
           <RightWrapper>
             <Description>
-              {getLocale('braveWalletNftPinningRunNodeDescription')}
+              {beforeTag}
+              <br />
+              <br />
+              {afterTag}
             </Description>
           </RightWrapper>
         </Section>
@@ -100,13 +103,6 @@ export const LocalIpfsNodeScreen = (props: Props) => {
             </Row>
             <CheckNftsButton onClick={onClickCheckNfts}>{getLocale('braveWalletNftPinningCheckNftsButton')}</CheckNftsButton>
           </LeftWrapper>
-          <RightWrapper>
-            <BenefitHeading>{getLocale('braveWalletNftPinningBenefitsHeading')}</BenefitHeading>
-            <BenefitsList>
-              <li>{getLocale('braveWalletNftPinningBenefitOne')}</li>
-              <li>{getLocale('braveWalletNftPinningBenefitTwo')}</li>
-            </BenefitsList>
-          </RightWrapper>
         </Section>
       </MainContent>
       <NftIllustration src={Illustration} />

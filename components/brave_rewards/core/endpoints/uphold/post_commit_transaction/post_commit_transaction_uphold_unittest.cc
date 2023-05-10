@@ -22,7 +22,7 @@ using ::testing::_;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-namespace ledger::endpoints::test {
+namespace brave_rewards::internal::endpoints::test {
 using Error = PostCommitTransactionUphold::Error;
 using Result = PostCommitTransactionUphold::Result;
 
@@ -72,9 +72,53 @@ INSTANTIATE_TEST_SUITE_P(
   PostCommitTransactionUphold,
   Values(
     PostCommitTransactionUpholdParamType{
-      "HTTP_200_ok",
+      "HTTP_200_response_not_a_dict",
       net::HTTP_OK,
-      "",
+      R"(
+        [
+          "status": "completed"
+        ]
+      )",
+      base::unexpected(Error::kFailedToParseBody)
+    },
+    PostCommitTransactionUpholdParamType{
+      "HTTP_200_status_wrong_case",
+      net::HTTP_OK,
+      R"(
+        {
+          "STATUS": "completed"
+        }
+      )",
+      base::unexpected(Error::kFailedToParseBody)
+    },
+    PostCommitTransactionUpholdParamType{
+      "HTTP_200_transaction_pending",
+      net::HTTP_OK,
+      R"(
+        {
+          "status": "processing"
+        }
+      )",
+      base::unexpected(Error::kTransactionPending)
+    },
+    PostCommitTransactionUpholdParamType{
+      "HTTP_200_unexpected_transaction_status",
+      net::HTTP_OK,
+      R"(
+        {
+          "status": "failed"
+        }
+      )",
+      base::unexpected(Error::kUnexpectedTransactionStatus)
+    },
+    PostCommitTransactionUpholdParamType{
+      "HTTP_200_transaction_completed",
+      net::HTTP_OK,
+      R"(
+        {
+          "status": "completed"
+        }
+      )",
       {}
     },
     PostCommitTransactionUpholdParamType{
@@ -101,4 +145,4 @@ INSTANTIATE_TEST_SUITE_P(
 );
 // clang-format on
 
-}  // namespace ledger::endpoints::test
+}  // namespace brave_rewards::internal::endpoints::test

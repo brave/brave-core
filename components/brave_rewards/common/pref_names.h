@@ -47,7 +47,7 @@ extern const char kAnonTransferChecked[];
 extern const char kVersion[];
 extern const char kMinVisitTime[];
 extern const char kMinVisits[];
-extern const char kAllowNonVerified[];
+extern const char kAllowNonVerified[];        // DEPRECATED
 extern const char kAllowVideoContribution[];  // DEPRECATED
 extern const char kScoreA[];
 extern const char kScoreB[];
@@ -77,6 +77,10 @@ extern const char kWalletUphold[];
 extern const char kWalletBitflyer[];
 extern const char kWalletGemini[];
 extern const char kWalletCreationEnvironment[];
+
+// deprecated p3a prefs
+extern const char kAdsWereDisabled[];
+extern const char kHasAdsP3AState[];
 
 }  // namespace brave_rewards::prefs
 

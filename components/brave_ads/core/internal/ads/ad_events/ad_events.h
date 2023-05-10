@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 
 namespace base {
 class Time;
@@ -17,12 +17,12 @@ class Time;
 
 namespace brave_ads {
 
+using AdEventCallback = base::OnceCallback<void(bool success)>;
+
 class AdType;
 class ConfirmationType;
 struct AdEventInfo;
 struct AdInfo;
-
-using AdEventCallback = base::OnceCallback<void(bool success)>;
 
 void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,

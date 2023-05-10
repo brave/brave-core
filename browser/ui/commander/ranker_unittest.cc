@@ -33,8 +33,10 @@ class RankerUnitTest : public testing::Test {
 TEST_F(RankerUnitTest, EqualRankSortsAlphabetically) {
   auto one = std::make_unique<commander::CommandItem>();
   one->title = u"A";
+  one->score = 0.5;
   auto two = std::make_unique<commander::CommandItem>();
   two->title = u"B";
+  two->score = 0.5;
 
   std::vector<std::unique_ptr<commander::CommandItem>> items;
   items.push_back(std::move(two));

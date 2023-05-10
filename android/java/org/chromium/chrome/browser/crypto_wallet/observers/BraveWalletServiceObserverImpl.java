@@ -26,6 +26,8 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
 
         default void onNetworkListChanged() {}
 
+        default void onDiscoverAssetsStarted() {}
+
         default void onDiscoverAssetsCompleted(BlockchainToken[] discoveredAssets) {}
 
         default void onResetWallet() {}
@@ -66,6 +68,9 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
     public void onNetworkListChanged() {
         if (isActive()) getRef().onNetworkListChanged();
     }
+
+    @Override
+    public void onDiscoverAssetsStarted() {}
 
     @Override
     public void onDiscoverAssetsCompleted(BlockchainToken[] discoveredAssets) {

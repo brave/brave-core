@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include <memory>
@@ -80,7 +80,7 @@ class FilTxManagerUnitTest : public testing::Test {
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
-    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
+    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
                                               keyring_service_.get(), &prefs_);
 
     keyring_service_->CreateWallet("testing123", base::DoNothing());

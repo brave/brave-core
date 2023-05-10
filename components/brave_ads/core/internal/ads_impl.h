@@ -6,13 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 
-#include <cstdint>
 #include <string>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads.h"
 #include "brave/components/brave_ads/core/history_filter_types.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
@@ -27,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
@@ -124,29 +122,32 @@ class AdsImpl final : public Ads,
                              base::Time to_time) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  AdContentLikeActionType ToggleLikeAd(base::Value::Dict value) override;
-  AdContentLikeActionType ToggleDislikeAd(base::Value::Dict value) override;
-  CategoryContentOptActionType ToggleLikeCategory(
+  mojom::UserReactionType ToggleLikeAd(const base::Value::Dict& value) override;
+  mojom::UserReactionType ToggleDislikeAd(
+      const base::Value::Dict& value) override;
+  mojom::UserReactionType ToggleLikeCategory(
       const std::string& category,
-      const CategoryContentOptActionType& action_type) override;
-  CategoryContentOptActionType ToggleDislikeCategory(
+      mojom::UserReactionType user_reaction_type) override;
+  mojom::UserReactionType ToggleDislikeCategory(
       const std::string& category,
-      const CategoryContentOptActionType& action_type) override;
-  bool ToggleSaveAd(base::Value::Dict value) override;
-  bool ToggleMarkAdAsInappropriate(base::Value::Dict value) override;
+      mojom::UserReactionType user_reaction_type) override;
+  bool ToggleSaveAd(const base::Value::Dict& value) override;
+  bool ToggleMarkAdAsInappropriate(const base::Value::Dict& value) override;
 
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);
-  void OnCreateOrOpenDatabase(InitializeCallback callback, bool success);
-  void OnPurgeExpiredAdEvents(InitializeCallback callback, bool success);
-  void OnPurgeOrphanedAdEvents(InitializeCallback callback, bool success);
-  void OnMigrateConversions(InitializeCallback callback, bool success);
-  void OnMigrateRewards(InitializeCallback callback, bool success);
-  void OnMigrateClientState(InitializeCallback callback, bool success);
-  void OnLoadClientState(InitializeCallback callback, bool success);
-  void OnMigrateConfirmationState(InitializeCallback callback, bool success);
-  void OnLoadConfirmationState(InitializeCallback callback, bool success);
-  void OnMigrateNotificationState(InitializeCallback callback, bool success);
+  void CreateOrOpenDatabaseCallback(InitializeCallback callback, bool success);
+  void PurgeExpiredAdEventsCallback(InitializeCallback callback, bool success);
+  void PurgeOrphanedAdEventsCallback(InitializeCallback callback, bool success);
+  void MigrateConversionsCallback(InitializeCallback callback, bool success);
+  void MigrateRewardsCallback(InitializeCallback callback, bool success);
+  void MigrateClientStateCallback(InitializeCallback callback, bool success);
+  void LoadClientStateCallback(InitializeCallback callback, bool success);
+  void MigrateConfirmationStateCallback(InitializeCallback callback,
+                                        bool success);
+  void LoadConfirmationStateCallback(InitializeCallback callback, bool success);
+  void MigrateNotificationStateCallback(InitializeCallback callback,
+                                        bool success);
 
   bool IsInitialized() const { return is_initialized_; }
 
@@ -177,16 +178,19 @@ class AdsImpl final : public Ads,
 
   SubdivisionTargeting subdivision_targeting_;
 
-  resource::AntiTargeting anti_targeting_resource_;
-  resource::EpsilonGreedyBandit epsilon_greedy_bandit_resource_;
-  resource::PurchaseIntent purchase_intent_resource_;
-  resource::TextClassification text_classification_resource_;
-  resource::TextEmbedding text_embedding_resource_;
+  AntiTargetingResource anti_targeting_resource_;
 
-  processor::EpsilonGreedyBandit epsilon_greedy_bandit_processor_;
-  processor::PurchaseIntent purchase_intent_processor_;
-  processor::TextClassification text_classification_processor_;
-  processor::TextEmbedding text_embedding_processor_;
+  EpsilonGreedyBanditResource epsilon_greedy_bandit_resource_;
+  EpsilonGreedyBanditProcessor epsilon_greedy_bandit_processor_;
+
+  PurchaseIntentResource purchase_intent_resource_;
+  PurchaseIntentProcessor purchase_intent_processor_;
+
+  TextClassificationResource text_classification_resource_;
+  TextClassificationProcessor text_classification_processor_;
+
+  TextEmbeddingResource text_embedding_resource_;
+  TextEmbeddingProcessor text_embedding_processor_;
 
   InlineContentAdHandler inline_content_ad_handler_;
   NewTabPageAdHandler new_tab_page_ad_handler_;

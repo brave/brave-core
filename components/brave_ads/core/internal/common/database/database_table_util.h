@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 
 namespace brave_ads::database {
 
@@ -28,15 +28,13 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const std::string& to,
                       const std::vector<std::string>& from_columns,
                       const std::vector<std::string>& to_columns,
-                      bool should_drop,
-                      const std::string& group_by = "");
+                      bool should_drop);
 
 void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& columns,
-                      bool should_drop,
-                      const std::string& group_by = "");
+                      bool should_drop);
 
 void RenameTable(mojom::DBTransactionInfo* transaction,
                  const std::string& from,

@@ -13,7 +13,7 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_test_suite_util.h"
@@ -77,8 +77,7 @@ absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
 }
 
 bool ShouldReadResponseBodyFromFile(const std::string& response_body) {
-  return base::StartsWith(response_body, "/",
-                          base::CompareCase::INSENSITIVE_ASCII);
+  return base::StartsWith(response_body, "/");
 }
 
 std::string ParseFilenameFromResponseBody(const std::string& response_body) {
@@ -99,14 +98,13 @@ absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
 
   std::string response_body = url_response->second;
   if (ShouldReadResponseBodyFromFile(response_body)) {
-    const std::string filename = ParseFilenameFromResponseBody(response_body);
-    const base::FilePath file_path = GetTestPath().AppendASCII(filename);
+    const base::FilePath file_path =
+        GetTestPath().AppendASCII(ParseFilenameFromResponseBody(response_body));
     if (!base::ReadFileToString(file_path, &response_body)) {
-      NOTREACHED() << file_path << " not found";
-      return absl::nullopt;
+      NOTREACHED_NORETURN() << file_path << " not found";
     }
 
-    ParseAndReplaceTags(&response_body);
+    ParseAndReplaceTags(response_body);
   }
 
   return mojom::UrlResponseInfo(url_request->url, url_response->first,

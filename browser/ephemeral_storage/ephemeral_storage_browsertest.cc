@@ -108,12 +108,14 @@ HttpRequestMonitor::HttpRequestMonitor() = default;
 HttpRequestMonitor::~HttpRequestMonitor() = default;
 
 void HttpRequestMonitor::OnHttpRequest(const HttpRequest& request) {
+  base::AutoLock lock(lock_);
   http_requests_.push_back(request);
 }
 
 bool HttpRequestMonitor::HasHttpRequestWithCookie(
     const GURL& url,
     const std::string& cookie_value) const {
+  base::AutoLock lock(lock_);
   for (const auto& http_request : http_requests_) {
     if (GetHttpRequestURL(http_request) != url)
       continue;
@@ -128,6 +130,7 @@ bool HttpRequestMonitor::HasHttpRequestWithCookie(
 }
 
 int HttpRequestMonitor::GetHttpRequestsCount(const GURL& url) const {
+  base::AutoLock lock(lock_);
   int count = 0;
   for (const auto& http_request : http_requests_) {
     if (GetHttpRequestURL(http_request) == url) {
@@ -135,6 +138,11 @@ int HttpRequestMonitor::GetHttpRequestsCount(const GURL& url) const {
     }
   }
   return count;
+}
+
+void HttpRequestMonitor::Clear() {
+  base::AutoLock lock(lock_);
+  http_requests_.clear();
 }
 
 EphemeralStorageBrowserTest::EphemeralStorageBrowserTest()

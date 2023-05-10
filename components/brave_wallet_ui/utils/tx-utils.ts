@@ -21,7 +21,11 @@ import {
   TransactionInfo
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
-import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
+import {
+  MAX_UINT256,
+  NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+  UNKNOWN_TOKEN_COINGECKO_ID
+} from '../common/constants/magics'
 import { SwapExchangeProxy } from '../common/constants/registry'
 
 // utils
@@ -211,7 +215,10 @@ export const transactionSortByDateComparer = <
   }
 }
 
-export function isSolanaTransaction (tx: TransactionInfo): tx is SolanaTransactionInfo {
+export function isSolanaTransaction (tx?: TransactionInfo): tx is SolanaTransactionInfo {
+  if (!tx) {
+    return false
+  }
   const { txType, txDataUnion: { solanaTxData } } = tx
   return SolanaTransactionTypes.includes(txType) ||
     (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)
@@ -254,10 +261,10 @@ export function isSolanaDappTransaction (tx: TransactionInfo): tx is SolanaTrans
   )
 }
 
-export const isFilecoinTransaction = (tx: {
+export const isFilecoinTransaction = (tx?: {
   txDataUnion: TxDataPresence
 }): tx is FileCoinTransactionInfo => {
-  return tx.txDataUnion.filTxData !== undefined
+  return tx?.txDataUnion.filTxData !== undefined
 }
 
 export const isFilecoinTestnetTx = (tx: {
@@ -310,7 +317,13 @@ export const getToAddressesFromSolanaTransaction = (
   return [...new Set(addresses.filter(a => !!a))] // unique, non empty addresses
 }
 
-export function getTransactionToAddress (tx: TransactionInfo): string {
+export const getTransactionToAddress = (
+  tx?: TransactionInfo | SerializableTransactionInfo
+): string => {
+  if (!tx) {
+    return ''
+  }
+
   if (isSolanaDappTransaction(tx)) {
     return getToAddressesFromSolanaTransaction(tx)[0] ?? ''
   }
@@ -373,9 +386,13 @@ export function isSolanaSplTransaction (tx: TransactionInfo): tx is SolanaTransa
 export const findTransactionToken = <
   T extends Pick<BraveWallet.BlockchainToken, 'contractAddress'>
 >(
-  tx: TransactionInfo,
+  tx: TransactionInfo | undefined,
   tokensList: T[]
 ): T | undefined => {
+  if (!tx) {
+    return undefined
+  }
+
   // Solana SPL
   if (isSolanaSplTransaction(tx)) {
     return findTokenByContractAddress(
@@ -396,7 +413,7 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
   tokensList,
   tx
 }: {
-  tx: TransactionInfo
+  tx: TransactionInfo | undefined
   nativeAsset?: BraveWallet.BlockchainToken
   tokensList: BraveWallet.BlockchainToken[]
 }): {
@@ -407,7 +424,10 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
   sellAmount: Amount
   sellAmountWei: Amount
 } => {
-  if (tx.txType !== BraveWallet.TransactionType.ETHSwap) {
+  if (
+    !tx ||
+    tx.txType !== BraveWallet.TransactionType.ETHSwap
+  ) {
     return {
       buyToken: undefined,
       sellToken: undefined,
@@ -430,7 +450,24 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
     .map(address =>
       address === NATIVE_ASSET_CONTRACT_ADDRESS_0X
         ? nativeAsset
-        : findTokenByContractAddress(address, tokensList) || nativeAsset
+        : findTokenByContractAddress(address, tokensList) ||
+        // token not found
+        // return a "faked" coin (will need to "discover" it later)
+        {
+          chainId: tx.chainId,
+          coin: getCoinFromTxDataUnion(tx.txDataUnion),
+          contractAddress: address,
+          symbol: '???',
+          isErc20: true,
+          coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
+          name: address,
+          logo: 'chrome://erc-token-images/',
+          tokenId: '',
+          isErc1155: false,
+          isErc721: false,
+          isNft: false,
+          visible: true
+        } as BraveWallet.BlockchainToken
     ).filter((t): t is BraveWallet.BlockchainToken => Boolean(t))
 
   const sellToken = fillTokens.length === 1
@@ -453,8 +490,9 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
 
   const buyToken = fillTokens[fillTokens.length - 1]
   const buyAmountWei = new Amount(minBuyAmountArg)
-  const buyAmount = buyAmountWei
-    .divideByDecimals(buyToken.decimals)
+  const buyAmount = buyToken
+    ? buyAmountWei.divideByDecimals(buyToken.decimals)
+    : Amount.empty()
 
   return {
     buyToken,

@@ -14,9 +14,9 @@ namespace brave_ads {
 namespace {
 
 constexpr char kCategoryKey[] = "category";
-constexpr char kOptActionKey[] = "optAction";
+constexpr char kUserReactionTypeKey[] = "optAction";
 
-constexpr char kLegacyOptActionKey[] = "opt_action";
+constexpr char kLegacyUserReactionTypeKey[] = "opt_action";
 
 }  // namespace
 
@@ -25,24 +25,26 @@ base::Value::Dict CategoryContentToValue(
   base::Value::Dict dict;
 
   dict.Set(kCategoryKey, category_content.category);
-  dict.Set(kOptActionKey, static_cast<int>(category_content.opt_action_type));
+  dict.Set(kUserReactionTypeKey,
+           static_cast<int>(category_content.user_reaction_type));
 
   return dict;
 }
 
-CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& root) {
+CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& dict) {
   CategoryContentInfo category_content;
 
-  if (const std::string* value = root.FindString(kCategoryKey)) {
+  if (const auto* value = dict.FindString(kCategoryKey)) {
     category_content.category = *value;
   }
 
-  if (const auto value = root.FindInt(kOptActionKey)) {
-    category_content.opt_action_type =
-        static_cast<CategoryContentOptActionType>(*value);
-  } else if (const auto legacy_value = root.FindInt(kLegacyOptActionKey)) {
-    category_content.opt_action_type =
-        static_cast<CategoryContentOptActionType>(*legacy_value);
+  if (const auto user_reaction_type = dict.FindInt(kUserReactionTypeKey)) {
+    category_content.user_reaction_type =
+        static_cast<mojom::UserReactionType>(*user_reaction_type);
+  } else if (const auto legacy_user_reaction_type =
+                 dict.FindInt(kLegacyUserReactionTypeKey)) {
+    category_content.user_reaction_type =
+        static_cast<mojom::UserReactionType>(*legacy_user_reaction_type);
   }
 
   return category_content;

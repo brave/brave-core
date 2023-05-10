@@ -7,6 +7,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
@@ -24,34 +25,34 @@
 
 // npm run test -- brave_browser_tests --filter=RewardsPromotionBrowserTest.*
 
-namespace rewards_browsertest {
+namespace brave_rewards {
 
 class RewardsPromotionBrowserTest : public InProcessBrowserTest {
  public:
   RewardsPromotionBrowserTest() {
-    promotion_ = std::make_unique<RewardsBrowserTestPromotion>();
-    response_ = std::make_unique<RewardsBrowserTestResponse>();
+    promotion_ = std::make_unique<test_util::RewardsBrowserTestPromotion>();
+    response_ = std::make_unique<test_util::RewardsBrowserTestResponse>();
   }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
     context_helper_ =
-        std::make_unique<RewardsBrowserTestContextHelper>(browser());
+        std::make_unique<test_util::RewardsBrowserTestContextHelper>(browser());
 
     // HTTP resolver
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(
-        base::BindRepeating(&rewards_browsertest_util::HandleRequest));
+        base::BindRepeating(&test_util::HandleRequest));
     ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
     brave::RegisterPathProvider();
     auto* profile = browser()->profile();
-    rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
-        brave_rewards::RewardsServiceFactory::GetForProfile(profile));
+    rewards_service_ = static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(profile));
 
     // Response mock
     base::ScopedAllowBlockingForTesting allow_blocking;
@@ -65,7 +66,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     // Other
     promotion_->Initialize(browser(), rewards_service_);
 
-    rewards_browsertest_util::SetOnboardingBypassed(browser());
+    test_util::SetOnboardingBypassed(browser());
   }
 
   void TearDown() override {
@@ -103,16 +104,16 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     // Wait for promotion to initialize
     promotion_->WaitForPromotionInitialization();
 
-    rewards_browsertest_util::WaitForElementThenClick(
+    test_util::WaitForElementThenClick(
         contents.get(), "[data-test-id=notification-action-button");
 
     // Wait for CAPTCHA
-    rewards_browsertest_util::WaitForElementToAppear(
-        contents.get(), "[data-test-id=grant-captcha-object]");
+    test_util::WaitForElementToAppear(contents.get(),
+                                      "[data-test-id=grant-captcha-object]");
 
-    rewards_browsertest_util::DragAndDrop(
-        contents.get(), "[data-test-id=grant-captcha-object]",
-        "[data-test-id=grant-captcha-target]");
+    test_util::DragAndDrop(contents.get(),
+                           "[data-test-id=grant-captcha-object]",
+                           "[data-test-id=grant-captcha-target]");
 
     if (!should_finish) {
       promotion_->WaitForPromotionFinished(false);
@@ -129,16 +130,15 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     EXPECT_STREQ(
         promotion->id.c_str(),
         promotion_->GetPromotionId().c_str());
-    EXPECT_EQ(promotion->type, ledger::mojom::PromotionType::UGP);
+    EXPECT_EQ(promotion->type, mojom::PromotionType::UGP);
     EXPECT_EQ(promotion->expires_at, 1740816427ull);
 
     // Check that promotion notification shows the appropriate amount
     const std::string selector = "[id='root']";
 
-    rewards_browsertest_util::WaitForElementToContain(contents.get(), selector,
-                                                      "Free Token Grant");
-    rewards_browsertest_util::WaitForElementToContain(contents.get(), selector,
-                                                      "30.000 BAT");
+    test_util::WaitForElementToContain(contents.get(), selector,
+                                       "Free Token Grant");
+    test_util::WaitForElementToContain(contents.get(), selector, "30.000 BAT");
 
     return 30;
   }
@@ -148,30 +148,25 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
   }
 
   void CheckPromotionStatus(const std::string status) {
-    context_helper_->LoadURL(
-        rewards_browsertest_util::GetRewardsInternalsUrl());
+    context_helper_->LoadURL(test_util::GetRewardsInternalsUrl());
 
-    rewards_browsertest_util::WaitForElementThenClick(
-        contents(),
-        "#internals-tabs > div > div:nth-of-type(3)");
+    test_util::WaitForElementThenClick(
+        contents(), "#internals-tabs > div > div:nth-of-type(3)");
 
-    rewards_browsertest_util::WaitForElementToContain(
-        contents(),
-        "#internals-tabs",
-        status);
+    test_util::WaitForElementToContain(contents(), "#internals-tabs", status);
   }
 
-  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
+  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
-  std::unique_ptr<RewardsBrowserTestResponse> response_;
-  std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
+  std::unique_ptr<test_util::RewardsBrowserTestPromotion> promotion_;
+  std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
+  std::unique_ptr<test_util::RewardsBrowserTestContextHelper> context_helper_;
   bool gone_ = false;
   bool removed_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  test_util::CreateRewardsWallet(rewards_service_);
   double balance = ClaimPromotion();
   ASSERT_EQ(balance, 30.0);
 }
@@ -179,62 +174,55 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
                        PromotionHasEmptyPublicKey) {
   response_->SetPromotionEmptyKey(true);
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  test_util::CreateRewardsWallet(rewards_service_);
 
   base::WeakPtr<content::WebContents> popup =
       context_helper_->OpenRewardsPopup();
 
   promotion_->WaitForPromotionInitialization();
-  rewards_browsertest_util::WaitForElementToAppear(
-      popup.get(), "[data-test-id=notification-close]", false);
+  test_util::WaitForElementToAppear(popup.get(),
+                                    "[data-test-id=notification-close]", false);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
   gone_ = true;
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  test_util::CreateRewardsWallet(rewards_service_);
   ClaimPromotion(false);
   CheckPromotionStatus("Over");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
                        PromotionRemovedFromEndpoint) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  test_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();
   promotion_->WaitForPromotionInitialization();
   removed_ = true;
   context_helper_->ReloadCurrentSite();
 
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "[data-test-id='promotion-claim-box']",
-      false);
+  test_util::WaitForElementToAppear(
+      contents(), "[data-test-id='promotion-claim-box']", false);
   CheckPromotionStatus("Over");
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/29519): Test flaky on
-// master for the mac build.
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_PromotionNotQuiteOver DISABLED_PromotionNotQuiteOver
-#else
-#define MAYBE_PromotionNotQuiteOver PromotionNotQuiteOver
-#endif  // BUILDFLAG(IS_MAC)
-IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
-                       MAYBE_PromotionNotQuiteOver) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  rewards_service_->FetchPromotions(base::DoNothing());
-  promotion_->WaitForPromotionInitialization();
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionNotQuiteOver) {
+  test_util::CreateRewardsWallet(rewards_service_);
+
+  auto fetch_promotions = [this]() {
+    base::RunLoop run_loop;
+    rewards_service_->FetchPromotions(base::BindLambdaForTesting(
+        [&](std::vector<mojom::PromotionPtr>) { run_loop.Quit(); }));
+    run_loop.Run();
+  };
+
+  fetch_promotions();
 
   removed_ = true;
-  rewards_service_->FetchPromotions(base::DoNothing());
-  promotion_->WaitForPromotionInitialization();
-
+  fetch_promotions();
   CheckPromotionStatus("Over");
 
   removed_ = false;
-  rewards_service_->FetchPromotions(base::DoNothing());
-  promotion_->WaitForPromotionInitialization();
-
+  fetch_promotions();
   CheckPromotionStatus("Active");
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards

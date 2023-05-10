@@ -6,14 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_SAMPLE_ADS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_SAMPLE_ADS_H_
 
+#include <limits>
 #include <numeric>
 #include <ostream>
 #include <vector>
 
 #include "base/notreached.h"
+#include "base/numerics/ranges.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/ad_predictor_info.h"
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -41,7 +42,9 @@ absl::optional<T> SampleAdFromPredictors(
     const CreativeAdPredictorMap<T>& creative_ad_predictors) {
   const double normalizing_constant =
       CalculateNormalizingConstantFromPredictors(creative_ad_predictors);
-  if (DoubleIsLessEqual(normalizing_constant, 0.0)) {
+  if (normalizing_constant <= 0.0 ||
+      base::IsApproximatelyEqual(normalizing_constant, 0.0,
+                                 std::numeric_limits<double>::epsilon())) {
     return absl::nullopt;
   }
 
@@ -52,13 +55,13 @@ absl::optional<T> SampleAdFromPredictors(
     const double probability = ad_predictor.score / normalizing_constant;
     sum += probability;
 
-    if (DoubleIsLess(rand, sum)) {
+    if (rand < sum && !base::IsApproximatelyEqual(
+                          rand, sum, std::numeric_limits<double>::epsilon())) {
       return ad_predictor.creative_ad;
     }
   }
 
-  NOTREACHED() << "Sum should always be less than probability";
-  return absl::nullopt;
+  NOTREACHED_NORETURN() << "Sum should always be less than probability";
 }
 
 template <typename T>

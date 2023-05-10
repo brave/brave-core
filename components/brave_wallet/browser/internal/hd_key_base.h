@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_BASE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_BASE_H_
@@ -37,8 +37,6 @@ class HDKeyBase {
   virtual std::unique_ptr<HDKeyBase> DeriveChildFromPath(
       const std::string& path) = 0;
 
-  virtual std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg,
-                                    int* recid) = 0;
   virtual bool Verify(const std::vector<uint8_t>& msg,
                       const std::vector<uint8_t>& sig) = 0;
 

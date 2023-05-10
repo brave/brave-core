@@ -17,10 +17,10 @@
 namespace brave_ads {
 
 template <typename T>
-absl::optional<T> PredictAd(const targeting::UserModelInfo& user_model,
+absl::optional<T> PredictAd(const UserModelInfo& user_model,
                             const AdEventList& ad_events,
                             const std::vector<T>& creative_ads) {
-  DCHECK(!creative_ads.empty());
+  CHECK(!creative_ads.empty());
 
   const std::vector<T> paced_creative_ads = PaceCreativeAds(creative_ads);
 

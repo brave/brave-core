@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/swap_service.h"
 
@@ -319,7 +319,8 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
       GetPriceQuoteURL(std::move(swap_params),
                        json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
                                                          absl::nullopt)),
-      "", "", true, std::move(internal_callback), Get0xAPIHeaders());
+      "", "", std::move(internal_callback), Get0xAPIHeaders(),
+      {.auto_retry_on_network_change = true});
 }
 
 void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
@@ -363,7 +364,8 @@ void SwapService::GetTransactionPayload(
       GetTransactionPayloadURL(std::move(swap_params),
                                json_rpc_service_->GetChainIdSync(
                                    mojom::CoinType::ETH, absl::nullopt)),
-      "", "", true, std::move(internal_callback), Get0xAPIHeaders());
+      "", "", std::move(internal_callback), Get0xAPIHeaders(),
+      {.auto_retry_on_network_change = true});
 }
 
 void SwapService::OnGetTransactionPayload(
@@ -412,8 +414,8 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
       GetJupiterQuoteURL(std::move(params),
                          json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
                                                            absl::nullopt)),
-      "", "", true, std::move(internal_callback), request_headers, -1u,
-      std::move(conversion_callback));
+      "", "", std::move(internal_callback), request_headers,
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
@@ -463,7 +465,8 @@ void SwapService::GetJupiterSwapTransactions(
       "POST",
       GetJupiterSwapTransactionsURL(json_rpc_service_->GetChainIdSync(
           mojom::CoinType::SOL, absl::nullopt)),
-      *encoded_params, "application/json", true, std::move(internal_callback));
+      *encoded_params, "application/json", std::move(internal_callback), {},
+      {.auto_retry_on_network_change = true});
 }
 
 void SwapService::OnGetJupiterSwapTransactions(

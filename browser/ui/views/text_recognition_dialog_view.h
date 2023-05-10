@@ -48,6 +48,9 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
  private:
   FRIEND_TEST_ALL_PREFIXES(TextRecognitionBrowserTest, TextRecognitionTest);
 
+  // views::DialogDelegateView overrides:
+  void AddedToWidget() override;
+
   void OnGetTextFromImage(const std::vector<std::string>& text);
 
 #if BUILDFLAG(IS_WIN)

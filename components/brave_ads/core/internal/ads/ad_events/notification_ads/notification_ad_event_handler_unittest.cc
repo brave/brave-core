@@ -19,7 +19,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -33,8 +33,9 @@ NotificationAdInfo BuildAndSaveNotificationAd() {
 
 }  // namespace
 
-class BraveAdsNotificationAdEventHandlerTest : public EventHandlerDelegate,
-                                               public UnitTestBase {
+class BraveAdsNotificationAdEventHandlerTest
+    : public NotificationAdEventHandlerDelegate,
+      public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -42,46 +43,51 @@ class BraveAdsNotificationAdEventHandlerTest : public EventHandlerDelegate,
     event_handler_.SetDelegate(this);
   }
 
-  void OnNotificationAdServed(const NotificationAdInfo& ad) override {
+  void OnDidFireNotificationAdServedEvent(
+      const NotificationAdInfo& ad) override {
     ad_ = ad;
-    did_serve_ad_ = true;
+    did_fire_served_ad_event_ = true;
   }
 
-  void OnNotificationAdViewed(const NotificationAdInfo& ad) override {
+  void OnDidFireNotificationAdViewedEvent(
+      const NotificationAdInfo& ad) override {
     ad_ = ad;
-    did_view_ad_ = true;
+    did_fire_viewed_ad_event_ = true;
   }
 
-  void OnNotificationAdClicked(const NotificationAdInfo& ad) override {
+  void OnDidFireNotificationAdClickedEvent(
+      const NotificationAdInfo& ad) override {
     ad_ = ad;
-    did_click_ad_ = true;
+    did_fire_clicked_ad_event_ = true;
   }
 
-  void OnNotificationAdDismissed(const NotificationAdInfo& ad) override {
+  void OnDidFireNotificationAdDismissedEvent(
+      const NotificationAdInfo& ad) override {
     ad_ = ad;
-    did_dismiss_ad_ = true;
+    did_fire_dismissed_ad_event_ = true;
   }
 
-  void OnNotificationAdTimedOut(const NotificationAdInfo& ad) override {
+  void OnDidFireNotificationAdTimedOutEvent(
+      const NotificationAdInfo& ad) override {
     ad_ = ad;
-    did_time_out_ad_ = true;
+    did_fire_timed_out_ad_event_ = true;
   }
 
-  void OnNotificationAdEventFailed(
+  void OnFailedToFireNotificationAdEvent(
       const std::string& /*placement_id*/,
       const mojom::NotificationAdEventType /*event_type*/) override {
-    did_fail_to_fire_event_ = true;
+    did_fail_to_fire_ad_event_ = true;
   }
 
-  EventHandler event_handler_;
+  NotificationAdEventHandler event_handler_;
 
   NotificationAdInfo ad_;
-  bool did_serve_ad_ = false;
-  bool did_view_ad_ = false;
-  bool did_click_ad_ = false;
-  bool did_dismiss_ad_ = false;
-  bool did_time_out_ad_ = false;
-  bool did_fail_to_fire_event_ = false;
+  bool did_fire_served_ad_event_ = false;
+  bool did_fire_viewed_ad_event_ = false;
+  bool did_fire_clicked_ad_event_ = false;
+  bool did_fire_dismissed_ad_event_ = false;
+  bool did_fire_timed_out_ad_event_ = false;
+  bool did_fail_to_fire_ad_event_ = false;
 };
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
@@ -93,15 +99,15 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
                            mojom::NotificationAdEventType::kServed);
 
   // Assert
-  EXPECT_TRUE(did_serve_ad_);
-  EXPECT_FALSE(did_view_ad_);
-  EXPECT_FALSE(did_click_ad_);
-  EXPECT_FALSE(did_dismiss_ad_);
-  EXPECT_FALSE(did_time_out_ad_);
-  EXPECT_FALSE(did_fail_to_fire_event_);
+  EXPECT_TRUE(did_fire_served_ad_event_);
+  EXPECT_FALSE(did_fire_viewed_ad_event_);
+  EXPECT_FALSE(did_fire_clicked_ad_event_);
+  EXPECT_FALSE(did_fire_dismissed_ad_event_);
+  EXPECT_FALSE(did_fire_timed_out_ad_event_);
+  EXPECT_FALSE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(ad, ad_);
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
+      1U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
@@ -113,15 +119,15 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
                            mojom::NotificationAdEventType::kViewed);
 
   // Assert
-  EXPECT_FALSE(did_serve_ad_);
-  EXPECT_TRUE(did_view_ad_);
-  EXPECT_FALSE(did_click_ad_);
-  EXPECT_FALSE(did_dismiss_ad_);
-  EXPECT_FALSE(did_time_out_ad_);
-  EXPECT_FALSE(did_fail_to_fire_event_);
+  EXPECT_FALSE(did_fire_served_ad_event_);
+  EXPECT_TRUE(did_fire_viewed_ad_event_);
+  EXPECT_FALSE(did_fire_clicked_ad_event_);
+  EXPECT_FALSE(did_fire_dismissed_ad_event_);
+  EXPECT_FALSE(did_fire_timed_out_ad_event_);
+  EXPECT_FALSE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(ad, ad_);
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
+      1U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
@@ -133,15 +139,15 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
                            mojom::NotificationAdEventType::kClicked);
 
   // Asser
-  EXPECT_FALSE(did_serve_ad_);
-  EXPECT_FALSE(did_view_ad_);
-  EXPECT_TRUE(did_click_ad_);
-  EXPECT_FALSE(did_dismiss_ad_);
-  EXPECT_FALSE(did_time_out_ad_);
-  EXPECT_FALSE(did_fail_to_fire_event_);
+  EXPECT_FALSE(did_fire_served_ad_event_);
+  EXPECT_FALSE(did_fire_viewed_ad_event_);
+  EXPECT_TRUE(did_fire_clicked_ad_event_);
+  EXPECT_FALSE(did_fire_dismissed_ad_event_);
+  EXPECT_FALSE(did_fire_timed_out_ad_event_);
+  EXPECT_FALSE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(ad, ad_);
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kClicked));
+      1U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
@@ -153,15 +159,15 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
                            mojom::NotificationAdEventType::kDismissed);
 
   // Assert
-  EXPECT_FALSE(did_serve_ad_);
-  EXPECT_FALSE(did_view_ad_);
-  EXPECT_FALSE(did_click_ad_);
-  EXPECT_TRUE(did_dismiss_ad_);
-  EXPECT_FALSE(did_time_out_ad_);
-  EXPECT_FALSE(did_fail_to_fire_event_);
+  EXPECT_FALSE(did_fire_served_ad_event_);
+  EXPECT_FALSE(did_fire_viewed_ad_event_);
+  EXPECT_FALSE(did_fire_clicked_ad_event_);
+  EXPECT_TRUE(did_fire_dismissed_ad_event_);
+  EXPECT_FALSE(did_fire_timed_out_ad_event_);
+  EXPECT_FALSE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_EQ(1, GetAdEventCount(AdType::kNotificationAd,
-                               ConfirmationType::kDismissed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
+                                ConfirmationType::kDismissed));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
@@ -173,12 +179,12 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
                            mojom::NotificationAdEventType::kTimedOut);
 
   // Assert
-  EXPECT_FALSE(did_serve_ad_);
-  EXPECT_FALSE(did_view_ad_);
-  EXPECT_FALSE(did_click_ad_);
-  EXPECT_FALSE(did_dismiss_ad_);
-  EXPECT_TRUE(did_time_out_ad_);
-  EXPECT_FALSE(did_fail_to_fire_event_);
+  EXPECT_FALSE(did_fire_served_ad_event_);
+  EXPECT_FALSE(did_fire_viewed_ad_event_);
+  EXPECT_FALSE(did_fire_clicked_ad_event_);
+  EXPECT_FALSE(did_fire_dismissed_ad_event_);
+  EXPECT_TRUE(did_fire_timed_out_ad_event_);
+  EXPECT_FALSE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(ad, ad_);
 }
 
@@ -191,14 +197,14 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
                            mojom::NotificationAdEventType::kViewed);
 
   // Assert
-  EXPECT_FALSE(did_serve_ad_);
-  EXPECT_FALSE(did_view_ad_);
-  EXPECT_FALSE(did_click_ad_);
-  EXPECT_FALSE(did_dismiss_ad_);
-  EXPECT_FALSE(did_time_out_ad_);
-  EXPECT_TRUE(did_fail_to_fire_event_);
+  EXPECT_FALSE(did_fire_served_ad_event_);
+  EXPECT_FALSE(did_fire_viewed_ad_event_);
+  EXPECT_FALSE(did_fire_clicked_ad_event_);
+  EXPECT_FALSE(did_fire_dismissed_ad_event_);
+  EXPECT_FALSE(did_fire_timed_out_ad_event_);
+  EXPECT_TRUE(did_fail_to_fire_ad_event_);
   EXPECT_EQ(
-      0, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
+      0U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 
@@ -38,12 +38,14 @@ absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
     return absl::nullopt;
   }
   auto* data = json_value.GetDict().FindString("data");
-  if (!data)
+  if (!data) {
     return absl::nullopt;
+  }
 
   std::vector<uint8_t> result;
-  if (!PrefixedHexStringToBytes(*data, &result))
+  if (!PrefixedHexStringToBytes(*data, &result)) {
     return absl::nullopt;
+  }
   return result;
 }
 
@@ -69,11 +71,13 @@ EnsResolverTaskError MakeInvalidParamsError() {
 
 std::string GetParent(const std::string& domain) {
   DCHECK(domain == "eth" || base::EndsWith(domain, ".eth"));
-  if (domain == "eth")
+  if (domain == "eth") {
     return "";
+  }
   std::size_t dot_pos = domain.find('.');
-  if (dot_pos == std::string::npos)
+  if (dot_pos == std::string::npos) {
     return "";
+  }
   return domain.substr(dot_pos + 1);
 }
 
@@ -135,8 +139,9 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
   }
 
   auto* error_data = json_value.GetDict().FindStringByDottedPath("error.data");
-  if (!error_data)
+  if (!error_data) {
     return absl::nullopt;
+  }
 
   auto bytes = PrefixedHexStringToBytes(*error_data);
   if (!bytes) {
@@ -153,8 +158,9 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
 
   // error OffchainLookup(address sender, string[] urls, bytes callData,
   // bytes4 callbackFunction, bytes extraData)
-  if (!base::ranges::equal(selector, kOffchainLookupSelector))
+  if (!base::ranges::equal(selector, kOffchainLookupSelector)) {
     return absl::nullopt;
+  }
   auto sender = eth_abi::ExtractAddressFromTuple(args, 0);
   auto urls = eth_abi::ExtractStringArrayFromTuple(args, 1);
   auto call_data = eth_abi::ExtractBytesFromTuple(args, 2);
@@ -522,10 +528,9 @@ void EnsResolverTask::FetchOffchainData() {
 
   api_request_helper_ens_offchain_->Request(
       payload.empty() ? "GET" : "POST", offchain_url, payload,
-      "application/json", false,
+      "application/json",
       base::BindOnce(&EnsResolverTask::OnFetchOffchainDone,
-                     weak_ptr_factory_.GetWeakPtr()),
-      {}, -1u, base::NullCallback());
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
@@ -611,9 +616,8 @@ void EnsResolverTask::OnFetchOffchainCallbackDone(
 void EnsResolverTask::RequestInternal(const std::string& json_payload,
                                       RequestIntermediateCallback callback) {
   api_request_helper_->Request("POST", network_url_, json_payload,
-                               "application/json", false, std::move(callback),
-                               MakeCommonJsonRpcHeaders(json_payload), -1u,
-                               base::NullCallback());
+                               "application/json", std::move(callback),
+                               MakeCommonJsonRpcHeaders(json_payload));
 }
 
 }  // namespace brave_wallet

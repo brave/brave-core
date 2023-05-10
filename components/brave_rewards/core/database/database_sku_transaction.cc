@@ -13,7 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 namespace {
@@ -29,7 +29,7 @@ DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;
 
 void DatabaseSKUTransaction::InsertOrUpdate(
     mojom::SKUTransactionPtr transaction,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!transaction) {
     BLOG(1, "Transcation is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -66,7 +66,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
 void DatabaseSKUTransaction::SaveExternalTransaction(
     const std::string& transaction_id,
     const std::string& external_transaction_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (transaction_id.empty() || external_transaction_id.empty()) {
     BLOG(1,
          "Data is empty " << transaction_id << "/" << external_transaction_id);
@@ -168,4 +168,4 @@ void DatabaseSKUTransaction::OnGetRecord(mojom::DBCommandResponsePtr response,
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

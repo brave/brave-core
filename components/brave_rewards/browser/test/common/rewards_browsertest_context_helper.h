@@ -17,7 +17,7 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-namespace rewards_browsertest {
+namespace brave_rewards::test_util {
 
 class RewardsBrowserTestContextHelper {
  public:
@@ -45,6 +45,6 @@ class RewardsBrowserTestContextHelper {
   base::WeakPtr<content::WebContents> popup_contents_;
 };
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test_util
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_HELPER_H_

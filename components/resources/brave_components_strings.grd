@@ -374,6 +374,9 @@
         <message name="IDS_SIDEBAR_PLAYLIST_ITEM_TITLE" desc="Title for plyalist item in sidebar">
           Playlist
         </message>
+        <message name="IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE" desc="Title for chat summarizer item in sidebar">
+          Chat Summarizer
+        </message>
       </if>
 
       <!-- WebUI private tab resources -->
@@ -489,7 +492,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME" desc="">Minimum page time before logging a visit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS" desc="">Minimum visits for publisher relevancy</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_OTHER" desc="">Other settings</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SHOW_NON_VERIFIED" desc="">Show non-verified sites in list</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1" desc="">1 visit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5" desc="">5 visits</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_10" desc="">10 visits</message>
@@ -582,7 +584,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_KEY" desc="event log key">Key</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_VALUE" desc="event log value">Value</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_TIME" desc="when event was logged">Logged at</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_DISCLAIMER" desc="">WARNING: Data on this page may be sensitive. Treat them as you would your wallet private keys. Be careful who you share them with.</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_DISCLAIMER" desc="">WARNING: Data on these pages may be sensitive. Be careful who you share them with.</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE" desc="Contribution type">Type:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_DOWNLOAD_BUTTON" desc="">Download full log</message>
@@ -810,9 +812,11 @@
         <part file="decentralized_dns_strings.grdp" />
       </if>
       <part file="domain_block_strings.grdp" />
+      <part file="request_otr_strings.grdp" />
       <part file="ipfs_strings.grdp" />
       <part file="permissions_strings.grdp" />
       <part file="google_sign_in_permission_strings.grdp" />
+      <part file="localhost_access_permission_strings.grdp" />
       <part file="rewards_strings.grdp" />
       <part file="speedreader_strings.grdp" />
       <part file="wallet_strings.grdp" />
@@ -820,6 +824,8 @@
       <part file="brave_news_strings.grdp" />
       <part file="brave_shields_strings.grdp" />
       <part file="brave_welcome_strings.grdp" />
+      <part file="ai_chat_prompts.grdp" />
+      <part file="ai_chat_ui_strings.grdp" />
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
       </if>

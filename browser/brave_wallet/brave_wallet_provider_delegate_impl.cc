@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 
@@ -25,11 +25,12 @@ namespace brave_wallet {
 
 namespace {
 
-bool IsAccountAllowed(const std::vector<std::string>& allowed_accounts,
-                      const std::string& account) {
+bool IsAccountInAllowedList(const std::vector<std::string>& allowed_accounts,
+                            const std::string& account) {
   for (const auto& allowed_account : allowed_accounts) {
-    if (base::CompareCaseInsensitiveASCII(account, allowed_account) == 0)
+    if (base::CompareCaseInsensitiveASCII(account, allowed_account) == 0) {
       return true;
+    }
   }
   return false;
 }
@@ -54,16 +55,6 @@ void OnRequestPermissions(
     std::move(callback).Run(mojom::RequestPermissionsError::kNone,
                             granted_accounts);
   }
-}
-
-void OnIsAccountAllowed(
-    const std::string& account,
-    BraveWalletProviderDelegate::IsAccountAllowedCallback callback,
-    bool success,
-    const std::vector<std::string>& allowed_accounts) {
-  bool allowed = IsAccountAllowed(allowed_accounts, account);
-
-  std::move(callback).Run(allowed);
 }
 
 absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
@@ -116,26 +107,26 @@ void BraveWalletProviderDelegateImpl::ShowWalletOnboarding() {
 void BraveWalletProviderDelegateImpl::ShowAccountCreation(
     mojom::CoinType type) {
   auto keyring_id = CoinTypeToKeyringId(type, absl::nullopt);
-  if (keyring_id)
+  if (keyring_id) {
     ::brave_wallet::ShowAccountCreation(web_contents_, *keyring_id);
+  }
 }
 
-void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
+absl::optional<std::vector<std::string>>
+BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     mojom::CoinType type,
-    const std::vector<std::string>& accounts,
-    GetAllowedAccountsCallback callback) {
+    const std::vector<std::string>& accounts) {
   if (IsPermissionDenied(type)) {
-    std::move(callback).Run(true, std::vector<std::string>());
-    return;
+    return std::vector<std::string>();
   }
+
   auto permission = CoinTypeToPermissionType(type);
   if (!permission) {
-    std::move(callback).Run(false, std::vector<std::string>());
-    return;
+    return absl::nullopt;
   }
-  permissions::BraveWalletPermissionContext::GetAllowedAccounts(
-      *permission, content::RenderFrameHost::FromID(host_id_), accounts,
-      std::move(callback));
+
+  return permissions::BraveWalletPermissionContext::GetAllowedAccounts(
+      *permission, content::RenderFrameHost::FromID(host_id_), accounts);
 }
 
 void BraveWalletProviderDelegateImpl::RequestPermissions(
@@ -168,19 +159,19 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
       base::BindOnce(&OnRequestPermissions, accounts, std::move(callback)));
 }
 
-void BraveWalletProviderDelegateImpl::IsAccountAllowed(
+bool BraveWalletProviderDelegateImpl::IsAccountAllowed(
     mojom::CoinType type,
-    const std::string& account,
-    IsAccountAllowedCallback callback) {
+    const std::string& account) {
   auto permission = CoinTypeToPermissionType(type);
   if (!permission) {
-    std::move(callback).Run(false);
-    return;
+    return false;
   }
 
-  permissions::BraveWalletPermissionContext::GetAllowedAccounts(
-      *permission, content::RenderFrameHost::FromID(host_id_), {account},
-      base::BindOnce(&OnIsAccountAllowed, account, std::move(callback)));
+  const auto allowed_accounts =
+      permissions::BraveWalletPermissionContext::GetAllowedAccounts(
+          *permission, content::RenderFrameHost::FromID(host_id_), {account});
+
+  return allowed_accounts && IsAccountInAllowedList(*allowed_accounts, account);
 }
 
 bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
@@ -203,32 +194,38 @@ bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
 
 void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(
     const std::string& account) {
-  if (!web_contents_)
+  if (!web_contents_) {
     return;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper)
+  if (tab_helper) {
     tab_helper->AddSolanaConnectedAccount(host_id_, account);
+  }
 }
 
 void BraveWalletProviderDelegateImpl::RemoveSolanaConnectedAccount(
     const std::string& account) {
-  if (!web_contents_)
+  if (!web_contents_) {
     return;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper)
+  if (tab_helper) {
     tab_helper->RemoveSolanaConnectedAccount(host_id_, account);
+  }
 }
 
 bool BraveWalletProviderDelegateImpl::IsSolanaAccountConnected(
     const std::string& account) {
-  if (!web_contents_)
+  if (!web_contents_) {
     return false;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (!tab_helper)
+  if (!tab_helper) {
     return false;
+  }
 
   return tab_helper->IsSolanaAccountConnected(host_id_, account);
 }
@@ -241,21 +238,25 @@ void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {
 void BraveWalletProviderDelegateImpl::RenderFrameHostChanged(
     content::RenderFrameHost* old_host,
     content::RenderFrameHost* new_host) {
-  if (!old_host || old_host != content::RenderFrameHost::FromID(host_id_))
+  if (!old_host || old_host != content::RenderFrameHost::FromID(host_id_)) {
     return;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper)
+  if (tab_helper) {
     tab_helper->ClearSolanaConnectedAccounts(host_id_);
+  }
 }
 
 void BraveWalletProviderDelegateImpl::PrimaryPageChanged(content::Page& page) {
-  if (!web_contents_)
+  if (!web_contents_) {
     return;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper)
+  if (tab_helper) {
     tab_helper->ClearSolanaConnectedAccounts(host_id_);
+  }
 }
 
 }  // namespace brave_wallet

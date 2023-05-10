@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
+#include <limits>
+
+#include "base/numerics/ranges.h"
 
 namespace brave_ads {
 
@@ -24,14 +26,14 @@ TransactionInfo& TransactionInfo::operator=(TransactionInfo&& other) noexcept =
 TransactionInfo::~TransactionInfo() = default;
 
 bool TransactionInfo::operator==(const TransactionInfo& other) const {
-  return id == other.id &&
-         DoubleEquals(created_at.ToDoubleT(), other.created_at.ToDoubleT()) &&
+  return id == other.id && created_at == other.created_at &&
          creative_instance_id == other.creative_instance_id &&
-         segment == other.segment && DoubleEquals(value, other.value) &&
+         segment == other.segment &&
+         base::IsApproximatelyEqual(value, other.value,
+                                    std::numeric_limits<double>::epsilon()) &&
          ad_type == other.ad_type &&
          confirmation_type == other.confirmation_type &&
-         DoubleEquals(reconciled_at.ToDoubleT(),
-                      other.reconciled_at.ToDoubleT());
+         reconciled_at == other.reconciled_at;
 }
 
 bool TransactionInfo::operator!=(const TransactionInfo& other) const {

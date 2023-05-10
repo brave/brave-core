@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 #include <string>
@@ -127,7 +127,7 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
             "daf5a779ae972f972197303d7b574746c7ef83eadac0f2791ad23db92e4c8e53");
 
   int recid;
-  const std::vector<uint8_t> signature = key.Sign(message, &recid);
+  const std::vector<uint8_t> signature = key.SignCompact(message, &recid);
 
   // invalid
   tx.ProcessSignature(std::vector<uint8_t>(63), recid, 1);
@@ -166,7 +166,8 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message1337)),
             "9df81edc908cd622cbbab86525a4588fdcbaf6c88757f39b42b1f8f58fd617c2");
   recid = 0;
-  const std::vector<uint8_t> signature1337 = key.Sign(message1337, &recid);
+  const std::vector<uint8_t> signature1337 =
+      key.SignCompact(message1337, &recid);
   tx.ProcessSignature(signature1337, recid, 1337);
   EXPECT_EQ(tx.GetSignedTransaction(),
             "0xf86e098504a817c8008252089435353535353535353535353535353535353535"

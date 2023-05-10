@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace util {
 
 std::map<std::string, std::string> GetSignHeaders(
@@ -27,6 +27,6 @@ std::vector<std::string> BuildSignHeaders(
     const std::vector<uint8_t>& private_key);
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_COMMON_REQUEST_UTIL_H_

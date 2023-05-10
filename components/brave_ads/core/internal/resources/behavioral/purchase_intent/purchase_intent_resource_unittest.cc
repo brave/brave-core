@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -24,37 +25,44 @@ namespace {
 constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
 }  // namespace
 
-class BraveAdsPurchaseIntentResourceTest : public UnitTestBase {};
+class BraveAdsPurchaseIntentResourceTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    resource_ = std::make_unique<PurchaseIntentResource>();
+  }
+
+  bool LoadResource() {
+    resource_->Load();
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
+  }
+
+  std::unique_ptr<PurchaseIntentResource> resource_;
+};
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResource) {
   // Arrange
-  resource::PurchaseIntent resource;
 
   // Act
-  resource.Load();
-  task_environment_.RunUntilIdle();
 
   // Assert
-  EXPECT_TRUE(resource.IsInitialized());
+  EXPECT_TRUE(LoadResource());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  resource::PurchaseIntent resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  resource::PurchaseIntent resource;
   EXPECT_CALL(ads_client_mock_, LoadFileResource(kResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
@@ -66,23 +74,19 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       }));
 
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, IsNotInitialized) {
   // Arrange
-  resource::PurchaseIntent resource;
 
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(resource_->IsInitialized());
 }
 
 }  // namespace brave_ads

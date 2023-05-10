@@ -55,13 +55,13 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     const base::FilePath& installed_dir)
     : NTPBackgroundImagesData() {
   absl::optional<base::Value> json_value = base::JSONReader::Read(json_string);
-  if (!json_value) {
+  if (!json_value || !json_value->is_dict()) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;
   }
+  base::Value::Dict& root = json_value->GetDict();
 
-  absl::optional<int> incomingSchemaVersion =
-      json_value->FindIntKey(kSchemaVersionKey);
+  absl::optional<int> incomingSchemaVersion = root.FindInt(kSchemaVersionKey);
   const bool schemaVersionIsValid = incomingSchemaVersion &&
       *incomingSchemaVersion == kExpectedSchemaVersion;
   if (!schemaVersionIsValid) {
@@ -73,15 +73,14 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     return;
   }
 
-  if (auto* images = json_value->FindListKey(kImagesKey)) {
-    const int image_count = images->GetList().size();
-    for (int i = 0; i < image_count; ++i) {
-      const auto& image = images->GetList()[i];
+  if (auto* images = root.FindList(kImagesKey)) {
+    for (const auto& item : *images) {
+      const auto& image = item.GetDict();
       Background background;
       background.image_file =
-          installed_dir.AppendASCII(*image.FindStringKey(kImageSourceKey));
-      background.author = *image.FindStringKey(kImageAuthorKey);
-      background.link = *image.FindStringKey(kImageLinkKey);
+          installed_dir.AppendASCII(*image.FindString(kImageSourceKey));
+      background.author = *image.FindString(kImageAuthorKey);
+      background.link = *image.FindString(kImageLinkKey);
 
       backgrounds.push_back(background);
     }

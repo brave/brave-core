@@ -6,8 +6,7 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
@@ -16,24 +15,21 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
-namespace brave_ads::processor {
+namespace brave_ads {
 
-TextEmbedding::TextEmbedding(resource::TextEmbedding& resource)
+TextEmbeddingProcessor::TextEmbeddingProcessor(TextEmbeddingResource& resource)
     : resource_(resource) {
-  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
-TextEmbedding::~TextEmbedding() {
-  AdsClientHelper::RemoveObserver(this);
+TextEmbeddingProcessor::~TextEmbeddingProcessor() {
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void TextEmbedding::Process(const std::string& html) {
+void TextEmbeddingProcessor::Process(const std::string& html) {
   if (!resource_->IsInitialized()) {
     BLOG(1, "Failed to process text embeddings as resource not initialized");
     return;
@@ -45,11 +41,8 @@ void TextEmbedding::Process(const std::string& html) {
     return;
   }
 
-  const ml::pipeline::EmbeddingProcessing* const processing_pipeline =
-      resource_->Get();
   const ml::pipeline::TextEmbeddingInfo text_embedding =
-      processing_pipeline->EmbedText(text);
-
+      resource_->get().EmbedText(text);
   if (text_embedding.embedding.empty()) {
     BLOG(1, "Embedding is empty");
     return;
@@ -85,17 +78,7 @@ void TextEmbedding::Process(const std::string& html) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextEmbedding::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
-  resource_->Load();
-}
-
-void TextEmbedding::OnNotifyDidUpdateResourceComponent(const std::string& id) {
-  if (IsValidLanguageComponentId(id)) {
-    resource_->Load();
-  }
-}
-
-void TextEmbedding::OnHtmlContentDidChange(
+void TextEmbeddingProcessor::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
@@ -119,11 +102,11 @@ void TextEmbedding::OnHtmlContentDidChange(
     return;
   }
 
-  if (!targeting::IsTextEmbeddingEnabled()) {
+  if (!IsTextEmbeddingFeatureEnabled()) {
     return;
   }
 
   Process(content);
 }
 
-}  // namespace brave_ads::processor
+}  // namespace brave_ads

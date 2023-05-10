@@ -29,7 +29,7 @@
 // Response body:
 // {Empty}
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint {
@@ -61,6 +61,6 @@ class PostClobberedClaims {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_CLOBBERED_CLAIMS_POST_CLOBBERED_CLAIMS_H_

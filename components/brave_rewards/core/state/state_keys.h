@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_KEYS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_KEYS_H_
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 const char kServerPublisherListStamp[] = "publisher_prefix_list_stamp";
@@ -16,7 +16,6 @@ const char kPromotionCorruptedMigrated[] = "promotion_corrupted_migrated2";
 const char kVersion[] = "version";
 const char kMinVisitTime[] = "ac.min_visit_time";
 const char kMinVisits[] = "ac.min_visits";
-const char kAllowNonVerified[] = "ac.allow_non_verified";
 const char kScoreA[] = "ac.score.a";
 const char kScoreB[] = "ac.score.b";
 const char kAutoContributeEnabled[] = "ac.enabled";
@@ -45,6 +44,6 @@ const char kWalletBitflyer[] = "wallets.bitflyer";
 const char kWalletGemini[] = "wallets.gemini";
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_KEYS_H_

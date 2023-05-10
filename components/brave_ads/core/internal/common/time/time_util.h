@@ -14,7 +14,7 @@ class Time;
 
 namespace brave_ads {
 
-int GetLocalTimeAsMinutes(base::Time time);
+int GetLocalTimeInMinutes(base::Time time);
 
 base::Time AdjustLocalTimeToBeginningOfPreviousMonth(base::Time time);
 base::Time AdjustLocalTimeToEndOfPreviousMonth(base::Time time);

@@ -26,7 +26,7 @@ TEST_F(BraveAdsLinearTest, ThreeClassesPredictionTest) {
   const std::map<std::string, double> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
 
-  const model::Linear linear(weights, biases);
+  const LinearModel linear(weights, biases);
   const VectorData class_1_vector_data({1.0, 0.0, 0.0});
   const VectorData class_2_vector_data({0.0, 1.0, 0.0});
   const VectorData class_3_vector_data({0.0, 1.0, 2.0});
@@ -57,7 +57,7 @@ TEST_F(BraveAdsLinearTest, BiasesPredictionTest) {
   const std::map<std::string, double> biases = {
       {"class_1", 0.5}, {"class_2", 0.25}, {"class_3", 1.0}};
 
-  const model::Linear linear_biased(weights, biases);
+  const LinearModel linear_biased(weights, biases);
   const VectorData avg_vector({1.0, 1.0, 1.0});
 
   // Act
@@ -77,7 +77,7 @@ TEST_F(BraveAdsLinearTest, BinaryClassifierPredictionTest) {
 
   const std::map<std::string, double> biases = {{"the_only_class", -0.45}};
 
-  const model::Linear linear(weights, biases);
+  const LinearModel linear(weights, biases);
   const VectorData vector_data_0({1.07, 1.52, 0.91});
   const VectorData vector_data_1({1.11, 1.63, 1.21});
 
@@ -108,7 +108,7 @@ TEST_F(BraveAdsLinearTest, TopPredictionsTest) {
                                                 {"class_4", 0.22},
                                                 {"class_5", 0.21}};
 
-  const model::Linear linear_biased(weights, biases);
+  const LinearModel linear_biased(weights, biases);
   const std::vector<float> pt_1 = {1.0, 0.99, 0.98, 0.97, 0.96};
   const std::vector<float> pt_2 = {0.83, 0.79, 0.91, 0.87, 0.82};
   const std::vector<float> pt_3 = {0.92, 0.95, 0.85, 0.91, 0.73};

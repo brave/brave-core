@@ -20,7 +20,7 @@
 using ::testing::_;
 using ::testing::MockFunction;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -132,4 +132,4 @@ TEST_F(PostSuggestionsTest, ServerError500) {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

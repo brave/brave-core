@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -24,32 +25,40 @@ namespace {
 constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 }  // namespace
 
-class BraveAdsTextEmbeddingResourceTest : public UnitTestBase {};
+class BraveAdsTextEmbeddingResourceTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    resource_ = std::make_unique<TextEmbeddingResource>();
+  }
+
+  bool LoadResource() {
+    resource_->Load();
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
+  }
+
+  std::unique_ptr<TextEmbeddingResource> resource_;
+};
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, LoadResource) {
   // Arrange
-  resource::TextEmbedding resource;
 
   // Act
-  resource.Load();
-  task_environment_.RunUntilIdle();
 
   // Assert
-  EXPECT_TRUE(resource.IsInitialized());
+  EXPECT_TRUE(LoadResource());
 }
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  resource::TextEmbedding resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadMissingResource) {
@@ -65,22 +74,19 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       }));
 
-  resource::TextEmbedding resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, IsNotInitialized) {
   // Arrange
-  const resource::TextEmbedding resource;
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(resource_->IsInitialized());
 }
 
 }  // namespace brave_ads

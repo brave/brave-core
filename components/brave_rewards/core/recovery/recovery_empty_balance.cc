@@ -23,7 +23,7 @@ const int32_t kVersion = 1;
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace recovery {
 
 EmptyBalance::EmptyBalance(LedgerImpl& ledger)
@@ -198,4 +198,4 @@ void EmptyBalance::Sent(const mojom::Result result) {
 }
 
 }  // namespace recovery
-}  // namespace ledger
+}  // namespace brave_rewards::internal

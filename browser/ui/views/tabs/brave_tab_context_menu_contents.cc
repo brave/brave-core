@@ -65,12 +65,36 @@ void BraveTabContextMenuContents::RunMenuAt(const gfx::Point& point,
                           views::MenuAnchorPosition::kTopLeft, source_type);
 }
 
+bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
+  }
+
+  if (command_id == BraveTabMenuModel::CommandShowVerticalTabs) {
+    return tabs::utils::ShouldShowVerticalTabs(browser_);
+  }
+
+  return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
+}
+
 bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
   if (IsBraveCommandId(command_id))
     return IsBraveCommandIdEnabled(command_id);
 
   return controller_->IsCommandEnabledForTab(
       static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
+}
+
+bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
+  }
+
+  if (command_id == BraveTabMenuModel::CommandShowVerticalTabs) {
+    return tabs::utils::SupportsVerticalTabs(browser_);
+  }
+
+  return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
 }
 
 bool BraveTabContextMenuContents::GetAcceleratorForCommandId(
@@ -118,6 +142,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
       }
       return false;
     }
+    case BraveTabMenuModel::CommandShowVerticalTabs:
+      return true;
     default:
       NOTREACHED();
       break;
@@ -134,6 +160,11 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandBookmarkAllTabs:
       chrome::BookmarkAllTabs(browser_);
       return;
+    case BraveTabMenuModel::CommandShowVerticalTabs: {
+      brave::ToggleVerticalTabStrip(browser_);
+      BrowserView::GetBrowserViewForBrowser(browser_)->InvalidateLayout();
+      return;
+    }
     case BraveTabMenuModel::CommandToggleTabMuted: {
       auto* model = static_cast<BraveTabStripModel*>(controller_->model());
       auto indices = model->GetTabIndicesForCommandAt(tab_index_);

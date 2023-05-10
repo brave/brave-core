@@ -12,36 +12,38 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 constexpr char kRotatingHashKey[] = "rotating_hash";
 }  // namespace
 
-base::Value::Dict GetRotatingHash(const TransactionInfo& transaction) {
+base::Value::Dict BuildRotatingHashUserData(
+    const TransactionInfo& transaction) {
   base::Value::Dict user_data;
 
-  const auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  const std::string& device_id = sys_info.device_id;
+  const std::string& device_id =
+      GlobalState::GetInstance()->SysInfo().device_id;
   if (device_id.empty()) {
     return user_data;
   }
 
-  const int64_t timestamp_rounded_to_nearest_hour = static_cast<int64_t>(
-      base::Time::Now().ToDoubleT() / base::Time::kSecondsPerHour);
-  const std::string timestamp =
-      base::NumberToString(timestamp_rounded_to_nearest_hour);
+  const std::string timestamp_rounded_down_to_nearest_hour =
+      base::NumberToString(
+          base::Time::Now().ToDeltaSinceWindowsEpoch().InSeconds() /
+          base::Time::kSecondsPerHour);
 
-  const std::string rotating_hash = base::Base64Encode(crypto::Sha256(
-      base::StrCat({device_id, transaction.creative_instance_id, timestamp})));
+  const std::string rotating_hash = base::Base64Encode(
+      crypto::Sha256(base::StrCat({device_id, transaction.creative_instance_id,
+                                   timestamp_rounded_down_to_nearest_hour})));
   user_data.Set(kRotatingHashKey, rotating_hash);
 
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

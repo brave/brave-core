@@ -33,6 +33,7 @@ void LogAdEvent(const AdInfo& ad,
   ad_event.creative_set_id = ad.creative_set_id;
   ad_event.creative_instance_id = ad.creative_instance_id;
   ad_event.advertiser_id = ad.advertiser_id;
+  ad_event.segment = ad.segment;
   ad_event.created_at = base::Time::Now();
 
   LogAdEvent(ad_event, std::move(callback));
@@ -61,7 +62,7 @@ void PurgeExpiredAdEvents(AdEventCallback callback) {
 
 void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback) {
-  DCHECK(mojom::IsKnownEnumValue(ad_type));
+  CHECK(mojom::IsKnownEnumValue(ad_type));
 
   const database::table::AdEvents database_table;
   database_table.PurgeOrphaned(

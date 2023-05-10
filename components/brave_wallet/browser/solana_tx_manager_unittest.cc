@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 
@@ -9,10 +9,10 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -73,7 +73,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
-    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
+    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
                                               keyring_service_.get(), &prefs_);
     CreateWallet();
     AddAccount();
@@ -117,9 +117,10 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                                ->at(0)
                                                .As<network::DataElementBytes>()
                                                .AsStringPiece());
-          absl::optional<base::Value> request_value =
-              base::JSONReader::Read(request_string);
-          std::string* method = request_value->FindStringKey("method");
+          base::Value::Dict request_root =
+              base::test::ParseJsonDict(request_string);
+
+          std::string* method = request_root.FindString("method");
           ASSERT_TRUE(method);
 
           if (*method == "getLatestBlockhash") {
@@ -158,11 +159,11 @@ class SolanaTxManagerUnitTest : public testing::Test {
               return;
             }
 
-            const base::Value* params_list =
-                request_value->FindListKey("params");
-            ASSERT_TRUE(params_list && params_list->GetList()[0].is_list());
+            const base::Value::List* params_list =
+                request_root.FindList("params");
+            ASSERT_TRUE(params_list && (*params_list)[0].is_list());
             const std::string* hash =
-                params_list->GetList()[0].GetList()[0].GetIfString();
+                (*params_list)[0].GetList()[0].GetIfString();
             ASSERT_TRUE(hash);
             std::string json;
 

@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace publisher {
 
 PrefixListReader::PrefixListReader() : prefix_size_(kMinPrefixSize) {}
@@ -93,4 +93,4 @@ PrefixListReader::ParseError PrefixListReader::Parse(
 }
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::internal

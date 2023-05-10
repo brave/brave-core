@@ -18,7 +18,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 LedgerImpl::LedgerImpl(
     mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote)
@@ -56,47 +56,47 @@ void LedgerImpl::Initialize(InitializeCallback callback) {
 }
 
 void LedgerImpl::SetEnvironment(mojom::Environment environment) {
-  DCHECK(IsUninitialized() || ledger::is_testing);
-  ledger::_environment = environment;
+  DCHECK(IsUninitialized() || is_testing);
+  _environment = environment;
 }
 
 void LedgerImpl::SetDebug(bool debug) {
-  DCHECK(IsUninitialized() || ledger::is_testing);
-  ledger::is_debug = debug;
+  DCHECK(IsUninitialized() || is_testing);
+  is_debug = debug;
 }
 
 void LedgerImpl::SetReconcileInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || ledger::is_testing);
-  ledger::reconcile_interval = interval;
+  DCHECK(IsUninitialized() || is_testing);
+  reconcile_interval = interval;
 }
 
 void LedgerImpl::SetRetryInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || ledger::is_testing);
-  ledger::retry_interval = interval;
+  DCHECK(IsUninitialized() || is_testing);
+  retry_interval = interval;
 }
 
 void LedgerImpl::SetTesting() {
-  ledger::is_testing = true;
+  is_testing = true;
 }
 
 void LedgerImpl::SetStateMigrationTargetVersionForTesting(int32_t version) {
-  ledger::state_migration_target_version_for_testing = version;
+  state_migration_target_version_for_testing = version;
 }
 
 void LedgerImpl::GetEnvironment(GetEnvironmentCallback callback) {
-  std::move(callback).Run(ledger::_environment);
+  std::move(callback).Run(_environment);
 }
 
 void LedgerImpl::GetDebug(GetDebugCallback callback) {
-  std::move(callback).Run(ledger::is_debug);
+  std::move(callback).Run(is_debug);
 }
 
 void LedgerImpl::GetReconcileInterval(GetReconcileIntervalCallback callback) {
-  std::move(callback).Run(ledger::reconcile_interval);
+  std::move(callback).Run(reconcile_interval);
 }
 
 void LedgerImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
-  std::move(callback).Run(ledger::retry_interval);
+  std::move(callback).Run(retry_interval);
 }
 
 void LedgerImpl::CreateRewardsWallet(const std::string& country,
@@ -135,7 +135,6 @@ void LedgerImpl::GetAutoContributeProperties(
   props->amount = state()->GetAutoContributionAmount();
   props->contribution_min_time = state()->GetPublisherMinVisitTime();
   props->contribution_min_visits = state()->GetPublisherMinVisits();
-  props->contribution_non_verified = state()->GetPublisherAllowNonVerified();
   props->reconcile_stamp = state()->GetReconcileStamp();
   std::move(callback).Run(std::move(props));
 }
@@ -155,15 +154,6 @@ void LedgerImpl::GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) {
   }
 
   std::move(callback).Run(state()->GetPublisherMinVisits());
-}
-
-void LedgerImpl::GetPublisherAllowNonVerified(
-    GetPublisherAllowNonVerifiedCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(false);
-  }
-
-  std::move(callback).Run(state()->GetPublisherAllowNonVerified());
 }
 
 void LedgerImpl::GetAutoContributeEnabled(
@@ -256,6 +246,13 @@ void LedgerImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
     return;
   }
 
+  // When performing automated testing, ignore changes in browser window
+  // activation. When running tests in parallel, activation changes can
+  // interfere with AC calculations on some platforms.
+  if (is_testing) {
+    return;
+  }
+
   if (last_shown_tab_id_ != tab_id) {
     return;
   }
@@ -265,6 +262,13 @@ void LedgerImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
 
 void LedgerImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
   if (!IsReady()) {
+    return;
+  }
+
+  // When performing automated testing, ignore changes in browser window
+  // activation. When running tests in parallel, activation changes can
+  // interfere with AC calculations on some platforms.
+  if (is_testing) {
     return;
   }
 
@@ -337,10 +341,6 @@ void LedgerImpl::SetPublisherMinVisitTime(int duration_in_seconds) {
 
 void LedgerImpl::SetPublisherMinVisits(int visits) {
   WhenReady([this, visits]() { state()->SetPublisherMinVisits(visits); });
-}
-
-void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
-  WhenReady([this, allow]() { state()->SetPublisherAllowNonVerified(allow); });
 }
 
 void LedgerImpl::SetAutoContributionAmount(double amount) {
@@ -901,4 +901,4 @@ void LedgerImpl::WhenReady(T callback) {
   }
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

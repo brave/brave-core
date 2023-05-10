@@ -17,40 +17,42 @@
 
 @protocol LedgerClientBridge;
 
-class LedgerClientIOS : public ledger::mojom::LedgerClient {
+class LedgerClientIOS : public brave_rewards::mojom::LedgerClient {
  public:
   explicit LedgerClientIOS(id<LedgerClientBridge> bridge);
   ~LedgerClientIOS() override;
 
-  mojo::PendingAssociatedRemote<ledger::mojom::LedgerClient> MakeRemote();
+  mojo::PendingAssociatedRemote<brave_rewards::mojom::LedgerClient>
+  MakeRemote();
 
  private:
   __unsafe_unretained id<LedgerClientBridge> bridge_;
-  mojo::AssociatedReceiver<ledger::mojom::LedgerClient> receiver_;
+  mojo::AssociatedReceiver<brave_rewards::mojom::LedgerClient> receiver_;
 
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
                     FetchFavIconCallback callback) override;
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
-  void LoadURL(ledger::mojom::UrlRequestPtr request,
+  void LoadURL(brave_rewards::mojom::UrlRequestPtr request,
                LoadURLCallback callback) override;
   void Log(const std::string& file,
            int32_t line,
            int32_t verbose_level,
            const std::string& message) override;
-  void OnPanelPublisherInfo(ledger::mojom::Result result,
-                            ledger::mojom::PublisherInfoPtr publisher_info,
-                            uint64_t windowId) override;
+  void OnPanelPublisherInfo(
+      brave_rewards::mojom::Result result,
+      brave_rewards::mojom::PublisherInfoPtr publisher_info,
+      uint64_t windowId) override;
   void OnPublisherRegistryUpdated() override;
   void OnPublisherUpdated(const std::string& publisher_id) override;
   void OnReconcileComplete(
-      ledger::mojom::Result result,
-      ledger::mojom::ContributionInfoPtr contribution) override;
+      brave_rewards::mojom::Result result,
+      brave_rewards::mojom::ContributionInfoPtr contribution) override;
   void PublisherListNormalized(
-      std::vector<ledger::mojom::PublisherInfoPtr> list) override;
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list) override;
   void OnContributeUnverifiedPublishers(
-      ledger::mojom::Result result,
+      brave_rewards::mojom::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
   void SetBooleanState(const std::string& name,
@@ -103,9 +105,10 @@ class LedgerClientIOS : public ledger::mojom::LedgerClient {
   void GetClientInfo(GetClientInfoCallback callback) override;
   void UnblindedTokensReady() override;
   void ReconcileStampReset() override;
-  void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
+  void RunDBTransaction(brave_rewards::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
-  void PendingContributionSaved(const ledger::mojom::Result result) override;
+  void PendingContributionSaved(
+      const brave_rewards::mojom::Result result) override;
   void ClearAllNotifications() override;
   void ExternalWalletConnected() override;
   void ExternalWalletLoggedOut() override;

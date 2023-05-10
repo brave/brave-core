@@ -39,7 +39,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
 
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
-      std::vector<ledger::mojom::PublisherInfoPtr> list) override;
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list) override;
 
   void OnExcludedSitesChanged(RewardsService* rewards_service,
                               std::string publisher_key,
@@ -53,15 +53,15 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
 
   void OnPendingContributionRemoved(
       RewardsService* rewards_service,
-      const ledger::mojom::Result result) override;
+      const brave_rewards::mojom::Result result) override;
 
   void OnReconcileComplete(
       RewardsService* rewards_service,
-      const ledger::mojom::Result result,
+      const brave_rewards::mojom::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::mojom::RewardsType type,
-      const ledger::mojom::ContributionProcessor processor) override;
+      const brave_rewards::mojom::RewardsType type,
+      const brave_rewards::mojom::ContributionProcessor processor) override;
 
   void OnExternalWalletConnected() override;
 
@@ -72,23 +72,25 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
 
   void OnFetchPromotions(
       RewardsService* rewards_service,
-      const ledger::mojom::Result result,
-      const std::vector<ledger::mojom::PromotionPtr>& list) override;
+      const brave_rewards::mojom::Result result,
+      const std::vector<brave_rewards::mojom::PromotionPtr>& list) override;
 
-  void OnPromotionFinished(RewardsService* rewards_service,
-                           const ledger::mojom::Result result,
-                           ledger::mojom::PromotionPtr promotion) override;
+  void OnPromotionFinished(
+      RewardsService* rewards_service,
+      const brave_rewards::mojom::Result result,
+      brave_rewards::mojom::PromotionPtr promotion) override;
 
-  void OnPendingContributionSaved(RewardsService* rewards_service,
-                                  const ledger::mojom::Result result) override;
+  void OnPendingContributionSaved(
+      RewardsService* rewards_service,
+      const brave_rewards::mojom::Result result) override;
 
   void OnAdsEnabled(RewardsService* rewards_service, bool ads_enabled) override;
 
   void OnCompleteReset(const bool success) override;
 
   void OnPanelPublisherInfo(RewardsService* rewards_service,
-                            const ledger::mojom::Result result,
-                            const ledger::mojom::PublisherInfo* info,
+                            const brave_rewards::mojom::Result result,
+                            const brave_rewards::mojom::PublisherInfo* info,
                             uint64_t windowId) override;
 
  private:

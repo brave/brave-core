@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 
@@ -173,6 +173,9 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
+    brave_wallet::SetDefaultEthereumWallet(
+        browser()->profile()->GetPrefs(),
+        brave_wallet::mojom::DefaultWallet::BraveWallet);
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -201,8 +204,9 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
   std::unique_ptr<net::test_server::HttpResponse> HandleChainRequest(
       const net::test_server::HttpRequest& request) {
     GURL absolute_url = https_server_->GetURL(request.relative_url);
-    if (absolute_url.path() != "/rpc")
+    if (absolute_url.path() != "/rpc") {
       return nullptr;
+    }
     std::map<std::string, std::string> params;
     ExtractParameters(absolute_url.query(), &params);
     auto http_response =
@@ -226,8 +230,9 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
     }
     std::string rpc_query("rpc=" + EncodeQuery(rpc.spec()));
     GURL::Replacements replacements;
-    if (!query.empty())
+    if (!query.empty()) {
       rpc_query += "&" + query;
+    }
     replacements.SetQueryStr(rpc_query);
     auto url =
         https_server()->GetURL(host, "/brave_wallet_ethereum_chain.html");

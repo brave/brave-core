@@ -10,7 +10,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_confirmation_delegate.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 
 namespace brave_ads {
@@ -35,7 +35,7 @@ class Confirmations final : public RedeemConfirmationDelegate {
   ~Confirmations() override;
 
   void SetDelegate(ConfirmationsDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 
@@ -45,7 +45,7 @@ class Confirmations final : public RedeemConfirmationDelegate {
 
  private:
   void Retry();
-  void OnRetry();
+  void RetryCallback();
   void StopRetrying();
 
   void ConfirmTransaction(const TransactionInfo& transaction);
@@ -58,7 +58,7 @@ class Confirmations final : public RedeemConfirmationDelegate {
 
   void RecreateOptedInDynamicUserDataAndRedeem(
       const ConfirmationInfo& confirmation);
-  void OnRecreateOptedInDynamicUserDataAndRedeem(
+  void RecreateOptedInDynamicUserDataAndRedeemCallback(
       const ConfirmationInfo& confirmation,
       base::Value::Dict dynamic_opted_in_user_data);
 

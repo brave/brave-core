@@ -9,21 +9,21 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/search_result_ads/search_result_ads_per_day_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/search_result_ads/search_result_ads_per_hour_permission_rule.h"
 
-namespace brave_ads::search_result_ads {
+namespace brave_ads {
 
 // static
-bool PermissionRules::HasPermission() {
+bool SearchResultAdPermissionRules::HasPermission() {
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
 
-  AdsPerDayPermissionRule ads_per_day_permission_rule;
-  if (!ShouldAllow(&ads_per_day_permission_rule)) {
+  const SearchResultAdsPerDayPermissionRule ads_per_day_permission_rule;
+  if (!ShouldAllow(ads_per_day_permission_rule)) {
     return false;
   }
 
-  AdsPerHourPermissionRule ads_per_hour_permission_rule;
-  return ShouldAllow(&ads_per_hour_permission_rule);
+  const SearchResultAdsPerHourPermissionRule ads_per_hour_permission_rule;
+  return ShouldAllow(ads_per_hour_permission_rule);
 }
 
-}  // namespace brave_ads::search_result_ads
+}  // namespace brave_ads

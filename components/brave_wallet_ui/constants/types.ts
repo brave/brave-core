@@ -194,6 +194,7 @@ export interface AppsListType {
 }
 
 export interface ChartTimelineObjectType {
+  abr: string
   name: string
   id: BraveWallet.AssetPriceTimeframe
 }
@@ -226,10 +227,16 @@ export interface AssetPriceWithContractAndChainId extends BraveWallet.AssetPrice
   chainId: string
 }
 
+export interface UIState {
+  selectedPendingTransactionId?: string | undefined
+  transactionProviderErrorRegistry: TransactionProviderErrorRegistry
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
+  isBitcoinEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: BraveWallet.AppItem[]
@@ -329,11 +336,13 @@ export interface PageState {
 export interface WalletPageState {
   wallet: WalletState
   page: PageState
+  ui: UIState
 }
 
 export interface WalletPanelState {
   wallet: WalletState
   panel: PanelState
+  ui: UIState
 }
 
 export interface WalletInfoBase {
@@ -344,6 +353,7 @@ export interface WalletInfoBase {
   accountInfos: BraveWallet.AccountInfo[]
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
+  isBitcoinEnabled: boolean
   isNftPinningFeatureEnabled: boolean
   isPanelV2FeatureEnabled: boolean
 }
@@ -750,9 +760,6 @@ export enum WalletRoutes {
   DepositFundsPageStart = '/crypto/deposit-funds',
   DepositFundsPage = '/crypto/deposit-funds/:tokenId?',
 
-  // NFTs
-  Nfts = '/crypto/nfts',
-
   // market
   Market = '/crypto/market',
   MarketSub = '/crypto/market/:chainIdOrMarketSymbol?',
@@ -789,8 +796,14 @@ export enum WalletRoutes {
 
   // portfolio
   Portfolio = '/crypto/portfolio',
-  PortfolioAsset = '/crypto/portfolio/:chainIdOrMarketSymbol/:contractOrSymbol?/:tokenId?',
-  PortfolioSub = '/crypto/portfolio/:chainIdOrMarketSymbol?',
+  PortfolioAssets = '/crypto/portfolio/assets',
+  PortfolioNFTs = '/crypto/portfolio/nfts',
+  PortfolioAsset = '/crypto/portfolio/' +
+  ':assetsOrNfts/' +
+  ':chainIdOrMarketSymbol/' +
+  ':contractOrSymbol?/' +
+  ':tokenId?',
+  PortfolioSub = '/crypto/portfolio/:assetsOrNfts/:chainIdOrMarketSymbol?',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
@@ -800,6 +813,9 @@ export enum WalletRoutes {
 
   // send
   Send = '/send',
+
+  // dev bitcoin screen
+  DevBitcoin = '/dev-bitcoin',
 
   // NFT Pining
   LocalIpfsNode = '/crypto/local-ipfs-node',
@@ -995,9 +1011,11 @@ export type NavIDTypes =
   | 'deposit'
   | 'activity'
   | 'portfolio'
+  | 'bitcoinSandbox'
   | 'nfts'
   | 'market'
   | 'accounts'
+  | 'assets'
 
 export interface NavOption {
   id: NavIDTypes
@@ -1041,3 +1059,13 @@ export type DAppPermissionDurationOption = {
 export type DAppConnectedPermissionsOption = {
   name: string
 }
+
+const BitcoinKeyringTypes = [
+  BraveWallet.BITCOIN_KEYRING84_ID, BraveWallet.BITCOIN_KEYRING84_TEST_ID
+] as const
+export type BitcoinKeyring = typeof BitcoinKeyringTypes[number]
+
+const BitcoinNetworkTypes = [
+    BraveWallet.BITCOIN_MAINNET, BraveWallet.BITCOIN_TESTNET
+] as const
+export type BitcoinNetwork = typeof BitcoinNetworkTypes[number]

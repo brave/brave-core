@@ -8,11 +8,11 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 void SetEpsilonGreedyBanditEligibleSegments(const SegmentList& segments);
 SegmentList GetEpsilonGreedyBanditEligibleSegments();
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_UTIL_H_

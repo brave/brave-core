@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/check_op.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
@@ -54,20 +54,21 @@ class CreativeNotificationAds final : public TableInterface {
   void GetAll(GetCreativeNotificationAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
-    DCHECK_GT(batch_size, 0);
+    CHECK_GT(batch_size, 0);
 
     batch_size_ = batch_size;
   }
 
   std::string GetTableName() const override;
 
+  void Create(mojom::DBTransactionInfo* transaction) override;
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNotificationAdList& creative_ads);
 
-  std::string BuildInsertOrUpdateQuery(
+  std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const CreativeNotificationAdList& creative_ads) const;
 

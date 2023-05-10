@@ -14,15 +14,13 @@
 #include "brave/components/brave_rewards/core/legacy/media/github.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
 
-namespace ledger {
-class LedgerImpl;
-}
+namespace brave_rewards::internal {
 
-namespace braveledger_media {
+class LedgerImpl;
 
 class Media {
  public:
-  explicit Media(ledger::LedgerImpl& ledger);
+  explicit Media(LedgerImpl& ledger);
 
   ~Media();
 
@@ -32,31 +30,31 @@ class Media {
 
   void ProcessMedia(const base::flat_map<std::string, std::string>& parts,
                     const std::string& type,
-                    ledger::mojom::VisitDataPtr visit_data);
+                    mojom::VisitDataPtr visit_data);
 
   void GetMediaActivityFromUrl(uint64_t windowId,
-                               ledger::mojom::VisitDataPtr visit_data,
+                               mojom::VisitDataPtr visit_data,
                                const std::string& type,
                                const std::string& publisher_blob);
 
   void SaveMediaInfo(const std::string& type,
                      const base::flat_map<std::string, std::string>& data,
-                     ledger::PublisherInfoCallback callback);
+                     PublisherInfoCallback callback);
 
   static std::string GetShareURL(
       const std::string& type,
       const base::flat_map<std::string, std::string>& args);
 
  private:
-  void OnMediaActivityError(ledger::mojom::VisitDataPtr visit_data,
+  void OnMediaActivityError(mojom::VisitDataPtr visit_data,
                             const std::string& type,
                             uint64_t windowId);
 
-  const raw_ref<ledger::LedgerImpl> ledger_;
-  braveledger_media::YouTube media_youtube_;
-  braveledger_media::GitHub media_github_;
+  const raw_ref<LedgerImpl> ledger_;
+  YouTube media_youtube_;
+  GitHub media_github_;
 };
 
-}  // namespace braveledger_media
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_MEDIA_H_

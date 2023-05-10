@@ -20,7 +20,7 @@ namespace {
 std::string GetFormattedBalanceDate(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  DCHECK(exploded.HasValidValues());
+  CHECK(exploded.HasValidValues());
 
   return base::StringPrintf("%04d-%02d", exploded.year, exploded.month);
 }

@@ -64,7 +64,7 @@ export const mockBinanceCoinErc20Token = {
 }
 
 export const mockBitcoinErc20Token = {
-  contractAddress: '4',
+  contractAddress: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
   name: 'Bitcoin',
   symbol: 'BTC',
   logo: BTCIconUrl,
@@ -114,6 +114,40 @@ export const mockZrxErc20Token = {
   chainId: '0x1'
 }
 
+export const mockDaiToken = {
+  coingeckoId: 'dai',
+  contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
+  decimals: 18,
+  isErc20: true,
+  isErc721: false,
+  isErc1155: false,
+  isNft: false,
+  logo: 'chrome://erc-token-images/dai.png',
+  name: 'DAI Stablecoin',
+  symbol: 'DAI',
+  tokenId: '',
+  visible: true,
+  coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID
+}
+
+export const mockUSDCoin = {
+  coingeckoId: 'usd-coin',
+  contractAddress: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
+  decimals: 6,
+  isErc20: true,
+  isErc721: false,
+  isErc1155: false,
+  isNft: false,
+  logo: 'chrome://erc-token-images/usdc.png',
+  name: 'USD Coin',
+  symbol: 'USDC',
+  tokenId: '',
+  visible: true,
+  coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID
+}
+
 export const mockMoonCatNFT = {
   contractAddress: '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69',
   name: 'MoonCats',
@@ -138,6 +172,16 @@ export const mockAccountAssetOptions: BraveWallet.BlockchainToken[] = [
   mockBitcoinErc20Token,
   mockAlgorandErc20Token,
   mockZrxErc20Token
+]
+
+export const mockErc20TokensList = [
+  mockBasicAttentionToken,
+  mockBinanceCoinErc20Token,
+  mockBitcoinErc20Token,
+  mockAlgorandErc20Token,
+  mockZrxErc20Token,
+  mockDaiToken,
+  mockUSDCoin
 ]
 
 export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [

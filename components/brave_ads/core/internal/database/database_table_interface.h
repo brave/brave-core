@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 
 namespace brave_ads::database {
 
@@ -18,8 +18,8 @@ class TableInterface {
 
   virtual std::string GetTableName() const = 0;
 
-  virtual void Migrate(mojom::DBTransactionInfo* transaction,
-                       int to_version) = 0;
+  virtual void Create(mojom::DBTransactionInfo* transaction) = 0;
+  virtual void Migrate(mojom::DBTransactionInfo* transaction, int to_version);
 };
 
 }  // namespace brave_ads::database

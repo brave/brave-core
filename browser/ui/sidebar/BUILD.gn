@@ -78,6 +78,7 @@ source_set("browser_tests") {
     "//brave/app:command_ids",
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs",
+    "//brave/components/playlist/common",
     "//brave/components/sidebar",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",

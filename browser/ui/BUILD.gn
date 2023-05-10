@@ -11,6 +11,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -45,6 +46,8 @@ source_set("ui") {
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
+    "webui/skus_internals_ui.cc",
+    "webui/skus_internals_ui.h",
   ]
 
   # It doesn't make sense to view accelerators on iOS & Android.
@@ -106,6 +109,8 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "session_crashed_bubble_brave.cc",
+      "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
+      "side_panel/ai_chat/ai_chat_side_panel_utils.h",
       "toolbar/bookmark_bar_sub_menu_model.cc",
       "toolbar/bookmark_bar_sub_menu_model.h",
       "toolbar/brave_app_menu_model.cc",
@@ -115,6 +120,10 @@ source_set("ui") {
       "toolbar/brave_bookmark_sub_menu_model.cc",
       "toolbar/brave_bookmark_sub_menu_model.h",
       "toolbar/brave_recent_tabs_sub_menu_model.h",
+      "webui/ai_chat/ai_chat_ui.cc",
+      "webui/ai_chat/ai_chat_ui.h",
+      "webui/ai_chat/ai_chat_ui_page_handler.cc",
+      "webui/ai_chat/ai_chat_ui_page_handler.h",
       "webui/brave_rewards/rewards_panel_handler.cc",
       "webui/brave_rewards/rewards_panel_handler.h",
       "webui/brave_rewards/rewards_panel_ui.cc",
@@ -195,6 +204,13 @@ source_set("ui") {
     ]
 
     deps += [ "//chrome/browser/ui/commander:fuzzy_finder" ]
+
+    if (enable_request_otr) {
+      deps += [
+        "//brave/components/request_otr/common",
+        "//brave/components/request_otr/common/buildflags:buildflags",
+      ]
+    }
 
     if (enable_pin_shortcut) {
       sources += [
@@ -286,6 +302,9 @@ source_set("ui") {
       "views/omnibox/brave_search_conversion_promotion_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
+      "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.cc",
+      "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.h",
+      "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc",
       "views/side_panel/brave_side_panel.cc",
       "views/side_panel/brave_side_panel.h",
       "views/side_panel/playlist/playlist_side_panel_coordinator.cc",
@@ -402,8 +421,6 @@ source_set("ui") {
   deps += [
     "//base",
     "//brave/app:command_ids",
-    "//brave/app/theme:brave_theme_resources",
-    "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/vector_icons:vector_icons",
     "//brave/browser:browser_process",
     "//brave/browser:sparkle_buildflags",
@@ -451,7 +468,6 @@ source_set("ui") {
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wayback_machine/buildflags",
-    "//brave/components/brave_webtorrent:static_resources",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/de_amp/common",
@@ -471,6 +487,9 @@ source_set("ui") {
     "//brave/components/p3a_utils",
     "//brave/components/playlist/common/buildflags",
     "//brave/components/resources:static_resources",
+    "//brave/components/skus/browser/resources:generated_resources",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
     "//brave/components/text_recognition/common/buildflags",
     "//brave/components/time_period_storage",
     "//brave/components/tor/buildflags",
@@ -554,6 +573,9 @@ source_set("ui") {
 
   if (!is_android && !is_ios) {
     deps += [
+      "//brave/app/theme:brave_theme_resources",
+      "//brave/app/theme:brave_unscaled_resources",
+      "//brave/components/brave_webtorrent:static_resources",
       "//brave/components/commander/browser",
       "//brave/components/webcompat_reporter/browser",
       "//brave/components/webcompat_reporter/ui:generated_resources",
@@ -622,6 +644,13 @@ source_set("ui") {
     ]
   }
 
+  if (enable_request_otr) {
+    deps += [
+      "//brave/components/request_otr/browser",
+      "//brave/components/request_otr/common",
+    ]
+  }
+
   if (toolkit_views) {
     deps += [
       "//brave/browser/ui/sidebar",
@@ -670,6 +699,9 @@ source_set("ui") {
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
       "//brave/common/importer",
+      "//brave/components/ai_chat",
+      "//brave/components/ai_chat:mojom",
+      "//brave/components/ai_chat_ui:generated_resources",
       "//brave/components/brave_adaptive_captcha",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_new_tab_ui:mojom",

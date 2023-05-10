@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
-
 namespace brave_ads {
 
 ConversionInfo::ConversionInfo() = default;
@@ -28,7 +26,7 @@ bool ConversionInfo::operator==(const ConversionInfo& other) const {
          url_pattern == other.url_pattern &&
          observation_window == other.observation_window &&
          advertiser_public_key == other.advertiser_public_key &&
-         DoubleEquals(expire_at.ToDoubleT(), other.expire_at.ToDoubleT());
+         expire_at == other.expire_at;
 }
 
 bool ConversionInfo::operator!=(const ConversionInfo& other) const {

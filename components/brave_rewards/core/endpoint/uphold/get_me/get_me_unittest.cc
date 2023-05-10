@@ -20,7 +20,7 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace uphold {
 
@@ -132,7 +132,7 @@ TEST_F(GetMeTest, ServerOK) {
   base::MockCallback<GetMeCallback> callback;
   EXPECT_CALL(callback, Run)
       .Times(1)
-      .WillOnce([](mojom::Result result, const ::ledger::uphold::User& user) {
+      .WillOnce([](mojom::Result result, const internal::uphold::User& user) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(user.name, "John");
         EXPECT_EQ(user.member_id, "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
@@ -181,4 +181,4 @@ TEST_F(GetMeTest, ServerErrorRandom) {
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

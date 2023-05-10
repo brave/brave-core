@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
 
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -46,11 +47,11 @@ TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
   expected_history_item.ad_content.brand_url = ad.target_url;
   expected_history_item.ad_content.confirmation_type =
       ConfirmationType::kViewed;
-  expected_history_item.ad_content.like_action_type =
-      AdContentLikeActionType::kNeutral;
+  expected_history_item.ad_content.user_reaction_type =
+      mojom::UserReactionType::kNeutral;
   expected_history_item.category_content.category = ad.segment;
-  expected_history_item.category_content.opt_action_type =
-      CategoryContentOptActionType::kNone;
+  expected_history_item.category_content.user_reaction_type =
+      mojom::UserReactionType::kNeutral;
 
   EXPECT_EQ(expected_history_item, history_item);
 }

@@ -10,25 +10,18 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
+class AntiTargetingResource;
+class EligibleInlineContentAdsBase;
 class SubdivisionTargeting;
 
-namespace inline_content_ads {
-
-class EligibleAdsBase;
-
-class EligibleAdsFactory final {
+class EligibleInlineContentAdsFactory final {
  public:
-  static std::unique_ptr<EligibleAdsBase> Build(
+  static std::unique_ptr<EligibleInlineContentAdsBase> Build(
       int version,
       const SubdivisionTargeting& subdivision_targeting,
-      const resource::AntiTargeting& anti_targeting_resource);
+      const AntiTargetingResource& anti_targeting_resource);
 };
 
-}  // namespace inline_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_INLINE_CONTENT_ADS_ELIGIBLE_INLINE_CONTENT_ADS_FACTORY_H_

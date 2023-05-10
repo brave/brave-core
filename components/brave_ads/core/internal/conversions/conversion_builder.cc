@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_builder.h"
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
 namespace brave_ads {
@@ -23,8 +23,10 @@ absl::optional<ConversionInfo> BuildConversion(
   conversion.url_pattern = ad_mojom->conversion->url_pattern;
   conversion.advertiser_public_key =
       ad_mojom->conversion->advertiser_public_key;
-  conversion.observation_window = int{ad_mojom->conversion->observation_window};
-  conversion.expire_at = ad_mojom->conversion->expire_at;
+  conversion.observation_window =
+      base::Days(ad_mojom->conversion->observation_window);
+  conversion.expire_at =
+      ad_mojom->conversion->expire_at + conversion.observation_window;
 
   if (!conversion.IsValid()) {
     return absl::nullopt;

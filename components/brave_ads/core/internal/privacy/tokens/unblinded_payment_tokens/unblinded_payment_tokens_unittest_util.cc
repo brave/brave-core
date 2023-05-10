@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
@@ -19,8 +19,10 @@ UnblindedPaymentTokens& GetUnblindedPaymentTokens() {
 }
 
 UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count) {
+  CHECK_GT(count, 0);
+
   UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(count);
+      BuildUnblindedPaymentTokens(count);
   GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
   return unblinded_payment_tokens;
 }
@@ -34,11 +36,11 @@ UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
 
   unblinded_payment_token.value =
       cbr::UnblindedToken(unblinded_payment_token_base64);
-  DCHECK(unblinded_payment_token.value.has_value());
+  CHECK(unblinded_payment_token.value.has_value());
 
   unblinded_payment_token.public_key =
       cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
-  DCHECK(unblinded_payment_token.public_key.has_value());
+  CHECK(unblinded_payment_token.public_key.has_value());
 
   unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
 
@@ -76,7 +78,9 @@ UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
   return unblinded_payment_tokens;
 }
 
-UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
+UnblindedPaymentTokenList BuildUnblindedPaymentTokens(const int count) {
+  CHECK_GT(count, 0);
+
   const std::vector<std::string> unblinded_payment_tokens_base64 = {
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)",
       R"(hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K)",
@@ -105,9 +109,9 @@ UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
   return unblinded_payment_tokens;
 }
 
-UnblindedPaymentTokenInfo GetUnblindedPaymentToken() {
+UnblindedPaymentTokenInfo BuildUnblindedPaymentToken() {
   const UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(/*count*/ 1);
+      BuildUnblindedPaymentTokens(/*count*/ 1);
   CHECK(!unblinded_payment_tokens.empty());
   return unblinded_payment_tokens.front();
 }

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_
 
-#include <cstdint>
 #include <map>
 #include <set>
 #include <string>
@@ -16,7 +15,7 @@
 
 class GURL;
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 using AntiTargetingSiteList = std::set<GURL>;
 using AntiTargetingMap =
@@ -36,10 +35,10 @@ struct AntiTargetingInfo final {
   static base::expected<AntiTargetingInfo, std::string> CreateFromValue(
       base::Value::Dict dict);
 
-  uint16_t version = 0;
+  int version = 0;
   AntiTargetingMap sites;
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_

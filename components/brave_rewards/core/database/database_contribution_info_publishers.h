@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabaseContributionInfoPublishers : public DatabaseTable {
@@ -32,7 +32,7 @@ class DatabaseContributionInfoPublishers : public DatabaseTable {
 
   void UpdateContributedAmount(const std::string& contribution_id,
                                const std::string& publisher_key,
-                               ledger::LegacyResultCallback callback);
+                               LegacyResultCallback callback);
 
  private:
   void OnGetRecordByContributionList(
@@ -45,6 +45,6 @@ class DatabaseContributionInfoPublishers : public DatabaseTable {
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_CONTRIBUTION_INFO_PUBLISHERS_H_

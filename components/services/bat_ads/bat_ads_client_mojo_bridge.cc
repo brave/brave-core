@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "brave/components/brave_ads/core/notification_ad_value_util.h"
@@ -227,7 +227,7 @@ void BatAdsClientMojoBridge::AddTrainingSample(
 void BatAdsClientMojoBridge::Load(const std::string& name,
                                   brave_ads::LoadCallback callback) {
   if (!bat_ads_client_.is_bound()) {
-    std::move(callback).Run(/*success*/ false, /*value*/ {});
+    std::move(callback).Run(/*value*/ absl::nullopt);
     return;
   }
 

@@ -9,6 +9,7 @@ import * as React from 'react'
 import { WalletSelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
+import { openBlockExplorerURL } from '../../../utils/block-explorer-utils'
 
 // Styled components
 import {
@@ -51,6 +52,7 @@ import AdvancedTransactionSettings from '../advanced-transaction-settings'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
+import { UNKNOWN_TOKEN_COINGECKO_ID } from '../../../common/constants/magics'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
@@ -146,7 +148,11 @@ export function ConfirmSwapTransaction (props: Props) {
       {transactionDetails?.sellToken &&
         transactionDetails?.buyToken &&
         transactionDetails?.minBuyAmount &&
-        transactionDetails?.sellAmount && (
+        transactionDetails?.sellAmount &&
+        transactionDetails?.buyToken?.coingeckoId !==
+          UNKNOWN_TOKEN_COINGECKO_ID &&
+        transactionDetails?.sellToken?.coingeckoId !==
+          UNKNOWN_TOKEN_COINGECKO_ID && (
           <ExchangeRate>
             1 {transactionDetails.sellToken.symbol} ={' '}
             {transactionDetails.minBuyAmount
@@ -250,6 +256,9 @@ function SwapAsset (props: SwapAssetProps) {
     return ''
   }, [network])
 
+  // computed
+  const isUnknownAsset = asset?.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
+
   return (
     <SwapAssetContainer top={type === 'maker'}>
       <SwapAssetHeader>
@@ -296,6 +305,19 @@ function SwapAsset (props: SwapAssetProps) {
               <LoadingSkeleton width={200} height={18} />
               <Spacer />
               <LoadingSkeleton width={200} height={18} />
+            </>
+          ) : isUnknownAsset ? (
+            <>
+              <SwapAssetAmountSymbol>{asset.symbol}</SwapAssetAmountSymbol>
+              <EditButton
+                onClick={openBlockExplorerURL({
+                  type: 'token',
+                  network,
+                  value: asset.contractAddress
+                })}
+              >
+                {getLocale('braveWalletTransactionExplorer')}
+              </EditButton>
             </>
           ) : (
             <>

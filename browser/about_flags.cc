@@ -12,7 +12,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
@@ -28,6 +28,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -39,6 +40,10 @@
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/components/ai_chat/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"
@@ -54,6 +59,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+#include "brave/components/request_otr/common/features.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -79,6 +88,15 @@
       FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN), \
   })
 #if BUILDFLAG(IS_WIN)
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                  \
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      kBraveVPNWireguardFeatureInternalName,                                 \
+      "Enable experimental Wireguard Brave VPN service",                     \
+      "Experimental Wireguard VPN support. Not implemented yet",             \
+      kOsWin,                                                                \
+      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNUseWireguardService), \
+  })
+
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES                                    \
   EXPAND_FEATURE_ENTRIES({                                               \
       kBraveVPNDnsFeatureInternalName,                                   \
@@ -90,10 +108,12 @@
   })
 #else
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
 #endif
 #else
 #define BRAVE_VPN_FEATURE_ENTRIES
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
 #endif
 
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \
@@ -114,6 +134,18 @@
           "Enables faster loading of simplified article-style web pages.", \
           kOsDesktop | kOsAndroid,                                         \
           FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
+      }))
+
+#define REQUEST_OTR_FEATURE_ENTRIES                                           \
+  IF_BUILDFLAG(                                                               \
+      ENABLE_REQUEST_OTR,                                                     \
+      EXPAND_FEATURE_ENTRIES({                                                \
+          "brave-request-otr-tab",                                            \
+          "Enable Request-OTR Tab",                                           \
+          "Suggest going off-the-record when visiting potentially sensitive " \
+          "URLs",                                                             \
+          kOsDesktop,                                                         \
+          FEATURE_VALUE_TYPE(request_otr::features::kBraveRequestOTRTab),     \
       }))
 
 #define BRAVE_MODULE_FILENAME_PATCH                                           \
@@ -369,6 +401,19 @@
 #define BRAVE_SHARED_PINNED_TABS
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
+#define BRAVE_AI_CHAT                                          \
+  EXPAND_FEATURE_ENTRIES({                                     \
+      "brave-ai-chat",                                         \
+      "Brave AI Chat",                                         \
+      "Summarize articles and engage in conversation with AI", \
+      kOsWin | kOsMac | kOsLinux,                              \
+      FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),          \
+  })
+#else
+#define BRAVE_AI_CHAT
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -389,6 +434,14 @@
           "sec-ch-ua-mobile, sec-ch-ua-platform)",                             \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(blink::features::kAllowCertainClientHints),       \
+      },                                                                       \
+      {                                                                        \
+          "clamp-platform-version-client-hint",                                \
+          "Clamp platform version client hint",                                \
+          "Clamps the patch field of the platform version client hint",        \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              blink::features::kClampPlatformVersionClientHint),               \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
@@ -522,6 +575,14 @@
                                  kBraveGoogleSignInPermission),                \
       },                                                                       \
       {                                                                        \
+          "brave-localhost-access-permission",                                 \
+          "Enable Localhost access permission prompt",                         \
+          "Enable permissioning access to localhost connections",              \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveLocalhostAccessPermission),       \
+      },                                                                       \
+      {                                                                        \
           "brave-extension-network-blocking",                                  \
           "Enable extension network blocking",                                 \
           "Enable blocking for network requests initiated by extensions",      \
@@ -616,7 +677,7 @@
           "Enable Brave Ads custom push notifications",                        \
           "Enable Brave Ads custom push notifications to support rich media",  \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_ads::features::kCustomNotificationAds),     \
+          FEATURE_VALUE_TYPE(brave_ads::kCustomNotificationAdFeature),         \
       },                                                                       \
       {                                                                        \
           "brave-ads-allowed-to-fallback-to-custom-push-notification-ads",     \
@@ -627,7 +688,7 @@
           "notifications",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
-              brave_ads::features::kAllowedToFallbackToCustomNotificationAds), \
+              brave_ads::kAllowedToFallbackToCustomNotificationAdFeature),     \
       },                                                                       \
       {                                                                        \
           "brave-sync-v2",                                                     \
@@ -752,8 +813,10 @@
   BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                         \
   BRAVE_VPN_FEATURE_ENTRIES                                                    \
   BRAVE_VPN_DNS_FEATURE_ENTRIES                                                \
+  BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
+  REQUEST_OTR_FEATURE_ENTRIES                                                  \
   BRAVE_MODULE_FILENAME_PATCH                                                  \
   BRAVE_FEDERATED_FEATURE_ENTRIES                                              \
   PLAYLIST_FEATURE_ENTRIES                                                     \
@@ -763,6 +826,7 @@
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_SHARED_PINNED_TABS                                                     \
+  BRAVE_AI_CHAT                                                                \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 
 namespace flags_ui {

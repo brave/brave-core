@@ -45,12 +45,12 @@ class UnblindedToken {
   }
 
   challenge_bypass_ristretto::UnblindedToken& get() {
-    DCHECK(unblinded_token_);
+    CHECK(unblinded_token_);
     return *unblinded_token_;
   }
 
   const challenge_bypass_ristretto::UnblindedToken& get() const {
-    DCHECK(unblinded_token_);
+    CHECK(unblinded_token_);
     return *unblinded_token_;
   }
 

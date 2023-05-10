@@ -35,6 +35,7 @@ constexpr base::StringPiece kBravePinsJson = R"brave_pins_json({
   "entries": [
     // Brave
     { "name": "adblock-data.s3.brave.com", "pins": "brave"},
+    { "name": "ai-chat.proxy.brave.com", "pins": "brave"},
     { "name": "brave-core-ext.s3.brave.com", "pins": "brave"},
     { "name": "brave-today-cdn.brave.com", "pins": "brave"},
     { "name": "clients4.brave.com", "pins": "brave"},
@@ -146,6 +147,11 @@ constexpr base::StringPiece kBraveHstsJson = R"brave_hsts_json({
     // Brave
     {
       "name": "adblock-data.s3.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "ai-chat.proxy.brave.com",
       "mode": "force-https",
       "policy": "custom"
     },
@@ -535,9 +541,9 @@ bool ParseCertificatesFile(base::StringPiece certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
   constexpr base::StringPiece brave_certs = R"brave_certs(
-# Last updated: Thu Apr 20 17:56:38 UTC 2023
+# Last updated: Mon May  8 23:54:37 UTC 2023
 PinsListTimestamp
-1682013398
+1683590077
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/

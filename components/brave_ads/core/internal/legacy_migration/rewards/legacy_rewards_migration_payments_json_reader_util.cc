@@ -54,12 +54,12 @@ absl::optional<PaymentList> GetPaymentsFromList(const base::Value::List& list) {
   PaymentList payments;
 
   for (const auto& item : list) {
-    const base::Value::Dict* dict = item.GetIfDict();
-    if (!dict) {
+    const auto* item_dict = item.GetIfDict();
+    if (!item_dict) {
       return absl::nullopt;
     }
 
-    const absl::optional<PaymentInfo> payment = ParsePayment(*dict);
+    const absl::optional<PaymentInfo> payment = ParsePayment(*item_dict);
     if (!payment) {
       return absl::nullopt;
     }
@@ -73,19 +73,17 @@ absl::optional<PaymentList> GetPaymentsFromList(const base::Value::List& list) {
 }  // namespace
 
 absl::optional<PaymentList> ParsePayments(const base::Value::Dict& dict) {
-  const base::Value::Dict* const ads_rewards_value =
-      dict.FindDict(kAdsRewardsKey);
-  if (!ads_rewards_value) {
+  const auto* const ads_rewards_dict = dict.FindDict(kAdsRewardsKey);
+  if (!ads_rewards_dict) {
     return PaymentList{};
   }
 
-  const base::Value::List* const payments_value =
-      ads_rewards_value->FindList(kPaymentListKey);
-  if (!payments_value) {
+  const auto* const list = ads_rewards_dict->FindList(kPaymentListKey);
+  if (!list) {
     return absl::nullopt;
   }
 
-  return GetPaymentsFromList(*payments_value);
+  return GetPaymentsFromList(*list);
 }
 
 }  // namespace brave_ads::rewards::json::reader

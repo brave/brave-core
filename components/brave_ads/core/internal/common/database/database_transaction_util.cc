@@ -7,21 +7,30 @@
 
 #include <utility>
 
-#include "base/functional/callback.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "base/functional/bind.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
 namespace brave_ads::database {
 
-void OnResultCallback(ResultCallback callback,
+namespace {
+
+void OnRunTransaction(ResultCallback callback,
                       mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
-  if (command_response->status !=
-      mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    return std::move(callback).Run(/*success*/ false);
-  }
+  std::move(callback).Run(
+      /*success*/ command_response->status ==
+      mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK);
+}
 
-  std::move(callback).Run(/*success*/ true);
+}  // namespace
+
+void RunTransaction(mojom::DBTransactionInfoPtr transaction,
+                    ResultCallback callback) {
+  AdsClientHelper::GetInstance()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnRunTransaction, std::move(callback)));
 }
 
 }  // namespace brave_ads::database

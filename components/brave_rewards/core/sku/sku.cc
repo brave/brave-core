@@ -14,7 +14,7 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace sku {
 
 SKU::SKU(LedgerImpl& ledger) : ledger_(ledger), common_(ledger) {}
@@ -23,7 +23,7 @@ SKU::~SKU() = default;
 
 void SKU::Process(const std::vector<mojom::SKUOrderItem>& items,
                   const std::string& wallet_type,
-                  ledger::SKUOrderCallback callback,
+                  SKUOrderCallback callback,
                   const std::string& contribution_id) {
   auto create_callback = std::bind(&SKU::OrderCreated, this, _1, _2,
                                    wallet_type, contribution_id, callback);
@@ -35,7 +35,7 @@ void SKU::OrderCreated(const mojom::Result result,
                        const std::string& order_id,
                        const std::string& wallet_type,
                        const std::string& contribution_id,
-                       ledger::SKUOrderCallback callback) {
+                       SKUOrderCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order was not successful");
     callback(result, "");
@@ -52,7 +52,7 @@ void SKU::OrderCreated(const mojom::Result result,
 void SKU::ContributionIdSaved(const mojom::Result result,
                               const std::string& order_id,
                               const std::string& wallet_type,
-                              ledger::SKUOrderCallback callback) {
+                              SKUOrderCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Contribution id not saved");
     callback(result, "");
@@ -67,7 +67,7 @@ void SKU::ContributionIdSaved(const mojom::Result result,
 
 void SKU::CreateTransaction(mojom::SKUOrderPtr order,
                             const std::string& wallet_type,
-                            ledger::SKUOrderCallback callback) {
+                            SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order not found");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -82,7 +82,7 @@ void SKU::CreateTransaction(mojom::SKUOrderPtr order,
 
 void SKU::Retry(const std::string& order_id,
                 const std::string& wallet_type,
-                ledger::SKUOrderCallback callback) {
+                SKUOrderCallback callback) {
   if (order_id.empty()) {
     BLOG(0, "Order id is empty");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -96,7 +96,7 @@ void SKU::Retry(const std::string& order_id,
 
 void SKU::OnOrder(mojom::SKUOrderPtr order,
                   const std::string& wallet_type,
-                  ledger::SKUOrderCallback callback) {
+                  SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -126,4 +126,4 @@ void SKU::OnOrder(mojom::SKUOrderPtr order,
 }
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::internal

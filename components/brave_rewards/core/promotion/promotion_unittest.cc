@@ -26,7 +26,7 @@ using ::testing::Field;
 using ::testing::HasSubstr;
 using ::testing::Pointee;
 
-namespace ledger::promotion {
+namespace brave_rewards::internal::promotion {
 
 class PromotionTest : public testing::Test {
  protected:
@@ -122,14 +122,14 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   EXPECT_CALL(callback, Run).Times(2);
 
   // to avoid fulfilling the fetch request from database in Promotion::Fetch()
-  ledger::is_testing = true;
+  is_testing = true;
   promotion_.Fetch(callback.Get());
   task_environment_.RunUntilIdle();
 
   inserted = true;
   promotion_.Fetch(callback.Get());
   task_environment_.RunUntilIdle();
-  ledger::is_testing = false;
+  is_testing = false;
 }
 
-}  // namespace ledger::promotion
+}  // namespace brave_rewards::internal::promotion

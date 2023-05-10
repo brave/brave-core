@@ -6,24 +6,18 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 
 #include "base/check.h"
-#include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
-void SaveCreativeAds(const CreativeNewTabPageAdList& creative_ads) {
-  database::table::CreativeNewTabPageAds database_table;
-  database_table.Save(
-      creative_ads, base::BindOnce([](const bool success) { CHECK(success); }));
-}
-
 CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {
+  CHECK_GT(count, 0);
+
   CreativeNewTabPageAdList creative_ads;
 
   for (int i = 0; i < count; i++) {

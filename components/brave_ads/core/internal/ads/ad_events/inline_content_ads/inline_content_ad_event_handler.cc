@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 
-namespace brave_ads::inline_content_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -24,7 +24,7 @@ bool ShouldDebounceViewedAdEvent(
     const AdInfo& ad,
     const AdEventList& ad_events,
     const mojom::InlineContentAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::InlineContentAdEventType::kViewed &&
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed);
@@ -34,7 +34,7 @@ bool ShouldDebounceClickedAdEvent(
     const AdInfo& ad,
     const AdEventList& ad_events,
     const mojom::InlineContentAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::InlineContentAdEventType::kClicked &&
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked);
@@ -43,7 +43,7 @@ bool ShouldDebounceClickedAdEvent(
 bool WasAdServed(const AdInfo& ad,
                  const AdEventList& ad_events,
                  const mojom::InlineContentAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::InlineContentAdEventType::kServed ||
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
@@ -52,7 +52,7 @@ bool WasAdServed(const AdInfo& ad,
 bool IsAdPlaced(const AdInfo& ad,
                 const AdEventList& ad_events,
                 const mojom::InlineContentAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::InlineContentAdEventType::kServed ||
          event_type == mojom::InlineContentAdEventType::kViewed ||
@@ -63,7 +63,7 @@ bool IsAdPlaced(const AdInfo& ad,
 bool ShouldDebounceAdEvent(const AdInfo& ad,
                            const AdEventList& ad_events,
                            const mojom::InlineContentAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||
          ShouldDebounceClickedAdEvent(ad, ad_events, event_type) ||
@@ -72,16 +72,17 @@ bool ShouldDebounceAdEvent(const AdInfo& ad,
 
 }  // namespace
 
-EventHandler::EventHandler() = default;
+InlineContentAdEventHandler::InlineContentAdEventHandler() = default;
 
-EventHandler::~EventHandler() {
+InlineContentAdEventHandler::~InlineContentAdEventHandler() {
   delegate_ = nullptr;
 }
 
-void EventHandler::FireEvent(const std::string& placement_id,
-                             const std::string& creative_instance_id,
-                             const mojom::InlineContentAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+void InlineContentAdEventHandler::FireEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::InlineContentAdEventType event_type) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (placement_id.empty()) {
     BLOG(1,
@@ -100,13 +101,14 @@ void EventHandler::FireEvent(const std::string& placement_id,
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      base::BindOnce(&EventHandler::OnGetForCreativeInstanceId,
-                     weak_factory_.GetWeakPtr(), placement_id, event_type));
+      base::BindOnce(
+          &InlineContentAdEventHandler::GetForCreativeInstanceIdCallback,
+          weak_factory_.GetWeakPtr(), placement_id, event_type));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EventHandler::OnGetForCreativeInstanceId(
+void InlineContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const std::string& placement_id,
     const mojom::InlineContentAdEventType event_type,
     const bool success,
@@ -125,18 +127,19 @@ void EventHandler::OnGetForCreativeInstanceId(
   FireEvent(ad, event_type);
 }
 
-void EventHandler::FireEvent(const InlineContentAdInfo& ad,
-                             const mojom::InlineContentAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+void InlineContentAdEventHandler::FireEvent(
+    const InlineContentAdInfo& ad,
+    const mojom::InlineContentAdEventType event_type) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
-      base::BindOnce(&EventHandler::OnGetAdEvents, weak_factory_.GetWeakPtr(),
-                     ad, event_type));
+      base::BindOnce(&InlineContentAdEventHandler::GetAdEventsCallback,
+                     weak_factory_.GetWeakPtr(), ad, event_type));
 }
 
-void EventHandler::OnGetAdEvents(
+void InlineContentAdEventHandler::GetAdEventsCallback(
     const InlineContentAdInfo& ad,
     const mojom::InlineContentAdEventType event_type,
     const bool success,
@@ -163,16 +166,16 @@ void EventHandler::OnGetAdEvents(
                              event_type);
   }
 
-  const auto ad_event = AdEventFactory::Build(event_type);
+  const auto ad_event = InlineContentAdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
   SuccessfullyFiredEvent(ad, event_type);
 }
 
-void EventHandler::SuccessfullyFiredEvent(
+void InlineContentAdEventHandler::SuccessfullyFiredEvent(
     const InlineContentAdInfo& ad,
     const mojom::InlineContentAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (!delegate_) {
     return;
@@ -180,36 +183,36 @@ void EventHandler::SuccessfullyFiredEvent(
 
   switch (event_type) {
     case mojom::InlineContentAdEventType::kServed: {
-      delegate_->OnInlineContentAdServed(ad);
+      delegate_->OnDidFireInlineContentAdServedEvent(ad);
       break;
     }
 
     case mojom::InlineContentAdEventType::kViewed: {
-      delegate_->OnInlineContentAdViewed(ad);
+      delegate_->OnDidFireInlineContentAdViewedEvent(ad);
       break;
     }
 
     case mojom::InlineContentAdEventType::kClicked: {
-      delegate_->OnInlineContentAdClicked(ad);
+      delegate_->OnDidFireInlineContentAdClickedEvent(ad);
       break;
     }
   }
 }
 
-void EventHandler::FailedToFireEvent(
+void InlineContentAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   BLOG(1, "Failed to fire inline content ad "
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
 
   if (delegate_) {
-    delegate_->OnInlineContentAdEventFailed(placement_id, creative_instance_id,
-                                            event_type);
+    delegate_->OnFailedToFireInlineContentAdEvent(
+        placement_id, creative_instance_id, event_type);
   }
 }
 
-}  // namespace brave_ads::inline_content_ads
+}  // namespace brave_ads

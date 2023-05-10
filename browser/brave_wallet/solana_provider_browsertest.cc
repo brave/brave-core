@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
@@ -321,6 +321,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
   ~SolanaProviderTest() override = default;
 
   void SetUpOnMainThread() override {
+    brave_wallet::SetDefaultSolanaWallet(
+        browser()->profile()->GetPrefs(),
+        brave_wallet::mojom::DefaultWallet::BraveWallet);
     host_resolver()->AddRule("*", "127.0.0.1");
 
     https_server_for_files_.SetSSLConfig(

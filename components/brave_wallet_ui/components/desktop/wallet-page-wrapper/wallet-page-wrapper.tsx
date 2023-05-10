@@ -37,15 +37,23 @@ import {
   BackgroundGradientTopLayer,
   BackgroundGradientMiddleLayer,
   BackgroundGradientBottomLayer,
-  BlockForHeight
+  BlockForHeight,
+  FeatureRequestButtonWrapper,
+  CardHeaderWrapper,
+  CardHeader,
+  CardHeaderShadow,
+  CardHeaderContentWrapper
 } from './wallet-page-wrapper.style'
 
 export interface Props {
   wrapContentInBox?: boolean
   cardWidth?: number
-  cardOverflow?: 'auto' | 'hidden' | 'visible'
   noPadding?: boolean
+  noCardPadding?: boolean
   hideBackground?: boolean
+  hideNav?: boolean
+  hideHeader?: boolean
+  cardHeader?: JSX.Element | undefined | null
   children?: React.ReactNode
 }
 
@@ -53,10 +61,13 @@ export const WalletPageWrapper = (props: Props) => {
   const {
     children,
     cardWidth,
-    cardOverflow,
     noPadding,
+    noCardPadding,
     wrapContentInBox,
-    hideBackground
+    cardHeader,
+    hideBackground,
+    hideNav,
+    hideHeader
   } = props
 
   // Routing
@@ -66,23 +77,70 @@ export const WalletPageWrapper = (props: Props) => {
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
 
+  // State
+  const [headerShadowOpacity, setHeaderShadowOpacity]
+    = React.useState<number>(0)
+  const [headerDividerOpacity, setHeaderDividerOpacity]
+    = React.useState<number>(1)
+  const [headerHeight, setHeaderHeight] = React.useState<number>(0)
+
+  // Refs
+  let scrollRef = React.useRef<HTMLDivElement | null>(null)
+  const headerRef = React.createRef<HTMLDivElement>()
+
   // Computed
-  const showNavigationAndHeader =
-    isWalletCreated && !isWalletLocked &&
-    (
-      walletLocation.includes(WalletRoutes.Portfolio) ||
-      walletLocation.includes(WalletRoutes.Accounts) ||
-      walletLocation.includes(WalletRoutes.Market) ||
-      walletLocation.includes(WalletRoutes.Activity) ||
-      walletLocation.includes(WalletRoutes.Nfts) ||
-      walletLocation.includes(WalletRoutes.Send) ||
-      walletLocation.includes(WalletRoutes.Swap) ||
-      walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
-      walletLocation.includes(WalletRoutes.DepositFundsPageStart)
-    )
 
   const headerTitle = AllNavOptions.find((option) =>
     walletLocation.includes(option.route))?.name ?? ''
+
+  React.useEffect(() => {
+    // Keeps track of the Header height to update
+    // the card top position and headers shadow.
+    if (cardHeader) {
+      setHeaderHeight(headerRef?.current?.clientHeight ?? 0)
+    }
+  }, [headerRef?.current?.clientHeight, cardHeader])
+
+  const onScroll = React.useCallback(() => {
+    const scrollPosition = scrollRef.current
+    if (scrollPosition !== null) {
+      const { scrollTop } = scrollPosition
+
+      // Assures that shadowOpacity and dividerOpacity are
+      // the expect value when scrollTop is 0, since some values
+      // may not get calculated when scrolling fast.
+      if (scrollTop === 0) {
+        setHeaderShadowOpacity(0)
+        setHeaderDividerOpacity(1)
+        return
+      }
+
+      // Calculates opacity values for the first 64 scroll positions.
+      if (scrollTop <= 64) {
+
+        // Increases shadowOpacity by 0.00125 until it reaches
+        // desired opacity of 0.08, or will decrease shadowOpacity by
+        // 0.00125 until it reaches desired opacity of 0.
+        // example: 0.00125 * 64 = 0.08
+        setHeaderShadowOpacity((scrollTop / 8) * 0.01)
+
+        // Decreases dividerOpacity by 0.015625 until it reaches
+        // desired opacity of 0, or will increase dividerOpacity by
+        // 0.015625 until it reaches desired opacity of 1.
+        // example: 0.015625 * 64 = 1
+        setHeaderDividerOpacity(
+          (100 - ((100 / 64) * scrollTop)) * 0.01
+        )
+        return
+      }
+
+      // Assures that shadowOpacity and dividerOpacity are
+      // the expect value when scrollTop is greater than 64,
+      // since some values may not get calculated when scrolling fast.
+      setHeaderShadowOpacity(0.08)
+      setHeaderDividerOpacity(0)
+    }
+  }, [scrollRef.current])
 
   return (
     <>
@@ -95,25 +153,63 @@ export const WalletPageWrapper = (props: Props) => {
         </BackgroundGradientWrapper>
       }
       <Wrapper noPadding={noPadding}>
-        {showNavigationAndHeader && walletLocation !== WalletRoutes.Swap &&
+        {
+          isWalletCreated &&
+          !isWalletLocked &&
+          !hideHeader &&
           <TabHeader title={headerTitle} />
         }
-        {showNavigationAndHeader &&
+        {
+          isWalletCreated &&
+          !isWalletLocked &&
+          !hideNav &&
           <WalletNav isSwap={walletLocation === WalletRoutes.Swap} />
         }
         {!isWalletLocked &&
-          <FeatureRequestButton />
+          <FeatureRequestButtonWrapper>
+            <FeatureRequestButton />
+          </FeatureRequestButtonWrapper>
         }
         <BlockForHeight />
+
         {wrapContentInBox ? (
           <LayoutCardWrapper
-            maxWidth={cardWidth}
+            ref={scrollRef}
+            onScroll={onScroll}
+            hideCardHeader={!cardHeader}
+            headerHeight={headerHeight}
           >
+            {cardHeader &&
+              <CardHeaderWrapper>
+                <CardHeaderShadow
+                  headerHeight={headerHeight}
+                />
+              </CardHeaderWrapper>
+            }
+
             <ContainerCard
-              cardOverflow={cardOverflow}
+              noPadding={noCardPadding}
+              maxWidth={cardWidth}
+              hideCardHeader={!cardHeader}
             >
               {children}
             </ContainerCard>
+
+            {cardHeader &&
+              <CardHeaderWrapper
+                ref={headerRef}
+              >
+                <CardHeader
+                  shadowOpacity={headerShadowOpacity}
+                >
+                  <CardHeaderContentWrapper
+                    dividerOpacity={headerDividerOpacity}
+                  >
+                    {cardHeader}
+                  </CardHeaderContentWrapper>
+                </CardHeader>
+              </CardHeaderWrapper>
+            }
           </LayoutCardWrapper>
         ) : (
           children

@@ -1,6 +1,7 @@
-# Copyright 2019 The Brave Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
 import os
@@ -13,39 +14,62 @@ def main():
     argument_parser.add_argument('zipalign_path')
     argument_parser.add_argument('apksigner_path')
     argument_parser.add_argument('jarsigner_path')
-    argument_parser.add_argument('unsigned_apk_path', nargs='+')
+    argument_parser.add_argument('unsigned_apk_paths', nargs='+')
     argument_parser.add_argument('key_path')
     argument_parser.add_argument('key_passwd')
     argument_parser.add_argument('prvt_key_passwd')
     argument_parser.add_argument('key_name')
     args = argument_parser.parse_args()
 
+    sign(args.zipalign_path, args.apksigner_path, args.jarsigner_path, \
+        args.unsigned_apk_paths, args.key_path, args.key_passwd, \
+        args.prvt_key_passwd, args.key_name)
+
+
+def sign(zipalign_path, apksigner_path, jarsigner_path, \
+    unsigned_apk_paths, key_path, key_passwd, prvt_key_passwd, \
+    key_name):
     with tempfile.NamedTemporaryFile() as staging_file:
-        for unsigned_apk_path in args.unsigned_apk_path:
+        for unsigned_apk_path in unsigned_apk_paths:
             subprocess.check_output([
-                args.zipalign_path, '-p', '-f', '4',
-                unsigned_apk_path, staging_file.name])
+                zipalign_path, '-p', '-f', '4', unsigned_apk_path,
+                staging_file.name
+            ])
             if os.path.splitext(unsigned_apk_path)[1] == '.apk':
                 cmd_args = [
-                    args.apksigner_path, 'sign',
-                    '--in', staging_file.name,
-                    '--out', unsigned_apk_path,
-                    '--ks', args.key_path,
-                    '--ks-key-alias', args.key_name,
-                    '--ks-pass', 'pass:' + args.key_passwd,
-                    '--key-pass', 'pass:' + args.prvt_key_passwd,
+                    apksigner_path,
+                    'sign',
+                    '--in',
+                    staging_file.name,
+                    '--out',
+                    unsigned_apk_path,
+                    '--ks',
+                    key_path,
+                    '--ks-key-alias',
+                    key_name,
+                    '--ks-pass',
+                    'pass:' + key_passwd,
+                    '--key-pass',
+                    'pass:' + prvt_key_passwd,
                 ]
             else:
                 cmd_args = [
-                    args.jarsigner_path, '-verbose',
-                    '-sigalg', 'SHA256withRSA',
-                    '-digestalg', 'SHA-256',
-                    '-keystore', args.key_path,
-                    '-storepass', args.key_passwd,
-                    '-keypass', args.prvt_key_passwd,
+                    jarsigner_path,
+                    '-verbose',
+                    '-sigalg',
+                    'SHA256withRSA',
+                    '-digestalg',
+                    'SHA-256',
+                    '-keystore',
+                    key_path,
+                    '-storepass',
+                    key_passwd,
+                    '-keypass',
+                    prvt_key_passwd,
                     staging_file.name,
-                    '-signedjar', unsigned_apk_path,
-                    args.key_name,
+                    '-signedjar',
+                    unsigned_apk_path,
+                    key_name,
                 ]
             subprocess.check_output(cmd_args)
 

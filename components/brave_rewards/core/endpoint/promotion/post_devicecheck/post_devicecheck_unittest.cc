@@ -20,7 +20,7 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -109,4 +109,4 @@ TEST_F(PostDevicecheckTest, ServerErrorRandom) {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

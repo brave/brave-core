@@ -42,3 +42,12 @@
     sub-label="$i18n{statsUsagePingEnabledDesc}"
     on-settings-boolean-control-change="onStatsUsagePingEnabledChange_">
 </settings-toggle-button>
+<div hidden="[[!isRequestOTRFeatureEnabled_]]" class="settings-box">
+    <div class="start" id="labelWrapper">
+        <div class="label">$i18n{requestOTRLabel}</div>
+    </div>
+    <settings-dropdown-menu id="defaultRequestOTR"
+                            pref="{{prefs.brave.request_otr.request_otr_action_option}}"
+                            menu-options="[[requestOTRActions_]]">
+    </settings-dropdown-menu>
+</div>

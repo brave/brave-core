@@ -18,7 +18,7 @@ class Token;
 
 class TokenGenerator : public TokenGeneratorInterface {
  public:
-  std::vector<cbr::Token> Generate(int count) const override;
+  std::vector<cbr::Token> Generate(size_t count) const override;
 };
 
 }  // namespace brave_ads::privacy

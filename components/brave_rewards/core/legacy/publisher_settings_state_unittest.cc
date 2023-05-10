@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=PublisherSettingsStateTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 TEST(PublisherSettingsStateTest, ToJsonSerialization) {
   // Arrange
@@ -79,4 +79,4 @@ TEST(PublisherSettingsStateTest, FromJsonDeserialization) {
             publisher_settings_properties);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

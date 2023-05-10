@@ -15,17 +15,17 @@ base::Value::List SegmentsToValue(const SegmentList& segments) {
   base::Value::List list;
 
   for (const auto& segment : segments) {
-    DCHECK(!segment.empty());
+    CHECK(!segment.empty());
     list.Append(segment);
   }
 
   return list;
 }
 
-SegmentList SegmentsFromValue(const base::Value::List& value) {
+SegmentList SegmentsFromValue(const base::Value::List& list) {
   SegmentList segments;
 
-  for (const auto& item : value) {
+  for (const auto& item : list) {
     if (!item.is_string()) {
       return {};
     }

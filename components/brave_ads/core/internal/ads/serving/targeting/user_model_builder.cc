@@ -8,19 +8,19 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_model.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_model.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_model.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 namespace {
 
@@ -45,23 +45,23 @@ void OnGetTextEmbeddingHtmlEvents(
 void BuildUserModel(BuildUserModelCallback callback) {
   UserModelInfo user_model;
 
-  if (IsTextClassificationEnabled()) {
-    const model::TextClassification text_classification_model;
+  if (IsTextClassificationFeatureEnabled()) {
+    const TextClassificationModel text_classification_model;
     user_model.interest_segments = text_classification_model.GetSegments();
   }
 
-  if (IsEpsilonGreedyBanditEnabled()) {
-    const model::EpsilonGreedyBandit epsilon_greedy_bandit_model;
+  if (IsEpsilonGreedyBanditFeatureEnabled()) {
+    const EpsilonGreedyBanditModel epsilon_greedy_bandit_model;
     user_model.latent_interest_segments =
         epsilon_greedy_bandit_model.GetSegments();
   }
 
-  if (IsPurchaseIntentEnabled()) {
-    const model::PurchaseIntent purchase_intent_model;
+  if (IsPurchaseIntentFeatureEnabled()) {
+    const PurchaseIntentModel purchase_intent_model;
     user_model.purchase_intent_segments = purchase_intent_model.GetSegments();
   }
 
-  if (IsTextEmbeddingEnabled()) {
+  if (IsTextEmbeddingFeatureEnabled()) {
     GetTextEmbeddingHtmlEventsFromDatabase(base::BindOnce(
         &OnGetTextEmbeddingHtmlEvents, user_model, std::move(callback)));
   } else {
@@ -69,4 +69,4 @@ void BuildUserModel(BuildUserModelCallback callback) {
   }
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

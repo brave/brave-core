@@ -16,7 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::security {
+namespace brave_ads {
 
 TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithShortMessage) {
   // Arrange
@@ -95,4 +95,4 @@ TEST(BraveAdsConversionsUtilTest, SealEnvelope) {
   EXPECT_EQ(verifiable_conversion.id, *message);
 }
 
-}  // namespace brave_ads::security
+}  // namespace brave_ads

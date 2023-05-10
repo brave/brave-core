@@ -14,14 +14,14 @@ namespace brave_ads::database {
 mojom::DBRecordInfoPtr CreateRecord(
     sql::Statement* statement,
     const std::vector<mojom::DBCommandInfo::RecordBindingType>& bindings) {
-  DCHECK(statement);
+  CHECK(statement);
 
   mojom::DBRecordInfoPtr record = mojom::DBRecordInfo::New();
 
   int column = 0;
 
   for (const auto& binding : bindings) {
-    DCHECK(mojom::IsKnownEnumValue(binding));
+    CHECK(mojom::IsKnownEnumValue(binding));
 
     mojom::DBValuePtr value;
     switch (binding) {

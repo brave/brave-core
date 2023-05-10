@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_
@@ -50,6 +50,8 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
           json_rpc_service,
+      mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
+          bitcoin_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
       mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
           asset_ratio_service,
@@ -67,7 +69,9 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
           brave_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
-          brave_wallet_p3a) override;
+          brave_wallet_p3a,
+      mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
+          brave_wallet_ipfs_service_receiver) override;
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;

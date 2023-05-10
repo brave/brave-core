@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-module ledger.mojom;
+module brave_rewards.mojom;
 
 enum GetRecipientIDGeminiError {
   kFailedToCreateRequest,
@@ -20,6 +20,8 @@ enum GetParametersError {
 
 enum GetTransactionStatusUpholdError {
   kFailedToCreateRequest,
+  kTransactionPending,                  // HTTP 200
+  kUnexpectedTransactionStatus,         // HTTP 200
   kAccessTokenExpired,                  // HTTP 401
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody
@@ -73,9 +75,12 @@ enum PostCommitTransactionGeminiError {
 
 enum PostCommitTransactionUpholdError {
   kFailedToCreateRequest,
+  kTransactionPending,                  // HTTP 200
+  kUnexpectedTransactionStatus,         // HTTP 200
   kAccessTokenExpired,                  // HTTP 401
   kTransactionNotFound,                 // HTTP 404
-  kUnexpectedStatusCode                 // HTTP xxx
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
 };
 
 enum PostCreateTransactionUpholdError {

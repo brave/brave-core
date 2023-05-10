@@ -11,10 +11,12 @@ import re
 import shutil
 import subprocess
 
+from os.path import join
+
 import override_utils
 
 from import_inline import get_src_dir
-from sign_binaries import sign_binaries, sign_binary
+from sign_binaries import sign_binaries
 
 
 @override_utils.override_function(globals())
@@ -73,15 +75,22 @@ def CreateArchiveFile(original_function, options, staging_dir, current_version,
     # actually two-tuple build numbers y.z, not four-tuple version numbers
     # w.x.y.z.
     current_version_full = BuildVersion()
-    prev_version_full = GetPrevVersion(options.build_dir, staging_dir,
-                                       options.last_chrome_installer,
-                                       options.output_name)
-    CheckDeltaUpdatePrecondition(options.last_chrome_installer,
-                                 prev_version_full, current_version_full)
     SignAndCopyPreSignedBinaries(options.skip_signing, options.output_dir,
                                  staging_dir, current_version_full)
     return original_function(options, staging_dir, current_version,
                              prev_version)
+
+
+@override_utils.override_function(globals())
+def PrepareSetupExec(original_function, options, current_version, prev_version):
+    if options.skip_signing:
+        return original_function(options, current_version, prev_version)
+    build_dir_before = options.build_dir
+    options.build_dir = join(options.build_dir, 'presigned_binaries')
+    try:
+        return original_function(options, current_version, prev_version)
+    finally:
+        options.build_dir = build_dir_before
 
 
 def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
@@ -98,6 +107,12 @@ def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
     locales_dest_path = os.path.realpath(locales_dest_path)
     shutil.rmtree(locales_dest_path, ignore_errors=True)
     shutil.copytree(locales_src_dir_path, locales_dest_path)
+    # The "nb" locale is a subset of "no". Chromium uses the former, while
+    # Transifex uses the latter. To integrate with Transifex, our code renames
+    # "nb" to "no". But we still need to present "nb" to Chromium. The following
+    # code achieves this:
+    os.rename(os.path.join(locales_dest_path, 'no'),
+              os.path.join(locales_dest_path, 'nb'))
     # Files are copied, but we need to inform g_archive_inputs about that
     for root, _, files in os.walk(locales_dest_path):
         for name in files:
@@ -108,26 +123,14 @@ def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
             g_archive_inputs.append(candidate)
 
 
-def CheckDeltaUpdatePrecondition(last_chrome_installer, prev_version,
-                                 curr_version):
-    if last_chrome_installer and prev_version == curr_version:
-        raise Exception("Cannot create delta update files between the same "
-                        "source and target version %s. Please increment the "
-                        "Chrome version (for instance by rebasing your changes "
-                        "against a later upstream version). Or pass files "
-                        "representing a lower version to "
-                        "--last_chrome_installer." % prev_version)
-
-
 def SignAndCopyPreSignedBinaries(skip_signing, output_dir, staging_dir,
                                  current_version):
     if not skip_signing:
         sign_binaries(staging_dir)
-        sign_binary(os.path.join(output_dir, 'setup.exe'))
-        # Copies already signed three binaries - brave.exe and chrome.dll
-        # These files are signed during the build phase to create widevine sig
-        # files.
-        src_dir = os.path.join(output_dir, 'signed_binaries')
+        # Copy pre-signed files into the staging directory. This is important
+        # when Widevine host verification is enabled, because it ensures that
+        # the associated .sig files remain valid.
+        src_dir = os.path.join(output_dir, 'presigned_binaries')
         chrome_dir = os.path.join(staging_dir, CHROME_DIR)
         version_dir = os.path.join(chrome_dir, current_version)
         shutil.copy(os.path.join(src_dir, 'brave.exe'), chrome_dir)

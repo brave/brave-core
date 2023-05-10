@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -38,11 +39,13 @@ class BraveAdsIssuersTest : public UnitTestBase {
 
 TEST_F(BraveAdsIssuersTest, FetchIssuers) {
   // Arrange
-  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
+  const URLResponseMap url_responses = {
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   const IssuersInfo expected_issuers =
       BuildIssuers(7'200'000,
-                   {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
+                   {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
@@ -58,12 +61,10 @@ TEST_F(BraveAdsIssuersTest, FetchIssuers) {
   // Assert
 }
 
-TEST_F(BraveAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
+TEST_F(BraveAdsIssuersTest, FetchIssuersInvalidJsonResponseBody) {
   // Arrange
   const URLResponseMap url_responses = {
-      {// Issuers request
-       "/v3/issuers/",
-       {{net::HTTP_OK, /*response_body*/ "INVALID"}}}};
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body*/ "{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
@@ -87,9 +88,9 @@ TEST_F(BraveAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
 TEST_F(BraveAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {// Issuers request
-       "/v3/issuers/",
-       {{net::HTTP_NOT_FOUND, /*response_body*/ {}}}}};
+      {BuildIssuersUrlPath(),
+       {{net::HTTP_NOT_FOUND,
+         /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);

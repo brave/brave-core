@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_HD_KEYRING_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_HD_KEYRING_H_
@@ -15,7 +15,6 @@
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -52,9 +51,6 @@ class HDKeyring {
   // Find private key by address and encode for export (it would be hex or
   // base58 depends on underlying hd key)
   virtual std::string EncodePrivateKeyForExport(const std::string& address);
-
-  std::vector<uint8_t> SignMessage(const std::string& address,
-                                   const std::vector<uint8_t>& message);
 
   bool HasAddress(const std::string& addr);
 

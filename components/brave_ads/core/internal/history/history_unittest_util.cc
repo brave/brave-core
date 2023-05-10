@@ -13,7 +13,7 @@
 
 namespace brave_ads {
 
-int GetHistoryItemCount() {
+size_t GetHistoryItemCount() {
   const HistoryItemList history_items =
       HistoryManager::Get(HistoryFilterType::kNone, HistorySortType::kNone,
                           DistantPast(), DistantFuture());

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h"
 
+#include <utility>
+
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
@@ -22,7 +24,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/transferred_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
 namespace brave_ads {
@@ -30,59 +32,62 @@ namespace brave_ads {
 ExclusionRulesBase::ExclusionRulesBase(
     const AdEventList& ad_events,
     const SubdivisionTargeting& subdivision_targeting,
-    const resource::AntiTargeting& anti_targeting_resource,
+    const AntiTargetingResource& anti_targeting_resource,
     const BrowsingHistoryList& browsing_history) {
-  anti_targeting_exclusion_rule_ = std::make_unique<AntiTargetingExclusionRule>(
-      anti_targeting_resource, browsing_history);
-  exclusion_rules_.push_back(anti_targeting_exclusion_rule_.get());
+  auto anti_targeting_exclusion_rule =
+      std::make_unique<AntiTargetingExclusionRule>(anti_targeting_resource,
+                                                   browsing_history);
+  exclusion_rules_.push_back(std::move(anti_targeting_exclusion_rule));
 
-  conversion_exclusion_rule_ =
+  auto conversion_exclusion_rule =
       std::make_unique<ConversionExclusionRule>(ad_events);
-  exclusion_rules_.push_back(conversion_exclusion_rule_.get());
+  exclusion_rules_.push_back(std::move(conversion_exclusion_rule));
 
-  daily_cap_exclusion_rule_ =
+  auto daily_cap_exclusion_rule =
       std::make_unique<DailyCapExclusionRule>(ad_events);
-  exclusion_rules_.push_back(daily_cap_exclusion_rule_.get());
+  exclusion_rules_.push_back(std::move(daily_cap_exclusion_rule));
 
-  daypart_exclusion_rule_ = std::make_unique<DaypartExclusionRule>();
-  exclusion_rules_.push_back(daypart_exclusion_rule_.get());
+  auto daypart_exclusion_rule = std::make_unique<DaypartExclusionRule>();
+  exclusion_rules_.push_back(std::move(daypart_exclusion_rule));
 
-  dislike_category_exclusion_rule_ =
+  auto dislike_category_exclusion_rule =
       std::make_unique<DislikeCategoryExclusionRule>();
-  exclusion_rules_.push_back(dislike_category_exclusion_rule_.get());
+  exclusion_rules_.push_back(std::move(dislike_category_exclusion_rule));
 
-  dislike_exclusion_rule_ = std::make_unique<DislikeExclusionRule>();
-  exclusion_rules_.push_back(dislike_exclusion_rule_.get());
+  auto dislike_exclusion_rule = std::make_unique<DislikeExclusionRule>();
+  exclusion_rules_.push_back(std::move(dislike_exclusion_rule));
 
-  marked_as_inappropriate_exclusion_rule_ =
+  auto marked_as_inappropriate_exclusion_rule =
       std::make_unique<MarkedAsInappropriateExclusionRule>();
-  exclusion_rules_.push_back(marked_as_inappropriate_exclusion_rule_.get());
+  exclusion_rules_.push_back(std::move(marked_as_inappropriate_exclusion_rule));
 
-  per_day_exclusion_rule_ = std::make_unique<PerDayExclusionRule>(ad_events);
-  exclusion_rules_.push_back(per_day_exclusion_rule_.get());
+  auto per_day_exclusion_rule =
+      std::make_unique<PerDayExclusionRule>(ad_events);
+  exclusion_rules_.push_back(std::move(per_day_exclusion_rule));
 
-  per_month_exclusion_rule_ =
+  auto per_month_exclusion_rule =
       std::make_unique<PerMonthExclusionRule>(ad_events);
-  exclusion_rules_.push_back(per_month_exclusion_rule_.get());
+  exclusion_rules_.push_back(std::move(per_month_exclusion_rule));
 
-  per_week_exclusion_rule_ = std::make_unique<PerWeekExclusionRule>(ad_events);
-  exclusion_rules_.push_back(per_week_exclusion_rule_.get());
+  auto per_week_exclusion_rule =
+      std::make_unique<PerWeekExclusionRule>(ad_events);
+  exclusion_rules_.push_back(std::move(per_week_exclusion_rule));
 
-  split_test_exclusion_rule_ = std::make_unique<SplitTestExclusionRule>();
-  exclusion_rules_.push_back(split_test_exclusion_rule_.get());
+  auto split_test_exclusion_rule = std::make_unique<SplitTestExclusionRule>();
+  exclusion_rules_.push_back(std::move(split_test_exclusion_rule));
 
-  subdivision_targeting_exclusion_rule_ =
+  auto subdivision_targeting_exclusion_rule =
       std::make_unique<SubdivisionTargetingExclusionRule>(
           subdivision_targeting);
-  exclusion_rules_.push_back(subdivision_targeting_exclusion_rule_.get());
+  exclusion_rules_.push_back(std::move(subdivision_targeting_exclusion_rule));
 
-  total_max_exclusion_rule_ =
+  auto total_max_exclusion_rule =
       std::make_unique<TotalMaxExclusionRule>(ad_events);
-  exclusion_rules_.push_back(total_max_exclusion_rule_.get());
+  exclusion_rules_.push_back(std::move(total_max_exclusion_rule));
 
-  transferred_exclusion_rule_ =
+  auto transferred_exclusion_rule =
       std::make_unique<TransferredExclusionRule>(ad_events);
-  exclusion_rules_.push_back(transferred_exclusion_rule_.get());
+  exclusion_rules_.push_back(std::move(transferred_exclusion_rule));
 }
 
 ExclusionRulesBase::~ExclusionRulesBase() = default;
@@ -91,15 +96,17 @@ bool ExclusionRulesBase::ShouldExcludeCreativeAd(
     const CreativeAdInfo& creative_ad) {
   return base::ranges::any_of(
       exclusion_rules_,
-      [=](ExclusionRuleInterface<CreativeAdInfo>* exclusion_rule) {
+      [=](const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
+              exclusion_rule) {
         return AddToCacheIfNeeded(creative_ad, exclusion_rule);
       });
 }
 
 bool ExclusionRulesBase::AddToCacheIfNeeded(
     const CreativeAdInfo& creative_ad,
-    ExclusionRuleInterface<CreativeAdInfo>* exclusion_rule) {
-  DCHECK(exclusion_rule);
+    const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
+        exclusion_rule) {
+  CHECK(exclusion_rule);
 
   if (IsCached(creative_ad)) {
     return true;

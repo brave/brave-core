@@ -13,11 +13,7 @@ import Illustration from '../../../assets/png-icons/nft-ipfs/pinned-nft-illustra
 import { InfoTooltip } from './components/info-tooltip/info-tooltip'
 
 // styled components
-import {
-  BenefitHeading,
-  BenefitsList
-} from '../local-ipfs-node/local-ipfs-node.styles'
-import { Column, Row } from '../../shared/style'
+import { Row } from '../../shared/style'
 
 // selectors
 import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
@@ -26,6 +22,7 @@ import { PageSelectors } from '../../../page/selectors'
 // utils
 import { WalletPageActions } from '../../../page/actions'
 import { getLocale } from '../../../../common/locale'
+import { useNftPin } from '../../../common/hooks/nft-pin'
 
 // routes
 import { WalletRoutes } from '../../../constants/types'
@@ -44,6 +41,7 @@ import {
   SubDivider,
   PinnedNftIllustration
 } from './inspects-nfts.styles'
+import { Description } from '../local-ipfs-node/local-ipfs-node.styles'
 
 interface Props {
   onClose: () => void
@@ -52,6 +50,9 @@ interface Props {
 
 export const InspectNftsScreen = ({ onClose }: Props) => {
   const [showTooltip, setShowTooltip] = React.useState<boolean>(false)
+
+  // hooks
+  const { pinnableNftsCount } = useNftPin()
 
   // routing
   const history = useHistory()
@@ -65,7 +66,7 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
     if (!isAutoPinEnabled) {
       dispatch(WalletPageActions.setAutoPinEnabled(true))
     }
-    history.push(WalletRoutes.Nfts)
+    history.push(WalletRoutes.PortfolioNFTs)
   }, [isAutoPinEnabled])
 
   const onShowTooltip = React.useCallback(() => setShowTooltip(true), [])
@@ -104,15 +105,16 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
         <Row>
           <SubDivider />
         </Row>
-        <Column margin='32px 0 0'>
-          <BenefitHeading>{getLocale('braveWalletNftPinningBenefitsHeading')}</BenefitHeading>
-          <BenefitsList>
-            <li>{getLocale('braveWalletNftPinningBenefitOne')}</li>
-            <li>{getLocale('braveWalletNftPinningBenefitTwo')}</li>
-          </BenefitsList>
-        </Column>
+        <Row margin='32px 0 0'>
+          <Description>{getLocale('braveWalletNftPinningBenefitsHeading')}</Description>
+        </Row>
         <Row gap='16px' alignItems='center' justifyContent='center'>
-          <PinNftsButton onClick={onClickRunNode}>{getLocale('braveWalletNftPinningPinNftsButton')}</PinNftsButton>
+          <PinNftsButton
+            onClick={onClickRunNode}
+            disabled={pinnableNftsCount === 0}
+          >
+            {getLocale('braveWalletNftPinningPinNftsButton')}
+          </PinNftsButton>
         </Row>
         <PinnedNftIllustration src={Illustration} />
       </MainContent>

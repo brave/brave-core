@@ -7,7 +7,9 @@ import { FilecoinNetwork } from '../../common/hardware/types'
 import {
   BraveWallet,
   GetPriceHistoryReturnObjectInfo,
-  AssetPriceWithContractAndChainId
+  AssetPriceWithContractAndChainId,
+  BitcoinKeyring,
+  BitcoinNetwork
 } from '../../constants/types'
 
 export type CreateWalletPayloadType = {
@@ -22,6 +24,12 @@ export type AddAccountPayloadType = {
 export type AddFilecoinAccountPayloadType = {
   accountName: string
   network: FilecoinNetwork
+}
+
+export type AddBitcoinAccountPayloadType = {
+  accountName: string
+  networkId: BitcoinNetwork
+  keyringId: BitcoinKeyring
 }
 
 export type ImportAccountPayloadType = {

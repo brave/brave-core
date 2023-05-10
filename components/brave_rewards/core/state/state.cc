@@ -21,6 +21,8 @@
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 
+namespace brave_rewards::internal {
+
 namespace {
 
 std::string VectorDoubleToString(const std::vector<double>& items) {
@@ -86,7 +88,7 @@ base::flat_map<std::string, std::string> StringToPayoutStatus(
 }
 
 base::Value WalletProviderRegionsToValue(
-    const base::flat_map<std::string, ledger::mojom::RegionsPtr>&
+    const base::flat_map<std::string, mojom::RegionsPtr>&
         wallet_provider_regions) {
   base::Value::Dict wallet_provider_regions_dict;
 
@@ -111,8 +113,8 @@ base::Value WalletProviderRegionsToValue(
   return base::Value(std::move(wallet_provider_regions_dict));
 }
 
-base::flat_map<std::string, ledger::mojom::RegionsPtr>
-ValueToWalletProviderRegions(const base::Value& value) {
+base::flat_map<std::string, mojom::RegionsPtr> ValueToWalletProviderRegions(
+    const base::Value& value) {
   DCHECK(value.is_dict());
   if (!value.is_dict()) {
     BLOG(0, "Failed to parse JSON!");
@@ -120,7 +122,7 @@ ValueToWalletProviderRegions(const base::Value& value) {
   }
 
   auto wallet_provider_regions =
-      ledger::endpoints::GetWalletProviderRegions(value.GetDict());
+      endpoints::GetWalletProviderRegions(value.GetDict());
   if (!wallet_provider_regions) {
     BLOG(0, "Failed to parse JSON!");
     return {};
@@ -130,18 +132,18 @@ ValueToWalletProviderRegions(const base::Value& value) {
 }
 
 std::string ConvertInlineTipPlatformToKey(
-    const ledger::mojom::InlineTipsPlatforms platform) {
+    const mojom::InlineTipsPlatforms platform) {
   switch (platform) {
-    case ledger::mojom::InlineTipsPlatforms::REDDIT: {
-      return ledger::state::kInlineTipRedditEnabled;
+    case mojom::InlineTipsPlatforms::REDDIT: {
+      return state::kInlineTipRedditEnabled;
     }
-    case ledger::mojom::InlineTipsPlatforms::TWITTER: {
-      return ledger::state::kInlineTipTwitterEnabled;
+    case mojom::InlineTipsPlatforms::TWITTER: {
+      return state::kInlineTipTwitterEnabled;
     }
-    case ledger::mojom::InlineTipsPlatforms::GITHUB: {
-      return ledger::state::kInlineTipGithubEnabled;
+    case mojom::InlineTipsPlatforms::GITHUB: {
+      return state::kInlineTipGithubEnabled;
     }
-    case ledger::mojom::InlineTipsPlatforms::NONE: {
+    case mojom::InlineTipsPlatforms::NONE: {
       NOTREACHED();
       return "";
     }
@@ -150,7 +152,6 @@ std::string ConvertInlineTipPlatformToKey(
 
 }  // namespace
 
-namespace ledger {
 namespace state {
 
 State::State(LedgerImpl& ledger) : ledger_(ledger), migration_(ledger) {}
@@ -189,16 +190,6 @@ void State::SetPublisherMinVisits(const int visits) {
 
 int State::GetPublisherMinVisits() {
   return ledger_->GetState<int>(kMinVisits);
-}
-
-void State::SetPublisherAllowNonVerified(const bool allow) {
-  ledger_->database()->SaveEventLog(kAllowNonVerified, std::to_string(allow));
-  ledger_->SetState(kAllowNonVerified, allow);
-  ledger_->publisher()->SynopsisNormalizer();
-}
-
-bool State::GetPublisherAllowNonVerified() {
-  return ledger_->GetState<bool>(kAllowNonVerified);
 }
 
 void State::SetScoreValues(double a, double b) {
@@ -279,7 +270,7 @@ void State::SetReconcileStamp(const int reconcile_interval) {
   ledger_->client()->ReconcileStampReset();
 }
 void State::ResetReconcileStamp() {
-  SetReconcileStamp(ledger::reconcile_interval);
+  SetReconcileStamp(reconcile_interval);
 }
 
 uint64_t State::GetCreationStamp() {
@@ -467,4 +458,4 @@ bool State::SetEncryptedString(const std::string& key,
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal

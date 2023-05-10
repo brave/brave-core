@@ -8,13 +8,14 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 constexpr char kCreatedAtTimestampKey[] = "createdAtTimestamp";
 }  // namespace
 
-base::Value::Dict GetCreatedAtTimestamp(const TransactionInfo& transaction) {
+base::Value::Dict BuildCreatedAtTimestampUserData(
+    const TransactionInfo& transaction) {
   base::Value::Dict user_data;
 
   user_data.Set(kCreatedAtTimestampKey,
@@ -23,4 +24,4 @@ base::Value::Dict GetCreatedAtTimestamp(const TransactionInfo& transaction) {
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

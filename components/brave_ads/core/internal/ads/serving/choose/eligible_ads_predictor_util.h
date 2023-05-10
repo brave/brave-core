@@ -17,8 +17,8 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/ad_predictor_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features_util.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
@@ -35,9 +35,7 @@ constexpr size_t kAdLastSeenHoursAgoIndex = 4;
 constexpr size_t kAdvertiserLastSeenHoursAgoIndex = 5;
 constexpr size_t kPriorityIndex = 6;
 
-namespace targeting {
 struct UserModelInfo;
-}  // namespace targeting
 
 SegmentList SegmentIntersection(SegmentList lhs, SegmentList rhs);
 
@@ -68,31 +66,27 @@ CreativeAdPredictorMap<T> GroupCreativeAdsByCreativeInstanceId(
 template <typename T>
 AdPredictorInfo<T> ComputePredictorFeatures(
     const AdPredictorInfo<T>& ad_predictor,
-    const targeting::UserModelInfo& user_model,
+    const UserModelInfo& user_model,
     const AdEventList& ad_events) {
   AdPredictorInfo<T> mutable_ad_predictor(ad_predictor);
 
   const SegmentList intent_child_segments_intersection = SegmentIntersection(
-      targeting::GetTopChildPurchaseIntentSegments(user_model),
-      ad_predictor.segments);
+      GetTopChildPurchaseIntentSegments(user_model), ad_predictor.segments);
   mutable_ad_predictor.does_match_intent_child_segments =
       !intent_child_segments_intersection.empty();
 
   const SegmentList intent_parent_segments_intersection = SegmentIntersection(
-      targeting::GetTopParentPurchaseIntentSegments(user_model),
-      ad_predictor.segments);
+      GetTopParentPurchaseIntentSegments(user_model), ad_predictor.segments);
   mutable_ad_predictor.does_match_intent_parent_segments =
       !intent_parent_segments_intersection.empty();
 
-  const SegmentList interest_child_segments_intersection =
-      SegmentIntersection(targeting::GetTopChildInterestSegments(user_model),
-                          ad_predictor.segments);
+  const SegmentList interest_child_segments_intersection = SegmentIntersection(
+      GetTopChildInterestSegments(user_model), ad_predictor.segments);
   mutable_ad_predictor.does_match_interest_child_segments =
       !interest_child_segments_intersection.empty();
 
-  const SegmentList interest_parent_segments_intersection =
-      SegmentIntersection(targeting::GetTopParentInterestSegments(user_model),
-                          ad_predictor.segments);
+  const SegmentList interest_parent_segments_intersection = SegmentIntersection(
+      GetTopParentInterestSegments(user_model), ad_predictor.segments);
   mutable_ad_predictor.does_match_interest_parent_segments =
       !interest_parent_segments_intersection.empty();
 
@@ -139,13 +133,13 @@ double ComputePredictorScore(const AdPredictorInfo<T>& ad_predictor) {
   if (ad_predictor.ad_last_seen_hours_ago <= base::Time::kHoursPerDay) {
     score += ad_predictor_weights.at(kAdLastSeenHoursAgoIndex) *
              ad_predictor.ad_last_seen_hours_ago /
-             double{base::Time::kHoursPerDay};
+             static_cast<double>(base::Time::kHoursPerDay);
   }
 
   if (ad_predictor.advertiser_last_seen_hours_ago <= base::Time::kHoursPerDay) {
     score += ad_predictor_weights.at(kAdvertiserLastSeenHoursAgoIndex) *
              ad_predictor.advertiser_last_seen_hours_ago /
-             double{base::Time::kHoursPerDay};
+             static_cast<double>(base::Time::kHoursPerDay);
   }
 
   if (ad_predictor.creative_ad.priority > 0) {
@@ -159,7 +153,7 @@ double ComputePredictorScore(const AdPredictorInfo<T>& ad_predictor) {
 template <typename T>
 CreativeAdPredictorMap<T> ComputePredictorFeaturesAndScores(
     const CreativeAdPredictorMap<T>& creative_ad_predictors,
-    const targeting::UserModelInfo& user_model,
+    const UserModelInfo& user_model,
     const AdEventList& ad_events) {
   CreativeAdPredictorMap<T> creative_ad_predictors_with_features;
 
@@ -179,7 +173,7 @@ template <typename T>
 std::vector<int> ComputeVoteRegistry(
     const std::vector<T>& creative_ads,
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-  DCHECK(!creative_ads.empty());
+  CHECK(!creative_ads.empty());
 
   std::vector<int> vote_registry(creative_ads.size());
 
@@ -202,7 +196,7 @@ std::vector<int> ComputeVoteRegistry(
 
     while (iter != similarity_scores.end()) {
       const size_t index = std::distance(similarity_scores.cbegin(), iter);
-      DCHECK_LT(index, vote_registry.size());
+      CHECK_LT(index, vote_registry.size());
       vote_registry[index]++;
 
       iter = base::ranges::find_if(
@@ -213,7 +207,7 @@ std::vector<int> ComputeVoteRegistry(
     }
   }
 
-  DCHECK_EQ(vote_registry.size(), creative_ads.size());
+  CHECK_EQ(vote_registry.size(), creative_ads.size());
   return vote_registry;
 }
 

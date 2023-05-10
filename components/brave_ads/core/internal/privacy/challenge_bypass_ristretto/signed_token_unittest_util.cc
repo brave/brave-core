@@ -15,10 +15,7 @@ SignedToken GetSignedToken() {
 }
 
 std::vector<SignedToken> GetSignedTokens() {
-  std::vector<SignedToken> signed_tokens;
-  const SignedToken signed_token = GetSignedToken();
-  signed_tokens.push_back(signed_token);
-  return signed_tokens;
+  return {GetSignedToken()};
 }
 
 SignedToken GetInvalidSignedToken() {
@@ -26,10 +23,7 @@ SignedToken GetInvalidSignedToken() {
 }
 
 std::vector<SignedToken> GetInvalidSignedTokens() {
-  std::vector<SignedToken> signed_tokens;
-  const SignedToken signed_token = GetInvalidSignedToken();
-  signed_tokens.push_back(signed_token);
-  return signed_tokens;
+  return {GetInvalidSignedToken()};
 }
 
 }  // namespace brave_ads::privacy::cbr

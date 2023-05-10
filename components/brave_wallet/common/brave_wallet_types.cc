@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
@@ -84,23 +84,27 @@ absl::optional<SolanaSignatureStatus> SolanaSignatureStatus::FromValue(
     const base::Value::Dict& value) {
   SolanaSignatureStatus status;
   const std::string* slot_string = value.FindString("slot");
-  if (!slot_string || !base::StringToUint64(*slot_string, &status.slot))
+  if (!slot_string || !base::StringToUint64(*slot_string, &status.slot)) {
     return absl::nullopt;
+  }
 
   const std::string* confirmations_string = value.FindString("confirmations");
   if (!confirmations_string ||
-      !base::StringToUint64(*confirmations_string, &status.confirmations))
+      !base::StringToUint64(*confirmations_string, &status.confirmations)) {
     return absl::nullopt;
+  }
 
   const std::string* err = value.FindString("err");
-  if (!err)
+  if (!err) {
     return absl::nullopt;
+  }
   status.err = *err;
 
   const std::string* confirmation_status =
       value.FindString("confirmation_status");
-  if (!confirmation_status)
+  if (!confirmation_status) {
     return absl::nullopt;
+  }
   status.confirmation_status = *confirmation_status;
 
   return status;
@@ -121,8 +125,9 @@ bool ValidSolidityBits(size_t bits) {
 }
 
 absl::optional<uint256_t> MaxSolidityUint(size_t bits) {
-  if (!ValidSolidityBits(bits))
+  if (!ValidSolidityBits(bits)) {
     return absl::nullopt;
+  }
   // Max hex for intN value is 0x[ff]... for num bytes
   uint256_t value = 0;
   const size_t num_bytes = bits / 8;
@@ -134,8 +139,9 @@ absl::optional<uint256_t> MaxSolidityUint(size_t bits) {
 }
 
 absl::optional<int256_t> MaxSolidityInt(size_t bits) {
-  if (!ValidSolidityBits(bits))
+  if (!ValidSolidityBits(bits)) {
     return absl::nullopt;
+  }
   // Max hex for intN value is 0x7f[ff]... for num bytes - 1
   int256_t value = 0x7f;
   const size_t num_bytes = bits / 8;
@@ -147,8 +153,9 @@ absl::optional<int256_t> MaxSolidityInt(size_t bits) {
 }
 
 absl::optional<int256_t> MinSolidityInt(size_t bits) {
-  if (!ValidSolidityBits(bits))
+  if (!ValidSolidityBits(bits)) {
     return absl::nullopt;
+  }
   // Min hex for intN value is 0x80[00]... for num bytes - 1
   // A simple bit shift doesn't work quite right because of
   // using boost's int256_t type.

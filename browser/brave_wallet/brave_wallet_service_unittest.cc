@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include <memory>
@@ -2608,6 +2608,22 @@ TEST_F(BraveWalletServiceUnitTest, RecordGeneralUsageMetrics) {
   histogram_tester_->ExpectUniqueSample(kBraveWalletMonthlyHistogramName, 1, 2);
   histogram_tester_->ExpectUniqueSample(kBraveWalletWeeklyHistogramName, 1, 2);
   histogram_tester_->ExpectUniqueSample(kBraveWalletDailyHistogramName, 1, 2);
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {
+  service_->GetBalanceScannerSupportedChains(
+      base::BindLambdaForTesting([](const std::vector<std::string>& chains) {
+        std::vector<std::string> expected_chains = {
+            mojom::kMainnetChainId,
+            mojom::kBinanceSmartChainMainnetChainId,
+            mojom::kPolygonMainnetChainId,
+            mojom::kOptimismMainnetChainId,
+            mojom::kArbitrumMainnetChainId,
+            mojom::kAvalancheMainnetChainId,
+        };
+        ASSERT_EQ(chains.size(), expected_chains.size());
+        EXPECT_EQ(chains, expected_chains);
+      }));
 }
 
 }  // namespace brave_wallet

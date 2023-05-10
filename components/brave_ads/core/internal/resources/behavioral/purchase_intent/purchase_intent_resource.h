@@ -6,41 +6,48 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_RESOURCE_H_
 
+#include <string>
+
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
+#include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
-class PurchaseIntent final {
+class PurchaseIntentResource final : public AdsClientNotifierObserver {
  public:
-  PurchaseIntent();
+  PurchaseIntentResource();
 
-  PurchaseIntent(const PurchaseIntent&) = delete;
-  PurchaseIntent& operator=(const PurchaseIntent&) = delete;
+  PurchaseIntentResource(const PurchaseIntentResource&) = delete;
+  PurchaseIntentResource& operator=(const PurchaseIntentResource&) = delete;
 
-  PurchaseIntent(PurchaseIntent&&) noexcept = delete;
-  PurchaseIntent& operator=(PurchaseIntent&&) noexcept = delete;
+  PurchaseIntentResource(PurchaseIntentResource&&) noexcept = delete;
+  PurchaseIntentResource& operator=(PurchaseIntentResource&&) noexcept = delete;
 
-  ~PurchaseIntent();
+  ~PurchaseIntentResource() override;
 
   bool IsInitialized() const { return is_initialized_; }
 
   void Load();
 
-  const targeting::PurchaseIntentInfo* Get() const;
+  const PurchaseIntentInfo& get() const { return purchase_intent_; }
 
  private:
-  void OnLoadAndParseResource(
-      ParsingErrorOr<targeting::PurchaseIntentInfo> result);
+  void LoadAndParseResourceCallback(
+      ResourceParsingErrorOr<PurchaseIntentInfo> result);
+
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   bool is_initialized_ = false;
 
-  targeting::PurchaseIntentInfo purchase_intent_;
+  PurchaseIntentInfo purchase_intent_;
 
-  base::WeakPtrFactory<PurchaseIntent> weak_factory_{this};
+  base::WeakPtrFactory<PurchaseIntentResource> weak_factory_{this};
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_RESOURCE_H_

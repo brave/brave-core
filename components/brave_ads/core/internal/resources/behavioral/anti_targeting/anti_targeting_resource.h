@@ -11,21 +11,21 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
+#include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
-class AntiTargeting final : public AdsClientNotifierObserver {
+class AntiTargetingResource final : public AdsClientNotifierObserver {
  public:
-  AntiTargeting();
+  AntiTargetingResource();
 
-  AntiTargeting(const AntiTargeting&) = delete;
-  AntiTargeting& operator=(const AntiTargeting&) = delete;
+  AntiTargetingResource(const AntiTargetingResource&) = delete;
+  AntiTargetingResource& operator=(const AntiTargetingResource&) = delete;
 
-  AntiTargeting(AntiTargeting&&) noexcept = delete;
-  AntiTargeting& operator=(AntiTargeting&&) noexcept = delete;
+  AntiTargetingResource(AntiTargetingResource&&) noexcept = delete;
+  AntiTargetingResource& operator=(AntiTargetingResource&&) noexcept = delete;
 
-  ~AntiTargeting() override;
+  ~AntiTargetingResource() override;
 
   bool IsInitialized() const { return is_initialized_; }
 
@@ -34,7 +34,8 @@ class AntiTargeting final : public AdsClientNotifierObserver {
   const AntiTargetingInfo& get() const { return anti_targeting_; }
 
  private:
-  void OnLoadAndParseResource(ParsingErrorOr<AntiTargetingInfo> result);
+  void LoadAndParseResourceCallback(
+      ResourceParsingErrorOr<AntiTargetingInfo> result);
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
@@ -44,9 +45,9 @@ class AntiTargeting final : public AdsClientNotifierObserver {
 
   AntiTargetingInfo anti_targeting_;
 
-  base::WeakPtrFactory<AntiTargeting> weak_factory_{this};
+  base::WeakPtrFactory<AntiTargetingResource> weak_factory_{this};
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_RESOURCE_H_

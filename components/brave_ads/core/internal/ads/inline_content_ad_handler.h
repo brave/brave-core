@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
@@ -18,24 +18,19 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
 class Account;
+class AntiTargetingResource;
 class SubdivisionTargeting;
 class Transfer;
 struct InlineContentAdInfo;
 
-class InlineContentAdHandler final
-    : public inline_content_ads::EventHandlerDelegate,
-      public inline_content_ads::ServingDelegate {
+class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
+                                     public InlineContentAdServingDelegate {
  public:
-  InlineContentAdHandler(
-      Account& account,
-      Transfer& transfer,
-      const SubdivisionTargeting& subdivision_targeting,
-      const resource::AntiTargeting& anti_targeting_resource);
+  InlineContentAdHandler(Account& account,
+                         Transfer& transfer,
+                         const SubdivisionTargeting& subdivision_targeting,
+                         const AntiTargetingResource& anti_targeting_resource);
 
   InlineContentAdHandler(const InlineContentAdHandler&) = delete;
   InlineContentAdHandler& operator=(const InlineContentAdHandler&) = delete;
@@ -53,22 +48,25 @@ class InlineContentAdHandler final
                     mojom::InlineContentAdEventType event_type);
 
  private:
-  // inline_content_ads::ServingDelegate:
+  // InlineContentAdServingDelegate:
   void OnOpportunityAroseToServeInlineContentAd(
       const SegmentList& segments) override;
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
 
-  // inline_content_ads::EventHandlerDelegate:
-  void OnInlineContentAdServed(const InlineContentAdInfo& ad) override;
-  void OnInlineContentAdViewed(const InlineContentAdInfo& ad) override;
-  void OnInlineContentAdClicked(const InlineContentAdInfo& ad) override;
+  // InlineContentAdEventHandlerDelegate:
+  void OnDidFireInlineContentAdServedEvent(
+      const InlineContentAdInfo& ad) override;
+  void OnDidFireInlineContentAdViewedEvent(
+      const InlineContentAdInfo& ad) override;
+  void OnDidFireInlineContentAdClickedEvent(
+      const InlineContentAdInfo& ad) override;
 
-  inline_content_ads::EventHandler event_handler_;
+  InlineContentAdEventHandler event_handler_;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
 
-  inline_content_ads::Serving serving_;
+  InlineContentAdServing serving_;
 };
 
 }  // namespace brave_ads

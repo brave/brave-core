@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 template <class T, class U>
@@ -20,6 +20,6 @@ class Writer {
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_STATE_WRITER_H_

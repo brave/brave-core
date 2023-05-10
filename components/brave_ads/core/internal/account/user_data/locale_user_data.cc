@@ -7,12 +7,12 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/locale/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 
@@ -21,7 +21,7 @@ constexpr char kOtherCountryCode[] = "??";
 
 }  // namespace
 
-base::Value::Dict GetLocale() {
+base::Value::Dict BuildLocaleUserData() {
   base::Value::Dict user_data;
 
   auto& build_channel = GlobalState::GetInstance()->BuildChannel();
@@ -31,10 +31,10 @@ base::Value::Dict GetLocale() {
 
   const std::string country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
-  if (privacy::locale::IsCountryCodeMemberOfAnonymitySet(country_code)) {
+  if (privacy::IsCountryCodeMemberOfAnonymitySet(country_code)) {
     user_data.Set(kCountryCodeKey, country_code);
   } else {
-    if (privacy::locale::ShouldClassifyCountryCodeAsOther(country_code)) {
+    if (privacy::ShouldClassifyCountryCodeAsOther(country_code)) {
       user_data.Set(kCountryCodeKey, kOtherCountryCode);
     }
   }
@@ -42,4 +42,4 @@ base::Value::Dict GetLocale() {
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

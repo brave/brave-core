@@ -23,7 +23,7 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/history/core/browser/history_service.h"
@@ -59,6 +59,7 @@ class SimpleURLLoader;
 namespace brave_ads {
 
 class AdsTooltipsDelegate;
+class BatAdsServiceFactory;
 class Database;
 class DeviceId;
 struct NewTabPageAdInfo;
@@ -76,6 +77,7 @@ class AdsServiceImpl : public AdsService,
           adaptive_captcha_service,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
       std::unique_ptr<DeviceId> device_id,
+      std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
       brave_federated::AsyncDataStore* notification_ad_timing_data_store);
@@ -114,7 +116,7 @@ class AdsServiceImpl : public AdsService,
 
   bool ShouldRewardUser() const;
   void InitializeRewardsWallet();
-  void OnInitializeRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
+  void OnInitializeRewardsWallet(brave_rewards::mojom::RewardsWalletPtr wallet);
   void InitializeBatAds();
   void OnInitializeBatAds(bool success);
 
@@ -140,7 +142,7 @@ class AdsServiceImpl : public AdsService,
   void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();
-  void OnGetRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
+  void OnGetRewardsWallet(brave_rewards::mojom::RewardsWalletPtr wallet);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.
@@ -275,10 +277,10 @@ class AdsServiceImpl : public AdsService,
   void ToggleDislikeAd(base::Value::Dict value,
                        ToggleDislikeAdCallback callback) override;
   void ToggleLikeCategory(const std::string& category,
-                          int action,
+                          mojom::UserReactionType user_reaction_type,
                           ToggleLikeCategoryCallback callback) override;
   void ToggleDislikeCategory(const std::string& category,
-                             int action,
+                             mojom::UserReactionType user_reaction_type,
                              ToggleDislikeCategoryCallback callback) override;
   void ToggleSaveAd(base::Value::Dict value,
                     ToggleSaveAdCallback callback) override;
@@ -368,8 +370,7 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A
   // business logic.
-  void RecordP2AEvent(const std::string& name,
-                      base::Value::List value) override;
+  void RecordP2AEvent(const std::string& name, base::Value::List list) override;
 
   void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
                              training_sample) override;
@@ -464,6 +465,8 @@ class AdsServiceImpl : public AdsService,
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 
   const std::unique_ptr<DeviceId> device_id_;
+
+  const std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory_;
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 

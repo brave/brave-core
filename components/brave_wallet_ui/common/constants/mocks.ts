@@ -23,7 +23,7 @@ type EIP1559SerializableTransactionInfo = SerializableTransactionInfo & {
 export const getMockedTransactionInfo =
   (): EIP1559SerializableTransactionInfo => {
     return {
-      chainId: '1337',
+      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       id: '1',
       fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
       txHash: '',
@@ -40,7 +40,7 @@ export const getMockedTransactionInfo =
             signOnly: false,
             signedTransaction: undefined
           },
-          chainId: '1337',
+          chainId: BraveWallet.LOCALHOST_CHAIN_ID,
           maxPriorityFeePerGas: '',
           maxFeePerGas: '',
           gasEstimation: undefined
@@ -157,7 +157,7 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
-export const mockAccount: WalletAccountType = {
+export const mockAccount: WalletAccountType & BraveWallet.AccountInfo = {
   id: 'mockId',
   name: 'mockAccountName',
   address: 'mockAddress',
@@ -167,7 +167,18 @@ export const mockAccount: WalletAccountType = {
   coin: BraveWallet.CoinType.ETH,
   accountType: 'Primary',
   tokenBalanceRegistry: {},
-  keyringId: 'default'
+  keyringId: 'default',
+  hardware: undefined,
+  isImported: false,
+}
+
+export const mockEthAccountInfo: BraveWallet.AccountInfo = {
+  hardware: undefined,
+  name: 'mockEthAccountName',
+  address: 'mockEthAddress',
+  coin: BraveWallet.CoinType.ETH,
+  keyringId: 'default',
+  isImported: false
 }
 
 export const mockSolanaAccount: WalletAccountType = {
@@ -185,6 +196,15 @@ export const mockSolanaAccount: WalletAccountType = {
   keyringId: 'default'
 }
 
+export const mockSolanaAccountInfo: BraveWallet.AccountInfo = {
+  name: 'MockSolanaAccount',
+  address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+  coin: BraveWallet.CoinType.SOL,
+  keyringId: 'default',
+  hardware: undefined,
+  isImported: false
+}
+
 export const mockFilecoinAccount: WalletAccountType = {
   id: 'mockId-3',
   name: 'MockFilecoinAccount',
@@ -196,6 +216,15 @@ export const mockFilecoinAccount: WalletAccountType = {
   accountType: 'Primary',
   tokenBalanceRegistry: {},
   keyringId: BraveWallet.FILECOIN_TESTNET_KEYRING_ID
+}
+
+export const mockFilecoinAccountInfo: BraveWallet.AccountInfo = {
+  name: 'MockFilecoinAccount',
+  address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
+  coin: BraveWallet.CoinType.FIL,
+  keyringId: BraveWallet.FILECOIN_TESTNET_KEYRING_ID,
+  hardware: undefined,
+  isImported: false
 }
 
 export const mockAssetPrices: AssetPriceWithContractAndChainId[] = [

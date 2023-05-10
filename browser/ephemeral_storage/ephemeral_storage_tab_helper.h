@@ -51,7 +51,8 @@ class EphemeralStorageTabHelper
 
   void CreateEphemeralStorageAreasForDomainAndURL(const std::string& new_domain,
                                                   const GURL& new_url);
-  void CreateFirstPartyStorageLifetime(const GURL& url);
+  void CreateFirstPartyStorageLifetime(const std::string& new_domain,
+                                       const GURL& new_url);
 
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
   scoped_refptr<content::TLDEphemeralLifetime> tld_ephemeral_lifetime_;

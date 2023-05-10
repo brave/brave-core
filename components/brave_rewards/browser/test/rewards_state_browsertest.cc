@@ -38,12 +38,12 @@
 
 // npm run test -- brave_browser_tests --filter=RewardsStateBrowserTest*
 
-namespace rewards_browsertest {
+namespace brave_rewards {
 
 class RewardsStateBrowserTest : public InProcessBrowserTest {
  public:
   RewardsStateBrowserTest() {
-    response_ = std::make_unique<RewardsBrowserTestResponse>();
+    response_ = std::make_unique<test_util::RewardsBrowserTestResponse>();
   }
 
   bool SetUpUserDataDirectory() override {
@@ -62,14 +62,14 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(
-        base::BindRepeating(&rewards_browsertest_util::HandleRequest));
+        base::BindRepeating(&test_util::HandleRequest));
     ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
     brave::RegisterPathProvider();
     profile_ = browser()->profile();
-    rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
-        brave_rewards::RewardsServiceFactory::GetForProfile(profile_));
+    rewards_service_ = static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(profile_));
 
     // Response mock
     base::ScopedAllowBlockingForTesting allow_blocking;
@@ -179,24 +179,19 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(base::CopyFile(test_path, profile_path));
   }
 
-  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
+  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  std::unique_ptr<RewardsBrowserTestResponse> response_;
+  std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
   EXPECT_EQ(
       profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visit_time"),
       5);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visits"),
-      5);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.allow_non_verified"),
-      false);
+  EXPECT_EQ(profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visits"), 5);
   EXPECT_EQ(profile_->GetPrefs()->GetDouble("brave.rewards.ac.score.a"),
       14500.0);
   EXPECT_EQ(profile_->GetPrefs()->GetDouble("brave.rewards.ac.score.b"),
@@ -205,8 +200,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
   rewards_service_->GetBalanceReport(
       4, 2020,
       base::BindLambdaForTesting(
-          [&](const ledger::mojom::Result result,
-              ledger::mojom::BalanceReportInfoPtr report) {
+          [&](const mojom::Result result, mojom::BalanceReportInfoPtr report) {
             EXPECT_EQ(report->grants, 4.1);
             EXPECT_EQ(report->earning_from_ads, 4.2);
             EXPECT_EQ(report->auto_contribute, 4.3);
@@ -217,8 +211,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
   rewards_service_->GetBalanceReport(
       5, 2020,
       base::BindLambdaForTesting(
-          [&](const ledger::mojom::Result result,
-              ledger::mojom::BalanceReportInfoPtr report) {
+          [&](const mojom::Result result, mojom::BalanceReportInfoPtr report) {
             EXPECT_EQ(report->grants, 5.1);
             EXPECT_EQ(report->earning_from_ads, 5.2);
             EXPECT_EQ(report->auto_contribute, 5.3);
@@ -230,7 +223,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 1);
 
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
 
   const std::string wallet_json =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.brave");
@@ -264,7 +257,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACEnabled) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 7);
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", true);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", true);
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
   EXPECT_EQ(
       profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
       true);
@@ -274,7 +267,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACDisabled) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 7);
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", true);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", false);
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
   EXPECT_EQ(
       profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
       false);
@@ -284,7 +277,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACEnabled) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 1);
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", false);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", true);
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
   EXPECT_EQ(
       profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
       false);
@@ -294,7 +287,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACDisabled) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 7);
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", false);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", false);
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
   EXPECT_EQ(
       profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
       false);
@@ -305,12 +298,11 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11ValidWallet) {
 
   const std::string wallet = "wallet";
 
-  const auto encrypted =
-      rewards_browsertest_util::EncryptPrefString(rewards_service_, wallet);
+  const auto encrypted = test_util::EncryptPrefString(rewards_service_, wallet);
   ASSERT_TRUE(encrypted);
   profile_->GetPrefs()->SetString("brave.rewards.wallets.brave", *encrypted);
 
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
 
   const auto brave_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.brave");
@@ -325,12 +317,12 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11CorruptedWallet) {
   base::Base64Encode("foobar", &base64_wallet);
   profile_->GetPrefs()->SetString("brave.rewards.wallets.brave", base64_wallet);
 
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
 
   const auto brave_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.brave");
-  const auto decrypted = rewards_browsertest_util::DecryptPrefString(
-      rewards_service_, brave_wallet);
+  const auto decrypted =
+      test_util::DecryptPrefString(rewards_service_, brave_wallet);
 
   EXPECT_FALSE(decrypted);
 }
@@ -340,12 +332,12 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11InvalidWallet) {
 
   profile_->GetPrefs()->SetString("brave.rewards.wallets.brave", "foobar");
 
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
 
   const auto brave_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.brave");
-  const auto decrypted = rewards_browsertest_util::DecryptPrefString(
-      rewards_service_, brave_wallet);
+  const auto decrypted =
+      test_util::DecryptPrefString(rewards_service_, brave_wallet);
 
   EXPECT_FALSE(decrypted);
 }
@@ -353,7 +345,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11InvalidWallet) {
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11EmptyWallet) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 10);
 
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
 
   const auto brave_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.brave");
@@ -1139,34 +1131,32 @@ IN_PROC_BROWSER_TEST_P_(V10, Paths) {
   const auto& expected_wallet = std::get<1>(params);
 
   const auto encrypted_from_wallet =
-      rewards_browsertest_util::EncryptPrefString(rewards_service_,
-                                                  from_wallet);
+      test_util::EncryptPrefString(rewards_service_, from_wallet);
   ASSERT_TRUE(encrypted_from_wallet);
   profile_->GetPrefs()->SetString("brave.rewards.wallets.uphold",
                                   *encrypted_from_wallet);
 
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
 
   const auto encrypted_to_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.uphold");
-  const auto decrypted_to_wallet = rewards_browsertest_util::DecryptPrefString(
-      rewards_service_, encrypted_to_wallet);
+  const auto decrypted_to_wallet =
+      test_util::DecryptPrefString(rewards_service_, encrypted_to_wallet);
   ASSERT_TRUE(decrypted_to_wallet);
 
   EXPECT_EQ(*decrypted_to_wallet, expected_wallet);
 }
 
-class V12
-    : public RewardsStateBrowserTest,
-      public testing::WithParamInterface<
-          std::tuple<std::string, std::string, ledger::mojom::WalletStatus>> {};
+class V12 : public RewardsStateBrowserTest,
+            public testing::WithParamInterface<
+                std::tuple<std::string, std::string, mojom::WalletStatus>> {};
 
 // clang-format off
 INSTANTIATE_TEST_SUITE_P(
   RewardsStateBrowserTest,
   V12,
   testing::Values(
-    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+    std::tuple<std::string, std::string, mojom::WalletStatus>(
       "pre_v12_NOT_CONNECTED__v12_kNotConnected",
       R"(
         {
@@ -1178,9 +1168,9 @@ INSTANTIATE_TEST_SUITE_P(
           "activity_url": "activity_url"
         }
       )",
-      ledger::mojom::WalletStatus::kNotConnected
+      mojom::WalletStatus::kNotConnected
     ),
-    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+    std::tuple<std::string, std::string, mojom::WalletStatus>(
       "pre_v12_VERIFIED__v12_kConnected",
       R"(
         {
@@ -1192,9 +1182,9 @@ INSTANTIATE_TEST_SUITE_P(
           "activity_url": ""
         }
       )",
-      ledger::mojom::WalletStatus::kConnected
+      mojom::WalletStatus::kConnected
     ),
-    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+    std::tuple<std::string, std::string, mojom::WalletStatus>(
       "pre_v12_VERIFIED__v12_kLoggedOut",
       R"(
         {
@@ -1206,9 +1196,9 @@ INSTANTIATE_TEST_SUITE_P(
           "activity_url": "activity_url"
         }
       )",
-      ledger::mojom::WalletStatus::kLoggedOut
+      mojom::WalletStatus::kLoggedOut
     ),
-    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+    std::tuple<std::string, std::string, mojom::WalletStatus>(
       "pre_v12_DISCONNECTED_VERIFIED_v12_VERIFIED__kLoggedOut",
       R"(
         {
@@ -1220,9 +1210,9 @@ INSTANTIATE_TEST_SUITE_P(
           "activity_url": "activity_url"
         }
       )",
-      ledger::mojom::WalletStatus::kLoggedOut
+      mojom::WalletStatus::kLoggedOut
     ),
-    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+    std::tuple<std::string, std::string, mojom::WalletStatus>(
       "pre_v12_CONNECTED__v12_kNotConnected",
       R"(
         {
@@ -1234,9 +1224,9 @@ INSTANTIATE_TEST_SUITE_P(
           "activity_url": "activity_url"
         }
       )",
-      ledger::mojom::WalletStatus::kNotConnected
+      mojom::WalletStatus::kNotConnected
     ),
-    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+    std::tuple<std::string, std::string, mojom::WalletStatus>(
       "pre_v12_DISCONNECTED_NOT_VERIFIED__v12_kNotConnected",
       R"(
         {
@@ -1248,9 +1238,9 @@ INSTANTIATE_TEST_SUITE_P(
           "activity_url": "activity_url"
         }
       )",
-      ledger::mojom::WalletStatus::kNotConnected
+      mojom::WalletStatus::kNotConnected
     ),
-    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+    std::tuple<std::string, std::string, mojom::WalletStatus>(
       "pre_v12_PENDING__v12_kNotConnected",
       R"(
         {
@@ -1262,7 +1252,7 @@ INSTANTIATE_TEST_SUITE_P(
           "activity_url": "activity_url"
         }
       )",
-      ledger::mojom::WalletStatus::kNotConnected
+      mojom::WalletStatus::kNotConnected
     )
   ),
   [](const auto& info) {
@@ -1277,18 +1267,17 @@ IN_PROC_BROWSER_TEST_P_(V12, Paths) {
   rewards_service_->SetLedgerStateTargetVersionForTesting(12);
 
   const auto encrypted_from_wallet =
-      rewards_browsertest_util::EncryptPrefString(rewards_service_,
-                                                  std::get<1>(GetParam()));
+      test_util::EncryptPrefString(rewards_service_, std::get<1>(GetParam()));
   ASSERT_TRUE(encrypted_from_wallet);
   profile_->GetPrefs()->SetString("brave.rewards.wallets.bitflyer",
                                   *encrypted_from_wallet);
 
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
 
   const auto encrypted_to_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.bitflyer");
-  const auto decrypted_to_wallet = rewards_browsertest_util::DecryptPrefString(
-      rewards_service_, encrypted_to_wallet);
+  const auto decrypted_to_wallet =
+      test_util::DecryptPrefString(rewards_service_, encrypted_to_wallet);
   ASSERT_TRUE(decrypted_to_wallet);
 
   const auto value = base::JSONReader::Read(*decrypted_to_wallet);
@@ -1310,7 +1299,7 @@ IN_PROC_BROWSER_TEST_P_(V12, Paths) {
   ASSERT_TRUE(
       (std::set{0 /* kNotConnected */, 2 /* kConnected */, 4 /* kLoggedOut */}
            .count(*status)));
-  ASSERT_TRUE(static_cast<ledger::mojom::WalletStatus>(*status) ==
+  ASSERT_TRUE(static_cast<mojom::WalletStatus>(*status) ==
               std::get<2>(GetParam()));
 
   if (*status == 0 /* kNotConnected */ || *status == 4 /* kLoggedOut */) {
@@ -1340,7 +1329,7 @@ IN_PROC_BROWSER_TEST_P_(V12, Paths) {
 
 class V13 : public RewardsStateBrowserTest,
             public testing::WithParamInterface<
-                std::tuple<std::string, ledger::mojom::WalletStatus>> {};
+                std::tuple<std::string, mojom::WalletStatus>> {};
 
 INSTANTIATE_TEST_SUITE_P(
     RewardsStateBrowserTest,
@@ -1348,9 +1337,9 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Combine(testing::Values(std::string("bitflyer"),
                                      std::string("gemini"),
                                      std::string("uphold")),
-                     testing::Values(ledger::mojom::WalletStatus::kNotConnected,
-                                     ledger::mojom::WalletStatus::kConnected,
-                                     ledger::mojom::WalletStatus::kLoggedOut)),
+                     testing::Values(mojom::WalletStatus::kNotConnected,
+                                     mojom::WalletStatus::kConnected,
+                                     mojom::WalletStatus::kLoggedOut)),
     [](const testing::TestParamInfo<V13::ParamType>& info) {
       return (std::ostringstream{} << std::get<0>(info.param) << '_'
                                    << std::get<1>(info.param) << '_'
@@ -1364,7 +1353,7 @@ IN_PROC_BROWSER_TEST_P_(V13, Paths) {
   rewards_service_->SetLedgerStateTargetVersionForTesting(13);
 
   const auto wallet_status = std::get<1>(GetParam());
-  const auto encrypted_wallet = rewards_browsertest_util::EncryptPrefString(
+  const auto encrypted_wallet = test_util::EncryptPrefString(
       rewards_service_,
       (std::ostringstream{} << R"({ "status": )"
                             << static_cast<int>(wallet_status) << " }")
@@ -1373,9 +1362,9 @@ IN_PROC_BROWSER_TEST_P_(V13, Paths) {
   profile_->GetPrefs()->SetString(
       "brave.rewards.wallets." + std::get<0>(GetParam()), *encrypted_wallet);
 
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  test_util::StartProcess(rewards_service_);
 
-  if (wallet_status == ledger::mojom::WalletStatus::kConnected) {
+  if (wallet_status == mojom::WalletStatus::kConnected) {
     ASSERT_TRUE(profile_->GetPrefs()->HasPrefPath(
         brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
     ASSERT_TRUE(profile_->GetPrefs()->GetBoolean(
@@ -1386,4 +1375,4 @@ IN_PROC_BROWSER_TEST_P_(V13, Paths) {
   }
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards

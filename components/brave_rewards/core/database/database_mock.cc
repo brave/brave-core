@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_mock.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 MockDatabase::MockDatabase(LedgerImpl& ledger) : Database(ledger) {}
@@ -13,4 +13,4 @@ MockDatabase::MockDatabase(LedgerImpl& ledger) : Database(ledger) {}
 MockDatabase::~MockDatabase() = default;
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

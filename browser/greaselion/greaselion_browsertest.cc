@@ -34,6 +34,8 @@
 
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
+using brave_rewards::RewardsServiceImpl;
+using brave_rewards::test_util::RewardsBrowserTestResponse;
 using extensions::ExtensionBrowserTest;
 using greaselion::GreaselionDownloadService;
 using greaselion::GreaselionService;
@@ -119,8 +121,7 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
 class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
  public:
   GreaselionServiceTest(): https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    response_ =
-        std::make_unique<rewards_browsertest::RewardsBrowserTestResponse>();
+    response_ = std::make_unique<RewardsBrowserTestResponse>();
   }
 
   void SetUpOnMainThread() override {
@@ -167,13 +168,13 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
     // HTTP resolver
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_.RegisterRequestHandler(
-        base::BindRepeating(&rewards_browsertest_util::HandleRequest));
+        base::BindRepeating(&brave_rewards::test_util::HandleRequest));
     ASSERT_TRUE(https_server_.Start());
 
     // Rewards service
-    rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
-        brave_rewards::RewardsServiceFactory::GetForProfile(profile()));
-    rewards_browsertest_util::StartProcess(rewards_service_);
+    rewards_service_ = static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(profile()));
+    brave_rewards::test_util::StartProcess(rewards_service_);
 
     // Response mock
     rewards_service_->ForTestingSetTestResponseCallback(
@@ -220,9 +221,9 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
         response);
   }
 
-  std::unique_ptr<rewards_browsertest::RewardsBrowserTestResponse> response_;
+  std::unique_ptr<RewardsBrowserTestResponse> response_;
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
+  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
 };
 
 #if !BUILDFLAG(IS_MAC)

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace credential {
 
 CredentialsRedeem::CredentialsRedeem() = default;
@@ -15,4 +15,4 @@ CredentialsRedeem::CredentialsRedeem(const CredentialsRedeem& info) = default;
 CredentialsRedeem::~CredentialsRedeem() = default;
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::internal

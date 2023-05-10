@@ -25,8 +25,13 @@ import { WalletPageActions } from '../../../../../page/actions'
 // utils
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../../utils/amount'
-import { setNftDiscoveryEnabled } from '../../../../../common/async/lib'
-import { LOCAL_STORAGE_KEYS } from '../../../../../common/constants/local-storage-keys'
+import {
+  LOCAL_STORAGE_KEYS
+} from '../../../../../common/constants/local-storage-keys'
+import {
+  useGetNftDiscoveryEnabledStatusQuery,
+  useSetNftDiscoveryEnabledMutation
+} from '../../../../../common/slices/api.slice'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -43,7 +48,7 @@ import {
   AddIcon,
   AddButton
 } from './nfts.styles'
-import { ScrollableColumn } from '../../../../shared/style'
+import { Column } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 
@@ -74,13 +79,24 @@ export const Nfts = (props: Props) => {
   const dispatch = useDispatch()
   const { nonFungibleTokens } = useNftPin()
 
+  // queries
+  const { data: isNftAutoDiscoveryEnabled } = useGetNftDiscoveryEnabledStatusQuery()
+
+  // mutations
+  const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
+
   // methods
   const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value)
   }, [])
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.contractAddress}/${asset.tokenId}`)
+    history.push(
+      `${WalletRoutes.PortfolioNFTs //
+      }/${asset.chainId //
+      }/${asset.contractAddress //
+      }/${asset.tokenId}`
+    )
     // reset nft metadata
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
   }, [dispatch])
@@ -101,9 +117,9 @@ export const Nfts = (props: Props) => {
   }, [])
 
   const onConfirmNftAutoDiscovery = React.useCallback(async () => {
-    await setNftDiscoveryEnabled(true)
+    await setNftDiscovery(true)
     hideNftDiscoveryModal()
-  }, [hideNftDiscoveryModal])
+  }, [hideNftDiscoveryModal, setNftDiscovery])
 
   // memos
   const filteredNfts = React.useMemo(() => {
@@ -129,6 +145,7 @@ export const Nfts = (props: Props) => {
     return filteredNfts.sort((a, b) => a.name.localeCompare(b.name))
   }, [filteredNfts])
 
+
   return (
     <>
       <FilterTokenRow>
@@ -147,10 +164,13 @@ export const Nfts = (props: Props) => {
           <AddIcon />
         </AddButton>
       </FilterTokenRow>
-      {sortedNfts.length === 0
-        ? <NftsEmptyState onImportNft={toggleShowAddNftModal} />
-        : <ScrollableColumn>
-          <NftGrid>
+      <Column
+        fullWidth={true}
+        padding='10px 20px 20px 20px'
+      >
+        {sortedNfts.length === 0
+          ? <NftsEmptyState onImportNft={toggleShowAddNftModal} />
+          : <NftGrid>
             {sortedNfts.map(nft => (
               <NFTGridViewItem
                 key={`${nft.tokenId}-${nft.contractAddress}`}
@@ -159,15 +179,15 @@ export const Nfts = (props: Props) => {
               />
             ))}
           </NftGrid>
-        </ScrollableColumn>
-      }
+        }
+      </Column>
       {showAddNftModal &&
         <AddOrEditNftModal
           onClose={toggleShowAddNftModal}
           onHideForm={toggleShowAddNftModal}
         />
       }
-      {showNftDiscoveryModal &&
+      {!isNftAutoDiscoveryEnabled && showNftDiscoveryModal &&
         <EnableNftDiscoveryModal
           onConfirm={onConfirmNftAutoDiscovery}
           onCancel={hideNftDiscoveryModal}

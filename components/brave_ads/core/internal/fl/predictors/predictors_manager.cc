@@ -134,7 +134,7 @@ PredictorsManager& PredictorsManager::GetInstance() {
 
 void PredictorsManager::SetPredictorVariable(
     std::unique_ptr<PredictorVariableInterface> predictor_variable) {
-  DCHECK(predictor_variable);
+  CHECK(predictor_variable);
 
   const brave_federated::mojom::CovariateType type =
       predictor_variable->GetType();
@@ -146,7 +146,7 @@ PredictorsManager::GetTrainingSample() const {
   std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample;
 
   for (const auto& [_, predictor_variable] : predictor_variables_) {
-    DCHECK(predictor_variable);
+    CHECK(predictor_variable);
 
     brave_federated::mojom::CovariateInfoPtr predictor =
         brave_federated::mojom::CovariateInfo::New();

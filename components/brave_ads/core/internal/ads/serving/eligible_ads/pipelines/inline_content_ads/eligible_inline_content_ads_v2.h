@@ -17,55 +17,46 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
+class AntiTargetingResource;
 class SubdivisionTargeting;
+struct UserModelInfo;
 
-namespace inline_content_ads {
-
-class EligibleAdsV2 final : public EligibleAdsBase {
+class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
  public:
-  EligibleAdsV2(const SubdivisionTargeting& subdivision_targeting,
-                const resource::AntiTargeting& anti_targeting_resource);
-  ~EligibleAdsV2() override;
+  EligibleInlineContentAdsV2(
+      const SubdivisionTargeting& subdivision_targeting,
+      const AntiTargetingResource& anti_targeting_resource);
+  ~EligibleInlineContentAdsV2() override;
 
   void GetForUserModel(
-      targeting::UserModelInfo user_model,
+      UserModelInfo user_model,
       const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback) override;
+      EligibleAdsCallback<CreativeInlineContentAdList> callback) override;
 
  private:
-  void OnGetForUserModel(
-      targeting::UserModelInfo user_model,
+  void GetForUserModelCallback(
+      UserModelInfo user_model,
       const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+      EligibleAdsCallback<CreativeInlineContentAdList> callback,
       bool success,
       const AdEventList& ad_events);
 
   void GetBrowsingHistory(
-      targeting::UserModelInfo user_model,
+      UserModelInfo user_model,
       const AdEventList& ad_events,
       const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
+      EligibleAdsCallback<CreativeInlineContentAdList> callback);
 
-  void GetEligibleAds(
-      targeting::UserModelInfo user_model,
-      const AdEventList& ad_events,
-      const std::string& dimensions,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
-      const BrowsingHistoryList& browsing_history);
-
-  void OnGetEligibleAds(
-      const targeting::UserModelInfo& user_model,
+  void GetEligibleAds(UserModelInfo user_model,
+                      const AdEventList& ad_events,
+                      const std::string& dimensions,
+                      EligibleAdsCallback<CreativeInlineContentAdList> callback,
+                      const BrowsingHistoryList& browsing_history);
+  void GetEligibleAdsCallback(
+      const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+      EligibleAdsCallback<CreativeInlineContentAdList> callback,
       bool success,
       const CreativeInlineContentAdList& creative_ads);
 
@@ -74,10 +65,9 @@ class EligibleAdsV2 final : public EligibleAdsBase {
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history);
 
-  base::WeakPtrFactory<EligibleAdsV2> weak_factory_{this};
+  base::WeakPtrFactory<EligibleInlineContentAdsV2> weak_factory_{this};
 };
 
-}  // namespace inline_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_INLINE_CONTENT_ADS_ELIGIBLE_INLINE_CONTENT_ADS_V2_H_

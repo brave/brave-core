@@ -9,11 +9,12 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_delegate.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_features_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_feature_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
@@ -21,9 +22,9 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::new_tab_page_ads {
+namespace brave_ads {
 
-class BraveAdsNewTabPageAdServingDelegate : public ServingDelegate {
+class BraveAdsNewTabPageAdServingDelegate : public NewTabPageAdServingDelegate {
  public:
   void OnOpportunityAroseToServeNewTabPageAd(
       const SegmentList& /*segments*/) override {
@@ -59,25 +60,25 @@ class BraveAdsNewTabPageAdServingTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ForceServingVersion(1);
+    ForceNewTabPageAdServingVersion(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
-    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    serving_ = std::make_unique<Serving>(*subdivision_targeting_,
-                                         *anti_targeting_resource_);
+    anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
+    serving_ = std::make_unique<NewTabPageAdServing>(*subdivision_targeting_,
+                                                     *anti_targeting_resource_);
     serving_->SetDelegate(&serving_delegate_);
   }
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<Serving> serving_;
+  std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
+  std::unique_ptr<NewTabPageAdServing> serving_;
 
   BraveAdsNewTabPageAdServingDelegate serving_delegate_;
 };
 
 TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  ForceServingVersion(0);
+  ForceNewTabPageAdServingVersion(0);
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -98,7 +99,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
 
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -121,7 +122,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad.wallpapers.clear();
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -158,7 +159,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -173,4 +174,4 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
       base::Unretained(&serving_delegate_)));
 }
 
-}  // namespace brave_ads::new_tab_page_ads
+}  // namespace brave_ads

@@ -10,9 +10,10 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-absl::optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
+absl::optional<VerifiableConversionEnvelopeInfo>
+MaybeBuildVerifiableConversionEnvelope(
     const ConversionQueueItemInfo& conversion_queue_item) {
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = conversion_queue_item.conversion_id;
@@ -23,7 +24,7 @@ absl::optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
     return absl::nullopt;
   }
 
-  return security::SealEnvelope(verifiable_conversion);
+  return SealEnvelope(verifiable_conversion);
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

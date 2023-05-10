@@ -38,7 +38,6 @@ function readCachedState (state: Rewards.State) {
     contributionMinTime: Number(cached.contributionMinTime) || 0,
     contributionMinVisits: Number(cached.contributionMinVisits) || 0,
     contributionMonthly: Number(cached.contributionMonthly) || 0,
-    contributionNonVerified: Boolean(cached.contributionNonVerified),
     reconcileStamp: Number(cached.reconcileStamp),
     ui: {
       ...state.ui,

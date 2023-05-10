@@ -20,7 +20,7 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
@@ -170,4 +170,4 @@ TEST_F(GetCredentialsTest, ServerErrorRandom) {
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

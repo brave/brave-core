@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 
@@ -74,8 +74,10 @@ std::unique_ptr<KeyedService> TxServiceFactory::BuildServiceInstanceFor(
       JsonRpcServiceFactory::GetServiceForState(browser_state);
   auto* keyring_service =
       KeyringServiceFactory::GetServiceForState(browser_state);
-  std::unique_ptr<TxService> tx_service(new TxService(
-      json_rpc_service, keyring_service, browser_state->GetPrefs()));
+  // TODO(apaymyshev): support bitcoin for ios.
+  std::unique_ptr<TxService> tx_service(
+      new TxService(json_rpc_service, /*bitcoin_wallet_service=*/nullptr,
+                    keyring_service, browser_state->GetPrefs()));
   return tx_service;
 }
 

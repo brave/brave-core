@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Månatliga dricks</translation>
 <translation id="178390304006113804">Ställ in återkommande månatliga dricks så att du kontinuerligt kan stödja dina favoritkreatörer.</translation>
 <translation id="3302159320447117425">Ingen månatlig dricks har konfigurerats än.</translation>
+<translation id="564837702459183199">Nästa bidrag</translation>
 <translation id="4898632353264854950">Webbplatser kommer dyka upp vartefter du surfar på webben</translation>
 <translation id="3024485967181749006">Total dricks denna månad</translation>
-<translation id="8183455888546367148">Totalt månatlig dricks denna månad</translation>
 <translation id="4153752809523809915">Har du donerat till dina favorit-innehållskreatörer idag?</translation>
 <translation id="7286722244752781970">Minimum tid på en sida innan ett besök loggas</translation>
 <translation id="4424486208397124985">Minsta antal besök för relevans för utgivare</translation>
 <translation id="5421369907811917952">Andra inställningar</translation>
 <translation id="6248554379744796526">Visa icke bekräftade webbplatser i listan</translation>
-<translation id="5510618543889994434">Tillåt donationer till videor</translation>
 <translation id="8933202740471878108">1 besök</translation>
 <translation id="354797634123275103">5 besök</translation>
 <translation id="3583700907990488238">10 besök</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 minut</translation>
 <translation id="2807328214759298515">Upp till</translation>
 <translation id="7483857210736407752">Visa donationsknappar på webbplatser</translation>
-<translation id="7583327070390027131">Nästa datum för månatlig dricks</translation>
 <translation id="6231182869178328516">Jag gav just dricks till <ph name="NAME"/> med Brave Browser. Kolla in den på https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Jag älskar att <ph name="HASHTAG"/>Brave låter mig stödja skapare! Jag gav just <ph name="NAME"/> i dricks med <ph name="HASHTAG2"/>BAT. Om de verifierar på https://creators.brave.com före <ph name="DATE"/> är denna BAT deras!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Du kan ändra dina <ph name="SITE_PERMISSIONS"/> när som helst. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">webbplatsbehörighet</translation>
 <translation id="4355784577209159847">Tillåt användning av cookies från tredje part för äldre Google-inloggning</translation>
+<translation id="5770656036486891920"><ph name="URL"/> vill använda cookies från tredje part för äldre Google-inloggning</translation>
 <translation id="7717357606512850995">Kontrollera status</translation>
 <translation id="7306880305145342514">Grattis! Din <ph name="MONTH"/> är här!</translation>
 <translation id="3007207731685398329">Dina <ph name="AMOUNT"/> <ph name="MONTH"/> kommer om <ph name="DAYS"/></translation>
@@ -659,6 +658,7 @@
       =1 {Denna månad har du besökt # kreatör som stöds av Belöningar i Brave}
       other {Denna månad har du besökt # kreatörer som stöds av Belöningar i Brave}
     }</translation>
+<translation id="6067959437127691361">Med Belöningar i Brave kan du stötta kreatörer samtidigt som du tjänar BAT.</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Rewards: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Dina <ph name="MONTH"/> Ad Rewards är här!</translation>
 <translation id="7861645265922445992">Hämta Rewards</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">Ok</translation>
 <translation id="6727102863431372879">Ange</translation>
 <translation id="8853725596990766789">Ändra summa</translation>
-<translation id="6067959437127691361">Med Belöningar i Brave kan du stötta kreatörer samtidigt som du tjänar BAT.</translation>
 <translation id="1609556006143307897">Du hjälper till att stödja innehållsskapare</translation>
 <translation id="6605147707233193230">Aktivera för att stödja innehållsskapare</translation>
 <translation id="5430495762768325224">Läs mer om BAT</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">Förväntad enkel objektparameter.</translation>
 <translation id="1875861420974447980">Detta kedje-ID används för närvarande</translation>
 <translation id="167698752210114155">Ett internt fel har inträffat</translation>
+<translation id="7497827357097190289">Blockhash är ogiltigt eller kan inte valideras</translation>
 <translation id="8945668490056243760">Prenumerationstypen stöds inte</translation>
 <translation id="2326876601333401685">Den här RPC-metoden stöds inte.</translation>
 <translation id="1128992132632883337">Ett svarstolkningsfel har inträffat</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">HÄLFTEN</translation>
 <translation id="2784548701748328827">MAX</translation>
 <translation id="2329227154184107678">Granska beställning</translation>
+<translation id="3220443877821207794">Granska skicka</translation>
 <translation id="8530071505111489657">Inga tillgängliga tokens</translation>
 <translation id="615791330696335475">Sök tokens efter namn</translation>
 <translation id="5009335307032488349">Sök NFT efter namn, id</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">FUNKTIONSTYP</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
-<translation id="4874303883488468190">Välj konton</translation>
-<translation id="2018472018751735678">Visa adresserna till dina tillåtna konton (obligatoriskt)</translation>
-<translation id="7029403458170657879">Anslut med Brave Wallet</translation>
+<translation id="6760823167126275974">Anslut plånbok</translation>
+<translation id="716009557505091365">eller koppla till:</translation>
+<translation id="7242985059140288348">Den här appen kommer att kunna:</translation>
+<translation id="7352133688029686231">Den kommer inte att kunna:</translation>
+<translation id="1647328658385235886">Kontrollera plånbokens saldo och aktivitet</translation>
+<translation id="3295962112184461868">Begär godkännande för transaktioner och signaturer</translation>
+<translation id="6096892345597202096">Visa din tillåtna plånboksadress</translation>
+<translation id="496578987299869780">Flytta medel utan ditt tillstånd</translation>
+<translation id="3226586788973641582">Se till att du litar på den här webbplatsen.</translation>
+<translation id="6837278005487143422">Tillståndets varaktighet</translation>
+<translation id="1903637466604153314">Tills jag stänger den här webbplatsen</translation>
+<translation id="4324239559624557455">Under 24 timmar</translation>
+<translation id="9139452553033760558">Under 1 vecka</translation>
+<translation id="1658834457013045127">För alltid</translation>
 <translation id="2770851145415891830">Befintliga krypto-plånböcker har upptäckts</translation>
 <translation id="2237759620789871865">Om du hellre hoppar över importen och behåller den gamla kryptoplånboksupplevelsen navigerar du bara till Brave-webbläsaren <ph name="LINK_BEFORE"/>Inställningar<ph name="LINK_AFTER"/> och ändrar standard tillbaka till kryptoplånböcker. Du kan även importera den nya Brave-plånboken och ändra tillbaka när som helst.</translation>
 <translation id="5590175005414413980">Ange lösenordet till dina befintliga kryptoplånböcker för att importera till Brave-plånboken. Njut av ett snabbare och säkrare sätt att hantera kryptotillgångar och interagera med Web3 DApps.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">Hur kan jag hitta rätt adress?</translation>
 <translation id="8395402412470376435">Adresser valideras för att förhindra att användare skickar pengar till fel adress på grund av felaktig användning av stora och små bokstäver. Detta är en "kontrollsumma"-process för att verifiera att det är en giltig Ethereum-adress.</translation>
 <translation id="4583433813614292221">1. Besök</translation>
+<translation id="8061317754447191238">Besök etherscan och klistra in plånbokadressen du vill skicka tokens till. Ange sedan</translation>
 <translation id="5393164213211430081">2. Kopiera och ange ETH-adressen</translation>
+<translation id="8306108469060304141">Kopiera och ange rätt adress. Du kan se att vissa tecken har konverterats korrekt.</translation>
 <translation id="2378355054306959991">Behöver du ytterligare hjälp?</translation>
 <translation id="862585889767884824">av</translation>
 <translation id="9106265941552476098">Avvisa <ph name="TRANSACTION_LENGTH"/> transaktioner</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">Tokenstandard</translation>
 <translation id="9033453977881595182">Token-id</translation>
 <translation id="6332387008245531841">Kontraktsadress</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Bildens plats eller adress</translation>
 <translation id="2962388922926051374">Begär metod för "eth_chainId" på <ph name="URL"/> misslyckades</translation>
 <translation id="8325036459845654666">Nätverket har redan lagts till.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">Inga tillgångar som matchar sökning eller filter hittades</translation>
 <translation id="7383613643114466279">Den här tillgången stöds inte av Brave Wallet</translation>
 <translation id="6423985584914773314">Inte en giltig FIL-adress</translation>
-<translation id="3898731124813934210">Köp med Wyre</translation>
 <translation id="5522073372365069684">Köp med Ramp</translation>
 <translation id="6153197326949684688">Sälj med <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Minimumbeloppet måste vara <ph name="FIAT_AMOUNT"/> eller högre.</translation>
 <translation id="7902920577183739843">Köp med Sardine</translation>
 <translation id="6534275647567011533">Köp med Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Köp kryptovaluta med Visa eller Mastercard.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">Det gick inte att hämta avgiftsberäkningar</translation>
 <translation id="5361710044667743492">Varför är den inte tillgänglig?</translation>
 <translation id="3668838456083358569">Vissa NFT-data lagras i centraliserade servrar som exempelvis AWS, Google Cloud, etc. I detta fall är det inte möjligt att fästa dina NFT-data till IPFS-nätverket.</translation>
-<translation id="1293258969121701010">Genom att köra IPFS på datorn kan du:</translation>
-<translation id="4568942135611119076">Säkerställ att dina NFT-data är online och inte kan manipuleras.</translation>
-<translation id="4915883034746438977">Få tillbaka innehåll med hjälp av CID (Content Identifier) från felaktiga data.</translation>
-<translation id="1373647012698032676">Delta med äkthetsbevis och gör IPFS-nätverket rikt och hälsosamt.</translation>
-<translation id="1806204385270226865">Gör så att mina NFT:er alltid är online</translation>
-<translation id="4323376551843624309">Aktivera fästning av NFT:er</translation>
-<translation id="6501331923135442324">Ett stort steg mot att bli en del av web3</translation>
-<translation id="5361073938927187534">Kör en IPFS-nod och se till att dina NFT:er alltid är online</translation>
-<translation id="1060267371223703324">Kontrollera vilka av mina NFT:er som kan fästas</translation>
-<translation id="2641083452974145848">Nu kan du köra ditt IPFS och vara en del av web 3. Dina NFT-data kommer att vara online för alltid och kan inte manipuleras.</translation>
-<translation id="4460927368826360904">Du kör en IPFS-nod. Filen hämtas till den lokala IPFS-noden.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> av <ph name="PINNABLE"/> NFT:er har fästs till IPFS.</translation>
+<translation id="4225753478505258806">Men IPFS behöver enskilda deltagare för att fungera. Kör IPFS på din dator för att:</translation>
+<translation id="7674069205559000521">Bidra till nätverkets hastighet och tillgänglighet</translation>
+<translation id="7775229731579227782">Öka säkerheten för dina NFT:er</translation>
+<translation id="2319971828691864975">Kom igång med IPFS</translation>
+<translation id="7906328323880284538">Det säkraste sättet att vara värd för NFT:er</translation>
+<translation id="166206715890914321">Kör en IPFS-nod för att se till att dina NFT:er alltid är online</translation>
+<translation id="8913523138550521467">IPFS är ett supersäkert alternativ till traditionella webbhotell. Istället för att förlita sig på en enda värd gör IPFS det möjligt för tusentals individer (som kör "noder") att arbeta tillsammans för att lagra innehåll. Och så länge en person har en kopia kan en fil aldrig försvinna. Att "fästa" dina NFT:er på IPFS – och köra din egen IPFS-nod – är det bästa sättet att säkra dina NFT:er.</translation>
+<translation id="9160750213078764355">Se vilka av mina NFT:er som är kvalificerade</translation>
+<translation id="6671461082721702724">Nu kan du köra din IPFS och vara en del av web 3. Dina NFT-data kommer att förbli online för alltid.</translation>
+<translation id="654964147165509548">NFT:er fästs på din lokala IPFS-nod.</translation>
+<translation id="4910182786472608576">NFT:er som stöds av <ph name="PINNED"/> fästs på din lokala IPFS-nod.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> av <ph name="TOTAL"/> är tillgängliga!</translation>
 <translation id="6852656829524945421">Kunde inte fästa</translation>
 <translation id="7698019251444927442">Du kör en IPFS-nod</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">Fäst till den lokala IPFS-noden</translation>
 <translation id="5659058832308365026">NFT-data fästs till den lokala IPFS-noden</translation>
 <translation id="4919133452617704550">Kan inte fästas till den lokala IPFS-noden</translation>
+<translation id="4220102684162429566">De vanligaste anledningarna:</translation>
+<translation id="451509325309455">NFT har URL-problem med icke-IPFS-metadata</translation>
+<translation id="3827697793483899711">Interna IPFS-nodproblem</translation>
+<translation id="1992846713609432783">Inte tillräckligt med utrymme på lokal nod</translation>
 <translation id="3225624966527491351">Importera NFT</translation>
 <translation id="9085765419770918643">Inga NFT:er här ännu.</translation>
 <translation id="8445532667841598737">Är du redo att lägga till några? Klicka bara på knappen nedan för att importera.</translation>
 <translation id="9136462955850040542">Kompatibel med NFT:er på Solana (SPL) och Ethereum (ERC-721).</translation>
+<translation id="849880459530751909">Redigera NFT</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="3745016858329272300">Allmän information</translation>
 <translation id="4045404575593562245">Tor kontrollhändelse</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">Globala Sköld-inställningar</translation>
 <translation id="2108334320919763866">Global standard</translation>
 <translation id="3440043456924990296">Inställningar hanterade av organisation</translation>
+<translation id="7053983685419859001">Blockera</translation>
+<translation id="5716230673298034837">Tillåt alla</translation>
+<translation id="5279600392753459966">Blockera alla</translation>
 <translation id="4516904298421534459">Filtrera listor</translation>
 <translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
 <translation id="131231380815754440">Aktivera HTTPS</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">Blocka aggressivt spårare och annonser</translation>
 <translation id="7384778069178817075">Tillåt alla spårare och annonser</translation>
 <translation id="4941539331405513605">Blocka cookies mellan sajter</translation>
+<translation id="2749284154880331639">Glöm kakor från första part</translation>
 <translation id="6883611015375728278">Blockera alla kakor</translation>
 <translation id="5657156137487675418">Tillåt alla cookies</translation>
 <translation id="8366221601425141146">Fingeravtryck blockerat</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> spårare, annonser med mera är blockerade</translation>
 <translation id="4292121526390005808">Blockerade skript</translation>
+<translation id="5046271170844958713">Tillåtna skript</translation>
 <translation id="264682546981571963">Trött på meddelanden om samtycke till cookies?</translation>
 <translation id="4986297793092101884">Brave blockerar redan tredjepartscookies. Vi kan också blockera meddelanden om samtycke till cookies.</translation>
 <translation id="535688588637568715">Ja, blockera meddelanden om samtycke till cookies</translation>
@@ -1669,6 +1688,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> kunde inte ansluta till <ph name="REGION_NAME"/> servern. Du kan försöka igen eller välja en annan.</translation>
 <translation id="1024255913009642477">Redan köpt VPN?</translation>
 <translation id="8814357473522731680">Drivs av</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Upphör att gälla</translation>
 <translation id="1691256669639196606">Hantera prenumeration</translation>
 <translation id="434523916398030617">Kontakta teknisk support</translation>

@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
+#include <limits>
+
+#include "base/numerics/ranges.h"
 
 namespace brave_ads {
 
@@ -27,9 +29,10 @@ CatalogCampaignInfo::~CatalogCampaignInfo() = default;
 
 bool CatalogCampaignInfo::operator==(const CatalogCampaignInfo& other) const {
   return campaign_id == other.campaign_id && priority == other.priority &&
-         DoubleEquals(ptr, other.ptr) && start_at == other.start_at &&
-         end_at == other.end_at && daily_cap == other.daily_cap &&
-         advertiser_id == other.advertiser_id &&
+         base::IsApproximatelyEqual(ptr, other.ptr,
+                                    std::numeric_limits<double>::epsilon()) &&
+         start_at == other.start_at && end_at == other.end_at &&
+         daily_cap == other.daily_cap && advertiser_id == other.advertiser_id &&
          creative_sets == other.creative_sets && dayparts == other.dayparts &&
          geo_targets == other.geo_targets;
 }

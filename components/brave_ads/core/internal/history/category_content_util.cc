@@ -13,9 +13,8 @@ namespace brave_ads {
 CategoryContentInfo BuildCategoryContent(const std::string& segment) {
   CategoryContentInfo category_content;
 
-  category_content.opt_action_type =
-      ClientStateManager::GetInstance()
-          .GetCategoryContentOptActionTypeForSegment(segment);
+  category_content.user_reaction_type =
+      ClientStateManager::GetInstance().GetUserReactionTypeForSegment(segment);
   category_content.category = segment;
 
   return category_content;

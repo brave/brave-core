@@ -11,7 +11,7 @@ namespace brave_ads::ml {
 
 namespace {
 
-constexpr int kMaximumHtmlLengthToClassify = (1 << 20);
+constexpr int kMaximumHtmlLengthToClassify = 1 << 20;
 constexpr int kMaximumSubLen = 6;
 constexpr int kDefaultBucketCount = 10'000;
 

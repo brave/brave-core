@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_
@@ -145,13 +145,21 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletTopNavNFTS", IDS_BRAVE_WALLET_TOP_NAV_N_F_T_S},
     {"braveWalletTopNavAccounts", IDS_BRAVE_WALLET_TOP_NAV_ACCOUNTS},
     {"braveWalletTopNavMarket", IDS_BRAVE_WALLET_TOP_NAV_MARKET},
-    {"braveWalletChartLive", IDS_BRAVE_WALLET_CHART_LIVE},
+    {"braveWalletChartOneHour", IDS_BRAVE_WALLET_CHART_ONE_HOUR},
     {"braveWalletChartOneDay", IDS_BRAVE_WALLET_CHART_ONE_DAY},
     {"braveWalletChartOneWeek", IDS_BRAVE_WALLET_CHART_ONE_WEEK},
     {"braveWalletChartOneMonth", IDS_BRAVE_WALLET_CHART_ONE_MONTH},
     {"braveWalletChartThreeMonths", IDS_BRAVE_WALLET_CHART_THREE_MONTHS},
     {"braveWalletChartOneYear", IDS_BRAVE_WALLET_CHART_ONE_YEAR},
     {"braveWalletChartAllTime", IDS_BRAVE_WALLET_CHART_ALL_TIME},
+    {"braveWalletChartOneHourAbbr", IDS_BRAVE_WALLET_CHART_ONE_HOUR_ABBR},
+    {"braveWalletChartOneDayAbbr", IDS_BRAVE_WALLET_CHART_ONE_DAY_ABBR},
+    {"braveWalletChartOneWeekAbbr", IDS_BRAVE_WALLET_CHART_ONE_WEEK_ABBR},
+    {"braveWalletChartOneMonthAbbr", IDS_BRAVE_WALLET_CHART_ONE_MONTH_ABBR},
+    {"braveWalletChartThreeMonthsAbbr",
+     IDS_BRAVE_WALLET_CHART_THREE_MONTHS_ABBR},
+    {"braveWalletChartOneYearAbbr", IDS_BRAVE_WALLET_CHART_ONE_YEAR_ABBR},
+    {"braveWalletChartAllTimeAbbr", IDS_BRAVE_WALLET_CHART_ALL_TIME_ABBR},
     {"braveWalletAddCoin", IDS_BRAVE_WALLET_ADD_COIN},
     {"braveWalletBalance", IDS_BRAVE_WALLET_BALANCE},
     {"braveWalletPortfolioAssetNetworkDescription",
@@ -271,8 +279,6 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_WALLET_POPUP_HIDE_BALANCES},
     {"braveWalletWalletPopupShowGraph",
      IDS_BRAVE_WALLET_WALLET_POPUP_SHOW_GRAPH},
-    {"braveWalletWalletPopupPortfolioCustomizations",
-     IDS_BRAVE_WALLET_WALLET_POPUP_PORTFOLIO_CUSTOMIZATIONS},
     {"braveWalletBackupWarningText", IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT},
     {"braveWalletBackupButton", IDS_BRAVE_WALLET_BACKUP_BUTTON},
     {"braveWalletDismissButton", IDS_BRAVE_WALLET_DISMISS_BUTTON},
@@ -1140,10 +1146,6 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNftPinningTooltip", IDS_BRAVE_WALLET_NFT_PINNING_TOOLTIP},
     {"braveWalletNftPinningBenefitsHeading",
      IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING},
-    {"braveWalletNftPinningBenefitOne",
-     IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_ONE},
-    {"braveWalletNftPinningBenefitTwo",
-     IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO},
     {"braveWalletNftPinningPinNftsButton",
      IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON},
     {"braveWalletNftPinningBackButton",

@@ -15,47 +15,6 @@ namespace brave_ads {
 
 class BraveAdsUserActivityUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsUserActivityUtilTest, NoTabsOpened) {
-  // Arrange
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClickedLink);
-
-  // Act
-  const UserActivityEventList events =
-      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
-          base::Minutes(30));
-  const int number_of_tabs_opened = GetNumberOfTabsOpened(events);
-
-  // Assert
-  EXPECT_EQ(0, number_of_tabs_opened);
-}
-
-TEST_F(BraveAdsUserActivityUtilTest, TabsOpened) {
-  // Arrange
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClickedLink);
-
-  AdvanceClockBy(base::Minutes(30));
-
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClosedTab);
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kOpenedNewTab);
-
-  // Act
-  const UserActivityEventList events =
-      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
-          base::Minutes(30));
-  const int number_of_tabs_opened = GetNumberOfTabsOpened(events);
-
-  // Assert
-  EXPECT_EQ(2, number_of_tabs_opened);
-}
-
 TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
   // Arrange
   UserActivityManager::GetInstance().RecordEvent(
@@ -77,15 +36,15 @@ TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Act
   const UserActivityEventList events =
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
-  const int number_of_tabs_opened = GetNumberOfUserActivityEvents(
-      events, UserActivityEventType::kClickedLink);
+
+  // Act
 
   // Assert
-  EXPECT_EQ(2, number_of_tabs_opened);
+  EXPECT_EQ(2U, GetNumberOfUserActivityEvents(
+                    events, UserActivityEventType::kClickedLink));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -94,30 +53,29 @@ TEST_F(BraveAdsUserActivityUtilTest,
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Act
   const UserActivityEventList events =
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
-  const int number_of_tabs_opened =
-      GetNumberOfUserActivityEvents(events, UserActivityEventType::kClosedTab);
+
+  // Act
 
   // Assert
-  EXPECT_EQ(0, number_of_tabs_opened);
+  EXPECT_EQ(0U, GetNumberOfUserActivityEvents(
+                    events, UserActivityEventType::kClosedTab));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
        GetNumberOfUserActivityEventsFromEmptyHistory) {
   // Arrange
-
-  // Act
   const UserActivityEventList events =
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
-  const int number_of_tabs_opened =
-      GetNumberOfUserActivityEvents(events, UserActivityEventType::kClosedTab);
+
+  // Act
 
   // Assert
-  EXPECT_EQ(0, number_of_tabs_opened);
+  EXPECT_EQ(0U, GetNumberOfUserActivityEvents(
+                    events, UserActivityEventType::kClosedTab));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
@@ -150,15 +108,16 @@ TEST_F(BraveAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
       UserActivityEventType::kClickedLink);
   AdvanceClockBy(base::Minutes(1));
 
-  // Act
   const UserActivityEventList events =
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
-  const int64_t time = GetTimeSinceLastUserActivityEvent(
-      events, UserActivityEventType::kTabStartedPlayingMedia);
+
+  // Act
 
   // Assert
-  EXPECT_EQ(6 * base::Time::kSecondsPerMinute, time);
+  EXPECT_EQ(base::Minutes(6),
+            GetTimeSinceLastUserActivityEvent(
+                events, UserActivityEventType::kTabStartedPlayingMedia));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -167,30 +126,31 @@ TEST_F(BraveAdsUserActivityUtilTest,
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
-  // Act
   const UserActivityEventList events =
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
-  const int64_t time = GetTimeSinceLastUserActivityEvent(
-      events, UserActivityEventType::kTabStartedPlayingMedia);
+
+  // Act
 
   // Assert
-  EXPECT_EQ(kUserActivityMissingValue, time);
+  EXPECT_EQ(base::TimeDelta(),
+            GetTimeSinceLastUserActivityEvent(
+                events, UserActivityEventType::kTabStartedPlayingMedia));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
        GetTimeSinceLastUserActivityEventFromEmptyHistory) {
   // Arrange
-
-  // Act
   const UserActivityEventList events =
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
-  const int64_t time = GetTimeSinceLastUserActivityEvent(
-      events, UserActivityEventType::kTabStartedPlayingMedia);
+
+  // Act
 
   // Assert
-  EXPECT_EQ(kUserActivityMissingValue, time);
+  EXPECT_EQ(base::TimeDelta(),
+            GetTimeSinceLastUserActivityEvent(
+                events, UserActivityEventType::kTabStartedPlayingMedia));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggers) {
@@ -198,7 +158,7 @@ TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggers) {
 
   // Act
   const UserActivityTriggerList triggers =
-      ToUserActivityTriggers("05=.3;0C1305=1.0;0C13=0.5");
+      ToUserActivityTriggers(/*param_value*/ "05=.3;0C1305=1.0;0C13=0.5");
 
   // Assert
   UserActivityTriggerList expected_triggers;
@@ -220,11 +180,11 @@ TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggersForInvalidTrigger) {
   // Arrange
 
   // Act
-  const UserActivityTriggerList triggers = ToUserActivityTriggers("INVALID");
+  const UserActivityTriggerList triggers =
+      ToUserActivityTriggers(/*param_value*/ "INVALID");
 
   // Assert
-  const UserActivityTriggerList expected_triggers;
-  EXPECT_EQ(expected_triggers, triggers);
+  EXPECT_TRUE(triggers.empty());
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -233,7 +193,7 @@ TEST_F(BraveAdsUserActivityUtilTest,
 
   // Act
   const UserActivityTriggerList triggers =
-      ToUserActivityTriggers("05=.3;0C1305=;=0.5;C1305=1.0");
+      ToUserActivityTriggers(/*param_value*/ "05=.3;0C1305=;=0.5;C1305=1.0");
 
   // Assert
   UserActivityTriggerList expected_triggers;
@@ -249,11 +209,11 @@ TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggersForEmptyTrigger) {
   // Arrange
 
   // Act
-  const UserActivityTriggerList triggers = ToUserActivityTriggers({});
+  const UserActivityTriggerList triggers =
+      ToUserActivityTriggers(/*param_value*/ {});
 
   // Assert
-  const UserActivityTriggerList expected_triggers;
-  EXPECT_EQ(expected_triggers, triggers);
+  EXPECT_TRUE(triggers.empty());
 }
 
 }  // namespace brave_ads

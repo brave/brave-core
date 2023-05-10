@@ -18,7 +18,7 @@ absl::optional<privacy::UnblindedPaymentTokenList> ReadUnblindedPaymentTokens(
     return absl::nullopt;
   }
 
-  return ParseUnblindedPaymentTokens(*root);
+  return ParseUnblindedPaymentTokens(root->GetDict());
 }
 
 }  // namespace brave_ads::rewards::json::reader

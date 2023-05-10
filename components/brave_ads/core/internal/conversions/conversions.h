@@ -12,7 +12,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
@@ -29,8 +28,7 @@ namespace brave_ads {
 struct AdEventInfo;
 struct VerifiableConversionInfo;
 
-class Conversions final : public AdsClientNotifierObserver,
-                          public TabManagerObserver {
+class Conversions final : public TabManagerObserver {
  public:
   Conversions();
 
@@ -52,46 +50,47 @@ class Conversions final : public AdsClientNotifierObserver,
   void Process();
 
  private:
-  void OnGetUnprocessedConversions(
+  void GetUnprocessedConversionsCallback(
       bool success,
       const ConversionQueueItemList& conversion_queue_items);
 
   void CheckRedirectChain(const std::vector<GURL>& redirect_chain,
                           const std::string& html,
                           const ConversionIdPatternMap& conversion_id_patterns);
-  void OnGetAllAdEvents(std::vector<GURL> redirect_chain,
-                        std::string html,
-                        ConversionIdPatternMap conversion_id_patterns,
-                        bool success,
-                        const AdEventList& ad_events);
-  void OnGetAllConversions(const std::vector<GURL>& redirect_chain,
-                           const std::string& html,
-                           const ConversionIdPatternMap& conversion_id_patterns,
-                           const AdEventList& ad_events,
-                           bool success,
-                           const ConversionList& conversions);
+  void GetAllAdEventsCallback(std::vector<GURL> redirect_chain,
+                              std::string html,
+                              ConversionIdPatternMap conversion_id_patterns,
+                              bool success,
+                              const AdEventList& ad_events);
+  void GetAllConversionsCallback(
+      const std::vector<GURL>& redirect_chain,
+      const std::string& html,
+      const ConversionIdPatternMap& conversion_id_patterns,
+      const AdEventList& ad_events,
+      bool success,
+      const ConversionList& conversions);
 
   void Convert(const AdEventInfo& ad_event,
                const VerifiableConversionInfo& verifiable_conversion);
 
   void AddItemToQueue(const AdEventInfo& ad_event,
                       const VerifiableConversionInfo& verifiable_conversion);
-  void OnSaveConversionQueue(bool success);
+  void SaveConversionQueueCallback(bool success);
 
   void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
-  void OnGetConversionQueue(
+  void GetConversionQueueCallback(
       bool success,
       const ConversionQueueItemList& conversion_queue_items);
   void ProcessQueue();
 
   void RemoveInvalidQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item);
-  void OnRemoveInvalidQueueItem(
+  void RemoveInvalidQueueItemCallback(
       const ConversionQueueItemInfo& conversion_queue_item,
       bool success);
   void MarkQueueItemAsProcessed(
       const ConversionQueueItemInfo& conversion_queue_item);
-  void OnMarkQueueItemAsProcessed(
+  void MarkQueueItemAsProcessedCallback(
       const ConversionQueueItemInfo& conversion_queue_item,
       bool success);
   void FailedToConvertQueueItem(
@@ -105,10 +104,6 @@ class Conversions final : public AdsClientNotifierObserver,
   void NotifyConversionFailed(
       const ConversionQueueItemInfo& conversion_queue_item) const;
 
-  // AdsClientNotifierObserver:
-  void OnNotifyLocaleDidChange(const std::string& locale) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
-
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
@@ -116,7 +111,7 @@ class Conversions final : public AdsClientNotifierObserver,
 
   base::ObserverList<ConversionsObserver> observers_;
 
-  resource::Conversions resource_;
+  ConversionsResource resource_;
 
   Timer timer_;
 

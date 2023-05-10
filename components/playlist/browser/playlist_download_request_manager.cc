@@ -54,7 +54,9 @@ void PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
   // Never allow running in main world (0).
   CHECK(id > content::ISOLATED_WORLD_ID_CONTENT_END);
   // Only allow ID to be set once.
-  CHECK(!PlaylistJavaScriptWorldIdIsSet());
+  if (PlaylistJavaScriptWorldIdIsSet()) {
+    CHECK_IS_TEST();
+  }
   g_playlist_javascript_world_id = id;
 }
 
@@ -66,8 +68,6 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
 void PlaylistDownloadRequestManager::CreateWebContents() {
-  DCHECK(!web_contents_);
-
   content::WebContents::CreateParams create_params(context_, nullptr);
   web_contents_ = content::WebContents::Create(create_params);
   if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
@@ -243,8 +243,6 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     return;
   }
 
-  web_contents_.reset();
-
   /* Expected output:
     [
       {
@@ -345,6 +343,7 @@ void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
   if (web_contents_ && web_contents_.get() == web_contents) {
     web_prefs->force_cosmetic_filtering = true;
     web_prefs->hide_media_src_api = true;
+    web_prefs->should_detect_media_files = true;
   }
 }
 

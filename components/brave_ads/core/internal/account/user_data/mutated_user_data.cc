@@ -8,13 +8,13 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 constexpr char kMutatedKey[] = "mutated";
 }  // namespace
 
-base::Value::Dict GetMutated() {
+base::Value::Dict BuildMutatedUserData() {
   base::Value::Dict user_data;
 
   if (ConfirmationStateManager::GetInstance().is_mutated() ||
@@ -25,4 +25,4 @@ base::Value::Dict GetMutated() {
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

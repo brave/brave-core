@@ -10,12 +10,12 @@
 
 #include "base/check_op.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 
 namespace brave_ads::database {
 
 std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
-  DCHECK_NE(0U, parameters_count);
+  CHECK_NE(0U, parameters_count);
 
   const std::vector<std::string> placeholders(parameters_count, "?");
 
@@ -26,7 +26,7 @@ std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
 std::string BuildBindingParameterPlaceholders(
     const size_t parameters_count,
     const size_t binded_parameters_count) {
-  DCHECK_NE(0U, binded_parameters_count);
+  CHECK_NE(0U, binded_parameters_count);
 
   std::string placeholder = BuildBindingParameterPlaceholder(parameters_count);
   if (binded_parameters_count == 1) {
@@ -41,7 +41,7 @@ std::string BuildBindingParameterPlaceholders(
 
 void Bind(sql::Statement* statement,
           const mojom::DBCommandBindingInfo& binding) {
-  DCHECK(statement);
+  CHECK(statement);
 
   switch (binding.value->which()) {
     case mojom::DBValue::Tag::kNullValue: {
@@ -76,8 +76,8 @@ void Bind(sql::Statement* statement,
   }
 }
 
-void BindNull(mojom::DBCommandInfo* command, const int_fast16_t index) {
-  DCHECK(command);
+void BindNull(mojom::DBCommandInfo* command, const int32_t index) {
+  CHECK(command);
 
   mojom::DBCommandBindingInfoPtr binding = mojom::DBCommandBindingInfo::New();
   binding->index = index;
@@ -87,9 +87,9 @@ void BindNull(mojom::DBCommandInfo* command, const int_fast16_t index) {
 }
 
 void BindInt(mojom::DBCommandInfo* command,
-             const int index,
+             const int32_t index,
              const int32_t value) {
-  DCHECK(command);
+  CHECK(command);
 
   mojom::DBCommandBindingInfoPtr binding = mojom::DBCommandBindingInfo::New();
   binding->index = index;
@@ -99,9 +99,9 @@ void BindInt(mojom::DBCommandInfo* command,
 }
 
 void BindInt64(mojom::DBCommandInfo* command,
-               const int index,
+               const int32_t index,
                const int64_t value) {
-  DCHECK(command);
+  CHECK(command);
 
   mojom::DBCommandBindingInfoPtr binding = mojom::DBCommandBindingInfo::New();
   binding->index = index;
@@ -111,9 +111,9 @@ void BindInt64(mojom::DBCommandInfo* command,
 }
 
 void BindDouble(mojom::DBCommandInfo* command,
-                const int index,
+                const int32_t index,
                 const double value) {
-  DCHECK(command);
+  CHECK(command);
 
   mojom::DBCommandBindingInfoPtr binding = mojom::DBCommandBindingInfo::New();
   binding->index = index;
@@ -123,9 +123,9 @@ void BindDouble(mojom::DBCommandInfo* command,
 }
 
 void BindBool(mojom::DBCommandInfo* command,
-              const int index,
+              const int32_t index,
               const bool value) {
-  DCHECK(command);
+  CHECK(command);
 
   mojom::DBCommandBindingInfoPtr binding = mojom::DBCommandBindingInfo::New();
   binding->index = index;
@@ -135,9 +135,9 @@ void BindBool(mojom::DBCommandInfo* command,
 }
 
 void BindString(mojom::DBCommandInfo* command,
-                const int index,
+                const int32_t index,
                 const std::string& value) {
-  DCHECK(command);
+  CHECK(command);
 
   mojom::DBCommandBindingInfoPtr binding = mojom::DBCommandBindingInfo::New();
   binding->index = index;

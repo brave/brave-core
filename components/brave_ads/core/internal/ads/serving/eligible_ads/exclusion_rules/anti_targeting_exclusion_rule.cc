@@ -19,7 +19,7 @@ namespace {
 
 bool HasVisitedSiteOnAntiTargetingList(
     const BrowsingHistoryList& browsing_history,
-    const resource::AntiTargetingSiteList& anti_targeting_sites) {
+    const AntiTargetingSiteList& anti_targeting_sites) {
   const auto iter = base::ranges::find_first_of(
       anti_targeting_sites, browsing_history, SameDomainOrHost);
   return iter != anti_targeting_sites.cend();
@@ -28,10 +28,9 @@ bool HasVisitedSiteOnAntiTargetingList(
 }  // namespace
 
 AntiTargetingExclusionRule::AntiTargetingExclusionRule(
-    const resource::AntiTargeting& anti_targeting_resource,
+    const AntiTargetingResource& resource,
     BrowsingHistoryList browsing_history)
-    : anti_targeting_resource_(anti_targeting_resource),
-      browsing_history_(std::move(browsing_history)) {}
+    : resource_(resource), browsing_history_(std::move(browsing_history)) {}
 
 AntiTargetingExclusionRule::~AntiTargetingExclusionRule() = default;
 
@@ -59,9 +58,8 @@ bool AntiTargetingExclusionRule::DoesRespectCap(
     return true;
   }
 
-  const auto iter =
-      anti_targeting_resource_->get().sites.find(creative_ad.creative_set_id);
-  if (iter == anti_targeting_resource_->get().sites.cend()) {
+  const auto iter = resource_->get().sites.find(creative_ad.creative_set_id);
+  if (iter == resource_->get().sites.cend()) {
     // Always respect if creative set has no anti-targeting sites
     return true;
   }

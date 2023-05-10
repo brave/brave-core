@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
-#include <set>
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
@@ -22,26 +22,10 @@ namespace {
 constexpr char kSegmentSeparator[] = "-";
 
 std::vector<std::string> SplitSegment(const std::string& segment) {
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
 
   return base::SplitString(segment, kSegmentSeparator, base::KEEP_WHITESPACE,
                            base::SPLIT_WANT_ALL);
-}
-
-void RemoveDuplicates(SegmentList* segments) {
-  DCHECK(segments);
-
-  std::set<std::string> seen;  // log(n) existence check
-
-  auto iter = segments->cbegin();
-  while (iter != segments->cend()) {
-    if (seen.find(*iter) != seen.cend()) {
-      iter = segments->erase(iter);
-    } else {
-      seen.insert(*iter);
-      iter++;
-    }
-  }
 }
 
 }  // namespace
@@ -49,64 +33,70 @@ void RemoveDuplicates(SegmentList* segments) {
 SegmentList GetSegments(const CatalogInfo& catalog) {
   SegmentList segments;
 
+  base::flat_set<std::string> exists;
+
   for (const auto& campaign : catalog.campaigns) {
     for (const auto& creative_set : campaign.creative_sets) {
       for (const auto& segment : creative_set.segments) {
-        DCHECK(!segment.name.empty());
+        CHECK(!segment.name.empty());
+
+        if (exists.find(segment.name) != std::cend(exists)) {
+          continue;
+        }
+
         segments.push_back(segment.name);
+
+        exists.insert(segment.name);
       }
     }
   }
-
-  RemoveDuplicates(&segments);
 
   return segments;
 }
 
 std::string GetParentSegment(const std::string& segment) {
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
 
   const std::vector<std::string> components = SplitSegment(segment);
-  DCHECK(!components.empty());
+  CHECK(!components.empty());
 
   return components.front();
-}
-
-bool MatchParentSegments(const std::string& lhs, const std::string& rhs) {
-  DCHECK(!lhs.empty());
-  DCHECK(!rhs.empty());
-
-  return GetParentSegment(lhs) == GetParentSegment(rhs);
 }
 
 SegmentList GetParentSegments(const SegmentList& segments) {
   SegmentList parent_segments;
 
+  base::flat_set<std::string> exists;
+
   for (const auto& segment : segments) {
-    DCHECK(!segment.empty());
+    CHECK(!segment.empty());
 
     const std::string parent_segment = GetParentSegment(segment);
-    DCHECK(!parent_segment.empty());
+    CHECK(!parent_segment.empty());
+
+    if (exists.find(parent_segment) != std::cend(exists)) {
+      continue;
+    }
 
     parent_segments.push_back(parent_segment);
-  }
 
-  RemoveDuplicates(&parent_segments);
+    exists.insert(parent_segment);
+  }
 
   return parent_segments;
 }
 
 bool HasChildSegment(const std::string& segment) {
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
 
   const std::vector<std::string> components = SplitSegment(segment);
-  DCHECK(!components.empty());
+  CHECK(!components.empty());
 
   return components.size() != 1;
 }
 
 bool ShouldFilterSegment(const std::string& segment) {
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
 
   const FilteredCategoryList& filtered_segments =
       ClientStateManager::GetInstance().GetFilteredCategories();
@@ -125,7 +115,8 @@ bool ShouldFilterSegment(const std::string& segment) {
         }
 
         // Filter against parent, i.e. "technology & computing"
-        return MatchParentSegments(segment, filtered_segment.name);
+        return GetParentSegment(segment) ==
+               GetParentSegment(filtered_segment.name);
       });
 
   return iter != filtered_segments.cend();

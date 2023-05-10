@@ -52,31 +52,30 @@ class ConfirmationStateManager final {
   void reset_failed_confirmations() { failed_confirmations_.clear(); }
 
   const privacy::UnblindedTokens& GetUnblindedTokens() const {
-    DCHECK(is_initialized_);
+    CHECK(is_initialized_);
     return unblinded_tokens_;
   }
 
   privacy::UnblindedTokens& GetUnblindedTokens() {
-    DCHECK(is_initialized_);
+    CHECK(is_initialized_);
     return unblinded_tokens_;
   }
 
   const privacy::UnblindedPaymentTokens& GetUnblindedPaymentTokens() const {
-    DCHECK(is_initialized_);
+    CHECK(is_initialized_);
     return unblinded_payment_tokens_;
   }
 
   privacy::UnblindedPaymentTokens& GetUnblindedPaymentTokens() {
-    DCHECK(is_initialized_);
+    CHECK(is_initialized_);
     return unblinded_payment_tokens_;
   }
 
   bool is_mutated() const { return is_mutated_; }
 
  private:
-  void OnLoaded(InitializeCallback callback,
-                bool success,
-                const std::string& json);
+  void LoadedCallback(InitializeCallback callback,
+                      const absl::optional<std::string>& json);
 
   bool ParseFailedConfirmationsFromDictionary(const base::Value::Dict& dict);
 

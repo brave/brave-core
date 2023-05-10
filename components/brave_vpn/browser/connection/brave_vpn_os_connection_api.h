@@ -67,7 +67,7 @@ class BraveVPNOSConnectionAPI {
 // Create platform specific api instance.
 // NOTE: Don't call this method directly.
 // Only BraveBrowserProcess need to use this method.
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNOSConnectionAPI(
+std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
     version_info::Channel channel);

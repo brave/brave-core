@@ -11,8 +11,8 @@
 #include "base/containers/circular_deque.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler_delegate.h"
 
@@ -22,7 +22,7 @@ class Account;
 class Transfer;
 struct SearchResultAdInfo;
 
-class SearchResultAd final : public search_result_ads::EventHandlerDelegate {
+class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
  public:
   SearchResultAd(Account& account, Transfer& transfer);
 
@@ -42,18 +42,20 @@ class SearchResultAd final : public search_result_ads::EventHandlerDelegate {
 
  private:
   void MaybeTriggerAdViewedEventFromQueue();
-  void OnFireAdViewedEvent(bool success,
-                           const std::string& placement_id,
-                           mojom::SearchResultAdEventType event_type);
+  void FireAdViewedEventCallback(bool success,
+                                 const std::string& placement_id,
+                                 mojom::SearchResultAdEventType event_type);
 
-  // search_result_ads::EventHandlerDelegate:
-  void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;
-  void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override;
+  // SearchResultAdEventHandlerDelegate:
+  void OnDidFireSearchResultAdViewedEvent(
+      const SearchResultAdInfo& ad) override;
+  void OnDidFireSearchResultAdClickedEvent(
+      const SearchResultAdInfo& ad) override;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
 
-  search_result_ads::EventHandler event_handler_;
+  SearchResultAdEventHandler event_handler_;
 
   base::circular_deque<mojom::SearchResultAdInfoPtr> ad_viewed_event_queue_;
 

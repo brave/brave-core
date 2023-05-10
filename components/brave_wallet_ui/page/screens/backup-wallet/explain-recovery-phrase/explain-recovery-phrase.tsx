@@ -61,7 +61,7 @@ export const RecoveryPhraseExplainer = () => {
   }
 
   const skipBackup = () => {
-    history.push(WalletRoutes.Portfolio)
+    history.push(WalletRoutes.PortfolioAssets)
   }
 
   // render

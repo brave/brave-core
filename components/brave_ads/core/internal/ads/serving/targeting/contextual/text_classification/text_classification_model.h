@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/model_interface.h"
 
-namespace brave_ads::targeting::model {
+namespace brave_ads {
 
-class TextClassification final : public ModelInterface {
+class TextClassificationModel final : public ModelInterface {
  public:
   SegmentList GetSegments() const override;
 };
 
-}  // namespace brave_ads::targeting::model
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_MODEL_H_

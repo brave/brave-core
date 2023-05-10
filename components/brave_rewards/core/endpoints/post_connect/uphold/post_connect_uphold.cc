@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 
 PostConnectUphold::PostConnectUphold(LedgerImpl& ledger, std::string&& address)
     : PostConnect(ledger), address_(std::move(address)) {}
@@ -95,4 +95,4 @@ const char* PostConnectUphold::Path() const {
   return "/v3/wallet/uphold/%s/claim";
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints

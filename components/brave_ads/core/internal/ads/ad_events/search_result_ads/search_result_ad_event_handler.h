@@ -12,8 +12,8 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler_delegate.h"
 
@@ -21,27 +21,28 @@ namespace brave_ads {
 
 struct SearchResultAdInfo;
 
-namespace search_result_ads {
-
 using FireAdEventHandlerCallback =
     base::OnceCallback<void(bool success,
                             const std::string& placement_id,
                             const mojom::SearchResultAdEventType event_type)>;
 
-class EventHandler final : public EventHandlerDelegate {
+class SearchResultAdEventHandler final
+    : public SearchResultAdEventHandlerDelegate {
  public:
-  EventHandler();
+  SearchResultAdEventHandler();
 
-  EventHandler(const EventHandler&) = delete;
-  EventHandler& operator=(const EventHandler&) = delete;
+  SearchResultAdEventHandler(const SearchResultAdEventHandler&) = delete;
+  SearchResultAdEventHandler& operator=(const SearchResultAdEventHandler&) =
+      delete;
 
-  EventHandler(EventHandler&&) noexcept = delete;
-  EventHandler& operator=(EventHandler&&) noexcept = delete;
+  SearchResultAdEventHandler(SearchResultAdEventHandler&&) noexcept = delete;
+  SearchResultAdEventHandler& operator=(SearchResultAdEventHandler&&) noexcept =
+      delete;
 
-  ~EventHandler() override;
+  ~SearchResultAdEventHandler() override;
 
-  void SetDelegate(EventHandlerDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+  void SetDelegate(SearchResultAdEventHandlerDelegate* delegate) {
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 
@@ -56,20 +57,21 @@ class EventHandler final : public EventHandlerDelegate {
 
   void FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
                        FireAdEventHandlerCallback callback) const;
-  void OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
-                      FireAdEventHandlerCallback callback,
-                      bool success) const;
-  void OnSaveConversions(const SearchResultAdInfo& ad,
-                         FireAdEventHandlerCallback callback,
-                         bool success) const;
-  void OnGetAdEventsForViewedSearchResultAd(const SearchResultAdInfo& ad,
-                                            FireAdEventHandlerCallback callback,
-                                            bool success,
-                                            const AdEventList& ad_events) const;
+  void SaveDepositsCallback(mojom::SearchResultAdInfoPtr ad_mojom,
+                            FireAdEventHandlerCallback callback,
+                            bool success) const;
+  void SaveConversionsCallback(const SearchResultAdInfo& ad,
+                               FireAdEventHandlerCallback callback,
+                               bool success) const;
+  void GetAdEventsForViewedSearchResultAdCallback(
+      const SearchResultAdInfo& ad,
+      FireAdEventHandlerCallback callback,
+      bool success,
+      const AdEventList& ad_events) const;
 
   void FireClickedEvent(const SearchResultAdInfo& ad,
                         FireAdEventHandlerCallback callback) const;
-  void OnGetAdEventsForClickedSearchResultAd(
+  void GetAdEventsForClickedSearchResultAdCallback(
       const SearchResultAdInfo& ad,
       FireAdEventHandlerCallback callback,
       bool success,
@@ -82,12 +84,11 @@ class EventHandler final : public EventHandlerDelegate {
                          mojom::SearchResultAdEventType event_type,
                          FireAdEventHandlerCallback callback) const;
 
-  raw_ptr<EventHandlerDelegate> delegate_ = nullptr;
+  raw_ptr<SearchResultAdEventHandlerDelegate> delegate_ = nullptr;
 
-  base::WeakPtrFactory<EventHandler> weak_factory_{this};
+  base::WeakPtrFactory<SearchResultAdEventHandler> weak_factory_{this};
 };
 
-}  // namespace search_result_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_H_

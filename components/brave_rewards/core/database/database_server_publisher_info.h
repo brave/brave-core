@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/database/database_server_publisher_banner.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 using GetServerPublisherInfoCallback =
@@ -24,13 +24,13 @@ class DatabaseServerPublisherInfo : public DatabaseTable {
   ~DatabaseServerPublisherInfo() override;
 
   void InsertOrUpdate(const mojom::ServerPublisherInfo& server_info,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void GetRecord(const std::string& publisher_key,
                  GetServerPublisherInfoCallback callback);
 
   void DeleteExpiredRecords(int64_t max_age_seconds,
-                            ledger::LegacyResultCallback callback);
+                            LegacyResultCallback callback);
 
  private:
   void OnGetRecordBanner(mojom::PublisherBannerPtr banner,
@@ -43,12 +43,12 @@ class DatabaseServerPublisherInfo : public DatabaseTable {
                    GetServerPublisherInfoCallback callback);
 
   void OnExpiredRecordsSelected(mojom::DBCommandResponsePtr response,
-                                ledger::LegacyResultCallback callback);
+                                LegacyResultCallback callback);
 
   DatabaseServerPublisherBanner banner_;
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_

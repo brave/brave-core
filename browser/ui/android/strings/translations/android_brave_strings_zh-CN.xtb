@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">退出时关闭标签页</translation>
 <translation id="4448697385961650078">阻止跟踪器和广告</translation>
 <translation id="2448893613530489637">阻止跟踪器和广告加载显示在网页中</translation>
+<translation id="1025207378813960343">确保网站的连接是安全的。</translation>
+<translation id="6686219838158572786">要求所有连接使用 HTTPS（严格）</translation>
+<translation id="4221284400051835823">尽可能升级到 HTTPS（默认）</translation>
+<translation id="4690906712010847708">不要将连接升级到 HTTPS（禁用）</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
 <translation id="5254037869598726291">匿名的 P3A 信息有助于 Brave 估计总体使用量，并确保我们’在改进受欢迎的功能。</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">自动播放</translation>
 <translation id="7445411102860286510">允许网站自动播放静音的视频（推荐）</translation>
 <translation id="7837721118676387834">允许特定网站自动播放静音的视频。</translation>
+<translation id="4206299587103092719">Google 登录</translation>
+<translation id="9110294136812584522">网站可以要求通过第三方 cookie 使用传统的谷歌登录</translation>
+<translation id="2903783737778379345">不允许通过第三方 cookie 登录传统谷歌</translation>
+<translation id="6880817299303842099">允许使用第三方 cookie 登录旧版谷歌</translation>
 <translation id="181905442828471321">Brave Shields 全局默认值</translation>
 <translation id="2675679258824361492">其他隐私设置</translation>
 <translation id="8026334261755873520">清除浏览数据</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">您正在自动发送打赏至：</translation>
 <translation id="1628742278973105368">您的首月打赏将发送于：</translation>
 <translation id="1642952941091001113">此创作者尚未注册为 Brave 用户捐款的接收者。在创建者验证之前或在 90 天过去之前，我们会继续尝试捐款。</translation>
-<translation id="635752162765375187">注意：此创建者目前尚未完成配置，无法从您的奖励托管钱包服务接收小费。您给予的任何提示都将继续处于待处理状态并会自动重试 90 天。</translation>
+<translation id="8228150955416632026">您已连接到<ph name="WALLET_PROVIDER"/>，但这个创建者已连接到<ph name="SUPPORTED_WALLET_PROVIDER"/>。这意味着该创作者无法收到您的建议。您目前提出的任何建议都将保持等待状态，并在 90 天内自动重试。</translation>
 <translation id="1910721550319506122">欢迎！</translation>
 <translation id="2734870894159530879">登录到 <ph name="WALLET_PROVIDER"/> 查看您的余额</translation>
 <translation id="5830114181292529917">您可以通过打赏的方式来支持这个网站。这是感谢他们制作精彩内容的一种方式。</translation>
@@ -610,6 +618,7 @@
 <translation id="4522570452068850558">详细信息</translation>
 <translation id="3995184924764722477">账户详情</translation>
 <translation id="8967036623785635603">编辑可见资产</translation>
+<translation id="8475984867371585028">编辑可见 NFT</translation>
 <translation id="5050890334032852465">保存账户监视清单</translation>
 <translation id="7755766175599167100">搜索代币</translation>
 <translation id="3835223348537121988">余额：</translation>
@@ -1046,4 +1055,78 @@
 <translation id="1776742005329298234">从 <ph name="DUE_DATE"/> 起，我们将停止对现有虚拟 BAT 余额的支持。在此日期之前连接一个托管账户，以便我们将您的收入余额转到您的托管账户，否则您的余额将丢失。</translation>
 <translation id="5089752671190341407">您仍然有时间把您的 vBAT 贡献给您最喜欢的创作者</translation>
 <translation id="171158953146804144">从 <ph name="DUE_DATE"/> 起，我们将停止对现有虚拟 BAT 余额的支持。但您所在的地区（<ph name="REGION"/>）没有可用的托管人来提取您的收入。在那之前，您仍然可以为您最喜欢的创作者做贡献。</translation>
+<translation id="8949422576126100041">浏览网页与 Speedreader？</translation>
+<translation id="591648995518106347">自动加载符合条件的文章在读者模式</translation>
+<translation id="5062934803872044756">在<ph name="NETWORK"/>的<ph name="SYMBOL"/></translation>
+<translation id="295620834661738195">Brave 播放列表</translation>
+<translation id="4850886885716139402">视图</translation>
+<translation id="7392941176393379100">添加至“<ph name="PLAYLIST_NAME"/>”</translation>
+<translation id="8289472222022674331">管理您的播放列表数据</translation>
+<translation id="7650602357673790368">默认情况下，播放列表将自动保存内容到您的设备上，以便离线播放（在私人和amp;amp; 共享播放列表上）。如果您未连接无线网络，将使用你的手机数据进行自动保存。请在设置改变这个默认值。</translation>
+<translation id="5900576657906675258">添加项目到播放列表</translation>
+<translation id="349846214503465941">启用播放列表</translation>
+<translation id="1309636029062006520">制作您最喜爱的音频和视频播放列表，并随时随地播放。</translation>
+<translation id="7899390017499980820">添加至播放列表按钮</translation>
+<translation id="6901152954398668317">显示或隐藏“添加到播放列表”按钮，以快速访问添加或删除媒体。</translation>
+<translation id="8404028031709373707">自动播放</translation>
+<translation id="597781019681241649">当播放列表打开时启用自动播放。</translation>
+<translation id="2625554376218216118">从我停止的地方开始回放</translation>
+<translation id="2953730196265332002">自动同步任何更改创作者所作的共享播放列表。</translation>
+<translation id="3561815498111282415">自动离线保存</translation>
+<translation id="1832424694374124654">自动保存新的播放列表项目到您的设备，以便您可以在没有互联网连接的情况下播放。</translation>
+<translation id="8103022210423023846">打开自动保存</translation>
+<translation id="3926329432879804185">关闭自动保存</translation>
+<translation id="7768812595186089508">只有连接到无线网络时才能自动保存</translation>
+<translation id="5939518447894949180">重置</translation>
+<translation id="8199028711686989861">从播放列表中删除所有视频，包括离线模式下存储的视频。</translation>
+<translation id="5916664084637901428">启用</translation>
+<translation id="5860033963881614850">关闭</translation>
+<translation id="2920568868625746681">仅限无线网络</translation>
+<translation id="4590997608186539865">播放单</translation>
+<translation id="7525067979554623046">创建</translation>
+<translation id="5491049004699827548">创建您的第一个播放列表</translation>
+<translation id="5319108110887582146">制作一个播放列表，包含您最喜爱的音频和视频，随时随地均可播放。甚至离线也可以播放。</translation>
+<translation id="6802849415466883498">创建一个播放列表</translation>
+<translation id="8525248723479742219">稍后播放</translation>
+<translation id="7453007860684252933">浏览并添加</translation>
+<translation id="9014883386413828317">添加您最喜爱的内容。寻找屏幕右下方的（+）按钮。</translation>
+<translation id="5928669500312007783">浏览媒体</translation>
+<translation id="8152485753254079984">新建播放列表</translation>
+<translation id="9130105487623071247">播放列表名称</translation>
+<translation id="726581235416249619">未命名播放列表</translation>
+<translation id="1456254983411148628">删除数据</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/>已选</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/>个项目</translation>
+<translation id="2317629745818459803">播放全部</translation>
+<translation id="7544853251252956727">随机播放</translation>
+<translation id="2881339830231736485">最近播放</translation>
+<translation id="7636458383879257005">轻按、长按或拖动</translation>
+<translation id="8120600068258956006">添加至播放列表</translation>
+<translation id="39991094779686024">播放列表</translation>
+<translation id="1710072605877822603">添加媒体</translation>
+<translation id="903678009070770568">添加视频到 Brave 播放列表，以后或离线观看</translation>
+<translation id="3063627607780392015">手机没有信号？又需要安抚哭泣的孩子？</translation>
+<translation id="2041014734809158138">无论您是在地铁、飞机还是长途汽车旅行中。播放列表已经准备就绪。</translation>
+<translation id="7287143275037417932">或者点击播放列表按钮</translation>
+<translation id="6959838938954098206">当有媒体需要添加时，会出现播放列表按钮。长按它可以获得选项。您甚至可以隐藏它。</translation>
+<translation id="3620862810055853183">打开播放列表</translation>
+<translation id="3861012838874771868">打开播放列表设置</translation>
+<translation id="5220099266891491416">隐藏播放列表按钮</translation>
+<translation id="7416347631175891923">试试看！</translation>
+<translation id="1173894706177603556">重命名</translation>
+<translation id="1620612903815671893">删除播放列表离线数据</translation>
+<translation id="3261711068865275261">删除所有离线数据</translation>
+<translation id="6653691766801349738">保留播放列表供离线使用</translation>
+<translation id="8708086574143054053">保留所有播放列表供离线使用</translation>
+<translation id="3596306474342941843">删除播放列表</translation>
+<translation id="7765158879357617694">移动</translation>
+<translation id="3803384303807438047">删除项目的离线数据</translation>
+<translation id="4195643157523330669">在新标签页中打开</translation>
+<translation id="4243710787042215766">在私有标签页中打开</translation>
+<translation id="8261506727792406068">删除</translation>
+<translation id="377872456482681602">请先选择项目</translation>
+<translation id="6172429305139364624">播放列表项未缓存。\n请将项目缓存为离线模式。</translation>
+<translation id="3631131732607750008">内容过期。请几秒后重试。</translation>
+<translation id="9085765419770918643">这里还没有 NFT。</translation>
+<translation id="8445532667841598737">准备好添加内容了吗？只需点击下面的按钮即可导入。</translation>
 </translationbundle>

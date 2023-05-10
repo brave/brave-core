@@ -12,18 +12,19 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
-EventHandler::EventHandler() = default;
+NotificationAdEventHandler::NotificationAdEventHandler() = default;
 
-EventHandler::~EventHandler() {
+NotificationAdEventHandler::~NotificationAdEventHandler() {
   delegate_ = nullptr;
 }
 
-void EventHandler::FireEvent(const std::string& placement_id,
-                             const mojom::NotificationAdEventType event_type) {
-  DCHECK(!placement_id.empty());
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+void NotificationAdEventHandler::FireEvent(
+    const std::string& placement_id,
+    const mojom::NotificationAdEventType event_type) {
+  CHECK(!placement_id.empty());
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const absl::optional<NotificationAdInfo> ad =
       NotificationAdManager::GetInstance().MaybeGetForPlacementId(placement_id);
@@ -33,7 +34,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
     return FailedToFireEvent(placement_id, event_type);
   }
 
-  const auto ad_event = AdEventFactory::Build(event_type);
+  const auto ad_event = NotificationAdEventFactory::Build(event_type);
   ad_event->FireEvent(*ad);
 
   SuccessfullyFiredEvent(*ad, event_type);
@@ -41,10 +42,10 @@ void EventHandler::FireEvent(const std::string& placement_id,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EventHandler::SuccessfullyFiredEvent(
+void NotificationAdEventHandler::SuccessfullyFiredEvent(
     const NotificationAdInfo& ad,
     const mojom::NotificationAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (!delegate_) {
     return;
@@ -52,43 +53,43 @@ void EventHandler::SuccessfullyFiredEvent(
 
   switch (event_type) {
     case mojom::NotificationAdEventType::kServed: {
-      delegate_->OnNotificationAdServed(ad);
+      delegate_->OnDidFireNotificationAdServedEvent(ad);
       break;
     }
 
     case mojom::NotificationAdEventType::kViewed: {
-      delegate_->OnNotificationAdViewed(ad);
+      delegate_->OnDidFireNotificationAdViewedEvent(ad);
       break;
     }
 
     case mojom::NotificationAdEventType::kClicked: {
-      delegate_->OnNotificationAdClicked(ad);
+      delegate_->OnDidFireNotificationAdClickedEvent(ad);
       break;
     }
 
     case mojom::NotificationAdEventType::kDismissed: {
-      delegate_->OnNotificationAdDismissed(ad);
+      delegate_->OnDidFireNotificationAdDismissedEvent(ad);
       break;
     }
 
     case mojom::NotificationAdEventType::kTimedOut: {
-      delegate_->OnNotificationAdTimedOut(ad);
+      delegate_->OnDidFireNotificationAdTimedOutEvent(ad);
       break;
     }
   }
 }
 
-void EventHandler::FailedToFireEvent(
+void NotificationAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   BLOG(1, "Failed to fire notification ad "
               << event_type << " event for placement id " << placement_id);
 
   if (delegate_) {
-    delegate_->OnNotificationAdEventFailed(placement_id, event_type);
+    delegate_->OnFailedToFireNotificationAdEvent(placement_id, event_type);
   }
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

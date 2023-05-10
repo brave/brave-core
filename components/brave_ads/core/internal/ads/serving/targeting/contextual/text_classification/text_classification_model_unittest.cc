@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_model.h"
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -14,29 +15,32 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::targeting::model {
+namespace brave_ads {
 
 class BraveAdsTextClassificationModelTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    resource_.Load();
-    task_environment_.RunUntilIdle();
+    resource_ = std::make_unique<TextClassificationResource>();
   }
 
-  resource::TextClassification resource_;
+  bool LoadResource() {
+    resource_->Load();
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
+  }
+
+  std::unique_ptr<TextClassificationResource> resource_;
 };
 
 TEST_F(BraveAdsTextClassificationModelTest,
        DoNotGetSegmentsForUninitializedResource) {
   // Arrange
-  resource::TextClassification resource;
-
-  processor::TextClassification processor(resource);
+  TextClassificationProcessor processor(*resource_);
   processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
 
-  const TextClassification model;
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -47,11 +51,13 @@ TEST_F(BraveAdsTextClassificationModelTest,
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   // Arrange
+  ASSERT_TRUE(LoadResource());
+
   const std::string text;
-  processor::TextClassification processor(resource_);
+  TextClassificationProcessor processor(*resource_);
   processor.Process(text);
 
-  const TextClassification model;
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -63,10 +69,12 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
 TEST_F(BraveAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedText) {
   // Arrange
-  processor::TextClassification processor(resource_);
+  ASSERT_TRUE(LoadResource());
+
+  TextClassificationProcessor processor(*resource_);
   processor.Process(/*text*/ "Some content about technology & computing");
 
-  const TextClassification model;
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -136,16 +144,18 @@ TEST_F(BraveAdsTextClassificationModelTest,
 TEST_F(BraveAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedTexts) {
   // Arrange
+  ASSERT_TRUE(LoadResource());
+
   const std::vector<std::string> texts = {
       "Some content about cooking food", "Some content about finance & banking",
       "Some content about technology & computing"};
 
-  processor::TextClassification processor(resource_);
+  TextClassificationProcessor processor(*resource_);
   for (const auto& text : texts) {
     processor.Process(text);
   }
 
-  const TextClassification model;
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -255,7 +265,9 @@ TEST_F(BraveAdsTextClassificationModelTest,
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  const TextClassification model;
+  ASSERT_TRUE(LoadResource());
+
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -264,4 +276,4 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   EXPECT_TRUE(segments.empty());
 }
 
-}  // namespace brave_ads::targeting::model
+}  // namespace brave_ads

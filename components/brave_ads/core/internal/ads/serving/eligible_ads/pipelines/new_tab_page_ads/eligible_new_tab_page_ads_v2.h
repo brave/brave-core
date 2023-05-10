@@ -16,50 +16,41 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
+class AntiTargetingResource;
 class SubdivisionTargeting;
+struct UserModelInfo;
 
-namespace new_tab_page_ads {
-
-class EligibleAdsV2 final : public EligibleAdsBase {
+class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
  public:
-  EligibleAdsV2(const SubdivisionTargeting& subdivision_targeting,
-                const resource::AntiTargeting& anti_targeting_resource);
-  ~EligibleAdsV2() override;
+  EligibleNewTabPageAdsV2(const SubdivisionTargeting& subdivision_targeting,
+                          const AntiTargetingResource& anti_targeting_resource);
+  ~EligibleNewTabPageAdsV2() override;
 
   void GetForUserModel(
-      targeting::UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
+      UserModelInfo user_model,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
 
  private:
-  void OnGetForUserModel(
-      targeting::UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+  void GetForUserModelCallback(
+      UserModelInfo user_model,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       bool success,
       const AdEventList& ad_events);
 
   void GetBrowsingHistory(
-      targeting::UserModelInfo user_model,
+      UserModelInfo user_model,
       const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
 
-  void GetEligibleAds(targeting::UserModelInfo user_model,
+  void GetEligibleAds(UserModelInfo user_model,
                       const AdEventList& ad_events,
-                      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+                      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
                       const BrowsingHistoryList& browsing_history);
-
-  void OnGetEligibleAds(
-      const targeting::UserModelInfo& user_model,
+  void GetEligibleAdsCallback(
+      const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
@@ -69,10 +60,9 @@ class EligibleAdsV2 final : public EligibleAdsBase {
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history);
 
-  base::WeakPtrFactory<EligibleAdsV2> weak_factory_{this};
+  base::WeakPtrFactory<EligibleNewTabPageAdsV2> weak_factory_{this};
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NEW_TAB_PAGE_ADS_ELIGIBLE_NEW_TAB_PAGE_ADS_V2_H_

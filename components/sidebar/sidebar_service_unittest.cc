@@ -540,7 +540,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   // new default items, plus the custom item.
   EXPECT_EQ(service_->items().size(),
             std::size(SidebarService::kDefaultBuiltInItemTypes) -
-                2 /* for history and playlist: invisible built-in itmes */
+                3 /* for History, Playlist, ChatUI: invisible built-in itmes */
                 + 1 /*for custom item added above*/);
 }
 

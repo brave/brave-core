@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 
@@ -9,8 +9,9 @@
 #include <utility>
 
 #include "base/command_line.h"
-#include "base/functional/bind.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -20,24 +21,22 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_ipfs_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -102,6 +101,8 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
         json_rpc_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
+        bitcoin_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
@@ -120,7 +121,9 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
         brave_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
-        brave_wallet_p3a_receiver) {
+        brave_wallet_p3a_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
+        brave_wallet_ipfs_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -133,6 +136,8 @@ void WalletPanelUI::CreatePanelHandler(
 
   brave_wallet::JsonRpcServiceFactory::BindForContext(
       profile, std::move(json_rpc_service_receiver));
+  brave_wallet::BitcoinWalletServiceFactory::BindForContext(
+      profile, std::move(bitcoin_rpc_service_receiver));
   brave_wallet::SwapServiceFactory::BindForContext(
       profile, std::move(swap_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(
@@ -147,6 +152,9 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(solana_tx_manager_proxy_receiver));
   brave_wallet::TxServiceFactory::BindFilTxManagerProxyForContext(
       profile, std::move(filecoin_tx_manager_proxy_receiver));
+  brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
+      profile, std::move(brave_wallet_ipfs_service_receiver));
+
   brave_wallet::BraveWalletService* wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
   wallet_service->Bind(std::move(brave_wallet_service_receiver));

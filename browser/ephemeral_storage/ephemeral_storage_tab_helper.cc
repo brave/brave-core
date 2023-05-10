@@ -11,7 +11,7 @@
 
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
-#include "base/ranges/ranges.h"
+#include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ephemeral_storage/first_party_storage_lifetime.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -86,9 +86,10 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
   // The URL might not be empty if this is a restored WebContents, for instance.
   // In that case we want to make sure it has valid ephemeral storage.
   const GURL& url = web_contents->GetLastCommittedURL();
-  CreateEphemeralStorageAreasForDomainAndURL(
-      net::URLToEphemeralStorageDomain(url), url);
-  CreateFirstPartyStorageLifetime(url);
+  const std::string ephemeral_storage_domain =
+      net::URLToEphemeralStorageDomain(url);
+  CreateEphemeralStorageAreasForDomainAndURL(ephemeral_storage_domain, url);
+  CreateFirstPartyStorageLifetime(ephemeral_storage_domain, url);
 }
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() = default;
@@ -114,13 +115,7 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
   if (new_domain != previous_domain) {
     // Create new storage areas for new ephemeral storage domain.
     CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
-  }
-
-  if (!url::IsSameOriginWith(new_url, last_committed_url)) {
-    // Create new FirstPartyStorage lifetime if an origin has changed. This
-    // differs from eTLD+1 (EphemeralStorageDomain) comparison above, because
-    // shield settings are bound to the host, not domain.
-    CreateFirstPartyStorageLifetime(new_url);
+    CreateFirstPartyStorageLifetime(new_domain, new_url);
   }
 }
 
@@ -196,18 +191,20 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
 }
 
 void EphemeralStorageTabHelper::CreateFirstPartyStorageLifetime(
-    const GURL& url) {
+    const std::string& new_domain,
+    const GURL& new_url) {
   if (!base::FeatureList::IsEnabled(
           net::features::kBraveForgetFirstPartyStorage)) {
     return;
   }
 
-  if (url.is_valid() && brave_shields::GetBraveShieldsEnabled(
-                            HostContentSettingsMapFactory::GetForProfile(
-                                GetWebContents().GetBrowserContext()),
-                            url)) {
+  if (new_url.is_valid() && brave_shields::GetBraveShieldsEnabled(
+                                HostContentSettingsMapFactory::GetForProfile(
+                                    GetWebContents().GetBrowserContext()),
+                                new_url)) {
+    const GURL key_url(base::StrCat({"https://", new_domain, "/"}));
     first_party_storage_lifetime_ = FirstPartyStorageLifetime::GetOrCreate(
-        web_contents()->GetBrowserContext(), url::Origin::Create(url));
+        web_contents()->GetBrowserContext(), url::Origin::Create(key_url));
   } else {
     first_party_storage_lifetime_.reset();
   }

@@ -12,7 +12,7 @@
 namespace brave_ads {
 
 base::Value::List IssuersToValue(const IssuerList& issuers);
-absl::optional<IssuerList> ValueToIssuers(const base::Value::List& value);
+absl::optional<IssuerList> ValueToIssuers(const base::Value::List& list);
 
 }  // namespace brave_ads
 

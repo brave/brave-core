@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_
@@ -12,7 +12,6 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
@@ -192,6 +191,11 @@ std::string eTLDPlusOne(const url::Origin& origin);
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
 
 bool IsFilecoinKeyringId(const std::string& keyring_id);
+
+bool IsBitcoinKeyring(const std::string& keyring_id);
+bool IsBitcoinNetwork(const std::string& network_id);
+bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
+                                      const std::string& keyring_id);
 
 std::string GetFilecoinKeyringId(const std::string& network);
 

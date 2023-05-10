@@ -13,45 +13,39 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
+class AntiTargetingResource;
 class SubdivisionTargeting;
+struct UserModelInfo;
 
-namespace notification_ads {
-
-class EligibleAdsBase {
+class EligibleNotificationAdsBase {
  public:
-  EligibleAdsBase(const EligibleAdsBase&) = delete;
-  EligibleAdsBase& operator=(const EligibleAdsBase&) = delete;
+  EligibleNotificationAdsBase(const EligibleNotificationAdsBase&) = delete;
+  EligibleNotificationAdsBase& operator=(const EligibleNotificationAdsBase&) =
+      delete;
 
-  EligibleAdsBase(EligibleAdsBase&&) noexcept = delete;
-  EligibleAdsBase& operator=(EligibleAdsBase&&) noexcept = delete;
+  EligibleNotificationAdsBase(EligibleNotificationAdsBase&&) noexcept = delete;
+  EligibleNotificationAdsBase& operator=(
+      EligibleNotificationAdsBase&&) noexcept = delete;
 
-  virtual ~EligibleAdsBase();
+  virtual ~EligibleNotificationAdsBase();
 
   virtual void GetForUserModel(
-      targeting::UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback) = 0;
+      UserModelInfo user_model,
+      EligibleAdsCallback<CreativeNotificationAdList> callback) = 0;
 
   void SetLastServedAd(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
-  EligibleAdsBase(const SubdivisionTargeting& subdivision_targeting,
-                  const resource::AntiTargeting& anti_targeting_resource);
+  EligibleNotificationAdsBase(
+      const SubdivisionTargeting& subdivision_targeting,
+      const AntiTargetingResource& anti_targeting_resource);
 
   const raw_ref<const SubdivisionTargeting> subdivision_targeting_;
-  const raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
+  const raw_ref<const AntiTargetingResource> anti_targeting_resource_;
 
   AdInfo last_served_ad_;
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NOTIFICATION_ADS_ELIGIBLE_NOTIFICATION_ADS_BASE_H_

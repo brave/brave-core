@@ -10,13 +10,13 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_interface.h"
 
-namespace brave_ads::new_tab_page_ads {
+namespace brave_ads {
 
-class AdsPerDayPermissionRule final : public PermissionRuleInterface {
+class NewTabPageAdsPerDayPermissionRule final : public PermissionRuleInterface {
  public:
   base::expected<void, std::string> ShouldAllow() const override;
 };
 
-}  // namespace brave_ads::new_tab_page_ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_PER_DAY_PERMISSION_RULE_H_

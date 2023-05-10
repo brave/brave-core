@@ -5,7 +5,7 @@
 
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 
 #import "ads_client_bridge.h"
@@ -24,7 +24,6 @@
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/ad_content_action_types.h"
 #include "brave/components/brave_ads/core/ad_content_info.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 #include "brave/components/brave_ads/core/ad_event_history.h"
@@ -41,7 +40,7 @@
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
-#import "brave/ios/browser/api/ads/ads.mojom.objc+private.h"
+#import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
 #include "build/build_config.h"
@@ -189,6 +188,15 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
            selector:@selector(applicationDidBackground)
                name:UIApplicationDidEnterBackgroundNotification
              object:nil];
+
+    const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
+    adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
+
+    adEventHistory = new brave_ads::AdEventHistory();
+
+    adsClient = new AdsClientIOS(self);
+    adsClientNotifier = new brave_ads::AdsClientNotifier();
+    ads = brave_ads::Ads::CreateInstance(adsClient);
   }
   return self;
 }
@@ -232,19 +240,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
                    completion:(void (^)(bool))completion {
-  if ([self isAdsServiceRunning]) {
-    completion(false);  // Already running
-    return;
-  }
-
-  const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
-  adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
-
-  adEventHistory = new brave_ads::AdEventHistory();
-
-  adsClient = new AdsClientIOS(self);
-  adsClientNotifier = new brave_ads::AdsClientNotifier();
-  ads = brave_ads::Ads::CreateInstance(adsClient);
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();
   ads->SetSysInfo(std::move(cppSysInfo));
@@ -1198,9 +1193,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     callback:(brave_ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    std::move(callback).Run(/*success*/ false, /*value*/ {});
+    std::move(callback).Run(/*value*/ absl::nullopt);
   } else {
-    std::move(callback).Run(/*success*/ true, contents);
+    std::move(callback).Run(contents);
   }
 }
 

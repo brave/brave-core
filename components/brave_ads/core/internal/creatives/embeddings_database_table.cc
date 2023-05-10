@@ -10,9 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -24,11 +22,11 @@ namespace {
 
 constexpr char kTableName[] = "embeddings";
 
-int BindParameters(mojom::DBCommandInfo* command,
-                   const CreativeAdList& creative_ads) {
-  DCHECK(command);
+size_t BindParameters(mojom::DBCommandInfo* command,
+                      const CreativeAdList& creative_ads) {
+  CHECK(command);
 
-  int count = 0;
+  size_t count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
@@ -44,19 +42,14 @@ int BindParameters(mojom::DBCommandInfo* command,
 }
 
 void MigrateToV27(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  const std::string query =
-      "CREATE TABLE IF NOT EXISTS embeddings"
-      "(creative_set_id TEXT NOT NULL, "
-      "embedding TEXT NOT NULL, "
-      "PRIMARY KEY (creative_set_id), "
-      "UNIQUE(creative_set_id) ON CONFLICT REPLACE)";
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql =
+      "CREATE TABLE IF NOT EXISTS embeddings (creative_set_id TEXT NOT NULL, "
+      "embedding TEXT NOT NULL, PRIMARY KEY (creative_set_id), "
+      "UNIQUE(creative_set_id) ON CONFLICT REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -64,7 +57,7 @@ void MigrateToV27(mojom::DBTransactionInfo* transaction) {
 
 void Embeddings::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                 const CreativeAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (creative_ads.empty()) {
     return;
@@ -72,28 +65,37 @@ void Embeddings::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
-
+  command->sql = BuildInsertOrUpdateSql(&*command, creative_ads);
   transaction->commands.push_back(std::move(command));
 }
 
 void Embeddings::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  DeleteTable(transaction.get(), GetTableName());
+  DeleteTable(&*transaction, GetTableName());
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 std::string Embeddings::GetTableName() const {
   return kTableName;
 }
 
+void Embeddings::Create(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE embeddings (creative_set_id TEXT NOT NULL, "
+      "embedding TEXT NOT NULL, PRIMARY KEY (creative_set_id), "
+      "UNIQUE(creative_set_id) ON CONFLICT REPLACE);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void Embeddings::Migrate(mojom::DBTransactionInfo* transaction,
                          const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 27: {
@@ -109,15 +111,15 @@ void Embeddings::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string Embeddings::BuildInsertOrUpdateQuery(
+std::string Embeddings::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
-  const int binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (creative_set_id, embedding) VALUES $2",
+      "INSERT OR REPLACE INTO $1 (creative_set_id, embedding) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 2, binded_parameters_count)},
       nullptr);

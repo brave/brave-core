@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_KEYRING_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_KEYRING_H_
@@ -25,6 +25,9 @@ class SolanaKeyring : public HDKeyring {
                           const std::string& hd_path) override;
 
   std::string ImportAccount(const std::vector<uint8_t>& keypair) override;
+
+  std::vector<uint8_t> SignMessage(const std::string& address,
+                                   const std::vector<uint8_t>& message);
 
   static absl::optional<std::string> CreateProgramDerivedAddress(
       const std::vector<std::vector<uint8_t>>& seeds,

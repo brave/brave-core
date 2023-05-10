@@ -52,7 +52,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
     CreativeDaypartList creative_dayparts;
     for (const auto& daypart : campaign.dayparts) {
       CreativeDaypartInfo creative_daypart;
-      creative_daypart.dow = daypart.dow;
+      creative_daypart.days_of_week = daypart.days_of_week;
       creative_daypart.start_minute = daypart.start_minute;
       creative_daypart.end_minute = daypart.end_minute;
 
@@ -92,7 +92,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
         creative_ad.ptr = campaign.ptr;
-        creative_ad.conversion = !creative_set.conversions.empty();
+        creative_ad.has_conversion = !creative_set.conversions.empty();
         creative_ad.per_day = creative_set.per_day;
         creative_ad.per_week = creative_set.per_week;
         creative_ad.per_month = creative_set.per_month;
@@ -110,7 +110,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         // Segments
         for (const auto& segment : creative_set.segments) {
           const std::string segment_name = base::ToLowerASCII(segment.name);
-          DCHECK(!segment_name.empty());
+          CHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -129,7 +129,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
-          DCHECK(!top_level_segment_name.empty());
+          CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
             creative_ad.segment = top_level_segment_name;
@@ -157,7 +157,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
         creative_ad.ptr = campaign.ptr;
-        creative_ad.conversion = !creative_set.conversions.empty();
+        creative_ad.has_conversion = !creative_set.conversions.empty();
         creative_ad.per_day = creative_set.per_day;
         creative_ad.per_week = creative_set.per_week;
         creative_ad.per_month = creative_set.per_month;
@@ -177,7 +177,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         // Segments
         for (const auto& segment : creative_set.segments) {
           const std::string segment_name = base::ToLowerASCII(segment.name);
-          DCHECK(!segment_name.empty());
+          CHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -196,7 +196,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
-          DCHECK(!top_level_segment_name.empty());
+          CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
             creative_ad.segment = top_level_segment_name;
@@ -223,7 +223,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = !creative_set.conversions.empty();
+        info.has_conversion = !creative_set.conversions.empty();
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
@@ -238,7 +238,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.image_url = creative.payload.image_url;
         info.alt = creative.payload.alt;
 
-        DCHECK(!creative.payload.wallpapers.empty());
+        CHECK(!creative.payload.wallpapers.empty());
         for (const auto& catalog_new_tab_page_ad_wallpaper :
              creative.payload.wallpapers) {
           CreativeNewTabPageAdWallpaperInfo wallpaper;
@@ -256,7 +256,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         // Segments
         for (const auto& segment : creative_set.segments) {
           const std::string segment_name = base::ToLowerASCII(segment.name);
-          DCHECK(!segment_name.empty());
+          CHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -275,7 +275,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
-          DCHECK(!top_level_segment_name.empty());
+          CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
             info.segment = top_level_segment_name;
@@ -302,7 +302,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion = !creative_set.conversions.empty();
+        info.has_conversion = !creative_set.conversions.empty();
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
@@ -319,7 +319,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         // Segments
         for (const auto& segment : creative_set.segments) {
           const std::string segment_name = base::ToLowerASCII(segment.name);
-          DCHECK(!segment_name.empty());
+          CHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -338,7 +338,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
-          DCHECK(!top_level_segment_name.empty());
+          CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
             info.segment = top_level_segment_name;

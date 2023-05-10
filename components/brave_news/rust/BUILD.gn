@@ -16,3 +16,14 @@ rust_crate("rust_lib") {
 rust_cxx("rust-rs") {
   input = [ "lib.rs" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "rust_strip_html_unittest.cc" ]
+
+  deps = [
+    ":rust-rs",
+    "//testing/gtest",
+  ]
+}

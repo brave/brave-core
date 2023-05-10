@@ -10,7 +10,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
@@ -37,7 +37,7 @@ SearchResultAd::~SearchResultAd() = default;
 void SearchResultAd::TriggerEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (event_type == mojom::SearchResultAdEventType::kViewed) {
     ad_viewed_event_queue_.push_front(std::move(ad_mojom));
@@ -54,14 +54,14 @@ void SearchResultAd::TriggerEvent(
 
 // static
 void SearchResultAd::DeferTriggeringOfAdViewedEventForTesting() {
-  DCHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
+  CHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
   g_defer_triggering_of_ad_viewed_event_for_testing = true;
 }
 
 // static
 void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
-  DCHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
-  DCHECK(g_deferred_search_result_ad_for_testing);
+  CHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
+  CHECK(g_deferred_search_result_ad_for_testing);
   g_defer_triggering_of_ad_viewed_event_for_testing = false;
   g_deferred_search_result_ad_for_testing
       ->trigger_ad_viewed_event_in_progress_ = false;
@@ -72,8 +72,8 @@ void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
-  DCHECK((!ad_viewed_event_queue_.empty() ||
-          !trigger_ad_viewed_event_in_progress_));
+  CHECK((!ad_viewed_event_queue_.empty() ||
+         !trigger_ad_viewed_event_in_progress_));
 
   if (ad_viewed_event_queue_.empty() || trigger_ad_viewed_event_in_progress_) {
     return;
@@ -84,18 +84,18 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
       std::move(ad_viewed_event_queue_.back());
   ad_viewed_event_queue_.pop_back();
 
-  event_handler_.FireEvent(std::move(ad_mojom),
-                           mojom::SearchResultAdEventType::kViewed,
-                           base::BindOnce(&SearchResultAd::OnFireAdViewedEvent,
-                                          weak_factory_.GetWeakPtr()));
+  event_handler_.FireEvent(
+      std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed,
+      base::BindOnce(&SearchResultAd::FireAdViewedEventCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void SearchResultAd::OnFireAdViewedEvent(
+void SearchResultAd::FireAdViewedEventCallback(
     const bool /*success*/,
     const std::string& /*placement_id*/,
     const mojom::SearchResultAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-  DCHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewed);
+  CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewed);
 
   if (g_defer_triggering_of_ad_viewed_event_for_testing) {
     g_deferred_search_result_ad_for_testing = this;
@@ -105,14 +105,16 @@ void SearchResultAd::OnFireAdViewedEvent(
   MaybeTriggerAdViewedEventFromQueue();
 }
 
-void SearchResultAd::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
+void SearchResultAd::OnDidFireSearchResultAdViewedEvent(
+    const SearchResultAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
 }
 
-void SearchResultAd::OnSearchResultAdClicked(const SearchResultAdInfo& ad) {
+void SearchResultAd::OnDidFireSearchResultAdClickedEvent(
+    const SearchResultAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);

@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#fff">
+  <title>$i18n{tabTitle}</title>
+  <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_core.css">
+  <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_common.css">
+  <link rel="stylesheet" href="request_otr_interstitial.css">
+  <script src="../../../../ui/webui/resources/js/util_deprecated.js"></script>
+  <script src="../../../../components/security_interstitials/core/common/resources/interstitial_common.js"></script>
+  <script src="request_otr_interstitial.js"></script>
+</head>
+<body id="body" class="requestotr">
+  <div class="interstitial-wrapper">
+    <div id="main-content">
+      <div class="icon" id="icon"></div>
+      <div id="main-message">
+         <h1>$i18nRaw{heading}</h1>
+         <p id="primary-paragraph">$i18nRaw{primaryParagraph}</p>
+         <pre id="domain">$i18nRaw{domain}</pre>
+         <p>$i18nRaw{explanationParagraph}</p>
+      </div>
+      <div id="never-ask-again">
+          <label id="never-ask-again-label">
+              <input type="checkbox" id="never-ask-again-checkbox">
+              $i18nRaw{neverAskAgainText}
+          </label>
+          <p id="never-ask-again-explanation-paragraph">$i18nRaw{neverAskAgainExplanationText}</p>
+      </div>
+    </div>
+    <div class="nav-wrapper">
+      <button id="primary-button" class="primary-button">$i18n{proceedOTRText}</button>
+      <button id="back-button" class="secondary-button">$i18n{proceedText}</button>
+    </div>
+  </div>
+</body>

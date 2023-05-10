@@ -57,9 +57,9 @@ source_set("browser") {
     "ads_service_impl.cc",
     "ads_service_impl.h",
     "ads_tooltips_delegate.h",
+    "bat_ads_service_factory.h",
     "device_id.cc",
     "device_id.h",
-    "service_sandbox_type.h",
   ]
 
   deps += [

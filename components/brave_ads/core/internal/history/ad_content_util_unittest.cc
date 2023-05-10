@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_content_util.h"
 
-#include "brave/components/brave_ads/core/ad_content_action_types.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -48,7 +48,7 @@ TEST_F(BraveAdsAdContentUtilTest, Build) {
   expected_ad_content.brand_info = kDescription;
   expected_ad_content.brand_display_url = ad.target_url.host();
   expected_ad_content.brand_url = ad.target_url;
-  expected_ad_content.like_action_type = AdContentLikeActionType::kNeutral;
+  expected_ad_content.user_reaction_type = mojom::UserReactionType::kNeutral;
   expected_ad_content.confirmation_type = ConfirmationType::kViewed;
 
   EXPECT_EQ(expected_ad_content, ad_content);

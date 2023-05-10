@@ -5,14 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
+#include <limits>
+
+#include "base/numerics/ranges.h"
 
 namespace brave_ads {
 
 bool operator==(const UserActivityTriggerInfo& lhs,
                 const UserActivityTriggerInfo& rhs) {
   return lhs.event_sequence == rhs.event_sequence &&
-         DoubleEquals(lhs.score, rhs.score);
+         base::IsApproximatelyEqual(lhs.score, rhs.score,
+                                    std::numeric_limits<double>::epsilon());
 }
 
 bool operator!=(const UserActivityTriggerInfo& lhs,

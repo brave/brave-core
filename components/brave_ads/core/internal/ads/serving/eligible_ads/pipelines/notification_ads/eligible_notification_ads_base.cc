@@ -5,17 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
-EligibleAdsBase::EligibleAdsBase(
+EligibleNotificationAdsBase::EligibleNotificationAdsBase(
     const SubdivisionTargeting& subdivision_targeting,
-    const resource::AntiTargeting& anti_targeting_resource)
+    const AntiTargetingResource& anti_targeting_resource)
     : subdivision_targeting_(subdivision_targeting),
       anti_targeting_resource_(anti_targeting_resource) {}
 
-EligibleAdsBase::~EligibleAdsBase() = default;
+EligibleNotificationAdsBase::~EligibleNotificationAdsBase() = default;
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

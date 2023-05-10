@@ -40,7 +40,7 @@ TextProcessing& TextProcessing::operator=(TextProcessing&& other) noexcept =
 TextProcessing::~TextProcessing() = default;
 
 TextProcessing::TextProcessing(TransformationVector transformations,
-                               model::Linear linear_model)
+                               LinearModel linear_model)
     : is_initialized_(true) {
   linear_model_ = std::move(linear_model);
   transformations_ = std::move(transformations);
@@ -71,8 +71,8 @@ PredictionMap TextProcessing::Apply(
     const std::unique_ptr<Data>& input_data) const {
   const size_t transformation_count = transformations_.size();
 
-  if (!transformation_count) {
-    DCHECK(input_data->GetType() == DataType::kVector);
+  if (transformation_count == 0) {
+    CHECK(input_data->GetType() == DataType::kVector);
     const VectorData* const vector_data =
         static_cast<VectorData*>(input_data.get());
     return linear_model_.GetTopPredictions(*vector_data);
@@ -83,7 +83,7 @@ PredictionMap TextProcessing::Apply(
     current_data = transformations_[i]->Apply(current_data);
   }
 
-  DCHECK(current_data->GetType() == DataType::kVector);
+  CHECK(current_data->GetType() == DataType::kVector);
   const VectorData* const vector_data =
       static_cast<VectorData*>(current_data.get());
   return linear_model_.GetTopPredictions(*vector_data);

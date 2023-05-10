@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_rewards/common/mojom/ledger_endpoints.mojom.h"
-#include "brave/components/brave_rewards/core/endpoints/request_builder.h"
+#include "brave/components/brave_rewards/core/endpoints/get_transaction_status/get_transaction_status.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -100,41 +100,30 @@
 //   "type": "transfer"
 // }
 
-namespace ledger {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class GetTransactionStatusUphold;
 
 template <>
 struct ResultFor<GetTransactionStatusUphold> {
-  using Value = bool;  // transaction completed
+  using Value = void;  // transaction completed
   using Error = mojom::GetTransactionStatusUpholdError;
 };
 
 class GetTransactionStatusUphold final
-    : public RequestBuilder,
+    : public GetTransactionStatus,
       public ResponseHandler<GetTransactionStatusUphold> {
  public:
+  using GetTransactionStatus::GetTransactionStatus;
+
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  GetTransactionStatusUphold(LedgerImpl& ledger,
-                             std::string&& token,
-                             std::string&& transaction_id);
-  ~GetTransactionStatusUphold() override;
-
  private:
-  std::string token_;
-  std::string transaction_id_;
-
   absl::optional<std::string> Url() const override;
-  mojom::UrlMethod Method() const override;
   absl::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
 };
 
-}  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_UPHOLD_GET_TRANSACTION_STATUS_GET_TRANSACTION_STATUS_UPHOLD_H_

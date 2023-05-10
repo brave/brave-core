@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/common/solana_address.h"
 
@@ -30,8 +30,9 @@ bool SolanaAddress::operator!=(const SolanaAddress& other) const {
 // static
 absl::optional<SolanaAddress> SolanaAddress::FromBytes(
     base::span<const uint8_t> bytes) {
-  if (bytes.size() != kSolanaPubkeySize)
+  if (bytes.size() != kSolanaPubkeySize) {
     return absl::nullopt;
+  }
 
   return SolanaAddress(bytes);
 }
@@ -39,8 +40,9 @@ absl::optional<SolanaAddress> SolanaAddress::FromBytes(
 // static
 absl::optional<SolanaAddress> SolanaAddress::FromBytes(
     std::vector<uint8_t> bytes) {
-  if (bytes.size() != kSolanaPubkeySize)
+  if (bytes.size() != kSolanaPubkeySize) {
     return absl::nullopt;
+  }
 
   return SolanaAddress(std::move(bytes));
 }
@@ -49,8 +51,9 @@ absl::optional<SolanaAddress> SolanaAddress::FromBytes(
 absl::optional<SolanaAddress> SolanaAddress::FromBase58(
     const std::string& base58_string) {
   std::vector<uint8_t> bytes;
-  if (!Base58Decode(base58_string, &bytes, kSolanaPubkeySize))
+  if (!Base58Decode(base58_string, &bytes, kSolanaPubkeySize)) {
     return absl::nullopt;
+  }
 
   return SolanaAddress(std::move(bytes));
 }

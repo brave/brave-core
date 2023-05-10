@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 
@@ -34,8 +34,9 @@ static_assert(std::size(kRecordKeys) ==
 }  // namespace
 
 GURL ResolveUrl(const std::vector<std::string>& response) {
-  if (response.size() != GetRecordKeys().size())
+  if (response.size() != GetRecordKeys().size()) {
     return GURL();
+  }
 
   // TODO(jocelyn): Do not fallback to the set redirect URL if dns.A or
   // dns.AAAA is not empty once we support the classical DNS records case.

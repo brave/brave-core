@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 
@@ -12,10 +12,10 @@
 #include <vector>
 
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -196,9 +196,9 @@ class EthTxManagerUnitTest : public testing::Test {
                                                ->at(0)
                                                .As<network::DataElementBytes>()
                                                .AsStringPiece());
-          absl::optional<base::Value> request_value =
-              base::JSONReader::Read(request_string);
-          std::string* method = request_value->FindStringKey("method");
+          base::Value::Dict request_value =
+              base::test::ParseJsonDict(request_string);
+          std::string* method = request_value.FindString("method");
           ASSERT_TRUE(method);
 
           if (*method == "eth_estimateGas") {
@@ -256,8 +256,9 @@ class EthTxManagerUnitTest : public testing::Test {
         shared_url_loader_factory_, &profile_prefs_);
     keyring_service_ = std::make_unique<KeyringService>(
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
-    tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), keyring_service_.get(), &profile_prefs_);
+    tx_service_ =
+        std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
+                                    keyring_service_.get(), &profile_prefs_);
 
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();

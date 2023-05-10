@@ -18,18 +18,19 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-void BuildConversion(const std::string& creative_instance_id,
-                     BuildConversionCallback callback) {
-  DCHECK(!creative_instance_id.empty());
+void BuildVerifiableConversionUserData(
+    const std::string& creative_instance_id,
+    BuildVerifiableConversionUserDataCallback callback) {
+  CHECK(!creative_instance_id.empty());
 
   const database::table::ConversionQueue database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(
-          [](BuildConversionCallback callback, const bool success,
-             const std::string& /*creative_instance_id*/,
+          [](BuildVerifiableConversionUserDataCallback callback,
+             const bool success, const std::string& /*creative_instance_id*/,
              const ConversionQueueItemList& conversion_queue_items) {
             if (!success) {
               return std::move(callback).Run(/*user_data*/ {});
@@ -41,16 +42,16 @@ void BuildConversion(const std::string& creative_instance_id,
 
             const ConversionQueueItemInfo& conversion_queue_item =
                 conversion_queue_items.front();
-            const absl::optional<security::VerifiableConversionEnvelopeInfo>
+            const absl::optional<VerifiableConversionEnvelopeInfo>
                 verifiable_conversion_envelope =
-                    GetEnvelope(conversion_queue_item);
+                    MaybeBuildVerifiableConversionEnvelope(
+                        conversion_queue_item);
             if (!verifiable_conversion_envelope) {
               return std::move(callback).Run(/*user_data*/ {});
             }
 
             base::Value::Dict dict;
-            dict.Set(kVerifiableConversionEnvelopeAlgorithmKey,
-                     security::GetAlgorithm());
+            dict.Set(kVerifiableConversionEnvelopeAlgorithmKey, GetAlgorithm());
             dict.Set(kVerifiableConversionEnvelopeCipherTextKey,
                      verifiable_conversion_envelope->ciphertext);
             dict.Set(kVerifiableConversionEnvelopeEphemeralPublicKeyKey,
@@ -66,4 +67,4 @@ void BuildConversion(const std::string& creative_instance_id,
           std::move(callback)));
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

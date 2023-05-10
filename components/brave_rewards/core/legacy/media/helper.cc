@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 
-namespace braveledger_media {
+namespace brave_rewards::internal {
 
 std::string GetMediaKey(const std::string& mediaId, const std::string& type) {
   if (mediaId.empty() || type.empty()) {
@@ -46,4 +46,4 @@ std::string ExtractData(const std::string& data,
   return match;
 }
 
-}  // namespace braveledger_media
+}  // namespace brave_rewards::internal

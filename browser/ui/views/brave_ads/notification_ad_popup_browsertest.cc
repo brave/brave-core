@@ -3,25 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/files/file_path.h"
-#include "base/run_loop.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/browser/ui/brave_ads/notification_ad_popup_handler.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_collection.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/test/views/snapshot/widget_snapshot_checker.h"
 #include "chrome/browser/platform_util.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "ui/gfx/native_widget_types.h"
-#include "ui/views/widget/widget.h"
 
 // npm run test -- brave_browser_tests --filter=NotificationAdPopupBrowserTest.*
 
@@ -30,7 +25,7 @@ namespace brave_ads {
 class NotificationAdPopupBrowserTest : public InProcessBrowserTest {
  public:
   NotificationAdPopupBrowserTest() {
-    feature_list_.InitAndEnableFeature(features::kCustomNotificationAds);
+    feature_list_.InitAndEnableFeature(kCustomNotificationAdFeature);
   }
 
   void SetUp() override {

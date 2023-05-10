@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_key_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature_unittest_util.h"
@@ -18,7 +19,9 @@ namespace {
 constexpr char kMessage[] = "The quick brown fox jumps over the lazy dog";
 }  // namespace
 
-TEST(BraveAdsVerificationKeyTest, Sign) {
+class BraveAdsVerificationKeyTest : public UnitTestBase {};
+
+TEST_F(BraveAdsVerificationKeyTest, Sign) {
   // Arrange
   VerificationKey verification_key = GetVerificationKey();
 
@@ -31,7 +34,7 @@ TEST(BraveAdsVerificationKeyTest, Sign) {
   EXPECT_EQ(GetVerificationSignature(), *verification_signature);
 }
 
-TEST(BraveAdsVerificationKeyTest, Verify) {
+TEST_F(BraveAdsVerificationKeyTest, Verify) {
   // Arrange
   VerificationKey verification_key = GetVerificationKey();
 
@@ -40,8 +43,8 @@ TEST(BraveAdsVerificationKeyTest, Verify) {
   EXPECT_TRUE(verification_key.Verify(GetVerificationSignature(), kMessage));
 }
 
-TEST(BraveAdsVerificationKeyTest,
-     FailToVerifyWithInvalidVerificationSignature) {
+TEST_F(BraveAdsVerificationKeyTest,
+       FailToVerifyWithInvalidVerificationSignature) {
   // Arrange
   VerificationKey verification_key = GetVerificationKey();
 

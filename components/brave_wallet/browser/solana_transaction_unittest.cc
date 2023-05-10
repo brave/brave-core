@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 
@@ -223,8 +223,9 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   std::vector<uint8_t> message_bytes;
   ASSERT_TRUE(Base58Decode(sign_tx_param->encoded_serialized_msg,
                            &message_bytes, kSolanaMaxTxSize, false));
-  std::vector<uint8_t> signature = keyring_service()->SignMessage(
-      mojom::kSolanaKeyringId, kFromAccount, message_bytes);
+  std::vector<uint8_t> signature =
+      keyring_service()->SignMessageBySolanaKeyring(kFromAccount,
+                                                    message_bytes);
   expected_bytes.insert(expected_bytes.end(), signature.begin(),
                         signature.end());
   expected_bytes.insert(expected_bytes.end(), test_sig2.begin(),
@@ -895,8 +896,9 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
       Base58Encode(*seriazlied_msg), std::move(sig_key_pairs)));
 
   expect_signed_tx_bytes = {2};  // 2 signatures
-  std::vector<uint8_t> selected_account_sig = keyring_service()->SignMessage(
-      mojom::kSolanaKeyringId, kFromAccount, *seriazlied_msg);
+  std::vector<uint8_t> selected_account_sig =
+      keyring_service()->SignMessageBySolanaKeyring(kFromAccount,
+                                                    *seriazlied_msg);
   expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
                                 passed_sig_bytes.begin(),
                                 passed_sig_bytes.end());

@@ -280,8 +280,8 @@ SolanaTransaction::GetSignedTransactionBytes(
                                  selected_account_signature->begin(),
                                  selected_account_signature->end());
       } else {
-        std::vector<uint8_t> signature = keyring_service->SignMessage(
-            mojom::kSolanaKeyringId, signer, message_bytes);
+        std::vector<uint8_t> signature =
+            keyring_service->SignMessageBySolanaKeyring(signer, message_bytes);
         transaction_bytes.insert(transaction_bytes.end(), signature.begin(),
                                  signature.end());
       }

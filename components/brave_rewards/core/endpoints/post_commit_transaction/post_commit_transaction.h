@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoints {
@@ -30,6 +30,6 @@ class PostCommitTransaction : public RequestBuilder {
 };
 
 }  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_COMMIT_TRANSACTION_POST_COMMIT_TRANSACTION_H_

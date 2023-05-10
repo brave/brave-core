@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Po ukončení zavřít karty</translation>
 <translation id="4448697385961650078">Blokovat sledování &amp; ads</translation>
 <translation id="2448893613530489637">Zabraňuje načítání a zobrazování sledovacích &amp; reklam na webových stránkách</translation>
+<translation id="1025207378813960343">Zajistit, aby připojení k webovým stránkám byla bezpečná.</translation>
+<translation id="6686219838158572786">Požadovat, aby všechna připojení používala protokol HTTPS (striktní)</translation>
+<translation id="4221284400051835823">Použít HTTPS, kdykoli je to možné (výchozí nastavení)</translation>
+<translation id="4690906712010847708">Neupgradovat připojení na HTTPS (vypnuto)</translation>
 <translation id="1680858055899097121">Nesetrvávat v kartách mezi relacemi prohlížení</translation>
 <translation id="7142548388914389999">Umožnit analýzu produktů se zachováním soukromí (P3A)</translation>
 <translation id="5254037869598726291">Anonymizované informace P3A pomáhají společnosti Brave odhadnout celkové využití a zajistit, abychom mohli oblíbené funkce stále vylepšovat.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Automatické přehrávání</translation>
 <translation id="7445411102860286510">Povolit webům automaticky přehrávat ztlumená videa (doporučeno)</translation>
 <translation id="7837721118676387834">Povolit automatické přehrávání ztlumených videí na konkrétním webu.</translation>
+<translation id="4206299587103092719">Přihlášení Google</translation>
+<translation id="9110294136812584522">Stránky vás pomohou požádat, abyste použili starší službu přihlášení Google, prostřednictvím souborů cookie třetích stran.</translation>
+<translation id="2903783737778379345">Starší službu přihlášení Google nepouživejte prostřednictvím souborů cookie třetích stran.</translation>
+<translation id="6880817299303842099">Je povoleno používání souborů cookie třetích stran pro starší službu přihlášení Google.</translation>
 <translation id="181905442828471321">Společnost Brave chrání globální výchozí nastavení</translation>
 <translation id="2675679258824361492">Ostatní nastavení ochrany osobních údajů</translation>
 <translation id="8026334261755873520">Vymazat údaje o prohlížení</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Automaticky posíláte příspěvek:</translation>
 <translation id="1628742278973105368">Váš první měsíční příspěvek bude odeslán:</translation>
 <translation id="1642952941091001113">Tento tvůrce se zatím nepřihlásil k přijímání příspěvků od uživatelů Brave. Budeme se snažit přispívat, dokud to neověří nebo dokud neuplyne 90 dní.</translation>
-<translation id="635752162765375187">POZNÁMKA: Nastavení tohoto tvůrce nejsou v této chvíli konfigurována tak, aby mohl přijímat příspěvky z Odměn ve vaší svěřené peněžence. Pokus o jakékoli odeslání příspěvku se bude po dobu 90 dnů automaticky opakovat.</translation>
+<translation id="8228150955416632026">Jste připojeni k poskytovateli <ph name="WALLET_PROVIDER"/>, ale tento autor je připojen k poskytovateli <ph name="SUPPORTED_WALLET_PROVIDER"/>. To znamená, že váš příspěvek se k autorovi nemůže dostat. Prozatím zůstanou všechny vaše příspěvky ve stavu čekání a pokus přispět se bude automaticky opakovat po dobu 90 dnů.</translation>
 <translation id="1910721550319506122">Vítejte!</translation>
 <translation id="2734870894159530879">Pro zobrazení zůstatku se přihlaste k účtu <ph name="WALLET_PROVIDER"/></translation>
 <translation id="5830114181292529917">Tuto stránku můžete podpořit zasláním tipu. Je to způsob, jak jim poděkovat za vytváření skvělého obsahu.</translation>
@@ -610,6 +618,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
 <translation id="3995184924764722477">Detaily účtu</translation>
 <translation id="8967036623785635603">Upravit viditelné položky</translation>
+<translation id="8475984867371585028">Upravit viditelné NFT</translation>
 <translation id="5050890334032852465">Uložit seznam sledování účtu</translation>
 <translation id="7755766175599167100">Hledat tokeny</translation>
 <translation id="3835223348537121988">Zůstatek:</translation>
@@ -1046,4 +1055,78 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1776742005329298234">Dne <ph name="DUE_DATE"/> ukončíme podporu stávajících zůstatků virtuálních tokenů BAT. Připojte si před tímto datem účet se správcem, abychom na něj mohli váš zůstatek převést, jinak vydělané tokeny ztratíte.</translation>
 <translation id="5089752671190341407">Stále máte čas přispět přispět své tokeny vBAT svým oblíbeným autorům</translation>
 <translation id="171158953146804144">Dne <ph name="DUE_DATE"/> ukončíme podporu stávajících zůstatků virtuálních tokenů BAT. Bohužel ve vašem regionu (<ph name="REGION"/>) nejsou k dispozici žádní správci, ke kterým bychom vám mohli vaše tokeny převést. Do té doby můžete stále přispívat svým oblíbeným tvůrcům.</translation>
+<translation id="8949422576126100041">Zobrazit stránku v režimu rychlého čtení?</translation>
+<translation id="591648995518106347">Automaticky zobrazit vhodné články v režimu čtečky</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> na síti <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Seznam stop Brave</translation>
+<translation id="4850886885716139402">Zobrazit</translation>
+<translation id="7392941176393379100">Přidáno do '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Správa dat seznamu stop</translation>
+<translation id="7650602357673790368">Ve výchozím nastavení seznamy stop automaticky ukládají obsah do zařízení pro přehrávání offline (soukromé i sdílené seznamy). Pokud nejste připojeni k Wi-Fi, bude automatické ukládání používat mobilní data.\n\nV nastaveních můžete toto výchozí nastavení změnit.</translation>
+<translation id="5900576657906675258">Přidat položku do seznamu stop</translation>
+<translation id="349846214503465941">Aktivovat seznam stop</translation>
+<translation id="1309636029062006520">Vytvořte si seznamy stop z oblíbených audio a video záznamů a přehrávejte si je kdykoli a kdekoli.</translation>
+<translation id="7899390017499980820">Tlačítko Přidat do seznamu stop</translation>
+<translation id="6901152954398668317">Zobrazí nebo skryje tlačítko „Přidat do seznamu stop“ pro rychlý přístup k přidání nebo odebrání médií.</translation>
+<translation id="8404028031709373707">Automatické přehrávání</translation>
+<translation id="597781019681241649">Při otevření seznamu stop zapne automatické přehrávání.</translation>
+<translation id="2625554376218216118">Spustit přehrávání tam, kde skončilo</translation>
+<translation id="2953730196265332002">Automaticky synchronizovat všechny změny, které autor provede ve sdíleném seznamu stop.</translation>
+<translation id="3561815498111282415">Automatické ukládání pro přehrávání offline</translation>
+<translation id="1832424694374124654">Automaticky ukládat nové položky seznamů stop do zařízení, abyste je mohli přehrávat i bez připojení k internetu.</translation>
+<translation id="8103022210423023846">Automatické ukládání zapnuto</translation>
+<translation id="3926329432879804185">Automatické ukládání vypnuto</translation>
+<translation id="7768812595186089508">Automaticky ukládat pouze s Wi-Fi připojením</translation>
+<translation id="5939518447894949180">Reset</translation>
+<translation id="8199028711686989861">Odstranit všechna videa ze seznamu stop, včetně úložiště pro přehrávání offline.</translation>
+<translation id="5916664084637901428">Zapnuto</translation>
+<translation id="5860033963881614850">Vypnuto</translation>
+<translation id="2920568868625746681">Pouze Wi-Fi</translation>
+<translation id="4590997608186539865">Seznam stop</translation>
+<translation id="7525067979554623046">Vytvořit</translation>
+<translation id="5491049004699827548">Vytvoření prvního seznamu stop</translation>
+<translation id="5319108110887582146">Vytvořte si seznam stop z oblíbených audio a video záznamů a přehrávejte si je kdykoli a kdekoli. Dokonce i offline.</translation>
+<translation id="6802849415466883498">Vytvořit seznam stop</translation>
+<translation id="8525248723479742219">Přehrát později</translation>
+<translation id="7453007860684252933">Procházet a přidávat</translation>
+<translation id="9014883386413828317">Přidejte si to, co máte rádi. V pravé dolní části obrazovky je tlačítko ( + ).</translation>
+<translation id="5928669500312007783">Procházet média</translation>
+<translation id="8152485753254079984">Nový seznam stop</translation>
+<translation id="9130105487623071247">Název seznamu stop</translation>
+<translation id="726581235416249619">Seznam stop bez názvu</translation>
+<translation id="1456254983411148628">Odstranit data</translation>
+<translation id="2365883822666964139">Vybraných: <ph name="NUMBER"/></translation>
+<translation id="8617390509150638117">Položek: <ph name="NUMBER"/></translation>
+<translation id="2317629745818459803">Přehrát vše</translation>
+<translation id="7544853251252956727">Přehrávat náhodně</translation>
+<translation id="2881339830231736485">Nedávno přehrávané</translation>
+<translation id="7636458383879257005">Klepněte, dlouze stiskněte nebo přetáhněte</translation>
+<translation id="8120600068258956006">Přidat do seznamu stop</translation>
+<translation id="39991094779686024">Seznamy stop</translation>
+<translation id="1710072605877822603">Přidat média</translation>
+<translation id="903678009070770568">Přidejte si videa do seznamu stop Brave. Budete je moci později kdykoli sledovat, dokonce i offline</translation>
+<translation id="3063627607780392015">Jste mimo dosah mobilních dat? Potřebujete uklidnit plačící batole?</translation>
+<translation id="2041014734809158138">Ať už jste v oblasti bez signálu nebo letíte letadlem, seznam stop vás nenechá na holičkách.</translation>
+<translation id="7287143275037417932">Nebo klepněte na tlačítko Seznam stop, když se zobrazí</translation>
+<translation id="6959838938954098206">Tlačítko Seznam stop se zobrazí, když je možné přidat média. Dlouhým stisknutím si zobrazíte možnosti. Můžete jej i skrýt.</translation>
+<translation id="3620862810055853183">Otevřít seznam stop</translation>
+<translation id="3861012838874771868">Otevřít nastavení seznamu stop</translation>
+<translation id="5220099266891491416">Skrýt tlačítko Seznam stop</translation>
+<translation id="7416347631175891923">Zkuste to!</translation>
+<translation id="1173894706177603556">Přejmenovat</translation>
+<translation id="1620612903815671893">Odstranit offline data seznamu stop</translation>
+<translation id="3261711068865275261">Odstranit všechna offline data</translation>
+<translation id="6653691766801349738">Připravit seznam stop pro použití offline</translation>
+<translation id="8708086574143054053">Připravit všechny seznamy stop pro použití offline</translation>
+<translation id="3596306474342941843">Odstranit seznam stop</translation>
+<translation id="7765158879357617694">Přesunout</translation>
+<translation id="3803384303807438047">Odstranit offline data položky</translation>
+<translation id="4195643157523330669">Otevřít na nové kartě</translation>
+<translation id="4243710787042215766">Otevřít v soukromé kartě</translation>
+<translation id="8261506727792406068">Smazat</translation>
+<translation id="377872456482681602">Nejprve vyberte položky</translation>
+<translation id="6172429305139364624">Položka seznamu stop není uložena.\nUložte položku pro použití offline.</translation>
+<translation id="3631131732607750008">Vypršela platnost obsahu. Zkuste to znovu za několik sekund.</translation>
+<translation id="9085765419770918643">Zatím tady nejsou žádná NFT.</translation>
+<translation id="8445532667841598737">Jste připraveni nějaká přidat? Import provede kliknutím na tlačítko níže.</translation>
 </translationbundle>

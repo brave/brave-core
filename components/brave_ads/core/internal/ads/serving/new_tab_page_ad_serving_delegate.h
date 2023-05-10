@@ -12,9 +12,7 @@ namespace brave_ads {
 
 struct NewTabPageAdInfo;
 
-namespace new_tab_page_ads {
-
-class ServingDelegate {
+class NewTabPageAdServingDelegate {
  public:
   // Invoked when an opportunity arises to serve a new tab page ad for the
   // |segments|.
@@ -28,10 +26,9 @@ class ServingDelegate {
   virtual void OnFailedToServeNewTabPageAd() {}
 
  protected:
-  virtual ~ServingDelegate() = default;
+  virtual ~NewTabPageAdServingDelegate() = default;
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_NEW_TAB_PAGE_AD_SERVING_DELEGATE_H_

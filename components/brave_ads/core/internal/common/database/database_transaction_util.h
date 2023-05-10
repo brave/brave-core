@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_TRANSACTION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_TRANSACTION_UTIL_H_
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 
 namespace brave_ads::database {
 
-void OnResultCallback(ResultCallback callback,
-                      mojom::DBCommandResponseInfoPtr command_response);
+void RunTransaction(mojom::DBTransactionInfoPtr transaction,
+                    ResultCallback callback);
 
 }  // namespace brave_ads::database
 

@@ -15,6 +15,7 @@
 #include "brave/browser/net/brave_ads_status_header_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
+#include "brave/browser/net/brave_localhost_permission_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
@@ -77,6 +78,13 @@ void BraveRequestHandler::SetupCallbacks() {
   callback = base::BindRepeating(
       decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
   before_url_request_callbacks_.push_back(callback);
+
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveLocalhostAccessPermission)) {
+    callback =
+        base::BindRepeating(brave::OnBeforeURLRequest_LocalhostPermissionWork);
+    before_url_request_callbacks_.push_back(callback);
+  }
 
 #if BUILDFLAG(ENABLE_IPFS)
   if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {

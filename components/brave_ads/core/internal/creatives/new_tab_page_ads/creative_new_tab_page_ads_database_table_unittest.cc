@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -28,7 +29,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
 
   // Act
-  SaveCreativeAds({});
+  database::SaveCreativeNewTabPageAds({});
 
   // Assert
 }
@@ -40,7 +41,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
       BuildCreativeNewTabPageAds(/*count*/ 2);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -62,7 +63,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
       BuildCreativeNewTabPageAds(/*count*/ 3);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -84,10 +85,10 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ads.push_back(creative_ad);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -119,7 +120,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
 
@@ -152,15 +153,13 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
 
   // Assert
-  const CreativeNewTabPageAdInfo expected_creative_ad = creative_ad_1;
-
   database_table_.GetForCreativeInstanceId(
-      expected_creative_ad.creative_instance_id,
+      creative_ad_1.creative_instance_id,
       base::BindOnce(
           [](const CreativeNewTabPageAdInfo& expected_creative_ad,
              const bool success, const std::string& /*creative_instance_id*/,
@@ -168,7 +167,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
             ASSERT_TRUE(success);
             EXPECT_EQ(expected_creative_ad, creative_ad);
           },
-          expected_creative_ad));
+          creative_ad_1));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -177,7 +176,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdList creative_ads =
       BuildCreativeNewTabPageAds(/*count*/ 1);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
 
@@ -197,7 +196,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdList creative_ads =
       BuildCreativeNewTabPageAds(/*count*/ 1);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
 
@@ -217,7 +216,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdList creative_ads =
       BuildCreativeNewTabPageAds(/*count*/ 1);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
 
@@ -251,7 +250,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   creative_ad_3.segment = "automobiles";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
 
@@ -288,7 +287,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   creative_ad_2.end_at = DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
   AdvanceClockBy(base::Milliseconds(1));
@@ -321,7 +320,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
 

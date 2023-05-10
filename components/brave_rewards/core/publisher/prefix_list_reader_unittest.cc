@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter='PrefixListReaderTest.*'
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace publisher {
 
 class PrefixListReaderTest : public testing::Test {
@@ -162,4 +162,4 @@ TEST_F(PrefixListReaderTest, BrotliCompression) {
 }
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::internal

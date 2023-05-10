@@ -810,8 +810,8 @@ TEST_F(BraveWalletPinServiceTest, RemoveSolPin) {
                   mojom::TokenPinStatusCode::STATUS_UNPINNING_FAILED),
               *(GetPrefs()
                     ->GetDict(kPinnedNFTAssets)
-                    .FindByDottedPath(kSolMonkey1Path)
-                    ->FindStringKey("status")));
+                    .FindDictByDottedPath(kSolMonkey1Path)
+                    ->FindString("status")));
   }
 
   {
@@ -877,8 +877,8 @@ TEST_F(BraveWalletPinServiceTest, RemovePin) {
                   mojom::TokenPinStatusCode::STATUS_UNPINNING_FAILED),
               *(GetPrefs()
                     ->GetDict(kPinnedNFTAssets)
-                    .FindByDottedPath(kMonkey1Path)
-                    ->FindStringKey("status")));
+                    .FindDictByDottedPath(kMonkey1Path)
+                    ->FindString("status")));
   }
 
   {

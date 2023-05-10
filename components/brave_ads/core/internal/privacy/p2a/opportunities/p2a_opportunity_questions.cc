@@ -24,12 +24,12 @@ std::vector<std::string> CreateAdOpportunityQuestions(
   const std::vector<std::string> parent_segments = GetParentSegments(segments);
 
   for (const auto& segment : parent_segments) {
-    DCHECK(!segment.empty());
+    CHECK(!segment.empty());
 
     std::string stripped_segment = StripNonAlphaNumericCharacters(segment);
 
     base::ReplaceChars(stripped_segment, " ", "", &stripped_segment);
-    DCHECK(!stripped_segment.empty());
+    CHECK(!stripped_segment.empty());
 
     const std::string question =
         base::StrCat({kQuestionPrefix, stripped_segment});

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/priority/priority.h"
 
 #include "base/ranges/algorithm.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -14,7 +15,9 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsPriorityTest, PrioritizeNoCreativeAds) {
+class BraveAdsPriorityTest : public UnitTestBase {};
+
+TEST_F(BraveAdsPriorityTest, PrioritizeNoCreativeAds) {
   // Arrange
   const CreativeNotificationAdList creative_ads;
 
@@ -26,7 +29,7 @@ TEST(BraveAdsPriorityTest, PrioritizeNoCreativeAds) {
   EXPECT_TRUE(prioritized_creative_ads.empty());
 }
 
-TEST(BraveAdsPriorityTest, PrioritizeSingleCreativeAd) {
+TEST_F(BraveAdsPriorityTest, PrioritizeSingleCreativeAd) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -45,7 +48,7 @@ TEST(BraveAdsPriorityTest, PrioritizeSingleCreativeAd) {
   EXPECT_EQ(expected_prioritized_creative_ads, prioritized_creative_ads);
 }
 
-TEST(BraveAdsPriorityTest, PrioritizeMultipleCreativeAds) {
+TEST_F(BraveAdsPriorityTest, PrioritizeMultipleCreativeAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -75,7 +78,7 @@ TEST(BraveAdsPriorityTest, PrioritizeMultipleCreativeAds) {
                                   prioritized_creative_ads));
 }
 
-TEST(BraveAdsPriorityTest, DoNotPrioritizeZeroPriorityCreativeAds) {
+TEST_F(BraveAdsPriorityTest, DoNotPrioritizeZeroPriorityCreativeAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 

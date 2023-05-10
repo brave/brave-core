@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
-namespace ledger::wallet {
+namespace brave_rewards::internal::wallet {
 
 namespace {
 std::string GetConnectedWalletType(LedgerImpl& ledger) {
@@ -36,7 +36,7 @@ WalletBalance::WalletBalance(LedgerImpl& ledger) : ledger_(ledger) {}
 
 WalletBalance::~WalletBalance() = default;
 
-void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
+void WalletBalance::Fetch(FetchBalanceCallback callback) {
   auto tokens_callback =
       base::BindOnce(&WalletBalance::OnGetUnblindedTokens,
                      base::Unretained(this), std::move(callback));
@@ -50,7 +50,7 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
 }
 
 void WalletBalance::OnGetUnblindedTokens(
-    ledger::FetchBalanceCallback callback,
+    FetchBalanceCallback callback,
     std::vector<mojom::UnblindedTokenPtr> tokens) {
   double total = 0.0;
   for (const auto& token : tokens) {
@@ -73,12 +73,11 @@ void WalletBalance::OnGetUnblindedTokens(
                      std::move(callback)));
 }
 
-void WalletBalance::OnFetchExternalWalletBalance(
-    const std::string& wallet_type,
-    mojom::BalancePtr balance_ptr,
-    ledger::FetchBalanceCallback callback,
-    mojom::Result result,
-    double balance) {
+void WalletBalance::OnFetchExternalWalletBalance(const std::string& wallet_type,
+                                                 mojom::BalancePtr balance_ptr,
+                                                 FetchBalanceCallback callback,
+                                                 mojom::Result result,
+                                                 double balance) {
   if (result == mojom::Result::LEDGER_OK) {
     DCHECK(balance_ptr);
     balance_ptr->total += balance;
@@ -94,4 +93,4 @@ void WalletBalance::OnFetchExternalWalletBalance(
   }
 }
 
-}  // namespace ledger::wallet
+}  // namespace brave_rewards::internal::wallet

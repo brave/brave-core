@@ -8,7 +8,7 @@ import { BraveWallet } from '../constants/types'
 
 let walletPageApiProxyInstance: WalletPageApiProxy
 
-class WalletPageApiProxy extends WalletApiProxy {
+export class WalletPageApiProxy extends WalletApiProxy {
   callbackRouter = new BraveWallet.PageCallbackRouter()
   pageHandler = new BraveWallet.PageHandlerRemote()
   constructor () {
@@ -20,6 +20,7 @@ class WalletPageApiProxy extends WalletApiProxy {
       this.pageHandler.$.bindNewPipeAndPassReceiver(),
       this.walletHandler.$.bindNewPipeAndPassReceiver(),
       this.jsonRpcService.$.bindNewPipeAndPassReceiver(),
+      this.bitcoinWalletService.$.bindNewPipeAndPassReceiver(),
       this.swapService.$.bindNewPipeAndPassReceiver(),
       this.assetRatioService.$.bindNewPipeAndPassReceiver(),
       this.keyringService.$.bindNewPipeAndPassReceiver(),

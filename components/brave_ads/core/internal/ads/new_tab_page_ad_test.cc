@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
@@ -31,8 +32,7 @@ class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
-        {// Fetch catalog request
-         "/v9/catalog",
+        {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
            /*response_body*/ "/catalog_with_new_tab_page_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
@@ -48,8 +48,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
         // Assert
         EXPECT_TRUE(ad);
         EXPECT_TRUE(ad->IsValid());
-        EXPECT_EQ(1, GetAdEventCount(AdType::kNewTabPageAd,
-                                     ConfirmationType::kServed));
+        EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
+                                      ConfirmationType::kServed));
       }));
 }
 
@@ -61,10 +61,10 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
                                     mojom::NewTabPageAdEventType::kServed);
 
   // Assert
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0, GetHistoryItemCount());
-  EXPECT_EQ(0, GetTransactionCount());
+  EXPECT_EQ(0U, GetHistoryItemCount());
+  EXPECT_EQ(0U, GetTransactionCount());
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
@@ -77,12 +77,12 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
                                     mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1, GetHistoryItemCount());
-  EXPECT_EQ(1, GetTransactionCount());
+  EXPECT_EQ(1U, GetHistoryItemCount());
+  EXPECT_EQ(1U, GetTransactionCount());
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
@@ -97,14 +97,14 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
                                     mojom::NewTabPageAdEventType::kClicked);
 
   // Assert
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
-  EXPECT_EQ(2, GetHistoryItemCount());
-  EXPECT_EQ(2, GetTransactionCount());
+  EXPECT_EQ(2U, GetHistoryItemCount());
+  EXPECT_EQ(2U, GetTransactionCount());
 }
 
 }  // namespace brave_ads

@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import { layoutSmallWidth, layoutTopPosition } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Wrapper = styled.div`
   --display-text: none;
@@ -16,15 +17,33 @@ export const Wrapper = styled.div`
   border-radius: 12px;
   border: 1px solid var(--nav-border);
   position: absolute;
-  top: 100px;
+  top: ${layoutTopPosition}px;
   left: 32px;
   overflow: visible;
   z-index: 10;
   padding: 0px 8px;
   transition-duration: 0.1s;
+  transition-timing-function: ease;
   &:hover {
     --display-text: flex;
     --icon-margin-right: 16px;
+  }
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    flex-direction: row;
+    top: unset;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    border: none;
+    padding: 8px 0px;
+    border-radius: 0px;
+    box-shadow: 0px -8px 16px rgba(0, 0, 0, 0.04);
+    transition-duration: 0.5s;
+    --display-text: flex;
+    &:hover {
+      --display-text: flex;
+      --icon-margin-right: 0px;
+    }
   }
 `
 
@@ -36,7 +55,35 @@ export const Section = styled.div<{ showBorder?: boolean }>`
   width: 100%;
   padding: 8px 0px;
   transition-duration: inherit;
+  transition-timing-function: inherit;
   border-bottom: ${(p) => p.showBorder
     ? `1px solid var(--nav-border)`
     : 'none'};
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    flex-direction: row;
+    padding: 0px 8px;
+    border-bottom: none;
+    border-right: ${(p) => p.showBorder
+    ? `1px solid var(--nav-border)`
+    : 'none'};
+  }
+`
+
+export const PageOptionsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  transition-duration: inherit;
+  transition-timing-function: inherit;
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    display: none;
+  }
+`
+
+export const PanelOptionsWrapper = styled.div`
+  display: none;
+  width: 100%;
+  transition-duration: inherit;
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    display: flex;
+  }
 `

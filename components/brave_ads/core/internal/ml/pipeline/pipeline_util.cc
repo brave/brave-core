@@ -26,155 +26,136 @@ namespace {
 // TODO(https://github.com/brave/brave-browser/issues/24940): Reduce cognitive
 // complexity.
 absl::optional<TransformationVector> ParsePipelineTransformations(
-    base::Value::List* transformations_value) {
-  if (!transformations_value) {
-    return absl::nullopt;
-  }
+    const base::Value::List& list) {
+  TransformationVector transformation_vector;
 
-  absl::optional<TransformationVector> transformations = TransformationVector();
-  for (const base::Value& item : *transformations_value) {
-    const base::Value::Dict& transformation = item.GetDict();
+  for (const auto& item : list) {
+    const auto* const item_dict = item.GetIfDict();
+    if (!item_dict) {
+      return absl::nullopt;
+    }
+
     const std::string* const transformation_type =
-        transformation.FindString("transformation_type");
-
+        item_dict->FindString("transformation_type");
     if (!transformation_type) {
       return absl::nullopt;
     }
 
-    const std::string parsed_transformation_type = *transformation_type;
-
-    if (parsed_transformation_type == "TO_LOWER") {
-      transformations->push_back(std::make_unique<LowercaseTransformation>());
+    if (*transformation_type == "TO_LOWER") {
+      transformation_vector.push_back(
+          std::make_unique<LowercaseTransformation>());
     }
 
-    if (parsed_transformation_type == "NORMALIZE") {
-      transformations->push_back(
+    if (*transformation_type == "NORMALIZE") {
+      transformation_vector.push_back(
           std::make_unique<NormalizationTransformation>());
     }
 
-    if (parsed_transformation_type == "HASHED_NGRAMS") {
-      const base::Value::Dict* const transformation_params =
-          transformation.FindDict("params");
-
-      if (!transformation_params) {
+    if (*transformation_type == "HASHED_NGRAMS") {
+      const auto* const params_dict = item_dict->FindDict("params");
+      if (!params_dict) {
         return absl::nullopt;
       }
 
-      const absl::optional<int> nb =
-          transformation_params->FindInt("num_buckets");
-      if (!nb) {
-        return absl::nullopt;
-      }
-      const int num_buckets = *nb;
-
-      const base::Value::List* const ngram_sizes =
-          transformation_params->FindList("ngrams_range");
-      if (!ngram_sizes) {
+      const absl::optional<int> num_buckets =
+          params_dict->FindInt("num_buckets");
+      if (!num_buckets) {
         return absl::nullopt;
       }
 
-      std::vector<int> ngram_range;
-      for (const base::Value& n : *ngram_sizes) {
-        if (n.is_int()) {
-          ngram_range.push_back(n.GetInt());
-        } else {
+      const auto* const ngrams_range_list =
+          params_dict->FindList("ngrams_range");
+      if (!ngrams_range_list) {
+        return absl::nullopt;
+      }
+
+      std::vector<int> subgrams;
+      for (const base::Value& subgram : *ngrams_range_list) {
+        if (!subgram.is_int()) {
           return absl::nullopt;
         }
+
+        subgrams.push_back(subgram.GetInt());
       }
-      transformations->push_back(std::make_unique<HashedNGramsTransformation>(
-          num_buckets, ngram_range));
+
+      transformation_vector.push_back(
+          std::make_unique<HashedNGramsTransformation>(*num_buckets, subgrams));
     }
   }
 
-  return transformations;
+  return transformation_vector;
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/24941): Reduce cognitive
 // complexity.
-absl::optional<model::Linear> ParsePipelineClassifier(
-    base::Value::Dict* classifier_value) {
-  if (!classifier_value) {
+absl::optional<LinearModel> ParsePipelineClassifier(
+    const base::Value::Dict& dict) {
+  const std::string* const classifier_type = dict.FindString("classifier_type");
+  if (!classifier_type || *classifier_type != "LINEAR") {
     return absl::nullopt;
   }
 
-  const std::string* const classifier_type =
-      classifier_value->FindString("classifier_type");
-
-  if (!classifier_type) {
-    return absl::nullopt;
-  }
-
-  const std::string parsed_classifier_type = *classifier_type;
-
-  if (parsed_classifier_type != "LINEAR") {
-    return absl::nullopt;
-  }
-
-  base::Value::List* specified_classes = classifier_value->FindList("classes");
-  if (!specified_classes) {
+  const auto* const classes_list = dict.FindList("classes");
+  if (!classes_list) {
     return absl::nullopt;
   }
 
   std::vector<std::string> classes;
-  classes.reserve(specified_classes->size());
-  for (const base::Value& class_name : *specified_classes) {
-    if (!class_name.is_string()) {
+  classes.reserve(classes_list->size());
+  for (const base::Value& item : *classes_list) {
+    if (!item.is_string()) {
       return absl::nullopt;
     }
 
-    const std::string& class_string = class_name.GetString();
-    if (class_string.empty()) {
+    const std::string& class_name = item.GetString();
+    if (class_name.empty()) {
       return absl::nullopt;
     }
 
-    classes.push_back(class_string);
+    classes.push_back(class_name);
   }
 
-  base::Value::Dict* class_weights =
-      classifier_value->FindDict("class_weights");
-  if (!class_weights) {
+  const auto* const class_weights_dict = dict.FindDict("class_weights");
+  if (!class_weights_dict) {
     return absl::nullopt;
   }
 
-  std::map<std::string, VectorData> weights;
-  for (const std::string& class_string : classes) {
-    base::Value::List* list = class_weights->FindList(class_string);
+  std::map</*class_name*/ std::string, /*weights*/ VectorData> class_weights;
+  for (const std::string& class_name : classes) {
+    const auto* const list = class_weights_dict->FindList(class_name);
     if (!list) {
       return absl::nullopt;
     }
 
     std::vector<float> class_coef_weights;
     class_coef_weights.reserve(list->size());
-    for (const base::Value& weight : *list) {
-      if (weight.is_double() || weight.is_int()) {
-        class_coef_weights.push_back(weight.GetDouble());
-      } else {
+    for (const base::Value& item : *list) {
+      if (!item.is_double() && !item.is_int()) {
         return absl::nullopt;
       }
+
+      class_coef_weights.push_back(static_cast<float>(item.GetDouble()));
     }
-    weights[class_string] = VectorData(std::move(class_coef_weights));
+
+    class_weights[class_name] = VectorData(std::move(class_coef_weights));
   }
 
-  std::map<std::string, double> specified_biases;
-  base::Value::List* biases = classifier_value->FindList("biases");
-  if (!biases) {
+  const auto* const biases_list = dict.FindList("biases");
+  if (!biases_list || biases_list->size() != classes.size()) {
     return absl::nullopt;
   }
 
-  if (biases->size() != classes.size()) {
-    return absl::nullopt;
-  }
-
-  for (size_t i = 0; i < biases->size(); i++) {
-    const base::Value& this_bias = (*biases)[i];
-    if (this_bias.is_double() || this_bias.is_int()) {
-      specified_biases[classes[i]] = this_bias.GetDouble();
-    } else {
+  std::map</*class_name*/ std::string, /*bias*/ double> biases;
+  for (size_t i = 0; i < biases_list->size(); i++) {
+    const base::Value& bias = (*biases_list)[i];
+    if (!bias.is_double() && !bias.is_int()) {
       return absl::nullopt;
     }
+
+    biases[classes[i]] = bias.GetDouble();
   }
 
-  return model::Linear(std::move(weights), std::move(specified_biases));
+  return LinearModel(std::move(class_weights), std::move(biases));
 }
 
 }  // namespace
@@ -195,14 +176,22 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value::Dict dict) {
     return absl::nullopt;
   }
 
+  const auto* transformations_list = dict.FindList("transformations");
+  if (!transformations_list) {
+    return absl::nullopt;
+  }
   absl::optional<TransformationVector> transformations =
-      ParsePipelineTransformations(dict.FindList("transformations"));
+      ParsePipelineTransformations(*transformations_list);
   if (!transformations) {
     return absl::nullopt;
   }
 
-  absl::optional<model::Linear> linear_model =
-      ParsePipelineClassifier(dict.FindDict("classifier"));
+  const auto* classifier_dict = dict.FindDict("classifier");
+  if (!classifier_dict) {
+    return absl::nullopt;
+  }
+  absl::optional<LinearModel> linear_model =
+      ParsePipelineClassifier(*classifier_dict);
   if (!linear_model) {
     return absl::nullopt;
   }

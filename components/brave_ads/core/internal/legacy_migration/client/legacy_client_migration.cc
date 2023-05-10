@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::client {
 
@@ -40,15 +41,15 @@ void Migrate(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->Load(
       kClientStateFilename,
       base::BindOnce(
-          [](InitializeCallback callback, const bool success,
-             const std::string& json) {
-            if (!success) {
+          [](InitializeCallback callback,
+             const absl::optional<std::string>& json) {
+            if (!json) {
               // Client state does not exist
               return SuccessfullyMigrated(std::move(callback));
             }
 
             ClientInfo client;
-            if (!client.FromJson(json)) {
+            if (!client.FromJson(*json)) {
               BLOG(0, "Failed to load client state");
               return FailedToMigrate(std::move(callback));
             }

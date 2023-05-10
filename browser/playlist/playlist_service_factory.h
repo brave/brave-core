@@ -16,6 +16,8 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
+class PrefRegistrySimple;
+
 namespace playlist {
 class PlaylistService;
 class MediaDetectorComponentManager;
@@ -34,6 +36,8 @@ class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
 
   PlaylistServiceFactory(const PlaylistServiceFactory&) = delete;
   PlaylistServiceFactory& operator=(const PlaylistServiceFactory&) = delete;
+
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
   // BrowserContextKeyedServiceFactory
   void RegisterProfilePrefs(

@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_HISTORY_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_HISTORY_UNITTEST_UTIL_H_
 
+#include <cstddef>
+
 namespace brave_ads {
 
-int GetHistoryItemCount();
+size_t GetHistoryItemCount();
 
 }  // namespace brave_ads
 

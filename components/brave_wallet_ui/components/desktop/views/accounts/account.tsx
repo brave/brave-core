@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { Redirect, useParams, useLocation } from 'react-router'
 import { useDispatch } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { create } from 'ethereum-blockies'
 
 // Selectors
@@ -64,8 +65,9 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 // Hooks
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 import {
-  useGetNetworksQuery,
-  useGetUserTokensRegistryQuery
+  useGetVisibleNetworksQuery,
+  useGetUserTokensRegistryQuery,
+  useGetTransactionsQuery
 } from '../../../../common/slices/api.slice'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
 
@@ -88,15 +90,29 @@ export const Account = ({
 
   // unsafe selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
+  const selectedAccount = React.useMemo(() => {
+    return accounts.find(({ address }) =>
+      address.toLowerCase() === accountId?.toLowerCase()
+    )
+  }, [accounts, accountId])
 
   // queries
-  const { data: networkList = [] } = useGetNetworksQuery()
+  const { data: networkList = [] } = useGetVisibleNetworksQuery()
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
       userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
     })
   })
+  const { data: unsortedTransactionList = [] } = useGetTransactionsQuery(
+    selectedAccount
+      ? {
+          address: selectedAccount.address,
+          chainId: null,
+          coinType: selectedAccount.coin
+        }
+      : skipToken,
+    { skip: !selectedAccount }
+  )
 
   // safe selectors
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
@@ -120,12 +136,6 @@ export const Account = ({
   } = useMultiChainSellAssets()
 
   // memos
-  const selectedAccount = React.useMemo(() => {
-    return accounts.find(({ address }) =>
-      address.toLowerCase() === accountId?.toLowerCase()
-    )
-  }, [accounts, accountId])
-
   const orb = React.useMemo(() => {
     if (selectedAccount) {
       return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
@@ -133,18 +143,8 @@ export const Account = ({
   }, [selectedAccount])
 
   const transactionList = React.useMemo(() => {
-    if (selectedAccount?.address && transactions[selectedAccount.address]) {
-      return sortTransactionByDate(
-        transactions[selectedAccount.address],
-        'descending'
-      )
-    } else {
-      return []
-    }
-  }, [
-    selectedAccount?.address,
-    selectedAccount && transactions[selectedAccount.address],
-  ])
+    return sortTransactionByDate(unsortedTransactionList, 'descending')
+  }, [unsortedTransactionList])
 
   const accountsTokensList = React.useMemo(() => {
     if (!selectedAccount) {
@@ -153,6 +153,11 @@ export const Account = ({
     // Since LOCALHOST's chainId is shared between coinType's
     // this check will make sure we are returning the correct
     // LOCALHOST asset for each account.
+    const hasLocalHostNetwork = networkList.some(
+      (network) =>
+        network.chainId === BraveWallet.LOCALHOST_CHAIN_ID
+        && network.coin === selectedAccount.coin
+    )
     const coinName = CoinTypesMap[selectedAccount?.coin ?? 0]
     const localHostCoins = userVisibleTokensInfo.filter((token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
     const accountsLocalHost = localHostCoins.find((token) => token.symbol.toUpperCase() === coinName)
@@ -161,7 +166,14 @@ export const Account = ({
     const list =
       userVisibleTokensInfo.filter((token) => chainList.includes(token?.chainId ?? '') &&
         token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID) ?? []
-    if (accountsLocalHost && (selectedAccount.keyringId !== BraveWallet.FILECOIN_KEYRING_ID)) {
+    if (
+      accountsLocalHost &&
+      hasLocalHostNetwork &&
+      (
+        selectedAccount.keyringId !==
+        BraveWallet.FILECOIN_KEYRING_ID
+      )
+    ) {
       return [...list, accountsLocalHost]
     }
     return list

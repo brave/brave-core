@@ -29,7 +29,7 @@ bool DoesRespectCap() {
   const base::Time time = base::Time::Now();
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  DCHECK(exploded.HasValidValues());
+  CHECK(exploded.HasValidValues());
 
   return exploded.hour >= kDoNotDisturbToHour &&
          exploded.hour < kDoNotDisturbFromHour;

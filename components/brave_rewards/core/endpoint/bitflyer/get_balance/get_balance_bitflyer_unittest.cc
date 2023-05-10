@@ -20,7 +20,7 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace bitflyer {
 
@@ -156,4 +156,4 @@ TEST_F(GetBalanceTest, ServerErrorRandom) {
 
 }  // namespace bitflyer
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

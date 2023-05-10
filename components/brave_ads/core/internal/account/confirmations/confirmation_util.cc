@@ -44,20 +44,21 @@ absl::optional<OptedInInfo> CreateOptedIn(
     privacy::TokenGeneratorInterface* token_generator,
     const ConfirmationInfo& confirmation,
     const OptedInUserDataInfo& opted_in_user_data) {
-  DCHECK(token_generator);
-  DCHECK(ShouldRewardUser());
+  CHECK(token_generator);
+  CHECK(ShouldRewardUser());
 
   OptedInInfo opted_in;
 
   // Token
-  const std::vector<privacy::cbr::Token> tokens = token_generator->Generate(1);
-  DCHECK(!tokens.empty());
+  const std::vector<privacy::cbr::Token> tokens =
+      token_generator->Generate(/*count*/ 1);
+  CHECK(!tokens.empty());
   opted_in.token = tokens.front();
 
   // Blinded token
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens =
       privacy::cbr::BlindTokens(tokens);
-  DCHECK(!blinded_tokens.empty());
+  CHECK(!blinded_tokens.empty());
   opted_in.blinded_token = blinded_tokens.front();
 
   // Unblinded token
@@ -114,8 +115,8 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
     const OptedInUserDataInfo& opted_in_user_data) {
-  DCHECK(token_generator);
-  DCHECK(transaction.IsValid());
+  CHECK(token_generator);
+  CHECK(transaction.IsValid());
 
   ConfirmationInfo confirmation;
   confirmation.transaction_id = transaction.id;
@@ -135,6 +136,8 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
     return absl::nullopt;
   }
   confirmation.opted_in = opted_in;
+
+  CHECK(IsValid(confirmation));
 
   return confirmation;
 }
@@ -183,8 +186,7 @@ bool IsValid(const ConfirmationInfo& confirmation) {
   }
   const base::Value::Dict& dict = root->GetDict();
 
-  if (const std::string* const value =
-          dict.FindString(kVerificationSignatureKey)) {
+  if (const auto* const value = dict.FindString(kVerificationSignatureKey)) {
     const privacy::cbr::VerificationSignature verification_signature =
         privacy::cbr::VerificationSignature(*value);
     if (!verification_signature.has_value()) {

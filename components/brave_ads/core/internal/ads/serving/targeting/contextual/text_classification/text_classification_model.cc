@@ -8,12 +8,13 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace brave_ads::targeting::model {
+namespace brave_ads {
 
 namespace {
 
@@ -24,7 +25,7 @@ SegmentProbabilityMap GetSegmentProbabilities(
 
   for (const auto& probabilities : text_classification_probabilities) {
     for (const auto& [segment, page_score] : probabilities) {
-      DCHECK(!segment.empty());
+      CHECK(!segment.empty());
 
       const auto iter = segment_probabilities.find(segment);
       if (iter == segment_probabilities.cend()) {
@@ -42,9 +43,8 @@ SegmentProbabilityList ToSortedSegmentProbabilityList(
     const SegmentProbabilityMap& segment_probabilities) {
   SegmentProbabilityList list(segment_probabilities.size());
 
-  std::partial_sort_copy(
-      segment_probabilities.cbegin(), segment_probabilities.cend(),
-      list.begin(), list.end(),
+  base::ranges::partial_sort_copy(
+      segment_probabilities, list,
       [](const SegmentProbabilityPair& lhs, const SegmentProbabilityPair& rhs) {
         return lhs.second > rhs.second;
       });
@@ -56,7 +56,7 @@ SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
   SegmentList segments;
 
   for (const auto& [segment, probability] : segment_probabilities) {
-    DCHECK(!segment.empty());
+    CHECK(!segment.empty());
 
     segments.push_back(segment);
   }
@@ -66,7 +66,7 @@ SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
 
 }  // namespace
 
-SegmentList TextClassification::GetSegments() const {
+SegmentList TextClassificationModel::GetSegments() const {
   const TextClassificationProbabilityList& probabilities =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();
@@ -87,4 +87,4 @@ SegmentList TextClassification::GetSegments() const {
   return ToSegmentList(sorted_segment_probabilities);
 }
 
-}  // namespace brave_ads::targeting::model
+}  // namespace brave_ads

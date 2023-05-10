@@ -17,7 +17,7 @@ base::Value::Dict NotificationAdToValue(const NotificationAdInfo& ad);
 base::Value::List NotificationAdsToValue(
     const base::circular_deque<NotificationAdInfo>& ads);
 
-NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& root);
+NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& dict);
 base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
     const base::Value::List& list);
 

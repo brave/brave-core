@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 UserModelInfo::UserModelInfo() = default;
 
@@ -20,4 +20,4 @@ UserModelInfo& UserModelInfo::operator=(UserModelInfo&& other) noexcept =
 
 UserModelInfo::~UserModelInfo() = default;
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

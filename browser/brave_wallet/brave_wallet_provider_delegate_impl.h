@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_H_
@@ -42,15 +42,14 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void ShowWalletOnboarding() override;
   void ShowAccountCreation(mojom::CoinType type) override;
   url::Origin GetOrigin() const override;
-  void GetAllowedAccounts(mojom::CoinType type,
-                          const std::vector<std::string>& accounts,
-                          GetAllowedAccountsCallback callback) override;
+  absl::optional<std::vector<std::string>> GetAllowedAccounts(
+      mojom::CoinType type,
+      const std::vector<std::string>& accounts) override;
   void RequestPermissions(mojom::CoinType type,
                           const std::vector<std::string>& accounts,
                           RequestPermissionsCallback callback) override;
-  void IsAccountAllowed(mojom::CoinType type,
-                        const std::string& account,
-                        IsAccountAllowedCallback callback) override;
+  bool IsAccountAllowed(mojom::CoinType type,
+                        const std::string& account) override;
   bool IsPermissionDenied(mojom::CoinType type) override;
   void AddSolanaConnectedAccount(const std::string& account) override;
   void RemoveSolanaConnectedAccount(const std::string& account) override;

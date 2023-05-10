@@ -13,29 +13,21 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr char kExpectedJson[] =
-    R"({"signature":"XsaQ/XqKiWfeTCjFDhkyldsx0086qu6tjgJDCKo+f7kA0eA+mdf3Ae+BjPcDDQ8JfVbVQkI5ub394qdTmE2bRw==","t":"PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgCw=="})";
-
-}  // namespace
-
 class BraveAdsOptedInCredentialJsonWriterTest : public UnitTestBase {};
 
 TEST_F(BraveAdsOptedInCredentialJsonWriterTest, WriteJson) {
   // Arrange
-  const privacy::UnblindedTokenList unblinded_tokens =
-      privacy::GetUnblindedTokens(/*count*/ 1);
-  ASSERT_TRUE(!unblinded_tokens.empty());
-  const privacy::UnblindedTokenInfo& unblinded_token = unblinded_tokens.front();
 
   // Act
   const absl::optional<std::string> json = json::writer::WriteOptedInCredential(
-      unblinded_token, /*payload*/ "definition: the weight of a payload");
+      privacy::BuildUnblindedToken(),
+      /*payload*/ "definition: the weight of a payload");
   ASSERT_TRUE(json);
 
   // Assert
-  EXPECT_EQ(kExpectedJson, *json);
+  EXPECT_EQ(
+      R"({"signature":"XsaQ/XqKiWfeTCjFDhkyldsx0086qu6tjgJDCKo+f7kA0eA+mdf3Ae+BjPcDDQ8JfVbVQkI5ub394qdTmE2bRw==","t":"PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgCw=="})",
+      *json);
 }
 
 }  // namespace brave_ads

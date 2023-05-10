@@ -6,7 +6,7 @@
 #include "brave/components/brave_rewards/core/logging/event_log_util.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace log {
 std::string GetEventLogKeyForLinkingResult(
     mojom::ConnectExternalWalletError error) {
@@ -36,4 +36,4 @@ std::string GetEventLogKeyForLinkingResult(
   }
 }
 }  // namespace log
-}  // namespace ledger
+}  // namespace brave_rewards::internal

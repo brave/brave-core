@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 using GetSKUOrderItemsCallback =
@@ -35,6 +35,6 @@ class DatabaseSKUOrderItems : public DatabaseTable {
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SKU_ORDER_ITEMS_H_

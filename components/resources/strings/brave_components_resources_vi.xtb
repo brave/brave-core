@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Tiền tip Hàng tháng</translation>
 <translation id="178390304006113804">Thiết lập tiền thưởng hàng tháng để bạn có thể liên tục hỗ trợ những người tạo nội dung yêu thích của mình.</translation>
 <translation id="3302159320447117425">Chưa có tiền thưởng hàng tháng.</translation>
+<translation id="564837702459183199">Đóng góp tiếp theo</translation>
 <translation id="4898632353264854950">Các trang web sẽ xuất hiện khi bạn duyệt</translation>
 <translation id="3024485967181749006">Tổng tiền tip tháng này</translation>
-<translation id="8183455888546367148">Tổng tiền thưởng hàng tháng của tháng này</translation>
 <translation id="4153752809523809915">Hôm nay bạn đã gửi tiền tip cho nhà sáng tạo nội dung mà bạn ưa thích chưa?</translation>
 <translation id="7286722244752781970">Thời gian xem trang tối thiểu trước khi lưu lại lượt truy cập</translation>
 <translation id="4424486208397124985">Số lượt truy cập tối thiểu đối với nhà xuất bản liên quan</translation>
 <translation id="5421369907811917952">Cài đặt khác</translation>
 <translation id="6248554379744796526">Hiển thị các trang chưa xác thực trong danh sách</translation>
-<translation id="5510618543889994434">Cho phép đóng góp cho video</translation>
 <translation id="8933202740471878108">1 lượt truy cập</translation>
 <translation id="354797634123275103">5 lượt truy cập</translation>
 <translation id="3583700907990488238">10 lượt xem</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 phút</translation>
 <translation id="2807328214759298515">Tối đa</translation>
 <translation id="7483857210736407752">Hiển thị nút Tiền thưởng trên trang web</translation>
-<translation id="7583327070390027131">Ngày tiền thưởng hàng tháng tiếp theo</translation>
 <translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME"/> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Rất thích khi <ph name="HASHTAG"/>Brave cho tôi hỗ trợ các nhà sáng tạo! Vừa thưởng cho <ph name="NAME"/> with <ph name="HASHTAG2"/>BAT. Nếu họ xác nhận tại https://creators.brave.com trước <ph name="DATE"/> thì BAT sẽ được chuyển sang cho họ!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Bạn có thể thay đổi <ph name="SITE_PERMISSIONS"/> của mình bất cứ lúc nào. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">cấp quyền website</translation>
 <translation id="4355784577209159847">Cho phép sử dụng cookie của bên thứ ba cho Đăng nhập bằng Google cũ</translation>
+<translation id="5770656036486891920"><ph name="URL"/> muốn sử dụng cookie của bên thứ ba cho Đăng nhập cũ bằng Google</translation>
 <translation id="7717357606512850995">Kiểm tra trạng thái</translation>
 <translation id="7306880305145342514">Chúc mừng! Phần thưởng <ph name="MONTH"/> của bạn đã về!</translation>
 <translation id="3007207731685398329">Phần thưởng <ph name="AMOUNT"/><ph name="MONTH"/> của bạn sẽ về trong <ph name="DAYS"/> nữa</translation>
@@ -659,6 +658,7 @@
       =1 {Tháng này, bạn đã ghé thăm # người sáng tạo nội dung được Brave Phần thưởng hỗ trợ}
       other {Tháng này, bạn đã ghé thăm # người sáng tạo nội dung được Brave Phần thưởng hỗ trợ}
     }</translation>
+<translation id="6067959437127691361">Sử dụng Brave Phần thưởng giúp hỗ trợ người sáng tạo nội dung và cho phép bạn kiếm BAT.</translation>
 <translation id="1187367336925051518">Phần thưởng <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Phần thưởng Quảng cáo <ph name="MONTH"/> của bạn ở đây!</translation>
 <translation id="7861645265922445992">Nhận Phần thưởng</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Đặt</translation>
 <translation id="8853725596990766789">Thay đổi số lượng</translation>
-<translation id="6067959437127691361">Sử dụng Brave Phần thưởng giúp hỗ trợ người sáng tạo nội dung và cho phép bạn kiếm BAT.</translation>
 <translation id="1609556006143307897">Bạn đang giúp hỗ trợ người sáng tạo nội dung</translation>
 <translation id="6605147707233193230">Bật để giúp hỗ trợ người sáng tạo nội dung</translation>
 <translation id="5430495762768325224">Tìm hiểu thêm về BAT</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">Mong đợi nhận một tham số đối tượng.</translation>
 <translation id="1875861420974447980">Mã chuỗi này hiện đang được sử dụng</translation>
 <translation id="167698752210114155">Đã xảy ra lỗi nội bộ</translation>
+<translation id="7497827357097190289">Blockhash không hợp lệ hoặc không thể xác thực</translation>
 <translation id="8945668490056243760">Loại đăng ký không được hỗ trợ</translation>
 <translation id="2326876601333401685">Phương pháp RPC này không được hỗ trợ.</translation>
 <translation id="1128992132632883337">Đã xảy ra lỗi phân tích cú pháp phản hồi</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">HALF</translation>
 <translation id="2784548701748328827">MAX</translation>
 <translation id="2329227154184107678">Xem lại đơn đặt hàng</translation>
+<translation id="3220443877821207794">Kiểm tra tab gửi</translation>
 <translation id="8530071505111489657">Không có mã thông báo khả dụng</translation>
 <translation id="615791330696335475">Tìm kiếm mã thông báo theo tên</translation>
 <translation id="5009335307032488349">Tìm kiếm NFT theo tên, mã</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">LOẠI CHỨC NĂNG</translation>
 <translation id="838933475572692615">DỮ LIỆU HEX</translation>
 <translation id="2240831799756994975">BYTE</translation>
-<translation id="4874303883488468190">Chọn tài khoản</translation>
-<translation id="2018472018751735678">Xem địa chỉ của các tài khoản được phép của bạn (bắt buộc)</translation>
-<translation id="7029403458170657879">Kết nối với Ví Brave</translation>
+<translation id="6760823167126275974">Kết nối ví</translation>
+<translation id="716009557505091365">hoặc kết nối với:</translation>
+<translation id="7242985059140288348">Ứng dụng này có thể:</translation>
+<translation id="7352133688029686231">Việc này không thể:</translation>
+<translation id="1647328658385235886">Kiểm tra số dư và hoạt động của ví</translation>
+<translation id="3295962112184461868">Yêu cầu phê duyệt giao dịch và chữ ký</translation>
+<translation id="6096892345597202096">Xem địa chỉ ví được phép của bạn</translation>
+<translation id="496578987299869780">Di chuyển tiền mà không có sự cho phép của bạn</translation>
+<translation id="3226586788973641582">Hãy chắc chắn rằng bạn tin tưởng trang web này.</translation>
+<translation id="6837278005487143422">Thời hạn cho phép</translation>
+<translation id="1903637466604153314">Cho đến khi tôi đóng trang web này</translation>
+<translation id="4324239559624557455">Trong 24 giờ</translation>
+<translation id="9139452553033760558">Trong 1 tuần</translation>
+<translation id="1658834457013045127">Mãi mãi</translation>
 <translation id="2770851145415891830">Đã phát hiện ví tiền mã hóa hiện hành</translation>
 <translation id="2237759620789871865">Nếu bạn muốn bỏ qua việc nhập và giữ lại trải nghiệm Ví tiền mã hóa cũ, chỉ cần chuyển đến Trình duyệt Brave <ph name="LINK_BEFORE"/>Cài đặt<ph name="LINK_AFTER"/> và thay đổi mặc định về Ví tiền mã hóa. Bạn cũng có thể nhập, dùng thử Ví Brave mới và thay đổi lại bất cứ lúc nào.</translation>
 <translation id="5590175005414413980">Nhập mật khẩu ví tiền mã hóa hiện tại của bạn để nhập vào Ví Brave. Tận hưởng một phương thức nhanh hơn và bảo mật hơn để quản lý tài sản tiền mã hóa và tương tác với các ứng dụng Web3 DApps.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">Làm thế nào tôi có thể tìm đúng địa chỉ?</translation>
 <translation id="8395402412470376435">Brave xác thực và ngăn người dùng gửi tiền đến địa chỉ sai do viết hoa không chính xác. Đây là quy trình "tổng kiểm" để xác minh rằng đó là địa chỉ Ethereum hợp lệ.</translation>
 <translation id="4583433813614292221">1. Truy cập</translation>
+<translation id="8061317754447191238">Truy cập etherscan và dán địa chỉ ví bạn muốn gửi mã thông báo. Sau đó nhập</translation>
 <translation id="5393164213211430081">2. Sao chép và nhập địa chỉ ETH</translation>
+<translation id="8306108469060304141">Sao chép và nhập địa chỉ chính xác. Bạn có thể thấy rằng một số ký tự đã được chuyển đổi chính xác.</translation>
 <translation id="2378355054306959991">Cần thêm trợ giúp?</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098">Từ chối <ph name="TRANSACTION_LENGTH"/> giao dịch</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">Token tiêu chuẩn</translation>
 <translation id="9033453977881595182">Mã Token</translation>
 <translation id="6332387008245531841">Địa chỉ hợp đồng</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Vị trí hoặc địa chỉ hình ảnh</translation>
 <translation id="2962388922926051374">Yêu cầu phương pháp 'eth_chainId' trên <ph name="URL"/> không thành công</translation>
 <translation id="8325036459845654666">Mạng này đã được thêm.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">Không tìm thấy tài sản nào phù hợp với tìm kiếm hoặc bộ lọc</translation>
 <translation id="7383613643114466279">Nội dung này không được Ví Brave hỗ trợ</translation>
 <translation id="6423985584914773314">Không phải là địa chỉ FIL hợp lệ</translation>
-<translation id="3898731124813934210">Mua bằng Wyre</translation>
 <translation id="5522073372365069684">Mua bằng Ramp</translation>
 <translation id="6153197326949684688">Bán với <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Số tiền tối thiểu phải là <ph name="FIAT_AMOUNT"/> hoặc nhiều hơn.</translation>
 <translation id="7902920577183739843">Mua bằng Sardine</translation>
 <translation id="6534275647567011533">Mua bằng Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Mua tiền mã hóa bằng thẻ Visa hoặc Mastercard.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">Không thể tìm nạp ước tính phí</translation>
 <translation id="5361710044667743492">Tại sao không có sẵn?</translation>
 <translation id="3668838456083358569">Một số dữ liệu NFT được lưu trữ trong máy chủ tập trung như AWS, Google Cloud, v.v. Trong trường hợp này, không thể ghim dữ liệu NFT của bạn vào mạng IPFS.</translation>
-<translation id="1293258969121701010">Bằng cách chạy IPFS trên máy tính của mình, bạn có thể:</translation>
-<translation id="4568942135611119076">Đảm bảo dữ liệu NFT của bạn luôn trực tuyến và không bị giả mạo.</translation>
-<translation id="4915883034746438977">Lấy lại nội dung bằng mã định danh nội dung (CID) từ dữ liệu không chính xác.</translation>
-<translation id="1373647012698032676">Tham gia bằng chứng xác thực và làm cho mạng IPFS phong phú và lành mạnh.</translation>
-<translation id="1806204385270226865">Giữ NFT của tôi luôn trực tuyến</translation>
-<translation id="4323376551843624309">Bật tính năng ghim NFT</translation>
-<translation id="6501331923135442324">Một bước tiến lớn để trở thành một phần của web3</translation>
-<translation id="5361073938927187534">Chạy nút IPFS và giữ NFT của bạn luôn trực tuyến</translation>
-<translation id="1060267371223703324">Kiểm tra những NFT nào của tôi có thể được ghim</translation>
-<translation id="2641083452974145848">Giờ đây, bạn có thể chạy IPFS của mình và là một phần của web 3. Dữ liệu NFT của bạn sẽ trực tuyến mãi mãi và không thể bị giả mạo.</translation>
-<translation id="4460927368826360904">Bạn đang chạy nút IPFS. Tệp đang được tìm nạp tới nút IPFS cục bộ.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> trong số <ph name="PINNABLE"/> NFT đã được ghim thành công vào IPFS.</translation>
+<translation id="4225753478505258806">Nhưng IPFS cần những người tham gia riêng lẻ để hoạt động. Chạy IPFS trên máy tính của bạn để:</translation>
+<translation id="7674069205559000521">Góp phần tăng tốc độ và tính khả dụng của mạng</translation>
+<translation id="7775229731579227782">Tăng tính bảo mật cho NFT của bạn</translation>
+<translation id="2319971828691864975">Bắt đầu với IPFS</translation>
+<translation id="7906328323880284538">Cách an toàn nhất để lưu trữ NFT</translation>
+<translation id="166206715890914321">Chạy nút IPFS để giữ NFT của bạn trực tuyến mãi mãi</translation>
+<translation id="8913523138550521467">IPFS là giải pháp thay thế siêu an toàn cho dịch vụ lưu trữ Web truyền thống. Thay vì dựa vào một máy chủ duy nhất, IPFS cho phép hàng nghìn cá nhân (những người chạy “nút”) làm việc cùng nhau để lưu trữ nội dung. Và miễn là một người có một bản sao, một tập tin không bao giờ có thể biến mất. “Ghim” NFT của bạn vào IPFS—và chạy nút IPFS của riêng bạn—là cách tốt nhất để bảo mật NFT của bạn.</translation>
+<translation id="9160750213078764355">Xem NFT nào của tôi đủ điều kiện</translation>
+<translation id="6671461082721702724">Bây giờ bạn có thể chạy IPFS của mình và là một phần của web 3. Dữ liệu NFT của bạn sẽ trực tuyến mãi mãi.</translation>
+<translation id="654964147165509548">NFT đang được ghim vào nút IPFS cục bộ của bạn.</translation>
+<translation id="4910182786472608576">Các NFT được hỗ trợ <ph name="PINNED"/> được ghim vào nút IPFS cục bộ của bạn.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> trong số <ph name="TOTAL"/> có sẵn!</translation>
 <translation id="6852656829524945421">Không thể ghim</translation>
 <translation id="7698019251444927442">Bạn đang chạy nút IPFS</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">Đã ghim vào nút IPFS cục bộ của bạn</translation>
 <translation id="5659058832308365026">Dữ liệu NFT đang được ghim vào nút IPFS cục bộ của bạn</translation>
 <translation id="4919133452617704550">Không thể ghim vào nút IPFS cục bộ của bạn</translation>
+<translation id="4220102684162429566">Lý do phổ biến nhất:</translation>
+<translation id="451509325309455">NFT có vấn đề về url siêu dữ liệu không phải IPFS</translation>
+<translation id="3827697793483899711">Vấn đề về nút IPFS nội bộ</translation>
+<translation id="1992846713609432783">Không đủ dung lượng trên nút cục bộ</translation>
 <translation id="3225624966527491351">Nhập khẩu NFT</translation>
 <translation id="9085765419770918643">Chưa có NFT nào ở đây.</translation>
 <translation id="8445532667841598737">Sẵn sàng để thêm một ít? Chỉ cần nhấp vào nút bên dưới để nhập.</translation>
 <translation id="9136462955850040542">Tương thích với NFT trên Solana (SPL) và Ethereum (ERC-721).</translation>
+<translation id="849880459530751909">Sửa NFT</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">Cài đặt Lá chắn toàn cục</translation>
 <translation id="2108334320919763866">Mặc định toàn cầu</translation>
 <translation id="3440043456924990296">Cài đặt do tổ chức quản lý</translation>
+<translation id="7053983685419859001">Chặn</translation>
+<translation id="5716230673298034837">Cho phép toàn bộ</translation>
+<translation id="5279600392753459966">Chặn tất cả</translation>
 <translation id="4516904298421534459">Lọc danh sách</translation>
 <translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="131231380815754440">Bật HTTPS</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">Tích cực chặn trình theo dõi &amp; quảng cáo</translation>
 <translation id="7384778069178817075">Cho phép tất cả trình theo dõi và quảng cáo</translation>
 <translation id="4941539331405513605">Chặn cookie liên trang</translation>
+<translation id="2749284154880331639">Quên cookie của bên thứ nhất</translation>
 <translation id="6883611015375728278">Chặn tất cả cookie</translation>
 <translation id="5657156137487675418">Cho phép mọi cookie.</translation>
 <translation id="8366221601425141146">Đã chặn tính năng tạo dấu vân tay</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Khiên Brave 
 <ph name="NUMBER"/> Trình theo dõi, quảng cáo và hơn thế nữa bị chặn</translation>
 <translation id="4292121526390005808">Các script đã bị chặn</translation>
+<translation id="5046271170844958713">Script được cho phép</translation>
 <translation id="264682546981571963">Mệt mỏi với các thông báo đồng ý cookie?</translation>
 <translation id="4986297793092101884">Brave đã chặn cookie của bên thứ ba. Chúng tôi cũng có thể chặn thông báo chấp thuận cookie.</translation>
 <translation id="535688588637568715">Có, chặn thông báo chấp thuận cookie</translation>
@@ -1669,6 +1688,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> không thể kết nối với máy chủ <ph name="REGION_NAME"/>. Bạn có thể thử lại hoặc chọn một máy chủ khác.</translation>
 <translation id="1024255913009642477">Đã mua VPN?</translation>
 <translation id="8814357473522731680">Được hỗ trợ bởi</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Hết hạn</translation>
 <translation id="1691256669639196606">Quản lý đăng ký</translation>
 <translation id="434523916398030617">Liên hệ hỗ trợ kỹ thuật</translation>

@@ -13,7 +13,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_associated_receiver.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 class LedgerFactoryImpl : public mojom::LedgerFactory {
  public:
@@ -35,6 +35,6 @@ class LedgerFactoryImpl : public mojom::LedgerFactory {
   mojo::SelfOwnedAssociatedReceiverRef<mojom::Ledger> ledger_;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_

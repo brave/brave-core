@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/scoped_multi_source_observation.h"
 #include "ui/views/view_observer.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
@@ -47,6 +48,7 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
   }
 
   // views::WidgetDelegateView:
+  void AddedToWidget() override;
   void ChildPreferredSizeChanged(views::View* child) override;
 
   // views::ViewObserver:
@@ -56,6 +58,7 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
   void OnViewIsDeleting(views::View* observed_view) override;
 
   // views::WidgetObserver:
+  void OnWidgetVisibilityChanged(views::Widget* widget, bool visible) override;
   void OnWidgetBoundsChanged(views::Widget* widget,
                              const gfx::Rect& new_bounds) override;
   void OnWidgetDestroying(views::Widget* widget) override;
@@ -76,7 +79,7 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
   base::ScopedObservation<views::View, views::ViewObserver>
       host_view_observation_{this};
 
-  base::ScopedObservation<views::Widget, views::WidgetObserver>
+  base::ScopedMultiSourceObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
 };
 

@@ -13,7 +13,6 @@ export const StyledWrapper = styled.div<{
   height: 130px;
   min-height: 130px;
   max-height: 130px;
-  margin-bottom: 30px;
   box-sizing: border-box;
   position: relative;
   z-index: 9;
@@ -50,8 +49,8 @@ export const ChartBalance = styled.span`
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
-  font-size: 11px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 24px;
   color: ${leo.color.text.primary};
 `
 

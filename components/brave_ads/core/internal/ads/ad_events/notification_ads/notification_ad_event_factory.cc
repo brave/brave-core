@@ -13,33 +13,34 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_viewed.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
-std::unique_ptr<AdEventInterface<NotificationAdInfo>> AdEventFactory::Build(
+std::unique_ptr<AdEventInterface<NotificationAdInfo>>
+NotificationAdEventFactory::Build(
     const mojom::NotificationAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   switch (event_type) {
     case mojom::NotificationAdEventType::kServed: {
-      return std::make_unique<AdEventServed>();
+      return std::make_unique<NotificationAdEventServed>();
     }
 
     case mojom::NotificationAdEventType::kViewed: {
-      return std::make_unique<AdEventViewed>();
+      return std::make_unique<NotificationAdEventViewed>();
     }
 
     case mojom::NotificationAdEventType::kClicked: {
-      return std::make_unique<AdEventClicked>();
+      return std::make_unique<NotificationAdEventClicked>();
     }
 
     case mojom::NotificationAdEventType::kDismissed: {
-      return std::make_unique<AdEventDismissed>();
+      return std::make_unique<NotificationAdEventDismissed>();
     }
 
     case mojom::NotificationAdEventType::kTimedOut: {
-      return std::make_unique<AdEventTimedOut>();
+      return std::make_unique<NotificationAdEventTimedOut>();
     }
   }
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

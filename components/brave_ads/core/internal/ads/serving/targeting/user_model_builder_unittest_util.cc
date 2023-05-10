@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 UserModelInfo BuildUserModel(
     const SegmentList& interest_segments,
@@ -22,4 +22,4 @@ UserModelInfo BuildUserModel(
   return user_model;
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

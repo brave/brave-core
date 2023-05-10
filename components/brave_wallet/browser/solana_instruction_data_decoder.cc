@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 
@@ -618,8 +618,9 @@ absl::optional<uint8_t> DecodeUint8(const std::vector<uint8_t>& input,
 absl::optional<std::string> DecodeUint8String(const std::vector<uint8_t>& input,
                                               size_t& offset) {
   auto ret = DecodeUint8(input, offset);
-  if (!ret)
+  if (!ret) {
     return absl::nullopt;
+  }
   return base::NumberToString(*ret);
 }
 
@@ -627,8 +628,9 @@ absl::optional<std::string> DecodeAuthorityTypeString(
     const std::vector<uint8_t>& input,
     size_t& offset) {
   auto ret = DecodeUint8(input, offset);
-  if (ret && *ret <= kAuthorityTypeMax)
+  if (ret && *ret <= kAuthorityTypeMax) {
     return base::NumberToString(*ret);
+  }
   return absl::nullopt;
 }
 
@@ -656,8 +658,9 @@ absl::optional<std::string> DecodeUint32String(
     const std::vector<uint8_t>& input,
     size_t& offset) {
   auto ret = DecodeUint32(input, offset);
-  if (!ret)
+  if (!ret) {
     return absl::nullopt;
+  }
   return base::NumberToString(*ret);
 }
 
@@ -685,15 +688,17 @@ absl::optional<std::string> DecodeUint64String(
     const std::vector<uint8_t>& input,
     size_t& offset) {
   auto ret = DecodeUint64(input, offset);
-  if (!ret)
+  if (!ret) {
     return absl::nullopt;
+  }
   return base::NumberToString(*ret);
 }
 
 absl::optional<std::string> DecodePublicKey(const std::vector<uint8_t>& input,
                                             size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < kSolanaPubkeySize)
+  if (offset >= input.size() || input.size() - offset < kSolanaPubkeySize) {
     return absl::nullopt;
+  }
 
   offset += kSolanaPubkeySize;
   return Base58Encode(std::vector<uint8_t>(
@@ -730,15 +735,17 @@ absl::optional<std::string> DecodeOptionalPublicKey(
 absl::optional<std::string> DecodeString(const std::vector<uint8_t>& input,
                                          size_t& offset) {
   auto len_lower = DecodeUint32(input, offset);
-  if (!len_lower || *len_lower > kMaxStringSize32Bit)
+  if (!len_lower || *len_lower > kMaxStringSize32Bit) {
     return absl::nullopt;
+  }
   auto len_upper = DecodeUint32(input, offset);
   if (!len_upper || *len_upper != 0) {  // Non-zero means len exceeds u32 max.
     return absl::nullopt;
   }
 
-  if (offset + *len_lower > input.size())
+  if (offset + *len_lower > input.size()) {
     return absl::nullopt;
+  }
 
   offset += *len_lower;
   return std::string(reinterpret_cast<const char*>(&input[offset - *len_lower]),
@@ -778,8 +785,9 @@ bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
       break;
   }
 
-  if (!value)
+  if (!value) {
     return false;
+  }
 
   // Early return to ignore optional public key in the param name-value list
   // if it is not passed.
@@ -800,8 +808,9 @@ absl::optional<mojom::SolanaSystemInstruction> DecodeSystemInstructionType(
     size_t& offset) {
   auto ins_type = DecodeUint32(data, offset);
   if (!ins_type || *ins_type > static_cast<uint32_t>(
-                                   mojom::SolanaSystemInstruction::kMaxValue))
+                                   mojom::SolanaSystemInstruction::kMaxValue)) {
     return absl::nullopt;
+  }
   return static_cast<mojom::SolanaSystemInstruction>(*ins_type);
 }
 
@@ -810,8 +819,9 @@ absl::optional<mojom::SolanaTokenInstruction> DecodeTokenInstructionType(
     size_t& offset) {
   auto ins_type = DecodeUint8(data, offset);
   if (!ins_type || *ins_type > static_cast<uint8_t>(
-                                   mojom::SolanaTokenInstruction::kMaxValue))
+                                   mojom::SolanaTokenInstruction::kMaxValue)) {
     return absl::nullopt;
+  }
   return static_cast<mojom::SolanaTokenInstruction>(*ins_type);
 }
 
@@ -856,8 +866,9 @@ absl::optional<SolanaInstructionDecodedData> Decode(
 
   const std::vector<ParamNameTypeTuple>* param_tuples =
       DecodeInstructionType(program_id, data, offset, decoded_data);
-  if (!param_tuples)
+  if (!param_tuples) {
     return absl::nullopt;
+  }
 
   for (const auto& param_tuple : *param_tuples) {
     if (!DecodeParamType(param_tuple, data, offset, decoded_data.params)) {

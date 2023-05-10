@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_DELEGATE_H_
@@ -21,9 +21,6 @@ class BraveWalletProviderDelegate {
   using RequestPermissionsCallback = base::OnceCallback<void(
       mojom::RequestPermissionsError error,
       const absl::optional<std::vector<std::string>>& allowed_accounts)>;
-  using IsAccountAllowedCallback = base::OnceCallback<void(bool allowed)>;
-  using GetAllowedAccountsCallback =
-      base::OnceCallback<void(bool success, const std::vector<std::string>&)>;
 
   BraveWalletProviderDelegate() = default;
   BraveWalletProviderDelegate(const BraveWalletProviderDelegate&) = delete;
@@ -40,12 +37,11 @@ class BraveWalletProviderDelegate {
   virtual void RequestPermissions(mojom::CoinType type,
                                   const std::vector<std::string>& accounts,
                                   RequestPermissionsCallback) = 0;
-  virtual void IsAccountAllowed(mojom::CoinType type,
-                                const std::string& account,
-                                IsAccountAllowedCallback callback) = 0;
-  virtual void GetAllowedAccounts(mojom::CoinType type,
-                                  const std::vector<std::string>& accounts,
-                                  GetAllowedAccountsCallback callback) = 0;
+  virtual bool IsAccountAllowed(mojom::CoinType type,
+                                const std::string& account) = 0;
+  virtual absl::optional<std::vector<std::string>> GetAllowedAccounts(
+      mojom::CoinType type,
+      const std::vector<std::string>& accounts) = 0;
   virtual bool IsPermissionDenied(mojom::CoinType type) = 0;
   virtual void AddSolanaConnectedAccount(const std::string& account) {}
   virtual void RemoveSolanaConnectedAccount(const std::string& account) {}

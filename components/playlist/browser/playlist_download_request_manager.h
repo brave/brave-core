@@ -73,6 +73,11 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
       content::WebContents* web_contents,
       blink::web_pref::WebPreferences* web_prefs);
 
+  const content::WebContents* background_contents() const {
+    return web_contents_.get();
+  }
+
+  // This will create or get web contents
   content::WebContents* GetBackgroundWebContentsForTesting();
 
   const MediaDetectorComponentManager* media_detector_component_manager()

@@ -20,7 +20,7 @@
 using ::testing::_;
 using ::testing::MockFunction;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
@@ -165,4 +165,4 @@ TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

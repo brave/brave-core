@@ -33,7 +33,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -68,6 +68,9 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/skus/common/features.h"
+#include "brave/components/skus/common/skus_internals.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -115,6 +118,12 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+#include "brave/browser/request_otr/request_otr_service_factory.h"
+#include "brave/components/request_otr/browser/request_otr_navigation_throttle.h"
+#include "brave/components/request_otr/browser/request_otr_tab_storage.h"
+#endif
 
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
@@ -185,6 +194,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
@@ -194,6 +204,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/commands_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
+#include "brave/components/ai_chat/ai_chat.mojom.h"
+#include "brave/components/ai_chat/features.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -209,7 +221,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_render_frame_browser_client.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -254,6 +268,25 @@ void BindCosmeticFiltersResources(
       FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
                                 std::move(receiver)));
 }
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+void BindPlaylistRenderFrameBrowserClient(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<playlist::mojom::PlaylistRenderFrameBrowserClient>
+        receiver) {
+  auto* playlist_service =
+      playlist::PlaylistServiceFactory::GetForBrowserContext(
+          frame_host->GetBrowserContext());
+  if (!playlist_service) {
+    // We don't support playlist on OTR profile.
+    return;
+  }
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<playlist::PlaylistRenderFrameBrowserClient>(
+          frame_host->GetGlobalId(), playlist_service->GetWeakPtr()),
+      std::move(receiver));
+}
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 void MaybeBindWalletP3A(
     content::RenderFrameHost* const frame_host,
@@ -513,7 +546,14 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     registry.ForWebUI<commands::CommandsUI>()
         .Add<commands::mojom::CommandsService>();
   }
+  if (ai_chat::features::IsAIChatEnabled()) {
+    registry.ForWebUI<AIChatUI>().Add<ai_chat::mojom::PageHandler>();
+  }
 #endif
+
+  if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
+    registry.ForWebUI<SkusInternalsUI>().Add<skus::mojom::SkusInternals>();
+  }
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
@@ -571,6 +611,20 @@ bool BraveContentBrowserClient::CanCreateWindow(
       opener, opener_url, opener_top_level_frame_url, source_origin,
       container_type, target_url, referrer, frame_name, disposition, features,
       user_gesture, opener_suppressed, no_javascript_access);
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  // If the user has requested going off-the-record in this tab, don't allow
+  // opening new windows via script
+  if (content::WebContents* web_contents =
+          content::WebContents::FromRenderFrameHost(opener)) {
+    if (request_otr::RequestOTRTabStorage* request_otr_tab_storage =
+            request_otr::RequestOTRTabStorage::FromWebContents(web_contents)) {
+      if (request_otr_tab_storage->RequestedOTR()) {
+        *no_javascript_access = true;
+      }
+    }
+  }
+#endif
 
   return can_create_window && google_sign_in_permission::CanCreateWindow(
                                   opener, opener_url, target_url);
@@ -644,6 +698,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::TipPanelHandlerFactory, brave_rewards::TipPanelUI>(
       map);
+  if (ai_chat::features::IsAIChatEnabled() &&
+      !render_frame_host->GetBrowserContext()->IsTor()) {
+    content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
+                                                    AIChatUI>(map);
+  }
 #endif
 
 // Brave News
@@ -665,6 +724,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  map->Add<playlist::mojom::PlaylistRenderFrameBrowserClient>(
+      base::BindRepeating(&BindPlaylistRenderFrameBrowserClient));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
@@ -1052,6 +1116,20 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
                           context))) {
     throttles.push_back(std::move(debounce_throttle));
   }
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  // Request Off-The-Record
+  if (auto request_otr_throttle =
+          request_otr::RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
+              handle,
+              request_otr::RequestOTRServiceFactory::GetForBrowserContext(
+                  context),
+              EphemeralStorageServiceFactory::GetForContext(context),
+              Profile::FromBrowserContext(context)->GetPrefs(),
+              g_browser_process->GetApplicationLocale())) {
+    throttles.push_back(std::move(request_otr_throttle));
+  }
+#endif
 
   return throttles;
 }

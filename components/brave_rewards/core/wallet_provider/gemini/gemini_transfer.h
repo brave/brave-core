@@ -9,21 +9,21 @@
 #include "brave/components/brave_rewards/core/endpoints/gemini/post_commit_transaction/post_commit_transaction_gemini.h"
 #include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
 
-namespace ledger::gemini {
+namespace brave_rewards::internal::gemini {
 
 class GeminiTransfer final : public wallet_provider::Transfer {
  public:
   using Transfer::Transfer;
 
  private:
-  void CommitTransaction(ledger::ResultCallback,
+  void CommitTransaction(ResultCallback,
                          mojom::ExternalTransactionPtr) const override;
 
   void OnCommitTransaction(
-      ledger::ResultCallback,
+      ResultCallback,
       endpoints::PostCommitTransactionGemini::Result&&) const;
 };
 
-}  // namespace ledger::gemini
+}  // namespace brave_rewards::internal::gemini
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_GEMINI_GEMINI_TRANSFER_H_

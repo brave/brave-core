@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_wallet/notifications/wallet_notification_service.h"
 
@@ -40,7 +40,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, prefs());
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         prefs(), local_state());
-    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
+    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
                                               keyring_service_.get(), prefs());
     notification_service_ =
         std::make_unique<WalletNotificationService>(profile());

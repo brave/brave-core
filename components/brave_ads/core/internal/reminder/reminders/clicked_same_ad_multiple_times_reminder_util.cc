@@ -7,12 +7,12 @@
 
 #include "base/check_op.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder_features.h"
+#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 
 namespace brave_ads {
 
@@ -47,7 +47,7 @@ bool DidUserClickTheSameAdMultipleTimes(const HistoryItemInfo& history_item) {
 
   const size_t remind_user_if_clicking_the_same_ad_after =
       kRemindUserIfClickingTheSameAdAfter.Get();
-  DCHECK_GT(remind_user_if_clicking_the_same_ad_after, 0U);
+  CHECK_GT(remind_user_if_clicking_the_same_ad_after, 0U);
 
   return (count - 1) % remind_user_if_clicking_the_same_ad_after ==
          remind_user_if_clicking_the_same_ad_after - 1;

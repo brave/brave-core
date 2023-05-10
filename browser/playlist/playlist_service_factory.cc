@@ -12,6 +12,7 @@
 
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
@@ -111,6 +112,16 @@ bool PlaylistServiceFactory::IsPlaylistEnabled(
          brave::IsRegularProfile(context);
 }
 
+// static
+void PlaylistServiceFactory::RegisterLocalStatePrefs(
+    PrefRegistrySimple* registry) {
+  // Prefs for P3A
+  registry->RegisterTimePref(kPlaylistFirstUsageTime, base::Time());
+  registry->RegisterTimePref(kPlaylistLastUsageTime, base::Time());
+  registry->RegisterBooleanPref(kPlaylistUsedSecondDay, false);
+  registry->RegisterListPref(kPlaylistUsageWeeklyStorage);
+}
+
 void PlaylistServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   auto default_list = mojom::Playlist::New();
@@ -141,9 +152,12 @@ PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   DCHECK(media_detector_component_manager_);
-  return new PlaylistService(context, media_detector_component_manager_.get(),
+  PrefService* local_state = g_browser_process->local_state();
+  return new PlaylistService(context, local_state,
+                             media_detector_component_manager_.get(),
                              std::make_unique<PlaylistServiceDelegateImpl>(
-                                 Profile::FromBrowserContext(context)));
+                                 Profile::FromBrowserContext(context)),
+                             brave_stats::GetFirstRunTime(local_state));
 }
 
 void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {

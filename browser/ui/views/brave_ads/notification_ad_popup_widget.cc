@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "build/build_config.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/native_theme/native_theme.h"
@@ -26,28 +26,35 @@ void NotificationAdPopupWidget::InitWidget(
     const gfx::Rect& bounds,
     gfx::NativeWindow browser_native_window,
     gfx::NativeView browser_native_view) {
-  DCHECK(delegate);
+  CHECK(delegate);
 
   views::Widget::InitParams params;
   params.delegate = delegate;
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
-  // Chromium doesn't always support transparent window background on X11.
-  // This can cause artifacts on shadows around ads notification popup. To fix
-  // this shadows are drawn by Widget.
-#if BUILDFLAG(IS_LINUX)
-  params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
-#else
-  params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
-#endif  // BUILDFLAG(IS_LINUX)
   params.bounds = bounds;
 
-  if (features::ShouldAttachNotificationAdToBrowserWindow()) {
-    params.z_order = ui::ZOrderLevel::kNormal;
-    params.parent = browser_native_view;
-  } else {
+  if constexpr (BUILDFLAG(IS_LINUX)) {
+    // Chromium doesn't always support transparent window background on X11.
+    // This can cause artifacts on shadows around ads notification popup. To fix
+    // this shadows are drawn by Widget.
+    params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
+
+    // TODO(https://github.com/brave/brave-browser/issues/29744): Enable
+    // ZOrderLevel::kNormal for Linux when custom notification ad drawing
+    // artifacts are fixed.
     params.z_order = ui::ZOrderLevel::kFloatingWindow;
     params.context = browser_native_window;
+  } else {
+    params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
+
+    if (kUseSameZOrderAsBrowserWindow.Get()) {
+      params.z_order = ui::ZOrderLevel::kNormal;
+      params.parent = browser_native_view;
+    } else {
+      params.z_order = ui::ZOrderLevel::kFloatingWindow;
+      params.context = browser_native_window;
+    }
   }
 
 #if BUILDFLAG(IS_WIN)
@@ -55,7 +62,7 @@ void NotificationAdPopupWidget::InitWidget(
   // not the Ash desktop (since there is already another toast contents view
   // there
   if (!params.parent) {
-    DCHECK(!params.native_widget);
+    CHECK(!params.native_widget);
     params.native_widget = new views::DesktopNativeWidgetAura(this);
   }
 #endif  // BUILDFLAG(IS_WIN)

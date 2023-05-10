@@ -37,6 +37,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -108,7 +109,13 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/components/ai_chat/features.h"
+#include "brave/components/ai_chat/pref_names.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+#include "brave/components/request_otr/browser/request_otr_service.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -179,6 +186,8 @@ void RegisterProfilePrefsForMigration(
 
   // Added Feb 2023
   registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
+
+  brave_rewards::RewardsService::RegisterProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -421,6 +430,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
+  if (ai_chat::features::IsAIChatEnabled()) {
+    ai_chat::prefs::RegisterProfilePrefs(registry);
+  }
 #endif
 
   brave_search_conversion::RegisterPrefs(registry);
@@ -439,6 +451,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefsForMigration(registry);
 
   translate::RegisterBraveProfilePrefsForMigration(registry);
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  request_otr::RequestOTRService::RegisterProfilePrefs(registry);
+#endif
 }
 
 }  // namespace brave

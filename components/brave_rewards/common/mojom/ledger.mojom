@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-module ledger.mojom;
+module brave_rewards.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
 
@@ -136,7 +136,6 @@ struct AutoContributeProperties {
   double amount;
   uint64 contribution_min_time;
   int32 contribution_min_visits;
-  bool contribution_non_verified;
   uint64 reconcile_stamp;
 };
 
@@ -223,7 +222,8 @@ enum Result {
   IN_PROGRESS= 33,
   REWARDS_OFF = 34,
   AC_OFF = 35,
-  RETRY_PENDING_TRANSACTION = 36
+  RETRY_PENDING_TRANSACTION_SHORT = 36,
+  RETRY_PENDING_TRANSACTION_LONG = 37
 };
 
 enum PublisherStatus {

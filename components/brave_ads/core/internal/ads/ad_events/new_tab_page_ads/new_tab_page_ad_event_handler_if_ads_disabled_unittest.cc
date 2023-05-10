@@ -13,18 +13,19 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::new_tab_page_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -32,7 +33,7 @@ CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
 
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   return creative_ad;
 }
@@ -40,7 +41,7 @@ CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
 }  // namespace
 
 class BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest
-    : public EventHandlerDelegate,
+    : public NewTabPageAdEventHandlerDelegate,
       public UnitTestBase {
  protected:
   void SetUp() override {
@@ -51,29 +52,29 @@ class BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest
     event_handler_.SetDelegate(this);
   }
 
-  void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) override {
+  void OnDidFireNewTabPageAdServedEvent(const NewTabPageAdInfo& ad) override {
     ad_ = ad;
     did_serve_ad_ = true;
   }
 
-  void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override {
+  void OnDidFireNewTabPageAdViewedEvent(const NewTabPageAdInfo& ad) override {
     ad_ = ad;
     did_view_ad_ = true;
   }
 
-  void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override {
+  void OnDidFireNewTabPageAdClickedEvent(const NewTabPageAdInfo& ad) override {
     ad_ = ad;
     did_click_ad_ = true;
   }
 
-  void OnNewTabPageAdEventFailed(
+  void OnFailedToFireNewTabPageAdEvent(
       const std::string& /*placement_id*/,
       const std::string& /*creative_instance_id*/,
       const mojom::NewTabPageAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;
   }
 
-  EventHandler event_handler_;
+  NewTabPageAdEventHandler event_handler_;
 
   NewTabPageAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -103,9 +104,9 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
   const NewTabPageAdInfo expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
@@ -133,11 +134,11 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
   const NewTabPageAdInfo expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
@@ -156,9 +157,9 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
@@ -175,9 +176,9 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
@@ -194,9 +195,9 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
@@ -214,9 +215,9 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
@@ -234,9 +235,9 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
@@ -248,7 +249,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
-  const int ads_per_hour = kMaximumAdsPerHour.Get();
+  const size_t ads_per_hour = kMaximumNewTabPageAdsPerHour.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -258,7 +259,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_hour - 1);
 
-  AdvanceClockBy(kMinimumWaitTime.Get());
+  AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get());
 
   event_handler_.FireEvent(placement_id, creative_ad.creative_instance_id,
                            mojom::NewTabPageAdEventType::kServed);
@@ -279,7 +280,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_hour = kMaximumAdsPerHour.Get();
+  const size_t ads_per_hour = kMaximumNewTabPageAdsPerHour.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -308,7 +309,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_day = kMaximumAdsPerDay.Get();
+  const size_t ads_per_day = kMaximumNewTabPageAdsPerDay.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -342,7 +343,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_day = kMaximumAdsPerDay.Get();
+  const size_t ads_per_day = kMaximumNewTabPageAdsPerDay.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -368,4 +369,4 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-}  // namespace brave_ads::new_tab_page_ads
+}  // namespace brave_ads

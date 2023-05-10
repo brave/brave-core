@@ -8,7 +8,7 @@
 #include <ostream>
 
 #include "base/notreached.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
@@ -34,9 +34,8 @@ std::string StaticUrlHost::Get() const {
     }
   }
 
-  NOTREACHED() << "Unexpected value for EnvironmentType: "
-               << static_cast<int>(environment_type);
-  return kStagingHost;
+  NOTREACHED_NORETURN() << "Unexpected value for EnvironmentType: "
+                        << static_cast<int>(environment_type);
 }
 
 }  // namespace brave_ads

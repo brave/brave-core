@@ -9,7 +9,7 @@ import * as React from 'react'
 import { PanelTypes, NavOption } from '../../../constants/types'
 
 // Options
-import { PanelNavOptions } from '../../../options/nav-options'
+import { PanelNavOptionsOld } from '../../../options/nav-options'
 
 // Components
 import { PanelBottomNavButton } from './panel-bottom-nav-button/panel-bottom-nav-button'
@@ -43,7 +43,7 @@ export const PanelBottomNav = (props: Props) => {
   return (
     <StyledWrapper>
       <NavOutline>
-        {PanelNavOptions.map((option) =>
+        {PanelNavOptionsOld.map((option) =>
           <PanelBottomNavButton
             key={option.id}
             onClick={() => handleOnClick(option)}

@@ -6,17 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_PROCESSOR_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_PROCESSOR_H_
 
-namespace brave_ads::processor {
+namespace brave_ads {
 
-struct BanditFeedbackInfo;
+struct EpsilonGreedyBanditFeedbackInfo;
 
-class EpsilonGreedyBandit final {
+class EpsilonGreedyBanditProcessor final {
  public:
-  EpsilonGreedyBandit();
+  EpsilonGreedyBanditProcessor();
 
-  static void Process(const BanditFeedbackInfo& feedback);
+  static void Process(const EpsilonGreedyBanditFeedbackInfo& feedback);
 };
 
-}  // namespace brave_ads::processor
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_PROCESSOR_H_

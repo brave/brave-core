@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
@@ -31,6 +31,7 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
 
   std::string GetTableName() const override;
 
+  void Create(mojom::DBTransactionInfo* transaction) override;
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
@@ -38,7 +39,7 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
       mojom::DBTransactionInfo* transaction,
       const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
-  std::string BuildInsertOrUpdateQuery(
+  std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const TextEmbeddingHtmlEventList& text_embedding_html_events) const;
 };

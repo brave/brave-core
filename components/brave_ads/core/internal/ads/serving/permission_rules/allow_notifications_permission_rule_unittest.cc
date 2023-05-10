@@ -14,7 +14,7 @@ namespace brave_ads {
 
 class BraveAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
  protected:
-  AllowNotificationsPermissionRule permission_rule_;
+  const AllowNotificationsPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, AllowAd) {

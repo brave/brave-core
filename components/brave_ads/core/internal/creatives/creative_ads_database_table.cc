@@ -13,7 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -31,16 +31,33 @@ namespace {
 
 constexpr char kTableName[] = "creative_ads";
 
-int BindParameters(mojom::DBCommandInfo* command,
-                   const CreativeAdList& creative_ads) {
-  DCHECK(command);
+void BindRecords(mojom::DBCommandInfo* command) {
+  CHECK(command);
 
-  int count = 0;
+  command->record_bindings = {
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE   // target_url
+  };
+}
+
+size_t BindParameters(mojom::DBCommandInfo* command,
+                      const CreativeAdList& creative_ads) {
+  CHECK(command);
+
+  size_t count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.creative_instance_id);
-    BindBool(command, index++, creative_ad.conversion);
+    BindBool(command, index++, creative_ad.has_conversion);
     BindInt(command, index++, creative_ad.per_day);
     BindInt(command, index++, creative_ad.per_week);
     BindInt(command, index++, creative_ad.per_month);
@@ -56,12 +73,12 @@ int BindParameters(mojom::DBCommandInfo* command,
 }
 
 CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id = ColumnString(record, 0);
-  creative_ad.conversion = ColumnBool(record, 1);
+  creative_ad.has_conversion = ColumnBool(record, 1);
   creative_ad.per_day = ColumnInt(record, 2);
   creative_ad.per_week = ColumnInt(record, 3);
   creative_ad.per_month = ColumnInt(record, 4);
@@ -74,12 +91,12 @@ CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 CreativeAdMap GroupCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   CreativeAdMap creative_ads;
 
   for (const auto& record : command_response->result->get_records()) {
-    const CreativeAdInfo creative_ad = GetFromRecord(record.get());
+    const CreativeAdInfo creative_ad = GetFromRecord(&*record);
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
     if (iter == creative_ads.cend()) {
@@ -108,7 +125,7 @@ CreativeAdMap GroupCreativeAdsFromResponse(
 
 CreativeAdList GetCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   const CreativeAdMap grouped_creative_ads =
       GroupCreativeAdsFromResponse(std::move(command_response));
@@ -148,27 +165,19 @@ void OnGetForCreativeInstanceId(
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   DropTable(transaction, "creative_ads");
 
-  const std::string query =
-      "CREATE TABLE creative_ads "
-      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
-      "ON CONFLICT REPLACE, "
-      "conversion INTEGER NOT NULL DEFAULT 0, "
-      "per_day INTEGER NOT NULL DEFAULT 0, "
-      "per_week INTEGER NOT NULL DEFAULT 0, "
-      "per_month INTEGER NOT NULL DEFAULT 0, "
-      "total_max INTEGER NOT NULL DEFAULT 0, "
-      "value DOUBLE NOT NULL DEFAULT 0, "
-      "split_test_group TEXT, "
-      "target_url TEXT NOT NULL)";
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql =
+      "CREATE TABLE creative_ads (creative_instance_id TEXT NOT NULL PRIMARY "
+      "KEY UNIQUE ON CONFLICT REPLACE, conversion INTEGER NOT NULL DEFAULT 0, "
+      "per_day INTEGER NOT NULL DEFAULT 0, per_week INTEGER NOT NULL DEFAULT "
+      "0, per_month INTEGER NOT NULL DEFAULT 0, total_max INTEGER NOT NULL "
+      "DEFAULT 0, value DOUBLE NOT NULL DEFAULT 0, split_test_group TEXT, "
+      "target_url TEXT NOT NULL);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -176,7 +185,7 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
 void CreativeAds::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                  const CreativeAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (creative_ads.empty()) {
     return;
@@ -184,19 +193,16 @@ void CreativeAds::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
-
+  command->sql = BuildInsertOrUpdateSql(&*command, creative_ads);
   transaction->commands.push_back(std::move(command));
 }
 
 void CreativeAds::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  DeleteTable(transaction.get(), GetTableName());
+  DeleteTable(&*transaction, GetTableName());
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 void CreativeAds::GetForCreativeInstanceId(
@@ -209,30 +215,16 @@ void CreativeAds::GetForCreativeInstanceId(
                                    creative_ad);
   }
 
-  const std::string query = base::ReplaceStringPlaceholders(
-      "SELECT creative_instance_id, conversion, per_day, per_week, per_month, "
-      "total_max, value, split_test_group, target_url FROM $1 AS ca WHERE "
-      "ca.creative_instance_id = '$2'",
-      {GetTableName(), creative_instance_id}, nullptr);
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
-  command->command = query;
-
-  command->record_bindings = {
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // creative_instance_id
-      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE   // target_url
-  };
-
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  command->sql = base::ReplaceStringPlaceholders(
+      "SELECT creative_instance_id, conversion, per_day, per_week, per_month, "
+      "total_max, value, split_test_group, target_url FROM $1 AS ca WHERE "
+      "ca.creative_instance_id = '$2';",
+      {GetTableName(), creative_instance_id}, nullptr);
+  BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -245,9 +237,24 @@ std::string CreativeAds::GetTableName() const {
   return kTableName;
 }
 
+void CreativeAds::Create(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_ads (creative_instance_id TEXT NOT "
+      "NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, conversion INTEGER NOT "
+      "NULL DEFAULT 0, per_day INTEGER NOT NULL DEFAULT 0, per_week INTEGER "
+      "NOT NULL DEFAULT 0, per_month INTEGER NOT NULL DEFAULT 0, total_max "
+      "INTEGER NOT NULL DEFAULT 0, value DOUBLE NOT NULL DEFAULT 0, "
+      "split_test_group TEXT, target_url TEXT NOT NULL);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void CreativeAds::Migrate(mojom::DBTransactionInfo* transaction,
                           const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 24: {
@@ -263,17 +270,17 @@ void CreativeAds::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string CreativeAds::BuildInsertOrUpdateQuery(
+std::string CreativeAds::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
-  const int binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (creative_instance_id, conversion, per_day, "
       "per_week, per_month, total_max, value, split_test_group, target_url) "
-      "VALUES $2",
+      "VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 9, binded_parameters_count)},
       nullptr);

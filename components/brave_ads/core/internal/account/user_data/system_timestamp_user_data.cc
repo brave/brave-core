@@ -8,13 +8,13 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 constexpr char kSystemTimestampKey[] = "systemTimestamp";
 }  // namespace
 
-base::Value::Dict GetSystemTimestamp() {
+base::Value::Dict BuildSystemTimestampUserData() {
   base::Value::Dict user_data;
 
   user_data.Set(kSystemTimestampKey,
@@ -23,4 +23,4 @@ base::Value::Dict GetSystemTimestamp() {
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

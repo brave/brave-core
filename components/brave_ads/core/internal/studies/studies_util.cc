@@ -15,7 +15,7 @@ namespace {
 constexpr char kStudyPrefixTag[] = "BraveAds.";
 }  // namespace
 
-base::FieldTrial::ActiveGroups GetActiveFieldTrialGroupsForActiveStudies() {
+base::FieldTrial::ActiveGroups GetActiveFieldTrialStudyGroups() {
   base::FieldTrial::ActiveGroups active_field_trial_groups;
   base::FieldTrialList::GetActiveFieldTrialGroups(&active_field_trial_groups);
 
@@ -25,8 +25,7 @@ base::FieldTrial::ActiveGroups GetActiveFieldTrialGroupsForActiveStudies() {
                         std::back_inserter(filtered_active_field_trial_groups),
                         [](const base::FieldTrial::ActiveGroup& active_group) {
                           return base::StartsWith(active_group.trial_name,
-                                                  kStudyPrefixTag,
-                                                  base::CompareCase::SENSITIVE);
+                                                  kStudyPrefixTag);
                         });
 
   return filtered_active_field_trial_groups;
@@ -34,7 +33,7 @@ base::FieldTrial::ActiveGroups GetActiveFieldTrialGroupsForActiveStudies() {
 
 void LogActiveStudies() {
   const base::FieldTrial::ActiveGroups active_field_trial_groups =
-      GetActiveFieldTrialGroupsForActiveStudies();
+      GetActiveFieldTrialStudyGroups();
   if (active_field_trial_groups.empty()) {
     BLOG(1, "No active studies");
     return;

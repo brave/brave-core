@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 StateMigrationV4::StateMigrationV4(LedgerImpl& ledger) : ledger_(ledger) {}
@@ -21,4 +21,4 @@ void StateMigrationV4::Migrate(ResultCallback callback) {
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal

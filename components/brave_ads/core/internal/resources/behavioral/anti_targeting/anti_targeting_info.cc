@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 AntiTargetingInfo::AntiTargetingInfo() = default;
 
@@ -29,7 +29,7 @@ base::expected<AntiTargetingInfo, std::string>
 AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
   AntiTargetingInfo anti_targeting;
 
-  if (absl::optional<int> version = dict.FindInt("version")) {
+  if (const absl::optional<int> version = dict.FindInt("version")) {
     if (kAntiTargetingResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version mismatch");
     }
@@ -37,26 +37,26 @@ AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
     anti_targeting.version = *version;
   }
 
-  const base::Value::Dict* const site_lists = dict.FindDict("sites");
-  if (!site_lists) {
+  const auto* const sites_dict = dict.FindDict("sites");
+  if (!sites_dict) {
     return base::unexpected("Failed to load from JSON, sites missing");
   }
 
-  for (const auto [key, value] : *site_lists) {
-    if (!value.is_list()) {
+  for (const auto [creative_set_id, sites] : *sites_dict) {
+    if (!sites.is_list()) {
       return base::unexpected(
           "Failed to load from JSON, sites not of type list");
     }
 
-    std::set<GURL> sites;
-    for (const auto& site : value.GetList()) {
-      sites.insert(GURL(site.GetString()));
+    std::set<GURL> anti_targeting_sites;
+    for (const auto& site : sites.GetList()) {
+      anti_targeting_sites.insert(GURL(site.GetString()));
     }
 
-    anti_targeting.sites[key] = std::move(sites);
+    anti_targeting.sites[creative_set_id] = std::move(anti_targeting_sites);
   }
 
   return anti_targeting;
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

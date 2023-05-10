@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "brave_base/random.h"
+#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 
 namespace brave_ads {
 
@@ -33,12 +33,12 @@ base::Time Timer::Start(const base::Location& location,
 base::Time Timer::StartWithPrivacy(const base::Location& location,
                                    const base::TimeDelta delay,
                                    base::OnceClosure user_task) {
-  auto rand_delay_in_seconds =
-      static_cast<int64_t>(brave_base::random::Geometric(delay.InSeconds()));
-  rand_delay_in_seconds = std::max(int64_t{1}, rand_delay_in_seconds);
+  base::TimeDelta rand_delay = RandTimeDelta(delay);
+  if (!rand_delay.is_positive()) {
+    rand_delay = base::Seconds(1);
+  }
 
-  return Start(location, base::Seconds(rand_delay_in_seconds),
-               std::move(user_task));
+  return Start(location, rand_delay, std::move(user_task));
 }
 
 bool Timer::IsRunning() const {

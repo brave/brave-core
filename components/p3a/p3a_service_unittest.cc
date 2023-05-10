@@ -10,11 +10,11 @@
 #include <vector>
 
 #include "base/command_line.h"
-#include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/metric_names.h"
@@ -141,8 +141,9 @@ class P3AServiceTest : public testing::Test {
   void StoreJsonMetricInMap(const network::ResourceRequest& request,
                             const GURL& url) {
     base::StringPiece body = ExtractBodyFromRequest(request);
-    base::Value parsed_log = *base::JSONReader::Read(body);
-    std::string metric_name = *parsed_log.FindStringKey("metric_name");
+    base::Value::Dict parsed_log = base::test::ParseJsonDict(body);
+    std::string* metric_name = parsed_log.FindString("metric_name");
+    ASSERT_TRUE(metric_name);
 
     std::set<std::string>* metrics_set;
     if (url == GURL(kTestP3AJsonHost)) {
@@ -155,8 +156,8 @@ class P3AServiceTest : public testing::Test {
       return;
     }
 
-    ASSERT_EQ(metrics_set->find(metric_name), metrics_set->end());
-    metrics_set->insert(metric_name);
+    ASSERT_EQ(metrics_set->find(*metric_name), metrics_set->end());
+    metrics_set->insert(*metric_name);
   }
 };
 

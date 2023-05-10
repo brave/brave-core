@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 
@@ -52,8 +52,9 @@ content::WebContents* GetWebContentsFromTabId(Browser** browser,
     for (int index = 0; index < tab_strip_model->count(); ++index) {
       content::WebContents* contents = tab_strip_model->GetWebContentsAt(index);
       if (sessions::SessionTabHelper::IdForTab(contents).id() == tab_id) {
-        if (browser)
+        if (browser) {
           *browser = target_browser;
+        }
         return contents;
       }
     }

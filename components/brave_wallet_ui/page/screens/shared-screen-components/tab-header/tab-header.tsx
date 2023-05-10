@@ -29,8 +29,8 @@ import { HorizontalDivider, Row, Text } from '../../send/shared.styles'
 
 // Components
 import {
-  WalletMorePopup
-} from '../../../../components/desktop/wallet-more-popup/index'
+  WalletSettingsMenu
+} from '../../../../components/desktop/wallet-menus/wallet-settings-menu'
 
 interface Props {
   title: string
@@ -77,7 +77,7 @@ export const TabHeader = (props: Props) => {
           <SettingsIcon name='more-horizontal' />
         </SettingsButton>
         {showSettings &&
-          <WalletMorePopup
+          <WalletSettingsMenu
             onClickBackup={onShowBackup}
             onClosePopup={() => setShowSettings(false)}
             yPosition={50}

@@ -80,7 +80,7 @@ void AdsTabHelper::TabUpdated() {
 
 void AdsTabHelper::RunIsolatedJavaScript(
     content::RenderFrameHost* render_frame_host) {
-  DCHECK(render_frame_host);
+  CHECK(render_frame_host);
 
   render_frame_host->ExecuteJavaScriptInIsolatedWorld(
       kGetDocumentHTMLScript,
@@ -125,7 +125,7 @@ void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
 
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  DCHECK(navigation_handle);
+  CHECK(navigation_handle);
 
   if (!ads_service_ || !navigation_handle->IsInPrimaryMainFrame() ||
       !navigation_handle->HasCommitted() || !tab_id_.is_valid()) {
@@ -139,10 +139,8 @@ void AdsTabHelper::DidFinishNavigation(
   // This should eventually be fixed in crbug.com/617904.
   if (tab_not_restored && (navigation_handle->HasUserGesture() ||
                            !navigation_handle->IsRendererInitiated())) {
-    const int32_t page_transition =
-        static_cast<int32_t>(navigation_handle->GetPageTransition());
-
-    ads_service_->NotifyUserGestureEventTriggered(page_transition);
+    ads_service_->NotifyUserGestureEventTriggered(
+        navigation_handle->GetPageTransition());
   }
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
@@ -167,7 +165,7 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
                                  const GURL& validated_url) {
-  DCHECK(render_frame_host);
+  CHECK(render_frame_host);
 
   if (render_frame_host->GetParent()) {
     return;
@@ -246,7 +244,7 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
-  DCHECK(browser);
+  CHECK(browser);
 
   if (!ads_service_) {
     return;

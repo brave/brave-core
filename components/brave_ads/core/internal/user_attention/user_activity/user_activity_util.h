@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_USER_ACTIVITY_USER_ACTIVITY_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_USER_ACTIVITY_USER_ACTIVITY_UTIL_H_
 
-#include <cstdint>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_info.h"
@@ -15,14 +14,11 @@
 
 namespace brave_ads {
 
-constexpr int64_t kUserActivityMissingValue = -1;
-
-int GetNumberOfTabsOpened(const UserActivityEventList& events);
-
-int GetNumberOfUserActivityEvents(const UserActivityEventList& events,
-                                  UserActivityEventType event_type);
-int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,
-                                          UserActivityEventType event_type);
+size_t GetNumberOfUserActivityEvents(const UserActivityEventList& events,
+                                     UserActivityEventType event_type);
+base::TimeDelta GetTimeSinceLastUserActivityEvent(
+    const UserActivityEventList& events,
+    UserActivityEventType event_type);
 
 UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value);
 

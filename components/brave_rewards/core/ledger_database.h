@@ -16,7 +16,7 @@
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 class LedgerDatabase {
  public:
@@ -62,6 +62,6 @@ class LedgerDatabase {
   SEQUENCE_CHECKER(sequence_checker_);
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_DATABASE_H_

@@ -575,6 +575,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_NEWS_SHOW" desc="Text for news source">
         Show Brave News
       </message>
+      <message name="IDS_NO_CONTENT_TITLE" desc="Text for no source card title">
+        No content
+      </message>
+      <message name="IDS_NO_CONTENT_SUBTITLE" desc="Text for no source card subtitle">
+        Brave News has no content to show.
+      </message>
+      <message name="IDS_CHOOSE_CONTENT_SOURCES" desc="Text for no source card button">
+        Choose content sources
+      </message>
       <message name="IDS_FINGERPRINTING_PROTECTION_SUMMARY" desc="Summary for fingerprinting protection.">
         Prevents browser from fingerprinting
       </message>
@@ -654,6 +663,19 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_WEBSITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS" desc="Label for G sign-in site settings.">
         Allowed to use third-party cookies for legacy Google Sign-In
+      </message>
+      <!-- LOCALHOST SIGN IN SITE SETTING -->
+      <message name="IDS_LOCALHOST_TITLE" desc="Label for localhost site settings.">
+        Localhost Access
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_LOCALHOST_ASK" desc="Label for localhost site settings.">
+        Sites can request access to localhost resources
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_LOCALHOST_BLOCK" desc="Label for localhost site settings.">
+        Don't allow access to localhost resources
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_LOCALHOST_ALLOW_EXCEPTIONS" desc="Label for localhost site settings.">
+        Allowed to access localhost resources
       </message>
 
       <message name="IDS_PREFS_SECTION_BRAVE_SHIELDS_GLOBALS" desc="Title for Brave shields global defaults section in the privacy preferences screen">
@@ -1286,8 +1308,11 @@ Are you sure you want to do this?
       <message name="IDS_YOU_CAN_SUPPORT_CREATORS" desc="Text description for banner on NTP.">
         You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.
       </message>
-      <message name="IDS_PREFS_USE_CUSTOM_TABS" desc="Title for closing all tabs closes brave in controls section">
-        Open tabs in Custom Tabs
+      <message name="IDS_PREFS_USE_CUSTOM_TABS_TITLE" desc="Title for use custom tabs section">
+        Open external links in Brave
+      </message>
+      <message name="IDS_PREFS_USE_CUSTOM_TABS_TEXT" desc="Text for use custom tabs section">
+        Opens links from other apps in a Brave webview. Note: Brave must be set as your default browser.
       </message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_LOGGED_OUT" desc="Brave rewards panel logged out state text">
         Logged out
@@ -2140,7 +2165,7 @@ Are you sure you want to do this?
       The number of minutes to wait until the Brave Wallet is automatically locked
     </message>
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_OPTION" desc="Title for preference to reset Brave Wallet.">
-      Reset Brave Wallet
+      Reset and clear wallet data
     </message>
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_CONFIRMATION" desc="Confirmation for Brave Wallet reset.">
       Are you sure you want to reset your Brave Rewards? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">%1$s<ex>Yes</ex></ph>" to confirm.
@@ -2963,8 +2988,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">
       Switch network
     </message>
-    <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically.">
-      Enable Tab Group auto creation
+    <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically title.">
+      Only open links in current tab group
+    </message>
+    <message name="IDS_ENABLE_TAB_GROUPS_TEXT" desc="Menu item for grouping Tabs automatically text.">
+      Automatically opens all links in the current tab group
     </message>
     <message name="IDS_DAPPS_MENU_LOCK_WALLET" desc="Menu item Lock Wallet on DApps Panel">
       Lock Wallet
@@ -3164,11 +3192,17 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_DESCRIPTION" desc="Create Account Tab Description">
       You don’t yet have a <ph name="ACCOUNT_TYPE"><ex>Solana</ex>%1$s</ph> account. Create one now?
     </message>
-    <message name="IDS_WALLET_ACTION_YES" desc="Action text for general positive actions">
+    <message name="IDS_BRAVE_ACTION_YES" desc="Action text for general positive actions">
       Yes
     </message>
-    <message name="IDS_WALLET_ACTION_NO" desc="Action text for general negative actions">
+    <message name="IDS_BRAVE_ACTION_NO" desc="Action text for general negative actions">
       No
+    </message>
+    <message name="IDS_BRAVE_ACTION_ENABLE" desc="Action text to enable something">
+      Enable
+    </message>
+    <message name="IDS_BRAVE_ACTION_CANCEL" desc="Action text to cancel something">
+      Cancel
     </message>
     <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype">
       Ethereum
@@ -3608,7 +3642,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SPEEDREADER_MESSAGE_BUTTON" desc="The label for the button to enable speedreader on current page.">
       Enable
     </message>
-    <message name="IDS_ENABLE_SPEEDREADER_TITLE" desc="Title for preference that enables or disables Speedreader." translateable="false">
+    <message name="IDS_ENABLE_SPEEDREADER_TITLE" desc="Title for preference that enables or disables Speedreader.">
       Enable Speedreader
     </message>
     <message name="IDS_ENABLE_SPEEDREADER_SUMMARY" desc="Summary for preference that enables or disables Speedreader">
@@ -3862,6 +3896,24 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_ADD_NFTS" desc="How to import NFTs in the NFT grid.">
       Ready to add some? Just click the button below to import.
+    </message>
+    <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_HEADER" desc="Enable NFT auto-discovery modal header">
+      Want your NFTs displayed automatically?
+    </message>
+    <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION" desc="Enable NFT auto-discovery modal description">
+      Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph>SimpleHash<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph> to provide this service. <ph name="BEGIN_LINK_2">&lt;LINK_2&gt;</ph>Learn more.<ph name="END_LINK_2">&lt;/LINK_2&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL" desc="The label for enabling NFT discovery">
+      Enable NFT discovery
+    </message>
+    <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC" desc="The description for enabling NFT discovery">
+      Automatically add NFTs you own to the Wallet using third party APIs. <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph>Learn more.<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph>
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_ACCOUNT" desc="Label for Solana Address Lookup Table Account section">
+      Address Lookup Table Account:
+    </message>
+    <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX" desc="Label for Solana Address Lookup Table Index section">
+      Address Lookup Table Index:
     </message>
   </messages>
   </release>

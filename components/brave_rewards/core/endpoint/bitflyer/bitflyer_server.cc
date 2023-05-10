@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 
 BitflyerServer::BitflyerServer(LedgerImpl& ledger)
@@ -16,4 +16,4 @@ BitflyerServer::BitflyerServer(LedgerImpl& ledger)
 BitflyerServer::~BitflyerServer() = default;
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

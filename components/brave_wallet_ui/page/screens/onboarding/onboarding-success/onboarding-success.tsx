@@ -50,7 +50,7 @@ export const OnboardingSuccess = () => {
   // methods
   const onComplete = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
-    history.push(WalletRoutes.Portfolio)
+    history.push(WalletRoutes.PortfolioAssets)
   }, [])
 
   const onClickBuyCrypto = React.useCallback(() => {

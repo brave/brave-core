@@ -9,13 +9,13 @@
 
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 constexpr char kPlatformKey[] = "platform";
 }  // namespace
 
-base::Value::Dict GetPlatform() {
+base::Value::Dict BuildPlatformUserData() {
   base::Value::Dict user_data;
 
   const std::string platform_name = PlatformHelper::GetInstance().GetName();
@@ -26,4 +26,4 @@ base::Value::Dict GetPlatform() {
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

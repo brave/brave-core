@@ -125,6 +125,14 @@
       </template>
     </select>
   </div>
+  <settings-toggle-button id="forgetFirstPartyStorageControlType"
+    hidden="[[!isForgetFirstPartyStorageFeatureEnabled_]]"
+    class="cr-row"
+    label="$i18n{forgetFirstPartyStorageLabel}"
+    sub-label="$i18n{forgetFirstPartyStorageSubLabel}"
+    on-settings-boolean-control-change="onForgetFirstPartyStorageToggleChange_"
+    pref="[[isForgetFirstPartyStorageEnabled_]]">
+  </settings-toggle-button>
 </div>
 <settings-animated-pages id="filters" section="shields">
   <div route-path="default">

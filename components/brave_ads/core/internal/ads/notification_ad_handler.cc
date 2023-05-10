@@ -21,14 +21,15 @@
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/bandit_feedback_info.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_util.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 namespace brave_ads {
@@ -37,7 +38,7 @@ NotificationAdHandler::NotificationAdHandler(
     Account& account,
     Transfer& transfer,
     const SubdivisionTargeting& subdivision_targeting,
-    const resource::AntiTargeting& anti_targeting_resource)
+    const AntiTargetingResource& anti_targeting_resource)
     : account_(account),
       transfer_(transfer),
       serving_(subdivision_targeting, anti_targeting_resource) {
@@ -72,7 +73,7 @@ void NotificationAdHandler::MaybeServeAtRegularIntervals() {
 void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   event_handler_.FireEvent(placement_id, event_type);
 }
@@ -130,14 +131,16 @@ void NotificationAdHandler::OnDidServeNotificationAd(
   ShowNotificationAd(ad);
 
   TriggerEvent(ad.placement_id, mojom::NotificationAdEventType::kServed);
+
+  serving_.MaybeServeAdAtNextRegularInterval();
 }
 
-void NotificationAdHandler::OnNotificationAdServed(
+void NotificationAdHandler::OnDidFireNotificationAdServedEvent(
     const NotificationAdInfo& ad) {
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
-void NotificationAdHandler::OnNotificationAdViewed(
+void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
     const NotificationAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
@@ -149,7 +152,7 @@ void NotificationAdHandler::OnNotificationAdViewed(
   privacy::p2a::RecordAdImpression(ad);
 }
 
-void NotificationAdHandler::OnNotificationAdClicked(
+void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
     const NotificationAdInfo& ad) {
   CloseNotificationAd(ad.placement_id);
 
@@ -160,7 +163,7 @@ void NotificationAdHandler::OnNotificationAdClicked(
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kClicked);
 
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {ad.segment, mojom::NotificationAdEventType::kClicked});
 
   SetNotificationAdEventPredictorVariable(
@@ -168,7 +171,7 @@ void NotificationAdHandler::OnNotificationAdClicked(
   PredictorsManager::GetInstance().AddTrainingSample();
 }
 
-void NotificationAdHandler::OnNotificationAdDismissed(
+void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
     const NotificationAdInfo& ad) {
   DismissNotificationAd(ad.placement_id);
 
@@ -177,7 +180,7 @@ void NotificationAdHandler::OnNotificationAdDismissed(
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kDismissed);
 
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {ad.segment, mojom::NotificationAdEventType::kDismissed});
 
   SetNotificationAdEventPredictorVariable(
@@ -185,11 +188,10 @@ void NotificationAdHandler::OnNotificationAdDismissed(
   PredictorsManager::GetInstance().AddTrainingSample();
 }
 
-void NotificationAdHandler::OnNotificationAdTimedOut(
+void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(
     const NotificationAdInfo& ad) {
   NotificationAdTimedOut(ad.placement_id);
-
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
   SetNotificationAdEventPredictorVariable(

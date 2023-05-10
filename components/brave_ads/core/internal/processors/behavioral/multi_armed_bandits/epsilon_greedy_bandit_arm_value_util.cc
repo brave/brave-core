@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 namespace {
 
@@ -34,29 +34,19 @@ absl::optional<EpsilonGreedyBanditArmInfo> MaybeGetArmFromDict(
   return arm;
 }
 
-absl::optional<EpsilonGreedyBanditArmInfo> MaybeGetArmFromValue(
-    const base::Value& value) {
-  const base::Value::Dict* const dict = value.GetIfDict();
-  if (!dict) {
-    return absl::nullopt;
-  }
-
-  return MaybeGetArmFromDict(*dict);
-}
-
 }  // namespace
 
 base::Value::Dict EpsilonGreedyBanditArmsToValue(
     const EpsilonGreedyBanditArmMap& arms) {
   base::Value::Dict dict;
 
-  for (const auto& [key, value] : arms) {
-    base::Value::Dict item;
-    item.Set(kSegmentKey, key);
-    item.Set(kPullsKey, value.pulls);
-    item.Set(kValueKey, value.value);
+  for (const auto& [segment, arm] : arms) {
+    base::Value::Dict arm_dict;
+    arm_dict.Set(kSegmentKey, segment);
+    arm_dict.Set(kPullsKey, arm.pulls);
+    arm_dict.Set(kValueKey, arm.value);
 
-    dict.Set(key, std::move(item));
+    dict.Set(segment, std::move(arm_dict));
   }
 
   return dict;
@@ -68,15 +58,21 @@ EpsilonGreedyBanditArmMap EpsilonGreedyBanditArmsFromValue(
 
   EpsilonGreedyBanditArmMap arms;
 
-  for (const auto [key, value] : dict) {
+  for (const auto [segment, value] : dict) {
+    const auto* const item_dict = value.GetIfDict();
+    if (!item_dict) {
+      found_errors = true;
+      continue;
+    }
+
     const absl::optional<EpsilonGreedyBanditArmInfo> arm =
-        MaybeGetArmFromValue(value);
+        MaybeGetArmFromDict(*item_dict);
     if (!arm) {
       found_errors = true;
       continue;
     }
 
-    arms[key] = *arm;
+    arms[segment] = *arm;
   }
 
   if (found_errors) {
@@ -86,4 +82,4 @@ EpsilonGreedyBanditArmMap EpsilonGreedyBanditArmsFromValue(
   return arms;
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

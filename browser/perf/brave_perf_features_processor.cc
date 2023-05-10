@@ -26,7 +26,7 @@
 #endif
 
 namespace {
-void FakeCallback(ledger::mojom::CreateRewardsWalletResult) {}
+void FakeCallback(brave_rewards::mojom::CreateRewardsWalletResult) {}
 
 void EnableAdblockCookieList(base::WeakPtr<Profile> profile) {
   if (!profile) {

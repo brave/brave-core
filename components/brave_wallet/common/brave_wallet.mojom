@@ -326,6 +326,7 @@ interface PanelHandlerFactory {
                      pending_receiver<PanelHandler> panel_handler,
                      pending_receiver<WalletHandler> wallet_handler,
                      pending_receiver<JsonRpcService> json_rpc_service,
+                     pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
                      pending_receiver<SwapService> swap_service,
                      pending_receiver<AssetRatioService> asset_ratio_service,
                      pending_receiver<KeyringService> keyring_service,
@@ -335,7 +336,9 @@ interface PanelHandlerFactory {
                      pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                      pending_receiver<BraveWalletService> brave_wallet_service,
-                     pending_receiver<BraveWalletP3A> brave_wallet_p3a);
+                     pending_receiver<BraveWalletP3A> brave_wallet_p3a,
+                     pending_receiver<IpfsService>
+                         brave_wallet_ipfs_service_receiver);
 };
 
 interface PageHandlerFactory {
@@ -344,6 +347,7 @@ interface PageHandlerFactory {
                     pending_receiver<PageHandler> page_handler,
                     pending_receiver<WalletHandler> wallet_handler,
                     pending_receiver<JsonRpcService> json_rpc_service,
+                    pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
                     pending_receiver<SwapService> swap_service,
                     pending_receiver<AssetRatioService> asset_ratio_service,
                     pending_receiver<KeyringService> keyring_service,
@@ -557,7 +561,9 @@ const string kFilecoinTestnetKeyringId = "filecoin_testnet";
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
-const string kBitcoinKeyringId = "bitcoin";
+// BIP 84 keyrings.
+const string kBitcoinKeyring84Id = "bitcoin_84";
+const string kBitcoinKeyring84TestId = "bitcoin_84_test";
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
 const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks";
@@ -608,6 +614,7 @@ struct WalletInfo {
   array<AccountInfo> accountInfos;
   bool isFilecoinEnabled;
   bool isSolanaEnabled;
+  bool isBitcoinEnabled;
   bool isNftPinningFeatureEnabled;
   bool IsPanelV2FeatureEnabled;
 };
@@ -706,7 +713,7 @@ interface BlockchainRegistry {
   // Below APIs are Ethereum only for the moment.
   // Obtains all tokens for a single provider for the Buy UI
   GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
-  // Obtains all tokens for multiple providers for the Buy UI 
+  // Obtains all tokens for multiple providers for the Buy UI
   GetProvidersBuyTokens(array<OnRampProvider> providers, string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains all tokens for the Sell UI
@@ -747,10 +754,13 @@ interface KeyringService {
 
   // Adds an account to the keyring.
   // For filecoin strictly use AddFilecoinAccount.
-  AddAccount(string accountName, CoinType coin) => (bool success);
+  AddAccount(string account_name, CoinType coin) => (bool success);
 
   // Adds an account to the filecoin(keyring is choosed by network).
-  AddFilecoinAccount(string accountName, string fileCoinNetwork) => (bool success);
+  AddFilecoinAccount(string account_name, string filecoin_network) => (bool success);
+
+  // Adds bitcoin account.
+  AddBitcoinAccount(string account_name, string network_id, string keyring_id) => (bool success);
 
   // Encodes the private key for exporting.
   EncodePrivateKeyForExport(string address, string password, CoinType coin)
@@ -899,8 +909,17 @@ interface SwapService {
 };
 
 interface IpfsService {
+  GetNFTGatewayURL() => (string? url);
+  GetGatewayURL() => (string? url);
+
+  SetGateway(string url) => (bool result);
+  SetNFTGateway(string url) => (bool result);
+
+  TranslateToGatewayURL(string url) => (string? translated_url);
   TranslateToNFTGatewayURL(string url) => (string? translated_url);
   ExtractIPFSUrlFromGatewayLikeUrl(string url) => (string? ipfs_url);
+
+  ContentHashToCIDv1URL(array<uint8> content_hash) => (string? url);
 };
 
 interface JsonRpcServiceObserver {
@@ -981,6 +1000,8 @@ const string kSolanaTestnet = "0x66";
 const string kSolanaDevnet = "0x67";
 const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
+const string kBitcoinMainnet = "bitcoin_mainnet";
+const string kBitcoinTestnet = "bitcoin_testnet";
 
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
@@ -1176,6 +1197,17 @@ interface JsonRpcService {
   // Obtains the quantity of ERC1155 tokens a user has
   GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
+  // Fetches symbol of an ERC20 or ERC721 token.
+  GetEthTokenSymbol(string chain_id,
+                    string contract_address) => (string symbol,
+                                                 ProviderError error,
+                                                 string error_message);
+
+  // Fetches decimals of an ERC20 or ERC721 token.
+  GetEthTokenDecimals(string chain_id,
+                      string contract_address) => (string decimals,
+                                                   ProviderError error,
+                                                   string error_message);
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
 
@@ -1195,6 +1227,36 @@ interface JsonRpcService {
   // Returns whether a blockhash is still valid or not for a given chain.
   IsSolanaBlockhashValid(string chain_id, string blockhash, string? commitment)
     => (bool is_valid, SolanaProviderError error, string error_message);
+};
+
+struct BitcoinKeyId {
+  uint32 account;
+  uint32 change;
+  uint32 index;
+};
+
+struct BitcoinUnspentOutput {
+  array<uint8> txid;
+  uint32 vout;
+  uint64 value;
+};
+
+struct BitcoinAddressInfo {
+  BitcoinKeyId key_id;
+  string address_string;
+  uint32 balance;
+  array<BitcoinUnspentOutput> utxo_list;
+};
+
+struct BitcoinAccountInfo {
+  string name;
+  array<BitcoinAddressInfo> address_infos;
+  uint32 balance;
+};
+
+interface BitcoinWalletService {
+  GetBitcoinAccountInfo(string network_id, string keyring_id, uint32 account_index) => (BitcoinAccountInfo? account_info);
+  SendTo(string network_id, string keyring_id, uint32 account_index, string address_to, uint64 amount, uint64 fee) => (string txid, string error);
 };
 
 enum TransactionStatus {
@@ -1428,7 +1490,10 @@ interface BraveWalletServiceObserver {
   // Fired when the list of networks changes
   OnNetworkListChanged();
 
-  // Fired when a discovered asset query completes
+  // Fired when asset discovery starts
+  OnDiscoverAssetsStarted();
+
+  // Fired when asset discovery completes
   OnDiscoverAssetsCompleted(array<BlockchainToken> discovered_assets);
 
   // Fired when wallet service is being reset
@@ -1636,6 +1701,10 @@ interface BraveWalletService {
 
   // Calling this setter should be approved by privacy review.
   SetNftDiscoveryEnabled(bool enabled);
+
+  // Returns a list of chain_ids for which GetERC20TokenBalances
+  // is supported
+  GetBalanceScannerSupportedChains() => (array<string> chain_ids);
 
   // Resets the keyring and the related preferences
   Reset();

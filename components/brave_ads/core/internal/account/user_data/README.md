@@ -29,6 +29,6 @@ See [identifiable confirmation token redemption](../utility/redeem_unblinded_pay
 | user data  | optional  | mutable  | description  |
 |---|---|---|---|
 | platform  | no  | no  | Operating system  |
-| totals  | no  | no  | Total count of confirmation tokens for each creative  |
+| summary  | no  | no  | Total count of confirmation tokens for each creative  |
 
 Please add to it!

@@ -7,8 +7,11 @@
 
 import argparse
 import os
-import subprocess
+import shutil
 import sys
+
+from os.path import abspath, dirname
+from lib.util import execute
 
 cert = os.environ.get('CERT')
 cert_hash = os.environ.get('AUTHENTICODE_HASH')
@@ -37,14 +40,6 @@ def get_sign_cmd(file):
     return cmd + ' "' + file + '"'
 
 
-def run_cmd(cmd):
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    for line in p.stdout:
-        print(line)
-    p.wait()
-    assert p.returncode == 0, "Error signing"
-
-
 def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
     matches = []
     for root, _, filenames in os.walk(base_dir):
@@ -56,21 +51,23 @@ def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
         sign_binary(binary)
 
 
-def sign_binary(binary):
+def sign_binary(binary, out_file=None):
+    if out_file:
+        os.makedirs(dirname(abspath(out_file)), exist_ok=True)
+        shutil.copy(binary, out_file)
+        binary = out_file
     cmd = get_sign_cmd(binary)
-    run_cmd(cmd)
+    execute(cmd)
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-b', '--build_dir', required=True,
-        help='Build directory. The paths in input_file are relative to this.')
+    parser.add_argument('file', help='the file to sign.')
+    parser.add_argument('--out_file',
+                        help=('where to place the signed file. By default, the '
+                              'file is signed in-place.'))
     args = parser.parse_args()
-
-    args.build_dir = os.path.normpath(args.build_dir)
-
-    sign_binaries(args.build_dir, ('brave.exe', 'chrome.dll'))
+    sign_binary(args.file, args.out_file)
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace uphold {
 
 struct Capabilities {
@@ -17,6 +17,6 @@ struct Capabilities {
 };
 
 }  // namespace uphold
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_CAPABILITIES_H_

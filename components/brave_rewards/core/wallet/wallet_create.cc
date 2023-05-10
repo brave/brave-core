@@ -18,11 +18,13 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
-using ledger::endpoints::PatchWallets;
-using ledger::endpoints::PostWallets;
-using ledger::endpoints::RequestFor;
+namespace brave_rewards::internal {
 
-namespace ledger::wallet {
+using endpoints::PatchWallets;
+using endpoints::PostWallets;
+using endpoints::RequestFor;
+
+namespace wallet {
 
 namespace {
 
@@ -129,7 +131,7 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
 
   if constexpr (std::is_same_v<Result, PostWallets::Result>) {
     ledger_->state()->ResetReconcileStamp();
-    if (!ledger::is_testing) {
+    if (!is_testing) {
       ledger_->state()->SetEmptyBalanceChecked(true);
       ledger_->state()->SetPromotionCorruptedMigrated(true);
     }
@@ -139,4 +141,6 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
   std::move(callback).Run(mojom::CreateRewardsWalletResult::kSuccess);
 }
 
-}  // namespace ledger::wallet
+}  // namespace wallet
+
+}  // namespace brave_rewards::internal

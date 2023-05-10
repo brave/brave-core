@@ -25,7 +25,7 @@ TransactionInfo BuildTransaction(double value,
 TransactionInfo BuildTransaction(double value,
                                  const ConfirmationType& confirmation_type);
 
-int GetTransactionCount();
+size_t GetTransactionCount();
 
 }  // namespace brave_ads
 

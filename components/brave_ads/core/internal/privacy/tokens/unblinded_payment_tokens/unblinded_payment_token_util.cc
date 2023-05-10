@@ -85,7 +85,7 @@ bool UnblindedPaymentTokensIsEmpty() {
       .IsEmpty();
 }
 
-int UnblindedPaymentTokenCount() {
+size_t UnblindedPaymentTokenCount() {
   return ConfirmationStateManager::GetInstance()
       .GetUnblindedPaymentTokens()
       .Count();

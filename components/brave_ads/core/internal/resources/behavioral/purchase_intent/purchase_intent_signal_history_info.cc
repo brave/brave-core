@@ -5,19 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
-
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const base::Time created_at,
-    const uint16_t weight)
+    const int weight)
     : created_at(created_at), weight(weight) {}
 
+// TODO(https://github.com/brave/brave-browser/issues/27893):
 bool operator==(const PurchaseIntentSignalHistoryInfo& lhs,
                 const PurchaseIntentSignalHistoryInfo& rhs) {
-  return DoubleEquals(lhs.created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
-         lhs.weight == rhs.weight;
+  return lhs.created_at == rhs.created_at && lhs.weight == rhs.weight;
 }
 
 bool operator!=(const PurchaseIntentSignalHistoryInfo& lhs,
@@ -25,4 +23,4 @@ bool operator!=(const PurchaseIntentSignalHistoryInfo& lhs,
   return !(lhs == rhs);
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

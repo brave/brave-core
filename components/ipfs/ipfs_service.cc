@@ -420,8 +420,8 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
       "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this),
                      cids.size(), recursive, iter, std::move(callback)),
-      api_request_helper::APIRequestOptions{.timeout = base::Minutes(2)},
-      GetHeaders(gurl));
+      GetHeaders(gurl),
+      api_request_helper::APIRequestOptions{.timeout = base::Minutes(2)});
 }
 
 void IpfsService::RemovePin(const std::vector<std::string>& cids,
@@ -442,7 +442,7 @@ void IpfsService::RemovePin(const std::vector<std::string>& cids,
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
 
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnPinRemoveResult, base::Unretained(this),
                      iter, std::move(callback)),
       GetHeaders(gurl));
@@ -537,7 +537,7 @@ void IpfsService::GetPins(const absl::optional<std::vector<std::string>>& cids,
   auto iter =
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnGetPinsResult, base::Unretained(this),
                      iter, std::move(callback)),
       GetHeaders(gurl));
@@ -685,7 +685,7 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
   auto iter =
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnGetConnectedPeers, base::Unretained(this),
                      iter, std::move(callback),
                      retries.value_or(kPeersDefaultRetries)),
@@ -751,7 +751,7 @@ void IpfsService::GetAddressesConfig(GetAddressesConfigCallback callback) {
   auto iter =
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnGetAddressesConfig, base::Unretained(this),
                      iter, std::move(callback)),
       GetHeaders(gurl));
@@ -923,7 +923,7 @@ void IpfsService::GetRepoStats(GetRepoStatsCallback callback) {
   auto iter =
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnRepoStats, base::Unretained(this), iter,
                      std::move(callback)),
       GetHeaders(gurl));
@@ -963,7 +963,7 @@ void IpfsService::GetNodeInfo(GetNodeInfoCallback callback) {
   auto iter =
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnNodeInfo, base::Unretained(this), iter,
                      std::move(callback)),
       GetHeaders(gurl));
@@ -1003,7 +1003,7 @@ void IpfsService::RunGarbageCollection(GarbageCollectionCallback callback) {
   auto iter =
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnGarbageCollection, base::Unretained(this),
                      iter, std::move(callback)),
       GetHeaders(gurl));
@@ -1035,7 +1035,7 @@ void IpfsService::PreWarmShareableLink(const GURL& url) {
 
   auto iter =
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
-  iter->get()->Request("HEAD", url, std::string(), std::string(), false,
+  iter->get()->Request("HEAD", url, std::string(), std::string(),
                        base::BindOnce(&IpfsService::OnPreWarmComplete,
                                       base::Unretained(this), iter),
                        GetHeaders(url));

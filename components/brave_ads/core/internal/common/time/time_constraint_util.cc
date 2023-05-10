@@ -13,8 +13,8 @@ namespace brave_ads {
 bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
     const base::TimeDelta time_constraint,
-    const int cap) {
-  const int count = base::ranges::count_if(
+    const size_t cap) {
+  const size_t count = base::ranges::count_if(
       history, [time_constraint](const base::Time created_at) {
         return base::Time::Now() - created_at < time_constraint;
       });

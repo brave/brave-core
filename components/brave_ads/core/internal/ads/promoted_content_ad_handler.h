@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_delegate.h"
 
@@ -19,8 +19,7 @@ class Account;
 class Transfer;
 struct PromotedContentAdInfo;
 
-class PromotedContentAd final
-    : public promoted_content_ads::EventHandlerDelegate {
+class PromotedContentAd final : public PromotedContentAdEventHandlerDelegate {
  public:
   PromotedContentAd(Account& account, Transfer& transfer);
 
@@ -37,14 +36,16 @@ class PromotedContentAd final
                     mojom::PromotedContentAdEventType event_type);
 
  private:
-  // promoted_content_ads::EventHandlerDelegate:
-  void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override;
-  void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override;
+  // PromotedContentAdEventHandlerDelegate:
+  void OnDidFirePromotedContentAdViewedEvent(
+      const PromotedContentAdInfo& ad) override;
+  void OnDidFirePromotedContentAdClickedEvent(
+      const PromotedContentAdInfo& ad) override;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
 
-  promoted_content_ads::EventHandler event_handler_;
+  PromotedContentAdEventHandler event_handler_;
 };
 
 }  // namespace brave_ads

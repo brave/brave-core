@@ -33,14 +33,12 @@ bool ShouldFilterConfirmationType(const ConfirmationType& confirmation_type) {
     }
 
     case ConfirmationType::kUndefined: {
-      NOTREACHED();
-      return true;
+      NOTREACHED_NORETURN();
     }
   }
 
-  NOTREACHED() << "Unexpected value for ConfirmationType: "
-               << static_cast<int>(confirmation_type.value());
-  return true;
+  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "
+                        << static_cast<int>(confirmation_type.value());
 }
 
 std::map</*placement_id*/ std::string, HistoryItemInfo> BuildBuckets(

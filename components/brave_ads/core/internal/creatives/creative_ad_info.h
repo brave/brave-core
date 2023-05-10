@@ -39,7 +39,7 @@ struct CreativeAdInfo {
   int daily_cap = 0;
   int priority = 0;
   double ptr = 0.0;
-  bool conversion = false;
+  bool has_conversion = false;
   int per_day = 0;
   int per_week = 0;
   int per_month = 0;

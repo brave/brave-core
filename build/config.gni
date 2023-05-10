@@ -1,3 +1,8 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//build/config/apple/symbols.gni")
 import("//build/util/branding.gni")
 import("//chrome/version.gni")
@@ -43,6 +48,7 @@ declare_args() {
   # Enables brave/tools/redirect_cc target, replaces brave/chromium_src
   # overrides with empty ones to make //base buildable for redirect_cc.
   is_redirect_cc_build = false
+  android_aab_to_apk = false
 }
 
 declare_args() {
@@ -97,7 +103,7 @@ if (is_win) {
   if (target_cpu == "x86") {
     _arch = "32"
   }
-  brave_installer_exe = "brave_installer$brave_underline_full_version.exe"
+  brave_installer_exe = "brave_installer.exe"
   brave_stub_installer_exe =
       "BraveBrowser$_channel" + "Setup$_arch$brave_underline_full_version.exe"
   brave_untagged_stub_installer_exe =

@@ -213,23 +213,41 @@ void TabDragController::DetachAndAttachToNewContext(
     TabDragContext* target_context,
     const gfx::Point& point_in_screen,
     bool set_capture) {
-  TabDragControllerChromium::DetachAndAttachToNewContext(
-      release_capture, target_context, point_in_screen, set_capture);
   if (!is_showing_vertical_tabs_) {
+    TabDragControllerChromium::DetachAndAttachToNewContext(
+        release_capture, target_context, point_in_screen, set_capture);
     return;
   }
 
-  auto* browser_view =
-      static_cast<BraveBrowserView*>(BrowserView::GetBrowserViewForNativeWindow(
-          GetAttachedBrowserWidget()->GetNativeWindow()));
-  DCHECK(browser_view);
+  auto get_region_view = [this]() {
+    auto* browser_view = static_cast<BraveBrowserView*>(
+        BrowserView::GetBrowserViewForNativeWindow(
+            GetAttachedBrowserWidget()->GetNativeWindow()));
+    DCHECK(browser_view);
 
-  auto* widget_delegate_view =
-      browser_view->vertical_tab_strip_widget_delegate_view();
-  DCHECK(widget_delegate_view);
+    auto* widget_delegate_view =
+        browser_view->vertical_tab_strip_widget_delegate_view();
+    DCHECK(widget_delegate_view);
 
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
-  DCHECK(region_view);
+    auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+    DCHECK(region_view);
+
+    return region_view;
+  };
+
+  if (!vertical_tab_state_resetter_) {
+    // In case it was the very first drag-and-drop source, this could be null.
+    // But we also still need to collapse it when detaching tabs in to new
+    // browser. So call ExpandTabStripForDragging() so that it can be collapsed
+    // in the same manner.
+    auto* region_view = get_region_view();
+    vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
+  }
+
+  TabDragControllerChromium::DetachAndAttachToNewContext(
+      release_capture, target_context, point_in_screen, set_capture);
+
+  auto* region_view = get_region_view();
 
   vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
   // Relayout tabs with expanded bounds.

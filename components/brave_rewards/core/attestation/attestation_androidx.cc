@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_androidx.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace attestation {
 
 AttestationAndroid::AttestationAndroid(LedgerImpl& ledger)
@@ -93,4 +93,4 @@ void AttestationAndroid::OnConfirm(ConfirmCallback callback,
 }
 
 }  // namespace attestation
-}  // namespace ledger
+}  // namespace brave_rewards::internal

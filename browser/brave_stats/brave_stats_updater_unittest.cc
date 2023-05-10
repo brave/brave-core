@@ -687,7 +687,8 @@ TEST_F(BraveStatsUpdaterTest, UsagePingRequest) {
         EXPECT_EQ(request.url.spec().find("https://localhost:8443"), (size_t)0);
       }));
 
-  brave_stats::BraveStatsUpdater updater(GetLocalState());
+  brave_stats::BraveStatsUpdater updater(GetLocalState(),
+                                         /*profile_manager*/ nullptr);
   updater.SetURLLoaderFactoryForTesting(shared_url_loader_factory_);
   brave_stats::BraveStatsUpdater::StatsUpdatedCallback cb = base::BindRepeating(
       [](int* ping_count, GURL* last_url, const GURL& url) {
@@ -719,7 +720,8 @@ TEST_F(BraveStatsUpdaterTest, UsagePingRequest) {
 }
 
 TEST_F(BraveStatsUpdaterTest, RecordP3APing) {
-  brave_stats::BraveStatsUpdater updater(GetLocalState());
+  brave_stats::BraveStatsUpdater updater(GetLocalState(),
+                                         /*profile_manager*/ nullptr);
   updater.SetURLLoaderFactoryForTesting(shared_url_loader_factory_);
 
   histogram_tester_.ExpectUniqueSample(

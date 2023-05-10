@@ -6,35 +6,35 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_DELEGATE_H_
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 
 struct SearchResultAdInfo;
 
-namespace search_result_ads {
-
-class EventHandlerDelegate {
+class SearchResultAdEventHandlerDelegate {
  public:
   // Invoked when the search result |ad| is served.
-  virtual void OnSearchResultAdServed(const SearchResultAdInfo& ad) {}
+  virtual void OnDidFireSearchResultAdServedEvent(
+      const SearchResultAdInfo& ad) {}
 
   // Invoked when the search result |ad| is viewed.
-  virtual void OnSearchResultAdViewed(const SearchResultAdInfo& ad) {}
+  virtual void OnDidFireSearchResultAdViewedEvent(
+      const SearchResultAdInfo& ad) {}
 
   // Invoked when the search result |ad| is clicked.
-  virtual void OnSearchResultAdClicked(const SearchResultAdInfo& ad) {}
+  virtual void OnDidFireSearchResultAdClickedEvent(
+      const SearchResultAdInfo& ad) {}
 
   // Invoked when the search result |ad| event fails for |event_type|.
-  virtual void OnSearchResultAdEventFailed(
+  virtual void OnFailedToFireSearchResultAdEvent(
       const SearchResultAdInfo& ad,
       const mojom::SearchResultAdEventType event_type) {}
 
  protected:
-  virtual ~EventHandlerDelegate() = default;
+  virtual ~SearchResultAdEventHandlerDelegate() = default;
 };
 
-}  // namespace search_result_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_DELEGATE_H_

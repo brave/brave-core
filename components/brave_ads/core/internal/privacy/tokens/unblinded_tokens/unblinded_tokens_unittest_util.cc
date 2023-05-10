@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
@@ -22,7 +22,9 @@ UnblindedTokens& GetUnblindedTokens() {
 }
 
 UnblindedTokenList SetUnblindedTokens(const int count) {
-  UnblindedTokenList unblinded_tokens = GetUnblindedTokens(count);
+  CHECK_GT(count, 0);
+
+  UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(count);
   GetUnblindedTokens().SetTokens(unblinded_tokens);
   return unblinded_tokens;
 }
@@ -62,7 +64,9 @@ UnblindedTokenList CreateUnblindedTokens(
   return unblinded_tokens;
 }
 
-UnblindedTokenList GetUnblindedTokens(const int count) {
+UnblindedTokenList BuildUnblindedTokens(const int count) {
+  CHECK_GT(count, 0);
+
   const WalletInfo& wallet = GetWalletForTesting();
 
   const std::vector<std::string> unblinded_tokens_base64 = {
@@ -93,8 +97,8 @@ UnblindedTokenList GetUnblindedTokens(const int count) {
   return unblinded_tokens;
 }
 
-UnblindedTokenInfo GetUnblindedToken() {
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 1);
+UnblindedTokenInfo BuildUnblindedToken() {
+  const UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(/*count*/ 1);
   CHECK(!unblinded_tokens.empty());
   return unblinded_tokens.front();
 }

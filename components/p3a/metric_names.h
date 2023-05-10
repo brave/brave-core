@@ -42,8 +42,10 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.NTP.SponsoredNewTabsCreated",
     "Brave.Omnibox.SearchCount",
     "Brave.P3A.SentAnswersCount",
+    "Brave.Playlist.FirstTimeOffset",
+    "Brave.Playlist.NewUserReturning",
+    "Brave.Playlist.UsageDaysInWeek",
     "Brave.Rewards.AdsEnabledDuration",
-    "Brave.Rewards.AdsState.2",
     "Brave.Rewards.AutoContributionsState.3",
     "Brave.Rewards.EnabledSource",
     "Brave.Rewards.InlineTipTrigger",
@@ -177,8 +179,10 @@ constexpr inline auto kCollectedTypicalHistograms =
 
 constexpr inline auto kCollectedSlowHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
+    "Brave.Core.ProfileCount",
     "Brave.Core.UsageMonthly",
     "Brave.P3A.TestSlowMetric",
+    "Brave.Playlist.LastUsageTime",
     "Brave.Rewards.TipsSent",
     "Brave.Sync.EnabledTypes",
     "Brave.Sync.SyncedObjectsCount",
@@ -196,6 +200,8 @@ constexpr inline auto kCollectedExpressHistograms =
 // Once the metric value has been sent, the value will be removed from the log store.
 constexpr inline auto kEphemeralHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
+    "Brave.Playlist.UsageDaysInWeek",
+    "Brave.Playlist.FirstTimeOffset",
     "Brave.Rewards.EnabledInstallationTime",
     "Brave.Rewards.EnabledSource",
     "Brave.Rewards.InlineTipTrigger",

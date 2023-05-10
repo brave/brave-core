@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_DELEGATE_H_
@@ -36,8 +36,6 @@ class BraveWalletServiceDelegate {
       mojom::BraveWalletService::ResetPermissionCallback;
   using IsPermissionDeniedCallback =
       mojom::BraveWalletService::IsPermissionDeniedCallback;
-  using GetActiveOriginCallback =
-      mojom::BraveWalletService::GetActiveOriginCallback;
   using GetWebSitesWithPermissionCallback =
       mojom::BraveWalletService::GetWebSitesWithPermissionCallback;
   using ResetWebSitePermissionCallback =
@@ -86,7 +84,7 @@ class BraveWalletServiceDelegate {
                                       const std::string& formed_website,
                                       ResetWebSitePermissionCallback callback);
 
-  virtual void GetActiveOrigin(GetActiveOriginCallback callback);
+  virtual mojom::OriginInfoPtr GetActiveOrigin();
 
   virtual void ClearWalletUIStoragePartition();
 

@@ -12,7 +12,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/locale/subdivision_code_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 
 namespace brave_ads {
 
@@ -21,8 +21,7 @@ namespace {
 bool DoesAdSupportSubdivisionTargetingCode(
     const CreativeAdInfo& creative_ad,
     const std::string& subdivision_targeting_code) {
-  const std::string country_code =
-      locale::GetCountryCode(subdivision_targeting_code);
+  const std::string country_code = GetCountryCode(subdivision_targeting_code);
 
   return creative_ad.geo_targets.find(subdivision_targeting_code) !=
              creative_ad.geo_targets.cend() ||

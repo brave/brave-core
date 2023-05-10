@@ -13,12 +13,14 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -535,8 +537,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
   show_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsEnabled, prefs,
-      base::BindRepeating(&VerticalTabStripRegionView::UpdateLayout,
-                          base::Unretained(this), false));
+      base::BindRepeating(
+          &VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged,
+          base::Unretained(this)));
   UpdateLayout();
 
   collapsed_pref_.Init(
@@ -589,14 +592,28 @@ void VerticalTabStripRegionView::SetState(State state) {
   PreferredSizeChanged();
 }
 
+void VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished(
+    State original_state) {
+  DCHECK_NE(original_state, State::kExpanded)
+      << "As per ExpandTabStripForDragging(), this shouldn't happen";
+
+  if (tabs::utils::IsFloatingVerticalTabsEnabled(browser_) &&
+      IsMouseHovered()) {
+    SetState(State::kFloating);
+    return;
+  }
+
+  SetState(State::kCollapsed);
+}
+
 VerticalTabStripRegionView::ScopedStateResetter
 VerticalTabStripRegionView::ExpandTabStripForDragging() {
   if (state_ == State::kExpanded)
     return {};
 
-  auto resetter = std::make_unique<base::ScopedClosureRunner>(
-      base::BindOnce(&VerticalTabStripRegionView::SetState,
-                     weak_factory_.GetWeakPtr(), State::kCollapsed));
+  auto resetter = std::make_unique<base::ScopedClosureRunner>(base::BindOnce(
+      &VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished,
+      weak_factory_.GetWeakPtr(), state_));
 
   SetState(State::kExpanded);
   // In this case, we dont' wait for the widget bounds to be changed so that
@@ -676,6 +693,21 @@ void VerticalTabStripRegionView::Layout() {
                   scroll_contents_view_->GetPreferredSize().height())});
   }
   UpdateTabSearchButtonVisibility();
+}
+
+void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
+  auto* profile = browser_->profile()->GetOriginalProfile();
+  auto* sidebar_service =
+      sidebar::SidebarServiceFactory::GetForProfile(profile);
+  DCHECK(sidebar_service);
+
+  if (*show_vertical_tabs_) {
+    sidebar_service->MoveSidebarToRightTemporarily();
+  } else {
+    sidebar_service->RestoreSidebarAlignmentIfNeeded();
+  }
+
+  UpdateLayout(/* in_destruction= */ false);
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
@@ -777,8 +809,18 @@ void VerticalTabStripRegionView::OnBoundsChanged(
     return;
   }
 
-  if (previous_bounds.size() != size())
+  if (previous_bounds.size() != size()) {
+    if (GetAvailableWidthForTabContainer() != tab_strip()->width()) {
+      // During/After the drag and drop session, tab strip container might have
+      // ignored Layout() request. As the container bounds changed, we should
+      // force it to layout.
+      // https://github.com/brave/brave-browser/issues/29941
+      tab_strip()->tab_container_->InvalidateIdealBounds();
+      tab_strip()->tab_container_->CompleteAnimationAndLayout();
+    }
+
     ScrollActiveTabToBeVisible();
+  }
 
 #if DCHECK_IS_ON()
   if (auto width = GetContentsBounds().width(); width) {

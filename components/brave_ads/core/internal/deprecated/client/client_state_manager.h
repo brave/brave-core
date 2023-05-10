@@ -10,9 +10,8 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/ad_content_action_types.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/category_content_action_types.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -21,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/flagged_ad_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -43,7 +43,6 @@ class ClientStateManager final {
   static ClientStateManager& GetInstance();
 
   void Initialize(InitializeCallback callback);
-
   const FilteredAdvertiserList& GetFilteredAdvertisers() const;
   const FilteredCategoryList& GetFilteredCategories() const;
   const FlaggedAdList& GetFlaggedAds() const;
@@ -53,22 +52,21 @@ class ClientStateManager final {
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,
-      const targeting::PurchaseIntentSignalHistoryInfo& history);
-  const targeting::PurchaseIntentSignalHistoryMap&
-  GetPurchaseIntentSignalHistory() const;
+      const PurchaseIntentSignalHistoryInfo& history);
+  const PurchaseIntentSignalHistoryMap& GetPurchaseIntentSignalHistory() const;
 
-  AdContentLikeActionType ToggleLikeAd(const AdContentInfo& ad_content);
-  AdContentLikeActionType ToggleDislikeAd(const AdContentInfo& ad_content);
-  AdContentLikeActionType GetAdContentLikeActionTypeForAdvertiser(
+  mojom::UserReactionType ToggleLikeAd(const AdContentInfo& ad_content);
+  mojom::UserReactionType ToggleDislikeAd(const AdContentInfo& ad_content);
+  mojom::UserReactionType GetUserReactionTypeForAdvertiser(
       const std::string& advertiser_id);
 
-  CategoryContentOptActionType ToggleLikeCategory(
+  mojom::UserReactionType ToggleLikeCategory(
       const std::string& category,
-      CategoryContentOptActionType action_type);
-  CategoryContentOptActionType ToggleDislikeCategory(
+      mojom::UserReactionType user_reaction_type);
+  mojom::UserReactionType ToggleDislikeCategory(
       const std::string& category,
-      CategoryContentOptActionType action_type);
-  CategoryContentOptActionType GetCategoryContentOptActionTypeForSegment(
+      mojom::UserReactionType user_reaction_type);
+  mojom::UserReactionType GetUserReactionTypeForSegment(
       const std::string& segment);
 
   bool ToggleSaveAd(const AdContentInfo& ad_content);
@@ -87,8 +85,8 @@ class ClientStateManager final {
   void ResetAllSeenAdvertisersForType(const AdType& type);
 
   void AppendTextClassificationProbabilitiesToHistory(
-      const targeting::TextClassificationProbabilityMap& probabilities);
-  const targeting::TextClassificationProbabilityList&
+      const TextClassificationProbabilityMap& probabilities);
+  const TextClassificationProbabilityList&
   GetTextClassificationProbabilitiesHistory() const;
 
   void RemoveAllHistory();
@@ -99,9 +97,8 @@ class ClientStateManager final {
   void Save();
 
   void Load(InitializeCallback callback);
-  void OnLoaded(InitializeCallback callback,
-                bool success,
-                const std::string& json);
+  void LoadedCallback(InitializeCallback callback,
+                      const absl::optional<std::string>& json);
 
   bool FromJson(const std::string& json);
 

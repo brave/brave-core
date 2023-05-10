@@ -16,7 +16,7 @@ namespace brave_ads {
 
 class BraveAdsDislikeExclusionRuleTest : public UnitTestBase {
  protected:
-  DislikeExclusionRule exclusion_rule_;
+  const DislikeExclusionRule exclusion_rule_;
 };
 
 TEST_F(BraveAdsDislikeExclusionRuleTest, AllowAd) {
@@ -37,7 +37,7 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, DoNotAllowAd) {
 
   AdContentInfo ad_content;
   ad_content.advertiser_id = kAdvertiserId;
-  ad_content.like_action_type = AdContentLikeActionType::kNeutral;
+  ad_content.user_reaction_type = mojom::UserReactionType::kNeutral;
   ClientStateManager::GetInstance().ToggleDislikeAd(ad_content);
 
   // Act

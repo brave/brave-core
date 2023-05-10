@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace recovery {
@@ -53,6 +53,6 @@ class EmptyBalance {
 };
 
 }  // namespace recovery
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_EMPTY_BALANCE_H_

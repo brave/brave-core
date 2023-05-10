@@ -22,10 +22,10 @@ void NotificationAdPopupHandler::Show(Profile* profile,
                                       const NotificationAd& notification_ad,
                                       gfx::NativeWindow browser_native_window,
                                       gfx::NativeView browser_native_view) {
-  DCHECK(profile);
+  CHECK(profile);
 
   const std::string& id = notification_ad.id();
-  DCHECK(!id.empty());
+  CHECK(!id.empty());
 
   NotificationAdPopup* popup = new NotificationAdPopup(
       profile, notification_ad, browser_native_window, browser_native_view);
@@ -40,7 +40,7 @@ void NotificationAdPopupHandler::Show(Profile* profile,
 // static
 void NotificationAdPopupHandler::Close(const std::string& notification_id,
                                        bool by_user) {
-  DCHECK(!notification_id.empty());
+  CHECK(!notification_id.empty());
 
   NotificationAdPopup* popup =
       NotificationAdPopupCollection::Get(notification_id);

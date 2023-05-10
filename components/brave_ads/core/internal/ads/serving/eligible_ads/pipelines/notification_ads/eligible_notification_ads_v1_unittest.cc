@@ -15,15 +15,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 class BraveAdsEligibleNotificationAdsV1Test : public UnitTestBase {
  protected:
@@ -31,14 +32,14 @@ class BraveAdsEligibleNotificationAdsV1Test : public UnitTestBase {
     UnitTestBase::SetUp();
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
-    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    eligible_ads_ = std::make_unique<EligibleAdsV1>(*subdivision_targeting_,
-                                                    *anti_targeting_resource_);
+    anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
+    eligible_ads_ = std::make_unique<EligibleNotificationAdsV1>(
+        *subdivision_targeting_, *anti_targeting_resource_);
   }
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<EligibleAdsV1> eligible_ads_;
+  std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
+  std::unique_ptr<EligibleNotificationAdsV1> eligible_ads_;
 };
 
 TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
@@ -55,17 +56,16 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
-          {/*interest_segments*/ "technology & computing-software"},
-          /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
-          /*text_embedding_html_events*/ {}),
+      BuildUserModel({/*interest_segments*/ "technology & computing-software"},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -82,17 +82,16 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
-          {/*interest_segments*/ "technology & computing-software"},
-          /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
-          /*text_embedding_html_events*/ {}),
+      BuildUserModel({/*interest_segments*/ "technology & computing-software"},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -109,16 +108,16 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({/*interest_segments*/ "finance-banking"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      BuildUserModel({/*interest_segments*/ "finance-banking"},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -149,14 +148,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad_1,
                                                       creative_ad_3};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -177,7 +176,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForNoSegments) {
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad};
@@ -200,14 +199,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({/*interest_segments*/ "UNMATCHED"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      BuildUserModel({/*interest_segments*/ "UNMATCHED"},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -221,7 +220,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -248,7 +247,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad_1);
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
@@ -257,7 +256,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -289,7 +288,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
   creative_ad_2.ptr = 0.5;
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
   const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
@@ -297,7 +296,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -335,13 +334,13 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad_1};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -357,4 +356,4 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
           std::move(expected_creative_ads)));
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

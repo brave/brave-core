@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
@@ -34,14 +34,15 @@ class AdEvents final : public TableInterface {
 
   std::string GetTableName() const override;
 
+  void Create(mojom::DBTransactionInfo* transaction) override;
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const AdEventList& ad_event);
 
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const AdEventList& ad_events) const;
+  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                     const AdEventList& ad_events) const;
 };
 
 }  // namespace brave_ads::database::table

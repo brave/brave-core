@@ -229,7 +229,7 @@ public class PortfolioFragment
                                     .setMessage(getString(
                                             R.string.brave_wallet_create_account_description,
                                             networkInfo.symbolName))
-                                    .setPositiveButton(R.string.wallet_action_yes,
+                                    .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
                                                 mWalletModel.getCryptoModel()
                                                         .getNetworkModel()
@@ -257,7 +257,7 @@ public class PortfolioFragment
                                                         });
                                             })
                                     .setNegativeButton(
-                                            R.string.wallet_action_no, (dialog, which) -> {
+                                            R.string.brave_action_no, (dialog, which) -> {
                                                 mWalletModel.getCryptoModel()
                                                         .getNetworkModel()
                                                         .clearCreateAccountState();

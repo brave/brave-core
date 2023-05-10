@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_JS_ETHEREUM_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_JS_ETHEREUM_PROVIDER_H_
@@ -51,6 +51,30 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   explicit JSEthereumProvider(content::RenderFrame* render_frame);
   ~JSEthereumProvider() override;
 
+  class MetaMask final : public gin::Wrappable<MetaMask> {
+   public:
+    static gin::WrapperInfo kWrapperInfo;
+
+    explicit MetaMask(content::RenderFrame*);
+    ~MetaMask() override;
+    MetaMask(const MetaMask&) = delete;
+    MetaMask& operator=(const MetaMask&) = delete;
+
+    // gin::WrappableBase
+    gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
+        v8::Isolate* isolate) override;
+    const char* GetTypeName() override;
+    v8::Local<v8::Promise> IsUnlocked(v8::Isolate* isolate);
+
+   private:
+    void OnIsUnlocked(v8::Global<v8::Context> global_context,
+                      v8::Global<v8::Promise::Resolver> promise_resolver,
+                      v8::Isolate* isolate,
+                      bool locked);
+    raw_ptr<content::RenderFrame> render_frame_;
+    mojo::Remote<mojom::EthereumProvider> ethereum_provider_;
+  };
+
   // content::RenderFrameObserver
   void OnDestruct() override {}
   void WillReleaseScriptContext(v8::Local<v8::Context>,
@@ -66,6 +90,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
 
   bool GetIsBraveWallet();
   bool GetIsMetaMask();
+  v8::Local<v8::Value> GetMetaMask(v8::Isolate* isolate);
   std::string GetChainId();
   v8::Local<v8::Value> GetNetworkVersion(v8::Isolate* isolate);
   v8::Local<v8::Value> GetSelectedAddress(v8::Isolate* isolate);
@@ -75,7 +100,6 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
                                  v8::Local<v8::Value> input);
   bool IsConnected();
   v8::Local<v8::Promise> Enable(v8::Isolate* isolate);
-  v8::Local<v8::Promise> IsUnlocked(v8::Isolate* isolate);
   v8::Local<v8::Promise> SendMethod(gin::Arguments* args);
   void SendAsync(gin::Arguments* args);
 
@@ -89,10 +113,6 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
                             const std::string& first_allowed_account,
                             const bool update_bind_js_properties);
 
-  void OnIsUnlocked(v8::Global<v8::Context> global_context,
-                    v8::Global<v8::Promise::Resolver> promise_resolver,
-                    v8::Isolate* isolate,
-                    bool locked);
   void SendResponse(base::Value id,
                     v8::Global<v8::Context> global_context,
                     std::unique_ptr<v8::Global<v8::Function>> callback,

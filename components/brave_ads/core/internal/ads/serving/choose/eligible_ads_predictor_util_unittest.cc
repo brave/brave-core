@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/eligible_ads_predictor_util.h"
 
 #include <map>
+#include <numeric>
 #include <string>
 
 #include "base/test/scoped_feature_list.h"
@@ -81,7 +82,7 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
   params["ad_predictor_weights"] = "0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
-      {{kEligibleAdsFeature, params}}, {});
+      {{kEligibleAdFeature, params}}, {});
 
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -130,7 +131,7 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
 }
 
 TEST(BraveAdsEligibleAdsPredictorUtilTest,
-     ComputePredictorScoreWithEmptyAdFeatures) {
+     ComputePredictorScoreWithEmptyAdPredictor) {
   // Arrange
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
 
@@ -183,10 +184,8 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
   // Assert
   ASSERT_EQ(creative_ads.size(), vote_registry.size());
 
-  int total_votes = 0;
-  for (const int vote : vote_registry) {
-    total_votes += vote;
-  }
+  const int total_votes =
+      std::accumulate(vote_registry.begin(), vote_registry.end(), 0);
   EXPECT_EQ(static_cast<int>(text_embeddings.size()), total_votes);
   EXPECT_EQ(static_cast<int>(text_embeddings.size()),
             vote_registry.at(creative_ads.size() - 1));
@@ -225,10 +224,8 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
   // Assert
   ASSERT_EQ(creative_ads.size(), vote_registry.size());
 
-  int total_votes = 0;
-  for (const int vote : vote_registry) {
-    total_votes += vote;
-  }
+  const int total_votes =
+      std::accumulate(vote_registry.begin(), vote_registry.end(), 0);
   EXPECT_EQ(3 * static_cast<int>(text_embeddings.size()), total_votes);
   EXPECT_EQ(vote_registry.at(0), vote_registry.at(creative_ads.size() - 1));
   EXPECT_EQ(static_cast<int>(text_embeddings.size()),
@@ -270,10 +267,8 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
   // Assert
   ASSERT_EQ(creative_ads.size(), vote_registry.size());
 
-  int total_votes = 0;
-  for (const int vote : vote_registry) {
-    total_votes += vote;
-  }
+  const int total_votes =
+      std::accumulate(vote_registry.begin(), vote_registry.end(), 0);
   EXPECT_EQ(static_cast<int>(text_embeddings.size()), total_votes);
   EXPECT_EQ(static_cast<int>(text_embeddings.size()),
             vote_registry.at(creative_ads.size() - 1));

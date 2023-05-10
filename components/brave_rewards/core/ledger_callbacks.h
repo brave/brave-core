@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 using AttestPromotionCallback = mojom::Ledger::AttestPromotionCallback;
 
@@ -130,6 +130,6 @@ using SKUOrderCallback = std::function<void(mojom::Result, const std::string&)>;
 using UnverifiedPublishersCallback =
     std::function<void(std::vector<std::string>&&)>;
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_CALLBACKS_H_

@@ -16,11 +16,13 @@ import getWalletPanelApiProxy from './wallet_panel_api_proxy'
 import { walletApi } from '../common/slices/api.slice'
 import walletReducer from '../common/slices/wallet.slice'
 import { panelReducer } from './reducers/panel_reducer'
+import uiReducer from '../common/slices/ui.slice'
 
 const store = configureStore({
   reducer: {
     panel: panelReducer,
     wallet: walletReducer,
+    ui: uiReducer,
     [walletApi.reducerPath]: walletApi.reducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({

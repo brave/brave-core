@@ -101,7 +101,7 @@ void IpnsKeysManager::RemoveKey(const std::string& name,
   auto iter =
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpnsKeysManager::OnKeyRemoved, weak_factory_.GetWeakPtr(),
                      iter, name, std::move(callback)),
       {{net::HttpRequestHeaders::kOrigin,
@@ -149,7 +149,7 @@ void IpnsKeysManager::GenerateNewKey(const std::string& name,
   auto iter =
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpnsKeysManager::OnKeyCreated, weak_factory_.GetWeakPtr(),
                      iter, std::move(callback)),
       {{net::HttpRequestHeaders::kOrigin,
@@ -197,7 +197,7 @@ void IpnsKeysManager::LoadKeysInternal(int retries) {
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
   auto url = server_endpoint_.Resolve(kAPIKeyListEndpoint);
   iter->get()->Request(
-      "POST", url, std::string(), std::string(), false,
+      "POST", url, std::string(), std::string(),
       base::BindOnce(&IpnsKeysManager::OnKeysLoaded, weak_factory_.GetWeakPtr(),
                      iter, retries),
       {{net::HttpRequestHeaders::kOrigin,

@@ -6,42 +6,33 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EXCLUSION_RULES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EXCLUSION_RULES_H_
 
-#include <memory>
-
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h"
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-class CreativeInstanceExclusionRule;
+class AntiTargetingResource;
 class SubdivisionTargeting;
 
-namespace inline_content_ads {
-
-class ExclusionRules final : public ExclusionRulesBase {
+class InlineContentAdExclusionRules final : public ExclusionRulesBase {
  public:
-  ExclusionRules(const AdEventList& ad_events,
-                 const SubdivisionTargeting& subdivision_targeting,
-                 const resource::AntiTargeting& anti_targeting_resource,
-                 const BrowsingHistoryList& browsing_history);
+  InlineContentAdExclusionRules(
+      const AdEventList& ad_events,
+      const SubdivisionTargeting& subdivision_targeting,
+      const AntiTargetingResource& anti_targeting_resource,
+      const BrowsingHistoryList& browsing_history);
 
-  ExclusionRules(const ExclusionRules&) = delete;
-  ExclusionRules& operator=(const ExclusionRules&) = delete;
+  InlineContentAdExclusionRules(const InlineContentAdExclusionRules&) = delete;
+  InlineContentAdExclusionRules& operator=(
+      const InlineContentAdExclusionRules&) = delete;
 
-  ExclusionRules(ExclusionRules&&) noexcept = delete;
-  ExclusionRules& operator=(ExclusionRules&&) noexcept = delete;
+  InlineContentAdExclusionRules(InlineContentAdExclusionRules&&) noexcept =
+      delete;
+  InlineContentAdExclusionRules& operator=(
+      InlineContentAdExclusionRules&&) noexcept = delete;
 
-  ~ExclusionRules() override;
-
- private:
-  std::unique_ptr<CreativeInstanceExclusionRule>
-      creative_instance_exclusion_rule_;
+  ~InlineContentAdExclusionRules() override;
 };
 
-}  // namespace inline_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EXCLUSION_RULES_H_

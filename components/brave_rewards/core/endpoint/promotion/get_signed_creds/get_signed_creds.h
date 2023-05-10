@@ -43,7 +43,7 @@
 //   "data": {}
 // }
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint {
@@ -77,6 +77,6 @@ class GetSignedCreds {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_SIGNED_CREDS_GET_SIGNED_CREDS_H_

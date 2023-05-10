@@ -38,7 +38,6 @@ class TipPanelBubbleHost : public BrowserUserData<TipPanelBubbleHost>,
   friend class BrowserUserData<TipPanelBubbleHost>;
 
   std::unique_ptr<WebUIBubbleManager> bubble_manager_;
-  TipPanelCoordinator::Observation coordinator_observation_{this};
 
   BROWSER_USER_DATA_KEY_DECL();
 };

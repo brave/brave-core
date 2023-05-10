@@ -9,7 +9,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 class LedgerImpl;
 
@@ -26,6 +26,6 @@ class StateMigrationV11 {
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V11_H_

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_value_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 void SetEpsilonGreedyBanditArms(const EpsilonGreedyBanditArmMap& arms) {
   AdsClientHelper::GetInstance()->SetDictPref(
@@ -29,4 +29,4 @@ EpsilonGreedyBanditArmMap GetEpsilonGreedyBanditArms() {
   return EpsilonGreedyBanditArmsFromValue(*dict);
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

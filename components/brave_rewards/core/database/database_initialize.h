@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace database {
@@ -20,17 +20,17 @@ class DatabaseInitialize {
   explicit DatabaseInitialize(LedgerImpl& ledger);
   ~DatabaseInitialize();
 
-  void Start(ledger::LegacyResultCallback callback);
+  void Start(LegacyResultCallback callback);
 
  private:
   void OnInitialize(mojom::DBCommandResponsePtr response,
-                    ledger::LegacyResultCallback callback);
+                    LegacyResultCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
-  ledger::database::DatabaseMigration migration_;
+  DatabaseMigration migration_;
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_INITIALIZE_H_

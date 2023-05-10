@@ -10,11 +10,11 @@
 
 #include "base/functional/callback.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
-
 using GetDiagnosticsCallback =
     base::OnceCallback<void(absl::optional<base::Value::List> diagnostics)>;
 
@@ -35,9 +35,11 @@ using ToggleLikeAdCallback =
 using ToggleDislikeAdCallback =
     base::OnceCallback<void(base::Value::Dict ad_content)>;
 using ToggleLikeCategoryCallback =
-    base::OnceCallback<void(const std::string& category, int action)>;
+    base::OnceCallback<void(const std::string& category,
+                            const mojom::UserReactionType user_reaction_type)>;
 using ToggleDislikeCategoryCallback =
-    base::OnceCallback<void(const std::string& category, int action)>;
+    base::OnceCallback<void(const std::string& category,
+                            const mojom::UserReactionType user_reaction_type)>;
 using ToggleSaveAdCallback =
     base::OnceCallback<void(base::Value::Dict ad_content)>;
 using ToggleMarkAdAsInappropriateCallback =

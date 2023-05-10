@@ -10,7 +10,7 @@
 
 #include "base/check_op.h"
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
@@ -47,20 +47,21 @@ class ConversionQueue final : public TableInterface {
       GetConversionQueueForCreativeInstanceIdCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
-    DCHECK_GT(batch_size, 0);
+    CHECK_GT(batch_size, 0);
 
     batch_size_ = batch_size;
   }
 
   std::string GetTableName() const override;
 
+  void Create(mojom::DBTransactionInfo* transaction) override;
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const ConversionQueueItemList& conversion_queue_items);
 
-  std::string BuildInsertOrUpdateQuery(
+  std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const ConversionQueueItemList& conversion_queue_items) const;
 

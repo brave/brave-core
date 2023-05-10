@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace brave_ads::privacy::locale {
+namespace brave_ads::privacy {
 
 // Return |true| if the given |country_code| is a member of the anonymity set,
 // otherwise returns |false|.
@@ -18,6 +18,6 @@ bool IsCountryCodeMemberOfAnonymitySet(const std::string& country_code);
 // otherwise returns |false|.
 bool ShouldClassifyCountryCodeAsOther(const std::string& country_code);
 
-}  // namespace brave_ads::privacy::locale
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_LOCALE_COUNTRY_CODE_UTIL_H_

@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 
@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -17,8 +18,6 @@
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/storage_partition.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/wallet_notification_helper.h"
@@ -137,6 +136,7 @@ TxServiceFactory::TxServiceFactory()
           "TxService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(JsonRpcServiceFactory::GetInstance());
+  DependsOn(BitcoinWalletServiceFactory::GetInstance());
   DependsOn(KeyringServiceFactory::GetInstance());
   DependsOn(AssetRatioServiceFactory::GetInstance());
 }
@@ -147,6 +147,7 @@ KeyedService* TxServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* tx_service =
       new TxService(JsonRpcServiceFactory::GetServiceForContext(context),
+                    BitcoinWalletServiceFactory::GetServiceForContext(context),
                     KeyringServiceFactory::GetServiceForContext(context),
                     user_prefs::UserPrefs::Get(context));
 #if !BUILDFLAG(IS_ANDROID)

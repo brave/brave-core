@@ -34,6 +34,7 @@ def main():
                       type=str,
                       help='Tags/binaries to test')
   parser.add_argument('--config', required=True, type=str)
+  parser.add_argument('--target_os', type=str)
   parser.add_argument('--no-report', action='store_true')
   parser.add_argument('--report-only', action='store_true')
   parser.add_argument('--report-on-failure', action='store_true')

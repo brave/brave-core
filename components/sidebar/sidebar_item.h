@@ -26,8 +26,9 @@ struct SidebarItem {
     kReadingList,
     kHistory,
     kPlaylist,
+    kChatUI,
     // When adding new item, dont' forget to update kBuiltInItemLast.
-    kBuiltInItemLast = kPlaylist,
+    kBuiltInItemLast = kChatUI,
   };
 
   static SidebarItem Create(const std::u16string& title,

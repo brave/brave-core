@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/functional/bind.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -23,6 +22,7 @@
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
+#include "net/base/features.h"
 
 // Cache active Browser instance's TabStripModel to give
 // to ShieldsPanelDataHandler when this is created because
@@ -48,6 +48,10 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
                      brave_shields::IsHttpsByDefaultFeatureEnabled());
 
   source->AddBoolean("isTorProfile", profile_->IsTor());
+
+  source->AddBoolean("isForgetFirstPartyStorageEnabled",
+                     base::FeatureList::IsEnabled(
+                         net::features::kBraveForgetFirstPartyStorage));
 
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(

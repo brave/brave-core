@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace base {
@@ -26,27 +25,23 @@ class TimeDelta;
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
 class Account;
+class AntiTargetingResource;
 class SubdivisionTargeting;
 class Transfer;
 struct NotificationAdInfo;
 struct WalletInfo;
 
-class NotificationAdHandler final
-    : public AccountObserver,
-      public AdsClientNotifierObserver,
-      public BrowserManagerObserver,
-      public notification_ads::EventHandlerDelegate,
-      public notification_ads::ServingDelegate {
+class NotificationAdHandler final : public AccountObserver,
+                                    public AdsClientNotifierObserver,
+                                    public BrowserManagerObserver,
+                                    public NotificationAdEventHandlerDelegate,
+                                    public NotificationAdServingDelegate {
  public:
   NotificationAdHandler(Account& account,
                         Transfer& transfer,
                         const SubdivisionTargeting& subdivision_targeting,
-                        const resource::AntiTargeting& anti_targeting_resource);
+                        const AntiTargetingResource& anti_targeting_resource);
 
   NotificationAdHandler(const NotificationAdHandler&) = delete;
   NotificationAdHandler& operator=(const NotificationAdHandler&) = delete;
@@ -74,26 +69,29 @@ class NotificationAdHandler final
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  // notification_ads::ServingDelegate:
+  // NotificationAdServingDelegate:
   void OnOpportunityAroseToServeNotificationAd(
       const SegmentList& segments) override;
   void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
-  // notification_ads::EventHandlerDelegate:
-  void OnNotificationAdServed(const NotificationAdInfo& ad) override;
-  void OnNotificationAdViewed(const NotificationAdInfo& ad) override;
-  void OnNotificationAdClicked(const NotificationAdInfo& ad) override;
-  void OnNotificationAdDismissed(const NotificationAdInfo& ad) override;
-  void OnNotificationAdTimedOut(const NotificationAdInfo& ad) override;
+  // NotificationAdEventHandlerDelegate:
+  void OnDidFireNotificationAdServedEvent(
+      const NotificationAdInfo& ad) override;
+  void OnDidFireNotificationAdViewedEvent(
+      const NotificationAdInfo& ad) override;
+  void OnDidFireNotificationAdClickedEvent(
+      const NotificationAdInfo& ad) override;
+  void OnDidFireNotificationAdDismissedEvent(
+      const NotificationAdInfo& ad) override;
+  void OnDidFireNotificationAdTimedOutEvent(
+      const NotificationAdInfo& ad) override;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
 
-  notification_ads::EventHandler event_handler_;
+  NotificationAdEventHandler event_handler_;
 
-  notification_ads::Serving serving_;
-
-  const processor::EpsilonGreedyBandit epsilon_greedy_bandit_processor_;
+  NotificationAdServing serving_;
 };
 
 }  // namespace brave_ads

@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace sku {
 
 std::string GetBraveDestination(const std::string& wallet_type);
@@ -21,6 +21,6 @@ std::string GetUpholdDestination();
 std::string GetGeminiDestination();
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_UTIL_H_

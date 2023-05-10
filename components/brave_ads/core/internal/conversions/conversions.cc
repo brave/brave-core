@@ -16,20 +16,18 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_factory.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
-#include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave_base/random.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
@@ -37,27 +35,31 @@ namespace brave_ads {
 
 namespace {
 
-constexpr int64_t kConvertAfterSeconds =
-    base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
-constexpr int64_t kDebugConvertAfterSeconds =
-    10 * base::Time::kSecondsPerMinute;
-constexpr int64_t kExpiredConvertAfterSeconds =
-    1 * base::Time::kSecondsPerMinute;
+constexpr base::TimeDelta kConvertAfter = base::Days(1);
+constexpr base::TimeDelta kDebugConvertAfter = base::Minutes(10);
+constexpr base::TimeDelta kConvertExpiredAfter = base::Minutes(1);
+
 constexpr char kSearchInUrl[] = "url";
 
-bool HasObservationWindowForAdEventExpired(const int observation_window,
-                                           const AdEventInfo& ad_event) {
-  const base::Time time = base::Time::Now() - base::Days(observation_window);
-
-  return time >= ad_event.created_at;
+bool HasObservationWindowForAdEventExpired(
+    const base::TimeDelta observation_window,
+    const AdEventInfo& ad_event) {
+  return ad_event.created_at < base::Time::Now() - observation_window;
 }
 
 bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
   if (ad_event.type == AdType::kInlineContentAd) {
+    // Only convert post clicks for inline content ads for opted-out and
+    // opted-in users.
     return ad_event.confirmation_type != ConfirmationType::kViewed;
   }
 
-  // Do not convert if the user has not joined rewards for all other ad types
+  if (ad_event.type == AdType::kSearchResultAd) {
+    // Always convert search result ads for both opted-out and opted-in users.
+    return true;
+  }
+
+  // Only convert for opted-in users for all other ad types.
   return ShouldRewardUser();
 }
 
@@ -86,9 +88,8 @@ bool DoesConfirmationTypeMatchConversionType(
     }
   }
 
-  NOTREACHED() << "Unexpected value for ConfirmationType: "
-               << static_cast<int>(confirmation_type.value());
-  return false;
+  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "
+                        << static_cast<int>(confirmation_type.value());
 }
 
 std::string ExtractConversionIdFromText(
@@ -197,7 +198,7 @@ ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
 ConversionList SortConversions(const ConversionList& conversions) {
   const auto sort =
       ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
-  DCHECK(sort);
+  CHECK(sort);
 
   return sort->Apply(conversions);
 }
@@ -205,22 +206,20 @@ ConversionList SortConversions(const ConversionList& conversions) {
 }  // namespace
 
 Conversions::Conversions() {
-  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 Conversions::~Conversions() {
-  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
 void Conversions::AddObserver(ConversionsObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Conversions::RemoveObserver(ConversionsObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -243,13 +242,14 @@ void Conversions::MaybeConvert(
 
 void Conversions::Process() {
   const database::table::ConversionQueue database_table;
-  database_table.GetUnprocessed(base::BindOnce(
-      &Conversions::OnGetUnprocessedConversions, weak_factory_.GetWeakPtr()));
+  database_table.GetUnprocessed(
+      base::BindOnce(&Conversions::GetUnprocessedConversionsCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Conversions::OnGetUnprocessedConversions(
+void Conversions::GetUnprocessedConversionsCallback(
     const bool success,
     const ConversionQueueItemList& conversion_queue_items) {
   if (!success) {
@@ -275,12 +275,12 @@ void Conversions::CheckRedirectChain(
   BLOG(1, "Checking URL for conversions");
 
   const database::table::AdEvents ad_events_database_table;
-  ad_events_database_table.GetAll(
-      base::BindOnce(&Conversions::OnGetAllAdEvents, weak_factory_.GetWeakPtr(),
-                     redirect_chain, html, conversion_id_patterns));
+  ad_events_database_table.GetAll(base::BindOnce(
+      &Conversions::GetAllAdEventsCallback, weak_factory_.GetWeakPtr(),
+      redirect_chain, html, conversion_id_patterns));
 }
 
-void Conversions::OnGetAllAdEvents(
+void Conversions::GetAllAdEventsCallback(
     std::vector<GURL> redirect_chain,
     std::string html,
     ConversionIdPatternMap conversion_id_patterns,
@@ -293,12 +293,12 @@ void Conversions::OnGetAllAdEvents(
 
   const database::table::Conversions conversions_database_table;
   conversions_database_table.GetAll(base::BindOnce(
-      &Conversions::OnGetAllConversions, weak_factory_.GetWeakPtr(),
+      &Conversions::GetAllConversionsCallback, weak_factory_.GetWeakPtr(),
       std::move(redirect_chain), std::move(html),
       std::move(conversion_id_patterns), ad_events));
 }
 
-void Conversions::OnGetAllConversions(
+void Conversions::GetAllConversionsCallback(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionIdPatternMap& conversion_id_patterns,
@@ -392,22 +392,23 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.creative_set_id = ad_event.creative_set_id;
   conversion_queue_item.creative_instance_id = ad_event.creative_instance_id;
   conversion_queue_item.advertiser_id = ad_event.advertiser_id;
+  conversion_queue_item.segment = ad_event.segment;
   conversion_queue_item.conversion_id = verifiable_conversion.id;
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
-  const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
-      ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
+
   conversion_queue_item.process_at =
-      base::Time::Now() + base::Seconds(rand_delay);
+      base::Time::Now() +
+      RandTimeDelta(ShouldDebug() ? kDebugConvertAfter : kConvertAfter);
 
   database::table::ConversionQueue database_table;
   database_table.Save({conversion_queue_item},
-                      base::BindOnce(&Conversions::OnSaveConversionQueue,
+                      base::BindOnce(&Conversions::SaveConversionQueueCallback,
                                      weak_factory_.GetWeakPtr()));
 }
 
-void Conversions::OnSaveConversionQueue(const bool success) {
+void Conversions::SaveConversionQueueCallback(const bool success) {
   if (!success) {
     BLOG(1, "Failed to append conversion to queue");
     return;
@@ -466,10 +467,10 @@ void Conversions::ConvertedQueueItem(
 void Conversions::ProcessQueue() {
   const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(base::BindOnce(
-      &Conversions::OnGetConversionQueue, weak_factory_.GetWeakPtr()));
+      &Conversions::GetConversionQueueCallback, weak_factory_.GetWeakPtr()));
 }
 
-void Conversions::OnGetConversionQueue(
+void Conversions::GetConversionQueueCallback(
     const bool success,
     const ConversionQueueItemList& conversion_queue_items) {
   if (!success) {
@@ -493,17 +494,16 @@ void Conversions::RemoveInvalidQueueItem(
   const database::table::ConversionQueue database_table;
   database_table.Delete(
       conversion_queue_item,
-      base::BindOnce(&Conversions::OnRemoveInvalidQueueItem,
+      base::BindOnce(&Conversions::RemoveInvalidQueueItemCallback,
                      weak_factory_.GetWeakPtr(), conversion_queue_item));
 }
 
-void Conversions::OnRemoveInvalidQueueItem(
+void Conversions::RemoveInvalidQueueItemCallback(
     const ConversionQueueItemInfo& conversion_queue_item,
     const bool success) {
   if (!success) {
     BLOG(0, "Failed to remove invalid conversion");
-    NOTREACHED();
-    return;
+    NOTREACHED_NORETURN();
   }
 
   FailedToConvertQueueItem(conversion_queue_item);
@@ -514,17 +514,16 @@ void Conversions::MarkQueueItemAsProcessed(
   const database::table::ConversionQueue database_table;
   database_table.Update(
       conversion_queue_item,
-      base::BindOnce(&Conversions::OnMarkQueueItemAsProcessed,
+      base::BindOnce(&Conversions::MarkQueueItemAsProcessedCallback,
                      weak_factory_.GetWeakPtr(), conversion_queue_item));
 }
 
-void Conversions::OnMarkQueueItemAsProcessed(
+void Conversions::MarkQueueItemAsProcessedCallback(
     const ConversionQueueItemInfo& conversion_queue_item,
     const bool success) {
   if (!success) {
     BLOG(0, "Failed to mark conversion as processed");
-    NOTREACHED();
-    return;
+    NOTREACHED_NORETURN();
   }
 
   ConvertedQueueItem(conversion_queue_item);
@@ -532,17 +531,12 @@ void Conversions::OnMarkQueueItemAsProcessed(
 
 void Conversions::StartTimer(
     const ConversionQueueItemInfo& conversion_queue_item) {
+  const base::Time process_at = conversion_queue_item.process_at;
+
   const base::Time now = base::Time::Now();
 
-  base::TimeDelta delay;
-
-  if (now < conversion_queue_item.process_at) {
-    delay = conversion_queue_item.process_at - now;
-  } else {
-    const auto rand_delay = static_cast<int64_t>(
-        brave_base::random::Geometric(kExpiredConvertAfterSeconds));
-    delay = base::Seconds(rand_delay);
-  }
+  const base::TimeDelta delay =
+      now < process_at ? process_at - now : RandTimeDelta(kConvertExpiredAfter);
 
   const base::Time process_queue_at = timer_.Start(
       FROM_HERE, delay,
@@ -574,21 +568,11 @@ void Conversions::NotifyConversionFailed(
   }
 }
 
-void Conversions::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
-  resource_.Load();
-}
-
-void Conversions::OnNotifyDidUpdateResourceComponent(const std::string& id) {
-  if (IsValidCountryComponentId(id)) {
-    resource_.Load();
-  }
-}
-
 void Conversions::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
-  MaybeConvert(redirect_chain, content, resource_.get()->id_patterns);
+  MaybeConvert(redirect_chain, content, resource_.get().id_patterns);
 }
 
 }  // namespace brave_ads

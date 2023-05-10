@@ -19,7 +19,7 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace gemini {
 
@@ -151,4 +151,4 @@ TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
 
 }  // namespace gemini
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

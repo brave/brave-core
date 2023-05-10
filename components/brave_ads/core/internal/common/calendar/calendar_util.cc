@@ -12,7 +12,7 @@
 namespace brave_ads {
 
 int GetLastDayOfMonth(const int year, const int month) {
-  DCHECK((month >= 1 && month <= 12));
+  CHECK((month >= 1 && month <= 12));
 
   switch (month) {
     case 2: {  // February
@@ -37,8 +37,8 @@ int GetLastDayOfMonth(const int year, const int month) {
 }
 
 int GetDayOfWeek(int year, int month, int day) {
-  DCHECK((month >= 1 && month <= 12));
-  DCHECK((day >= 1 && day <= GetLastDayOfMonth(year, month)));
+  CHECK((month >= 1 && month <= 12));
+  CHECK((day >= 1 && day <= GetLastDayOfMonth(year, month)));
 
   if (month < 3) {
     month += 12;
@@ -58,7 +58,7 @@ int GetDayOfWeek(const base::Time time, const bool is_local) {
   } else {
     time.UTCExplode(&exploded);
   }
-  DCHECK(exploded.HasValidValues());
+  CHECK(exploded.HasValidValues());
 
   return exploded.day_of_week;
 }

@@ -75,6 +75,71 @@ function InsertGoogleSignInSubpage (
   }
 }
 
+function InsertLocalhostAccessSubpage (
+  templateContent: DocumentFragment,
+  pages: Element)
+{
+  pages.insertAdjacentHTML(
+    'beforeend',
+    getTrustedHTML`
+        <template is="dom-if" route-path="/content/localhostAccess" no-search>
+        <settings-subpage>
+          <category-default-setting
+            id="localhostAccessDefault"
+            category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]">
+          </category-default-setting>
+          <category-setting-exceptions
+            id="localhostExceptions"
+            category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]">
+          </category-setting-exceptions>
+        </settings-subpage>
+        </template>
+      `)
+
+  const localhostAccessTemplate = templateContent.
+    querySelector('[route-path="/content/localhostAccess"]')
+  if (!localhostAccessTemplate) {
+    console.error(
+      '[Brave Settings Overrides] Couldn\'t find localhost access template')
+  } else {
+    const localhostAccessSubpage =
+      localhostAccessTemplate.content.querySelector('settings-subpage')
+    if (!localhostAccessSubpage) {
+      console.error(
+        '[Brave Settings Overrides] Couldn\'t find localhost access subpage')
+    } else {
+      localhostAccessSubpage.setAttribute('page-title',
+        loadTimeData.getString('siteSettingsCategoryLocalhostAccess'))
+      const localhostAccessDefault =
+        localhostAccessTemplate.content.getElementById('localhostAccessDefault')
+      if (!localhostAccessDefault) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find localhost access default')
+      } else {
+        localhostAccessDefault.setAttribute(
+          'toggle-off-label',
+          loadTimeData.getString('siteSettingsLocalhostAccessAsk'))
+          localhostAccessDefault.setAttribute(
+          'toggle-on-label',
+          loadTimeData.getString('siteSettingsLocalhostAccessAsk'))
+      }
+      const localhostExceptions =
+        localhostAccessTemplate.content.getElementById('localhostExceptions')
+      if (!localhostExceptions) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find localhost exceptions')
+      } else {
+        localhostExceptions.setAttribute(
+          'block-header',
+          loadTimeData.getString('siteSettingsLocalhostAccessBlockExceptions'))
+        localhostExceptions.setAttribute(
+          'allow-header',
+          loadTimeData.getString('siteSettingsLocalhostAccessAllowExceptions'))
+      }
+    }
+  }
+}
+
 function InsertAutoplaySubpage (
   templateContent: DocumentFragment,
   pages: Element)
@@ -368,6 +433,11 @@ RegisterPolymerTemplateModifications({
       if (isGoogleSignInFeatureEnabled) {
         InsertGoogleSignInSubpage(templateContent, pages)
       }
+      const isLocalhostAccessFeatureEnabled =
+        loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
+      if (isLocalhostAccessFeatureEnabled) {
+        InsertLocalhostAccessSubpage(templateContent, pages)
+      }
       InsertAutoplaySubpage(templateContent, pages)
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
@@ -377,7 +447,6 @@ RegisterPolymerTemplateModifications({
       InsertShieldsSubpage(templateContent, pages)
       InsertCookiesSubpage(templateContent, pages)
     }
-
     if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
       const privacySandboxSettings3Template = templateContent.
         querySelector(`template[if*='isPrivacySandboxSettings3Enabled_']`)

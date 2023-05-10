@@ -12,6 +12,7 @@
 extern const char kAdblockHost[];
 extern const char kAdblockInternalsHost[];
 extern const char kAdblockJS[];
+extern const char kSkusInternalsHost[];
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 extern const char kIPFSWebUIHost[];
 extern const char kIPFSWebUIURL[];
@@ -68,5 +69,7 @@ extern const char kPlaylistPlayerURL[];
 extern const char kSpeedreaderPanelURL[];
 extern const char kSpeedreaderPanelHost[];
 extern const char kCommandsHost[];
+extern const char kChatUIURL[];
+extern const char kChatUIHost[];
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_

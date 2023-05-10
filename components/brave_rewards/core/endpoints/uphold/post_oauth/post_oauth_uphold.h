@@ -30,7 +30,7 @@
 // }
 // clang-format on
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoints {
@@ -63,6 +63,6 @@ class PostOAuthUphold final : public RequestBuilder,
 };
 
 }  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_UPHOLD_POST_OAUTH_POST_OAUTH_UPHOLD_H_

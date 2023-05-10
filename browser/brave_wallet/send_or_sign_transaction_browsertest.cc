@@ -176,6 +176,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
+    brave_wallet::SetDefaultEthereumWallet(
+        browser()->profile()->GetPrefs(),
+        brave_wallet::mojom::DefaultWallet::BraveWallet);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
@@ -826,8 +829,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, InvalidAddress) {
     EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
-              l10n_util::GetStringUTF8(
-                  IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
+              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 
@@ -856,8 +858,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NoEthPermission) {
     EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
-              l10n_util::GetStringUTF8(
-                  IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
+              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 

@@ -24,33 +24,30 @@ namespace base {
 class File;
 }  // namespace base
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 template <typename T>
 base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
     base::File file) {
   if (!file.IsValid()) {
-    return base::unexpected("File is not valid");
+    return base::ok(T{});
   }
 
   absl::optional<base::Value> root;
   {
+    // |content| can be up to 10 MB, so we keep the scope of this object to this
+    // block to release its memory as soon as possible.
+
     std::string content;
-    const base::ScopedFILE stream(base::FileToFILE(std::move(file), "rb"));
-    if (!base::ReadStreamToString(stream.get(), &content)) {
-      return base::unexpected("Couldn't read file");
+    const base::ScopedFILE scoped_file(base::FileToFILE(std::move(file), "rb"));
+    if (!base::ReadStreamToString(scoped_file.get(), &content)) {
+      return base::unexpected("Failed to read file");
     }
 
     root = base::JSONReader::Read(content);
-    if (!root) {
-      return base::unexpected("Failed to parse json");
+    if (!root || !root->is_dict()) {
+      return base::unexpected("Invalid JSON");
     }
-    // `content` can be up to 10 MB, so we keep the scope of this object to this
-    // block to release its memory as soon as possible.
-  }
-
-  if (!root->is_dict()) {
-    return base::unexpected("JSON is not a dictionary");
   }
 
   return T::CreateFromValue(std::move(root).value().TakeDict());
@@ -75,6 +72,6 @@ void LoadAndParseResource(const std::string& id,
       base::BindOnce(&ReadFileAndParseResource<T>, std::move(callback)));
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_RESOURCES_UTIL_IMPL_H_

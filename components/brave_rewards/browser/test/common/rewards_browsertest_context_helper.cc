@@ -15,9 +15,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace rewards_browsertest {
-
-using brave_rewards::RewardsPanelCoordinator;
+namespace brave_rewards::test_util {
 
 RewardsBrowserTestContextHelper::RewardsBrowserTestContextHelper(
     Browser* browser) {
@@ -57,8 +55,8 @@ RewardsBrowserTestContextHelper::OpenRewardsPopup() {
     }
   } while (!popup_contents_);
 
-  rewards_browsertest_util::WaitForElementToAppear(
-      popup_contents_.get(), "[data-test-id=rewards-panel]");
+  test_util::WaitForElementToAppear(popup_contents_.get(),
+                                    "[data-test-id=rewards-panel]");
 
   return popup_contents_;
 }
@@ -71,8 +69,8 @@ RewardsBrowserTestContextHelper::OpenSiteBanner() {
   content::CreateAndLoadWebContentsObserver site_banner_observer;
 
   // Click button to initiate sending a tip.
-  rewards_browsertest_util::WaitForElementThenClick(
-      popup_contents.get(), "[data-test-id=tip-button]");
+  test_util::WaitForElementThenClick(popup_contents.get(),
+                                     "[data-test-id=tip-button]");
 
   // Wait for the site banner to load and retrieve the notification source
   base::WeakPtr<content::WebContents> banner =
@@ -98,7 +96,7 @@ void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
 
   // The minimum publisher duration when testing is 1 second (and the
   // granularity is seconds), so wait for just over 2 seconds to elapse
-  base::PlatformThread::Sleep(base::Milliseconds(2100));
+  test_util::WaitForAutoContributeVisitTime();
 
   LoadRewardsPage();
 
@@ -108,36 +106,24 @@ void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
   EXPECT_EQ(contents->GetLastCommittedURL().host_piece(), "rewards");
 
   // Ensure that the AC box is displayed.
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents, "[data-test-id=auto-contribute-panel]");
+  test_util::WaitForElementToAppear(contents,
+                                    "[data-test-id=auto-contribute-panel]");
 
   // Ensure that the AC sites table is displayed.
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents, "[data-test-id=auto-contribute-table]");
-
-  // Make sure site appears in auto-contribute table
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents,
-      "[data-test-id='ac_link_" + publisher + "']",
-      publisher);
+  test_util::WaitForElementToAppear(contents,
+                                    "[data-test-id=auto-contribute-table]");
 
   if (verified) {
+    // Make sure site appears in auto-contribute table
+    test_util::WaitForElementToEqual(
+        contents, "[data-test-id='ac_link_" + publisher + "']", publisher);
+
     // A verified site has two images associated with it, the site's
     // favicon and the verified icon
     content::EvalJsResult js_result = EvalJs(
         contents,
         "document.querySelector(\"[data-test-id='ac_link_" +
         publisher + "']\").getElementsByTagName('svg').length === 1;",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_TRUE(js_result.ExtractBool());
-  } else {
-    // An unverified site has one image associated with it, the site's
-    // favicon
-    content::EvalJsResult js_result = EvalJs(
-        contents,
-        "document.querySelector(\"[data-test-id='ac_link_" +
-        publisher + "']\").getElementsByTagName('svg').length === 0;",
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
     EXPECT_TRUE(js_result.ExtractBool());
@@ -151,7 +137,7 @@ void RewardsBrowserTestContextHelper::LoadURL(GURL url) {
 }
 
 void RewardsBrowserTestContextHelper::LoadRewardsPage() {
-  GURL url = rewards_browsertest_util::GetRewardsUrl();
+  GURL url = test_util::GetRewardsUrl();
   auto* tab_strip = browser_->tab_strip_model();
 
   // Activate the rewards page if it's already loaded into a tab.
@@ -171,8 +157,8 @@ void RewardsBrowserTestContextHelper::LoadRewardsPage() {
   }
 
   // Wait for the content to be fully rendered before continuing.
-  rewards_browsertest_util::WaitForElementToAppear(
-      tab_strip->GetActiveWebContents(), "[data-test-id=rewards-balance-text]");
+  test_util::WaitForElementToAppear(tab_strip->GetActiveWebContents(),
+                                    "[data-test-id=rewards-balance-text]");
 }
 
 void RewardsBrowserTestContextHelper::ReloadCurrentSite() {
@@ -181,4 +167,4 @@ void RewardsBrowserTestContextHelper::ReloadCurrentSite() {
   EXPECT_TRUE(WaitForLoadStop(contents));
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test_util

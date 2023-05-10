@@ -39,9 +39,6 @@ import usePricing from '../../../../../../common/hooks/pricing'
 import { Column, ScrollableColumn } from '../../../../../shared/style'
 import {
   ButtonRow,
-  DividerText,
-  SubDivider,
-  Spacer,
   FilterTokenRow
 } from '../../style'
 
@@ -56,6 +53,7 @@ interface Props {
   enableScroll?: boolean
   maxListHeight?: string
   estimatedItemSize: number
+  horizontalPadding?: number
 }
 
 export const TokenLists = ({
@@ -67,7 +65,8 @@ export const TokenLists = ({
   maxListHeight,
   hideAssetFilter,
   hideAccountFilter,
-  hideAutoDiscovery
+  hideAutoDiscovery,
+  horizontalPadding
 }: Props) => {
   // routing
   const history = useHistory()
@@ -116,19 +115,16 @@ export const TokenLists = ({
     })
   }, [searchValue, visibleTokens])
 
-  const [fungibleTokens, nonFungibleTokens] = React.useMemo(
-    () => {
-      let fungible = []
-      let nonFungible = []
-      for (const token of filteredAssetList) {
-        if (token.asset.isErc721 || token.asset.isNft) {
-          nonFungible.push(token)
-        } else {
-          fungible.push(token)
-        }
-      }
-      return [fungible, nonFungible]
-    },
+  const fungibleTokens = React.useMemo(() => {
+    return filteredAssetList
+      .filter(
+        (token) => !(
+          token.asset.isErc721 ||
+          token.asset.isNft ||
+          token.asset.isErc1155
+        )
+      )
+  },
     [filteredAssetList]
   )
 
@@ -180,21 +176,10 @@ export const TokenLists = ({
       {!assetAutoDiscoveryCompleted && !hideAutoDiscovery &&
         <PortfolioAssetItemLoadingSkeleton />
       }
-      {nonFungibleTokens.length !== 0 &&
-        <>
-          <Column fullWidth={true} alignItems='flex-start'>
-            <Spacer />
-            <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-            <SubDivider />
-          </Column>
-          {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
-        </>
-      }
     </>
   }, [
     sortedFungibleTokensList,
     renderToken,
-    nonFungibleTokens,
     assetAutoDiscoveryCompleted,
     hideAutoDiscovery
   ])
@@ -210,7 +195,7 @@ export const TokenLists = ({
   // render
   return (
     <>
-      <FilterTokenRow>
+      <FilterTokenRow horizontalPadding={horizontalPadding}>
 
         <Column flex={1} style={{ minWidth: '25%' }} alignItems='flex-start'>
           <SearchBar
@@ -234,7 +219,14 @@ export const TokenLists = ({
 
       {enableScroll
         ? (
-          <ScrollableColumn maxHeight={maxListHeight}>
+          <ScrollableColumn
+            maxHeight={maxListHeight}
+            padding={
+              `0px ${horizontalPadding !== undefined
+                ? horizontalPadding
+                : 0}px`
+            }
+          >
             {listUi}
           </ScrollableColumn>
         )
@@ -242,7 +234,9 @@ export const TokenLists = ({
       }
 
       {!hideAddButton &&
-        <ButtonRow>
+        <ButtonRow
+          horizontalPadding={horizontalPadding}
+        >
           <AddButton
             buttonType='secondary'
             onSubmit={showAddAssetsModal}

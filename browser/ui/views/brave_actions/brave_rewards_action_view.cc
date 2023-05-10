@@ -49,6 +49,7 @@ using brave_rewards::RewardsPanelUI;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
 
+constexpr int kCornerRadius = 16;
 constexpr SkColor kIconColor = SK_ColorBLACK;
 const char kVerifiedCheck[] = "\u2713";
 constexpr SkColor kBadgeVerifiedBG = SkColorSetRGB(0x4c, 0x54, 0xd2);
@@ -114,6 +115,46 @@ class RewardsActionMenuModel : public ui::SimpleMenuModel,
   raw_ptr<PrefService> prefs_ = nullptr;
 };
 
+// In order to set rounded corners in the dialog, we must subclass
+// `WebUIBubbleManager` and override the `CreateWebUIBubbleDialog`.
+class RewardsPanelBubbleManager : public WebUIBubbleManager {
+ public:
+  RewardsPanelBubbleManager(views::View* anchor_view, Profile* profile)
+      : anchor_view_(anchor_view), profile_(profile) {}
+
+  ~RewardsPanelBubbleManager() override = default;
+
+  // WebUIBubbleManager:
+
+  // The persistent renderer feature is not supported for this bubble.
+  void MaybeInitPersistentRenderer() override {}
+
+  base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
+      const absl::optional<gfx::Rect>& anchor) override {
+    auto contents_wrapper =
+        std::make_unique<BubbleContentsWrapperT<RewardsPanelUI>>(
+            GURL(kBraveRewardsPanelURL), profile_, IDS_BRAVE_UI_BRAVE_REWARDS);
+
+    set_bubble_using_cached_web_contents(false);
+    set_cached_contents_wrapper(std::move(contents_wrapper));
+    cached_contents_wrapper()->ReloadWebContents();
+
+    auto bubble_view = std::make_unique<WebUIBubbleDialogView>(
+        anchor_view_, cached_contents_wrapper(), anchor);
+    bubble_view->SetPaintClientToLayer(true);
+    bubble_view->set_use_round_corners(true);
+    bubble_view->set_corner_radius(kCornerRadius);
+
+    auto weak_ptr = bubble_view->GetWeakPtr();
+    views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
+    return weak_ptr;
+  }
+
+ private:
+  const raw_ptr<views::View> anchor_view_;
+  const raw_ptr<Profile> profile_;
+};
+
 }  // namespace
 
 BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
@@ -125,11 +166,9 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
           nullptr,
           false),
       browser_(browser),
-      bubble_manager_(std::make_unique<WebUIBubbleManagerT<RewardsPanelUI>>(
-          this,
-          browser_->profile(),
-          GURL(kBraveRewardsPanelURL),
-          IDS_BRAVE_UI_BRAVE_REWARDS)) {
+      bubble_manager_(
+          std::make_unique<RewardsPanelBubbleManager>(this,
+                                                      browser_->profile())) {
   DCHECK(browser_);
 
   SetButtonController(std::make_unique<views::MenuButtonController>(

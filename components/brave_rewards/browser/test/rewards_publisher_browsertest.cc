@@ -25,19 +25,19 @@
 
 // npm run test -- brave_browser_tests --filter=RewardsPublisherBrowserTest.*
 
-namespace rewards_browsertest {
+namespace brave_rewards {
 
 class RewardsPublisherBrowserTest : public InProcessBrowserTest {
  public:
   RewardsPublisherBrowserTest() {
-    response_ = std::make_unique<RewardsBrowserTestResponse>();
+    response_ = std::make_unique<test_util::RewardsBrowserTestResponse>();
   }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
     context_helper_ =
-        std::make_unique<RewardsBrowserTestContextHelper>(browser());
+        std::make_unique<test_util::RewardsBrowserTestContextHelper>(browser());
 
     // HTTP resolver
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -45,14 +45,14 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(
-        base::BindRepeating(&rewards_browsertest_util::HandleRequest));
+        base::BindRepeating(&test_util::HandleRequest));
     ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
     brave::RegisterPathProvider();
     auto* profile = browser()->profile();
-    rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
-        brave_rewards::RewardsServiceFactory::GetForProfile(profile));
+    rewards_service_ = static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(profile));
 
     // Response mock
     base::ScopedAllowBlockingForTesting allow_blocking;
@@ -63,7 +63,7 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
             base::Unretained(this)));
     rewards_service_->SetLedgerEnvForTesting();
 
-    rewards_browsertest_util::SetOnboardingBypassed(browser());
+    test_util::SetOnboardingBypassed(browser());
   }
 
   void TearDown() override {
@@ -93,21 +93,18 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
+  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  std::unique_ptr<RewardsBrowserTestResponse> response_;
-  std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
+  std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
+  std::unique_ptr<test_util::RewardsBrowserTestContextHelper> context_helper_;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
                        PanelShowsCorrectPublisherData) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  test_util::CreateRewardsWallet(rewards_service_);
   // Navigate to a verified site in a new tab
   const std::string publisher = "duckduckgo.com";
-  rewards_browsertest_util::NavigateToPublisherPage(
-      browser(),
-      https_server_.get(),
-      publisher);
+  test_util::NavigateToPublisherPage(browser(), https_server_.get(), publisher);
 
   // Open the Rewards popup
   base::WeakPtr<content::WebContents> popup_contents =
@@ -117,48 +114,44 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
   // Retrieve the inner text of the wallet panel and verify that it
   // looks as expected
   std::string card_selector = "[data-test-id=publisher-card]";
-  rewards_browsertest_util::WaitForElementToContain(
-      popup_contents.get(), card_selector, "Verified Creator");
-  rewards_browsertest_util::WaitForElementToContain(popup_contents.get(),
-                                                    card_selector, publisher);
+  test_util::WaitForElementToContain(popup_contents.get(), card_selector,
+                                     "Verified Creator");
+  test_util::WaitForElementToContain(popup_contents.get(), card_selector,
+                                     publisher);
 
   // Retrieve the inner HTML of the wallet panel and verify that it
   // contains the expected favicon
   {
     const std::string favicon =
         "chrome://favicon/size/64@1x/https://" + publisher;
-    rewards_browsertest_util::WaitForElementToContainHTML(
-        popup_contents.get(), card_selector, favicon);
+    test_util::WaitForElementToContainHTML(popup_contents.get(), card_selector,
+                                           favicon);
   }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitVerifiedPublisher) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  test_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
-      rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
-      true);
+      test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitUnverifiedPublisher) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  test_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
-      rewards_browsertest_util::GetUrl(https_server_.get(), "brave.com"),
-      false);
+      test_util::GetUrl(https_server_.get(), "brave.com"), false);
 }
 
 // Registered publishers without a wallet address are displayed as not verified
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitRegisteredPublisher) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  test_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(
-      rewards_browsertest_util::GetUrl(https_server_.get(),
-                                       "registeredsite.com"),
-      false);
+      test_util::GetUrl(https_server_.get(), "registeredsite.com"), false);
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards

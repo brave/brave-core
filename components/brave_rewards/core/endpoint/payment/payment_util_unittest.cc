@@ -10,31 +10,31 @@
 
 // npm run test -- brave_unit_tests --filter=PaymentUtilTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
 class PaymentUtilTest : public testing::Test {};
 
 TEST(PaymentUtilTest, GetServerUrlDevelopment) {
-  ledger::_environment = mojom::Environment::DEVELOPMENT;
+  _environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   const std::string expected_url = "";
   ASSERT_EQ(url, "https://payment.rewards.brave.software/test");
 }
 
 TEST(PaymentUtilTest, GetServerUrlStaging) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://payment.rewards.bravesoftware.com/test");
 }
 
 TEST(PaymentUtilTest, GetServerUrlProduction) {
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://payment.rewards.brave.com/test");
 }
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

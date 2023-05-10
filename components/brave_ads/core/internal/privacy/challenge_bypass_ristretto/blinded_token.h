@@ -42,12 +42,12 @@ class BlindedToken {
   }
 
   challenge_bypass_ristretto::BlindedToken& get() {
-    DCHECK(blinded_token_);
+    CHECK(blinded_token_);
     return *blinded_token_;
   }
 
   const challenge_bypass_ristretto::BlindedToken& get() const {
-    DCHECK(blinded_token_);
+    CHECK(blinded_token_);
     return *blinded_token_;
   }
 

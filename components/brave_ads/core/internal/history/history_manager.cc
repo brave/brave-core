@@ -35,12 +35,12 @@ HistoryManager& HistoryManager::GetInstance() {
 }
 
 void HistoryManager::AddObserver(HistoryManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void HistoryManager::RemoveObserver(HistoryManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -118,52 +118,52 @@ HistoryItemInfo HistoryManager::Add(
   return history_item;
 }
 
-AdContentLikeActionType HistoryManager::LikeAd(
+mojom::UserReactionType HistoryManager::LikeAd(
     const AdContentInfo& ad_content) const {
-  const AdContentLikeActionType action_type =
+  const mojom::UserReactionType user_reaction_type =
       ClientStateManager::GetInstance().ToggleLikeAd(ad_content);
-  if (action_type == AdContentLikeActionType::kThumbsUp) {
+  if (user_reaction_type == mojom::UserReactionType::kLike) {
     NotifyDidLikeAd(ad_content);
   }
 
-  return action_type;
+  return user_reaction_type;
 }
 
-AdContentLikeActionType HistoryManager::DislikeAd(
+mojom::UserReactionType HistoryManager::DislikeAd(
     const AdContentInfo& ad_content) const {
-  const AdContentLikeActionType action_type =
+  const mojom::UserReactionType user_reaction_type =
       ClientStateManager::GetInstance().ToggleDislikeAd(ad_content);
-  if (action_type == AdContentLikeActionType::kThumbsDown) {
+  if (user_reaction_type == mojom::UserReactionType::kDislike) {
     NotifyDidDislikeAd(ad_content);
   }
 
-  return action_type;
+  return user_reaction_type;
 }
 
-CategoryContentOptActionType HistoryManager::LikeCategory(
+mojom::UserReactionType HistoryManager::LikeCategory(
     const std::string& category,
-    const CategoryContentOptActionType& action_type) const {
-  const CategoryContentOptActionType toggled_action_type =
+    const mojom::UserReactionType user_reaction_type) const {
+  const mojom::UserReactionType toggled_user_reaction_type =
       ClientStateManager::GetInstance().ToggleLikeCategory(category,
-                                                           action_type);
-  if (toggled_action_type == CategoryContentOptActionType::kOptIn) {
+                                                           user_reaction_type);
+  if (toggled_user_reaction_type == mojom::UserReactionType::kLike) {
     NotifyDidLikeCategory(category);
   }
 
-  return toggled_action_type;
+  return toggled_user_reaction_type;
 }
 
-CategoryContentOptActionType HistoryManager::DislikeCategory(
+mojom::UserReactionType HistoryManager::DislikeCategory(
     const std::string& category,
-    const CategoryContentOptActionType& action_type) const {
-  const CategoryContentOptActionType toggled_action_type =
-      ClientStateManager::GetInstance().ToggleDislikeCategory(category,
-                                                              action_type);
-  if (toggled_action_type == CategoryContentOptActionType::kOptOut) {
+    const mojom::UserReactionType user_reaction_type) const {
+  const mojom::UserReactionType toggled_user_reaction_type =
+      ClientStateManager::GetInstance().ToggleDislikeCategory(
+          category, user_reaction_type);
+  if (toggled_user_reaction_type == mojom::UserReactionType::kDislike) {
     NotifyDidDislikeCategory(category);
   }
 
-  return toggled_action_type;
+  return toggled_user_reaction_type;
 }
 
 bool HistoryManager::ToggleSaveAd(const AdContentInfo& ad_content) const {

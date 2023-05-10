@@ -17,7 +17,8 @@
   SYNC_V2_MIGRATE_INFOBAR_DELEGATE = 503,                                    \
   ANDROID_SYSTEM_SYNC_DISABLED_INFOBAR = 504, SYNC_CANNOT_RUN_INFOBAR = 505, \
   WEB_DISCOVERY_INFOBAR_DELEGATE = 506,                                      \
-  BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507,
+  BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507,                                  \
+  BRAVE_REQUEST_OTR_INFOBAR_DELEGATE,
 
 #include "src/components/infobars/core/infobar_delegate.h"  // IWYU pragma: export
 

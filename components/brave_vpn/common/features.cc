@@ -29,6 +29,9 @@ BASE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI,
 BASE_FEATURE(kBraveVPNDnsProtection,
              "BraveVPNDnsProtection",
              base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveVPNUseWireguardService,
+             "BraveVPNUseWireguardService",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 #endif
 }  // namespace features
 

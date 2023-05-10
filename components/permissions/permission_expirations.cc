@@ -286,18 +286,18 @@ PermissionExpirations::ParseExpiringPermissions(
   }
 
   expiring_permissions.reserve(expiring_permissions_val.GetList().size());
-  for (const auto& item : expiring_permissions_val.GetList()) {
-    if (!item.is_dict()) {
+  for (const auto& entry : expiring_permissions_val.GetList()) {
+    const auto* item = entry.GetIfDict();
+    if (!item) {
       continue;
     }
     const std::string* requesting_origin =
-        item.FindStringKey(kRequestingOriginKey);
-    const std::string* embedding_origin =
-        item.FindStringKey(kEmbeddingOriginKey);
+        item->FindString(kRequestingOriginKey);
+    const std::string* embedding_origin = item->FindString(kEmbeddingOriginKey);
     if (!requesting_origin) {
       continue;
     }
-    absl::optional<int> content_setting = item.FindIntKey(kContentSettingKey);
+    absl::optional<int> content_setting = item->FindInt(kContentSettingKey);
     expiring_permissions.push_back(PermissionOrigins(
         requesting_origin, embedding_origin,
         content_setting.value_or(ContentSetting::CONTENT_SETTING_ALLOW)));

@@ -11,25 +11,26 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_viewed.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 
-namespace brave_ads::promoted_content_ads {
+namespace brave_ads {
 
-std::unique_ptr<AdEventInterface<PromotedContentAdInfo>> AdEventFactory::Build(
+std::unique_ptr<AdEventInterface<PromotedContentAdInfo>>
+PromotedContentAdEventFactory::Build(
     const mojom::PromotedContentAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   switch (event_type) {
     case mojom::PromotedContentAdEventType::kServed: {
-      return std::make_unique<AdEventServed>();
+      return std::make_unique<PromotedContentAdEventServed>();
     }
 
     case mojom::PromotedContentAdEventType::kViewed: {
-      return std::make_unique<AdEventViewed>();
+      return std::make_unique<PromotedContentAdEventViewed>();
     }
 
     case mojom::PromotedContentAdEventType::kClicked: {
-      return std::make_unique<AdEventClicked>();
+      return std::make_unique<PromotedContentAdEventClicked>();
     }
   }
 }
 
-}  // namespace brave_ads::promoted_content_ads
+}  // namespace brave_ads

@@ -17,7 +17,9 @@ import {
 } from './style'
 
 // components
-import { WalletMorePopup } from '../../desktop'
+import {
+  WalletSettingsMenu
+} from '../../desktop/wallet-menus/wallet-settings-menu'
 
 export interface Props {
   onExpand: () => void
@@ -41,9 +43,8 @@ export const ConnectedHeader = (props: Props) => {
       <HeaderTitle>{getLocale('braveWalletPanelTitle')}</HeaderTitle>
       <ActionIcon onClick={onClickMore} />
       {showMore &&
-        <WalletMorePopup
+        <WalletSettingsMenu
           onClickViewOnBlockExplorer={onClickViewOnBlockExplorer}
-          isPanel={true}
         />
       }
     </HeaderWrapper>

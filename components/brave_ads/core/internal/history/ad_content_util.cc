@@ -29,8 +29,8 @@ AdContentInfo BuildAdContent(const AdInfo& ad,
   ad_content.brand_info = description;
   ad_content.brand_display_url = ad.target_url.host();
   ad_content.brand_url = ad.target_url;
-  ad_content.like_action_type =
-      ClientStateManager::GetInstance().GetAdContentLikeActionTypeForAdvertiser(
+  ad_content.user_reaction_type =
+      ClientStateManager::GetInstance().GetUserReactionTypeForAdvertiser(
           ad.advertiser_id);
   ad_content.confirmation_type = confirmation_type;
 

@@ -9,8 +9,11 @@
 
 #include "base/functional/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
@@ -20,8 +23,13 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
+#include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_channel_proxy.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/browser/extension_registry.h"
+#endif
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
     : profile_(profile), is_wallet_allowed_for_context_(false) {
@@ -99,12 +107,32 @@ void BraveRendererUpdater::UpdateAllRenderers() {
 void BraveRendererUpdater::UpdateRenderer(
     mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
         renderer_configuration) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  extensions::ExtensionRegistry* registry =
+      extensions::ExtensionRegistry::Get(profile_);
+  bool has_installed_metamask =
+      registry &&
+      registry->enabled_extensions().Contains(metamask_extension_id);
+#else
+  bool has_installed_metamask = false;
+#endif
+
+  brave_wallet::KeyringService* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(profile_);
+  bool wallet_created =
+      keyring_service &&
+      keyring_service->IsKeyringCreated(brave_wallet::mojom::kDefaultKeyringId);
+  bool should_ignore_brave_wallet_for_eth =
+      !wallet_created || has_installed_metamask;
+  bool should_ignore_brave_wallet_for_sol = !wallet_created;
+
   auto default_ethereum_wallet =
       static_cast<brave_wallet::mojom::DefaultWallet>(
           brave_wallet_ethereum_provider_.GetValue());
   bool brave_use_native_ethereum_wallet =
-      (default_ethereum_wallet ==
-           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
+      ((default_ethereum_wallet ==
+            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
+        !should_ignore_brave_wallet_for_eth) ||
        default_ethereum_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
@@ -115,8 +143,9 @@ void BraveRendererUpdater::UpdateRenderer(
   auto default_solana_wallet = static_cast<brave_wallet::mojom::DefaultWallet>(
       brave_wallet_solana_provider_.GetValue());
   bool brave_use_native_solana_wallet =
-      (default_solana_wallet ==
-           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
+      ((default_solana_wallet ==
+            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
+        !should_ignore_brave_wallet_for_sol) ||
        default_solana_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();

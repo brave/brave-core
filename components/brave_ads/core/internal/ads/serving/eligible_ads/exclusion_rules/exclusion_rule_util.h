@@ -24,22 +24,22 @@ bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
                             const ConfirmationType& confirmation_type,
                             base::TimeDelta time_constraint,
-                            int cap);
+                            size_t cap);
 bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
                                const AdEventList& ad_events,
                                const ConfirmationType& confirmation_type,
                                base::TimeDelta time_constraint,
-                               int cap);
+                               size_t cap);
 bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
                             const ConfirmationType& confirmation_type,
                             base::TimeDelta time_constraint,
-                            int cap);
+                            size_t cap);
 
 template <typename T>
 bool ShouldInclude(const T& ad,
                    const ExclusionRuleInterface<T>* const exclusion_rule) {
-  DCHECK(exclusion_rule);
+  CHECK(exclusion_rule);
 
   const auto result = exclusion_rule->ShouldInclude(ad);
   if (!result.has_value()) {

@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 
@@ -51,8 +51,9 @@ void FilBlockTracker::OnGetFilBlockHeight(const std::string& chain_id,
                                           uint64_t latest_height,
                                           mojom::FilecoinProviderError error,
                                           const std::string& error_message) {
-  if (callback)
+  if (callback) {
     std::move(callback).Run(latest_height, error, error_message);
+  }
 
   if (error != mojom::FilecoinProviderError::kSuccess) {
     VLOG(1) << __FUNCTION__ << ": Failed to get latest height, error: "
@@ -63,8 +64,9 @@ void FilBlockTracker::OnGetFilBlockHeight(const std::string& chain_id,
     return;
   }
   latest_height_map_[chain_id] = latest_height;
-  for (auto& observer : observers_)
+  for (auto& observer : observers_) {
     observer.OnLatestHeightUpdated(chain_id, latest_height);
+  }
 }
 
 void FilBlockTracker::AddObserver(FilBlockTracker::Observer* observer) {

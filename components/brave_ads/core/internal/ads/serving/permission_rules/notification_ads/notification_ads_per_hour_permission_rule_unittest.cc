@@ -5,21 +5,19 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/notification_ads/notification_ads_per_hour_permission_rule.h"
 
-#include <cstdint>
-
+#include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 class BraveAdsNotificationAdsPerHourPermissionRuleTest : public UnitTestBase {
  protected:
-  AdsPerHourPermissionRule permission_rule_;
+  const NotificationAdsPerHourPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -37,7 +35,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-  const int ads_per_hour = kDefaultAdsPerHour.Get();
+  const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
   ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
                                 ads_per_hour);
@@ -54,7 +52,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
-  const int ads_per_hour = kDefaultAdsPerHour.Get();
+  const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
   ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
                                 ads_per_hour);
@@ -70,7 +68,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int ads_per_hour = kDefaultAdsPerHour.Get();
+  const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
   ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
                                 ads_per_hour);
@@ -86,7 +84,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  const int ads_per_hour = kDefaultAdsPerHour.Get();
+  const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
   ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
                                 ads_per_hour);
@@ -104,7 +102,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
-  const int ads_per_hour = kDefaultAdsPerHour.Get();
+  const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
   ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
                                 ads_per_hour);
@@ -119,4 +117,4 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

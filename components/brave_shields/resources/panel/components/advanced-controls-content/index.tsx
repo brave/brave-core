@@ -21,7 +21,6 @@ const adBlockModeOptions = [
 
 const cookieBlockModeOptions = [
   { value: CookieBlockMode.BLOCKED, text: getLocale('braveShieldsCookiesBlockAll') },
-  { value: CookieBlockMode.FORGET_FIRST_PARTY, text: getLocale('braveShieldsForgetFirstPartyCookies') },
   { value: CookieBlockMode.CROSS_SITE_BLOCKED, text: getLocale('braveShieldsCrossCookiesBlocked') },
   { value: CookieBlockMode.ALLOW, text: getLocale('braveShieldsCookiesAllowedAll') }
 ]
@@ -103,11 +102,21 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
+  const handleForgetFirstPartyStorageEnabledChange = (isEnabled: boolean) => {
+    getPanelBrowserAPI().dataHandler.setForgetFirstPartyStorageEnabled(
+      isEnabled
+    )
+    if (getSiteSettings) getSiteSettings()
+  }
+
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
   const httpRedirectsListCount = siteBlockInfo?.httpRedirectsList.length ?? 0
   const jsListCount = siteBlockInfo?.blockedJsList.length ?? 0
   const isHttpsByDefaultEnabled = loadTimeData.getBoolean('isHttpsByDefaultEnabled')
   const isTorProfile = loadTimeData.getBoolean('isTorProfile')
+  const isForgetFirstPartyStorageEnabled = loadTimeData.getBoolean(
+    'isForgetFirstPartyStorageEnabled'
+  )
 
   return (
     <section
@@ -221,10 +230,6 @@ function AdvancedControlsContent () {
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
               {cookieBlockModeOptions.map(entry => {
-                if (entry.value === CookieBlockMode.FORGET_FIRST_PARTY &&
-                    !siteBlockInfo?.isForgetFirstPartyStorageFeatureEnabled) {
-                    return
-                }
                 return (
                   <option key={entry.value} value={entry.value}>{entry.text}</option>
                 )
@@ -232,6 +237,18 @@ function AdvancedControlsContent () {
             </Select>
             </div>
         </S.ControlGroup>
+        {isForgetFirstPartyStorageEnabled && <S.ControlGroup>
+          <label>
+            <span>{getLocale('braveShieldsForgetFirstPartyStorage')}</span>
+            <Toggle
+              onChange={handleForgetFirstPartyStorageEnabledChange}
+              isOn={siteSettings?.isForgetFirstPartyStorageEnabled}
+              size='sm'
+              accessibleLabel={getLocale('braveShieldsForgetFirstPartyStorage')}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
+            />
+          </label>
+        </S.ControlGroup>}
         <S.SettingsDesc>
           <p>*{getLocale('braveShieldSettingsDescription')}</p>
         </S.SettingsDesc>

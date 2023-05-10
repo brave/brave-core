@@ -6,7 +6,7 @@ gclient_gn_args = [
 ]
 
 vars = {
-  'brave_rust_version': '"1.67.0"',
+  'brave_rust_version': Str('1.67.1'),
   'download_prebuilt_sparkle': True,
 }
 
@@ -24,7 +24,7 @@ deps = {
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
-  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@6fe7beb9c534437a4afa28507424fea310979806",
+  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@e5f7828f8f0d849d3c55245107bdd241ddd900e9",
   "third_party/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@95ea54ba089610019a74c1176a2c7c0dba144b1c",
@@ -70,40 +70,21 @@ hooks = [
   {
     'name': 'download_rust_deps',
     'pattern': '.',
-    'condition': 'checkout_android',
     'action': [
-      'vpython3', 'script/download_rust_deps.py', Var('brave_rust_version'), 'android'
+      'vpython3', 'script/download_rust_deps.py',
+      '--rust_version={brave_rust_version}',
+      '--checkout_android={checkout_android}',
+      '--checkout_ios={checkout_ios}',
+      '--checkout_linux={checkout_linux}',
+      '--checkout_mac={checkout_mac}',
+      '--checkout_win={checkout_win}',
     ]
-  },
-  {
-    'name': 'download_rust_deps',
-    'pattern': '.',
-    'condition': 'checkout_mac or checkout_ios',
-    'action': [
-      'vpython3', 'script/download_rust_deps.py', Var('brave_rust_version'), 'ios'
-    ]
-  },
-  {
-    'name': 'download_rust_deps',
-    'pattern': '.',
-    'condition': 'checkout_win',
-    'action': [
-      'vpython3', 'script/download_rust_deps.py', Var('brave_rust_version'), 'win32'
-    ]
-  },
-  {
-    'name': 'download_rust_deps',
-    'pattern': '.',
-    'condition': 'checkout_linux',
-    'action': [
-      'vpython3', 'script/download_rust_deps.py', Var('brave_rust_version'), 'linux'
-    ],
   },
   {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS
     'name': 'web_discovery_project_npm_deps',
     'pattern': '.',
-    'condition': 'not checkout_android and not checkout_ios',
+    'condition': 'checkout_linux or checkout_mac or checkout_win',
     'action': ['vpython3', 'script/web_discovery_project.py', '--install'],
   },
   {

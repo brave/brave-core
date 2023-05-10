@@ -78,6 +78,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -831,7 +832,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask = new BraveShieldsUtils.BraveShieldsWorkerTask(mTitle);
+                // Profile.getLastUsedRegularProfile requires to run in UI thread,
+                // so get api key here and pass it to IO worker task
+                String referralApiKey =
+                        NTPBackgroundImagesBridge.getInstance(mProfile).getReferralApiKey();
+                BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
+                        new BraveShieldsUtils.BraveShieldsWorkerTask(mTitle, referralApiKey);
                 mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 mReportBrokenSiteLayout.setVisibility(View.GONE);
                 mThankYouLayout.setVisibility(View.VISIBLE);

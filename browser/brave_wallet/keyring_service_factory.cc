@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 
@@ -25,8 +25,9 @@ KeyringServiceFactory* KeyringServiceFactory::GetInstance() {
 // static
 mojo::PendingRemote<mojom::KeyringService> KeyringServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  if (!IsAllowedForContext(context))
+  if (!IsAllowedForContext(context)) {
     return mojo::PendingRemote<mojom::KeyringService>();
+  }
 
   return static_cast<KeyringService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))

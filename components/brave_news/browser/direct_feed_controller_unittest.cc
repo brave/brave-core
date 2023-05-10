@@ -368,7 +368,8 @@ TEST(BraveNewsDirectFeed, EmptyTitleFallsBackToFeedSource) {
   const auto& dict = prefs.GetDict(prefs::kBraveNewsDirectFeeds);
   ASSERT_EQ(1u, dict.size());
   for (const auto&& [key, value] : dict) {
-    auto* title = value.FindStringKey(prefs::kBraveNewsDirectFeedsKeyTitle);
+    auto* title =
+        value.GetDict().FindString(prefs::kBraveNewsDirectFeedsKeyTitle);
     EXPECT_EQ(kFeedSource, *title);
   }
 }

@@ -8,37 +8,37 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 
 struct PromotedContentAdInfo;
 
-namespace promoted_content_ads {
-
-class EventHandlerDelegate {
+class PromotedContentAdEventHandlerDelegate {
  public:
   // Invoked when the promoted content |ad| is served.
-  virtual void OnPromotedContentAdServed(const PromotedContentAdInfo& ad) {}
+  virtual void OnDidFirePromotedContentAdServedEvent(
+      const PromotedContentAdInfo& ad) {}
 
   // Invoked when the promoted content |ad| is viewed.
-  virtual void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) {}
+  virtual void OnDidFirePromotedContentAdViewedEvent(
+      const PromotedContentAdInfo& ad) {}
 
   // Invoked when the promoted content |ad| is clicked.
-  virtual void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) {}
+  virtual void OnDidFirePromotedContentAdClickedEvent(
+      const PromotedContentAdInfo& ad) {}
 
   // Invoked when the promoted content |ad| event fails for |placement_id|,
   // |creative_instance_id| and |event_type|.
-  virtual void OnPromotedContentAdEventFailed(
+  virtual void OnFailedToFirePromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) {}
 
  protected:
-  virtual ~EventHandlerDelegate() = default;
+  virtual ~PromotedContentAdEventHandlerDelegate() = default;
 };
 
-}  // namespace promoted_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_HANDLER_DELEGATE_H_

@@ -17,7 +17,7 @@ class BraveAdsHashedNGramsTransformationTest : public UnitTestBase {};
 
 TEST_F(BraveAdsHashedNGramsTransformationTest, HashingTest) {
   // Arrange
-  constexpr int kDefaultBucketCount = 10'000;
+  constexpr size_t kDefaultBucketCount = 10'000;
   constexpr char kTestString[] = "tiny";
   const std::unique_ptr<Data> text_data =
       std::make_unique<TextData>(kTestString);
@@ -42,7 +42,7 @@ TEST_F(BraveAdsHashedNGramsTransformationTest, HashingTest) {
 
 TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
   // Arrange
-  constexpr int kHashBucketCount = 3;
+  constexpr size_t kHashBucketCount = 3;
   constexpr char kTestString[] = "tiny";
   const std::unique_ptr<Data> text_data =
       std::make_unique<TextData>(kTestString);
@@ -60,8 +60,7 @@ TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
 
   // Assert
   ASSERT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
-  EXPECT_EQ(kHashBucketCount,
-            static_cast<int>(hashed_vector_data->GetData().size()));
+  EXPECT_EQ(kHashBucketCount, hashed_vector_data->GetData().size());
 }
 
 }  // namespace brave_ads::ml

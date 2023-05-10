@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 
@@ -74,8 +74,9 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     std::tie(tx_type, tx_params, tx_args) = *tx_info;
   }
   absl::optional<std::string> signed_transaction;
-  if (tx_->IsSigned())
+  if (tx_->IsSigned()) {
     signed_transaction = tx_->GetSignedTransaction();
+  }
 
   return mojom::TransactionInfo::New(
       id_, from_, tx_hash_,

@@ -13,24 +13,17 @@
 namespace brave_ads::privacy::p2a {
 
 namespace {
-
 constexpr char kQuestionsAsJson[] = R"(["question_1","question_2"])";
-constexpr char kNoQuestionsAsJson[] = "[]";
-
 }  // namespace
 
 TEST(BraveAdsP2AValueUtilTest, QuestionsToValue) {
   // Arrange
 
   // Act
-  const base::Value::List list = QuestionsToValue({"question_1", "question_2"});
 
   // Assert
-  const base::Value value = base::test::ParseJson(kQuestionsAsJson);
-  const base::Value::List* const expected_list = value.GetIfList();
-  ASSERT_TRUE(expected_list);
-
-  EXPECT_EQ(*expected_list, list);
+  EXPECT_EQ(base::test::ParseJsonList(kQuestionsAsJson),
+            QuestionsToValue({"question_1", "question_2"}));
 }
 
 TEST(BraveAdsP2AValueUtilTest, NoQuestionsToValue) {
@@ -40,11 +33,7 @@ TEST(BraveAdsP2AValueUtilTest, NoQuestionsToValue) {
   const base::Value::List list = QuestionsToValue({});
 
   // Assert
-  const base::Value value = base::test::ParseJson(kNoQuestionsAsJson);
-  const base::Value::List* const expected_list = value.GetIfList();
-  ASSERT_TRUE(expected_list);
-
-  EXPECT_EQ(*expected_list, list);
+  EXPECT_TRUE(list.empty());
 }
 
 }  // namespace brave_ads::privacy::p2a

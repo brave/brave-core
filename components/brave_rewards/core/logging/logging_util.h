@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 bool ShouldLogHeader(const std::string& header);
 
@@ -30,6 +30,6 @@ void LogUrlResponse(const char* func,
                     const mojom::UrlResponse& response,
                     const bool long_response = false);
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LOGGING_LOGGING_UTIL_H_

@@ -6,7 +6,6 @@
   <message name="IDS_WALLET_USER_REJECTED_REQUEST" desc="The text of the response for brave provider call if the user rejected the request">The user rejected the request.</message>
   <message name="IDS_WALLET_INVALID_PARAMETERS" desc="The call was made with invalid parameters">Invalid parameters.</message>
   <message name="IDS_WALLET_UNKNOWN_CHAIN" desc="The text of the response for wallet_switchEthereumChain call with unknown">Chain <ph name="VALUE">$1<ex>1</ex></ph> hasn't been added</message>
-  <message name="IDS_WALLET_EXPECTED_SINGLE_PARAMETER" desc="The text of the response for wallet_addEthereumChain call with empty parameters">Expected single, object parameter.</message>
   <message name="IDS_WALLET_CHAIN_EXISTS" desc="The text of the response for wallet_addEthereumChain call with existing chain id">This Chain ID is currently used</message>
   <message name="IDS_WALLET_INTERNAL_ERROR" desc="The text of the response for wallet_addEthereumChain call with internal error">An internal error has occurred</message>
   <message name="IDS_WALLET_INVALID_BLOCKHASH_ERROR" desc="The text of the response for Solana signTransaction and signAllTransactions with invalid blockhash or can not be validated due to network or RPC error">Blockhash is invalid or can not be validated</message>
@@ -17,7 +16,6 @@
   <message name="IDS_WALLET_INVALID_MNEMONIC_ERROR" desc="The text for invalid mnemonic being imported error">The mnemonic being imported is not valid for Brave Wallet</message>
   <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_(add|switch)EthereumChain call for existing request">A request is already in progress</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA" desc="The text of the response for eth_sendTransaction">Transaction data is missing</message>
-  <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED" desc="The text of the response for eth_sendTransaction">'from' is not authorized to send transactions</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_TO_OR_DATA" desc="Transaction data is not validated">Transaction data 'to' or 'data' must be specified</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NONCE_INVALID" desc="Transaction data is not validated">Transaction data 'nonce' is not valid</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICE_INVALID" desc="Transaction data is not validated">Transaction data 'gasPrice' is not valid</message>
@@ -34,7 +32,6 @@
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_FEES_FAILED" desc="Failed to get gas fees">Failed to get the gas fees for EIP-1559 transaction</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_USER_REJECTED" desc="The text of the response for eth_sendTransaction">User rejected the transaction</message>
   <message name="IDS_WALLET_SEND_TRANSACTION_ERROR" desc="The text of the response for eth_sendTransaction or Solana sendTransaction">Error processing the transaction</message>
-  <message name="IDS_WALLET_ETH_SIGN_NOT_AUTHED" desc="The text of the response for eth_sign">'<ph name="VALUE">$1<ex>1</ex></ph>' is not authorized to sign message</message>
   <message name="IDS_WALLET_SIGN_TRANSACTION_ERROR" desc="Failed to sign transaction">Failed to sign transaction</message>
   <message name="IDS_WALLET_ETH_INVALID_CHAIN_ID_RPC" desc="Invalid Chain ID response">Invalid chain ID response from RPC service</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY" desc="Transaction data is not validated">Transaction data 'from' must be specified</message>
@@ -66,13 +63,20 @@
   <message name="IDS_BRAVE_WALLET_TOP_NAV_N_F_T_S" desc="NFTs top nav button">NFTs</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_ACCOUNTS" desc="Accounts top nav button">Accounts</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_MARKET" desc="Accounts top nav button">Market</message>
-  <message name="IDS_BRAVE_WALLET_CHART_LIVE" desc="Chart control bar 1H button">1H</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ONE_DAY" desc="Chart control bar 1D button">1D</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ONE_WEEK" desc="Chart control bar 1W button">1W</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ONE_MONTH" desc="Chart control bar 1M button">1M</message>
-  <message name="IDS_BRAVE_WALLET_CHART_THREE_MONTHS" desc="Chart control bar 3M button">3M</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ONE_YEAR" desc="Chart control bar 1Y button">1Y</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ALL_TIME" desc="Chart control bar All button">All</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_HOUR" desc="Chart control 1 Hour">1 Hour</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_DAY" desc="Chart control 1 Day">1 Day</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_WEEK" desc="Chart control 1 Week">1 Week</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_MONTH" desc="Chart control 1 Month">1 Month</message>
+  <message name="IDS_BRAVE_WALLET_CHART_THREE_MONTHS" desc="Chart control 3 Months">3 Months</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_YEAR" desc="Chart control 1 Year">1 Year</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ALL_TIME" desc="Chart control All time">All time</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_HOUR_ABBR" desc="Chart control 1 Hour abbreviated">1H</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_DAY_ABBR" desc="Chart control 1 Day abbreviated">1D</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_WEEK_ABBR" desc="Chart control 1 Week abbreviated">1W</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_MONTH_ABBR" desc="Chart control 1 Month abbreviated">1M</message>
+  <message name="IDS_BRAVE_WALLET_CHART_THREE_MONTHS_ABBR" desc="Chart control 3 Months abbreviated">3M</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_YEAR_ABBR" desc="Chart control 1 Year abbreviated">1Y</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ALL_TIME_ABBR" desc="Chart control All time abbreviated">All</message>
   <message name="IDS_BRAVE_WALLET_ADD_COIN" desc="Portfolio Add Coin button">Add Coin</message>
   <message name="IDS_BRAVE_WALLET_BALANCE" desc="Portfolio Balance title">Balance</message>
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION" desc="Portfolio Asset Item Network Description"><ph name="SYMBOL"><ex>BAT</ex>$1</ph> on <ph name="NETWORK"><ex>Ethereum Mainnet</ex>$2</ph></message>
@@ -172,7 +176,6 @@
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_CONNECTED_SITES" desc="Wallet popup connected sites button">Connected sites</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_HIDE_BALANCES" desc="Wallet popup hide balances checkbox">Hide balances</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SHOW_GRAPH" desc="Wallet popup show graph checkbox">Show graph</message>
-  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_PORTFOLIO_CUSTOMIZATIONS" desc="Wallet popup portfolio customizations sections">Portfolio customizations</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT" desc="Backup warning banner description">Back up your wallet now to protect your assets and ensure you never lose access.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_BUTTON" desc="Backup warning banner back up button">Back up now</message>
   <message name="IDS_BRAVE_WALLET_DISMISS_BUTTON" desc="Backup warning banner dismiss button">Dismiss</message>
@@ -858,23 +861,21 @@
 
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_WHY_NOT_AVAILABLE" desc="Inspect NFTs subheading">Why not available?</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_TOOLTIP" desc="Inspect NFTs page tooltip text">Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING" desc="Inspect NFTs page tooltip text">But IPFS needs individual participants to function. Run IPFS on your computer to:</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_ONE" desc="Nft Pinning 1st benefit">Contribute to the network's speed and availability</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO" desc="Nft Pinning 2nd benefit">Increase the security of your NFTs</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING" desc="Benefit description">By enabling IPFS in Brave, your NFTs will be pinned automatically. It's the best way to securely back up your NFTs.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON" desc="Pin Nfts button text">Get started with IPFS</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BACK_BUTTON" desc="Back button text">Back</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_CLOSE_BUTTON" desc="Close button text">Close</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_HEADING" desc="Local IPFS node page heading">The safest way to host NFTs</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_HEADING" desc="Local IPFS page run node heading">Run an IPFS node to keep your NFTs online forever</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_DESCRIPTION" desc="Local IPFS page run node description">IPFS is a super-secure alternative to traditional Web hosting. Instead of relying on a single host, IPFS enables thousands of individuals (who run “nodes”) to work together to store content. And as long as one person has a copy, a file can never disappear. “Pinning” your NFTs to IPFS—and running your own IPFS node—is the best way to secure your NFTs.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_HEADING" desc="Local IPFS page run node heading">Enable IPFS in Brave to automatically back up your NFTs</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_DESCRIPTION" desc="Local IPFS page run node description">IPFS is a community-driven storage network, like a hard drive that everyone can use. But instead of being controlled by one authority, thousands of individuals work together to host content on IPFS. When you “pin” something to IPFS, you’re ensuring that at least one copy of that content is safely stored. And as long as one person has a copy, a file can never disappear.<ph name="NEWLINE">$1</ph>By enabling IPFS in Brave, your NFTs will be pinned automatically. It's the best way to securely back up your NFTs.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_CHECK_NFTS_BUTTON" desc="Check pinnable NFTs button text">See which of my NFTs are eligible</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_START" desc="NFT IPFS banner initial text">Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_START" desc="NFT IPFS banner initial text">Enable IPFS in Brave to automatically back up your NFTs for extra security.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_UPLOADING" desc="NFT IPFS banner uploading text">NFTs are being pinned to your local IPFS node.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_SUCCESS" desc="NFT IPFS banner success text"><ph name="PINNED">$1<ex>1</ex></ph> supported NFTs are pinned to your local IPFS node.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_LEARN_MORE" desc="NFT IPFS banner learn more text">Learn more</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING" desc="Inspect page heading"><ph name="PINNABLE">$1<ex>1</ex></ph> out of <ph name="TOTAL">$2<ex>3</ex></ph> are available!</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_UNABLE_TO_PIN" desc="Inspect page unable to pin text">Unable to pin</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_NODE_RUNNING_STATUS" desc="Local IPFS node running status text">You're running IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_NODE_RUNNING_STATUS" desc="Local IPFS node running status text">You're running an IPFS node</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_NODE_NOT_RUNNING_STATUS" desc="Local IPFS node not running status text">Local IPFS node is not running</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNED" desc="IPFS pinning status description when an NFT is pinned">Pinned to your local IPFS node</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING" desc="IPFS pinning status description when pinning is in progress">NFT data is being pinned to your local IPFS node</message>

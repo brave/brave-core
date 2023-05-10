@@ -38,15 +38,12 @@ class BraveAdsUnblindedTokenValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsUnblindedTokenValueUtilTest, ToValue) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(2);
 
   // Act
-  const base::Value::List value = UnblindedTokensToValue(unblinded_tokens);
 
   // Assert
-  const base::Value expected_value = base::test::ParseJson(kJson);
-
-  EXPECT_EQ(expected_value, value);
+  EXPECT_EQ(base::test::ParseJsonList(kJson),
+            UnblindedTokensToValue(BuildUnblindedTokens(/*count*/ 2)));
 }
 
 TEST_F(BraveAdsUnblindedTokenValueUtilTest, ToEmptyValue) {
@@ -54,36 +51,28 @@ TEST_F(BraveAdsUnblindedTokenValueUtilTest, ToEmptyValue) {
   const UnblindedTokenList unblinded_tokens;
 
   // Act
-  const base::Value::List value = UnblindedTokensToValue(unblinded_tokens);
+  const base::Value::List list = UnblindedTokensToValue(unblinded_tokens);
 
   // Assert
-  const base::Value expected_value = base::test::ParseJson(kEmptyJson);
-
-  EXPECT_EQ(expected_value, value);
+  EXPECT_TRUE(list.empty());
 }
 
 TEST_F(BraveAdsUnblindedTokenValueUtilTest, FromValue) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::List* const list = value.GetIfList();
-  ASSERT_TRUE(list);
+  const base::Value::List list = base::test::ParseJsonList(kJson);
 
   // Act
-  const UnblindedTokenList unblinded_tokens = UnblindedTokensFromValue(*list);
 
   // Assert
-  const UnblindedTokenList expected_unblinded_tokens = GetUnblindedTokens(2);
-  EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
+  EXPECT_EQ(BuildUnblindedTokens(/*count*/ 2), UnblindedTokensFromValue(list));
 }
 
 TEST_F(BraveAdsUnblindedTokenValueUtilTest, FromEmptyValue) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kEmptyJson);
-  const base::Value::List* const list = value.GetIfList();
-  ASSERT_TRUE(list);
+  const base::Value::List list = base::test::ParseJsonList(kEmptyJson);
 
   // Act
-  const UnblindedTokenList unblinded_tokens = UnblindedTokensFromValue(*list);
+  const UnblindedTokenList unblinded_tokens = UnblindedTokensFromValue(list);
 
   // Assert
   EXPECT_TRUE(unblinded_tokens.empty());

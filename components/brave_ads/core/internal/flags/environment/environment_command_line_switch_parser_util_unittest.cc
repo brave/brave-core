@@ -6,7 +6,7 @@
 #include <string>
 
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
@@ -25,7 +25,7 @@ constexpr char kRewardsSwitch[] = "rewards";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   mojom::EnvironmentType expected_environment_type;
-} const kTestCases[] = {
+} const kTests[] = {
     {{kRewardsSwitch, "staging=true"}, mojom::EnvironmentType::kStaging},
     {{kRewardsSwitch, "staging=1"}, mojom::EnvironmentType::kStaging},
     {{kRewardsSwitch, "staging=false"}, mojom::EnvironmentType::kProduction},
@@ -69,7 +69,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
-                         testing::ValuesIn(kTestCases),
+                         testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

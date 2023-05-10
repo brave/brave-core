@@ -135,9 +135,10 @@
   return brave_shields::AdBlockServiceDomainResolver;
 }
 
-+ (NSString*)contentBlockerRulesFromFilterSet:(NSString*)filterSet {
++ (NSString*)contentBlockerRulesFromFilterSet:(NSString*)filterSet
+                                    truncated:(bool*)truncated {
   return base::SysUTF8ToNSString(adblock::ConvertRulesToContentBlockingRules(
-      base::SysNSStringToUTF8(filterSet)));
+      base::SysNSStringToUTF8(filterSet), truncated));
 }
 
 @end

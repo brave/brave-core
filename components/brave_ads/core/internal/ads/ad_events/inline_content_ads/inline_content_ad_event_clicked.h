@@ -12,14 +12,12 @@ namespace brave_ads {
 
 struct InlineContentAdInfo;
 
-namespace inline_content_ads {
-
-class AdEventClicked final : public AdEventInterface<InlineContentAdInfo> {
+class InlineContentAdEventClicked final
+    : public AdEventInterface<InlineContentAdInfo> {
  public:
   void FireEvent(const InlineContentAdInfo& ad) override;
 };
 
-}  // namespace inline_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_CLICKED_H_

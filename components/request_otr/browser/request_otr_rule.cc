@@ -1,0 +1,121 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/request_otr/browser/request_otr_rule.h"
+
+#include <memory>
+#include <utility>
+#include <vector>
+
+#include "base/json/json_reader.h"
+#include "base/types/expected.h"
+#include "components/prefs/pref_service.h"
+#include "extensions/common/url_pattern.h"
+#include "net/base/url_util.h"
+#include "url/gurl.h"
+#include "url/origin.h"
+#include "url/url_constants.h"
+
+namespace {
+
+// request-otr.json keys
+const char kInclude[] = "include";
+const char kExclude[] = "exclude";
+
+}  // namespace
+
+namespace request_otr {
+
+RequestOTRRule::RequestOTRRule() {}
+
+RequestOTRRule::~RequestOTRRule() = default;
+
+// static
+bool RequestOTRRule::GetURLPatternSetFromValue(
+    const base::Value* value,
+    extensions::URLPatternSet* result) {
+  if (!value->is_list()) {
+    return false;
+  }
+  std::string error;
+  bool valid = result->Populate(
+      value->GetList(), URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
+      false, &error);
+  if (!valid) {
+    DVLOG(1) << error;
+  }
+  return valid;
+}
+
+// static
+void RequestOTRRule::RegisterJSONConverter(
+    base::JSONValueConverter<RequestOTRRule>* converter) {
+  converter->RegisterCustomValueField<extensions::URLPatternSet>(
+      kInclude, &RequestOTRRule::include_pattern_set_,
+      GetURLPatternSetFromValue);
+  converter->RegisterCustomValueField<extensions::URLPatternSet>(
+      kExclude, &RequestOTRRule::exclude_pattern_set_,
+      GetURLPatternSetFromValue);
+}
+
+// static
+const std::string RequestOTRRule::GetETLDForRequestOTR(
+    const std::string& host) {
+  return net::registry_controlled_domains::GetDomainAndRegistry(
+      host, net::registry_controlled_domains::PrivateRegistryFilter::
+                EXCLUDE_PRIVATE_REGISTRIES);
+}
+
+// static
+base::expected<std::pair<std::vector<std::unique_ptr<RequestOTRRule>>,
+                         base::flat_set<std::string>>,
+               std::string>
+RequestOTRRule::ParseRules(const std::string& contents) {
+  if (contents.empty()) {
+    return base::unexpected("Could not obtain request_otr configuration");
+  }
+  absl::optional<base::Value> root = base::JSONReader::Read(contents);
+  if (!root) {
+    return base::unexpected("Failed to parse request_otr configuration");
+  }
+  std::vector<std::string> hosts;
+  std::vector<std::unique_ptr<RequestOTRRule>> rules;
+  base::JSONValueConverter<RequestOTRRule> converter;
+  for (base::Value& it : root->GetList()) {
+    std::unique_ptr<RequestOTRRule> rule = std::make_unique<RequestOTRRule>();
+    if (!converter.Convert(it, rule.get())) {
+      continue;
+    }
+    for (const URLPattern& pattern : rule->include_pattern_set()) {
+      if (!pattern.host().empty()) {
+        const std::string etldp1 =
+            RequestOTRRule::GetETLDForRequestOTR(pattern.host());
+        if (!etldp1.empty()) {
+          hosts.push_back(std::move(etldp1));
+        }
+      }
+    }
+    rules.push_back(std::move(rule));
+  }
+  return std::pair<std::vector<std::unique_ptr<RequestOTRRule>>,
+                   base::flat_set<std::string>>(std::move(rules), hosts);
+}
+
+bool RequestOTRRule::ShouldBlock(const GURL& url) const {
+  // If URL matches an explicitly excluded pattern, this rule does not
+  // apply.
+  if (exclude_pattern_set_.MatchesURL(url)) {
+    return false;
+  }
+  // If URL does not match an explicitly included pattern, this rule does not
+  // apply.
+  if (!include_pattern_set_.MatchesURL(url)) {
+    return false;
+  }
+
+  return true;
+}
+
+}  // namespace request_otr

@@ -98,8 +98,9 @@ void NonBlockingDelay(const base::TimeDelta& delay) {
 
 bool WaitFor(content::WebContents* web_contents, const std::string& selector) {
   for (int i = 0; i < 1000; ++i) {
-    if (EvalJs(web_contents, "!!(" + selector + ")").ExtractBool())
+    if (EvalJs(web_contents, "!!(" + selector + ")").ExtractBool()) {
       return true;
+    }
     NonBlockingDelay(base::Milliseconds(10));
   }
   return false;
@@ -107,8 +108,9 @@ bool WaitFor(content::WebContents* web_contents, const std::string& selector) {
 
 bool WaitAndClickElement(content::WebContents* web_contents,
                          const std::string& selector) {
-  if (!WaitFor(web_contents, selector))
+  if (!WaitFor(web_contents, selector)) {
     return false;
+  }
 
   return EvalJs(web_contents, selector + ".click()").value.is_none();
 }
@@ -193,8 +195,9 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
           if (request_string.find("eth_chainId") != std::string::npos) {
             const std::string response = base::StringPrintf(
                 R"({"jsonrpc":"2.0","id":1,"result":"%s"})", chain_id.c_str());
-            for (auto& url : network_urls)
+            for (auto& url : network_urls) {
               url_loader_factory_.AddResponse(url.spec(), response);
+            }
           }
         }));
   }

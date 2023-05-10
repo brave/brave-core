@@ -10,8 +10,6 @@
 #include <string>
 
 #include "components/content_settings/core/common/content_settings_pattern.h"
-#include "components/content_settings/core/common/content_settings_types.h"
-#include "services/network/public/mojom/referrer_policy.mojom.h"
 
 namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
@@ -35,7 +33,6 @@ enum ControlType {
   ALLOW = 0,
   BLOCK,
   BLOCK_THIRD_PARTY,
-  FORGET_FIRST_PARTY,
   DEFAULT,
 };
 
@@ -141,6 +138,13 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
                             PrefService* local_state = nullptr);
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url);
+
+void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
+                                       bool is_enabled,
+                                       const GURL& url,
+                                       PrefService* local_state = nullptr);
+bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
+                                       const GURL& url);
 
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 

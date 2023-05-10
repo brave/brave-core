@@ -1278,7 +1278,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         settingsLauncher.launchSettingsActivity(this, BravePlaylistPreferences.class);
     }
 
-    private void openBraveNewsSettings() {
+    public void openBraveNewsSettings() {
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)) {
             settingsLauncher.launchSettingsActivity(this, BraveNewsPreferencesV2.class);
@@ -1635,7 +1635,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                     .setMessage(getString(
                                             R.string.brave_wallet_create_account_description,
                                             networkInfo.symbolName))
-                                    .setPositiveButton(R.string.wallet_action_yes,
+                                    .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
                                                 mWalletModel.getCryptoModel()
                                                         .getNetworkModel()
@@ -1663,7 +1663,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                                         });
                                             })
                                     .setNegativeButton(
-                                            R.string.wallet_action_no, (dialog, which) -> {
+                                            R.string.brave_action_no, (dialog, which) -> {
                                                 mWalletModel.getCryptoModel()
                                                         .getNetworkModel()
                                                         .clearCreateAccountState();

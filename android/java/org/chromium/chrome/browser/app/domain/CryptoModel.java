@@ -338,6 +338,15 @@ public class CryptoModel {
         mNetworkModel.setAccountInfosFromKeyRingModel(accountInfosFromKeyRingModel);
     }
 
+    public void updateNftDiscovery(boolean isEnabled) {
+        mBraveWalletService.setNftDiscoveryEnabled(isEnabled);
+    }
+
+    public void isNftDiscoveryEnabled(Callback1<Boolean> callback) {
+        mBraveWalletService.getNftDiscoveryEnabled(
+                isNftDiscoveryEnabled -> { callback.call(isNftDiscoveryEnabled); });
+    }
+
     // Clear buy send swap model
     public void clearBSS() {
         mSendModel = null;

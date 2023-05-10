@@ -13,13 +13,15 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-using ledger::endpoints::PostCommitTransactionGemini;
-using ledger::endpoints::RequestFor;
+namespace brave_rewards::internal {
 
-namespace ledger::gemini {
+using endpoints::PostCommitTransactionGemini;
+using endpoints::RequestFor;
+
+namespace gemini {
 
 void GeminiTransfer::CommitTransaction(
-    ledger::ResultCallback callback,
+    ResultCallback callback,
     mojom::ExternalTransactionPtr transaction) const {
   if (!transaction) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
@@ -44,7 +46,7 @@ void GeminiTransfer::CommitTransaction(
 }
 
 void GeminiTransfer::OnCommitTransaction(
-    ledger::ResultCallback callback,
+    ResultCallback callback,
     endpoints::PostCommitTransactionGemini::Result&& result) const {
   if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected})) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
@@ -54,7 +56,7 @@ void GeminiTransfer::OnCommitTransaction(
     switch (result.error()) {
       case PostCommitTransactionGemini::Error::kTransactionPending:
         return std::move(callback).Run(
-            mojom::Result::RETRY_PENDING_TRANSACTION);
+            mojom::Result::RETRY_PENDING_TRANSACTION_LONG);
       case PostCommitTransactionGemini::Error::kAccessTokenExpired:
         if (!ledger_->gemini()->LogOutWallet()) {
           BLOG(0, "Failed to disconnect " << constant::kWalletGemini
@@ -69,4 +71,6 @@ void GeminiTransfer::OnCommitTransaction(
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace ledger::gemini
+}  // namespace gemini
+
+}  // namespace brave_rewards::internal

@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.TransactionType;
+import org.chromium.chrome.browser.crypto_wallet.fragments.NftGridFragment;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,6 +38,10 @@ public final class WalletConstants {
     public static final String URL_SIGN_TRANSACTION_REQUEST =
             "https://support.brave.com/hc/en-us/articles/4409513799693";
 
+    // NFT Auto Discovery
+    public static final String NFT_DISCOVERY_LEARN_MORE_LINK =
+            "https://github.com/brave/brave-browser/wiki/NFT-Discovery";
+
     // Regex
     public static final String REGX_ANY_ETH_ADDRESS = ".*(0x[a-fA-F0-9]{40}).*";
 
@@ -65,7 +70,8 @@ public final class WalletConstants {
     public static final String PREF_SHOW_BRIDGE_INFO_DIALOG = "pref_show_bridge_info_dialog";
 
     // To clear prefs while resetting wallet
-    public static final String[] BRAVE_WALLET_PREFS = {PREF_SHOW_BRIDGE_INFO_DIALOG};
+    public static final String[] BRAVE_WALLET_PREFS = {
+            PREF_SHOW_BRIDGE_INFO_DIALOG, NftGridFragment.SHOW_NFT_DISCOVERY_DIALOG};
 
     public static List<String> SUPPORTED_TOP_LEVEL_CHAIN_IDS = Arrays.asList(
             BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.SOLANA_MAINNET);

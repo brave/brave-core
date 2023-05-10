@@ -13,7 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 namespace {
@@ -30,7 +30,7 @@ DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
 void DatabaseMediaPublisherInfo::InsertOrUpdate(
     const std::string& media_key,
     const std::string& publisher_key,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (media_key.empty() || publisher_key.empty()) {
     BLOG(1, "Data is empty " << media_key << "/" << publisher_key);
     callback(mojom::Result::LEDGER_ERROR);
@@ -57,9 +57,8 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseMediaPublisherInfo::GetRecord(
-    const std::string& media_key,
-    ledger::PublisherInfoCallback callback) {
+void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
+                                           PublisherInfoCallback callback) {
   if (media_key.empty()) {
     BLOG(1, "Media key is empty");
     return callback(mojom::Result::LEDGER_ERROR, {});
@@ -102,7 +101,7 @@ void DatabaseMediaPublisherInfo::GetRecord(
 
 void DatabaseMediaPublisherInfo::OnGetRecord(
     mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoCallback callback) {
+    PublisherInfoCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(1, "Response is wrong");
@@ -134,4 +133,4 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

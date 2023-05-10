@@ -15,51 +15,42 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
+class AntiTargetingResource;
 class SubdivisionTargeting;
+struct UserModelInfo;
 
-namespace notification_ads {
-
-class EligibleAdsV2 final : public EligibleAdsBase {
+class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
  public:
-  EligibleAdsV2(const SubdivisionTargeting& subdivision_targeting,
-                const resource::AntiTargeting& anti_targeting_resource);
-  ~EligibleAdsV2() override;
+  EligibleNotificationAdsV2(
+      const SubdivisionTargeting& subdivision_targeting,
+      const AntiTargetingResource& anti_targeting_resource);
+  ~EligibleNotificationAdsV2() override;
 
   void GetForUserModel(
-      targeting::UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback) override;
+      UserModelInfo user_model,
+      EligibleAdsCallback<CreativeNotificationAdList> callback) override;
 
  private:
-  void OnGetForUserModel(
-      targeting::UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+  void GetForUserModelCallback(
+      UserModelInfo user_model,
+      EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const AdEventList& ad_events);
 
   void GetBrowsingHistory(
-      targeting::UserModelInfo user_model,
+      UserModelInfo user_model,
       const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback);
+      EligibleAdsCallback<CreativeNotificationAdList> callback);
 
-  void GetEligibleAds(
-      targeting::UserModelInfo user_model,
-      const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
-      const BrowsingHistoryList& browsing_history);
-
-  void OnGetEligibleAds(
-      const targeting::UserModelInfo& user_model,
+  void GetEligibleAds(UserModelInfo user_model,
+                      const AdEventList& ad_events,
+                      EligibleAdsCallback<CreativeNotificationAdList> callback,
+                      const BrowsingHistoryList& browsing_history);
+  void GetEligibleAdsCallback(
+      const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNotificationAdList& creative_ads);
@@ -69,10 +60,9 @@ class EligibleAdsV2 final : public EligibleAdsBase {
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history);
 
-  base::WeakPtrFactory<EligibleAdsV2> weak_factory_{this};
+  base::WeakPtrFactory<EligibleNotificationAdsV2> weak_factory_{this};
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NOTIFICATION_ADS_ELIGIBLE_NOTIFICATION_ADS_V2_H_

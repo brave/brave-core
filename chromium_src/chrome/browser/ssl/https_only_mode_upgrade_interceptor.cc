@@ -7,22 +7,8 @@
 
 #include "net/base/url_util.h"
 
-namespace net {
-namespace {
-
-bool IsOnion(const GURL& url) {
-  return IsSubdomainOf(url.host(), "onion");
-}
-
-bool IsLocalhostOrOnion(const GURL& url) {
-  return IsLocalhost(url) || IsOnion(url);
-}
-
-}  // namespace
-}  // namespace net
-
 #define IsLocalhost(URL) IsLocalhostOrOnion(URL)
 
 #include "src/chrome/browser/ssl/https_only_mode_upgrade_interceptor.cc"
 
-#undef IsLocalHost
+#undef IsLocalhost

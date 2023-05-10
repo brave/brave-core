@@ -11,7 +11,7 @@
 
 #include "base/check_op.h"
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
@@ -64,20 +64,21 @@ class CreativePromotedContentAds final : public TableInterface {
   void GetAll(GetCreativePromotedContentAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
-    DCHECK_GT(batch_size, 0);
+    CHECK_GT(batch_size, 0);
 
     batch_size_ = batch_size;
   }
 
   std::string GetTableName() const override;
 
+  void Create(mojom::DBTransactionInfo* transaction) override;
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativePromotedContentAdList& creative_ads);
 
-  std::string BuildInsertOrUpdateQuery(
+  std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const CreativePromotedContentAdList& creative_ads) const;
 

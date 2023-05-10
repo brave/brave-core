@@ -14,7 +14,7 @@ namespace brave_ads::ml::pipeline {
 struct EmbeddingPipelineInfo;
 
 absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
-    const base::Value::Dict& root);
+    const base::Value::Dict& dict);
 
 }  // namespace brave_ads::ml::pipeline
 

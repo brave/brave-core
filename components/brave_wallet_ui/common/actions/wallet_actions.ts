@@ -12,6 +12,7 @@
   addAccount,
   addFavoriteApp,
   addFilecoinAccount,
+  addBitcoinAccount,
   addSitePermission,
   addUserAsset,
   addUserAssetError,

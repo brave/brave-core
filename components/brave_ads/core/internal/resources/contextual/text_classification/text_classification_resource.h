@@ -6,39 +6,50 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_
 
+#include <string>
+
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
+#include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
-class TextClassification final {
+class TextClassificationResource final : public AdsClientNotifierObserver {
  public:
-  TextClassification();
+  TextClassificationResource();
 
-  TextClassification(const TextClassification&) = delete;
-  TextClassification& operator=(const TextClassification&) = delete;
+  TextClassificationResource(const TextClassificationResource&) = delete;
+  TextClassificationResource& operator=(const TextClassificationResource&) =
+      delete;
 
-  TextClassification(TextClassification&&) noexcept = delete;
-  TextClassification& operator=(TextClassification&&) noexcept = delete;
+  TextClassificationResource(TextClassificationResource&&) noexcept = delete;
+  TextClassificationResource& operator=(TextClassificationResource&&) noexcept =
+      delete;
 
-  ~TextClassification();
+  ~TextClassificationResource() override;
 
   bool IsInitialized() const;
 
   void Load();
 
-  const ml::pipeline::TextProcessing* Get() const;
+  const ml::pipeline::TextProcessing& get() const {
+    return text_processing_pipeline_;
+  }
 
  private:
-  void OnLoadAndParseResource(
-      ParsingErrorOr<ml::pipeline::TextProcessing> result);
+  void LoadAndParseResourceCallback(
+      ResourceParsingErrorOr<ml::pipeline::TextProcessing> result);
+
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   ml::pipeline::TextProcessing text_processing_pipeline_;
 
-  base::WeakPtrFactory<TextClassification> weak_factory_{this};
+  base::WeakPtrFactory<TextClassificationResource> weak_factory_{this};
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_

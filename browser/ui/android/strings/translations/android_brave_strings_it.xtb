@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Chiudi le schede quando esci</translation>
 <translation id="4448697385961650078">Blocca indicatori &amp; annunci</translation>
 <translation id="2448893613530489637">Impedisce il caricamento e la visualizzazione di tracker e annunci nelle pagine Web</translation>
+<translation id="1025207378813960343">Assicurati che le connessioni ai siti web siano sicure.</translation>
+<translation id="6686219838158572786">Richiedi a tutte le connessioni di utilizzare HTTPS (rigido)</translation>
+<translation id="4221284400051835823">Aggiorna a HTTPS quando possibile (predefinito)</translation>
+<translation id="4690906712010847708">Non aggiornare le connessioni a HTTPS (disabilitato)</translation>
 <translation id="1680858055899097121">Non rimanere nelle schede tra una sessione di navigazione e l'altra</translation>
 <translation id="7142548388914389999">Acconsenti all'analisi dei prodotti di tutela della privacy (P3A).</translation>
 <translation id="5254037869598726291">Le informazioni di analisi P3A rese anonime consentono a Brave di stimare l'utilizzo complessivo e ci aiutano a migliorare le funzioni più popolari.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Riproduzione automatica</translation>
 <translation id="7445411102860286510">Consenti ai siti di riprodurre automaticamente i video con audio disattivato (opzione consigliata)</translation>
 <translation id="7837721118676387834">Consenti la riproduzione automatica dei video con audio disattivato in un sito specifico.</translation>
+<translation id="4206299587103092719">Sign-in di Google</translation>
+<translation id="9110294136812584522">I siti possono richiedere di usare la vecchia versione del sign-in di Google tramite cookie di terze parti</translation>
+<translation id="2903783737778379345">Non consentire l’utilizzo della vecchia versione del sign-in di Google tramite cookie di terze parti</translation>
+<translation id="6880817299303842099">Consentito l’utilizzo di cookie di terze parti per la vecchia versione del sign-in di Google</translation>
 <translation id="181905442828471321">Impostazioni predefinite di protezione globali di Brave</translation>
 <translation id="2675679258824361492">Altre impostazioni sulla privacy</translation>
 <translation id="8026334261755873520">Cancella dati di navigazione</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Invii automaticamente una mancia a:</translation>
 <translation id="1628742278973105368">La tua prima mancia mensile verrà inviata il:</translation>
 <translation id="1642952941091001113">Questo creatore non si è ancora registrato e al momento non può ricevere donazioni dagli utenti di Brave. Proveremo a inviargli le donazioni finché non avrà effettuato la verifica, o finché non saranno passati 90 giorni.</translation>
-<translation id="635752162765375187">N.B.: questo autore non ha ancora eseguito la configurazione necessaria per ricevere donazioni dal tuo servizio di custodial wallet delle ricompense. Le tue donazioni resteranno in attesa; riproveremo automaticamente per 90 giorni.</translation>
+<translation id="8228150955416632026">Hai una connessione con <ph name="WALLET_PROVIDER"/>, ma questo autore è connesso con <ph name="SUPPORTED_WALLET_PROVIDER"/>. Ciò significa che questo autore non potrà ricevere la tua donazione. Al momento ogni donazione che farai rimarrà in sospeso; riproveremo automaticamente per 90 giorni.</translation>
 <translation id="1910721550319506122">Benvenuto!</translation>
 <translation id="2734870894159530879">Accedi ad <ph name="WALLET_PROVIDER"/> per vedere il tuo saldo</translation>
 <translation id="5830114181292529917">Puoi supportare questo sito inviando una donazione. È un modo per ringraziare per i fantastici contenuti.</translation>
@@ -610,6 +618,7 @@ Confermi di voler procedere?</translation>
 <translation id="4522570452068850558">Dettagli</translation>
 <translation id="3995184924764722477">Dettagli Account</translation>
 <translation id="8967036623785635603">Modifica asset visibili</translation>
+<translation id="8475984867371585028">Modifica gli NFT visibili</translation>
 <translation id="5050890334032852465">Salva watchlist dell’account</translation>
 <translation id="7755766175599167100">Ricerca token</translation>
 <translation id="3835223348537121988">Saldo:</translation>
@@ -1046,4 +1055,78 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1776742005329298234">Dal giorno <ph name="DUE_DATE"/> non supporteremo più i saldi pre-esistenti in BAT virtuali. Collega entro questa data un conto di custodia, per permetterci di trasferire gli importi guadagnati su tale conto, o il tuo saldo andrà perso.</translation>
 <translation id="5089752671190341407">Hai ancora tempo per fornire i vBAT ai tuoi autori preferiti.</translation>
 <translation id="171158953146804144">Dal giorno <ph name="DUE_DATE"/> non supporteremo più i saldi pre-esistenti in BAT virtuali. Purtroppo nella tua area geografica (<ph name="REGION"/>) non sono disponibili servizi di custodia in grado di permetterti il prelievo degli importi guadagnati. Fino alla data indicata potrai continuare a sostenere economicamente i tuoi autori preferiti.</translation>
+<translation id="8949422576126100041">Visualizzare la pagina con Speedreader?</translation>
+<translation id="591648995518106347">Carica automaticamente gli articoli idonei in modalità di lettura</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> su <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Playlist Brave</translation>
+<translation id="4850886885716139402">Visualizza</translation>
+<translation id="7392941176393379100">Aggiunto a ‘<ph name="PLAYLIST_NAME"/>’</translation>
+<translation id="8289472222022674331">Gestione dei dati della playlist</translation>
+<translation id="7650602357673790368">Per impostazione predefinita, Brave Playlist salverà automaticamente il contenuto sul dispositivo per la riproduzione offline (sia su playlist private che condivise). Se non hai una connessione Wi-Fi, la funzione di salvataggio automatico userà i dati mobili.\n\nPer cambiare questa impostazione predefinita, vai alle impostazioni.</translation>
+<translation id="5900576657906675258">Aggiungi elemento alla playlist</translation>
+<translation id="349846214503465941">Abilita la playlist</translation>
+<translation id="1309636029062006520">Crea playlist dei tuoi audio e video preferiti e riproducili quando e dove vuoi.</translation>
+<translation id="7899390017499980820">Pulsante Aggiungi alla playlist</translation>
+<translation id="6901152954398668317">Mostra o nascondi il pulsante “Aggiungi alla playlist” per aggiungere o rimuovere file multimediali velocemente.</translation>
+<translation id="8404028031709373707">Riproduzione automatica</translation>
+<translation id="597781019681241649">Abilita la riproduzione automatica quando la playlist è aperta.</translation>
+<translation id="2625554376218216118">Avvia la riproduzione da dove l’avevo interrotta</translation>
+<translation id="2953730196265332002">Sincronizza automaticamente tutte le modifiche che l’autore ha apportato a una playlist condivisa.</translation>
+<translation id="3561815498111282415">Salvataggio automatico offline</translation>
+<translation id="1832424694374124654">Salva automaticamente i nuovi elementi della playlist sul dispositivo così puoi riprodurli anche senza connessione internet.</translation>
+<translation id="8103022210423023846">Salvataggio automatico ON</translation>
+<translation id="3926329432879804185">Salvataggio automatico OFF</translation>
+<translation id="7768812595186089508">Salvataggio automatico solo quando il dispositivo è connesso al Wi-Fi</translation>
+<translation id="5939518447894949180">Ripristina</translation>
+<translation id="8199028711686989861">Rimuovi tutti i video dalla playlist, inclusi quelli salvati in modalità offline.</translation>
+<translation id="5916664084637901428">On</translation>
+<translation id="5860033963881614850">Off</translation>
+<translation id="2920568868625746681">Solo Wi-Fi</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Crea</translation>
+<translation id="5491049004699827548">Crea la tua prima playlist</translation>
+<translation id="5319108110887582146">Crea una playlist dei tuoi audio e video preferiti e riproducila quando e dove vuoi. Anche offline.</translation>
+<translation id="6802849415466883498">Crea una playlist</translation>
+<translation id="8525248723479742219">Riproduci più tardi</translation>
+<translation id="7453007860684252933">Sfoglia e aggiungi</translation>
+<translation id="9014883386413828317">Aggiungi i tuoi contenuti preferiti. Cerca il pulsante ( + ) nella parte inferiore destra della schermata.</translation>
+<translation id="5928669500312007783">Cerca file multimediali</translation>
+<translation id="8152485753254079984">Nuova playlist</translation>
+<translation id="9130105487623071247">Nome della playlist</translation>
+<translation id="726581235416249619">Playlist senza nome</translation>
+<translation id="1456254983411148628">Rimuovi i dati</translation>
+<translation id="2365883822666964139">Selezione: <ph name="NUMBER"/></translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> elementi</translation>
+<translation id="2317629745818459803">Riproduci tutto</translation>
+<translation id="7544853251252956727">Riproduzione casuale</translation>
+<translation id="2881339830231736485">Riproduzioni recenti</translation>
+<translation id="7636458383879257005">Tocca, tieni premuto o trascina</translation>
+<translation id="8120600068258956006">Aggiungi alla playlist</translation>
+<translation id="39991094779686024">Playlist</translation>
+<translation id="1710072605877822603">Aggiungi file multimediali</translation>
+<translation id="903678009070770568">Aggiungi video a Brave Playlist e guardali in un secondo momento, anche offline.</translation>
+<translation id="3063627607780392015">Senza copertura mobile? Hai bisogno di calmare un bambino che piange?</translation>
+<translation id="2041014734809158138">Sulla metro, in aereo o durante un lungo viaggio in auto. Brave Playlist è la soluzione.</translation>
+<translation id="7287143275037417932">Oppure tocca il pulsante Playlist quando compare</translation>
+<translation id="6959838938954098206">Il pulsante Playlist compare quando ci sono dei file multimediali da aggiungere. Tienilo premuto per vedere le opzioni. Puoi anche nasconderlo.</translation>
+<translation id="3620862810055853183">Apri playlist</translation>
+<translation id="3861012838874771868">Apri le impostazioni della playlist</translation>
+<translation id="5220099266891491416">Nascondi il pulsante Playlist</translation>
+<translation id="7416347631175891923">Provalo!</translation>
+<translation id="1173894706177603556">Rinomina</translation>
+<translation id="1620612903815671893">Rimuovi i dati offline della playlist</translation>
+<translation id="3261711068865275261">Rimuovi tutti i dati offline</translation>
+<translation id="6653691766801349738">Mantieni la playlist per l’uso offline</translation>
+<translation id="8708086574143054053">Mantieni tutte le playlist per l’uso offline</translation>
+<translation id="3596306474342941843">Elimina la playlist</translation>
+<translation id="7765158879357617694">Sposta</translation>
+<translation id="3803384303807438047">Elimina i dati offline dell’elemento</translation>
+<translation id="4195643157523330669">Apri in un'altra scheda</translation>
+<translation id="4243710787042215766">Apri in una scheda privata</translation>
+<translation id="8261506727792406068">Elimina</translation>
+<translation id="377872456482681602">Prima seleziona gli elementi</translation>
+<translation id="6172429305139364624">L’elemento della playlist non è salvato nella cache.\nSalvalo nella cache per la modalità offline.</translation>
+<translation id="3631131732607750008">Contenuto scaduto. Riprova tra qualche secondo.</translation>
+<translation id="9085765419770918643">Non ci sono ancora NFT.</translation>
+<translation id="8445532667841598737">Vuoi aggiungerne? Clicca il pulsante qui sotto per importarli.</translation>
 </translationbundle>

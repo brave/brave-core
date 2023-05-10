@@ -11,7 +11,7 @@
 namespace brave_ads {
 
 bool RgbStringToSkColor(base::StringPiece rgb, SkColor* color) {
-  DCHECK(color);
+  CHECK(color);
 
   // Expect three RGB color components with length == 2, e.g. 42fe4c.
   constexpr size_t kColorComponentsCount = 3;

@@ -22,11 +22,11 @@ constexpr char kRewardsSwitch[] = "rewards";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_should_debug;
-} const kTestCases[] = {{{kRewardsSwitch, "debug=true"}, true},
-                        {{kRewardsSwitch, "debug=1"}, true},
-                        {{kRewardsSwitch, "debug=false"}, false},
-                        {{kRewardsSwitch, "debug=foobar"}, false},
-                        {{}, false}};
+} const kTests[] = {{{kRewardsSwitch, "debug=true"}, true},
+                    {{kRewardsSwitch, "debug=1"}, true},
+                    {{kRewardsSwitch, "debug=false"}, false},
+                    {{kRewardsSwitch, "debug=foobar"}, false},
+                    {{}, false}};
 
 }  // namespace
 
@@ -65,7 +65,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDebugCommandLineSwitchParserUtilTest,
-                         testing::ValuesIn(kTestCases),
+                         testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

@@ -13,7 +13,7 @@
 namespace brave_ads::rewards::json::reader {
 
 absl::optional<TransactionList> ParseTransactionHistory(
-    const base::Value::Dict& value);
+    const base::Value::Dict& dict);
 
 }  // namespace brave_ads::rewards::json::reader
 

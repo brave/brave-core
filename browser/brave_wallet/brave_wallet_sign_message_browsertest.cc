@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
@@ -13,6 +13,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -77,6 +78,9 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
+    brave_wallet::SetDefaultEthereumWallet(
+        browser()->profile()->GetPrefs(),
+        brave_wallet::mojom::DefaultWallet::BraveWallet);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
@@ -225,10 +229,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UnknownAddress) {
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
-              l10n_util::GetStringFUTF8(
-                  IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                  base::ASCIIToUTF16(std::string(
-                      "0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909"))));
+              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 
@@ -278,10 +279,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
-              l10n_util::GetStringFUTF8(
-                  IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                  base::ASCIIToUTF16(std::string(
-                      "0x084DCb94038af1715963F149079cE011C4B22961"))));
+              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 

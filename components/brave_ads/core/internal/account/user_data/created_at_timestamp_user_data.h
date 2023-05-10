@@ -12,11 +12,9 @@ namespace brave_ads {
 
 struct TransactionInfo;
 
-namespace user_data {
+base::Value::Dict BuildCreatedAtTimestampUserData(
+    const TransactionInfo& transaction);
 
-base::Value::Dict GetCreatedAtTimestamp(const TransactionInfo& transaction);
-
-}  // namespace user_data
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_CREATED_AT_TIMESTAMP_USER_DATA_H_

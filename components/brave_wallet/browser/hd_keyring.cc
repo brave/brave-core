@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 
@@ -52,12 +52,14 @@ void HDKeyring::RemoveAccount() {
 bool HDKeyring::AddImportedAddress(const std::string& address,
                                    std::unique_ptr<HDKeyBase> hd_key) {
   // Account already exists
-  if (imported_accounts_.find(address) != imported_accounts_.end())
+  if (imported_accounts_.find(address) != imported_accounts_.end()) {
     return false;
+  }
   // Check if it is duplicate in derived accounts
   for (size_t i = 0; i < accounts_.size(); ++i) {
-    if (GetAddress(i) == address)
+    if (GetAddress(i) == address) {
       return false;
+    }
   }
 
   imported_accounts_[address] = std::move(hd_key);
@@ -66,8 +68,9 @@ bool HDKeyring::AddImportedAddress(const std::string& address,
 
 std::string HDKeyring::ImportAccount(const std::vector<uint8_t>& private_key) {
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
-  if (!hd_key)
+  if (!hd_key) {
     return std::string();
+  }
 
   const std::string address = GetAddressInternal(hd_key.get());
   if (!AddImportedAddress(address, std::move(hd_key))) {
@@ -86,8 +89,9 @@ bool HDKeyring::RemoveImportedAccount(const std::string& address) {
 }
 
 std::string HDKeyring::GetAddress(size_t index) const {
-  if (accounts_.empty() || index >= accounts_.size())
+  if (accounts_.empty() || index >= accounts_.size()) {
     return std::string();
+  }
   return GetAddressInternal(accounts_[index].get());
 }
 
@@ -100,37 +104,31 @@ std::string HDKeyring::GetDiscoveryAddress(size_t index) const {
 
 std::string HDKeyring::EncodePrivateKeyForExport(const std::string& address) {
   HDKeyBase* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key)
+  if (!hd_key) {
     return std::string();
+  }
 
   return hd_key->EncodePrivateKeyForExport();
 }
 
-std::vector<uint8_t> HDKeyring::SignMessage(
-    const std::string& address,
-    const std::vector<uint8_t>& message) {
-  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key)
-    return std::vector<uint8_t>();
-
-  return hd_key->Sign(message, nullptr);
-}
-
 HDKeyBase* HDKeyring::GetHDKeyFromAddress(const std::string& address) {
   const auto imported_accounts_iter = imported_accounts_.find(address);
-  if (imported_accounts_iter != imported_accounts_.end())
+  if (imported_accounts_iter != imported_accounts_.end()) {
     return imported_accounts_iter->second.get();
+  }
   for (size_t i = 0; i < accounts_.size(); ++i) {
-    if (GetAddress(i) == address)
+    if (GetAddress(i) == address) {
       return accounts_[i].get();
+    }
   }
   return nullptr;
 }
 
 bool HDKeyring::HasAddress(const std::string& address) {
   for (size_t i = 0; i < accounts_.size(); ++i) {
-    if (GetAddress(i) == address)
+    if (GetAddress(i) == address) {
       return true;
+    }
   }
   return false;
 }

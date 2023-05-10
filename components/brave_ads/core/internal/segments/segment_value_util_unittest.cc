@@ -24,16 +24,12 @@ TEST(BraveAdsSegmentValueUtilTest, SegmentsToValue) {
   // Arrange
 
   // Act
-  const base::Value::List list =
-      SegmentsToValue({"technology & computing", "personal finance-banking",
-                       "food & drink-restaurants"});
 
   // Assert
-  const base::Value value = base::test::ParseJson(kSegmentsAsJson);
-  const base::Value::List* const expected_list = value.GetIfList();
-  ASSERT_TRUE(expected_list);
-
-  EXPECT_EQ(*expected_list, list);
+  EXPECT_EQ(
+      base::test::ParseJsonList(kSegmentsAsJson),
+      SegmentsToValue({"technology & computing", "personal finance-banking",
+                       "food & drink-restaurants"}));
 }
 
 TEST(BraveAdsSegmentValueUtilTest, NoSegmentsToValue) {
@@ -43,37 +39,28 @@ TEST(BraveAdsSegmentValueUtilTest, NoSegmentsToValue) {
   const base::Value::List list = SegmentsToValue({});
 
   // Assert
-  const base::Value value = base::test::ParseJson(kNoSegmentsAsJson);
-  const base::Value::List* const expected_list = value.GetIfList();
-  ASSERT_TRUE(expected_list);
-
-  EXPECT_EQ(*expected_list, list);
+  EXPECT_TRUE(list.empty());
 }
 
 TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kSegmentsAsJson);
-  const base::Value::List* const list = value.GetIfList();
-  ASSERT_TRUE(list);
+  const base::Value::List list = base::test::ParseJsonList(kSegmentsAsJson);
 
   // Act
-  const SegmentList segments = SegmentsFromValue(*list);
 
   // Assert
   const SegmentList expected_segments = {"technology & computing",
                                          "personal finance-banking",
                                          "food & drink-restaurants"};
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, SegmentsFromValue(list));
 }
 
 TEST(BraveAdsSegmentValueUtilTest, NoSegmentsFromValue) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kNoSegmentsAsJson);
-  const base::Value::List* const list = value.GetIfList();
-  ASSERT_TRUE(list);
+  const base::Value::List list = base::test::ParseJsonList(kNoSegmentsAsJson);
 
   // Act
-  const SegmentList segments = SegmentsFromValue(*list);
+  const SegmentList segments = SegmentsFromValue(list);
 
   // Assert
   EXPECT_TRUE(segments.empty());

@@ -11,7 +11,7 @@ class Time;
 class TimeDelta;
 }  // namespace base
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 bool ShouldServeAdsAtRegularIntervals();
 
@@ -19,6 +19,6 @@ base::TimeDelta CalculateDelayBeforeServingAnAd();
 base::Time ServeAdAt();
 void SetServeAdAt(base::Time serve_ad_at);
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_NOTIFICATION_AD_SERVING_UTIL_H_

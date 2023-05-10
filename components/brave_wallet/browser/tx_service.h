@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_SERVICE_H_
@@ -24,6 +24,7 @@ class PrefService;
 namespace brave_wallet {
 
 class JsonRpcService;
+class BitcoinWalletService;
 class KeyringService;
 class TxManager;
 class EthTxManager;
@@ -37,6 +38,7 @@ class TxService : public KeyedService,
                   public mojom::FilTxManagerProxy {
  public:
   TxService(JsonRpcService* json_rpc_service,
+            BitcoinWalletService* bitcoin_wallet_service,
             KeyringService* keyring_service,
             PrefService* prefs);
   ~TxService() override;

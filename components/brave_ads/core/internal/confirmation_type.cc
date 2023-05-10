@@ -53,7 +53,7 @@ ConfirmationType::ConfirmationType(const std::string& value) {
   } else if (value == kConversionType) {
     value_ = kConversion;
   } else {
-    NOTREACHED();
+    NOTREACHED_NORETURN();
   }
 }
 
@@ -108,8 +108,7 @@ std::string ConfirmationType::ToString() const {
     }
   }
 
-  NOTREACHED() << "Unexpected value for Value: " << value_;
-  return kUndefinedType;
+  NOTREACHED_NORETURN() << "Unexpected value for Value: " << value_;
 }
 
 bool operator==(const ConfirmationType& lhs, const ConfirmationType& rhs) {

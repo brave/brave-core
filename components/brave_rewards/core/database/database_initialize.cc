@@ -13,7 +13,7 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 DatabaseInitialize::DatabaseInitialize(LedgerImpl& ledger)
@@ -21,7 +21,7 @@ DatabaseInitialize::DatabaseInitialize(LedgerImpl& ledger)
 
 DatabaseInitialize::~DatabaseInitialize() = default;
 
-void DatabaseInitialize::Start(ledger::LegacyResultCallback callback) {
+void DatabaseInitialize::Start(LegacyResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   transaction->version = GetCurrentVersion();
   transaction->compatible_version = GetCompatibleVersion();
@@ -35,7 +35,7 @@ void DatabaseInitialize::Start(ledger::LegacyResultCallback callback) {
 }
 
 void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
-                                      ledger::LegacyResultCallback callback) {
+                                      LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -55,4 +55,4 @@ void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -6,8 +6,10 @@
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
@@ -46,6 +48,9 @@ EphemeralStorageService::EphemeralStorageService(
           net::features::kBraveForgetFirstPartyStorage)) {
     first_party_storage_areas_keep_alive_ = base::Seconds(
         net::features::kBraveForgetFirstPartyStorageKeepAliveTimeInSeconds
+            .Get());
+    first_party_storage_startup_cleanup_delay_ = base::Seconds(
+        net::features::kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds
             .Get());
     CleanupFirstPartyStorageAreasOnStartup();
   }
@@ -200,9 +205,16 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
     if (!url.is_valid()) {
       continue;
     }
-    CleanupFirstPartyStorageArea(url::Origin::Create(url));
+    const url::Origin origin(url::Origin::Create(url));
+    auto cleanup_timer = std::make_unique<base::OneShotTimer>();
+    cleanup_timer->Start(
+        FROM_HERE, first_party_storage_startup_cleanup_delay_,
+        base::BindOnce(
+            &EphemeralStorageService::CleanupFirstPartyStorageAreaByTimer,
+            weak_ptr_factory_.GetWeakPtr(), origin));
+    first_party_storage_areas_to_cleanup_.emplace(origin,
+                                                  std::move(cleanup_timer));
   }
-  urls_to_cleanup->clear();
 }
 
 void EphemeralStorageService::CleanupFirstPartyStorageAreaByTimer(
@@ -223,26 +235,32 @@ void EphemeralStorageService::CleanupFirstPartyStorageArea(
       net::features::kBraveForgetFirstPartyStorage));
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   content::BrowsingDataRemover::DataType data_to_remove =
-      content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE;
+      content::BrowsingDataRemover::DATA_TYPE_COOKIES |
+      content::BrowsingDataRemover::DATA_TYPE_CACHE |
+      content::BrowsingDataRemover::DATA_TYPE_MEDIA_LICENSES |
+      content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE |
+      content::BrowsingDataRemover::DATA_TYPE_ATTRIBUTION_REPORTING |
+      content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX |
+      content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX_INTERNAL;
   content::BrowsingDataRemover::OriginType origin_type =
       content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
       content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
   auto filter_builder = content::BrowsingDataFilterBuilder::Create(
       content::BrowsingDataFilterBuilder::Mode::kDelete);
-  filter_builder->AddOrigin(origin);
+  filter_builder->AddRegisterableDomain(origin.host());
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
+}
 
-  const auto& url = net::SchemefulSite(origin).GetURL();
-  auto cookie_deletion_filter = network::mojom::CookieDeletionFilter::New();
-  cookie_deletion_filter->including_domains.emplace({url.host()});
-
-  auto site_instance = content::SiteInstance::CreateForURL(context_, url);
-  auto* storage_partition = context_->GetStoragePartition(site_instance.get());
-  if (storage_partition) {
-    storage_partition->GetCookieManagerForBrowserProcess()->DeleteCookies(
-        std::move(cookie_deletion_filter), base::NullCallback());
+size_t EphemeralStorageService::FireCleanupTimersForTesting() {
+  std::vector<base::OneShotTimer*> timers;
+  for (const auto& areas_to_cleanup : first_party_storage_areas_to_cleanup_) {
+    timers.push_back(areas_to_cleanup.second.get());
   }
+  for (auto* timer : timers) {
+    timer->FireNow();
+  }
+  return timers.size();
 }
 
 }  // namespace ephemeral_storage

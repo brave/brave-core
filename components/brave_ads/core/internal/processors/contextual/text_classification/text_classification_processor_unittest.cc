@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_classification/text_classification_processor.h"
 
+#include <memory>
+
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_model.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -20,24 +22,28 @@ class BraveAdsTextClassificationProcessorTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    resource_.Load();
-    task_environment_.RunUntilIdle();
+    resource_ = std::make_unique<TextClassificationResource>();
   }
 
-  resource::TextClassification resource_;
+  bool LoadResource() {
+    resource_->Load();
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
+  }
+
+  std::unique_ptr<TextClassificationResource> resource_;
 };
 
 TEST_F(BraveAdsTextClassificationProcessorTest,
        DoNotProcessIfResourceIsNotInitialized) {
   // Arrange
-  resource::TextClassification resource;
 
   // Act
-  processor::TextClassification processor(resource);
+  TextClassificationProcessor processor(*resource_);
   processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
 
   // Assert
-  const targeting::TextClassificationProbabilityList& list =
+  const TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();
 
@@ -46,12 +52,14 @@ TEST_F(BraveAdsTextClassificationProcessorTest,
 
 TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Act
+  ASSERT_TRUE(LoadResource());
+
   const std::string text;
-  processor::TextClassification processor(resource_);
+  TextClassificationProcessor processor(*resource_);
   processor.Process(text);
 
   // Assert
-  const targeting::TextClassificationProbabilityList& list =
+  const TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();
 
@@ -60,11 +68,13 @@ TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Act
-  const targeting::model::TextClassification model;
+  ASSERT_TRUE(LoadResource());
+
+  const TextClassificationModel model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const targeting::TextClassificationProbabilityList& list =
+  const TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();
 
@@ -73,11 +83,13 @@ TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   // Act
-  processor::TextClassification processor(resource_);
+  ASSERT_TRUE(LoadResource());
+
+  TextClassificationProcessor processor(*resource_);
   processor.Process(/*text*/ "Some content about technology & computing");
 
   // Assert
-  const targeting::TextClassificationProbabilityList& list =
+  const TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();
 
@@ -86,13 +98,15 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Act
-  processor::TextClassification processor(resource_);
+  ASSERT_TRUE(LoadResource());
+
+  TextClassificationProcessor processor(*resource_);
   processor.Process(/*text*/ "Some content about cooking food");
   processor.Process(/*text*/ "Some content about finance & banking");
   processor.Process(/*text*/ "Some content about technology & computing");
 
   // Assert
-  const targeting::TextClassificationProbabilityList& list =
+  const TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();
 

@@ -9,6 +9,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "net/base/features.h"
+#include "net/base/url_util.h"
 
 #define MaybeCreateLoader(...)                                                \
   MaybeCreateLoader(__VA_ARGS__) {                                            \
@@ -53,8 +54,11 @@
                 ? net::features::kBraveHttpsByDefault  \
                 : FLAG)
 
+#define IsLocalhost(URL) IsLocalhostOrOnion(URL)
+
 #include "src/chrome/browser/ssl/https_upgrades_interceptor.cc"
 
 #undef MaybeCreateLoader
 #undef MaybeCreateLoaderForResponse
 #undef IsEnabled
+#undef IsLocalhost

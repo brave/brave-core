@@ -8,12 +8,10 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
@@ -37,7 +35,7 @@ namespace {
 
 void MigrateToVersion(mojom::DBTransactionInfo* transaction,
                       const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   table::Conversions conversions_database_table;
   conversions_database_table.Migrate(transaction, to_version);
@@ -98,11 +96,12 @@ void MigrateToVersion(mojom::DBTransactionInfo* transaction,
 
 void MigrateFromVersion(const int from_version, ResultCallback callback) {
   const int to_version = database::kVersion;
-  DCHECK(from_version < to_version);
+  CHECK(from_version < to_version);
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+
   for (int i = from_version + 1; i <= to_version; i++) {
-    MigrateToVersion(transaction.get(), i);
+    MigrateToVersion(&*transaction, i);
   }
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -112,9 +111,7 @@ void MigrateFromVersion(const int from_version, ResultCallback callback) {
   transaction->compatible_version = database::kCompatibleVersion;
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 }  // namespace brave_ads::database

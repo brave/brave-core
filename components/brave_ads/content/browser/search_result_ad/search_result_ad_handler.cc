@@ -11,8 +11,8 @@
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/common/features.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_util.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -28,7 +28,7 @@ SearchResultAdHandler::SearchResultAdHandler(
     const bool should_trigger_viewed_event)
     : ads_service_(ads_service),
       should_trigger_viewed_event_(should_trigger_viewed_event) {
-  DCHECK(ads_service_);
+  CHECK(ads_service_);
 }
 
 SearchResultAdHandler::~SearchResultAdHandler() = default;
@@ -41,7 +41,7 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     const bool should_trigger_viewed_event) {
   if (!ads_service || !ads_service->IsEnabled() ||
       !base::FeatureList::IsEnabled(
-          features::kShouldTriggerSearchResultAdEvents) ||
+          kShouldTriggerSearchResultAdEventsFeature) ||
       !brave_search::IsAllowedHost(url)) {
     return {};
   }
@@ -53,8 +53,8 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
 void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
     content::RenderFrameHost* render_frame_host,
     base::OnceCallback<void(std::vector<std::string> placement_ids)> callback) {
-  DCHECK(render_frame_host);
-  DCHECK(ads_service_);
+  CHECK(render_frame_host);
+  CHECK(ads_service_);
 
   if (!ads_service_->IsEnabled()) {
     return;
@@ -63,7 +63,7 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
   mojo::Remote<blink::mojom::DocumentMetadata> document_metadata;
   render_frame_host->GetRemoteInterfaces()->GetInterface(
       document_metadata.BindNewPipeAndPassReceiver());
-  DCHECK(document_metadata.is_bound());
+  CHECK(document_metadata.is_bound());
   document_metadata.reset_on_disconnect();
 
   blink::mojom::DocumentMetadata* raw_document_metadata =
@@ -76,7 +76,7 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
 
 void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     const GURL& navigation_url) {
-  DCHECK(ads_service_);
+  CHECK(ads_service_);
   if (!ads_service_->IsEnabled() || !search_result_ads_) {
     return;
   }
@@ -105,7 +105,7 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
     mojo::Remote<blink::mojom::DocumentMetadata> /*document_metadata*/,
     base::OnceCallback<void(std::vector<std::string> placement_ids)> callback,
     blink::mojom::WebPagePtr web_page) {
-  DCHECK(ads_service_);
+  CHECK(ads_service_);
 
   if (!ads_service_->IsEnabled() || !web_page) {
     return std::move(callback).Run({});
@@ -116,9 +116,9 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
 
   std::vector<std::string> placement_ids;
   if (search_result_ads_ && should_trigger_viewed_event_) {
-    base::ranges::transform(*search_result_ads_,
-                            std::back_inserter(placement_ids),
-                            [](const auto& value) { return value.first; });
+    base::ranges::transform(
+        *search_result_ads_, std::back_inserter(placement_ids),
+        [](const auto& search_result_ad) { return search_result_ad.first; });
   }
 
   std::move(callback).Run(std::move(placement_ids));

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -24,32 +25,40 @@ namespace {
 constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
 }  // namespace
 
-class BraveAdsAntiTargetingResourceTest : public UnitTestBase {};
+class BraveAdsAntiTargetingResourceTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    resource_ = std::make_unique<AntiTargetingResource>();
+  }
+
+  bool LoadResource() {
+    resource_->Load();
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
+  }
+
+  std::unique_ptr<AntiTargetingResource> resource_;
+};
 
 TEST_F(BraveAdsAntiTargetingResourceTest, LoadResource) {
   // Arrange
-  resource::AntiTargeting resource;
 
   // Act
-  resource.Load();
-  task_environment_.RunUntilIdle();
 
   // Assert
-  EXPECT_TRUE(resource.IsInitialized());
+  EXPECT_TRUE(LoadResource());
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  resource::AntiTargeting resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
@@ -65,24 +74,19 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       }));
 
-  resource::AntiTargeting resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest, IsNotInitialized) {
   // Arrange
-  resource::AntiTargeting resource;
 
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(resource_->IsInitialized());
 }
 
 }  // namespace brave_ads

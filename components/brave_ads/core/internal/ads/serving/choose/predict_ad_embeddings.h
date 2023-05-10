@@ -6,16 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_PREDICT_AD_EMBEDDINGS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_PREDICT_AD_EMBEDDINGS_H_
 
+#include <limits>
 #include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/numerics/ranges.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/eligible_ads_predictor_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/sample_ads.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -23,9 +24,9 @@ namespace brave_ads {
 
 template <typename T>
 absl::optional<T> MaybePredictAdUsingEmbeddings(
-    const targeting::UserModelInfo& user_model,
+    const UserModelInfo& user_model,
     const std::vector<T>& creative_ads) {
-  DCHECK(!creative_ads.empty());
+  CHECK(!creative_ads.empty());
 
   const std::vector<T> paced_creative_ads = PaceCreativeAds(creative_ads);
 
@@ -39,14 +40,15 @@ absl::optional<T> MaybePredictAdUsingEmbeddings(
   const std::vector<double> probabilities =
       ComputeProbabilities(votes_registry);
 
-  DCHECK_EQ(paced_creative_ads.size(), probabilities.size());
+  CHECK_EQ(paced_creative_ads.size(), probabilities.size());
   const double rand = base::RandDouble();
   double sum = 0.0;
 
   for (size_t i = 0; i < paced_creative_ads.size(); i++) {
     sum += probabilities.at(i);
 
-    if (DoubleIsLess(rand, sum)) {
+    if (rand < sum && !base::IsApproximatelyEqual(
+                          rand, sum, std::numeric_limits<double>::epsilon())) {
       return paced_creative_ads.at(i);
     }
   }

@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "brave/components/p3a/network_annotations.h"
 #include "brave/components/p3a/nitro_utils/attestation.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -28,6 +29,7 @@ namespace {
 constexpr char kCurrentPKPrefName[] = "brave.p3a.current_pk";
 constexpr char kCurrentEpochPrefName[] = "brave.p3a.current_epoch";
 constexpr char kNextEpochTimePrefName[] = "brave.p3a.next_epoch_time";
+constexpr char kApprovedCertFPPrefName[] = "brave.p3a.approved_cert_fp";
 // A generous arbitrary limit, 128KB
 constexpr std::size_t kMaxInfoResponseSize = 128 * 1024;
 const int kRndInfoRetryInitialBackoffSeconds = 5;
@@ -63,9 +65,11 @@ const int kRndInfoRetryMaxBackoffMinutes = 60;
 RandomnessServerInfo::RandomnessServerInfo(
     uint8_t current_epoch,
     base::Time next_epoch_time,
+    bool epoch_change_detected,
     ::rust::Box<constellation::PPOPRFPublicKeyWrapper> public_key)
     : current_epoch(current_epoch),
       next_epoch_time(next_epoch_time),
+      epoch_change_detected(epoch_change_detected),
       public_key(std::move(public_key)) {}
 RandomnessServerInfo::~RandomnessServerInfo() {}
 
@@ -77,7 +81,16 @@ StarRandomnessMeta::StarRandomnessMeta(
     : url_loader_factory_(url_loader_factory),
       local_state_(local_state),
       info_callback_(info_callback),
-      config_(config) {}
+      config_(config) {
+  std::string approved_cert_fp_str =
+      local_state->GetString(kApprovedCertFPPrefName);
+  net::HashValue approved_cert_fp;
+  if (!approved_cert_fp_str.empty() &&
+      approved_cert_fp.FromString(approved_cert_fp_str)) {
+    VLOG(2) << "StarRandomnessMeta: loaded cached approved cert";
+    approved_cert_fp_ = absl::make_optional(approved_cert_fp);
+  }
+}
 
 StarRandomnessMeta::~StarRandomnessMeta() {}
 
@@ -85,6 +98,7 @@ void StarRandomnessMeta::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kCurrentPKPrefName, std::string());
   registry->RegisterIntegerPref(kCurrentEpochPrefName, -1);
   registry->RegisterTimePref(kNextEpochTimePrefName, base::Time());
+  registry->RegisterStringPref(kApprovedCertFPPrefName, "");
 }
 
 bool StarRandomnessMeta::VerifyRandomnessCert(
@@ -95,7 +109,7 @@ bool StarRandomnessMeta::VerifyRandomnessCert(
   }
   const network::mojom::URLResponseHead* response_info =
       url_loader->ResponseInfo();
-  if (approved_cert_ == nullptr) {
+  if (!approved_cert_fp_.has_value()) {
     LOG(ERROR) << "StarRandomnessMeta: approved cert is missing";
     AttestServer(false);
     return false;
@@ -105,10 +119,12 @@ bool StarRandomnessMeta::VerifyRandomnessCert(
     LOG(ERROR) << "StarRandomnessMeta: ssl info is missing from response info";
     return false;
   }
-  if (!response_info->ssl_info->cert->EqualsIncludingChain(
-          approved_cert_.get())) {
+  net::HashValue cert_fp_hash = net::HashValue(
+      response_info->ssl_info->cert->CalculateChainFingerprint256());
+  if (cert_fp_hash != *approved_cert_fp_) {
     LOG(ERROR) << "StarRandomnessMeta: approved cert mismatch, will retry "
-                  "attestation";
+                  "attestation; fp = "
+               << cert_fp_hash.ToString();
     AttestServer(false);
     return false;
   }
@@ -118,32 +134,41 @@ bool StarRandomnessMeta::VerifyRandomnessCert(
 void StarRandomnessMeta::RequestServerInfo() {
   rnd_server_info_ = nullptr;
 
-  if (!config_->disable_star_attestation && approved_cert_ == nullptr) {
+  if (!config_->disable_star_attestation && !approved_cert_fp_.has_value()) {
     AttestServer(true);
     return;
   }
 
-  if (!has_used_cached_info) {
+  if (!has_used_cached_info_) {
     // Using cached server info, if available.
+    last_cached_epoch_ =
+        absl::make_optional(local_state_->GetInteger(kCurrentEpochPrefName));
     base::Time saved_next_epoch_time =
         local_state_->GetTime(kNextEpochTimePrefName);
-    if (saved_next_epoch_time > base::Time::Now()) {
-      int saved_epoch = local_state_->GetInteger(kCurrentEpochPrefName);
+    // only return cached info if the epoch is not expired,
+    // and if the "fake" star epoch matches the last saved epoch (if specified).
+    // if "fake" star epoch does not match the saved epoch, then fresh server
+    // info should be requested to update the local state with the new epoch
+    // info
+    if (saved_next_epoch_time > base::Time::Now() &&
+        (!config_->fake_star_epoch.has_value() ||
+         config_->fake_star_epoch == last_cached_epoch_)) {
       std::string saved_pk = local_state_->GetString(kCurrentPKPrefName);
 
       rnd_server_info_ = std::make_unique<RandomnessServerInfo>(
-          static_cast<uint8_t>(saved_epoch), saved_next_epoch_time,
+          *last_cached_epoch_, saved_next_epoch_time, false,
           DecodeServerPublicKey(&saved_pk));
       VLOG(2) << "StarRandomnessMeta: using cached server info";
       info_callback_.Run(rnd_server_info_.get());
-      has_used_cached_info = true;
+      has_used_cached_info_ = true;
       return;
     }
   }
 
   rnd_server_info_ = nullptr;
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(config_->star_randomness_host + "/info");
+  resource_request->url =
+      GURL(base::StrCat({config_->star_randomness_host, "/info"}));
   if (!resource_request->url.is_valid() ||
       !resource_request->url.SchemeIsHTTPOrHTTPS()) {
     VLOG(2) << "StarRandomnessMeta: star randomness host invalid, skipping "
@@ -171,10 +196,11 @@ void StarRandomnessMeta::AttestServer(bool make_info_request_after) {
     return;
   }
   attestation_pending_ = true;
-  approved_cert_ = nullptr;
+  approved_cert_fp_ = absl::nullopt;
 
   VLOG(2) << "StarRandomnessMeta: starting attestation";
-  GURL attestation_url = GURL(config_->star_randomness_host + "/attestation");
+  GURL attestation_url = GURL(
+      base::StrCat({config_->star_randomness_host, "/enclave/attestation"}));
   if (!attestation_url.is_valid() || !attestation_url.SchemeIsHTTPOrHTTPS()) {
     VLOG(2) << "StarRandomnessMeta: star randomness host invalid, skipping "
                "server attestation";
@@ -197,9 +223,13 @@ void StarRandomnessMeta::HandleAttestationResult(
     }
     return;
   }
-  approved_cert_ = approved_cert;
+  approved_cert_fp_ = absl::make_optional(
+      net::HashValue(approved_cert->CalculateChainFingerprint256()));
+  std::string approved_cert_fp_str = approved_cert_fp_->ToString();
+  local_state_->SetString(kApprovedCertFPPrefName, approved_cert_fp_str);
   attestation_pending_ = false;
-  VLOG(2) << "StarRandomnessMeta: attestation succeeded";
+  VLOG(2) << "StarRandomnessMeta: attestation succeeded; fp = "
+          << approved_cert_fp_str;
   if (make_info_request_after) {
     RequestServerInfo();
   }
@@ -246,15 +276,20 @@ void StarRandomnessMeta::HandleServerInfoResponse(
     ScheduleServerInfoRetry();
     return;
   }
-  absl::optional<int> epoch = parsed_value.value().FindIntKey("currentEpoch");
-  std::string* next_epoch_time_str =
-      parsed_value.value().FindStringKey("nextEpochTime");
+  base::Value::Dict& root = parsed_value->GetDict();
+  absl::optional<int> epoch = root.FindInt("currentEpoch");
+  std::string* next_epoch_time_str = root.FindString("nextEpochTime");
   if (!epoch || !next_epoch_time_str) {
     LOG(ERROR) << "StarRandomnessMeta: failed to parse server info json: "
                   "missing fields";
     ScheduleServerInfoRetry();
     return;
   }
+
+  if (config_->fake_star_epoch.has_value()) {
+    epoch = config_->fake_star_epoch;
+  }
+
   base::Time next_epoch_time;
   if (!base::Time::FromString(next_epoch_time_str->c_str(), &next_epoch_time) ||
       next_epoch_time <= base::Time::Now()) {
@@ -263,7 +298,7 @@ void StarRandomnessMeta::HandleServerInfoResponse(
     ScheduleServerInfoRetry();
     return;
   }
-  const std::string* pk_value = parsed_value.value().FindStringKey("publicKey");
+  const std::string* pk_value = root.FindString("publicKey");
   ::rust::Box<constellation::PPOPRFPublicKeyWrapper> pk =
       DecodeServerPublicKey(pk_value);
   if (pk_value != nullptr) {
@@ -271,8 +306,16 @@ void StarRandomnessMeta::HandleServerInfoResponse(
   }
   local_state_->SetInteger(kCurrentEpochPrefName, *epoch);
   local_state_->SetTime(kNextEpochTimePrefName, next_epoch_time);
+
+  bool epoch_change_detected = false;
+  if (last_cached_epoch_ != epoch) {
+    last_cached_epoch_ = epoch;
+    epoch_change_detected = true;
+  }
+
   rnd_server_info_ = std::make_unique<RandomnessServerInfo>(
-      static_cast<uint8_t>(*epoch), next_epoch_time, std::move(pk));
+      static_cast<uint8_t>(*epoch), next_epoch_time, epoch_change_detected,
+      std::move(pk));
   current_backoff_time_ = base::TimeDelta();
   VLOG(2) << "StarRandomnessMeta: server info retrieved";
   info_callback_.Run(rnd_server_info_.get());

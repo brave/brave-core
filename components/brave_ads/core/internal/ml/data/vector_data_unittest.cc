@@ -23,13 +23,12 @@ TEST_F(BraveAdsVectorDataTest, DenseVectorDataInitialization) {
   // Act
 
   // Assert
-  EXPECT_EQ(static_cast<int>(vector_5.size()),
-            dense_vector_data_5.GetDimensionCount());
+  EXPECT_EQ(vector_5.size(), dense_vector_data_5.GetDimensionCount());
 }
 
 TEST_F(BraveAdsVectorDataTest, SparseVectorDataInitialization) {
   // Arrange
-  constexpr int kDimensionCount = 6;
+  constexpr size_t kDimensionCount = 6;
 
   const std::map<unsigned, double> sparse_vector_6 = {
       {0U, 1.0}, {2U, 3.0}, {3U, -2.0}};
@@ -213,7 +212,7 @@ TEST_F(BraveAdsVectorDataTest, NormalizeDenseVector) {
 }
 
 TEST_F(BraveAdsVectorDataTest, NormalizeSparseVector) {
-  constexpr int kDimensionCount = 6;
+  constexpr size_t kDimensionCount = 6;
   const std::map<unsigned, double> sparse_vector_5 = {
       {0U, 1.0}, {2U, 3.0}, {3U, -2.0}, {10U, -1.0}, {30U, 1.0}};
   VectorData sparse_vector_data_5(kDimensionCount, sparse_vector_5);

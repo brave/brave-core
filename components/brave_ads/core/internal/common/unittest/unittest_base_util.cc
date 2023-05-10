@@ -17,6 +17,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_reader.h"
 #include "base/no_destructor.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -25,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_test_suite_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -79,7 +81,8 @@ void MockRecordAdEventForId(const AdsClientMock& mock) {
             CHECK(!confirmation_type.empty());
 
             const std::string uuid = GetUuidForCurrentTestAndValue(id);
-            const std::string type_id = ad_type + confirmation_type;
+            const std::string type_id =
+                base::StrCat({ad_type, confirmation_type});
             AdEventHistory()[uuid][type_id].push_back(time);
           }));
 }
@@ -92,29 +95,29 @@ void MockGetAdEventHistory(const AdsClientMock& mock) {
             CHECK(!ad_type.empty());
             CHECK(!confirmation_type.empty());
 
-            const std::string namespace_for_current_test =
-                GetNamespaceForCurrentTest();
+            const std::string uuid_for_current_test = GetUuidForCurrentTest();
 
-            const std::string type_id = ad_type + confirmation_type;
+            const std::string type_id =
+                base::StrCat({ad_type, confirmation_type});
 
-            std::vector<base::Time> timestamps;
+            std::vector<base::Time> ad_event_history;
 
-            for (const auto& [uuid, ad_event_history] : AdEventHistory()) {
-              if (!base::EndsWith(uuid, namespace_for_current_test,
+            for (const auto& [uuid, history] : AdEventHistory()) {
+              if (!base::EndsWith(uuid,
+                                  base::StrCat({":", uuid_for_current_test}),
                                   base::CompareCase::SENSITIVE)) {
-                // Only get ad events for current test namespace.
+                // Only get ad events for current test.
                 continue;
               }
 
-              for (const auto& [ad_event_type_id, ad_event_timestamps] :
-                   ad_event_history) {
+              for (const auto& [ad_event_type_id, timestamps] : history) {
                 if (ad_event_type_id == type_id) {
-                  base::Extend(timestamps, ad_event_timestamps);
+                  base::Extend(ad_event_history, timestamps);
                 }
               }
             }
 
-            return timestamps;
+            return ad_event_history;
           }));
 }
 
@@ -149,10 +152,10 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              return std::move(callback).Run(/*success*/ false, value);
+              return std::move(callback).Run(absl::nullopt);
             }
 
-            std::move(callback).Run(/*success*/ true, value);
+            std::move(callback).Run(value);
           }));
 }
 
@@ -191,7 +194,7 @@ void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
         mojom::DBCommandResponseInfoPtr command_response =
             mojom::DBCommandResponseInfo::New();
 
-        database.RunTransaction(std::move(transaction), command_response.get());
+        database.RunTransaction(std::move(transaction), &*command_response);
 
         std::move(callback).Run(std::move(command_response));
       }));

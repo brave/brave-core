@@ -282,6 +282,13 @@
 -SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForValidSignedinSupervisedUsers
 -SupervisedUserURLFilterExtensionsTest.ChromeWebstoreURLsAreAlwaysAllowed
 
+# These tests dcheck because we modify the download bubble behavior with regards
+# to dangerous downloads.
+-DownloadDisplayControllerTest.GetProgressItemsAllComplete
+-DownloadDisplayControllerTest.InitialState_NewLastDownload
+-DownloadDisplayControllerTest.InitialState_OldLastDownload
+-DownloadDisplayControllerTest.UpdateToolbarButtonState_OnCompleteItemCreated
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
@@ -690,3 +697,6 @@
 # This test fails because we changed the behavior of the fuzzy finder to match
 # the empty string.
 -CommanderFuzzyFinder.EmptyStringDoesNotMatch
+
+# We changed the default value of media router to disabled, so the tests fail.
+-MediaDialogViewWithRemotePlaybackTest.*

@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
@@ -42,15 +42,15 @@ class Transactions final : public TableInterface {
 
   std::string GetTableName() const override;
 
+  void Create(mojom::DBTransactionInfo* transaction) override;
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const TransactionList& transactions);
 
-  std::string BuildInsertOrUpdateQuery(
-      mojom::DBCommandInfo* command,
-      const TransactionList& transactions) const;
+  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                     const TransactionList& transactions) const;
 };
 
 }  // namespace brave_ads::database::table

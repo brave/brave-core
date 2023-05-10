@@ -328,9 +328,7 @@ void UnitTestBase::MockSetDictPref(AdsClientMock& mock) {
       .WillByDefault(
           Invoke([=](const std::string& path, base::Value::Dict value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);
-            std::string json;
-            CHECK(base::JSONWriter::Write(value, &json));
-            Prefs()[uuid] = json;
+            CHECK(base::JSONWriter::Write(value, &Prefs()[uuid]));
             NotifyPrefDidChange(path);
           }));
 }
@@ -340,9 +338,7 @@ void UnitTestBase::MockSetListPref(AdsClientMock& mock) {
       .WillByDefault(
           Invoke([=](const std::string& path, base::Value::List value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);
-            std::string json;
-            CHECK(base::JSONWriter::Write(value, &json));
-            Prefs()[uuid] = json;
+            CHECK(base::JSONWriter::Write(value, &Prefs()[uuid]));
             NotifyPrefDidChange(path);
           }));
 }

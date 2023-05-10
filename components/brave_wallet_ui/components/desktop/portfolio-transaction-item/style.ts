@@ -196,7 +196,7 @@ export const CoinsButton = styled(WalletButton)`
   padding: 4px;
 `
 
-export const CoinsButtonSpacer = styled(WalletButton)`
+export const CoinsButtonSpacer = styled.div`
   width: 24px;
   height: 24px;
   padding: 4px;

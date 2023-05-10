@@ -13,45 +13,39 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
+class AntiTargetingResource;
 class SubdivisionTargeting;
+struct UserModelInfo;
 
-namespace new_tab_page_ads {
-
-class EligibleAdsBase {
+class EligibleNewTabPageAdsBase {
  public:
-  EligibleAdsBase(const EligibleAdsBase&) = delete;
-  EligibleAdsBase& operator=(const EligibleAdsBase&) = delete;
+  EligibleNewTabPageAdsBase(const EligibleNewTabPageAdsBase&) = delete;
+  EligibleNewTabPageAdsBase& operator=(const EligibleNewTabPageAdsBase&) =
+      delete;
 
-  EligibleAdsBase(EligibleAdsBase&&) noexcept = delete;
-  EligibleAdsBase& operator=(EligibleAdsBase&&) noexcept = delete;
+  EligibleNewTabPageAdsBase(EligibleNewTabPageAdsBase&&) noexcept = delete;
+  EligibleNewTabPageAdsBase& operator=(EligibleNewTabPageAdsBase&&) noexcept =
+      delete;
 
-  virtual ~EligibleAdsBase();
+  virtual ~EligibleNewTabPageAdsBase();
 
   virtual void GetForUserModel(
-      targeting::UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) = 0;
+      UserModelInfo user_model,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback) = 0;
 
   void SetLastServedAd(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
-  EligibleAdsBase(const SubdivisionTargeting& subdivision_targeting,
-                  const resource::AntiTargeting& anti_targeting_resource);
+  EligibleNewTabPageAdsBase(
+      const SubdivisionTargeting& subdivision_targeting,
+      const AntiTargetingResource& anti_targeting_resource);
 
   const raw_ref<const SubdivisionTargeting> subdivision_targeting_;
-  const raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
+  const raw_ref<const AntiTargetingResource> anti_targeting_resource_;
 
   AdInfo last_served_ad_;
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NEW_TAB_PAGE_ADS_ELIGIBLE_NEW_TAB_PAGE_ADS_BASE_H_

@@ -1,13 +1,15 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/tx_service.h"
 
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -21,11 +23,13 @@ namespace {
 
 mojom::CoinType GetCoinTypeFromTxDataUnion(
     const mojom::TxDataUnion& tx_data_union) {
-  if (tx_data_union.is_solana_tx_data())
+  if (tx_data_union.is_solana_tx_data()) {
     return mojom::CoinType::SOL;
+  }
 
-  if (tx_data_union.is_fil_tx_data())
+  if (tx_data_union.is_fil_tx_data()) {
     return mojom::CoinType::FIL;
+  }
 
   return mojom::CoinType::ETH;
 }
@@ -44,15 +48,21 @@ size_t CalculatePendingTxCount(
 }  // namespace
 
 TxService::TxService(JsonRpcService* json_rpc_service,
+                     BitcoinWalletService* bitcoin_wallet_service,
                      KeyringService* keyring_service,
                      PrefService* prefs)
     : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
-  tx_manager_map_[mojom::CoinType::ETH] = std::unique_ptr<TxManager>(
-      new EthTxManager(this, json_rpc_service, keyring_service, prefs));
-  tx_manager_map_[mojom::CoinType::SOL] = std::unique_ptr<TxManager>(
-      new SolanaTxManager(this, json_rpc_service, keyring_service, prefs));
-  tx_manager_map_[mojom::CoinType::FIL] = std::unique_ptr<TxManager>(
-      new FilTxManager(this, json_rpc_service, keyring_service, prefs));
+  tx_manager_map_[mojom::CoinType::ETH] = std::make_unique<EthTxManager>(
+      this, json_rpc_service, keyring_service, prefs);
+  tx_manager_map_[mojom::CoinType::SOL] = std::make_unique<SolanaTxManager>(
+      this, json_rpc_service, keyring_service, prefs);
+  tx_manager_map_[mojom::CoinType::FIL] = std::make_unique<FilTxManager>(
+      this, json_rpc_service, keyring_service, prefs);
+  if (IsBitcoinEnabled()) {
+    CHECK(bitcoin_wallet_service);
+    tx_manager_map_[mojom::CoinType::BTC] = std::make_unique<BitcoinTxManager>(
+        this, json_rpc_service, bitcoin_wallet_service, keyring_service, prefs);
+  }
 }
 
 TxService::~TxService() = default;
@@ -240,26 +250,31 @@ void TxService::AddObserver(
 }
 
 void TxService::OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) {
-  for (const auto& observer : observers_)
+  for (const auto& observer : observers_) {
     observer->OnTransactionStatusChanged(tx_info->Clone());
+  }
 }
 
 void TxService::OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) {
-  for (const auto& observer : observers_)
+  for (const auto& observer : observers_) {
     observer->OnNewUnapprovedTx(tx_info->Clone());
+  }
 }
 
 void TxService::OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) {
-  for (const auto& observer : observers_)
+  for (const auto& observer : observers_) {
     observer->OnUnapprovedTxUpdated(tx_info->Clone());
+  }
 }
 
 void TxService::Reset() {
   ClearTxServiceProfilePrefs(prefs_);
-  for (auto const& service : tx_manager_map_)
+  for (auto const& service : tx_manager_map_) {
     service.second->Reset();
-  for (const auto& observer : observers_)
+  }
+  for (const auto& observer : observers_) {
     observer->OnTxServiceReset();
+  }
 }
 
 void TxService::MakeERC20TransferData(const std::string& to_address,

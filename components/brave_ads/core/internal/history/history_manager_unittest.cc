@@ -7,6 +7,7 @@
 
 #include "base/containers/circular_deque.h"
 #include "base/ranges/algorithm.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -236,8 +237,8 @@ TEST_F(BraveAdsHistoryManagerTest, LikeCategory) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Act
-  HistoryManager::GetInstance().LikeCategory(
-      ad.segment, CategoryContentOptActionType::kNone);
+  HistoryManager::GetInstance().LikeCategory(ad.segment,
+                                             mojom::UserReactionType::kNeutral);
 
   // Assert
   EXPECT_FALSE(did_dislike_category_);
@@ -254,7 +255,7 @@ TEST_F(BraveAdsHistoryManagerTest, DislikeCategory) {
 
   // Act
   HistoryManager::GetInstance().DislikeCategory(
-      ad.segment, CategoryContentOptActionType::kNone);
+      ad.segment, mojom::UserReactionType::kNeutral);
 
   // Assert
   EXPECT_TRUE(did_dislike_category_);

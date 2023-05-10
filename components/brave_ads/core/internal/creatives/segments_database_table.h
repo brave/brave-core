@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
@@ -24,12 +24,12 @@ class Segments final : public TableInterface {
 
   std::string GetTableName() const override;
 
+  void Create(mojom::DBTransactionInfo* transaction) override;
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
-  std::string BuildInsertOrUpdateQuery(
-      mojom::DBCommandInfo* command,
-      const CreativeAdList& creative_ads) const;
+  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                     const CreativeAdList& creative_ads) const;
 };
 
 }  // namespace brave_ads::database::table

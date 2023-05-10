@@ -210,15 +210,14 @@
 <translation id="7577100371127227294">毎月のチップ</translation>
 <translation id="178390304006113804">毎月のチップを設定することで、お気に入りのクリエイターを継続的にサポートすることができます。</translation>
 <translation id="3302159320447117425">毎月のチップ額が設定されていません。</translation>
+<translation id="564837702459183199">次の寄付</translation>
 <translation id="4898632353264854950">サイトは閲覧する際に表示されます</translation>
 <translation id="3024485967181749006">今月のチップ合計</translation>
-<translation id="8183455888546367148">今月のチップ合計</translation>
 <translation id="4153752809523809915">今日はお気に入りコンテンツの作者へチップを送りましたか？</translation>
 <translation id="7286722244752781970">サイト訪問を記録する最小ページ数</translation>
 <translation id="4424486208397124985">サイト関連性推定に使用する最小サイト訪問数</translation>
 <translation id="5421369907811917952">その他の設定</translation>
 <translation id="6248554379744796526">リスト内に未検証のサイトを表示する</translation>
-<translation id="5510618543889994434">動画への支援を許可する</translation>
 <translation id="8933202740471878108">訪問数1</translation>
 <translation id="354797634123275103">5 回訪問</translation>
 <translation id="3583700907990488238">10 回訪問</translation>
@@ -227,7 +226,6 @@
 <translation id="8610523985422563960">1分</translation>
 <translation id="2807328214759298515">最大</translation>
 <translation id="7483857210736407752">サイト上にチップボタンを表示する</translation>
-<translation id="7583327070390027131">次の毎月のチップ日</translation>
 <translation id="6231182869178328516">Braveでチップを送りました！ <ph name="NAME"/> https://brave.com/ja/tips/</translation>
 <translation id="5916536234616514390"><ph name="HASHTAG"/>Brave でクリエイターをサポートできて最高です！<ph name="NAME"/>に<ph name="HASHTAG2"/>BATのチップを送信したので、<ph name="DATE"/>までに https://creators.brave.com で認証してBATを手に入れてください！</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -641,6 +639,7 @@
 <translation id="8797999629784150206"><ph name="SITE_PERMISSIONS"/>をいつでも変更できます。 <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">サイトのアクセス許可</translation>
 <translation id="4355784577209159847">レガシーのGoogleサインインにサードパーティCookieの使用を許可</translation>
+<translation id="5770656036486891920"><ph name="URL"/>から、レガシーGoogleサインインのためにサードパーティのCookieを使用することを求められています。</translation>
 <translation id="7717357606512850995">ステータスを確認</translation>
 <translation id="7306880305145342514">おめでとうございます！<ph name="MONTH"/>のリワードを獲得しました！</translation>
 <translation id="3007207731685398329"><ph name="MONTH"/>のリワード<ph name="AMOUNT"/>が<ph name="DAYS"/>後以降に順次送付されます。</translation>
@@ -662,6 +661,7 @@
       =1 {今月アクセスした、Brave Rewardsから支援されているクリエイターの数は#人です}
       other {今月アクセスした、Brave Rewardsから支援されているクリエイターの数は#人です}
     }</translation>
+<translation id="6067959437127691361">Brave Rewardsを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/>のリワード: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481"><ph name="MONTH"/>のリワードが届きました！</translation>
 <translation id="7861645265922445992">リワードを受け取る</translation>
@@ -693,7 +693,6 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">設定</translation>
 <translation id="8853725596990766789">金額を変更</translation>
-<translation id="6067959437127691361">Brave Rewardsを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
 <translation id="1609556006143307897">あなたはコンテンツクリエイターを支援中です</translation>
 <translation id="6605147707233193230">有効にしてコンテンツクリエイターを支援</translation>
 <translation id="5430495762768325224">BATに関する詳細</translation>
@@ -787,6 +786,7 @@
 <translation id="9161147058107529840">単一のオブジェクトのパラメーターが必要です。</translation>
 <translation id="1875861420974447980">このチェーンIDは現在使用中です</translation>
 <translation id="167698752210114155">内部エラーが発生しました</translation>
+<translation id="7497827357097190289">ブロックハッシュが無効、または検証できません</translation>
 <translation id="8945668490056243760">サポートされないサブスクリプションタイプです</translation>
 <translation id="2326876601333401685">このRPCメソッドはサポートされていません。</translation>
 <translation id="1128992132632883337">レスポンスのパースエラーが発生しました</translation>
@@ -870,6 +870,7 @@
 <translation id="570080709303714420">半分</translation>
 <translation id="2784548701748328827">最大</translation>
 <translation id="2329227154184107678">注文をレビュー</translation>
+<translation id="3220443877821207794">レビュー送信</translation>
 <translation id="8530071505111489657">利用可能なトークンがありません</translation>
 <translation id="615791330696335475">トークンを名前で検索</translation>
 <translation id="5009335307032488349">NFTを名前、IDで検索</translation>
@@ -1094,9 +1095,20 @@
 <translation id="4460220693591349571">機能タイプ</translation>
 <translation id="838933475572692615">HEXデータ</translation>
 <translation id="2240831799756994975">バイト</translation>
-<translation id="4874303883488468190">アカウントを選択</translation>
-<translation id="2018472018751735678">許可されたアカウントのアドレスを表示（必須）</translation>
-<translation id="7029403458170657879">Brave Wallet で接続する</translation>
+<translation id="6760823167126275974">ウォレットを接続</translation>
+<translation id="716009557505091365">またはこちらと接続:</translation>
+<translation id="7242985059140288348">このアプリは、以下のことができます。</translation>
+<translation id="7352133688029686231">以下のことはできません。</translation>
+<translation id="1647328658385235886">ウォレットの残高とアクティビティを確認する</translation>
+<translation id="3295962112184461868">取引や署名の承認を求める</translation>
+<translation id="6096892345597202096">許可されたウォレットアドレスを表示する</translation>
+<translation id="496578987299869780">お客様の許可なく資金を移動させる</translation>
+<translation id="3226586788973641582">信頼できるサイトかどうかを確認してください。</translation>
+<translation id="6837278005487143422">許可期間</translation>
+<translation id="1903637466604153314">このサイトを閉じるまで</translation>
+<translation id="4324239559624557455">24時間</translation>
+<translation id="9139452553033760558">1週間</translation>
+<translation id="1658834457013045127">無期限</translation>
 <translation id="2770851145415891830">既存の暗号資産ウォレットが検出されました</translation>
 <translation id="2237759620789871865">インポートをスキップして以前の暗号資産ウォレットのエクスペリエンスを維持したい場合は、Braveブラウザの<ph name="LINK_BEFORE"/>設定<ph name="LINK_AFTER"/>に移動して、デフォルトを暗号資産ウォレットに戻してください。インポートして新しいBraveウォレットを試した後、いつでも元に戻すことができます。</translation>
 <translation id="5590175005414413980">Braveウォレットにインポートする既存の暗号資産ウォレットのパスワードを入力します。暗号資産の管理とWeb3 DAppとの通信を、より高速で安全に行うことができます。</translation>
@@ -1172,7 +1184,9 @@
 <translation id="8585995109882455949">正しいアドレスを調べるにはどうすればよいですか？</translation>
 <translation id="8395402412470376435">Braveは、大文字小文字が正しくないために、ユーザーが間違ったアドレスに資金を送ることを検証、防止します。これは、有効なイーサリアムのアドレスであることを確認するための「チェックサム」処理です。</translation>
 <translation id="4583433813614292221">1. アクセス</translation>
+<translation id="8061317754447191238">etherscanにアクセスし、トークンを送りたいウォレットアドレスを貼り付けます。次に</translation>
 <translation id="5393164213211430081">2. ETHアドレスをコピーして入力</translation>
+<translation id="8306108469060304141">Copyを入力し、正しいアドレスを入力します。一部の文字が正しく変換されたことが確認できます。</translation>
 <translation id="2378355054306959991">もっと詳しく知りたい方はこちら</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/>件のトランザクションを拒否</translation>
@@ -1212,7 +1226,6 @@
 <translation id="1904295039023858291">トークン規格</translation>
 <translation id="9033453977881595182">トークンID</translation>
 <translation id="6332387008245531841">連絡先アドレス</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">画像の位置またはアドレス</translation>
 <translation id="2962388922926051374"><ph name="URL"/>におけるメソッド 'eth_chainId' のリクエストに失敗しました</translation>
 <translation id="8325036459845654666">このネットワークは既に追加されています。</translation>
@@ -1229,14 +1242,11 @@
 <translation id="5133421763709317473">検索またはフィルタに一致するアセットが見つかりません。</translation>
 <translation id="7383613643114466279">このアセットは、Brave Walletではサポートされていません</translation>
 <translation id="6423985584914773314">有効なFILアドレスではありません</translation>
-<translation id="3898731124813934210">Wyreで購入</translation>
 <translation id="5522073372365069684">Rampで購入</translation>
 <translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/>で販売</translation>
-<translation id="6097502401711916278"><ph name="FIAT_AMOUNT"/> 以上であることが条件です。</translation>
 <translation id="7902920577183739843">Sardineで購入</translation>
 <translation id="6534275647567011533">Transakで購入</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">VisaまたはMastercardで暗号資産を購入。</translation>
@@ -1513,18 +1523,17 @@
 <translation id="2227702748249086756">料金の見積もりを取ることができない</translation>
 <translation id="5361710044667743492">なぜ利用できないのでしょうか？</translation>
 <translation id="3668838456083358569">NFTデータの中には、AWSやGoogle Cloudなどの中央サーバーに保存されているものがあります。この場合、IPFSネットワークにNFTデータを固定することはできません。</translation>
-<translation id="1293258969121701010">コンピューター上でIPFSを実行することで、以下のことが可能になります。</translation>
-<translation id="4568942135611119076">NFTのデータはオンラインに保存し、改ざんできないようにします。</translation>
-<translation id="4915883034746438977">不正なデータからコンテンツ識別子(CID)を使ってコンテンツを取り戻します。</translation>
-<translation id="1373647012698032676">真偽証明に参加し、IPFSのネットワークを豊かで健全なものにしましょう。</translation>
-<translation id="1806204385270226865">NFTを常にオンラインにしておく</translation>
-<translation id="4323376551843624309">NFTのピン留めを有効にする</translation>
-<translation id="6501331923135442324">Web3の一部となるための大きな一歩</translation>
-<translation id="5361073938927187534">IPFSノードを稼働させ、NFTを常にオンラインにしておく</translation>
-<translation id="1060267371223703324">自分のNFTのうち、どのNFTをピン留めできるかを確認する</translation>
-<translation id="2641083452974145848">これでIPFSを稼働させ、Web3の一部になることができます。NFTのデータは永遠にオンラインであり、改ざんされることはありません。</translation>
-<translation id="4460927368826360904">IPFSノードが稼働しています。ファイルはローカルIPFSノードにフェッチされています。</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/>のうち、<ph name="PINNABLE"/> NFTはIPFSに正常にピン留めされています。</translation>
+<translation id="4225753478505258806">しかし、IPFSが機能するためには、個々の参加者が必要です。コンピュータでIPFSを実行すると、以下のことが可能になります。</translation>
+<translation id="7674069205559000521">ネットワークのスピードと可用性に貢献する</translation>
+<translation id="7775229731579227782">NFTのセキュリティを高める</translation>
+<translation id="2319971828691864975">IPFSを始める</translation>
+<translation id="7906328323880284538">NFTを最も安全にホストする方法</translation>
+<translation id="166206715890914321">NFTを永遠にオンラインに保つためにIPFSノードを実行する</translation>
+<translation id="8913523138550521467">IPFSは、従来のウェブホスティングに代わる超安全な方法です。IPFSは単一のホストに依存するのではなく、何千もの個人（「ノード」を運営する）が協力してコンテンツを保存することを可能にします。そして、一人がコピーを持っている限り、ファイルは決して消えることはありません。NFTをIPFSに「ピン留め」し、独自のIPFSノードを運営することは、NFTを安全に保護するための最善の方法です。</translation>
+<translation id="9160750213078764355">私のNFTのうち、どれが対象か確認する</translation>
+<translation id="6671461082721702724">これでIPFSを稼働させ、Web3の一部になることができます。NFTのデータは永遠にオンラインであり続けます。</translation>
+<translation id="654964147165509548">NFTは、ローカルのIPFSノードにピン留めされています。</translation>
+<translation id="4910182786472608576"><ph name="PINNED"/>対応NFTは、ローカルのIPFSノードにピン留めされています。</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/>のうち、<ph name="TOTAL"/>が利用できます！</translation>
 <translation id="6852656829524945421">ピン留めできない</translation>
 <translation id="7698019251444927442">IPFSノードが稼働している</translation>
@@ -1532,10 +1541,15 @@
 <translation id="7527548209942671618">ローカルIPFSノードにピン留め</translation>
 <translation id="5659058832308365026">NFTデータは、ローカルのIPFSノードにピン留めされています</translation>
 <translation id="4919133452617704550">ローカルのIPFSノードにピン留めすることができない</translation>
+<translation id="4220102684162429566">最も多い理由:</translation>
+<translation id="451509325309455">NFTはIPFS以外のメタデータのurlに問題がある</translation>
+<translation id="3827697793483899711">内部IPFSノードの問題</translation>
+<translation id="1992846713609432783">ローカルノードに十分な容量がない</translation>
 <translation id="3225624966527491351">NFTをインポート</translation>
 <translation id="9085765419770918643">ここにはまだNFTはありません。</translation>
 <translation id="8445532667841598737">追加する準備はできていますか？下のボタンをクリックしてインポートしてください。</translation>
 <translation id="9136462955850040542">Solana（SPL）、Ethereum（ERC-721）上のNFTに対応しています。</translation>
+<translation id="849880459530751909">NFTを編集する</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -1612,6 +1626,9 @@
 <translation id="9204041448536398473">Shieldのグローバル設定</translation>
 <translation id="2108334320919763866">グローバルのデフォルト設定</translation>
 <translation id="3440043456924990296">設定は組織で管理</translation>
+<translation id="7053983685419859001">ブロック</translation>
+<translation id="5716230673298034837">すべて許可する</translation>
+<translation id="5279600392753459966">すべてブロックする</translation>
 <translation id="4516904298421534459">フィルターリスト</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="131231380815754440">HTTPSを有効にする</translation>
@@ -1622,6 +1639,7 @@
 <translation id="8593054718053894081">すべてのトラッカーと広告をブロック</translation>
 <translation id="7384778069178817075">すべてのトラッカー &amp; 広告を許可</translation>
 <translation id="4941539331405513605">クロスサイトクッキーをブロック</translation>
+<translation id="2749284154880331639">ファーストパーティCookieを忘れる</translation>
 <translation id="6883611015375728278">全てのクッキーをブロック</translation>
 <translation id="5657156137487675418">全てのクッキーを許可する</translation>
 <translation id="8366221601425141146">フィンガープリントがブロックされました</translation>
@@ -1636,6 +1654,7 @@
 <translation id="7194012750329511146">Brave Shield
 で、<ph name="NUMBER"/>件のトラッカー、広告などがブロックされました</translation>
 <translation id="4292121526390005808">ブロックされたスクリプト</translation>
+<translation id="5046271170844958713">スクリプトを許可する</translation>
 <translation id="264682546981571963">Cookieの同意通知にうんざりしていませんか？</translation>
 <translation id="4986297793092101884">Braveはすでにサードパーティーのクッキーをブロックしています。クッキーの同意通知もブロックすることができます。</translation>
 <translation id="535688588637568715">はい、Cookieの同意通知をブロックします。</translation>
@@ -1672,6 +1691,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/>が<ph name="REGION_NAME"/>サーバーに接続できませんでした。再度お試しいただくか、別のものを選択してください。</translation>
 <translation id="1024255913009642477">VPNを購入済みですか？</translation>
 <translation id="8814357473522731680">提供元</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">有効期限</translation>
 <translation id="1691256669639196606">サブスクリプションを管理</translation>
 <translation id="434523916398030617">テクニカルサポートに連絡する</translation>

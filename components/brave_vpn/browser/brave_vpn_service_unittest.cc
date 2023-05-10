@@ -21,7 +21,6 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api_sim.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
@@ -44,6 +43,10 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_sim.h"
+#endif
 
 namespace brave_vpn {
 
@@ -225,7 +228,9 @@ class BraveVPNServiceTest : public testing::Test {
       service_->Shutdown();
     }
     skus_service_.reset();
+#if !BUILDFLAG(IS_ANDROID)
     connection_api_.reset();
+#endif
   }
 
   void ResetVpnService() {
@@ -233,8 +238,13 @@ class BraveVPNServiceTest : public testing::Test {
       service_->Shutdown();
     }
     service_ = std::make_unique<BraveVpnService>(
-        connection_api_.get(), url_loader_factory_.GetSafeWeakWrapper(),
-        &local_pref_service_, &profile_pref_service_,
+#if !BUILDFLAG(IS_ANDROID)
+        connection_api_.get(),
+#else
+        nullptr,
+#endif
+        url_loader_factory_.GetSafeWeakWrapper(), &local_pref_service_,
+        &profile_pref_service_,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
   }
@@ -499,9 +509,10 @@ class BraveVPNServiceTest : public testing::Test {
     EXPECT_TRUE(observer->GetPurchasedState().has_value());
     EXPECT_EQ(observer->GetPurchasedState().value(), state);
   }
-
-  std::string https_response_;
+#if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<BraveVPNOSConnectionAPISim> connection_api_;
+#endif
+  std::string https_response_;
   base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_pref_service_;

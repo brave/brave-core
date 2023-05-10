@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace promotion {
 
 PromotionTransfer::PromotionTransfer(LedgerImpl& ledger)
@@ -24,7 +24,7 @@ PromotionTransfer::PromotionTransfer(LedgerImpl& ledger)
 
 PromotionTransfer::~PromotionTransfer() = default;
 
-void PromotionTransfer::Start(ledger::PostSuggestionsClaimCallback callback) {
+void PromotionTransfer::Start(PostSuggestionsClaimCallback callback) {
   auto tokens_callback =
       base::BindOnce(&PromotionTransfer::OnGetSpendableUnblindedTokens,
                      base::Unretained(this), std::move(callback));
@@ -37,7 +37,7 @@ void PromotionTransfer::Start(ledger::PostSuggestionsClaimCallback callback) {
 }
 
 void PromotionTransfer::OnGetSpendableUnblindedTokens(
-    ledger::PostSuggestionsClaimCallback callback,
+    PostSuggestionsClaimCallback callback,
     std::vector<mojom::UnblindedTokenPtr> tokens) {
   std::vector<mojom::UnblindedToken> token_list;
   for (auto& token : tokens) {
@@ -59,11 +59,10 @@ void PromotionTransfer::OnGetSpendableUnblindedTokens(
                              redeem.token_list.size() * constant::kVotePrice));
 }
 
-void PromotionTransfer::OnDrainTokens(
-    ledger::PostSuggestionsClaimCallback callback,
-    double transfer_amount,
-    mojom::Result result,
-    std::string drain_id) const {
+void PromotionTransfer::OnDrainTokens(PostSuggestionsClaimCallback callback,
+                                      double transfer_amount,
+                                      mojom::Result result,
+                                      std::string drain_id) const {
   if (result == mojom::Result::LEDGER_OK) {
     ledger_->database()->SaveEventLog(log::kPromotionVBATDrained,
                                       base::NumberToString(transfer_amount));
@@ -73,4 +72,4 @@ void PromotionTransfer::OnDrainTokens(
 }
 
 }  // namespace promotion
-}  // namespace ledger
+}  // namespace brave_rewards::internal

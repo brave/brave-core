@@ -8,50 +8,74 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
+#include "brave/components/brave_ads/core/internal/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 namespace {
 constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
 }  // namespace
 
-TextClassification::TextClassification() = default;
+TextClassificationResource::TextClassificationResource() {
+  AdsClientHelper::AddObserver(this);
+}
 
-TextClassification::~TextClassification() = default;
+TextClassificationResource::~TextClassificationResource() {
+  AdsClientHelper::RemoveObserver(this);
+}
 
-bool TextClassification::IsInitialized() const {
+bool TextClassificationResource::IsInitialized() const {
   return text_processing_pipeline_.IsInitialized();
 }
 
-void TextClassification::Load() {
+void TextClassificationResource::Load() {
   LoadAndParseResource(
-      kResourceId, targeting::kTextClassificationResourceVersion.Get(),
-      base::BindOnce(&TextClassification::OnLoadAndParseResource,
+      kResourceId, kTextClassificationResourceVersion.Get(),
+      base::BindOnce(&TextClassificationResource::LoadAndParseResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
-void TextClassification::OnLoadAndParseResource(
-    ParsingErrorOr<ml::pipeline::TextProcessing> result) {
+///////////////////////////////////////////////////////////////////////////////
+
+void TextClassificationResource::LoadAndParseResourceCallback(
+    ResourceParsingErrorOr<ml::pipeline::TextProcessing> result) {
   if (!result.has_value()) {
-    BLOG(1, result.error());
-    BLOG(1, "Failed to initialize " << kResourceId
-                                    << " text classification resource");
+    BLOG(0, "Failed to initialize " << kResourceId
+                                    << " text classification resource ("
+                                    << result.error() << ")");
     return;
   }
+
+  if (!result.value().IsInitialized()) {
+    BLOG(7, kResourceId << " text classification resource does not exist");
+    return;
+  }
+
   BLOG(1, "Successfully loaded " << kResourceId
                                  << " text classification resource");
+
   text_processing_pipeline_ = std::move(result).value();
 
-  BLOG(1, "Successfully initialized " << kResourceId
-                                      << " text classification resource");
+  BLOG(1, "Successfully initialized "
+              << kResourceId << " text classification resource version "
+              << kTextClassificationResourceVersion.Get());
 }
 
-const ml::pipeline::TextProcessing* TextClassification::Get() const {
-  return &text_processing_pipeline_;
+void TextClassificationResource::OnNotifyLocaleDidChange(
+    const std::string& /*locale*/) {
+  Load();
 }
 
-}  // namespace brave_ads::resource
+void TextClassificationResource::OnNotifyDidUpdateResourceComponent(
+    const std::string& id) {
+  if (IsValidLanguageComponentId(id)) {
+    Load();
+  }
+}
+
+}  // namespace brave_ads

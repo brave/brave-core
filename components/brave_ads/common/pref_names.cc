@@ -10,13 +10,6 @@ namespace brave_ads::prefs {
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
-// Stores whether ads were disabled at least once
-const char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
-
-// Indicates whether we have any initial state of the ads status metric, besides
-// "No Wallet".
-const char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
-
 // Prefix for preference names pertaining to p2a weekly metrics
 const char kP2AStoragePrefNamePrefix[] = "brave.weekly_storage.";
 

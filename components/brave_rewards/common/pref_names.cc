@@ -44,8 +44,8 @@ const char kPromotionCorruptedMigrated[] =
     "brave.rewards.promotion_corrupted_migrated2";
 const char kAnonTransferChecked[] =  "brave.rewards.anon_transfer_checked";
 const char kVersion[] =  "brave.rewards.version";
-const char kMinVisitTime[] =  "brave.rewards.ac.min_visit_time";
-const char kMinVisits[] =  "brave.rewards.ac.min_visits";
+const char kMinVisitTime[] = "brave.rewards.ac.min_visit_time";
+const char kMinVisits[] = "brave.rewards.ac.min_visits";
 const char kAllowNonVerified[] =  "brave.rewards.ac.allow_non_verified";
 const char kAllowVideoContribution[] =
     "brave.rewards.ac.allow_video_contributions";
@@ -88,6 +88,8 @@ const char kWalletBitflyer[] = "brave.rewards.wallets.bitflyer";
 const char kWalletGemini[] = "brave.rewards.wallets.gemini";
 const char kWalletCreationEnvironment[] =
     "brave.rewards.wallet_creation_environment";
+const char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
+const char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
 
 }  // namespace prefs
 }  // namespace brave_rewards

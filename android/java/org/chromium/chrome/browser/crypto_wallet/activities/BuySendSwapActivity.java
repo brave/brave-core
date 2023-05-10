@@ -1790,7 +1790,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     new MaterialAlertDialogBuilder(this, R.style.BraveWalletAlertDialogTheme)
                             .setMessage(getString(R.string.brave_wallet_create_account_description,
                                     networkInfo.symbolName))
-                            .setPositiveButton(R.string.wallet_action_yes,
+                            .setPositiveButton(R.string.brave_action_yes,
                                     (dialog, which) -> {
                                         mWalletModel.getCryptoModel().getNetworkModel().setNetwork(
                                                 networkInfo, success -> {
@@ -1815,7 +1815,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                                             .clearCreateAccountState();
                                                 });
                                     })
-                            .setNegativeButton(R.string.wallet_action_no, (dialog, which) -> {
+                            .setNegativeButton(R.string.brave_action_no, (dialog, which) -> {
                                 // update mNetworkSpinner to current network
                                 setSelectedNetwork(mSelectedNetwork, mNetworks);
 

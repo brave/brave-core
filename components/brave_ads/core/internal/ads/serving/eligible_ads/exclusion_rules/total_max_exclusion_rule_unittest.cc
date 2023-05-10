@@ -32,7 +32,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   creative_ad.creative_set_id = kCreativeSetIds[0];
   creative_ad.total_max = 2;
 
-  TotalMaxExclusionRule exclusion_rule({});
+  const TotalMaxExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -53,7 +53,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 
   ad_events.push_back(ad_event);
 
-  TotalMaxExclusionRule exclusion_rule(ad_events);
+  const TotalMaxExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -79,7 +79,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest,
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  TotalMaxExclusionRule exclusion_rule(ad_events);
+  const TotalMaxExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -93,7 +93,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
   creative_ad.creative_set_id = kCreativeSetIds[0];
   creative_ad.total_max = 0;
 
-  TotalMaxExclusionRule exclusion_rule({});
+  const TotalMaxExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -115,7 +115,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  TotalMaxExclusionRule exclusion_rule(ad_events);
+  const TotalMaxExclusionRule exclusion_rule(ad_events);
 
   // Act
 

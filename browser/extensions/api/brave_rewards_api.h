@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/types/expected.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "extensions/browser/extension_function.h"
@@ -100,8 +100,8 @@ class BraveRewardsGetPublisherInfoFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetPublisherInfo(const ledger::mojom::Result result,
-                          ledger::mojom::PublisherInfoPtr info);
+  void OnGetPublisherInfo(const brave_rewards::mojom::Result result,
+                          brave_rewards::mojom::PublisherInfoPtr info);
 };
 
 class BraveRewardsSetPublisherIdForTabFunction : public ExtensionFunction {
@@ -123,8 +123,8 @@ class BraveRewardsGetPublisherInfoForTabFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetPublisherPanelInfo(ledger::mojom::Result result,
-                               ledger::mojom::PublisherInfoPtr info);
+  void OnGetPublisherPanelInfo(brave_rewards::mojom::Result result,
+                               brave_rewards::mojom::PublisherInfoPtr info);
 };
 
 class BraveRewardsGetPublisherPanelInfoFunction : public ExtensionFunction {
@@ -137,8 +137,8 @@ class BraveRewardsGetPublisherPanelInfoFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetPublisherPanelInfo(const ledger::mojom::Result result,
-                               ledger::mojom::PublisherInfoPtr info);
+  void OnGetPublisherPanelInfo(const brave_rewards::mojom::Result result,
+                               brave_rewards::mojom::PublisherInfoPtr info);
 };
 
 class BraveRewardsSavePublisherInfoFunction : public ExtensionFunction {
@@ -151,7 +151,7 @@ class BraveRewardsSavePublisherInfoFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnSavePublisherInfo(const ledger::mojom::Result result);
+  void OnSavePublisherInfo(const brave_rewards::mojom::Result result);
 };
 
 class BraveRewardsTipSiteFunction : public ExtensionFunction {
@@ -174,9 +174,9 @@ class BraveRewardsTipUserFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnTipUserGetPublisherInfo(const ledger::mojom::Result result,
-                                 ledger::mojom::PublisherInfoPtr info);
-  void OnTipUserSavePublisherInfo(const ledger::mojom::Result result);
+  void OnTipUserGetPublisherInfo(const brave_rewards::mojom::Result result,
+                                 brave_rewards::mojom::PublisherInfoPtr info);
+  void OnTipUserSavePublisherInfo(const brave_rewards::mojom::Result result);
   void ShowTipDialog();
 };
 
@@ -200,7 +200,8 @@ class BraveRewardsGetRewardsParametersFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetRewardsParameters(ledger::mojom::RewardsParametersPtr parameters);
+  void OnGetRewardsParameters(
+      brave_rewards::mojom::RewardsParametersPtr parameters);
 };
 
 class BraveRewardsCreateRewardsWalletFunction : public ExtensionFunction {
@@ -214,7 +215,7 @@ class BraveRewardsCreateRewardsWalletFunction : public ExtensionFunction {
 
  private:
   void CreateRewardsWalletCallback(
-      ledger::mojom::CreateRewardsWalletResult result);
+      brave_rewards::mojom::CreateRewardsWalletResult result);
 };
 
 class BraveRewardsGetAvailableCountriesFunction : public ExtensionFunction {
@@ -257,7 +258,7 @@ class BraveRewardsGetUserTypeFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void Callback(ledger::mojom::UserType user_type);
+  void Callback(brave_rewards::mojom::UserType user_type);
 };
 
 class BraveRewardsGetPublishersVisitedCountFunction : public ExtensionFunction {
@@ -283,8 +284,8 @@ class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnBalanceReport(const ledger::mojom::Result result,
-                       ledger::mojom::BalanceReportInfoPtr report);
+  void OnBalanceReport(const brave_rewards::mojom::Result result,
+                       brave_rewards::mojom::BalanceReportInfoPtr report);
 };
 
 class BraveRewardsIncludeInAutoContributionFunction : public ExtensionFunction {
@@ -307,7 +308,8 @@ class BraveRewardsFetchPromotionsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnPromotionsFetched(std::vector<ledger::mojom::PromotionPtr> promotions);
+  void OnPromotionsFetched(
+      std::vector<brave_rewards::mojom::PromotionPtr> promotions);
 };
 
 class BraveRewardsClaimPromotionFunction : public ExtensionFunction {
@@ -321,7 +323,7 @@ class BraveRewardsClaimPromotionFunction : public ExtensionFunction {
 
  private:
   void OnClaimPromotion(const std::string& promotion_id,
-                        const ledger::mojom::Result result,
+                        const brave_rewards::mojom::Result result,
                         const std::string& captcha_image,
                         const std::string& hint,
                         const std::string& captcha_id);
@@ -338,8 +340,8 @@ class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
 
  private:
   void OnAttestPromotion(const std::string& promotion_id,
-                         const ledger::mojom::Result result,
-                         ledger::mojom::PromotionPtr promotion);
+                         const brave_rewards::mojom::Result result,
+                         brave_rewards::mojom::PromotionPtr promotion);
 };
 
 class BraveRewardsGetPendingContributionsTotalFunction
@@ -400,7 +402,7 @@ class BraveRewardsSaveRecurringTipFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnSaveRecurringTip(ledger::mojom::Result result);
+  void OnSaveRecurringTip(brave_rewards::mojom::Result result);
 };
 
 class BraveRewardsRemoveRecurringTipFunction :
@@ -424,7 +426,8 @@ class BraveRewardsGetRecurringTipsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetRecurringTips(std::vector<ledger::mojom::PublisherInfoPtr> list);
+  void OnGetRecurringTips(
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list);
 };
 
 class BraveRewardsRefreshPublisherFunction : public ExtensionFunction {
@@ -437,7 +440,7 @@ class BraveRewardsRefreshPublisherFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnRefreshPublisher(const ledger::mojom::PublisherStatus status,
+  void OnRefreshPublisher(const brave_rewards::mojom::PublisherStatus status,
                           const std::string& publisher_key);
 };
 
@@ -487,8 +490,9 @@ class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnFetchBalance(base::expected<ledger::mojom::BalancePtr,
-                                     ledger::mojom::FetchBalanceError> result);
+  void OnFetchBalance(
+      base::expected<brave_rewards::mojom::BalancePtr,
+                     brave_rewards::mojom::FetchBalanceError> result);
 };
 
 class BraveRewardsGetExternalWalletProvidersFunction
@@ -513,8 +517,8 @@ class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
 
  private:
   void OnGetExternalWallet(
-      base::expected<ledger::mojom::ExternalWalletPtr,
-                     ledger::mojom::GetExternalWalletError> result);
+      base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                     brave_rewards::mojom::GetExternalWalletError> result);
 };
 
 class BraveRewardsGetRewardsEnabledFunction : public ExtensionFunction {
@@ -623,7 +627,7 @@ class BraveRewardsGetPrefsFunction : public ExtensionFunction {
 
  private:
   void GetAutoContributePropertiesCallback(
-      ledger::mojom::AutoContributePropertiesPtr properties);
+      brave_rewards::mojom::AutoContributePropertiesPtr properties);
 };
 
 class BraveRewardsUpdatePrefsFunction : public ExtensionFunction {

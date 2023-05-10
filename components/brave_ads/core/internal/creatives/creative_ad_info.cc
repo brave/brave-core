@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
+#include <limits>
+
+#include "base/numerics/ranges.h"
 
 namespace brave_ads {
 
@@ -26,14 +28,16 @@ CreativeAdInfo::~CreativeAdInfo() = default;
 bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
   return creative_instance_id == other.creative_instance_id &&
          creative_set_id == other.creative_set_id &&
-         campaign_id == other.campaign_id &&
-         DoubleEquals(start_at.ToDoubleT(), other.start_at.ToDoubleT()) &&
-         DoubleEquals(end_at.ToDoubleT(), other.end_at.ToDoubleT()) &&
-         daily_cap == other.daily_cap && advertiser_id == other.advertiser_id &&
-         priority == other.priority && DoubleEquals(ptr, other.ptr) &&
-         conversion == other.conversion && per_day == other.per_day &&
+         campaign_id == other.campaign_id && start_at == other.start_at &&
+         end_at == other.end_at && daily_cap == other.daily_cap &&
+         advertiser_id == other.advertiser_id && priority == other.priority &&
+         base::IsApproximatelyEqual(ptr, other.ptr,
+                                    std::numeric_limits<double>::epsilon()) &&
+         has_conversion == other.has_conversion && per_day == other.per_day &&
          per_week == other.per_week && per_month == other.per_month &&
-         total_max == other.total_max && DoubleEquals(value, other.value) &&
+         total_max == other.total_max &&
+         base::IsApproximatelyEqual(value, other.value,
+                                    std::numeric_limits<double>::epsilon()) &&
          split_test_group == other.split_test_group &&
          segment == other.segment && embedding == other.embedding &&
          geo_targets == other.geo_targets && target_url == other.target_url &&

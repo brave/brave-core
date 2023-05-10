@@ -11,48 +11,39 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
 class GURL;
 
 namespace brave_ads {
 
-namespace resource {
-class TextClassification;
-}  // namespace resource
+class TextClassificationResource;
 
-namespace processor {
-
-class TextClassification final : public AdsClientNotifierObserver,
-                                 public TabManagerObserver {
+class TextClassificationProcessor final : public TabManagerObserver {
  public:
-  explicit TextClassification(resource::TextClassification& resource);
+  explicit TextClassificationProcessor(TextClassificationResource& resource);
 
-  TextClassification(const TextClassification&) = delete;
-  TextClassification& operator=(const TextClassification&) = delete;
+  TextClassificationProcessor(const TextClassificationProcessor&) = delete;
+  TextClassificationProcessor& operator=(const TextClassificationProcessor&) =
+      delete;
 
-  TextClassification(TextClassification&&) noexcept = delete;
-  TextClassification& operator=(TextClassification&&) noexcept = delete;
+  TextClassificationProcessor(TextClassificationProcessor&&) noexcept = delete;
+  TextClassificationProcessor& operator=(
+      TextClassificationProcessor&&) noexcept = delete;
 
-  ~TextClassification() override;
+  ~TextClassificationProcessor() override;
 
   void Process(const std::string& text);
 
  private:
-  // AdsClientNotifierObserver:
-  void OnNotifyLocaleDidChange(const std::string& locale) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
-
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
-  const raw_ref<resource::TextClassification> resource_;
+  const raw_ref<TextClassificationResource> resource_;
 };
 
-}  // namespace processor
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_

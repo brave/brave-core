@@ -12,11 +12,8 @@ namespace brave_ads {
 
 struct TransactionInfo;
 
-namespace user_data {
+base::Value::Dict BuildSegmentUserData(const TransactionInfo& transaction);
 
-base::Value::Dict GetSegment(const TransactionInfo& transaction);
-
-}  // namespace user_data
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_SEGMENT_USER_DATA_H_

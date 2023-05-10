@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_STATEMENT_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_STATEMENT_UTIL_H_
 
+#include <cstdint>
+
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 
 namespace base {
@@ -19,7 +21,7 @@ base::Time GetNextPaymentDate(const TransactionList& transactions);
 double GetEarningsForThisMonth(const TransactionList& transactions);
 double GetEarningsForLastMonth(const TransactionList& transactions);
 
-int GetAdsReceivedThisMonth(const TransactionList& transactions);
+int32_t GetAdsReceivedThisMonth(const TransactionList& transactions);
 
 }  // namespace brave_ads
 

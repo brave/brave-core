@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_H_
@@ -177,6 +177,7 @@ class BraveWalletService : public KeyedService,
                               const std::string& formed_website,
                               ResetWebSitePermissionCallback callback) override;
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
+  mojom::OriginInfoPtr GetActiveOriginSync();
   void GeteTLDPlusOneFromOrigin(const url::Origin& origin,
                                 GetActiveOriginCallback callback) override;
   void GetPendingSignMessageRequests(
@@ -227,8 +228,13 @@ class BraveWalletService : public KeyedService,
 
   void SetNftDiscoveryEnabled(bool enabled) override;
 
+  void GetBalanceScannerSupportedChains(
+      GetBalanceScannerSupportedChainsCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
+
+  void OnDiscoverAssetsStarted();
 
   void OnDiscoverAssetsCompleted(
       std::vector<mojom::BlockchainTokenPtr> discovered_assets);

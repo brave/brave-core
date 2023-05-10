@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_IOS_BROWSER_API_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IOS_PRIVATE_H_
 #define BRAVE_IOS_BROWSER_API_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IOS_PRIVATE_H_
@@ -34,12 +34,11 @@ class BraveWalletProviderDelegateBridge
   void RequestPermissions(mojom::CoinType type,
                           const std::vector<std::string>& accounts,
                           RequestPermissionsCallback) override;
-  void IsAccountAllowed(mojom::CoinType type,
-                        const std::string& account,
-                        IsAccountAllowedCallback callback) override;
-  void GetAllowedAccounts(mojom::CoinType type,
-                          const std::vector<std::string>& accounts,
-                          GetAllowedAccountsCallback callback) override;
+  bool IsAccountAllowed(mojom::CoinType type,
+                        const std::string& account) override;
+  absl::optional<std::vector<std::string>> GetAllowedAccounts(
+      mojom::CoinType type,
+      const std::vector<std::string>& accounts) override;
   bool IsPermissionDenied(mojom::CoinType type) override;
   void AddSolanaConnectedAccount(const std::string& account) override;
   void RemoveSolanaConnectedAccount(const std::string& account) override;

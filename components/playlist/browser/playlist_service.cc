@@ -54,10 +54,13 @@ std::vector<base::FilePath> GetOrphanedPaths(
 }  // namespace
 
 PlaylistService::PlaylistService(content::BrowserContext* context,
+                                 PrefService* local_state,
                                  MediaDetectorComponentManager* manager,
-                                 std::unique_ptr<Delegate> delegate)
+                                 std::unique_ptr<Delegate> delegate,
+                                 base::Time browser_first_run_time)
     : delegate_(std::move(delegate)),
       base_dir_(context->GetPath().Append(kBaseDirName)),
+      playlist_p3a_(local_state, browser_first_run_time),
       prefs_(user_prefs::UserPrefs::Get(context)) {
   content::URLDataSource::Add(context,
                               std::make_unique<PlaylistDataSource>(this));
@@ -322,6 +325,25 @@ void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
     obs.OnPlaylistStatusChanged({playlist_event, playlist_id});
 }
 
+void PlaylistService::NotifyMediaFilesUpdated(
+    const GURL& url,
+    std::vector<mojom::PlaylistItemPtr> items) {
+  if (items.empty()) {
+    return;
+  }
+
+  DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
+           << " were updated: count =>" << items.size();
+
+  for (auto& service_observer : service_observers_) {
+    std::vector<mojom::PlaylistItemPtr> cloned_items;
+    base::ranges::transform(
+        items, std::back_inserter(cloned_items),
+        [](const auto& item_ptr) { return item_ptr->Clone(); });
+    service_observer->OnMediaFilesUpdated(url, std::move(cloned_items));
+  }
+}
+
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
   const auto& items = prefs_->GetDict(kPlaylistItemsPref);
   const base::Value::Dict* playlist_info = items.FindDict(id);
@@ -358,6 +380,10 @@ void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
       web_contents, web_prefs);
 }
 
+base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
+
 void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
   std::vector<mojom::PlaylistPtr> playlists;
   const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
@@ -368,6 +394,8 @@ void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
   }
 
   std::move(callback).Run(std::move(playlists));
+
+  playlist_p3a_.ReportNewUsage();
 }
 
 void PlaylistService::GetPlaylist(const std::string& id,
@@ -383,6 +411,8 @@ void PlaylistService::GetPlaylist(const std::string& id,
 
   const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
   std::move(callback).Run(ConvertValueToPlaylist(*playlist_dict, items_dict));
+
+  playlist_p3a_.ReportNewUsage();
 }
 
 void PlaylistService::GetAllPlaylistItems(
@@ -549,6 +579,8 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
                      weak_factory_.GetWeakPtr(), item.Clone(), cache,
                      /*update_media_src_and_retry_on_fail=*/false,
                      base::NullCallback()));
+
+  playlist_p3a_.ReportNewUsage();
 }
 
 bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
@@ -905,6 +937,21 @@ mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
 void PlaylistService::AddObserver(
     mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) {
   service_observers_.Add(std::move(observer));
+}
+
+void PlaylistService::OnMediaUpdatedFromContents(
+    content::WebContents* contents) {
+  if (download_request_manager_->background_contents() != contents) {
+    return;
+  }
+
+  // Try getting media files that are added dynamically after we've tried.
+  PlaylistDownloadRequestManager::Request request;
+  request.url_or_contents = contents->GetWeakPtr();
+  request.callback =
+      base::BindOnce(&PlaylistService::NotifyMediaFilesUpdated,
+                     weak_factory_.GetWeakPtr(), contents->GetVisibleURL());
+  download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
 void PlaylistService::AddObserverForTest(PlaylistServiceObserver* observer) {

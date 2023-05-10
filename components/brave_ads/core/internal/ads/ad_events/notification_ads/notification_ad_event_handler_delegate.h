@@ -8,42 +8,44 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 
 struct NotificationAdInfo;
 
-namespace notification_ads {
-
-class EventHandlerDelegate {
+class NotificationAdEventHandlerDelegate {
  public:
   // Invoked when the notification |ad| is served.
-  virtual void OnNotificationAdServed(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdServedEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| is viewed.
-  virtual void OnNotificationAdViewed(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdViewedEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| is clicked.
-  virtual void OnNotificationAdClicked(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdClickedEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| is dismissed.
-  virtual void OnNotificationAdDismissed(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdDismissedEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| times out.
-  virtual void OnNotificationAdTimedOut(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdTimedOutEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| event fails for |placement_id| and
   // |event_type|.
-  virtual void OnNotificationAdEventFailed(
+  virtual void OnFailedToFireNotificationAdEvent(
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) {}
 
  protected:
-  virtual ~EventHandlerDelegate() = default;
+  virtual ~NotificationAdEventHandlerDelegate() = default;
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_DELEGATE_H_

@@ -101,28 +101,14 @@ class APIRequestHelper {
   // into string before validating the response. For these purposes
   // conversion_callback is added which receives raw response and can perform
   // necessary conversions.
-  //
-  // This method will be deprecated soon, please use the one underneath with
-  // APIRequestOption parameter.
-  // https://github.com/brave/brave-browser/issues/29611
-  Ticket Request(
-      const std::string& method,
-      const GURL& url,
-      const std::string& payload,
-      const std::string& payload_content_type,
-      bool auto_retry_on_network_change,
-      ResultCallback callback,
-      const base::flat_map<std::string, std::string>& headers = {},
-      size_t max_body_size = -1u,
-      ResponseConversionCallback conversion_callback = base::NullCallback());
   Ticket Request(
       const std::string& method,
       const GURL& url,
       const std::string& payload,
       const std::string& payload_content_type,
       ResultCallback callback,
-      const APIRequestOptions& request_options,
       const base::flat_map<std::string, std::string>& headers = {},
+      const APIRequestOptions& request_options = {},
       ResponseConversionCallback conversion_callback = base::NullCallback());
 
   using DownloadCallback = base::OnceCallback<void(
@@ -131,10 +117,10 @@ class APIRequestHelper {
   Ticket Download(const GURL& url,
                   const std::string& payload,
                   const std::string& payload_content_type,
-                  bool auto_retry_on_network_change,
                   const base::FilePath& path,
                   DownloadCallback callback,
-                  const base::flat_map<std::string, std::string>& headers = {});
+                  const base::flat_map<std::string, std::string>& headers = {},
+                  const APIRequestOptions& request_options = {});
 
   void Cancel(const Ticket& ticket);
 

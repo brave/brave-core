@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabaseActivityInfo : public DatabaseTable {
@@ -20,18 +20,18 @@ class DatabaseActivityInfo : public DatabaseTable {
   ~DatabaseActivityInfo() override;
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void NormalizeList(std::vector<mojom::PublisherInfoPtr> list,
-                     ledger::LegacyResultCallback callback);
+                     LegacyResultCallback callback);
 
   void GetRecordsList(const int start,
                       const int limit,
                       mojom::ActivityInfoFilterPtr filter,
-                      ledger::GetActivityInfoListCallback callback);
+                      GetActivityInfoListCallback callback);
 
   void DeleteRecord(const std::string& publisher_key,
-                    ledger::LegacyResultCallback callback);
+                    LegacyResultCallback callback);
 
   void GetPublishersVisitedCount(base::OnceCallback<void(int)> callback);
 
@@ -40,10 +40,10 @@ class DatabaseActivityInfo : public DatabaseTable {
                             mojom::PublisherInfoPtr info);
 
   void OnGetRecordsList(mojom::DBCommandResponsePtr response,
-                        ledger::GetActivityInfoListCallback callback);
+                        GetActivityInfoListCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_ACTIVITY_INFO_H_

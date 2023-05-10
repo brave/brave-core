@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Mga Buwanang Tip</translation>
 <translation id="178390304006113804">Mag-set up ng mga umuulit na buwanang tip para tuloy-tuloy mong masusuportahan ang mga paborito mong creator.</translation>
 <translation id="3302159320447117425">Wala pang nase-set up na buwanag tip.</translation>
+<translation id="564837702459183199">Susunod na kontribusyon</translation>
 <translation id="4898632353264854950">Lalabas ang mga site habang nagba-browse ka</translation>
 <translation id="3024485967181749006">Kabuuang halaga ng mga tip ngayong buwan</translation>
-<translation id="8183455888546367148">Kabuuang halaga ng mga buwanang tip ngayong buwan</translation>
 <translation id="4153752809523809915">Nabigyan mo na ba ng tip ngayong araw ang paborito mong content creator?</translation>
 <translation id="7286722244752781970">Minimum na oras sa page bago mag-log ng pagbisita</translation>
 <translation id="4424486208397124985">Minimum na bilang ng mga pagbisita para sa kaugnayan ng publisher</translation>
 <translation id="5421369907811917952">Iba pang mga setting</translation>
 <translation id="6248554379744796526">Magpakita ng mga hindi na-verify na site sa listahan</translation>
-<translation id="5510618543889994434">Payagan ang mga kontribusyon sa mga video</translation>
 <translation id="8933202740471878108">1 pagbisita</translation>
 <translation id="354797634123275103">5 pagbisita</translation>
 <translation id="3583700907990488238">10 pagbisita</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 minuto</translation>
 <translation id="2807328214759298515">Hanggang</translation>
 <translation id="7483857210736407752">Ipakita ang mga button ng Tip sa mga site</translation>
-<translation id="7583327070390027131">Petsa ng susunod na buwanang tip</translation>
 <translation id="6231182869178328516">Nag-tip ako kay <ph name="NAME"/> gamit ang Brave Browser. Subukan ito sa https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Gusto kong hinahayaan ako ng <ph name="HASHTAG"/>Brave na sumuporta ng mga creator! Kaka-tip ko lang kay<ph name="NAME"/> nang <ph name="HASHTAG2"/>BAT. Kung magve-verify sila sa https://creators.brave.com bago ang <ph name="DATE"/>, sa kanila ang BAT!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Puwede mong baguhin ang iyong <ph name="SITE_PERMISSIONS"/> anumang oras. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">pahintulot sa site</translation>
 <translation id="4355784577209159847">Pahintulutan ang paggamit ng third-party cookies para sa legacy sa Google Sign-In</translation>
+<translation id="5770656036486891920">Gustong gumamit ng <ph name="URL"/> ng third-party na cookies para sa legacy na Pag-sign In sa Google</translation>
 <translation id="7717357606512850995">I-check ang kalagayan</translation>
 <translation id="7306880305145342514">Pagbati! Ang iyong <ph name="MONTH"/> na mga pabuya ay naitala na!</translation>
 <translation id="3007207731685398329">Ang iyong <ph name="AMOUNT"/><ph name="MONTH"/> na mga pabuya ay darating sa loob ng <ph name="DAYS"/></translation>
@@ -659,6 +658,7 @@
       =1 {This month, you've visited # creator supported by Brave Rewards}
       other {This month, you've visited # creators supported by Brave Rewards}
     }</translation>
+<translation id="6067959437127691361">Tumutulong ang paggamit ng Brave Rewards na suportahan ang mga creator ng content, at binibigyang-daan kang makaipon ng BAT.</translation>
 <translation id="1187367336925051518">Mga Reward sa <ph name="MONTH"/> : <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Narito na ang iyong Mga Reward ng Ad noong <ph name="MONTH"/>!</translation>
 <translation id="7861645265922445992">I-claim ang Mga Reward</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Itakda</translation>
 <translation id="8853725596990766789">Baguhin ang halaga</translation>
-<translation id="6067959437127691361">Tumutulong ang paggamit ng Brave Rewards na suportahan ang mga creator ng content, at binibigyang-daan kang makaipon ng BAT.</translation>
 <translation id="1609556006143307897">Tumutulong ka para masuportahan ang mga creator ng content</translation>
 <translation id="6605147707233193230">I-on para makatulong sa pagsuporta sa mga creator ng content</translation>
 <translation id="5430495762768325224">Matuto pa tungkol sa BAT</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">Inaasahang isang parameter ng object.</translation>
 <translation id="1875861420974447980">Kasalukuyang ginagamit ang Chain ID na ito</translation>
 <translation id="167698752210114155">Nagkaroon ng internal na error</translation>
+<translation id="7497827357097190289">Invalid o hindi ma-validate ang blockhash</translation>
 <translation id="8945668490056243760">Hindi sinusuportahang uri ng subscription</translation>
 <translation id="2326876601333401685">Hindi sinusuportahan ang pamamaraang RPC na ito.</translation>
 <translation id="1128992132632883337">May nangyaring response parsing error</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">KALAHATI</translation>
 <translation id="2784548701748328827">MAX</translation>
 <translation id="2329227154184107678">Suriin ang order</translation>
+<translation id="3220443877821207794">Ipadala ang pagsusuri</translation>
 <translation id="8530071505111489657">Walang available na token</translation>
 <translation id="615791330696335475">Maghanap ng token base sa pangalan</translation>
 <translation id="5009335307032488349">Maghanap ng NFT base sa pangalan, id</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">URI NG FUNCTION</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
-<translation id="4874303883488468190">Pumili ng (mga) account</translation>
-<translation id="2018472018751735678">Tingnan ang mga address ng iyong mga pinahihintulutang account (kinakailangan)</translation>
-<translation id="7029403458170657879">Kumonekta sa Brave Wallet</translation>
+<translation id="6760823167126275974">Magkonekta ng wallet</translation>
+<translation id="716009557505091365">o kumonekta sa:</translation>
+<translation id="7242985059140288348">Magagawa ng app na ito na:</translation>
+<translation id="7352133688029686231">Hindi nito magagawang:</translation>
+<translation id="1647328658385235886">Tingnan ang balanse at aktibidad ng wallet</translation>
+<translation id="3295962112184461868">Humiling ng pag-apruba para sa mga transaksyon at lagda</translation>
+<translation id="6096892345597202096">Tingnan ang iyong mga pinapahintulutan address ng wallet</translation>
+<translation id="496578987299869780">Maglipat ng pondo nang walang pahintulot mo</translation>
+<translation id="3226586788973641582">Tiyaking pinagkakatiwalaan mo ang site na ito.</translation>
+<translation id="6837278005487143422">Tagal ng pahintulot</translation>
+<translation id="1903637466604153314">Hanggang sa isara ko ang site na ito</translation>
+<translation id="4324239559624557455">Sa loob ng 24 na oras</translation>
+<translation id="9139452553033760558">Sa loob ng 1 linggo</translation>
+<translation id="1658834457013045127">Hindi kahit kailan</translation>
 <translation id="2770851145415891830">May mga na-detect na kasalukuyang wallet ng cryptocurrency</translation>
 <translation id="2237759620789871865">Kung mas nanaisin mong laktawan ang pag-import at panatilihin ang lumang karanasan sa Crypto Wallets, pumunta lang sa <ph name="LINK_BEFORE"/>Mga Setting<ph name="LINK_AFTER"/> ng Brave Browser at ibalik ang default na Crypto Wallets. Pwede ka ring mag-import, subukan ang bagong Brave Wallet, at palitan ito anumang oras.</translation>
 <translation id="5590175005414413980">Ilagay ang password ng iyong mga kasalukuyang crypto wallet na ii-import sa Brave Wallet. I-enjoy ang mas mabilis at mas ligtas na paraan para pamahalaan ang mga crypto asset at gumamit ng mga Web3 DApp.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">Paano ko mahahanap ang tamang address?</translation>
 <translation id="8395402412470376435">Vina-validate at pinipigilan ng Brave ang mga user na magpadala ng pondo sa maling address dahil sa maling capitalization. Isa itong "checksum" na proseso para i-verify na isa itong valid na Ethereum address.</translation>
 <translation id="4583433813614292221">1. Bisitahin</translation>
+<translation id="8061317754447191238">Bisitahin ang etherscan at i-paste ang address ng wallet kung saan mo gustong magpadala ng mga token. Pagkatapos ay pindutin ang enter</translation>
 <translation id="5393164213211430081">2. Kopyahin at ilagay ang ETH address</translation>
+<translation id="8306108469060304141">Kopyahin at ilagay ang tamang address. Makikita mong may ilang character na na-convert nang tama.</translation>
 <translation id="2378355054306959991">Kailangan pa ng tulong?</translation>
 <translation id="862585889767884824">sa</translation>
 <translation id="9106265941552476098">Tanggihan ang <ph name="TRANSACTION_LENGTH"/> transaksyon</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">Pamantayan ng token</translation>
 <translation id="9033453977881595182">ID ng token</translation>
 <translation id="6332387008245531841">Address ng kontrata</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Lokasyon o address ng larawan</translation>
 <translation id="2962388922926051374">Mag-request ng paraan ng 'eth_chainId' sa <ph name="URL"/> hindi nagtagumpay</translation>
 <translation id="8325036459845654666">Naidagdag na ang network na ito.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">Walang nahanap na asset na tumutugma sa paghahanap o filter</translation>
 <translation id="7383613643114466279">Hindi suportado ng Brave Wallet ang asset na ito</translation>
 <translation id="6423985584914773314">Hindi valid na FIL na address</translation>
-<translation id="3898731124813934210">Bumili gamit ang Wyre</translation>
 <translation id="5522073372365069684">Bumili gamit ang Ramp</translation>
 <translation id="6153197326949684688">Ibenta gamit ang <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278"><ph name="FIAT_AMOUNT"/> o higit pa dapat ang minimum na halaga.</translation>
 <translation id="7902920577183739843">Bumili gamit ang Sardine</translation>
 <translation id="6534275647567011533">Bumili gamit ang Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Bumili ng crypto gamit ang Visa o Mastercard.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">Hindi nakuha ang mga tinatantyang bayad</translation>
 <translation id="5361710044667743492">Bakit hindi available?</translation>
 <translation id="3668838456083358569">Naka-store ang ilan sa data ng NFT sa naka-centralize na server gaya ng AWS, Google Cloud, atbp. Sa kasong ito, hindi nito ma-pin ang iyong data ng NFT sa IPFS network.</translation>
-<translation id="1293258969121701010">Sa pamamagitan ng pagpapatakbo ng IPFS sa iyong computer, magagawa mong:</translation>
-<translation id="4568942135611119076">Tiyaking mananatiling online ang iyong data ng NFT at hindi ito mapapakialaman.</translation>
-<translation id="4915883034746438977">Magbalik ng content gamit ang content identifier (CID) mula sa maling data.</translation>
-<translation id="1373647012698032676">Magsama ng patunay ng pagiging authentic at gawing kapaki-pakinabang ang IPFS network.</translation>
-<translation id="1806204385270226865">Panatilihing palaging online ang mga NFT ko</translation>
-<translation id="4323376551843624309">Bigyang-daan ang pag-pin ng NFT</translation>
-<translation id="6501331923135442324">Isang malaking hakbang sa pagiging bahagi ng web3</translation>
-<translation id="5361073938927187534">Patakbuhin ang IPFS node at panatilihing palaging online ang iyong mga NFT</translation>
-<translation id="1060267371223703324">Tingnan kung aling mga NFT ko ang puwedeng i-pin</translation>
-<translation id="2641083452974145848">Mapapatakbo mo na ngayon ang iyong IPFS at maging bahagi ng web 3. Mananatiling online sa lahat ng oras ang iyong data ng NFT at hindi ito mapapakialamanan.</translation>
-<translation id="4460927368826360904">Pinapatakbo mo ang IPFS node. Ipinapasa ang file sa lokal na IPFS node.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> sa <ph name="PINNABLE"/> NFT ang na-pin na sa IPFS.</translation>
+<translation id="4225753478505258806">Pero kailangan ng IPFS ng mga indibidwal na kalahok para gumana. Patakbuhin ang IPFS sa iyong computer para:</translation>
+<translation id="7674069205559000521">Mag-contribute sa bilis at availability ng network</translation>
+<translation id="7775229731579227782">Patatagin ang seguridad ng iyong mga NFT</translation>
+<translation id="2319971828691864975">Magsimula sa IPFS</translation>
+<translation id="7906328323880284538">Ang pinakaligtas na paraan para mag-host ng mga NFT</translation>
+<translation id="166206715890914321">Magpatakbo ng IPFS node para panatilihing online ang iyong mga NFT kahit kailan</translation>
+<translation id="8913523138550521467">Ang IPFS ay napaka-secure na alternatibo ng tradisyonal na pag-host sa Web. Sa halip na umasa sa isang host, binibigyang-daan ng IPFS ang libo-libong indibidwal (na nagpapatakbo ng “mga node”) na magtulungan para mag-store ng content. At hangga't may isang taong may kopya, hindi mawawala ang isang file kahit kailan. Ang “pag-pin” ng iyong mga NFT sa IPFS—at pagpapatakbo ng sarili mong IPFS node—ang pinakamahusay na paraan para i-secure ang iyong mga NFT.</translation>
+<translation id="9160750213078764355">Tingnan kung alin sa mga NFT ang kwalipikado</translation>
+<translation id="6671461082721702724">Puwede mo na ngayong patakbuhin ang iyong IPFS at maging bahagi ng web 3. Mananatiling online ang data ng NFT mo kahit kailan.</translation>
+<translation id="654964147165509548">Pini-pin ang mga NFT sa iyong lokal na IPFS node.</translation>
+<translation id="4910182786472608576"><ph name="PINNED"/> (na) sinusuportahang NFT ang naka-pin sa iyong lokal na IPFS node.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> sa <ph name="TOTAL"/> ang available!</translation>
 <translation id="6852656829524945421">Hindi na-pin</translation>
 <translation id="7698019251444927442">Pinapatakbo mo ang IPFS node</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">Na-pin sa iyong lokal na IPFS node</translation>
 <translation id="5659058832308365026">Pini-pin ang data ng NFT sa iyong lokal na IPFS node</translation>
 <translation id="4919133452617704550">Hindi ma-pin sa iyong lokal na IPFS node</translation>
+<translation id="4220102684162429566">Mga pinakakaraniwang dahilan:</translation>
+<translation id="451509325309455">May mga problema sa url ng metadata ng hindi IPFS ang NFT</translation>
+<translation id="3827697793483899711">Mga problema sa internal na IPFS node</translation>
+<translation id="1992846713609432783">Hindi sapat ang espasyo sa lokal na node</translation>
 <translation id="3225624966527491351">Mag-import ng NFT</translation>
 <translation id="9085765419770918643">Wala pang NFT dito.</translation>
 <translation id="8445532667841598737">Handa nang magdagdag? I-click lang ang button sa ibaba para mag-import.</translation>
 <translation id="9136462955850040542">Compatible sa mga NFT sa Solana (SPL) at Ethereum (ERC-721).</translation>
+<translation id="849880459530751909">I-edit ang NFT</translation>
 <translation id="3155170474926428993">Launcher ng Tor</translation>
 <translation id="3745016858329272300">Pangkalahatang Impormasyon</translation>
 <translation id="4045404575593562245">Mga Control Event ng Tor</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">Mga pangkalahatang setting ng Shield</translation>
 <translation id="2108334320919763866">Mga global na default</translation>
 <translation id="3440043456924990296">Pinapamahalaan ng organisasyon ang mga setting</translation>
+<translation id="7053983685419859001">I-block</translation>
+<translation id="5716230673298034837">Payagan lahat</translation>
+<translation id="5279600392753459966">I-block lahat</translation>
 <translation id="4516904298421534459">I-filter ang mga listahan</translation>
 <translation id="3570081523466826008">I-upgrade sa HTTPS ang mga koneksyon</translation>
 <translation id="131231380815754440">I-enable ang HTTPS</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">Sapilitang i-block ang mga tracker &amp; ad</translation>
 <translation id="7384778069178817075">Allow all trackers &amp; ads</translation>
 <translation id="4941539331405513605">I-block ang cross-site cookies</translation>
+<translation id="2749284154880331639">Kalimutan ang first-party na cookies</translation>
 <translation id="6883611015375728278">I-block ang lahat ng cookie</translation>
 <translation id="5657156137487675418">Payagan ang lahat ng cookie</translation>
 <translation id="8366221601425141146">Na-block ang pag-fingerprint</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Mga na-block na tracker, ad, at higit pa</translation>
 <translation id="4292121526390005808">Mga naka-block na script</translation>
+<translation id="5046271170844958713">Mga pinapayagang script</translation>
 <translation id="264682546981571963">Sawa na sa mga abiso sa pahintulot ng cookie?</translation>
 <translation id="4986297793092101884">Bina-block na ng Brave ang mga third-party na cookies. Kaya rin naming mag-block ng mga abiso sa pahintulot.</translation>
 <translation id="535688588637568715">Oo, i-block ang mga abiso sa pahintulot ng cookie</translation>
@@ -1669,6 +1688,7 @@
 <translation id="1305433007676951913">Hindi makakonekta ang <ph name="PRODUCT_NAME"/> sa <ph name="REGION_NAME"/> server. Pwede kang sumubok ulit, o pumili ng iba.</translation>
 <translation id="1024255913009642477">Nakabili na ng VPN?</translation>
 <translation id="8814357473522731680">Pinapagana ng</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Mag-e-expire sa</translation>
 <translation id="1691256669639196606">Pamahalaan subscription</translation>
 <translation id="434523916398030617">Makipag-ugnayan sa teknikal na suporta</translation>

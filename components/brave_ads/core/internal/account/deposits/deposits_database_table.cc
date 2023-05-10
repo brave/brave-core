@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -23,11 +23,22 @@ namespace {
 
 constexpr char kTableName[] = "deposits";
 
-int BindParameters(mojom::DBCommandInfo* command,
-                   const CreativeAdList& creative_ads) {
-  DCHECK(command);
+void BindRecords(mojom::DBCommandInfo* command) {
+  CHECK(command);
 
-  int count = 0;
+  command->record_bindings = {
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE   // expire_at
+  };
+}
+
+size_t BindParameters(mojom::DBCommandInfo* command,
+                      const CreativeAdList& creative_ads) {
+  CHECK(command);
+
+  size_t count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
@@ -42,8 +53,8 @@ int BindParameters(mojom::DBCommandInfo* command,
 }
 
 void BindParameters(mojom::DBCommandInfo* command, const DepositInfo& deposit) {
-  DCHECK(command);
-  DCHECK(deposit.IsValid());
+  CHECK(command);
+  CHECK(deposit.IsValid());
 
   BindString(command, 0, deposit.creative_instance_id);
   BindDouble(command, 1, deposit.value);
@@ -51,7 +62,7 @@ void BindParameters(mojom::DBCommandInfo* command, const DepositInfo& deposit) {
 }
 
 DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   DepositInfo deposit;
 
@@ -80,26 +91,21 @@ void OnGetForCreativeInstanceId(
 
   const mojom::DBRecordInfoPtr record =
       std::move(command_response->result->get_records().front());
-  DepositInfo deposit = GetFromRecord(record.get());
+  DepositInfo deposit = GetFromRecord(&*record);
 
   std::move(callback).Run(/*success*/ true, std::move(deposit));
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  const std::string query =
-      "CREATE TABLE IF NOT EXISTS deposits "
-      "(creative_instance_id TEXT NOT NULL, "
-      "value DOUBLE NOT NULL, "
-      "expire_at TIMESTAMP NOT NULL, "
-      "PRIMARY KEY (creative_instance_id), "
-      "UNIQUE(creative_instance_id) ON CONFLICT REPLACE)";
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql =
+      "CREATE TABLE IF NOT EXISTS deposits (creative_instance_id "
+      "TEXT NOT NULL, value DOUBLE NOT NULL, expire_at TIMESTAMP "
+      "NOT NULL, PRIMARY KEY (creative_instance_id), "
+      "UNIQUE(creative_instance_id) ON CONFLICT REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -112,16 +118,14 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  InsertOrUpdate(transaction.get(), deposit);
+  InsertOrUpdate(&*transaction, deposit);
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                               const CreativeAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (creative_ads.empty()) {
     return;
@@ -129,20 +133,18 @@ void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
-
+  command->sql = BuildInsertOrUpdateSql(&*command, creative_ads);
   transaction->commands.push_back(std::move(command));
 }
 
 void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                               const DepositInfo& deposit) {
-  DCHECK(transaction);
-  DCHECK(deposit.IsValid());
+  CHECK(transaction);
+  CHECK(deposit.IsValid());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(), deposit);
-
+  command->sql = BuildInsertOrUpdateSql(&*command, deposit);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -153,23 +155,14 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                                    /*deposit*/ absl::nullopt);
   }
 
-  const std::string query = base::ReplaceStringPlaceholders(
-      "SELECT creative_instance_id, value, expire_at FROM $1 AS rv WHERE "
-      "rv.creative_instance_id = '$2'",
-      {GetTableName(), creative_instance_id}, nullptr);
-
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
-  command->command = query;
-
-  command->record_bindings = {
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // creative_instance_id
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE   // expire_at
-  };
-
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  command->sql = base::ReplaceStringPlaceholders(
+      "SELECT creative_instance_id, value, expire_at FROM $1 AS rv WHERE "
+      "rv.creative_instance_id = '$2';",
+      {GetTableName(), creative_instance_id}, nullptr);
+  BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -179,38 +172,43 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) const {
-  const std::string query = base::ReplaceStringPlaceholders(
-      "DELETE FROM $1 WHERE DATETIME('now') >= DATETIME(expire_at, "
-      "'unixepoch')",
-      {GetTableName()}, nullptr);
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  command->sql = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE DATETIME('now') >= "
+      "DATETIME(expire_at, 'unixepoch');",
+      {GetTableName()}, nullptr);
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 std::string Deposits::GetTableName() const {
   return kTableName;
 }
 
+void Deposits::Create(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE deposits (creative_instance_id TEXT NOT NULL, "
+      "value DOUBLE NOT NULL, expire_at TIMESTAMP NOT NULL, PRIMARY "
+      "KEY (creative_instance_id), UNIQUE(creative_instance_id) ON "
+      "CONFLICT REPLACE);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void Deposits::Migrate(mojom::DBTransactionInfo* transaction,
                        const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 24: {
       MigrateToV24(transaction);
-      break;
-    }
-
-    default: {
       break;
     }
   }
@@ -218,32 +216,31 @@ void Deposits::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string Deposits::BuildInsertOrUpdateQuery(
+std::string Deposits::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
-  const int binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (creative_instance_id, value, expire_at) "
-      "VALUES $2",
+      "VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 3, binded_parameters_count)},
       nullptr);
 }
 
-std::string Deposits::BuildInsertOrUpdateQuery(
-    mojom::DBCommandInfo* command,
-    const DepositInfo& deposit) const {
-  DCHECK(command);
-  DCHECK(deposit.IsValid());
+std::string Deposits::BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                             const DepositInfo& deposit) const {
+  CHECK(command);
+  CHECK(deposit.IsValid());
 
   BindParameters(command, deposit);
 
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (creative_instance_id, value, expire_at) "
-      "VALUES $2",
+      "VALUES $2;",
       {GetTableName(),
        BuildBindingParameterPlaceholders(/*parameters_count*/ 3,
                                          /*binded_parameters_count*/ 1)},

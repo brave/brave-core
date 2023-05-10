@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/brave_ads/bounds_util.h"
 
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/native_widget_types.h"
@@ -19,7 +19,7 @@ enum class EdgeGravity { kTop, kBottom, kLeft, kRight };
 
 gfx::Rect GetDisplayScreenWorkArea(gfx::Rect* bounds,
                                    gfx::NativeView native_view) {
-  DCHECK(bounds);
+  CHECK(bounds);
 
   gfx::Rect work_area =
       display::Screen::GetScreen()->GetDisplayMatching(*bounds).work_area();
@@ -46,7 +46,7 @@ gfx::Rect GetNearestDisplayScreenWorkArea(gfx::NativeView native_view) {
 }
 
 void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
-  DCHECK(bounds);
+  CHECK(bounds);
 
   bounds->AdjustToFit(work_area);
 }
@@ -55,17 +55,17 @@ void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
 
 void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
                                                    gfx::Rect* bounds) {
-  DCHECK(widget);
-  DCHECK(bounds);
+  CHECK(widget);
+  CHECK(bounds);
 
   gfx::NativeView native_view = widget->GetNativeView();
   gfx::Rect work_area;
-  if (features::ShouldAttachNotificationAdToBrowserWindow()) {
+  if (kUseSameZOrderAsBrowserWindow.Get()) {
     if (widget->parent()) {
       native_view = widget->parent()->GetNativeView();
     }
     work_area = GetNearestDisplayScreenWorkArea(native_view);
-  } else if (features::ShouldSupportMultipleDisplays()) {
+  } else if (kShouldSupportMultipleDisplays.Get()) {
     work_area = GetDisplayScreenWorkArea(bounds, native_view);
   } else {
     work_area = GetPrimaryDisplayScreenWorkArea();
@@ -76,7 +76,7 @@ void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
 }
 
 void SnapBoundsToEdgeOfWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
-  DCHECK(bounds);
+  CHECK(bounds);
 
   EdgeGravity gravity = EdgeGravity::kTop;
   int min_dist = bounds->y() - work_area.y();

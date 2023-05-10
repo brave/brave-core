@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_json_reader.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -44,7 +45,7 @@ TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
   // Arrange
 
   // Act
-  const SegmentList segments = GetSegments({});
+  const SegmentList segments = GetSegments(/*catalog*/ {});
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -89,7 +90,7 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
   // Arrange
 
   // Act
-  const SegmentList parent_segments = GetParentSegments({});
+  const SegmentList parent_segments = GetParentSegments(/*segments*/ {});
 
   // Assert
   EXPECT_TRUE(parent_segments.empty());
@@ -98,7 +99,7 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
   ClientStateManager::GetInstance().ToggleDislikeCategory(
-      "parent-child", CategoryContentOptActionType::kNone);
+      "parent-child", mojom::UserReactionType::kNeutral);
 
   // Act
 
@@ -109,7 +110,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
   ClientStateManager::GetInstance().ToggleDislikeCategory(
-      "parent-child", CategoryContentOptActionType::kNone);
+      "parent-child", mojom::UserReactionType::kNeutral);
 
   // Act
 
@@ -120,7 +121,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
   ClientStateManager::GetInstance().ToggleDislikeCategory(
-      "parent", CategoryContentOptActionType::kNone);
+      "parent", mojom::UserReactionType::kNeutral);
 
   // Act
 
@@ -131,7 +132,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
   ClientStateManager::GetInstance().ToggleDislikeCategory(
-      "parent", CategoryContentOptActionType::kNone);
+      "parent", mojom::UserReactionType::kNeutral);
 
   // Act
 
@@ -143,7 +144,7 @@ TEST_F(BraveAdsSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
   ClientStateManager::GetInstance().ToggleDislikeCategory(
-      "parent", CategoryContentOptActionType::kNone);
+      "parent", mojom::UserReactionType::kNeutral);
 
   // Act
 
@@ -155,32 +156,12 @@ TEST_F(BraveAdsSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
   ClientStateManager::GetInstance().ToggleDislikeCategory(
-      "parent", CategoryContentOptActionType::kNone);
+      "parent", mojom::UserReactionType::kNeutral);
 
   // Act
 
   // Assert
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
-}
-
-TEST_F(BraveAdsSegmentUtilTest, MatchParentSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(MatchParentSegments("technology & computing-windows",
-                                  "technology & computing-linux"));
-}
-
-TEST_F(BraveAdsSegmentUtilTest, ParentSegmentsDoNotMatch) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(
-      MatchParentSegments("business-banking", "technology & computing-linux"));
 }
 
 TEST_F(BraveAdsSegmentUtilTest, HasChildSegment) {

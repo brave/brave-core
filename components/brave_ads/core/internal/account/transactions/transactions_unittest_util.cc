@@ -32,8 +32,8 @@ TransactionInfo BuildTransaction(const double value,
   transaction.created_at = Now();
   transaction.creative_instance_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
-  transaction.segment = "untargeted";
   transaction.value = value;
+  transaction.segment = "untargeted";
   transaction.ad_type = AdType::kNotificationAd;
   transaction.confirmation_type = confirmation_type;
   transaction.reconciled_at = reconciled_at;
@@ -43,16 +43,16 @@ TransactionInfo BuildTransaction(const double value,
 
 TransactionInfo BuildTransaction(const double value,
                                  const ConfirmationType& confirmation_type) {
-  return BuildTransaction(value, confirmation_type, base::Time());
+  return BuildTransaction(value, confirmation_type, DistantPast());
 }
 
-int GetTransactionCount() {
-  int count = 0;
+size_t GetTransactionCount() {
+  size_t count = 0;
 
   GetTransactionsForDateRange(
       DistantPast(), DistantFuture(),
       base::BindOnce(
-          [](int* count, const bool success,
+          [](size_t* count, const bool success,
              const TransactionList& transactions) mutable {
             CHECK(success);
             *count = transactions.size();

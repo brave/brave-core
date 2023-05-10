@@ -12,27 +12,27 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_prediction_util.h"
 
-namespace brave_ads::ml::model {
+namespace brave_ads::ml {
 
-Linear::Linear() = default;
+LinearModel::LinearModel() = default;
 
-Linear::Linear(std::map<std::string, VectorData> weights,
-               std::map<std::string, double> biases) {
+LinearModel::LinearModel(std::map<std::string, VectorData> weights,
+                         std::map<std::string, double> biases) {
   weights_ = std::move(weights);
   biases_ = std::move(biases);
 }
 
-Linear::Linear(const Linear& other) = default;
+LinearModel::LinearModel(const LinearModel& other) = default;
 
-Linear& Linear::operator=(const Linear& other) = default;
+LinearModel& LinearModel::operator=(const LinearModel& other) = default;
 
-Linear::Linear(Linear&& other) noexcept = default;
+LinearModel::LinearModel(LinearModel&& other) noexcept = default;
 
-Linear& Linear::operator=(Linear&& other) noexcept = default;
+LinearModel& LinearModel::operator=(LinearModel&& other) noexcept = default;
 
-Linear::~Linear() = default;
+LinearModel::~LinearModel() = default;
 
-PredictionMap Linear::Predict(const VectorData& x) const {
+PredictionMap LinearModel::Predict(const VectorData& x) const {
   PredictionMap predictions;
   for (const auto& kv : weights_) {
     double prediction = kv.second * x;
@@ -45,8 +45,8 @@ PredictionMap Linear::Predict(const VectorData& x) const {
   return predictions;
 }
 
-PredictionMap Linear::GetTopPredictions(const VectorData& x,
-                                        const int top_count) const {
+PredictionMap LinearModel::GetTopPredictions(const VectorData& x,
+                                             const int top_count) const {
   const PredictionMap prediction_map = Predict(x);
   const PredictionMap prediction_map_softmax = Softmax(prediction_map);
   std::vector<std::pair<double, std::string>> prediction_order;
@@ -65,4 +65,4 @@ PredictionMap Linear::GetTopPredictions(const VectorData& x,
   return top_predictions;
 }
 
-}  // namespace brave_ads::ml::model
+}  // namespace brave_ads::ml

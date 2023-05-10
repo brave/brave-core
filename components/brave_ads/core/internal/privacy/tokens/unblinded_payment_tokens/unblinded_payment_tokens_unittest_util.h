@@ -31,8 +31,8 @@ UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
 UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
     const std::vector<std::string>& unblinded_payment_tokens_base64);
 
-UnblindedPaymentTokenList GetUnblindedPaymentTokens(int count);
-UnblindedPaymentTokenInfo GetUnblindedPaymentToken();
+UnblindedPaymentTokenList BuildUnblindedPaymentTokens(int count);
+UnblindedPaymentTokenInfo BuildUnblindedPaymentToken();
 
 }  // namespace privacy
 }  // namespace brave_ads

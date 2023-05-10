@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 using GetUnblindedTokenListCallback =
@@ -23,21 +23,21 @@ class DatabaseUnblindedToken : public DatabaseTable {
   ~DatabaseUnblindedToken() override;
 
   void InsertOrUpdateList(std::vector<mojom::UnblindedTokenPtr> list,
-                          ledger::LegacyResultCallback callback);
+                          LegacyResultCallback callback);
 
   void GetSpendableRecords(GetUnblindedTokenListCallback callback);
 
   void MarkRecordListAsSpent(const std::vector<std::string>& ids,
                              mojom::RewardsType redeem_type,
                              const std::string& redeem_id,
-                             ledger::LegacyResultCallback callback);
+                             LegacyResultCallback callback);
 
   void MarkRecordListAsReserved(const std::vector<std::string>& ids,
                                 const std::string& redeem_id,
-                                ledger::LegacyResultCallback callback);
+                                LegacyResultCallback callback);
 
   void MarkRecordListAsSpendable(const std::string& redeem_id,
-                                 ledger::LegacyResultCallback callback);
+                                 LegacyResultCallback callback);
 
   void GetReservedRecordList(const std::string& redeem_id,
                              GetUnblindedTokenListCallback callback);
@@ -52,10 +52,10 @@ class DatabaseUnblindedToken : public DatabaseTable {
 
   void OnMarkRecordListAsReserved(mojom::DBCommandResponsePtr response,
                                   size_t expected_row_count,
-                                  ledger::LegacyResultCallback callback);
+                                  LegacyResultCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_UNBLINDED_TOKEN_H_

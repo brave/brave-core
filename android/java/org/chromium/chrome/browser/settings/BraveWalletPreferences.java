@@ -9,25 +9,40 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.SpanApplier;
 
 public class BraveWalletPreferences
         extends BravePreferenceFragment implements ConnectionErrorHandler {
+    private static final String TAG = "WalletPreferences";
     private static final String PREF_BRAVE_WALLET_AUTOLOCK = "pref_brave_wallet_autolock";
     private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
     private static final String BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH = "web3_notifications_switch";
+    private static final String BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH =
+            "nft_auto_discovery_switch";
+    private static final String BRAVE_WALLET_WEB3_NFT_DISCOVERY_LEARN_MORE =
+            "nft_auto_discovery_learn_more";
     // A global preference, default state is on
     public static final String PREF_BRAVE_WALLET_WEB3_NOTIFICATIONS =
             "pref_brave_wallet_web3_notifications";
@@ -35,6 +50,9 @@ public class BraveWalletPreferences
     private BraveWalletAutoLockPreferences mPrefAutolock;
     private KeyringService mKeyringService;
     private ChromeSwitchPreference mWeb3NotificationsSwitch;
+    private ChromeSwitchPreference mWeb3NftDiscoverySwitch;
+
+    private WalletModel mWalletModel;
 
     public static boolean getPrefWeb3NotificationsEnabled() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -43,8 +61,15 @@ public class BraveWalletPreferences
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            mWalletModel = activity.getWalletModel();
+            setUpNftDiscoveryPreference();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "onCreate ", e);
+        }
 
         mPrefAutolock = (BraveWalletAutoLockPreferences) findPreference(PREF_BRAVE_WALLET_AUTOLOCK);
         mWeb3NotificationsSwitch =
@@ -59,6 +84,32 @@ public class BraveWalletPreferences
                 });
 
         InitKeyringService();
+    }
+
+    private void setUpNftDiscoveryPreference() {
+        if (mWalletModel == null) return;
+        mWeb3NftDiscoverySwitch =
+                (ChromeSwitchPreference) findPreference(BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH);
+        mWalletModel.getCryptoModel().isNftDiscoveryEnabled(isNftDiscoveryEnabled -> {
+            mWeb3NftDiscoverySwitch.setChecked(isNftDiscoveryEnabled);
+        });
+        mWeb3NftDiscoverySwitch.setOnPreferenceChangeListener(
+                (Preference preference, Object newValue) -> {
+                    mWalletModel.getCryptoModel().updateNftDiscovery((boolean) newValue);
+                    return true;
+                });
+
+        TextMessagePreference learnMorePreference =
+                findPreference(BRAVE_WALLET_WEB3_NFT_DISCOVERY_LEARN_MORE);
+        var learnMoreDesc =
+                SpanApplier.applySpans(getString(R.string.settings_enable_nft_discovery_desc),
+                        new SpanApplier.SpanInfo("<LINK_1>", "</LINK_1>",
+                                new NoUnderlineClickableSpan(
+                                        requireContext(), R.color.brave_link, result -> {
+                                            TabUtils.openUrlInCustomTab(requireContext(),
+                                                    WalletConstants.NFT_DISCOVERY_LEARN_MORE_LINK);
+                                        })));
+        learnMorePreference.setSummary(learnMoreDesc);
     }
 
     @Override

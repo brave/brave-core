@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Close tabs on exit</translation>
 <translation id="4448697385961650078">Block trackers &amp; ads</translation>
 <translation id="2448893613530489637">Prevents trackers &amp; ads from loading and showing in webpages</translation>
+<translation id="1025207378813960343">Ensure the connections to websites are secure.</translation>
+<translation id="6686219838158572786">Require all connections to use HTTPS (strict)</translation>
+<translation id="4221284400051835823">Upgrade to HTTPS whenever possible (default)</translation>
+<translation id="4690906712010847708">Don't upgrade connections to HTTPS (disabled)</translation>
 <translation id="1680858055899097121">Don't persist tabs between browsing sessions</translation>
 <translation id="7142548388914389999">Allow privacy-preserving product analytics (P3A)</translation>
 <translation id="5254037869598726291">Anonymised P3A info helps Brave estimate overall usage and ensure we’re improving popular features.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Auto-play</translation>
 <translation id="7445411102860286510">Allow sites to automatically play muted videos (recommended)</translation>
 <translation id="7837721118676387834">Allow auto-play of muted videos for a specific site.</translation>
+<translation id="4206299587103092719">Google sign-in</translation>
+<translation id="9110294136812584522">Sites can ask to use legacy Google Sign-In via third-party cookies</translation>
+<translation id="2903783737778379345">Don't allow legacy Google Sign-In via third-party cookies</translation>
+<translation id="6880817299303842099">Allowed to use third-party cookies for legacy Google Sign-In</translation>
 <translation id="181905442828471321">Brave shields global defaults</translation>
 <translation id="2675679258824361492">Other privacy settings</translation>
 <translation id="8026334261755873520">Clear browsing data</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">You are automatically sending a tip to:</translation>
 <translation id="1628742278973105368">Your first monthly tip will be sent on:</translation>
 <translation id="1642952941091001113">This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.</translation>
-<translation id="635752162765375187">NOTE: this creator is currently not configured to receive tips from your Rewards custodial wallet service. Any tip you make will remain pending and retry automatically for 90 days.</translation>
+<translation id="8228150955416632026">You're connected to <ph name="WALLET_PROVIDER"/>, but this creator is connected to <ph name="SUPPORTED_WALLET_PROVIDER"/>. This means your tip can't reach this creator. For now, any tip you make will remain pending and retry automatically for 90 days.</translation>
 <translation id="1910721550319506122">Welcome!</translation>
 <translation id="2734870894159530879">Log in to <ph name="WALLET_PROVIDER"/> to see your balance</translation>
 <translation id="5830114181292529917">You can support this site by sending a tip. It's a way of thanking them for making great content.</translation>
@@ -610,6 +618,7 @@ Are you sure you want to do this?</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="3995184924764722477">Account Details</translation>
 <translation id="8967036623785635603">Edit visible assets</translation>
+<translation id="8475984867371585028">Edit visible NFTs</translation>
 <translation id="5050890334032852465">Save account watchlist</translation>
 <translation id="7755766175599167100">Search tokens</translation>
 <translation id="3835223348537121988">Balance:</translation>
@@ -1046,4 +1055,78 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1776742005329298234">On <ph name="DUE_DATE"/>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.</translation>
 <translation id="5089752671190341407">You still have time to contribute your vBATs to your favourite creators</translation>
 <translation id="171158953146804144">On <ph name="DUE_DATE"/>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION"/>) to withdraw your earnings. Until then, you can still contribute to your favourite creators.</translation>
+<translation id="8949422576126100041">View page with Speedreader?</translation>
+<translation id="591648995518106347">Automatically loads eligible articles in reader mode</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> on <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Brave playlist</translation>
+<translation id="4850886885716139402">View</translation>
+<translation id="7392941176393379100">Added to '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Managing your playlist data</translation>
+<translation id="7650602357673790368">By default, playlist will auto save content to your device for offline playback (on both private &amp; shared playlists). If you’re not on WiFi, auto save will use your cellular data.\n\nTo change this default, use settings.</translation>
+<translation id="5900576657906675258">Add item to playlist</translation>
+<translation id="349846214503465941">Enable playlist</translation>
+<translation id="1309636029062006520">Make playlists of your favourite audio and videos, and play anytime, anywhere.</translation>
+<translation id="7899390017499980820">Add to playlist button</translation>
+<translation id="6901152954398668317">Show or hide "Add to playlist" button for quick access to add or remove media.</translation>
+<translation id="8404028031709373707">Auto-play</translation>
+<translation id="597781019681241649">Enables auto-play when playlist is opened.</translation>
+<translation id="2625554376218216118">Start playback where I left off</translation>
+<translation id="2953730196265332002">Automatically sync any changes the creator made to a shared playlist.</translation>
+<translation id="3561815498111282415">Auto-save for offline</translation>
+<translation id="1832424694374124654">Automatically saves new playlist items to your device so you can play without an Internet connection.</translation>
+<translation id="8103022210423023846">Auto-save ON</translation>
+<translation id="3926329432879804185">Auto-save OFF</translation>
+<translation id="7768812595186089508">Auto-save only when connected to Wi-Fi</translation>
+<translation id="5939518447894949180">Reset</translation>
+<translation id="8199028711686989861">Remove all videos from playlist, including offline mode storage.</translation>
+<translation id="5916664084637901428">On</translation>
+<translation id="5860033963881614850">Off</translation>
+<translation id="2920568868625746681">Wi-Fi only</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Create</translation>
+<translation id="5491049004699827548">Create your first playlist</translation>
+<translation id="5319108110887582146">Make a playlist of your favourite audio and videos and play anytime, anywhere. Even offline.</translation>
+<translation id="6802849415466883498">Create a playlist</translation>
+<translation id="8525248723479742219">Play later</translation>
+<translation id="7453007860684252933">Browse and add</translation>
+<translation id="9014883386413828317">Add your favourite content. Look for the ( + ) button in the lower-right part of your screen.</translation>
+<translation id="5928669500312007783">Browse for media</translation>
+<translation id="8152485753254079984">New playlist</translation>
+<translation id="9130105487623071247">Playlist name</translation>
+<translation id="726581235416249619">Untitled playlist</translation>
+<translation id="1456254983411148628">Remove data</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> selected</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> items</translation>
+<translation id="2317629745818459803">Play all</translation>
+<translation id="7544853251252956727">Shuffle</translation>
+<translation id="2881339830231736485">Recently played</translation>
+<translation id="7636458383879257005">Tap, long press or drag</translation>
+<translation id="8120600068258956006">Add to playlist</translation>
+<translation id="39991094779686024">Playlists</translation>
+<translation id="1710072605877822603">Add media</translation>
+<translation id="903678009070770568">Add videos to Brave playlist and watch later, even offline</translation>
+<translation id="3063627607780392015">Out of mobile range? Need to calm a crying toddler?</translation>
+<translation id="2041014734809158138">Whether you're on the train, a flight or a long car trip, playlist has you covered.</translation>
+<translation id="7287143275037417932">Or tap the playlist button when it appears</translation>
+<translation id="6959838938954098206">Playlist button appears when there’s media to add. Long press it for options. You can even hide it.</translation>
+<translation id="3620862810055853183">Open playlist</translation>
+<translation id="3861012838874771868">Open playlist Settings</translation>
+<translation id="5220099266891491416">Hide playlist button</translation>
+<translation id="7416347631175891923">Try it!</translation>
+<translation id="1173894706177603556">Rename</translation>
+<translation id="1620612903815671893">Remove playlist offline data</translation>
+<translation id="3261711068865275261">Remove all offline data</translation>
+<translation id="6653691766801349738">Keep playlist for offline use</translation>
+<translation id="8708086574143054053">Keep all playlists for offline use</translation>
+<translation id="3596306474342941843">Delete playlist</translation>
+<translation id="7765158879357617694">Move</translation>
+<translation id="3803384303807438047">Delete item's offline data</translation>
+<translation id="4195643157523330669">Open in new tab</translation>
+<translation id="4243710787042215766">Open in Private tab</translation>
+<translation id="8261506727792406068">Delete</translation>
+<translation id="377872456482681602">Please select items first</translation>
+<translation id="6172429305139364624">Playlist item is not cached.\nPlease cache the item for offline mode.</translation>
+<translation id="3631131732607750008">Content expired. Try again in a few seconds.</translation>
+<translation id="9085765419770918643">No NFTs here yet.</translation>
+<translation id="8445532667841598737">Ready to add some? Just click the button below to import.</translation>
 </translationbundle>

@@ -10,26 +10,26 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_day_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_hour_permission_rule.h"
 
-namespace brave_ads::promoted_content_ads {
+namespace brave_ads {
 
 // static
-bool PermissionRules::HasPermission() {
+bool PromotedContentAdPermissionRules::HasPermission() {
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
 
-  CatalogPermissionRule catalog_permission_rule;
-  if (!ShouldAllow(&catalog_permission_rule)) {
+  const CatalogPermissionRule catalog_permission_rule;
+  if (!ShouldAllow(catalog_permission_rule)) {
     return false;
   }
 
-  AdsPerDayPermissionRule ads_per_day_permission_rule;
-  if (!ShouldAllow(&ads_per_day_permission_rule)) {
+  const PromotedContentAdsPerDayPermissionRule ads_per_day_permission_rule;
+  if (!ShouldAllow(ads_per_day_permission_rule)) {
     return false;
   }
 
-  AdsPerHourPermissionRule ads_per_hour_permission_rule;
-  return ShouldAllow(&ads_per_hour_permission_rule);
+  const PromotedContentAdsPerHourPermissionRule ads_per_hour_permission_rule;
+  return ShouldAllow(ads_per_hour_permission_rule);
 }
 
-}  // namespace brave_ads::promoted_content_ads
+}  // namespace brave_ads

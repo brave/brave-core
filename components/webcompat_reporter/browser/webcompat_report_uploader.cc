@@ -13,7 +13,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/webcompat_reporter/browser/buildflags.h"
+#include "brave/components/webcompat_reporter/buildflags/buildflags.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "net/base/load_flags.h"
 #include "net/base/privacy_mode.h"

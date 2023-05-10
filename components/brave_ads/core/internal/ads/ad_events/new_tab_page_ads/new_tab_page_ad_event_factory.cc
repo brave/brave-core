@@ -11,25 +11,25 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-namespace brave_ads::new_tab_page_ads {
+namespace brave_ads {
 
-std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> AdEventFactory::Build(
-    const mojom::NewTabPageAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+std::unique_ptr<AdEventInterface<NewTabPageAdInfo>>
+NewTabPageAdEventFactory::Build(const mojom::NewTabPageAdEventType event_type) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   switch (event_type) {
     case mojom::NewTabPageAdEventType::kServed: {
-      return std::make_unique<AdEventServed>();
+      return std::make_unique<NewTabPageAdEventServed>();
     }
 
     case mojom::NewTabPageAdEventType::kViewed: {
-      return std::make_unique<AdEventViewed>();
+      return std::make_unique<NewTabPageAdEventViewed>();
     }
 
     case mojom::NewTabPageAdEventType::kClicked: {
-      return std::make_unique<AdEventClicked>();
+      return std::make_unique<NewTabPageAdEventClicked>();
     }
   }
 }
 
-}  // namespace brave_ads::new_tab_page_ads
+}  // namespace brave_ads

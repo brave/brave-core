@@ -17,9 +17,6 @@ class Time;
 
 namespace brave_ads {
 
-class AdType;
-class ConfirmationType;
-
 using AddTransactionCallback =
     base::OnceCallback<void(bool success, const TransactionInfo& transaction)>;
 
@@ -27,6 +24,9 @@ using GetTransactionsCallback =
     base::OnceCallback<void(bool success, const TransactionList& transactions)>;
 
 using RemoveAllTransactionsCallback = base::OnceCallback<void(bool success)>;
+
+class AdType;
+class ConfirmationType;
 
 TransactionInfo AddTransaction(const std::string& creative_instance_id,
                                const std::string& segment,

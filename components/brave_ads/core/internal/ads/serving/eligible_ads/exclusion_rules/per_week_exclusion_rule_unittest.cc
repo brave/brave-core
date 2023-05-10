@@ -23,7 +23,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.per_week = 2;
 
-  PerWeekExclusionRule exclusion_rule({});
+  const PerWeekExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -37,7 +37,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfZero) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.per_week = 0;
 
-  PerWeekExclusionRule exclusion_rule({});
+  const PerWeekExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -58,7 +58,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 
   ad_events.push_back(ad_event);
 
-  PerWeekExclusionRule exclusion_rule(ad_events);
+  const PerWeekExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -80,7 +80,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  PerWeekExclusionRule exclusion_rule(ad_events);
+  const PerWeekExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(7));
 
@@ -104,7 +104,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  PerWeekExclusionRule exclusion_rule(ad_events);
+  const PerWeekExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(7) - base::Milliseconds(1));
 
@@ -128,7 +128,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  PerWeekExclusionRule exclusion_rule(ad_events);
+  const PerWeekExclusionRule exclusion_rule(ad_events);
 
   // Act
 

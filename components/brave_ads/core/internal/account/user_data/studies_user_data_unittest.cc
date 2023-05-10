@@ -13,23 +13,19 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-TEST(BraveAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
+TEST(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {
   // Arrange
 
   // Act
-  const base::Value::Dict user_data = GetStudies();
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"studies":[]})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"studies":[]})"),
+            BuildStudiesUserData());
 }
 
-TEST(BraveAdsStudiesUserDataTest, GetStudies) {
+TEST(BraveAdsStudiesUserDataTest, BuildStudiesUserData) {
   // Arrange
   const scoped_refptr<base::FieldTrial> field_trial_1 =
       base::FieldTrialList::CreateFieldTrial("BraveAds.FooStudy", "GroupA");
@@ -46,14 +42,12 @@ TEST(BraveAdsStudiesUserDataTest, GetStudies) {
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
   // Act
-  const base::Value::Dict user_data = GetStudies();
 
   // Assert
-  const base::Value expected_user_data = base::test::ParseJson(
-      R"({"studies":[{"group":"GroupB","name":"BraveAds.BarStudy"},{"group":"GroupA","name":"BraveAds.FooStudy"}]})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(
+      base::test::ParseJsonDict(
+          R"({"studies":[{"group":"GroupB","name":"BraveAds.BarStudy"},{"group":"GroupA","name":"BraveAds.FooStudy"}]})"),
+      BuildStudiesUserData());
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

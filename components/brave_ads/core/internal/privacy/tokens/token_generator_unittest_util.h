@@ -8,13 +8,17 @@
 
 #include <vector>
 
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
+
 namespace brave_ads::privacy {
 
 namespace cbr {
 class Token;
 }  // namespace cbr
 
-std::vector<cbr::Token> GetTokens(int count);
+std::vector<cbr::Token> BuildTokens(size_t count);
+
+void MockTokenGenerator(const TokenGeneratorMock& mock, size_t count);
 
 }  // namespace brave_ads::privacy
 

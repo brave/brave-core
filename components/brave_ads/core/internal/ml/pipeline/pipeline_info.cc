@@ -13,7 +13,7 @@ PipelineInfo::PipelineInfo(const int version,
                            std::string timestamp,
                            std::string locale,
                            TransformationVector transformations,
-                           model::Linear linear_model)
+                           LinearModel linear_model)
     : version(version),
       timestamp(std::move(timestamp)),
       locale(std::move(locale)),

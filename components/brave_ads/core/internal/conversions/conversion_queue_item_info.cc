@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
-
 namespace brave_ads {
 
 ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
@@ -34,8 +32,7 @@ bool ConversionQueueItemInfo::operator==(
          advertiser_id == other.advertiser_id && segment == other.segment &&
          conversion_id == other.conversion_id &&
          advertiser_public_key == other.advertiser_public_key &&
-         DoubleEquals(process_at.ToDoubleT(), other.process_at.ToDoubleT()) &&
-         was_processed == other.was_processed;
+         process_at == other.process_at && was_processed == other.was_processed;
 }
 
 bool ConversionQueueItemInfo::operator!=(

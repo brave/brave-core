@@ -15,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "chrome/browser/profiles/profile_manager_observer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
@@ -22,6 +23,7 @@ class BraveStatsUpdaterBrowserTest;
 class PrefChangeRegistrar;
 class PrefRegistrySimple;
 class PrefService;
+class ProfileManager;
 
 namespace base {
 class OneShotTimer;
@@ -47,12 +49,12 @@ extern const char kP3ADailyPingHistogramName[];
 
 class BraveStatsUpdaterParams;
 
-class BraveStatsUpdater {
+class BraveStatsUpdater : public ProfileManagerObserver {
  public:
-  explicit BraveStatsUpdater(PrefService* pref_service);
+  BraveStatsUpdater(PrefService* pref_service, ProfileManager* profile_manager);
   BraveStatsUpdater(const BraveStatsUpdater&) = delete;
   BraveStatsUpdater& operator=(const BraveStatsUpdater&) = delete;
-  ~BraveStatsUpdater();
+  ~BraveStatsUpdater() override;
 
   void Start();
   void Stop();
@@ -98,6 +100,9 @@ class BraveStatsUpdater {
   bool HasDoneThresholdPing();
   void DisableThresholdPing();
 
+  // ProfileManagerObserver:
+  void OnProfileAdded(Profile* profile) override;
+
   network::mojom::URLLoaderFactory* GetURLLoaderFactory();
 
   friend class ::BraveStatsUpdaterBrowserTest;
@@ -106,6 +111,7 @@ class BraveStatsUpdater {
   ProcessArch arch_ = ProcessArch::kArchSkip;
   bool stats_startup_complete_ = false;
   raw_ptr<PrefService> pref_service_ = nullptr;
+  raw_ptr<ProfileManager> profile_manager_ = nullptr;
   std::string usage_server_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;

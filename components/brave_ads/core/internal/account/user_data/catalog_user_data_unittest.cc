@@ -12,23 +12,21 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsCatalogUserDataTest : public UnitTestBase {};
 
-TEST_F(BraveAdsCatalogUserDataTest, GetCatalog) {
+TEST_F(BraveAdsCatalogUserDataTest, BuildCatalogUserData) {
   // Arrange
   SetCatalogId(kCatalogId);
 
   // Act
-  const base::Value::Dict user_data = GetCatalog();
 
   // Assert
-  const base::Value expected_user_data = base::test::ParseJson(
-      R"({"catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}]})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(
+      base::test::ParseJsonDict(
+          R"({"catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}]})"),
+      BuildCatalogUserData());
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

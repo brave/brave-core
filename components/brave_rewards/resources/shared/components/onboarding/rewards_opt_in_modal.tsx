@@ -161,7 +161,6 @@ export function RewardsOptInModal (props: Props) {
               placeholderText={getString('onboardingSelectCountry')}
               value={countryCode}
               onChange={setCountryCode}
-              autoFocus
             />
           </style.selectCountry>
           <style.mainAction>

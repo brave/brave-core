@@ -6,40 +6,48 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_RESOURCE_H_
 
+#include <string>
+
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
+#include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
-class Conversions final {
+class ConversionsResource final : public AdsClientNotifierObserver {
  public:
-  Conversions();
+  ConversionsResource();
 
-  Conversions(const Conversions&) = delete;
-  Conversions& operator=(const Conversions&) = delete;
+  ConversionsResource(const ConversionsResource&) = delete;
+  ConversionsResource& operator=(const ConversionsResource&) = delete;
 
-  Conversions(Conversions&&) noexcept = delete;
-  Conversions& operator=(Conversions&&) noexcept = delete;
+  ConversionsResource(ConversionsResource&&) noexcept = delete;
+  ConversionsResource& operator=(ConversionsResource&&) noexcept = delete;
 
-  ~Conversions();
+  ~ConversionsResource() override;
 
   bool IsInitialized() const { return is_initialized_; }
 
   void Load();
 
-  const ConversionsInfo* get() const { return &conversions_; }
+  const ConversionsInfo& get() const { return conversions_; }
 
  private:
-  void OnLoadAndParseResource(ParsingErrorOr<ConversionsInfo> result);
+  void LoadAndParseResourceCallback(
+      ResourceParsingErrorOr<ConversionsInfo> result);
+
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   bool is_initialized_ = false;
 
   ConversionsInfo conversions_;
 
-  base::WeakPtrFactory<Conversions> weak_factory_{this};
+  base::WeakPtrFactory<ConversionsResource> weak_factory_{this};
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_RESOURCE_H_

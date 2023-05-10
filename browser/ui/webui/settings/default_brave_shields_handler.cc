@@ -15,12 +15,16 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/web_ui.h"
 #include "url/gurl.h"
 
 using brave_shields::ControlType;
 using brave_shields::ControlTypeFromString;
 using brave_shields::ControlTypeToString;
+
+DefaultBraveShieldsHandler::DefaultBraveShieldsHandler() = default;
+DefaultBraveShieldsHandler::~DefaultBraveShieldsHandler() = default;
 
 void DefaultBraveShieldsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -79,6 +83,49 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getForgetFirstPartyStorageEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setForgetFirstPartyStorageEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetForgetFirstPartyStorageEnabled,
+          base::Unretained(this)));
+
+  content_settings_observation_.Observe(
+      HostContentSettingsMapFactory::GetForProfile(profile_));
+}
+
+void DefaultBraveShieldsHandler::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsTypeSet content_type_set) {
+  if (!content_type_set.Contains(ContentSettingsType::COOKIES) &&
+      !content_type_set.Contains(
+          ContentSettingsType::BRAVE_COSMETIC_FILTERING) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_TRACKERS) &&
+      !content_type_set.Contains(
+          ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES) &&
+      !content_type_set.Contains(
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_SHIELDS) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_HTTPS_UPGRADE) &&
+      !content_type_set.Contains(
+          ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE)) {
+    return;
+  }
+
+  if (primary_pattern != ContentSettingsPattern::Wildcard() &&
+      secondary_pattern != ContentSettingsPattern::Wildcard()) {
+    return;
+  }
+
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("brave-shields-settings-changed");
 }
 
 void DefaultBraveShieldsHandler::IsAdControlEnabled(
@@ -226,4 +273,27 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
       value ? ControlType::BLOCK : ControlType::ALLOW, GURL(),
       g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::SetForgetFirstPartyStorageEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+  bool value = args[0].GetBool();
+
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile_), value, GURL(),
+      g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool result = brave_shields::GetForgetFirstPartyStorageEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(result));
 }

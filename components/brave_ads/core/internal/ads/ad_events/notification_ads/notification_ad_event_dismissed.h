@@ -12,14 +12,12 @@ namespace brave_ads {
 
 struct NotificationAdInfo;
 
-namespace notification_ads {
-
-class AdEventDismissed final : public AdEventInterface<NotificationAdInfo> {
+class NotificationAdEventDismissed final
+    : public AdEventInterface<NotificationAdInfo> {
  public:
   void FireEvent(const NotificationAdInfo& ad) override;
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_DISMISSED_H_

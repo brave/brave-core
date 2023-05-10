@@ -6,7 +6,7 @@
 import WalletApiProxy from '../common/wallet_api_proxy'
 import { BraveWallet } from '../constants/types'
 
-class WalletPanelApiProxy extends WalletApiProxy {
+export class WalletPanelApiProxy extends WalletApiProxy {
   callbackRouter = new BraveWallet.PageCallbackRouter()
   panelHandler = new BraveWallet.PanelHandlerRemote()
 
@@ -19,6 +19,7 @@ class WalletPanelApiProxy extends WalletApiProxy {
         this.panelHandler.$.bindNewPipeAndPassReceiver(),
         this.walletHandler.$.bindNewPipeAndPassReceiver(),
         this.jsonRpcService.$.bindNewPipeAndPassReceiver(),
+        this.bitcoinWalletService.$.bindNewPipeAndPassReceiver(),
         this.swapService.$.bindNewPipeAndPassReceiver(),
         this.assetRatioService.$.bindNewPipeAndPassReceiver(),
         this.keyringService.$.bindNewPipeAndPassReceiver(),
@@ -28,7 +29,8 @@ class WalletPanelApiProxy extends WalletApiProxy {
         this.solanaTxManagerProxy.$.bindNewPipeAndPassReceiver(),
         this.filTxManagerProxy.$.bindNewPipeAndPassReceiver(),
         this.braveWalletService.$.bindNewPipeAndPassReceiver(),
-        this.braveWalletP3A.$.bindNewPipeAndPassReceiver())
+        this.braveWalletP3A.$.bindNewPipeAndPassReceiver(),
+        this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver())
   }
 }
 

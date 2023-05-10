@@ -28,14 +28,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-base::Time CalculateExpireAtTime(const int observation_window) {
-  return Now() + base::Days(observation_window);
-}
-
-}  // namespace
-
 class BraveAdsConversionsTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -65,8 +57,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -102,8 +94,8 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -151,8 +143,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -191,8 +183,8 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -237,8 +229,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -274,8 +266,8 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -323,8 +315,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -363,8 +355,8 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -410,8 +402,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -449,8 +441,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -500,8 +492,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -543,8 +535,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -589,8 +581,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -627,8 +619,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -670,8 +662,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*/baz";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -717,8 +709,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*/baz";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -747,8 +739,7 @@ TEST_F(BraveAdsConversionsTest,
                      std::move(conversion)));
 }
 
-TEST_F(BraveAdsConversionsTest,
-       DoNotConvertViewedSearchResultAdWhenAdsAreDisabled) {
+TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -763,8 +754,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -779,12 +770,18 @@ TEST_F(BraveAdsConversionsTest,
       {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
-      condition,
-      base::BindOnce([](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_TRUE(ad_events.empty());
-      }));
+                       EXPECT_EQ(1U, ad_events.size());
+
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
@@ -800,8 +797,8 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -831,7 +828,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertClickedSearchResultAdWhenAdsAreDisabled) {
+       ConvertClickedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -849,8 +846,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -865,12 +862,18 @@ TEST_F(BraveAdsConversionsTest,
       {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
-      condition,
-      base::BindOnce([](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_TRUE(ad_events.empty());
-      }));
+                       EXPECT_EQ(1U, ad_events.size());
+
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
@@ -889,8 +892,8 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
   conversion.creative_set_id = creative_ad.creative_set_id;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
   database::SaveConversions(conversions);
 
@@ -927,18 +930,16 @@ TEST_F(BraveAdsConversionsTest, ConvertMultipleAds) {
   conversion_1.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion_1.type = "postview";
   conversion_1.url_pattern = "https://www.foo.com/*";
-  conversion_1.observation_window = 3;
-  conversion_1.expire_at =
-      CalculateExpireAtTime(conversion_1.observation_window);
+  conversion_1.observation_window = base::Days(3);
+  conversion_1.expire_at = Now() + conversion_1.observation_window;
   conversions.push_back(conversion_1);
 
   ConversionInfo conversion_2;
   conversion_2.creative_set_id = "4e83a23c-1194-40f8-8fdc-2f38d7ed75c8";
   conversion_2.type = "postclick";
   conversion_2.url_pattern = "https://www.foo.com/*/baz";
-  conversion_2.observation_window = 3;
-  conversion_2.expire_at =
-      CalculateExpireAtTime(conversion_2.observation_window);
+  conversion_2.observation_window = base::Days(3);
+  conversion_2.expire_at = Now() + conversion_2.observation_window;
   conversions.push_back(conversion_2);
 
   database::SaveConversions(conversions);
@@ -984,11 +985,10 @@ TEST_F(BraveAdsConversionsTest, ConvertMultipleAds) {
             EXPECT_EQ(2U, ad_events.size());
 
             const ConversionInfo& conversion_1 = conversions.at(0);
-            const AdEventInfo& ad_event_1 = ad_events.at(1);
+            const AdEventInfo& ad_event_1 = ad_events.at(0);
             EXPECT_EQ(conversion_1.creative_set_id, ad_event_1.creative_set_id);
-
             const ConversionInfo& conversion_2 = conversions.at(1);
-            const AdEventInfo& ad_event_2 = ad_events.at(0);
+            const AdEventInfo& ad_event_2 = ad_events.at(1);
             EXPECT_EQ(conversion_2.creative_set_id, ad_event_2.creative_set_id);
           },
           std::move(conversions)));
@@ -1002,8 +1002,8 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*bar*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1048,8 +1048,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/bar";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1103,8 +1103,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/bar";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1157,7 +1157,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertAdWhenThereIsConversionHistoryForTheSameCreativeSet) {
+       DoNotConvertIfAnotherAdConvertedInTheSameCreativeSet) {
   // Arrange
   ConversionList conversions;
 
@@ -1165,8 +1165,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1205,7 +1205,7 @@ TEST_F(BraveAdsConversionsTest,
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertAdWhenUrlDoesNotMatchConversionIdPattern) {
+       DoNotConvertAdIfUrlDoesNotMatchConversionIdPattern) {
   // Arrange
   ConversionList conversions;
 
@@ -1213,8 +1213,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/bar/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1242,8 +1242,7 @@ TEST_F(BraveAdsConversionsTest,
       }));
 }
 
-TEST_F(BraveAdsConversionsTest,
-       ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
+TEST_F(BraveAdsConversionsTest, ConvertAdIfConversionIsOnTheCuspOfExpiring) {
   // Arrange
   ConversionList conversions;
 
@@ -1251,8 +1250,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://*.bar.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1288,7 +1287,7 @@ TEST_F(BraveAdsConversionsTest,
                      std::move(conversion)));
 }
 
-TEST_F(BraveAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
+TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfTheConversionHasExpired) {
   // Arrange
   ConversionList conversions;
 
@@ -1296,8 +1295,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/b*r/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1327,7 +1326,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
       }));
 }
 
-TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
+TEST_F(BraveAdsConversionsTest, ConvertAdIfIntermediateUrlIsInRedirectChain) {
   // Arrange
   ConversionList conversions;
 
@@ -1335,8 +1334,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/baz";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1372,7 +1371,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
                      std::move(conversion)));
 }
 
-TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
+TEST_F(BraveAdsConversionsTest, ConvertAdIfOriginalUrlIsInRedirectChain) {
   // Arrange
   ConversionList conversions;
 
@@ -1380,8 +1379,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/bar";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1417,7 +1416,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
                      std::move(conversion)));
 }
 
-TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainUrl) {
+TEST_F(BraveAdsConversionsTest, ConvertAdIfUrlIsInRedirectChain) {
   // Arrange
   ConversionList conversions;
 
@@ -1425,8 +1424,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainUrl) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/qux";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1464,9 +1463,10 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainUrl) {
 
 TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
   // Arrange
-  resource::Conversions resource;
+  ConversionsResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
+  ASSERT_TRUE(resource.IsInitialized());
 
   ConversionList conversions;
 
@@ -1475,8 +1475,8 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/thankyou";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1489,7 +1489,7 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
   conversions_->MaybeConvert(
       {GURL("https://foo.bar/"), GURL("https://brave.com/thankyou")},
       R"(<html><meta name="ad-conversion-id" content="abc123"></html>)",
-      resource.get()->id_patterns);
+      resource.get().id_patterns);
 
   // Assert
   conversion_queue_database_table_.GetAll(base::BindOnce(
@@ -1514,9 +1514,10 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
 TEST_F(BraveAdsConversionsTest,
        ExtractConversionIdWithResourcePatternFromHtml) {
   // Arrange
-  resource::Conversions resource;
+  ConversionsResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
+  ASSERT_TRUE(resource.IsInitialized());
 
   ConversionList conversions;
 
@@ -1525,8 +1526,8 @@ TEST_F(BraveAdsConversionsTest,
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/foobar";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1541,7 +1542,7 @@ TEST_F(BraveAdsConversionsTest,
   conversions_->MaybeConvert(
       {GURL("https://foo.bar/"), GURL("https://brave.com/foobar")},
       "<html><div id=\"conversion-id\">abc123</div></html>",
-      resource.get()->id_patterns);
+      resource.get().id_patterns);
 
   // Assert
   conversion_queue_database_table_.GetAll(base::BindOnce(
@@ -1565,9 +1566,10 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // Arrange
-  resource::Conversions resource;
+  ConversionsResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
+  ASSERT_TRUE(resource.IsInitialized());
 
   ConversionList conversions;
 
@@ -1576,8 +1578,8 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/foobar?conversion_id=*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   database::SaveConversions(conversions);
@@ -1593,7 +1595,7 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
       {GURL("https://foo.bar/"),
        GURL("https://brave.com/foobar?conversion_id=abc123")},
       "<html><div id=\"conversion-id\">foobar</div></html>",
-      resource.get()->id_patterns);
+      resource.get().id_patterns);
 
   // Assert
   conversion_queue_database_table_.GetAll(base::BindOnce(

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -24,32 +25,40 @@ namespace {
 constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
 }  // namespace
 
-class BraveAdsConversionsResourceTest : public UnitTestBase {};
+class BraveAdsConversionsResourceTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    resource_ = std::make_unique<ConversionsResource>();
+  }
+
+  bool LoadResource() {
+    resource_->Load();
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
+  }
+
+  std::unique_ptr<ConversionsResource> resource_;
+};
 
 TEST_F(BraveAdsConversionsResourceTest, LoadResource) {
   // Arrange
-  resource::Conversions resource;
 
   // Act
-  resource.Load();
-  task_environment_.RunUntilIdle();
 
   // Assert
-  EXPECT_TRUE(resource.IsInitialized());
+  EXPECT_TRUE(LoadResource());
 }
 
 TEST_F(BraveAdsConversionsResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  resource::Conversions resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsConversionsResourceTest, DoNotLoadMissingResource) {
@@ -65,24 +74,19 @@ TEST_F(BraveAdsConversionsResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       }));
 
-  resource::Conversions resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsConversionsResourceTest, IsNotInitialized) {
   // Arrange
-  resource::Conversions resource;
 
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(resource_->IsInitialized());
 }
 
 }  // namespace brave_ads

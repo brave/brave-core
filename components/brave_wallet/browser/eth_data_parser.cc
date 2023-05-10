@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
 
@@ -57,29 +57,33 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
   std::vector<uint8_t> calldata(data.begin() + 4, data.end());
   if (selector == kERC20TransferSelector) {
     auto decoded = ABIDecode({"address", "uint256"}, calldata);
-    if (!decoded)
+    if (!decoded) {
       return absl::nullopt;
+    }
 
     return std::tuple_cat(
         std::make_tuple(mojom::TransactionType::ERC20Transfer), *decoded);
   } else if (selector == kERC20ApproveSelector) {
     auto decoded = ABIDecode({"address", "uint256"}, calldata);
-    if (!decoded)
+    if (!decoded) {
       return absl::nullopt;
+    }
 
     return std::tuple_cat(std::make_tuple(mojom::TransactionType::ERC20Approve),
                           *decoded);
   } else if (selector == kERC721TransferFromSelector) {
     auto decoded = ABIDecode({"address", "address", "uint256"}, calldata);
-    if (!decoded)
+    if (!decoded) {
       return absl::nullopt;
+    }
 
     return std::tuple_cat(
         std::make_tuple(mojom::TransactionType::ERC721TransferFrom), *decoded);
   } else if (selector == kERC721SafeTransferFromSelector) {
     auto decoded = ABIDecode({"address", "address", "uint256"}, calldata);
-    if (!decoded)
+    if (!decoded) {
       return absl::nullopt;
+    }
 
     return std::tuple_cat(
         std::make_tuple(mojom::TransactionType::ERC721SafeTransferFrom),
@@ -94,13 +98,15 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L29-L41
     auto decoded_calldata =
         ABIDecode({"bytes", "uint256", "address"}, calldata);
-    if (!decoded_calldata)
+    if (!decoded_calldata) {
       return absl::nullopt;
+    }
 
     const auto& tx_args = std::get<1>(*decoded_calldata);
     auto decoded_path = UniswapEncodedPathDecode(tx_args.at(0));
-    if (!decoded_path)
+    if (!decoded_path) {
       return absl::nullopt;
+    }
 
     std::string fill_path = "0x";
     for (const auto& path : *decoded_path) {
@@ -137,13 +143,15 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L58-L71
     auto decoded_calldata =
         ABIDecode({"bytes", "uint256", "uint256", "address"}, calldata);
-    if (!decoded_calldata)
+    if (!decoded_calldata) {
       return absl::nullopt;
+    }
 
     const auto& tx_args = std::get<1>(*decoded_calldata);
     auto decoded_path = UniswapEncodedPathDecode(tx_args.at(0));
-    if (!decoded_path)
+    if (!decoded_path) {
       return absl::nullopt;
+    }
     std::string fill_path = "0x";
     for (const auto& path : *decoded_path) {
       base::StrAppend(&fill_path, {path.substr(2)});
@@ -166,8 +174,9 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // https://github.com/0xProject/protocol/blob/8d6f6e76e053f7b065d3315ddb31d2c35caddca7/contracts/zero-ex/contracts/src/features/UniswapFeature.sol#L93-L104
     auto decoded_calldata =
         ABIDecode({"address[]", "uint256", "uint256", "bool"}, calldata);
-    if (!decoded_calldata)
+    if (!decoded_calldata) {
       return absl::nullopt;
+    }
 
     const auto& tx_args = std::get<1>(*decoded_calldata);
     return std::make_tuple(
@@ -189,8 +198,9 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto decoded_calldata = ABIDecode(
         {"address", "address", "uint256", "uint256", "(uint32,bytes)[]"},
         calldata);
-    if (!decoded_calldata)
+    if (!decoded_calldata) {
       return absl::nullopt;
+    }
 
     const auto& tx_args = std::get<1>(*decoded_calldata);
     return std::make_tuple(

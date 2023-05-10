@@ -25,7 +25,7 @@ bool UnblindedTokenExists(const UnblindedTokenInfo& unblinded_token);
 
 bool UnblindedTokensIsEmpty();
 
-int UnblindedTokenCount();
+size_t UnblindedTokenCount();
 
 bool IsValid(const UnblindedTokenInfo& unblinded_token);
 

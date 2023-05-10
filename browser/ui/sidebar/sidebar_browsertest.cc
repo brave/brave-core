@@ -22,6 +22,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -83,13 +84,21 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return sidebar_container_view->GetEventDetectWidget()->widget_.get();
   }
 
-  void SimulateSidebarItemClickAt(int index) const {
+  raw_ptr<SidebarItemsContentsView> GetSidebarItemsContentsView(
+      SidebarController* controller) const {
     auto* sidebar_container_view =
-        static_cast<SidebarContainerView*>(controller()->sidebar());
+        static_cast<SidebarContainerView*>(controller->sidebar());
     auto sidebar_control_view = sidebar_container_view->sidebar_control_view_;
     auto sidebar_scroll_view = sidebar_control_view->sidebar_items_view_;
     auto sidebar_items_contents_view = sidebar_scroll_view->contents_view_;
     DCHECK(sidebar_items_contents_view);
+
+    return sidebar_items_contents_view;
+  }
+
+  void SimulateSidebarItemClickAt(int index) const {
+    auto sidebar_items_contents_view =
+        GetSidebarItemsContentsView(controller());
 
     auto* item = sidebar_items_contents_view->children()[index];
     DCHECK(item);
@@ -340,6 +349,48 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
             widget->GetWindowBoundsInScreen().right());
+}
+
+class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWithPlaylist() {
+    feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
+  }
+  ~SidebarBrowserTestWithPlaylist() override = default;
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
+  // There should be no crash with incognito.
+  auto* private_browser = CreateIncognitoBrowser(browser()->profile());
+  ASSERT_TRUE(private_browser);
+
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  const auto& items = sidebar_service->items();
+  auto iter = base::ranges::find_if(items, [](const auto& item) {
+    return item.type == SidebarItem::Type::kTypeBuiltIn &&
+           item.built_in_item_type == SidebarItem::BuiltInItemType::kPlaylist;
+  });
+  ASSERT_NE(iter, items.end());
+
+  auto sidebar_items_contents_view = GetSidebarItemsContentsView(
+      static_cast<BraveBrowser*>(private_browser)->sidebar_controller());
+  EXPECT_FALSE(sidebar_items_contents_view->children()
+                   .at(std::distance(items.begin(), iter))
+                   ->GetEnabled());
+
+  // Try Adding an item
+  sidebar_service->AddItem(sidebar::SidebarItem::Create(
+      GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, false));
+
+  // Try moving an item
+  sidebar_service->MoveItem(sidebar_service->items().size() - 1, 0);
+
+  // Try Remove an item
+  sidebar_service->RemoveItemAt(0);
 }
 
 class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {

@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Zawadi za Kila Mwezi</translation>
 <translation id="178390304006113804">Weka bahashishi zinazojirudia za kila mwezi ili uweze kuwasaidia waundaji unaowapenda kila wakati.</translation>
 <translation id="3302159320447117425">Hakuna bahashishi za kila mwezi zilizowekwa bado.</translation>
+<translation id="564837702459183199">Mchango unaofuata</translation>
 <translation id="4898632353264854950">Tovuti zitaonekana kadri unapoperuzi</translation>
 <translation id="3024485967181749006">Jumla ya michango yote mwezi huu</translation>
-<translation id="8183455888546367148">Jumla ya bahashishi za kila mwezi za mwezi huu</translation>
 <translation id="4153752809523809915">Je, umemchangia mtengeneza maudhui wako unayempenda leo?</translation>
 <translation id="7286722244752781970">Muda wa chini wa ukurasa kabla ya kuandika ziara</translation>
 <translation id="4424486208397124985">Ziara za kiwango cha chini kwa ufaafu w mchapishaji</translation>
 <translation id="5421369907811917952">Mipangilio mingine</translation>
 <translation id="6248554379744796526">Onyesha tovuti zisizoidhinishwa katika orodha</translation>
-<translation id="5510618543889994434">Ruhusu michango ya video</translation>
 <translation id="8933202740471878108">Ziara 1</translation>
 <translation id="354797634123275103">Ziara 5</translation>
 <translation id="3583700907990488238">Ziara 10</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">Dakika 1</translation>
 <translation id="2807328214759298515">Hadi</translation>
 <translation id="7483857210736407752">Onyesha vitufe vya Vidokezo katika tovuti</translation>
-<translation id="7583327070390027131">Tarehe inayofuata ya bahashishi za kila mwezi</translation>
 <translation id="6231182869178328516">Nimemzawadia <ph name="NAME"/> kwa kutumia Kisakuzi cha Brave. Angalia kwenye https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Napenda kuwa <ph name="HASHTAG"/>Brave huniruhusu kufadhili waundaji! Nimetoa bahashishi kwa<ph name="NAME"/> kwa BAT <ph name="HASHTAG2"/>. Ikiwa atathibitisha kwa https://creators.brave.com kabla ya <ph name="DATE"/>, BAT hiyo ni yake!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Unaweza kubadilisha <ph name="SITE_PERMISSIONS"/> wakati wowote. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">ruhusa ya tovuti</translation>
 <translation id="4355784577209159847">Ruhusu matumizi ya vidakuzi vingine vya Google Sign-In ya jadi</translation>
+<translation id="5770656036486891920"><ph name="URL"/> inataka kutumia vidakuzi vya wahusika wengine kwa Kipengele Asili cha Kuingia cha Google</translation>
 <translation id="7717357606512850995">Angalia hali</translation>
 <translation id="7306880305145342514">Hongera! Zawadi zako za <ph name="MONTH"/> zimefika!</translation>
 <translation id="3007207731685398329">Zawadi zako za <ph name="AMOUNT"/> <ph name="MONTH"/> zitafika baada ya <ph name="DAYS"/></translation>
@@ -659,6 +658,7 @@
       =1 {Mwezi huu, umetembelea muundaji # anayesaidiwa na Zawadi za Brave}
       other {Mwezi huu, umetembelea waundaji # wanaosaidiwa na Zawadi za Brave}
     }</translation>
+<translation id="6067959437127691361">Kutumia Zawadi za Brave huwezesha kuwasaidia waundaji maudhui na kukufanya kupata BAT.</translation>
 <translation id="1187367336925051518">Zawadi za <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Zawadi zako za Matangazo za <ph name="MONTH"/> zimefika!</translation>
 <translation id="7861645265922445992">Dai Zawadi</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">Sawa</translation>
 <translation id="6727102863431372879">Weka</translation>
 <translation id="8853725596990766789">Badilisha kiasi</translation>
-<translation id="6067959437127691361">Kutumia Zawadi za Brave huwezesha kuwasaidia waundaji maudhui na kukufanya kupata BAT.</translation>
 <translation id="1609556006143307897">Unawezesha kusaidia waundaji maudhui</translation>
 <translation id="6605147707233193230">Washa ili kuwezesha kuwasaidia waundaji maudhui</translation>
 <translation id="5430495762768325224">Pata maelezo zaidi kuhusu BAT</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">Kigezo kimoja cha kipengee kinachotarajiwa.</translation>
 <translation id="1875861420974447980">Kitambulisho hiki cha Mnyororo kinatumika kwa sasa</translation>
 <translation id="167698752210114155">Hitilafu ya ndani imetokea</translation>
+<translation id="7497827357097190289">Kitambulishi cha bloki ni batili au hakiwezi kuthibitishwa</translation>
 <translation id="8945668490056243760">Aina ya usajili usiotumika</translation>
 <translation id="2326876601333401685">Mbinu ya RPC haitumiki.</translation>
 <translation id="1128992132632883337">Hitilafu ya uchanganuzi wa jibu imetokea</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">NUSU</translation>
 <translation id="2784548701748328827">YA JUU ZAIDI</translation>
 <translation id="2329227154184107678">Kagua mpangilio</translation>
+<translation id="3220443877821207794">Kagua utumaji</translation>
 <translation id="8530071505111489657">Hakuna vianzio vinavyopatikana</translation>
 <translation id="615791330696335475">Tafuta kianzio kwa jina</translation>
 <translation id="5009335307032488349">Tafuta NFT kwa jina, kitambulisho</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">AINA YA KIPENGELE</translation>
 <translation id="838933475572692615">DATA YA HEX</translation>
 <translation id="2240831799756994975">BAITI</translation>
-<translation id="4874303883488468190">Teua akaunti</translation>
-<translation id="2018472018751735678">Tazama anwani za akaunti zako zinazoruhusiwa (zinahitajika)</translation>
-<translation id="7029403458170657879">Unganisha na Brave Wallet</translation>
+<translation id="6760823167126275974">Unganisha pochi</translation>
+<translation id="716009557505091365">au unganisha kwa:</translation>
+<translation id="7242985059140288348">Programu hii itaweza:</translation>
+<translation id="7352133688029686231">Haitaweza:</translation>
+<translation id="1647328658385235886">Kuangalia salio na shughuli ya pochi</translation>
+<translation id="3295962112184461868">Kuomba uidhinishaji wa miamala na sahihi</translation>
+<translation id="6096892345597202096">Kutazama anwani yako ya pochi inayoruhusiwa</translation>
+<translation id="496578987299869780">Kuhamisha fedha bila idhini yako</translation>
+<translation id="3226586788973641582">Hakikisha kuwa unaamini tovuti hii.</translation>
+<translation id="6837278005487143422">Muda wa ruhusa</translation>
+<translation id="1903637466604153314">Hadi nifunge tovuti hii</translation>
+<translation id="4324239559624557455">Kwa saa 24</translation>
+<translation id="9139452553033760558">Kwa wiki 1</translation>
+<translation id="1658834457013045127">Milele</translation>
 <translation id="2770851145415891830">Pochi za crypto zilizopo zimegunduliwa</translation>
 <translation id="2237759620789871865">Ikiwa ungependa kuruka uletaji na kukaa na hali ya Crypto Wallets ya zamani, nenda tu kwenye Mipangilio ya <ph name="LINK_BEFORE"/>Brave Browser<ph name="LINK_AFTER"/>na ubadilishe chaguomsingi hadi Crypto Wallets. Pia unaweza kuleta, kujaribu Brave Wallet mpya na kubadilisha wakati wowote.</translation>
 <translation id="5590175005414413980">Weka nenosiri lako la pochi za crypto lililopo ili uhamishe hadi kwa Pochi ya Brave. Furahia njia ya haraka na salama zaidi ya kudhibiti rasilimali za crypto na utumie Web3 DApps.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">Je, ninaweza kupata anwani sahihi vipi?</translation>
 <translation id="8395402412470376435">Brave huthibitisha na kuwazuia watumiaji kutuma pesa kwa anwani isiyo sahihi kwa sababu ya herufi kubwa au ndogo zisizo sahihi. Huu ni mchakato wa "kukagua tarakimu sahihi" ili kuthibitisha kuwa ni anwani halali ya Ethereum.</translation>
 <translation id="4583433813614292221">1. Tembelea</translation>
+<translation id="8061317754447191238">Tembelea etherscan na ubandike anwani ya pochi unayotaka kutumia tokeni. Kisha ingia.</translation>
 <translation id="5393164213211430081">2. Nakili na kuingiza anwani ya ETH</translation>
+<translation id="8306108469060304141">Nakili na uingize anwani sahihi. Unaweza kuangalia ikiwa baadhi ya vibambo vimegeuzwa kwa usahihi.</translation>
 <translation id="2378355054306959991">Je, unahitaji usaidizi zaidi?</translation>
 <translation id="862585889767884824">ya</translation>
 <translation id="9106265941552476098">Kataa miamala <ph name="TRANSACTION_LENGTH"/></translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">Kiwango cha tokeni</translation>
 <translation id="9033453977881595182">Kitambulisho cha Tokeni</translation>
 <translation id="6332387008245531841">Anwani ya mkataba</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Eneo au anwani ya picha</translation>
 <translation id="2962388922926051374">Ombi la 'eth_chainId' ya mbinu kwenye <ph name="URL"/> limefeli</translation>
 <translation id="8325036459845654666">Mtandao huu tayari umeongezwa.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">Hakuna mali yanayolingana na utafutaji au kichujio yaliyopatikana</translation>
 <translation id="7383613643114466279">Mali hii haitumiki kwa Pochi ya Brave</translation>
 <translation id="6423985584914773314">Sio anwani halali ya FIL</translation>
-<translation id="3898731124813934210">Nunua kwa Wyre</translation>
 <translation id="5522073372365069684">Nunua kwa Ramp</translation>
 <translation id="6153197326949684688">Uza kwa <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Kiasi cha chini zaidi lazima kiwe <ph name="FIAT_AMOUNT"/> au zaidi.</translation>
 <translation id="7902920577183739843">Nunua na Sardini</translation>
 <translation id="6534275647567011533">Nunua kwa Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardini</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Nunua crypto kwa Visa au Mastercard.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">Imeshindwa kuleta makadirio ya ada</translation>
 <translation id="5361710044667743492">Je, mbona haipatikani?</translation>
 <translation id="3668838456083358569">Baadhi ya data ya NFT huhifadhiwa katika seva kuu kama vile AWS, Google Cloud, n.k. Katika hali hii, haipatikani kubandika data yako ya NFT kwenye mtandao wa IPFS.</translation>
-<translation id="1293258969121701010">Kwa kuendesha IPFS kwenye kompyuta yako unaweza:</translation>
-<translation id="4568942135611119076">Kuhakikisha data yako ya NFT inasalia mtandaoni na haiwezi kubadilishwa.</translation>
-<translation id="4915883034746438977">Kurudisha maudhui kwa kutumia kitambulishi cha maudhui (CID) kutoka kwenye data isiyo sahihi.</translation>
-<translation id="1373647012698032676">Kushiriki uthibitisho wa uhalisi na ufanye mtandao wa IPFS kuwa bora na kufanya kazi vyema.</translation>
-<translation id="1806204385270226865">Fanya NFT zangu kuwa mtandaoni kila wakati</translation>
-<translation id="4323376551843624309">Wezesha ubandikaji wa NFT</translation>
-<translation id="6501331923135442324">Hatua kubwa kuelekea kuwa sehemu ya web3</translation>
-<translation id="5361073938927187534">Endesha nodi ya IPFS na ufanye NFT zako kuwa mtandaoni kila wakati</translation>
-<translation id="1060267371223703324">Angalia NFT zangu zinazoweza kubandikwa</translation>
-<translation id="2641083452974145848">Sasa unaweza kuendesha IPFS yako na kuwa sehemu ya wavuti wa 3. Data yako ya NFT itasalia mtandaoni milele na haiwezi kubadilishwa.</translation>
-<translation id="4460927368826360904">Unaendesha nodi ya IPFS. Faili inaletwa kwenye nodi ya ndani ya IPFS.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> kati ya NFT <ph name="PINNABLE"/> zimebandikwa kwenye IPFS kwa ufanisi.</translation>
+<translation id="4225753478505258806">Lakini IPFS inahitaji washiriki binafsi ili kufanya kazi. Endesha IPFS kwenye kompyuta yako ili:</translation>
+<translation id="7674069205559000521">Changia kwa kasi na upatikanaji wa mtandao</translation>
+<translation id="7775229731579227782">Ongeza usalama wa NFT zako</translation>
+<translation id="2319971828691864975">Anza kwa IPFS</translation>
+<translation id="7906328323880284538">Njia salama zaidi ya kupangisha NFT</translation>
+<translation id="166206715890914321">Endesha nodi ya IPFS ili kufanya NFT zako kuwa mtandaoni milele</translation>
+<translation id="8913523138550521467">IPFS ni mbadala salama mno wa upangishaji wa kawaida wa Wavuti. Badala ya kutegemea mpangishaji mmoja, IPFS huwezesha maelfu ya watu (wanaoendesha "nodi") kushirikiana ili kuhifadhi maudhui. Na mradi mtu mmoja ana nakala, faili haiwezi kutoweka. "Kubandika" NFT zako kwa IPFS—na kuendesha nodi yako mwenyewe ya IPFS—ndiyo njia bora zaidi ya kulinda NFT zako.</translation>
+<translation id="9160750213078764355">Angalia ni NFT zangu zipi zinazostahiki</translation>
+<translation id="6671461082721702724">Sasa unaweza kuendesha IPFS yako na kuwa sehemu ya wavuti wa 3. Data yako ya NFT itakuwa mtandaoni milele.</translation>
+<translation id="654964147165509548">NFT zinabandikwa kwenye nodi yako ya ndani ya IPFS.</translation>
+<translation id="4910182786472608576">NFT <ph name="PINNED"/> zinazoruhusiwa zimebandikwa kwenye nodi yako ya ndani ya IPFS.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> kati ya <ph name="TOTAL"/> zinapatikana!</translation>
 <translation id="6852656829524945421">Imeshindwa kubandika</translation>
 <translation id="7698019251444927442">Unaendesha nodi ya IPFS</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">Imebandikwa kwenye nodi yako ya ndani ya IPFS</translation>
 <translation id="5659058832308365026">Data ya NFT inabandikwa kwenye nodi yako ya ndani ya IPFS</translation>
 <translation id="4919133452617704550">Haiwezi kubandikwa kwenye nodi yako ya ndani ya IPFS</translation>
+<translation id="4220102684162429566">Sababu za kawaida zaidi:</translation>
+<translation id="451509325309455">NFT ina matatizo ya url ya metadata isiyo ya IPFS</translation>
+<translation id="3827697793483899711">Matatizo ya nodi ndani ya IPFS</translation>
+<translation id="1992846713609432783">Hakuna nafasi ya kutosha katika nodi ya ndani</translation>
 <translation id="3225624966527491351">Hamisha NFT</translation>
 <translation id="9085765419770918643">Hakuna NFT hapa bado.</translation>
 <translation id="8445532667841598737">Je, uko tayari kuongeza baadhi? Bofya tu kitufe kilicho hapa chini ili kuhamisha.</translation>
 <translation id="9136462955850040542">Zinaweza Kuchukuana na NFT kwenye Solana (SPL) na Ethereum (ERC-721).</translation>
+<translation id="849880459530751909">Hariri NFT</translation>
 <translation id="3155170474926428993">Kifungua Tor</translation>
 <translation id="3745016858329272300">Maelezo ya Jumla</translation>
 <translation id="4045404575593562245">Matukio ya Udhibiti wa Tor</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">Mipangilio ya Ulinzi</translation>
 <translation id="2108334320919763866">Machaguo msingi ya kimataifa</translation>
 <translation id="3440043456924990296">Mipangilio inayodhibitiwa na shirika</translation>
+<translation id="7053983685419859001">Zuia</translation>
+<translation id="5716230673298034837">Ruhusu yote</translation>
+<translation id="5279600392753459966">Zuia vyote</translation>
 <translation id="4516904298421534459">Chuja orodha</translation>
 <translation id="3570081523466826008">Boresha miunganisho kuwa HTTPS</translation>
 <translation id="131231380815754440">Wezesha HTTPS</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">Zuia vifuatiliaji na matangazo kwa hima</translation>
 <translation id="7384778069178817075">Zuia vifuatiliaji na matangazo yote</translation>
 <translation id="4941539331405513605">Zuia vidakuzi vya kwenye tovuti</translation>
+<translation id="2749284154880331639">Sahau vidakuzi vya mhusika asili</translation>
 <translation id="6883611015375728278">Zuia vidakuzi vyote</translation>
 <translation id="5657156137487675418">Ruhusu vidakuzi vyote</translation>
 <translation id="8366221601425141146">Alama za vidole zimezuiwa</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Vifuatiliaji, matangazo na zaidi yamezuiwa</translation>
 <translation id="4292121526390005808">Maandishi yaliyozuiwa</translation>
+<translation id="5046271170844958713">Maandishi yaliyoruhusiwa</translation>
 <translation id="264682546981571963">Je, umechoshwa na taarifa za idhini ya vidakuzi?</translation>
 <translation id="4986297793092101884">Brave tayari huzuia vidakuzi vya wahusika wengine. Tunaweza kuzuia taarifa za idhini ya vidakuzi, pia.</translation>
 <translation id="535688588637568715">Ndiyo, zuia taarifa za idhini ya vidakuzi</translation>
@@ -1669,6 +1688,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> haikuweza kuunganisha kwenye seva ya <ph name="REGION_NAME"/>. Unaweza kujaribu tena au uchague nyingine.</translation>
 <translation id="1024255913009642477">Tayari umenunua VPN?</translation>
 <translation id="8814357473522731680">Inaendeshwa na</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Muda wake unakwisha</translation>
 <translation id="1691256669639196606">Dhibiti usajili</translation>
 <translation id="434523916398030617">Wasiliana na usaidizi wa kiufundi</translation>

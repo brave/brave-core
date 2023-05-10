@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace contribution {
@@ -27,41 +27,41 @@ class ContributionSKU {
 
   void AutoContribution(const std::string& contribution_id,
                         const std::string& wallet_type,
-                        ledger::LegacyResultCallback callback);
+                        LegacyResultCallback callback);
 
   void Merchant(const mojom::SKUTransaction&, LegacyResultCallback callback);
 
   void Retry(mojom::ContributionInfoPtr contribution,
-             ledger::LegacyResultCallback callback);
+             LegacyResultCallback callback);
 
  private:
   void Start(const std::string& contribution_id,
              const mojom::SKUOrderItem& item,
              const std::string& wallet_type,
-             ledger::LegacyResultCallback callback);
+             LegacyResultCallback callback);
 
   void GetContributionInfo(mojom::ContributionInfoPtr contribution,
                            const mojom::SKUOrderItem& item,
                            const std::string& wallet_type,
-                           ledger::LegacyResultCallback callback);
+                           LegacyResultCallback callback);
 
   void GetOrder(mojom::Result result,
                 const std::string& order_id,
                 const std::string& contribution_id,
-                ledger::LegacyResultCallback callback);
+                LegacyResultCallback callback);
 
   void OnGetOrder(mojom::SKUOrderPtr order,
                   const std::string& contribution_id,
-                  ledger::LegacyResultCallback callback);
+                  LegacyResultCallback callback);
 
   void Completed(mojom::Result result,
                  const std::string& contribution_id,
                  mojom::RewardsType type,
-                 ledger::LegacyResultCallback callback);
+                 LegacyResultCallback callback);
 
   void CredsStepSaved(mojom::Result result,
                       const std::string& contribution_id,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void GetUnblindedTokens(std::vector<mojom::UnblindedTokenPtr> list,
                           const mojom::SKUTransaction&,
@@ -75,11 +75,11 @@ class ContributionSKU {
 
   void OnOrder(mojom::SKUOrderPtr order,
                std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-               ledger::LegacyResultCallback callback);
+               LegacyResultCallback callback);
 
   void RetryStartStep(mojom::ContributionInfoPtr contribution,
                       mojom::SKUOrderPtr order,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
   credential::CredentialsSKU credentials_;
@@ -87,5 +87,5 @@ class ContributionSKU {
 };
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_SKU_H_

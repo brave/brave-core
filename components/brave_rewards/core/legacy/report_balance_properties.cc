@@ -12,7 +12,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_rewards/core/legacy/bat_util.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 namespace {
 
@@ -39,7 +39,7 @@ bool GetPropertyFromDict(const base::Value::Dict& dict,
     return false;
   }
 
-  *value = braveledger_bat_util::ProbiToDouble(*balance_probi);
+  *value = ProbiToDouble(*balance_probi);
   return true;
 }
 
@@ -160,4 +160,4 @@ bool ReportBalanceProperties::FromJson(const std::string& json) {
   return FromValue(*root);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

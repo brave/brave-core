@@ -6,8 +6,8 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/installer/util/brave_shell_util.h"
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #endif
 #define UninstallProduct UninstallProduct_ChromiumImpl
 

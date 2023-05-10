@@ -1165,8 +1165,3 @@ export const addLogoToToken = async (token: BraveWallet.BlockchainToken) => {
     }
   }
 }
-
-export const setNftDiscoveryEnabled = async (enabled: boolean) => {
-  const { braveWalletService } = getAPIProxy()
-  await braveWalletService.setNftDiscoveryEnabled(enabled)
-}

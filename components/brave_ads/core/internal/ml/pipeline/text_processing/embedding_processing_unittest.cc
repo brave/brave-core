@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 
+#include <memory>
 #include <tuple>
 #include <vector>
 
@@ -15,18 +16,26 @@
 
 namespace brave_ads {
 
-class BraveAdsEmbeddingProcessingTest : public UnitTestBase {};
+class BraveAdsEmbeddingProcessingTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    resource_ = std::make_unique<TextEmbeddingResource>();
+  }
+
+  bool LoadResource() {
+    resource_->Load();
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
+  }
+
+  std::unique_ptr<TextEmbeddingResource> resource_;
+};
 
 TEST_F(BraveAdsEmbeddingProcessingTest, EmbedText) {
   // Arrange
-  resource::TextEmbedding resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-  ASSERT_TRUE(resource.IsInitialized());
-
-  const ml::pipeline::EmbeddingProcessing* const processing_pipeline =
-      resource.Get();
-  ASSERT_TRUE(processing_pipeline);
+  ASSERT_TRUE(LoadResource());
 
   const std::vector<std::tuple<std::string, std::vector<float>>> k_samples = {
       {"this simple unittest", {0.5F, 0.4F, 1.0F}},
@@ -39,7 +48,7 @@ TEST_F(BraveAdsEmbeddingProcessingTest, EmbedText) {
   for (const auto& [text, expected_embedding] : k_samples) {
     // Act
     const ml::pipeline::TextEmbeddingInfo text_embedding =
-        processing_pipeline->EmbedText(text);
+        resource_->get().EmbedText(text);
 
     // Assert
     EXPECT_EQ(expected_embedding, text_embedding.embedding);

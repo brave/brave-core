@@ -9,7 +9,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace state {
@@ -19,13 +19,13 @@ class StateMigrationV7 {
   explicit StateMigrationV7(LedgerImpl& ledger);
   ~StateMigrationV7();
 
-  void Migrate(ledger::LegacyResultCallback callback);
+  void Migrate(LegacyResultCallback callback);
 
  private:
   const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V7_H_

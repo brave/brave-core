@@ -12,7 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -51,9 +51,9 @@ SearchResultAdTabHelper::~SearchResultAdTabHelper() = default;
 // static
 void SearchResultAdTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
-  DCHECK(web_contents);
+  CHECK(web_contents);
   if (!base::FeatureList::IsEnabled(
-          features::kShouldTriggerSearchResultAdEvents) ||
+          kShouldTriggerSearchResultAdEventsFeature) ||
       !web_contents->GetBrowserContext() ||
       web_contents->GetBrowserContext()->IsOffTheRecord()) {
     return;
@@ -71,7 +71,7 @@ void SearchResultAdTabHelper::MaybeTriggerSearchResultAdClickedEvent(
 
 // static
 void SearchResultAdTabHelper::SetAdsServiceForTesting(AdsService* ads_service) {
-  DCHECK(!g_ads_service_for_testing || !ads_service);
+  CHECK(!g_ads_service_for_testing || !ads_service);
   g_ads_service_for_testing = ads_service;
 }
 
@@ -124,7 +124,7 @@ void SearchResultAdTabHelper::WebContentsDestroyed() {
 
 void SearchResultAdTabHelper::MaybeProcessSearchResultAdClickedEvent(
     content::NavigationHandle* navigation_handle) {
-  DCHECK(navigation_handle);
+  CHECK(navigation_handle);
 
   const auto& initiator_origin = navigation_handle->GetInitiatorOrigin();
   if (!navigation_handle->IsInPrimaryMainFrame() ||
@@ -153,7 +153,7 @@ void SearchResultAdTabHelper::MaybeProcessSearchResultAdClickedEvent(
     return;
   }
 
-  DCHECK(!navigation_handle->GetRedirectChain().empty());
+  CHECK(!navigation_handle->GetRedirectChain().empty());
   const GURL target_url = navigation_handle->GetRedirectChain()[0];
   search_result_ad_tab_helper->MaybeTriggerSearchResultAdClickedEvent(
       target_url);

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/catalog_permission_rule.h"
 
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -22,13 +23,12 @@ class BraveAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
-        {// Fetch catalog request
-         "/v9/catalog",
+        {BuildCatalogUrlPath(),
          {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
-  CatalogPermissionRule permission_rule_;
+  const CatalogPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, AllowAd) {

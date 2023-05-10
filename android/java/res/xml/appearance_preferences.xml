@@ -32,8 +32,7 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_enable_tab_groups"
         android:title="@string/enable_tab_groups_title"
-        android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
+        android:summary="@string/enable_tab_groups_text" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_enable_speedreader"

@@ -40,12 +40,12 @@ class Token {
   bool has_value() const { return token_.has_value(); }
 
   challenge_bypass_ristretto::Token& get() {
-    DCHECK(token_);
+    CHECK(token_);
     return *token_;
   }
 
   const challenge_bypass_ristretto::Token& get() const {
-    DCHECK(token_);
+    CHECK(token_);
     return *token_;
   }
 

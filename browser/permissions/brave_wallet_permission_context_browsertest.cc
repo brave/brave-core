@@ -1,11 +1,10 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
-#include "base/functional/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -22,29 +21,12 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
 namespace permissions {
-
-namespace {
-
-void OnGetAllowedAccountsResult(
-    bool* was_called,
-    bool expected_success,
-    const std::vector<std::string>& expected_allowed_accounts,
-    bool success,
-    const std::vector<std::string>& allowed_accounts) {
-  ASSERT_FALSE(*was_called);
-  *was_called = true;
-  EXPECT_EQ(expected_success, success);
-  EXPECT_EQ(expected_allowed_accounts, allowed_accounts);
-}
-
-}  // namespace
 
 class BraveWalletPermissionContextBrowserTest : public InProcessBrowserTest {
  public:
@@ -108,30 +90,20 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8C"};
 
   // Fail if rfh is null.
-  bool was_called = false;
-  BraveWalletPermissionContext::GetAllowedAccounts(
-      blink::PermissionType::BRAVE_ETHEREUM, nullptr /* rfh */, addresses,
-      base::BindOnce(&OnGetAllowedAccountsResult, &was_called, false,
-                     std::vector<std::string>()));
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(was_called);
+  auto allowed_accounts = BraveWalletPermissionContext::GetAllowedAccounts(
+      blink::PermissionType::BRAVE_ETHEREUM, nullptr /* rfh */, addresses);
+  EXPECT_FALSE(allowed_accounts);
 
-  was_called = false;
   const GURL& url = https_server()->GetURL("a.com", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-
   // No allowed accounts before setting permissions.
-  BraveWalletPermissionContext::GetAllowedAccounts(
+  allowed_accounts = BraveWalletPermissionContext::GetAllowedAccounts(
       blink::PermissionType::BRAVE_ETHEREUM,
-      web_contents()->GetPrimaryMainFrame(), addresses,
-      base::BindOnce(&OnGetAllowedAccountsResult, &was_called, true,
-                     std::vector<std::string>()));
-
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(was_called);
+      web_contents()->GetPrimaryMainFrame(), addresses);
+  EXPECT_TRUE(allowed_accounts);
+  EXPECT_TRUE(allowed_accounts->empty());
 
   // Return allowed accounts after permissions are set.
-  was_called = false;
   std::vector<std::string> expected_allowed_accounts = {addresses[0],
                                                         addresses[2]};
   for (const auto& account : expected_allowed_accounts) {
@@ -144,13 +116,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
         ContentSettingsType::BRAVE_ETHEREUM,
         ContentSetting::CONTENT_SETTING_ALLOW);
   }
-  BraveWalletPermissionContext::GetAllowedAccounts(
+  allowed_accounts = BraveWalletPermissionContext::GetAllowedAccounts(
       blink::PermissionType::BRAVE_ETHEREUM,
-      web_contents()->GetPrimaryMainFrame(), addresses,
-      base::BindOnce(&OnGetAllowedAccountsResult, &was_called, true,
-                     expected_allowed_accounts));
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(was_called);
+      web_contents()->GetPrimaryMainFrame(), addresses);
+  EXPECT_TRUE(allowed_accounts);
+  EXPECT_EQ(*allowed_accounts, expected_allowed_accounts);
 }
 
 }  // namespace permissions

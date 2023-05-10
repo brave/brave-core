@@ -16,31 +16,25 @@
 
 namespace brave_ads {
 
-int GetNumberOfTabsOpened(const UserActivityEventList& events) {
-  return base::ranges::count_if(events, [](const UserActivityEventInfo& event) {
-    return event.type == UserActivityEventType::kOpenedNewTab;
-  });
-}
-
-int GetNumberOfUserActivityEvents(const UserActivityEventList& events,
-                                  UserActivityEventType event_type) {
+size_t GetNumberOfUserActivityEvents(const UserActivityEventList& events,
+                                     UserActivityEventType event_type) {
   return base::ranges::count_if(
       events, [event_type](const UserActivityEventInfo& event) {
         return event.type == event_type;
       });
 }
 
-int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,
-                                          UserActivityEventType event_type) {
+base::TimeDelta GetTimeSinceLastUserActivityEvent(
+    const UserActivityEventList& events,
+    UserActivityEventType event_type) {
   const auto iter = base::ranges::find(base::Reversed(events), event_type,
                                        &UserActivityEventInfo::type);
 
   if (iter == events.crend()) {
-    return kUserActivityMissingValue;
+    return {};
   }
 
-  const base::TimeDelta time_delta = base::Time::Now() - iter->created_at;
-  return time_delta.InSeconds();
+  return base::Time::Now() - iter->created_at;
 }
 
 UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value) {

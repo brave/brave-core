@@ -36,7 +36,6 @@ const char kAutoContributionsStateHistogramName[] =
     "Brave.Rewards.AutoContributionsState.3";
 const char kAdsEnabledDurationHistogramName[] =
     "Brave.Rewards.AdsEnabledDuration";
-const char kAdsStateHistogramName[] = "Brave.Rewards.AdsState.2";
 const int kTipsSentBuckets[] = {1, 3};
 
 void RecordAutoContributionsState(bool ac_enabled) {
@@ -55,35 +54,7 @@ void RecordTipsSent(size_t tip_count) {
                                      tip_count);
 }
 
-void RecordAdsState(AdsState state) {
-  UMA_HISTOGRAM_ENUMERATION(kAdsStateHistogramName, state);
-}
-
-void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
-                                      const std::string& pref) {
-  const bool ads_enabled = prefs->GetBoolean(brave_ads::prefs::kEnabled);
-  if (pref == brave_ads::prefs::kEnabled) {
-    if (ads_enabled) {
-      RecordAdsState(AdsState::kAdsEnabled);
-      prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, false);
-    } else {
-      // Apparently, the pref was disabled.
-      RecordAdsState(AdsState::kAdsEnabledThenDisabledRewardsOn);
-      prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, true);
-    }
-  }
-}
-
-void MaybeRecordInitialAdsState(PrefService* prefs) {
-  if (!prefs->GetBoolean(brave_ads::prefs::kHasAdsP3AState)) {
-    const bool ads_state = prefs->GetBoolean(brave_ads::prefs::kEnabled);
-    RecordAdsState(ads_state ? AdsState::kAdsEnabled : AdsState::kAdsDisabled);
-    prefs->SetBoolean(brave_ads::prefs::kHasAdsP3AState, true);
-  }
-}
-
 void RecordNoWalletCreatedForAllMetrics() {
-  RecordAdsState(AdsState::kNoWallet);
   UMA_HISTOGRAM_EXACT_LINEAR(kTipsSentHistogramName, INT_MAX - 1, 3);
   UMA_HISTOGRAM_EXACT_LINEAR(kAutoContributionsStateHistogramName, INT_MAX - 1,
                              2);

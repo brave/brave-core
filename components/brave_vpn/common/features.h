@@ -16,6 +16,7 @@ BASE_DECLARE_FEATURE(kBraveVPN);
 BASE_DECLARE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI);
 #if BUILDFLAG(IS_WIN)
 BASE_DECLARE_FEATURE(kBraveVPNDnsProtection);
+BASE_DECLARE_FEATURE(kBraveVPNUseWireguardService);
 #endif
 }  // namespace features
 }  // namespace brave_vpn

@@ -52,8 +52,14 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
     ids.push_back(brave_wallet::mojom::kFilecoinKeyringId);
     ids.push_back(brave_wallet::mojom::kFilecoinTestnetKeyringId);
   }
-  if (brave_wallet::IsSolanaEnabled())
+  if (brave_wallet::IsSolanaEnabled()) {
     ids.push_back(brave_wallet::mojom::kSolanaKeyringId);
+  }
+
+  if (brave_wallet::IsBitcoinEnabled()) {
+    ids.push_back(brave_wallet::mojom::kBitcoinKeyring84Id);
+    ids.push_back(brave_wallet::mojom::kBitcoinKeyring84TestId);
+  }
 
   keyring_service_->GetKeyringsInfo(
       ids, base::BindOnce(&WalletHandler::OnGetWalletInfo,
@@ -83,8 +89,8 @@ void WalletHandler::OnGetWalletInfo(
       default_keyring->is_keyring_created, default_keyring->is_locked,
       std::move(favorite_apps_copy), default_keyring->is_backed_up,
       std::move(account_infos), brave_wallet::IsFilecoinEnabled(),
-      brave_wallet::IsSolanaEnabled(), brave_wallet::IsNftPinningEnabled(),
-      brave_wallet::IsPanelV2Enabled()));
+      brave_wallet::IsSolanaEnabled(), brave_wallet::IsBitcoinEnabled(),
+      brave_wallet::IsNftPinningEnabled(), brave_wallet::IsPanelV2Enabled()));
 }
 
 void WalletHandler::AddFavoriteApp(

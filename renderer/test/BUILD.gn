@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("browser_tests") {
@@ -11,6 +12,7 @@ source_set("browser_tests") {
   sources = [
     "digital_goods_api_browsertest.cc",
     "file_system_access_browsertest.cc",
+    "font_browsertest.cc",
     "js_ethereum_provider_browsertest.cc",
     "navigator_connection_attribute_browsertest.cc",
     "serial_api_browsertest.cc",
@@ -22,6 +24,7 @@ source_set("browser_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/browser/brave_wallet",
+    "//brave/browser/profiles:profiles",
     "//brave/common",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:utils",
@@ -34,4 +37,13 @@ source_set("browser_tests") {
     "//content/test:test_support",
     "//net:test_support",
   ]
+
+  if (enable_extensions) {
+    deps += [
+      "//brave/browser/ethereum_remote_client:ethereum_remote_client",
+      "//chrome/browser/extensions",
+      "//extensions:test_support",
+      "//extensions/browser",
+    ]
+  }
 }

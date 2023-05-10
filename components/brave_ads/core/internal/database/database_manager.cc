@@ -9,11 +9,12 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/database/database_creation.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
 
 namespace brave_ads {
@@ -28,12 +29,12 @@ DatabaseManager& DatabaseManager::GetInstance() {
 }
 
 void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void DatabaseManager::RemoveObserver(DatabaseManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -51,14 +52,14 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&DatabaseManager::OnCreateOrOpen,
+      base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void DatabaseManager::OnCreateOrOpen(
+void DatabaseManager::CreateOrOpenCallback(
     ResultCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   if (command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
@@ -69,23 +70,55 @@ void DatabaseManager::OnCreateOrOpen(
     return;
   }
 
-  NotifyDidCreateOrOpenDatabase();
-
-  DCHECK(command_response->result->get_value()->which() ==
-         mojom::DBValue::Tag::kIntValue);
+  CHECK(command_response->result->get_value()->which() ==
+        mojom::DBValue::Tag::kIntValue);
   const int from_version =
       command_response->result->get_value()->get_int_value();
+
+  if (from_version == 0) {
+    // Fresh install.
+    return Create(std::move(callback));
+  }
+
+  NotifyDidCreateOrOpenDatabase();
+
   MaybeMigrate(from_version, std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void DatabaseManager::Create(ResultCallback callback) const {
+  BLOG(1, "Create database for schema version " << database::kVersion);
+
+  database::Create(base::BindOnce(&DatabaseManager::CreateCallback,
+                                  weak_factory_.GetWeakPtr(),
+                                  std::move(callback)));
+}
+
+void DatabaseManager::CreateCallback(ResultCallback callback,
+                                     const bool success) const {
+  const int to_version = database::kVersion;
+
+  if (!success) {
+    BLOG(1, "Failed to create database for schema version " << to_version);
+    NotifyFailedToCreateOrOpenDatabase();
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  BLOG(1, "Created database for schema version " << to_version);
+
+  NotifyDidCreateOrOpenDatabase();
+
+  NotifyDatabaseIsReady();
+
+  std::move(callback).Run(/*success*/ true);
+}
+
 void DatabaseManager::MaybeMigrate(const int from_version,
                                    ResultCallback callback) const {
   const int to_version = database::kVersion;
-  DCHECK(from_version <= to_version);
-
   if (from_version == to_version) {
+    BLOG(1, "Database is up to date on schema version " << from_version);
     std::move(callback).Run(/*success*/ true);
     return;
   }
@@ -96,15 +129,16 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   NotifyWillMigrateDatabase(from_version, to_version);
 
   database::MigrateFromVersion(
-      from_version,
-      base::BindOnce(&DatabaseManager::OnMigrate, weak_factory_.GetWeakPtr(),
-                     from_version, std::move(callback)));
+      from_version, base::BindOnce(&DatabaseManager::MigrateCallback,
+                                   weak_factory_.GetWeakPtr(), from_version,
+                                   std::move(callback)));
 }
 
-void DatabaseManager::OnMigrate(const int from_version,
-                                ResultCallback callback,
-                                const bool success) const {
+void DatabaseManager::MigrateCallback(const int from_version,
+                                      ResultCallback callback,
+                                      const bool success) const {
   const int to_version = database::kVersion;
+
   if (!success) {
     BLOG(1, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
@@ -149,7 +183,7 @@ void DatabaseManager::NotifyWillMigrateDatabase(const int from_version,
 
 void DatabaseManager::NotifyDidMigrateDatabase(const int from_version,
                                                const int to_version) const {
-  DCHECK_NE(from_version, to_version);
+  CHECK_NE(from_version, to_version);
 
   for (DatabaseManagerObserver& observer : observers_) {
     observer.OnDidMigrateDatabase(from_version, to_version);

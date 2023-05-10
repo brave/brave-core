@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">ሲወጡ ትሮችን ይዝጉ</translation>
 <translation id="4448697385961650078">ተከታታዮችን &amp; ማስታወቂያዎችን አግድ</translation>
 <translation id="2448893613530489637">መከታተያዎችን ይከላከላል &amp; ማስታወቂያዎች በድረ-ገፆች ላይ ከመጫን እና ከማሳየት</translation>
+<translation id="1025207378813960343">ከዌብሳይቶቹ ጋር ያለው ግንኙነት ደሕንነቱ የተጠበቀ መሆኑን ያረጋግጡ።</translation>
+<translation id="6686219838158572786">ሁሉንም ግንኙነቶች HTTPS እንዲጠቀሙ ይጠይቁ (ጥብቅ)</translation>
+<translation id="4221284400051835823">በተቻለ መጠን ወደ HTTPS ያዘምኑ (ነባሪ)</translation>
+<translation id="4690906712010847708">ግንኙነቶችን ወደ HTTPS አያዘምኑ (ጠፍቷል)</translation>
 <translation id="1680858055899097121">በማሰሻ ክፍለ ጊዜያት መካከል ትሮችን አይቀያይሩ</translation>
 <translation id="7142548388914389999">የግል ምርት ትንታኔዎች ጠባቂዎች (P3A) ይፍቀዱ።</translation>
 <translation id="5254037869598726291">ስም የለሽ የ P3A መረጃ ጎበዝ አጠቃላይ አጠቃቀምን ለመገመት እና ታዋቂ ባህሪያትን እያሻሻልን መሆኑን ለማረጋገጥ ይረዳል።</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">ራስ-አጫውት</translation>
 <translation id="7445411102860286510">ጣቢያዎች ድምፀ-ከል የተደረገባቸው ቪዲዮዎችን በራስ-ሰር እንዲያጫውቱ ይፍቀዱላቸው (የሚመከር)</translation>
 <translation id="7837721118676387834">ለአንድ የተወሰነ ጣቢያ ድምጸ-ከል የተደረጉ ቪዲዮዎችን በራስ-ሰር ማጫወትን ይፍቀዱ።</translation>
+<translation id="4206299587103092719">Google መግቢያ</translation>
+<translation id="9110294136812584522">ጣቢያዎች በሶስተኛ ወገን ኩኪዎች በኩል የሌጋሲ Google መግቢያን ለመጠቀም ሊጠይቁ ይችላሉ</translation>
+<translation id="2903783737778379345">የሌጋሲ Google መግቢያን በሶስተኛ ወገን ኩኪዎች በኩል አይፍቀዱ</translation>
+<translation id="6880817299303842099">ለሌጋሲ Google መግቢያ የሶስተኛ ወገን ኩኪዎችን መጠቀም ይፈቀዳል</translation>
 <translation id="181905442828471321">የብሬቭ ጥበቃ ግሎባል ዲፎልት</translation>
 <translation id="2675679258824361492">ሌሎች የግላዊነት ቅንብሮች</translation>
 <translation id="8026334261755873520">የአሰሳ ውሂብ አጽዳ</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">ጉርሻ በራስ-ሰር እየላኩ ነው ለ:</translation>
 <translation id="1628742278973105368">የመጀመሪያው ወርሃዊ ጉርሻዎን በሚከተለው ላይ ይላካሉ:</translation>
 <translation id="1642952941091001113">ይህ ፈጣሪ ከ Brave ተጠቃሚዎች መዋጮዎችን ለማግኘት ገና አልተመዘገበም። እነርሱ እስከሚያረጋግጡ ወይም 90 ቀናት እስከሚያልፉ ድረስ መዋጮውን ለማድረግ እንሞክራለን።</translation>
-<translation id="635752162765375187">ማስታወሻ፦ ይህ ፈጣሪ ከእርስዎ የሽልማቶች ከስቶድያል ዋሌት አገልግሎት ጉርሻዎችን እንዲቀበል አልተዋቀረም። የሚሰጡት ጉርሻ  በራስሰር ደጋግሞ እየሞከረ ለ90 ቀናት በመጠባበቅ ይቆያል።</translation>
+<translation id="8228150955416632026">እርስዎ ከ<ph name="WALLET_PROVIDER"/> ጋር ተገናኝተዋል፣ ነገር ግን ይህ ፈጣሪ ከ<ph name="SUPPORTED_WALLET_PROVIDER"/>ጋር ተገናኝቷል። ይህ ማለት የእርስዎ ጉርሻ ይህንን ፈጣሪ መድረስ አይችልም። ለአሁን፣ እርስዎ የሚያገኙት ማንኛውም ጉርሻ በመጠባበቅ ላይ ሆኖ ይቆያል እና ለ90 ቀናት በራስ-ሰር ዳግም ሙከራ ያደርጋል።</translation>
 <translation id="1910721550319506122">እንኳን ደህና መጡ!</translation>
 <translation id="2734870894159530879">ሒሳብዎን ለማየት ወደ <ph name="WALLET_PROVIDER"/> ይግቡ።</translation>
 <translation id="5830114181292529917">ይህንን ጣቢያ ጉርሻ በመላክ ማገዝ ይችላሉ። ታላቅ የሆነ መተግበሪያን በመፍጠራቸው ምስጋና የማቅረቢያ መንገድ ነው።</translation>
@@ -610,6 +618,7 @@
 <translation id="4522570452068850558">ዝርዝሮች</translation>
 <translation id="3995184924764722477">የመለያ ዝርዝሮች</translation>
 <translation id="8967036623785635603">የሚታዩ እሴቶችን ኣስተካክል</translation>
+<translation id="8475984867371585028">የሚታዩ NFTs ን አስተካክል</translation>
 <translation id="5050890334032852465">የመለያ የክትትል ዝርዝርን ኣስቀምጥ</translation>
 <translation id="7755766175599167100">ቶክኖችን ፈልግ</translation>
 <translation id="3835223348537121988">ሂሳብ፡</translation>
@@ -1050,4 +1059,78 @@
 <translation id="1776742005329298234">በ <ph name="DUE_DATE"/> ላይ፣ ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍ መስጠት እናቆማለን። የተገኘውን ሒሳብዎን በአዋቂ ወደሚተዳደር የልጅ ሒሳብዎ ማስተላለፍ እንድንችል ከዚህ ቀን በፊት በአዋቂ ወደሚተዳደር ሒሳብ ጋር ያገናኙ፣ ያለበለዚያ ቀሪ ሒሳብዎ ይጠፋል።</translation>
 <translation id="5089752671190341407">የእርስዎን vBAT ለሚወዷቸው ፈጣሪዎች አስተዋጽኦ ለማበርከት አሁንም ጊዜ አለዎት</translation>
 <translation id="171158953146804144">በ <ph name="DUE_DATE"/>ላይ፣ ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍ መስጠት እናቆማለን። በሚያሳዝን ሁኔታ፣ በእርስዎ ክልል ውስጥ (<ph name="REGION"/>) ያገኙትን ገንዘብ ለማውጣት በአዋቂ የሚተዳደሩ የሉም፡፡ እስካዛው ድረስ፣ ወደሚወዷቸው ፈጣሪዎች አሁንም አስተዋጽዖ ማድረግ ይችላሉ።</translation>
+<translation id="8949422576126100041">ገጹን በ Speedreader ይመልከቱ?</translation>
+<translation id="591648995518106347">ብቁ የሆኑ ጽሑፎችን በአንባቢ ሁነታ ላይ በራስ-ሰር ይጭናል</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> በ <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">የ Brave የአጫዋች ዝርዝር</translation>
+<translation id="4850886885716139402">አሳይ</translation>
+<translation id="7392941176393379100">ወደ '<ph name="PLAYLIST_NAME"/>' ታክሏል</translation>
+<translation id="8289472222022674331">የአጫዋች ዝርዝር ውሂብዎን ማስተዳደር</translation>
+<translation id="7650602357673790368">በነባሪነት፣ የአጫዋች ዝርዝር በኦፍላይን መልሶ ለማጫወት (በሁለቱም በግል እና በጋራ አጫዋች ዝርዝሮች) ይዘትን በራስ-ሰር ያስቀምጣል። WiFi እየተጠቀሙ ካልሆነ፣ በራስሰር ማስቀመጥ የሞባይል ውሂብዎን ይጠቀማል።\n\nይህንን ነባሪ ለመቀየር ቅንብሮችን ይጠቀሙ።</translation>
+<translation id="5900576657906675258">ይህን ነገር ወደ አጫዋች ዝርዝር አክል</translation>
+<translation id="349846214503465941">የአጫዋች ዝርዝር አንቃ</translation>
+<translation id="1309636029062006520">የሚወዷቸውን ኦዲዮ እና ቪዲዮዎች አጫዋች ዝርዝሮችን ያብጁ፣ እና በማንኛውም ጊዜ፣ በማንኛውም ቦታ ያጫውቱ።</translation>
+<translation id="7899390017499980820">ወደ አጫዋች ዝርዝር አዝራር አክል</translation>
+<translation id="6901152954398668317">ሚዲያን ለመጨመር ወይም ለማስወገድ ፈጣን መዳረሻ ለማግኘት "ወደ አጫዋች ዝርዝር አክል" የሚለውን አሳይ ወይም ደብቅ።</translation>
+<translation id="8404028031709373707">በራስ-አጫውት</translation>
+<translation id="597781019681241649">አጫዋች ዝርዝሩ ሲከፈት በራስ-አጫውትን ያነቃል።</translation>
+<translation id="2625554376218216118">መልሶ ማጫወትን ካቆምኩበት ጀምር</translation>
+<translation id="2953730196265332002">በራስ ሰር፣ ፈጣሪው ያደረጋቸውን ለውጦች ወደ የተጋራ አጫዋች ዝርዝር ያመሳስሉ።</translation>
+<translation id="3561815498111282415">ለኦፍላይን በራስ-አስቀምጥ</translation>
+<translation id="1832424694374124654">በራስ ሰር፣ ያለበይነመረብ ግንኙነት መጫወት እንዲችሉ ይህ አዲስ አጫዋች ዝርዝር ንጥሎችን ወደ መሳሪያዎ ያስቀምጣል።</translation>
+<translation id="8103022210423023846">በራስ-አስቀምጥ በርቷል</translation>
+<translation id="3926329432879804185">በራስ-አስቀምጥ ጠፍቷል</translation>
+<translation id="7768812595186089508">ከ Wi-Fi ጋር ሲገናኝ ብቻ በራስ-አስቀምጥ</translation>
+<translation id="5939518447894949180">ዳግም አስጀምር</translation>
+<translation id="8199028711686989861">በኦፍላይን ሁነታ ማከማቻን ጨምሮ ሁሉንም ቪዲዮዎች ከአጫዋች ዝርዝር ያስወግዱ።</translation>
+<translation id="5916664084637901428">በርቷል</translation>
+<translation id="5860033963881614850">አጥፋ</translation>
+<translation id="2920568868625746681">Wifi ብቻ</translation>
+<translation id="4590997608186539865">አጫዋች ዝርዝር</translation>
+<translation id="7525067979554623046">ፍጠር</translation>
+<translation id="5491049004699827548">የመጀመሪያውን የአጫዋች ዝርዝርዎን ይፍጠሩ</translation>
+<translation id="5319108110887582146">የእርስዎን ተወዳጅ ኦዲዮ እና ቪዲዮዎች አጫዋች ዝርዝር ያዘጋጁ እና በማንኛውም ጊዜ በማንኛውም ቦታ ያጫውቱ። ከመስመር ውጭም ቢሆን።</translation>
+<translation id="6802849415466883498">አጫዋች ዝርዝር ይፍጠሩ</translation>
+<translation id="8525248723479742219">በኋላ ያጫውቱ</translation>
+<translation id="7453007860684252933">ያስሱ እና ያክሉ</translation>
+<translation id="9014883386413828317">የእርስዎን ተወዳጅ ይዘት ያክሉ። በማያ ገጽዎ ታችኛው ቀኝ ክፍል ላይ የ (+) አዝራርን ይፈልጉ።</translation>
+<translation id="5928669500312007783">ለሚድያ ያስሱ</translation>
+<translation id="8152485753254079984">አዲስ የአጫዋች ዝርዝር</translation>
+<translation id="9130105487623071247">የአጫዋች ዝርዝር ስም</translation>
+<translation id="726581235416249619">ስምአልባ የአጫዋች ዝርዝር</translation>
+<translation id="1456254983411148628">ውሂብ አስወግድ</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> ተመርጧል</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> ንጥሎች</translation>
+<translation id="2317629745818459803">ሁሉንም አጫውት</translation>
+<translation id="7544853251252956727">በውዝ</translation>
+<translation id="2881339830231736485">በቅርብ ጊዜ የተጫወቱ</translation>
+<translation id="7636458383879257005">መታ ያድርጉ፣ በረጅሙ ይጫኑ ወይም ይጎትቱ</translation>
+<translation id="8120600068258956006">ወደ አጫዋች ዝርዝር አክል</translation>
+<translation id="39991094779686024">የአጫዋች ዝርዝሮች</translation>
+<translation id="1710072605877822603">ሚድያ አክል</translation>
+<translation id="903678009070770568">ቪዲዮዎችን ወደ Brave የአጫዋች ዝርዝር ያክሉ እና በኋላ ይመልከቱ፣ ከመስመር ውጭ ጭምር</translation>
+<translation id="3063627607780392015">ከሴል ክልል ውጪ? የሚያለቅስ ልጅን ማረጋጋት ይፈልጋሉ?</translation>
+<translation id="2041014734809158138">የምድር ውስጥ ባቡር ውስጥ፣ በረራ ላይ ወይም ረጅም የመኪና ጉዞ ላይም ይሁኑ። አጫዋች ዝርዝሩ አለልዎ።</translation>
+<translation id="7287143275037417932">ወይም በሚታይበት ጊዜ የአጫዋች ዝርዝር አዝራሩን ይንኩ።</translation>
+<translation id="6959838938954098206">የሚታከሉ ሚዲያዎች ሲኖሩ የአጫዋች ዝርዝር አዝራሩ ይታያል። ለአማራጮች በረጅሙ ይጫኑት። እንዲያውም መደበቅ ይችላሉ።</translation>
+<translation id="3620862810055853183">የአጫዋች ዝርዝሩን ክፈት</translation>
+<translation id="3861012838874771868">የአጫዋች ዝርዝር ቅንብሮችን ክፈት</translation>
+<translation id="5220099266891491416">የአጫዋች ዝርዝር አዝራርን ደብቅ</translation>
+<translation id="7416347631175891923">ይሞክሩት!</translation>
+<translation id="1173894706177603556">ዳግም ሰይም</translation>
+<translation id="1620612903815671893">የአጫዋች ዝርዝር ከመስመር ውጭ ውሂብ ያስወግዱ</translation>
+<translation id="3261711068865275261">ሁሉንም ከመስመር ውጭ ውሂብ ያስወግዱ</translation>
+<translation id="6653691766801349738">ከመስመር ውጭ ለመጠቀም የአጫዋች ዝርዝር ያቆዩ</translation>
+<translation id="8708086574143054053">ሁሉንም የአጫዋች ዝርዝሮች ከመስመር ውጭ ለመጠቀም ያቆዩ</translation>
+<translation id="3596306474342941843">የአጫዋች ዝርዝር ሰርዝ</translation>
+<translation id="7765158879357617694">ውሰድ</translation>
+<translation id="3803384303807438047">የዚህን ነገር ከመስመር ውጭ ውሂብ ይሰርዙ</translation>
+<translation id="4195643157523330669">በአዲስ ትር ክፈት</translation>
+<translation id="4243710787042215766">የግል ትር ክፈት</translation>
+<translation id="8261506727792406068">ሰርዝ</translation>
+<translation id="377872456482681602">እባክዎ መጀመሪያ ንጥሎችን ይምረጡ</translation>
+<translation id="6172429305139364624">የአጫዋች ዝርዝር ንጥሉ አልተጣመረም።\nእባክዎ ንጥሉን ከመስመር ውጭ ሁነታ ያጣምሩ።</translation>
+<translation id="3631131732607750008">ይዘቱ ጊዜው አልፎበታል። ከጥቂት ሰከንዶች በኋላ እንደገና ይሞክሩ።</translation>
+<translation id="9085765419770918643">ምንም NFTs እስካሁን እዚህ የሉም።</translation>
+<translation id="8445532667841598737">አንዳንዶቹን ለማከል ዝግጁ ነዎት? ለማስገባት ከታች ያለውን አዝራር በቀላሉ ጠቅ ያድርጉ።</translation>
 </translationbundle>

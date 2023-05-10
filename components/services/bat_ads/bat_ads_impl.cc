@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/ad_content_info.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 #include "brave/components/brave_ads/core/ads.h"
@@ -26,15 +26,6 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace bat_ads {
-
-namespace {
-
-brave_ads::CategoryContentOptActionType ToCategoryContentOptActionType(
-    const int opt_action_type) {
-  return static_cast<brave_ads::CategoryContentOptActionType>(opt_action_type);
-}
-
-}  // namespace
 
 BatAdsImpl::BatAdsImpl(
     mojo::PendingAssociatedRemote<mojom::BatAdsClient> client,
@@ -206,33 +197,33 @@ void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
 void BatAdsImpl::ToggleLikeAd(base::Value::Dict value,
                               ToggleLikeAdCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.like_action_type = ads_->ToggleLikeAd(std::move(value));
+  ad_content.user_reaction_type = ads_->ToggleLikeAd(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
 void BatAdsImpl::ToggleDislikeAd(base::Value::Dict value,
                                  ToggleDislikeAdCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.like_action_type = ads_->ToggleDislikeAd(std::move(value));
+  ad_content.user_reaction_type = ads_->ToggleDislikeAd(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
-void BatAdsImpl::ToggleLikeCategory(const std::string& category,
-                                    const int opt_action_type,
-                                    ToggleLikeCategoryCallback callback) {
-  const brave_ads::CategoryContentOptActionType toggled_opt_action_type =
-      ads_->ToggleLikeCategory(category,
-                               ToCategoryContentOptActionType(opt_action_type));
-  std::move(callback).Run(category, static_cast<int>(toggled_opt_action_type));
+void BatAdsImpl::ToggleLikeCategory(
+    const std::string& category,
+    const brave_ads::mojom::UserReactionType user_reaction_type,
+    ToggleLikeCategoryCallback callback) {
+  const brave_ads::mojom::UserReactionType toggled_user_reaction_type =
+      ads_->ToggleLikeCategory(category, user_reaction_type);
+  std::move(callback).Run(category, toggled_user_reaction_type);
 }
 
-void BatAdsImpl::ToggleDislikeCategory(const std::string& category,
-                                       const int opt_action_type,
-                                       ToggleDislikeCategoryCallback callback) {
-  const brave_ads::CategoryContentOptActionType toggled_opt_action_type =
-      ads_->ToggleDislikeCategory(
-          category, ToCategoryContentOptActionType(opt_action_type));
-  std::move(callback).Run(category, static_cast<int>(toggled_opt_action_type));
+void BatAdsImpl::ToggleDislikeCategory(
+    const std::string& category,
+    const brave_ads::mojom::UserReactionType user_reaction_type,
+    ToggleDislikeCategoryCallback callback) {
+  const brave_ads::mojom::UserReactionType toggled_user_reaction_type =
+      ads_->ToggleDislikeCategory(category, user_reaction_type);
+  std::move(callback).Run(category, toggled_user_reaction_type);
 }
 
 void BatAdsImpl::ToggleSaveAd(base::Value::Dict value,

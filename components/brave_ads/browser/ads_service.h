@@ -14,7 +14,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -207,17 +207,19 @@ class AdsService : public KeyedService {
 
   // Called to like a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes two arguments -
-  // |std::string| containing the category. |int| containing the action.
+  // |std::string| containing the category. |mojom::UserReactionType| containing
+  // the user reaction type.
   virtual void ToggleLikeCategory(const std::string& category,
-                                  int action,
+                                  mojom::UserReactionType user_reaction_type,
                                   ToggleLikeCategoryCallback callback) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes two arguments -
-  // |std::string| containing the category. |int| containing the action.
+  // |std::string| containing the category. |mojom::UserReactionType| containing
+  // the user reaction type.
   virtual void ToggleDislikeCategory(
       const std::string& category,
-      int action,
+      mojom::UserReactionType user_reaction_type,
       ToggleDislikeCategoryCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it

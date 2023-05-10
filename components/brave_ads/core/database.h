@@ -6,14 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_DATABASE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_DATABASE_H_
 
-#include <cstdint>
 #include <memory>
 
 #include "base/files/file_path.h"
 #include "base/memory/memory_pressure_listener.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/export.h"
 #include "sql/database.h"
 #include "sql/meta_table.h"
@@ -37,8 +36,8 @@ class ADS_EXPORT Database final {
 
  private:
   mojom::DBCommandResponseInfo::StatusType Initialize(
-      int32_t version,
-      int32_t compatible_version,
+      int version,
+      int compatible_version,
       mojom::DBCommandResponseInfo* command_response);
 
   mojom::DBCommandResponseInfo::StatusType Execute(
@@ -50,12 +49,12 @@ class ADS_EXPORT Database final {
       mojom::DBCommandInfo* command,
       mojom::DBCommandResponseInfo* command_response);
 
-  mojom::DBCommandResponseInfo::StatusType Migrate(int32_t version,
-                                                   int32_t compatible_version);
+  mojom::DBCommandResponseInfo::StatusType Migrate(int version,
+                                                   int compatible_version);
 
-  void OnErrorCallback(int error, sql::Statement* statement);
+  void ErrorCallback(int error, sql::Statement* statement);
 
-  void OnMemoryPressure(
+  void MemoryPressureCallback(
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   base::FilePath db_path_;

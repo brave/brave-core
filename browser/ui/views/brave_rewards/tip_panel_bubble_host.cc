@@ -35,6 +35,9 @@ class TipPanelDialogView : public WebUIBubbleDialogView {
                      const absl::optional<gfx::Rect>& anchor_rect)
       : WebUIBubbleDialogView(anchor_view, contents_wrapper, anchor_rect) {
     SetArrow(views::BubbleBorder::TOP_CENTER);
+    SetPaintClientToLayer(true);
+    set_use_round_corners(true);
+    set_corner_radius(16);
   }
 
   // views::Widget:
@@ -107,10 +110,14 @@ TipPanelBubbleHost::TipPanelBubbleHost(Browser* browser)
     : BrowserUserData<TipPanelBubbleHost>(*browser) {
   auto* coordinator = TipPanelCoordinator::FromBrowser(browser);
   DCHECK(coordinator);
-  coordinator_observation_.Observe(coordinator);
+  coordinator->AddObserver(this);
 }
 
-TipPanelBubbleHost::~TipPanelBubbleHost() = default;
+TipPanelBubbleHost::~TipPanelBubbleHost() {
+  if (auto* coordinator = TipPanelCoordinator::FromBrowser(&GetBrowser())) {
+    coordinator->RemoveObserver(this);
+  }
+}
 
 void TipPanelBubbleHost::MaybeCreateForBrowser(Browser* browser) {
   DCHECK(browser);

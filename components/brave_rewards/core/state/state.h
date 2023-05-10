@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace state {
@@ -37,10 +37,6 @@ class State {
   void SetPublisherMinVisits(const int visits);
 
   int GetPublisherMinVisits();
-
-  void SetPublisherAllowNonVerified(const bool allow);
-
-  bool GetPublisherAllowNonVerified();
 
   void SetScoreValues(double a, double b);
 
@@ -119,6 +115,6 @@ class State {
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_

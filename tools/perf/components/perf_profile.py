@@ -5,7 +5,6 @@
 
 import logging
 import os
-import hashlib
 import uuid
 import shutil
 
@@ -30,11 +29,6 @@ def DownloadFromGoogleStorage(sha1: str, output_path: str) -> None:
   exit_code = gsutil.call('cp', gs_path, output_path)
   if exit_code:
     raise RuntimeError(f'Failed to download: {gs_path}')
-
-
-def GetProfileHash(profile: str, binary: str) -> str:
-  binary_path_hash = hashlib.sha256(binary.encode("utf-8")).hexdigest()[:6]
-  return profile + '-' + binary_path_hash
 
 
 def GetProfilePath(profile: str, work_directory: str) -> str:

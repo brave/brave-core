@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
 // utils
@@ -20,7 +20,7 @@ import { PageSelectors } from './selectors'
 
 // types
 import {
-  WalletRoutes
+  WalletRoutes, WalletState
 } from '../constants/types'
 
 // hooks
@@ -43,6 +43,7 @@ import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send-page/send-screen'
+import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import {
   WalletPageWrapper
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
@@ -54,6 +55,9 @@ export const Container = () => {
 
   // redux
   const dispatch = useDispatch()
+  const isBitcoinEnabled = useSelector(
+    ({ wallet }: { wallet: WalletState }) => wallet.isBitcoinEnabled
+  )
 
   // wallet selectors (safe)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
@@ -97,7 +101,7 @@ export const Container = () => {
     if (sessionRoute) {
       history.push(sessionRoute)
     } else {
-      history.push(WalletRoutes.Portfolio)
+      history.push(WalletRoutes.PortfolioAssets)
     }
   }, [inputValue, sessionRoute])
 
@@ -131,9 +135,9 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.Backup) ||
       walletLocation.includes(WalletRoutes.DepositFundsPageStart) ||
       walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
-      walletLocation.includes(WalletRoutes.Portfolio) ||
+      walletLocation.includes(WalletRoutes.PortfolioAssets) ||
+      walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
       walletLocation.includes(WalletRoutes.Market) ||
-      walletLocation.includes(WalletRoutes.Nfts) ||
       walletLocation.includes(WalletRoutes.Swap) ||
       walletLocation.includes(WalletRoutes.Send) ||
       walletLocation.includes(WalletRoutes.LocalIpfsNode ||
@@ -154,9 +158,9 @@ export const Container = () => {
         walletLocation.includes(WalletRoutes.FundWalletPage) ||
         walletLocation.includes(WalletRoutes.LocalIpfsNode) ||
         walletLocation.includes(WalletRoutes.InspectNfts) ||
-        walletLocation.includes(WalletRoutes.Portfolio) ||
+        walletLocation.includes(WalletRoutes.PortfolioAssets) ||
+        walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
         walletLocation.includes(WalletRoutes.Market) ||
-        walletLocation.includes(WalletRoutes.Nfts) ||
         walletLocation.includes(WalletRoutes.Activity) ||
         walletLocation.includes(WalletRoutes.Accounts)
       ) {
@@ -257,7 +261,6 @@ export const Container = () => {
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={456}
-                  cardOverflow='visible'
                 >
                   <FundWalletScreen />
                 </WalletPageWrapper>
@@ -269,7 +272,6 @@ export const Container = () => {
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={456}
-                  cardOverflow='visible'
                 >
                   <DepositFundsScreen />
                 </WalletPageWrapper>
@@ -278,11 +280,20 @@ export const Container = () => {
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.Swap} exact={true}>
-                <WalletPageWrapper hideBackground={true}>
+                <WalletPageWrapper
+                  hideHeader={true}
+                  hideBackground={true}
+                >
                   <Swap />
                 </WalletPageWrapper>
               </Route>
             }
+
+            {isBitcoinEnabled && !isWalletLocked && (
+              <Route path={WalletRoutes.DevBitcoin} exact={true}>
+                <DevBitcoin />
+              </Route>
+            )}
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.Send} exact={true}>
@@ -294,38 +305,19 @@ export const Container = () => {
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.CryptoPage}>
-                <WalletPageWrapper
-                  noPadding={
-                    walletLocation === WalletRoutes.LocalIpfsNode ||
-                    walletLocation === WalletRoutes.InspectNfts
-                  }
-                  wrapContentInBox={
-                    walletLocation !== WalletRoutes.LocalIpfsNode &&
-                    walletLocation !== WalletRoutes.InspectNfts
-                  }
-                  cardOverflow={
-                    walletLocation === WalletRoutes.Portfolio ||
-                      walletLocation === WalletRoutes.Activity ||
-                      walletLocation === WalletRoutes.Nfts
-                      ? 'visible'
-                      : 'hidden'
-                  }
-                >
-                  <CryptoView
-                    needsBackup={!isWalletBackedUp}
-                    defaultEthereumWallet={defaultEthereumWallet}
-                    defaultSolanaWallet={defaultSolanaWallet}
-                    onOpenWalletSettings={onOpenWalletSettings}
-                    isMetaMaskInstalled={isMetaMaskInstalled}
-                    sessionRoute={sessionRoute}
-                  />
-
-                </WalletPageWrapper>
+                <CryptoView
+                  needsBackup={!isWalletBackedUp}
+                  defaultEthereumWallet={defaultEthereumWallet}
+                  defaultSolanaWallet={defaultSolanaWallet}
+                  onOpenWalletSettings={onOpenWalletSettings}
+                  isMetaMaskInstalled={isMetaMaskInstalled}
+                  sessionRoute={sessionRoute}
+                />
               </Route>
             }
 
             {isWalletLocked && <Redirect to={WalletRoutes.Unlock} />}
-            {!isWalletLocked && <Redirect to={WalletRoutes.Portfolio} />}
+            {!isWalletLocked && <Redirect to={WalletRoutes.PortfolioAssets} />}
           </Switch>
         }
       </Switch>

@@ -9,7 +9,7 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
@@ -31,7 +31,7 @@ class Issuers {
   ~Issuers();
 
   void SetDelegate(IssuersDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 
@@ -39,7 +39,7 @@ class Issuers {
 
  private:
   void Fetch();
-  void OnFetch(const mojom::UrlResponseInfo& url_response);
+  void FetchCallback(const mojom::UrlResponseInfo& url_response);
 
   void SuccessfullyFetchedIssuers(const IssuersInfo& issuers);
   void FailedToFetchIssuers(bool should_retry);
@@ -47,7 +47,7 @@ class Issuers {
   void FetchAfterDelay();
 
   void RetryAfterDelay();
-  void OnRetry();
+  void RetryCallback();
   void StopRetrying();
 
   raw_ptr<IssuersDelegate> delegate_ = nullptr;

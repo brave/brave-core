@@ -10,11 +10,11 @@
 import collections
 import os
 import re
-import subprocess
 import sys
 import signing.signing  # pylint: disable=import-error, wrong-import-position, unused-import
 import signing.model  # pylint: disable=import-error, reimported, wrong-import-position, unused-import
 
+from lib.widevine import can_generate_sig_file, generate_sig_file
 from signing import model  # pylint: disable=import-error, reimported
 
 # Construct path to signing modules in chrome/installer/mac/signing
@@ -26,32 +26,11 @@ sys.path.append(signing_path)
 # Import the entire module to avoid circular dependencies in the functions
 
 brave_channel = os.environ.get('BRAVE_CHANNEL')
-sign_widevine_cert = os.environ.get('SIGN_WIDEVINE_CERT')
-sign_widevine_key = os.environ.get('SIGN_WIDEVINE_KEY')
-sign_widevine_passwd = os.environ.get('SIGN_WIDEVINE_PASSPHRASE')
-sig_generator_path = os.path.realpath(
-    os.path.dirname(os.path.realpath(__file__)))
-sig_generator_path = os.path.realpath(
-    os.path.join(sig_generator_path, os.pardir, os.pardir, 'third_party',
-                 'widevine', 'scripts', 'signature_generator.py'))
-
-
-def file_exists(path):
-    """ Checks if file with the given path exists """
-    return os.path.exists(path)
-
-
-def run_command(args, **kwargs):
-    """ Runs the given executable with the given arguments """
-    print('Running command: {}'.format(args)
-         )  # pylint: disable=superfluous-parens
-    subprocess.check_call(args, **kwargs)
 
 
 def GenerateBraveWidevineSigFile(paths, config, part):
     """ Generates Widevine .sig file """
-    if sign_widevine_key and sign_widevine_passwd and file_exists(
-            sig_generator_path):
+    if can_generate_sig_file():
         # Framework needs to be signed before generating Widevine signature
         # file. The calling script will re-sign it after Widevine signature
         # file has been added (see signing.py from where this function is
@@ -67,18 +46,8 @@ def GenerateBraveWidevineSigFile(paths, config, part):
         sig_target_file = os.path.join(chrome_framework_version_path,
                                        'Resources',
                                        chrome_framework_name + '.sig')
-        assert file_exists(
-            sig_source_file), 'Wrong source path for sig generation'
 
-        command = ['python', sig_generator_path, '--input_file',
-                   sig_source_file,
-                   '--output_file', sig_target_file, '--flags', '1',
-                   '--certificate', sign_widevine_cert,
-                   '--private_key', sign_widevine_key,
-                   '--private_key_passphrase', sign_widevine_passwd]
-
-        run_command(command)
-        assert file_exists(sig_target_file), 'No sig file'
+        generate_sig_file(sig_source_file, sig_target_file, '1')
 
 
 def BraveModifyPartsForSigning(parts, config):

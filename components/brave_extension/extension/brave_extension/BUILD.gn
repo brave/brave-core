@@ -50,6 +50,10 @@ if (is_mac) {
   foreach(locale, platform_pak_locales) {
     bundle_data("brave_extension_framework_bundle_data_${locale}") {
       locale = string_replace(locale, "-", "_")
+
+      # The "nb" locale is a subset of "no". Chromium uses the former, while
+      # Transifex uses the latter. To integrate with Transifex, our code renames
+      # "nb" to "no". The following creates a bridge between the two paradigms:
       source_locale = string_replace(locale, "nb", "no")
       sources = [ "//brave/components/brave_extension/extension/brave_extension/_locales/$source_locale/messages.json" ]
       outputs = [ "{{bundle_resources_dir}}/brave_extension/_locales/$locale/{{source_file_part}}" ]
@@ -65,6 +69,10 @@ if (is_mac) {
   foreach(locale, platform_pak_locales) {
     copy("locales_${locale}") {
       locale = string_replace(locale, "-", "_")
+
+      # The "nb" locale is a subset of "no". Chromium uses the former, while
+      # Transifex uses the latter. To integrate with Transifex, our code renames
+      # "nb" to "no". The following creates a bridge between the two paradigms:
       source_locale = string_replace(locale, "nb", "no")
       sources = [ "//brave/components/brave_extension/extension/brave_extension/_locales/${source_locale}/messages.json" ]
       outputs = [ "$root_out_dir/resources/brave_extension/_locales/${locale}/{{source_file_part}}" ]

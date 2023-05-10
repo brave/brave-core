@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
@@ -71,10 +71,6 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                            ConnectWithNoSolanaAccount);
 
   bool IsAccountConnected(const std::string& account);
-  void ContinueConnect(bool is_eagerly_connect,
-                       const std::string& selected_account,
-                       ConnectCallback callback,
-                       bool is_selected_account_allowed);
   void OnConnect(
       const std::string& requested_account,
       ConnectCallback callback,

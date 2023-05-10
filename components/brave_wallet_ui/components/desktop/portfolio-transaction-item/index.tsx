@@ -48,6 +48,7 @@ import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { WalletSelectors } from '../../../common/selectors'
 import { getAddressLabelFromRegistry } from '../../../utils/account-utils'
+import { openBlockExplorerURL } from '../../../utils/block-explorer-utils'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
@@ -383,27 +384,58 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (asset.contractAddress === '') {
-      history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.symbol}`)
+      history.push(
+        `${WalletRoutes.PortfolioAssets //
+        }/${asset.chainId //
+        }/${asset.symbol}`
+      )
       return
     }
-    history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.contractAddress}/${asset.tokenId}`)
+    if (asset.isErc721 || asset.isNft || asset.isErc1155) {
+      history.push(
+        `${WalletRoutes.PortfolioNFTs //
+        }/${asset.chainId //
+        }/${asset.contractAddress //
+        }/${asset.tokenId}`
+      )
+      return
+    }
+    history.push(
+      `${WalletRoutes.PortfolioAssets //
+      }/${asset.chainId //
+      }/${asset.contractAddress}`
+    )
   }, [history])
 
-  const onAssetClick = React.useCallback((symbol?: string) =>
-    isLoadingUserVisibleTokens ? undefined : () => {
-      if (!symbol) {
-        return
-      }
+  const onAssetClick = React.useCallback(
+    (symbol?: string, contractAddress?: string) =>
+      isLoadingUserVisibleTokens
+        ? undefined
+        : () => {
+            if (!symbol) {
+              return
+            }
 
-      const asset = findTokenBySymbol(symbol, userVisibleTokensInfo)
-      if (asset) {
-        onSelectAsset(asset)
-      }
-    },
+            const asset = findTokenBySymbol(symbol, userVisibleTokensInfo)
+            if (asset) {
+              onSelectAsset(asset)
+            }
+
+            if (!contractAddress) {
+              return
+            }
+
+            openBlockExplorerURL({
+              type: 'token',
+              network: txNetwork,
+              value: contractAddress
+            })()
+          },
     [
       onSelectAsset,
       userVisibleTokensInfo,
-      isLoadingUserVisibleTokens
+      isLoadingUserVisibleTokens,
+      txNetwork
     ]
   )
 
@@ -437,10 +469,12 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               {getIsTxApprovalUnlimited(transaction)
                 ? getLocale('braveWalletTransactionApproveUnlimited')
                 : normalizedTransferredValue}{' '}
-              <AddressOrAsset onClick={onAssetClick(txSymbol)}>
+              <AddressOrAsset
+                onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
+              >
                 {txSymbol}
-              </AddressOrAsset>
-              {' '}-{' '}
+              </AddressOrAsset>{' '}
+              -{' '}
               <AddressOrAsset onClick={onAddressClick(approvalTarget)}>
                 {approvalTargetLabel}
               </AddressOrAsset>
@@ -454,14 +488,24 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
           <DetailRow>
             <DetailTextDark>
               {sellAmount?.format(6)}{' '}
-              <AddressOrAsset onClick={onAssetClick(sellToken?.symbol)}>
+              <AddressOrAsset
+                onClick={onAssetClick(
+                  sellToken?.symbol,
+                  sellToken?.contractAddress
+                )}
+              >
                 {sellToken?.symbol}
               </AddressOrAsset>
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
               {buyAmount?.format(6)}{' '}
-              <AddressOrAsset onClick={onAddressClick(buyToken?.symbol)}>
+              <AddressOrAsset
+                onClick={onAssetClick(
+                  buyToken?.symbol,
+                  buyToken?.contractAddress
+                )}
+              >
                 {buyToken?.symbol}
               </AddressOrAsset>
             </DetailTextDark>
@@ -475,7 +519,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
           <DetailRow>
             <DetailTextDark>
               {normalizedTransferredValue}{' '}
-              <AddressOrAsset onClick={onAssetClick(txSymbol)}>
+              <AddressOrAsset
+                onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
+              >
                 {txSymbol}
               </AddressOrAsset>
             </DetailTextDark>
@@ -515,6 +561,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     }
   }, [
     transaction,
+    txToken?.contractAddress,
     isSwap,
     buyToken?.symbol,
     buyAmount,
@@ -546,7 +593,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               'braveWalletApprovalTransactionIntent'
             ).toLocaleUpperCase()}{' '}
           </strong>
-          <AddressOrAsset onClick={onAssetClick(txSymbol)}>
+          <AddressOrAsset
+            onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
+          >
             {txSymbol}
           </AddressOrAsset>
         </>
@@ -564,7 +613,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
             transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
           }
-          onClick={onAssetClick(txSymbol)}
+          onClick={onAssetClick(txSymbol, txToken?.contractAddress)}
         >
           {txSymbol}
           {
@@ -576,7 +625,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         </AddressOrAsset>
       </>
     )
-  }, [transaction, displayAccountName, onAssetClick])
+  }, [transaction, displayAccountName, onAssetClick, txToken?.contractAddress])
 
   const wasTxRejected =
     transaction.txStatus !== BraveWallet.TransactionStatus.Rejected &&

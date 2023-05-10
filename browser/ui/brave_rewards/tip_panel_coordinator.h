@@ -61,7 +61,7 @@ class TipPanelCoordinator : public BrowserUserData<TipPanelCoordinator> {
 
   void GetUserTypeCallback(const std::string& publisher_id,
                            bool inline_tip,
-                           ledger::mojom::UserType user_type);
+                           mojom::UserType user_type);
 
   void IsPublisherRegisteredCallback(const std::string& publisher_id,
                                      bool inline_tip,

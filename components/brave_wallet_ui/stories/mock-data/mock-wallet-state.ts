@@ -11,13 +11,13 @@ import { BraveWallet, WalletAccountType, WalletState } from '../../constants/typ
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
-import { mockBasicAttentionToken, mockMoonCatNFT } from './mock-asset-options'
 
 // mocks
 import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
 import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
+import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
 
-const mockAccount: WalletAccountType = {
+const mockAccount: WalletAccountType & BraveWallet.AccountInfo = {
   accountType: 'Primary',
   address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
   coin: 60,
@@ -32,10 +32,12 @@ const mockAccount: WalletAccountType = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: 'default'
+  keyringId: 'default',
+  isImported: false,
+  hardware: undefined
 }
 
-const mockAccount2: WalletAccountType = {
+const mockAccount2: WalletAccountType & BraveWallet.AccountInfo = {
   accountType: 'Primary',
   address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
   coin: 60,
@@ -50,10 +52,12 @@ const mockAccount2: WalletAccountType = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: 'default'
+  keyringId: 'default',
+  isImported: false,
+  hardware: undefined
 }
 
-const mockAccount3: WalletAccountType = {
+const mockAccount3: WalletAccountType & BraveWallet.AccountInfo = {
   accountType: 'Primary',
   address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
   coin: 60,
@@ -68,7 +72,9 @@ const mockAccount3: WalletAccountType = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: 'default'
+  keyringId: 'default',
+  isImported: false,
+  hardware: undefined
 }
 
 const mockCurrency: BraveWallet.OnRampCurrency = {
@@ -167,41 +173,7 @@ export const mockWalletState: WalletState = {
   defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   favoriteApps: [],
-  fullTokenList: [
-    {
-      coingeckoId: 'usd-coin',
-      contractAddress: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
-      decimals: 6,
-      isErc20: true,
-      isErc721: false,
-      isErc1155: false,
-      isNft: false,
-      logo: 'chrome://erc-token-images/usdc.png',
-      name: 'USD Coin',
-      symbol: 'USDC',
-      tokenId: '',
-      visible: true,
-      coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.MAINNET_CHAIN_ID
-    },
-    {
-      coingeckoId: 'dai',
-      contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
-      decimals: 18,
-      isErc20: true,
-      isErc721: false,
-      isErc1155: false,
-      isNft: false,
-      logo: 'chrome://erc-token-images/dai.png',
-      name: 'DAI Stablecoin',
-      symbol: 'DAI',
-      tokenId: '',
-      visible: true,
-      coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.MAINNET_CHAIN_ID
-    },
-    mockBasicAttentionToken
-  ],
+  fullTokenList: mockErc20TokensList,
   gasEstimates: undefined,
   hasIncorrectPassword: false,
   hasInitialized: true,
@@ -209,6 +181,7 @@ export const mockWalletState: WalletState = {
   isFilecoinEnabled: false,
   isMetaMaskInstalled: false,
   isSolanaEnabled: false,
+  isBitcoinEnabled: false,
   solFeeEstimates: {
     fee: 0.000005 * LAMPORTS_PER_SOL as unknown as bigint
   },

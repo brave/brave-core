@@ -93,7 +93,6 @@ import {
   NetworkDescription,
   NftMultimedia,
   PercentBubble,
-  PercentText,
   PriceRow,
   PriceText,
   StyledWrapper,
@@ -114,7 +113,6 @@ import {
   areSupportedForPinning,
   extractIpfsUrl
 } from '../../../../common/async/lib'
-import { ScrollableColumn } from '../../../shared/style'
 import { NftDetails } from '../../../../nft/components/nft-details/nft-details'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
@@ -204,10 +202,10 @@ export const PortfolioAsset = (props: Props) => {
   const userAssetList = React.useMemo(() => {
     const allAssets = userVisibleTokensInfo.map(
       (asset) =>
-        ({
-          asset: asset,
-          assetBalance: fullAssetBalance(asset)
-        } as UserAssetInfoType)
+      ({
+        asset: asset,
+        assetBalance: fullAssetBalance(asset)
+      } as UserAssetInfoType)
     )
     // By default we dont show any testnetwork assets
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
@@ -438,9 +436,9 @@ export const PortfolioAsset = (props: Props) => {
     let ignore = false
     if (nftMetadata?.imageURL) {
       areSupportedForPinning([nftMetadata?.imageURL]).then(
-        (v) => {if (!ignore) setNftPinnable(v)})
+        (v) => { if (!ignore) setNftPinnable(v) })
       extractIpfsUrl(nftMetadata?.imageURL).then(
-        (v) => {if (!ignore) setIpfsImageUrl(v)})
+        (v) => { if (!ignore) setIpfsImageUrl(v) })
     }
     return () => {
       ignore = true
@@ -548,7 +546,7 @@ export const PortfolioAsset = (props: Props) => {
     }))
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
-    history.push(WalletRoutes.Portfolio)
+    history.push(WalletRoutes.PortfolioAssets)
   }, [selectedAsset, showTokenDetailsModal, fullTokenList])
 
   const onViewOnExplorer = React.useCallback(() => {
@@ -706,7 +704,7 @@ export const PortfolioAsset = (props: Props) => {
 
   // asset not found
   if (!selectedAssetFromParams) {
-    return <Redirect to={WalletRoutes.Portfolio} />
+    return <Redirect to={WalletRoutes.PortfolioAssets} />
   }
 
   // render
@@ -739,187 +737,186 @@ export const PortfolioAsset = (props: Props) => {
         </BalanceRow>
       </TopRow>
 
-      <ScrollableColumn>
-        {!isNftAsset &&
-          <InfoColumn>
+      {!isNftAsset &&
+        <InfoColumn>
 
-            <AssetRow>
-              <AssetIconWithPlaceholder
-                asset={selectedAsset}
-                network={selectedAssetsNetwork}
-              />
-              <AssetColumn>
-                <AssetNameText>{selectedAssetFromParams.name}</AssetNameText>
-                <NetworkDescription>
-                  {networkDescription}
-                </NetworkDescription>
-              </AssetColumn>
-            </AssetRow>
+          <AssetRow>
+            <AssetIconWithPlaceholder
+              asset={selectedAsset}
+              network={selectedAssetsNetwork}
+            />
+            <AssetColumn>
+              <AssetNameText>{selectedAssetFromParams.name}</AssetNameText>
+              <NetworkDescription>
+                {networkDescription}
+              </NetworkDescription>
+            </AssetColumn>
+          </AssetRow>
 
-            <PriceRow>
-              <PriceText>
-                {
-                  selectedAssetFiatPrice
-                    ? new Amount(selectedAssetFiatPrice.price)
-                      .formatAsFiat(defaultCurrencies.fiat)
-                    : 0.00
-                }
-              </PriceText>
-              <PercentBubble
-                isDown={isSelectedAssetPriceDown}
-              >
-                <ArrowIcon
-                  isDown={isSelectedAssetPriceDown}
-                />
-                <PercentText>
-                  {
-                    selectedAssetFiatPrice
-                      ? Number(selectedAssetFiatPrice.assetTimeframeChange)
-                        .toFixed(2)
-                      : 0.00
-                  }%
-                </PercentText>
-              </PercentBubble>
-            </PriceRow>
-
-            <DetailText>
+          <PriceRow>
+            <PriceText>
               {
-                selectedAssetCryptoPrice
-                  ? new Amount(selectedAssetCryptoPrice.price)
-                    .formatAsAsset(undefined, defaultCurrencies.crypto)
-                  : ''
+                selectedAssetFiatPrice
+                  ? new Amount(selectedAssetFiatPrice.price)
+                    .formatAsFiat(defaultCurrencies.fiat)
+                  : '0.00'
               }
-            </DetailText>
+            </PriceText>
+            <PercentBubble
+              isDown={isSelectedAssetPriceDown}
+            >
+              <ArrowIcon
+                isDown={isSelectedAssetPriceDown}
+              />
+              {
+                selectedAssetFiatPrice
+                  ? Number(selectedAssetFiatPrice.assetTimeframeChange)
+                    .toFixed(2)
+                  : '0.00'
+              }%
+            </PercentBubble>
+          </PriceRow>
 
-          </InfoColumn>
-        }
+          <DetailText>
+            {
+              selectedAssetCryptoPrice
+                ? new Amount(selectedAssetCryptoPrice.price)
+                  .formatAsAsset(undefined, defaultCurrencies.crypto)
+                : ''
+            }
+          </DetailText>
 
-        {!isNftAsset &&
-          <LineChart
-            priceData={
-              selectedAsset
-                ? formattedPriceHistory
-                : priceHistory
-            }
-            isLoading={
-              selectedAsset
-                ? isLoading
-                : parseFloat(fullPortfolioFiatBalance) === 0
-                  ? false
-                  : isFetchingPortfolioPriceHistory
-            }
-            isDisabled={
-              selectedAsset
+        </InfoColumn>
+      }
+
+      {!isNftAsset &&
+        <LineChart
+          priceData={
+            selectedAsset
+              ? formattedPriceHistory
+              : priceHistory
+          }
+          isLoading={
+            selectedAsset
+              ? isLoading
+              : parseFloat(fullPortfolioFiatBalance) === 0
                 ? false
-                : parseFloat(fullPortfolioFiatBalance) === 0
-            }
-          />
-        }
-        {!isNftAsset &&
-          <ButtonRow noMargin={true}>
-            {isReduxSelectedAssetBuySupported &&
-              <BridgeToAuroraButton
-                onClick={onSelectBuy}
-              >
-                {getLocale('braveWalletBuy')}
-              </BridgeToAuroraButton>
-            }
-            {isSelectedAssetDepositSupported &&
-              <BridgeToAuroraButton
-                onClick={onSelectDeposit}
-              >
-                {getLocale('braveWalletAccountsDeposit')}
-              </BridgeToAuroraButton>
-            }
-            {isSelectedAssetBridgeSupported &&
-              <BridgeToAuroraButton
-                onClick={onBridgeToAuroraButton}
-              >
-                {getLocale('braveWalletBridgeToAuroraButton')}
-              </BridgeToAuroraButton>
-            }
-          </ButtonRow>
-        }
+                : isFetchingPortfolioPriceHistory
+          }
+          isDisabled={
+            selectedAsset
+              ? false
+              : parseFloat(fullPortfolioFiatBalance) === 0
+          }
+        />
+      }
+      {!isNftAsset &&
+        <ButtonRow>
+          {isReduxSelectedAssetBuySupported &&
+            <BridgeToAuroraButton
+              onClick={onSelectBuy}
+              noBottomMargin={true}
+            >
+              {getLocale('braveWalletBuy')}
+            </BridgeToAuroraButton>
+          }
+          {isSelectedAssetDepositSupported &&
+            <BridgeToAuroraButton
+              onClick={onSelectDeposit}
+              noBottomMargin={true}
+            >
+              {getLocale('braveWalletAccountsDeposit')}
+            </BridgeToAuroraButton>
+          }
+          {isSelectedAssetBridgeSupported &&
+            <BridgeToAuroraButton
+              onClick={onBridgeToAuroraButton}
+              noBottomMargin={true}
+            >
+              {getLocale('braveWalletBridgeToAuroraButton')}
+            </BridgeToAuroraButton>
+          }
+        </ButtonRow>
+      }
 
-        {showBridgeToAuroraModal &&
-          <BridgeToAuroraModal
-            dontShowWarningAgain={dontShowAuroraWarning}
-            onClose={onCloseAuroraModal}
-            onOpenRainbowAppClick={onOpenRainbowAppClick}
-            onDontShowAgain={onDontShowAgain}
-          />
-        }
+      {showBridgeToAuroraModal &&
+        <BridgeToAuroraModal
+          dontShowWarningAgain={dontShowAuroraWarning}
+          onClose={onCloseAuroraModal}
+          onOpenRainbowAppClick={onOpenRainbowAppClick}
+          onDontShowAgain={onDontShowAgain}
+        />
+      }
 
-        {showTokenDetailsModal && selectedAsset && selectedAssetsNetwork &&
-          <TokenDetailsModal
-            onClose={onCloseTokenDetailsModal}
-            selectedAsset={selectedAsset}
-            selectedAssetNetwork={selectedAssetsNetwork}
-            assetBalance={formattedAssetBalance}
-            formattedFiatBalance={
-              fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)
-            }
-            onShowHideTokenModal={onShowHideTokenModal}
-          />
-        }
+      {showTokenDetailsModal && selectedAsset && selectedAssetsNetwork &&
+        <TokenDetailsModal
+          onClose={onCloseTokenDetailsModal}
+          selectedAsset={selectedAsset}
+          selectedAssetNetwork={selectedAssetsNetwork}
+          assetBalance={formattedAssetBalance}
+          formattedFiatBalance={
+            fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)
+          }
+          onShowHideTokenModal={onShowHideTokenModal}
+        />
+      }
 
-        {showHideTokenModel && selectedAsset && selectedAssetsNetwork &&
-          <HideTokenModal
-            selectedAsset={selectedAsset}
-            selectedAssetNetwork={selectedAssetsNetwork}
-            onClose={onCloseHideTokenModal}
-            onHideAsset={onHideAsset}
-          />
-        }
+      {showHideTokenModel && selectedAsset && selectedAssetsNetwork &&
+        <HideTokenModal
+          selectedAsset={selectedAsset}
+          selectedAssetNetwork={selectedAssetsNetwork}
+          onClose={onCloseHideTokenModal}
+          onHideAsset={onHideAsset}
+        />
+      }
 
-        {!nftMetadataError &&
-          <NftMultimedia
-            onLoad={onNftDetailsLoad}
-            visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
-            ref={nftDetailsRef}
-            sandbox="allow-scripts allow-popups allow-same-origin"
-            allow="clipboard-write"
-            src='chrome-untrusted://nft-display'
-            allowFullScreen
-          />
-        }
+      {!nftMetadataError &&
+        <NftMultimedia
+          onLoad={onNftDetailsLoad}
+          visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
+          ref={nftDetailsRef}
+          sandbox="allow-scripts allow-popups allow-same-origin"
+          allow="clipboard-write"
+          src='chrome-untrusted://nft-display'
+          allowFullScreen
+        />
+      }
 
-        {isNftAsset && selectedAsset &&
-          <NftDetails
-            selectedAsset={selectedAsset}
-            nftMetadata={nftMetadata}
-            nftMetadataError={nftMetadataError}
-            tokenNetwork={selectedAssetsNetwork}
-            nftPinningStatus={currentNftPinningStatus}
-            imageIpfsUrl={ipfsImageUrl}
-          />
-        }
+      {isNftAsset && selectedAsset &&
+        <NftDetails
+          selectedAsset={selectedAsset}
+          nftMetadata={nftMetadata}
+          nftMetadataError={nftMetadataError}
+          tokenNetwork={selectedAssetsNetwork}
+          nftPinningStatus={currentNftPinningStatus}
+          imageIpfsUrl={ipfsImageUrl}
+        />
+      }
 
-        {showNftModal && nftMetadata?.imageURL &&
-          <NftModal
-            nftImageUrl={nftMetadata.imageURL}
-            onClose={onCloseNftModal}
-          />
-        }
+      {showNftModal && nftMetadata?.imageURL &&
+        <NftModal
+          nftImageUrl={nftMetadata.imageURL}
+          onClose={onCloseNftModal}
+        />
+      }
 
-        {!isShowingMarketData &&
-          <AccountsAndTransactionsList
-            formattedFullAssetBalance={formattedFullAssetBalance}
-            fullAssetFiatBalance={fullAssetFiatBalance}
-            selectedAsset={selectedAsset}
-            selectedAssetTransactions={selectedAssetTransactions}
-            onClickAddAccount={onClickAddAccount}
-          />
-        }
+      {!isShowingMarketData &&
+        <AccountsAndTransactionsList
+          formattedFullAssetBalance={formattedFullAssetBalance}
+          fullAssetFiatBalance={fullAssetFiatBalance}
+          selectedAsset={selectedAsset}
+          selectedAssetTransactions={selectedAssetTransactions}
+          onClickAddAccount={onClickAddAccount}
+        />
+      }
 
-        {isShowingMarketData && selectedCoinMarket &&
-          <CoinStats
-            marketCapRank={selectedCoinMarket.marketCapRank}
-            volume={selectedCoinMarket.totalVolume}
-            marketCap={selectedCoinMarket.marketCap}
-          />
-        }
-      </ScrollableColumn>
+      {isShowingMarketData && selectedCoinMarket &&
+        <CoinStats
+          marketCapRank={selectedCoinMarket.marketCapRank}
+          volume={selectedCoinMarket.totalVolume}
+          marketCap={selectedCoinMarket.marketCap}
+        />
+      }
     </StyledWrapper>
   )
 }

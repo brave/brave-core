@@ -7,21 +7,50 @@
 
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_utils.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 using Error = PostCommitTransactionUphold::Error;
 using Result = PostCommitTransactionUphold::Result;
+
+namespace {
+
+Result ParseBody(const std::string& body) {
+  const auto value = base::JSONReader::Read(body);
+  if (!value || !value->is_dict()) {
+    BLOG(0, "Failed to parse body!");
+    return base::unexpected(Error::kFailedToParseBody);
+  }
+
+  const auto* status = value->GetDict().FindString("status");
+  if (!status || status->empty()) {
+    BLOG(0, "Failed to parse body!");
+    return base::unexpected(Error::kFailedToParseBody);
+  }
+
+  if (*status == "processing") {
+    return base::unexpected(Error::kTransactionPending);
+  }
+
+  if (*status != "completed") {
+    return base::unexpected(Error::kUnexpectedTransactionStatus);
+  }
+
+  return {};
+}
+
+}  // namespace
 
 // static
 Result PostCommitTransactionUphold::ProcessResponse(
     const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return {};
+      return ParseBody(response.body);
     case net::HTTP_UNAUTHORIZED:  // HTTP 401
       BLOG(0, "Access token expired!");
       return base::unexpected(Error::kAccessTokenExpired);
@@ -45,4 +74,4 @@ absl::optional<std::vector<std::string>> PostCommitTransactionUphold::Headers(
   return endpoint::uphold::RequestAuthorization(token_);
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints

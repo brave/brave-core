@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_WALLET_PERMISSION_CONTEXT_H_
 #define BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_WALLET_PERMISSION_CONTEXT_H_
@@ -65,11 +65,10 @@ class BraveWalletPermissionContext : public PermissionContextBase {
       content::WebContents* web_contents);
   static void Cancel(content::WebContents* web_contents);
 
-  static void GetAllowedAccounts(
+  static absl::optional<std::vector<std::string>> GetAllowedAccounts(
       blink::PermissionType permission,
       content::RenderFrameHost* rfh,
-      const std::vector<std::string>& addresses,
-      base::OnceCallback<void(bool, const std::vector<std::string>&)> callback);
+      const std::vector<std::string>& addresses);
 
   // We will only check global setting and setting per origin since we won't
   // write block rule per address on an origin.
