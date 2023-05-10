@@ -148,7 +148,8 @@ bool BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time now) {
 // static
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     content::WebUIDataSource* source,
-    Profile* profile) {
+    Profile* profile,
+    bool was_invisible_and_restored) {
   //
   // Initial Values
   // Should only contain data that is static
@@ -174,11 +175,15 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     source->AddBoolean("isTor", profile->IsTor());
     source->AddBoolean("isQwant", brave::IsRegionForQwant(profile));
   }
-  return new BraveNewTabMessageHandler(profile);
+  return new BraveNewTabMessageHandler(profile, was_invisible_and_restored);
 }
 
-BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
-    : profile_(profile), weak_ptr_factory_(this) {
+BraveNewTabMessageHandler::BraveNewTabMessageHandler(
+    Profile* profile,
+    bool was_invisible_and_restored)
+    : profile_(profile),
+      was_invisible_and_restored_(was_invisible_and_restored),
+      weak_ptr_factory_(this) {
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
@@ -449,7 +454,13 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
     const base::Value::List& args) {
   AllowJavascript();
 
-  // Decrement original value only if there's actual branded content
+  // Decrement original value only if there's actual branded content and we are
+  // not restoring invisible (hidden or occluded) browser tabs.
+  if (was_invisible_and_restored_) {
+    was_invisible_and_restored_ = false;
+    return;
+  }
+
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_))
     service->RegisterPageView();
 }
