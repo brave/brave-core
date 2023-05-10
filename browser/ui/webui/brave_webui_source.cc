@@ -68,6 +68,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
 
   // clang-format off
   static std::map<std::string, std::vector<WebUISimpleItem> > resources = {
+#if !BUILDFLAG(IS_ANDROID)
     {
       std::string("newtab"), {
         { "img/toolbar/menu_btn.svg", IDR_BRAVE_COMMON_TOOLBAR_IMG },
@@ -77,24 +78,22 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "314e7529efec41c8867019815f4d8dad.svg", IDR_BRAVE_NEW_TAB_IMG4 },
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         // New tab Backgrounds
-#if !BUILDFLAG(IS_ANDROID)
         { "dylan-malval_sea-min.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
-#endif
         // private tab
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT
         { "dbdc336ccc651b8a7c925b3482d6e65a.svg", IDR_BRAVE_PRIVATE_TAB_IMG }
     }
-#if !BUILDFLAG(IS_ANDROID)
     }, {
       std::string("rewards"), {
         { "favicon.ico", IDR_BRAVE_REWARDS_FAVICON },
       }
-#endif
     }, {
       std::string("welcome"), {
         { "favicon.ico", IDR_BRAVE_WELCOME_PAGE_FAVICON }
       }
-    }, {
+    },
+#endif
+    {
       std::string("adblock"), {}
     }
   };
@@ -270,6 +269,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "cardsToggleDesc", IDS_BRAVE_NEW_TAB_CARDS_DESC },
         { "editCardsTitle", IDS_EDIT_CARDS_TITLE },
         { "braveRewardsTitle", IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE },
+#if !BUILDFLAG(IS_ANDROID)
         // Private Tab - General
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
         { "done", IDS_BRAVE_PRIVATE_NEW_TAB_DONE },
@@ -300,6 +300,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         // Private Tab - Private Window - Tor Box
         { "boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2 },
         { "boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON },
+#endif  // !BUILDFLAG(IS_ANDROID)
 
         // Brave Talk prompt
         { "braveTalkPromptTitle", IDS_BRAVE_TALK_PROMPT_TITLE },
