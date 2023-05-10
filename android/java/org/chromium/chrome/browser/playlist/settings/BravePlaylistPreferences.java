@@ -12,6 +12,8 @@ import androidx.preference.Preference;
 
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
@@ -23,9 +25,6 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistService;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class BravePlaylistPreferences extends BravePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
@@ -68,8 +67,7 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         mResetPlaylist = (BravePlaylistResetPreference) findPreference(PREF_RESET_PLAYLIST);
         mResetPlaylist.setOnPreferenceClickListener(preference -> {
             if (mPlaylistService != null) {
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(() -> {
+                PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK, () -> {
                     mPlaylistService.resetAll();
                     PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
                     getActivity().runOnUiThread(
