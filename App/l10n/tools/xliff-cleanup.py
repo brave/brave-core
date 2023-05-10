@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #
 # xliff-cleanup.py <files>
@@ -27,7 +27,7 @@ REMOVE_FILES = []
 if __name__ == "__main__":
     for path in sys.argv[1:]:
         # Read it in and modify it in memory
-        with open(path) as fp:
+        with open(path, 'rb') as fp:
             tree = etree.parse(fp)
             root = tree.getroot()
 
@@ -53,5 +53,5 @@ if __name__ == "__main__":
                     if len(trans_unit_nodes) == 0:
                         file_node.getparent().remove(file_node)
         # Write it back to the same file
-        with open(path, "w") as fp:
+        with open(path, "wb") as fp:
             fp.write(etree.tostring(tree, encoding='UTF-8'))
