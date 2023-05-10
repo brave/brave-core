@@ -12,10 +12,8 @@ struct UnlockWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
 
   @State private var password: String = ""
-  @State private var isPasswordRevealed: Bool = false
   @State private var unlockError: UnlockError?
   @State private var attemptedBiometricsUnlock: Bool = false
-  @FocusState private var isPasswordFieldFocused: Bool
 
   private enum UnlockError: LocalizedError {
     case incorrectPassword
@@ -47,8 +45,6 @@ struct UnlockWalletView: View {
 
   private func fillPasswordFromKeychain() {
     if let password = keyringStore.retrievePasswordFromKeychain() {
-      // hide password (if revealed) before populating field with stored password
-      isPasswordRevealed = false
       self.password = password
       unlock()
     }
@@ -70,35 +66,42 @@ struct UnlockWalletView: View {
     }
     return nil
   }
-  
-  @State private var viewSize: CGSize = .zero
-  
-  private var isSmallScreen: Bool {
-    viewSize.height <= 667
-  }
 
   var body: some View {
     ScrollView(.vertical) {
-      VStack(spacing: isSmallScreen ? 38 : 42) {
+      VStack(spacing: 46) {
         Image("graphic-lock", bundle: .module)
+          .padding(.bottom)
           .accessibilityHidden(true)
-          .padding(.top, isSmallScreen ? 0 : 20)
-        Text(Strings.Wallet.unlockWalletTitle)
-          .font(.headline)
-          .multilineTextAlignment(.center)
-          .fixedSize(horizontal: false, vertical: true)
-        RevealableSecureField(Strings.Wallet.passwordPlaceholder, text: $password, isRevealed: $isPasswordRevealed)
-          .textContentType(.password)
-          .focused($isPasswordFieldFocused)
-          .font(.subheadline)
-          .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
-          .onSubmit(unlock)
+        VStack {
+          Text(Strings.Wallet.unlockWalletTitle)
+            .font(.headline)
+            .padding(.bottom)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+          HStack {
+            SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: unlock)
+              .textContentType(.password)
+              .font(.subheadline)
+              .introspectTextField(customize: { tf in
+                tf.becomeFirstResponder()
+              })
+              .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
+            if keyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
+              Button(action: fillPasswordFromKeychain) {
+                icon
+                  .imageScale(.large)
+                  .font(.headline)
+              }
+            }
+          }
           .padding(.horizontal, 48)
-        VStack(spacing: isSmallScreen ? 20 : 30) {
+        }
+        VStack(spacing: 30) {
           Button(action: unlock) {
             Text(Strings.Wallet.unlockWalletButtonTitle)
           }
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .buttonStyle(BraveFilledButtonStyle(size: .normal))
           .disabled(!isPasswordValid)
           NavigationLink(destination: RestoreWalletContainerView(keyringStore: keyringStore)) {
             Text(Strings.Wallet.restoreWalletButtonTitle)
@@ -106,27 +109,11 @@ struct UnlockWalletView: View {
           }
           .foregroundColor(Color(.braveLabel))
         }
-        .padding(.top, isSmallScreen ? 5 : 10)
-        
-        if keyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
-          Button(action: fillPasswordFromKeychain) {
-            icon
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .imageScale(.large)
-              .font(.headline)
-              .frame(width: 26, height: 26)
-          }
-          .padding(.top, isSmallScreen ? 12 : 18)
-        }
       }
       .frame(maxHeight: .infinity, alignment: .top)
       .padding()
       .padding(.vertical)
     }
-    .readSize(onChange: { size in
-      self.viewSize = size
-    })
     .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
@@ -139,8 +126,6 @@ struct UnlockWalletView: View {
           attemptedBiometricsUnlock = true
           fillPasswordFromKeychain()
         }
-        // only focus field if user did not manually lock
-        isPasswordFieldFocused = !keyringStore.lockedManually
       }
     }
   }
@@ -155,22 +140,3 @@ struct CryptoUnlockView_Previews: PreviewProvider {
   }
 }
 #endif
-
-private struct SizePreferenceKey: PreferenceKey {
-  static var defaultValue: CGSize = .zero
-  static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
-}
-
-private extension View {
-  /// Determines the size of the view and calls the `onChange` when the size changes with the new size.
-  /// https://www.fivestars.blog/articles/swiftui-share-layout-information/
-  func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
-    background(
-      GeometryReader { geometryProxy in
-        Color.clear
-          .preference(key: SizePreferenceKey.self, value: geometryProxy.size)
-      }
-    )
-    .onPreferenceChange(SizePreferenceKey.self, perform: onChange)
-  }
-}
