@@ -241,9 +241,9 @@ extension BraveWallet.TransactionInfo {
       txType: .erc20Approve,
       txParams: ["address", "uint256"],
       txArgs: ["0xe592427a0aece92de3edee1f18e0157c05861564Z", "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
-      createdTime: Date(timeIntervalSince1970: 1636399671),
-      submittedTime: Date(timeIntervalSince1970: 1636399673),
-      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       groupId: nil,
       chainId: BraveWallet.MainnetChainId
@@ -283,13 +283,13 @@ extension BraveWallet.TransactionInfo {
       confirmedTime: Date(timeIntervalSince1970: 1667854820), // Monday, November 7, 2022 9:00:20 PM GMT
       originInfo: .init(),
       groupId: nil,
-      chainId: BraveWallet.MainnetChainId
+      chainId: BraveWallet.SolanaMainnet
     )
   }
   /// Solana Token Transfer
   static var previewConfirmedSolTokenTransfer: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
-      id: "3d3c7715-f5f2-4f70-ab97-7fb8d3b2a3cd",
+      id: "12345675-f5f2-4f70-ab97-7fb8d3b2a3cd",
       fromAddress: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
       txHash: "",
       txDataUnion: .init(
@@ -315,12 +315,12 @@ extension BraveWallet.TransactionInfo {
       txType: .solanaSplTokenTransfer,
       txParams: [],
       txArgs: [],
-      createdTime: Date(timeIntervalSince1970: 1636399671),
-      submittedTime: Date(timeIntervalSince1970: 1636399673),
-      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       groupId: nil,
-      chainId: BraveWallet.MainnetChainId
+      chainId: BraveWallet.SolanaMainnet
     )
   }
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {

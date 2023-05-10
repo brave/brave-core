@@ -8,36 +8,6 @@ import BraveCore
 
 extension BraveWalletTxService {
   
-  // Fetches all pending transactions for all given keyrings. This will return transactions from all networks.
-  func pendingTransactions(
-    for keyrings: [BraveWallet.KeyringInfo]
-  ) async -> [BraveWallet.TransactionInfo] {
-    await allTransactions(for: keyrings).filter { $0.txStatus == .unapproved }
-  }
-
-  // Fetches all transactions for all given keyrings. This will return transactions from all networks.
-  func allTransactions(
-    for keyrings: [BraveWallet.KeyringInfo]
-  ) async -> [BraveWallet.TransactionInfo] {
-    return await withTaskGroup(
-      of: [BraveWallet.TransactionInfo].self,
-      body: { @MainActor group in
-        for keyring in keyrings {
-          for info in keyring.accountInfos {
-            group.addTask { @MainActor in
-              await self.allTransactionInfo(info.coin, chainId: nil, from: info.address)
-            }
-          }
-        }
-        var allTx: [BraveWallet.TransactionInfo] = []
-        for await transactions in group {
-          allTx.append(contentsOf: transactions)
-        }
-        return allTx
-      }
-    )
-  }
-  
   // Fetches all pending transactions for all given keyrings
   func pendingTransactions(
     chainIdsForCoin: [BraveWallet.CoinType: [String]],
