@@ -53,10 +53,10 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       }
       
       Task { @MainActor in
-        let domain = Domain.getOrCreate(forUrl: frameURL, persistent: tab?.isPrivate == true ? false : true)
+        let domain = Domain.getOrCreate(forUrl: frameURL, persistent: self.tab?.isPrivate == true ? false : true)
         let cachedEngines = AdBlockStats.shared.cachedEngines(for: domain)
         
-        let selectorArrays = await cachedEngines.asyncConcurrentMap { cachedEngine -> [String] in
+        let selectorArrays = await cachedEngines.asyncConcurrentCompactMap { cachedEngine -> CachedAdBlockEngine.SelectorsTuple? in
           do {
             return try await cachedEngine.selectorsForCosmeticRules(
               frameURL: frameURL,
@@ -65,11 +65,28 @@ class CosmeticFiltersScriptHandler: TabContentScript {
             )
           } catch {
             Logger.module.error("\(error.localizedDescription)")
-            return []
+            return nil
           }
         }
         
-        replyHandler(selectorArrays.flatMap({ $0 }), nil)
+        var standardSelectors: Set<String> = []
+        var agressiveSelectors: Set<String> = []
+        for tuple in selectorArrays {
+          let isAgressive = tuple.source.isAlwaysAgressive(
+            given: FilterListStorage.shared.filterLists
+          )
+          
+          if isAgressive {
+            agressiveSelectors = agressiveSelectors.union(tuple.selectors)
+          } else {
+            standardSelectors = standardSelectors.union(tuple.selectors)
+          }
+        }
+        
+        replyHandler([
+          "agressiveSelectors": Array(agressiveSelectors),
+          "standardSelectors": Array(standardSelectors)
+        ], nil)
       }
     } catch {
       assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")

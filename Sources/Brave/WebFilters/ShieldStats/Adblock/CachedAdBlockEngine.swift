@@ -11,6 +11,9 @@ import Preferences
 /// An object that wraps around an `AdblockEngine` and caches some results
 /// and ensures information is always returned on the correct thread on the engine.
 public class CachedAdBlockEngine {
+  typealias CosmeticFilterModelTuple = (source: AdBlockEngineManager.Source, model: CosmeticFilterModel)
+  typealias SelectorsTuple = (source: AdBlockEngineManager.Source, selectors: Set<String>)
+  
   /// We cache the models so that they load faster when we need to poll information about the frame
   private var cachedCosmeticFilterModels = FifoDict<URL, CosmeticFilterModel?>()
   /// We cache the models so that they load faster when doing stats tracking or request blocking
@@ -40,18 +43,20 @@ public class CachedAdBlockEngine {
   
   /// Returns all the models for this frame URL
   /// The results are cached per url, so you may call this method as many times for the same url without any performance implications.
-  func cosmeticFilterModel(forFrameURL frameURL: URL) async throws -> CosmeticFilterModel? {
-    return try await withCheckedThrowingContinuation { continuation in
+  func cosmeticFilterModel(forFrameURL frameURL: URL) async throws -> CosmeticFilterModelTuple? {
+    return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<CosmeticFilterModelTuple?, Error>) in
       serialQueue.async { [weak self] in
-        if let model = self?.cachedCosmeticFilterModels.getElement(frameURL) {
-          continuation.resume(returning: model)
+        guard let self = self else {
+          continuation.resume(returning: nil)
           return
         }
         
         do {
-          let model = try self?.engine.cosmeticFilterModel(forFrameURL: frameURL)
-          self?.cachedCosmeticFilterModels.addElement(model, forKey: frameURL)
-          continuation.resume(returning: model)
+          if let model = try self.cachedCosmeticFilterModel(forFrameURL: frameURL) {
+            continuation.resume(returning: (self.source, model))
+          } else {
+            continuation.resume(returning: nil)
+          }
         } catch {
           continuation.resume(throwing: error)
         }
@@ -60,28 +65,47 @@ public class CachedAdBlockEngine {
   }
   
   /// Return the selectors that need to be hidden given the frameURL, ids and classes
-  func selectorsForCosmeticRules(frameURL: URL, ids: [String], classes: [String]) async throws -> [String] {
-    let exceptions = try await cosmeticFilterModel(forFrameURL: frameURL)?.exceptions ?? []
-
-    return try await withCheckedThrowingContinuation { continuation in
+  func selectorsForCosmeticRules(frameURL: URL, ids: [String], classes: [String]) async throws -> SelectorsTuple? {
+    return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<SelectorsTuple?, Error>) in
       serialQueue.async { [weak self] in
-        let selectorsJSON = self?.engine.stylesheetForCosmeticRulesIncluding(classes: classes, ids: ids, exceptions: exceptions)
-
-        guard let data = selectorsJSON?.data(using: .utf8) else {
-          continuation.resume(returning: [])
+        guard let self = self else {
+          continuation.resume(returning: nil)
           return
         }
         
-        let decoder = JSONDecoder()
-        
         do {
+          let model = try self.cachedCosmeticFilterModel(forFrameURL: frameURL)
+          
+          let selectorsJSON = self.engine.stylesheetForCosmeticRulesIncluding(
+            classes: classes, ids: ids, exceptions: model?.exceptions ?? []
+          )
+          
+          guard let data = selectorsJSON.data(using: .utf8) else {
+            continuation.resume(returning: nil)
+            return
+          }
+          
+          let decoder = JSONDecoder()
           let result = try decoder.decode([String].self, from: data)
-          continuation.resume(returning: result)
+          continuation.resume(returning: (self.source, Set(result)))
         } catch {
           continuation.resume(throwing: error)
         }
       }
     }
+  }
+  
+  /// Return a cosmetic filter modelf or the given frameURL
+  ///
+  /// - Warning: The caller is responsible for syncing on the `serialQueue`
+  private func cachedCosmeticFilterModel(forFrameURL frameURL: URL) throws -> CosmeticFilterModel? {
+    if let result = self.cachedCosmeticFilterModels.getElement(frameURL) {
+      return result
+    }
+    
+    let model = try self.engine.cosmeticFilterModel(forFrameURL: frameURL)
+    self.cachedCosmeticFilterModels.addElement(model, forKey: frameURL)
+    return model
   }
   
   /// Checks the general and regional engines to see if the request should be blocked
@@ -111,7 +135,7 @@ public class CachedAdBlockEngine {
     // Add the selectors poller scripts for this frame
     var userScriptTypes: Set<UserScriptType> = []
     
-    if let source = try await cosmeticFilterModel(forFrameURL: frameURL)?.injectedScript, !source.isEmpty {
+    if let source = try await cosmeticFilterModel(forFrameURL: frameURL)?.model.injectedScript, !source.isEmpty {
       let configuration = UserScriptType.EngineScriptConfiguration(
         frameURL: frameURL, isMainFrame: isMainFrame, source: source, order: index,
         isDeAMPEnabled: Preferences.Shields.autoRedirectAMPPages.value
