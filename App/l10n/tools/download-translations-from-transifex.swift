@@ -98,7 +98,7 @@ guard let apiKey = ProcessInfo.processInfo.environment["PASSWORD"] else {
 
   let process = Process()
   process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-  process.arguments = ["python", "xliff-cleanup.py", xliffURL.path]
+  process.arguments = ["python3", "xliff-cleanup.py", xliffURL.path]
   do {
     try process.run()
     process.waitUntilExit()
