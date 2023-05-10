@@ -47,7 +47,6 @@ private struct CreateWalletView: View {
 
   @State private var password: String = ""
   @State private var repeatedPassword: String = ""
-  @State private var isPasswordRevealed: Bool = false
   @State private var validationError: ValidationError?
   @State private var isShowingBiometricsPrompt: Bool = false
   @State private var isSkippingBiometricsPrompt: Bool = false
@@ -112,22 +111,12 @@ private struct CreateWalletView: View {
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
           VStack {
-            RevealableSecureField(
-              Strings.Wallet.passwordPlaceholder,
-              text: $password,
-              isRevealed: $isPasswordRevealed
-            )
-            .textContentType(.newPassword)
-            .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .requirementsNotMet))
-            RevealableSecureField(
-              Strings.Wallet.repeatedPasswordPlaceholder,
-              showsRevealButton: false,
-              text: $repeatedPassword,
-              isRevealed: $isPasswordRevealed
-            )
-            .textContentType(.newPassword)
-            .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .inputsDontMatch))
-            .onSubmit(createWallet)
+            SecureField(Strings.Wallet.passwordPlaceholder, text: $password)
+              .textContentType(.newPassword)
+              .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .requirementsNotMet))
+            SecureField(Strings.Wallet.repeatedPasswordPlaceholder, text: $repeatedPassword, onCommit: createWallet)
+              .textContentType(.newPassword)
+              .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .inputsDontMatch))
           }
           .font(.subheadline)
           .padding(.horizontal, 48)
@@ -136,53 +125,53 @@ private struct CreateWalletView: View {
           Text(Strings.Wallet.continueButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
-        .background(
-          WalletPromptView(
-            isPresented: $isShowingBiometricsPrompt,
-            buttonTitle: Strings.Wallet.biometricsSetupEnableButtonTitle,
-            action: { enabled, navController in
-              // Store password in keychain
-              if enabled, case let status = keyringStore.storePasswordInKeychain(password),
-                 status != errSecSuccess {
-                let isPublic = AppConstants.buildChannel.isPublic
-                let alert = UIAlertController(
-                  title: Strings.Wallet.biometricsSetupErrorTitle,
-                  message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
-                  preferredStyle: .alert
-                )
-                alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
-                navController?.presentedViewController?.present(alert, animated: true)
-                return false
-              }
-              let controller = UIHostingController(
-                rootView: BackupWalletView(
-                  password: password,
-                  keyringStore: keyringStore
-                )
-              )
-              navController?.pushViewController(controller, animated: true)
-              return true
-            },
-            content: {
-              VStack {
-                Image(sharedName: "pin-migration-graphic")
-                  .resizable()
-                  .aspectRatio(contentMode: .fit)
-                  .frame(maxWidth: 250)
-                  .padding()
-                Text(Strings.Wallet.biometricsSetupTitle)
-                  .font(.headline)
-                  .fixedSize(horizontal: false, vertical: true)
-                  .multilineTextAlignment(.center)
-                  .padding(.bottom)
-              }
-            }
-          )
-        )
       }
       .frame(maxHeight: .infinity, alignment: .top)
       .padding()
       .padding(.vertical)
+      .background(
+        WalletPromptView(
+          isPresented: $isShowingBiometricsPrompt,
+          buttonTitle: Strings.Wallet.biometricsSetupEnableButtonTitle,
+          action: { enabled, navController in
+            // Store password in keychain
+            if enabled, case let status = keyringStore.storePasswordInKeychain(password),
+               status != errSecSuccess {
+              let isPublic = AppConstants.buildChannel.isPublic
+              let alert = UIAlertController(
+                title: Strings.Wallet.biometricsSetupErrorTitle,
+                message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
+                preferredStyle: .alert
+              )
+              alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
+              navController?.presentedViewController?.present(alert, animated: true)
+              return false
+            }
+            let controller = UIHostingController(
+              rootView: BackupWalletView(
+                password: password,
+                keyringStore: keyringStore
+              )
+            )
+            navController?.pushViewController(controller, animated: true)
+            return true
+          },
+          content: {
+            VStack {
+              Image(sharedName: "pin-migration-graphic")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: 250)
+                .padding()
+              Text(Strings.Wallet.biometricsSetupTitle)
+                .font(.headline)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.center)
+                .padding(.bottom)
+            }
+          }
+        )
+      )
       .background(
         NavigationLink(
           destination: BackupWalletView(password: password, keyringStore: keyringStore),

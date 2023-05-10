@@ -50,7 +50,6 @@ private struct RestoreWalletView: View {
 
   @State private var password: String = ""
   @State private var repeatedPassword: String = ""
-  @State private var isPasswordRevealed: Bool = false
   @State private var phrase: String = ""
   @State private var isEditingPhrase: Bool = false
   @State private var showingRecoveryPhase: Bool = false
@@ -145,7 +144,6 @@ private struct RestoreWalletView: View {
           }
         }
         .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .invalidPhrase))
-        .textInputAutocapitalization(.never)
         if isShowingLegacyWalletToggle {
           HStack {
             Toggle(Strings.Wallet.restoreWalletImportFromLegacyBraveWallet, isOn: $isBraveLegacyWallet)
@@ -194,21 +192,12 @@ private struct RestoreWalletView: View {
       VStack {
         Text(Strings.Wallet.restoreWalletNewPasswordTitle)
           .font(.subheadline.weight(.medium))
-        RevealableSecureField(
-          Strings.Wallet.passwordPlaceholder,
-          text: $password,
-          isRevealed: $isPasswordRevealed
-        )
-        .textContentType(.newPassword)
-        .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .requirementsNotMet))
-        RevealableSecureField(
-          Strings.Wallet.repeatedPasswordPlaceholder,
-          showsRevealButton: false,
-          text: $repeatedPassword,
-          isRevealed: $isPasswordRevealed
-        )
-        .textContentType(.newPassword)
-        .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .inputsDontMatch))
+        SecureField(Strings.Wallet.passwordPlaceholder, text: $password)
+          .textContentType(.newPassword)
+          .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .requirementsNotMet))
+        SecureField(Strings.Wallet.repeatedPasswordPlaceholder, text: $repeatedPassword)
+          .textContentType(.newPassword)
+          .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .inputsDontMatch))
       }
       .font(.subheadline)
       .padding(.horizontal, 48)
@@ -221,20 +210,6 @@ private struct RestoreWalletView: View {
     .onChange(of: phrase, perform: handlePhraseChanged)
     .onChange(of: password, perform: handlePasswordChanged)
     .onChange(of: repeatedPassword, perform: handleRepeatedPasswordChanged)
-    .onChange(of: isPasswordRevealed) { isPasswordRevealed in
-      // only reveal password or recovery phrase, not both. Used to prevent
-      // 3rd-party keyboard usage on this view by keeping a SecureField visible
-      if isPasswordRevealed && showingRecoveryPhase {
-        showingRecoveryPhase = false
-      }
-    }
-    .onChange(of: showingRecoveryPhase) { showingRecoveryPhase in
-      // only reveal password or recovery phrase, not both. Used to prevent
-      // 3rd-party keyboard usage on this view by keeping a SecureField visible
-      if showingRecoveryPhase && isPasswordRevealed {
-        isPasswordRevealed = false
-      }
-    }
     .background(
       WalletPromptView(
         isPresented: $keyringStore.isRestoreFromUnlockBiometricsPromptVisible,
