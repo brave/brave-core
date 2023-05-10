@@ -7,7 +7,11 @@
   padding: 16px;
 }
 
-.textBase {
+.turnBase {
+  display: flex;
+  font: var(--leo-font-secondary-default-regular);
+  color: var(--leo-color-text-primary);
+
   p {
    margin: 0;
    white-space: pre-wrap;
@@ -15,20 +19,24 @@
  }
 
 .turnAI {
-  @extend .textBase;
+  @extend .turnBase;
   padding: 16px;
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: 16px 16px 16px 3px;
 }
 
 .turnHuman {
-  @extend .textBase;
-  padding: 0 16px 16px 0;
+  @extend .turnBase;
+  justify-content: end;
+  color: var(--leo-color-text-secondary);
+  padding: 16px 0 16px 0;
+}
 
-  // bubble wrap
-  p:first-child {
-    background-color: var(--leo-color-container-highlight);
-    padding: 16px;
-    border-radius: 16px 16px 2px 16px;
-  }
+.bubbleWrap {
+  background-color: var(--leo-color-container-highlight);
+  padding: 16px;
+  border-radius: 16px 16px 2px 16px;
+  display: inline-flex;
 }
 
 .caret {

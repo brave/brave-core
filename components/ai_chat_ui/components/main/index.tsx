@@ -14,6 +14,12 @@ interface MainProps {
 function Main (props: MainProps) {
   return (
     <main className={styles.main}>
+      <div className={styles.header}>
+        <div className={styles.logoBox}>
+          <div className={styles.logo} />
+          <span>Brave</span>
+        </div>
+      </div>
       <div className={styles.scroller}>
         {props.conversationList}
       </div>

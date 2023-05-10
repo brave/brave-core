@@ -58,9 +58,11 @@ function ConversationList (props: ConversationListProps) {
 
         return (
           <div key={id} ref={elementRef} className={turnClass}>
-            <p>
-              {turn.text}
-            </p>
+            <div className={classnames({
+              [styles.bubbleWrap]: turn.characterType === CharacterType.HUMAN
+            })}>
+              <p>{turn.text}</p>
+            </div>
           </div>
         )
       })}

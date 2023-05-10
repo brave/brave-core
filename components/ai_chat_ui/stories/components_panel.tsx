@@ -75,6 +75,7 @@ export const _Main = () => {
       onSubmit={handleSubmit}
       hasSeenAgreement={hasSeenAgreement}
       onHandleAgreeClick={() => {}}
+      showInput={true}
     />
   )
 

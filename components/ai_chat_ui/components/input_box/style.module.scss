@@ -31,13 +31,17 @@
   &:focus {
     outline: none;
   }
+
+  &::placeholder {
+    color: var(--leo-color-text-secondary);
+  }
 }
 
 .buttonSend {
   background-color: transparent;
   border: 0;
   padding: 14px;
-  color: var(--leo-color-text-primary);
+  color: var(--leo-color-icon-default);
   cursor: pointer;
 }
 
