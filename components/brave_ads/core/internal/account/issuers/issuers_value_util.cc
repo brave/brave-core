@@ -44,8 +44,8 @@ absl::optional<std::string> GetNameForIssuerType(const IssuerType type) {
     }
   }
 
-  NOTREACHED() << "Unexpected value for IssuerType: " << static_cast<int>(type);
-  return absl::nullopt;
+  NOTREACHED_NORETURN() << "Unexpected value for IssuerType: "
+                        << static_cast<int>(type);
 }
 
 absl::optional<IssuerType> ParseIssuerType(const base::Value::Dict& dict) {
@@ -146,7 +146,7 @@ absl::optional<IssuerList> ValueToIssuers(const base::Value::List& list) {
     if (!issuer_type) {
       return absl::nullopt;
     }
-    DCHECK_NE(IssuerType::kUndefined, *issuer_type);
+    CHECK_NE(IssuerType::kUndefined, *issuer_type);
 
     const absl::optional<PublicKeyMap> public_keys =
         ParsePublicKeys(*item_dict);

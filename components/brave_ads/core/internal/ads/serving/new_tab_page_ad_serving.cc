@@ -54,24 +54,24 @@ void NewTabPageAdServing::MaybeServeAd(
     return FailedToServeAd(std::move(callback));
   }
 
-  BuildUserModel(base::BindOnce(&NewTabPageAdServing::OnBuildUserModel,
+  BuildUserModel(base::BindOnce(&NewTabPageAdServing::BuildUserModelCallback,
                                 weak_factory_.GetWeakPtr(),
                                 std::move(callback)));
 }
 
-void NewTabPageAdServing::OnBuildUserModel(
+void NewTabPageAdServing::BuildUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,
     const UserModelInfo& user_model) {
-  DCHECK(eligible_ads_);
+  CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
-      user_model, base::BindOnce(&NewTabPageAdServing::OnGetForUserModel,
+      user_model, base::BindOnce(&NewTabPageAdServing::GetForUserModelCallback,
                                  weak_factory_.GetWeakPtr(),
                                  std::move(callback), user_model));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NewTabPageAdServing::OnGetForUserModel(
+void NewTabPageAdServing::GetForUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,
     const UserModelInfo& user_model,
     const bool had_opportunity,
@@ -121,7 +121,7 @@ void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad,
               << "      x: " << ad.wallpapers[0].focal_point.x << "\n"
               << "      y: " << ad.wallpapers[0].focal_point.y);
 
-  DCHECK(eligible_ads_);
+  CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
   if (delegate_) {

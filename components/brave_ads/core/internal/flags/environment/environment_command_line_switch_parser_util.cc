@@ -30,9 +30,8 @@ absl::optional<mojom::EnvironmentType> ParseEnvironmentCommandLineSwitch() {
     }
   }
 
-  NOTREACHED() << "Unexpected value for Environment: "
-               << static_cast<int>(*flags.environment);
-  return absl::nullopt;
+  NOTREACHED_NORETURN() << "Unexpected value for Environment: "
+                        << static_cast<int>(*flags.environment);
 }
 
 }  // namespace brave_ads

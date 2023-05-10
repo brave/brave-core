@@ -24,15 +24,13 @@ TEST(BraveAdsSummaryUserDataUtilTest, BuildBucketsIfNoUnblindedPaymentTokens) {
 
 TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
   // Arrange
-  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(2);
 
   // Act
-  const AdTypeBucketMap buckets = BuildBuckets(unblinded_payment_tokens);
 
   // Assert
   const AdTypeBucketMap expected_buckets = {{"ad_notification", {{"view", 2}}}};
-  EXPECT_EQ(expected_buckets, buckets);
+  EXPECT_EQ(expected_buckets,
+            BuildBuckets(privacy::BuildUnblindedPaymentTokens(/*count*/ 2)));
 }
 
 }  // namespace brave_ads

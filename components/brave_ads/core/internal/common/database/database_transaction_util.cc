@@ -17,7 +17,7 @@ namespace {
 
 void OnRunTransaction(ResultCallback callback,
                       mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   std::move(callback).Run(
       /*success*/ command_response->status ==

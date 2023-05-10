@@ -24,7 +24,7 @@ namespace {
 constexpr char kTableName[] = "deposits";
 
 void BindRecords(mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::
@@ -36,7 +36,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const CreativeAdList& creative_ads) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -53,8 +53,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 void BindParameters(mojom::DBCommandInfo* command, const DepositInfo& deposit) {
-  DCHECK(command);
-  DCHECK(deposit.IsValid());
+  CHECK(command);
+  CHECK(deposit.IsValid());
 
   BindString(command, 0, deposit.creative_instance_id);
   BindDouble(command, 1, deposit.value);
@@ -62,7 +62,7 @@ void BindParameters(mojom::DBCommandInfo* command, const DepositInfo& deposit) {
 }
 
 DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   DepositInfo deposit;
 
@@ -97,7 +97,7 @@ void OnGetForCreativeInstanceId(
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -125,7 +125,7 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
 
 void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                               const CreativeAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (creative_ads.empty()) {
     return;
@@ -139,8 +139,8 @@ void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 
 void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                               const DepositInfo& deposit) {
-  DCHECK(transaction);
-  DCHECK(deposit.IsValid());
+  CHECK(transaction);
+  CHECK(deposit.IsValid());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
@@ -190,7 +190,7 @@ std::string Deposits::GetTableName() const {
 }
 
 void Deposits::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -204,7 +204,7 @@ void Deposits::Create(mojom::DBTransactionInfo* transaction) {
 
 void Deposits::Migrate(mojom::DBTransactionInfo* transaction,
                        const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 24: {
@@ -219,7 +219,7 @@ void Deposits::Migrate(mojom::DBTransactionInfo* transaction,
 std::string Deposits::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
@@ -233,8 +233,8 @@ std::string Deposits::BuildInsertOrUpdateSql(
 
 std::string Deposits::BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
                                              const DepositInfo& deposit) const {
-  DCHECK(command);
-  DCHECK(deposit.IsValid());
+  CHECK(command);
+  CHECK(deposit.IsValid());
 
   BindParameters(command, deposit);
 

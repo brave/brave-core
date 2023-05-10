@@ -28,12 +28,12 @@ TabManager& TabManager::GetInstance() {
 }
 
 void TabManager::AddObserver(TabManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void TabManager::RemoveObserver(TabManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -73,12 +73,12 @@ absl::optional<TabInfo> TabManager::GetForId(const int32_t id) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void TabManager::Add(const TabInfo& tab) {
-  DCHECK(!GetForId(tab.id));
+  CHECK(!GetForId(tab.id));
   tabs_[tab.id] = tab;
 }
 
 void TabManager::Update(const TabInfo& tab) {
-  DCHECK(GetForId(tab.id));
+  CHECK(GetForId(tab.id));
   tabs_[tab.id] = tab;
 }
 
@@ -144,7 +144,7 @@ void TabManager::OnNotifyTabHtmlContentDidChange(
     const int32_t id,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
-  DCHECK(!redirect_chain.empty());
+  CHECK(!redirect_chain.empty());
 
   const uint32_t hash = base::FastHash(content);
   if (hash == last_html_content_hash_) {
@@ -161,7 +161,7 @@ void TabManager::OnNotifyTabTextContentDidChange(
     const int32_t id,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
-  DCHECK(!redirect_chain.empty());
+  CHECK(!redirect_chain.empty());
 
   const uint32_t hash = base::FastHash(content);
   if (hash == last_text_content_hash_) {

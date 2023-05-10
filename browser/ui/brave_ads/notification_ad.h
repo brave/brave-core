@@ -55,7 +55,7 @@ class NotificationAd {
   NotificationAdDelegate* delegate() const { return delegate_.get(); }
 
   void set_delegate(scoped_refptr<NotificationAdDelegate> delegate) {
-    DCHECK(!delegate_);
+    CHECK(!delegate_);
     delegate_ = std::move(delegate);
   }
 

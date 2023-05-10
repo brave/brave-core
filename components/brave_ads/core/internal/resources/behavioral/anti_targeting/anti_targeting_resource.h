@@ -34,7 +34,8 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
   const AntiTargetingInfo& get() const { return anti_targeting_; }
 
  private:
-  void OnLoadAndParseResource(ResourceParsingErrorOr<AntiTargetingInfo> result);
+  void LoadAndParseResourceCallback(
+      ResourceParsingErrorOr<AntiTargetingInfo> result);
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;

@@ -227,7 +227,7 @@ void BatAdsClientMojoBridge::AddTrainingSample(
 void BatAdsClientMojoBridge::Load(const std::string& name,
                                   brave_ads::LoadCallback callback) {
   if (!bat_ads_client_.is_bound()) {
-    std::move(callback).Run(/*success*/ false, /*value*/ {});
+    std::move(callback).Run(/*value*/ absl::nullopt);
     return;
   }
 

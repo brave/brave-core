@@ -17,8 +17,8 @@ namespace brave_ads {
 void BuildConversionUserData(const std::string& creative_instance_id,
                              const ConfirmationType& confirmation_type,
                              BuildConversionUserDataCallback callback) {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
+  CHECK(!creative_instance_id.empty());
+  CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
   if (confirmation_type != ConfirmationType::kConversion) {
     return std::move(callback).Run(base::Value::Dict());

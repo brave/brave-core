@@ -34,7 +34,7 @@ namespace brave_ads::database {
 namespace {
 
 void Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   table::Conversions conversions_database_table;
   conversions_database_table.Create(transaction);

@@ -38,7 +38,7 @@ class InlineContentAdServing final {
   ~InlineContentAdServing();
 
   void SetDelegate(InlineContentAdServingDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 
@@ -48,14 +48,14 @@ class InlineContentAdServing final {
  private:
   bool IsSupported() const { return bool{eligible_ads_}; }
 
-  void OnBuildUserModel(const std::string& dimensions,
-                        MaybeServeInlineContentAdCallback callback,
-                        const UserModelInfo& user_model);
-  void OnGetForUserModel(const UserModelInfo& user_model,
-                         const std::string& dimensions,
-                         MaybeServeInlineContentAdCallback callback,
-                         bool had_opportunity,
-                         const CreativeInlineContentAdList& creative_ads);
+  void BuildUserModelCallback(const std::string& dimensions,
+                              MaybeServeInlineContentAdCallback callback,
+                              const UserModelInfo& user_model);
+  void GetForUserModelCallback(const UserModelInfo& user_model,
+                               const std::string& dimensions,
+                               MaybeServeInlineContentAdCallback callback,
+                               bool had_opportunity,
+                               const CreativeInlineContentAdList& creative_ads);
 
   void ServeAd(const InlineContentAdInfo& ad,
                MaybeServeInlineContentAdCallback callback);

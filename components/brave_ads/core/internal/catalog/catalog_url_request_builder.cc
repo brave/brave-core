@@ -9,7 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_constants.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "url/gurl.h"
 
@@ -19,13 +19,11 @@ namespace {
 
 GURL BuildUrl() {
   const std::string spec = base::StringPrintf(
-      "%s/v%d/catalog", GetStaticUrlHost().c_str(), kCatalogVersion);
+      "%s%s", GetStaticUrlHost().c_str(), BuildCatalogUrlPath().c_str());
   return GURL(spec);
 }
 
 }  // namespace
-
-// GET /v#/catalog
 
 mojom::UrlRequestInfoPtr CatalogUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();

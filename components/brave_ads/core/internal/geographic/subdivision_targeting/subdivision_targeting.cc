@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_constants.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/supported_subdivision_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -207,8 +207,7 @@ void SubdivisionTargeting::MaybeFetchForLocale(const std::string& locale) {
 }
 
 void SubdivisionTargeting::Fetch() {
-  BLOG(1, "FetchSubdivisionTargeting");
-  BLOG(2, "GET " << kSubdivisionTargetingUrlPath);
+  BLOG(1, "FetchSubdivisionTargeting " << BuildSubdivisionTargetingUrlPath());
 
   GetSubdivisionUrlRequestBuilder url_request_builder;
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -216,11 +215,13 @@ void SubdivisionTargeting::Fetch() {
   BLOG(7, UrlRequestHeadersToString(url_request));
 
   AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request), base::BindOnce(&SubdivisionTargeting::OnFetch,
-                                             weak_factory_.GetWeakPtr()));
+      std::move(url_request),
+      base::BindOnce(&SubdivisionTargeting::FetchCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void SubdivisionTargeting::OnFetch(const mojom::UrlResponseInfo& url_response) {
+void SubdivisionTargeting::FetchCallback(
+    const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnFetchSubdivisionTargeting");
 
   BLOG(6, UrlResponseToString(url_response));

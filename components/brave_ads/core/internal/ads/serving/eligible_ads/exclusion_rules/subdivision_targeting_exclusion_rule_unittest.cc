@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_constants.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_unittest_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -104,17 +104,12 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
     return BuildSubdivisionCode(GetParam().country, region);
   }
 
-  void MockUrlResponse(const std::string& country, const std::string& region) {
-    const URLResponseMap url_responses = {
-        {kSubdivisionTargetingUrlPath,
-         {BuildSubdivisionTargetingUrlResponse(net::HTTP_OK, country,
-                                               region)}}};
-
-    MockUrlResponses(ads_client_mock_, url_responses);
-  }
-
   void MockUrlResponseForTestParam() {
-    MockUrlResponse(GetParam().country, GetParam().region);
+    const URLResponseMap url_responses = {
+        {BuildSubdivisionTargetingUrlPath(),
+         {{net::HTTP_OK, BuildSubdivisionTargetingUrlResponseBody(
+                             GetParam().country, GetParam().region)}}}};
+    MockUrlResponses(ads_client_mock_, url_responses);
   }
 
   std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
@@ -335,8 +330,11 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
                                   true);
 
-  MockUrlResponse(/*country*/ "XX",
-                  /*region*/ "NO REGION");
+  const URLResponseMap url_responses = {
+      {BuildSubdivisionTargetingUrlPath(),
+       {{net::HTTP_OK, BuildSubdivisionTargetingUrlResponseBody(
+                           /*country*/ "XX", /*region*/ "NO REGION")}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
 

@@ -19,7 +19,7 @@ base::Value::Dict BuildBuildChannelUserData() {
   base::Value::Dict user_data;
 
   const auto& build_channel = GlobalState::GetInstance()->BuildChannel();
-  DCHECK(!build_channel.name.empty());
+  CHECK(!build_channel.name.empty());
   user_data.Set(kBuildChannelKey, build_channel.name);
 
   return user_data;

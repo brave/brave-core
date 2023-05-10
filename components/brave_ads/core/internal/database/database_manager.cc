@@ -29,12 +29,12 @@ DatabaseManager& DatabaseManager::GetInstance() {
 }
 
 void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void DatabaseManager::RemoveObserver(DatabaseManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -52,14 +52,14 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&DatabaseManager::OnCreateOrOpen,
+      base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void DatabaseManager::OnCreateOrOpen(
+void DatabaseManager::CreateOrOpenCallback(
     ResultCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   if (command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
@@ -70,8 +70,8 @@ void DatabaseManager::OnCreateOrOpen(
     return;
   }
 
-  DCHECK(command_response->result->get_value()->which() ==
-         mojom::DBValue::Tag::kIntValue);
+  CHECK(command_response->result->get_value()->which() ==
+        mojom::DBValue::Tag::kIntValue);
   const int from_version =
       command_response->result->get_value()->get_int_value();
 
@@ -90,13 +90,13 @@ void DatabaseManager::OnCreateOrOpen(
 void DatabaseManager::Create(ResultCallback callback) const {
   BLOG(1, "Create database for schema version " << database::kVersion);
 
-  database::Create(base::BindOnce(&DatabaseManager::OnCreate,
+  database::Create(base::BindOnce(&DatabaseManager::CreateCallback,
                                   weak_factory_.GetWeakPtr(),
                                   std::move(callback)));
 }
 
-void DatabaseManager::OnCreate(ResultCallback callback,
-                               const bool success) const {
+void DatabaseManager::CreateCallback(ResultCallback callback,
+                                     const bool success) const {
   const int to_version = database::kVersion;
 
   if (!success) {
@@ -129,14 +129,14 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   NotifyWillMigrateDatabase(from_version, to_version);
 
   database::MigrateFromVersion(
-      from_version,
-      base::BindOnce(&DatabaseManager::OnMigrate, weak_factory_.GetWeakPtr(),
-                     from_version, std::move(callback)));
+      from_version, base::BindOnce(&DatabaseManager::MigrateCallback,
+                                   weak_factory_.GetWeakPtr(), from_version,
+                                   std::move(callback)));
 }
 
-void DatabaseManager::OnMigrate(const int from_version,
-                                ResultCallback callback,
-                                const bool success) const {
+void DatabaseManager::MigrateCallback(const int from_version,
+                                      ResultCallback callback,
+                                      const bool success) const {
   const int to_version = database::kVersion;
 
   if (!success) {
@@ -183,7 +183,7 @@ void DatabaseManager::NotifyWillMigrateDatabase(const int from_version,
 
 void DatabaseManager::NotifyDidMigrateDatabase(const int from_version,
                                                const int to_version) const {
-  DCHECK_NE(from_version, to_version);
+  CHECK_NE(from_version, to_version);
 
   for (DatabaseManagerObserver& observer : observers_) {
     observer.OnDidMigrateDatabase(from_version, to_version);

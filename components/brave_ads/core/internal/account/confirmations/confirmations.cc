@@ -14,8 +14,8 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_user_data_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_confirmation_factory.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_factory.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -32,7 +32,7 @@ namespace {
 constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 
 void AppendToRetryQueue(const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   ConfirmationStateManager::GetInstance().AppendFailedConfirmation(
       confirmation);
@@ -47,7 +47,7 @@ void AppendToRetryQueue(const ConfirmationInfo& confirmation) {
 }
 
 void RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   if (!ConfirmationStateManager::GetInstance().RemoveFailedConfirmation(
           confirmation)) {
@@ -75,7 +75,7 @@ void RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
 
 Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator) {
-  DCHECK(token_generator_);
+  CHECK(token_generator_);
 }
 
 Confirmations::~Confirmations() {
@@ -83,7 +83,7 @@ Confirmations::~Confirmations() {
 }
 
 void Confirmations::Confirm(const TransactionInfo& transaction) {
-  DCHECK(transaction.IsValid());
+  CHECK(transaction.IsValid());
 
   ConfirmTransaction(transaction);
 }
@@ -104,19 +104,20 @@ void Confirmations::Retry() {
     return;
   }
 
-  DCHECK(!retry_timer_.IsRunning());
+  CHECK(!retry_timer_.IsRunning());
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&Confirmations::OnRetry, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Confirmations::RetryCallback,
+                     weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry sending failed confirmations "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
-void Confirmations::OnRetry() {
+void Confirmations::RetryCallback() {
   const ConfirmationList& failed_confirmations =
       ConfirmationStateManager::GetInstance().GetFailedConfirmations();
-  DCHECK(!failed_confirmations.empty());
+  CHECK(!failed_confirmations.empty());
 
   BLOG(1, "Retry sending failed confirmations");
 
@@ -180,12 +181,12 @@ void Confirmations::CreateAndRedeem(
 void Confirmations::RecreateOptedInDynamicUserDataAndRedeem(
     const ConfirmationInfo& confirmation) {
   const ConfirmationDynamicUserDataBuilder user_data_builder;
-  user_data_builder.Build(
-      base::BindOnce(&Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem,
-                     weak_factory_.GetWeakPtr(), confirmation));
+  user_data_builder.Build(base::BindOnce(
+      &Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback,
+      weak_factory_.GetWeakPtr(), confirmation));
 }
 
-void Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem(
+void Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback(
     const ConfirmationInfo& confirmation,
     base::Value::Dict dynamic_opted_in_user_data) {
   if (!confirmation.opted_in) {
@@ -201,7 +202,7 @@ void Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem(
 }
 
 void Confirmations::Redeem(const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   RedeemConfirmationFactory::BuildAndRedeemConfirmation(
       weak_factory_.GetWeakPtr(), confirmation);
@@ -210,7 +211,7 @@ void Confirmations::Redeem(const ConfirmationInfo& confirmation) {
 void Confirmations::OnDidRedeemOptedInConfirmation(
     const ConfirmationInfo& confirmation,
     const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   if (privacy::UnblindedPaymentTokenExists(unblinded_payment_token)) {
     BLOG(1, "Unblinded payment token is a duplicate");
@@ -241,7 +242,7 @@ void Confirmations::OnDidRedeemOptedInConfirmation(
 
 void Confirmations::OnDidRedeemOptedOutConfirmation(
     const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   if (delegate_) {
     delegate_->OnDidConfirm(confirmation);
@@ -256,7 +257,7 @@ void Confirmations::OnFailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
     const bool should_retry,
     const bool should_backoff) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   if (should_retry) {
     AppendToRetryQueue(confirmation);

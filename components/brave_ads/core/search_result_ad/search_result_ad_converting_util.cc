@@ -63,8 +63,8 @@ constexpr auto kSearchResultAdConversionAttributes =
 
 bool GetStringValue(const schema_org::mojom::PropertyPtr& ad_property,
                     std::string* out_value) {
-  DCHECK(ad_property);
-  DCHECK(out_value);
+  CHECK(ad_property);
+  CHECK(out_value);
 
   // Wrong attribute type.
   if (!ad_property->values->is_string_values() ||
@@ -83,8 +83,8 @@ bool GetStringValue(const schema_org::mojom::PropertyPtr& ad_property,
 
 bool GetIntValue(const schema_org::mojom::PropertyPtr& ad_property,
                  int32_t* out_value) {
-  DCHECK(ad_property);
-  DCHECK(out_value);
+  CHECK(ad_property);
+  CHECK(out_value);
 
   // Wrong attribute type.
   if (!ad_property->values->is_long_values() ||
@@ -100,8 +100,8 @@ bool GetIntValue(const schema_org::mojom::PropertyPtr& ad_property,
 
 bool GetDoubleValue(const schema_org::mojom::PropertyPtr& ad_property,
                     double* out_value) {
-  DCHECK(ad_property);
-  DCHECK(out_value);
+  CHECK(ad_property);
+  CHECK(out_value);
 
   // Wrong attribute type.
   if (!ad_property->values->is_string_values() ||
@@ -115,8 +115,8 @@ bool GetDoubleValue(const schema_org::mojom::PropertyPtr& ad_property,
 
 bool GetUrlValue(const schema_org::mojom::PropertyPtr& ad_property,
                  GURL* out_value) {
-  DCHECK(ad_property);
-  DCHECK(out_value);
+  CHECK(ad_property);
+  CHECK(out_value);
 
   // Wrong attribute type.
   if (!ad_property->values->is_string_values() ||
@@ -136,8 +136,8 @@ bool GetUrlValue(const schema_org::mojom::PropertyPtr& ad_property,
 
 bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
                          mojom::SearchResultAdInfo* search_result_ad) {
-  DCHECK(ad_property);
-  DCHECK(search_result_ad);
+  CHECK(ad_property);
+  CHECK(search_result_ad);
 
   const std::string& name = ad_property->name;
   if (name == kDataPlacementId) {
@@ -176,15 +176,13 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
     return GetDoubleValue(ad_property, &search_result_ad->value);
   }
 
-  NOTREACHED();
-
-  return false;
+  NOTREACHED_NORETURN();
 }
 
 bool SetConversionProperty(const schema_org::mojom::PropertyPtr& ad_property,
                            mojom::ConversionInfo* conversion) {
-  DCHECK(ad_property);
-  DCHECK(conversion);
+  CHECK(ad_property);
+  CHECK(conversion);
 
   const std::string& name = ad_property->name;
   if (name == kDataConversionTypeValue) {
@@ -203,14 +201,12 @@ bool SetConversionProperty(const schema_org::mojom::PropertyPtr& ad_property,
     return GetIntValue(ad_property, &conversion->observation_window);
   }
 
-  NOTREACHED();
-
-  return false;
+  NOTREACHED_NORETURN();
 }
 
 void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
                                    SearchResultAdMap* search_result_ads) {
-  DCHECK(search_result_ads);
+  CHECK(search_result_ads);
 
   // Wrong search result ad type specified.
   if (!entity || entity->type != kSearchResultAdType) {

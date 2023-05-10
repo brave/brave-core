@@ -13,7 +13,7 @@ namespace brave_ads {
 // Use for requests that are not user-specific and do not process personal data.
 std::string GetStaticUrlHost();
 
-// Only used by the /v1/getstate endpoint.
+// Only used by the /v#/getstate endpoint.
 std::string GetGeoUrlHost();
 
 // Use for requests that include the wallet ID and therefore fully identify the

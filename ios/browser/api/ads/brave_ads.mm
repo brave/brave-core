@@ -1193,9 +1193,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     callback:(brave_ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    std::move(callback).Run(/*success*/ false, /*value*/ {});
+    std::move(callback).Run(/*value*/ absl::nullopt);
   } else {
-    std::move(callback).Run(/*success*/ true, contents);
+    std::move(callback).Run(contents);
   }
 }
 

@@ -47,8 +47,8 @@ void MockBuildChannel(const BuildChannelType type) {
     }
   }
 
-  NOTREACHED() << "Unexpected value for BuildChannelType: "
-               << static_cast<int>(type);
+  NOTREACHED_NORETURN() << "Unexpected value for BuildChannelType: "
+                        << static_cast<int>(type);
 }
 
 void MockPlatformHelper(const PlatformHelperMock& mock,
@@ -151,7 +151,7 @@ void MockUrlResponses(AdsClientMock& mock,
                 GetNextUrlResponseForRequest(url_request, url_responses);
             if (!url_response) {
               // URL request should not be mocked.
-              return std::move(callback).Run({});
+              return std::move(callback).Run(/*url_response*/ {});
             }
 
             std::move(callback).Run(*url_response);

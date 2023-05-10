@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/flagged_ad_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -42,7 +43,6 @@ class ClientStateManager final {
   static ClientStateManager& GetInstance();
 
   void Initialize(InitializeCallback callback);
-
   const FilteredAdvertiserList& GetFilteredAdvertisers() const;
   const FilteredCategoryList& GetFilteredCategories() const;
   const FlaggedAdList& GetFlaggedAds() const;
@@ -97,9 +97,8 @@ class ClientStateManager final {
   void Save();
 
   void Load(InitializeCallback callback);
-  void OnLoaded(InitializeCallback callback,
-                bool success,
-                const std::string& json);
+  void LoadedCallback(InitializeCallback callback,
+                      const absl::optional<std::string>& json);
 
   bool FromJson(const std::string& json);
 

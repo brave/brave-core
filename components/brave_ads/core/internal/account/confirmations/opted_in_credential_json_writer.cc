@@ -26,8 +26,8 @@ constexpr char kTokenPreimageKey[] = "t";
 absl::optional<std::string> WriteOptedInCredential(
     const privacy::UnblindedTokenInfo& unblinded_token,
     const std::string& payload) {
-  DCHECK(IsValid(unblinded_token));
-  DCHECK(!payload.empty());
+  CHECK(IsValid(unblinded_token));
+  CHECK(!payload.empty());
 
   absl::optional<privacy::cbr::VerificationKey> verification_key =
       unblinded_token.value.DeriveVerificationKey();

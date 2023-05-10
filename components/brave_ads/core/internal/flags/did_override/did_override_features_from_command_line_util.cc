@@ -78,7 +78,7 @@ bool DidOverrideFeaturesFromCommandLine() {
   const auto brave_ads_features = ParseCommandLineSwitches();
   return base::ranges::any_of(kFeatures, [&brave_ads_features](
                                              const auto* const feature) {
-    DCHECK(feature);
+    CHECK(feature);
 
     return base::FeatureList::GetInstance()->IsFeatureOverriddenFromCommandLine(
                feature->name) ||

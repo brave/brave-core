@@ -15,7 +15,7 @@ namespace brave_ads {
 
 void SetNotificationAdEventPredictorVariable(
     const mojom::NotificationAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   PredictorsManager::GetInstance().SetPredictorVariable(
       std::make_unique<NotificationAdEventPredictorVariable>(event_type));

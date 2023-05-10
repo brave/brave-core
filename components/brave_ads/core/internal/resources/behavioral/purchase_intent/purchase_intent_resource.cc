@@ -31,13 +31,13 @@ PurchaseIntentResource::~PurchaseIntentResource() {
 void PurchaseIntentResource::Load() {
   LoadAndParseResource(
       kResourceId, kPurchaseIntentResourceVersion.Get(),
-      base::BindOnce(&PurchaseIntentResource::OnLoadAndParseResource,
+      base::BindOnce(&PurchaseIntentResource::LoadAndParseResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void PurchaseIntentResource::OnLoadAndParseResource(
+void PurchaseIntentResource::LoadAndParseResourceCallback(
     ResourceParsingErrorOr<PurchaseIntentInfo> result) {
   if (!result.has_value()) {
     BLOG(0, "Failed to initialize " << kResourceId

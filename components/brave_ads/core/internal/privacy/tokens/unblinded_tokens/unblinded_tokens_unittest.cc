@@ -16,8 +16,7 @@ class BraveAdsUnblindedTokensTest : public UnitTestBase {};
 
 TEST_F(BraveAdsUnblindedTokensTest, GetToken) {
   // Arrange
-  // Arrange
-  const UnblindedTokenList tokens = GetUnblindedTokens(/*count*/ 2);
+  const UnblindedTokenList tokens = BuildUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
 
   UnblindedTokens unblinded_tokens;
@@ -26,30 +25,35 @@ TEST_F(BraveAdsUnblindedTokensTest, GetToken) {
   // Act
 
   // Assert
-  const UnblindedTokenInfo& expected_token = tokens.at(0);
-  EXPECT_EQ(expected_token, unblinded_tokens.GetToken());
+  EXPECT_EQ(tokens.at(0), unblinded_tokens.GetToken());
 }
 
 TEST_F(BraveAdsUnblindedTokensTest, GetAllTokens) {
   // Arrange
+  const UnblindedTokenList tokens = BuildUnblindedTokens(/*count*/ 2);
+  ASSERT_EQ(2U, tokens.size());
+
   UnblindedTokens unblinded_tokens;
-  unblinded_tokens.SetTokens(GetUnblindedTokens(/*count*/ 2));
+  unblinded_tokens.SetTokens(tokens);
 
   // Act
 
   // Assert
-  EXPECT_EQ(GetUnblindedTokens(/*count*/ 2), unblinded_tokens.GetAllTokens());
+  EXPECT_EQ(tokens, unblinded_tokens.GetAllTokens());
 }
 
 TEST_F(BraveAdsUnblindedTokensTest, SetTokens) {
   // Arrange
+  const UnblindedTokenList tokens = BuildUnblindedTokens(/*count*/ 2);
+  ASSERT_EQ(2U, tokens.size());
+
   UnblindedTokens unblinded_tokens;
 
   // Act
-  unblinded_tokens.SetTokens(GetUnblindedTokens(/*count*/ 2));
+  unblinded_tokens.SetTokens(tokens);
 
   // Assert
-  EXPECT_EQ(GetUnblindedTokens(/*count*/ 2), unblinded_tokens.GetAllTokens());
+  EXPECT_EQ(tokens, unblinded_tokens.GetAllTokens());
 }
 
 TEST_F(BraveAdsUnblindedTokensTest, SetEmptyTokens) {
@@ -65,7 +69,7 @@ TEST_F(BraveAdsUnblindedTokensTest, SetEmptyTokens) {
 
 TEST_F(BraveAdsUnblindedTokensTest, AddTokens) {
   // Arrange
-  const UnblindedTokenList tokens = GetUnblindedTokens(/*count*/ 2);
+  const UnblindedTokenList tokens = BuildUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
 
   UnblindedTokens unblinded_tokens;
@@ -91,7 +95,7 @@ TEST_F(BraveAdsUnblindedTokensTest, AddEmptyTokens) {
 
 TEST_F(BraveAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
   // Arrange
-  const UnblindedTokenInfo unblinded_token = GetUnblindedToken();
+  const UnblindedTokenInfo unblinded_token = BuildUnblindedToken();
 
   UnblindedTokens unblinded_tokens;
   unblinded_tokens.AddTokens({unblinded_token});
@@ -105,7 +109,7 @@ TEST_F(BraveAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
 
 TEST_F(BraveAdsUnblindedTokensTest, RemoveToken) {
   // Arrange
-  const UnblindedTokenList tokens = GetUnblindedTokens(/*count*/ 2);
+  const UnblindedTokenList tokens = BuildUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
 
   UnblindedTokens unblinded_tokens;
@@ -124,7 +128,7 @@ TEST_F(BraveAdsUnblindedTokensTest, RemoveToken) {
 
 TEST_F(BraveAdsUnblindedTokensTest, RemoveTokens) {
   // Arrange
-  const UnblindedTokenList tokens = GetUnblindedTokens(/*count*/ 3);
+  const UnblindedTokenList tokens = BuildUnblindedTokens(/*count*/ 3);
   ASSERT_EQ(3U, tokens.size());
 
   UnblindedTokens unblinded_tokens;
@@ -145,7 +149,7 @@ TEST_F(BraveAdsUnblindedTokensTest, RemoveTokens) {
 TEST_F(BraveAdsUnblindedTokensTest, RemoveAllTokens) {
   // Arrange
   UnblindedTokens unblinded_tokens;
-  unblinded_tokens.SetTokens(GetUnblindedTokens(/*count*/ 2));
+  unblinded_tokens.SetTokens(BuildUnblindedTokens(/*count*/ 2));
 
   // Act
   unblinded_tokens.RemoveAllTokens();
@@ -156,7 +160,7 @@ TEST_F(BraveAdsUnblindedTokensTest, RemoveAllTokens) {
 
 TEST_F(BraveAdsUnblindedTokensTest, TokenDoesExist) {
   // Arrange
-  const UnblindedTokenInfo unblinded_token = GetUnblindedToken();
+  const UnblindedTokenInfo unblinded_token = BuildUnblindedToken();
 
   UnblindedTokens unblinded_tokens;
   unblinded_tokens.SetTokens({unblinded_token});
@@ -174,13 +178,13 @@ TEST_F(BraveAdsUnblindedTokensTest, TokenDoesNotExist) {
   // Act
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens.TokenExists(GetUnblindedToken()));
+  EXPECT_FALSE(unblinded_tokens.TokenExists(BuildUnblindedToken()));
 }
 
 TEST_F(BraveAdsUnblindedTokensTest, Count) {
   // Arrange
   UnblindedTokens unblinded_tokens;
-  unblinded_tokens.SetTokens(GetUnblindedTokens(/*count*/ 3));
+  unblinded_tokens.SetTokens(BuildUnblindedTokens(/*count*/ 3));
 
   // Act
 
@@ -200,7 +204,7 @@ TEST_F(BraveAdsUnblindedTokensTest, IsEmpty) {
 
 TEST_F(BraveAdsUnblindedTokensTest, IsNotEmpty) {
   // Arrange
-  const UnblindedTokenInfo unblinded_token = GetUnblindedToken();
+  const UnblindedTokenInfo unblinded_token = BuildUnblindedToken();
 
   UnblindedTokens unblinded_tokens;
   unblinded_tokens.SetTokens({unblinded_token});

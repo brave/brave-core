@@ -30,8 +30,8 @@ UnblindedTokenList CreateUnblindedTokens(
     const std::vector<std::string>& unblinded_tokens_base64,
     const WalletInfo& wallet);
 
-UnblindedTokenList GetUnblindedTokens(int count);
-UnblindedTokenInfo GetUnblindedToken();
+UnblindedTokenList BuildUnblindedTokens(int count);
+UnblindedTokenInfo BuildUnblindedToken();
 
 }  // namespace privacy
 }  // namespace brave_ads

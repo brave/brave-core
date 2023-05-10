@@ -18,10 +18,8 @@ class BraveAdsUnblindedTokenUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsUnblindedTokenUtilTest, GetUnblindedToken) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 2);
+  const UnblindedTokenList unblinded_tokens = SetUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, unblinded_tokens.size());
-
-  GetUnblindedTokens().SetTokens(unblinded_tokens);
 
   // Act
   const absl::optional<UnblindedTokenInfo> unblinded_token =
@@ -36,16 +34,14 @@ TEST_F(BraveAdsUnblindedTokenUtilTest, DoNotGetUnblindedToken) {
   // Arrange
 
   // Act
-  const absl::optional<UnblindedTokenInfo> unblinded_token =
-      MaybeGetUnblindedToken();
 
   // Assert
-  EXPECT_FALSE(unblinded_token);
+  EXPECT_FALSE(MaybeGetUnblindedToken());
 }
 
 TEST_F(BraveAdsUnblindedTokenUtilTest, AddUnblindedTokens) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 2);
+  const UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, unblinded_tokens.size());
 
   const UnblindedTokenInfo& token_1 = unblinded_tokens.at(0);
@@ -63,7 +59,7 @@ TEST_F(BraveAdsUnblindedTokenUtilTest, AddUnblindedTokens) {
 
 TEST_F(BraveAdsUnblindedTokenUtilTest, RemoveUnblindedToken) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 3);
+  const UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(/*count*/ 3);
   ASSERT_EQ(3U, unblinded_tokens.size());
 
   const UnblindedTokenInfo& token_1 = unblinded_tokens.at(0);
@@ -92,12 +88,11 @@ TEST_F(BraveAdsUnblindedTokenUtilTest, UnblindedTokenCount) {
 
 TEST_F(BraveAdsUnblindedTokenUtilTest, IsValid) {
   // Arrange
-  const UnblindedTokenInfo unblinded_token = GetUnblindedToken();
 
   // Act
 
   // Assert
-  EXPECT_TRUE(IsValid(unblinded_token));
+  EXPECT_TRUE(IsValid(BuildUnblindedToken()));
 }
 
 TEST_F(BraveAdsUnblindedTokenUtilTest, IsNotValid) {
@@ -107,7 +102,6 @@ TEST_F(BraveAdsUnblindedTokenUtilTest, IsNotValid) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsValid(unblinded_token));
 }
 
 }  // namespace brave_ads::privacy

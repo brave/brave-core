@@ -34,9 +34,8 @@ std::string GeoUrlHost::Get() const {
     }
   }
 
-  NOTREACHED() << "Unexpected value for EnvironmentType: "
-               << static_cast<int>(environment_type);
-  return kStagingHost;
+  NOTREACHED_NORETURN() << "Unexpected value for EnvironmentType: "
+                        << static_cast<int>(environment_type);
 }
 
 }  // namespace brave_ads

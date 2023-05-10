@@ -86,7 +86,7 @@ class ADS_EXPORT AdsClient {
 
   // Fetch and return data for the |url_request|. Loading should be performed
   // asynchronously, so that the app remains responsive and should handle
-  // incoming data or errors as they arrive. The callback takes 1 argument -
+  // incoming data or errors as they arrive. The callback takes one argument -
   // |URLResponse| containing the URL response.
   virtual void UrlRequest(mojom::UrlRequestInfoPtr url_request,
                           UrlRequestCallback callback) = 0;
@@ -99,12 +99,11 @@ class ADS_EXPORT AdsClient {
                     SaveCallback callback) = 0;
 
   // Load a file for the specified |name| from persistent storage. The callback
-  // takes 2 arguments - |bool| is set to |true| if successful otherwise
-  // |false|. |value| containing the persisted value.
+  // takes one argument - optional containing the loaded |value|.
   virtual void Load(const std::string& name, LoadCallback callback) = 0;
 
   // Load a file resource for the specified |id| and |version| from persistent
-  // storage. The callback takes 1 argument - |base::File| will be valid if
+  // storage. The callback takes one argument - |base::File| will be valid if
   // successful otherwise invalid.
   virtual void LoadFileResource(const std::string& id,
                                 int version,
@@ -115,7 +114,7 @@ class ADS_EXPORT AdsClient {
   virtual std::string LoadDataResource(const std::string& name) = 0;
 
   // Retrieves the captcha scheduled for the specified |payment_id|, if any. The
-  // callback takes 1 argument - |std::string| containing a captcha id if the
+  // callback takes one argument - |std::string| containing a captcha id if the
   // user must solve a captcha otherwise an empty string.
   virtual void GetScheduledCaptcha(const std::string& payment_id,
                                    GetScheduledCaptchaCallback callback) = 0;

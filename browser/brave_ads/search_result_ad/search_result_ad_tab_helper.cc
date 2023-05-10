@@ -51,7 +51,7 @@ SearchResultAdTabHelper::~SearchResultAdTabHelper() = default;
 // static
 void SearchResultAdTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
-  DCHECK(web_contents);
+  CHECK(web_contents);
   if (!base::FeatureList::IsEnabled(
           kShouldTriggerSearchResultAdEventsFeature) ||
       !web_contents->GetBrowserContext() ||
@@ -71,7 +71,7 @@ void SearchResultAdTabHelper::MaybeTriggerSearchResultAdClickedEvent(
 
 // static
 void SearchResultAdTabHelper::SetAdsServiceForTesting(AdsService* ads_service) {
-  DCHECK(!g_ads_service_for_testing || !ads_service);
+  CHECK(!g_ads_service_for_testing || !ads_service);
   g_ads_service_for_testing = ads_service;
 }
 
@@ -124,7 +124,7 @@ void SearchResultAdTabHelper::WebContentsDestroyed() {
 
 void SearchResultAdTabHelper::MaybeProcessSearchResultAdClickedEvent(
     content::NavigationHandle* navigation_handle) {
-  DCHECK(navigation_handle);
+  CHECK(navigation_handle);
 
   const auto& initiator_origin = navigation_handle->GetInitiatorOrigin();
   if (!navigation_handle->IsInPrimaryMainFrame() ||
@@ -153,7 +153,7 @@ void SearchResultAdTabHelper::MaybeProcessSearchResultAdClickedEvent(
     return;
   }
 
-  DCHECK(!navigation_handle->GetRedirectChain().empty());
+  CHECK(!navigation_handle->GetRedirectChain().empty());
   const GURL target_url = navigation_handle->GetRedirectChain()[0];
   search_result_ad_tab_helper->MaybeTriggerSearchResultAdClickedEvent(
       target_url);

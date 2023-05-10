@@ -38,13 +38,12 @@ class BraveAdsUnblindedTokenValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsUnblindedTokenValueUtilTest, ToValue) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 2);
 
   // Act
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonList(kJson),
-            UnblindedTokensToValue(unblinded_tokens));
+            UnblindedTokensToValue(BuildUnblindedTokens(/*count*/ 2)));
 }
 
 TEST_F(BraveAdsUnblindedTokenValueUtilTest, ToEmptyValue) {
@@ -65,7 +64,7 @@ TEST_F(BraveAdsUnblindedTokenValueUtilTest, FromValue) {
   // Act
 
   // Assert
-  EXPECT_EQ(GetUnblindedTokens(2), UnblindedTokensFromValue(list));
+  EXPECT_EQ(BuildUnblindedTokens(/*count*/ 2), UnblindedTokensFromValue(list));
 }
 
 TEST_F(BraveAdsUnblindedTokenValueUtilTest, FromEmptyValue) {

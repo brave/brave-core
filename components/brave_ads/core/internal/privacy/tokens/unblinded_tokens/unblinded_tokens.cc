@@ -16,7 +16,7 @@ UnblindedTokens::UnblindedTokens() = default;
 UnblindedTokens::~UnblindedTokens() = default;
 
 const UnblindedTokenInfo& UnblindedTokens::GetToken() const {
-  DCHECK_NE(Count(), 0U);
+  CHECK_NE(Count(), 0U);
 
   return unblinded_tokens_.front();
 }

@@ -22,7 +22,7 @@ base::Value::List DiagnosticsToValue(const DiagnosticMap& diagnostics) {
   base::Value::List list;
 
   for (const auto& [entry_type, entry] : diagnostics) {
-    DCHECK(entry);
+    CHECK(entry);
 
     base::Value::Dict dict;
     dict.Set(kNameKey, entry->GetName());

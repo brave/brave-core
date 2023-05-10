@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 
 #include <string>
-#include <vector>
 
 #include "base/check_op.h"
 #include "base/no_destructor.h"
@@ -138,6 +137,8 @@ const std::vector<std::string>& GetTokens() {
   return *tokens;
 }
 
+}  // namespace
+
 std::vector<cbr::Token> BuildTokens(const size_t count) {
   CHECK_GT(count, 0U);
 
@@ -155,8 +156,6 @@ std::vector<cbr::Token> BuildTokens(const size_t count) {
 
   return tokens;
 }
-
-}  // namespace
 
 void MockTokenGenerator(const TokenGeneratorMock& mock, const size_t count) {
   CHECK_GT(count, 0U);

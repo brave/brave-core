@@ -24,9 +24,8 @@ std::unique_ptr<HistoryFilterInterface> HistoryFilterFactory::Build(
     }
   }
 
-  NOTREACHED() << "Unexpected value for HistoryFilterType: "
-               << static_cast<int>(type);
-  return nullptr;
+  NOTREACHED_NORETURN() << "Unexpected value for HistoryFilterType: "
+                        << static_cast<int>(type);
 }
 
 }  // namespace brave_ads

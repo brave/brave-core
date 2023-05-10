@@ -50,7 +50,7 @@ PaddedImageButton::PaddedImageButton(PressedCallback callback)
 
 void PaddedImageButton::AdjustBorderInsetToFitHeight(const int height) {
   views::Border* border = GetBorder();
-  DCHECK(border);
+  CHECK(border);
 
   const gfx::ImageSkia& image = GetImage(views::Button::STATE_NORMAL);
 

@@ -49,15 +49,15 @@ void Migrate(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->Load(
       kNotificationStateFilename,
       base::BindOnce(
-          [](InitializeCallback callback, const bool success,
-             const std::string& json) {
-            if (!success) {
+          [](InitializeCallback callback,
+             const absl::optional<std::string>& json) {
+            if (!json) {
               // Notification state does not exist
               return SuccessfullyMigrated(std::move(callback));
             }
 
             const absl::optional<base::circular_deque<NotificationAdInfo>> ads =
-                json::reader::ReadNotificationAds(json);
+                json::reader::ReadNotificationAds(*json);
             if (!ads) {
               BLOG(0, "Failed to load notification state");
               return FailedToMigrate(std::move(callback));

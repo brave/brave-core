@@ -29,7 +29,7 @@ constexpr char kTableName[] = "text_embedding_html_events";
 constexpr char kDelimiter[] = " ";
 
 void BindRecords(mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::INT64_TYPE,   // created_at
@@ -43,7 +43,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
 size_t BindParameters(
     mojom::DBCommandInfo* command,
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -65,7 +65,7 @@ size_t BindParameters(
 }
 
 TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   TextEmbeddingHtmlEventInfo text_embedding_html_event;
 
@@ -102,7 +102,7 @@ void OnGetTextEmbeddingHtmlEvents(
 }
 
 void MigrateToV25(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -164,7 +164,7 @@ std::string TextEmbeddingHtmlEvents::GetTableName() const {
 }
 
 void TextEmbeddingHtmlEvents::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -178,7 +178,7 @@ void TextEmbeddingHtmlEvents::Create(mojom::DBTransactionInfo* transaction) {
 
 void TextEmbeddingHtmlEvents::Migrate(mojom::DBTransactionInfo* transaction,
                                       const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 25: {
@@ -197,7 +197,7 @@ void TextEmbeddingHtmlEvents::Migrate(mojom::DBTransactionInfo* transaction,
 void TextEmbeddingHtmlEvents::InsertOrUpdate(
     mojom::DBTransactionInfo* transaction,
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (text_embedding_html_events.empty()) {
     return;
@@ -213,7 +213,7 @@ void TextEmbeddingHtmlEvents::InsertOrUpdate(
 std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const TextEmbeddingHtmlEventList& text_embedding_html_events) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count =
       BindParameters(command, text_embedding_html_events);

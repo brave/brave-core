@@ -40,9 +40,8 @@ std::unique_ptr<UrlHostInterface> UrlHostFactory::Build(
     }
   }
 
-  NOTREACHED() << "Unexpected value for UrlHostType: "
-               << static_cast<int>(type);
-  return nullptr;
+  NOTREACHED_NORETURN() << "Unexpected value for UrlHostType: "
+                        << static_cast<int>(type);
 }
 
 }  // namespace brave_ads

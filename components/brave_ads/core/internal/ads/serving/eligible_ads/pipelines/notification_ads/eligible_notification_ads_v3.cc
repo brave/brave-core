@@ -34,22 +34,22 @@ EligibleNotificationAdsV3::~EligibleNotificationAdsV3() = default;
 
 void EligibleNotificationAdsV3::GetForUserModel(
     UserModelInfo user_model,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads");
 
   database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNotificationAd,
-      base::BindOnce(&EligibleNotificationAdsV3::OnGetForUserModel,
+      base::BindOnce(&EligibleNotificationAdsV3::GetForUserModelCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleNotificationAdsV3::OnGetForUserModel(
+void EligibleNotificationAdsV3::GetForUserModelCallback(
     UserModelInfo user_model,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -64,7 +64,7 @@ void EligibleNotificationAdsV3::OnGetForUserModel(
 void EligibleNotificationAdsV3::GetBrowsingHistory(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
       base::BindOnce(&EligibleNotificationAdsV3::GetEligibleAds,
@@ -75,19 +75,20 @@ void EligibleNotificationAdsV3::GetBrowsingHistory(
 void EligibleNotificationAdsV3::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   const database::table::CreativeNotificationAds database_table;
-  database_table.GetAll(base::BindOnce(
-      &EligibleNotificationAdsV3::OnGetEligibleAds, weak_factory_.GetWeakPtr(),
-      user_model, ad_events, browsing_history, std::move(callback)));
+  database_table.GetAll(
+      base::BindOnce(&EligibleNotificationAdsV3::GetEligibleAdsCallback,
+                     weak_factory_.GetWeakPtr(), user_model, ad_events,
+                     browsing_history, std::move(callback)));
 }
 
-void EligibleNotificationAdsV3::OnGetEligibleAds(
+void EligibleNotificationAdsV3::GetEligibleAdsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNotificationAdList& creative_ads) {

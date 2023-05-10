@@ -35,12 +35,12 @@ HistoryManager& HistoryManager::GetInstance() {
 }
 
 void HistoryManager::AddObserver(HistoryManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void HistoryManager::RemoveObserver(HistoryManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 

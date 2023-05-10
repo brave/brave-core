@@ -22,13 +22,13 @@ GlobalState*& GetGlobalStateInstance() {
 
 GlobalStateHolder::GlobalStateHolder(GlobalState* global_state) {
   GlobalState*& global_state_instance = GetGlobalStateInstance();
-  DCHECK(!global_state_instance);
+  CHECK(!global_state_instance);
   global_state_instance = global_state;
 }
 
 GlobalStateHolder::~GlobalStateHolder() {
   GlobalState*& global_state_instance = GetGlobalStateInstance();
-  DCHECK(global_state_instance);
+  CHECK(global_state_instance);
   global_state_instance = nullptr;
 }
 

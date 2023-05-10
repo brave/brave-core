@@ -54,7 +54,7 @@ class CreativeNotificationAds final : public TableInterface {
   void GetAll(GetCreativeNotificationAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
-    DCHECK_GT(batch_size, 0);
+    CHECK_GT(batch_size, 0);
 
     batch_size_ = batch_size;
   }

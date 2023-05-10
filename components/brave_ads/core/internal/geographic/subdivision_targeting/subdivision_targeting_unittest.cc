@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_constants.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_unittest_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "net/http/http_status_code.h"
@@ -35,9 +35,9 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowAndAutoDetectForSupportedCountryAndRegionUrlResponse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {kSubdivisionTargetingUrlPath,
-       {BuildSubdivisionTargetingUrlResponse(net::HTTP_OK, /*country*/ "US",
-                                             /*region*/ "CA")}}};
+      {BuildSubdivisionTargetingUrlPath(),
+       {{net::HTTP_OK, BuildSubdivisionTargetingUrlResponseBody(
+                           /*country*/ "US", /*region*/ "CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
@@ -56,9 +56,9 @@ TEST_F(
     ShouldAllowButDefaultToDisabledForSupportedCountryButNoRegionUrlResponse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {kSubdivisionTargetingUrlPath,
-       {BuildSubdivisionTargetingUrlResponse(net::HTTP_OK, /*country*/ "US",
-                                             /*region*/ "NO REGION")}}};
+      {BuildSubdivisionTargetingUrlPath(),
+       {{net::HTTP_OK, BuildSubdivisionTargetingUrlResponseBody(
+                           /*country*/ "US", /*region*/ "NO REGION")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
@@ -74,9 +74,9 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAutoDetectForUnsupportedCountryAndRegionUrlResponse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {kSubdivisionTargetingUrlPath,
-       {BuildSubdivisionTargetingUrlResponse(net::HTTP_OK, /*country*/ "XX",
-                                             /*region*/ "XX")}}};
+      {BuildSubdivisionTargetingUrlPath(),
+       {{net::HTTP_OK, BuildSubdivisionTargetingUrlResponseBody(
+                           /*country*/ "XX", /*region*/ "XX")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
@@ -177,10 +177,12 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
        RetryAfterInvalidUrlResponseStatusCode) {
   // Arrange
   const URLResponseMap url_responses = {
-      {kSubdivisionTargetingUrlPath,
-       {BuildSubdivisionTargetingUrlResponse(net::HTTP_INTERNAL_SERVER_ERROR),
-        BuildSubdivisionTargetingUrlResponse(net::HTTP_OK, /*country*/ "US",
-                                             /*region*/ "CA")}}};
+      {BuildSubdivisionTargetingUrlPath(),
+       {{net::HTTP_INTERNAL_SERVER_ERROR,
+         /*response_body*/ net::GetHttpReasonPhrase(
+             net::HTTP_INTERNAL_SERVER_ERROR)},
+        {net::HTTP_OK, BuildSubdivisionTargetingUrlResponseBody(
+                           /*country*/ "US", /*region*/ "CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -203,11 +205,10 @@ TEST_P(BraveAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest,
        RetryAfterInvalidUrlResponseBody) {
   // Arrange
   const URLResponseMap url_responses = {
-      {kSubdivisionTargetingUrlPath,
-       {BuildSubdivisionTargetingUrlResponse(net::HTTP_OK,
-                                             /*response_body*/ GetParam()),
-        BuildSubdivisionTargetingUrlResponse(net::HTTP_OK, /*country*/ "US",
-                                             /*region*/ "CA")}}};
+      {BuildSubdivisionTargetingUrlPath(),
+       {{net::HTTP_OK, /*response_body*/ GetParam()},
+        {net::HTTP_OK, BuildSubdivisionTargetingUrlResponseBody(
+                           /*country*/ "US", /*region*/ "CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();

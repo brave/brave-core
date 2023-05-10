@@ -15,7 +15,6 @@ namespace {
 
 constexpr char kProductionEnvironment[] = "Production";
 constexpr char kStagingEnvironment[] = "Staging";
-constexpr char kUnknownEnvironment[] = "Unknown";
 
 }  // namespace
 
@@ -31,9 +30,8 @@ std::string EnvironmentTypeEnumToString(
     }
   }
 
-  NOTREACHED() << "Unexpected value for EnvironmentType: "
-               << static_cast<int>(environment_type);
-  return kUnknownEnvironment;
+  NOTREACHED_NORETURN() << "Unexpected value for EnvironmentType: "
+                        << static_cast<int>(environment_type);
 }
 
 }  // namespace brave_ads

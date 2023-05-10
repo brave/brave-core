@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_json_reader.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -45,17 +46,17 @@ Catalog::~Catalog() {
 }
 
 void Catalog::AddObserver(CatalogObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Catalog::RemoveObserver(CatalogObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
 void Catalog::MaybeFetch() {
-  if (is_processing_ || retry_timer_.IsRunning()) {
+  if (is_fetching_ || retry_timer_.IsRunning()) {
     return;
   }
 
@@ -65,12 +66,11 @@ void Catalog::MaybeFetch() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Catalog::Fetch() {
-  DCHECK(!is_processing_);
+  CHECK(!is_fetching_);
 
-  BLOG(1, "Catalog");
-  BLOG(2, "GET /v" << kCatalogVersion << "/catalog");
+  BLOG(1, "FetchCatalog " << BuildCatalogUrlPath());
 
-  is_processing_ = true;
+  is_fetching_ = true;
 
   CatalogUrlRequestBuilder url_request_builder;
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -79,16 +79,16 @@ void Catalog::Fetch() {
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&Catalog::OnFetch, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Catalog::FetchCallback, weak_factory_.GetWeakPtr()));
 }
 
-void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnCatalog");
+void Catalog::FetchCallback(const mojom::UrlResponseInfo& url_response) {
+  BLOG(1, "OnFetchCatalog");
 
   BLOG(7, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  is_processing_ = false;
+  is_fetching_ = false;
 
   if (url_response.status_code == net::HTTP_NOT_MODIFIED) {
     BLOG(1, "Catalog is up to date");
@@ -147,13 +147,13 @@ void Catalog::FetchAfterDelay() {
 void Catalog::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&Catalog::OnRetry, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Catalog::RetryCallback, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching catalog "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
-void Catalog::OnRetry() {
+void Catalog::RetryCallback() {
   BLOG(1, "Retry fetching catalog");
 
   Fetch();

@@ -28,7 +28,7 @@ SearchResultAdHandler::SearchResultAdHandler(
     const bool should_trigger_viewed_event)
     : ads_service_(ads_service),
       should_trigger_viewed_event_(should_trigger_viewed_event) {
-  DCHECK(ads_service_);
+  CHECK(ads_service_);
 }
 
 SearchResultAdHandler::~SearchResultAdHandler() = default;
@@ -53,8 +53,8 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
 void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
     content::RenderFrameHost* render_frame_host,
     base::OnceCallback<void(std::vector<std::string> placement_ids)> callback) {
-  DCHECK(render_frame_host);
-  DCHECK(ads_service_);
+  CHECK(render_frame_host);
+  CHECK(ads_service_);
 
   if (!ads_service_->IsEnabled()) {
     return;
@@ -63,7 +63,7 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
   mojo::Remote<blink::mojom::DocumentMetadata> document_metadata;
   render_frame_host->GetRemoteInterfaces()->GetInterface(
       document_metadata.BindNewPipeAndPassReceiver());
-  DCHECK(document_metadata.is_bound());
+  CHECK(document_metadata.is_bound());
   document_metadata.reset_on_disconnect();
 
   blink::mojom::DocumentMetadata* raw_document_metadata =
@@ -76,7 +76,7 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
 
 void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     const GURL& navigation_url) {
-  DCHECK(ads_service_);
+  CHECK(ads_service_);
   if (!ads_service_->IsEnabled() || !search_result_ads_) {
     return;
   }
@@ -105,7 +105,7 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
     mojo::Remote<blink::mojom::DocumentMetadata> /*document_metadata*/,
     base::OnceCallback<void(std::vector<std::string> placement_ids)> callback,
     blink::mojom::WebPagePtr web_page) {
-  DCHECK(ads_service_);
+  CHECK(ads_service_);
 
   if (!ads_service_->IsEnabled() || !web_page) {
     return std::move(callback).Run({});

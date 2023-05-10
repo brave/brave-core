@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_json_reader.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -53,12 +54,11 @@ void Issuers::MaybeFetch() {
 //////////////////////////////////////////////////////////////////////////////
 
 void Issuers::Fetch() {
-  DCHECK(!is_fetching_);
+  CHECK(!is_fetching_);
+
+  BLOG(1, "FetchIssuers" << BuildIssuersUrlPath());
 
   is_fetching_ = true;
-
-  BLOG(1, "FetchIssuers");
-  BLOG(2, "GET /v3/issuers/");
 
   IssuersUrlRequestBuilder url_request_builder;
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -67,14 +67,16 @@ void Issuers::Fetch() {
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&Issuers::OnFetch, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Issuers::FetchCallback, weak_factory_.GetWeakPtr()));
 }
 
-void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
+void Issuers::FetchCallback(const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnFetchIssuers");
 
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
+
+  is_fetching_ = false;
 
   if (url_response.status_code != net::HTTP_OK) {
     return FailedToFetchIssuers(/*should_retry*/ true);
@@ -93,8 +95,6 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
 void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
   StopRetrying();
 
-  is_fetching_ = false;
-
   if (delegate_) {
     delegate_->OnDidFetchIssuers(issuers);
   }
@@ -104,8 +104,6 @@ void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
 
 void Issuers::FailedToFetchIssuers(const bool should_retry) {
   BLOG(0, "Failed to fetch issuers");
-
-  is_fetching_ = false;
 
   if (delegate_) {
     delegate_->OnFailedToFetchIssuers();
@@ -117,7 +115,7 @@ void Issuers::FailedToFetchIssuers(const bool should_retry) {
 }
 
 void Issuers::FetchAfterDelay() {
-  DCHECK(!retry_timer_.IsRunning());
+  CHECK(!retry_timer_.IsRunning());
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, GetFetchDelay(),
@@ -128,11 +126,11 @@ void Issuers::FetchAfterDelay() {
 }
 
 void Issuers::RetryAfterDelay() {
-  DCHECK(!timer_.IsRunning());
+  CHECK(!timer_.IsRunning());
 
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&Issuers::OnRetry, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Issuers::RetryCallback, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching issuers "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
@@ -142,7 +140,7 @@ void Issuers::RetryAfterDelay() {
   }
 }
 
-void Issuers::OnRetry() {
+void Issuers::RetryCallback() {
   BLOG(1, "Retry fetching issuers");
 
   if (delegate_) {

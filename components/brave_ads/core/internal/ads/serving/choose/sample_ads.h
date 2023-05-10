@@ -61,8 +61,7 @@ absl::optional<T> SampleAdFromPredictors(
     }
   }
 
-  NOTREACHED() << "Sum should always be less than probability";
-  return absl::nullopt;
+  NOTREACHED_NORETURN() << "Sum should always be less than probability";
 }
 
 template <typename T>

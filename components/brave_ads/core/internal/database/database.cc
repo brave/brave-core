@@ -22,7 +22,7 @@ namespace brave_ads {
 Database::Database(base::FilePath path) : db_path_(std::move(path)) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
-  db_.set_error_callback(base::BindRepeating(&Database::OnErrorCallback,
+  db_.set_error_callback(base::BindRepeating(&Database::ErrorCallback,
                                              weak_factory_.GetWeakPtr()));
 }
 
@@ -32,8 +32,8 @@ void Database::RunTransaction(mojom::DBTransactionInfoPtr transaction,
                               mojom::DBCommandResponseInfo* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  DCHECK(transaction);
-  DCHECK(command_response);
+  CHECK(transaction);
+  CHECK(command_response);
 
   if (!db_.is_open() && !db_.Open(db_path_)) {
     command_response->status =
@@ -49,7 +49,7 @@ void Database::RunTransaction(mojom::DBTransactionInfoPtr transaction,
   }
 
   for (const auto& command : transaction->commands) {
-    DCHECK(mojom::IsKnownEnumValue(command->type));
+    CHECK(mojom::IsKnownEnumValue(command->type));
 
     mojom::DBCommandResponseInfo::StatusType status;
 
@@ -100,7 +100,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
     mojom::DBCommandResponseInfo* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  DCHECK(command_response);
+  CHECK(command_response);
 
   int table_version = 0;
 
@@ -120,7 +120,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
 
     is_initialized_ = true;
     memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
-        FROM_HERE, base::BindRepeating(&Database::OnMemoryPressure,
+        FROM_HERE, base::BindRepeating(&Database::MemoryPressureCallback,
                                        weak_factory_.GetWeakPtr()));
   } else {
     table_version = meta_table_.GetVersionNumber();
@@ -134,7 +134,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
 
 mojom::DBCommandResponseInfo::StatusType Database::Execute(
     mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   if (!is_initialized_) {
     return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
@@ -150,7 +150,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Execute(
 
 mojom::DBCommandResponseInfo::StatusType Database::Run(
     mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   if (!is_initialized_) {
     return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
@@ -177,8 +177,8 @@ mojom::DBCommandResponseInfo::StatusType Database::Run(
 mojom::DBCommandResponseInfo::StatusType Database::Read(
     mojom::DBCommandInfo* command,
     mojom::DBCommandResponseInfo* command_response) {
-  DCHECK(command);
-  DCHECK(command_response);
+  CHECK(command);
+  CHECK(command_response);
 
   if (!is_initialized_) {
     return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
@@ -221,11 +221,11 @@ mojom::DBCommandResponseInfo::StatusType Database::Migrate(
   return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
 }
 
-void Database::OnErrorCallback(const int error, sql::Statement* statement) {
+void Database::ErrorCallback(const int error, sql::Statement* statement) {
   VLOG(0) << "Database error: " << db_.GetDiagnosticInfo(error, statement);
 }
 
-void Database::OnMemoryPressure(
+void Database::MemoryPressureCallback(
     base::MemoryPressureListener::
         MemoryPressureLevel /*memory_pressure_level*/) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

@@ -36,13 +36,13 @@ bool TextClassificationResource::IsInitialized() const {
 void TextClassificationResource::Load() {
   LoadAndParseResource(
       kResourceId, kTextClassificationResourceVersion.Get(),
-      base::BindOnce(&TextClassificationResource::OnLoadAndParseResource,
+      base::BindOnce(&TextClassificationResource::LoadAndParseResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextClassificationResource::OnLoadAndParseResource(
+void TextClassificationResource::LoadAndParseResourceCallback(
     ResourceParsingErrorOr<ml::pipeline::TextProcessing> result) {
   if (!result.has_value()) {
     BLOG(0, "Failed to initialize " << kResourceId

@@ -113,8 +113,7 @@ void ReplaceTagsForText(const std::vector<std::string>& tags,
       CHECK(time_tag_value) << "Invalid time tag value: " << value;
       value = *time_tag_value;
     } else {
-      NOTREACHED() << "Unsupported tag: " << tag;
-      continue;
+      NOTREACHED_NORETURN() << "Unsupported tag: " << tag;
     }
 
     const std::string enclosed_tag =

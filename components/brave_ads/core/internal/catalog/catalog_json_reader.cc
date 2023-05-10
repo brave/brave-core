@@ -8,7 +8,6 @@
 #include <cstdint>
 
 #include "base/check.h"
-#include "base/notreached.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/ad_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -91,7 +90,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
       const std::string value = creative_set_node["value"].GetString();
       const bool success = base::StringToDouble(value, &creative_set.value);
-      DCHECK(success);
+      CHECK(success);
 
       if (creative_set_node.HasMember("embedding")) {
         for (const auto& item : creative_set_node["embedding"].GetArray()) {
@@ -286,7 +285,6 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_promoted_content_ads.push_back(creative);
         } else {
           // Unknown type
-          NOTREACHED();
           continue;
         }
       }

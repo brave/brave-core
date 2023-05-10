@@ -16,9 +16,9 @@
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
@@ -75,22 +75,22 @@ class Account final : public AdsClientNotifierObserver,
 
   void MaybeGetIssuers() const;
 
-  void OnGetDepositValue(const std::string& creative_instance_id,
-                         const AdType& ad_type,
-                         const std::string& segment,
-                         const ConfirmationType& confirmation_type,
-                         bool success,
-                         double value) const;
+  void GetDepositValueCallback(const std::string& creative_instance_id,
+                               const AdType& ad_type,
+                               const std::string& segment,
+                               const ConfirmationType& confirmation_type,
+                               bool success,
+                               double value) const;
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const std::string& segment,
                       const ConfirmationType& confirmation_type,
                       double value) const;
-  void OnDepositProcessed(const std::string& creative_instance_id,
-                          const AdType& ad_type,
-                          const ConfirmationType& confirmation_type,
-                          bool success,
-                          const TransactionInfo& transaction) const;
+  void ProcessDepositCallback(const std::string& creative_instance_id,
+                              const AdType& ad_type,
+                              const ConfirmationType& confirmation_type,
+                              bool success,
+                              const TransactionInfo& transaction) const;
   void FailedToProcessDeposit(const std::string& creative_instance_id,
                               const AdType& ad_type,
                               const ConfirmationType& confirmation_type) const;
@@ -101,7 +101,7 @@ class Account final : public AdsClientNotifierObserver,
   void WalletWasCreated(const WalletInfo& wallet) const;
   void WalletDidUpdate(const WalletInfo& wallet) const;
   void WalletDidChange(const WalletInfo& wallet) const;
-  void OnRewardsReset(bool success) const;
+  void RewardsResetCallback(bool success) const;
 
   void MaybeResetIssuersAndConfirmations();
 

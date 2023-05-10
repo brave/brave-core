@@ -25,22 +25,12 @@ CreativeAdInfo& CreativeAdInfo::operator=(CreativeAdInfo&& other) noexcept =
 
 CreativeAdInfo::~CreativeAdInfo() = default;
 
-// TODO(https://github.com/brave/brave-browser/issues/23087):
-// |base::IsApproximatelyEqual| can be removed for timestamp comparisons once
-// timestamps are persisted using |ToDeltaSinceWindowsEpoch| and
-// |FromDeltaSinceWindowsEpoch| in microseconds.
 bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
   return creative_instance_id == other.creative_instance_id &&
          creative_set_id == other.creative_set_id &&
-         campaign_id == other.campaign_id &&
-         base::IsApproximatelyEqual(start_at.ToDoubleT(),
-                                    other.start_at.ToDoubleT(),
-                                    std::numeric_limits<double>::epsilon()) &&
-         base::IsApproximatelyEqual(end_at.ToDoubleT(),
-                                    other.end_at.ToDoubleT(),
-                                    std::numeric_limits<double>::epsilon()) &&
-         daily_cap == other.daily_cap && advertiser_id == other.advertiser_id &&
-         priority == other.priority &&
+         campaign_id == other.campaign_id && start_at == other.start_at &&
+         end_at == other.end_at && daily_cap == other.daily_cap &&
+         advertiser_id == other.advertiser_id && priority == other.priority &&
          base::IsApproximatelyEqual(ptr, other.ptr,
                                     std::numeric_limits<double>::epsilon()) &&
          has_conversion == other.has_conversion && per_day == other.per_day &&

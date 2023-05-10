@@ -18,6 +18,8 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/refill_unblinded_tokens/refill_unblinded_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_factory.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
@@ -26,8 +28,6 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -46,6 +46,8 @@ bool ShouldResetIssuersAndConfirmations() {
 
 Account::Account(privacy::TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator) {
+  CHECK(token_generator_);
+
   AdsClientHelper::AddObserver(this);
 
   Initialize();
@@ -56,12 +58,12 @@ Account::~Account() {
 }
 
 void Account::AddObserver(AccountObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Account::RemoveObserver(AccountObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -120,9 +122,9 @@ void Account::Deposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const std::string& segment,
                       const ConfirmationType& confirmation_type) const {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(AdType::kUndefined, ad_type);
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
+  CHECK(!creative_instance_id.empty());
+  CHECK_NE(AdType::kUndefined, ad_type);
+  CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
   const std::unique_ptr<DepositInterface> deposit =
       DepositsFactory::Build(ad_type, confirmation_type);
@@ -132,9 +134,9 @@ void Account::Deposit(const std::string& creative_instance_id,
 
   deposit->GetValue(
       creative_instance_id,
-      base::BindOnce(&Account::OnGetDepositValue, weak_factory_.GetWeakPtr(),
-                     creative_instance_id, ad_type, segment,
-                     confirmation_type));
+      base::BindOnce(&Account::GetDepositValueCallback,
+                     weak_factory_.GetWeakPtr(), creative_instance_id, ad_type,
+                     segment, confirmation_type));
 }
 
 // static
@@ -172,12 +174,12 @@ void Account::MaybeGetIssuers() const {
   issuers_->MaybeFetch();
 }
 
-void Account::OnGetDepositValue(const std::string& creative_instance_id,
-                                const AdType& ad_type,
-                                const std::string& segment,
-                                const ConfirmationType& confirmation_type,
-                                const bool success,
-                                const double value) const {
+void Account::GetDepositValueCallback(const std::string& creative_instance_id,
+                                      const AdType& ad_type,
+                                      const std::string& segment,
+                                      const ConfirmationType& confirmation_type,
+                                      const bool success,
+                                      const double value) const {
   if (!success) {
     return FailedToProcessDeposit(creative_instance_id, ad_type,
                                   confirmation_type);
@@ -194,15 +196,16 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const double value) const {
   AddTransaction(
       creative_instance_id, segment, value, ad_type, confirmation_type,
-      base::BindOnce(&Account::OnDepositProcessed, weak_factory_.GetWeakPtr(),
-                     creative_instance_id, ad_type, confirmation_type));
+      base::BindOnce(&Account::ProcessDepositCallback,
+                     weak_factory_.GetWeakPtr(), creative_instance_id, ad_type,
+                     confirmation_type));
 }
 
-void Account::OnDepositProcessed(const std::string& creative_instance_id,
-                                 const AdType& ad_type,
-                                 const ConfirmationType& confirmation_type,
-                                 const bool success,
-                                 const TransactionInfo& transaction) const {
+void Account::ProcessDepositCallback(const std::string& creative_instance_id,
+                                     const AdType& ad_type,
+                                     const ConfirmationType& confirmation_type,
+                                     const bool success,
+                                     const TransactionInfo& transaction) const {
   if (!success) {
     return FailedToProcessDeposit(creative_instance_id, ad_type,
                                   confirmation_type);
@@ -265,11 +268,11 @@ void Account::WalletDidChange(const WalletInfo& wallet) const {
 
   NotifyWalletDidChange(wallet);
 
-  ResetRewards(
-      base::BindOnce(&Account::OnRewardsReset, weak_factory_.GetWeakPtr()));
+  ResetRewards(base::BindOnce(&Account::RewardsResetCallback,
+                              weak_factory_.GetWeakPtr()));
 }
 
-void Account::OnRewardsReset(const bool success) const {
+void Account::RewardsResetCallback(const bool success) const {
   if (!success) {
     BLOG(0, "Failed to reset rewards state");
     return;
@@ -368,13 +371,13 @@ void Account::OnNotifyPrefDidChange(const std::string& path) {
 }
 
 void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   TopUpUnblindedTokens();
 }
 
 void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   TopUpUnblindedTokens();
 }

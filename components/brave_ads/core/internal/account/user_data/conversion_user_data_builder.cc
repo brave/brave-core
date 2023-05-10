@@ -23,7 +23,7 @@ namespace brave_ads {
 void BuildVerifiableConversionUserData(
     const std::string& creative_instance_id,
     BuildVerifiableConversionUserDataCallback callback) {
-  DCHECK(!creative_instance_id.empty());
+  CHECK(!creative_instance_id.empty());
 
   const database::table::ConversionQueue database_table;
   database_table.GetForCreativeInstanceId(

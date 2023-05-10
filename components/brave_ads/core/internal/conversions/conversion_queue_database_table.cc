@@ -28,7 +28,7 @@ constexpr char kTableName[] = "conversion_queue";
 constexpr int kDefaultBatchSize = 50;
 
 void BindRecords(mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // ad_type
@@ -48,7 +48,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const ConversionQueueItemList& conversion_queue_items) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -72,7 +72,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   ConversionQueueItemInfo conversion_queue_item;
 
@@ -137,7 +137,7 @@ void OnGetForCreativeInstanceId(
 }
 
 void MigrateToV10(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   DropTable(transaction, "conversion_queue");
 
@@ -155,7 +155,7 @@ void MigrateToV10(mojom::DBTransactionInfo* transaction) {
 }
 
 void MigrateToV11(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   // Create a temporary table with new |advertiser_public_key| column
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -181,13 +181,13 @@ void MigrateToV11(mojom::DBTransactionInfo* transaction) {
 }
 
 void MigrateToV17(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   CreateTableIndex(transaction, "conversion_queue", "creative_instance_id");
 }
 
 void MigrateToV21(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   // Create a temporary table with new |ad_type| and |was_processed| column
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -222,7 +222,7 @@ void MigrateToV21(mojom::DBTransactionInfo* transaction) {
 }
 
 void MigrateToV26(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   // Create a temporary table with new |segment| column
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -255,7 +255,7 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
 }
 
 void MigrateToV28(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   // Create a temporary table with renamed |timestamp| to |process_at| column
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -416,7 +416,7 @@ std::string ConversionQueue::GetTableName() const {
 }
 
 void ConversionQueue::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -431,7 +431,7 @@ void ConversionQueue::Create(mojom::DBTransactionInfo* transaction) {
 
 void ConversionQueue::Migrate(mojom::DBTransactionInfo* transaction,
                               const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 10: {
@@ -475,7 +475,7 @@ void ConversionQueue::Migrate(mojom::DBTransactionInfo* transaction,
 void ConversionQueue::InsertOrUpdate(
     mojom::DBTransactionInfo* transaction,
     const ConversionQueueItemList& conversion_queue_items) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (conversion_queue_items.empty()) {
     return;
@@ -490,7 +490,7 @@ void ConversionQueue::InsertOrUpdate(
 std::string ConversionQueue::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const ConversionQueueItemList& conversion_queue_items) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count =
       BindParameters(command, conversion_queue_items);

@@ -22,7 +22,7 @@ constexpr char kTableName[] = "dayparts";
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const CreativeAdList& creative_ads) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -42,7 +42,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   DropTable(transaction, "dayparts");
 
@@ -57,7 +57,7 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 }
 
 void MigrateToV28(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   // Create a temporary table with renamed |expire_at| column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -89,7 +89,7 @@ void MigrateToV28(mojom::DBTransactionInfo* transaction) {
 
 void Dayparts::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                               const CreativeAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (creative_ads.empty()) {
     return;
@@ -114,7 +114,7 @@ std::string Dayparts::GetTableName() const {
 }
 
 void Dayparts::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -129,7 +129,7 @@ void Dayparts::Create(mojom::DBTransactionInfo* transaction) {
 
 void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
                        const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 24: {
@@ -153,7 +153,7 @@ void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
 std::string Dayparts::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 

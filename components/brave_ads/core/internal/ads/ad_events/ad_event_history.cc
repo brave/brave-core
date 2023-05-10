@@ -23,7 +23,7 @@ std::string GetTypeId(const std::string& ad_type,
 
 void PurgeHistoryOlderThan(std::vector<base::Time>* history,
                            const base::TimeDelta time_delta) {
-  DCHECK(history);
+  CHECK(history);
 
   const base::Time past = base::Time::Now() - time_delta;
 
@@ -43,9 +43,9 @@ void AdEventHistory::RecordForId(const std::string& id,
                                  const std::string& ad_type,
                                  const std::string& confirmation_type,
                                  const base::Time time) {
-  DCHECK(!id.empty());
-  DCHECK(!ad_type.empty());
-  DCHECK(!confirmation_type.empty());
+  CHECK(!id.empty());
+  CHECK(!ad_type.empty());
+  CHECK(!confirmation_type.empty());
 
   const std::string type_id = GetTypeId(ad_type, confirmation_type);
 
@@ -57,8 +57,8 @@ void AdEventHistory::RecordForId(const std::string& id,
 std::vector<base::Time> AdEventHistory::Get(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
-  DCHECK(!ad_type.empty());
-  DCHECK(!confirmation_type.empty());
+  CHECK(!ad_type.empty());
+  CHECK(!confirmation_type.empty());
 
   const std::string type_id = GetTypeId(ad_type, confirmation_type);
 

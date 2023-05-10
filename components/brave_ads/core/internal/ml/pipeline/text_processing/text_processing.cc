@@ -72,7 +72,7 @@ PredictionMap TextProcessing::Apply(
   const size_t transformation_count = transformations_.size();
 
   if (transformation_count == 0) {
-    DCHECK(input_data->GetType() == DataType::kVector);
+    CHECK(input_data->GetType() == DataType::kVector);
     const VectorData* const vector_data =
         static_cast<VectorData*>(input_data.get());
     return linear_model_.GetTopPredictions(*vector_data);
@@ -83,7 +83,7 @@ PredictionMap TextProcessing::Apply(
     current_data = transformations_[i]->Apply(current_data);
   }
 
-  DCHECK(current_data->GetType() == DataType::kVector);
+  CHECK(current_data->GetType() == DataType::kVector);
   const VectorData* const vector_data =
       static_cast<VectorData*>(current_data.get());
   return linear_model_.GetTopPredictions(*vector_data);

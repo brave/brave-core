@@ -42,9 +42,9 @@ class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
 
  private:
   void MaybeTriggerAdViewedEventFromQueue();
-  void OnFireAdViewedEvent(bool success,
-                           const std::string& placement_id,
-                           mojom::SearchResultAdEventType event_type);
+  void FireAdViewedEventCallback(bool success,
+                                 const std::string& placement_id,
+                                 mojom::SearchResultAdEventType event_type);
 
   // SearchResultAdEventHandlerDelegate:
   void OnDidFireSearchResultAdViewedEvent(

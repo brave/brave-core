@@ -37,13 +37,13 @@ class VectorDataStorage {
       : dimension_count_(dimension_count),
         points_(std::move(points)),
         values_(std::move(values)) {
-    DCHECK((points_.size() == values_.size() || points_.empty()));
+    CHECK((points_.size() == values_.size() || points_.empty()));
   }
 
   size_t GetSize() const { return values_.size(); }
 
   uint32_t GetPointAt(size_t index) const {
-    DCHECK_LT(index, values_.size());
+    CHECK_LT(index, values_.size());
     if (points_.empty()) {  // The "dense" case, see the description.
       return index;
     }
@@ -196,7 +196,7 @@ void VectorData::Normalize() {
 }
 
 float VectorData::ComputeSimilarity(const VectorData& other) const {
-  DCHECK(GetDimensionCount() == other.GetDimensionCount());
+  CHECK(GetDimensionCount() == other.GetDimensionCount());
   return (*this * other) / (GetNorm() * other.GetNorm());
 }
 

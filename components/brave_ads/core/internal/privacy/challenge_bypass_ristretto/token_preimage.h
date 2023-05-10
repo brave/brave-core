@@ -42,12 +42,12 @@ class TokenPreimage {
   }
 
   challenge_bypass_ristretto::TokenPreimage& get() {
-    DCHECK(token_preimage_);
+    CHECK(token_preimage_);
     return *token_preimage_;
   }
 
   const challenge_bypass_ristretto::TokenPreimage& get() const {
-    DCHECK(token_preimage_);
+    CHECK(token_preimage_);
     return *token_preimage_;
   }
 

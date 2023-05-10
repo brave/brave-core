@@ -32,7 +32,7 @@ constexpr uint8_t kHKDFSalt[] = {
 
 absl::optional<std::vector<uint8_t>> GetHKDF(
     const std::vector<uint8_t>& secret) {
-  DCHECK(!secret.empty());
+  CHECK(!secret.empty());
 
   std::vector<uint8_t> derived_key(kHKDFSeedLength);
 
@@ -48,7 +48,7 @@ absl::optional<std::vector<uint8_t>> GetHKDF(
 }
 
 KeyPairInfo GenerateSignKeyPairFromSecret(const std::vector<uint8_t>& secret) {
-  DCHECK(!secret.empty());
+  CHECK(!secret.empty());
 
   std::vector<uint8_t> secret_key = secret;
   secret_key.resize(crypto_sign_SECRETKEYBYTES);

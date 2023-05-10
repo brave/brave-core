@@ -24,7 +24,7 @@ constexpr char kTableName[] = "embeddings";
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const CreativeAdList& creative_ads) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -42,7 +42,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 void MigrateToV27(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -57,7 +57,7 @@ void MigrateToV27(mojom::DBTransactionInfo* transaction) {
 
 void Embeddings::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                 const CreativeAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (creative_ads.empty()) {
     return;
@@ -82,7 +82,7 @@ std::string Embeddings::GetTableName() const {
 }
 
 void Embeddings::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -95,7 +95,7 @@ void Embeddings::Create(mojom::DBTransactionInfo* transaction) {
 
 void Embeddings::Migrate(mojom::DBTransactionInfo* transaction,
                          const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 27: {
@@ -114,7 +114,7 @@ void Embeddings::Migrate(mojom::DBTransactionInfo* transaction,
 std::string Embeddings::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 

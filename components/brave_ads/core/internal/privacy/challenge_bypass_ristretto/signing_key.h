@@ -45,12 +45,12 @@ class SigningKey {
   bool has_value() const { return signing_key_.has_value(); }
 
   challenge_bypass_ristretto::SigningKey& get() {
-    DCHECK(signing_key_);
+    CHECK(signing_key_);
     return *signing_key_;
   }
 
   const challenge_bypass_ristretto::SigningKey& get() const {
-    DCHECK(signing_key_);
+    CHECK(signing_key_);
     return *signing_key_;
   }
 

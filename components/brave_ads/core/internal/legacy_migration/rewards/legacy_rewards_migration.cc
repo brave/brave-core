@@ -38,9 +38,8 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 }
 
 void OnMigrate(InitializeCallback callback,
-               const bool success,
-               const std::string& json) {
-  if (!success) {
+               const absl::optional<std::string>& json) {
+  if (!json) {
     // Confirmations state does not exist
     return SuccessfullyMigrated(std::move(callback));
   }
@@ -48,7 +47,7 @@ void OnMigrate(InitializeCallback callback,
   BLOG(3, "Migrating rewards state");
 
   const absl::optional<TransactionList> transactions =
-      BuildTransactionsFromJson(json);
+      BuildTransactionsFromJson(*json);
   if (!transactions) {
     BLOG(0, "Failed to parse rewards state");
     return FailedToMigrate(std::move(callback));

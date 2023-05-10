@@ -39,21 +39,21 @@ EligibleInlineContentAdsV1::~EligibleInlineContentAdsV1() = default;
 void EligibleInlineContentAdsV1::GetForUserModel(
     UserModelInfo user_model,
     const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads:");
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
-      base::BindOnce(&EligibleInlineContentAdsV1::OnGetForUserModel,
+      base::BindOnce(&EligibleInlineContentAdsV1::GetForUserModelCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      dimensions, std::move(callback)));
 }
 
-void EligibleInlineContentAdsV1::OnGetForUserModel(
+void EligibleInlineContentAdsV1::GetForUserModelCallback(
     UserModelInfo user_model,
     const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -72,7 +72,7 @@ void EligibleInlineContentAdsV1::GetBrowsingHistory(
     UserModelInfo user_model,
     const std::string& dimensions,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
       base::BindOnce(&EligibleInlineContentAdsV1::GetEligibleAds,
@@ -84,7 +84,7 @@ void EligibleInlineContentAdsV1::GetEligibleAds(
     UserModelInfo user_model,
     const std::string& dimensions,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   GetForChildSegments(std::move(user_model), dimensions, ad_events,
                       browsing_history, std::move(callback));
@@ -95,7 +95,7 @@ void EligibleInlineContentAdsV1::GetForChildSegments(
     const std::string& dimensions,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   const SegmentList segments = GetTopChildSegments(user_model);
   if (segments.empty()) {
     return GetForParentSegments(user_model, dimensions, ad_events,
@@ -110,18 +110,18 @@ void EligibleInlineContentAdsV1::GetForChildSegments(
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       segments, dimensions,
-      base::BindOnce(&EligibleInlineContentAdsV1::OnGetForChildSegments,
+      base::BindOnce(&EligibleInlineContentAdsV1::GetForChildSegmentsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      dimensions, ad_events, browsing_history,
                      std::move(callback)));
 }
 
-void EligibleInlineContentAdsV1::OnGetForChildSegments(
+void EligibleInlineContentAdsV1::GetForChildSegmentsCallback(
     const UserModelInfo& user_model,
     const std::string& dimensions,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeInlineContentAdList& creative_ads) {
@@ -152,7 +152,7 @@ void EligibleInlineContentAdsV1::GetForParentSegments(
     const std::string& dimensions,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   const SegmentList segments = GetTopParentSegments(user_model);
   if (segments.empty()) {
     return GetForUntargeted(dimensions, ad_events, browsing_history,
@@ -167,16 +167,16 @@ void EligibleInlineContentAdsV1::GetForParentSegments(
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       segments, dimensions,
-      base::BindOnce(&EligibleInlineContentAdsV1::OnGetForParentSegments,
+      base::BindOnce(&EligibleInlineContentAdsV1::GetForParentSegmentsCallback,
                      weak_factory_.GetWeakPtr(), dimensions, ad_events,
                      browsing_history, std::move(callback)));
 }
 
-void EligibleInlineContentAdsV1::OnGetForParentSegments(
+void EligibleInlineContentAdsV1::GetForParentSegmentsCallback(
     const std::string& dimensions,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeInlineContentAdList& creative_ads) {
@@ -206,21 +206,21 @@ void EligibleInlineContentAdsV1::GetForUntargeted(
     const std::string& dimensions,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       {kUntargeted}, dimensions,
-      base::BindOnce(&EligibleInlineContentAdsV1::OnGetForUntargeted,
+      base::BindOnce(&EligibleInlineContentAdsV1::GetForUntargetedCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,
                      std::move(callback)));
 }
 
-void EligibleInlineContentAdsV1::OnGetForUntargeted(
+void EligibleInlineContentAdsV1::GetForUntargetedCallback(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeInlineContentAdList& creative_ads) {

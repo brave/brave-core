@@ -31,7 +31,6 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_value_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_value_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -56,7 +55,7 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
   base::Value::List list;
 
   for (const auto& confirmation : confirmations) {
-    DCHECK(IsValid(confirmation));
+    CHECK(IsValid(confirmation));
 
     base::Value::Dict dict;
 
@@ -150,24 +149,23 @@ void ConfirmationStateManager::Initialize(const WalletInfo& wallet,
 
   AdsClientHelper::GetInstance()->Load(
       kConfirmationStateFilename,
-      base::BindOnce(&ConfirmationStateManager::OnLoaded,
+      base::BindOnce(&ConfirmationStateManager::LoadedCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ConfirmationStateManager::OnLoaded(InitializeCallback callback,
-                                        const bool success,
-                                        const std::string& json) {
-  if (!success) {
+void ConfirmationStateManager::LoadedCallback(
+    InitializeCallback callback,
+    const absl::optional<std::string>& json) {
+  if (!json) {
     BLOG(3, "Confirmations state does not exist, creating default state");
 
     is_initialized_ = true;
 
     Save();
   } else {
-    if (!FromJson(json)) {
+    if (!FromJson(*json)) {
       BLOG(0, "Failed to load confirmations state");
-
-      BLOG(3, "Failed to parse confirmations state: " << json);
+      BLOG(3, "Failed to parse confirmations state: " << *json);
 
       return std::move(callback).Run(/*success*/ false);
     }
@@ -256,7 +254,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
         return absl::nullopt;
       }
 
-      DCHECK(wallet_.IsValid());
+      CHECK(wallet_.IsValid());
       const absl::optional<std::string> signature =
           crypto::Sign(*unblinded_token_base64, wallet_.secret_key);
       if (!signature) {
@@ -287,7 +285,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
 bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     const base::Value::Dict& dict,
     ConfirmationList* confirmations) const {
-  DCHECK(confirmations);
+  CHECK(confirmations);
 
   // Confirmations
   const auto* const list = dict.FindList("failed_confirmations");
@@ -375,23 +373,23 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
 
 const ConfirmationList& ConfirmationStateManager::GetFailedConfirmations()
     const {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
   return failed_confirmations_;
 }
 
 void ConfirmationStateManager::AppendFailedConfirmation(
     const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
   failed_confirmations_.push_back(confirmation);
 }
 
 bool ConfirmationStateManager::RemoveFailedConfirmation(
     const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const auto iter =
       base::ranges::find(failed_confirmations_, confirmation.transaction_id,
@@ -474,7 +472,7 @@ bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
       privacy::UnblindedTokensFromValue(*list);
 
   if (!filtered_unblinded_tokens.empty()) {
-    DCHECK(wallet_.IsValid());
+    CHECK(wallet_.IsValid());
     const std::string public_key = wallet_.public_key;
 
     filtered_unblinded_tokens.erase(

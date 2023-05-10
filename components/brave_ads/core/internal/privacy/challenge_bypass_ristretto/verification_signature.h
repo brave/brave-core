@@ -43,12 +43,12 @@ class VerificationSignature {
   }
 
   challenge_bypass_ristretto::VerificationSignature& get() {
-    DCHECK(verification_signature_);
+    CHECK(verification_signature_);
     return *verification_signature_;
   }
 
   const challenge_bypass_ristretto::VerificationSignature& get() const {
-    DCHECK(verification_signature_);
+    CHECK(verification_signature_);
     return *verification_signature_;
   }
 

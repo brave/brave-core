@@ -17,7 +17,7 @@ namespace {
 
 std::string GetUrlHost(const UrlHostType type) {
   std::unique_ptr<UrlHostInterface> url_host = UrlHostFactory::Build(type);
-  DCHECK(url_host);
+  CHECK(url_host);
 
   return url_host->Get();
 }

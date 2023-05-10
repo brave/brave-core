@@ -33,14 +33,16 @@ class DatabaseManager final {
   void CreateOrOpen(ResultCallback callback);
 
  private:
-  void OnCreateOrOpen(ResultCallback callback,
-                      mojom::DBCommandResponseInfoPtr command_response);
+  void CreateOrOpenCallback(ResultCallback callback,
+                            mojom::DBCommandResponseInfoPtr command_response);
 
   void Create(ResultCallback callback) const;
-  void OnCreate(ResultCallback callback, bool success) const;
+  void CreateCallback(ResultCallback callback, bool success) const;
 
   void MaybeMigrate(int from_version, ResultCallback callback) const;
-  void OnMigrate(int from_version, ResultCallback callback, bool success) const;
+  void MigrateCallback(int from_version,
+                       ResultCallback callback,
+                       bool success) const;
 
   void NotifyWillCreateOrOpenDatabase() const;
   void NotifyDidCreateOrOpenDatabase() const;

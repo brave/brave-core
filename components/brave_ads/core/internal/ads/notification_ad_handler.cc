@@ -73,7 +73,7 @@ void NotificationAdHandler::MaybeServeAtRegularIntervals() {
 void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   event_handler_.FireEvent(placement_id, event_type);
 }

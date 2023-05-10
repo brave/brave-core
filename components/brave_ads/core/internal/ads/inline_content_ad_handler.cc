@@ -47,7 +47,7 @@ void InlineContentAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   event_handler_.FireEvent(placement_id, creative_instance_id, event_type);
 }

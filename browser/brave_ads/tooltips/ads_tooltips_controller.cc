@@ -19,7 +19,7 @@ namespace brave_ads {
 
 AdsTooltipsController::AdsTooltipsController(Profile* profile)
     : profile_(profile) {
-  DCHECK(profile_);
+  CHECK(profile_);
 }
 
 AdsTooltipsController::~AdsTooltipsController() = default;

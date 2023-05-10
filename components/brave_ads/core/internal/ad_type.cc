@@ -40,12 +40,12 @@ AdType::AdType(const std::string& value) {
   } else if (value == kSearchResultAdType) {
     value_ = kSearchResultAd;
   } else {
-    NOTREACHED();
+    NOTREACHED_NORETURN();
   }
 }
 
 AdType::AdType(const mojom::AdType value) {
-  DCHECK(mojom::IsKnownEnumValue(value));
+  CHECK(mojom::IsKnownEnumValue(value));
 
   switch (value) {
     case mojom::AdType::kUndefined: {
@@ -111,8 +111,7 @@ std::string AdType::ToString() const {
     }
   }
 
-  NOTREACHED() << "Unexpected value for Value: " << value_;
-  return kUndefinedType;
+  NOTREACHED_NORETURN() << "Unexpected value for Value: " << value_;
 }
 
 bool operator==(const AdType& lhs, const AdType& rhs) {

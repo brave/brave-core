@@ -27,7 +27,7 @@ bool DidOverrideCommandLineSwitchValues() {
 
   return base::ranges::any_of(
       kSwitches, [command_line](const auto* const switch_string) {
-        DCHECK(switch_string);
+        CHECK(switch_string);
         return !command_line->GetSwitchValueASCII(switch_string).empty();
       });
 }

@@ -20,8 +20,8 @@ class ConfirmationUserDataBuilder final : public UserDataBuilderInterface {
   void Build(UserDataBuilderCallback callback) const override;
 
  private:
-  void OnGetConversion(UserDataBuilderCallback callback,
-                       base::Value::Dict user_data) const;
+  void GetConversionCallback(UserDataBuilderCallback callback,
+                             base::Value::Dict user_data) const;
 
   TransactionInfo transaction_;
 
