@@ -1040,7 +1040,6 @@ extension Strings {
   public static let blockAdsAndTrackingDescription = NSLocalizedString("BlockAdsAndTrackingDescription", tableName: "BraveShared", bundle: .module, value: "Prevents ads, popups, and trackers from loading.", comment: "")
   public static let HTTPSEverywhere = NSLocalizedString("HTTPSEverywhere", tableName: "BraveShared", bundle: .module, value: "Upgrade Connections to HTTPS", comment: "")
   public static let HTTPSEverywhereDescription = NSLocalizedString("HTTPSEverywhereDescription", tableName: "BraveShared", bundle: .module, value: "Opens sites using secure HTTPS instead of HTTP when possible.", comment: "")
-  public static let blockPhishingAndMalware = NSLocalizedString("BlockPhishingAndMalware", tableName: "BraveShared", bundle: .module, value: "Block Phishing and Malware", comment: "")
   public static let googleSafeBrowsing = NSLocalizedString("GoogleSafeBrowsing", tableName: "BraveShared", bundle: .module, value: "Block Dangerous Sites", comment: "")
   public static let googleSafeBrowsingUsingWebKitDescription = NSLocalizedString("GoogleSafeBrowsingUsingWebKitDescription", tableName: "BraveShared", bundle: .module, value: "Sends obfuscated URLs of some pages you visit to the Google Safe Browsing service, when your security is at risk.", comment: "")
   public static let blockScripts = NSLocalizedString("BlockScripts", tableName: "BraveShared", bundle: .module, value: "Block Scripts", comment: "")

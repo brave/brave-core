@@ -2991,7 +2991,6 @@ extension BrowserViewController: PreferencesObserver {
       tabManager.selectedTab?.updatePullToRefreshVisibility()
     case Preferences.Shields.blockAdsAndTracking.key,
       Preferences.Shields.blockScripts.key,
-      Preferences.Shields.blockPhishingAndMalware.key,
       Preferences.Shields.blockImages.key,
       Preferences.Shields.fingerprintingProtection.key,
       Preferences.Shields.useRegionAdBlock.key:

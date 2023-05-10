@@ -110,8 +110,6 @@ public final class Domain: NSManagedObject, CRUD {
         return self.shield_allOff?.boolValue ?? false
       case .AdblockAndTp:
         return self.shield_adblockAndTp?.boolValue ?? Preferences.Shields.blockAdsAndTracking.value
-      case .SafeBrowsing:
-        return self.shield_safeBrowsing?.boolValue ?? Preferences.Shields.blockPhishingAndMalware.value
       case .FpProtection:
         return self.shield_fpProtection?.boolValue ?? Preferences.Shields.fingerprintingProtection.value
       case .NoScript:
@@ -402,7 +400,6 @@ extension Domain {
     switch shield {
     case .AllOff: shield_allOff = setting
     case .AdblockAndTp: shield_adblockAndTp = setting
-    case .SafeBrowsing: shield_safeBrowsing = setting
     case .FpProtection: shield_fpProtection = setting
     case .NoScript: shield_noScript = setting
     }
@@ -415,8 +412,6 @@ extension Domain {
       return self.shield_allOff?.boolValue
     case .AdblockAndTp:
       return self.shield_adblockAndTp?.boolValue
-    case .SafeBrowsing:
-      return self.shield_safeBrowsing?.boolValue
     case .FpProtection:
       return self.shield_fpProtection?.boolValue
     case .NoScript:

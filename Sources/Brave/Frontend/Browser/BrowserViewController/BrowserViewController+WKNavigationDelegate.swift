@@ -253,8 +253,6 @@ extension BrowserViewController: WKNavigationDelegate {
       }
       
       let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
-      // Enable safe browsing (frodulent website warnings)
-      webView.configuration.preferences.isFraudulentWebsiteWarningEnabled = domainForMainFrame.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true)
       
       // Debouncing logic
       // Handle debouncing for main frame only and only if the site (etld+1) changes

@@ -62,7 +62,6 @@ class DomainTests: CoreDataTestCase {
   @MainActor func testDefaultShieldSettings() {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
     XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
     XCTAssertTrue(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
@@ -79,7 +78,6 @@ class DomainTests: CoreDataTestCase {
     }
 
     XCTAssertFalse(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: false))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
@@ -89,7 +87,6 @@ class DomainTests: CoreDataTestCase {
     }
 
     XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
     XCTAssertTrue(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
@@ -97,32 +94,19 @@ class DomainTests: CoreDataTestCase {
 
   /// Tests non-HTTPSE shields
   @MainActor func testNormalShieldSettings() {
-
-    backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(forUrl: url2HTTPS, shield: .SafeBrowsing, isOn: true, isPrivateBrowsing: false)
-    }
-
     backgroundSaveAndWaitForExpectation {
       Domain.setBraveShield(forUrl: url2HTTPS, shield: .AdblockAndTp, isOn: false, isPrivateBrowsing: false)
     }
+    
     let domain = Domain.getOrCreate(forUrl: url2HTTPS, persistent: true)
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
-
     // These should be the same in this situation
     XCTAssertFalse(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-
-    // Setting to "new" values
-    // Setting to same value
-    backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(forUrl: url2HTTPS, shield: .SafeBrowsing, isOn: true, isPrivateBrowsing: false)
-    }
 
     backgroundSaveAndWaitForExpectation {
       Domain.setBraveShield(forUrl: url2HTTPS, shield: .AdblockAndTp, isOn: true, isPrivateBrowsing: false)
     }
 
     domain.managedObjectContext?.refreshAllObjects()
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
     XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
   }
 
@@ -198,30 +182,5 @@ class DomainTests: CoreDataTestCase {
       Domain.clearAllWalletPermissions(for: .sol)
     }
     XCTAssertFalse(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
-  }
-  
-  @MainActor func testSafeBrowsing() {
-    Preferences.Shields.blockPhishingAndMalware.reset()
-    DataController.shared = DataController()
-    DataController.shared.initializeOnce()
-    
-    let urls = [
-      URL(string: "http://brave.com")!,
-      URL(string: "https://brave.com")!,
-      URL(string: "https://www.brave.com")!,
-      URL(string: "https://example.com")!
-    ]
-    
-    for url in urls {
-      let domain = Domain.getOrCreate(forUrl: url, persistent: false)
-      XCTAssertTrue(domain.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true))
-    }
-    
-    Preferences.Shields.blockPhishingAndMalware.value = false
-    
-    for url in urls {
-      let domain = Domain.getOrCreate(forUrl: url, persistent: false)
-      XCTAssertFalse(domain.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true))
-    }
   }
 }
