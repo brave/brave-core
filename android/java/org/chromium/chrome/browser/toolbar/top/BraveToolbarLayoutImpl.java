@@ -193,6 +193,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private static final long MINUTES_10 = 10 * 60 * 1000;
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
 
+    private static final int PLAYLIST_MEDIA_COUNT_LIMIT = 3;
+
     private PlaylistServiceObserverImpl mPlaylistServiceObserver;
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
@@ -686,7 +688,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                         new PlaylistWarningDialogListener() {
                                             @Override
                                             public void onActionClicked() {
-                                                // addMediaToPlaylist(contentUrl, viewGroup);
                                                 addMediaToPlaylist(items);
                                             }
 
@@ -709,7 +710,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                         playlistWarningDialogListener);
 
                             } else {
-                                // addMediaToPlaylist(contentUrl, viewGroup);
                                 addMediaToPlaylist(items);
                             }
                         } else if (playlistOptionsModel.getOptionType()
@@ -740,8 +740,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                                 new PlaylistOnboardingActionClickListener() {
                                                     @Override
                                                     public void onOnboardingActionClick() {
-                                                        // addMediaToPlaylist(contentUrl,
-                                                        // viewGroup);
                                                         addMediaToPlaylist(items);
                                                     }
                                                 };
@@ -772,17 +770,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 items, ConstantUtils.DEFAULT_PLAYLIST, shouldCacheMediaFilesForPlaylist());
         int mediaCount = SharedPreferencesManager.getInstance().readInt(
                 PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
-        if (mediaCount < 3) {
+        if (mediaCount < PLAYLIST_MEDIA_COUNT_LIMIT) {
             SharedPreferencesManager.getInstance().writeInt(
                     PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
         }
     }
 
     private void addMediaToPlaylist() {
-        if (mPlaylistService == null) {
+        Tab currentTab = getToolbarDataProvider().getTab();
+        if (mPlaylistService == null || currentTab == null) {
             return;
         }
-        Tab currentTab = getToolbarDataProvider().getTab();
         org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
         contentUrl.url = currentTab.getUrl().getSpec();
         mPlaylistService.addMediaFilesFromPageToPlaylist(
