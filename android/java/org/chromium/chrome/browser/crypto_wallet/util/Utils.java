@@ -1039,6 +1039,8 @@ public class Utils {
             case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
                 logo = "ftm.png";
                 break;
+            case BraveWalletConstants.FILECOIN_MAINNET:
+            case BraveWalletConstants.FILECOIN_TESTNET:
             case BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID:
             case BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID:
                 logo = "fil.png";

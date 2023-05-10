@@ -238,6 +238,7 @@ public class AssetUtils {
             put(BraveWalletConstants.SEPOLIA_CHAIN_ID, Arrays.asList("eth"));
             put(BraveWalletConstants.SOLANA_TESTNET, Arrays.asList("sol"));
             put(BraveWalletConstants.SOLANA_DEVNET, Arrays.asList("sol"));
+            put(BraveWalletConstants.FILECOIN_TESTNET, Arrays.asList("fil"));
         }
     };
     public static String httpifyIpfsUrl(String url) {
