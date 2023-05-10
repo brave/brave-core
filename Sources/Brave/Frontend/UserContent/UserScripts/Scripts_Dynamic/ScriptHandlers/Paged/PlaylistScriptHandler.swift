@@ -19,7 +19,7 @@ enum PlaylistItemAddedState {
 
 protocol PlaylistScriptHandlerDelegate: NSObject {
   func updatePlaylistURLBar(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?)
-  func showPlaylistPopover(tab: Tab?, state: PlaylistPopoverState)
+  func showPlaylistPopover(tab: Tab?)
   func showPlaylistToast(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?)
   func showPlaylistAlert(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?)
   func showPlaylistOnboarding(tab: Tab?)

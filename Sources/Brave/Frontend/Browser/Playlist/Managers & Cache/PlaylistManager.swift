@@ -243,7 +243,12 @@ public class PlaylistManager: NSObject {
   }
   
   public func setupPlaylistFolder() {
-    if PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID) == nil {
+    if let savedFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID) {
+      if savedFolder.title != Strings.PlaylistFolders.playlistSavedFolderTitle {
+        // This title may change so we should update it
+        savedFolder.title = Strings.PlaylistFolders.playlistSavedFolderTitle
+      }
+    } else {
       PlaylistFolder.addFolder(title: Strings.PlaylistFolders.playlistSavedFolderTitle, uuid: PlaylistFolder.savedFolderUUID) { uuid in
         Logger.module.debug("Created Playlist Folder: \(uuid)")
       }

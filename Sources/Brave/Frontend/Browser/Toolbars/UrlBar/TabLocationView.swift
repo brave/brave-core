@@ -16,6 +16,7 @@ protocol TabLocationViewDelegate {
   func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView)
   func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapPlaylist(_ tabLocationView: TabLocationView)
+  func tabLocationViewDidTapPlaylistMenuAction(_ tabLocationView: TabLocationView, action: PlaylistURLBarButton.MenuAction)
   func tabLocationViewDidTapLockImageView(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView)
   func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton)
@@ -264,7 +265,6 @@ class TabLocationView: UIView {
 
     // Visual centering
     rewardsButton.contentEdgeInsets = .init(top: 1, left: 5, bottom: 1, right: 5)
-    playlistButton.contentEdgeInsets = .init(top: 2, left: 10, bottom: 2, right: 6)
     
     urlTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
@@ -292,6 +292,10 @@ class TabLocationView: UIView {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         self?.updateColors(isPrivateBrowsing)
       })
+    
+    playlistButton.menuActionHandler = { [unowned self] action in
+      self.delegate?.tabLocationViewDidTapPlaylistMenuAction(self, action: action)
+    }
     
     updateForTraitCollection()
   }

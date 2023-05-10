@@ -16,63 +16,44 @@ import Onboarding
 
 extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSharingScriptHandlerDelegate {
 
-  private func createPlaylistPopover(tab: Tab?, state: PlaylistPopoverState) -> PopoverController {
+  func createPlaylistPopover(item: PlaylistInfo, tab: Tab?) -> PopoverController {
+    
+    let folderName = PlaylistItem.getItem(uuid: item.tagId)?.playlistFolder?.title ?? Strings.PlaylistFolders.playlistSavedFolderTitle
+
     return PopoverController(
-      contentController: PlaylistPopoverViewController(state: state).then {
-        $0.rootView.onPrimaryButtonPressed = { [weak self, weak tab] in
-          guard let self = self,
-            let selectedTab = tab,
-            let item = selectedTab.playlistItem
-          else { return }
-
-          switch state {
-          case .addToPlaylist:
-            // Dismiss popover
-            UIImpactFeedbackGenerator(style: .medium).bzzt()
-            self.dismiss(animated: true, completion: nil)
-
-            // Update playlist with new items.
-            self.addToPlaylist(item: item) { [weak self] didAddItem in
-              guard let self = self else { return }
-
-              if didAddItem {
-                self.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
-              }
-            }
-
-          case .addedToPlaylist:
-            // Dismiss popover
-            UIImpactFeedbackGenerator(style: .medium).bzzt()
-
-            self.dismiss(animated: true) {
-              DispatchQueue.main.async {
-                if let webView = tab?.webView {
-                  PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
-                    self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
-                  }
-                } else {
-                  self.openPlaylist(tab: tab, item: item, playbackOffset: 0.0)
+      content: PlaylistPopoverView(folderName: folderName) { [weak self] action in
+        guard let self = self,
+              let selectedTab = tab,
+              let item = selectedTab.playlistItem else {
+          return
+        }
+        // Dismiss popover
+        UIImpactFeedbackGenerator(style: .medium).bzzt()
+        
+        self.dismiss(animated: true) {
+          switch action {
+          case .openPlaylist:
+            DispatchQueue.main.async {
+              if let webView = tab?.webView {
+                PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
+                  self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                 }
+              } else {
+                self.openPlaylist(tab: tab, item: item, playbackOffset: 0.0)
               }
             }
+          case .changeFolders:
+            guard let item = PlaylistItem.getItem(uuid: item.tagId) else { return }
+            let controller = PlaylistChangeFoldersViewController(item: item)
+            self.present(controller, animated: true)
+          case .timedOut:
+            // Just dismisses
+            break
           }
         }
-
-        $0.rootView.onSecondaryButtonPressed = { [weak tab] in
-          guard let selectedTab = tab,
-            let item = selectedTab.playlistItem
-          else { return }
-          UIImpactFeedbackGenerator(style: .medium).bzzt()
-
-          self.dismiss(animated: true)
-
-          DispatchQueue.main.async {
-            if PlaylistManager.shared.delete(item: item) {
-              self.updatePlaylistURLBar(tab: tab, state: .newItem, item: item)
-            }
-          }
-        }
-      })
+      },
+      contentSizeBehavior: .autoLayout(.phoneWidth)
+    )
   }
 
   func updatePlaylistURLBar(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
@@ -103,41 +84,14 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
           toolbar?.menuButton.removeBadge(.playlist, animated: true)
         }
       case .existingItem:
-        topToolbar.updatePlaylistButtonState(shouldShowPlaylistURLBarButton ? .addedToPlaylist : .none)
+        topToolbar.updatePlaylistButtonState(shouldShowPlaylistURLBarButton ? .addedToPlaylist(item) : .none)
         topToolbar.menuButton.removeBadge(.playlist, animated: true)
         toolbar?.menuButton.removeBadge(.playlist, animated: true)
       }
     }
   }
 
-  func showPlaylistPopover(tab: Tab?, state: PlaylistPopoverState) {
-    guard let selectedTab = tabManager.selectedTab,
-      tab == selectedTab,
-      let playlistItem = selectedTab.playlistItem
-    else {
-      return
-    }
-
-    if state == .addToPlaylist {
-      UIImpactFeedbackGenerator(style: .medium).bzzt()
-
-      // Update playlist with new items.
-      self.addToPlaylist(item: playlistItem) { [weak self] didAddItem in
-        guard let self = self else { return }
-
-        if didAddItem {
-          self.updatePlaylistURLBar(tab: tab, state: .existingItem, item: playlistItem)
-
-          DispatchQueue.main.async {
-            self.showPlaylistPopover(tab: tab, state: .addedToPlaylist)
-          }
-        }
-      }
-      return
-    }
-
-    let popover = createPlaylistPopover(tab: tab, state: state)
-    popover.present(from: topToolbar.locationView.playlistButton, on: self)
+  func showPlaylistPopover(tab: Tab?) {
   }
 
   func showPlaylistToast(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
@@ -308,7 +262,17 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
     }
   }
 
-  func openPlaylist(tab: Tab?, item: PlaylistInfo?, playbackOffset: Double, folderSharingPageUrl: String? = nil) {
+  func openPlaylist(tab: Tab?, item: PlaylistInfo?, folderSharingPageUrl: String? = nil) {
+    if let item, let webView = tab?.webView {
+      PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
+        self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime, folderSharingPageUrl: folderSharingPageUrl)
+      }
+    } else {
+      openPlaylist(tab: tab, item: item, playbackOffset: 0.0, folderSharingPageUrl: folderSharingPageUrl)
+    }
+  }
+  
+  private func openPlaylist(tab: Tab?, item: PlaylistInfo?, playbackOffset: Double, folderSharingPageUrl: String? = nil) {
     let playlistController = PlaylistCarplayManager.shared.getPlaylistController(tab: tab,
                                                                                  initialItem: item,
                                                                                  initialItemPlaybackOffset: playbackOffset)
@@ -345,7 +309,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
     }
   }
 
-  func addToPlaylist(item: PlaylistInfo, completion: ((_ didAddItem: Bool) -> Void)?) {
+  func addToPlaylist(item: PlaylistInfo, folderUUID: String? = nil, completion: ((_ didAddItem: Bool) -> Void)? = nil) {
     if PlaylistManager.shared.isDiskSpaceEncumbered() {
       let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
       let alert = UIAlertController(
@@ -360,7 +324,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
             self.addToPlayListActivityItem = nil
 
             AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
-            PlaylistItem.addItem(item, cachedData: nil) { [weak self] in
+            PlaylistItem.addItem(item, folderUUID: folderUUID, cachedData: nil) { [weak self] in
               guard let self = self else { return }
               PlaylistManager.shared.autoDownload(item: item)
 
@@ -388,7 +352,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
       addToPlayListActivityItem = nil
 
       AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
-      PlaylistItem.addItem(item, cachedData: nil) { [weak self] in
+      PlaylistItem.addItem(item, folderUUID: folderUUID, cachedData: nil) { [weak self] in
         guard let self = self else { return }
         PlaylistManager.shared.autoDownload(item: item)
 

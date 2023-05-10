@@ -1457,6 +1457,31 @@ extension Strings {
       NSLocalizedString("playList.removeActionButtonTitle", tableName: "BraveShared", bundle: .module,
         value: "Remove",
         comment: "Title for removing offline mode storage")
+    
+    public static let addedToPlaylistMessage =
+      NSLocalizedString("playList.addedToPlaylistMessage", tableName: "BraveShared", bundle: .module,
+                      value: "Added to %@",
+                      comment: "A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later'")
+    
+    public static let removedFromPlaylistMessage =
+      NSLocalizedString("playList.removedFromPlaylistMessage", tableName: "BraveShared", bundle: .module,
+                      value: "Removed from %@",
+                      comment: "A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later'")
+    
+    public static let openInPlaylistButtonTitle =
+      NSLocalizedString("playList.openInPlaylistButtonTitle", tableName: "BraveShared", bundle: .module,
+                      value: "Open In Playlist",
+                      comment: "Title for opening the playlist")
+    
+    public static let changeFoldersButtonTitle =
+      NSLocalizedString("playList.changeFoldersButtonTitle", tableName: "BraveShared", bundle: .module,
+                        value: "Change Playlist",
+                        comment: "Title for changing the folder of the current media playlist item")
+    
+    public static let undoRemoveButtonTitle =
+      NSLocalizedString("playList.undoRemoveButtonTitle", tableName: "BraveShared", bundle: .module,
+                      value: "Undo",
+                      comment: "A button title that when tapped will re-add the media item (undo the removal) that the user recently removed.")
 
     public static let noticeAlertTitle =
       NSLocalizedString("playList.noticeAlertTitle", tableName: "BraveShared", bundle: .module,
@@ -1758,31 +1783,11 @@ extension Strings {
         value: "Adding video and audio files for offline use can use a lot of storage on your device. Please remove some files to free up storage space.",
         comment: "When the user's disk space is almost full")
 
-    public static let playlistPopoverAddTitle =
-      NSLocalizedString("playlist.popoverAddTitle", tableName: "BraveShared", bundle: .module,
-        value: "Would you like to add this media to your Brave Playlist?",
-        comment: "Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar")
-
-    public static let playlistPopoverAddBody =
-      NSLocalizedString("playlist.popoverAddBody", tableName: "BraveShared", bundle: .module,
-        value: "Brave Playlists support Offline Playback, Picture-in-picture, continuous playback and repeat modes.",
-        comment: "Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar")
-
-    public static let playlistPopoverAddedTitle =
-      NSLocalizedString("playlist.popoverAddedTitle", tableName: "BraveShared", bundle: .module,
-        value: "This media is in your Brave Playlist",
-        comment: "Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar")
-
-    public static let playlistPopoverOpenInBravePlaylist =
-      NSLocalizedString("playlist.popoverOpenInBravePlaylist", tableName: "BraveShared", bundle: .module,
-        value: "Open In Brave Playlist",
-        comment: "Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar")
-
-    public static let playlistPopoverRemoveFromBravePlaylist =
-      NSLocalizedString("playlist.popoverRemoveFromBravePlaylist", tableName: "BraveShared", bundle: .module,
-        value: "Remove",
-        comment: "Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar")
-
+    public static let playlistPopoverChangeFoldersButtonTitle =
+      NSLocalizedString("playlist.playlistPopoverChangeFoldersButtonTitle", tableName: "BraveShared", bundle: .module,
+        value: "Change",
+        comment: "Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to")
+    
     public static let playlistCarplayTitle =
       NSLocalizedString("playlist.carplayTitle", tableName: "BraveShared", bundle: .module,
         value: "Brave Playlist",
@@ -1832,12 +1837,12 @@ extension Strings {
   public struct PlaylistFolders {
     public static let playlistSavedFolderTitle =
       NSLocalizedString("playlistFolders.savedFolderTitle", tableName: "BraveShared", bundle: .module,
-        value: "Saved",
+        value: "Play Later",
         comment: "The title of the default playlist folder")
 
     public static let playlistUntitledFolderTitle =
       NSLocalizedString("playlistFolders.untitledFolderTitle", tableName: "BraveShared", bundle: .module,
-        value: "Untitled Folder",
+        value: "Untitled Playlist",
         comment: "The title of a folder when the user enters no name (untitled)")
 
     public static let playlistEditFolderScreenTitle =
@@ -1847,12 +1852,12 @@ extension Strings {
 
     public static let playlistNewFolderScreenTitle =
       NSLocalizedString("playlistFolders.newFolderScreenTitle", tableName: "BraveShared", bundle: .module,
-        value: "New Folder",
+        value: "New Playlist",
         comment: "The title of the screen to create a new folder")
 
     public static let playlistNewFolderButtonTitle =
       NSLocalizedString("playlistFolders.newFolderButtonTitle", tableName: "BraveShared", bundle: .module,
-        value: "New Folder",
+        value: "New Playlist",
         comment: "The title of the button to create a new folder")
 
     public static let playlistCreateNewFolderButtonTitle =
@@ -1877,7 +1882,7 @@ extension Strings {
 
     public static let playlistFolderEditMenuTitle =
       NSLocalizedString("playlistFolders.editMenuTitle", tableName: "BraveShared", bundle: .module,
-        value: "Edit Folder",
+        value: "Edit Playlist",
         comment: "The title of the menu option that allows the user to edit the name of a folder")
 
     public static let playlistFolderEditButtonTitle =
@@ -1887,7 +1892,7 @@ extension Strings {
 
     public static let playlistFolderNewFolderSectionTitle =
       NSLocalizedString("playlistFolders.newFolderSectionTitle", tableName: "BraveShared", bundle: .module,
-        value: "Add videos to this folder",
+        value: "Add videos to this playlist",
         comment: "The title of the section where the user can select videos to add to the new folder being created")
 
     public static let playlistFolderNewFolderSectionSubtitle =
@@ -1897,17 +1902,17 @@ extension Strings {
 
     public static let playlistFolderMoveFolderCurrentSectionTitle =
       NSLocalizedString("playlistFolders.moveFolderCurrentSectionTitle", tableName: "BraveShared", bundle: .module,
-        value: "Current Folder",
+        value: "Current Playlist",
         comment: "The title of the section indicating the currently selected folder")
 
     public static let playlistFolderSelectAFolderTitle =
       NSLocalizedString("playlistFolders.selectAFolderTitle", tableName: "BraveShared", bundle: .module,
-        value: "Select a folder to move %lld items to",
+        value: "Select a playlist to move %lld items to",
         comment: "The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'")
 
     public static let playlistFolderSelectASingleFolderTitle =
       NSLocalizedString("playlistFolders.selectASingleFolderTitle", tableName: "BraveShared", bundle: .module,
-        value: "Select a folder to move 1 item to",
+        value: "Select a playlist to move 1 item to",
         comment: "The title of the section indicating that the user should select a folder to move 1 item to.")
 
     public static let playlistFolderMoveFolderScreenTitle =
@@ -1939,6 +1944,21 @@ extension Strings {
       NSLocalizedString("playlistFolders.moveItemWithMultipleNoNameTitle", tableName: "BraveShared", bundle: .module,
         value: "%lld items",
         comment: "%lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use")
+    
+    public static let playlistChangeFoldersTitle =
+      NSLocalizedString("playlistFolders.changeFoldersTitle", tableName: "BraveShared", bundle: .module,
+                      value: "Move To",
+                      comment: "The title of the screen that allows you to change the folder where a playlist item was saved to")
+    
+    public static let playlistCreateFolderTextFieldLabel =
+      NSLocalizedString("playlistFolders.createFolderTextFieldLabel", tableName: "BraveShared", bundle: .module,
+                      value: "Playlist Name",
+                      comment: "A label shown above the text field that allows the user to type a name of the playlist they are going to create")
+    
+    public static let playlistCreateFolderTextFieldPlaceholder =
+      NSLocalizedString("playlistFolders.createFolderTextFieldPlaceholder", tableName: "BraveShared", bundle: .module,
+                      value: "Enter your playlist name",
+                      comment: "A label shown above the text field that allows the user to type a name of the playlist they are going to create")
   }
   
   public struct PlaylistFolderSharing {

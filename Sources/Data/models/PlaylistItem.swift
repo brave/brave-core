@@ -109,7 +109,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       sectionNameKeyPath: nil, cacheName: nil)
   }
 
-  public static func addItem(_ item: PlaylistInfo, cachedData: Data?, completion: (() -> Void)? = nil) {
+  public static func addItem(_ item: PlaylistInfo, folderUUID: String? = nil, cachedData: Data?, completion: (() -> Void)? = nil) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
       let playlistItem = PlaylistItem(context: context,
                                       name: item.name,
@@ -121,7 +121,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
                                       mediaSrc: item.src)
       playlistItem.order = item.order
       playlistItem.uuid = item.tagId
-      playlistItem.playlistFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID, context: context)
+      playlistItem.playlistFolder = PlaylistFolder.getFolder(uuid: folderUUID ?? PlaylistFolder.savedFolderUUID, context: context)
 
       PlaylistItem.reorderItems(context: context)
       PlaylistItem.saveContext(context)
