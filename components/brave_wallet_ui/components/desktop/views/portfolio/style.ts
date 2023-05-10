@@ -5,7 +5,6 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import Icon from '@brave/leo/react/icon'
 import { ArrowUpIcon } from 'brave-ui/components/icons'
 import {
   AssetIconProps,
@@ -327,10 +326,6 @@ export const MoreButton = styled(WalletButton)`
   mask-size: cover;
 `
 
-export const SelectTimelineClickArea = styled.div`
-  position: relative;
-`
-
 export const SelectTimelineWrapper = styled(Row)`
   @media screen and (max-width: ${layoutSmallWidth}px) {
     justify-content: flex-start;
@@ -338,43 +333,6 @@ export const SelectTimelineWrapper = styled(Row)`
   @media screen and (max-width: ${layoutPanelWidth}px) {
     justify-content: center;
   }
-`
-
-export const SelectTimelinButton = styled(WalletButton)`
-  --button-border: ${leo.color.primary[20]};
-  @media (prefers-color-scheme: dark) {
-    --button-border: ${leo.color.primary[50]};
-  }
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border-radius: 48px;
-  padding: 6px 10px 6px 18px;
-  border: 1px solid var(--button-border);
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.03em;
-  font-weight: 600;
-  color: ${leo.color.text.interactive};
-`
-
-export const SelectTimelinButtonIcon = styled(Icon) <
-  {
-    isOpen: boolean
-  }>`
-  --leo-icon-size: 16px;
-  color: ${leo.color.icon.interactive};
-  margin-left: 8px;
-  transition-duration: 0.3s;
-  transform: ${(p) =>
-    p.isOpen
-      ? 'rotate(180deg)'
-      : 'unset'
-  };
 `
 
 export const ControlsRow = styled(Row)`
