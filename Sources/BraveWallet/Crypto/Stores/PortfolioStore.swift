@@ -151,7 +151,6 @@ public class PortfolioStore: ObservableObject {
   }
   
   func discoverAssetsOnAllSupportedChains() {
-    isLoadingDiscoverAssets = true
     walletService.discoverAssetsOnAllSupportedChains()
   }
   
