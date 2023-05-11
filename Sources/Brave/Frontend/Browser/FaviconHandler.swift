@@ -23,7 +23,7 @@ class FaviconHandler {
     unregister(tabObservers)
   }
 
-  @MainActor func loadFaviconURL(
+  func loadFaviconURL(
     _ url: URL,
     forTab tab: Tab
   ) async throws -> Favicon {
@@ -42,7 +42,7 @@ extension FaviconHandler: TabEventHandler {
         tab.favicon = Favicon.default
       }
       
-      Task { @MainActor in
+      Task {
         let favicon = try await loadFaviconURL(currentURL, forTab: tab)
         TabEvent.post(.didLoadFavicon(favicon), for: tab)
       }

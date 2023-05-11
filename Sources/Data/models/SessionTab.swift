@@ -86,8 +86,12 @@ extension SessionTab {
   }
   
   public static func exists(tabId: UUID) -> Bool {
+    return Self.exists(tabId: tabId, in: DataController.viewContext)
+  }
+  
+  public static func exists(tabId: UUID, in context: NSManagedObjectContext) -> Bool {
     let predicate = NSPredicate(format: "\(#keyPath(SessionTab.tabId)) == %@", argumentArray: [tabId])
-    return Self.count(predicate: predicate, context: DataController.viewContext) != 0
+    return Self.count(predicate: predicate, context: context) != 0
   }
   
   /// Returns the tab with the specificed tabId
@@ -108,9 +112,15 @@ extension SessionTab {
     let predicate = NSPredicate(format: "\(lastUpdatedKeyPath) = nil OR \(lastUpdatedKeyPath) > %@", date)
     return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
   }
-  
-  public func delete() {
-    delete(context: .new(inMemory: false))
+    
+  public static func delete(tabId: UUID) {
+    DataController.perform { context in
+      guard let sessionTab = SessionTab.from(tabId: tabId, in: context) else {
+        return
+      }
+      
+      sessionTab.delete(context: .existing(context))
+    }
   }
   
   public static func deleteAll() {
@@ -198,27 +208,27 @@ extension SessionTab {
   }
   
   public static func createIfNeeded(tabId: UUID, title: String, tabURL: URL) {
-    if !SessionTab.exists(tabId: tabId) {
-      DataController.performOnMainContext { context in
-        guard let window = SessionWindow.getActiveWindow(context: context) else { return }
-        _ = SessionTab(context: context,
-                       sessionWindow: window,
-                       sessionTabGroup: nil,
-                       index: Int32(window.sessionTabs?.count ?? 0),
-                       interactionState: Data(),
-                       isPrivate: false,
-                       isSelected: false,
-                       lastUpdated: .now,
-                       screenshotData: Data(),
-                       title: title,
-                       url: tabURL,
-                       tabId: tabId)
-        
-        do {
-          try context.save()
-        } catch {
-          Logger.module.error("performTask save error: \(error.localizedDescription, privacy: .public)")
-        }
+    DataController.perform { context in
+      guard !SessionTab.exists(tabId: tabId, in: context),
+            let window = SessionWindow.getActiveWindow(context: context) else { return }
+      
+      _ = SessionTab(context: context,
+                     sessionWindow: window,
+                     sessionTabGroup: nil,
+                     index: Int32(window.sessionTabs?.count ?? 0),
+                     interactionState: Data(),
+                     isPrivate: false,
+                     isSelected: false,
+                     lastUpdated: .now,
+                     screenshotData: Data(),
+                     title: title,
+                     url: tabURL,
+                     tabId: tabId)
+      
+      do {
+        try context.save()
+      } catch {
+        Logger.module.error("performTask save error: \(error.localizedDescription, privacy: .public)")
       }
     }
   }
