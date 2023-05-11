@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Import web components here. They will be available on the page
+// as <leo-{component}></leo-{component}>.
 import '@brave/leo/web-components/button'
 import { setIconBasePath } from '@brave/leo/web-components/icon'
 
-setIconBasePath('chrome://resources/brave-icons')
+setIconBasePath('//resources/brave-icons')
