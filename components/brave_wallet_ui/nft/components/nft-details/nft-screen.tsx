@@ -258,10 +258,13 @@ export const NftScreen = (props: Props) => {
 
     let ignore = false
     if (nftMetadata?.imageURL) {
-      areSupportedForPinning([nftMetadata?.imageURL]).then(
-        (v) => { if (!ignore) setIsNftPinnable(v) })
-      extractIpfsUrl(nftMetadata?.imageURL).then(
-        (v) => { if (!ignore) setIpfsImageUrl(v) })
+      areSupportedForPinning([nftMetadata?.imageURL])
+        .then((v) => { if (!ignore) setIsNftPinnable(v) })
+        .catch(err => console.error(err))
+      extractIpfsUrl(nftMetadata?.imageURL)
+        .then((v) => { if (!ignore) setIpfsImageUrl(v) })
+        .catch(err => console.error(err))
+
     }
     return () => {
       ignore = true
