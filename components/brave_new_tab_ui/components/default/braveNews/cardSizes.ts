@@ -73,6 +73,7 @@ export const Image = styled('img')<ImageProps>`
   width: 100%;
   height: 100%;
   object-fit: ${p => p.isPromoted ? 'contain' : 'cover'};
+  object-position: ${p => p.isPromoted ? 'center center' : 'center top'};
   background-color: rgba(188,188,188,0.2);
 `
 
