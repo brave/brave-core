@@ -2583,6 +2583,7 @@ TEST_F(BraveWalletServiceUnitTest, SetNftDiscoveryEnabled) {
   EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(1);
   service_->SetNftDiscoveryEnabled(true);
   base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer_));
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 
   // Unsetting NFT discovery enabled should update the pref and not trigger
@@ -2590,6 +2591,7 @@ TEST_F(BraveWalletServiceUnitTest, SetNftDiscoveryEnabled) {
   EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(0);
   service_->SetNftDiscoveryEnabled(false);
   base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer_));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 }
 
