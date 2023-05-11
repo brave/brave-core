@@ -1,0 +1,35 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitCompatApplication.java b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitCompatApplication.java
+index c461773e3c06a8e857fc281052f2dae4d98a6992..1a1f8dd7cd3a21643d800d9e6a649dda18d38dc4 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitCompatApplication.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitCompatApplication.java
+@@ -212,7 +212,7 @@ public class SplitCompatApplication extends Application {
+         // WebView installs its own PureJavaExceptionHandler.
+         // Incremental install disables process isolation, so things in this block will
+         // actually be run for incremental apks, but not normal apks.
+-        if (!isIsolatedProcess && !isWebViewProcess()) {
++        if (!isIsolatedProcess /*&& !isWebViewProcess()*/) {
+             JavaExceptionReporterFactory factory = new JavaExceptionReporterFactory() {
+                 @Override
+                 public JavaExceptionReporter createJavaExceptionReporter() {
+@@ -282,9 +282,9 @@ public class SplitCompatApplication extends Application {
+      */
+     protected void performBrowserProcessPreloading(Context context) {}
+ 
+-    public boolean isWebViewProcess() {
+-        return false;
+-    }
++    // public boolean isWebViewProcess() {
++    //     return false;
++    // }
+ 
+     public static boolean isBrowserProcess() {
+         return !ContextUtils.getProcessName().contains(":");
+@@ -304,7 +304,7 @@ public class SplitCompatApplication extends Application {
+             return;
+         }
+         // WebView initialization sets the correct process type.
+-        if (isWebViewProcess()) return;
++//        if (isWebViewProcess()) return;
+ 
+         // Child processes set their own process type when bound.
+         String processName = ContextUtils.getProcessName();

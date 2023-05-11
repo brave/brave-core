@@ -1,0 +1,13 @@
+diff --git a/components/browser_ui/bottomsheet/android/internal/BUILD.gn b/components/browser_ui/bottomsheet/android/internal/BUILD.gn
+index 4f13b6cd0dfcaf705574d8d790071c01bd5d0a49..281b632707c43f9b99028e6b70bc02131fe7d8c8 100644
+--- a/components/browser_ui/bottomsheet/android/internal/BUILD.gn
++++ b/components/browser_ui/bottomsheet/android/internal/BUILD.gn
+@@ -9,7 +9,7 @@ android_library("java") {
+     ":*",
+     "../test:*",
+     "//chrome/android:chrome_all_java",
+-    "//weblayer/browser/java:java",
++    # "//weblayer/browser/java:java",
+   ]
+ 
+   sources = [

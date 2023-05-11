@@ -1,0 +1,13 @@
+diff --git a/content/public/android/java/src/org/chromium/content/browser/BrowserStartupControllerImpl.java b/content/public/android/java/src/org/chromium/content/browser/BrowserStartupControllerImpl.java
+index 342eb74d2ae5bd28e957cba8ced407a6d8ef4586..de354fc88656acf7bd3b45f7e8e8ea4c8dff096e 100644
+--- a/content/public/android/java/src/org/chromium/content/browser/BrowserStartupControllerImpl.java
++++ b/content/public/android/java/src/org/chromium/content/browser/BrowserStartupControllerImpl.java
+@@ -355,7 +355,7 @@ public class BrowserStartupControllerImpl implements BrowserStartupController {
+      */
+     private void assertProcessTypeSupported(@LibraryProcessType int libraryProcessType) {
+         assert LibraryProcessType.PROCESS_BROWSER == libraryProcessType
+-                || LibraryProcessType.PROCESS_WEBVIEW == libraryProcessType
++                //|| LibraryProcessType.PROCESS_WEBVIEW == libraryProcessType
+                 || LibraryProcessType.PROCESS_WEBLAYER == libraryProcessType;
+         LibraryLoader.getInstance().assertCompatibleProcessType(libraryProcessType);
+     }

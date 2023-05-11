@@ -1,0 +1,17 @@
+diff --git a/base/android/library_loader/library_loader_hooks.h b/base/android/library_loader/library_loader_hooks.h
+index 52734aec581eea284674cc8d2f8e1c1b38fdef06..2f5c6fcb0f7fb383f5cf6a3513b63cb0cf331f2a 100644
+--- a/base/android/library_loader/library_loader_hooks.h
++++ b/base/android/library_loader/library_loader_hooks.h
+@@ -26,9 +26,9 @@ enum LibraryProcessType {
+   // Shared library is running in child process.
+   PROCESS_CHILD = 2,
+   // Shared library is running in the app that uses webview.
+-  PROCESS_WEBVIEW = 3,
+-  // Shared library is running in child process as part of webview.
+-  PROCESS_WEBVIEW_CHILD = 4,
++  // PROCESS_WEBVIEW = 3,
++  // // Shared library is running in child process as part of webview.
++  // PROCESS_WEBVIEW_CHILD = 4,
+   // Shared library is running in the app that uses weblayer.
+   PROCESS_WEBLAYER = 5,
+   // Shared library is running in child process as part of weblayer.

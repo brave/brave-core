@@ -1,8 +1,52 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 28fe2423c40e908a6a22f1d24675386b4edd1378..def90d8031f9ea26a6eb583088cf55489d70af4c 100644
+index 28fe2423c40e908a6a22f1d24675386b4edd1378..699ab2a4c8c8f0f20560bc05e91e0e7733bbf6de 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -275,6 +275,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -2,7 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
+-import("//android_webview/variables.gni")
++#import("//android_webview/variables.gni")
+ import("//base/android/linker/config.gni")
+ import("//base/android/resource_exclusions.gni")
+ import("//build/config/android/rules.gni")
+@@ -16,7 +16,7 @@ import("//chrome/version.gni")
+ import("//components/crash/android/silent_java_assert_reporting.gni")
+ import("//components/optimization_guide/features.gni")
+ import("//device/vr/buildflags/buildflags.gni")
+-import("//weblayer/variables.gni")
++# import("//weblayer/variables.gni")
+ import("channel.gni")
+ 
+ declare_args() {
+@@ -125,6 +125,7 @@ template("split_manifest_template") {
+ #   android_app_bundle_module(), depending on the target type.
+ #
+ template("chrome_public_common_apk_or_module_tmpl") {
++print("AB: at template chrome_public_common_apk_or_module_tmpl target_name=",target_name)
+   assert(
+       invoker.target_type == "android_apk" ||
+           invoker.target_type == "android_app_bundle_module" ||
+@@ -200,7 +201,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+       } else if (_is_monochrome) {
+         input = "//chrome/android/java/AndroidManifest_monochrome.xml"
+         includes = [
+-          "//android_webview/nonembedded/java/AndroidManifest.xml",
++#          "//android_webview/nonembedded/java/AndroidManifest.xml",
+           "//chrome/android/java/AndroidManifest.xml",
+         ]
+         variables += monochrome_android_manifest_jinja_variables
+@@ -238,6 +239,8 @@ template("chrome_public_common_apk_or_module_tmpl") {
+     }
+   }
+   target(_target_type, target_name) {
++print("AB: _target_type=",_target_type)
++print("AB: target_name=",target_name)
+     forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
+     forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+ 
+@@ -275,6 +278,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        "*ic_file_download_white*",  # Bottom edge seems misaligned.
        "*ic_lock.*",  # Bottom edge seems misaligned.
      ]
@@ -10,7 +54,7 @@ index 28fe2423c40e908a6a22f1d24675386b4edd1378..def90d8031f9ea26a6eb583088cf5548
  
      # Note most of these, with the exception of resource_exclusion_exceptions,
      # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -380,6 +381,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -380,6 +384,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
          proguard_configs = []
        }
        proguard_configs += [ "//chrome/android/proguard/main.flags" ]
@@ -18,3 +62,83 @@ index 28fe2423c40e908a6a22f1d24675386b4edd1378..def90d8031f9ea26a6eb583088cf5548
      }
  
      if (use_chromium_linker) {
+@@ -478,6 +483,8 @@ template("chrome_public_common_apk_or_module_tmpl") {
+ # The equivalent of chrome_common_apk_or_module_tmpl for all builds of
+ # monochrome and trichrome chrome.
+ template("monochrome_public_common_apk_or_module_tmpl") {
++print("AB: at template monochrome_public_common_apk_or_module_tmpl target_name=",target_name)
++
+   chrome_public_common_apk_or_module_tmpl(target_name) {
+     _overrides = {
+       _is_bundle_module = defined(invoker.target_type) &&
+@@ -584,13 +591,13 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+       if (is_monochrome) {
+         product_config_java_packages = [
+           "org.chromium.chrome.browser",
+-          webview_product_config_java_package,
++#          webview_product_config_java_package,
+         ]
+ 
+-        if (webview_includes_weblayer) {
+-          product_config_java_packages +=
+-              [ weblayer_product_config_java_package ]
+-        }
++        # if (webview_includes_weblayer) {
++        #   product_config_java_packages +=
++        #       [ weblayer_product_config_java_package ]
++        # }
+ 
+         # Flag whether additional deps and libs should be included for each ABI.
+         _include_primary_support = false
+@@ -620,17 +627,17 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+           _include_primary_support = true
+         }
+ 
+-        deps += [
+-          "//android_webview/glue:glue_java",
+-          "//android_webview/nonembedded:nonembedded_java",
+-        ]
++        # deps += [
++        #   "//android_webview/glue:glue_java",
++        #   "//android_webview/nonembedded:nonembedded_java",
++        # ]
+         if (!_is_bundle_module) {
+           deps += [ "//chrome/android:monochrome_java" ]
+         }
+ 
+         if (_include_primary_support) {
+           deps += [
+-            "//android_webview:monochrome_webview_primary_abi_assets",
++            # "//android_webview:monochrome_webview_primary_abi_assets",
+             "//third_party/crashpad/crashpad/handler:crashpad_handler_trampoline",
+           ]
+           loadable_modules +=
+@@ -642,7 +649,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+               "crashpad_handler_trampoline($android_secondary_abi_toolchain)"
+ 
+           deps += [
+-            "//android_webview:monochrome_webview_secondary_abi_assets",
++            # "//android_webview:monochrome_webview_secondary_abi_assets",
+             _trampoline,
+           ]
+ 
+@@ -709,7 +716,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+       if (_is_bundle_module) {
+         # Resources config for blocklisting resource names from obfuscation
+         resources_config_paths = [
+-          "//android_webview/aapt2.config",
++          # "//android_webview/aapt2.config",
+           "//chrome/android/aapt2.config",
+         ]
+         if (defined(invoker.resources_config_paths)) {
+@@ -746,8 +753,8 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+           proguard_configs += invoker.proguard_configs
+         }
+         if (is_monochrome) {
+-          proguard_configs +=
+-              [ "//android_webview/nonembedded/java/proguard.flags" ]
++          # proguard_configs +=
++          #     [ "//android_webview/nonembedded/java/proguard.flags" ]
+         }
+       }
+     }

@@ -1,0 +1,13 @@
+diff --git a/chrome/android/trichrome.gni b/chrome/android/trichrome.gni
+index 32ebe222908eec93068a4174b58d492f696f1ce1..220ac6319c41399ff075b512d61891f836bf33f6 100644
+--- a/chrome/android/trichrome.gni
++++ b/chrome/android/trichrome.gni
+@@ -108,7 +108,7 @@ template("trichrome_library_apk_tmpl") {
+ 
+     # TODO(torne): using icon_resources just to get a temporary icon
+     deps = [
+-      "//android_webview/nonembedded:icon_resources",
++      # "//android_webview/nonembedded:icon_resources",
+       "//third_party/icu:icu_assets",
+     ]
+     if (defined(invoker.deps)) {

@@ -1,0 +1,17 @@
+diff --git a/tools/perf/chrome_telemetry_build/BUILD.gn b/tools/perf/chrome_telemetry_build/BUILD.gn
+index 31b47c238b80cfefec1788807f4b8812d44c354d..6b1cab7575ed300c3fdb4bda669c7e11741a706a 100644
+--- a/tools/perf/chrome_telemetry_build/BUILD.gn
++++ b/tools/perf/chrome_telemetry_build/BUILD.gn
+@@ -125,9 +125,9 @@ if (is_android) {
+ 
+     data_deps = [
+       ":telemetry_chrome_test",
+-      "//android_webview:system_webview_apk",
+-      "//android_webview/test:webview_instrumentation_apk",
+-      "//android_webview/tools/system_webview_shell:system_webview_shell_apk",
++      # "//android_webview:system_webview_apk",
++      # "//android_webview/test:webview_instrumentation_apk",
++      # "//android_webview/tools/system_webview_shell:system_webview_shell_apk",
+     ]
+   }
+ 

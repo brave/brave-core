@@ -1,0 +1,54 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitMonochromeApplication.java b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitMonochromeApplication.java
+index 85644887459d476a8a8a4c377c395d2d5fb7e59a..e97e8a693eccda20fefd357c5383ad7fd1b85b3f 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitMonochromeApplication.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitMonochromeApplication.java
+@@ -6,7 +6,7 @@ package org.chromium.chrome.browser.base;
+ 
+ import android.content.Context;
+ 
+-import org.chromium.android_webview.nonembedded.WebViewApkApplication;
++//import org.chromium.android_webview.nonembedded.WebViewApkApplication;
+ import org.chromium.base.library_loader.LibraryProcessType;
+ import org.chromium.build.annotations.IdentifierNameString;
+ import org.chromium.components.version_info.VersionInfo;
+@@ -24,12 +24,12 @@ public class SplitMonochromeApplication extends SplitChromeApplication {
+         @Override
+         public void onCreate() {
+             super.onCreate();
+-            if (getApplication().isWebViewProcess()) {
+-                WebViewApkApplication.checkForAppRecovery();
+-            }
+-            if (!VersionInfo.isStableBuild() && getApplication().isWebViewProcess()) {
+-                WebViewApkApplication.postDeveloperUiLauncherIconTask();
+-            }
++            // if (getApplication().isWebViewProcess()) {
++            //     WebViewApkApplication.checkForAppRecovery();
++            // }
++            // if (!VersionInfo.isStableBuild() && getApplication().isWebViewProcess()) {
++            //     WebViewApkApplication.postDeveloperUiLauncherIconTask();
++            // }
+         }
+     }
+ 
+@@ -49,7 +49,7 @@ public class SplitMonochromeApplication extends SplitChromeApplication {
+     }
+ 
+     public static void initializeMonochromeProcessCommon(String packageName) {
+-        WebViewApkApplication.maybeInitProcessGlobals();
++//        WebViewApkApplication.maybeInitProcessGlobals();
+ 
+         // ChildProcessCreationParams is only needed for browser process, though it is
+         // created and set in all processes. We must set isExternalService to true for
+@@ -62,8 +62,8 @@ public class SplitMonochromeApplication extends SplitChromeApplication {
+                 LibraryProcessType.PROCESS_CHILD, bindToCaller, ignoreVisibilityForImportance);
+     }
+ 
+-    @Override
+-    public boolean isWebViewProcess() {
+-        return WebViewApkApplication.isWebViewProcess();
+-    }
++    // @Override
++    // public boolean isWebViewProcess() {
++    //     return WebViewApkApplication.isWebViewProcess();
++    // }
+ }

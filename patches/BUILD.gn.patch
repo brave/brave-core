@@ -1,0 +1,62 @@
+diff --git a/BUILD.gn b/BUILD.gn
+index 6b729528b79bddbfcc02dc2dc5a812b6a72f87e0..2d39e283f6afbc7e5108cace3bf8fd8e3370909c 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -223,13 +223,13 @@ group("gn_all") {
+     ]
+   }
+ 
+-  if (is_android) {
+-    deps += [
+-      "//weblayer/browser/android/javatests:webengine_support_instrumentation_test_apk",
+-      "//weblayer/browser/java:weblayer_junit_tests",
+-      "//weblayer/test:weblayer_browsertests",
+-    ]
+-  }
++  # if (is_android) {
++  #   deps += [
++  #     "//weblayer/browser/android/javatests:webengine_support_instrumentation_test_apk",
++  #     "//weblayer/browser/java:weblayer_junit_tests",
++  #     "//weblayer/test:weblayer_browsertests",
++  #   ]
++  # }
+ 
+   if (!is_ios && !is_android) {
+     deps += [
+@@ -374,7 +374,7 @@ group("gn_all") {
+       "//services:services_junit_tests",
+       "//testing/android/junit:junit_unit_tests",
+       "//third_party/android_build_tools/lint:custom_lint_java",
+-      "//third_party/androidx_javascriptengine",
++#      "//third_party/androidx_javascriptengine",
+       "//third_party/catapult/devil",
+       "//third_party/r8:custom_d8_java",
+       "//tools/android:android_tools",
+@@ -403,10 +403,10 @@ group("gn_all") {
+ 
+     if (!is_cast_android) {
+       deps += [
+-        "//android_webview:empty_group",
+-        "//android_webview/test",
+-        "//android_webview/tools/automated_ui_tests:webview_ui_test_app",
+-        "//android_webview/tools/system_webview_shell",
++        # "//android_webview:empty_group",
++        # "//android_webview/test",
++        # "//android_webview/tools/automated_ui_tests:webview_ui_test_app",
++        # "//android_webview/tools/system_webview_shell",
+         "//chrome/android:chrome_junit_tests",
+         "//chrome/android:chrome_public_apk",
+         "//chrome/android:chrome_public_test_apk",
+@@ -416,9 +416,9 @@ group("gn_all") {
+         "//content/shell/android:content_shell_test_apk",
+       ]
+ 
+-      if (android_sdk_release == "tprivacysandbox") {
+-        deps += [ "//android_webview/tools/sdk_sandbox" ]
+-      }
++      # if (android_sdk_release == "tprivacysandbox") {
++      #   deps += [ "//android_webview/tools/sdk_sandbox" ]
++      # }
+     }
+ 
+     if (enable_chrome_android_internal) {

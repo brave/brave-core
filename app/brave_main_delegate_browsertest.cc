@@ -47,7 +47,7 @@
 #include "third_party/blink/public/common/features.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "android_webview/common/aw_features.h"
+//#include "android_webview/common/aw_features.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #else
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"

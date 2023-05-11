@@ -1,0 +1,13 @@
+diff --git a/testing/scripts/finch.gni b/testing/scripts/finch.gni
+index 40ce69b8cdf686d0abd77aefb6f469bf47e63ca8..d8a1aebd5754561a445d15faaeae11feacfd1719 100644
+--- a/testing/scripts/finch.gni
++++ b/testing/scripts/finch.gni
+@@ -41,7 +41,7 @@ template("android_wpt_finch_smoke_tests") {
+       "$root_build_dir/pyproto/",
+     ]
+     data_deps = [
+-      "//android_webview/proto:aw_variations_seed_proto",
++      # "//android_webview/proto:aw_variations_seed_proto",
+       "//chrome/test/chromedriver:chromedriver_server($host_toolchain)",
+       "//third_party/blink/tools:wpt_tests_android_isolate",
+       "//third_party/catapult/devil:devil",

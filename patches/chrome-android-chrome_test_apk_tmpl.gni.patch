@@ -1,0 +1,26 @@
+diff --git a/chrome/android/chrome_test_apk_tmpl.gni b/chrome/android/chrome_test_apk_tmpl.gni
+index 113c1e404526eb7d449d554d322e9e1c70016cdf..e5265db2ad5a6e1d72255fed019cb6a15a221df1 100644
+--- a/chrome/android/chrome_test_apk_tmpl.gni
++++ b/chrome/android/chrome_test_apk_tmpl.gni
+@@ -92,7 +92,7 @@ template("monochrome_test_apk_tmpl") {
+         [ "test_manifest_package=$chrome_public_test_manifest_package" ]
+ 
+     deps = chrome_public_shared_deps + invoker.deps + [
+-             "//android_webview:platform_service_bridge_upstream_implementation_java",
++            #  "//android_webview:platform_service_bridge_upstream_implementation_java",
+              "//chrome/android:chrome_public_base_module_java_for_test",
+              "//chrome/android:monochrome_apk_pak_assets",
+              "//third_party/android_sdk:android_test_base_java",
+@@ -101,9 +101,9 @@ template("monochrome_test_apk_tmpl") {
+              "//third_party/android_support_test_runner:runner_java",
+            ]
+ 
+-    if (webview_includes_weblayer) {
+-      deps += [ "//weblayer/browser/java:upstream_java" ]
+-    }
++    # if (webview_includes_weblayer) {
++    #   deps += [ "//weblayer/browser/java:upstream_java" ]
++    # }
+ 
+     additional_apks = [ "//net/android:net_test_support_apk" ]
+     if (defined(invoker.additional_apks)) {

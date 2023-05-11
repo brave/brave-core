@@ -1,0 +1,21 @@
+diff --git a/build/android/gyp/compile_resources.py b/build/android/gyp/compile_resources.py
+index 1fa8815222f480ba42a0b5018d6a9f781fb67e38..45c13cf01eec3c8a1d16ab76c8002f0660948497 100755
+--- a/build/android/gyp/compile_resources.py
++++ b/build/android/gyp/compile_resources.py
+@@ -627,6 +627,8 @@ def _RemoveUnwantedLocalizedStrings(dep_subdirs, options):
+     dep_subdirs: List of resource dependency directories.
+     options: Command-line options namespace.
+   """
++  print('_RemoveUnwantedLocalizedStrings 000')
++  print('_RemoveUnwantedLocalizedStrings 000 options=', options)
+   # Collect locale and file paths from the existing subdirs.
+   # The following variable maps Android locale names to
+   # sets of corresponding xml file paths.
+@@ -650,6 +652,7 @@ def _RemoveUnwantedLocalizedStrings(dep_subdirs, options):
+   shared_resources_locales = wanted_locales
+   shared_names_allowlist = set()
+   if options.shared_resources_allowlist_locales:
++    print('_RemoveUnwantedLocalizedStrings 000 options.shared_resources_allowlist=', options.shared_resources_allowlist)
+     shared_names_allowlist = set(
+         resource_utils.GetRTxtStringResourceNames(
+             options.shared_resources_allowlist))

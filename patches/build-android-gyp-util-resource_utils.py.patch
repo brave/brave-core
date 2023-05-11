@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/util/resource_utils.py b/build/android/gyp/util/resource_utils.py
-index 36d890417d5665de7b4ca48a4402fd6ff699a0c0..4cf64c6145f363f475aae61973b56249c4af1de7 100644
+index 36d890417d5665de7b4ca48a4402fd6ff699a0c0..e0710987ea18e8e3ea33b691533f6655ec97393e 100644
 --- a/build/android/gyp/util/resource_utils.py
 +++ b/build/android/gyp/util/resource_utils.py
 @@ -256,6 +256,7 @@ class ResourceInfoFile:
@@ -10,3 +10,21 @@ index 36d890417d5665de7b4ca48a4402fd6ff699a0c0..4cf64c6145f363f475aae61973b56249
      if new_value != source_path:
        raise Exception('Duplicate AddMapping for "{}". old={} new={}'.format(
            archive_path, new_value, source_path))
+@@ -322,6 +323,8 @@ def _ParseTextSymbolsFile(path, fix_package_ids=False):
+   Raises:
+     Exception: An unexpected line was detected in the input.
+   """
++  print('_ParseTextSymbolsFile 000') 
++  print('_ParseTextSymbolsFile 000 path=', path) 
+   ret = []
+   with open(path) as f:
+     for line in f:
+@@ -387,6 +390,8 @@ def _GetRTxtResourceNames(r_txt_path):
+ 
+ def GetRTxtStringResourceNames(r_txt_path):
+   """Parse an R.txt file and the list of its string resource names."""
++  print('GetRTxtStringResourceNames 000')
++  print('GetRTxtStringResourceNames 000 r_txt_path=', r_txt_path)
+   return sorted({
+       entry.name
+       for entry in _ParseTextSymbolsFile(r_txt_path)

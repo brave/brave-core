@@ -1,5 +1,5 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index b60b6fb8d6dc1f15bdb455630413f4f9e6d5a52a..bf61cb1b433340bb8f10232bcb7f14c6fe342ee4 100644
+index b60b6fb8d6dc1f15bdb455630413f4f9e6d5a52a..faecfe6f3a443119582b0b8e7c5dd9007c4f4e5b 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
 @@ -8,6 +8,7 @@
@@ -10,3 +10,20 @@ index b60b6fb8d6dc1f15bdb455630413f4f9e6d5a52a..bf61cb1b433340bb8f10232bcb7f14c6
    import("//build/config/android/channel.gni")
    import("//build/config/chromecast_build.gni")
    import("//build/config/dcheck_always_on.gni")
+@@ -247,11 +248,11 @@ if (is_android || is_chromeos) {
+     enable_unused_resource_stripping = true
+ 
+     # The target to use as the system WebView implementation.
+-    if (android_64bit_target_cpu && skip_secondary_abi_for_cq) {
+-      system_webview_apk_target = "//android_webview:system_webview_64_apk"
+-    } else {
+-      system_webview_apk_target = "//android_webview:system_webview_apk"
+-    }
++    # if (android_64bit_target_cpu && skip_secondary_abi_for_cq) {
++    #   system_webview_apk_target = "//android_webview:system_webview_64_apk"
++    # } else {
++    #   system_webview_apk_target = "//android_webview:system_webview_apk"
++    # }
+ 
+     # Where to write failed expectations for bots to read.
+     expectations_failure_dir = "$root_build_dir/failed_expectations"

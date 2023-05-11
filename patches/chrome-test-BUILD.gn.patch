@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 9db7751fea52eaa1b716437028d6343931a36475..b2503c9c151adf21d5e71d87139c81b4fe2d8ccc 100644
+index 9db7751fea52eaa1b716437028d6343931a36475..8dbefa926fa0882ca35961b3852b6496f7addb35 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -392,6 +392,7 @@ static_library("test_support") {
@@ -10,3 +10,24 @@ index 9db7751fea52eaa1b716437028d6343931a36475..b2503c9c151adf21d5e71d87139c81b4
    data_deps = []
  
    if (enable_pdf) {
+@@ -5377,13 +5378,13 @@ if (is_android) {
+   # Difference between this and performance_test_suite is that this runs a devil
+   # script before the build, to remove the system webview. See
+   # //testing/buildbot/gn_isolate_map.pyl
+-  group("performance_webview_test_suite") {
+-    testonly = true
+-    data_deps = [
+-      "//android_webview/tools/system_webview_shell:system_webview_shell_apk",
+-      "//chrome/test:performance_test_suite_android_webview",
+-    ]
+-  }
++  # group("performance_webview_test_suite") {
++  #   testonly = true
++  #   data_deps = [
++  #     "//android_webview/tools/system_webview_shell:system_webview_shell_apk",
++  #     "//chrome/test:performance_test_suite_android_webview",
++  #   ]
++  # }
+ 
+   # Difference between this and telemetry_perf_tests is that this runs a devil
+   # script before the build, to remove the system webview. See

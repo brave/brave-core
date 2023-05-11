@@ -1,0 +1,25 @@
+diff --git a/chrome/android/modules/chrome_feature_modules.gni b/chrome/android/modules/chrome_feature_modules.gni
+index 1a73a9da70721ad1f5f40b65e019aa023e329db1..77cdad701c1122c7fb471af455c51ed694e7bea4 100644
+--- a/chrome/android/modules/chrome_feature_modules.gni
++++ b/chrome/android/modules/chrome_feature_modules.gni
+@@ -11,8 +11,8 @@ import(
+ import("//chrome/android/modules/stack_unwinder/stack_unwinder_module.gni")
+ import("//chrome/android/modules/test_dummy/test_dummy_module.gni")
+ import("//device/vr/buildflags/buildflags.gni")
+-import("//weblayer/variables.gni")
+-import("//weblayer/weblayer_module.gni")
++# import("//weblayer/variables.gni")
++# import("//weblayer/weblayer_module.gni")
+ 
+ if (enable_vr) {
+   import("//chrome/android/features/vr/vr_module.gni")
+@@ -63,6 +63,6 @@ trichrome_module_descs = monochrome_module_descs
+ 
+ # Add this after we assign trichrome_module_descs, since WebLayer should only be
+ # part of Monochrome.
+-if (webview_includes_weblayer) {
+-  monochrome_module_descs += [ weblayer_module_desc ]
+-}
++# if (webview_includes_weblayer) {
++#   monochrome_module_descs += [ weblayer_module_desc ]
++# }
