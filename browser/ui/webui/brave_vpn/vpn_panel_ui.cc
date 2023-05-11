@@ -58,6 +58,10 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
       std::string("font-src "
                   "chrome-untrusted://resources;"));
 
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      "img-src 'self' chrome-untrusted://resources;");
+
   Profile* profile = Profile::FromWebUI(web_ui);
   content::URLDataSource::Add(
       profile, std::make_unique<FaviconSource>(

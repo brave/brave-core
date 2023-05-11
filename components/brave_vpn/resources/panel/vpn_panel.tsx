@@ -7,6 +7,7 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
+import { setIconBasePath } from '@brave/leo/react/icon'
 
 import '$web-components/app.global.scss'
 import { loadTimeData } from '../../../common/loadTimeData'
@@ -17,6 +18,8 @@ import Container from './container'
 import { PanelWrapper } from './style'
 import store from './state/store'
 import getPanelBrowserAPI from './api/panel_browser_api'
+
+setIconBasePath('//resources/brave-icons')
 
 function App () {
   React.useEffect(() => {
