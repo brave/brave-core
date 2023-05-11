@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings_shared/controls/controlled_radio_button.html b/chrome/browser/resources/settings_shared/controls/controlled_radio_button.html
+index b2c2c288a5fe0940f99843a4f556cfb4d73ef5bd..e9095c6c81921cd861cd5a6b1b702ee8ba5845ee 100644
+--- a/chrome/browser/resources/settings_shared/controls/controlled_radio_button.html
++++ b/chrome/browser/resources/settings_shared/controls/controlled_radio_button.html
+@@ -1,6 +1,6 @@
+ <style
+ <if expr="not chromeos_ash">
+-  include="cr-radio-button-style"
++  include="settings-shared cr-radio-button-style"
+ </if>
+ <if expr="chromeos_ash">
+   include="cr-radio-button-style cros-color-overrides"
