@@ -53,6 +53,7 @@ export interface Props {
   hideBackground?: boolean
   hideNav?: boolean
   hideHeader?: boolean
+  hideDivider?: boolean
   cardHeader?: JSX.Element | undefined | null
   children?: React.ReactNode
 }
@@ -67,7 +68,8 @@ export const WalletPageWrapper = (props: Props) => {
     cardHeader,
     hideBackground,
     hideNav,
-    hideHeader
+    hideHeader,
+    hideDivider
   } = props
 
   // Routing
@@ -204,6 +206,7 @@ export const WalletPageWrapper = (props: Props) => {
                 >
                   <CardHeaderContentWrapper
                     dividerOpacity={headerDividerOpacity}
+                    hideDivider={hideDivider}
                   >
                     {cardHeader}
                   </CardHeaderContentWrapper>

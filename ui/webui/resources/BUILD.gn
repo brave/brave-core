@@ -191,6 +191,9 @@ leo_icons = [
   "warning-circle-filled.svg",
   "warning-triangle-filled.svg",
   "check-circle-filled.svg",
+  "arrow-small-up.svg",
+  "arrow-small-down.svg",
+  "info-outline.svg",
 ]
 
 generate_grd("icons_grdp") {

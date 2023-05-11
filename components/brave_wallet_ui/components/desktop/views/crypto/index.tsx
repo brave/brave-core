@@ -231,13 +231,7 @@ const CryptoView = (props: Props) => {
         </Route>
 
         <Route path={WalletRoutes.PortfolioAsset} exact>
-          <WalletPageWrapper
-            wrapContentInBox={true}
-          >
-            <StyledWrapper>
-              <PortfolioAsset />
-            </StyledWrapper>
-          </WalletPageWrapper>
+          <PortfolioAsset />
         </Route>
 
         <Route path={WalletRoutes.Portfolio}>

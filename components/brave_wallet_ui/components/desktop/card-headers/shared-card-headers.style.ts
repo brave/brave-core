@@ -21,7 +21,10 @@ export const MenuWrapper = styled.div`
   position: relative;
 `
 
-export const CircleButton = styled(WalletButton)`
+export const CircleButton = styled(WalletButton) <{
+  size?: number,
+  marginRight?: number
+}>`
   --button-border-color: ${leo.color.primary[20]};
   @media (prefers-color-scheme: dark) {
     --button-border-color: ${leo.color.primary[50]};
@@ -35,11 +38,22 @@ export const CircleButton = styled(WalletButton)`
   background-color: ${leo.color.container.background};
   border-radius: 100%;
   border: 1px solid var(--button-border-color);
-  height: 36px;
-  width: 36px;
+  height: ${(p) => p.size !== undefined ? p.size : 36}px;
+  width: ${(p) => p.size !== undefined ? p.size : 36}px;
+  margin-right: ${(p) =>
+    p.marginRight !== undefined
+      ? p.marginRight
+      : 0
+  }px;
 `
 
-export const ButtonIcon = styled(Icon)`
-  --leo-icon-size: 18px;
+export const ButtonIcon = styled(Icon) <{
+  size?: number
+}>`
+  --leo-icon-size: ${(p) =>
+    p.size !== undefined
+      ? p.size
+      : 18
+  }px;
   color: ${leo.color.icon.interactive};
 `

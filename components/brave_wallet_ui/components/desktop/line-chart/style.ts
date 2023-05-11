@@ -15,7 +15,6 @@ export const StyledWrapper = styled.div<{
   max-height: 130px;
   box-sizing: border-box;
   position: relative;
-  z-index: 9;
   ${p => p.customStyle
     ? css`
       ${p.customStyle}
