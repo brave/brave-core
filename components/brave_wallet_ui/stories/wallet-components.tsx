@@ -17,15 +17,13 @@ import { NftIpfsBanner } from '../components/desktop/nft-ipfs-banner/nft-ipfs-ba
 import { LocalIpfsNodeScreen } from '../components/desktop/local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../components/desktop/inspect-nfts/inspect-nfts'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
-import { NftDetails } from '../nft/components/nft-details/nft-details'
-import { mockNewAssetOptions } from './mock-data/mock-asset-options'
-import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
-import { mockErc721Token, mockNetwork } from '../common/constants/mocks'
+import { mockErc721Token, mockNetwork, mockNftPinningStatus } from '../common/constants/mocks'
 import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
 import { NftsEmptyState } from '../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
 import { EnableNftDiscoveryModal } from '../components/desktop/popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { NftScreen } from '../nft/components/nft-details/nft-screen'
 import { ContainerCard, LayoutCardWrapper } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -179,20 +177,6 @@ _InspectNftsScreen.story = {
   name: 'Inspect NFTs Screen'
 }
 
-export const _NftDetails = () => {
-  return (
-    <NftDetails
-      selectedAsset={{ ...mockNewAssetOptions[2], contractAddress: '0x7b539F7Cc90De458B60c2ab52eEf504B5de6D035', isErc721: true }}
-      nftMetadata={mockNFTMetadata[0]}
-      tokenNetwork={mockNetwork}
-    />
-  )
-}
-
-_NftDetails.story = {
-  name: 'NFT Details'
-}
-
 export const _NftPinningStatus = () => {
   return (
     <div style={{ display: 'grid', gap: 10 }}>
@@ -243,22 +227,24 @@ export const _NftScreen = () => {
   return (
     <WalletPageStory
       pageStateOverride={{
-        isAutoPinEnabled: true
+        isAutoPinEnabled: true,
+        isFetchingNFTMetadata: false,
+        nftMetadata: mockNFTMetadata[0],
+        nftMetadataError: '',
+        selectedAsset: mockErc721Token,
+        nftsPinningStatus: mockNftPinningStatus
       }}
     >
-      <LayoutCardWrapper>
-      <ContainerCard
+      <LayoutCardWrapper
+        headerHeight={92}
       >
-        <NftScreen
-          isLoading={false}
-          selectedAsset={mockErc721Token}
-          tokenNetwork={mockNetwork}
-          nftMetadata={mockNFTMetadata[0]}
-          nftMetadataError=''
-          nftPinningStatus={{ code: BraveWallet.TokenPinStatusCode.STATUS_PINNED, error: undefined }}
-          imageIpfsUrl='ipfs://QmaSoKQVvBKoTy7eFvmTaHV5bxWDDKqMvwsX48JXseE2Z2'
-        />
-      </ContainerCard>
+        <ContainerCard
+        >
+          <NftScreen
+            selectedAsset={mockErc721Token}
+            tokenNetwork={mockNetwork}
+          />
+        </ContainerCard>
     </LayoutCardWrapper>
     </WalletPageStory>
   )

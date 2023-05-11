@@ -11,9 +11,11 @@ import {
   WalletAccountType,
   AssetPriceWithContractAndChainId
 } from '../../constants/types'
+import { NftsPinningStatusType } from '../../page/constants/action_types'
 
 // mocks
 import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-options'
+import { getAssetIdKey } from '../../utils/asset-utils'
 
 
 type EIP1559SerializableTransactionInfo = SerializableTransactionInfo & {
@@ -174,6 +176,13 @@ export const mockErc721Token: BraveWallet.BlockchainToken = {
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
+export const mockNftPinningStatus: NftsPinningStatusType = {
+  [getAssetIdKey(mockErc721Token)]: {
+    code: BraveWallet.TokenPinStatusCode.STATUS_PINNED,
+    error: undefined
+  }
+}
+
 export const mockAccount: WalletAccountType = {
   id: 'mockId',
   name: 'mockAccountName',
@@ -184,9 +193,7 @@ export const mockAccount: WalletAccountType = {
   coin: BraveWallet.CoinType.ETH,
   accountType: 'Primary',
   tokenBalanceRegistry: {},
-  keyringId: 'default',
-  hardware: undefined,
-  isImported: false,
+  keyringId: 'default'
 }
 
 export const mockEthAccountInfo: BraveWallet.AccountInfo = {
