@@ -24,6 +24,7 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   gap: 6px;
   position: relative;
+  margin-top: 8px;
 `
 
 export const ContentWrapper = styled.div<{

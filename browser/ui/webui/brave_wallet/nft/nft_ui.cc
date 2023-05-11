@@ -46,7 +46,8 @@ UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
       std::string("script-src 'self' chrome-untrusted://resources;"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      std::string("style-src 'self' 'unsafe-inline';"));
+      std::string(
+          "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       std::string("font-src 'self' data:;"));
