@@ -133,11 +133,20 @@ if (is_android) {
   }
 
   android_assets("brave_pak_assets") {
-    sources = [ "$root_out_dir/brave_resources.pak" ]
+    sources = [
+      "$root_out_dir/brave_resources.pak",
+      "$root_out_dir/icudtl.dat",
+    ]
 
     deps = [
       "//brave:brave_file_assets",
       "//brave:packed_resources_extra",
+
+      # AB: the targets below were missing when I removed AndroidWebview in a naive way
+      # lets add them directly
+      # TODO: get the better way to pull these deps
+      "//gin:v8_snapshot_assets",
+      "//third_party/icu:copy_icudata",
     ]
     disable_compression = true
   }
