@@ -76,7 +76,7 @@
             android:visibility="visible"/>
 
         <ImageView
-            android:id="@+id/swap_button"
+            android:id="@+id/buy_send_swap_button"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:contentDescription="@null"
@@ -89,7 +89,7 @@
         <!-- On Android 5 and 6 crash happens when vectored image contains gradient.
             So here raster image is specified by default, but for Android 7 and above
             vector image is used, see BraveWalletActivity.triggerLayoutInflation()
-            for swap_button.
+            for buy_send_swap_button.
         -->
     </LinearLayout>
 </FrameLayout>
