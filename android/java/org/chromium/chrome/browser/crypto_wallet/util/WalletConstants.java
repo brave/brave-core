@@ -73,8 +73,9 @@ public final class WalletConstants {
     public static final String[] BRAVE_WALLET_PREFS = {
             PREF_SHOW_BRIDGE_INFO_DIALOG, NftGridFragment.SHOW_NFT_DISCOVERY_DIALOG};
 
-    public static List<String> SUPPORTED_TOP_LEVEL_CHAIN_IDS = Arrays.asList(
-            BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.SOLANA_MAINNET);
+    public static List<String> SUPPORTED_TOP_LEVEL_CHAIN_IDS =
+            Arrays.asList(BraveWalletConstants.MAINNET_CHAIN_ID,
+                    BraveWalletConstants.SOLANA_MAINNET, BraveWalletConstants.FILECOIN_MAINNET);
 
     public static List<String> BUY_SUPPORTED_ONRAMP_NETWORKS = Arrays.asList(
             BraveWalletConstants.SOLANA_MAINNET, BraveWalletConstants.MAINNET_CHAIN_ID,
@@ -119,12 +120,11 @@ public final class WalletConstants {
     public static final String SOL_INS_SIG_VERIFY = "Ed25519SigVerify111111111111111111111111111";
     public static final String SOL_INS_SECP = "KeccakSecp256k11111111111111111111111111111";
 
-    public static final List<String> KNOWN_TEST_CHAIN_IDS =
-            Arrays.asList(BraveWalletConstants.GOERLI_CHAIN_ID,
-                    BraveWalletConstants.SEPOLIA_CHAIN_ID, BraveWalletConstants.LOCALHOST_CHAIN_ID,
-                    BraveWalletConstants.SOLANA_TESTNET, BraveWalletConstants.SOLANA_DEVNET,
-                    BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
-                    BraveWalletConstants.FILECOIN_TESTNET);
+    public static final List<String> KNOWN_TEST_CHAIN_IDS = Arrays.asList(
+            BraveWalletConstants.GOERLI_CHAIN_ID, BraveWalletConstants.SEPOLIA_CHAIN_ID,
+            BraveWalletConstants.LOCALHOST_CHAIN_ID, BraveWalletConstants.SOLANA_TESTNET,
+            BraveWalletConstants.SOLANA_DEVNET, BraveWalletConstants.FILECOIN_TESTNET,
+            BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID);
 
     public static final List<Integer> SEND_TRANSACTION_TYPES = Arrays.asList(
             TransactionType.ETH_SEND, TransactionType.ERC20_TRANSFER,
