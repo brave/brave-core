@@ -7,25 +7,20 @@ import styled from 'styled-components'
 import { layoutSmallWidth, layoutTopPosition } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Wrapper = styled.div`
-  --display-text: none;
-  --icon-margin-right: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   background-color: var(--nav-background);
-  border-radius: 12px;
-  border: 1px solid var(--nav-border);
+  border-radius: 16px;
   position: absolute;
   top: ${layoutTopPosition}px;
   left: 32px;
   overflow: visible;
   z-index: 10;
-  padding: 0px 8px;
-  &:hover {
-    --display-text: flex;
-    --icon-margin-right: 16px;
-  }
+  width: 240px;
+  padding: 12px 0px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
   @media screen and (max-width: ${layoutSmallWidth}px) {
     flex-direction: row;
     top: unset;
@@ -36,11 +31,7 @@ export const Wrapper = styled.div`
     padding: 8px 0px;
     border-radius: 0px;
     box-shadow: 0px -8px 16px rgba(0, 0, 0, 0.04);
-    --display-text: flex;
-    &:hover {
-      --display-text: flex;
-      --icon-margin-right: 0px;
-    }
+    width: unset;
   }
 `
 
@@ -50,7 +41,7 @@ export const Section = styled.div<{ showBorder?: boolean }>`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding: 8px 0px;
+  padding: 12px 0px;
   border-bottom: ${(p) => p.showBorder
     ? `1px solid var(--nav-border)`
     : 'none'};
@@ -67,6 +58,7 @@ export const Section = styled.div<{ showBorder?: boolean }>`
 export const PageOptionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     display: none;
   }
