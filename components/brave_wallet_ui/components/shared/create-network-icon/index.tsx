@@ -99,6 +99,7 @@ export const CreateNetworkIcon = ({
     <IconWrapper
       marginRight={marginRight ?? 0}
       isTestnet={network ? SupportedTestNetworks.includes(network.chainId) : false}
+      size={size}
     >
       <NetworkIcon
         size={size}

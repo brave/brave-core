@@ -514,7 +514,17 @@
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID" desc="NFT detail screen token id category">Token ID</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS" desc="NFT detail contract address category">Contract address</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_DESCRIPTION" desc="NFT detail description category">Description</message>
-  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_IMAGE_ADDRESS" desc="NFT detail image address category">Image location or address</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_IMAGE_ADDRESS" desc="NFT detail image address category">Image URL</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_IN_PROGRESS" desc="NFT detail pinning in progress">In progress</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_SUCCESSFUL" desc="NFT detail pinning successful">Pinned</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_FAILED" desc="NFT detail pinning failed">Failed</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_OVERVIEW" desc="NFT detail overview">Overview</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_OWNED_BY" desc="NFT detail owned by">Owned by</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_VIEW_ACCOUNT" desc="NFT detail view account">View account</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_STATUS_LABEL" desc="NFT detail pinning status label">IPFS pinning status</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_NOT_AVAILABLE" desc="NFT detail not avaialable text">Not available yet</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_CID" desc="NFT detail CID label">CID</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PROPERTIES" desc="NFT detail properties">Properties</message>
   <message name="IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED" desc="The error message when request for method 'eth_chainId' on custom network url failed">Request for method 'eth_chainId' on <ph name="URL">$1<ex>https://some.network/rpc/</ex></ph> failed</message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_EXISTS" desc="The error text of the wallet network dialog for existing network">
     This network is already added.

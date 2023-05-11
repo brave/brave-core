@@ -128,3 +128,7 @@ export const IPFS_PROTOCOL = 'ipfs://'
 export const isIpfs = (url?: string) => {
   return url?.toLowerCase()?.startsWith(IPFS_PROTOCOL)
 }
+
+export const getCid =(ipfsUrl: string) => {
+  return ipfsUrl.replace(IPFS_PROTOCOL, '')
+}

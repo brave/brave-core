@@ -9,13 +9,14 @@ import { AssetIconFactory, AssetIconProps } from '../style'
 export const IconWrapper = styled.div<{
   marginRight: number
   isTestnet: boolean
+  size?: string
 }>`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 15px;
-  height: 15px;
+  width: ${p => p.size ? p.size : '15px'};
+  height: ${p => p.size ? p.size : '15px'};
   margin-right: ${(p) => `${p.marginRight}px`};
   filter: ${(p) => p.isTestnet ? 'grayscale(100%)' : 'none'};
 `

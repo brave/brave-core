@@ -298,6 +298,9 @@ handler.on(
     const result = await getNFTMetadata(payload)
     if (!result?.error) {
       const response = result?.response && JSON.parse(result.response)
+      const attributes = Array.isArray(response.attributes)
+      ? response.attributes.map((attr: { trait_type: string; value: string }) => ({ traitType: attr.trait_type, value: attr.value }))
+      : []
       const tokenNetwork = await getNetwork(getWalletPageApiProxy(), payload)
 
       const nftMetadata: NFTMetadataReturnType = {
@@ -324,7 +327,8 @@ handler.on(
           facebook: '',
           logo: '',
           twitter: ''
-        }
+        },
+        attributes
       }
       store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))
       store.dispatch(WalletPageActions.updateNftMetadataError(undefined))

@@ -20,10 +20,12 @@ import WalletPageStory from './wrappers/wallet-page-story-wrapper'
 import { NftDetails } from '../nft/components/nft-details/nft-details'
 import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
-import { mockNetwork } from '../common/constants/mocks'
+import { mockErc721Token, mockNetwork } from '../common/constants/mocks'
 import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
 import { NftsEmptyState } from '../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
 import { EnableNftDiscoveryModal } from '../components/desktop/popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
+import { NftScreen } from '../nft/components/nft-details/nft-screen'
+import { ContainerCard, LayoutCardWrapper } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -235,4 +237,29 @@ export const _EnableNftDiscoveryModal = () => {
 
 _EnableNftDiscoveryModal.story = {
   title: 'Enable NFT Discovery Modal'
+}
+
+export const _NftScreen = () => {
+  return (
+    <WalletPageStory
+      pageStateOverride={{
+        isAutoPinEnabled: true
+      }}
+    >
+      <LayoutCardWrapper>
+      <ContainerCard
+      >
+        <NftScreen
+          isLoading={false}
+          selectedAsset={mockErc721Token}
+          tokenNetwork={mockNetwork}
+          nftMetadata={mockNFTMetadata[0]}
+          nftMetadataError=''
+          nftPinningStatus={{ code: BraveWallet.TokenPinStatusCode.STATUS_PINNED, error: undefined }}
+          imageIpfsUrl='ipfs://QmaSoKQVvBKoTy7eFvmTaHV5bxWDDKqMvwsX48JXseE2Z2'
+        />
+      </ContainerCard>
+    </LayoutCardWrapper>
+    </WalletPageStory>
+  )
 }

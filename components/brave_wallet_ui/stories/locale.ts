@@ -700,7 +700,17 @@ provideStrings({
   braveWalletNFTDetailTokenID: 'Token ID',
   braveWalletNFTDetailContractAddress: 'Contract address',
   braveWalletNFTDetailDescription: 'Description',
-  braveWalletNFTDetailImageAddress: 'Image location or address',
+  braveWalletNFTDetailImageAddress: 'Image URL',
+  braveWalletNFTDetailsPinningInProgress: 'In progress',
+  braveWalletNFTDetailsPinningSuccessful: 'Pinned',
+  braveWalletNFTDetailsPinningFailed: 'Failed',
+  braveWalletNFTDetailsNotAvailable: 'Not available yet',
+  braveWalletNFTDetailsOverview: 'Overview',
+  braveWalletNFTDetailsOwnedBy: 'Owned by',
+  braveWalletNFTDetailsViewAccount: 'View account',
+  braveWalletNFTDetailsPinningStatusLabel: 'IPFS pinning status',
+  braveWalletNFTDetailsCid: 'CID',
+  braveWalletNFTDetailsProperties: 'Properties',
 
   // Sweepstakes
   braveWalletSweepstakesTitle: 'Brave Swap-stakes',
