@@ -318,6 +318,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
+  mojom::Environment GetDefaultServerEnvironment();
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void SetLedgerStateTargetVersionForTesting(int version);
@@ -584,8 +586,6 @@ class RewardsServiceImpl : public RewardsService,
 
   static void OnGetRewardsParameters(GetRewardsParametersCallback,
                                      mojom::RewardsParametersPtr);
-
-  mojom::Environment GetDefaultServerEnvironment();
 
 #if BUILDFLAG(IS_ANDROID)
   mojom::Environment GetDefaultServerEnvironmentForAndroid();

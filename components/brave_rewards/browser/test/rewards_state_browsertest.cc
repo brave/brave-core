@@ -409,15 +409,6 @@ class V10 : public RewardsStateBrowserTest,
   }
 };
 
-#ifdef OFFICIAL_BUILD
-#define _UPHOLD_CLIENT_ID_ \
-  +std::string(BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_ID)) +
-#define _UPHOLD_URL_ +std::string(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)) +
-#else
-#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID)) +
-#define _UPHOLD_URL_ +std::string(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL)) +
-#endif
-
 // clang-format off
 INSTANTIATE_TEST_SUITE_P(
     RewardsStateBrowserTest,
@@ -437,13 +428,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -466,13 +456,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -495,13 +484,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -524,13 +512,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -553,13 +540,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -569,7 +555,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"}),
         // NOLINTNEXTLINE
-        std::make_pair(  // CONNECTED_token_non_empty_address_empty__PENDING_token_empty_address_empty
+        std::make_pair(  // CONNECTED_token_non_empty_address_empty__PENDING_token_non_empty_address_empty
             std::string{
                 R"({"account_url":"",)"
                 R"("address":"",)"
@@ -582,13 +568,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -611,13 +596,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -627,7 +611,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"}),
         // NOLINTNEXTLINE
-        std::make_pair(  // CONNECTED_token_non_empty_address_non_empty__PENDING_token_empty_address_empty
+        std::make_pair(  // CONNECTED_token_non_empty_address_non_empty__PENDING_token_non_empty_address_empty
             std::string{
                 R"({"account_url":"",)"
                 R"("address":"962df5b1-bb72-4619-a349-c8087941b795",)"
@@ -640,13 +624,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -669,13 +652,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -698,13 +680,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -727,13 +708,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -756,13 +736,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -785,13 +764,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -814,13 +792,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -843,13 +820,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -872,13 +848,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -901,13 +876,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -930,13 +904,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -959,13 +932,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -988,13 +960,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -1017,13 +988,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -1046,13 +1016,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -1075,13 +1044,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -1104,13 +1072,12 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":""})"},
             std::string{
-                R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"({"account_url":"%s/dashboard",)"
                 R"("activity_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
                 R"("fees":{},)"
-                R"("login_url":")" _UPHOLD_URL_
-                R"(/authorize/)" _UPHOLD_CLIENT_ID_
+                R"("login_url":"%s/authorize/%s)"
                 R"(?scope=cards:read cards:write user:read transactions:read )"
                 R"(transactions:transfer:application )"
                 R"(transactions:transfer:others&intention=login&state=state",)"
@@ -1145,7 +1112,19 @@ IN_PROC_BROWSER_TEST_P_(V10, Paths) {
       test_util::DecryptPrefString(rewards_service_, encrypted_to_wallet);
   ASSERT_TRUE(decrypted_to_wallet);
 
-  EXPECT_EQ(*decrypted_to_wallet, expected_wallet);
+  const mojom::Environment environment =
+      rewards_service_->GetDefaultServerEnvironment();
+  EXPECT_EQ(*decrypted_to_wallet,
+            base::StringPrintf(expected_wallet.c_str(),
+                               environment == mojom::Environment::PRODUCTION
+                                   ? BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)
+                                   : BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL),
+                               environment == mojom::Environment::PRODUCTION
+                                   ? BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)
+                                   : BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL),
+                               environment == mojom::Environment::PRODUCTION
+                                   ? BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_ID)
+                                   : BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID)));
 }
 
 class V12 : public RewardsStateBrowserTest,
