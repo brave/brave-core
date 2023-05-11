@@ -10,7 +10,6 @@ import BraveUI
 class AdvancedShieldsView: UIStackView {
   let siteTitle = HeaderTitleView()
   let adsTrackersControl = ToggleView(title: Strings.blockAdsAndTracking)
-  let blockMalwareControl = ToggleView(title: Strings.blockPhishing)
   let blockScriptsControl = ToggleView(title: Strings.blockScripts)
   let fingerprintingControl = ToggleView(title: Strings.fingerprintingProtection)
   let globalControlsTitleView = HeaderTitleView().then {
@@ -26,7 +25,6 @@ class AdvancedShieldsView: UIStackView {
     let rows: [UIView] = [
       siteTitle,
       adsTrackersControl,
-      blockMalwareControl,
       blockScriptsControl,
       fingerprintingControl,
       globalControlsTitleView,
