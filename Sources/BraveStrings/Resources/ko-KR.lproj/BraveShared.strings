@@ -142,9 +142,6 @@
 /* Brave panel individual toggle title */
 "BlockPhishing" = "피싱 차단";
 
-/* No comment provided by engineer. */
-"BlockPhishingAndMalware" = "피싱 및 악성 코드 차단";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "팝업 차단";
 
@@ -282,6 +279,18 @@
 
 /* Settings item for clearing the cache */
 "Cache" = "캐시";
+
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "탭 바 이동";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "주소창, 탭, 북마크 등 각종 도구를 브라우저 하단으로 이동합니다.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Brave 탭 바 맞춤 설정";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Brave를 기본 브라우저로 설정하시겠습니까?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Brave를 기본으로 설정하면 탭한 모든 링크가 Brave의 프라이버시 보호가 적용되어 열립니다.";
@@ -1309,6 +1318,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "파일 앱에서 다운로드 폴더를 여는 중 알 수 없는 오류가 발생했습니다.";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@의 메시지:";
+
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "%@에 앱 전환을 허용하시겠습니까?";
 
@@ -1657,21 +1669,6 @@
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "웹 호환성";
 
-/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddBody" = "Brave 재생목록은 오프라인 재생, PIP(Picture-in-picture), 연속 재생, 반복 모드를 지원합니다.";
-
-/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddedTitle" = "Brave 재생목록에 있는 미디어";
-
-/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddTitle" = "이 미디어를 Brave 재생목록에 추가하시겠습니까?";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverOpenInBravePlaylist" = "Brave 재생목록에서 열기";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverRemoveFromBravePlaylist" = "제거";
-
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "제거";
 
@@ -1701,6 +1698,9 @@
 
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "모든 재생목록 폴더 자동 동기화";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "재생목록 폴더 자동 동기화";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "새 탭에서 현재 항목을 열거나 시스템 공유 메뉴를 통해 공유할 수 있습니다.";
@@ -1747,17 +1747,11 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "폴더 편집";
 
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "폴더 편집";
-
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "이 폴더에서 변경한 내용을 저장할 수 없음";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "이동";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "현재 폴더";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "이동";
@@ -1774,35 +1768,14 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ 외 %2$lld개 항목";
 
-/* The title of the button to create a new folder */
-"playlistFolders.newFolderButtonTitle" = "새 폴더";
-
-/* The title of the screen to create a new folder */
-"playlistFolders.newFolderScreenTitle" = "새 폴더";
-
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "동영상을 선택하려면 탭";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "이 폴더에 동영상 추가";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "저장됨";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "%lld개 항목을 이동할 폴더 선택";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "1개 항목을 이동할 폴더 선택";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld개 항목";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1개 항목";
-
-/* The title of a folder when the user enters no name (untitled) */
-"playlistFolders.untitledFolderTitle" = "무제 폴더";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Brave 재생목록에 추가 버튼";
@@ -2390,6 +2363,9 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "정기 팁";
 
 /* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Rewards 프로필, 기기 및 잔액 정보(항상 공유됨)";
+
+/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "기본 정보";
 
 /* No comment provided by engineer. */
@@ -2412,6 +2388,9 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Rewards 내부 공유";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "이들 페이지상의 데이터는 민감한 것일 수 있습니다. 공유받을 사람을 주의하여 확인하세요.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "경고";
@@ -2442,6 +2421,15 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "버전";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Rewards 프로필 생성 날짜";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Rewards 프로필 정보";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "Rewards 지급 ID";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "리워드 패널";
@@ -3490,8 +3478,20 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "제공:";
 
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "선호하는 전송 프로토콜을 선택하세요. 기존 VPN을 전환하면 자격증명이 지워지고 VPN 연결이 현재 수립되어 있다면 재연결됩니다.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "터널 프로토콜을 전환하지 못했습니다. 나중에 다시 시도하세요.";
+
 /* Title for error when we fail to switch tunnel protocol for the user */
 "vpn.protocolPickerErrorTitle" = "서버 오류";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "전송 프로토콜";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN 터널 프로토콜이 변경되었습니다.";
 
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "가장 근접한 서버 지역이 시스템 시간대를 기반으로 자동 선택됩니다. 인터넷 속도를 빠르게 하려면 이 설정을 유지하는 것이 좋습니다.";
@@ -3574,6 +3574,9 @@
 /* Table cell title for status of current VPN subscription. */
 "vpn.settingsSubscriptionStatus" = "상태";
 
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "전송 프로토콜";
+
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "비활성화됨";
 
@@ -3609,6 +3612,12 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "구독 대금은 iTunes 계정을 통해 청구됩니다.\n\n구독을 구매하면 무료 평가판에서 미사용된 부분은 포기한 것으로 간주합니다.\n\n현재 구독 기간 종료 최소 24시간 전에 취소하지 않으면 구독이 자동으로 갱신됩니다.\n\n구매 후 설정에서 구독을 관리할 수 있습니다.\n\nBrave를 사용하면 이용 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "현재 설정: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "VPN 지역";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Brave Firewall + VPN 구성이 재설정되고 모든 오류가 정정됩니다. 이 프로세스는 1분 정도 소요됩니다.";

@@ -217,6 +217,9 @@
 /* The title of the 24h volume of this coin from market. */
 "wallet.coinMarket24HVolume" = "24 小時成交量";
 
+/* The message will be displayed when there is no coin market loaded or having an error. */
+"wallet.coinMarketEmptyMsg" = "尚无市场信息";
+
 /* The header title of the section that display coin market information. */
 "wallet.coinMarketInformation" = "資訊";
 
@@ -892,8 +895,14 @@
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "应该提供有效的 IPFS 网关。所提供的网关将检查是否有能力加载 IPFS 资源。";
 
+/* The description of the empty state inside NFT tab. */
+"wallet.nftPageEmptyDescription" = "准备好添加内容了吗？只需轻击下面的按钮即可导入。";
+
 /* The title of the empty state inside NFT tab. */
 "wallet.nftPageEmptyTitle" = "这里还没有 NFT。";
+
+/* The title of the tab that will display user's visible NFT assets. */
+"wallet.nftPageTitle" = "NFT";
 
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
@@ -1126,6 +1135,9 @@
 /* The title of a button that will go the list of networks. */
 "wallet.settingsNetworkButtonTitle" = "网络";
 
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "重置和清除钱包数据";
+
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "重置";
 
@@ -1296,6 +1308,12 @@
 
 /* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
 "wallet.solanaInstructionAccounts" = "账户";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\" */
+"wallet.solanaInstructionAddressLookupAcc" = "地址查询表账户";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\" */
+"wallet.solanaInstructionAddressLookupIndex" = "地址查询表索引";
 
 /* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
 "wallet.solanaInstructionData" = "数据";

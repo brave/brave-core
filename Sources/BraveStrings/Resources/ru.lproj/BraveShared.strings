@@ -142,9 +142,6 @@
 /* Brave panel individual toggle title */
 "BlockPhishing" = "Блокировать фишинг";
 
-/* No comment provided by engineer. */
-"BlockPhishingAndMalware" = "Блокировать фишинг и вредоносное ПО";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Блокировать всплывающие окна";
 
@@ -897,6 +894,9 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Ошибка";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Блокировать опасные сайты";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Отправляет обфусцированные URL-адреса некоторых страниц, которые вы посещали, в сервис \"Google Безопасный просмотр\", если есть угроза вашей безопасности.";
@@ -1669,21 +1669,6 @@
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Веб-совместимость";
 
-/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddBody" = "Плейлисты Brave поддерживают воспроизведение без перерыва, на повторе и офлайн, а также функцию «Картинка в картинке».";
-
-/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddedTitle" = "Этот медиафайл уже есть в плейлисте Brave";
-
-/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddTitle" = "Вы хотите добавить этот медиафайл в плейлист Brave?";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverOpenInBravePlaylist" = "Открыть в плейлисте Brave";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverRemoveFromBravePlaylist" = "Удалить";
-
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Удалить";
 
@@ -1713,6 +1698,9 @@
 
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Автоматически синхронизирует все папки плейлиста.";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Автоматически синхронизировать папки плейлиста";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Вы можете открыть текущий контент в новой вкладке или отправить его через меню «Поделиться»";
@@ -1759,17 +1747,11 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "Изменение папки";
 
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Изменение папки";
-
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "При сохранении изменений произошла ошибка.";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "Перемещение";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Текущая папка";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Перемещение";
@@ -1786,35 +1768,14 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ и другие объекты (%2$lld)";
 
-/* The title of the button to create a new folder */
-"playlistFolders.newFolderButtonTitle" = "Новая папка";
-
-/* The title of the screen to create a new folder */
-"playlistFolders.newFolderScreenTitle" = "Новая папка";
-
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "Нажмите, чтобы выбрать видео.";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Добавление видео в папку";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "Сохраненное";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "Выбор новой папки для объектов (%lld)";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "Выберите папку для 1 объекта";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "Объектов: %lld.";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1 объект.";
-
-/* The title of a folder when the user enters no name (untitled) */
-"playlistFolders.untitledFolderTitle" = "Без названия";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Кнопка «Добавить в плейлист Brave»";
@@ -2402,6 +2363,9 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Регулярное вознаграждение";
 
 /* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Сведения о профиле Brave Наград, устройстве и балансе (всегда в общем доступе)";
+
+/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Основная информация";
 
 /* No comment provided by engineer. */
@@ -2424,6 +2388,9 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Распространение внутренних данных о вознаграждениях Brave Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Будьте осторожны, когда делитесь этими страницами. Они могут содержать конфиденциальные данные.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Внимание!";
@@ -2454,6 +2421,15 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Версия";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Дата создания профиля Brave Наград";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Сведения о профиле Brave Наград";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "ID оплаты Brave Наград";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Панель Rewards";
@@ -3502,8 +3478,20 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "При поддержке";
 
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "Выберите предпочтительный протокол транспортного уровня. После переключения существующие учетные данные VPN будут стерты. Если сейчас установлено VPN-соединение, вы подключитесь заново.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Не удалось переключить туннельный протокол. Повторите попытку.";
+
 /* Title for error when we fail to switch tunnel protocol for the user */
 "vpn.protocolPickerErrorTitle" = "Ошибка сервера";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Протокол транспортного уровня";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN-протокол изменен.";
 
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "Ближайшие к вам серверы будут выбраны автоматически. Они определятся по часовому поясу вашей системы, и это поможет установить высокую скорость интернет-соединения.";
@@ -3586,6 +3574,9 @@
 /* Table cell title for status of current VPN subscription. */
 "vpn.settingsSubscriptionStatus" = "Статус";
 
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Протокол транспортного уровня";
+
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Отключено";
 
@@ -3621,6 +3612,12 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Плата за подписки будет взиматься через ваш аккаунт iTunes.\n\nПри покупке подписки неиспользованный период бесплатной версии аннулируется.\n\nПодписка будет обновляться автоматически. Чтобы отменить подписку, откажитесь от нее как минимум за 24 часа до окончания текущего расчетного периода.\n\nВы можете управлять подписками в настройках.\n\nИспользуя Brave, вы соглашаетесь с нашими Условиями использования и Политикой конфиденциальности.";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Текущий регион: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "Выбрать регион";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Это позволит сбросить настройки файрвола и VPN-расширения для браузера Brave и исправить любые ошибки. Процесс может занять около минуты.";
