@@ -11,7 +11,7 @@ enum CharacterType {
 };
 
 enum ConversationTurnVisibility {
-  DONT_ADD,
+  INTERNAL, // does not get added to chat history, used as a flag internally
   VISIBLE,
   HIDDEN
 };

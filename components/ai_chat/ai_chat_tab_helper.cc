@@ -274,7 +274,7 @@ void AIChatTabHelper::DistillViaAlgorithm(const ui::AXTree& tree) {
 
   // We hide the prompt with article content from the user
   MakeAPIRequestWithConversationHistoryUpdate(
-      {CharacterType::HUMAN, ConversationTurnVisibility::DONT_ADD,
+      {CharacterType::HUMAN, ConversationTurnVisibility::INTERNAL,
        summarize_prompt});
 }
 
@@ -297,7 +297,7 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   std::string prompt_with_history =
       base::StrCat({prompt, ai_chat::kAIPrompt, " <response>\n"});
 
-  if (turn.visibility != ConversationTurnVisibility::DONT_ADD) {
+  if (turn.visibility != ConversationTurnVisibility::INTERNAL) {
     AddToConversationHistory(turn);
   }
 
@@ -309,7 +309,7 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   // the incoming response is expected to include the AI-generated summary.
   // TODO(nullhook): Improve this heuristic, as it may or may not be true.
   bool is_summarize_prompt =
-      turn.visibility == ConversationTurnVisibility::DONT_ADD ? true : false;
+      turn.visibility == ConversationTurnVisibility::INTERNAL ? true : false;
 
   ai_chat_api_->QueryPrompt(
       base::BindOnce(&AIChatTabHelper::OnAPIResponse, base::Unretained(this),
