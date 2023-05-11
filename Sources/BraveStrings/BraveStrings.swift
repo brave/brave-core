@@ -1088,7 +1088,6 @@ extension Strings {
   public static let individualControls = NSLocalizedString("IndividualControls", tableName: "BraveShared", bundle: .module, value: "Individual Controls", comment: "title for per-site shield toggles")
   public static let blockingMonitor = NSLocalizedString("BlockingMonitor", tableName: "BraveShared", bundle: .module, value: "Blocking Monitor", comment: "title for section showing page blocking statistics")
   public static let siteShieldSettings = NSLocalizedString("SiteShieldSettings", tableName: "BraveShared", bundle: .module, value: "Shields", comment: "Brave panel topmost title")
-  public static let blockPhishing = NSLocalizedString("BlockPhishing", tableName: "BraveShared", bundle: .module, value: "Block Phishing", comment: "Brave panel individual toggle title")
   public static let adsAndTrackers = NSLocalizedString("AdsAndTrackers", tableName: "BraveShared", bundle: .module, value: "Ads and Trackers", comment: "individual blocking statistic title")
   public static let HTTPSUpgrades = NSLocalizedString("HTTPSUpgrades", tableName: "BraveShared", bundle: .module, value: "HTTPS Upgrades", comment: "individual blocking statistic title")
   public static let scriptsBlocked = NSLocalizedString("ScriptsBlocked", tableName: "BraveShared", bundle: .module, value: "Scripts Blocked", comment: "individual blocking statistic title")
