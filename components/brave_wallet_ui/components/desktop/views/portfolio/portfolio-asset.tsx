@@ -487,15 +487,6 @@ export const PortfolioAsset = (props: Props) => {
 
   const onHideAsset = React.useCallback(() => {
     if (!selectedAsset) return
-    if (
-      fullTokenList.some((asset) =>
-        asset.contractAddress.toLowerCase() ===
-        selectedAsset.contractAddress.toLowerCase())
-    ) {
-      dispatch(WalletActions.removeUserAsset(selectedAsset))
-    } else {
-      dispatch(WalletActions.setUserAssetVisible({ token: selectedAsset, isVisible: false }))
-    }
     dispatch(WalletActions.setUserAssetVisible({ token: selectedAsset, isVisible: false }))
     dispatch(WalletActions.refreshBalancesAndPriceHistory())
     dispatch(WalletPageActions.selectAsset({
@@ -505,7 +496,7 @@ export const PortfolioAsset = (props: Props) => {
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
-  }, [selectedAsset, showTokenDetailsModal, fullTokenList])
+  }, [selectedAsset, showTokenDetailsModal])
 
   const onCloseNftModal = React.useCallback(() => {
     setshowNftModal(false)

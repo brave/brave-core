@@ -157,6 +157,20 @@ const defaultState: WalletState = {
       LOCAL_STORAGE_KEYS
         .HIDE_PORTFOLIO_BALANCES
     ) === 'true',
+  removedFungibleTokenIds:
+    JSON.parse(
+      localStorage
+        .getItem(
+          LOCAL_STORAGE_KEYS
+            .USER_REMOVED_FUNGIBLE_TOKEN_IDS
+        ) || '[]'),
+  removedNonFungibleTokenIds:
+    JSON.parse(
+      localStorage
+        .getItem(
+          LOCAL_STORAGE_KEYS
+            .USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
+        ) || '[]')
 }
 
 // async actions
@@ -428,9 +442,9 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       setCoinMarkets (state: WalletState, { payload }: PayloadAction<GetCoinMarketsResponse>) {
         state.coinMarketData = payload.success
           ? payload.values.map(coin => {
-              coin.image = coin.image.replace('https://assets.coingecko.com', ' https://assets.cgproxy.brave.com')
-              return coin
-            })
+            coin.image = coin.image.replace('https://assets.coingecko.com', ' https://assets.cgproxy.brave.com')
+            return coin
+          })
           : []
         state.isLoadingCoinMarketData = false
       },
@@ -475,6 +489,22 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           { payload }: PayloadAction<boolean>
         ) {
         state.hidePortfolioGraph = payload
+      },
+
+      setRemovedFungibleTokenIds
+        (
+          state: WalletState,
+          { payload }: PayloadAction<string[]>
+        ) {
+        state.removedFungibleTokenIds = payload
+      },
+
+      setRemovedNonFungibleTokenIds
+        (
+          state: WalletState,
+          { payload }: PayloadAction<string[]>
+        ) {
+        state.removedNonFungibleTokenIds = payload
       },
 
       setHidePortfolioBalances

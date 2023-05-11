@@ -117,13 +117,37 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     return Object.keys(tokenRegistry).length === 0 ? [] : tokenRegistry[selectedNetworkFilter.chainId]
   }, [tokenRegistry, selectedNetworkFilter.chainId, fullTokenListAllChains, Object.keys(tokenRegistry).length])
 
+  // User tokens sorted by visibility
+  const usersTokensSortedByVisibility
+    : BraveWallet.BlockchainToken[] =
+    React.useMemo(() => {
+      return [...userVisibleTokensInfo]
+        .sort((a, b) =>
+          Number(b.visible) - Number(a.visible)
+        )
+    }, [userVisibleTokensInfo])
+
   // Users visible tokens based on selectedNetworkFilter
-  const userVisibleTokensBySelectedNetwork: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return userVisibleTokensInfo
-    }
-    return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
-  }, [userVisibleTokensInfo, selectedNetworkFilter.chainId, tokenRegistry])
+  const userVisibleTokensBySelectedNetwork
+    : BraveWallet.BlockchainToken[] =
+    React.useMemo(() => {
+      if (
+        selectedNetworkFilter.chainId ===
+        AllNetworksOption.chainId
+      ) {
+        return usersTokensSortedByVisibility
+      }
+      return usersTokensSortedByVisibility
+        .filter(
+          (token) =>
+            token.chainId ===
+            selectedNetworkFilter.chainId
+        )
+    }, [
+      usersTokensSortedByVisibility,
+      selectedNetworkFilter.chainId,
+      tokenRegistry
+    ])
 
   // Constructed list based on Users Visible Tokens and Full Token List
   const tokenList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
@@ -141,7 +165,13 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     return isUserVisibleTokensInfoEmpty
       ? filteredTokenRegistry
       : [...userVisibleTokensBySelectedNetwork, ...filteredTokenRegistry]
-  }, [isUserVisibleTokensInfoEmpty, selectedNetworkList, userVisibleTokensInfo, nativeAsset])
+  }, [
+    isUserVisibleTokensInfoEmpty,
+    selectedNetworkList,
+    userVisibleTokensInfo,
+    nativeAsset,
+    userVisibleTokensBySelectedNetwork
+  ])
 
   // Filtered token list based on user removed tokens
   const filteredOutRemovedTokens = React.useMemo(() => {
@@ -184,58 +214,50 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     return (isUserToken(token) && findUpdatedTokenInfo(token)?.visible) ?? false
   }, [isUserToken, findUpdatedTokenInfo])
 
-  const isCustomToken = React.useCallback((token: BraveWallet.BlockchainToken): boolean => {
-    if (token.contractAddress === '') {
-      return false
-    }
+  const isRemovable = React.useCallback(
+    (
+      token: BraveWallet.BlockchainToken
+    ): boolean => {
+      // Native assets should not be removable.
+      if (token.contractAddress === '') {
+        return false
+      }
 
-    // Any token with a tokenId should be considered a custom token.
-    if (token.tokenId !== '') {
-      return true
-    }
+      // Any NFT should be removable.
+      if (
+        token.isErc721 ||
+        token.isErc1155 ||
+        token.isNft
+      ) {
+        return true
+      }
 
-    return !fullTokenListAllChains
-      .some(each => each.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
-  }, [fullTokenListAllChains])
+      return !fullTokenListAllChains
+        .some(
+          each =>
+            each.contractAddress.toLowerCase() ===
+            token.contractAddress.toLowerCase()
+        )
+    }, [fullTokenListAllChains])
 
-  const addOrRemoveTokenFromList = React.useCallback((selected: boolean, token: BraveWallet.BlockchainToken) => {
-    if (selected) {
-      return [...updatedTokensList, token]
-    }
-    return updatedTokensList.filter((t) => t !== token)
-  }, [updatedTokensList])
-
-  // Do to a bug, users were able to set a non custom token's
-  // visibility to false. We only allow setting visibility to custom tokens
-  // to make it easier for users to re-add in the future. This method is added
-  // to help the user get un-stuck.
-  const findNonCustomTokenWithVisibleFalse = React.useCallback((token: BraveWallet.BlockchainToken) => {
-    return userVisibleTokensInfo.some((t) =>
-      checkIfTokensMatch(t, token) &&
-      !t.visible)
-  }, [userVisibleTokensInfo])
-
-  const onCheckWatchlistItem = React.useCallback((key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => {
-    if (isUserToken(token)) {
-      if (isCustom || token.contractAddress === '' || (!isCustom && findNonCustomTokenWithVisibleFalse(token))) {
-        const updatedToken = selected ? { ...token, visible: true } : { ...token, visible: false }
-        const tokenIndex = updatedTokensList.findIndex((t) => checkIfTokensMatch(t, token))
+  const onCheckWatchlistItem = React.useCallback(
+    (
+      key: string,
+      selected: boolean,
+      token: BraveWallet.BlockchainToken
+    ) => {
+      if (isUserToken(token)) {
+        const updatedToken = { ...token, visible: selected }
+        const tokenIndex =
+          updatedTokensList
+            .findIndex((t) => checkIfTokensMatch(t, token))
         let newList = [...updatedTokensList]
         newList.splice(tokenIndex, 1, updatedToken)
         setUpdatedTokensList(newList)
-      } else {
-        if (token.isErc721) setTokenContractAddress(token.contractAddress)
-        setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
+        return
       }
-      return
-    }
-    if (token.isErc721 || token.isNft) {
-      setShowAddCustomToken(true)
-      setTokenContractAddress(token.contractAddress)
-      return
-    }
-    setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
-  }, [isUserToken, updatedTokensList, addOrRemoveTokenFromList, findNonCustomTokenWithVisibleFalse])
+      setUpdatedTokensList([...updatedTokensList, token])
+    }, [isUserToken, updatedTokensList])
 
   const toggleShowAddCustomToken = () => setShowAddCustomToken(prev => !prev)
 
@@ -314,7 +336,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
                   </NoAssetRow>
                   : <VirtualizedVisibleAssetsList
                     tokenList={filteredTokenList}
-                    isCustomToken={isCustomToken}
+                    isRemovable={isRemovable}
                     onRemoveAsset={onRemoveAsset}
                     isAssetSelected={isAssetSelected}
                     onCheckWatchlistItem={onCheckWatchlistItem}
