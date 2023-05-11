@@ -65,6 +65,8 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
+  mixer[ui::kColorBadgeBackground] = {SkColorSetRGB(95, 92, 241)};
+  mixer[ui::kColorBadgeForeground] = {SkColorSetRGB(245, 244, 254)};
   mixer[kColorDownloadShelfButtonText] = {gfx::kBraveGrey800};
   mixer[kColorForTest] = {kLightColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
@@ -104,6 +106,8 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
+  mixer[ui::kColorBadgeBackground] = {SkColorSetRGB(135, 132, 244)};
+  mixer[ui::kColorBadgeForeground] = {SkColorSetRGB(14, 14, 52)};
   mixer[kColorDownloadShelfButtonText] = {SK_ColorWHITE};
   mixer[kColorForTest] = {kDarkColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
