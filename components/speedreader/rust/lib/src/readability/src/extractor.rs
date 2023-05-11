@@ -399,8 +399,7 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             dom.append(&meta_area, NodeOrText::AppendNode(splitter));
         }
 
-        let content =
-            dom::create_element_simple(dom, "div", "", None);
+        let content = dom::create_element_simple(dom, "div", "", None);
         dom::set_attr("id", "7c08a417-bf02-4241-a55e-ad5b8dc88f69", content.clone(), true);
         dom.reparent_children(&root, &content);
 
