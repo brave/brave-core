@@ -395,6 +395,20 @@ class Tab: NSObject {
       Logger.module.warning("creating webview with no lastRequest and no session data: \(self.url?.absoluteString ?? "nil")")
     }
   }
+  
+  func restore(_ webView: WKWebView, requestRestorationData: (title: String, request: URLRequest)?) {
+    if let sessionInfo = requestRestorationData {
+      restoring = true
+      lastTitle = sessionInfo.title
+      webView.load(sessionInfo.request)
+      restoring = false
+      self.sessionData = nil
+    } else if let request = lastRequest {
+      webView.load(request)
+    } else {
+      Logger.module.warning("creating webview with no lastRequest and no session data: \(self.url?.absoluteString ?? "nil")")
+    }
+  }
 
   func deleteWebView() {
     contentScriptManager.uninstall(from: self)

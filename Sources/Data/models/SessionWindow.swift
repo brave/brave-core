@@ -56,7 +56,7 @@ extension SessionWindow {
   /// Returns the active window
   public static func getActiveWindow(context: NSManagedObjectContext) -> SessionWindow? {
     let predicate = NSPredicate(format: "\(#keyPath(SessionWindow.isSelected)) == true")
-    return first(where: predicate, context: DataController.viewContext)
+    return first(where: predicate, context: context)
   }
   
   /// Returns the tab with the specificed windowId
