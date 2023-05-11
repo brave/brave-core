@@ -394,7 +394,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Hide YouTube Recommended Content
       </message>
       <message name="IDS_HIDE_YOUTUBE_RECOMMENDED_CONTENT_DESCRIPTION" desc="Hides the up next, home feed and end card elements on YouTube.">
-        Hides the up next, home feed and end card elements on YouTube.
+        Hides the up next and end card elements on YouTube.
       </message>
       <message name="IDS_HIDE_YOUTUBE_DISTRACTING_ELEMENTS" desc="Hide YouTube Distracting Elements">
         Hide YouTube Distracting Elements
