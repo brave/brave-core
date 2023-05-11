@@ -235,7 +235,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 } else if (isInsExists
                         && (instructionType == SolanaSystemInstruction.WITHDRAW_NONCE_ACCOUNT)) {
                     String noncePubKey =
-                            presenter.getPubKeyPerParamKey(WalletConstants.SOL_DAPP_NONCE_ACCOUNT);
+                            presenter.getAccountPerParamKey(WalletConstants.SOL_DAPP_NONCE_ACCOUNT);
                     String toPubKey = presenter.toPubKey();
                     if (noncePubKey != null && noncePubKey.equals(txInfo.fromAddress)) {
                         lamportTransferredAmount =
@@ -251,7 +251,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                                         == SolanaSystemInstruction.CREATE_ACCOUNT_WITH_SEED)) {
                     String fromPubKey = presenter.fromPubKey();
                     String newAccountPubKey =
-                            presenter.getPubKeyPerParamKey(WalletConstants.SOL_DAPP_NEW_ACCOUNT);
+                            presenter.getAccountPerParamKey(WalletConstants.SOL_DAPP_NEW_ACCOUNT);
                     if (TextUtils.isEmpty(to)) {
                         to = newAccountPubKey;
                     }
