@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser.playlist;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -32,7 +34,6 @@ import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -282,21 +283,59 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     } else if (option == PlaylistOptions.RECOVER_PLAYLIST_ITEM) {
                         mPlaylistService.recoverLocalDataForItem(
                                 playlistItemOption.getPlaylistItemModel().getId(), true,
-                                playlistItem
-                                -> {
-
+                                playlistItem -> {
+                                    loadPlaylist(playlistItemOption.getPlaylistId());
                                 });
                     }
                 });
 
-        if (getIntent() != null && getIntent().getStringExtra(ConstantUtils.PLAYLIST_ID) != null) {
-            String playlistId = getIntent().getStringExtra(ConstantUtils.PLAYLIST_ID);
-            if (playlistId.equals(ConstantUtils.ALL_PLAYLIST)) {
-                showAllPlaylistsFragment();
+        if (getIntent() != null) {
+            if (!TextUtils.isEmpty(getIntent().getAction())
+                    && getIntent().getAction().equals(ConstantUtils.PLAYLIST_ACTION)
+                    && !TextUtils.isEmpty(
+                            getIntent().getStringExtra(ConstantUtils.CURRENT_PLAYLIST_ID))
+                    && !TextUtils.isEmpty(
+                            getIntent().getStringExtra(ConstantUtils.CURRENT_PLAYING_ITEM_ID))) {
+                showPlaylistForPlayer(getIntent().getStringExtra(ConstantUtils.CURRENT_PLAYLIST_ID),
+                        getIntent().getStringExtra(ConstantUtils.CURRENT_PLAYING_ITEM_ID));
             } else {
-                showPlaylist(playlistId, false);
+                String playlistId = getIntent().getStringExtra(ConstantUtils.PLAYLIST_ID);
+                if (!TextUtils.isEmpty(playlistId)
+                        && playlistId.equals(ConstantUtils.ALL_PLAYLIST)) {
+                    showAllPlaylistsFragment();
+                } else {
+                    showPlaylist(playlistId, false);
+                }
             }
         }
+    }
+
+    private void showPlaylist(String playlistId, boolean shouldFallback) {
+        if (mPlaylistService == null) {
+            return;
+        }
+        loadPlaylist(playlistId);
+        PlaylistFragment playlistFragment = new PlaylistFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().replace(
+                R.id.fragment_container_view_tag, playlistFragment);
+        if (shouldFallback) {
+            transaction.addToBackStack(AllPlaylistFragment.class.getSimpleName());
+        }
+        transaction.commit();
+    }
+
+    private void showPlaylistForPlayer(String playlistId, String playlistItemId) {
+        if (mPlaylistService == null) {
+            return;
+        }
+        loadPlaylist(playlistId);
+        PlaylistFragment playlistFragment = new PlaylistFragment();
+        Bundle fragmentBundle = new Bundle();
+        fragmentBundle.putString(ConstantUtils.CURRENT_PLAYING_ITEM_ID, playlistItemId);
+        playlistFragment.setArguments(fragmentBundle);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().replace(
+                R.id.fragment_container_view_tag, playlistFragment);
+        transaction.commit();
     }
 
     private void loadPlaylist(String playlistId) {
@@ -319,20 +358,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                 mPlaylistViewModel.setPlaylistData(playlistModel);
             }
         });
-    }
-
-    private void showPlaylist(String playlistId, boolean shouldFallback) {
-        if (mPlaylistService == null) {
-            return;
-        }
-        loadPlaylist(playlistId);
-        PlaylistFragment playlistFragment = new PlaylistFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().replace(
-                R.id.fragment_container_view_tag, playlistFragment);
-        if (shouldFallback) {
-            transaction.addToBackStack(AllPlaylistFragment.class.getSimpleName());
-        }
-        transaction.commit();
     }
 
     private void loadAllPlaylists() {

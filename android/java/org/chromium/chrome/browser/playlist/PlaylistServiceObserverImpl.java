@@ -15,6 +15,7 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
         default void onEvent(int event, String playlistId) {}
         default void onMediaFileDownloadProgressed(String id, long totalBytes, long receivedBytes,
                 byte percentComplete, String timeRemaining) {}
+        default void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {}
     }
 
     private PlaylistServiceObserverImplDelegate mDelegate;
@@ -40,7 +41,11 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     }
 
     @Override
-    public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {}
+    public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {
+        if (mDelegate == null) return;
+
+        mDelegate.onMediaFilesUpdated(pageUrl, items);
+    }
 
     @Override
     public void close() {
