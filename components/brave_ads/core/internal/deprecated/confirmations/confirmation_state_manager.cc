@@ -352,8 +352,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     // Was created
-    const absl::optional<bool> was_created = item_dict->FindBool("created");
-    confirmation.was_created = was_created.value_or(true);
+    confirmation.was_created = item_dict->FindBool("created").value_or(true);
 
     // Opted-in
     confirmation.opted_in = GetOptedIn(*item_dict);
