@@ -2054,7 +2054,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
       "appspot.com##.fpsponsored1\n"
       "appspot.com##.fpsponsored2\n"
       "appspot.com##.fpsponsored3\n"
-      "appspot.com##.fpsponsored4\n");
+      "appspot.com##.fpsponsored4\n"
+      "appspot.com##.fpsponsored5\n");
 
   // *.appspot.com is used here to check the eTLD logic.
   // It's a private suffix from https://publicsuffix.org/list/
@@ -2078,6 +2079,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
                          "checkSelector('#same-etld', 'display', 'block')"));
   EXPECT_EQ(true, EvalJs(contents,
                          "checkSelector('#another-etld', 'display', 'none')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "checkSelector('#another-etld-significant-text', "
+                         "'display', 'block')"));
 }
 
 // Test cosmetic filtering bypasses 1st party checks in Aggressive mode
