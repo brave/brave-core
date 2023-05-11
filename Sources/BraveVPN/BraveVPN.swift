@@ -279,8 +279,13 @@ public class BraveVPN {
           logAndStoreError("configureAndConnectVPN: \(error)")
         }
         
-        reconnectPending = false
-        completion?(status == .success)
+        // Re-connected user should update last used region - detail is pulled
+        fetchLastUsedRegionDetail() { _, _ in
+          reconnectPending = false
+          DispatchQueue.main.async {
+            completion?(status == .success)
+          }
+        }
       }
     } else {
       // Setting User preferred Transport Protocol to WireGuard
@@ -379,11 +384,7 @@ public class BraveVPN {
   /// Return the region last activated with the details
   /// It will give region details for automatic
   public static var activatedRegion: GRDRegion? {
-    guard let isoCode = helper.selectedRegion?.countryISOCode, isoCode.isEmpty else {
-      return helper.selectedRegion
-    }
-    
-    return lastKnownRegion
+    helper.selectedRegion ?? lastKnownRegion
   }
   
   /// Switched to use an automatic region, region closest to user location.
