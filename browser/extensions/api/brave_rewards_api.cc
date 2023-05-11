@@ -5,20 +5,16 @@
 
 #include "brave/browser/extensions/api/brave_rewards_api.h"
 
-#include <map>
-#include <memory>
 #include <string>
 #include <utility>
 
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/version.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
@@ -37,10 +33,8 @@
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
-#include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 
 using brave_ads::AdsService;
@@ -126,8 +120,7 @@ std::string StringifyResult(
 
 }  // namespace
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 BraveRewardsIsSupportedFunction::~BraveRewardsIsSupportedFunction() = default;
 
@@ -1043,14 +1036,14 @@ ExtensionFunction::ResponseAction BraveRewardsSaveRecurringTipFunction::Run() {
       brave_rewards::SaveRecurringTip::Params::Create(args());
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
 
-  if (!rewards_service_) {
+  if (!rewards_service) {
     return RespondNow(NoArguments());
   }
 
-  rewards_service_->SaveRecurringTip(
+  rewards_service->SaveRecurringTip(
       params->publisher_key, params->new_amount,
       base::BindOnce(&BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip,
                      this));
@@ -1074,11 +1067,11 @@ BraveRewardsRemoveRecurringTipFunction::Run() {
       brave_rewards::RemoveRecurringTip::Params::Create(args());
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
 
-  if (rewards_service_) {
-    rewards_service_->RemoveRecurringTip(params->publisher_key);
+  if (rewards_service) {
+    rewards_service->RemoveRecurringTip(params->publisher_key);
   }
 
   return RespondNow(NoArguments());
@@ -1104,18 +1097,18 @@ ExtensionFunction::ResponseAction BraveRewardsGetRecurringTipsFunction::Run() {
 void BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips(
     std::vector<::brave_rewards::mojom::PublisherInfoPtr> list) {
   base::Value::Dict result;
-  base::Value::List recurringTips;
+  base::Value::List recurring_tips;
 
   if (!list.empty()) {
     for (const auto& item : list) {
       base::Value::Dict tip;
       tip.Set("publisherKey", item->id);
       tip.Set("amount", item->weight);
-      recurringTips.Append(std::move(tip));
+      recurring_tips.Append(std::move(tip));
     }
   }
 
-  result.Set("recurringTips", std::move(recurringTips));
+  result.Set("recurringTips", std::move(recurring_tips));
   Respond(WithArguments(std::move(result)));
 }
 
@@ -1568,5 +1561,4 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api
