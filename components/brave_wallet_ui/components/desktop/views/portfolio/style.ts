@@ -5,7 +5,6 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import { ArrowUpIcon } from 'brave-ui/components/icons'
 import {
   AssetIconProps,
   AssetIconFactory,
@@ -13,7 +12,6 @@ import {
   Row,
   Column
 } from '../../../shared/style'
-import More from '../../../extension/assets/actions.svg'
 import {
   layoutSmallWidth,
   layoutPanelWidth
@@ -59,16 +57,6 @@ export const FiatChange = styled.span<{ isDown?: boolean }>`
   };
 `
 
-export const PriceText = styled.span`
-  font-family: Poppins;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 36px;
-  letter-spacing: 0.02em;
-  margin-right: 10px;
-  color: ${(p) => p.theme.color.text01};
-`
-
 export const ButtonRow = styled.div<
   {
     noMargin?: boolean,
@@ -95,62 +83,6 @@ export const BalanceRow = styled.div<{ gap?: string }>`
   height: 36px;
   vertical-align: middle;
   gap: ${p => p.gap || 0};
-`
-
-export const InfoColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin: 10px 0px 20px 10px;
-`
-
-export const AssetRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-`
-
-export const AssetColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-`
-
-export const PriceRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`
-
-export const AssetNameText = styled.span`
-  font-family: Poppins;
-  font-size: 20px;
-  line-height: 30px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text01};
-`
-
-export const NetworkDescription = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 16px;
-  letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text02};
-`
-
-export const DetailText = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  font-weight: 400;
-  color: ${(p) => p.theme.color.text03};
 `
 
 // Construct styled-component using JS object instead of string, for editor
@@ -198,14 +130,6 @@ export const PercentBubble = styled.div<{ isDown?: boolean }>`
       ? leo.color.red[50]
       : leo.color.green[50]
   };
-`
-
-export const ArrowIcon = styled(ArrowUpIcon) <{ isDown?: boolean }>`
-  width: 12px;
-  height: 12px;
-  margin-right: 2px;
-  transform: ${(p) => p.isDown ? 'rotate(270deg)' : 'rotate(90deg)'};
-  color: inherit;
 `
 
 export const EmptyTransactionContainer = styled.div`
@@ -276,6 +200,7 @@ export const FilterTokenRow = styled.div<
 `
 
 export const NftMultimedia = styled.iframe<{ visible?: boolean }>`
+  display: ${p => p.visible ? 'flex' : 'none'};
   width: 100%;
   min-height: ${p => p.visible ? '500px' : '0px'};
   border: none;
@@ -307,23 +232,6 @@ export const BridgeToAuroraButton = styled(WalletButton) <
   border: none;
   margin-bottom: ${(p) => p.noBottomMargin ? 0 : 32}px;
   margin-right: 10px;
-`
-
-export const MoreButton = styled(WalletButton)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 18px;
-  height: 18px;
-  margin-left: 16px;
-  outline: none;
-  border: none;
-  padding: 0;
-  background-color: ${(p) => p.theme.color.interactive07};
-  -webkit-mask-image: url(${More});
-  mask-image: url(${More});
-  mask-size: cover;
 `
 
 export const SelectTimelineWrapper = styled(Row)`

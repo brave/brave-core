@@ -25,7 +25,6 @@ import {
   sortTransactionByDate
 } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
-import useExplorer from '../../../../common/hooks/explorer'
 import {
   CommandMessage,
   NftUiCommand,
@@ -55,13 +54,14 @@ import { WalletSelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
 // Options
-import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
 
 // Components
 import { BackButton } from '../../../shared'
-import withPlaceholderIcon from '../../../shared/create-placeholder-icon'
 import { LineChart } from '../../'
+import {
+  LineChartControls
+} from '../../line-chart/line-chart-controls/line-chart-controls'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
 import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
 
@@ -81,41 +81,33 @@ import {
 
 // Styled Components
 import {
-  ArrowIcon,
-  AssetColumn,
-  AssetIcon,
-  AssetNameText,
-  AssetRow,
   BalanceRow,
   BridgeToAuroraButton,
-  DetailText,
-  InfoColumn,
-  NetworkDescription,
   NftMultimedia,
-  PercentBubble,
-  PriceRow,
-  PriceText,
   StyledWrapper,
   TopRow,
-  MoreButton,
   ButtonRow
 } from './style'
+import { Row, Column } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import { CoinStats } from './components/coin-stats/coin-stats'
-import { AssetMorePopup } from './components/asset-more-popup/asset-more-popup'
 import { TokenDetailsModal } from './components/token-details-modal/token-details-modal'
 import { WalletActions } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
-import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
 import { IpfsNodeStatus } from './components/ipfs-node-status/ipfs-node-status'
 import {
   areSupportedForPinning,
   extractIpfsUrl
 } from '../../../../common/async/lib'
 import { NftDetails } from '../../../../nft/components/nft-details/nft-details'
+import {
+  WalletPageWrapper
+} from '../../wallet-page-wrapper/wallet-page-wrapper'
+import {
+  AssetDetailsHeader
+} from '../../card-headers/asset-details-header'
 
-const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
 const bridgeToAuroraDontShowAgainKey = 'bridgeToAuroraDontShowAgain'
 
@@ -128,7 +120,6 @@ export const PortfolioAsset = (props: Props) => {
   // state
   const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] = React.useState<boolean>(false)
   const [dontShowAuroraWarning, setDontShowAuroraWarning] = React.useState<boolean>(false)
-  const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
   const [showNftModal, setshowNftModal] = React.useState<boolean>(false)
@@ -144,7 +135,6 @@ export const PortfolioAsset = (props: Props) => {
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
   const portfolioPriceHistory = useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
-  const selectedPortfolioTimeline = useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
   const isFetchingPortfolioPriceHistory = useSafeWalletSelector(WalletSelectors.isFetchingPortfolioPriceHistory)
@@ -155,8 +145,6 @@ export const PortfolioAsset = (props: Props) => {
 
   const isLoading = useSafePageSelector(PageSelectors.isFetchingPriceHistory)
   const selectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
-  const selectedAssetCryptoPrice = useUnsafePageSelector(PageSelectors.selectedAssetCryptoPrice)
-  const selectedAssetFiatPrice = useUnsafePageSelector(PageSelectors.selectedAssetFiatPrice)
   const selectedAssetPriceHistory = useUnsafePageSelector(PageSelectors.selectedAssetPriceHistory)
   const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
   const isFetchingNFTMetadata = useSafePageSelector(PageSelectors.isFetchingNFTMetadata)
@@ -238,7 +226,6 @@ export const PortfolioAsset = (props: Props) => {
 
   // more custom hooks
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
-  const openExplorer = useExplorer(selectedAssetsNetwork)
 
   // memos / computed
   const selectedAssetFromParams = React.useMemo(() => {
@@ -414,21 +401,6 @@ export const PortfolioAsset = (props: Props) => {
     return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
   }, [fullTokenList, selectedAsset?.symbol])
 
-
-  const isSelectedAssetPriceDown =
-    selectedAsset &&
-      selectedAssetFiatPrice
-      ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0
-      : false
-
-  const networkDescription =
-    isShowingMarketData
-      ? selectedAssetFromParams?.symbol ?? ''
-      : getLocale('braveWalletPortfolioAssetNetworkDescription')
-        .replace('$1', selectedAssetFromParams?.symbol ?? '')
-        .replace('$2', selectedAssetsNetwork?.chainName ?? '')
-
-
   const [ipfsImageUrl, setIpfsImageUrl] = React.useState<string>()
   const [nftPinnable, setNftPinnable] = React.useState<boolean>()
 
@@ -509,21 +481,7 @@ export const PortfolioAsset = (props: Props) => {
     setShowBridgeToAuroraModal(false)
   }, [])
 
-  const onShowMore = React.useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    setShowMore(true)
-  }, [])
-
-  const onHideMore = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    setShowMore(false)
-  }, [])
-
-  const onShowTokenDetailsModal = React.useCallback(() => setShowTokenDetailsModal(true), [])
-
   const onCloseTokenDetailsModal = React.useCallback(() => setShowTokenDetailsModal(false), [])
-
-  const onShowHideTokenModal = React.useCallback(() => setShowHideTokenModal(true), [])
 
   const onCloseHideTokenModal = React.useCallback(() => setShowHideTokenModal(false), [])
 
@@ -548,12 +506,6 @@ export const PortfolioAsset = (props: Props) => {
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
   }, [selectedAsset, showTokenDetailsModal, fullTokenList])
-
-  const onViewOnExplorer = React.useCallback(() => {
-    if (selectedAsset) {
-      openExplorer('token', selectedAsset.contractAddress)()
-    }
-  }, [selectedAsset])
 
   const onCloseNftModal = React.useCallback(() => {
     setshowNftModal(false)
@@ -709,215 +661,200 @@ export const PortfolioAsset = (props: Props) => {
 
   // render
   return (
-    <StyledWrapper onClick={onHideMore}>
-      <TopRow>
-        <BalanceRow gap='16px'>
-          <BackButton onSubmit={goBack} />
-          {isNftAsset && currentNftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED && <IpfsNodeStatus />}
-        </BalanceRow>
-        <BalanceRow>
-          {!isNftAsset &&
-            <ChartControlBar
-              onSelectTimeframe={onChangeTimeline}
-              selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
-              timelineOptions={ChartTimelineOptions}
-            />
-          }
-          {selectedAsset?.contractAddress && !selectedAsset?.isErc721 && !selectedAsset.isNft &&
-            <MoreButton onClick={onShowMore} />
-          }
-          {showMore && selectedAsset &&
-            <AssetMorePopup
-              assetSymbol={selectedAsset.symbol}
-              onClickTokenDetails={onShowTokenDetailsModal}
-              onClickViewOnExplorer={onViewOnExplorer}
-              onClickHideToken={onShowHideTokenModal}
-            />
-          }
-        </BalanceRow>
-      </TopRow>
-
-      {!isNftAsset &&
-        <InfoColumn>
-
-          <AssetRow>
-            <AssetIconWithPlaceholder
-              asset={selectedAsset}
-              network={selectedAssetsNetwork}
-            />
-            <AssetColumn>
-              <AssetNameText>{selectedAssetFromParams.name}</AssetNameText>
-              <NetworkDescription>
-                {networkDescription}
-              </NetworkDescription>
-            </AssetColumn>
-          </AssetRow>
-
-          <PriceRow>
-            <PriceText>
-              {
-                selectedAssetFiatPrice
-                  ? new Amount(selectedAssetFiatPrice.price)
-                    .formatAsFiat(defaultCurrencies.fiat)
-                  : '0.00'
-              }
-            </PriceText>
-            <PercentBubble
-              isDown={isSelectedAssetPriceDown}
-            >
-              <ArrowIcon
-                isDown={isSelectedAssetPriceDown}
-              />
-              {
-                selectedAssetFiatPrice
-                  ? Number(selectedAssetFiatPrice.assetTimeframeChange)
-                    .toFixed(2)
-                  : '0.00'
-              }%
-            </PercentBubble>
-          </PriceRow>
-
-          <DetailText>
-            {
-              selectedAssetCryptoPrice
-                ? new Amount(selectedAssetCryptoPrice.price)
-                  .formatAsAsset(undefined, defaultCurrencies.crypto)
-                : ''
+    <WalletPageWrapper
+      wrapContentInBox={true}
+      noCardPadding={!isNftAsset}
+      hideDivider={!isNftAsset}
+      cardHeader={
+        !isNftAsset
+          ? <AssetDetailsHeader
+            isShowingMarketData={isShowingMarketData}
+            onBack={goBack}
+            onClickTokenDetails={
+              () => setShowTokenDetailsModal(true)
             }
-          </DetailText>
-
-        </InfoColumn>
+            onClickHideToken={
+              () => setShowHideTokenModal(true)
+            }
+          />
+          : undefined
       }
-
-      {!isNftAsset &&
-        <LineChart
-          priceData={
-            selectedAsset
-              ? formattedPriceHistory
-              : priceHistory
+    >
+      <StyledWrapper>
+        <TopRow>
+          {isNftAsset &&
+            <BalanceRow gap='16px'>
+              <BackButton onSubmit={goBack} />
+              {
+                currentNftPinningStatus?.code ===
+                BraveWallet.TokenPinStatusCode.STATUS_PINNED &&
+                <IpfsNodeStatus />
+              }
+            </BalanceRow>
           }
-          isLoading={
-            selectedAsset
-              ? isLoading
-              : parseFloat(fullPortfolioFiatBalance) === 0
+        </TopRow>
+
+        {!isNftAsset &&
+          <Row
+            margin='20px 0px 8px 0px'
+          >
+            <LineChartControls
+              onSelectTimeline={onChangeTimeline}
+              selectedTimeline={selectedTimeline}
+            />
+          </Row>
+        }
+
+        {!isNftAsset &&
+          <LineChart
+            priceData={
+              selectedAsset
+                ? formattedPriceHistory
+                : priceHistory
+            }
+            isLoading={
+              selectedAsset
+                ? isLoading
+                : parseFloat(fullPortfolioFiatBalance) === 0
+                  ? false
+                  : isFetchingPortfolioPriceHistory
+            }
+            isDisabled={
+              selectedAsset
                 ? false
-                : isFetchingPortfolioPriceHistory
-          }
-          isDisabled={
-            selectedAsset
-              ? false
-              : parseFloat(fullPortfolioFiatBalance) === 0
-          }
-        />
-      }
-      {!isNftAsset &&
-        <ButtonRow>
-          {isReduxSelectedAssetBuySupported &&
-            <BridgeToAuroraButton
-              onClick={onSelectBuy}
-              noBottomMargin={true}
-            >
-              {getLocale('braveWalletBuy')}
-            </BridgeToAuroraButton>
-          }
-          {isSelectedAssetDepositSupported &&
-            <BridgeToAuroraButton
-              onClick={onSelectDeposit}
-              noBottomMargin={true}
-            >
-              {getLocale('braveWalletAccountsDeposit')}
-            </BridgeToAuroraButton>
-          }
-          {isSelectedAssetBridgeSupported &&
-            <BridgeToAuroraButton
-              onClick={onBridgeToAuroraButton}
-              noBottomMargin={true}
-            >
-              {getLocale('braveWalletBridgeToAuroraButton')}
-            </BridgeToAuroraButton>
-          }
-        </ButtonRow>
-      }
+                : parseFloat(fullPortfolioFiatBalance) === 0
+            }
+          />
+        }
+        {!isNftAsset &&
+          <Row
+            padding='0px 20px'
+          >
+            <ButtonRow>
+              {isReduxSelectedAssetBuySupported &&
+                <BridgeToAuroraButton
+                  onClick={onSelectBuy}
+                  noBottomMargin={true}
+                >
+                  {getLocale('braveWalletBuy')}
+                </BridgeToAuroraButton>
+              }
+              {isSelectedAssetDepositSupported &&
+                <BridgeToAuroraButton
+                  onClick={onSelectDeposit}
+                  noBottomMargin={true}
+                >
+                  {getLocale('braveWalletAccountsDeposit')}
+                </BridgeToAuroraButton>
+              }
+              {isSelectedAssetBridgeSupported &&
+                <BridgeToAuroraButton
+                  onClick={onBridgeToAuroraButton}
+                  noBottomMargin={true}
+                >
+                  {getLocale('braveWalletBridgeToAuroraButton')}
+                </BridgeToAuroraButton>
+              }
+            </ButtonRow>
+          </Row>
+        }
 
-      {showBridgeToAuroraModal &&
-        <BridgeToAuroraModal
-          dontShowWarningAgain={dontShowAuroraWarning}
-          onClose={onCloseAuroraModal}
-          onOpenRainbowAppClick={onOpenRainbowAppClick}
-          onDontShowAgain={onDontShowAgain}
-        />
-      }
+        {showBridgeToAuroraModal &&
+          <BridgeToAuroraModal
+            dontShowWarningAgain={dontShowAuroraWarning}
+            onClose={onCloseAuroraModal}
+            onOpenRainbowAppClick={onOpenRainbowAppClick}
+            onDontShowAgain={onDontShowAgain}
+          />
+        }
 
-      {showTokenDetailsModal && selectedAsset && selectedAssetsNetwork &&
-        <TokenDetailsModal
-          onClose={onCloseTokenDetailsModal}
-          selectedAsset={selectedAsset}
-          selectedAssetNetwork={selectedAssetsNetwork}
-          assetBalance={formattedAssetBalance}
-          formattedFiatBalance={
-            fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)
-          }
-          onShowHideTokenModal={onShowHideTokenModal}
-        />
-      }
+        {showTokenDetailsModal &&
+          selectedAsset &&
+          selectedAssetsNetwork &&
+          <TokenDetailsModal
+            onClose={onCloseTokenDetailsModal}
+            selectedAsset={selectedAsset}
+            selectedAssetNetwork={selectedAssetsNetwork}
+            assetBalance={formattedAssetBalance}
+            formattedFiatBalance={
+              fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)
+            }
+            onShowHideTokenModal={
+              () => setShowHideTokenModal(true)
+            }
+          />
+        }
 
-      {showHideTokenModel && selectedAsset && selectedAssetsNetwork &&
-        <HideTokenModal
-          selectedAsset={selectedAsset}
-          selectedAssetNetwork={selectedAssetsNetwork}
-          onClose={onCloseHideTokenModal}
-          onHideAsset={onHideAsset}
-        />
-      }
+        {showHideTokenModel &&
+          selectedAsset &&
+          selectedAssetsNetwork &&
+          <HideTokenModal
+            selectedAsset={selectedAsset}
+            selectedAssetNetwork={selectedAssetsNetwork}
+            onClose={onCloseHideTokenModal}
+            onHideAsset={onHideAsset}
+          />
+        }
 
-      {!nftMetadataError &&
-        <NftMultimedia
-          onLoad={onNftDetailsLoad}
-          visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
-          ref={nftDetailsRef}
-          sandbox="allow-scripts allow-popups allow-same-origin"
-          allow="clipboard-write"
-          src='chrome-untrusted://nft-display'
-          allowFullScreen
-        />
-      }
+        {!nftMetadataError &&
+          <NftMultimedia
+            onLoad={onNftDetailsLoad}
+            visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
+            ref={nftDetailsRef}
+            sandbox="allow-scripts allow-popups allow-same-origin"
+            allow="clipboard-write"
+            src='chrome-untrusted://nft-display'
+            allowFullScreen
+          />
+        }
 
-      {isNftAsset && selectedAsset &&
-        <NftDetails
-          selectedAsset={selectedAsset}
-          nftMetadata={nftMetadata}
-          nftMetadataError={nftMetadataError}
-          tokenNetwork={selectedAssetsNetwork}
-          nftPinningStatus={currentNftPinningStatus}
-          imageIpfsUrl={ipfsImageUrl}
-        />
-      }
+        {isNftAsset && selectedAsset &&
+          <NftDetails
+            selectedAsset={selectedAsset}
+            nftMetadata={nftMetadata}
+            nftMetadataError={nftMetadataError}
+            tokenNetwork={selectedAssetsNetwork}
+            nftPinningStatus={currentNftPinningStatus}
+            imageIpfsUrl={ipfsImageUrl}
+          />
+        }
 
-      {showNftModal && nftMetadata?.imageURL &&
-        <NftModal
-          nftImageUrl={nftMetadata.imageURL}
-          onClose={onCloseNftModal}
-        />
-      }
+        {showNftModal && nftMetadata?.imageURL &&
+          <NftModal
+            nftImageUrl={nftMetadata.imageURL}
+            onClose={onCloseNftModal}
+          />
+        }
 
-      {!isShowingMarketData &&
-        <AccountsAndTransactionsList
-          formattedFullAssetBalance={formattedFullAssetBalance}
-          fullAssetFiatBalance={fullAssetFiatBalance}
-          selectedAsset={selectedAsset}
-          selectedAssetTransactions={selectedAssetTransactions}
-          onClickAddAccount={onClickAddAccount}
-        />
-      }
+        {!isShowingMarketData &&
+          <Column
+            padding='0px 20px 20px 20px'
+            fullWidth={true}
+          >
+            <AccountsAndTransactionsList
+              formattedFullAssetBalance={formattedFullAssetBalance}
+              fullAssetFiatBalance={fullAssetFiatBalance}
+              selectedAsset={selectedAsset}
+              selectedAssetTransactions={selectedAssetTransactions}
+              onClickAddAccount={onClickAddAccount}
+            />
+          </Column>
+        }
 
-      {isShowingMarketData && selectedCoinMarket &&
-        <CoinStats
-          marketCapRank={selectedCoinMarket.marketCapRank}
-          volume={selectedCoinMarket.totalVolume}
-          marketCap={selectedCoinMarket.marketCap}
-        />
-      }
-    </StyledWrapper>
+        {isShowingMarketData && selectedCoinMarket &&
+          <Column
+            padding='0px 20px 20px 20px'
+            fullWidth={true}
+          >
+            <CoinStats
+              marketCapRank={selectedCoinMarket.marketCapRank}
+              volume={selectedCoinMarket.totalVolume}
+              marketCap={selectedCoinMarket.marketCap}
+            />
+          </Column>
+        }
+      </StyledWrapper>
+    </WalletPageWrapper>
   )
 }
 

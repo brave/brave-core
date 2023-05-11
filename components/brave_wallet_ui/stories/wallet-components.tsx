@@ -6,14 +6,12 @@ import * as React from 'react'
 
 import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
 import { SideNav, TopTabNav } from '../components/desktop'
-import { NavTypes, TopTabNavTypes, BraveWallet } from '../constants/types'
+import { NavTypes, TopTabNavTypes } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
-import { ChartTimelineOptions } from '../options/chart-timeline-options'
 import './locale'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { LoadingSkeleton } from '../components/shared'
-import { ChartControlBar } from '../components/desktop/chart-control-bar/chart-control-bar'
 import { WalletNav } from '../components/desktop/wallet-nav/wallet-nav'
 import { NftIpfsBanner } from '../components/desktop/nft-ipfs-banner/nft-ipfs-banner'
 import { LocalIpfsNodeScreen } from '../components/desktop/local-ipfs-node/local-ipfs-node'
@@ -76,24 +74,6 @@ export const _DesktopTopTabNav = () => {
 
 _DesktopTopTabNav.story = {
   name: 'Top Tab Nav'
-}
-
-export const _LineChartControls = () => {
-  const [selectedTimeline, setSelectedTimeline] = React.useState<BraveWallet.AssetPriceTimeframe>(BraveWallet.AssetPriceTimeframe.OneDay)
-
-  return (
-    <DesktopComponentWrapper>
-      <ChartControlBar
-        onSelectTimeframe={setSelectedTimeline}
-        selectedTimeline={selectedTimeline}
-        timelineOptions={ChartTimelineOptions}
-      />
-    </DesktopComponentWrapper>
-  )
-}
-
-_LineChartControls.story = {
-  name: 'Chart Controls'
 }
 
 export const _SweepstakesBanner = () => {

@@ -143,7 +143,8 @@ export const CardHeaderShadow = styled(CardHeader) <{
 `
 
 export const CardHeaderContentWrapper = styled(Row) <{
-  dividerOpacity?: number
+  dividerOpacity?: number,
+  hideDivider?: boolean
 }>`
   --divider-opacity: ${(p) =>
     p.dividerOpacity !== undefined
@@ -154,7 +155,10 @@ export const CardHeaderContentWrapper = styled(Row) <{
   @media (prefers-color-scheme: dark) {
     --divider-color: rgba(43, 46, 59, var(--divider-opacity));
   }
-  border-bottom: 1px solid var(--divider-color);
+  border-bottom: ${(p) =>
+    p.hideDivider
+      ? 'none'
+      : '1px solid var(--divider-color)'};
   height: 100%;
 `
 

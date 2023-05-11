@@ -23,7 +23,7 @@ import {
   CircleButton,
   ButtonIcon,
   MenuWrapper
-} from './card-headers.style'
+} from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
 export const PortfolioOverviewHeader = () => {
