@@ -18,7 +18,9 @@
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_ES_SVG" file="assets/country-flags/ES.svg" type="BINDATA" />
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_FR_SVG" file="assets/country-flags/FR.svg" type="BINDATA" />
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_GB_SVG" file="assets/country-flags/GB.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_IT_SVG" file="assets/country-flags/IT.svg" type="BINDATA" />
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_JP_SVG" file="assets/country-flags/JP.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_MX_SVG" file="assets/country-flags/MX.svg" type="BINDATA" />
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_NL_SVG" file="assets/country-flags/NL.svg" type="BINDATA" />
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_SG_SVG" file="assets/country-flags/SG.svg" type="BINDATA" />
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_US_SVG" file="assets/country-flags/US.svg" type="BINDATA" />
