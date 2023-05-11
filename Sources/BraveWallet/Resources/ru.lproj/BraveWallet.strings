@@ -217,6 +217,9 @@
 /* The title of the 24h volume of this coin from market. */
 "wallet.coinMarket24HVolume" = "Объем за 24 ч";
 
+/* The message will be displayed when there is no coin market loaded or having an error. */
+"wallet.coinMarketEmptyMsg" = "Информация о доступном рынке пока недоступна.";
+
 /* The header title of the section that display coin market information. */
 "wallet.coinMarketInformation" = "Информация";
 
@@ -892,6 +895,9 @@
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "Укажите действительный шлюз IPFS. Мы проверим, можно ли через него загружать IPFS-ресурсы.";
 
+/* The description of the empty state inside NFT tab. */
+"wallet.nftPageEmptyDescription" = "Хотите добавить? Просто нажмите кнопку ниже для импорта.";
+
 /* The title of the empty state inside NFT tab. */
 "wallet.nftPageEmptyTitle" = "Здесь еще нет NFT.";
 
@@ -1129,6 +1135,9 @@
 /* The title of a button that will go the list of networks. */
 "wallet.settingsNetworkButtonTitle" = "Сети";
 
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "Сбросить кошелек и очистить данные";
+
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "Сбросить";
 
@@ -1299,6 +1308,12 @@
 
 /* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
 "wallet.solanaInstructionAccounts" = "Счета";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\" */
+"wallet.solanaInstructionAddressLookupAcc" = "Аккаунт в таблице для поиска адреса";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\" */
+"wallet.solanaInstructionAddressLookupIndex" = "Индекс в таблице для поиска адреса";
 
 /* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
 "wallet.solanaInstructionData" = "Данные";

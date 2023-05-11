@@ -142,9 +142,6 @@
 /* Brave panel individual toggle title */
 "BlockPhishing" = "Blockera phishing";
 
-/* No comment provided by engineer. */
-"BlockPhishingAndMalware" = "Blockera phishing och malware";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blockera popup-fönster";
 
@@ -1672,21 +1669,6 @@
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Webbkompatibilitet";
 
-/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddBody" = "Brave Playlist stöder offlineuppspelning, bild-i-bild, kontinuerlig uppspelning och repeat-lägen.";
-
-/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddedTitle" = "Denna media finns i din Brave Playlist";
-
-/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddTitle" = "Vill du lägga till detta media till din Brave Playlist?";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverOpenInBravePlaylist" = "Öppna i Brave Playlist";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverRemoveFromBravePlaylist" = "Ta bort";
-
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Ta bort";
 
@@ -1716,6 +1698,9 @@
 
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Synkronisera alla dina mappar med spellistor automatiskt";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Synka mappar med spellistor automatiskt";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Du kan öppna det aktuella objektet på en ny flik eller dela det via systemdelningsmenyn";
@@ -1762,17 +1747,11 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "Redigera mapp";
 
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Redigera mapp";
-
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "Tyvärr kunde vi inte spara ändringarna du har gjort i den här mappen";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "Flytta";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Aktuell mapp";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Flytta";
@@ -1789,35 +1768,14 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ och %2$lld objekt till";
 
-/* The title of the button to create a new folder */
-"playlistFolders.newFolderButtonTitle" = "Ny mapp";
-
-/* The title of the screen to create a new folder */
-"playlistFolders.newFolderScreenTitle" = "Ny mapp";
-
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "Tryck för att välja videor";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Lägg till videor i den här mappen";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "Sparat";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "Markera en mapp som %lld objekt ska flyttas till";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "Markera en mapp som 1 objekt ska flyttas till";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld objekt";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1 objekt";
-
-/* The title of a folder when the user enters no name (untitled) */
-"playlistFolders.untitledFolderTitle" = "Mapp utan titel";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Knappen Lägg till i Brave-spellista";
@@ -2405,6 +2363,9 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Återkommande dricks";
 
 /* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Rewards-profil, enhets- och saldoinformation (delas alltid)";
+
+/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Grundläggande information";
 
 /* No comment provided by engineer. */
@@ -2427,6 +2388,9 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Dela belöningar internt";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Data på dessa sidor kan vara känsliga. Var försiktig med vem du delar dem med.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Varning";
@@ -2457,6 +2421,15 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Version";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Rewards-profil skapad:";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Info om Rewards-profil";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "Rewards-betalningsid";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Belöningspanel";
@@ -3505,8 +3478,20 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Drivs av";
 
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "Välj önskat transportprotokoll. När du har bytt kommer dina befintliga VPN-inställningar att rensas och du kommer att återanslutas om en VPN-anslutning för närvarande är etablerad.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Det gick inte att byta tunnelprotokoll. Försök igen senare.";
+
 /* Title for error when we fail to switch tunnel protocol for the user */
 "vpn.protocolPickerErrorTitle" = "Serverfel";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Transportprotokoll";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN-tunnelprotokoll har ändrats.";
 
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "En serverregion som ligger närmast dig väljs automatiskt baserat på systemets tidszon. Detta rekommenderas för att säkerställa snabba internethastigheter.";
@@ -3589,6 +3574,9 @@
 /* Table cell title for status of current VPN subscription. */
 "vpn.settingsSubscriptionStatus" = "Status";
 
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Transportprotokoll";
+
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Inaktiverad";
 
@@ -3624,6 +3612,12 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Prenumerationer debiteras via ditt iTunes-konto.\n\nEventuell oanvänd del av den kostnadsfria provperioden, om den erbjuds, förverkas när du köper en prenumeration.\n\nDin prenumeration förnyas automatiskt såvida den inte sägs upp minst 24 timmar före slutet av den aktuella perioden.\n\nDu kan hantera dina prenumerationer i Inställningar.\n\nGenom att använda Brave godkänner du användarvillkoren och sekretesspolicyn.";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Aktuell inställning: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "VPN-region";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Detta kommer återställa din Brave brandvägg + VPN-konfiguration och fixa alla problem. Den här processen kan ta en minut.";

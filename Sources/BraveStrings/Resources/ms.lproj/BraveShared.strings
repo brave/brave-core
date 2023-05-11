@@ -142,9 +142,6 @@
 /* Brave panel individual toggle title */
 "BlockPhishing" = "Sekat Pemalsuan";
 
-/* No comment provided by engineer. */
-"BlockPhishingAndMalware" = "Sekat Pemalsuan dan Perisian Berbahaya";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "Sekat Halaman Timbul";
 
@@ -1672,21 +1669,6 @@
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Keserasian Web";
 
-/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddBody" = "Senarai Main Brave menyokong mod Main Semula Luar Talian, Gambar dalam gambar, main semula berterusan dan ulang.";
-
-/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddedTitle" = "Media ini berada dalam Senarai Main Brave anda";
-
-/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddTitle" = "Adakah anda mahu menambahkan media ini pada Senarai Main Brave?";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverOpenInBravePlaylist" = "Buka Dalam Senarai Main Brave";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverRemoveFromBravePlaylist" = "Alih Keluar";
-
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Alih Keluar";
 
@@ -1716,6 +1698,9 @@
 
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Segerakkan semua folder senarai main anda secara automatik";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Segerakkan Folder Senarai Main Secara Automatik";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Anda boleh membuka item semasa dalam Tab Baharu, atau berkongsinya melalui Menu Kongsi Sistem";
@@ -1762,17 +1747,11 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "Edit Folder";
 
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Edit Folder";
-
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "Maaf, kami tidak dapat menyimpan perubahan yang anda lakukan pada folder ini";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "Alih";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Folder Semasa";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Alih";
@@ -1789,35 +1768,14 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ dan %2$lld lagi item";
 
-/* The title of the button to create a new folder */
-"playlistFolders.newFolderButtonTitle" = "Folder Baharu";
-
-/* The title of the screen to create a new folder */
-"playlistFolders.newFolderScreenTitle" = "Folder Baharu";
-
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "Ketik untuk memilih video";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Tambahkan video pada folder ini";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "Disimpan";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "Pilih folder untuk mengalih %lld item ke";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "Pilih folder untuk sasaran pindahan 1 item";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld Item";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1 Item";
-
-/* The title of a folder when the user enters no name (untitled) */
-"playlistFolders.untitledFolderTitle" = "Folder Tiada Tajuk";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Butang Tambahkan pada Senarai Main Brave";
@@ -2405,6 +2363,9 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Tip berulang";
 
 /* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Maklumat profil, peranti & baki ganjaran (sentiasa dikongsi)";
+
+/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Maklumat Asas";
 
 /* No comment provided by engineer. */
@@ -2427,6 +2388,9 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Kongsi Dalaman Ganjaran";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Data pada halaman ini mungkin sensitif. Berhati-hati dengan orang yang anda kongsikan.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Amaran";
@@ -2457,6 +2421,15 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Versi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Tarikh Penciptaan Profil Ganjaran";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Maklumat Profil Ganjaran";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "ID Pembayaran Ganjaran";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Panel Ganjaran";
@@ -3505,8 +3478,20 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Dikuasakan oleh";
 
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "Sila pilih protokol pemindahan pilihan anda. Sebaik sahaja ditukar, kelayakan VPN sedia ada anda akan dikosongkan dan anda akan disambungkan semula jika sambungan VPN disediakan pada masa ini. ";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Gagal untuk menukar protokol terowong, sila cuba lagi kemudian.";
+
 /* Title for error when we fail to switch tunnel protocol for the user */
 "vpn.protocolPickerErrorTitle" = "Ralat Pelayan";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Protokol Pemindahan";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "Protokol Terowong VPN berubah.";
 
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "Wilayah pelayan yang paling dekat dengan anda akan dipilih secara automatik, berdasarkan zon waktu sistem anda. Ini disyorkan untuk memastikan kelajuan internet yang pantas.";
@@ -3589,6 +3574,9 @@
 /* Table cell title for status of current VPN subscription. */
 "vpn.settingsSubscriptionStatus" = "Status";
 
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Protokol Pemindahan";
+
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Dinyahaktif";
 
@@ -3624,6 +3612,12 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Langganan akan dikenakan bayaran melalui akaun iTunes anda.\n\nSebarang bahagian percubaan percuma yang tidak digunakan, jika ditawarkan, akan dibatalkan semasa anda membeli langganan.\n\nLangganan anda akan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh semasa.\n\nAnda boleh menguruskan langganan anda dalam Tetapan.\n\nDengan menggunakan Brave, anda bersetuju dengan Terma Penggunaan dan Dasar Privasi.";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Tetapan Terkini: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "Rantau VPN";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Ini akan menetapkan semula konfigurasi Brave Firewall + VPN anda dan memperbaiki sebarang kesalahan. Proses ini mungkin mengambil masa sebentar.";

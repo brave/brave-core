@@ -142,9 +142,6 @@
 /* Brave panel individual toggle title */
 "BlockPhishing" = "拦截钓鱼网站";
 
-/* No comment provided by engineer. */
-"BlockPhishingAndMalware" = "拦截钓鱼网站和恶意软件";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "拦截弹出窗口";
 
@@ -1672,21 +1669,6 @@
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Web 兼容性";
 
-/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddBody" = "Brave 播放列表支持离线播放、画中画、连续播放和重复模式。";
-
-/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddedTitle" = "此媒体已在您的 Brave 播放列表中";
-
-/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddTitle" = "您想将此媒体添加到您的 Brave 播放列表中？";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverOpenInBravePlaylist" = "在 Brave 播放列表中打开";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverRemoveFromBravePlaylist" = "移除";
-
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "移除";
 
@@ -1716,6 +1698,9 @@
 
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "自动同步所有播放列表文件夹";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "自动同步播放列表文件夹";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "您可以在新选项卡中打开当前项目，或通过系统共享菜单进行共享";
@@ -1762,17 +1747,11 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "编辑文件夹";
 
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "编辑文件夹";
-
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "抱歉，无法保存您对此文件夹所做的更改";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "移动";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "当前文件夹";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "移动";
@@ -1789,35 +1768,14 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ 和另外 %2$lld 个项目";
 
-/* The title of the button to create a new folder */
-"playlistFolders.newFolderButtonTitle" = "新建文件夹";
-
-/* The title of the screen to create a new folder */
-"playlistFolders.newFolderScreenTitle" = "新建文件夹";
-
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "轻击以选择视频";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "将视频保存至此文件夹";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "已保存";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "选择要将 %lld 个项目移动至其中的文件夹";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "选取要将 1 个项目移入的资料夹";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld 个项目";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1 个项目";
-
-/* The title of a folder when the user enters no name (untitled) */
-"playlistFolders.untitledFolderTitle" = "无标题文件夹";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "添加到 Brave 播放列表按钮";
@@ -2405,6 +2363,9 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "循环提示";
 
 /* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "奖励档案、设备和余额信息（始终共享）";
+
+/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "基本信息";
 
 /* No comment provided by engineer. */
@@ -2427,6 +2388,9 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "分享奖励（内部）";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "这些网页上的数据可能属于敏感信息。要留意与人共享这些数据。";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "警告";
@@ -2457,6 +2421,15 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "版本";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "奖励档案创建日期";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "奖励档案信息";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "奖励支付 ID：";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "奖励面板";
@@ -3505,8 +3478,20 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "支持提供方：";
 
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "请选择你喜欢的传输协议。一旦切换，你现有的 VPN 凭证将被清除，如果目前已建立 VPN 连接，你将被重新连接。";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "切换隧道协议失败，请稍后再试。";
+
 /* Title for error when we fail to switch tunnel protocol for the user */
 "vpn.protocolPickerErrorTitle" = "服务器错误";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "传输协议";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN 隧道协议已变更。";
 
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "系统会根据您的系统时区自动选择最接近您的服务器的区域。我们建议这样做是为了确保快速的互联网速度。";
@@ -3589,6 +3574,9 @@
 /* Table cell title for status of current VPN subscription. */
 "vpn.settingsSubscriptionStatus" = "状态";
 
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "传输协议";
+
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "已阻止";
 
@@ -3624,6 +3612,12 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "我们会通过您的 iTunes 账户收取订阅费用。\n\n购买订阅后，免费试用的任何未使用部分（如已提供）会被没收。\n\n您的订阅会自动更新，除非在当前订阅期结束前至少 24 小时以前取消该订阅。\n\n您可以在“设置”中管理您的订阅。\n\n使用 Brave，即表示您同意使用条款和隐私政策。";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "当前设置：%@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "VPN 区域";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "这将重置您的 Brave Firewall + VPN 配置并修复所有错误。此过程可能需要一分钟。";

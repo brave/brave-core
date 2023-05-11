@@ -217,6 +217,9 @@
 /* The title of the 24h volume of this coin from market. */
 "wallet.coinMarket24HVolume" = "Obrót 24-godz.";
 
+/* The message will be displayed when there is no coin market loaded or having an error. */
+"wallet.coinMarketEmptyMsg" = "Brak dostępnych informacji rynkowych";
+
 /* The header title of the section that display coin market information. */
 "wallet.coinMarketInformation" = "Informacja";
 
@@ -892,6 +895,9 @@
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "Należy podać aktualną bramkę IPFS. Podana bramka zostanie sprawdzona po względem możliwości wczytywania zasobów IPFS.";
 
+/* The description of the empty state inside NFT tab. */
+"wallet.nftPageEmptyDescription" = "Chcesz jakieś dodać? Wystarczy, że klikniesz poniższy przycisk, żeby rozpocząć importowanie.";
+
 /* The title of the empty state inside NFT tab. */
 "wallet.nftPageEmptyTitle" = "Nie ma tu jeszcze żadnych NFT.";
 
@@ -1129,6 +1135,9 @@
 /* The title of a button that will go the list of networks. */
 "wallet.settingsNetworkButtonTitle" = "Sieci";
 
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "Resetuj i wyczyść dane portfela";
+
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "Resetuj";
 
@@ -1299,6 +1308,12 @@
 
 /* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
 "wallet.solanaInstructionAccounts" = "Konta";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\" */
+"wallet.solanaInstructionAddressLookupAcc" = "Konto w tabeli adresów";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\" */
+"wallet.solanaInstructionAddressLookupIndex" = "Indeks w tabeli adresów";
 
 /* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
 "wallet.solanaInstructionData" = "Dane";

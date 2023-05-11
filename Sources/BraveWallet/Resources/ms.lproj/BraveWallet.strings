@@ -217,6 +217,9 @@
 /* The title of the 24h volume of this coin from market. */
 "wallet.coinMarket24HVolume" = "Kelantangan 24j";
 
+/* The message will be displayed when there is no coin market loaded or having an error. */
+"wallet.coinMarketEmptyMsg" = "Tiada maklumat pasaran tersedia lagi";
+
 /* The header title of the section that display coin market information. */
 "wallet.coinMarketInformation" = "Maklumat";
 
@@ -892,6 +895,9 @@
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "Get laluan IPFS sah patut disediakan. Get laluan yang disediakan akan diperiksa dari segi keupayaan untuk memuatkan sumber IPFS.";
 
+/* The description of the empty state inside NFT tab. */
+"wallet.nftPageEmptyDescription" = "Bersedia untuk menambah sesuatu? Hanya ketik butang di bawah untuk mengimport.";
+
 /* The title of the empty state inside NFT tab. */
 "wallet.nftPageEmptyTitle" = "Belum ada NFT di sini.";
 
@@ -1129,6 +1135,9 @@
 /* The title of a button that will go the list of networks. */
 "wallet.settingsNetworkButtonTitle" = "Rangkaian";
 
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "Tetapkan Semula dan Kosongkan Data Dompet";
+
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "Tetapkan semula";
 
@@ -1299,6 +1308,12 @@
 
 /* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
 "wallet.solanaInstructionAccounts" = "Akaun";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\" */
+"wallet.solanaInstructionAddressLookupAcc" = "Akaun Jadiual Carian Alamat";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\" */
+"wallet.solanaInstructionAddressLookupIndex" = "Indeks Jadual Carian Alamat";
 
 /* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
 "wallet.solanaInstructionData" = "Data";

@@ -142,9 +142,6 @@
 /* Brave panel individual toggle title */
 "BlockPhishing" = "フィッシングをブロック";
 
-/* No comment provided by engineer. */
-"BlockPhishingAndMalware" = "フィッシングとマルウェアをブロック";
-
 /* Setting to enable popup blocking */
 "BlockPopups" = "ポップアップをブロック";
 
@@ -1672,21 +1669,6 @@
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Web互換性";
 
-/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddBody" = "Brave Playlistにより、オフライン再生、ピクチャー・イン・ピクチャー再生、連続再生、リピート再生ができるようになります。";
-
-/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddedTitle" = "このメディアはBrave Playlistに追加されています。";
-
-/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
-"playlist.popoverAddTitle" = "このメディアをBrave Playlistに追加しますか？";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverOpenInBravePlaylist" = "Brave Playlistで開く";
-
-/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
-"playlist.popoverRemoveFromBravePlaylist" = "削除";
-
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "削除";
 
@@ -1716,6 +1698,9 @@
 
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "すべてのPlaylistフォルダを自動で同期する";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Playlistフォルダを自動で同期する";
 
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "システムの共有メニューから、現在のアイテムを新タブで開いたり、シェアすることができます。";
@@ -1762,17 +1747,11 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "フォルダを編集";
 
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "フォルダを編集";
-
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "このフォルダへの変更を保存できませんでした";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "移動";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "現在のフォルダ";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "移動";
@@ -1789,35 +1768,14 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ほか%2$lld件のアイテム";
 
-/* The title of the button to create a new folder */
-"playlistFolders.newFolderButtonTitle" = "新しいフォルダ";
-
-/* The title of the screen to create a new folder */
-"playlistFolders.newFolderScreenTitle" = "新しいフォルダ";
-
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "タップして動画を選択";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "このフォルダに動画を追加";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "追加済み";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "%lld件のアイテムを移動するフォルダを選択";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "1件のアイテムを移動するフォルダを選択";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld件のアイテム";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1件のアイテム";
-
-/* The title of a folder when the user enters no name (untitled) */
-"playlistFolders.untitledFolderTitle" = "未タイトルフォルダ";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "ボタンをクリックするとBrave Playlistに追加します";
@@ -2405,6 +2363,9 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "定期支払いチップ";
 
 /* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "リワードプロフィール、デバイスおよび残高情報 (常に共有)";
+
+/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "基本情報";
 
 /* No comment provided by engineer. */
@@ -2427,6 +2388,9 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Rewards内部情報を共有";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "これらのページのデータは機密性が高い場合があります。共有する相手には十分注意してください。";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "警告";
@@ -2457,6 +2421,15 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "バージョン";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "リワードプロフィール作成日";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "リワードプロフィール情報";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "リワード支払いID";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Rewardsパネル";
@@ -3505,8 +3478,20 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Powered by";
 
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "ご希望の転送プロトコルを選択してください。VPN接続が確立されている場合は、一度切り替えると既存のVPN認証情報がクリアされ、再接続されます。";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "トンネルプロトコルの切り替えに失敗しました。しばらくしてからもう一度お試しください。";
+
 /* Title for error when we fail to switch tunnel protocol for the user */
 "vpn.protocolPickerErrorTitle" = "サーバーエラー";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "転送プロトコル";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPNトンネルプロトコルを変更しました。";
 
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "あなたのシステムのタイムゾーンに基づいて、あなたに最も近接したサーバーリージョンが自動で選択されます。インターネットの速さを損なわないために推奨されています。";
@@ -3589,6 +3574,9 @@
 /* Table cell title for status of current VPN subscription. */
 "vpn.settingsSubscriptionStatus" = "稼働状況";
 
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "転送プロトコル";
+
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "無効";
 
@@ -3624,6 +3612,12 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "サブスクリプションはiTunesアカウントを通じて課金されます。\n無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\nサブスクリプションは「設定」で管理できます。\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "現在の設定: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "VPNのリージョン";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "この操作を実行するとBrave ファイアウォール+ VPNの構成はリセットされ、すべてのエラーが修正されます。このプロセスには1分かかる場合があります。";
