@@ -1478,6 +1478,11 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
 
   brave_adaptive_captcha_service->UpdateScheduledCaptchaResult(params->result);
 
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+  if (ads_service && params->result) {
+    ads_service->NotifyDidSolveAdaptiveCaptcha();
+  }
+
   return RespondNow(NoArguments());
 }
 

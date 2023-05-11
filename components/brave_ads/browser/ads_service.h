@@ -291,6 +291,9 @@ class AdsService : public KeyedService {
   // Invoked when the browser did resign active.
   virtual void NotifyBrowserDidResignActive() = 0;
 
+  // Invoked when the user solves an adaptive captch.
+  virtual void NotifyDidSolveAdaptiveCaptcha() = 0;
+
  protected:
   base::ObserverList<AdsServiceObserver> observers_;
 };

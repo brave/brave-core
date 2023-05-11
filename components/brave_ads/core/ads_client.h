@@ -126,9 +126,6 @@ class ADS_EXPORT AdsClient {
       const std::string& payment_id,
       const std::string& captcha_id) = 0;
 
-  // Clear the scheduled captcha, if any.
-  virtual void ClearScheduledCaptcha() = 0;
-
   // Run a database transaction. The callback takes one argument -
   // |mojom::DBCommandResponseInfoPtr| containing the info of the transaction.
   virtual void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,

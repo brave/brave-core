@@ -114,4 +114,8 @@ void BatAdsClientNotifierImpl::NotifyBrowserDidResignActive() {
   notifier_.NotifyBrowserDidResignActive();
 }
 
+void BatAdsClientNotifierImpl::NotifyDidSolveAdaptiveCaptcha() {
+  notifier_.NotifyDidSolveAdaptiveCaptcha();
+}
+
 }  // namespace bat_ads

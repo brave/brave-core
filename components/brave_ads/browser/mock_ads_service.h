@@ -123,7 +123,7 @@ class MockAdsService : public AdsService {
   MOCK_METHOD0(NotifyBrowserDidBecomeActive, void());
   MOCK_METHOD0(NotifyBrowserDidResignActive, void());
 
-  MOCK_METHOD1(WipeState, void(bool));
+  MOCK_METHOD0(NotifyDidSolveAdaptiveCaptcha, void());
 };
 
 }  // namespace brave_ads

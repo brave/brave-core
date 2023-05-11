@@ -122,6 +122,7 @@ class Account final : public AdsClientNotifierObserver,
 
   // AdsClientNotifierObserver:
   void OnNotifyPrefDidChange(const std::string& path) override;
+  void OnNotifyDidSolveAdaptiveCaptcha() override;
 
   // ConfirmationsDelegate:
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;
@@ -136,7 +137,6 @@ class Account final : public AdsClientNotifierObserver,
       override;
 
   // RefillUnblindedTokensDelegate:
-  void OnDidRefillUnblindedTokens() override;
   void OnCaptchaRequiredToRefillUnblindedTokens(
       const std::string& captcha_id) override;
 

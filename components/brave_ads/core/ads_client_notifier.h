@@ -116,6 +116,9 @@ class AdsClientNotifier {
   // Invoked when the browser did resign active.
   void NotifyBrowserDidResignActive() const;
 
+  // Invoked when the user solves an adaptive captch.
+  void NotifyDidSolveAdaptiveCaptcha() const;
+
  private:
   base::ObserverList<AdsClientNotifierObserver> observers_;
 };
