@@ -124,7 +124,7 @@
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/components/request_otr/browser/request_otr_navigation_throttle.h"
-#include "brave/components/request_otr/browser/request_otr_tab_storage.h"
+#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #endif
 
 using blink::web_pref::WebPreferences;
@@ -615,9 +615,11 @@ bool BraveContentBrowserClient::CanCreateWindow(
   // opening new windows via script
   if (content::WebContents* web_contents =
           content::WebContents::FromRenderFrameHost(opener)) {
-    if (request_otr::RequestOTRTabStorage* request_otr_tab_storage =
-            request_otr::RequestOTRTabStorage::FromWebContents(web_contents)) {
-      if (request_otr_tab_storage->RequestedOTR()) {
+    if (request_otr::
+            RequestOTRStorageTabHelper* request_otr_storage_tab_helper =
+                request_otr::RequestOTRStorageTabHelper::FromWebContents(
+                    web_contents)) {
+      if (request_otr_storage_tab_helper->requested_otr()) {
         *no_javascript_access = true;
       }
     }

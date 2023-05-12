@@ -61,6 +61,8 @@ void RequestOTRRule::RegisterJSONConverter(
 }
 
 // static
+// All eTLD+1 calculations for Request-OTR-Tab should flow through here so they
+// are consistent in their private registries configuration.
 const std::string RequestOTRRule::GetETLDForRequestOTR(
     const std::string& host) {
   return net::registry_controlled_domains::GetDomainAndRegistry(

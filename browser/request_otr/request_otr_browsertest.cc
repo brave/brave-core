@@ -292,7 +292,8 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
 
 // Check that a URL affected by both include and exclude rules is properly
 // excluded.
-IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, IncludeExclude) {
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       URLThatIsIncludedAndExcludedIsExcluded) {
   ASSERT_TRUE(InstallMockExtension());
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
   GURL url1 = embedded_test_server()->GetURL("www.b.com", "/simple.html");

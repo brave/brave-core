@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_TAB_STORAGE_H_
-#define BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_TAB_STORAGE_H_
+#ifndef BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_STORAGE_TAB_HELPER_H_
+#define BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_STORAGE_TAB_HELPER_H_
 
 #include "base/memory/ref_counted.h"
 #include "brave/components/brave_shields/browser/blocked_domain_1pes_lifetime.h"
@@ -25,25 +25,27 @@ namespace request_otr {
 // Per-tab storage for Request-OTR interstitials, that stores a flag
 // while proceeding so a new interstitial is not shown immediately,
 // and stores the result of the user's request.
-class RequestOTRTabStorage
-    : public content::WebContentsUserData<RequestOTRTabStorage> {
+class RequestOTRStorageTabHelper
+    : public content::WebContentsUserData<RequestOTRStorageTabHelper> {
  public:
-  ~RequestOTRTabStorage() override;
+  ~RequestOTRStorageTabHelper() override;
 
   // Disallow copy and assign.
-  RequestOTRTabStorage(const RequestOTRTabStorage&) = delete;
-  RequestOTRTabStorage& operator=(const RequestOTRTabStorage&) = delete;
+  RequestOTRStorageTabHelper(const RequestOTRStorageTabHelper&) = delete;
+  RequestOTRStorageTabHelper& operator=(const RequestOTRStorageTabHelper&) =
+      delete;
 
-  // Returns the RequestOTRTabStorage associated to |web_contents|, or
+  // Returns the RequestOTRStorageTabHelper associated to |web_contents|, or
   // creates one if there is none.
-  static RequestOTRTabStorage* GetOrCreate(content::WebContents* web_contents);
+  static RequestOTRStorageTabHelper* GetOrCreate(
+      content::WebContents* web_contents);
 
-  void SetIsProceeding(bool is_proceeding) { is_proceeding_ = is_proceeding; }
-  bool IsProceeding() const { return is_proceeding_; }
-  void SetOfferedOTR(bool offered) { offered_ = offered; }
-  bool OfferedOTR() { return offered_; }
-  void SetRequestedOTR(bool otr) { otr_ = otr; }
-  bool RequestedOTR() { return otr_; }
+  void set_is_proceeding(bool is_proceeding) { is_proceeding_ = is_proceeding; }
+  bool is_proceeding() const { return is_proceeding_; }
+  void set_offered_otr(bool offered) { offered_ = offered; }
+  bool offered_otr() { return offered_; }
+  void set_requested_otr(bool otr) { otr_ = otr; }
+  bool requested_otr() { return otr_; }
 
   void MaybeEnable1PESForUrl(
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
@@ -51,8 +53,8 @@ class RequestOTRTabStorage
       base::OnceCallback<void()> on_ready);
 
  private:
-  explicit RequestOTRTabStorage(content::WebContents* contents);
-  friend class content::WebContentsUserData<RequestOTRTabStorage>;
+  explicit RequestOTRStorageTabHelper(content::WebContents* contents);
+  friend class content::WebContentsUserData<RequestOTRStorageTabHelper>;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
   // Flag stores whether we are in the middle of a proceed action.
@@ -66,4 +68,4 @@ class RequestOTRTabStorage
 
 }  // namespace request_otr
 
-#endif  // BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_TAB_STORAGE_H_
+#endif  // BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_STORAGE_TAB_HELPER_H_
