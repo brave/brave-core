@@ -85,7 +85,14 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
 bool IsBraveVPNDisabledByPolicy(PrefService* prefs) {
   DCHECK(prefs);
   return prefs->FindPreference(prefs::kManagedBraveVPNDisabled) &&
+  // Need to investigate more about this.
+  // IsManagedPreference() gives false on macOS when it's configured by
+  // "defaults write com.brave.Browser.beta BraveVPNDisabled -bool true".
+  // As kManagedBraveVPNDisabled is false by default and only can be set
+  // by policy, I think skipping this condition checking will be fine.
+#if !BUILDFLAG(IS_MAC)
          prefs->IsManagedPreference(prefs::kManagedBraveVPNDisabled) &&
+#endif
          prefs->GetBoolean(prefs::kManagedBraveVPNDisabled);
 }
 
