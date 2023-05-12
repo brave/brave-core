@@ -25,8 +25,9 @@ NotificationAdServedAtPredictorVariable::GetType() const {
 }
 
 std::string NotificationAdServedAtPredictorVariable::GetValue() const {
-  return base::NumberToString(time_.is_null() ? kPredictorVariableMissingValue
-                                              : time_.ToDoubleT());
+  return base::NumberToString(
+      time_.is_null() ? kPredictorVariableMissingValue
+                      : time_.ToDeltaSinceWindowsEpoch().InMicroseconds());
 }
 
 }  // namespace brave_ads

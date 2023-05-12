@@ -38,7 +38,7 @@ TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest, GetValue) {
   // Act
 
   // Assert
-  EXPECT_EQ("1566172800", predictor_variable->GetValue());
+  EXPECT_EQ("13210646400000000", predictor_variable->GetValue());
 }
 
 TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest,

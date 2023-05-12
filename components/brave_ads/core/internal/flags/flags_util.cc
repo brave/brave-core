@@ -19,9 +19,7 @@ namespace brave_ads {
 namespace {
 
 mojom::EnvironmentType ChooseEnvironmentType() {
-  const absl::optional<mojom::EnvironmentType> environment_type =
-      ParseEnvironmentCommandLineSwitch();
-  return environment_type.value_or(kDefaultEnvironmentType);
+  return ParseEnvironmentCommandLineSwitch().value_or(kDefaultEnvironmentType);
 }
 
 }  // namespace

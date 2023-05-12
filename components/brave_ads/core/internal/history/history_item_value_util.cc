@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 #include "brave/components/brave_ads/core/internal/history/category_content_value_util.h"
@@ -15,7 +16,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kCreatedAtKey[] = "timestamp_in_seconds";
+constexpr char kCreatedAtKey[] = "created_at";
+constexpr char kLegacyCreatedAtKey[] = "timestamp_in_seconds";
 constexpr char kAdContentKey[] = "ad_content";
 constexpr char kCategoryContentKey[] = "category_content";
 
@@ -28,8 +30,7 @@ constexpr char kUICategoryContentKey[] = "categoryContent";
 base::Value::Dict HistoryItemToValue(const HistoryItemInfo& history_item) {
   base::Value::Dict dict;
 
-  dict.Set(kCreatedAtKey,
-           base::NumberToString(history_item.created_at.ToDoubleT()));
+  dict.Set(kCreatedAtKey, base::TimeToValue(history_item.created_at));
 
   dict.Set(kAdContentKey, AdContentToValue(history_item.ad_content));
 
@@ -56,14 +57,16 @@ base::Value::List HistoryItemToDetailRowsValue(
 HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
   HistoryItemInfo history_item;
 
-  if (const auto* const value = dict.FindString(kCreatedAtKey)) {
-    double created_at_as_double = 0.0;
-    if (base::StringToDouble(*value, &created_at_as_double)) {
-      history_item.created_at = base::Time::FromDoubleT(created_at_as_double);
+  if (const auto* const value = dict.Find(kCreatedAtKey)) {
+    history_item.created_at = base::ValueToTime(value).value_or(base::Time());
+  } else if (const auto* const legacy_string_value =
+                 dict.FindString(kLegacyCreatedAtKey)) {
+    double value_as_double = 0.0;
+    if (base::StringToDouble(*legacy_string_value, &value_as_double)) {
+      history_item.created_at = base::Time::FromDoubleT(value_as_double);
     }
-  } else if (const auto created_at_value_double =
-                 dict.FindDouble(kCreatedAtKey)) {
-    history_item.created_at = base::Time::FromDoubleT(*created_at_value_double);
+  } else if (const auto legacy_double_value = dict.FindDouble(kCreatedAtKey)) {
+    history_item.created_at = base::Time::FromDoubleT(*legacy_double_value);
   }
 
   if (const auto* const value = dict.FindDict(kAdContentKey)) {

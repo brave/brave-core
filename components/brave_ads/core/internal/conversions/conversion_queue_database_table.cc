@@ -41,8 +41,8 @@ void BindRecords(mojom::DBCommandInfo* command) {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // conversion_id
       mojom::DBCommandInfo::RecordBindingType::
           STRING_TYPE,  // advertiser_public_key
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // process_at
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE      // was_processed
+      mojom::DBCommandInfo::RecordBindingType::INT64_TYPE,  // process_at
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE     // was_processed
   };
 }
 
@@ -62,7 +62,9 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, conversion_queue_item.segment);
     BindString(command, index++, conversion_queue_item.conversion_id);
     BindString(command, index++, conversion_queue_item.advertiser_public_key);
-    BindDouble(command, index++, conversion_queue_item.process_at.ToDoubleT());
+    BindInt64(command, index++,
+              conversion_queue_item.process_at.ToDeltaSinceWindowsEpoch()
+                  .InMicroseconds());
     BindBool(command, index++, conversion_queue_item.was_processed);
 
     count++;
@@ -84,8 +86,8 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   conversion_queue_item.segment = ColumnString(record, 5);
   conversion_queue_item.conversion_id = ColumnString(record, 6);
   conversion_queue_item.advertiser_public_key = ColumnString(record, 7);
-  conversion_queue_item.process_at =
-      base::Time::FromDoubleT(ColumnDouble(record, 8));
+  conversion_queue_item.process_at = base::Time::FromDeltaSinceWindowsEpoch(
+      base::Microseconds(ColumnInt64(record, 8)));
   conversion_queue_item.was_processed = static_cast<bool>(ColumnInt(record, 9));
 
   return conversion_queue_item;
@@ -216,8 +218,8 @@ void MigrateToV21(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr update_command = mojom::DBCommandInfo::New();
   update_command->type = mojom::DBCommandInfo::Type::EXECUTE;
   update_command->sql =
-      "UPDATE conversion_queue SET ad_type = "
-      "'ad_notification' WHERE ad_type IS NULL;";
+      "UPDATE conversion_queue SET ad_type = 'ad_notification' WHERE ad_type "
+      "IS NULL;";
   transaction->commands.push_back(std::move(update_command));
 }
 
@@ -289,6 +291,17 @@ void MigrateToV28(mojom::DBTransactionInfo* transaction) {
 
   // Rename temporary table
   RenameTable(transaction, "conversion_queue_temp", "conversion_queue");
+}
+
+void MigrateToV29(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "UPDATE conversion_queue SET process_at = (CAST(process_at AS INT64) + "
+      "11644473600) * 1000000;";
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace
@@ -464,7 +477,8 @@ void ConversionQueue::Migrate(mojom::DBTransactionInfo* transaction,
       break;
     }
 
-    default: {
+    case 29: {
+      MigrateToV29(transaction);
       break;
     }
   }

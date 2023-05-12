@@ -14,6 +14,7 @@
 #include "base/hash/hash.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/json/values_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -67,8 +68,7 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
 
     dict.Set("ad_type", confirmation.ad_type.ToString());
 
-    dict.Set("timestamp_in_seconds",
-             base::NumberToString(confirmation.created_at.ToDoubleT()));
+    dict.Set("created_at", base::TimeToValue(confirmation.created_at));
 
     dict.Set("created", confirmation.was_created);
 
@@ -353,19 +353,18 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     // Created at
-    if (const auto* const value =
-            item_dict->FindString("timestamp_in_seconds")) {
-      double timestamp_as_double;
-      if (!base::StringToDouble(*value, &timestamp_as_double)) {
-        continue;
+    if (const auto* const value = item_dict->Find("created_at")) {
+      confirmation.created_at = base::ValueToTime(value).value_or(base::Time());
+    } else if (const auto* const legacy_string_value =
+                   item_dict->FindString("timestamp_in_seconds")) {
+      double value_as_double;
+      if (base::StringToDouble(*legacy_string_value, &value_as_double)) {
+        confirmation.created_at = base::Time::FromDoubleT(value_as_double);
       }
-
-      confirmation.created_at = base::Time::FromDoubleT(timestamp_as_double);
     }
 
     // Was created
-    const absl::optional<bool> was_created = item_dict->FindBool("created");
-    confirmation.was_created = was_created.value_or(true);
+    confirmation.was_created = item_dict->FindBool("created").value_or(true);
 
     // Opted-in
     confirmation.opted_in = GetOptedIn(*item_dict);

@@ -5,12 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
 
+#include <cinttypes>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -19,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 
 namespace brave_ads::database::table {
 
@@ -36,8 +37,8 @@ void BindRecords(mojom::DBCommandInfo* command) {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // url_pattern
       mojom::DBCommandInfo::RecordBindingType::
           STRING_TYPE,  // advertiser_public_key
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,  // observation_window
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE  // expire_at
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,   // observation_window
+      mojom::DBCommandInfo::RecordBindingType::INT64_TYPE  // expire_at
   };
 }
 
@@ -54,7 +55,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, conversion.url_pattern);
     BindString(command, index++, conversion.advertiser_public_key);
     BindInt(command, index++, conversion.observation_window.InDays());
-    BindDouble(command, index++, conversion.expire_at.ToDoubleT());
+    BindInt64(command, index++,
+              conversion.expire_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
 
     count++;
   }
@@ -72,7 +74,8 @@ ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   conversion.url_pattern = ColumnString(record, 2);
   conversion.advertiser_public_key = ColumnString(record, 3);
   conversion.observation_window = base::Days(ColumnInt(record, 4));
-  conversion.expire_at = base::Time::FromDoubleT(ColumnDouble(record, 5));
+  conversion.expire_at = base::Time::FromDeltaSinceWindowsEpoch(
+      base::Microseconds(ColumnInt64(record, 5)));
 
   return conversion;
 }
@@ -146,6 +149,17 @@ void MigrateToV28(mojom::DBTransactionInfo* transaction) {
               "creative_ad_conversions");
 }
 
+void MigrateToV29(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "UPDATE creative_ad_conversions SET expire_at = (CAST(expire_at AS "
+      "INT64) + 11644473600) * 1000000;";
+  transaction->commands.push_back(std::move(command));
+}
+
 }  // namespace
 
 void Conversions::Save(const ConversionList& conversions,
@@ -166,11 +180,12 @@ void Conversions::GetAll(GetConversionsCallback callback) const {
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
+  command->sql = base::StringPrintf(
       "SELECT ac.creative_set_id, ac.type, ac.url_pattern, "
-      "ac.advertiser_public_key, ac.observation_window, ac.expire_at FROM $1 "
-      "AS ac WHERE $2 < expire_at;",
-      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
+      "ac.advertiser_public_key, ac.observation_window, ac.expire_at FROM %s "
+      "AS ac WHERE %" PRId64 " < expire_at;",
+      GetTableName().c_str(),
+      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
@@ -184,9 +199,9 @@ void Conversions::PurgeExpired(ResultCallback callback) const {
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql = base::ReplaceStringPlaceholders(
-      "DELETE FROM $1 WHERE $2 >= expire_at;",
-      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
+  command->sql = base::StringPrintf(
+      "DELETE FROM %s WHERE %" PRId64 " >= expire_at;", GetTableName().c_str(),
+      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
   transaction->commands.push_back(std::move(command));
 
   RunTransaction(std::move(transaction), std::move(callback));
@@ -224,7 +239,8 @@ void Conversions::Migrate(mojom::DBTransactionInfo* transaction,
       break;
     }
 
-    default: {
+    case 29: {
+      MigrateToV29(transaction);
       break;
     }
   }
