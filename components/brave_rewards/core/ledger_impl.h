@@ -463,6 +463,10 @@ class LedgerImpl : public mojom::Ledger {
   ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
+LedgerImpl& ledger(
+    absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>>
+        ledger_client_remote = absl::nullopt);
+
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_H_

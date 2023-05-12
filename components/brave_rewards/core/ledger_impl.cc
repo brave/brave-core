@@ -901,4 +901,19 @@ void LedgerImpl::WhenReady(T callback) {
   }
 }
 
+LedgerImpl& ledger(
+    absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>>
+        ledger_client_remote) {
+  static thread_local LedgerImpl ledger([&] {
+    CHECK(ledger_client_remote);
+    auto remote = std::move(*ledger_client_remote);
+    ledger_client_remote.reset();
+    return remote;
+  }());
+
+  CHECK(!ledger_client_remote);
+
+  return ledger;
+}
+
 }  // namespace brave_rewards::internal

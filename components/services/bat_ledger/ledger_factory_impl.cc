@@ -13,7 +13,7 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "mojo/public/cpp/bindings/self_owned_associated_receiver.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 
 namespace brave_rewards::internal {
 
@@ -57,13 +57,14 @@ void LedgerFactoryImpl::CreateLedgerOnTaskRunner(
     scoped_refptr<base::SingleThreadTaskRunner> ledger_task_runner) {
   VLOG(0) << "Creating ledger for " << profile << "...";
 
-  mojo::MakeSelfOwnedAssociatedReceiver(
-      std::make_unique<LedgerImpl>(std::move(ledger_client_remote)),
-      std::move(ledger_receiver), std::move(ledger_task_runner))
-      ->set_connection_error_handler(base::BindPostTask(
-          main_task_runner,
-          base::BindOnce(&LedgerFactoryImpl::RemoveProfile,
-                         base::Unretained(this), std::move(profile))));
+  static thread_local mojo::AssociatedReceiver<mojom::Ledger> receiver(
+      &ledger(std::move(ledger_client_remote)), std::move(ledger_receiver),
+      std::move(ledger_task_runner));
+
+  receiver.set_disconnect_handler(base::BindPostTask(
+      main_task_runner,
+      base::BindOnce(&LedgerFactoryImpl::RemoveProfile, base::Unretained(this),
+                     std::move(profile))));
 }
 
 void LedgerFactoryImpl::AddProfile(base::FilePath&& profile,
