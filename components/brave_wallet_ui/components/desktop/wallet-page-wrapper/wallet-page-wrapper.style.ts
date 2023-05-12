@@ -9,7 +9,8 @@ import { Row } from '../../shared/style'
 
 const minCardHeight = 531
 const maxCardWidth = 768
-export const layoutSmallWidth = 983
+const layoutScaleWithNav = 1374
+export const layoutSmallWidth = 980
 export const layoutPanelWidth = 660
 export const layoutTopPosition = 68
 
@@ -57,9 +58,14 @@ export const LayoutCardWrapper = styled.div<{
   &::-webkit-scrollbar {
     display: none;
   }
+  @media screen and (max-width: ${layoutScaleWithNav}px) {
+    padding: 0px 32px 32px 304px;
+    align-items: flex-start;
+  }
   @media screen and (max-width: ${layoutSmallWidth}px) {
     bottom: 67px;
     padding: 0px 32px 32px 32px;
+    align-items: center;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px;
@@ -90,6 +96,11 @@ export const ContainerCard = styled.div<
   max-width: ${(p) => p.maxWidth ? p.maxWidth : maxCardWidth}px;
   position: relative;
   @media screen and (max-width: ${layoutSmallWidth}px) {
+    max-width: ${(p) =>
+    p.maxWidth
+      ? `${p.maxWidth}px`
+      : 'unset'
+  };
     width: 100%;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
@@ -109,7 +120,16 @@ export const CardHeaderWrapper = styled.div`
   top: ${layoutTopPosition}px;
   position: fixed;
   width: 100%;
+  @media screen and (max-width: ${layoutScaleWithNav}px) {
+    padding: 0px 32px 0px 304px;
+    left: 0px;
+    right: 0px;
+    align-items: flex-start;
+  }
   @media screen and (max-width: ${layoutSmallWidth}px) {
+    left: unset;
+    right: unset;
+    align-items: center;
     padding: 0px 32px;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
@@ -133,6 +153,9 @@ export const CardHeader = styled.div<{
   position: relative;
   max-width: ${maxCardWidth}px;
   box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, var(--shadow-opacity));
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    max-width: unset;
+  }
 `
 
 export const CardHeaderShadow = styled(CardHeader) <{
