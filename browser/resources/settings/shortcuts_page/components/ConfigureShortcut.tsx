@@ -71,33 +71,42 @@ const InUseAlert = styled(Alert)`
 
 const modifiers = ['Control', 'Alt', 'Shift', 'Meta']
 
+// Some keys are rendered differently on different platforms. For example Meta
+// is Meta on Windows & Linux but Command on OSX.
+// Note: This list of transforms should match what is returned by
+// GetAllModifierNames in accelerator_parsing.
+const keyTransforms = {
+  'Meta': navigator.platform?.includes('Mac') && 'Command'
+}
+const getKey = (key: string) => keyTransforms[key] || key
+
 class AcceleratorInfo {
   codes: string[] = []
   keys: string[] = []
 
   add(e: KeyboardEvent) {
     if (e.ctrlKey) {
-      this.codes.push('Control')
-      this.keys.push('Control')
+      this.codes.push(getKey('Control'))
+      this.keys.push(getKey('Control'))
     }
     if (e.altKey) {
-      this.codes.push('Alt')
-      this.keys.push('Alt')
+      this.codes.push(getKey('Alt'))
+      this.keys.push(getKey('Alt'))
     }
 
     if (e.shiftKey) {
-      this.codes.push('Shift')
-      this.keys.push('Shift')
+      this.codes.push(getKey('Shift'))
+      this.keys.push(getKey('Shift'))
     }
 
     if (e.metaKey) {
-      this.codes.push('Meta')
-      this.keys.push('Meta')
+      this.codes.push(getKey('Meta'))
+      this.keys.push(getKey('Meta'))
     }
 
     if (!modifiers.includes(e.key)) {
-      this.codes.push(e.code)
-      this.keys.push(e.key)
+      this.codes.push(getKey(e.code))
+      this.keys.push(getKey(e.key))
     }
 
     this.keys = Array.from(new Set(this.keys))
