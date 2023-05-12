@@ -931,8 +931,11 @@ export enum CoinTypesMap {
 
 export enum OnboardingAction {
   SHOWN = 0,
-  CREATED_WALLET = 1,
-  RESTORED_WALLET = 2
+  LEGAL_AND_PASSWORD = 1,
+  RECOVERY_SETUP = 2,
+  COMPLETE = 3,
+  COMPLETE_RECOVERY_SKIPPED = 4,
+  START_RESTORE = 5
 }
 
 export type BuyOption = {

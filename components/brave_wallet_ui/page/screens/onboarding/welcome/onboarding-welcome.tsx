@@ -72,8 +72,20 @@ export const OnboardingWelcome = () => {
     if (!setupStillInProgress) {
       dispatch(WalletPageActions.walletSetupComplete(false))
     }
-    braveWalletP3A.reportOnboardingAction(OnboardingAction.SHOWN)
   }, [setupStillInProgress])
+
+  React.useEffect(() => {
+    let action = OnboardingAction.SHOWN;
+    switch (nextStep) {
+      case WalletRoutes.OnboardingImportOrRestore:
+        action = OnboardingAction.START_RESTORE
+        break
+      case WalletRoutes.OnboardingCreatePassword:
+        action = OnboardingAction.LEGAL_AND_PASSWORD
+        break
+    }
+    braveWalletP3A.reportOnboardingAction(action)
+  }, [nextStep])
 
   // render
   if (nextStep !== undefined) {

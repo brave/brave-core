@@ -9,8 +9,12 @@ import {
   Redirect,
   Route,
   Switch,
-  useHistory
+  useHistory,
+  useLocation
 } from 'react-router'
+
+// utils
+import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 
 // components
 import { BackupRecoveryPhrase } from '../backup-wallet/backup-recovery-phrase/backup-recovery-phrase'
@@ -22,13 +26,17 @@ import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/impo
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 
 // types
-import { PageState, WalletRoutes, WalletState } from '../../../constants/types'
+import { OnboardingAction, PageState, WalletRoutes, WalletState } from '../../../constants/types'
 import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 import { OnboardingConnectHardwareWallet } from './connect-hardware/onboarding-connect-hardware-wallet'
 
 export const OnboardingRoutes = () => {
   // routing
   const history = useHistory()
+  const location = useLocation()
+
+  // custom hooks
+  const { braveWalletP3A } = useApiProxy()
 
   // redux
   const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
@@ -42,6 +50,27 @@ export const OnboardingRoutes = () => {
   const goToExplainRecoveryPhrase = React.useCallback(() => {
     history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
   }, [])
+
+  // p3a onboarding updates
+  React.useEffect(() => {
+    let action: OnboardingAction | null = null;
+    switch (location.pathname) {
+      case WalletRoutes.OnboardingWelcome:
+        action = OnboardingAction.SHOWN;
+        break;
+      case WalletRoutes.OnboardingCreatePassword:
+        action = OnboardingAction.LEGAL_AND_PASSWORD;
+        break;
+      case WalletRoutes.OnboardingExplainRecoveryPhrase:
+      case WalletRoutes.OnboardingBackupRecoveryPhrase:
+      case WalletRoutes.OnboardingVerifyRecoveryPhrase:
+        action = OnboardingAction.RECOVERY_SETUP;
+        break;
+    }
+    if (action) {
+      braveWalletP3A.reportOnboardingAction(action);
+    }
+  }, [location]);
 
   // render
   return (

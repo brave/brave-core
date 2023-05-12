@@ -9,7 +9,6 @@ import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import {
   BraveWallet,
-  OnboardingAction,
   NFTMetadataReturnType,
   UpdateAccountNamePayloadType,
   WalletState
@@ -111,9 +110,6 @@ handler.on(WalletPageActions.restoreWallet.type, async (store: Store, payload: R
   store.dispatch(WalletPageActions.setShowIsRestoring(false))
   if (payload?.completeWalletSetup) {
     store.dispatch(WalletPageActions.walletSetupComplete(payload.completeWalletSetup))
-  } else {
-    const braveWalletP3A = getWalletPageApiProxy().braveWalletP3A
-    await braveWalletP3A.reportOnboardingAction(OnboardingAction.RESTORED_WALLET)
   }
 })
 

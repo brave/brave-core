@@ -47,6 +47,8 @@ extern const char kBraveWalletEthereumTransactionsCoinTypeMigrated[];
 extern const char kBraveWalletP3AFirstUnlockTime[];
 extern const char kBraveWalletP3ALastUnlockTime[];
 extern const char kBraveWalletP3AUsedSecondDay[];
+extern const char kBraveWalletP3AOnboardingLastStep[];
+extern const char kBraveWalletP3ANewUserBalanceReported[];
 
 extern const char kBraveWalletP3AActiveWalletDict[];
 extern const char kBraveWalletKeyringEncryptionKeysMigrated[];

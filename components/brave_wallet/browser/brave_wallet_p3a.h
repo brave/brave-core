@@ -24,6 +24,7 @@ extern const char kDefaultWalletHistogramName[];
 extern const char kDefaultSolanaWalletHistogramName[];
 extern const char kKeyringCreatedHistogramName[];
 extern const char kOnboardingConversionHistogramName[];
+extern const char kNewUserBalanceHistogramName[];
 extern const char kEthProviderHistogramName[];
 extern const char kSolProviderHistogramName[];
 extern const char kEthTransactionSentHistogramName[];
@@ -76,8 +77,7 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
                         mojom::CoinType coin_type,
                         bool use_native_wallet_enabled,
                         bool allow_provider_overwrite) override;
-  void ReportOnboardingAction(
-      mojom::OnboardingAction onboarding_action) override;
+  void ReportOnboardingAction(mojom::OnboardingAction action) override;
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
 
@@ -89,6 +89,9 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void OnUpdateTimerFired();
   void WriteUsageStatsToHistogram();
   void RecordInitialBraveWalletP3AState();
+  absl::optional<mojom::OnboardingAction> GetLastOnboardingAction();
+  void RecordOnboardingHistogram();
+  void MaybeRecordNewUserBalance();
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;
   raw_ptr<PrefService> profile_prefs_;
@@ -96,6 +99,8 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
 
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
+
+  base::OneShotTimer onboarding_report_timer_;
 
   mojo::ReceiverSet<mojom::BraveWalletP3A> receivers_;
   base::RepeatingTimer update_timer_;

@@ -72,16 +72,38 @@ TEST_F(BraveWalletP3AUnitTest, ReportOnboardingAction) {
   histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
 
   wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::Shown);
-  histogram_tester_->ExpectUniqueSample(kOnboardingConversionHistogramName, 0,
+  // should not record immediately, should delay
+  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
+  task_environment_.FastForwardBy(base::Seconds(110));
+
+  // report new action before 120 seconds deadline, should postpone timer
+  wallet_p3a_->ReportOnboardingAction(
+      mojom::OnboardingAction::LegalAndPassword);
+  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
+  task_environment_.FastForwardBy(base::Seconds(120));
+  histogram_tester_->ExpectUniqueSample(kOnboardingConversionHistogramName, 1,
                                         1);
 
-  wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::CreatedWallet);
-  histogram_tester_->ExpectBucketCount(kOnboardingConversionHistogramName, 1,
-                                       1);
-
-  wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::RestoredWallet);
+  // report new action after 120 seconds deadline, should record
+  // immediately to correct histogram value
+  wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::RecoverySetup);
+  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 2);
   histogram_tester_->ExpectBucketCount(kOnboardingConversionHistogramName, 2,
                                        1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, ReportOnboardingActionRestore) {
+  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
+
+  wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::Shown);
+  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
+  task_environment_.FastForwardBy(base::Seconds(50));
+
+  wallet_p3a_->ReportOnboardingAction(mojom::OnboardingAction::StartRestore);
+  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
+  task_environment_.FastForwardBy(base::Seconds(120));
+  // should not monitor the wallet restore flow
+  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
 }
 
 TEST_F(BraveWalletP3AUnitTest, TransactionSent) {
@@ -136,6 +158,37 @@ TEST_F(BraveWalletP3AUnitTest, ActiveAccounts) {
   histogram_tester_->ExpectBucketCount(kEthActiveAccountHistogramName, 0, 1);
   histogram_tester_->ExpectBucketCount(kFilActiveAccountHistogramName, 1, 1);
   histogram_tester_->ExpectBucketCount(kSolActiveAccountHistogramName, 2, 1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, NewUserBalance) {
+  // record first usage
+  wallet_p3a_->ReportUsage(true);
+
+  task_environment_.FastForwardBy(base::Days(3));
+  wallet_p3a_->ReportUsage(true);
+
+  histogram_tester_->ExpectTotalCount(kNewUserBalanceHistogramName, 0);
+  wallet_p3a_->RecordActiveWalletCount(1, mojom::CoinType::ETH);
+  histogram_tester_->ExpectUniqueSample(kNewUserBalanceHistogramName, 1, 1);
+
+  task_environment_.FastForwardBy(base::Days(2));
+  wallet_p3a_->RecordActiveWalletCount(1, mojom::CoinType::ETH);
+  // Should not record because we already recorded
+  histogram_tester_->ExpectUniqueSample(kNewUserBalanceHistogramName, 1, 1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, NewUserBalancePastDeadline) {
+  // record first usage
+  wallet_p3a_->ReportUsage(true);
+
+  task_environment_.FastForwardBy(base::Days(8));
+  wallet_p3a_->ReportUsage(true);
+
+  histogram_tester_->ExpectTotalCount(kNewUserBalanceHistogramName, 0);
+  wallet_p3a_->RecordActiveWalletCount(1, mojom::CoinType::ETH);
+
+  // Should not record new value since we are past the deadline
+  histogram_tester_->ExpectTotalCount(kNewUserBalanceHistogramName, 0);
 }
 
 TEST_F(BraveWalletP3AUnitTest, JSProviders) {
