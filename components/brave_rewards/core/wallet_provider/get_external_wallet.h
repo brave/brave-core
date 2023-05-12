@@ -8,18 +8,12 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace wallet_provider {
+namespace brave_rewards::internal::wallet_provider {
 
 class GetExternalWallet {
  public:
-  explicit GetExternalWallet(LedgerImpl& ledger);
-
   virtual ~GetExternalWallet();
 
   void Run(GetExternalWalletCallback) const;
@@ -30,11 +24,8 @@ class GetExternalWallet {
   virtual void OnTransferTokens(GetExternalWalletCallback,
                                 mojom::Result,
                                 std::string drain_id) const;
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace wallet_provider
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::wallet_provider
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_GET_EXTERNAL_WALLET_H_

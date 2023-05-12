@@ -32,10 +32,7 @@ LedgerImpl::LedgerImpl(
       report_(*this),
       state_(*this),
       api_(*this),
-      recovery_(*this),
-      bitflyer_(*this),
-      gemini_(*this),
-      uphold_(*this) {
+      recovery_(*this) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_ledger_client_for_logging(ledger_client_.get());
 }

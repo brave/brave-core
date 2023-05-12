@@ -14,15 +14,10 @@
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace wallet_provider {
+namespace brave_rewards::internal::wallet_provider {
 
 class ConnectExternalWallet {
  public:
-  explicit ConnectExternalWallet(LedgerImpl& ledger);
-
   virtual ~ConnectExternalWallet();
 
   void Run(const base::flat_map<std::string, std::string>& query_parameters,
@@ -42,8 +37,6 @@ class ConnectExternalWallet {
                  std::string&& address,
                  endpoints::PostConnect::Result&&) const;
 
-  const raw_ref<LedgerImpl> ledger_;
-
  private:
   absl::optional<OAuthInfo> ExchangeOAuthInfo(mojom::ExternalWalletPtr) const;
 
@@ -52,7 +45,6 @@ class ConnectExternalWallet {
       const std::string& current_one_time_string) const;
 };
 
-}  // namespace wallet_provider
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::wallet_provider
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_CONNECT_EXTERNAL_WALLET_H_

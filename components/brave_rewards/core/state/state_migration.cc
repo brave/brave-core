@@ -32,8 +32,8 @@ StateMigration::StateMigration(LedgerImpl& ledger)
       v8_(ledger),
       v10_(ledger),
       v11_(ledger),
-      v12_(ledger),
-      v13_(ledger) {}
+      v12_(),
+      v13_() {}
 
 StateMigration::~StateMigration() = default;
 

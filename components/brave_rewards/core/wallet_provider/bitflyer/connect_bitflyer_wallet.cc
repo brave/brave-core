@@ -29,8 +29,7 @@ using wallet_provider::ConnectExternalWallet;
 
 namespace bitflyer {
 
-ConnectBitFlyerWallet::ConnectBitFlyerWallet(LedgerImpl& ledger)
-    : ConnectExternalWallet(ledger), bitflyer_server_(ledger) {}
+ConnectBitFlyerWallet::ConnectBitFlyerWallet() : bitflyer_server_(ledger()) {}
 
 ConnectBitFlyerWallet::~ConnectBitFlyerWallet() = default;
 
@@ -43,7 +42,7 @@ void ConnectBitFlyerWallet::Authorize(OAuthInfo&& oauth_info,
   DCHECK(!oauth_info.code.empty());
   DCHECK(!oauth_info.code_verifier.empty());
 
-  const auto rewards_wallet = ledger_->wallet()->GetWallet();
+  const auto rewards_wallet = ledger().wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(0, "Rewards wallet is null!");
     return std::move(callback).Run(
@@ -67,7 +66,7 @@ void ConnectBitFlyerWallet::OnAuthorize(ConnectExternalWalletCallback callback,
                                         std::string&& token,
                                         std::string&& address,
                                         std::string&& linking_info) const {
-  if (!ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kNotConnected,
+  if (!ledger().bitflyer()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                          mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -101,7 +100,7 @@ void ConnectBitFlyerWallet::OnAuthorize(ConnectExternalWalletCallback callback,
       base::BindOnce(&ConnectBitFlyerWallet::OnConnect, base::Unretained(this),
                      std::move(callback), std::move(token), std::move(address));
 
-  RequestFor<PostConnectBitflyer>(*ledger_, std::move(linking_info))
+  RequestFor<PostConnectBitflyer>(ledger(), std::move(linking_info))
       .Send(std::move(on_connect));
 }
 

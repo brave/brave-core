@@ -12,9 +12,6 @@
 namespace brave_rewards::internal::gemini {
 
 class GeminiTransfer final : public wallet_provider::Transfer {
- public:
-  using Transfer::Transfer;
-
  private:
   void CommitTransaction(ResultCallback,
                          mojom::ExternalTransactionPtr) const override;

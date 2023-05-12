@@ -30,7 +30,7 @@ void BitFlyerTransfer::CommitTransaction(
   DCHECK(!transaction->transaction_id.empty());
 
   const auto wallet =
-      ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected});
+      ledger().bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
@@ -39,7 +39,7 @@ void BitFlyerTransfer::CommitTransaction(
       base::BindOnce(&BitFlyerTransfer::OnCommitTransaction,
                      base::Unretained(this), std::move(callback));
 
-  RequestFor<PostCommitTransactionBitFlyer>(*ledger_, std::move(wallet->token),
+  RequestFor<PostCommitTransactionBitFlyer>(ledger(), std::move(wallet->token),
                                             std::move(wallet->address),
                                             std::move(transaction))
       .Send(std::move(on_commit_transaction));
@@ -48,14 +48,14 @@ void BitFlyerTransfer::CommitTransaction(
 void BitFlyerTransfer::OnCommitTransaction(
     ResultCallback callback,
     PostCommitTransactionBitFlyer::Result&& result) const {
-  if (!ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected})) {
+  if (!ledger().bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected})) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
   if (!result.has_value()) {
     if (result.error() ==
         PostCommitTransactionBitFlyer::Error::kAccessTokenExpired) {
-      if (!ledger_->bitflyer()->LogOutWallet()) {
+      if (!ledger().bitflyer()->LogOutWallet()) {
         BLOG(0, "Failed to disconnect " << constant::kWalletBitflyer
                                         << " wallet!");
       }

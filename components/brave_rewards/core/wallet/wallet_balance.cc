@@ -19,13 +19,13 @@ namespace brave_rewards::internal::wallet {
 
 namespace {
 std::string GetConnectedWalletType(LedgerImpl& ledger) {
-  return GetWalletIf(ledger, constant::kWalletBitflyer,
+  return GetWalletIf(constant::kWalletBitflyer,
                      {mojom::WalletStatus::kConnected})
              ? constant::kWalletBitflyer
-         : GetWalletIf(ledger, constant::kWalletGemini,
+         : GetWalletIf(constant::kWalletGemini,
                        {mojom::WalletStatus::kConnected})
              ? constant::kWalletGemini
-         : GetWalletIf(ledger, constant::kWalletUphold,
+         : GetWalletIf(constant::kWalletUphold,
                        {mojom::WalletStatus::kConnected})
              ? constant::kWalletUphold
              : "";
@@ -67,10 +67,9 @@ void WalletBalance::OnGetUnblindedTokens(
   }
 
   wallet::FetchBalance(
-      *ledger_, wallet_type,
-      base::BindOnce(&WalletBalance::OnFetchExternalWalletBalance,
-                     base::Unretained(this), wallet_type, std::move(balance),
-                     std::move(callback)));
+      wallet_type, base::BindOnce(&WalletBalance::OnFetchExternalWalletBalance,
+                                  base::Unretained(this), wallet_type,
+                                  std::move(balance), std::move(callback)));
 }
 
 void WalletBalance::OnFetchExternalWalletBalance(const std::string& wallet_type,
