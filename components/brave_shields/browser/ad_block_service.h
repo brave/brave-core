@@ -28,6 +28,7 @@
 #include "url/gurl.h"
 
 class AdBlockServiceTest;
+class DebounceBrowserTest;
 class PrefService;
 
 namespace component_updater {
@@ -136,6 +137,7 @@ class AdBlockService {
 
  private:
   friend class ::AdBlockServiceTest;
+  friend class ::DebounceBrowserTest;
 
   static std::string g_ad_block_dat_file_version_;
 

@@ -24,6 +24,7 @@ class FilePath;
 }
 
 class AdBlockServiceTest;
+class DebounceBrowserTest;
 
 namespace brave_shields {
 
@@ -57,6 +58,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
 
  private:
   friend class ::AdBlockServiceTest;
+  friend class ::DebounceBrowserTest;
 
   void OnComponentReady(const base::FilePath&);
 
