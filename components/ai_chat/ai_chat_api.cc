@@ -135,6 +135,10 @@ void AIChatAPI::QueryPrompt(ResponseCallback response_callback,
   DVLOG(1) << __func__ << " API Request sent\n";
 }
 
+void AIChatAPI::SendDataForTesting(const std::string& text) {
+  OnDataReceived(text, base::BindOnce([]() {}));
+}
+
 base::Value::Dict AIChatAPI::CreateApiParametersDict(
     const std::string& prompt) {
   base::Value::Dict dict;
@@ -192,15 +196,15 @@ void AIChatAPI::OnComplete(bool success) {
 
   int response_code = -1;
 
-  if (current_request_->get()->ResponseInfo() &&
-      current_request_->get()->ResponseInfo()->headers) {
-    response_code =
-        current_request_->get()->ResponseInfo()->headers->response_code();
+  if (network::SimpleURLLoader* simple_url_loader = current_request_->get();
+      simple_url_loader && simple_url_loader->ResponseInfo()->headers) {
+    response_code = simple_url_loader->ResponseInfo()->headers->response_code();
   }
 
   is_request_in_progress_ = false;
   current_request_->reset(nullptr);
   std::move(completion_callback_).Run(success, response_code);
+  api_request_helper_.Cancel(current_request_);
 }
 
 void AIChatAPI::OnRetry(base::OnceClosure start_retry) {

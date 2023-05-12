@@ -23,8 +23,6 @@
 
 namespace network {
 class SharedURLLoaderFactory;
-class SimpleURLLoader;
-class SimpleURLLoaderStreamConsumer;
 }  // namespace network
 
 namespace api_request_helper {
