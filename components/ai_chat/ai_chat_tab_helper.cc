@@ -281,6 +281,7 @@ void AIChatTabHelper::DistillViaAlgorithm(const ui::AXTree& tree) {
 void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
   article_summary_.clear();
+  article_text_.clear();
   SetRequestInProgress(false);
 
   for (auto& obs : observers_) {
