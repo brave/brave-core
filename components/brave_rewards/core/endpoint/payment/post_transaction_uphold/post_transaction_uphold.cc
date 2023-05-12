@@ -15,12 +15,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-PostTransactionUphold::PostTransactionUphold(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+PostTransactionUphold::PostTransactionUphold() = default;
 
 PostTransactionUphold::~PostTransactionUphold() = default;
 
@@ -81,7 +78,7 @@ void PostTransactionUphold::Request(const mojom::SKUTransaction& transaction,
   request->content = GeneratePayload(transaction);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void PostTransactionUphold::OnRequest(mojom::UrlResponsePtr response,
@@ -91,6 +88,4 @@ void PostTransactionUphold::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace payment
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::payment

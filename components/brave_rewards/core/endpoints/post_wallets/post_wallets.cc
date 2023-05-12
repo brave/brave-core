@@ -66,9 +66,8 @@ Result PostWallets::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-PostWallets::PostWallets(LedgerImpl& ledger,
-                         absl::optional<std::string>&& geo_country)
-    : RequestBuilder(ledger), geo_country_(std::move(geo_country)) {}
+PostWallets::PostWallets(absl::optional<std::string>&& geo_country)
+    : geo_country_(std::move(geo_country)) {}
 
 PostWallets::~PostWallets() = default;
 
@@ -82,7 +81,7 @@ absl::optional<std::string> PostWallets::Url() const {
 
 absl::optional<std::vector<std::string>> PostWallets::Headers(
     const std::string& content) const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;

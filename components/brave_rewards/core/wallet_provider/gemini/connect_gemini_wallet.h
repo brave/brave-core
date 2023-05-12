@@ -14,14 +14,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace gemini {
+namespace brave_rewards::internal::gemini {
 
 class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectGeminiWallet(LedgerImpl& ledger);
+  ConnectGeminiWallet();
 
   ~ConnectGeminiWallet() override;
 
@@ -53,7 +50,6 @@ class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
   endpoint::GeminiServer gemini_server_;
 };
 
-}  // namespace gemini
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::gemini
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_GEMINI_CONNECT_GEMINI_WALLET_H_

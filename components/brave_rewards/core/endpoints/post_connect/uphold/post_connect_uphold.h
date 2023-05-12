@@ -40,14 +40,11 @@
 //
 // Response body: -
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostConnectUphold final : public PostConnect {
  public:
-  PostConnectUphold(LedgerImpl& ledger, std::string&& address);
+  explicit PostConnectUphold(std::string&& address);
   ~PostConnectUphold() override;
 
  private:
@@ -60,7 +57,6 @@ class PostConnectUphold final : public PostConnect {
   std::string address_;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_CONNECT_UPHOLD_POST_CONNECT_UPHOLD_H_

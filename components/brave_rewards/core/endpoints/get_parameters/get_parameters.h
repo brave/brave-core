@@ -56,10 +56,7 @@
 // }
 // clang-format on
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class GetParameters;
 
@@ -74,7 +71,7 @@ class GetParameters final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  explicit GetParameters(LedgerImpl& ledger);
+  GetParameters();
   ~GetParameters() override;
 
  private:
@@ -82,7 +79,6 @@ class GetParameters final : public RequestBuilder,
   mojom::UrlMethod Method() const override;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_GET_PARAMETERS_GET_PARAMETERS_H_

@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -36,17 +35,13 @@
 // Response body:
 // {Empty}
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 using PostCredentialsCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PostCredentials {
  public:
-  explicit PostCredentials(LedgerImpl& ledger);
+  PostCredentials();
   ~PostCredentials();
 
   void Request(const std::string& order_id,
@@ -66,12 +61,8 @@ class PostCredentials {
 
   void OnRequest(PostCredentialsCallback callback,
                  mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace payment
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::payment
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_CREDENTIALS_POST_CREDENTIALS_H_

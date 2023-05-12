@@ -80,8 +80,8 @@ Result PatchWallets::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-PatchWallets::PatchWallets(LedgerImpl& ledger, std::string&& geo_country)
-    : RequestBuilder(ledger), geo_country_(std::move(geo_country)) {}
+PatchWallets::PatchWallets(std::string&& geo_country)
+    : geo_country_(std::move(geo_country)) {}
 
 PatchWallets::~PatchWallets() = default;
 
@@ -90,7 +90,7 @@ const char* PatchWallets::Path() const {
 }
 
 absl::optional<std::string> PatchWallets::Url() const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;
@@ -108,7 +108,7 @@ mojom::UrlMethod PatchWallets::Method() const {
 
 absl::optional<std::vector<std::string>> PatchWallets::Headers(
     const std::string& content) const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;

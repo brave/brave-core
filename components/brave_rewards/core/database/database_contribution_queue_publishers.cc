@@ -14,8 +14,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -23,9 +22,8 @@ const char kTableName[] = "contribution_queue_publishers";
 
 }  // namespace
 
-DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers(
-    LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers() =
+    default;
 
 DatabaseContributionQueuePublishers::~DatabaseContributionQueuePublishers() =
     default;
@@ -61,7 +59,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
@@ -95,7 +93,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
       std::bind(&DatabaseContributionQueuePublishers::OnGetRecordsByQueueId,
                 this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
@@ -122,5 +120,4 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
   callback(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

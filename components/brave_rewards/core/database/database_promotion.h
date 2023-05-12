@@ -12,18 +12,17 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 using GetPromotionCallback = std::function<void(mojom::PromotionPtr)>;
 
 using GetPromotionListCallback =
     std::function<void(std::vector<mojom::PromotionPtr>)>;
 
-class DatabasePromotion : public DatabaseTable {
+class DatabasePromotion {
  public:
-  explicit DatabasePromotion(LedgerImpl& ledger);
-  ~DatabasePromotion() override;
+  DatabasePromotion();
+  ~DatabasePromotion();
 
   void InsertOrUpdate(mojom::PromotionPtr info, LegacyResultCallback callback);
 
@@ -63,7 +62,6 @@ class DatabasePromotion : public DatabaseTable {
                     GetPromotionListCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PROMOTION_H_

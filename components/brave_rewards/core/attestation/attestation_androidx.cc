@@ -11,11 +11,9 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_androidx.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace brave_rewards::internal {
-namespace attestation {
+namespace brave_rewards::internal::attestation {
 
-AttestationAndroid::AttestationAndroid(LedgerImpl& ledger)
-    : Attestation(ledger), promotion_server_(ledger) {}
+AttestationAndroid::AttestationAndroid() = default;
 
 AttestationAndroid::~AttestationAndroid() = default;
 
@@ -92,5 +90,4 @@ void AttestationAndroid::OnConfirm(ConfirmCallback callback,
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace attestation
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::attestation

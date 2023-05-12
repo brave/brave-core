@@ -18,11 +18,9 @@ const char kTableName[] = "server_publisher_links";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseServerPublisherLinks::DatabaseServerPublisherLinks() = default;
 
 DatabaseServerPublisherLinks::~DatabaseServerPublisherLinks() = default;
 
@@ -99,7 +97,7 @@ void DatabaseServerPublisherLinks::GetRecord(
   auto transaction_callback =
       std::bind(&DatabaseServerPublisherLinks::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherLinks::OnGetRecord(
@@ -123,5 +121,4 @@ void DatabaseServerPublisherLinks::OnGetRecord(
   callback(links);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

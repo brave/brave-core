@@ -10,20 +10,14 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_settings_properties.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-}
-
-namespace brave_rewards::internal {
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 class LegacyPublisherState {
  public:
-  explicit LegacyPublisherState(LedgerImpl& ledger);
+  LegacyPublisherState();
 
   ~LegacyPublisherState();
 
@@ -44,11 +38,9 @@ class LegacyPublisherState {
               mojom::Result result,
               const std::string& data);
 
-  const raw_ref<LedgerImpl> ledger_;
   PublisherSettingsProperties state_;
 };
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_PUBLISHER_STATE_H_

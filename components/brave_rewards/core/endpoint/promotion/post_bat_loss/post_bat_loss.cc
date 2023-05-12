@@ -15,16 +15,14 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostBatLoss::PostBatLoss(LedgerImpl& ledger) : ledger_(ledger) {}
+PostBatLoss::PostBatLoss() = default;
 
 PostBatLoss::~PostBatLoss() = default;
 
 std::string PostBatLoss::GetUrl(const int32_t version) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -57,7 +55,7 @@ mojom::Result PostBatLoss::CheckStatusCode(const int status_code) {
 void PostBatLoss::Request(const double amount,
                           const int32_t version,
                           PostBatLossCallback callback) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     callback(mojom::Result::LEDGER_ERROR);
     return;
@@ -80,7 +78,7 @@ void PostBatLoss::Request(const double amount,
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void PostBatLoss::OnRequest(mojom::UrlResponsePtr response,
@@ -90,6 +88,4 @@ void PostBatLoss::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

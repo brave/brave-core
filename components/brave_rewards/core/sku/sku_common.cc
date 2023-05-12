@@ -12,11 +12,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace sku {
+namespace brave_rewards::internal::sku {
 
-SKUCommon::SKUCommon(LedgerImpl& ledger)
-    : ledger_(ledger), order_(ledger), transaction_(ledger) {}
+SKUCommon::SKUCommon() = default;
 
 SKUCommon::~SKUCommon() = default;
 
@@ -64,7 +62,7 @@ void SKUCommon::SendExternalTransaction(const std::string& order_id,
   auto get_callback =
       std::bind(&SKUCommon::GetSKUTransactionByOrderId, this, _1, callback);
 
-  ledger_->database()->GetSKUTransactionByOrderId(order_id, get_callback);
+  ledger().database()->GetSKUTransactionByOrderId(order_id, get_callback);
 }
 
 void SKUCommon::GetSKUTransactionByOrderId(
@@ -85,5 +83,4 @@ void SKUCommon::GetSKUTransactionByOrderId(
                 transaction->order_id, std::move(callback)));
 }
 
-}  // namespace sku
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::sku

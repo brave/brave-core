@@ -12,14 +12,11 @@
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
 class GeminiServer {
  public:
-  explicit GeminiServer(LedgerImpl& ledger);
+  GeminiServer();
   ~GeminiServer();
 
   gemini::PostAccount& post_account() { return post_account_; }
@@ -37,7 +34,6 @@ class GeminiServer {
   gemini::PostRecipientId post_recipient_id_;
 };
 
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_GEMINI_SERVER_H_

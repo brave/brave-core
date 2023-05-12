@@ -21,14 +21,9 @@
 
 #include "wally_bip39.h"  // NOLINT
 
-namespace brave_rewards::internal {
-namespace wallet {
+namespace brave_rewards::internal::wallet {
 
-Wallet::Wallet(LedgerImpl& ledger)
-    : ledger_(ledger),
-      create_(ledger),
-      balance_(ledger),
-      promotion_server_(ledger) {}
+Wallet::Wallet() = default;
 
 Wallet::~Wallet() = default;
 
@@ -45,7 +40,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   DCHECK(corrupted);
   *corrupted = false;
 
-  const std::string json = ledger_->GetState<std::string>(state::kWalletBrave);
+  const std::string json = ledger().GetState<std::string>(state::kWalletBrave);
 
   if (json.empty()) {
     return nullptr;
@@ -112,16 +107,15 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);
 
-  ledger_->SetState(state::kWalletBrave, std::move(json));
+  ledger().SetState(state::kWalletBrave, std::move(json));
 
-  ledger_->database()->SaveEventLog(state::kRecoverySeed, event_string);
+  ledger().database()->SaveEventLog(state::kRecoverySeed, event_string);
 
   if (!wallet->payment_id.empty()) {
-    ledger_->database()->SaveEventLog(state::kPaymentId, wallet->payment_id);
+    ledger().database()->SaveEventLog(state::kPaymentId, wallet->payment_id);
   }
 
   return true;
 }
 
-}  // namespace wallet
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::wallet

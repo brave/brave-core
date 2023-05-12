@@ -13,12 +13,10 @@
 
 namespace brave_rewards::internal::wallet_provider {
 
-GetExternalWallet::GetExternalWallet(LedgerImpl& ledger) : ledger_(ledger) {}
-
 GetExternalWallet::~GetExternalWallet() = default;
 
 void GetExternalWallet::Run(GetExternalWalletCallback callback) const {
-  auto wallet = wallet::MaybeCreateWallet(*ledger_, WalletType());
+  auto wallet = wallet::MaybeCreateWallet(WalletType());
   if (!wallet) {
     return std::move(callback).Run(
         base::unexpected(mojom::GetExternalWalletError::kUnexpected));
@@ -26,7 +24,7 @@ void GetExternalWallet::Run(GetExternalWalletCallback callback) const {
 
   if (wallet->status == mojom::WalletStatus::kConnected ||
       wallet->status == mojom::WalletStatus::kLoggedOut) {
-    return ledger_->promotion()->TransferTokens(
+    return ledger().promotion()->TransferTokens(
         base::BindOnce(&GetExternalWallet::OnTransferTokens,
                        base::Unretained(this), std::move(callback)));
   }
@@ -41,7 +39,7 @@ void GetExternalWallet::OnTransferTokens(GetExternalWalletCallback callback,
     BLOG(0, "Failed to transfer tokens!");
   }
 
-  auto wallet = wallet::GetWallet(*ledger_, WalletType());
+  auto wallet = wallet::GetWallet(WalletType());
   if (!wallet) {
     return std::move(callback).Run(
         base::unexpected(mojom::GetExternalWalletError::kUnexpected));

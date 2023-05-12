@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /v1/captchas/{captcha_id}.png
@@ -24,18 +23,14 @@
 // Response body:
 // {PNG data}
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using GetCaptchaCallback =
     base::OnceCallback<void(mojom::Result result, const std::string& image)>;
 
 class GetCaptcha {
  public:
-  explicit GetCaptcha(LedgerImpl& ledger);
+  GetCaptcha();
   ~GetCaptcha();
 
   void Request(const std::string& captcha_id, GetCaptchaCallback callback);
@@ -48,12 +43,8 @@ class GetCaptcha {
   mojom::Result ParseBody(const std::string& body, std::string* image);
 
   void OnRequest(GetCaptchaCallback callback, mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_CAPTCHA_GET_CAPTCHA_H_

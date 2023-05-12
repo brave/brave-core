@@ -9,18 +9,14 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_wallet/get_wallet.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace state {
+namespace brave_rewards::internal::state {
 
 class StateMigrationV10 {
  public:
-  explicit StateMigrationV10(LedgerImpl& ledger);
+  StateMigrationV10();
   ~StateMigrationV10();
 
   void Migrate(LegacyResultCallback callback);
@@ -31,11 +27,9 @@ class StateMigrationV10 {
                    bool linked,
                    LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<endpoint::promotion::GetWallet> get_wallet_;
 };
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V10_H_

@@ -34,10 +34,7 @@
 //   }
 // ]
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class GetRecipientIDGemini;
 
@@ -53,7 +50,7 @@ class GetRecipientIDGemini final
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  GetRecipientIDGemini(LedgerImpl& ledger, std::string&& token);
+  explicit GetRecipientIDGemini(std::string&& token);
   ~GetRecipientIDGemini() override;
 
  private:
@@ -65,7 +62,6 @@ class GetRecipientIDGemini final
   std::string token_;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_GEMINI_GET_RECIPIENT_ID_GET_RECIPIENT_ID_GEMINI_H_

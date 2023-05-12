@@ -11,13 +11,12 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseActivityInfo : public DatabaseTable {
+class DatabaseActivityInfo {
  public:
-  explicit DatabaseActivityInfo(LedgerImpl& ledger);
-  ~DatabaseActivityInfo() override;
+  DatabaseActivityInfo();
+  ~DatabaseActivityInfo();
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info,
                       LegacyResultCallback callback);
@@ -43,7 +42,6 @@ class DatabaseActivityInfo : public DatabaseTable {
                         GetActivityInfoListCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_ACTIVITY_INFO_H_

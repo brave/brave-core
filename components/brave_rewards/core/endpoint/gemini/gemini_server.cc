@@ -7,16 +7,10 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
-GeminiServer::GeminiServer(LedgerImpl& ledger)
-    : post_account_(ledger),
-      post_balance_(ledger),
-      post_oauth_(ledger),
-      post_recipient_id_(ledger) {}
+GeminiServer::GeminiServer() = default;
 
 GeminiServer::~GeminiServer() = default;
 
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint

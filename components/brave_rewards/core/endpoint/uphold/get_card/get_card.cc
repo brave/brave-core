@@ -17,11 +17,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
-GetCard::GetCard(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCard::GetCard() = default;
 
 GetCard::~GetCard() = default;
 
@@ -77,7 +75,7 @@ void GetCard::Request(const std::string& address,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(address);
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetCard::OnRequest(GetCardCallback callback,
@@ -97,6 +95,4 @@ void GetCard::OnRequest(GetCardCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::uphold

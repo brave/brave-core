@@ -14,8 +14,7 @@
 
 namespace brave_rewards::internal {
 
-Media::Media(LedgerImpl& ledger)
-    : ledger_(ledger), media_youtube_(ledger), media_github_(ledger) {}
+Media::Media() = default;
 
 Media::~Media() = default;
 
@@ -84,7 +83,7 @@ void Media::OnMediaActivityError(mojom::VisitDataPtr visit_data,
   visit_data->path = "/";
   visit_data->name = name;
 
-  ledger_->publisher()->GetPublisherActivityFromUrl(window_id,
+  ledger().publisher()->GetPublisherActivityFromUrl(window_id,
                                                     std::move(visit_data), "");
 }
 

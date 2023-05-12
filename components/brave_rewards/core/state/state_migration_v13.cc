@@ -14,16 +14,11 @@
 
 namespace brave_rewards::internal::state {
 
-StateMigrationV13::StateMigrationV13(LedgerImpl& ledger) : ledger_(ledger) {}
-
-StateMigrationV13::~StateMigrationV13() = default;
-
 bool StateMigrationV13::MigrateExternalWallet(const std::string& wallet_type) {
-  if (!wallet::GetWalletIf(*ledger_, wallet_type,
-                           {mojom::WalletStatus::kConnected})) {
+  if (!wallet::GetWalletIf(wallet_type, {mojom::WalletStatus::kConnected})) {
     BLOG(1, "User doesn't have a connected " << wallet_type << " wallet.");
   } else {
-    ledger_->client()->ExternalWalletConnected();
+    ledger().client()->ExternalWalletConnected();
   }
 
   return true;

@@ -13,14 +13,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace bitflyer {
+namespace brave_rewards::internal::bitflyer {
 
 class ConnectBitFlyerWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectBitFlyerWallet(LedgerImpl& ledger);
+  ConnectBitFlyerWallet();
 
   ~ConnectBitFlyerWallet() override;
 
@@ -38,7 +35,6 @@ class ConnectBitFlyerWallet : public wallet_provider::ConnectExternalWallet {
   endpoint::BitflyerServer bitflyer_server_;
 };
 
-}  // namespace bitflyer
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::bitflyer
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_CONNECT_BITFLYER_WALLET_H_

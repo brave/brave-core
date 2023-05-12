@@ -11,11 +11,9 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_iosx.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace brave_rewards::internal {
-namespace attestation {
+namespace brave_rewards::internal::attestation {
 
-AttestationIOS::AttestationIOS(LedgerImpl& ledger)
-    : Attestation(ledger), promotion_server_(ledger) {}
+AttestationIOS::AttestationIOS() = default;
 
 AttestationIOS::~AttestationIOS() = default;
 
@@ -126,5 +124,4 @@ void AttestationIOS::OnConfirm(ConfirmCallback callback, mojom::Result result) {
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace attestation
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::attestation

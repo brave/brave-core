@@ -18,22 +18,9 @@ const int kCurrentVersionNumber = 13;
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
-StateMigration::StateMigration(LedgerImpl& ledger)
-    : ledger_(ledger),
-      v1_(ledger),
-      v2_(ledger),
-      v4_(ledger),
-      v5_(ledger),
-      v6_(ledger),
-      v7_(ledger),
-      v8_(ledger),
-      v10_(ledger),
-      v11_(ledger),
-      v12_(ledger),
-      v13_(ledger) {}
+StateMigration::StateMigration() = default;
 
 StateMigration::~StateMigration() = default;
 
@@ -43,15 +30,15 @@ void StateMigration::Start(ResultCallback callback) {
 
 void StateMigration::FreshInstall(ResultCallback callback) {
   BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
-  ledger_->state()->SetVersion(kCurrentVersionNumber);
+  ledger().state()->SetVersion(kCurrentVersionNumber);
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 void StateMigration::Migrate(ResultCallback callback) {
-  int current_version = ledger_->state()->GetVersion();
+  int current_version = ledger().state()->GetVersion();
 
   if (current_version < 0) {
-    ledger_->state()->SetVersion(0);
+    ledger().state()->SetVersion(0);
     current_version = 0;
   }
 
@@ -141,7 +128,7 @@ void StateMigration::OnMigration(ResultCallback callback,
   }
 
   BLOG(1, "State: Migrated to version " << version);
-  ledger_->state()->SetVersion(version);
+  ledger().state()->SetVersion(version);
 
   // If the user did not previously have a state version and the initial
   // migration did not find any rewards data stored in JSON files, assume that
@@ -154,5 +141,4 @@ void StateMigration::OnMigration(ResultCallback callback,
   Migrate(std::move(callback));
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

@@ -15,8 +15,6 @@
 
 namespace brave_rewards::internal::wallet_provider {
 
-Transfer::Transfer(LedgerImpl& ledger) : ledger_(ledger) {}
-
 Transfer::~Transfer() = default;
 
 void Transfer::Run(const std::string& contribution_id,
@@ -37,7 +35,7 @@ void Transfer::MaybeCreateTransaction(
     const std::string& destination,
     const std::string& amount,
     MaybeCreateTransactionCallback callback) const {
-  ledger_->database()->GetExternalTransaction(
+  ledger().database()->GetExternalTransaction(
       contribution_id, destination,
       base::BindOnce(&Transfer::OnGetExternalTransaction,
                      base::Unretained(this), std::move(callback),
@@ -86,7 +84,7 @@ void Transfer::SaveExternalTransaction(
       &Transfer::OnSaveExternalTransaction, base::Unretained(this),
       std::move(callback), transaction->Clone());
 
-  ledger_->database()->SaveExternalTransaction(
+  ledger().database()->SaveExternalTransaction(
       std::move(transaction), std::move(on_save_external_transaction));
 }
 

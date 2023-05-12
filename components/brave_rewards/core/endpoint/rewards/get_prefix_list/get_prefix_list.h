@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /publishers/prefix-list
@@ -19,18 +18,14 @@
 // Response body:
 // blob
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace rewards {
+namespace brave_rewards::internal::endpoint::rewards {
 
 using GetPrefixListCallback =
     std::function<void(const mojom::Result result, const std::string& body)>;
 
 class GetPrefixList {
  public:
-  explicit GetPrefixList(LedgerImpl& ledger);
+  GetPrefixList();
   ~GetPrefixList();
 
   void Request(GetPrefixListCallback callback);
@@ -42,12 +37,8 @@ class GetPrefixList {
 
   void OnRequest(mojom::UrlResponsePtr response,
                  GetPrefixListCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace rewards
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::rewards
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_REWARDS_GET_PREFIX_LIST_GET_PREFIX_LIST_H_

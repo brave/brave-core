@@ -30,7 +30,7 @@ using Result = PostConnect::Result;
 
 class PostConnectMock final : public PostConnect {
  public:
-  explicit PostConnectMock(LedgerImpl& ledger) : PostConnect(ledger) {}
+  PostConnectMock() = default;
   ~PostConnectMock() override = default;
 
  private:

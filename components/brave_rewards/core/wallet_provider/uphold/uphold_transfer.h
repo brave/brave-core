@@ -16,9 +16,6 @@
 namespace brave_rewards::internal::uphold {
 
 class UpholdTransfer final : public wallet_provider::Transfer {
- public:
-  using Transfer::Transfer;
-
  private:
   void CreateTransaction(MaybeCreateTransactionCallback,
                          mojom::ExternalTransactionPtr) const override;

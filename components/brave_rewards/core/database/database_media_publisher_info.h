@@ -10,13 +10,12 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseMediaPublisherInfo : public DatabaseTable {
+class DatabaseMediaPublisherInfo {
  public:
-  explicit DatabaseMediaPublisherInfo(LedgerImpl& ledger);
-  ~DatabaseMediaPublisherInfo() override;
+  DatabaseMediaPublisherInfo();
+  ~DatabaseMediaPublisherInfo();
 
   void InsertOrUpdate(const std::string& media_key,
                       const std::string& publisher_key,
@@ -29,7 +28,6 @@ class DatabaseMediaPublisherInfo : public DatabaseTable {
                    PublisherInfoCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MEDIA_PUBLISHER_INFO_H_

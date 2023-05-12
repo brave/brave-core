@@ -13,39 +13,29 @@
 #include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
 #include "third_party/abseil-cpp/absl/types/variant.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
+namespace brave_rewards::internal::wallet {
 
-namespace wallet {
+mojom::ExternalWalletPtr GetWallet(const std::string& wallet_type);
 
-mojom::ExternalWalletPtr GetWallet(LedgerImpl& ledger,
-                                   const std::string& wallet_type);
-
-mojom::ExternalWalletPtr GetWalletIf(LedgerImpl& ledger,
-                                     const std::string& wallet_type,
+mojom::ExternalWalletPtr GetWalletIf(const std::string& wallet_type,
                                      const std::set<mojom::WalletStatus>&);
 
-bool SetWallet(LedgerImpl& ledger, mojom::ExternalWalletPtr);
+bool SetWallet(mojom::ExternalWalletPtr);
 
 mojom::ExternalWalletPtr TransitionWallet(
-    LedgerImpl& ledger,
     absl::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
     mojom::WalletStatus to);
 
-mojom::ExternalWalletPtr MaybeCreateWallet(LedgerImpl& ledger,
-                                           const std::string& wallet_type);
+mojom::ExternalWalletPtr MaybeCreateWallet(const std::string& wallet_type);
 
-bool LogOutWallet(LedgerImpl& ledger,
-                  const std::string& wallet_type,
+bool LogOutWallet(const std::string& wallet_type,
                   const std::string& notification = "");
 
 mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
 
-void FetchBalance(LedgerImpl& ledger,
-                  const std::string& wallet_type,
+void FetchBalance(const std::string& wallet_type,
                   base::OnceCallback<void(mojom::Result, double)> callback);
 
-}  // namespace wallet
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_UTIL_H_

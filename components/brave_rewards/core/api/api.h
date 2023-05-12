@@ -10,14 +10,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace api {
+namespace brave_rewards::internal::api {
 
 class API {
  public:
-  explicit API(LedgerImpl& ledger);
+  API();
   ~API();
 
   void Initialize();
@@ -28,7 +25,6 @@ class API {
   APIParameters parameters_;
 };
 
-}  // namespace api
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::api
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_API_API_H_

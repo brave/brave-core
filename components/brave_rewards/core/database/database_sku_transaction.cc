@@ -13,8 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -22,8 +21,7 @@ const char kTableName[] = "sku_transaction";
 
 }  // namespace
 
-DatabaseSKUTransaction::DatabaseSKUTransaction(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseSKUTransaction::DatabaseSKUTransaction() = default;
 
 DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;
 
@@ -60,7 +58,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(db_transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(db_transaction), transaction_callback);
 }
 
 void DatabaseSKUTransaction::SaveExternalTransaction(
@@ -93,7 +91,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUTransaction::GetRecordByOrderId(
@@ -129,7 +127,7 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
   auto transaction_callback =
       std::bind(&DatabaseSKUTransaction::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUTransaction::OnGetRecord(mojom::DBCommandResponsePtr response,
@@ -167,5 +165,4 @@ void DatabaseSKUTransaction::OnGetRecord(mojom::DBCommandResponsePtr response,
   callback(std::move(info));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

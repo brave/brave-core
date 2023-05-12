@@ -12,15 +12,14 @@
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 using SearchPublisherPrefixListCallback = std::function<void(bool)>;
 
-class DatabasePublisherPrefixList : public DatabaseTable {
+class DatabasePublisherPrefixList {
  public:
-  explicit DatabasePublisherPrefixList(LedgerImpl& ledger);
-  ~DatabasePublisherPrefixList() override;
+  DatabasePublisherPrefixList();
+  ~DatabasePublisherPrefixList();
 
   void Reset(publisher::PrefixListReader reader, LegacyResultCallback callback);
 
@@ -34,7 +33,6 @@ class DatabasePublisherPrefixList : public DatabaseTable {
   absl::optional<publisher::PrefixListReader> reader_;
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PUBLISHER_PREFIX_LIST_H_

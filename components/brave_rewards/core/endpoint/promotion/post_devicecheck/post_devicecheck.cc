@@ -16,11 +16,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostDevicecheck::PostDevicecheck(LedgerImpl& ledger) : ledger_(ledger) {}
+PostDevicecheck::PostDevicecheck() = default;
 
 PostDevicecheck::~PostDevicecheck() = default;
 
@@ -29,7 +27,7 @@ std::string PostDevicecheck::GetUrl() {
 }
 
 std::string PostDevicecheck::GeneratePayload(const std::string& key) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -94,7 +92,7 @@ void PostDevicecheck::Request(const std::string& key,
   request->content = GeneratePayload(key);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostDevicecheck::OnRequest(PostDevicecheckCallback callback,
@@ -114,6 +112,4 @@ void PostDevicecheck::OnRequest(PostDevicecheckCallback callback,
   std::move(callback).Run(result, nonce);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

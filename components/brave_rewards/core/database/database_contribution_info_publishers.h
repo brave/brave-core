@@ -11,13 +11,12 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseContributionInfoPublishers : public DatabaseTable {
+class DatabaseContributionInfoPublishers {
  public:
-  explicit DatabaseContributionInfoPublishers(LedgerImpl& ledger);
-  ~DatabaseContributionInfoPublishers() override;
+  DatabaseContributionInfoPublishers();
+  ~DatabaseContributionInfoPublishers();
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,
                       mojom::ContributionInfoPtr info);
@@ -44,7 +43,6 @@ class DatabaseContributionInfoPublishers : public DatabaseTable {
       ContributionPublisherPairListCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_CONTRIBUTION_INFO_PUBLISHERS_H_
