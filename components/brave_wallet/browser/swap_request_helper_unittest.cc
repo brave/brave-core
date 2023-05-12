@@ -27,9 +27,9 @@ const char* GetJupiterQuoteTemplate() {
           "outAmount": "261273",
           "amount": "10000",
           "otherAmountThreshold": "258660",
-          "outAmountWithSlippage": "258660",
           "swapMode": "ExactIn",
           "priceImpactPct": "0.008955716118219659",
+          "slippageBps": "50",
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -44,7 +44,7 @@ const char* GetJupiterQuoteTemplate() {
                 "amount": "%s",
                 "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                 "pct": "0.003"
-			  },
+              },
               "platformFee": {
                 "amount": "0",
                 "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
@@ -81,6 +81,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
         "otherAmountThreshold": 258660,
         "swapMode": "ExactIn",
         "priceImpactPct": 0.008955716118219659,
+        "slippageBps": 50,
         "marketInfos": [
           {
             "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -124,6 +125,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
         "otherAmountThreshold": 258660,
         "swapMode": "ExactIn",
         "priceImpactPct": 0.008955716118219659,
+        "slippageBps": 50,
         "marketInfos": [
           {
             "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",

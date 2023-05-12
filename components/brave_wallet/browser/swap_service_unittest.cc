@@ -51,7 +51,8 @@ brave_wallet::mojom::JupiterQuoteParamsPtr GetCannedJupiterQuoteParams() {
   params->output_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   params->input_mint = "So11111111111111111111111111111111111111112";
   params->amount = "10000";
-  params->slippage_percentage = 0.5;
+  params->slippage_bps = 50;
+  params->user_public_key = "foo";
   return params;
 }
 
@@ -719,33 +720,33 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
       swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
 
   // OK: output mint has Jupiter fees
-  ASSERT_EQ(url,
-            "https://quote-api.jup.ag/v1/quote?"
+  EXPECT_EQ(url,
+            "https://quote-api.jup.ag/v4/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
             "amount=10000&"
-            "feeBps=85&"
-            "slippage=0.500000&"
-            "onlyDirectRoutes=true");
+            "swapMode=ExactIn&"
+            "slippageBps=50&"
+            "feeBps=85");
 
   params->output_mint = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";
   url =
       swap_service_->GetJupiterQuoteURL(params.Clone(), mojom::kSolanaMainnet);
 
   // OK: output mint does not have Jupiter fees
-  ASSERT_EQ(url,
-            "https://quote-api.jup.ag/v1/quote?"
+  EXPECT_EQ(url,
+            "https://quote-api.jup.ag/v4/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y&"
             "amount=10000&"
-            "slippage=0.500000&"
-            "onlyDirectRoutes=true");
+            "swapMode=ExactIn&"
+            "slippageBps=50");
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactionsURL) {
   auto url =
       swap_service_->GetJupiterSwapTransactionsURL(mojom::kSolanaMainnet);
-  ASSERT_EQ(url, "https://quote-api.jup.ag/v1/swap");
+  EXPECT_EQ(url, "https://quote-api.jup.ag/v4/swap");
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
@@ -757,9 +758,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -797,6 +798,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
   expected_route->other_amount_threshold = 258660ULL;
   expected_route->swap_mode = "ExactIn";
   expected_route->price_impact_pct = 0.008955716118219659;
+  expected_route->slippage_bps = 50;
   auto& expected_market_info = expected_route->market_infos.emplace_back(
       mojom::JupiterMarketInfo::New());
   expected_market_info->id = "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK";
@@ -842,9 +844,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": []
         }
       ],
@@ -860,9 +862,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": %s,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": []
         }
       ],
@@ -878,9 +880,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": %s,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": []
         }
       ],
@@ -896,9 +898,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": %s,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": []
         }
       ],
@@ -914,9 +916,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -953,9 +955,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -992,9 +994,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -1031,9 +1033,9 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
           "outAmount": 261273,
           "amount": 10000,
           "otherAmountThreshold": 258660,
-          "outAmountWithSlippage": 258660,
           "swapMode": "ExactIn",
           "priceImpactPct": 0.008955716118219659,
+          "slippageBps": 50,
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -1065,13 +1067,10 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
 TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactions) {
   SetInterceptor(R"(
     {
-      "setupTransaction": "foo",
-      "swapTransaction": "bar",
-      "cleanupTransaction": "baz"
+      "swapTransaction": "bar"
     })");
 
-  auto expected_response =
-      mojom::JupiterSwapTransactions::New("foo", "bar", "baz");
+  auto expected_response = mojom::JupiterSwapTransactions::New("foo");
   // OK: valid case
   TestGetJupiterSwapTransactions(true, std::move(expected_response), false);
 
