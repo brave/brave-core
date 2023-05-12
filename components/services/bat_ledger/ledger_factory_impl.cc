@@ -13,7 +13,7 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "mojo/public/cpp/bindings/self_owned_associated_receiver.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 
 namespace brave_rewards::internal {
 
@@ -49,6 +49,42 @@ void LedgerFactoryImpl::CreateLedger(
                      profile, std::move(callback)));
 }
 
+class SelfOwnedLedgerReceiver {
+ public:
+  static void Create(mojo::PendingAssociatedRemote<mojom::LedgerClient> remote,
+                     mojo::PendingAssociatedReceiver<mojom::Ledger> receiver,
+                     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+                     base::OnceClosure disconnect_handler) {
+    new SelfOwnedLedgerReceiver(std::move(remote), std::move(receiver),
+                                std::move(task_runner),
+                                std::move(disconnect_handler));
+  }
+
+  SelfOwnedLedgerReceiver(const SelfOwnedLedgerReceiver&) = delete;
+  SelfOwnedLedgerReceiver& operator=(const SelfOwnedLedgerReceiver&) = delete;
+
+ private:
+  void Delete() { delete this; }
+
+  SelfOwnedLedgerReceiver(
+      mojo::PendingAssociatedRemote<mojom::LedgerClient> remote,
+      mojo::PendingAssociatedReceiver<mojom::Ledger> receiver,
+      scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+      base::OnceClosure disconnect_handler)
+      : receiver_(&ledger(std::move(remote)),
+                  std::move(receiver),
+                  std::move(task_runner)) {
+    receiver_.set_disconnect_handler(
+        std::move(disconnect_handler)
+            .Then(base::BindOnce(&SelfOwnedLedgerReceiver::Delete,
+                                 base::Unretained(this))));
+  }
+
+  ~SelfOwnedLedgerReceiver() = default;
+
+  mojo::AssociatedReceiver<mojom::Ledger> receiver_;
+};
+
 void LedgerFactoryImpl::CreateLedgerOnTaskRunner(
     base::FilePath&& profile,
     mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
@@ -57,10 +93,10 @@ void LedgerFactoryImpl::CreateLedgerOnTaskRunner(
     scoped_refptr<base::SingleThreadTaskRunner> ledger_task_runner) {
   VLOG(0) << "Creating ledger for " << profile << "...";
 
-  mojo::MakeSelfOwnedAssociatedReceiver(
-      std::make_unique<LedgerImpl>(std::move(ledger_client_remote)),
-      std::move(ledger_receiver), std::move(ledger_task_runner))
-      ->set_connection_error_handler(base::BindPostTask(
+  SelfOwnedLedgerReceiver::Create(
+      std::move(ledger_client_remote), std::move(ledger_receiver),
+      std::move(ledger_task_runner),
+      base::BindPostTask(
           main_task_runner,
           base::BindOnce(&LedgerFactoryImpl::RemoveProfile,
                          base::Unretained(this), std::move(profile))));

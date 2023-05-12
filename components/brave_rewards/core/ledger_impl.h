@@ -463,6 +463,19 @@ class LedgerImpl : public mojom::Ledger {
   ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
+inline LedgerImpl& ledger(
+    absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>>
+        ledger_client_remote = absl::nullopt) {
+  thread_local LedgerImpl ledger([&] {
+    CHECK(ledger_client_remote);
+    return *std::exchange(ledger_client_remote, absl::nullopt);
+  }());
+
+  CHECK(!ledger_client_remote);
+
+  return ledger;
+}
+
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_H_
