@@ -43,10 +43,12 @@ class SimulationService : public KeyedService, public mojom::SimulationService {
   void Bind(mojo::PendingReceiver<mojom::SimulationService> receiver);
 
   static GURL GetScanMessageURL(const std::string& chain_id,
-                                mojom::CoinType coin);
+                                mojom::CoinType coin,
+                                const std::string& language);
 
   static GURL GetScanTransactionURL(const std::string& chain_id,
-                                    mojom::CoinType coin);
+                                    mojom::CoinType coin,
+                                    const std::string& language);
 
   void HasTransactionScanSupport(
       const std::string& chain_id,

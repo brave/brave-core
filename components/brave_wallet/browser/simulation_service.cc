@@ -144,22 +144,24 @@ void SimulationService::Bind(
 
 // static
 GURL SimulationService::GetScanTransactionURL(const std::string& chain_id,
-                                              mojom::CoinType coin) {
+                                              mojom::CoinType coin,
+                                              const std::string& language) {
   std::string spec = base::StringPrintf(
       "%s/%s/%s", kBlowfishBaseAPIURL,
       GetRelativeScanPath(chain_id, coin).c_str(),
       coin == mojom::CoinType::SOL ? "transactions" : "transaction");
 
-  return GURL(spec);
+  return net::AppendQueryParameter(GURL(spec), "language", language);
 }
 
 // static
 GURL SimulationService::GetScanMessageURL(const std::string& chain_id,
-                                          mojom::CoinType coin) {
+                                          mojom::CoinType coin,
+                                          const std::string& language) {
   std::string spec =
       base::StringPrintf("%s/%s/message", kBlowfishBaseAPIURL,
                          GetRelativeScanPath(chain_id, coin).c_str());
-  return GURL(spec);
+  return net::AppendQueryParameter(GURL(spec), "language", language);
 }
 
 void SimulationService::HasTransactionScanSupport(
@@ -223,9 +225,10 @@ void SimulationService::ScanSolanaTransaction(
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod,
-      GetScanTransactionURL(chain_id, mojom::CoinType::SOL), *encoded_params,
-      "application/json", std::move(internal_callback), GetHeaders(),
-      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
+      GetScanTransactionURL(chain_id, mojom::CoinType::SOL, language),
+      *encoded_params, "application/json", std::move(internal_callback),
+      GetHeaders(), {.auto_retry_on_network_change = true},
+      std::move(conversion_callback));
 }
 
 void SimulationService::OnScanSolanaTransaction(
@@ -283,9 +286,10 @@ void SimulationService::ScanEVMTransaction(
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod,
-      GetScanTransactionURL(chain_id, mojom::CoinType::ETH), *encoded_params,
-      "application/json", std::move(internal_callback), GetHeaders(),
-      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
+      GetScanTransactionURL(chain_id, mojom::CoinType::ETH, language),
+      *encoded_params, "application/json", std::move(internal_callback),
+      GetHeaders(), {.auto_retry_on_network_change = true},
+      std::move(conversion_callback));
 }
 
 void SimulationService::OnScanEVMTransaction(

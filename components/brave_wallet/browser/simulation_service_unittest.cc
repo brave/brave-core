@@ -165,80 +165,85 @@ class SimulationServiceUnitTest : public testing::Test {
 };
 
 TEST_F(SimulationServiceUnitTest, GetScanTransactionURL) {
-  auto url = simulation_service_->GetScanTransactionURL(mojom::kMainnetChainId,
-                                                        mojom::CoinType::ETH);
-  EXPECT_EQ(
-      url,
-      "https://blowfish.wallet.brave.com/ethereum/v0/mainnet/scan/transaction");
-
-  url = simulation_service_->GetScanTransactionURL(mojom::kGoerliChainId,
-                                                   mojom::CoinType::ETH);
-  EXPECT_EQ(
-      url,
-      "https://blowfish.wallet.brave.com/ethereum/v0/goerli/scan/transaction");
+  auto url = simulation_service_->GetScanTransactionURL(
+      mojom::kMainnetChainId, mojom::CoinType::ETH, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/ethereum/v0/mainnet/scan/"
+            "transaction?language=en-US");
 
   url = simulation_service_->GetScanTransactionURL(
-      mojom::kPolygonMainnetChainId, mojom::CoinType::ETH);
-  EXPECT_EQ(
-      url,
-      "https://blowfish.wallet.brave.com/polygon/v0/mainnet/scan/transaction");
+      mojom::kGoerliChainId, mojom::CoinType::ETH, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/ethereum/v0/goerli/scan/"
+            "transaction?language=en-US");
 
   url = simulation_service_->GetScanTransactionURL(
-      mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH);
-  EXPECT_EQ(
-      url, "https://blowfish.wallet.brave.com/bnb/v0/mainnet/scan/transaction");
+      mojom::kPolygonMainnetChainId, mojom::CoinType::ETH, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/polygon/v0/mainnet/scan/"
+            "transaction?language=en-US");
 
   url = simulation_service_->GetScanTransactionURL(
-      mojom::kArbitrumMainnetChainId, mojom::CoinType::ETH);
+      mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/bnb/v0/mainnet/scan/"
+            "transaction?language=en-US");
+
+  url = simulation_service_->GetScanTransactionURL(
+      mojom::kArbitrumMainnetChainId, mojom::CoinType::ETH, "en-US");
   EXPECT_EQ(url,
             "https://blowfish.wallet.brave.com/arbitrum/v0/one/scan/"
-            "transaction");
+            "transaction?language=en-US");
 
-  url = simulation_service_->GetScanTransactionURL(mojom::kSolanaMainnet,
-                                                   mojom::CoinType::SOL);
-  EXPECT_EQ(
-      url,
-      "https://blowfish.wallet.brave.com/solana/v0/mainnet/scan/transactions");
+  url = simulation_service_->GetScanTransactionURL(
+      mojom::kSolanaMainnet, mojom::CoinType::SOL, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/solana/v0/mainnet/scan/"
+            "transactions?language=en-US");
 
-  url = simulation_service_->GetScanTransactionURL(mojom::kSolanaDevnet,
-                                                   mojom::CoinType::SOL);
-  EXPECT_EQ(
-      url,
-      "https://blowfish.wallet.brave.com/solana/v0/devnet/scan/transactions");
+  url = simulation_service_->GetScanTransactionURL(
+      mojom::kSolanaDevnet, mojom::CoinType::SOL, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/solana/v0/devnet/scan/"
+            "transactions?language=en-US");
 
-  url = simulation_service_->GetScanTransactionURL(mojom::kSolanaTestnet,
-                                                   mojom::CoinType::SOL);
-  EXPECT_EQ(
-      url,
-      "https://blowfish.wallet.brave.com/solana/v0/testnet/scan/transactions");
+  url = simulation_service_->GetScanTransactionURL(
+      mojom::kSolanaTestnet, mojom::CoinType::SOL, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/solana/v0/testnet/scan/"
+            "transactions?language=en-US");
 }
 
 TEST_F(SimulationServiceUnitTest, GetScanMessageURL) {
-  auto url = simulation_service_->GetScanMessageURL(mojom::kMainnetChainId,
-                                                    mojom::CoinType::ETH);
-  EXPECT_EQ(
-      url,
-      "https://blowfish.wallet.brave.com/ethereum/v0/mainnet/scan/message");
+  auto url = simulation_service_->GetScanMessageURL(
+      mojom::kMainnetChainId, mojom::CoinType::ETH, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/ethereum/v0/mainnet/scan/"
+            "message?language=en-US");
 
   url = simulation_service_->GetScanMessageURL(mojom::kGoerliChainId,
-                                               mojom::CoinType::ETH);
-  EXPECT_EQ(
-      url, "https://blowfish.wallet.brave.com/ethereum/v0/goerli/scan/message");
+                                               mojom::CoinType::ETH, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/ethereum/v0/goerli/scan/"
+            "message?language=en-US");
 
   url = simulation_service_->GetScanMessageURL(mojom::kPolygonMainnetChainId,
-                                               mojom::CoinType::ETH);
-  EXPECT_EQ(
-      url, "https://blowfish.wallet.brave.com/polygon/v0/mainnet/scan/message");
+                                               mojom::CoinType::ETH, "en-US");
+  EXPECT_EQ(url,
+            "https://blowfish.wallet.brave.com/polygon/v0/mainnet/scan/"
+            "message?language=en-US");
 
   url = simulation_service_->GetScanMessageURL(
-      mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH);
+      mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
   EXPECT_EQ(url,
-            "https://blowfish.wallet.brave.com/bnb/v0/mainnet/scan/message");
+            "https://blowfish.wallet.brave.com/bnb/v0/mainnet/scan/"
+            "message?language=en-US");
 
   url = simulation_service_->GetScanMessageURL(mojom::kArbitrumMainnetChainId,
-                                               mojom::CoinType::ETH);
+                                               mojom::CoinType::ETH, "en-US");
   EXPECT_EQ(url,
-            "https://blowfish.wallet.brave.com/arbitrum/v0/one/scan/message");
+            "https://blowfish.wallet.brave.com/arbitrum/v0/one/scan/"
+            "message?language=en-US");
 }
 
 TEST_F(SimulationServiceUnitTest, ScanEVMTransactionValidResponse) {
