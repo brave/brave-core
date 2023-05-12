@@ -57,6 +57,8 @@ void ViewCounterService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(
       prefs::kBrandedWallpaperNotificationDismissed, false);
+  registry->RegisterIntegerPref(prefs::kCountToBrandedWallpaper,
+                                kInitialCountToBrandedWallpaper);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
   // Integer type is used because this pref is used by radio button group in
@@ -79,6 +81,7 @@ ViewCounterService::ViewCounterService(
       ads_service_(ads_service),
       prefs_(prefs),
       is_supported_locale_(is_supported_locale),
+      model_(prefs),
       custom_bi_service_(custom_service),
       ntp_p3a_helper_(std::move(ntp_p3a_helper)) {
   DCHECK(service_);

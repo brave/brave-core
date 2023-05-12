@@ -5,14 +5,19 @@
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/logging.h"
 #include "base/rand_util.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace ntp_background_images {
 
-ViewCounterModel::ViewCounterModel() {
-  count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
+ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
+  CHECK(prefs);
+
+  count_to_branded_wallpaper_ =
+      prefs->GetInteger(prefs::kCountToBrandedWallpaper);
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
@@ -87,7 +92,6 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
 
     if (always_show_branded_wallpaper_) {
       // Reset count and increse image index for next time.
-      count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
       campaigns_current_branded_image_index_[current_campaign_index_]++;
       campaigns_current_branded_image_index_[current_campaign_index_] %=
           campaigns_total_branded_image_count_[current_campaign_index_];
@@ -106,6 +110,9 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
       current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
     }
   }
+
+  prefs_->SetInteger(prefs::kCountToBrandedWallpaper,
+                     count_to_branded_wallpaper_);
 }
 
 void ViewCounterModel::RegisterPageViewForBackgroundImages() {
