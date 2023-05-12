@@ -136,4 +136,10 @@ void AdsClientNotifier::NotifyBrowserDidResignActive() const {
   }
 }
 
+void AdsClientNotifier::NotifyDidSolveAdaptiveCaptcha() const {
+  for (auto& observer : observers_) {
+    observer.OnNotifyDidSolveAdaptiveCaptcha();
+  }
+}
+
 }  // namespace brave_ads

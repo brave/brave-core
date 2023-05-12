@@ -115,6 +115,9 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
 
   // Invoked when the browser did resign active.
   virtual void OnNotifyBrowserDidResignActive() {}
+
+  // Invoked when the user solves an adaptive captch.
+  virtual void OnNotifyDidSolveAdaptiveCaptcha() {}
 };
 
 }  // namespace brave_ads

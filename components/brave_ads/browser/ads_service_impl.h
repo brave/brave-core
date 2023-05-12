@@ -309,6 +309,8 @@ class AdsServiceImpl : public AdsService,
   void NotifyBrowserDidBecomeActive() override;
   void NotifyBrowserDidResignActive() override;
 
+  void NotifyDidSolveAdaptiveCaptcha() override;
+
   // bat_ads::mojom::BatAdsClient:
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
@@ -365,7 +367,6 @@ class AdsServiceImpl : public AdsService,
                            GetScheduledCaptchaCallback callback) override;
   void ShowScheduledCaptchaNotification(const std::string& payment_id,
                                         const std::string& captcha_id) override;
-  void ClearScheduledCaptcha() override;
 
   void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                         RunDBTransactionCallback callback) override;

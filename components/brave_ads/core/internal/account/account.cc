@@ -370,6 +370,10 @@ void Account::OnNotifyPrefDidChange(const std::string& path) {
   }
 }
 
+void Account::OnNotifyDidSolveAdaptiveCaptcha() {
+  TopUpUnblindedTokens();
+}
+
 void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
 
@@ -410,10 +414,6 @@ void Account::OnDidRedeemUnblindedPaymentTokens(
 
                           BLOG(3, "Successfully updated transactions");
                         }));
-}
-
-void Account::OnDidRefillUnblindedTokens() {
-  AdsClientHelper::GetInstance()->ClearScheduledCaptcha();
 }
 
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(

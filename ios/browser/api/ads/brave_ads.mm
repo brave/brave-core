@@ -1172,10 +1172,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       base::BindOnce(std::move(callback)));
 }
 
-- (void)clearScheduledCaptcha {
-  // Adaptive captcha not supported on iOS
-}
-
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(brave_ads::GetScheduledCaptchaCallback)callback {
   // Adaptive captcha not supported on iOS

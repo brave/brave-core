@@ -95,7 +95,6 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
       brave_ads::GetScheduledCaptchaCallback callback) override;
   void ShowScheduledCaptchaNotification(const std::string& payment_id,
                                         const std::string& captcha_id) override;
-  void ClearScheduledCaptcha() override;
 
   void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
                         brave_ads::RunDBTransactionCallback callback) override;

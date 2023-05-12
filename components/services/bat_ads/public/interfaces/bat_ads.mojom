@@ -52,6 +52,8 @@ interface BatAdsClientNotifier {
   NotifyBrowserDidEnterBackground();
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidResignActive();
+
+  NotifyDidSolveAdaptiveCaptcha();
 };
 
 interface BatAdsClient {
@@ -99,7 +101,6 @@ interface BatAdsClient {
 
   GetScheduledCaptcha(string payment_id) => (string captcha_id);
   ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
-  ClearScheduledCaptcha();
 
   RunDBTransaction(brave_ads.mojom.DBTransactionInfo transaction) =>
       (brave_ads.mojom.DBCommandResponseInfo response);

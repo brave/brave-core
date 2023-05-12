@@ -119,10 +119,6 @@ std::string AdsClientIOS::LoadDataResource(const std::string& name) {
   return [bridge_ loadDataResource:name];
 }
 
-void AdsClientIOS::ClearScheduledCaptcha() {
-  [bridge_ clearScheduledCaptcha];
-}
-
 void AdsClientIOS::GetScheduledCaptcha(
     const std::string& payment_id,
     brave_ads::GetScheduledCaptchaCallback callback) {

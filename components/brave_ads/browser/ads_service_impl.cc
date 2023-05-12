@@ -1626,6 +1626,12 @@ void AdsServiceImpl::NotifyBrowserDidResignActive() {
   }
 }
 
+void AdsServiceImpl::NotifyDidSolveAdaptiveCaptcha() {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyDidSolveAdaptiveCaptcha();
+  }
+}
+
 void AdsServiceImpl::IsNetworkConnectionAvailable(
     IsNetworkConnectionAvailableCallback callback) {
   std::move(callback).Run(!net::NetworkChangeNotifier::IsOffline());
@@ -1939,10 +1945,6 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
       base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
       base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
 #endif  // !BUILDFLAG(IS_ANDROID)
-}
-
-void AdsServiceImpl::ClearScheduledCaptcha() {
-  adaptive_captcha_service_->ClearScheduledCaptcha();
 }
 
 void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,

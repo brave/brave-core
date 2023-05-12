@@ -119,6 +119,9 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   // Invoked when the browser did resign active.
   void NotifyBrowserDidResignActive() override;
 
+  // Invoked when the user solves an adaptive captch.
+  void NotifyDidSolveAdaptiveCaptcha() override;
+
  private:
   brave_ads::AdsClientNotifier notifier_;
 

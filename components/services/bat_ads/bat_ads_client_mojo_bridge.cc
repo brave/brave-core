@@ -257,12 +257,6 @@ void BatAdsClientMojoBridge::RunDBTransaction(
                                     std::move(callback));
 }
 
-void BatAdsClientMojoBridge::ClearScheduledCaptcha() {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ClearScheduledCaptcha();
-  }
-}
-
 void BatAdsClientMojoBridge::GetScheduledCaptcha(
     const std::string& payment_id,
     brave_ads::GetScheduledCaptchaCallback callback) {
