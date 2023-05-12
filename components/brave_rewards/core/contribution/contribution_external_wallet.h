@@ -9,20 +9,12 @@
 #include <map>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class ContributionExternalWallet {
  public:
-  explicit ContributionExternalWallet(LedgerImpl& ledger);
-
-  ~ContributionExternalWallet();
-
   void Process(const std::string& contribution_id,
                LegacyResultCallback callback);
 
@@ -46,10 +38,7 @@ class ContributionExternalWallet {
   void Completed(mojom::Result result,
                  bool single_publisher,
                  LegacyResultCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_EXTERNAL_WALLET_H_

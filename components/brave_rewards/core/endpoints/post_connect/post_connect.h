@@ -17,10 +17,7 @@
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostConnect;
 
@@ -36,9 +33,6 @@ class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
   static ConnectExternalWalletResult ToConnectExternalWalletResult(
       const Result&);
 
-  explicit PostConnect(LedgerImpl& ledger);
-  ~PostConnect() override;
-
  protected:
   virtual const char* Path() const = 0;
 
@@ -49,7 +43,6 @@ class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
   std::string ContentType() const override;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_CONNECT_POST_CONNECT_H_

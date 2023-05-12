@@ -15,14 +15,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
-
-PostTransactionGemini::PostTransactionGemini(LedgerImpl& ledger)
-    : ledger_(ledger) {}
-
-PostTransactionGemini::~PostTransactionGemini() = default;
+namespace brave_rewards::internal::endpoint::payment {
 
 std::string PostTransactionGemini::GetUrl(const std::string& order_id) {
   const std::string path =
@@ -84,7 +77,7 @@ void PostTransactionGemini::Request(const mojom::SKUTransaction& transaction,
   BLOG(0, "External Transaction ID: " << transaction.external_transaction_id
                                       << " for " << transaction.amount);
 
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void PostTransactionGemini::OnRequest(mojom::UrlResponsePtr response,
@@ -100,6 +93,4 @@ void PostTransactionGemini::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace payment
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::payment

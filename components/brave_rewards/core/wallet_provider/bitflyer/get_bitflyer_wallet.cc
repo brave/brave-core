@@ -9,11 +9,6 @@
 
 namespace brave_rewards::internal::bitflyer {
 
-GetBitFlyerWallet::GetBitFlyerWallet(LedgerImpl& ledger)
-    : wallet_provider::GetExternalWallet(ledger) {}
-
-GetBitFlyerWallet::~GetBitFlyerWallet() = default;
-
 const char* GetBitFlyerWallet::WalletType() const {
   return constant::kWalletBitflyer;
 }

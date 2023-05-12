@@ -14,16 +14,10 @@
 #include "brave/components/brave_rewards/core/endpoint/payment/post_votes/post_votes.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
 class PaymentServer {
  public:
-  explicit PaymentServer(LedgerImpl& ledger);
-  ~PaymentServer();
-
   payment::PostOrder& post_order() { return post_order_; }
 
   payment::PostCredentials& post_credentials() { return post_credentials_; }
@@ -49,7 +43,6 @@ class PaymentServer {
   payment::PostTransactionUphold post_transaction_uphold_;
 };
 
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_PAYMENT_SERVER_H_

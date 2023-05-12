@@ -23,13 +23,7 @@ const char kTableName[] = "publisher_info";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace database {
-
-DatabasePublisherInfo::DatabasePublisherInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
-
-DatabasePublisherInfo::~DatabasePublisherInfo() = default;
+namespace brave_rewards::internal::database {
 
 void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
                                            LegacyResultCallback callback) {
@@ -84,7 +78,7 @@ void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
@@ -126,7 +120,7 @@ void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
   auto transaction_callback =
       std::bind(&DatabasePublisherInfo::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::OnGetRecord(mojom::DBCommandResponsePtr response,
@@ -205,7 +199,7 @@ void DatabasePublisherInfo::GetPanelRecord(
   auto transaction_callback =
       std::bind(&DatabasePublisherInfo::OnGetPanelRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::OnGetPanelRecord(
@@ -254,7 +248,7 @@ void DatabasePublisherInfo::RestorePublishers(ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  ledger().RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabasePublisherInfo::OnRestorePublishers,
                      base::Unretained(this), std::move(callback)));
@@ -269,7 +263,7 @@ void DatabasePublisherInfo::OnRestorePublishers(
     return;
   }
 
-  ledger_->publisher()->OnRestorePublishers(mojom::Result::LEDGER_OK,
+  ledger().publisher()->OnRestorePublishers(mojom::Result::LEDGER_OK,
                                             std::move(callback));
 }
 
@@ -300,7 +294,7 @@ void DatabasePublisherInfo::GetExcludedList(GetExcludedListCallback callback) {
   auto transaction_callback =
       std::bind(&DatabasePublisherInfo::OnGetExcludedList, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePublisherInfo::OnGetExcludedList(
@@ -332,5 +326,4 @@ void DatabasePublisherInfo::OnGetExcludedList(
   callback(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

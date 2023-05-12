@@ -12,13 +12,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-PutCaptcha::PutCaptcha(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PutCaptcha::~PutCaptcha() = default;
+namespace brave_rewards::internal::endpoint::promotion {
 
 std::string PutCaptcha::GetUrl(const std::string& captcha_id) {
   const std::string path =
@@ -75,7 +69,7 @@ void PutCaptcha::Request(const int x,
   request->content = GeneratePayload(x, y);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PUT;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PutCaptcha::OnRequest(PutCaptchaCallback callback,
@@ -85,6 +79,4 @@ void PutCaptcha::OnRequest(PutCaptchaCallback callback,
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

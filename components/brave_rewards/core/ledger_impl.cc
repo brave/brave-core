@@ -21,20 +21,7 @@ using std::placeholders::_1;
 namespace brave_rewards::internal {
 
 LedgerImpl::LedgerImpl(mojom::LedgerClient* ledger_client)
-    : ledger_client_(ledger_client),
-      promotion_(*this),
-      publisher_(*this),
-      media_(*this),
-      contribution_(*this),
-      wallet_(*this),
-      database_(*this),
-      report_(*this),
-      state_(*this),
-      api_(*this),
-      recovery_(*this),
-      bitflyer_(*this),
-      gemini_(*this),
-      uphold_(*this) {
+    : ledger_client_(ledger_client) {
   DCHECK(base::ThreadPoolInstance::Get());
   DCHECK(ledger_client_);
   set_ledger_client_for_logging(ledger_client_);

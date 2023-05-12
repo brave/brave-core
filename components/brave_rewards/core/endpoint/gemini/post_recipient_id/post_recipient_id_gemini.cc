@@ -17,10 +17,6 @@
 
 namespace brave_rewards::internal::endpoint::gemini {
 
-PostRecipientId::PostRecipientId(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PostRecipientId::~PostRecipientId() = default;
-
 std::string PostRecipientId::GetUrl() {
   return GetApiServerUrl("/v1/payments/recipientIds");
 }
@@ -72,7 +68,7 @@ void PostRecipientId::Request(const std::string& token,
   request->headers = RequestAuthorization(token);
   request->headers.push_back("X-GEMINI-PAYLOAD: " + GeneratePayload());
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PostRecipientId::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }

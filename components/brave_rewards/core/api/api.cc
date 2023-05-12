@@ -7,12 +7,7 @@
 
 #include <utility>
 
-namespace brave_rewards::internal {
-namespace api {
-
-API::API(LedgerImpl& ledger) : parameters_(ledger) {}
-
-API::~API() = default;
+namespace brave_rewards::internal::api {
 
 void API::Initialize() {
   parameters_.Initialize();
@@ -22,5 +17,4 @@ void API::FetchParameters(GetRewardsParametersCallback callback) {
   parameters_.Fetch(std::move(callback));
 }
 
-}  // namespace api
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::api

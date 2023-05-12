@@ -12,29 +12,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-Database::Database(LedgerImpl& ledger)
-    : ledger_(ledger),
-      initialize_(ledger),
-      activity_info_(ledger),
-      balance_report_(ledger),
-      contribution_info_(ledger),
-      contribution_queue_(ledger),
-      creds_batch_(ledger),
-      event_log_(ledger),
-      external_transactions_(ledger),
-      promotion_(ledger),
-      media_publisher_info_(ledger),
-      multi_tables_(ledger),
-      publisher_info_(ledger),
-      publisher_prefix_list_(ledger),
-      recurring_tip_(ledger),
-      server_publisher_info_(ledger),
-      sku_order_(ledger),
-      sku_transaction_(ledger),
-      unblinded_token_(ledger) {}
+Database::Database() = default;
 
 Database::~Database() = default;
 
@@ -50,7 +30,7 @@ void Database::Close(LegacyResultCallback callback) {
   transaction->commands.push_back(std::move(command));
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 /**
@@ -543,5 +523,4 @@ void Database::GetSpendableUnblindedTokensByBatchTypes(
   unblinded_token_.GetSpendableRecordListByBatchTypes(batch_types, callback);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

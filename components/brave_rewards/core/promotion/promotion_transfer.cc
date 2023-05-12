@@ -16,20 +16,14 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 
-namespace brave_rewards::internal {
-namespace promotion {
-
-PromotionTransfer::PromotionTransfer(LedgerImpl& ledger)
-    : ledger_(ledger), credentials_(ledger) {}
-
-PromotionTransfer::~PromotionTransfer() = default;
+namespace brave_rewards::internal::promotion {
 
 void PromotionTransfer::Start(PostSuggestionsClaimCallback callback) {
   auto tokens_callback =
       base::BindOnce(&PromotionTransfer::OnGetSpendableUnblindedTokens,
                      base::Unretained(this), std::move(callback));
 
-  ledger_->database()->GetSpendableUnblindedTokens(
+  ledger().database()->GetSpendableUnblindedTokens(
       [callback = std::make_shared<decltype(tokens_callback)>(std::move(
            tokens_callback))](std::vector<mojom::UnblindedTokenPtr> tokens) {
         std::move(*callback).Run(std::move(tokens));
@@ -64,12 +58,11 @@ void PromotionTransfer::OnDrainTokens(PostSuggestionsClaimCallback callback,
                                       mojom::Result result,
                                       std::string drain_id) const {
   if (result == mojom::Result::LEDGER_OK) {
-    ledger_->database()->SaveEventLog(log::kPromotionVBATDrained,
+    ledger().database()->SaveEventLog(log::kPromotionVBATDrained,
                                       base::NumberToString(transfer_amount));
   }
 
   std::move(callback).Run(result, std::move(drain_id));
 }
 
-}  // namespace promotion
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::promotion

@@ -8,22 +8,13 @@
 
 #include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace gemini {
+namespace brave_rewards::internal::gemini {
 
 class GetGeminiWallet : public wallet_provider::GetExternalWallet {
- public:
-  explicit GetGeminiWallet(LedgerImpl& ledger);
-
-  ~GetGeminiWallet() override;
-
  private:
   const char* WalletType() const override;
 };
 
-}  // namespace gemini
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::gemini
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_GEMINI_GET_GEMINI_WALLET_H_

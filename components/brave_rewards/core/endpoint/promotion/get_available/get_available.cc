@@ -18,16 +18,10 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-GetAvailable::GetAvailable(LedgerImpl& ledger) : ledger_(ledger) {}
-
-GetAvailable::~GetAvailable() = default;
+namespace brave_rewards::internal::endpoint::promotion {
 
 std::string GetAvailable::GetUrl(const std::string& platform) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   std::string payment_id;
   if (wallet) {
     payment_id =
@@ -205,7 +199,7 @@ void GetAvailable::Request(const std::string& platform,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(platform);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetAvailable::OnRequest(GetAvailableCallback callback,
@@ -226,6 +220,4 @@ void GetAvailable::OnRequest(GetAvailableCallback callback,
   std::move(callback).Run(result, std::move(list), corrupted_promotions);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

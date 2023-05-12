@@ -13,19 +13,13 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
 const char kTableName[] = "sku_order_items";
 
 }  // namespace
-
-DatabaseSKUOrderItems::DatabaseSKUOrderItems(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
-
-DatabaseSKUOrderItems::~DatabaseSKUOrderItems() = default;
 
 void DatabaseSKUOrderItems::InsertOrUpdateList(
     mojom::DBTransaction* transaction,
@@ -99,7 +93,7 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
   auto transaction_callback = std::bind(
       &DatabaseSKUOrderItems::OnGetRecordsByOrderId, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
@@ -135,5 +129,4 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
   callback(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

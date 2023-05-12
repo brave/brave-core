@@ -13,15 +13,11 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 using GetContributionInfoAndUnblindedTokensCallback = std::function<void(
     mojom::ContributionInfoPtr contribution,
@@ -31,9 +27,6 @@ using StatisticalVotingWinners = std::map<std::string, uint32_t>;
 
 class Unblinded {
  public:
-  explicit Unblinded(LedgerImpl& ledger);
-  ~Unblinded();
-
   void Start(const std::vector<mojom::CredsBatchType>& types,
              const std::string& contribution_id,
              LegacyResultCallback callback);
@@ -133,11 +126,9 @@ class Unblinded {
       double amount,
       const std::vector<mojom::ContributionPublisherPtr>& publisher_list);
 
-  const raw_ref<LedgerImpl> ledger_;
   credential::CredentialsPromotion credentials_promotion_;
   credential::CredentialsSKU credentials_sku_;
 };
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_

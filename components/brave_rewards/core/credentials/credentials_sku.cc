@@ -72,11 +72,6 @@ std::string ConvertItemTypeToString(const std::string& type) {
 
 namespace credential {
 
-CredentialsSKU::CredentialsSKU(LedgerImpl& ledger)
-    : ledger_(ledger), common_(ledger), payment_server_(ledger) {}
-
-CredentialsSKU::~CredentialsSKU() = default;
-
 void CredentialsSKU::Start(const CredentialsTrigger& trigger,
                            ResultCallback callback) {
   DCHECK_EQ(trigger.data.size(), 2ul);
@@ -90,7 +85,7 @@ void CredentialsSKU::Start(const CredentialsTrigger& trigger,
       base::BindOnce(&CredentialsSKU::OnStart, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->GetCredsBatchByTrigger(
+  ledger().database()->GetCredsBatchByTrigger(
       trigger.id, trigger.type,
       [callback = std::make_shared<decltype(get_callback)>(
            std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -116,7 +111,7 @@ void CredentialsSKU::OnStart(ResultCallback callback,
           base::BindOnce(&CredentialsSKU::Claim, base::Unretained(this),
                          std::move(callback), trigger);
 
-      ledger_->database()->GetCredsBatchByTrigger(
+      ledger().database()->GetCredsBatchByTrigger(
           trigger.id, trigger.type,
           [callback = std::make_shared<decltype(get_callback)>(
                std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -133,7 +128,7 @@ void CredentialsSKU::OnStart(ResultCallback callback,
           base::BindOnce(&CredentialsSKU::Unblind, base::Unretained(this),
                          std::move(callback), trigger);
 
-      ledger_->database()->GetCredsBatchByTrigger(
+      ledger().database()->GetCredsBatchByTrigger(
           trigger.id, trigger.type,
           [callback = std::make_shared<decltype(get_callback)>(
                std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -173,7 +168,7 @@ void CredentialsSKU::OnBlind(ResultCallback callback,
       base::BindOnce(&CredentialsSKU::Claim, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->GetCredsBatchByTrigger(
+  ledger().database()->GetCredsBatchByTrigger(
       trigger.id, trigger.type,
       [callback = std::make_shared<decltype(get_callback)>(
            std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -209,7 +204,7 @@ void CredentialsSKU::Claim(ResultCallback callback,
         base::BindOnce(&CredentialsSKU::RetryPreviousStepSaved,
                        base::Unretained(this), std::move(callback));
 
-    ledger_->database()->UpdateCredsBatchStatus(
+    ledger().database()->UpdateCredsBatchStatus(
         trigger.id, trigger.type, mojom::CredsBatchStatus::NONE,
         [callback = std::make_shared<decltype(save_callback)>(
              std::move(save_callback))](mojom::Result result) {
@@ -242,7 +237,7 @@ void CredentialsSKU::OnClaim(ResultCallback callback,
       base::BindOnce(&CredentialsSKU::ClaimStatusSaved, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->UpdateCredsBatchStatus(
+  ledger().database()->UpdateCredsBatchStatus(
       trigger.id, trigger.type, mojom::CredsBatchStatus::CLAIMED,
       [callback =
            std::make_shared<decltype(save_callback)>(std::move(save_callback))](
@@ -288,7 +283,7 @@ void CredentialsSKU::OnFetchSignedCreds(ResultCallback callback,
       base::BindOnce(&CredentialsSKU::SignedCredsSaved, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->SaveSignedCreds(
+  ledger().database()->SaveSignedCreds(
       std::move(batch), [callback = std::make_shared<decltype(get_callback)>(
                              std::move(get_callback))](mojom::Result result) {
         std::move(*callback).Run(result);
@@ -308,7 +303,7 @@ void CredentialsSKU::SignedCredsSaved(ResultCallback callback,
       base::BindOnce(&CredentialsSKU::Unblind, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->GetCredsBatchByTrigger(
+  ledger().database()->GetCredsBatchByTrigger(
       trigger.id, trigger.type,
       [callback = std::make_shared<decltype(get_callback)>(
            std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -364,7 +359,7 @@ void CredentialsSKU::Completed(ResultCallback callback,
     return;
   }
 
-  ledger_->client()->UnblindedTokensReady();
+  ledger().client()->UnblindedTokensReady();
   std::move(callback).Run(result);
 }
 
@@ -405,7 +400,7 @@ void CredentialsSKU::OnRedeemTokens(
     id = redeem.order_id;
   }
 
-  ledger_->database()->MarkUnblindedTokensAsSpent(token_id_list, redeem.type,
+  ledger().database()->MarkUnblindedTokensAsSpent(token_id_list, redeem.type,
                                                   id, callback);
 }
 

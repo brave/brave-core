@@ -13,18 +13,13 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 
 namespace brave_rewards::internal {
 
-class LedgerImpl;
-
 class GitHub {
  public:
-  explicit GitHub(LedgerImpl& ledger);
-
   static std::string GetLinkType(const std::string& url);
 
   void SaveMediaInfo(const base::flat_map<std::string, std::string>& data,
@@ -35,8 +30,6 @@ class GitHub {
 
   void ProcessMedia(const base::flat_map<std::string, std::string> parts,
                     const mojom::VisitData& visit_data);
-
-  ~GitHub();
 
  private:
   void OnMediaPublisherActivity(mojom::Result result,
@@ -126,8 +119,6 @@ class GitHub {
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetPublisherName);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONStringValue);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONIntValue);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_GITHUB_H_

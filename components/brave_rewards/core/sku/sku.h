@@ -9,20 +9,13 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 class SKU {
  public:
-  explicit SKU(LedgerImpl& ledger);
-  ~SKU();
-
   void Process(const std::vector<mojom::SKUOrderItem>& items,
                const std::string& wallet_type,
                SKUOrderCallback callback,
@@ -52,11 +45,9 @@ class SKU {
                const std::string& wallet_type,
                SKUOrderCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   SKUCommon common_;
 };
 
-}  // namespace sku
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::sku
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_H_

@@ -14,13 +14,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
-
-DatabaseMultiTables::DatabaseMultiTables(LedgerImpl& ledger)
-    : ledger_(ledger) {}
-
-DatabaseMultiTables::~DatabaseMultiTables() = default;
+namespace brave_rewards::internal::database {
 
 void DatabaseMultiTables::GetTransactionReport(
     const mojom::ActivityMonth month,
@@ -29,7 +23,7 @@ void DatabaseMultiTables::GetTransactionReport(
   auto promotion_callback =
       std::bind(&DatabaseMultiTables::OnGetTransactionReportPromotion, this, _1,
                 month, year, callback);
-  ledger_->database()->GetAllPromotions(promotion_callback);
+  ledger().database()->GetAllPromotions(promotion_callback);
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(
@@ -65,5 +59,4 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
   callback(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

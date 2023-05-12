@@ -6,27 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_H_
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/recovery/recovery_empty_balance.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace recovery {
+namespace brave_rewards::internal::recovery {
 
 class Recovery {
  public:
-  explicit Recovery(LedgerImpl& ledger);
-  ~Recovery();
-
   void Check();
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
   EmptyBalance empty_balance_;
 };
 
-}  // namespace recovery
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::recovery
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_H_

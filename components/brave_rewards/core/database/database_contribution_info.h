@@ -13,17 +13,13 @@
 #include "brave/components/brave_rewards/core/database/database_contribution_info_publishers.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 using GetContributionInfoCallback =
     std::function<void(mojom::ContributionInfoPtr)>;
 
-class DatabaseContributionInfo : public DatabaseTable {
+class DatabaseContributionInfo {
  public:
-  explicit DatabaseContributionInfo(LedgerImpl& ledger);
-  ~DatabaseContributionInfo() override;
-
   void InsertOrUpdate(mojom::ContributionInfoPtr info,
                       LegacyResultCallback callback);
 
@@ -90,7 +86,6 @@ class DatabaseContributionInfo : public DatabaseTable {
   DatabaseContributionInfoPublishers publishers_;
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_CONTRIBUTION_INFO_H_

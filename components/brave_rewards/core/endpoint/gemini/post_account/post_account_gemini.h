@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://api.sandbox.gemini.com/v1/account
@@ -38,19 +37,13 @@
 //   "memo_reference_code": "GEMAPLLV"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint::gemini {
+namespace brave_rewards::internal::endpoint::gemini {
 
 using PostAccountCallback = base::OnceCallback<
     void(mojom::Result, std::string&& linking_info, std::string&& user_name)>;
 
 class PostAccount {
  public:
-  explicit PostAccount(LedgerImpl& ledger);
-  ~PostAccount();
-
   void Request(const std::string& token, PostAccountCallback);
 
  private:
@@ -61,11 +54,8 @@ class PostAccount {
                           std::string* user_name);
 
   void OnRequest(PostAccountCallback, mojom::UrlResponsePtr);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace endpoint::gemini
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::gemini
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_POST_ACCOUNT_POST_ACCOUNT_GEMINI_H_

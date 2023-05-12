@@ -25,10 +25,7 @@
 //
 // Response body: -
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PatchWallets;
 
@@ -43,8 +40,7 @@ class PatchWallets final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  PatchWallets(LedgerImpl& ledger, std::string&& geo_country);
-  ~PatchWallets() override;
+  explicit PatchWallets(std::string&& geo_country);
 
  private:
   const char* Path() const;
@@ -59,7 +55,6 @@ class PatchWallets final : public RequestBuilder,
   std::string geo_country_;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_PATCH_WALLETS_PATCH_WALLETS_H_

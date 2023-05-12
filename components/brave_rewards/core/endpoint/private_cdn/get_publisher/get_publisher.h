@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /publishers/prefixes/{prefix}
@@ -23,11 +22,7 @@
 // See
 // https://github.com/brave/brave-core/blob/master/components/brave_rewards/core/publisher/protos/channel_response.proto
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace private_cdn {
+namespace brave_rewards::internal::endpoint::private_cdn {
 
 using GetPublisherCallback =
     std::function<void(const mojom::Result result,
@@ -35,9 +30,6 @@ using GetPublisherCallback =
 
 class GetPublisher {
  public:
-  explicit GetPublisher(LedgerImpl& ledger);
-  ~GetPublisher();
-
   void Request(const std::string& publisher_key,
                const std::string& hash_prefix,
                GetPublisherCallback callback);
@@ -54,12 +46,8 @@ class GetPublisher {
   void OnRequest(mojom::UrlResponsePtr response,
                  const std::string& publisher_key,
                  GetPublisherCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace private_cdn
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::private_cdn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PRIVATE_CDN_GET_PUBLISHER_GET_PUBLISHER_H_

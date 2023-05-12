@@ -17,10 +17,6 @@
 
 namespace brave_rewards::internal::endpoint::gemini {
 
-PostAccount::PostAccount(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PostAccount::~PostAccount() = default;
-
 std::string PostAccount::GetUrl() {
   return GetApiServerUrl("/v1/account");
 }
@@ -80,7 +76,7 @@ void PostAccount::Request(const std::string& token,
   request->headers = RequestAuthorization(token);
   request->method = mojom::UrlMethod::POST;
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PostAccount::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }

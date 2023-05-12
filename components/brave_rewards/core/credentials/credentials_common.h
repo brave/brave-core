@@ -12,20 +12,13 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace credential {
+namespace brave_rewards::internal::credential {
 
 class CredentialsCommon {
  public:
-  explicit CredentialsCommon(LedgerImpl& ledger);
-  ~CredentialsCommon();
-
   void GetBlindedCreds(const CredentialsTrigger& trigger,
                        ResultCallback callback);
 
@@ -43,11 +36,8 @@ class CredentialsCommon {
   void OnSaveUnblindedCreds(ResultCallback callback,
                             const CredentialsTrigger& trigger,
                             mojom::Result result);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace credential
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::credential
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_COMMON_H_

@@ -9,23 +9,16 @@
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
 class PrivateCDNServer {
  public:
-  explicit PrivateCDNServer(LedgerImpl& ledger);
-  ~PrivateCDNServer();
-
   private_cdn::GetPublisher& get_publisher() { return get_publisher_; }
 
  private:
   private_cdn::GetPublisher get_publisher_;
 };
 
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PRIVATE_CDN_PRIVATE_CDN_SERVER_H_

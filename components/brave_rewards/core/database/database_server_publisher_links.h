@@ -12,14 +12,10 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseServerPublisherLinks : public DatabaseTable {
+class DatabaseServerPublisherLinks {
  public:
-  explicit DatabaseServerPublisherLinks(LedgerImpl& ledger);
-  ~DatabaseServerPublisherLinks() override;
-
   void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const mojom::ServerPublisherInfo& server_info);
 
@@ -34,7 +30,6 @@ class DatabaseServerPublisherLinks : public DatabaseTable {
                    ServerPublisherLinksCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_

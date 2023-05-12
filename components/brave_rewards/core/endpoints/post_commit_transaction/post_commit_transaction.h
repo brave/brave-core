@@ -10,15 +10,11 @@
 
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostCommitTransaction : public RequestBuilder {
  public:
-  PostCommitTransaction(LedgerImpl& ledger,
-                        std::string&& token,
+  PostCommitTransaction(std::string&& token,
                         std::string&& address,
                         mojom::ExternalTransactionPtr);
   ~PostCommitTransaction() override;
@@ -29,7 +25,6 @@ class PostCommitTransaction : public RequestBuilder {
   mojom::ExternalTransactionPtr transaction_;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_COMMIT_TRANSACTION_POST_COMMIT_TRANSACTION_H_

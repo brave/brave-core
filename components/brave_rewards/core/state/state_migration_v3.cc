@@ -5,12 +5,7 @@
 
 #include "brave/components/brave_rewards/core/state/state_migration_v3.h"
 
-namespace brave_rewards::internal {
-namespace state {
-
-StateMigrationV3::StateMigrationV3() = default;
-
-StateMigrationV3::~StateMigrationV3() = default;
+namespace brave_rewards::internal::state {
 
 void StateMigrationV3::Migrate(LegacyResultCallback callback) {
   // In this migration we migrated anon address to uphold wallet in preferences
@@ -19,5 +14,4 @@ void StateMigrationV3::Migrate(LegacyResultCallback callback) {
   callback(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

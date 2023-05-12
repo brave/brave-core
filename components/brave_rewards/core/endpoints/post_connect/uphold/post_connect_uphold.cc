@@ -15,10 +15,8 @@
 
 namespace brave_rewards::internal::endpoints {
 
-PostConnectUphold::PostConnectUphold(LedgerImpl& ledger, std::string&& address)
-    : PostConnect(ledger), address_(std::move(address)) {}
-
-PostConnectUphold::~PostConnectUphold() = default;
+PostConnectUphold::PostConnectUphold(std::string&& address)
+    : address_(std::move(address)) {}
 
 absl::optional<std::string> PostConnectUphold::Content() const {
   if (address_.empty()) {
@@ -26,7 +24,7 @@ absl::optional<std::string> PostConnectUphold::Content() const {
     return absl::nullopt;
   }
 
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;

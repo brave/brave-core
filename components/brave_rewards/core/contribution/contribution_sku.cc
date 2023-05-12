@@ -77,11 +77,6 @@ void GetCredentialTrigger(mojom::SKUOrderPtr order,
 
 namespace contribution {
 
-ContributionSKU::ContributionSKU(LedgerImpl& ledger)
-    : ledger_(ledger), credentials_(ledger), sku_(ledger) {}
-
-ContributionSKU::~ContributionSKU() = default;
-
 void ContributionSKU::AutoContribution(const std::string& contribution_id,
                                        const std::string& wallet_type,
                                        LegacyResultCallback callback) {
@@ -98,7 +93,7 @@ void ContributionSKU::Start(const std::string& contribution_id,
   auto get_callback = std::bind(&ContributionSKU::GetContributionInfo, this, _1,
                                 item, wallet_type, callback);
 
-  ledger_->database()->GetContributionInfo(contribution_id, get_callback);
+  ledger().database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void ContributionSKU::GetContributionInfo(
@@ -144,7 +139,7 @@ void ContributionSKU::GetOrder(mojom::Result result,
 
   auto get_callback = std::bind(&ContributionSKU::OnGetOrder, this, _1,
                                 contribution_id, callback);
-  ledger_->database()->GetSKUOrder(order_id, get_callback);
+  ledger().database()->GetSKUOrder(order_id, get_callback);
 }
 
 void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
@@ -179,7 +174,7 @@ void ContributionSKU::Completed(mojom::Result result,
   auto save_callback = std::bind(&ContributionSKU::CredsStepSaved, this, _1,
                                  contribution_id, callback);
 
-  ledger_->database()->UpdateContributionInfoStep(
+  ledger().database()->UpdateContributionInfoStep(
       contribution_id, mojom::ContributionStep::STEP_CREDS, save_callback);
 }
 
@@ -192,7 +187,7 @@ void ContributionSKU::CredsStepSaved(mojom::Result result,
     return;
   }
 
-  ledger_->contribution()->StartUnblinded({mojom::CredsBatchType::SKU},
+  ledger().contribution()->StartUnblinded({mojom::CredsBatchType::SKU},
                                           contribution_id, callback);
 }
 
@@ -201,7 +196,7 @@ void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
   auto get_callback = std::bind(&ContributionSKU::GetUnblindedTokens, this, _1,
                                 transaction, callback);
 
-  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
+  ledger().database()->GetSpendableUnblindedTokensByBatchTypes(
       {mojom::CredsBatchType::PROMOTION}, get_callback);
 }
 
@@ -241,7 +236,7 @@ void ContributionSKU::GetUnblindedTokens(
   auto get_callback =
       std::bind(&ContributionSKU::GetOrderMerchant, this, _1, redeem, callback);
 
-  ledger_->database()->GetSKUOrder(transaction.order_id, get_callback);
+  ledger().database()->GetSKUOrder(transaction.order_id, get_callback);
 }
 
 void ContributionSKU::GetOrderMerchant(
@@ -287,7 +282,7 @@ void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,
       std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()),
       callback);
 
-  ledger_->database()->GetSKUOrderByContributionId(
+  ledger().database()->GetSKUOrderByContributionId(
       contribution->contribution_id, get_callback);
 }
 
@@ -311,7 +306,7 @@ void ContributionSKU::OnOrder(
     case mojom::ContributionStep::STEP_PREPARE:
     case mojom::ContributionStep::STEP_RESERVE:
     case mojom::ContributionStep::STEP_CREDS: {
-      ledger_->contribution()->RetryUnblinded({mojom::CredsBatchType::SKU},
+      ledger().contribution()->RetryUnblinded({mojom::CredsBatchType::SKU},
                                               contribution->contribution_id,
                                               callback);
       return;
