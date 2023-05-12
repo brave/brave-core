@@ -29,7 +29,6 @@ source_set("tabs") {
     ]
 
     deps = [
-      ":buildflags",
       "//brave/common/",
       "//chrome/app:generated_resources",
       "//components/prefs",
@@ -37,15 +36,5 @@ source_set("tabs") {
       "//content/public/browser",
       "//ui/color",
     ]
-  }
-}
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  if (brave_channel == "development" || brave_channel == "nightly" ||
-      brave_channel == "beta") {
-    flags = [ "VERTICAL_TAB_FLAG_DEFAULT_ON=1" ]
-  } else {
-    flags = [ "VERTICAL_TAB_FLAG_DEFAULT_ON=0" ]
   }
 }
