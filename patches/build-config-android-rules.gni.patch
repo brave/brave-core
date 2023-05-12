@@ -1,5 +1,5 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index f044ea6f32a2b7597f841345e830a8020e3aa29c..1ce57ec3dcec9c20aa7a614df6a64fcf8616ab10 100644
+index f044ea6f32a2b7597f841345e830a8020e3aa29c..92aaa4aca16a4c72c77f8a866562a2891d881631 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
 @@ -574,6 +574,7 @@ if (enable_java_templates && is_android) {
@@ -18,3 +18,52 @@ index f044ea6f32a2b7597f841345e830a8020e3aa29c..1ce57ec3dcec9c20aa7a614df6a64fcf
      action_with_pydeps(target_name) {
        forward_variables_from(invoker, TESTONLY_AND_VISIBILITY + [ "deps" ])
        inputs = [ invoker.input ]
+@@ -2457,6 +2459,7 @@ if (enable_java_templates && is_android) {
+   #   expected_proguard_config_base: Treat expected_proguard_config as a diff
+   #     with this file as the base.
+   template("android_apk_or_module") {
++print("at template(android_apk_or_module) target_name=", target_name)
+     forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+     _template_name = target_name
+     _base_path = "$target_out_dir/$target_name/$target_name"
+@@ -2731,6 +2734,7 @@ if (enable_java_templates && is_android) {
+     _compile_resources_emit_ids_out =
+         "${target_gen_dir}/${_compile_resources_target}.resource_ids"
+     compile_resources(_compile_resources_target) {
++print("at compile_resources(_compile_resources_target) target_name=", target_name)
+       forward_variables_from(
+           invoker,
+           [
+@@ -2788,6 +2792,8 @@ if (enable_java_templates && is_android) {
+       build_config_dep = ":$_build_config_target"
+       android_sdk_dep = _android_sdk_dep
+       deps = _java_assetres_deps + _non_java_deps
++print("at compile_resources(_compile_resources_target) _java_assetres_deps=", _java_assetres_deps)
++print("at compile_resources(_compile_resources_target) _non_java_deps=", _non_java_deps)
+ 
+       if (_incremental_apk) {
+         android_manifest = _incremental_android_manifest
+@@ -2820,6 +2826,7 @@ if (enable_java_templates && is_android) {
+       }
+ 
+       if (defined(_link_against)) {
++print("at compile_resources(_compile_resources_target) _link_against__compile_resources=", [ "${_link_against}__compile_resources" ])
+         deps += [ "${_link_against}__compile_resources" ]
+         include_resource = get_label_info(_link_against, "target_out_dir") +
+                            "/" + get_label_info(_link_against, "name") + ".ap_"
+@@ -2834,6 +2841,7 @@ if (enable_java_templates && is_android) {
+         # Used to ensure that the WebView resources are properly shared
+         # (i.e. are non-final and with package ID 0).
+         shared_resources_allowlist = _allowlist_r_txt_path
++print("at compile_resources(_compile_resources_target) _allowlist_deps=", _allowlist_deps)
+         deps += [ _allowlist_deps ]
+       }
+     }
+@@ -2907,6 +2915,7 @@ if (enable_java_templates && is_android) {
+       # file.
+       _copy_rtxt_target = "${_template_name}__copy_rtxt"
+       copy(_copy_rtxt_target) {
++print("at copy(_copy_rtxt_target) target_name=", target_name)
+         deps = [ ":$_compile_resources_target" ]
+         sources = [ _compile_resources_rtxt_out ]
+         outputs = [ _final_rtxt_path ]

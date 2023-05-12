@@ -1,0 +1,13 @@
+diff --git a/chrome/android/monochrome/BUILD.gn b/chrome/android/monochrome/BUILD.gn
+index 19040c5ba2aada4349d84e0879af32d105a6702f..55c722e6057e936996f2a980ef1d151a246070ac 100644
+--- a/chrome/android/monochrome/BUILD.gn
++++ b/chrome/android/monochrome/BUILD.gn
+@@ -34,7 +34,7 @@ python_library("monochrome_public_apk_checker") {
+       "//chrome/android/monochrome/scripts/monochrome_python_tests.pydeps"
+   data_deps = [
+     ":monochrome_python_tests_py",
+-    "//android_webview:system_webview_apk",
++#    "//android_webview:system_webview_apk",
+     "//chrome/android:chrome_public_apk",
+     "//chrome/android:monochrome_public_apk",
+   ]

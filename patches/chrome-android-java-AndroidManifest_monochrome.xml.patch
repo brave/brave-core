@@ -1,0 +1,16 @@
+diff --git a/chrome/android/java/AndroidManifest_monochrome.xml b/chrome/android/java/AndroidManifest_monochrome.xml
+index 3cd9602a74a33ac58bddbd1ac21d9293e305fdb6..76ee436de540354d597eea3059dba05bc36012d7 100644
+--- a/chrome/android/java/AndroidManifest_monochrome.xml
++++ b/chrome/android/java/AndroidManifest_monochrome.xml
+@@ -1,5 +1,4 @@
+ {% extends "chrome/android/java/AndroidManifest.xml" %}
+-{% import 'android_webview/nonembedded/java/AndroidManifest.xml' as webview %}
+ 
+ ## Copyright 2016 The Chromium Authors
+ ## Use of this source code is governed by a BSD-style license that can be
+@@ -34,5 +33,4 @@ android:use32bitAbi="true"
+ 
+ {% block base_application_definitions %}
+ {{ super() }}
+-{{ webview.common(manifest_package, webview_library) }}
+ {% endblock %}
