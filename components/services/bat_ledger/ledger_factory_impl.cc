@@ -49,6 +49,42 @@ void LedgerFactoryImpl::CreateLedger(
                      profile, std::move(callback)));
 }
 
+class SelfOwnedLedgerReceiver {
+ public:
+  static void Create(LedgerImpl* impl,
+                     mojo::PendingAssociatedReceiver<mojom::Ledger> receiver,
+                     scoped_refptr<base::SequencedTaskRunner> task_runner,
+                     base::OnceClosure disconnect_handler) {
+    new SelfOwnedLedgerReceiver(impl, std::move(receiver),
+                                std::move(task_runner),
+                                std::move(disconnect_handler));
+  }
+
+  SelfOwnedLedgerReceiver(const SelfOwnedLedgerReceiver&) = delete;
+  SelfOwnedLedgerReceiver& operator=(const SelfOwnedLedgerReceiver&) = delete;
+
+  void Close() {
+    delete this;
+  }
+
+ private:
+  SelfOwnedLedgerReceiver(
+      mojom::Ledger* impl,
+      mojo::PendingAssociatedReceiver<mojom::Ledger> receiver,
+      scoped_refptr<base::SequencedTaskRunner> task_runner,
+      base::OnceClosure disconnect_handler)
+      : receiver_(impl, std::move(receiver), std::move(task_runner)) {
+    receiver_.set_disconnect_handler(
+        std::move(disconnect_handler)
+            .Then(base::BindOnce(&SelfOwnedLedgerReceiver::Close,
+                                 base::Unretained(this))));
+  }
+
+  ~SelfOwnedLedgerReceiver() = default;
+
+  mojo::AssociatedReceiver<mojom::Ledger> receiver_;
+};
+
 void LedgerFactoryImpl::CreateLedgerOnTaskRunner(
     base::FilePath&& profile,
     mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
@@ -57,14 +93,13 @@ void LedgerFactoryImpl::CreateLedgerOnTaskRunner(
     scoped_refptr<base::SingleThreadTaskRunner> ledger_task_runner) {
   VLOG(0) << "Creating ledger for " << profile << "...";
 
-  static thread_local mojo::AssociatedReceiver<mojom::Ledger> receiver(
+  SelfOwnedLedgerReceiver::Create(
       &ledger(std::move(ledger_client_remote)), std::move(ledger_receiver),
-      std::move(ledger_task_runner));
-
-  receiver.set_disconnect_handler(base::BindPostTask(
-      main_task_runner,
-      base::BindOnce(&LedgerFactoryImpl::RemoveProfile, base::Unretained(this),
-                     std::move(profile))));
+      std::move(ledger_task_runner),
+      base::BindPostTask(
+          main_task_runner,
+          base::BindOnce(&LedgerFactoryImpl::RemoveProfile,
+                         base::Unretained(this), std::move(profile))));
 }
 
 void LedgerFactoryImpl::AddProfile(base::FilePath&& profile,

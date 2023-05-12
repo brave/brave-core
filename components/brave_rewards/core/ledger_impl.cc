@@ -906,9 +906,7 @@ LedgerImpl& ledger(
         ledger_client_remote) {
   static thread_local LedgerImpl ledger([&] {
     CHECK(ledger_client_remote);
-    auto remote = std::move(*ledger_client_remote);
-    ledger_client_remote.reset();
-    return remote;
+    return *std::exchange(ledger_client_remote, absl::nullopt);
   }());
 
   CHECK(!ledger_client_remote);
