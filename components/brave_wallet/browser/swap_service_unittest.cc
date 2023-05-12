@@ -727,8 +727,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
             "amount=10000&"
             "swapMode=ExactIn&"
             "slippageBps=50&"
-            "feeBps=85&"
-            "userPublicKey=foo");
+            "feeBps=85");
 
   params->output_mint = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";
   url =
@@ -741,8 +740,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
             "outputMint=SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y&"
             "amount=10000&"
             "swapMode=ExactIn&"
-            "slippageBps=50&"
-            "userPublicKey=foo");
+            "slippageBps=50");
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterSwapTransactionsURL) {

@@ -157,8 +157,9 @@ GURL AppendJupiterQuoteParams(
     url = net::AppendQueryParameter(url, "feeBps", GetFee(chain_id));
   }
 
-  return net::AppendQueryParameter(url, "userPublicKey",
-                                   params.user_public_key);
+  // TODO: append userPublicKey to get information on fees and ATA deposits.
+
+  return url;
 }
 
 base::flat_map<std::string, std::string> Get0xAPIHeaders() {
