@@ -37,13 +37,11 @@ class AIChatAPI : public network::SimpleURLLoaderStreamConsumer {
                    CompletionCallback completion_callback,
                    const std::string& prompt);
 
-  void SetResponseCallbackForTesting(ResponseCallback response_callback) {
+  void set_response_callback_for_testing(ResponseCallback response_callback) {
     response_callback_ = response_callback;
   }
 
-  void SendDataForTesting(const std::string& text) {
-    OnDataReceived(text, base::BindOnce([]() {}));
-  }
+  void SendDataForTesting(const std::string& text);
 
  private:
   base::Value::Dict CreateApiParametersDict(const std::string& prompt);
@@ -62,13 +60,13 @@ class AIChatAPI : public network::SimpleURLLoaderStreamConsumer {
   ResponseCallback response_callback_;
   CompletionCallback completion_callback_;
 
-  api_request_helper::APIRequestHelper::Ticket current_request_{};
+  api_request_helper::APIRequestHelper::Ticket current_request_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
   std::unique_ptr<data_decoder::DataDecoder> data_decoder_;
   mojo::Remote<data_decoder::mojom::JsonParser> json_parser_;
 
-  bool is_request_in_progress_{false};
+  bool is_request_in_progress_ = false;
 
   base::WeakPtrFactory<AIChatAPI> weak_ptr_factory_{this};
 };

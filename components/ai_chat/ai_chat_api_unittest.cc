@@ -30,7 +30,7 @@ class AIChatAPIUnitTest : public testing::Test {
 
   void SendMesage(AIChatAPI::ResponseCallback callback,
                   const std::string& text) {
-    ai_chat_api_->SetResponseCallbackForTesting(callback);
+    ai_chat_api_->set_response_callback_for_testing(callback);
     ai_chat_api_->SendDataForTesting(text);
   }
 

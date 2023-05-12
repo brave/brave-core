@@ -1,6 +1,6 @@
 include_rules = [
-  "+services/data_decoder/public",
   "+content/public/browser",
+  "+services/data_decoder/public",
   "+services/network/public",
   "+ui",
 ]
