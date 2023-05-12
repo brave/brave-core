@@ -134,7 +134,7 @@ export const NftScreen = (props: Props) => {
 
   const isNftPinned = React.useMemo(() => {
     return currentNftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED
-  }, [currentNftPinningStatus])
+  }, [currentNftPinningStatus?.code])
 
   const pinningStatusText = React.useMemo(() => {
     switch (currentNftPinningStatus?.code) {
