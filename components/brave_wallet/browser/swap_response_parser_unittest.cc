@@ -352,11 +352,11 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuoteSlippageBps) {
 
   // KO: null slippageBps value
   json = base::StringPrintf(json_fmt, "null");
-  ASSERT_FALSE(ParseJupiterQuote(ParseJson(json)));
+  EXPECT_FALSE(ParseJupiterQuote(ParseJson(json)));
 
   // KO: non-integer slippageBps value
   json = base::StringPrintf(json_fmt, "\"50.55\"");
-  ASSERT_FALSE(ParseJupiterQuote(ParseJson(json)));
+  EXPECT_FALSE(ParseJupiterQuote(ParseJson(json)));
 }
 
 TEST(SwapResponseParserUnitTest, ParseJupiterQuotePriceImpact) {
