@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index 16e81bb2922970734c4c5db9224a5cdd3315dd6d..2798d41e86dd5aa9f60c1d261b0395313ab099e5 100644
+index 68c1333455e47bc53aa47538a3dd05bbcb10c70c..2b6ac845d4b17b4e68a3b02274ca2de90dd52a06 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
 @@ -890,6 +890,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync_service) {
@@ -10,7 +10,7 @@ index 16e81bb2922970734c4c5db9224a5cdd3315dd6d..2798d41e86dd5aa9f60c1d261b039531
    DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount(
        signin::ConsentLevel::kSync));
    syncer::SyncService* service = GetSyncService();
-@@ -944,6 +945,7 @@ base::Value::Dict PeopleHandler::GetSyncStatusDictionary() const {
+@@ -943,6 +944,7 @@ base::Value::Dict PeopleHandler::GetSyncStatusDictionary() const {
        service && !disallowed_by_policy && service->IsSetupInProgress() &&
            !service->GetUserSettings()->IsFirstSetupComplete() &&
            identity_manager->HasPrimaryAccount(signin::ConsentLevel::kSync));
@@ -18,7 +18,7 @@ index 16e81bb2922970734c4c5db9224a5cdd3315dd6d..2798d41e86dd5aa9f60c1d261b039531
  
    const SyncStatusLabels status_labels = GetSyncStatusLabels(profile_);
    // TODO(crbug.com/1027467): Consider unifying some of the fields below to
-@@ -1106,6 +1108,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
+@@ -1105,6 +1107,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
  }
  
  bool PeopleHandler::IsProfileAuthNeededOrHasErrors() {

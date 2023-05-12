@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc b/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc
-index 7a48c127e3c6a99586b922c4abef34c854e194ab..55d556a37b43f42b59362ee53ebb95194b8767db 100644
+index bbf17cc2c5c7f9aac2544fe368ca2d022fa46ace..df12e57839a4f604f37c83b8ea70c11ee0af637a 100644
 --- a/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc
 +++ b/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc
-@@ -363,7 +363,7 @@ void OmniboxPopupViewViews::UpdatePopupAppearance() {
+@@ -359,7 +359,7 @@ void OmniboxPopupViewViews::UpdatePopupAppearance() {
        if (children().size() == i) {
          AddChildView(std::make_unique<OmniboxRowView>(
              i, edit_model_,

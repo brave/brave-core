@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index dec58a72bdbed2a725c3ffa1465f34f146d06863..b7742f259cbad920734690caeae49ee620aa7729 100644
+index c43a5dcb2545d36268941ec2f565795786e0e8ec..d04303c2254e85a3ed8c1d1c0cf6ef1d9de36669 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -239,6 +239,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -241,6 +241,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
    registry->RegisterIntegerPref(prefs::kIosSyncSegmentsNewTabPageDisplayCount,
                                  0);
@@ -10,7 +10,7 @@ index dec58a72bdbed2a725c3ffa1465f34f146d06863..b7742f259cbad920734690caeae49ee6
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -392,6 +393,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -397,6 +398,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    ntp_snippets::prefs::RegisterProfilePrefsForMigrationApril2023(registry);
  
    registry->RegisterBooleanPref(kDeprecatedReadingListHasUnseenEntries, false);
@@ -18,7 +18,7 @@ index dec58a72bdbed2a725c3ffa1465f34f146d06863..b7742f259cbad920734690caeae49ee6
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -421,6 +423,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+@@ -426,6 +428,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
    if (prefs->FindPreference(kTrialPrefName)) {
      prefs->ClearPref(kTrialPrefName);
    }

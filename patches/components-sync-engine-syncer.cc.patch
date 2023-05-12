@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine/syncer.cc b/components/sync/engine/syncer.cc
-index c927a5e12fcb709761f6d3c04d89f55f35a902ec..6079d94ab56761587c1b305e02e1689b6830f606 100644
+index 7df29f4570a31871bb77637f5f2bc6cd7cf676a3..352f8a3da7bf92f9a47f4bb3ea55063fd67d06d9 100644
 --- a/components/sync/engine/syncer.cc
 +++ b/components/sync/engine/syncer.cc
 @@ -188,6 +188,7 @@ SyncerError Syncer::BuildAndPostCommits(const ModelTypeSet& request_types,

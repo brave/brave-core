@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/download_target_determiner.cc b/chrome/browser/download/download_target_determiner.cc
-index 0927a4c06b273e58954cba1f6be70695370b83a8..fbc06b9fa3b99d1a7324012dc17fa5127bb160c7 100644
+index 801fb1b661edc5ed1869ca518e26b681d908d116..177c53c4323a59bd8b06e390e4e12494ce8ec99d 100644
 --- a/chrome/browser/download/download_target_determiner.cc
 +++ b/chrome/browser/download/download_target_determiner.cc
-@@ -1255,6 +1255,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
+@@ -1256,6 +1256,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
    // contains malware.
    if (HasPromptedForPath() ||
        confirmation_reason_ != DownloadConfirmationReason::NONE ||

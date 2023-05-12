@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index eeb286b07aae69c3d12a4f62ab0c1c22500bda7b..c604fc99ccd9693aa6e0c17ba3ee563c550ec6b1 100644
+index 3b5e1d0209c781179837f7ec265b324432fd3b22..f0d9b36bf7d3c1f74df74e20892d736b7e94ee9a 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -312,6 +312,7 @@ template("chrome_common_apk_or_module_tmpl") {
@@ -26,7 +26,7 @@ index eeb286b07aae69c3d12a4f62ab0c1c22500bda7b..c604fc99ccd9693aa6e0c17ba3ee563c
  
      if (defined(invoker.add_upstream_only_deps) &&
          invoker.add_upstream_only_deps) {
-@@ -749,6 +752,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+@@ -751,6 +754,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
      if (!defined(is_monochrome)) {
        is_trichrome = true
      }
