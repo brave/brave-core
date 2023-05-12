@@ -1,0 +1,12 @@
+diff --git a/BUILD.gn b/BUILD.gn
+index 6b729528b79bddbfcc02dc2dc5a812b6a72f87e0..4fea88ab15757912056f54fde051a21e216adeb4 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -229,6 +229,7 @@ group("gn_all") {
+       "//weblayer/browser/java:weblayer_junit_tests",
+       "//weblayer/test:weblayer_browsertests",
+     ]
++    deps -= [ "//weblayer/browser/android/javatests:webengine_support_instrumentation_test_apk", "//weblayer/browser/java:weblayer_junit_tests", "//weblayer/test:weblayer_browsertests", ]
+   }
+ 
+   if (!is_ios && !is_android) {

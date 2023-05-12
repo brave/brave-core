@@ -1,5 +1,9 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
+<<<<<<< HEAD
 index 4a4695c3d01198def864ea151ef2d02a24fd29ab..b2d4a4ee1fc79f1a786ea3a9ee2c581df374ef6d 100644
+=======
+index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..a994b6f9237ef66be894d105c9d275c32c270b44 100644
+>>>>>>> 20dcddfd48 (WIP: remove AndroidWebview from build, attempt #2, now no crash and 2MB LESS!)
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -103,6 +103,7 @@ if (current_toolchain == default_toolchain) {
@@ -66,3 +70,19 @@ index 4a4695c3d01198def864ea151ef2d02a24fd29ab..b2d4a4ee1fc79f1a786ea3a9ee2c581d
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
+@@ -2651,6 +2663,7 @@ if (current_toolchain == default_toolchain) {
+           deps += [ "//weblayer/browser/java:upstream_java" ]
+         }
+       }
++      deps += brave_monochrome_public_apk_or_module_tmpl_deps loadable_modules = brave_monochrome_public_apk_or_module_tmpl_loadable_modules secondary_abi_loadable_modules = brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules if (!_is_trichrome) { deps -= [ "//android_webview:platform_service_bridge_upstream_implementation_java", "//android_webview/nonembedded:icon_resources", "//android_webview/nonembedded:monochrome_devui_launcher_icon_resources" ] if (webview_includes_weblayer) { deps -= [ "//weblayer/browser/java:upstream_java" ] } } 
+     }
+   }
+ 
+@@ -3815,6 +3828,7 @@ template("libmonochrome_apk_or_bundle_tmpl") {
+       defines += [ "WEBVIEW_INCLUDES_WEBLAYER" ]
+       deps += [ "//weblayer:weblayer_lib" ]
+     }
++    deps -= [ "//android_webview/lib", "//android_webview/nonembedded" ] if (webview_includes_weblayer) { defines -= [ "WEBVIEW_INCLUDES_WEBLAYER" ] deps -= [ "//weblayer:weblayer_lib" ] }
+ 
+     if (allow_jni_multiplexing) {
+       defines += [ "JNI_REGISTRATION_REQUIRED" ]
