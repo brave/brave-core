@@ -25,6 +25,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 #include "brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h"
@@ -915,6 +916,12 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
             << placement_id;
   }
 
+  if (IsReminderNotificationAd(placement_id)) {
+    const GURL target_url = GetReminderNotificationAdTargetUrl();
+    OpenNewTabWithUrl(target_url);
+    return CloseNotificationAd(placement_id);
+  }
+
   if (!is_bat_ads_initialized_) {
     return RetryOpeningNewTabWithAd(placement_id);
   }
@@ -1740,14 +1747,9 @@ void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
 void AdsServiceImpl::ShowReminder(const mojom::ReminderType type) {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   if (IsEnabled() && CheckIfCanShowNotificationAds()) {
-    absl::optional<base::Value::Dict> reminder = GetReminder(type);
-    if (!reminder) {
-      NOTREACHED_NORETURN();
-    }
-
     // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple Brave
     // Ads reminders from notification ads.
-    ShowNotificationAd(std::move(*reminder));
+    ShowNotificationAd(GetReminder(type));
   }
 #endif
 }
