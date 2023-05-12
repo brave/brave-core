@@ -26,9 +26,10 @@ interface Props {
   assetName?: string
   tokenId?: string
   onBack: () => void
+  onSend: () => void
 }
 
-export const NftAssetHeader = ({ assetName, tokenId, onBack }: Props) => {
+export const NftAssetHeader = ({ assetName, tokenId, onBack, onSend }: Props) => {
   return (
     <Row
       padding='26px 0px'
@@ -52,7 +53,7 @@ export const NftAssetHeader = ({ assetName, tokenId, onBack }: Props) => {
           {assetName}&nbsp;{tokenId ? `#${new Amount(tokenId).toNumber()}` : ''}
         </HeaderTitle>
       </Row>
-      <SendButton>{getLocale('braveWalletSend')}</SendButton>
+      <SendButton onClick={onSend}>{getLocale('braveWalletSend')}</SendButton>
     </Row>
   )
 }

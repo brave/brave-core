@@ -454,6 +454,8 @@ export const PortfolioAsset = (props: Props) => {
     history.push(`${WalletRoutes.DepositFundsPageStart}/${selectedAsset?.symbol}`)
   }, [selectedAsset?.symbol])
 
+  const onSend = React.useCallback(() => history.push(WalletRoutes.Send), [])
+
   // effects
   React.useEffect(() => {
     setfilteredAssetList(userAssetList)
@@ -508,6 +510,7 @@ export const PortfolioAsset = (props: Props) => {
             onBack={goBack}  
             assetName={selectedAsset?.name}
             tokenId={selectedAsset?.tokenId}
+            onSend={onSend}
           />
       }
     >
