@@ -14,10 +14,9 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace sku {
+namespace brave_rewards::internal::sku {
 
-SKU::SKU(LedgerImpl& ledger) : ledger_(ledger), common_(ledger) {}
+SKU::SKU() = default;
 
 SKU::~SKU() = default;
 
@@ -45,7 +44,7 @@ void SKU::OrderCreated(const mojom::Result result,
   auto save_callback = std::bind(&SKU::ContributionIdSaved, this, _1, order_id,
                                  wallet_type, callback);
 
-  ledger_->database()->SaveContributionIdForSKUOrder(order_id, contribution_id,
+  ledger().database()->SaveContributionIdForSKUOrder(order_id, contribution_id,
                                                      save_callback);
 }
 
@@ -62,7 +61,7 @@ void SKU::ContributionIdSaved(const mojom::Result result,
   auto get_callback =
       std::bind(&SKU::CreateTransaction, this, _1, wallet_type, callback);
 
-  ledger_->database()->GetSKUOrder(order_id, get_callback);
+  ledger().database()->GetSKUOrder(order_id, get_callback);
 }
 
 void SKU::CreateTransaction(mojom::SKUOrderPtr order,
@@ -91,7 +90,7 @@ void SKU::Retry(const std::string& order_id,
 
   auto get_callback = std::bind(&SKU::OnOrder, this, _1, wallet_type, callback);
 
-  ledger_->database()->GetSKUOrder(order_id, get_callback);
+  ledger().database()->GetSKUOrder(order_id, get_callback);
 }
 
 void SKU::OnOrder(mojom::SKUOrderPtr order,
@@ -125,5 +124,4 @@ void SKU::OnOrder(mojom::SKUOrderPtr order,
   }
 }
 
-}  // namespace sku
 }  // namespace brave_rewards::internal

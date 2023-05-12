@@ -17,11 +17,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-PostVotes::PostVotes(LedgerImpl& ledger) : ledger_(ledger) {}
+PostVotes::PostVotes() = default;
 
 PostVotes::~PostVotes() = default;
 
@@ -83,7 +81,7 @@ void PostVotes::Request(const credential::CredentialsRedeem& redeem,
   request->content = GeneratePayload(redeem);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void PostVotes::OnRequest(mojom::UrlResponsePtr response,
@@ -93,6 +91,4 @@ void PostVotes::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

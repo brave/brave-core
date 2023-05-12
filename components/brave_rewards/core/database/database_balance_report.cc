@@ -48,8 +48,7 @@ std::string GetTypeColumn(mojom::ReportType type) {
 
 namespace database {
 
-DatabaseBalanceReport::DatabaseBalanceReport(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseBalanceReport::DatabaseBalanceReport() = default;
 
 DatabaseBalanceReport::~DatabaseBalanceReport() = default;
 
@@ -85,7 +84,7 @@ void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::InsertOrUpdateList(
@@ -123,7 +122,7 @@ void DatabaseBalanceReport::InsertOrUpdateList(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
@@ -166,7 +165,7 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::GetRecord(mojom::ActivityMonth month,
@@ -218,7 +217,7 @@ void DatabaseBalanceReport::GetRecord(mojom::ActivityMonth month,
   auto transaction_callback =
       std::bind(&DatabaseBalanceReport::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 void DatabaseBalanceReport::OnGetRecord(mojom::DBCommandResponsePtr response,
                                         GetBalanceReportCallback callback) {
@@ -275,7 +274,7 @@ void DatabaseBalanceReport::GetAllRecords(
   auto transaction_callback =
       std::bind(&DatabaseBalanceReport::OnGetAllRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::OnGetAllRecords(
@@ -319,7 +318,7 @@ void DatabaseBalanceReport::DeleteAllRecords(LegacyResultCallback callback) {
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

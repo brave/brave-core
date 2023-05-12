@@ -10,18 +10,14 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 class SKUOrder {
  public:
-  explicit SKUOrder(LedgerImpl& ledger);
+  SKUOrder();
   ~SKUOrder();
 
   void Create(const std::vector<mojom::SKUOrderItem>& items,
@@ -36,11 +32,9 @@ class SKUOrder {
                     const std::string& order_id,
                     SKUOrderCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   endpoint::PaymentServer payment_server_;
 };
 
-}  // namespace sku
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_ORDER_H_

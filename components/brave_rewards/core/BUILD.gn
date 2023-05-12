@@ -203,7 +203,6 @@ static_library("ledger") {
     "database/database_sku_order_items.h",
     "database/database_sku_transaction.cc",
     "database/database_sku_transaction.h",
-    "database/database_table.cc",
     "database/database_table.h",
     "database/database_unblinded_token.cc",
     "database/database_unblinded_token.h",

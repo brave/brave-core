@@ -10,13 +10,12 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabasePublisherInfo : public DatabaseTable {
+class DatabasePublisherInfo {
  public:
-  explicit DatabasePublisherInfo(LedgerImpl& ledger);
-  ~DatabasePublisherInfo() override;
+  DatabasePublisherInfo();
+  ~DatabasePublisherInfo();
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info,
                       LegacyResultCallback callback);
@@ -45,7 +44,6 @@ class DatabasePublisherInfo : public DatabaseTable {
                          GetExcludedListCallback callback);
 };
 
-}  // namespace database
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PUBLISHER_INFO_H_

@@ -14,11 +14,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-GetCaptcha::GetCaptcha(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCaptcha::GetCaptcha() = default;
 
 GetCaptcha::~GetCaptcha() = default;
 
@@ -72,7 +70,7 @@ void GetCaptcha::Request(const std::string& captcha_id,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(captcha_id);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetCaptcha::OnRequest(GetCaptchaCallback callback,
@@ -92,6 +90,4 @@ void GetCaptcha::OnRequest(GetCaptchaCallback callback,
   std::move(callback).Run(result, image);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

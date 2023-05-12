@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // PUT /v1/devicecheck/attestations/{nonce}
@@ -36,17 +35,13 @@
 //   "code": 401
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PutDevicecheckCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutDevicecheck {
  public:
-  explicit PutDevicecheck(LedgerImpl& ledger);
+  PutDevicecheck();
   ~PutDevicecheck();
 
   void Request(const std::string& blob,
@@ -64,12 +59,8 @@ class PutDevicecheck {
 
   void OnRequest(PutDevicecheckCallback callback,
                  mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_PUT_DEVICECHECK_PUT_DEVICECHECK_H_

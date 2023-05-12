@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/orders
@@ -57,18 +56,14 @@
 //   ]
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 using PostOrderCallback =
     std::function<void(const mojom::Result result, mojom::SKUOrderPtr order)>;
 
 class PostOrder {
  public:
-  explicit PostOrder(LedgerImpl& ledger);
+  PostOrder();
   ~PostOrder();
 
   void Request(const std::vector<mojom::SKUOrderItem>& items,
@@ -88,12 +83,8 @@ class PostOrder {
   void OnRequest(mojom::UrlResponsePtr response,
                  const std::vector<mojom::SKUOrderItem>& items,
                  PostOrderCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_

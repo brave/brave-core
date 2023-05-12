@@ -48,24 +48,24 @@ mojom::CreateRewardsWalletResult MapEndpointError(PatchWallets::Error error) {
 
 }  // namespace
 
-WalletCreate::WalletCreate(LedgerImpl& ledger) : ledger_(ledger) {}
+WalletCreate::WalletCreate() = default;
 
 void WalletCreate::CreateWallet(absl::optional<std::string>&& geo_country,
                                 CreateRewardsWalletCallback callback) {
   bool corrupted = false;
-  auto wallet = ledger_->wallet()->GetWallet(&corrupted);
+  auto wallet = ledger().wallet()->GetWallet(&corrupted);
 
   if (corrupted) {
     DCHECK(!wallet);
     BLOG(0, "Rewards wallet data is corrupted - generating a new wallet!");
-    ledger_->database()->SaveEventLog(log::kWalletCorrupted, "");
+    ledger().database()->SaveEventLog(log::kWalletCorrupted, "");
   }
 
   if (!wallet) {
     wallet = mojom::RewardsWallet::New();
     wallet->recovery_seed = util::Security::GenerateSeed();
 
-    if (!ledger_->wallet()->SetWallet(std::move(wallet))) {
+    if (!ledger().wallet()->SetWallet(std::move(wallet))) {
       BLOG(0, "Failed to set Rewards wallet!");
       return std::move(callback).Run(
           mojom::CreateRewardsWalletResult::kUnexpected);
@@ -77,7 +77,7 @@ void WalletCreate::CreateWallet(absl::optional<std::string>&& geo_country,
           &WalletCreate::OnResult<PatchWallets::Result>, base::Unretained(this),
           std::move(callback), geo_country);
 
-      return RequestFor<PatchWallets>(*ledger_, std::move(*geo_country))
+      return RequestFor<PatchWallets>(std::move(*geo_country))
           .Send(std::move(on_update_wallet));
     } else {
       BLOG(1, "Rewards wallet already exists.");
@@ -90,7 +90,7 @@ void WalletCreate::CreateWallet(absl::optional<std::string>&& geo_country,
       base::BindOnce(&WalletCreate::OnResult<PostWallets::Result>,
                      base::Unretained(this), std::move(callback), geo_country);
 
-  RequestFor<PostWallets>(*ledger_, std::move(geo_country))
+  RequestFor<PostWallets>(std::move(geo_country))
       .Send(std::move(on_create_wallet));
 }
 
@@ -116,26 +116,26 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
     return std::move(callback).Run(MapEndpointError(result.error()));
   }
 
-  auto wallet = ledger_->wallet()->GetWallet();
+  auto wallet = ledger().wallet()->GetWallet();
   DCHECK(wallet);
   if constexpr (std::is_same_v<Result, PostWallets::Result>) {
     DCHECK(!result.value().empty());
     wallet->payment_id = std::move(result.value());
   }
 
-  if (!ledger_->wallet()->SetWallet(std::move(wallet))) {
+  if (!ledger().wallet()->SetWallet(std::move(wallet))) {
     BLOG(0, "Failed to set Rewards wallet!");
     return std::move(callback).Run(
         mojom::CreateRewardsWalletResult::kUnexpected);
   }
 
   if constexpr (std::is_same_v<Result, PostWallets::Result>) {
-    ledger_->state()->ResetReconcileStamp();
+    ledger().state()->ResetReconcileStamp();
     if (!is_testing) {
-      ledger_->state()->SetEmptyBalanceChecked(true);
-      ledger_->state()->SetPromotionCorruptedMigrated(true);
+      ledger().state()->SetEmptyBalanceChecked(true);
+      ledger().state()->SetPromotionCorruptedMigrated(true);
     }
-    ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
+    ledger().state()->SetCreationStamp(util::GetCurrentTimeStamp());
   }
 
   std::move(callback).Run(mojom::CreateRewardsWalletResult::kSuccess);

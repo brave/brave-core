@@ -17,12 +17,9 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+PostSuggestionsClaim::PostSuggestionsClaim() = default;
 
 PostSuggestionsClaim::~PostSuggestionsClaim() = default;
 
@@ -32,7 +29,7 @@ std::string PostSuggestionsClaim::GetUrl() {
 
 std::string PostSuggestionsClaim::GeneratePayload(
     const credential::CredentialsRedeem& redeem) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -73,7 +70,7 @@ void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
                                    PostSuggestionsClaimCallback callback) {
   const std::string payload = GeneratePayload(redeem);
 
-  auto wallet = ledger_->wallet()->GetWallet();
+  auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
@@ -94,7 +91,7 @@ void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
@@ -124,6 +121,4 @@ void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
   std::move(callback).Run(result, std::move(*drain_id));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

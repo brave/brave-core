@@ -14,11 +14,9 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostSafetynet::PostSafetynet(LedgerImpl& ledger) : ledger_(ledger) {}
+PostSafetynet::PostSafetynet() = default;
 
 PostSafetynet::~PostSafetynet() = default;
 
@@ -27,7 +25,7 @@ std::string PostSafetynet::GetUrl() {
 }
 
 std::string PostSafetynet::GeneratePayload() {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -94,7 +92,7 @@ void PostSafetynet::Request(PostSafetynetCallback callback) {
   request->content = GeneratePayload();
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostSafetynet::OnRequest(PostSafetynetCallback callback,
@@ -114,6 +112,4 @@ void PostSafetynet::OnRequest(PostSafetynetCallback callback,
   std::move(callback).Run(result, nonce);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

@@ -48,8 +48,7 @@ std::tuple<publisher::PrefixIterator, std::string, size_t> GetPrefixInsertList(
 
 namespace database {
 
-DatabasePublisherPrefixList::DatabasePublisherPrefixList(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabasePublisherPrefixList::DatabasePublisherPrefixList() = default;
 
 DatabasePublisherPrefixList::~DatabasePublisherPrefixList() = default;
 
@@ -70,7 +69,7 @@ void DatabasePublisherPrefixList::Search(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  ledger().RunDBTransaction(
       std::move(transaction), [callback](mojom::DBCommandResponsePtr response) {
         if (!response || !response->result ||
             response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
@@ -130,7 +129,7 @@ void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
 
   auto iter = std::get<publisher::PrefixIterator>(insert_tuple);
 
-  ledger_->RunDBTransaction(
+  ledger().RunDBTransaction(
       std::move(transaction),
       [this, iter, callback](mojom::DBCommandResponsePtr response) {
         if (!response ||

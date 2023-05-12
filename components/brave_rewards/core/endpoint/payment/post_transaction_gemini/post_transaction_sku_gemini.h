@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/orders/{order_id}/transactions/gemini
@@ -41,18 +40,14 @@
 //   "amount": "1"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 using PostTransactionGeminiCallback =
     std::function<void(const mojom::Result result)>;
 
 class PostTransactionGemini {
  public:
-  explicit PostTransactionGemini(LedgerImpl& ledger);
+  PostTransactionGemini();
   ~PostTransactionGemini();
 
   void Request(const mojom::SKUTransaction& transaction,
@@ -67,12 +62,8 @@ class PostTransactionGemini {
 
   void OnRequest(mojom::UrlResponsePtr response,
                  PostTransactionGeminiCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_TRANSACTION_GEMINI_POST_TRANSACTION_SKU_GEMINI_H_

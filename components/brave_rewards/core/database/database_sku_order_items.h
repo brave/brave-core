@@ -12,16 +12,15 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 using GetSKUOrderItemsCallback =
     std::function<void(std::vector<mojom::SKUOrderItemPtr>)>;
 
-class DatabaseSKUOrderItems : public DatabaseTable {
+class DatabaseSKUOrderItems {
  public:
-  explicit DatabaseSKUOrderItems(LedgerImpl& ledger);
-  ~DatabaseSKUOrderItems() override;
+  DatabaseSKUOrderItems();
+  ~DatabaseSKUOrderItems();
 
   void InsertOrUpdateList(mojom::DBTransaction* transaction,
                           std::vector<mojom::SKUOrderItemPtr> list);
@@ -34,7 +33,6 @@ class DatabaseSKUOrderItems : public DatabaseTable {
                              GetSKUOrderItemsCallback callback);
 };
 
-}  // namespace database
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SKU_ORDER_ITEMS_H_

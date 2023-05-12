@@ -14,11 +14,9 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostCaptcha::PostCaptcha(LedgerImpl& ledger) : ledger_(ledger) {}
+PostCaptcha::PostCaptcha() = default;
 
 PostCaptcha::~PostCaptcha() = default;
 
@@ -27,7 +25,7 @@ std::string PostCaptcha::GetUrl() {
 }
 
 std::string PostCaptcha::GeneratePayload() {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -95,7 +93,7 @@ void PostCaptcha::Request(PostCaptchaCallback callback) {
   request->content = GeneratePayload();
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostCaptcha::OnRequest(PostCaptchaCallback callback,
@@ -116,6 +114,4 @@ void PostCaptcha::OnRequest(PostCaptchaCallback callback,
   std::move(callback).Run(result, hint, captcha_id);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

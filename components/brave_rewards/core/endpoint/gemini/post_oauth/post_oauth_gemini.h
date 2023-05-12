@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://exchange.sandbox.gemini.com/auth/token
@@ -38,17 +37,14 @@
 //   "token_type": "Bearer"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint::gemini {
+namespace brave_rewards::internal::endpoint::gemini {
 
 using PostOauthCallback =
     base::OnceCallback<void(mojom::Result, std::string&& token)>;
 
 class PostOauth {
  public:
-  explicit PostOauth(LedgerImpl& ledger);
+  PostOauth();
   ~PostOauth();
 
   void Request(const std::string& external_account_id,
@@ -64,11 +60,8 @@ class PostOauth {
   mojom::Result ParseBody(const std::string& body, std::string* token);
 
   void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace endpoint::gemini
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_POST_OAUTH_POST_OAUTH_GEMINI_H_

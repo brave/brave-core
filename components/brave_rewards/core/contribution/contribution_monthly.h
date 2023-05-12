@@ -8,19 +8,15 @@
 
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class ContributionMonthly {
  public:
-  explicit ContributionMonthly(LedgerImpl& ledger);
+  ContributionMonthly();
 
   ~ContributionMonthly();
 
@@ -37,10 +33,7 @@ class ContributionMonthly {
       std::vector<mojom::PublisherInfoPtr> publishers,
       LegacyResultCallback callback,
       bool success);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_

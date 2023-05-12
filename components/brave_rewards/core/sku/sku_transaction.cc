@@ -46,8 +46,7 @@ mojom::SKUTransactionType GetTransactionTypeFromWalletType(
 
 namespace sku {
 
-SKUTransaction::SKUTransaction(LedgerImpl& ledger)
-    : ledger_(ledger), payment_server_(ledger) {}
+SKUTransaction::SKUTransaction() = default;
 
 SKUTransaction::~SKUTransaction() = default;
 
@@ -74,7 +73,7 @@ void SKUTransaction::MaybeCreateTransaction(
     const std::string& wallet_type,
     MaybeCreateTransactionCallback callback) {
   DCHECK(order);
-  ledger_->database()->GetSKUTransactionByOrderId(
+  ledger().database()->GetSKUTransactionByOrderId(
       order->order_id, std::bind(&SKUTransaction::OnGetSKUTransactionByOrderId,
                                  this, std::move(callback), order->order_id,
                                  wallet_type, order->total_amount, _1));
@@ -110,7 +109,7 @@ void SKUTransaction::OnGetSKUTransactionByOrderId(
   auto on_save_sku_transaction =
       std::bind(std::move(callback), _1, *transaction);
 
-  ledger_->database()->SaveSKUTransaction(std::move(transaction),
+  ledger().database()->SaveSKUTransaction(std::move(transaction),
                                           std::move(on_save_sku_transaction));
 }
 
@@ -131,7 +130,7 @@ void SKUTransaction::OnTransactionSaved(
       std::bind(&SKUTransaction::OnTransfer, this, _1, transaction,
                 contribution_id, destination, callback);
 
-  ledger_->contribution()->TransferFunds(transaction, destination, wallet_type,
+  ledger().contribution()->TransferFunds(transaction, destination, wallet_type,
                                          contribution_id, transfer_callback);
 }
 
@@ -146,7 +145,7 @@ void SKUTransaction::OnTransfer(mojom::Result result,
     return;
   }
 
-  ledger_->database()->GetExternalTransaction(
+  ledger().database()->GetExternalTransaction(
       contribution_id, destination,
       base::BindOnce(&SKUTransaction::OnGetExternalTransaction,
                      base::Unretained(this), std::move(callback), transaction));
@@ -171,7 +170,7 @@ void SKUTransaction::OnGetExternalTransaction(
                                  this, _1, transaction, std::move(callback));
 
   // We save SKUTransactionStatus::COMPLETED status in this call
-  ledger_->database()->SaveSKUExternalTransaction(
+  ledger().database()->SaveSKUExternalTransaction(
       transaction.transaction_id, transaction.external_transaction_id,
       std::move(save_callback));
 }
@@ -189,7 +188,7 @@ void SKUTransaction::OnSaveSKUExternalTransaction(
   auto save_callback = std::bind(&SKUTransaction::SendExternalTransaction, this,
                                  _1, transaction, callback);
 
-  ledger_->database()->UpdateSKUOrderStatus(
+  ledger().database()->UpdateSKUOrderStatus(
       transaction.order_id, mojom::SKUOrderStatus::PAID, save_callback);
 }
 

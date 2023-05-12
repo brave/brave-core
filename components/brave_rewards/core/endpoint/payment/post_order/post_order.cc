@@ -17,11 +17,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-PostOrder::PostOrder(LedgerImpl& ledger) : ledger_(ledger) {}
+PostOrder::PostOrder() = default;
 
 PostOrder::~PostOrder() = default;
 
@@ -176,7 +174,7 @@ void PostOrder::Request(const std::vector<mojom::SKUOrderItem>& items,
   request->content = GeneratePayload(items);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void PostOrder::OnRequest(mojom::UrlResponsePtr response,
@@ -197,6 +195,4 @@ void PostOrder::OnRequest(mojom::UrlResponsePtr response,
   callback(result, std::move(order));
 }
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

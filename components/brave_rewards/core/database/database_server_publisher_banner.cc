@@ -18,11 +18,9 @@ const char kTableName[] = "server_publisher_banner";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl& ledger)
-    : DatabaseTable(ledger), links_(ledger) {}
+DatabaseServerPublisherBanner::DatabaseServerPublisherBanner() = default;
 
 DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() = default;
 
@@ -112,7 +110,7 @@ void DatabaseServerPublisherBanner::GetRecord(
       std::bind(&DatabaseServerPublisherBanner::OnGetRecord, this, _1,
                 publisher_key, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherBanner::OnGetRecord(
@@ -167,5 +165,4 @@ void DatabaseServerPublisherBanner::OnGetRecordLinks(
   callback(std::move(banner_pointer));
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

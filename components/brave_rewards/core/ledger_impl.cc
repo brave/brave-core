@@ -22,20 +22,7 @@ namespace brave_rewards::internal {
 
 LedgerImpl::LedgerImpl(
     mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote)
-    : ledger_client_(std::move(ledger_client_remote)),
-      promotion_(*this),
-      publisher_(*this),
-      media_(*this),
-      contribution_(*this),
-      wallet_(*this),
-      database_(*this),
-      report_(*this),
-      state_(*this),
-      api_(*this),
-      recovery_(*this),
-      bitflyer_(*this),
-      gemini_(*this),
-      uphold_(*this) {
+    : ledger_client_(std::move(ledger_client_remote)) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_ledger_client_for_logging(ledger_client_.get());
 }

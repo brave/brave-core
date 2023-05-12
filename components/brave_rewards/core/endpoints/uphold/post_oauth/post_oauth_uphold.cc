@@ -47,8 +47,8 @@ Result PostOAuthUphold::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-PostOAuthUphold::PostOAuthUphold(LedgerImpl& ledger, std::string&& code)
-    : RequestBuilder(ledger), code_(std::move(code)) {}
+PostOAuthUphold::PostOAuthUphold(std::string&& code)
+    : code_(std::move(code)) {}
 
 PostOAuthUphold::~PostOAuthUphold() = default;
 
