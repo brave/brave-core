@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -56,6 +57,8 @@ TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
 
+  FastForwardClockBy(base::Seconds(1));
+
   // Assert
 }
 
@@ -66,6 +69,8 @@ TEST_F(BraveAdsReminderTest,
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1);
+
+  FastForwardClockBy(base::Seconds(1));
 
   // Assert
 }
@@ -86,6 +91,8 @@ TEST_F(BraveAdsReminderTest,
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
+
+  FastForwardClockBy(base::Seconds(1));
 
   // Assert
 }
