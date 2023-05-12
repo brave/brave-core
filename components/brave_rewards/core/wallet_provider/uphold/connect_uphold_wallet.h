@@ -20,9 +20,7 @@ namespace brave_rewards::internal::uphold {
 
 class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectUpholdWallet(LedgerImpl& ledger);
-
-  ~ConnectUpholdWallet() override;
+  ConnectUpholdWallet();
 
  private:
   const char* WalletType() const override;

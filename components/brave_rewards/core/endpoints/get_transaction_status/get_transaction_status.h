@@ -10,17 +10,11 @@
 
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class GetTransactionStatus : public RequestBuilder {
  public:
-  GetTransactionStatus(LedgerImpl& ledger,
-                       std::string&& token,
-                       std::string&& transaction_id);
-  ~GetTransactionStatus() override;
+  GetTransactionStatus(std::string&& token, std::string&& transaction_id);
 
  private:
   mojom::UrlMethod Method() const override;
@@ -30,7 +24,6 @@ class GetTransactionStatus : public RequestBuilder {
   std::string transaction_id_;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_GET_TRANSACTION_STATUS_GET_TRANSACTION_STATUS_H_

@@ -11,18 +11,14 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 using GetCredsBatchCallback = std::function<void(mojom::CredsBatchPtr)>;
 using GetCredsBatchListCallback =
     std::function<void(std::vector<mojom::CredsBatchPtr>)>;
 
-class DatabaseCredsBatch : public DatabaseTable {
+class DatabaseCredsBatch {
  public:
-  explicit DatabaseCredsBatch(LedgerImpl& ledger);
-  ~DatabaseCredsBatch() override;
-
   void InsertOrUpdate(mojom::CredsBatchPtr creds,
                       LegacyResultCallback callback);
 
@@ -56,7 +52,6 @@ class DatabaseCredsBatch : public DatabaseTable {
                     GetCredsBatchListCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_CREDS_BATCH_H_

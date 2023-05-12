@@ -13,19 +13,13 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
 const char kTableName[] = "media_publisher_info";
 
 }  // namespace
-
-DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
-
-DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
 
 void DatabaseMediaPublisherInfo::InsertOrUpdate(
     const std::string& media_key,
@@ -54,7 +48,7 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
@@ -96,7 +90,7 @@ void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
   auto transaction_callback =
       std::bind(&DatabaseMediaPublisherInfo::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseMediaPublisherInfo::OnGetRecord(
@@ -132,5 +126,4 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   callback(mojom::Result::LEDGER_OK, std::move(info));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

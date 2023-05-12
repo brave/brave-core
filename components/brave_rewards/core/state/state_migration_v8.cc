@@ -9,22 +9,16 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace brave_rewards::internal {
-namespace state {
-
-StateMigrationV8::StateMigrationV8(LedgerImpl& ledger) : ledger_(ledger) {}
-
-StateMigrationV8::~StateMigrationV8() = default;
+namespace brave_rewards::internal::state {
 
 void StateMigrationV8::Migrate(LegacyResultCallback callback) {
-  const bool enabled = ledger_->GetState<bool>("enabled");
+  const bool enabled = ledger().GetState<bool>("enabled");
 
   if (!enabled) {
-    ledger_->SetState(kAutoContributeEnabled, false);
+    ledger().SetState(kAutoContributeEnabled, false);
   }
 
   callback(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

@@ -10,21 +10,14 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class ContributionSKU {
  public:
-  explicit ContributionSKU(LedgerImpl& ledger);
-  ~ContributionSKU();
-
   void AutoContribution(const std::string& contribution_id,
                         const std::string& wallet_type,
                         LegacyResultCallback callback);
@@ -81,11 +74,9 @@ class ContributionSKU {
                       mojom::SKUOrderPtr order,
                       LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   credential::CredentialsSKU credentials_;
   sku::SKU sku_;
 };
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_SKU_H_

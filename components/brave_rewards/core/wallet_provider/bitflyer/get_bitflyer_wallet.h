@@ -8,22 +8,13 @@
 
 #include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace bitflyer {
+namespace brave_rewards::internal::bitflyer {
 
 class GetBitFlyerWallet : public wallet_provider::GetExternalWallet {
- public:
-  explicit GetBitFlyerWallet(LedgerImpl& ledger);
-
-  ~GetBitFlyerWallet() override;
-
  private:
   const char* WalletType() const override;
 };
 
-}  // namespace bitflyer
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::bitflyer
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_GET_BITFLYER_WALLET_H_

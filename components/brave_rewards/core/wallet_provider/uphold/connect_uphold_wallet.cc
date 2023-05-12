@@ -23,17 +23,13 @@ namespace brave_rewards::internal {
 using endpoints::PostConnectUphold;
 using endpoints::PostOAuthUphold;
 using endpoints::RequestFor;
-using wallet_provider::ConnectExternalWallet;
 
 namespace uphold {
 
-ConnectUpholdWallet::ConnectUpholdWallet(LedgerImpl& ledger)
-    : ConnectExternalWallet(ledger) {
+ConnectUpholdWallet::ConnectUpholdWallet() {
   eligibility_checker_.Start(FROM_HERE, base::Minutes(is_testing ? 3 : 15),
                              this, &ConnectUpholdWallet::CheckEligibility);
 }
-
-ConnectUpholdWallet::~ConnectUpholdWallet() = default;
 
 const char* ConnectUpholdWallet::WalletType() const {
   return constant::kWalletUphold;
@@ -43,14 +39,14 @@ void ConnectUpholdWallet::Authorize(OAuthInfo&& oauth_info,
                                     ConnectExternalWalletCallback callback) {
   DCHECK(!oauth_info.code.empty());
 
-  RequestFor<PostOAuthUphold>(*ledger_, std::move(oauth_info.code))
+  RequestFor<PostOAuthUphold>(std::move(oauth_info.code))
       .Send(base::BindOnce(&ConnectUpholdWallet::OnAuthorize,
                            base::Unretained(this), std::move(callback)));
 }
 
 void ConnectUpholdWallet::OnAuthorize(ConnectExternalWalletCallback callback,
                                       PostOAuthUphold::Result&& result) {
-  if (!ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kNotConnected,
+  if (!ledger().uphold()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -64,7 +60,7 @@ void ConnectUpholdWallet::OnAuthorize(ConnectExternalWalletCallback callback,
 
   const std::string access_token = std::move(result.value());
 
-  ledger_->uphold()->GetUser(
+  ledger().uphold()->GetUser(
       access_token,
       // NOLINTNEXTLINE
       base::BindOnce(
@@ -78,7 +74,7 @@ void ConnectUpholdWallet::OnGetUser(ConnectExternalWalletCallback callback,
                                     const std::string& access_token,
                                     mojom::Result result,
                                     const User& user) const {
-  auto wallet = ledger_->uphold()->GetWalletIf(
+  auto wallet = ledger().uphold()->GetWalletIf(
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
     return std::move(callback).Run(
@@ -106,13 +102,13 @@ void ConnectUpholdWallet::OnGetUser(ConnectExternalWalletCallback callback,
 
   wallet->user_name = user.name;
   wallet->member_id = user.member_id;
-  if (!ledger_->uphold()->SetWallet(std::move(wallet))) {
+  if (!ledger().uphold()->SetWallet(std::move(wallet))) {
     BLOG(0, "Failed to save " << constant::kWalletUphold << " wallet!");
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
   }
 
-  ledger_->uphold()->GetCapabilities(
+  ledger().uphold()->GetCapabilities(
       access_token,
       base::BindOnce(
           // NOLINTNEXTLINE
@@ -128,7 +124,7 @@ void ConnectUpholdWallet::OnGetCapabilities(
     const std::string& access_token,
     mojom::Result result,
     Capabilities capabilities) const {
-  auto wallet = ledger_->uphold()->GetWalletIf(
+  auto wallet = ledger().uphold()->GetWalletIf(
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
     return std::move(callback).Run(
@@ -157,7 +153,7 @@ void ConnectUpholdWallet::OnGetCapabilities(
         mojom::ConnectExternalWalletError::kUpholdInsufficientCapabilities));
   }
 
-  ledger_->uphold()->CreateCard(
+  ledger().uphold()->CreateCard(
       access_token,
       base::BindOnce(&ConnectUpholdWallet::OnCreateCard, base::Unretained(this),
                      std::move(callback), access_token));
@@ -167,7 +163,7 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
                                        const std::string& access_token,
                                        mojom::Result result,
                                        std::string&& id) const {
-  if (!ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kNotConnected,
+  if (!ledger().uphold()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -194,18 +190,17 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
       base::BindOnce(&ConnectUpholdWallet::OnConnect, base::Unretained(this),
                      std::move(callback), access_token, id);
 
-  RequestFor<PostConnectUphold>(*ledger_, std::move(id))
-      .Send(std::move(on_connect));
+  RequestFor<PostConnectUphold>(std::move(id)).Send(std::move(on_connect));
 }
 
 void ConnectUpholdWallet::CheckEligibility() {
   auto wallet =
-      ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
+      ledger().uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
     return;
   }
 
-  ledger_->uphold()->GetUser(
+  ledger().uphold()->GetUser(
       // NOLINTNEXTLINE
       wallet->token, base::BindOnce(static_cast<void (ConnectUpholdWallet::*)(
                                         mojom::Result, const User&) const>(
@@ -216,7 +211,7 @@ void ConnectUpholdWallet::CheckEligibility() {
 void ConnectUpholdWallet::OnGetUser(mojom::Result result,
                                     const User& user) const {
   auto wallet =
-      ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
+      ledger().uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
     return;
   }
@@ -224,7 +219,7 @@ void ConnectUpholdWallet::OnGetUser(mojom::Result result,
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     // kConnected ==> kLoggedOut
-    if (!ledger_->uphold()->LogOutWallet()) {
+    if (!ledger().uphold()->LogOutWallet()) {
       BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
     }
 
@@ -240,14 +235,14 @@ void ConnectUpholdWallet::OnGetUser(mojom::Result result,
     BLOG(0, "BAT is not allowed for the user!");
 
     // kConnected ==> kLoggedOut
-    if (!ledger_->uphold()->LogOutWallet(notifications::kUpholdBATNotAllowed)) {
+    if (!ledger().uphold()->LogOutWallet(notifications::kUpholdBATNotAllowed)) {
       BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
     }
 
     return;
   }
 
-  ledger_->uphold()->GetCapabilities(
+  ledger().uphold()->GetCapabilities(
       wallet->token,
       base::BindOnce(
           // NOLINTNEXTLINE
@@ -258,14 +253,14 @@ void ConnectUpholdWallet::OnGetUser(mojom::Result result,
 
 void ConnectUpholdWallet::OnGetCapabilities(mojom::Result result,
                                             Capabilities capabilities) const {
-  if (!ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected})) {
+  if (!ledger().uphold()->GetWalletIf({mojom::WalletStatus::kConnected})) {
     return;
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     // kConnected ==> kLoggedOut
-    if (!ledger_->uphold()->LogOutWallet()) {
+    if (!ledger().uphold()->LogOutWallet()) {
       BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
     }
 
@@ -283,7 +278,7 @@ void ConnectUpholdWallet::OnGetCapabilities(mojom::Result result,
                                               << " capabilities!");
 
     // kConnected ==> kLoggedOut
-    if (!ledger_->uphold()->LogOutWallet(
+    if (!ledger().uphold()->LogOutWallet(
             notifications::kUpholdInsufficientCapabilities)) {
       BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
     }

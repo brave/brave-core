@@ -11,23 +11,16 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace wallet {
+namespace brave_rewards::internal::wallet {
 
 class Wallet {
  public:
-  explicit Wallet(LedgerImpl& ledger);
-  ~Wallet();
-
   void CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
                                CreateRewardsWalletCallback callback);
 
@@ -39,13 +32,11 @@ class Wallet {
   bool SetWallet(mojom::RewardsWalletPtr wallet);
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
   WalletCreate create_;
   WalletBalance balance_;
   endpoint::PromotionServer promotion_server_;
 };
 
-}  // namespace wallet
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_H_

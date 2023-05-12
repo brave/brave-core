@@ -16,13 +16,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace gemini {
-
-PostBalance::PostBalance(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PostBalance::~PostBalance() = default;
+namespace brave_rewards::internal::endpoint::gemini {
 
 std::string PostBalance::GetUrl() {
   return GetApiServerUrl("/v1/balances");
@@ -76,7 +70,7 @@ void PostBalance::Request(const std::string& token,
   request->url = GetUrl();
   request->method = mojom::UrlMethod::POST;
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostBalance::OnRequest(PostBalanceCallback callback,
@@ -96,6 +90,4 @@ void PostBalance::OnRequest(PostBalanceCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace gemini
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::gemini

@@ -9,21 +9,14 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/github.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
 
 namespace brave_rewards::internal {
 
-class LedgerImpl;
-
 class Media {
  public:
-  explicit Media(LedgerImpl& ledger);
-
-  ~Media();
-
   static std::string GetLinkType(const std::string& url,
                                  const std::string& first_party_url,
                                  const std::string& referrer);
@@ -50,7 +43,6 @@ class Media {
                             const std::string& type,
                             uint64_t windowId);
 
-  const raw_ref<LedgerImpl> ledger_;
   YouTube media_youtube_;
   GitHub media_github_;
 };

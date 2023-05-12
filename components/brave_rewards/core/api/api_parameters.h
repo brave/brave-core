@@ -9,19 +9,15 @@
 #include <memory>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoints/get_parameters/get_parameters.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace api {
+namespace brave_rewards::internal::api {
 
 class APIParameters {
  public:
-  explicit APIParameters(LedgerImpl& ledger);
+  APIParameters();
   ~APIParameters();
 
   void Initialize();
@@ -36,12 +32,10 @@ class APIParameters {
   void SetRefreshTimer(base::TimeDelta delay,
                        base::TimeDelta base_delay = base::TimeDelta());
 
-  const raw_ref<LedgerImpl> ledger_;
   base::OneShotTimer refresh_timer_;
   std::vector<GetRewardsParametersCallback> callbacks_;
 };
 
-}  // namespace api
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::api
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_API_API_PARAMETERS_H_

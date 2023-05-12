@@ -21,7 +21,7 @@ using endpoints::RequestFor;
 
 namespace api {
 
-APIParameters::APIParameters(LedgerImpl& ledger) : ledger_(ledger) {}
+APIParameters::APIParameters() = default;
 
 APIParameters::~APIParameters() = default;
 
@@ -39,14 +39,14 @@ void APIParameters::Fetch(GetRewardsParametersCallback callback) {
 
   refresh_timer_.Stop();
 
-  RequestFor<GetParameters>(*ledger_).Send(
+  RequestFor<GetParameters>().Send(
       base::BindOnce(&APIParameters::OnFetch, base::Unretained(this)));
 }
 
 void APIParameters::OnFetch(GetParameters::Result&& result) {
   if (result.has_value()) {
     DCHECK(result.value());
-    ledger_->state()->SetRewardsParameters(*result.value());
+    ledger().state()->SetRewardsParameters(*result.value());
     RunCallbacks();
     return SetRefreshTimer(base::Minutes(10), base::Hours(3));
   }
@@ -67,7 +67,7 @@ void APIParameters::RunCallbacks() {
   // Execute callbacks with the current parameters stored in state.
   // If the last fetch failed, callbacks will be run with the last
   // successfully fetched parameters or a default set of parameters.
-  auto parameters = ledger_->state()->GetRewardsParameters();
+  auto parameters = ledger().state()->GetRewardsParameters();
   DCHECK(parameters);
 
   auto callbacks = std::move(callbacks_);

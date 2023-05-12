@@ -16,13 +16,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-PostSuggestions::PostSuggestions(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PostSuggestions::~PostSuggestions() = default;
+namespace brave_rewards::internal::endpoint::promotion {
 
 std::string PostSuggestions::GetUrl() {
   return GetServerUrl("/v1/suggestions");
@@ -86,7 +80,7 @@ void PostSuggestions::Request(const credential::CredentialsRedeem& redeem,
   request->content = GeneratePayload(redeem);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void PostSuggestions::OnRequest(mojom::UrlResponsePtr response,
@@ -96,6 +90,4 @@ void PostSuggestions::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

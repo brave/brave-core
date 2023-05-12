@@ -11,14 +11,10 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseEventLog : public DatabaseTable {
+class DatabaseEventLog {
  public:
-  explicit DatabaseEventLog(LedgerImpl& ledger);
-  ~DatabaseEventLog() override;
-
   void Insert(const std::string& key, const std::string& value);
 
   void InsertRecords(const std::map<std::string, std::string>& records,
@@ -32,7 +28,6 @@ class DatabaseEventLog : public DatabaseTable {
                        GetEventLogsCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_EVENT_LOG_H_

@@ -16,19 +16,14 @@ namespace brave_rewards::internal {
 
 using uphold::Capabilities;
 
-namespace endpoint {
-namespace uphold {
-
-GetCapabilities::GetCapabilities(LedgerImpl& ledger) : ledger_(ledger) {}
-
-GetCapabilities::~GetCapabilities() = default;
+namespace endpoint::uphold {
 
 void GetCapabilities::Request(const std::string& token,
                               GetCapabilitiesCallback callback) {
   auto request = mojom::UrlRequest::New();
   request->url = GetServerUrl("/v0/me/capabilities");
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&GetCapabilities::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }
@@ -103,6 +98,5 @@ GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
   return capability_map;
 }
 
-}  // namespace uphold
-}  // namespace endpoint
+}  // namespace endpoint::uphold
 }  // namespace brave_rewards::internal

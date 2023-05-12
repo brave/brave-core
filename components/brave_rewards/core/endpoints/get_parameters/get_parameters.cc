@@ -140,10 +140,6 @@ Result GetParameters::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-GetParameters::GetParameters(LedgerImpl& ledger) : RequestBuilder(ledger) {}
-
-GetParameters::~GetParameters() = default;
-
 absl::optional<std::string> GetParameters::Url() const {
   return endpoint::api::GetServerUrl("/v1/parameters");
 }

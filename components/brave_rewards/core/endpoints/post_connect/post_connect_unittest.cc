@@ -29,10 +29,6 @@ using Error = PostConnect::Error;
 using Result = PostConnect::Result;
 
 class PostConnectMock final : public PostConnect {
- public:
-  explicit PostConnectMock(LedgerImpl& ledger) : PostConnect(ledger) {}
-  ~PostConnectMock() override = default;
-
  private:
   const char* Path() const override { return "/v3/wallet/mock/%s/claim"; }
 };

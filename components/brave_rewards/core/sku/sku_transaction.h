@@ -9,23 +9,16 @@
 #include <map>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 class SKUTransaction {
  public:
-  explicit SKUTransaction(LedgerImpl& ledger);
-  ~SKUTransaction();
-
   void Run(mojom::SKUOrderPtr order,
            const std::string& destination,
            const std::string& wallet_type,
@@ -77,11 +70,9 @@ class SKUTransaction {
   void OnSendExternalTransaction(mojom::Result result,
                                  LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   endpoint::PaymentServer payment_server_;
 };
 
-}  // namespace sku
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::sku
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_TRANSACTION_H_

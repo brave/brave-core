@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -36,17 +35,10 @@
 // Response body:
 // {Empty}
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 class PostSuggestionsClaim {
  public:
-  explicit PostSuggestionsClaim(LedgerImpl& ledger);
-  ~PostSuggestionsClaim();
-
   void Request(const credential::CredentialsRedeem& redeem,
                PostSuggestionsClaimCallback callback);
 
@@ -59,12 +51,8 @@ class PostSuggestionsClaim {
 
   void OnRequest(PostSuggestionsClaimCallback callback,
                  mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_POST_SUGGESTIONS_CLAIM_H_

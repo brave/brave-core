@@ -146,12 +146,7 @@ bool DecompressMessage(base::StringPiece payload, std::string* output) {
 
 }  // namespace
 
-namespace endpoint {
-namespace private_cdn {
-
-GetPublisher::GetPublisher(LedgerImpl& ledger) : ledger_(ledger) {}
-
-GetPublisher::~GetPublisher() = default;
+namespace endpoint::private_cdn {
 
 std::string GetPublisher::GetUrl(const std::string& hash_prefix) {
   const std::string prefix = base::ToLowerASCII(hash_prefix);
@@ -220,7 +215,7 @@ void GetPublisher::Request(const std::string& publisher_key,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(hash_prefix);
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void GetPublisher::OnRequest(mojom::UrlResponsePtr response,
@@ -252,6 +247,5 @@ void GetPublisher::OnRequest(mojom::UrlResponsePtr response,
   callback(mojom::Result::LEDGER_OK, std::move(info));
 }
 
-}  // namespace private_cdn
-}  // namespace endpoint
+}  // namespace endpoint::private_cdn
 }  // namespace brave_rewards::internal

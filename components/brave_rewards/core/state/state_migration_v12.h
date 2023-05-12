@@ -8,28 +8,18 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace state {
+namespace brave_rewards::internal::state {
 
 class StateMigrationV12 {
  public:
-  explicit StateMigrationV12(LedgerImpl& ledger);
-  ~StateMigrationV12();
-
   void Migrate(LegacyResultCallback);
 
  private:
   bool MigrateExternalWallet(const std::string& wallet_type);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V12_H_

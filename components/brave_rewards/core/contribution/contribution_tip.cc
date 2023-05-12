@@ -19,10 +19,6 @@
 
 namespace brave_rewards::internal::contribution {
 
-ContributionTip::ContributionTip(LedgerImpl& ledger) : ledger_(ledger) {}
-
-ContributionTip::~ContributionTip() = default;
-
 void ContributionTip::Process(const std::string& publisher_id,
                               double amount,
                               ProcessCallback callback) {
@@ -32,7 +28,7 @@ void ContributionTip::Process(const std::string& publisher_id,
     return;
   }
 
-  ledger_->publisher()->GetServerPublisherInfo(
+  ledger().publisher()->GetServerPublisherInfo(
       publisher_id,
       ToLegacyCallback(base::BindOnce(&ContributionTip::OnPublisherDataRead,
                                       base::Unretained(this), publisher_id,
@@ -64,7 +60,7 @@ void ContributionTip::OnPublisherDataRead(
   queue->partial = false;
   queue->publishers = std::move(queue_list);
 
-  ledger_->database()->SaveContributionQueue(
+  ledger().database()->SaveContributionQueue(
       std::move(queue),
       ToLegacyCallback(
           base::BindOnce(&ContributionTip::OnQueueSaved, base::Unretained(this),
@@ -75,7 +71,7 @@ void ContributionTip::OnQueueSaved(const std::string& queue_id,
                                    ProcessCallback callback,
                                    mojom::Result result) {
   if (result == mojom::Result::LEDGER_OK) {
-    ledger_->contribution()->ProcessContributionQueue();
+    ledger().contribution()->ProcessContributionQueue();
     std::move(callback).Run(queue_id);
   } else {
     BLOG(0, "Queue was not saved");

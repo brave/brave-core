@@ -20,16 +20,15 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_desktop.h"
 #endif
 
-namespace brave_rewards::internal {
-namespace attestation {
+namespace brave_rewards::internal::attestation {
 
-AttestationImpl::AttestationImpl(LedgerImpl& ledger) : Attestation(ledger) {
+AttestationImpl::AttestationImpl() {
 #if BUILDFLAG(IS_IOS)
-  platform_instance_ = std::make_unique<AttestationIOS>(ledger);
+  platform_instance_ = std::make_unique<AttestationIOS>();
 #elif BUILDFLAG(IS_ANDROID)
-  platform_instance_ = std::make_unique<AttestationAndroid>(ledger);
+  platform_instance_ = std::make_unique<AttestationAndroid>();
 #else
-  platform_instance_ = std::make_unique<AttestationDesktop>(ledger);
+  platform_instance_ = std::make_unique<AttestationDesktop>();
 #endif
 }
 
@@ -45,5 +44,4 @@ void AttestationImpl::Confirm(const std::string& solution,
   platform_instance_->Confirm(solution, std::move(callback));
 }
 
-}  // namespace attestation
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::attestation

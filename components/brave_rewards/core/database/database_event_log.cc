@@ -15,19 +15,13 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
 const char kTableName[] = "event_log";
 
 }  // namespace
-
-DatabaseEventLog::DatabaseEventLog(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
-
-DatabaseEventLog::~DatabaseEventLog() = default;
 
 void DatabaseEventLog::Insert(const std::string& key,
                               const std::string& value) {
@@ -54,7 +48,7 @@ void DatabaseEventLog::Insert(const std::string& key,
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(std::move(transaction),
+  ledger().RunDBTransaction(std::move(transaction),
                             [](mojom::DBCommandResponsePtr response) {});
 }
 
@@ -90,7 +84,7 @@ void DatabaseEventLog::InsertRecords(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
@@ -117,7 +111,7 @@ void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
   auto transaction_callback =
       std::bind(&DatabaseEventLog::OnGetAllRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,
@@ -145,5 +139,4 @@ void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,
   callback(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

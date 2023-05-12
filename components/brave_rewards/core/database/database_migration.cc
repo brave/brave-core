@@ -60,14 +60,9 @@
 // you should keep old table with name unblinded_tokens_29
 // Reference: https://github.com/brave/brave-browser/issues/10784
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 uint32_t DatabaseMigration::test_target_version_ = 0;
-
-DatabaseMigration::DatabaseMigration(LedgerImpl& ledger) : ledger_(ledger) {}
-
-DatabaseMigration::~DatabaseMigration() = default;
 
 void DatabaseMigration::Start(uint32_t table_version,
                               LegacyResultCallback callback) {
@@ -93,7 +88,7 @@ void DatabaseMigration::Start(uint32_t table_version,
   // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
   std::string migration_v32 = "";
-  if (ledger_->IsBitFlyerRegion()) {
+  if (ledger().IsBitFlyerRegion()) {
     migration_v30 = migration::v30;
     migration_v32 = migration::v32;
   }
@@ -164,14 +159,14 @@ void DatabaseMigration::Start(uint32_t table_version,
   const std::string message =
       base::StringPrintf("%d->%d", start_version, migrated_version);
 
-  ledger_->RunDBTransaction(
-      std::move(transaction), [this, callback, message, migrated_version](
+  ledger().RunDBTransaction(
+      std::move(transaction), [callback, message, migrated_version](
                                   mojom::DBCommandResponsePtr response) {
         if (response &&
             response->status == mojom::DBCommandResponse::Status::RESPONSE_OK) {
           // The event_log table was introduced in v29.
           if (migrated_version >= 29) {
-            ledger_->database()->SaveEventLog(log::kDatabaseMigrated, message);
+            ledger().database()->SaveEventLog(log::kDatabaseMigrated, message);
           }
           callback(mojom::Result::LEDGER_OK);
           return;
@@ -199,5 +194,4 @@ void DatabaseMigration::GenerateCommand(mojom::DBTransaction* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

@@ -12,9 +12,6 @@ namespace brave_rewards::internal::state {
 
 class StateMigrationV9 {
  public:
-  StateMigrationV9();
-  ~StateMigrationV9();
-
   void Migrate(LegacyResultCallback callback);
 };
 

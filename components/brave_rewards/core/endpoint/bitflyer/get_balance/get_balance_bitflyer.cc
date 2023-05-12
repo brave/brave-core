@@ -16,13 +16,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace bitflyer {
-
-GetBalance::GetBalance(LedgerImpl& ledger) : ledger_(ledger) {}
-
-GetBalance::~GetBalance() = default;
+namespace brave_rewards::internal::endpoint::bitflyer {
 
 std::string GetBalance::GetUrl() {
   return GetServerUrl("/api/link/v1/account/inventory");
@@ -94,7 +88,7 @@ void GetBalance::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetBalance::OnRequest(GetBalanceCallback callback,
@@ -114,6 +108,4 @@ void GetBalance::OnRequest(GetBalanceCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace bitflyer
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::bitflyer

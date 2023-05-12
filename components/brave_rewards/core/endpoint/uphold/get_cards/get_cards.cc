@@ -16,10 +16,6 @@
 
 namespace brave_rewards::internal::endpoint::uphold {
 
-GetCards::GetCards(LedgerImpl& ledger) : ledger_(ledger) {}
-
-GetCards::~GetCards() = default;
-
 std::string GetCards::GetUrl() {
   return GetServerUrl("/v0/me/cards?q=currency:BAT");
 }
@@ -75,7 +71,7 @@ void GetCards::Request(const std::string& token, GetCardsCallback callback) {
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&GetCards::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }

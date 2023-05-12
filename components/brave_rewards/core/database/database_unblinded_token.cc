@@ -17,19 +17,13 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
 const char kTableName[] = "unblinded_tokens";
 
 }  // namespace
-
-DatabaseUnblindedToken::DatabaseUnblindedToken(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
-
-DatabaseUnblindedToken::~DatabaseUnblindedToken() = default;
 
 void DatabaseUnblindedToken::InsertOrUpdateList(
     std::vector<mojom::UnblindedTokenPtr> list,
@@ -70,7 +64,7 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseUnblindedToken::OnGetRecords(
@@ -132,7 +126,7 @@ void DatabaseUnblindedToken::GetSpendableRecords(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(std::move(transaction),
+  ledger().RunDBTransaction(std::move(transaction),
                             std::bind(&DatabaseUnblindedToken::OnGetRecords,
                                       this, _1, std::move(callback)));
 }
@@ -167,7 +161,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseUnblindedToken::MarkRecordListAsReserved(
@@ -231,7 +225,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
       std::bind(&DatabaseUnblindedToken::OnMarkRecordListAsReserved, this, _1,
                 ids.size(), callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
@@ -280,7 +274,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpendable(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseUnblindedToken::GetReservedRecordList(
@@ -318,7 +312,7 @@ void DatabaseUnblindedToken::GetReservedRecordList(
   auto transaction_callback =
       std::bind(&DatabaseUnblindedToken::OnGetRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
@@ -363,8 +357,7 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
   auto transaction_callback =
       std::bind(&DatabaseUnblindedToken::OnGetRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

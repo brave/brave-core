@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
@@ -20,14 +19,11 @@
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace promotion {
+namespace brave_rewards::internal::promotion {
 
 class Promotion {
  public:
-  explicit Promotion(LedgerImpl& ledger);
+  Promotion();
   ~Promotion();
 
   void Initialize();
@@ -126,7 +122,6 @@ class Promotion {
 
   void OnLastCheckTimerElapsed();
 
-  const raw_ref<LedgerImpl> ledger_;
   attestation::AttestationImpl attestation_;
   PromotionTransfer transfer_;
   credential::CredentialsPromotion credentials_;
@@ -135,7 +130,6 @@ class Promotion {
   base::OneShotTimer retry_timer_;
 };
 
-}  // namespace promotion
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::promotion
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PROMOTION_PROMOTION_H_

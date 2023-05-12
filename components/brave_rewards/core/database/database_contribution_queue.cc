@@ -15,19 +15,13 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
 const char kTableName[] = "contribution_queue";
 
 }  // namespace
-
-DatabaseContributionQueue::DatabaseContributionQueue(LedgerImpl& ledger)
-    : DatabaseTable(ledger), publishers_(ledger) {}
-
-DatabaseContributionQueue::~DatabaseContributionQueue() = default;
 
 void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
                                                LegacyResultCallback callback) {
@@ -69,7 +63,7 @@ void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
       std::bind(&DatabaseContributionQueue::OnInsertOrUpdate, this, _1,
                 shared_info, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueue::OnInsertOrUpdate(
@@ -117,7 +111,7 @@ void DatabaseContributionQueue::GetFirstRecord(
   auto transaction_callback = std::bind(
       &DatabaseContributionQueue::OnGetFirstRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueue::OnGetFirstRecord(
@@ -193,8 +187,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

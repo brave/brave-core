@@ -13,15 +13,10 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 class MockDatabase : public Database {
  public:
-  explicit MockDatabase(LedgerImpl& ledger);
-
-  ~MockDatabase() override;
-
   MOCK_METHOD2(GetContributionInfo,
                void(const std::string& contribution_id,
                     GetContributionInfoCallback callback));
@@ -36,7 +31,6 @@ class MockDatabase : public Database {
   MOCK_METHOD1(GetAllPromotions, void(GetAllPromotionsCallback callback));
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MOCK_H_
