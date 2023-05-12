@@ -161,7 +161,7 @@ export const NftScreen = (props: Props) => {
   const tokenId = React.useMemo(
     () =>
       selectedAsset.tokenId ? new Amount(selectedAsset.tokenId).toNumber() : '',
-    [selectedAsset]
+    [selectedAsset.tokenId]
   )
 
   const ownerAccount = React.useMemo(() => {
