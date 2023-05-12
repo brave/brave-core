@@ -14,7 +14,7 @@ namespace features {
 
 BASE_FEATURE(kBraveVPN,
              "BraveVPN",
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(IS_LINUX)
              base::FEATURE_ENABLED_BY_DEFAULT
 #else
              base::FEATURE_DISABLED_BY_DEFAULT
@@ -23,7 +23,7 @@ BASE_FEATURE(kBraveVPN,
 
 BASE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI,
              "BraveVPNLinkSubscriptionAndroidUI",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_WIN)
 BASE_FEATURE(kBraveVPNDnsProtection,

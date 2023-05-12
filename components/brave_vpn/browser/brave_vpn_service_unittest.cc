@@ -508,7 +508,7 @@ class BraveVPNServiceTest : public testing::Test {
 };
 
 TEST(BraveVPNFeatureTest, FeatureTest) {
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(IS_LINUX)
   EXPECT_TRUE(IsBraveVPNEnabled());
 #else
   EXPECT_FALSE(IsBraveVPNEnabled());
