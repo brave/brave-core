@@ -20,6 +20,7 @@ import { useSafeWalletSelector } from '../../../../../common/hooks/use-safe-sele
 import { WalletSelectors } from '../../../../../common/selectors'
 
 // actions
+import { WalletActions } from '../../../../../common/actions'
 import { WalletPageActions } from '../../../../../page/actions'
 
 // utils
@@ -38,6 +39,7 @@ import SearchBar from '../../../../shared/search-bar'
 import NetworkFilterSelector from '../../../network-filter-selector'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
+import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-discovery-empty-state'
 
 // styles
 import {
@@ -48,10 +50,9 @@ import {
   AddIcon,
   AddButton
 } from './nfts.styles'
-import { Column } from '../../../../shared/style'
+import { ScrollableColumn } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
-
 interface Props {
   networks: BraveWallet.NetworkInfo[]
   nftList: BraveWallet.BlockchainToken[]
@@ -121,6 +122,10 @@ export const Nfts = (props: Props) => {
     hideNftDiscoveryModal()
   }, [hideNftDiscoveryModal, setNftDiscovery])
 
+  const onRefresh = React.useCallback(() => {
+    dispatch(WalletActions.refreshNetworksAndTokens())
+  }, [])
+
   // memos
   const filteredNfts = React.useMemo(() => {
     if (searchValue === '') {
@@ -155,23 +160,28 @@ export const Nfts = (props: Props) => {
           value={searchValue}
         />
         <NetworkFilterSelector networkListSubset={networks} />
-        {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 &&
+        {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 && (
           <IpfsButton onClick={onClickIpfsButton}>
             <IpfsIcon />
           </IpfsButton>
-        }
+        )}
         <AddButton onClick={toggleShowAddNftModal}>
           <AddIcon />
         </AddButton>
       </FilterTokenRow>
-      <Column
-        fullWidth={true}
-        padding='10px 20px 20px 20px'
-      >
-        {sortedNfts.length === 0
-          ? <NftsEmptyState onImportNft={toggleShowAddNftModal} />
-          : <NftGrid>
-            {sortedNfts.map(nft => (
+      <ScrollableColumn padding="10px 20px 20px 20px">
+        {sortedNfts.length === 0 ? (
+          isNftAutoDiscoveryEnabled ? (
+            <AutoDiscoveryEmptyState
+              onImportNft={toggleShowAddNftModal}
+              onRefresh={onRefresh}
+            />
+          ) : (
+            <NftsEmptyState onImportNft={toggleShowAddNftModal} />
+          )
+        ) : (
+          <NftGrid>
+            {sortedNfts.map((nft) => (
               <NFTGridViewItem
                 key={`${nft.tokenId}-${nft.contractAddress}`}
                 token={nft}
@@ -179,20 +189,20 @@ export const Nfts = (props: Props) => {
               />
             ))}
           </NftGrid>
-        }
-      </Column>
-      {showAddNftModal &&
+        )}
+      </ScrollableColumn>
+      {showAddNftModal && (
         <AddOrEditNftModal
           onClose={toggleShowAddNftModal}
           onHideForm={toggleShowAddNftModal}
         />
-      }
-      {!isNftAutoDiscoveryEnabled && showNftDiscoveryModal &&
+      )}
+      {!isNftAutoDiscoveryEnabled && showNftDiscoveryModal && (
         <EnableNftDiscoveryModal
           onConfirm={onConfirmNftAutoDiscovery}
           onCancel={hideNftDiscoveryModal}
         />
-      }
+      )}
     </>
   )
 }
