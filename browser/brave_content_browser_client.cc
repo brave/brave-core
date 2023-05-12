@@ -1097,6 +1097,14 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(decentralized_dns_navigation_throttle));
   }
 
+  // Debounce
+  if (auto debounce_throttle =
+          debounce::DebounceNavigationThrottle::MaybeCreateThrottleFor(
+              handle, debounce::DebounceServiceFactory::GetForBrowserContext(
+                          context))) {
+    throttles.push_back(std::move(debounce_throttle));
+  }
+
   if (std::unique_ptr<
           content::NavigationThrottle> domain_block_navigation_throttle =
           brave_shields::DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
@@ -1108,14 +1116,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
                   Profile::FromBrowserContext(context)),
               g_browser_process->GetApplicationLocale())) {
     throttles.push_back(std::move(domain_block_navigation_throttle));
-  }
-
-  // Debounce
-  if (auto debounce_throttle =
-          debounce::DebounceNavigationThrottle::MaybeCreateThrottleFor(
-              handle, debounce::DebounceServiceFactory::GetForBrowserContext(
-                          context))) {
-    throttles.push_back(std::move(debounce_throttle));
   }
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
