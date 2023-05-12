@@ -19,7 +19,7 @@ transpile_web_ui("generate_brave_webtorrent") {
 
   # Must match the relative path from the static GRD to the manifest.json
   # plus any other relative path we want these files to live in the extension
-  extra_relative_path = "/brave_webtorrent/extension/out"
+  resource_path_prefix = "brave_webtorrent/extension/out"
 
   public_asset_path = "/extension/out/"
 }

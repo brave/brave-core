@@ -26,8 +26,6 @@ def main():
     clean_target_dir(output_path_absolute)
 
     webpack_gen_dir = output_path_absolute
-    if args.extra_relative_path is not None:
-        webpack_gen_dir = webpack_gen_dir + args.extra_relative_path
 
     depfile_path = os.path.abspath(args.depfile_path[0])
     transpile_options = dict(
@@ -60,7 +58,6 @@ def parse_args():
     parser.add_argument('--depfile_path', nargs=1)
     parser.add_argument('--grd_name', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
-    parser.add_argument('--extra_relative_path', nargs='?')
     parser.add_argument('--public_asset_path', nargs='?')
     parser.add_argument('--webpack_alias',
                         action='append',

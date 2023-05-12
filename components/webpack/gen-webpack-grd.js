@@ -1,19 +1,19 @@
 const path = require('path')
 const fs = require('mz/fs')
 
-function getIncludesString (idPrefix, fileList) {
-  let includesString = ''
-  for (const relativeFilePath of fileList) {
-    const fileId = idPrefix + relativeFilePath.replace(/[^a-z0-9]/gi, '_').toUpperCase()
-    includesString += `<include name="${fileId}" file="${relativeFilePath}" type="BINDATA" />
-`
-}
-  return includesString
+function getIncludesString (fileList) {
+  return fileList.map(filePath => {
+    const relativePath = filePath.replace(targetDir, '')
+    const fileId = idPrefix + relativePath.replace(/[^a-z0-9]/gi, '_').toUpperCase()
+    const resourcePath = resourcePathPrefix
+      ? path.join(resourcePathPrefix, relativePath)
+      : relativePath
+    return `<include name="${fileId}" file="${filePath}" resource_path="${resourcePath}" use_base_dir="false" type="BINDATA" />`
+  }).join('\n')
 }
 
 
-function getGrdString (name = 'brave_rewards_resources', idPrefix = 'IDR_BRAVE_REWARDS', fileList = []) {
-  const includesString = getIncludesString(idPrefix, fileList)
+function getGrdString (name, fileList) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <grit latest_public_release="0" current_release="1" output_all_resource_defines="false">
   <outputs>
@@ -26,7 +26,7 @@ function getGrdString (name = 'brave_rewards_resources', idPrefix = 'IDR_BRAVE_R
   </outputs>
   <release seq="1">
     <includes>
-      ${includesString}
+      ${getIncludesString(fileList)}
     </includes>
   </release>
 </grit>
@@ -41,12 +41,7 @@ function getGrdString (name = 'brave_rewards_resources', idPrefix = 'IDR_BRAVE_R
 function getGrdpString(fileList) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  ${fileList.map(filePath => {
-    const relativePath = filePath.replace(targetDir, '')
-    const fileId = idPrefix + relativePath.replace(/[^a-z0-9]/gi, '_').toUpperCase()
-    const resourcePath = resourcePathPrefix ? `resource_path="${path.join(resourcePathPrefix, relativePath)}" ` : ''
-    return `<include name="${fileId}" file="${filePath}" ${resourcePath}use_base_dir="false" type="BINDATA" />`
-  }).join('\n')}
+  ${getIncludesString(fileList)}
 </grit-part>
 `
 }
@@ -74,7 +69,7 @@ async function getFileListDeep (dirPath) {
   )
 }
 
-async function createDynamicGDR (name, grdName, idPrefix, targetDir) {
+async function createDynamicGDR (name, grdName) {
   const gdrPath = path.join(targetDir, grdName)
   // remove previously generated file
   try {
@@ -82,11 +77,9 @@ async function createDynamicGDR (name, grdName, idPrefix, targetDir) {
   } catch (e) {}
   // build file list from target dir
   const filePaths = await getFileListDeep(targetDir)
-  const relativeFilePaths = filePaths.map(filePath => filePath.replace(targetDir, ''))
-
   const contents = gdrPath.endsWith('.grdp')
     ? getGrdpString(filePaths)
-    : getGrdString(name, idPrefix, relativeFilePaths)
+    : getGrdString(name, filePaths)
   await fs.writeFile(gdrPath, contents, { encoding: 'utf8' })
 }
 

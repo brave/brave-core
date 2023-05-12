@@ -70,19 +70,20 @@ brave_common_web_compile_inputs = [
 #       - resource ID (e.g. `IDR_RESOURCENAME_MYFILE_JS`)
 #   output_dir
 #     Optional custom path for compiled output
-#   extra_relative_path
-#     Extension resource files need to have the same relative path prefix
-#     in their GRD as the manifest.json in its (separate) GRD file
-#     So we offer an option to put a folder structure in between the GRD
-#     and the output directories so that the resource is stored as, e.g.
-#     extra/relative/path/myFile.js
+#   generate_grdp
+#     Optionally generate a Grit Part file instead of a grit file.
+#   resource_path_prefix
+#     Sometimes, as with extensions, it is desirable to specify a prefix which
+#     is used to import files. For example, the path prefix brave/foo means that
+#     to import subfolder/myFile.js you would write
+#       import('brave/foo/subfolder/myFile.js')
 #   public_asset_path
 #     Support a different URL path to access generated resources at.
 #     The default is '/' and we'll want to keep that most of the time,
-#     but if we're specifying extra_relative_path then normally a portion of
+#     but if we're specifying resource_path_prefix then normally a portion of
 #     that will need to be involved in the public_asset_path.
 #     For extensions, this is the relative path from where the manifest is to
-#     where the extra_relative_path ends.
+#     where the resource_path_prefix ends.
 #   webpack_aliases
 #     Support for web pack aliases that directly passed to webpack config.
 template("transpile_web_ui") {
@@ -171,10 +172,6 @@ template("transpile_web_ui") {
       foreach(alias, invoker.extra_modules) {
         args += [ "--extra_modules=" + alias ]
       }
-    }
-
-    if (defined(invoker.extra_relative_path)) {
-      args += [ "--extra_relative_path=" + invoker.extra_relative_path ]
     }
 
     if (defined(invoker.public_asset_path)) {
