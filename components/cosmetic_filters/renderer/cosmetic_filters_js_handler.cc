@@ -359,6 +359,7 @@ bool CosmeticFiltersJSHandler::ProcessURL(
   }
 
   enabled_1st_party_cf_ =
+      force_cosmetic_filtering ||
       render_frame_->GetWebFrame()->IsCrossOriginToOutermostMainFrame() ||
       content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
 

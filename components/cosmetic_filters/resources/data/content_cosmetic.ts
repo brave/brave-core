@@ -545,14 +545,11 @@ const pumpCosmeticFilterQueues = () => {
       // anything, leave the selector as "hiding" and move on.
       // This element will likely be checked again on the next 'pump'
       // as long as another element from the selector does not match 1st party.
-      if (!elmSubtreeIsFirstParty) {
-        continue
-      }
-
-      // If the subtree doesn't have a significant amount of text (e.g., it
-      // just says "Advertisement"), then no need to change anything; it should
-      // stay hidden.
-      if (!showsSignificantText(aMatchingElm)) {
+      //
+      // Also, if the subtree doesn't have a significant amount of text (e.g.,
+      // it just says "Advertisement"), then no need to change anything; it
+      // should stay hidden.
+      if (!(elmSubtreeIsFirstParty || showsSignificantText(aMatchingElm))) {
         continue
       }
 
