@@ -9,6 +9,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
+#include "base/test/gtest_util.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
@@ -405,6 +406,15 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnexpectedErrorResponse) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
+TEST_F(SimulationServiceUnitTest, ScanEVMTransactionNullParams) {
+  base::MockCallback<mojom::SimulationService::ScanEVMTransactionCallback>
+      callback;
+  EXPECT_DCHECK_DEATH(simulation_service_->ScanEVMTransaction(nullptr, "en-US",
+                                                              callback.Get()));
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
   SetInterceptor(R"(
     {
@@ -586,6 +596,15 @@ TEST_F(SimulationServiceUnitTest,
   simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
                                              callback.Get());
 
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionNullParams) {
+  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
+      callback;
+  EXPECT_DCHECK_DEATH(simulation_service_->ScanSolanaTransaction(
+      nullptr, "en-US", callback.Get()));
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }

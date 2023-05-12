@@ -247,6 +247,11 @@ TEST(SimulationRequestHelperUnitTest,
 }
 
 TEST(SimulationRequestHelperUnitTest,
+     EncodeScanTransactionParamsEVMNullParams) {
+  EXPECT_DCHECK_DEATH(evm::EncodeScanTransactionParams(nullptr));
+}
+
+TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaTransactionInfoDefaultOrigin) {
   auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
@@ -411,6 +416,11 @@ TEST(SimulationRequestHelperUnitTest,
 
   // KO: Invalid tx data is not encoded.
   EXPECT_FALSE(encoded_params);
+}
+
+TEST(SimulationRequestHelperUnitTest,
+     EncodeScanTransactionParamsSolanaNullParams) {
+  EXPECT_DCHECK_DEATH(solana::EncodeScanTransactionParams(nullptr));
 }
 
 }  // namespace brave_wallet

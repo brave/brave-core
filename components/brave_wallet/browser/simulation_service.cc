@@ -182,6 +182,8 @@ void SimulationService::ScanSolanaTransaction(
     mojom::SolanaTransactionRequestUnionPtr request,
     const std::string& language,
     ScanSolanaTransactionCallback callback) {
+  DCHECK(request);
+
   std::string chain_id;
   if (request->is_transaction_info()) {
     chain_id = request->get_transaction_info()->chain_id;
@@ -254,6 +256,8 @@ void SimulationService::ScanEVMTransaction(
     mojom::TransactionInfoPtr tx_info,
     const std::string& language,
     ScanEVMTransactionCallback callback) {
+  DCHECK(tx_info);
+
   const auto chain_id = tx_info->chain_id;
 
   if (!HasTransactionScanSupportInternal(chain_id, mojom::CoinType::ETH)) {
