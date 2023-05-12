@@ -51,7 +51,7 @@ import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { getCoinFromTxDataUnion } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
-import { useAssets, useHasAccount, usePrevNetwork, useBalanceUpdater } from '../common/hooks'
+import { useAssets, useHasAccount, useBalanceUpdater } from '../common/hooks'
 import { findTransactionAccount, isSolanaTransaction } from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
@@ -134,8 +134,6 @@ function Container () {
   useBalanceUpdater()
 
   const { needsAccount } = useHasAccount()
-
-  const { prevNetwork } = usePrevNetwork()
 
   const unlockWallet = (password: string) => {
     dispatch(WalletActions.unlockWallet({ password }))
@@ -710,12 +708,12 @@ function Container () {
     )
   }
 
-  if (selectedPanel === 'createAccount') {
+  if (selectedPanel === 'createAccount' && selectedNetwork) {
     return (
       <WelcomePanelWrapper>
         <LongWrapper>
           <CreateAccountTab
-            prevNetwork={prevNetwork}
+            network={selectedNetwork}
             isPanel={true}
           />
         </LongWrapper>

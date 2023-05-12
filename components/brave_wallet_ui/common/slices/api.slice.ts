@@ -492,7 +492,7 @@ export function createWalletApi (
       'WalletInfo',
       'NftDiscoveryEnabledStatus'
     ],
-    endpoints: ({ mutation, query }) => ({
+    endpoints: ({ mutation, query }) => { return {
       //
       // Account Info
       //
@@ -2952,7 +2952,7 @@ export function createWalletApi (
         },
         invalidatesTags: ['NftDiscoveryEnabledStatus']
       })
-    })
+    }}
   })
   return walletApi
 }

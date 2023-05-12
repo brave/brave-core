@@ -31,7 +31,6 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
-import { usePrevNetwork } from '../../../common/hooks'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 import {
   useGetMainnetsQuery,
@@ -81,7 +80,6 @@ export const DepositFundsScreen = () => {
   const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
 
   // custom hooks
-  const { prevNetwork } = usePrevNetwork()
   const { copyToClipboard, isCopied, resetCopyState } = useCopyToClipboard()
   const scrollIntoView = useScrollIntoView()
 
@@ -128,9 +126,10 @@ export const DepositFundsScreen = () => {
       : []
   }, [selectedAssetNetwork, accounts])
 
-  const needsAccount: boolean = React.useMemo(() => {
-    return !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
-  }, [selectedAsset, accountsForSelectedAssetNetwork.length])
+  const needsAccount =
+    !!selectedAsset &&
+    !!selectedAssetNetwork &&
+    accountsForSelectedAssetNetwork.length < 1
 
   const accountListSearchResults: WalletAccountType[] = React.useMemo(() => {
     if (accountSearchText === '') {
@@ -351,7 +350,6 @@ export const DepositFundsScreen = () => {
       {needsAccount && showDepositAddress &&
         <CreateAccountTab
           network={selectedAssetNetwork}
-          prevNetwork={prevNetwork}
           onCancel={goBackToSelectAssets}
         />
       }

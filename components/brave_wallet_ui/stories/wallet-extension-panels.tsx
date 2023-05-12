@@ -951,7 +951,7 @@ export const _CreateAccount = () => {
     <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
       <StyledCreateAccountPanel>
         <CreateAccountTab
-          prevNetwork={mockNetworks[0]}
+          network={mockNetworks[0]}
         />
       </StyledCreateAccountPanel>
     </Provider>

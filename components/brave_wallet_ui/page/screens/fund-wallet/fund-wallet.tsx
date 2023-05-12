@@ -27,7 +27,6 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-option/select-buy-option'
 
 // hooks
-import { usePrevNetwork } from '../../../common/hooks/previous-network'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
@@ -76,7 +75,6 @@ export const FundWalletScreen = () => {
     })
 
   // custom hooks
-  const { prevNetwork } = usePrevNetwork()
   const {
     allAssetOptions: allBuyAssetOptions,
     buyAmount,
@@ -121,7 +119,9 @@ export const FundWalletScreen = () => {
   }, [selectedAssetNetwork, accounts])
 
   const needsAccount: boolean =
-    !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
+    !!selectedAsset &&
+    !!selectedAssetNetwork &&
+    accountsForSelectedAssetNetwork.length < 1
 
   const accountListSearchResults: WalletAccountType[] = React.useMemo(() => {
     if (accountSearchText === '') {
@@ -343,10 +343,9 @@ export const FundWalletScreen = () => {
       }
 
       {/* Creates wallet Account if needed */}
-      {needsAccount && showBuyOptions &&
+      {needsAccount && showBuyOptions && selectedAssetNetwork &&
         <CreateAccountTab
           network={selectedAssetNetwork}
-          prevNetwork={prevNetwork}
           onCancel={goBackToSelectAssets}
         />
       }
