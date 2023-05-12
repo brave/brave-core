@@ -156,7 +156,7 @@ export const NftScreen = (props: Props) => {
       default:
         return getLocale('braveWalletNFTDetailsNotAvailable')
     }
-  }, [currentNftPinningStatus])
+  }, [currentNftPinningStatus?.code])
 
   const tokenId = React.useMemo(
     () =>
