@@ -120,10 +120,9 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    static void getKeyringInfos(KeyringService keyringService, String[] keyrings, Callbacks.Callback1<KeyringInfo[]> callback) {
-        keyringService.getKeyringsInfo(keyrings, keyringInfos -> {
-            callback.call(keyringInfos);
-        });
+    static void getKeyringInfos(KeyringService keyringService, String[] keyrings,
+            Callbacks.Callback1<KeyringInfo[]> callback) {
+        keyringService.getKeyringsInfo(keyrings, keyringInfos -> { callback.call(keyringInfos); });
     }
 
     private void update(int coinType, String chainId) {
