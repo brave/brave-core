@@ -50,6 +50,7 @@ absl::optional<std::string> EncodeJupiterTransactionParams(
             base::NumberToString(params->route->other_amount_threshold));
   route.Set("swapMode", params->route->swap_mode);
   route.Set("priceImpactPct", params->route->price_impact_pct);
+  route.Set("slippageBps", base::NumberToString(params->route->slippage_bps));
 
   base::Value::List market_infos_value;
   for (const auto& market_info : params->route->market_infos) {
@@ -97,6 +98,8 @@ absl::optional<std::string> EncodeJupiterTransactionParams(
       json::convert_string_value_to_uint64("/route/amount", result, false));
   result = std::string(json::convert_string_value_to_uint64(
       "/route/otherAmountThreshold", result, false));
+  result = std::string(json::convert_string_value_to_uint64(
+      "/route/slippageBps", result, false));
 
   for (int i = 0; i < static_cast<int>(params->route->market_infos.size());
        i++) {
