@@ -264,6 +264,48 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
 mojom::EVMSimulationResponsePtr ParseSimulationResponse(
     const base::Value& json_value) {
+  // {
+  //   "action": "NONE",
+  //   "warnings": [],
+  //   "simulationResults": {
+  //     "error": null,
+  //     "gas": {
+  //       "gasLimit": null
+  //     },
+  //     "expectedStateChanges": [
+  //       {
+  //         "humanReadableDiff": "Send 1 ETH",
+  //         "rawInfo": {
+  //           "kind": "NATIVE_ASSET_TRANSFER",
+  //           "data": {
+  //             "amount": {
+  //               "after": "1182957389356504134754",
+  //               "before": "1183957389356504134754"
+  //             },
+  //             "contract": {
+  //               "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  //               "kind": "ACCOUNT"
+  //             },
+  //             "asset": {
+  //               "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  //               "symbol": "ETH",
+  //               "name": "Ether",
+  //               "decimals": 18,
+  //               "verified": true,
+  //               "imageUrl":
+  //               "https://d1ts37qlq4uz4s.cloudfront.net/evm__evm%3A%3Aethereum__evm%3A%3Aethereum%3A%3Amainnet__0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+  //               "price": {
+  //                 "source": "Coingecko",
+  //                 "updatedAt": 1681958792,
+  //                 "dollarValuePerToken": 1945.92
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     ]
+  //   }
+  // }
   if (!json_value.is_dict()) {
     return nullptr;
   }
@@ -475,6 +517,49 @@ mojom::BlowfishSolanaStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
 mojom::SolanaSimulationResponsePtr ParseSimulationResponse(
     const base::Value& json_value) {
+  // {
+  //   "status": "CHECKS_PASSED",
+  //   "action": "NONE",
+  //   "warnings": [],
+  //   "simulationResults": {
+  //     "isRecentBlockhashExpired": false,
+  //     "expectedStateChanges": [
+  //       {
+  //         "humanReadableDiff": "Send 2 USDT",
+  //         "suggestedColor": "DEBIT",
+  //         "rawInfo": {
+  //           "kind": "SPL_TRANSFER",
+  //           "data": {
+  //             "symbol": "USDT",
+  //             "name": "USDT",
+  //             "mint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+  //             "decimals": 6,
+  //             "supply": 1000000000,
+  //             "metaplexTokenStandard": "unknown",
+  //             "assetPrice": {
+  //               "source": "Coingecko",
+  //               "last_updated_at": 1679331222,
+  //               "dollar_value_per_token": 0.99
+  //             },
+  //             "diff": {
+  //               "sign": "MINUS",
+  //               "digits": 2000000
+  //             }
+  //           }
+  //         }
+  //       }
+  //     ],
+  //     "error": null,
+  //     "raw": {
+  //       "err": null,
+  //       "logs": [],
+  //       "accounts": [],
+  //       "returnData": null,
+  //       "unitsConsumed": 148013
+  //     }
+  //   }
+  // }
+
   if (!json_value.is_dict()) {
     return nullptr;
   }
