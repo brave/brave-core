@@ -28,15 +28,10 @@ bool BraveTabRequestedOffTheRecord(content::WebContents* web_contents) {
   return false;
 }
 
-bool BraveOTRDummyFunctionAlwaysFalse() {
-  return false;
-}
-
 }  // namespace
 
-#define IsOffTheRecord                                                 \
-  IsOffTheRecord() || BraveTabRequestedOffTheRecord(web_contents()) || \
-      BraveOTRDummyFunctionAlwaysFalse
+#define IsOffTheRecord() \
+  IsOffTheRecord() || BraveTabRequestedOffTheRecord(web_contents())
 
 #endif
 
