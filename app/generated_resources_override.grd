@@ -881,15 +881,18 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         </if>
 
+      <if expr="is_win or is_macosx or is_linux">
+        </if>
+
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
         </if>
       <if expr="chromeos_lacros">
         </if>
-
       <if expr="chromeos_lacros">
         </if>
+
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -1184,7 +1187,15 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-      </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+    </if>
     <if expr="is_android">
       </if>
   </messages>

@@ -2951,6 +2951,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_PRINTER" desc="In CUPS printing settings subpage, text for the link adding a new CUPS printer.">
     Add printer
   </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_PRINTER_MANUALLY" desc="In CUPS printing settings subpage, text for the link adding a new CUPS printer." translateable="false">
+    Add printer manually
+  </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_DETECTED_OR_NEW_PRINTER" desc="In CUPS printing settings subpage, explanatory text for the nearby printers list.">
     Save detected printers to your profile, or add a new printer. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
@@ -3022,6 +3025,12 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_SAVED_PRINTERS_COUNT_NONE" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them they have no printers previously saved.">
     You have no saved printers.
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_HELP_SECTION_TITLE" desc="In CUPS printing settings subpage, this title helps users when their local printer is not shown on the page." translateable="false">
+    Don't see your printers below?
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_HELP_SECTION_DESCRIPTION" desc="In CUPS printing settings subpage, this description helps users when trying to connect to a local printer." translateable="false">
+    Make sure your printer is connected to the same Wi-Fi network as your Chromebook or via a USB cable. For more help, check compatibility and help information.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_SHOW_MORE" desc="Text for the button to show more printers when there are more printers than currently displayed to the user.">
     Show more
@@ -3787,6 +3796,15 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_DEVICE_INFO_A11Y_LABEL_EID_AND_IMEI" desc="A11y label for the network device info popup dialog that's read out when both EID and IMEI is displayed.">
     Your device EID is <ph name="EID_NUMBER">$1<ex>123456789</ex></ph> and device IMEI is <ph name="IMEI_NUMBER">$1<ex>123456789</ex></ph>. These numbers can be used to help activate service.
   </message>
+  <message name="IDS_SETTINGS_INTERNET_PASSPOINT_DETAILS" desc="Name of the settings page which displays details about Passpoint.">
+    Passpoint provider details
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_PASSPOINT_SECTION_LABEL" desc="Label of the section that contains the list of Passpoint subscriptions.">
+    Passpoint subscriptions
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_PASSPOINT_PROVIDER_LABEL" desc="Label of the link to the Passpoint provider details page.">
+    Passpoint provider
+  </message>
 
   <!-- Users Page (OS Settings) -->
   <message name="IDS_SETTINGS_USERS_MODIFIED_BY_OWNER_LABEL" desc="Label saying settings may only be modified by the device owner.">
@@ -4295,7 +4313,10 @@ Press an assigned switch or key to remove assignment.
     Failed to parse configuration
   </message>
   <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_TOO_MANY_NESTED_GROUPS" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that contains too many nested groups. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
-    Too many nested groups: <ph name="ERROR_LINE">$1<ex>[appdefaults]</ex></ph>
+    Too many nested groups: <ph name="ERROR_LINE">$1<ex>A{ (after many opening curly braces that haven't been closed yet)</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_LINE_TOO_LONG" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that contains a line that is too long. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+    Line is too long: <ph name="ERROR_LINE">$1<ex># A very long comment line...</ex></ph>
   </message>
   <message name="IDS_SETTINGS_ADD_KERBEROS_ACCOUNT_REFRESH_BUTTON_LABEL" desc="Label of the action button on the 'Refresh a Kerberos tickets' dialog.">
     Refresh
@@ -4808,34 +4829,37 @@ Press an assigned switch or key to remove assignment.
     Built-in Keyboard
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_REMAP_KEYS_ROW_LABEL" desc="In per-device keyboard Settings, the label of the Remap Keyboard Keys row.">
-    Remap keyboard keys
+    Customize keyboard keys
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_REMAP_KEYS_ROW_SUB_LABEL" desc="Sub-label with number of remapped keys for the Remap Keyboard Keys row.">
     {COUNT, plural,
-     =0 {No keys remapped}
-     =1 {1 remapped key}
-     other {{COUNT} remapped keys}}
+     =0 {No keys customized}
+     =1 {1 customized key}
+     other {{COUNT} customized keys}}
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_REMAP_KEYS_DESCRIPTION" desc="In Keyboard remap keys subpage, the description label above remapping keys to describe the actions user can perform.">
-    For each key listed below, choose the action you want it to perform
+    For <ph name="DEVICE_NAME">$1<ex>Internal Keyboard</ex></ph>, choose an action for each key
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_SEND_INVERTED_FUNCTION_KEYS" desc="In Device Settings, the inverted checkbox label for interpreting the top-row keys as function keys instead.">
-    Convert F keys to ChromeOS top-row keys
+    Use function keys as Chromebook top row keys
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_SEND_INVERTED_FUNCTION_KEYS_DESCRIPTION" desc="In Device Settings, the inverted label describing how to use the top-row keys' original actions when they are set to behave like function keys.">
-    Change the behavior of F keys to ChromeOS top-row actions
+    F keys will now have the behavior as your Chromebook top row keys.
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_BLOCK_META_FUNCTION_KEY_REWRITES" desc="In Device Settings, the checkbox label to enable the meta key to switch the behavior of the top-row keys.">
-    Enable System/Launcher key to switch the behavior of the top-row keys
+    Use the launcher key to change behavior of Chromebook top row keys
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_BLOCK_META_FUNCTION_KEY_REWRITES_DESCRIPTION" desc="In Device Settings, the label describing how to use the meta key to switch the behavior of the top-row keys.">
-    Hold the key to switch between F keys and ChromeOS actions
+    Hold the launcher key to change between the function keys
   </message>
-  <message name="IDS_SETTINGS_KEYBOARD_REMAP_RESTORE_BUTTON_LABEL" desc="In Keyboard remap keys subpage, the restore defaults button label.">
-    Restore defaults
+  <message name="IDS_SETTINGS_KEYBOARD_REMAP_RESTORE_BUTTON_LABEL" desc="In Keyboard remap keys subpage, the reset keys button label.">
+    Reset keys
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_NO_KEYBOARDS_HELP_MESSAGE" desc="In Keyboard remap keys subpage, the message that notifies users that no keyboards are connected.">
-    No keyboard detected
+    No keyboard connected
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_VIEW_AND_CUSTOMIZE_SHORTCUTS" desc="The link to view and customize the keyboard shortut.">
+    View and customize keyboard shortcuts
   </message>
   <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_LEFT_ALT" desc="In keyboard remap keys subpage, the label and dropdown list item for the Alt key.">
     alt
@@ -4912,10 +4936,10 @@ Press an assigned switch or key to remove assignment.
     Treat top-row keys as function keys
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_AUTO_REPEAT_ENABLE" desc="The checkbox label for enabling keyboard auto-repeat.">
-    Repeat key press
+    Press and hold to automatically repeat the key
   </message>
     <message name="IDS_SETTINGS_KEYBOARD_AUTO_REPEAT_ENABLE_SUB_LABEL" desc="The checkbox label for enabling keyboard auto-repeat.">
-If you hold down a key, the key’s character will repeat
+    If you hold down a key, the key's character will repeat
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_AUTO_REPEAT_DELAY" desc="The label for the slider for the delay before auto-repeat begins. The delay is the amount of time a key must be held down before auto-repeating begins.">
     Delay before repeat
