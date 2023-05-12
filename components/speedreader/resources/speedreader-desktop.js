@@ -48,9 +48,9 @@ const defaultSpeedreaderData = {
 const extractText = () => {
     return {
         title: document.title,
-        author: $(metaDataDivId).querySelector('.author').textContent,
-        desciption: $(metaDataDivId).querySelector('.subhead').textContent,
-        content: $(contentDivId).innerText.replace(/\n|\r +/g, ' ')
+        author: $(metaDataDivId)?.querySelector('.author')?.textContent,
+        desciption: $(metaDataDivId)?.querySelector('.subhead')?.textContent,
+        content: $(contentDivId)?.innerText.replace(/\n|\r +/g, ' ')
     }
 }
 
