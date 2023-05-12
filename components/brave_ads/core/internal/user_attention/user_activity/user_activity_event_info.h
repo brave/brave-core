@@ -13,6 +13,7 @@
 namespace brave_ads {
 
 struct UserActivityEventInfo final {
+  int32_t id;
   UserActivityEventType type;
   base::Time created_at;
 };

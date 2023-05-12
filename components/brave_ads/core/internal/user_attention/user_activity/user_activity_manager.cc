@@ -61,8 +61,10 @@ UserActivityManager& UserActivityManager::GetInstance() {
   return GlobalState::GetInstance()->GetUserActivityManager();
 }
 
-void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
+void UserActivityManager::RecordEvent(const UserActivityEventType event_type,
+                                      const int32_t id) {
   UserActivityEventInfo user_activity_event;
+  user_activity_event.id = id;
   user_activity_event.type = event_type;
   user_activity_event.created_at = base::Time::Now();
 
@@ -159,8 +161,8 @@ void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
   RecordEvent(UserActivityEventType::kOpenedNewTab);
 }
 
-void UserActivityManager::OnDidCloseTab(const int32_t /*id*/) {
-  RecordEvent(UserActivityEventType::kClosedTab);
+void UserActivityManager::OnDidCloseTab(const int32_t id) {
+  RecordEvent(UserActivityEventType::kClosedTab, id);
 }
 
 void UserActivityManager::OnTabDidStartPlayingMedia(const int32_t /*id*/) {

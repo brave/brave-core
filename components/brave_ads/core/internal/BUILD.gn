@@ -788,6 +788,8 @@ source_set("internal") {
     "fl/predictors/predictors_manager.h",
     "fl/predictors/variables/average_clickthrough_rate_predictor_variable.cc",
     "fl/predictors/variables/average_clickthrough_rate_predictor_variable.h",
+    "fl/predictors/variables/average_tab_lifespan_predictor_variable.cc",
+    "fl/predictors/variables/average_tab_lifespan_predictor_variable.h",
     "fl/predictors/variables/last_notification_ad_was_clicked_predictor_variable.cc",
     "fl/predictors/variables/last_notification_ad_was_clicked_predictor_variable.h",
     "fl/predictors/variables/notification_ad_event_predictor_variable.cc",

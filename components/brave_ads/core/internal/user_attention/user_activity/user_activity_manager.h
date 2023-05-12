@@ -39,7 +39,7 @@ class UserActivityManager final : public AdsClientNotifierObserver,
 
   static UserActivityManager& GetInstance();
 
-  void RecordEvent(UserActivityEventType event_type);
+  void RecordEvent(UserActivityEventType event_type, int32_t id = -1);
 
   UserActivityEventList GetHistoryForTimeWindow(
       base::TimeDelta time_window) const;

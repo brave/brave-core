@@ -12,6 +12,8 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"
 
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/average_tab_lifespan_predictor_variable.h"
+
 namespace brave_ads {
 
 TabManager::TabManager() {
@@ -123,7 +125,18 @@ void TabManager::NotifyHtmlContentDidChange(
 }
 
 void TabManager::NotifyDidCloseTab(const int32_t id) const {
-  for (TabManagerObserver& observer : observers_) {
+
+  BLOG(2, "Tab id " << id << " closed start");
+  std::unique_ptr<PredictorVariableInterface> predictor_variable =
+      std::make_unique<AverageTabLifespanPredictorVariable>(
+          UserActivityEventType::kOpenedNewTab,
+          brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
+  const std::string value = predictor_variable->GetValue();
+  BLOG(2, value);
+  BLOG(2, "Tab id " << id << " closed stop");
+
+  //
+  for (TabManagerObserver &observer : observers_) {
     observer.OnDidCloseTab(id);
   }
 }
