@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -86,10 +87,10 @@ constexpr char kEthErrorFetchingBalanceResult[] =
 
 }  // namespace
 
-class TestBraveWalletServiceObserverForAssetDiscovery
+class TestBraveWalletServiceObserverForAssetDiscoveryTask
     : public brave_wallet::BraveWalletServiceObserverBase {
  public:
-  TestBraveWalletServiceObserverForAssetDiscovery() = default;
+  TestBraveWalletServiceObserverForAssetDiscoveryTask() = default;
 
   void OnDiscoverAssetsStarted() override {
     on_discover_assets_started_fired_ = true;
@@ -103,7 +104,9 @@ class TestBraveWalletServiceObserverForAssetDiscovery
                 discovered_assets[i]->contract_address);
     }
     on_discover_assets_completed_fired_ = true;
-    run_loop_asset_discovery_->Quit();
+    if (run_loop_asset_discovery_) {
+      run_loop_asset_discovery_->Quit();
+    }
   }
 
   void WaitForOnDiscoverAssetsCompleted(
@@ -182,7 +185,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
         api_request_helper_.get(), wallet_service_.get(), json_rpc_service_,
         GetPrefs());
     wallet_service_observer_ =
-        std::make_unique<TestBraveWalletServiceObserverForAssetDiscovery>();
+        std::make_unique<TestBraveWalletServiceObserverForAssetDiscoveryTask>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());
   }
 
@@ -409,7 +412,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
 
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscovery>
+  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryTask>
       wallet_service_observer_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;

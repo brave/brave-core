@@ -219,6 +219,9 @@ class TestBraveWalletServiceObserver
 
   void OnNetworkListChanged() override { network_list_changed_fired_ = true; }
 
+  MOCK_METHOD1(OnDiscoverAssetsCompleted,
+               void(std::vector<mojom::BlockchainTokenPtr>));
+
   mojom::DefaultWallet GetDefaultEthereumWallet() {
     return default_ethereum_wallet_;
   }
@@ -2575,12 +2578,20 @@ TEST_F(BraveWalletServiceUnitTest, SetNftDiscoveryEnabled) {
   // Default should be off
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 
-  // Should be able to set to true
+  // Setting NFT discovery enabled should update the pref and trigger asset
+  // discovery
+  EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(1);
   service_->SetNftDiscoveryEnabled(true);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer_));
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 
-  // And then back to false
+  // Unsetting NFT discovery enabled should update the pref and not trigger
+  // asset discovery
+  EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(0);
   service_->SetNftDiscoveryEnabled(false);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer_));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 }
 

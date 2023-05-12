@@ -295,6 +295,7 @@ class BraveWalletService : public KeyedService,
   void OnDefaultBaseCurrencyChanged();
   void OnDefaultBaseCryptocurrencyChanged();
   void OnNetworkListChanged();
+  void OnBraveWalletNftDiscoveryEnabled();
 
   static absl::optional<std::string> GetChecksumAddress(
       const std::string& contract_address,
@@ -328,6 +329,7 @@ class BraveWalletService : public KeyedService,
   void CancelAllSignAllTransactionsCallbacks();
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
+  void DiscoverAssetsOnAllSupportedChains(bool bypass_rate_limit);
 
   base::OnceClosure sign_tx_request_added_cb_for_testing_;
   base::OnceClosure sign_all_txs_request_added_cb_for_testing_;
