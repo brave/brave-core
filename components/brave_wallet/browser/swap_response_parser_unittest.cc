@@ -32,9 +32,9 @@ const char* GetJupiterQuoteTemplate() {
           "outAmount": "261273",
           "amount": "10000",
           "otherAmountThreshold": "258660",
-          "outAmountWithSlippage": "258660",
           "swapMode": "ExactIn",
           "priceImpactPct": "0.008955716118219659",
+          "slippageBps": "50",
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -49,7 +49,7 @@ const char* GetJupiterQuoteTemplate() {
                 "amount": "%s",
                 "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                 "pct": "0.003"
-			  },
+              },
               "platformFee": {
                 "amount": "0",
                 "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
@@ -72,9 +72,9 @@ const char* GetJupiterQuoteTemplateForPriceImpact() {
           "outAmount": "261273",
           "amount": "10000",
           "otherAmountThreshold": "258660",
-          "outAmountWithSlippage": "258660",
           "swapMode": "ExactIn",
           "priceImpactPct": %s,
+          "slippageBps": "50",
           "marketInfos": [
             {
               "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
@@ -89,7 +89,7 @@ const char* GetJupiterQuoteTemplateForPriceImpact() {
                 "amount": "10000",
                 "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
                 "pct": "0.003"
-			  },
+              },
               "platformFee": {
                 "amount": "0",
                 "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
@@ -262,6 +262,7 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
   ASSERT_EQ(swap_quote->routes.at(0)->other_amount_threshold, 258660ULL);
   ASSERT_EQ(swap_quote->routes.at(0)->swap_mode, "ExactIn");
   ASSERT_EQ(swap_quote->routes.at(0)->price_impact_pct, 0.008955716118219659);
+  ASSERT_EQ(swap_quote->routes.at(0)->slippage_bps, 50);
   ASSERT_EQ(swap_quote->routes.at(0)->market_infos.size(), 1UL);
   ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->id,
             "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK");
@@ -325,6 +326,39 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
   ASSERT_FALSE(swap_quote);
 }
 
+TEST(SwapResponseParserUnitTest, ParseJupiterQuoteSlippageBps) {
+  auto* json_fmt(R"(
+    {
+      "data": [
+        {
+          "inAmount": "10000",
+          "outAmount": "261273",
+          "amount": "10000",
+          "otherAmountThreshold": "258660",
+          "swapMode": "ExactIn",
+          "priceImpactPct": "1.1",
+          "slippageBps": %s,
+          "marketInfos": []
+        }
+      ],
+      "timeTaken": "0.044471802000089156"
+    })");
+
+  // OK: valid slippageBps value
+  std::string json = base::StringPrintf(json_fmt, "\"50\"");
+  mojom::JupiterQuotePtr swap_quote = ParseJupiterQuote(ParseJson(json));
+  ASSERT_TRUE(swap_quote);
+  EXPECT_EQ(swap_quote->routes.at(0)->slippage_bps, 50);
+
+  // KO: null slippageBps value
+  json = base::StringPrintf(json_fmt, "null");
+  ASSERT_FALSE(ParseJupiterQuote(ParseJson(json)));
+
+  // KO: non-integer slippageBps value
+  json = base::StringPrintf(json_fmt, "\"50.55\"");
+  ASSERT_FALSE(ParseJupiterQuote(ParseJson(json)));
+}
+
 TEST(SwapResponseParserUnitTest, ParseJupiterQuotePriceImpact) {
   auto* json_template = GetJupiterQuoteTemplateForPriceImpact();
   std::string json = base::StringPrintf(json_template, "\"1.1\"", "\"1.1\"");
@@ -353,16 +387,12 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuotePriceImpact) {
 TEST(SwapResponseParserUnitTest, ParseJupiterSwapTransactions) {
   std::string json(R"(
     {
-      "setupTransaction": "setup",
-      "swapTransaction": "swap",
-      "cleanupTransaction": "cleanup"
+      "swapTransaction": "swap"
     })");
 
-  auto swap_transactions = ParseJupiterSwapTransactions(ParseJson(json));
-  ASSERT_TRUE(swap_transactions);
-  ASSERT_EQ(swap_transactions->setup_transaction, "setup");
-  ASSERT_EQ(swap_transactions->swap_transaction, "swap");
-  ASSERT_EQ(swap_transactions->cleanup_transaction, "cleanup");
+  auto transactions = ParseJupiterSwapTransactions(ParseJson(json));
+  ASSERT_TRUE(transactions);
+  ASSERT_EQ(transactions->swap_transaction, "swap");
 
   ASSERT_FALSE(ParseJupiterSwapTransactions(base::Value()));
   ASSERT_FALSE(ParseJupiterSwapTransactions(ParseJson(R"({"foo": "bar"})")));
