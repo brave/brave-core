@@ -17,7 +17,6 @@ class AverageTabLifespanPredictorVariable final
     : public PredictorVariableInterface {
 public:
   AverageTabLifespanPredictorVariable(
-      UserActivityEventType event_type,
       brave_federated::mojom::CovariateType predictor_type);
 
   // PredictorVariableInterface:
@@ -26,7 +25,6 @@ public:
   std::string GetValue() const override;
 
 private:
-  const UserActivityEventType event_type_;
   const brave_federated::mojom::CovariateType predictor_type_;
 };
 

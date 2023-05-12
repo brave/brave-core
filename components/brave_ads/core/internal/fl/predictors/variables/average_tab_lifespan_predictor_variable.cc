@@ -16,9 +16,8 @@
 namespace brave_ads {
 
 AverageTabLifespanPredictorVariable::AverageTabLifespanPredictorVariable(
-    UserActivityEventType event_type,
     brave_federated::mojom::CovariateType predictor_type)
-    : event_type_(event_type), predictor_type_(predictor_type) {}
+    : predictor_type_(predictor_type) {}
 
 brave_federated::mojom::DataType
 AverageTabLifespanPredictorVariable::GetDataType() const {
@@ -35,34 +34,39 @@ std::string AverageTabLifespanPredictorVariable::GetValue() const {
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(120)); // make this window longer
 
-  //
-  std::map<std::string, base::Time> tab_openings;
-  std::map<std::string, base::Time> tab_closings;
+  std::map<int32_t, base::Time> tab_openings;
+  std::map<int32_t, base::Time> tab_closings;
   for (const auto &event : events) {
     if (event.type == UserActivityEventType::kOpenedNewTab) {
-      tab_openings["hi"] = event.created_at;
+      tab_openings[event.id] = event.created_at;
       BLOG(2, "opening found");
       BLOG(2, event.id);
     }
     if (event.type == UserActivityEventType::kClosedTab) {
-      tab_closings["hi"] = event.created_at;
+      tab_closings[event.id] = event.created_at;
       BLOG(2, "closing found");
       BLOG(2, event.id);
     }
   }
 
-  base::Time opening;
-  const auto iter = tab_openings.find("hi");
-  if (iter == tab_openings.end()) {
-    BLOG(2, "no opening recorded");
-  } else {
-    opening = iter->second;
+  std::map<int32_t, base::TimeDelta> tab_lifespans;
+  for (auto iter_opening : tab_openings) {
+    const auto iter_closing = tab_closings.find(iter_opening.first);
+    if (!(iter_closing == tab_closings.end())) {
+      tab_lifespans[iter_opening.first] =
+          iter_closing->second - iter_opening.second;
+    }
   }
-  BLOG(2, opening);
-  //
 
-  return base::NumberToString(
-      GetNumberOfUserActivityEvents(events, event_type_));
+  double count_tabs = 0.0;
+  double total_lifespan = 0.0;
+  for (auto iter : tab_lifespans) {
+    count_tabs += 1;
+    total_lifespan += iter.second.InSecondsF();
+  }
+
+  const double average_lifespan = total_lifespan / count_tabs;
+  return base::NumberToString(average_lifespan);
 }
 
 } // namespace brave_ads

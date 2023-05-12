@@ -157,8 +157,8 @@ void UserActivityManager::OnTabDidChange(const TabInfo& /*tab*/) {
   RecordEvent(UserActivityEventType::kTabUpdated);
 }
 
-void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
-  RecordEvent(UserActivityEventType::kOpenedNewTab);
+void UserActivityManager::OnDidOpenNewTab(const TabInfo &tab) {
+  RecordEvent(UserActivityEventType::kOpenedNewTab, tab.id);
 }
 
 void UserActivityManager::OnDidCloseTab(const int32_t id) {
