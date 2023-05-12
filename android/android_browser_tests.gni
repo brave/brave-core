@@ -140,7 +140,6 @@ android_only_test_sources = [
 
 android_only_test_deps = [
   ":test_support",
-  "//android_webview/common",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
   "//chrome:chrome_android_core",
   "//chrome/android:app_hooks_java",

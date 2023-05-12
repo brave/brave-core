@@ -1,0 +1,12 @@
+diff --git a/chrome/android/trichrome.gni b/chrome/android/trichrome.gni
+index a43482435df77e392b915eb08a3b2ba69ca6c497..e4253b707344d55c0a48083d2450d6f2182ede7e 100644
+--- a/chrome/android/trichrome.gni
++++ b/chrome/android/trichrome.gni
+@@ -99,6 +99,7 @@ template("trichrome_library_apk_tmpl") {
+       "//android_webview/nonembedded:icon_resources",
+       "//third_party/icu:icu_assets",
+     ]
++    deps -= [ "//android_webview/nonembedded:icon_resources", ]
+     if (_include_primary_abi) {
+       deps += [ "//gin:v8_snapshot_assets" ]
+     } else {

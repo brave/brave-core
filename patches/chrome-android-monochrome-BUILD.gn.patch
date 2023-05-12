@@ -1,0 +1,12 @@
+diff --git a/chrome/android/monochrome/BUILD.gn b/chrome/android/monochrome/BUILD.gn
+index 19040c5ba2aada4349d84e0879af32d105a6702f..031270a5e7ace7d1921ac2a6e35445b2b11eee78 100644
+--- a/chrome/android/monochrome/BUILD.gn
++++ b/chrome/android/monochrome/BUILD.gn
+@@ -38,6 +38,7 @@ python_library("monochrome_public_apk_checker") {
+     "//chrome/android:chrome_public_apk",
+     "//chrome/android:monochrome_public_apk",
+   ]
++  data_deps -= [ "//android_webview:system_webview_apk" ]
+ }
+ 
+ # Separate target so that it can be shared with downstream.

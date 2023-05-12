@@ -1,0 +1,12 @@
+diff --git a/android_webview/system_webview_apk_tmpl.gni b/android_webview/system_webview_apk_tmpl.gni
+index 2a7d405dfcbbe68e89d575946dcf0c07bc85ffc9..fd85373b56c15c36a646d8479fac59786c9bcf84 100644
+--- a/android_webview/system_webview_apk_tmpl.gni
++++ b/android_webview/system_webview_apk_tmpl.gni
+@@ -187,6 +187,7 @@ template("system_webview_apk_or_module_tmpl") {
+     if (invoker.webview_devui_show_icon &&
+         !invoker.use_stable_package_name_for_trichrome) {
+       deps += [ "//android_webview/nonembedded:devui_launcher_icon_resources" ]
++      deps -= [ "//android_webview/nonembedded:devui_launcher_icon_resources" ]
+     }
+ 
+     # Flag whether additional deps and libs should be included for each ABI.

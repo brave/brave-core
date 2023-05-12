@@ -1,8 +1,29 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index eeb286b07aae69c3d12a4f62ab0c1c22500bda7b..eb2d6d0ade90d66ce2f9986c6d79fb7800744d7c 100644
+index eeb286b07aae69c3d12a4f62ab0c1c22500bda7b..255615de2781bc8ceb30173eb5fcee40c042daca 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -312,6 +312,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -204,6 +204,7 @@ template("chrome_common_apk_or_module_tmpl") {
+         "//android_webview/nonembedded/java/AndroidManifest.xml",
+         "//chrome/android/java/AndroidManifest.xml",
+       ]
++      includes -= ["//android_webview/nonembedded/java/AndroidManifest.xml" ]
+       variables += monochrome_android_manifest_jinja_variables
+       if (_is_64_bit_browser) {
+         variables += [ "webview_library=libmonochrome_64.so" ]
+@@ -279,12 +280,9 @@ template("chrome_common_apk_or_module_tmpl") {
+       # Resource allowlist used when generating R.java files and causes
+       # only the webview subset of resources to be marked as non-final.
+       # Strings in this target will also be kept in the base apk rather than placed in the language splits.
+-      shared_resources_allowlist_target =
+-          "//android_webview:system_webview_no_weblayer_apk"
+ 
+       # Ensure the localized resources for all locales are used, even when
+       # a smaller set is specified through aapt_locale_allowlist.
+-      shared_resources_allowlist_locales = platform_pak_locales
+ 
+       product_config_java_packages += [ webview_product_config_java_package ]
+ 
+@@ -312,6 +310,7 @@ template("chrome_common_apk_or_module_tmpl") {
        "*ic_file_download_white*",  # Bottom edge seems misaligned.
        "*ic_lock.*",  # Bottom edge seems misaligned.
      ]
@@ -10,7 +31,7 @@ index eeb286b07aae69c3d12a4f62ab0c1c22500bda7b..eb2d6d0ade90d66ce2f9986c6d79fb78
  
      # Most of these, with the exception of resource_exclusion_exceptions,
      # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -336,6 +337,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -336,6 +335,7 @@ template("chrome_common_apk_or_module_tmpl") {
  
        proguard_enabled = true
        proguard_configs = [ "//chrome/android/proguard/main.flags" ]
@@ -18,7 +39,31 @@ index eeb286b07aae69c3d12a4f62ab0c1c22500bda7b..eb2d6d0ade90d66ce2f9986c6d79fb78
        if (_is_monochrome) {
          proguard_configs +=
              [ "//android_webview/nonembedded/java/proguard.flags" ]
-@@ -721,6 +723,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -443,6 +443,7 @@ template("chrome_common_apk_or_module_tmpl") {
+       if (_include_secondary_abi) {
+         deps += [ "//android_webview:monochrome_webview_secondary_abi_assets" ]
+       }
++      deps -= [ "//android_webview/glue:glue_java", "//android_webview/nonembedded:monochrome_devui_launcher_icon_resources", "//android_webview/nonembedded:nonembedded_java", ] if (_include_primary_abi) { deps -= [ "//android_webview:monochrome_webview_primary_abi_assets" ] } if (_include_secondary_abi) { deps -= [ "//android_webview:monochrome_webview_secondary_abi_assets" ] }
+     }
+ 
+     if (_is_bundle && _is_monochrome) {
+@@ -552,6 +553,7 @@ template("chrome_common_apk_or_module_tmpl") {
+           shared_libraries += [ "//chrome/android:libmonochrome_64" ]
+           if (_include_32_bit_webview) {
+             secondary_abi_shared_libraries += [ "//android_webview:monochrome_64($android_secondary_abi_toolchain)" ]
++            # Don't exclude "//android_webview:monochrome_64($android_secondary_abi_toolchain)" from secondary_abi_shared_libraries, otherwise there will be a trouble of missing arm32 libs on Monochromearm64.aab
+           }
+           if (build_hwasan_splits) {
+             shared_libraries +=
+@@ -560,6 +562,7 @@ template("chrome_common_apk_or_module_tmpl") {
+         } else {
+           if (_include_64_bit_webview) {
+             shared_libraries += [ "//android_webview:monochrome" ]
++            # Don't exclude //android_webview:monochrome shared_libraries above, otherwise 64-bit apk/aab will contan only 32-bit libs and not 64-bit
+           }
+           secondary_abi_shared_libraries += [
+             "//chrome/android:libmonochrome($android_secondary_abi_toolchain)",
+@@ -721,6 +724,7 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])
