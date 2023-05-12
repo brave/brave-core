@@ -15,7 +15,7 @@ namespace brave_ads {
 
 GURL GetUrlWithEmptyQuery(const GURL& url);
 
-bool SchemeIsSupported(const GURL& url);
+bool DoesSupportUrl(const GURL& url);
 
 bool MatchUrlPattern(const GURL& url, const std::string& pattern);
 
