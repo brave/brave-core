@@ -157,7 +157,8 @@ GURL AppendJupiterQuoteParams(
     url = net::AppendQueryParameter(url, "feeBps", GetFee(chain_id));
   }
 
-  // TODO: append userPublicKey to get information on fees and ATA deposits.
+  // TODO(onyb): append userPublicKey to get information on fees and ATA
+  // deposits.
 
   return url;
 }
