@@ -127,7 +127,7 @@ template("transpile_web_ui") {
     # Output is a GRD that includes all the resources, and a bundle for each
     # entry point or a GRDP file that includes all the resources.
     grd_name = "$resource_name.grd"
-    if (defined(invoker.output_grdp) && invoker.output_grdp) {
+    if (defined(invoker.generate_grdp) && invoker.generate_grdp) {
       assert(defined(invoker.resource_path_prefix))
       grd_name = "$resource_name.grdp"
     }
