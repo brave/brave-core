@@ -52,8 +52,7 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
 
 class LedgerImpl : public mojom::Ledger {
  public:
-  explicit LedgerImpl(
-      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote);
+  explicit LedgerImpl(mojom::LedgerClient* ledger_client);
 
   ~LedgerImpl() override;
 
@@ -440,7 +439,7 @@ class LedgerImpl : public mojom::Ledger {
   template <typename T>
   void WhenReady(T callback);
 
-  mojo::AssociatedRemote<mojom::LedgerClient> ledger_client_;
+  mojom::LedgerClient* ledger_client_;
 
   promotion::Promotion promotion_;
   publisher::Publisher publisher_;
@@ -462,6 +461,17 @@ class LedgerImpl : public mojom::Ledger {
   std::queue<std::function<void()>> ready_callbacks_;
   ReadyState ready_state_ = ReadyState::kUninitialized;
 };
+
+inline LedgerImpl& ledger(LedgerImpl* init = nullptr) {
+  thread_local LedgerImpl& ledger([&]() -> LedgerImpl& {
+    CHECK(init);
+    return *std::exchange(init, nullptr);
+  }());
+
+  CHECK(!init);
+
+  return ledger;
+}
 
 }  // namespace brave_rewards::internal
 

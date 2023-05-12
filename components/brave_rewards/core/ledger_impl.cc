@@ -20,9 +20,8 @@ using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 
-LedgerImpl::LedgerImpl(
-    mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote)
-    : ledger_client_(std::move(ledger_client_remote)),
+LedgerImpl::LedgerImpl(mojom::LedgerClient* ledger_client)
+    : ledger_client_(ledger_client),
       promotion_(*this),
       publisher_(*this),
       media_(*this),
@@ -37,7 +36,8 @@ LedgerImpl::LedgerImpl(
       gemini_(*this),
       uphold_(*this) {
   DCHECK(base::ThreadPoolInstance::Get());
-  set_ledger_client_for_logging(ledger_client_.get());
+  DCHECK(ledger_client_);
+  set_ledger_client_for_logging(ledger_client_);
 }
 
 LedgerImpl::~LedgerImpl() {
@@ -786,7 +786,7 @@ absl::optional<std::string> LedgerImpl::DecryptString(
 // mojom::LedgerClient helpers end
 
 mojom::LedgerClient* LedgerImpl::client() {
-  return ledger_client_.get();
+  return ledger_client_;
 }
 
 database::Database* LedgerImpl::database() {
