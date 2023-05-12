@@ -67,9 +67,8 @@ AssetDiscoveryManager::~AssetDiscoveryManager() = default;
 void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
     const std::map<mojom::CoinType, std::vector<std::string>>&
         account_addresses,
-    bool triggered_by_accounts_added) {
-  if (triggered_by_accounts_added) {
-    // Always add asset discovery when an account is added
+    bool bypass_rate_limit) {
+  if (bypass_rate_limit) {
     AddTask(account_addresses);
     return;
   }
@@ -79,7 +78,7 @@ void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
     return;
   }
 
-  // Check if request should be rate limited throttled based on last
+  // Check if request should be throttled based on
   // kBraveWalletLastDiscoveredAssetsAt
   const base::Time assets_last_discovered_at =
       prefs_->GetTime(kBraveWalletLastDiscoveredAssetsAt);

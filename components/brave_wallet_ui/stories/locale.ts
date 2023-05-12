@@ -907,5 +907,9 @@ provideStrings({
   braveWalletEnableNftAutoDiscoveryModalHeader: 'Want your NFTs displayed automatically?',
   braveWalletEnableNftAutoDiscoveryModalDescription: 'Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with $1SimpleHash$2 to provide this service. $3Learn more.$4',
   braveWalletEnableNftAutoDiscoveryModalConfirm: 'Yes, proceed',
-  braveWalletEnableNftAutoDiscoveryModalCancel: 'No thanks, I\'ll do it manually'
+  braveWalletEnableNftAutoDiscoveryModalCancel: 'No thanks, I\'ll do it manually',
+  braveWalletAutoDiscoveryEmptyStateHeading: 'No NFTs to display',
+  braveWalletAutoDiscoveryEmptyStateSubHeading: 'Once an NFT is detected, it\’ll be displayed here.',
+  braveWalletAutoDiscoveryEmptyStateFooter: 'Can\’t see your NFTs?',
+  braveWalletAutoDiscoveryEmptyStateActions: '$1Refresh$2 or $3Import Manually$4'
 })

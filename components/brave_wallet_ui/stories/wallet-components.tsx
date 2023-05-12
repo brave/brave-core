@@ -24,6 +24,7 @@ import { EnableNftDiscoveryModal } from '../components/desktop/popup-modals/enab
 import { NftScreen } from '../nft/components/nft-details/nft-screen'
 import { ContainerCard, LayoutCardWrapper } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
+import { AutoDiscoveryEmptyState } from '../components/desktop/views/nfts/components/auto-discovery-empty-state/auto-discovery-empty-state'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -248,4 +249,17 @@ export const _NftScreen = () => {
     </LayoutCardWrapper>
     </WalletPageStory>
   )
+}
+
+export const _AutoDiscoveryEmptyState = () => {
+  return (
+    <AutoDiscoveryEmptyState
+      onImportNft={() => console.log('Import NFT')}
+      onRefresh={() => console.log('Import NFT')}
+    />
+  )
+}
+
+_AutoDiscoveryEmptyState.story = {
+  title: 'NFT Auto Discovery Empty State'
 }

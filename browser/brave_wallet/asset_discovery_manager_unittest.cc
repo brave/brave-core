@@ -46,10 +46,10 @@ const char kPasswordBrave[] = "brave";
 
 }  // namespace
 
-class TestBraveWalletServiceObserverForAssetDiscovery
+class TestBraveWalletServiceObserverForAssetDiscoveryManager
     : public brave_wallet::BraveWalletServiceObserverBase {
  public:
-  TestBraveWalletServiceObserverForAssetDiscovery() = default;
+  TestBraveWalletServiceObserverForAssetDiscoveryManager() = default;
 
   void OnDiscoverAssetsStarted() override {
     on_discover_assets_started_fired_ = true;
@@ -136,8 +136,8 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
         shared_url_loader_factory_, wallet_service_.get(), json_rpc_service_,
         keyring_service_, GetPrefs());
-    wallet_service_observer_ =
-        std::make_unique<TestBraveWalletServiceObserverForAssetDiscovery>();
+    wallet_service_observer_ = std::make_unique<
+        TestBraveWalletServiceObserverForAssetDiscoveryManager>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());
   }
 
@@ -148,7 +148,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   }
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscovery>
+  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryManager>
       wallet_service_observer_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
@@ -164,12 +164,12 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   void TestDiscoverAssetsOnAllSupportedChains(
       const std::map<mojom::CoinType, std::vector<std::string>>&
           account_addresses,
-      bool triggered_by_accounts_added,
+      bool bypass_rate_limit,
       bool expect_events_fired,
       const std::vector<std::string>& expected_token_contract_addresses,
       size_t expected_ending_queue_size = 0u) {
     asset_discovery_manager_->DiscoverAssetsOnAllSupportedChains(
-        account_addresses, triggered_by_accounts_added);
+        account_addresses, bypass_rate_limit);
     if (expect_events_fired) {
       wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
           expected_token_contract_addresses);

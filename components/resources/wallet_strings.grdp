@@ -904,4 +904,8 @@
   <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION" desc="Enable NFT auto-discovery modal description">Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with <ph name="BEFORE_UNDERLINE">$1</ph>SimpleHash<ph name="AFTER_UNDERLINE">$2</ph> to provide this service. <ph name="BEFORE_URL">$3</ph>Learn more.<ph name="AFTER_URL">$4</ph></message>
   <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CONFIRM" desc="Enable NFT auto-discovery modal confirm button text">Yes, proceed</message>
   <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CANCEL" desc="Enable NFT auto-discovery modal cancel button text">No thanks, I’ll do it manually</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_HEADING" desc="NFTs tab empty state heading when auto discovery is enabled">No NFTs to display</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_SUB_HEADING" desc="NFTs tab empty state sub heading when auto discovery is enabled">Once an NFT is detected, it’ll be displayed here.</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_FOOTER" desc="NFTs tab empty state footer when auto discovery is enabled">Can’t see your NFTs?</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_ACTIONS" desc="NFTs tab empty state action button text when auto discovery is enabled"><ph name="REFRESH">$1</ph>Refresh<ph name="REFRESH_END">$2</ph> or <ph name="IMPORT">$3</ph>Import Manually<ph name="IMPORT_END">$4</ph></message>
 </grit-part>

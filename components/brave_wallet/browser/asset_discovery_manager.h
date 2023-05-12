@@ -61,7 +61,7 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
   void DiscoverAssetsOnAllSupportedChains(
       const std::map<mojom::CoinType, std::vector<std::string>>&
           account_addresses,
-      bool triggered_by_accounts_added);
+      bool bypass_rate_limit);
 
   void SetQueueForTesting(
       std::queue<std::unique_ptr<AssetDiscoveryTask>> queue) {

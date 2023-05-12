@@ -85,7 +85,14 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
 bool IsBraveVPNDisabledByPolicy(PrefService* prefs) {
   DCHECK(prefs);
   return prefs->FindPreference(prefs::kManagedBraveVPNDisabled) &&
+  // Need to investigate more about this.
+  // IsManagedPreference() gives false on macOS when it's configured by
+  // "defaults write com.brave.Browser.beta BraveVPNDisabled -bool true".
+  // As kManagedBraveVPNDisabled is false by default and only can be set
+  // by policy, I think skipping this condition checking will be fine.
+#if !BUILDFLAG(IS_MAC)
          prefs->IsManagedPreference(prefs::kManagedBraveVPNDisabled) &&
+#endif
          prefs->GetBoolean(prefs::kManagedBraveVPNDisabled);
 }
 
@@ -104,13 +111,13 @@ std::string GetBraveVPNEntryName(version_info::Channel channel) {
   const std::string entry_name(kBraveVPNEntryName);
   switch (channel) {
     case version_info::Channel::UNKNOWN:
-      return entry_name + "-Development";
+      return entry_name + "Development";
     case version_info::Channel::CANARY:
-      return entry_name + "-Nightly";
+      return entry_name + "Nightly";
     case version_info::Channel::DEV:
-      return entry_name + "-Dev";
+      return entry_name + "Dev";
     case version_info::Channel::BETA:
-      return entry_name + "-Beta";
+      return entry_name + "Beta";
     case version_info::Channel::STABLE:
       return entry_name;
     default:

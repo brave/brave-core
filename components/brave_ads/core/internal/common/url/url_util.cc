@@ -5,10 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 
+#include <iostream>
+
 #include "base/ranges/algorithm.h"
 #include "base/strings/pattern.h"
-#include "base/strings/strcat.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "net/base/url_util.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -20,14 +22,18 @@ constexpr char kBraveScheme[] = "brave";
 constexpr char kChromeScheme[] = "chrome";
 
 constexpr char kRewardsHostName[] = "rewards";
-constexpr char kSettingsHostName[] = "settings";
 constexpr char kSyncHostName[] = "sync";
 constexpr char kWalletHostName[] = "wallet";
 
+constexpr char kSettingsHostName[] = "settings";
+
 constexpr char kSearchEnginesPath[] = "/searchEngines";
 constexpr char kSearchPath[] = "/search";
+constexpr char kSearchQuery[] = "search";
 
 GURL ReplaceUrlBraveHostWithChromeHost(const GURL& url) {
+  CHECK(url.is_valid());
+
   if (!url.SchemeIs(kBraveScheme)) {
     return url;
   }
@@ -40,19 +46,24 @@ GURL ReplaceUrlBraveHostWithChromeHost(const GURL& url) {
 }  // namespace
 
 GURL GetUrlWithEmptyQuery(const GURL& url) {
-  return GURL(base::StrCat(
-      {url.scheme(), url::kStandardSchemeSeparator, url.host(), url.path()}));
+  CHECK(url.is_valid());
+
+  GURL::Replacements replacements;
+  replacements.ClearQuery();
+  return url.ReplaceComponents(replacements);
 }
 
-bool SchemeIsSupported(const GURL& url) {
+bool DoesSupportUrl(const GURL& url) {
+  CHECK(url.is_valid());
+
   if (url.SchemeIs(url::kHttpsScheme)) {
+    // Always support https:// scheme.
     return true;
   }
 
-  // We must replace the brave:// schema with chrome:// due to GURL not parsing
-  // brave:// schemas.
+  // We must replace the brave:// scheme with chrome:// due to GURL not parsing
+  // brave:// schemes.
   const GURL modified_url = ReplaceUrlBraveHostWithChromeHost(url);
-
   if (!modified_url.SchemeIs(kChromeScheme)) {
     return false;
   }
@@ -60,16 +71,33 @@ bool SchemeIsSupported(const GURL& url) {
   const std::string host_name = modified_url.host();
   if (host_name == kRewardsHostName || host_name == kSyncHostName ||
       host_name == kWalletHostName) {
+    // Support chrome://rewards, chrome://sync and chrome://wallet URLs.
     return true;
   }
 
   if (host_name == kSettingsHostName) {
-    if (modified_url.path() == kSearchEnginesPath) {
-      return true;
-    }
+    if (modified_url.path() == kSearchEnginesPath ||
+        modified_url.path() == kSearchPath) {
+      if (!modified_url.has_query()) {
+        // Support chrome://settings/searchEngines and
+        // chrome://settings/search URLs.
+        return true;
+      }
 
-    if (modified_url.path() == kSearchPath) {
-      return true;
+      bool is_supported = true;
+      for (net::QueryIterator iter(modified_url); !iter.IsAtEnd();
+           iter.Advance()) {
+        if (iter.GetKey() != kSearchQuery || iter.GetValue().empty()) {
+          is_supported = false;
+          break;
+        }
+      }
+
+      if (is_supported) {
+        // Support chrome://settings/searchEngines?search=foobar and
+        // chrome://settings/search?search=foobar URLs.
+        return true;
+      }
     }
   }
 
