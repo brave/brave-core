@@ -37,7 +37,12 @@ AcceleratorService* AcceleratorServiceFactory::GetForContext(
 AcceleratorServiceFactory::AcceleratorServiceFactory()
     : ProfileKeyedServiceFactory(
           "AcceleratorServiceFactory",
-          ProfileSelections::BuildRedirectedToOriginal()) {}
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kRedirectedToOriginal)
+              // TODO(crbug.com/1418376): Check if this service is needed in
+              // Guest mode.
+              .WithGuest(ProfileSelection::kRedirectedToOriginal)
+              .Build()) {}
 
 AcceleratorServiceFactory::~AcceleratorServiceFactory() = default;
 

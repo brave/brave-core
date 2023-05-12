@@ -30,8 +30,14 @@ CommanderService* CommanderServiceFactory::GetForBrowserContext(
 }
 
 CommanderServiceFactory::CommanderServiceFactory()
-    : ProfileKeyedServiceFactory("CommanderService",
-                                 ProfileSelections::BuildForAllProfiles()) {}
+    : ProfileKeyedServiceFactory(
+          "CommanderService",
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kOwnInstance)
+              // TODO(crbug.com/1418376): Check if this service is needed in
+              // Guest mode.
+              .WithGuest(ProfileSelection::kOwnInstance)
+              .Build()) {}
 CommanderServiceFactory::~CommanderServiceFactory() = default;
 
 KeyedService* CommanderServiceFactory::BuildServiceInstanceFor(
