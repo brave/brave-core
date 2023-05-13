@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
@@ -48,7 +47,6 @@ class EmptyBalance {
 
   void Sent(const mojom::Result result);
 
-  const raw_ref<LedgerImpl> ledger_;
   endpoint::PromotionServer promotion_server_;
 };
 

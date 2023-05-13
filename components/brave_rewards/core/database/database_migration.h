@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace brave_rewards::internal {
@@ -30,7 +29,6 @@ class DatabaseMigration {
   void GenerateCommand(mojom::DBTransaction* transaction,
                        const std::string& query);
 
-  const raw_ref<LedgerImpl> ledger_;
   static uint32_t test_target_version_;
 };
 

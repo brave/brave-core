@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -47,7 +46,6 @@ class SKUCommon {
           result,
       SKUOrderCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   SKUOrder order_;
   SKUTransaction transaction_;
 };

@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v2/attestations/safetynet
@@ -59,8 +58,6 @@ class PostSafetynet {
 
   void OnRequest(PostSafetynetCallback callback,
                  mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -29,8 +28,6 @@ class WalletCreate {
   void OnResult(CreateRewardsWalletCallback,
                 absl::optional<std::string>&& geo_country,
                 Result&&);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace wallet

@@ -9,7 +9,6 @@
 #include <map>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
@@ -77,7 +76,6 @@ class SKUTransaction {
   void OnSendExternalTransaction(mojom::Result result,
                                  LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   endpoint::PaymentServer payment_server_;
 };
 

@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -35,7 +34,6 @@ class PromotionTransfer {
                      mojom::Result result,
                      std::string drain_id) const;
 
-  const raw_ref<LedgerImpl> ledger_;
   credential::CredentialsPromotion credentials_;
 };
 

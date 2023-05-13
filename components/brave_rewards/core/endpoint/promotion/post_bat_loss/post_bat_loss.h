@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/wallets/{payment_id}/events/batloss/{version}
@@ -52,8 +51,6 @@ class PostBatLoss {
   mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(mojom::UrlResponsePtr response, PostBatLossCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

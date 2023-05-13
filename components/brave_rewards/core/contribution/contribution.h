@@ -15,7 +15,6 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_ac.h"
@@ -178,7 +177,6 @@ class Contribution {
   void OnMarkUnblindedTokensAsSpendable(const mojom::Result result,
                                         const std::string& contribution_id);
 
-  const raw_ref<LedgerImpl> ledger_;
   Unblinded unblinded_;
   ContributionSKU sku_;
   ContributionMonthly monthly_;

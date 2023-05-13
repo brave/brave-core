@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /v1/promotions/{promotion_id}/claims/{claim_id}
@@ -71,8 +70,6 @@ class GetCredentials {
 
   void OnRequest(GetCredentialsCallback callback,
                  mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace payment

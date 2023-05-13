@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -61,8 +60,6 @@ class PostSuggestions {
 
   void OnRequest(mojom::UrlResponsePtr response,
                  PostSuggestionsCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

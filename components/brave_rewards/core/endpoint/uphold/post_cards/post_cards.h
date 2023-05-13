@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://api.uphold.com/v0/me/cards
@@ -102,8 +101,6 @@ class PostCards {
   mojom::Result ParseBody(const std::string& body, std::string* id);
 
   void OnRequest(PostCardsCallback, mojom::UrlResponsePtr);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace endpoint::uphold

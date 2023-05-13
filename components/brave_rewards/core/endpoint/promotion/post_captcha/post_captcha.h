@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/captchas
@@ -60,8 +59,6 @@ class PostCaptcha {
                           std::string* captcha_id);
 
   void OnRequest(PostCaptchaCallback callback, mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

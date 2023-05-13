@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_H_
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v1.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v10.h"
@@ -41,7 +40,6 @@ class StateMigration {
 
   void OnMigration(ResultCallback callback, int version, mojom::Result result);
 
-  const raw_ref<LedgerImpl> ledger_;
   StateMigrationV1 v1_;
   StateMigrationV2 v2_;
   StateMigrationV3 v3_;

@@ -10,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
 
@@ -197,8 +196,6 @@ class GetCapabilities {
       const mojom::UrlResponse& response);
 
   CapabilityMap ParseBody(const std::string& body);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace uphold

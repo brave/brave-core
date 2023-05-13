@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -42,8 +41,6 @@ class ContributionTip {
                     mojom::Result result);
 
   void OnPendingTipSaved(mojom::Result result);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace contribution

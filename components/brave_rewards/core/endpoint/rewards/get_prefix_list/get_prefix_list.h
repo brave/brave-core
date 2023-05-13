@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /publishers/prefix-list
@@ -42,8 +41,6 @@ class GetPrefixList {
 
   void OnRequest(mojom::UrlResponsePtr response,
                  GetPrefixListCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace rewards

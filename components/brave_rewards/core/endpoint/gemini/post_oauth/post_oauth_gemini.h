@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://exchange.sandbox.gemini.com/auth/token
@@ -64,8 +63,6 @@ class PostOauth {
   mojom::Result ParseBody(const std::string& body, std::string* token);
 
   void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace endpoint::gemini

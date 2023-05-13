@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace brave_rewards::internal {
@@ -36,15 +35,6 @@ using ContributionPublisherListCallback =
 
 using ContributionPublisherPairListCallback =
     std::function<void(std::vector<ContributionPublisherInfoPair>)>;
-
-class DatabaseTable {
- public:
-  explicit DatabaseTable(LedgerImpl& ledger);
-  virtual ~DatabaseTable();
-
- protected:
-  const raw_ref<LedgerImpl> ledger_;
-};
 
 }  // namespace database
 }  // namespace brave_rewards::internal

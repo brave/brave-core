@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
 
@@ -136,8 +135,6 @@ class GetMe {
                           internal::uphold::User* user);
 
   void OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace uphold

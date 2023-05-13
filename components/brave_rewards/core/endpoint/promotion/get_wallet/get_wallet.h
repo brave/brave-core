@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /v3/wallet/{payment_id}
@@ -64,8 +63,6 @@ class GetWallet {
   mojom::Result ParseBody(const std::string& body,
                           std::string* custodian,
                           bool* linked) const;
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

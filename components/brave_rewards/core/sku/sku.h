@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
@@ -52,7 +51,6 @@ class SKU {
                const std::string& wallet_type,
                SKUOrderCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   SKUCommon common_;
 };
 

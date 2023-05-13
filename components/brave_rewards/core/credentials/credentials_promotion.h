@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
@@ -99,7 +98,6 @@ class CredentialsPromotion : public Credentials {
                      mojom::Result result,
                      std::string drain_id);
 
-  const raw_ref<LedgerImpl> ledger_;
   CredentialsCommon common_;
   endpoint::PromotionServer promotion_server_;
 };

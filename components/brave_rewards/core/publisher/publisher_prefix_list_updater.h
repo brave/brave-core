@@ -10,7 +10,6 @@
 #include <map>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_server.h"
@@ -52,7 +51,6 @@ class PublisherPrefixListUpdater {
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
 
-  const raw_ref<LedgerImpl> ledger_;
   base::OneShotTimer timer_;
   bool auto_update_ = false;
   int retry_count_ = 0;

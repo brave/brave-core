@@ -13,7 +13,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -133,7 +132,6 @@ class Unblinded {
       double amount,
       const std::vector<mojom::ContributionPublisherPtr>& publisher_list);
 
-  const raw_ref<LedgerImpl> ledger_;
   credential::CredentialsPromotion credentials_promotion_;
   credential::CredentialsSKU credentials_sku_;
 };

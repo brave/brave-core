@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /publishers/prefixes/{prefix}
@@ -54,8 +53,6 @@ class GetPublisher {
   void OnRequest(mojom::UrlResponsePtr response,
                  const std::string& publisher_key,
                  GetPublisherCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace private_cdn

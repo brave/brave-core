@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -110,7 +109,6 @@ class State {
   bool SetEncryptedString(const std::string& key, const std::string& value);
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
   StateMigration migration_;
 };
 

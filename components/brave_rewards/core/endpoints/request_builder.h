@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -43,8 +42,6 @@ class RequestBuilder {
   virtual bool SkipLog() const;
 
   virtual uint32_t LoadFlags() const;
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace endpoints

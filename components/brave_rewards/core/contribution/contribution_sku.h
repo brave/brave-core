@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
@@ -81,7 +80,6 @@ class ContributionSKU {
                       mojom::SKUOrderPtr order,
                       LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   credential::CredentialsSKU credentials_;
   sku::SKU sku_;
 };

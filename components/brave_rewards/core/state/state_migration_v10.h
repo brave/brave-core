@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_wallet/get_wallet.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -31,7 +30,6 @@ class StateMigrationV10 {
                    bool linked,
                    LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<endpoint::promotion::GetWallet> get_wallet_;
 };
 

@@ -9,7 +9,6 @@
 #include <map>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace brave_rewards::internal {
@@ -31,9 +30,6 @@ class Attestation {
 
   virtual void Confirm(const std::string& solution,
                        ConfirmCallback callback) = 0;
-
- protected:
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace attestation

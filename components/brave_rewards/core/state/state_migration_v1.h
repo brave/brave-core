@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_state.h"
 
@@ -34,7 +33,6 @@ class StateMigrationV1 {
   void BalanceReportsSaved(mojom::Result result, LegacyResultCallback callback);
 
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;
-  const raw_ref<LedgerImpl> ledger_;
   bool legacy_data_migrated_ = false;
 };
 

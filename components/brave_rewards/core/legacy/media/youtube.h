@@ -11,7 +11,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 
@@ -144,8 +143,6 @@ class YouTube {
                           const mojom::VisitData& visit_data,
                           const std::string& media_key,
                           mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 
   // For testing purposes
   friend class MediaYouTubeTest;

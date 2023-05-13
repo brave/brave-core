@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -67,8 +66,6 @@ class PostCreds {
   mojom::Result ParseBody(const std::string& body, std::string* claim_id);
 
   void OnRequest(PostCredsCallback callback, mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

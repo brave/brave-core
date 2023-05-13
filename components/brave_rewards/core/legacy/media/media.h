@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/github.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
@@ -50,7 +49,6 @@ class Media {
                             const std::string& type,
                             uint64_t windowId);
 
-  const raw_ref<LedgerImpl> ledger_;
   YouTube media_youtube_;
   GitHub media_github_;
 };

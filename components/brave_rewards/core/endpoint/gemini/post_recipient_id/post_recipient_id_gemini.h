@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://api.gemini.com/v1/payments/recipientIds
@@ -60,8 +59,6 @@ class PostRecipientId {
 
   void OnRequest(PostRecipientIdCallback, mojom::UrlResponsePtr);
   std::string GeneratePayload();
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace endpoint::gemini

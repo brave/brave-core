@@ -11,7 +11,6 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
@@ -39,7 +38,6 @@ class Wallet {
   bool SetWallet(mojom::RewardsWalletPtr wallet);
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
   WalletCreate create_;
   WalletBalance balance_;
   endpoint::PromotionServer promotion_server_;

@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/functional/callback.h"
-#include "base/memory/raw_ref.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
@@ -65,7 +64,6 @@ class RequestFor {
   }
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
   absl::optional<mojom::UrlRequestPtr> request_;
 };
 

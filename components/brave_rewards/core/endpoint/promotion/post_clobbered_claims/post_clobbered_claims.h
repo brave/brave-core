@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -55,8 +54,6 @@ class PostClobberedClaims {
 
   void OnRequest(mojom::UrlResponsePtr response,
                  PostClobberedClaimsCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

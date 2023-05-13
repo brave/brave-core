@@ -11,7 +11,6 @@
 #include <string>
 #include <utility>
 
-#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"

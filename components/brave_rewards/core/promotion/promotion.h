@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
@@ -126,7 +125,6 @@ class Promotion {
 
   void OnLastCheckTimerElapsed();
 
-  const raw_ref<LedgerImpl> ledger_;
   attestation::AttestationImpl attestation_;
   PromotionTransfer transfer_;
   credential::CredentialsPromotion credentials_;

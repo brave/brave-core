@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 
@@ -79,7 +78,6 @@ class CredentialsSKU : public Credentials {
                       const CredentialsRedeem& redeem,
                       LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   CredentialsCommon common_;
   endpoint::PaymentServer payment_server_;
 };

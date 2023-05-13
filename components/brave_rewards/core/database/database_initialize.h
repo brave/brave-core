@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_INITIALIZE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_INITIALIZE_H_
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -26,7 +25,6 @@ class DatabaseInitialize {
   void OnInitialize(mojom::DBCommandResponsePtr response,
                     LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   DatabaseMigration migration_;
 };
 

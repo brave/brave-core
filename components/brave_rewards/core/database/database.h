@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 #include "base/functional/callback_forward.h"
-#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_balance_report.h"
@@ -351,7 +350,6 @@ class Database {
       GetUnblindedTokenListCallback callback);
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
   DatabaseInitialize initialize_;
   DatabaseActivityInfo activity_info_;
   DatabaseBalanceReport balance_report_;
