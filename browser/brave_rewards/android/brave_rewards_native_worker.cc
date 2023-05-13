@@ -497,20 +497,18 @@ void BraveRewardsNativeWorker::Donate(
     double amount,
     bool recurring) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->OnTip(
+    brave_rewards_service_->SendContribution(
         base::android::ConvertJavaStringToUTF8(env, publisher_key), amount,
         recurring,
-        base::BindOnce(&BraveRewardsNativeWorker::OnOneTimeTip,
+        base::BindOnce(&BraveRewardsNativeWorker::OnSendContribution,
                        weak_factory_.GetWeakPtr()));
   }
 }
 
-void BraveRewardsNativeWorker::OnOneTimeTip(
-    brave_rewards::mojom::Result result) {
+void BraveRewardsNativeWorker::OnSendContribution(bool result) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnOneTimeTip(
-      env, weak_java_brave_rewards_native_worker_.get(env),
-      static_cast<int>(result));
+  Java_BraveRewardsNativeWorker_onSendContribution(
+      env, weak_java_brave_rewards_native_worker_.get(env), result);
 }
 
 void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env) {
@@ -888,6 +886,7 @@ void BraveRewardsNativeWorker::onPublisherBanner(
     dict.Set("background", banner->background);
     dict.Set("logo", banner->logo);
     dict.Set("provider", banner->provider);
+    dict.Set("web3_url", banner->web3_url);
 
     base::Value::Dict links;
     for (auto const& link : banner->links) {

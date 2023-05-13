@@ -185,7 +185,6 @@
 
     <color name="brave_rewards_modal_text_color">#495057</color>
     <color name="brave_rewards_modal_theme_color">#4C54D2</color>
-    <color name="brave_rewards_tos_color">#868E96</color>
     <color name="brave_blue_tint_color">#4C54D2</color>
 
     <color name="shields_tooltip_arrow_color_1">#DD295B</color>
@@ -231,27 +230,14 @@
 
     <color name="rewards_panel_foreground_color">#80000000</color>
     <color name="rewards_divider_color">#E9E9F4</color>
-    <color name="rewards_tip_confirmation_text_color">#F7F8FA</color>
 
     <!--  Brave Wallet DApp  -->
     <color name="brave_wallet_dapp_text_color">#171919</color>
 
      <!--  Tipping Banner color  -->
-    <color name="rewards_send_tip_background">@color/brave_rewards_theme_color</color>
-    <color name="rewards_send_tip_minimum_balance_background">#E0F4DB</color>
-    <color name="rewards_send_tip_not_enough_fund_background">#868E96</color>
-    <color name="rewards_send_tip_icon_tint">#A1A8F2</color>
-    <color name="rewards_send_tip_icon_minimum_balance_tint">#63A07A</color>
-    <color name="rewards_send_tip_icon_not_enough_fund_tint">@android:color/white</color>
-    <color name="rewards_send_scrollbar_color">#DFDFE8</color>
-    <color name="rewards_tipping_panel_divider_color">#80AEB1C2</color>
-    <color name="rewards_tipping_black_color">#000000</color>
-    <color name="rewards_tipping_white_color">#FFFFFF</color>
-    <color name="rewards_tipping_publisher_name_color">#F8F9FA</color>
     <color name="rewards_tipping_text_color">#212529</color>
     <color name="vbat_warning_color">#FFD43B</color>
 
-    <color name="brave_rewards_theme_color">#4C54D2</color>
     <color name="cookie_consent_action_color">@color/brave_action_color</color>
     <color name="cookie_consent_text_color">#212529</color>
     <color name="cookie_consent_tooltip_color">@android:color/white</color>
@@ -298,4 +284,35 @@
 
     <color name="playlist_warning_dialog_bg">#FFFFFF</color>
     <color name="playlist_warning_settings_color">#A0A5EB</color>
+    <color name="tipping_details_description_text_color">#6B7084</color>
+    <color name="link_icon_color">#6B7084</color>
+    <color name="rewards_background_gradient_start_color">#FDF6EB</color>
+    <color name="rewards_background_gradient_end_color">#F4F2FC</color>
+    <color name="tipping_rewards_background_color">@android:color/white</color>
+    <color name="tipping_inside_box_background_color">#FFFFFF</color>
+    <color name="tipping_points_stroke_color">#E6EBEF</color>
+    <color name="tipping_points_selected_color">#F2F1FE</color>
+    <color name="tipping_rewards_points_text_color">#6B7084</color>
+    <color name="currency_edit_text_background_color">#EFF2F5</color>
+    <color name="use_web3_wallet_button_text_color">#423EEE</color>
+    <color name="transparent_shadow_background_start_color">#FFFFFF</color>
+    <color name="transparent_shadow_background_end_color">#00FFFFFF</color>
+    <color name="custodian_name_color">#585C6D</color>
+    <color name="tipping_error_alert_message_background_color">#FDF3F5</color>
+    <color name="tipping_use_web3_button_border_color">#E2E2FC</color>
+    <color name="verification_tick_mark_background">#5F5CF1</color>
+    <color name="bottomsheet_top_bar_color">#000000</color>
+    <color name="send_contribution_button_color">#A8ADBF</color>
+    <color name="custodian_text_background_color">#F4F6F8</color>
+    <color name="tootltip_verified_creator_text">#1D1F25</color>
+    <color name="tootltip_verified_creator_text_secondary">#6B7084</color>
+    <color name="contribution_sent_text_color">#31803E</color>
+    <color name="thanks_for_supporting_text_color">#423EEE</color>
+    <color name="go_back_text_color">#666D89</color>
+    <color name="monthly_contributions_text_color">#423EEE</color>
+    <color name="terms_of_service_text_color">#1C1E26</color>
+    <color name="terms_of_service_text_color_default">#666D89</color>
+    <color name="tipping_warning_default_background">#F0F7FC</color>
+    <color name="tipping_logout_warning_background_color">#FFF4D8</color>
+
 </resources>

@@ -731,9 +731,9 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnOneTimeTip(int result) {
+    public void onSendContribution(boolean result) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnOneTimeTip(result);
+            observer.onSendContribution(result);
         }
     }
 
