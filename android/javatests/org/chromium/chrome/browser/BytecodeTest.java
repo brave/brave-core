@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Assert;
@@ -34,6 +36,10 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
+import org.chromium.chrome.browser.bookmarks.BookmarkItemsAdapter;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.bookmarks.BookmarkOpener;
+import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -116,6 +122,10 @@ import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
+import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
+import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
+import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.permissions.PermissionDialogController;
@@ -199,6 +209,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/ChromeTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkModel"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment"));
         Assert.assertTrue(classExists(
@@ -390,6 +402,10 @@ public class BytecodeTest {
                 "addOrEditBookmark", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
                 "addOrEditBookmark", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
+                "showBookmarkManagerOnPhone", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
+                "showBookmarkManagerOnPhone", false, null));
         Assert.assertTrue(
                 methodExists("org/chromium/components/permissions/BravePermissionDialogModel",
                         "getModel", false, null));
@@ -765,6 +781,34 @@ public class BytecodeTest {
                 AppMenuDelegate.class, StatusBarColorProvider.class, ObservableSupplierImpl.class,
                 IntentRequestTracker.class, int.class, Supplier.class, Function.class,
                 OneshotSupplier.class, boolean.class, BackPressManager.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbar", Context.class,
+                AttributeSet.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/bookmarks/BookmarkToolbarCoordinator",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator",
+                SelectableListLayout.class, SelectionDelegate.class, SearchDelegate.class,
+                BookmarkItemsAdapter.class, boolean.class, OneshotSupplier.class,
+                BookmarkModel.class, BookmarkOpener.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator",
+                Context.class, ComponentName.class, boolean.class, boolean.class,
+                SnackbarManager.class, Profile.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerMediator", Context.class,
+                BookmarkModel.class, BookmarkOpener.class, SelectableListLayout.class,
+                SelectionDelegate.class, RecyclerView.class, BookmarkItemsAdapter.class,
+                LargeIconBridge.class, boolean.class, boolean.class, ObservableSupplierImpl.class,
+                Profile.class, BookmarkUndoController.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkModel",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkModel", long.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkPage",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkPage", ComponentName.class,
+                SnackbarManager.class, boolean.class, NativePageHost.class));
     }
 
     @Test
@@ -971,6 +1015,18 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/incognito/reauth/IncognitoReauthCoordinatorBase",
                 "mIncognitoReauthView"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/app/bookmarks/BookmarkActivity",
+                "mBookmarkManagerCoordinator"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator", "mMediator"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator", "mBookmarkModel"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator", "mContext"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/bookmarks/BookmarkToolbarCoordinator", "mToolbar"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/bookmarks/BookmarkPage",
+                "mBookmarkManagerCoordinator"));
     }
 
     @Test
@@ -1054,6 +1110,8 @@ public class BytecodeTest {
         Assert.assertTrue(checkSuperName(
                 "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator",
                 "org/chromium/chrome/browser/incognito/reauth/BravePrivateTabReauthCoordinatorBase"));
+        Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/bookmarks/BookmarkModel",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge"));
     }
 
     private boolean classExists(String className) {

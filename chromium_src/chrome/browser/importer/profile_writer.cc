@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/guid.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
@@ -42,3 +42,11 @@ void ProfileWriter::AddCreditCard(const std::u16string& name_on_card,
 
   personal_data->AddCreditCard(credit_card);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+namespace first_run {
+bool IsChromeFirstRun() {
+  return false;
+}
+}  // namespace first_run
+#endif  // BUILDFLAG(IS_ANDROID)
