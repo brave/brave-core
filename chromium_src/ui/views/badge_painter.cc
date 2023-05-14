@@ -6,6 +6,7 @@
 #include "cc/paint/paint_flags.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/text_utils.h"
 
 namespace gfx {
 
