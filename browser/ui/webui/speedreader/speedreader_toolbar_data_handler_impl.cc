@@ -36,12 +36,16 @@ class TtsPlayerDelegate : public speedreader::TtsPlayer::Delegate {
 }  // namespace
 
 SpeedreaderToolbarDataHandlerImpl::SpeedreaderToolbarDataHandlerImpl(
+    Browser* browser,
     mojo::PendingReceiver<speedreader::mojom::ToolbarDataHandler> receiver,
-    mojo::PendingRemote<speedreader::mojom::ToolbarEventsHandler> events,
-    Browser* browser)
-    : receiver_(this, std::move(receiver)),
+    mojo::PendingRemote<speedreader::mojom::ToolbarEventsHandler> events)
+    : browser_(browser),
+      receiver_(this, std::move(receiver)),
       events_(std::move(events)),
-      browser_(browser) {
+      browser_tab_strip_tracker_(this, this) {
+  browser_tab_strip_tracker_.Init();
+  active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
+      browser->tab_strip_model()->GetActiveWebContents());
   speedreader_service_observation_.Observe(GetSpeedreaderService());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
   speedreader::TtsPlayer::GetInstance()->set_delegate(
@@ -54,12 +58,18 @@ SpeedreaderToolbarDataHandlerImpl::~SpeedreaderToolbarDataHandlerImpl() =
 
 void SpeedreaderToolbarDataHandlerImpl::GetSiteSettings(
     GetSiteSettingsCallback callback) {
-  std::move(callback).Run(GetSpeedreaderTabHelper()->GetSiteSettings());
+  if (active_tab_helper_) {
+    std::move(callback).Run(active_tab_helper_->GetSiteSettings());
+  } else {
+    std::move(callback).Run(speedreader::mojom::SiteSettings::New());
+  }
 }
 
 void SpeedreaderToolbarDataHandlerImpl::SetSiteSettings(
     speedreader::mojom::SiteSettingsPtr settings) {
-  GetSpeedreaderTabHelper()->SetSiteSettings(*settings);
+  if (active_tab_helper_) {
+    active_tab_helper_->SetSiteSettings(*settings);
+  }
 }
 
 void SpeedreaderToolbarDataHandlerImpl::GetTtsSettings(
@@ -76,44 +86,50 @@ void SpeedreaderToolbarDataHandlerImpl::SetTtsSettings(
 }
 
 void SpeedreaderToolbarDataHandlerImpl::HideToolbar() {
-  GetSpeedreaderTabHelper()->HideReaderModeToolbar();
+  if (active_tab_helper_) {
+    active_tab_helper_->HideReaderModeToolbar();
+  }
 }
 
 void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
-  GetSpeedreaderTabHelper()->OnShowOriginalPage();
+  if (active_tab_helper_) {
+    active_tab_helper_->OnShowOriginalPage();
+  }
 }
 
-void SpeedreaderToolbarDataHandlerImpl::IsPlaying(IsPlayingCallback callback) {
-  std::move(callback).Run(GetTtsController().IsPlaying());
+void SpeedreaderToolbarDataHandlerImpl::GetPlaybackState(
+    GetPlaybackStateCallback callback) {
+  std::move(callback).Run(GetTabPlaybackState());
 }
 
 void SpeedreaderToolbarDataHandlerImpl::Rewind() {
-  GetTtsController().Rewind();
+  if (auto* tts = GetTtsController()) {
+    tts->Rewind();
+  }
 }
 
 void SpeedreaderToolbarDataHandlerImpl::Play() {
-  GetTtsController().Play();
+  if (auto* tts = GetTtsController()) {
+    tts->Play();
+  }
 }
 
 void SpeedreaderToolbarDataHandlerImpl::Pause() {
-  GetTtsController().Pause();
+  if (auto* tts = GetTtsController()) {
+    tts->Pause();
+  }
 }
 
 void SpeedreaderToolbarDataHandlerImpl::Stop() {
-  GetTtsController().Stop();
+  if (auto* tts = GetTtsController()) {
+    tts->Stop();
+  }
 }
 
 void SpeedreaderToolbarDataHandlerImpl::Forward() {
-  GetTtsController().Forward();
-}
-
-speedreader::SpeedreaderTabHelper*
-SpeedreaderToolbarDataHandlerImpl::GetSpeedreaderTabHelper() {
-  DCHECK(browser_);
-  auto* tab_helper = speedreader::SpeedreaderTabHelper::FromWebContents(
-      browser_->tab_strip_model()->GetActiveWebContents());
-  DCHECK(tab_helper);
-  return tab_helper;
+  if (auto* tts = GetTtsController()) {
+    tts->Forward();
+  }
 }
 
 speedreader::SpeedreaderService*
@@ -123,10 +139,26 @@ SpeedreaderToolbarDataHandlerImpl::GetSpeedreaderService() {
       browser_->profile());
 }
 
-speedreader::TtsPlayer::Controller&
+speedreader::TtsPlayer::Controller*
 SpeedreaderToolbarDataHandlerImpl::GetTtsController() {
-  return speedreader::TtsPlayer::GetInstance()->GetControllerFor(
-      GetSpeedreaderTabHelper()->web_contents());
+  if (!active_tab_helper_) {
+    return nullptr;
+  }
+  return &speedreader::TtsPlayer::GetInstance()->GetControllerFor(
+      active_tab_helper_->web_contents());
+}
+
+speedreader::mojom::PlaybackState
+SpeedreaderToolbarDataHandlerImpl::GetTabPlaybackState() {
+  auto* tts = GetTtsController();
+  if (tts && tts->IsPlaying()) {
+    if (tts->IsPlayingRequestedWebContents()) {
+      return speedreader::mojom::PlaybackState::kPlayingThisPage;
+    } else {
+      return speedreader::mojom::PlaybackState::kPlayingAnotherPage;
+    }
+  }
+  return speedreader::mojom::PlaybackState::kStopped;
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnSiteSettingsChanged(
@@ -141,17 +173,13 @@ void SpeedreaderToolbarDataHandlerImpl::OnTtsSettingsChanged(
 
 void SpeedreaderToolbarDataHandlerImpl::OnReadingStart(
     content::WebContents* web_contents) {
-  events_->OnReadingStateChanged(speedreader::mojom::ReadingState::kPlaying);
-}
-
-void SpeedreaderToolbarDataHandlerImpl::OnReadingPause(
-    content::WebContents* web_contents) {
-  events_->OnReadingStateChanged(speedreader::mojom::ReadingState::kPaused);
+  events_->SetPlaybackState(
+      speedreader::mojom::PlaybackState::kPlayingThisPage);
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnReadingStop(
     content::WebContents* web_contents) {
-  events_->OnReadingStateChanged(speedreader::mojom::ReadingState::kStopped);
+  events_->SetPlaybackState(speedreader::mojom::PlaybackState::kStopped);
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnReadingProgress(
@@ -159,3 +187,22 @@ void SpeedreaderToolbarDataHandlerImpl::OnReadingProgress(
     const std::string& element_id,
     int char_index,
     int length) {}
+
+void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  if (selection.active_tab_changed()) {
+    active_tab_helper_ = nullptr;
+
+    if (selection.new_contents) {
+      active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
+          selection.new_contents);
+      events_->SetPlaybackState(GetTabPlaybackState());
+    }
+  }
+}
+
+bool SpeedreaderToolbarDataHandlerImpl::ShouldTrackBrowser(Browser* browser) {
+  return browser_ == browser;
+}

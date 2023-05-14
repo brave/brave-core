@@ -7,8 +7,8 @@ import * as React from 'react'
 
 import * as S from './style'
 
-import { TtsSettings, dataHandler, PlaybackSpeed, eventsHandler, ReadingState } from '../../api/browser'
-import { Playback, PlaybackList, PlaybackSpeedList } from '../lists'
+import { TtsSettings, dataHandler, PlaybackSpeed, eventsHandler, PlaybackState } from '../../api/browser'
+import { Playback, PlaybackControl, PlaybackSpeedControl } from '../lists'
 
 interface TtsControlProps {
   ttsSettings: TtsSettings
@@ -23,16 +23,16 @@ function TtsControl(props: TtsControlProps) {
     setVoices(speechSynthesis.getVoices())
   }
 
-  const [isPlaying, setPlaying] = React.useState(false)
-  dataHandler.isPlaying().then(res => setPlaying(res.isPlaying))
-  eventsHandler.onReadingStateChanged.addListener((state: ReadingState) => {
-    setPlaying(state === ReadingState.kPlaying)
+  const [playbackState, setPlaybackState] = React.useState<PlaybackState>(PlaybackState.kStopped)
+  dataHandler.getPlaybackState().then(res => setPlaybackState(res.playbackState))
+  eventsHandler.setPlaybackState.addListener((state: PlaybackState) => {
+    setPlaybackState(state)
   })
 
   return (
     <S.Box>
-      <PlaybackList
-        isPlaying={isPlaying}
+      <PlaybackControl
+        playbackState={playbackState}
         onClick={(command: Playback) => {
           switch (command) {
             case Playback.Play:
@@ -54,7 +54,7 @@ function TtsControl(props: TtsControlProps) {
         }}
       />
       <S.VDelemiter />
-      <PlaybackSpeedList
+      <PlaybackSpeedControl
         speed={props.ttsSettings.speed}
         onClick={(speed: PlaybackSpeed) => {
           props.onTtsSpeedChange(speed)

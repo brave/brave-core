@@ -17,11 +17,11 @@ import PlusSVG from '../../svg/plus_add'
 import MinusSVG from '../../svg/minus'
 import RewindSVG from '../../svg/rewind_outline'
 import PlaySVG from '../../svg/play_outline'
-import StopSVG from '../../svg/pause_outline'
+import PauseSVG from '../../svg/pause_outline'
 import ForwardSVG from '../../svg/forward_outline'
 import SpeedSVG from '../../svg/speed'
 import FontSizeSVG from '../../svg/font_size'
-import { FontFamily, FontSize, PlaybackSpeed } from '../../api/browser'
+import { FontFamily, FontSize, PlaybackSpeed, PlaybackState } from '../../api/browser'
 import classnames from '$web-common/classnames'
 
 export enum MainButtonType {
@@ -222,12 +222,12 @@ export enum Playback {
   Forward
 }
 
-interface PlaybackListProps {
-  isPlaying: boolean
+interface PlaybackControlProps {
+  playbackState: PlaybackState
   onClick?: Function
 }
 
-export function PlaybackList(props: PlaybackListProps) {
+export function PlaybackControl(props: PlaybackControlProps) {
   return (
     <ListBox>
       <Option
@@ -241,11 +241,23 @@ export function PlaybackList(props: PlaybackListProps) {
         inGroup={true}
         isSelected={false}
         onClick={() => {
-          props.onClick?.(props.isPlaying ? Playback.Stop : Playback.Play)
+          switch (props.playbackState) {
+            case PlaybackState.kPlayingThisPage:
+              props.onClick?.(Playback.Pause)
+              break
+            case PlaybackState.kPlayingAnotherPage:
+              props.onClick?.(Playback.Stop)
+              break
+            case PlaybackState.kStopped:
+              props.onClick?.(Playback.Play)
+              break
+          }
         }}
       >
         <div>
-          {props.isPlaying ? <StopSVG /> : <PlaySVG />}
+          {props.playbackState === PlaybackState.kStopped && <PlaySVG />}
+          {props.playbackState === PlaybackState.kPlayingThisPage && <PauseSVG />}
+          {props.playbackState === PlaybackState.kPlayingAnotherPage && <PauseSVG />}
         </div>
       </Option>
       <Option
@@ -259,12 +271,12 @@ export function PlaybackList(props: PlaybackListProps) {
   )
 }
 
-interface PlaybackSpeedListProps {
+interface PlaybackSpeedControlProps {
   speed: PlaybackSpeed
   onClick?: Function
 }
 
-export function PlaybackSpeedList(props: PlaybackSpeedListProps) {
+export function PlaybackSpeedControl(props: PlaybackSpeedControlProps) {
   enum ActionType {
     Inc,
     Dec

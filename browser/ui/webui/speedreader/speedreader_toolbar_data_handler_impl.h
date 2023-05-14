@@ -12,6 +12,9 @@
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/tts_player.h"
+#include "chrome/browser/ui/browser_tab_strip_tracker.h"
+#include "chrome/browser/ui/browser_tab_strip_tracker_delegate.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -26,12 +29,14 @@ class SpeedreaderTabHelper;
 class SpeedreaderToolbarDataHandlerImpl
     : public speedreader::mojom::ToolbarDataHandler,
       public speedreader::SpeedreaderService::Observer,
-      public speedreader::TtsPlayer::Observer {
+      public speedreader::TtsPlayer::Observer,
+      public TabStripModelObserver,
+      public BrowserTabStripTrackerDelegate {
  public:
   SpeedreaderToolbarDataHandlerImpl(
+      Browser* browser,
       mojo::PendingReceiver<speedreader::mojom::ToolbarDataHandler> receiver,
-      mojo::PendingRemote<speedreader::mojom::ToolbarEventsHandler> events,
-      Browser* browser);
+      mojo::PendingRemote<speedreader::mojom::ToolbarEventsHandler> events);
   SpeedreaderToolbarDataHandlerImpl(const SpeedreaderToolbarDataHandlerImpl&) =
       delete;
   SpeedreaderToolbarDataHandlerImpl& operator=(
@@ -50,7 +55,7 @@ class SpeedreaderToolbarDataHandlerImpl
 
   void ViewOriginal() override;
 
-  void IsPlaying(IsPlayingCallback callback) override;
+  void GetPlaybackState(GetPlaybackStateCallback callback) override;
   void Rewind() override;
   void Play() override;
   void Pause() override;
@@ -60,7 +65,8 @@ class SpeedreaderToolbarDataHandlerImpl
  private:
   speedreader::SpeedreaderTabHelper* GetSpeedreaderTabHelper();
   speedreader::SpeedreaderService* GetSpeedreaderService();
-  speedreader::TtsPlayer::Controller& GetTtsController();
+  speedreader::TtsPlayer::Controller* GetTtsController();
+  speedreader::mojom::PlaybackState GetTabPlaybackState();
 
   // speedreader::SpeedreaderService::Observer:
   void OnSiteSettingsChanged(
@@ -70,17 +76,24 @@ class SpeedreaderToolbarDataHandlerImpl
 
   // speedreader::TtsPlayer::Observer:
   void OnReadingStart(content::WebContents* web_contents) override;
-  void OnReadingPause(content::WebContents* web_contents) override;
   void OnReadingStop(content::WebContents* web_contents) override;
   void OnReadingProgress(content::WebContents* web_contents,
                          const std::string& element_id,
                          int char_index,
                          int length) override;
 
-  mojo::Receiver<speedreader::mojom::ToolbarDataHandler> receiver_;
-  mojo::Remote<speedreader::mojom::ToolbarEventsHandler> events_;
+  // TabStripModelObserver:
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
+
+  // BrowserTabStripTrackerDelegate:
+  bool ShouldTrackBrowser(Browser* browser) override;
 
   raw_ptr<Browser> browser_ = nullptr;
+  mojo::Receiver<speedreader::mojom::ToolbarDataHandler> receiver_;
+  mojo::Remote<speedreader::mojom::ToolbarEventsHandler> events_;
 
   base::ScopedObservation<speedreader::SpeedreaderService,
                           speedreader::SpeedreaderService::Observer>
@@ -88,6 +101,9 @@ class SpeedreaderToolbarDataHandlerImpl
   base::ScopedObservation<speedreader::TtsPlayer,
                           speedreader::TtsPlayer::Observer>
       tts_player_observation_{this};
+
+  raw_ptr<speedreader::SpeedreaderTabHelper> active_tab_helper_ = nullptr;
+  BrowserTabStripTracker browser_tab_strip_tracker_;
 
   base::WeakPtrFactory<SpeedreaderToolbarDataHandlerImpl> weak_factory_{this};
 };

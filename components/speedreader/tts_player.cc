@@ -66,10 +66,6 @@ void TtsPlayer::SetVoice(const std::string& voice) {
 TtsPlayer::Controller::Controller(TtsPlayer* owner) : owner_(owner) {}
 TtsPlayer::Controller::~Controller() = default;
 
-bool TtsPlayer::Controller::IsPlayingRequestedWebContents() const {
-  return playing_web_contents_ == request_web_contents_;
-}
-
 void TtsPlayer::Controller::SetRequestWebContents(
     content::WebContents* web_contents) {
   request_web_contents_ = web_contents;
@@ -78,6 +74,10 @@ void TtsPlayer::Controller::SetRequestWebContents(
 bool TtsPlayer::Controller::IsPlaying() const {
   auto* tts = content::TtsController::GetInstance();
   return tts->IsSpeaking();
+}
+
+bool TtsPlayer::Controller::IsPlayingRequestedWebContents() const {
+  return playing_web_contents_ == request_web_contents_;
 }
 
 void TtsPlayer::Controller::Play() {
@@ -95,8 +95,16 @@ void TtsPlayer::Controller::Play() {
 }
 
 void TtsPlayer::Controller::Pause() {
-  auto* tts = content::TtsController::GetInstance();
-  tts->Pause();
+  if (IsPlayingRequestedWebContents()) {
+    auto* tts = content::TtsController::GetInstance();
+    reading_start_position_ =
+        std::min(static_cast<int>(reading_content_.size()),
+                 reading_start_position_ + reading_position_);
+    reading_position_ = 0;
+    tts->Stop();
+  } else {
+    Stop();
+  }
 }
 
 void TtsPlayer::Controller::Resume() {
@@ -176,6 +184,7 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
                             length);
       }
       break;
+    case content::TtsEventType::TTS_EVENT_PAUSE:
     case content::TtsEventType::TTS_EVENT_ERROR:
     case content::TtsEventType::TTS_EVENT_INTERRUPTED:
     case content::TtsEventType::TTS_EVENT_CANCELLED:
@@ -192,11 +201,6 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
     case content::TtsEventType::TTS_EVENT_START:
       for (auto& o : owner_->observers_) {
         o.OnReadingStart(playing_web_contents_);
-      }
-      break;
-    case content::TtsEventType::TTS_EVENT_PAUSE:
-      for (auto& o : owner_->observers_) {
-        o.OnReadingPause(playing_web_contents_);
       }
       break;
     case content::TTS_EVENT_SENTENCE:

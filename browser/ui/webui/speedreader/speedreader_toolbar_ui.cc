@@ -55,5 +55,5 @@ void SpeedreaderToolbarUI::CreateInterfaces(
     mojo::PendingRemote<speedreader::mojom::ToolbarEventsHandler>
         panel_events_handler) {
   toolbar_data_handler_ = std::make_unique<SpeedreaderToolbarDataHandlerImpl>(
-      std::move(panel_data_handler), std::move(panel_events_handler), browser_);
+      browser_, std::move(panel_data_handler), std::move(panel_events_handler));
 }

@@ -21,7 +21,7 @@ interface ToolbarDataHandler {
 
   HideToolbar();
 
-  IsPlaying() => (bool is_playing);
+  GetPlaybackState() => (PlaybackState playback_state);
 
   Rewind();
   Play();
@@ -34,7 +34,7 @@ interface ToolbarEventsHandler {
   OnSiteSettingsChanged(SiteSettings site_settings);
   OnTtsSettingsChanged(TtsSettings tts_settings);
 
-  OnReadingStateChanged(ReadingState state);
+  SetPlaybackState(PlaybackState playback_state);
 };
 
 struct SiteSettings {
@@ -102,8 +102,8 @@ enum PlaybackSpeed {
   k200 = 200,
 };
 
-enum ReadingState {
+enum PlaybackState {
   kStopped = 1,
-  kPaused = 2,
-  kPlaying = 3,
+  kPlayingThisPage = 2,
+  kPlayingAnotherPage = 3,
 };

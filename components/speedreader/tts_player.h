@@ -37,7 +37,6 @@ class TtsPlayer {
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnReadingStart(content::WebContents* web_contents) {}
-    virtual void OnReadingPause(content::WebContents* web_contents) {}
     virtual void OnReadingStop(content::WebContents* web_contents) {}
     virtual void OnReadingProgress(content::WebContents* web_contents,
                                    const std::string& element_id,
@@ -52,12 +51,12 @@ class TtsPlayer {
                      public content::UtteranceEventDelegate {
    public:
     bool IsPlaying() const;
+    bool IsPlayingRequestedWebContents() const;
 
     void Play();
     void Pause();
     void Resume();
     void Stop();
-
     void Forward();
     void Rewind();
 
@@ -67,7 +66,6 @@ class TtsPlayer {
 
     friend class TtsPlayer;
 
-    bool IsPlayingRequestedWebContents() const;
     void SetRequestWebContents(content::WebContents* web_contents);
 
     void Resume(bool recreate_utterance);
