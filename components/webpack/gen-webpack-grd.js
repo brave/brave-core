@@ -1,6 +1,15 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 const path = require('path')
 const fs = require('mz/fs')
 
+/**
+ * @param {string[]} fileList
+ * @returns {string}
+ */
 function getIncludesString (fileList) {
   return fileList.map(filePath => {
     const relativePath = filePath.replace(targetDir, '')
@@ -12,7 +21,11 @@ function getIncludesString (fileList) {
   }).join('\n')
 }
 
-
+/**
+ * @param {string} name
+ * @param {string[]} fileList
+ * @returns {string}
+ */
 function getGrdString (name, fileList) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <grit latest_public_release="0" current_release="1" output_all_resource_defines="false">
@@ -36,7 +49,7 @@ function getGrdString (name, fileList) {
 /**
  * Generates a GRDP file for a list of files.
  * @param {string[]} fileList The list of files to include
- * @returns The contents of a GRDP file containing |fileList|
+ * @returns {string} The contents of a GRDP file containing |fileList|
  */
 function getGrdpString(fileList) {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -46,7 +59,10 @@ function getGrdpString(fileList) {
 `
 }
 
-// Returns Promise<string[]>
+/**
+ * @param {string} dirPath
+ * @returns {Promise<string[]>}
+ */
 async function getFileListDeep (dirPath) {
   const dirItems = await fs.readdir(dirPath)
   // get Array<string | string[]> of contents
@@ -69,6 +85,10 @@ async function getFileListDeep (dirPath) {
   )
 }
 
+/**
+ * @param {string} name
+ * @param {string} grdName
+ */
 async function createDynamicGDR (name, grdName) {
   const gdrPath = path.join(targetDir, grdName)
   // remove previously generated file
