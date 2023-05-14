@@ -8,20 +8,16 @@
 
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace state {
+namespace brave_rewards::internal::state {
 
 class StateMigrationV8 {
  public:
-  explicit StateMigrationV8(LedgerImpl& ledger);
+  StateMigrationV8();
   ~StateMigrationV8();
 
   void Migrate(LegacyResultCallback callback);
 };
 
-}  // namespace state
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V8_H_

@@ -11,14 +11,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace wallet {
+namespace brave_rewards::internal::wallet {
 
 class WalletCreate {
  public:
-  explicit WalletCreate(LedgerImpl& ledger);
+  WalletCreate();
 
   void CreateWallet(absl::optional<std::string>&& geo_country,
                     CreateRewardsWalletCallback callback);
@@ -30,7 +27,6 @@ class WalletCreate {
                 Result&&);
 };
 
-}  // namespace wallet
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_CREATE_H_

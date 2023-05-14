@@ -48,7 +48,7 @@ mojom::CreateRewardsWalletResult MapEndpointError(PatchWallets::Error error) {
 
 }  // namespace
 
-WalletCreate::WalletCreate(LedgerImpl& ledger) : ledger_(ledger) {}
+WalletCreate::WalletCreate() = default;
 
 void WalletCreate::CreateWallet(absl::optional<std::string>&& geo_country,
                                 CreateRewardsWalletCallback callback) {

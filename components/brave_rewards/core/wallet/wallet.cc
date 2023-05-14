@@ -21,14 +21,9 @@
 
 #include "wally_bip39.h"  // NOLINT
 
-namespace brave_rewards::internal {
-namespace wallet {
+namespace brave_rewards::internal::wallet {
 
-Wallet::Wallet(LedgerImpl& ledger)
-    : ledger_(ledger),
-      create_(ledger),
-      balance_(ledger),
-      promotion_server_(ledger) {}
+Wallet::Wallet() = default;
 
 Wallet::~Wallet() = default;
 
@@ -123,5 +118,4 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   return true;
 }
 
-}  // namespace wallet
 }  // namespace brave_rewards::internal

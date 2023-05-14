@@ -18,7 +18,7 @@
 namespace brave_rewards::internal::wallet {
 
 namespace {
-std::string GetConnectedWalletType(LedgerImpl& ledger) {
+std::string GetConnectedWalletType() {
   return GetWalletIf(constant::kWalletBitflyer,
                      {mojom::WalletStatus::kConnected})
              ? constant::kWalletBitflyer
@@ -32,7 +32,7 @@ std::string GetConnectedWalletType(LedgerImpl& ledger) {
 }
 }  // namespace
 
-WalletBalance::WalletBalance(LedgerImpl& ledger) : ledger_(ledger) {}
+WalletBalance::WalletBalance() = default;
 
 WalletBalance::~WalletBalance() = default;
 

@@ -12,7 +12,7 @@
 
 namespace brave_rewards::internal::uphold {
 
-UpholdCard::UpholdCard(LedgerImpl& ledger) : uphold_server_(ledger) {}
+UpholdCard::UpholdCard() = default;
 
 UpholdCard::~UpholdCard() = default;
 

@@ -11,14 +11,11 @@
 
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace wallet {
+namespace brave_rewards::internal::wallet {
 
 class WalletBalance {
  public:
-  explicit WalletBalance(LedgerImpl& ledger);
+  WalletBalance();
   ~WalletBalance();
 
   void Fetch(FetchBalanceCallback callback);
@@ -34,6 +31,5 @@ class WalletBalance {
                                     double balance);
 };
 
-}  // namespace wallet
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_BALANCE_H_

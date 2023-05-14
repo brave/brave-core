@@ -17,14 +17,11 @@
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace wallet {
+namespace brave_rewards::internal::wallet {
 
 class Wallet {
  public:
-  explicit Wallet(LedgerImpl& ledger);
+  Wallet();
   ~Wallet();
 
   void CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
@@ -43,7 +40,6 @@ class Wallet {
   endpoint::PromotionServer promotion_server_;
 };
 
-}  // namespace wallet
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_H_
