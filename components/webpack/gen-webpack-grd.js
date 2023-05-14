@@ -85,11 +85,7 @@ async function getFileListDeep (dirPath) {
   )
 }
 
-/**
- * @param {string} name
- * @param {string} grdName
- */
-async function createDynamicGDR (name, grdName) {
+async function createDynamicGDR () {
   const gdrPath = path.join(targetDir, grdName)
   // remove previously generated file
   try {
@@ -99,7 +95,7 @@ async function createDynamicGDR (name, grdName) {
   const filePaths = await getFileListDeep(targetDir)
   const contents = gdrPath.endsWith('.grdp')
     ? getGrdpString(filePaths)
-    : getGrdString(name, filePaths)
+    : getGrdString(resourceName, filePaths)
   await fs.writeFile(gdrPath, contents, { encoding: 'utf8' })
 }
 
@@ -128,7 +124,7 @@ if (!grdName) {
 }
 
 // main
-createDynamicGDR(resourceName, grdName, idPrefix, targetDir)
+createDynamicGDR()
 .catch(err => {
   console.error(err)
   process.exit(1)
