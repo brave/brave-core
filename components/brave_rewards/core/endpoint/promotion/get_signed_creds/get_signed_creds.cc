@@ -13,11 +13,9 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-GetSignedCreds::GetSignedCreds(LedgerImpl& ledger) : ledger_(ledger) {}
+GetSignedCreds::GetSignedCreds() = default;
 
 GetSignedCreds::~GetSignedCreds() = default;
 
@@ -121,6 +119,4 @@ void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
   std::move(callback).Run(result, mojom::CredsBatch::New(batch));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

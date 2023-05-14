@@ -26,17 +26,13 @@
 // Response body:
 // {Empty}
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PostBatLossCallback = std::function<void(const mojom::Result result)>;
 
 class PostBatLoss {
  public:
-  explicit PostBatLoss(LedgerImpl& ledger);
+  PostBatLoss();
   ~PostBatLoss();
 
   void Request(const double amount,
@@ -53,8 +49,6 @@ class PostBatLoss {
   void OnRequest(mojom::UrlResponsePtr response, PostBatLossCallback callback);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_BAT_LOSS_POST_BAT_LOSS_H_

@@ -146,10 +146,9 @@ bool DecompressMessage(base::StringPiece payload, std::string* output) {
 
 }  // namespace
 
-namespace endpoint {
-namespace private_cdn {
+namespace endpoint::private_cdn {
 
-GetPublisher::GetPublisher(LedgerImpl& ledger) : ledger_(ledger) {}
+GetPublisher::GetPublisher() = default;
 
 GetPublisher::~GetPublisher() = default;
 
@@ -252,6 +251,5 @@ void GetPublisher::OnRequest(mojom::UrlResponsePtr response,
   callback(mojom::Result::LEDGER_OK, std::move(info));
 }
 
-}  // namespace private_cdn
 }  // namespace endpoint
 }  // namespace brave_rewards::internal

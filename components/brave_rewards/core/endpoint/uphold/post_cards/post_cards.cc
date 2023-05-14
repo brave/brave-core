@@ -16,7 +16,7 @@
 
 namespace brave_rewards::internal::endpoint::uphold {
 
-PostCards::PostCards(LedgerImpl& ledger) : ledger_(ledger) {}
+PostCards::PostCards() = default;
 
 PostCards::~PostCards() = default;
 

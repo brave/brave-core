@@ -37,17 +37,13 @@
 //   "code": 401
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PutCaptchaCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutCaptcha {
  public:
-  explicit PutCaptcha(LedgerImpl& ledger);
+  PutCaptcha();
   ~PutCaptcha();
 
   void Request(const int x,
@@ -65,8 +61,6 @@ class PutCaptcha {
   void OnRequest(PutCaptchaCallback callback, mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_PUT_CAPTCHA_PUT_CAPTCHA_H_

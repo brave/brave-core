@@ -15,7 +15,7 @@
 
 namespace brave_rewards::internal::endpoint::uphold {
 
-PatchCard::PatchCard(LedgerImpl& ledger) : ledger_(ledger) {}
+PatchCard::PatchCard() = default;
 
 PatchCard::~PatchCard() = default;
 

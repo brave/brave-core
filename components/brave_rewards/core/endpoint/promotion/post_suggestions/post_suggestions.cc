@@ -16,11 +16,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostSuggestions::PostSuggestions(LedgerImpl& ledger) : ledger_(ledger) {}
+PostSuggestions::PostSuggestions() = default;
 
 PostSuggestions::~PostSuggestions() = default;
 
@@ -96,6 +94,4 @@ void PostSuggestions::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

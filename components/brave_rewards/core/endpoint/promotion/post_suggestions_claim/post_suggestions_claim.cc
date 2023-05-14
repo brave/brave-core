@@ -17,12 +17,9 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+PostSuggestionsClaim::PostSuggestionsClaim() = default;
 
 PostSuggestionsClaim::~PostSuggestionsClaim() = default;
 
@@ -124,6 +121,4 @@ void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
   std::move(callback).Run(result, std::move(*drain_id));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

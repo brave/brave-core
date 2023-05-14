@@ -31,18 +31,14 @@
 //   "nonce": "c4645786-052f-402f-8593-56af2f7a21ce"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PostSafetynetCallback =
     base::OnceCallback<void(mojom::Result result, const std::string& nonce)>;
 
 class PostSafetynet {
  public:
-  explicit PostSafetynet(LedgerImpl& ledger);
+  PostSafetynet();
   ~PostSafetynet();
 
   void Request(PostSafetynetCallback callback);
@@ -60,8 +56,6 @@ class PostSafetynet {
                  mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_SAFETYNET_POST_SAFETYNET_H_

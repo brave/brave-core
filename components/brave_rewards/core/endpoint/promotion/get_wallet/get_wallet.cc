@@ -15,11 +15,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-GetWallet::GetWallet(LedgerImpl& ledger) : ledger_{ledger} {}
+GetWallet::GetWallet() = default;
 
 GetWallet::~GetWallet() = default;
 
@@ -108,6 +106,4 @@ mojom::Result GetWallet::ParseBody(const std::string& body,
   return mojom::Result::LEDGER_OK;
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

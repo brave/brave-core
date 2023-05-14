@@ -12,11 +12,9 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PutCaptcha::PutCaptcha(LedgerImpl& ledger) : ledger_(ledger) {}
+PutCaptcha::PutCaptcha() = default;
 
 PutCaptcha::~PutCaptcha() = default;
 
@@ -85,6 +83,4 @@ void PutCaptcha::OnRequest(PutCaptchaCallback callback,
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

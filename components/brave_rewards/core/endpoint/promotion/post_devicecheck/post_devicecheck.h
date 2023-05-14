@@ -30,18 +30,14 @@
 //   "nonce": "c4645786-052f-402f-8593-56af2f7a21ce"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PostDevicecheckCallback =
     base::OnceCallback<void(mojom::Result result, const std::string& nonce)>;
 
 class PostDevicecheck {
  public:
-  explicit PostDevicecheck(LedgerImpl& ledger);
+  PostDevicecheck();
   ~PostDevicecheck();
 
   void Request(const std::string& key, PostDevicecheckCallback callback);
@@ -59,8 +55,6 @@ class PostDevicecheck {
                  mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_DEVICECHECK_POST_DEVICECHECK_H_

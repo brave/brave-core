@@ -71,18 +71,14 @@
 //   ]
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
 using GetCardCallback = base::OnceCallback<void(const mojom::Result result,
                                                 const double available)>;
 
 class GetCard {
  public:
-  explicit GetCard(LedgerImpl& ledger);
+  GetCard();
   ~GetCard();
 
   void Request(const std::string& address,
@@ -99,8 +95,6 @@ class GetCard {
   void OnRequest(GetCardCallback callback, mojom::UrlResponsePtr response);
 };
 
-}  // namespace uphold
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_GET_CARD_GET_CARD_H_

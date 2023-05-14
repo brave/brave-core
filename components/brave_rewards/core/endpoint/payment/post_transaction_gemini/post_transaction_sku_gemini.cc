@@ -15,12 +15,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-PostTransactionGemini::PostTransactionGemini(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+PostTransactionGemini::PostTransactionGemini() = default;
 
 PostTransactionGemini::~PostTransactionGemini() = default;
 
@@ -100,6 +97,4 @@ void PostTransactionGemini::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

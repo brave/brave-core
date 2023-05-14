@@ -12,11 +12,9 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PutDevicecheck::PutDevicecheck(LedgerImpl& ledger) : ledger_(ledger) {}
+PutDevicecheck::PutDevicecheck() = default;
 
 PutDevicecheck::~PutDevicecheck() = default;
 
@@ -84,6 +82,4 @@ void PutDevicecheck::OnRequest(PutDevicecheckCallback callback,
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

@@ -35,17 +35,13 @@
 // Response body:
 // {Empty}
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 using PostVotesCallback = std::function<void(const mojom::Result result)>;
 
 class PostVotes {
  public:
-  explicit PostVotes(LedgerImpl& ledger);
+  PostVotes();
   ~PostVotes();
 
   void Request(const credential::CredentialsRedeem& redeem,
@@ -61,8 +57,6 @@ class PostVotes {
   void OnRequest(mojom::UrlResponsePtr response, PostVotesCallback callback);
 };
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_VOTES_POST_VOTES_H_

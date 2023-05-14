@@ -16,10 +16,9 @@ namespace brave_rewards::internal {
 
 using uphold::Capabilities;
 
-namespace endpoint {
-namespace uphold {
+namespace endpoint::uphold {
 
-GetCapabilities::GetCapabilities(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCapabilities::GetCapabilities() = default;
 
 GetCapabilities::~GetCapabilities() = default;
 
@@ -103,6 +102,5 @@ GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
   return capability_map;
 }
 
-}  // namespace uphold
 }  // namespace endpoint
 }  // namespace brave_rewards::internal

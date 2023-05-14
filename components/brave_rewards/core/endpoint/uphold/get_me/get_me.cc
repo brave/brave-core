@@ -14,11 +14,9 @@
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
-GetMe::GetMe(LedgerImpl& ledger) : ledger_(ledger) {}
+GetMe::GetMe() = default;
 
 GetMe::~GetMe() = default;
 
@@ -94,6 +92,4 @@ void GetMe::OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response) {
   std::move(callback).Run(result, user);
 }
 
-}  // namespace uphold
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

@@ -15,11 +15,9 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostCreds::PostCreds(LedgerImpl& ledger) : ledger_(ledger) {}
+PostCreds::PostCreds() = default;
 
 PostCreds::~PostCreds() = default;
 
@@ -148,6 +146,4 @@ void PostCreds::OnRequest(PostCredsCallback callback,
   std::move(callback).Run(result, claim_id);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

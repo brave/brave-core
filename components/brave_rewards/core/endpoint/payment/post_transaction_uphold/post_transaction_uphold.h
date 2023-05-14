@@ -40,18 +40,14 @@
 //   "amount": "1"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 using PostTransactionUpholdCallback =
     std::function<void(const mojom::Result result)>;
 
 class PostTransactionUphold {
  public:
-  explicit PostTransactionUphold(LedgerImpl& ledger);
+  PostTransactionUphold();
   ~PostTransactionUphold();
 
   void Request(const mojom::SKUTransaction& transaction,
@@ -68,8 +64,6 @@ class PostTransactionUphold {
                  PostTransactionUpholdCallback callback);
 };
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_TRANSACTION_UPHOLD_POST_TRANSACTION_UPHOLD_H_

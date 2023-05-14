@@ -16,7 +16,7 @@
 
 namespace brave_rewards::internal::endpoint::uphold {
 
-GetCards::GetCards(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCards::GetCards() = default;
 
 GetCards::~GetCards() = default;
 

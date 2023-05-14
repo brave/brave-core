@@ -15,12 +15,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-PostTransactionUphold::PostTransactionUphold(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+PostTransactionUphold::PostTransactionUphold() = default;
 
 PostTransactionUphold::~PostTransactionUphold() = default;
 
@@ -91,6 +88,4 @@ void PostTransactionUphold::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

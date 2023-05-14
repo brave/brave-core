@@ -17,11 +17,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-PostOrder::PostOrder(LedgerImpl& ledger) : ledger_(ledger) {}
+PostOrder::PostOrder() = default;
 
 PostOrder::~PostOrder() = default;
 
@@ -197,6 +195,4 @@ void PostOrder::OnRequest(mojom::UrlResponsePtr response,
   callback(result, std::move(order));
 }
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

@@ -22,11 +22,7 @@
 // See
 // https://github.com/brave/brave-core/blob/master/components/brave_rewards/core/publisher/protos/channel_response.proto
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace private_cdn {
+namespace brave_rewards::internal::endpoint::private_cdn {
 
 using GetPublisherCallback =
     std::function<void(const mojom::Result result,
@@ -34,7 +30,7 @@ using GetPublisherCallback =
 
 class GetPublisher {
  public:
-  explicit GetPublisher(LedgerImpl& ledger);
+  GetPublisher();
   ~GetPublisher();
 
   void Request(const std::string& publisher_key,
@@ -55,8 +51,6 @@ class GetPublisher {
                  GetPublisherCallback callback);
 };
 
-}  // namespace private_cdn
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PRIVATE_CDN_GET_PUBLISHER_GET_PUBLISHER_H_

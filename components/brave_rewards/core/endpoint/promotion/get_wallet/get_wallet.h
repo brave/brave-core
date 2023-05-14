@@ -36,18 +36,14 @@
 //     "ae55f61fa5b2870c0ee3633004c6d7a40adb5694c73d05510d8179cec8a3403a"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using GetWalletCallback = std::function<
     void(mojom::Result result, const std::string& custodian, bool linked)>;
 
 class GetWallet {
  public:
-  explicit GetWallet(LedgerImpl& ledger);
+  GetWallet();
   ~GetWallet();
 
   void Request(GetWalletCallback callback) const;
@@ -65,8 +61,6 @@ class GetWallet {
                           bool* linked) const;
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_WALLET_GET_WALLET_H_

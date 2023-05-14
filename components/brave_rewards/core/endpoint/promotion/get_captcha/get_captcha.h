@@ -23,18 +23,14 @@
 // Response body:
 // {PNG data}
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using GetCaptchaCallback =
     base::OnceCallback<void(mojom::Result result, const std::string& image)>;
 
 class GetCaptcha {
  public:
-  explicit GetCaptcha(LedgerImpl& ledger);
+  GetCaptcha();
   ~GetCaptcha();
 
   void Request(const std::string& captcha_id, GetCaptchaCallback callback);
@@ -49,8 +45,6 @@ class GetCaptcha {
   void OnRequest(GetCaptchaCallback callback, mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_CAPTCHA_GET_CAPTCHA_H_

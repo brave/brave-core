@@ -35,15 +35,11 @@
 // Response body:
 // {Empty}
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 class PostSuggestionsClaim {
  public:
-  explicit PostSuggestionsClaim(LedgerImpl& ledger);
+  PostSuggestionsClaim();
   ~PostSuggestionsClaim();
 
   void Request(const credential::CredentialsRedeem& redeem,
@@ -60,8 +56,6 @@ class PostSuggestionsClaim {
                  mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_POST_SUGGESTIONS_CLAIM_H_

@@ -42,18 +42,14 @@
 //   "data": {}
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using GetSignedCredsCallback =
     base::OnceCallback<void(mojom::Result, mojom::CredsBatchPtr)>;
 
 class GetSignedCreds {
  public:
-  explicit GetSignedCreds(LedgerImpl& ledger);
+  GetSignedCreds();
   ~GetSignedCreds();
 
   void Request(const std::string& promotion_id,
@@ -72,8 +68,6 @@ class GetSignedCreds {
                  mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_SIGNED_CREDS_GET_SIGNED_CREDS_H_

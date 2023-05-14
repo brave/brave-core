@@ -14,11 +14,9 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostCaptcha::PostCaptcha(LedgerImpl& ledger) : ledger_(ledger) {}
+PostCaptcha::PostCaptcha() = default;
 
 PostCaptcha::~PostCaptcha() = default;
 
@@ -116,6 +114,4 @@ void PostCaptcha::OnRequest(PostCaptchaCallback callback,
   std::move(callback).Run(result, hint, captcha_id);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

@@ -18,11 +18,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-GetAvailable::GetAvailable(LedgerImpl& ledger) : ledger_(ledger) {}
+GetAvailable::GetAvailable() = default;
 
 GetAvailable::~GetAvailable() = default;
 
@@ -226,6 +224,4 @@ void GetAvailable::OnRequest(GetAvailableCallback callback,
   std::move(callback).Run(result, std::move(list), corrupted_promotions);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

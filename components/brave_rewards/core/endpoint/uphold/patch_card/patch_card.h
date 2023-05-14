@@ -79,16 +79,13 @@
 //   ]
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint::uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
 using PatchCardCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PatchCard {
  public:
-  explicit PatchCard(LedgerImpl& ledger);
+  PatchCard();
   ~PatchCard();
 
   void Request(const std::string& token,
@@ -105,7 +102,6 @@ class PatchCard {
   void OnRequest(PatchCardCallback, mojom::UrlResponsePtr);
 };
 
-}  // namespace endpoint::uphold
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_PATCH_CARD_PATCH_CARD_H_

@@ -13,12 +13,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostClobberedClaims::PostClobberedClaims(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+PostClobberedClaims::PostClobberedClaims() = default;
 
 PostClobberedClaims::~PostClobberedClaims() = default;
 
@@ -76,6 +73,4 @@ void PostClobberedClaims::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

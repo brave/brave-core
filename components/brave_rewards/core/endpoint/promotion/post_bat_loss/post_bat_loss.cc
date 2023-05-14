@@ -15,11 +15,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostBatLoss::PostBatLoss(LedgerImpl& ledger) : ledger_(ledger) {}
+PostBatLoss::PostBatLoss() = default;
 
 PostBatLoss::~PostBatLoss() = default;
 
@@ -90,6 +88,4 @@ void PostBatLoss::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

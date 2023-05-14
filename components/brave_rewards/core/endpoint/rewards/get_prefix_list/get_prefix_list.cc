@@ -13,11 +13,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace rewards {
+namespace brave_rewards::internal::endpoint::rewards {
 
-GetPrefixList::GetPrefixList(LedgerImpl& ledger) : ledger_(ledger) {}
+GetPrefixList::GetPrefixList() = default;
 
 GetPrefixList::~GetPrefixList() = default;
 
@@ -57,6 +55,4 @@ void GetPrefixList::OnRequest(mojom::UrlResponsePtr response,
   callback(mojom::Result::LEDGER_OK, response->body);
 }
 
-}  // namespace rewards
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

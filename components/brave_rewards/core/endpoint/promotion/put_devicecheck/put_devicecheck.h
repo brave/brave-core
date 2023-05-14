@@ -35,17 +35,13 @@
 //   "code": 401
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PutDevicecheckCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutDevicecheck {
  public:
-  explicit PutDevicecheck(LedgerImpl& ledger);
+  PutDevicecheck();
   ~PutDevicecheck();
 
   void Request(const std::string& blob,
@@ -65,8 +61,6 @@ class PutDevicecheck {
                  mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_PUT_DEVICECHECK_PUT_DEVICECHECK_H_

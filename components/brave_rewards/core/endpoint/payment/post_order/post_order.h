@@ -56,18 +56,14 @@
 //   ]
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 using PostOrderCallback =
     std::function<void(const mojom::Result result, mojom::SKUOrderPtr order)>;
 
 class PostOrder {
  public:
-  explicit PostOrder(LedgerImpl& ledger);
+  PostOrder();
   ~PostOrder();
 
   void Request(const std::vector<mojom::SKUOrderItem>& items,
@@ -89,8 +85,6 @@ class PostOrder {
                  PostOrderCallback callback);
 };
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_

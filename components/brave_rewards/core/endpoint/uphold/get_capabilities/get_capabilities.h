@@ -165,18 +165,14 @@
 //   }
 // ]
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
 using GetCapabilitiesCallback =
     base::OnceCallback<void(mojom::Result, internal::uphold::Capabilities)>;
 
 class GetCapabilities {
  public:
-  explicit GetCapabilities(LedgerImpl& ledger);
+  GetCapabilities();
   ~GetCapabilities();
 
   void Request(const std::string& token, GetCapabilitiesCallback callback);
@@ -198,8 +194,6 @@ class GetCapabilities {
   CapabilityMap ParseBody(const std::string& body);
 };
 
-}  // namespace uphold
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_GET_CAPABILITIES_GET_CAPABILITIES_H_

@@ -38,18 +38,14 @@
 //   "claimId": "53714048-9675-419e-baa3-369d85a2facb"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PostCredsCallback =
     base::OnceCallback<void(mojom::Result result, const std::string& claim_id)>;
 
 class PostCreds {
  public:
-  explicit PostCreds(LedgerImpl& ledger);
+  PostCreds();
   ~PostCreds();
 
   void Request(const std::string& promotion_id,
@@ -68,8 +64,6 @@ class PostCreds {
   void OnRequest(PostCredsCallback callback, mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_CREDS_POST_CREDS_H_

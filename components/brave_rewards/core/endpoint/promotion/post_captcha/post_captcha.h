@@ -29,11 +29,7 @@
 //   "captchaId": "d155d2d2-2627-425b-9be8-44ae9f541762"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PostCaptchaCallback =
     base::OnceCallback<void(mojom::Result result,
@@ -42,7 +38,7 @@ using PostCaptchaCallback =
 
 class PostCaptcha {
  public:
-  explicit PostCaptcha(LedgerImpl& ledger);
+  PostCaptcha();
   ~PostCaptcha();
 
   void Request(PostCaptchaCallback callback);
@@ -61,8 +57,6 @@ class PostCaptcha {
   void OnRequest(PostCaptchaCallback callback, mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_CAPTCHA_POST_CAPTCHA_H_

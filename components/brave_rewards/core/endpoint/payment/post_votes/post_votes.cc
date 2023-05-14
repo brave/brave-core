@@ -17,11 +17,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-PostVotes::PostVotes(LedgerImpl& ledger) : ledger_(ledger) {}
+PostVotes::PostVotes() = default;
 
 PostVotes::~PostVotes() = default;
 
@@ -93,6 +91,4 @@ void PostVotes::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

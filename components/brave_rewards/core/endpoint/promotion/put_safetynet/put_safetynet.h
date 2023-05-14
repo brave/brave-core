@@ -34,17 +34,13 @@
 //   "code": 401
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PutSafetynetCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutSafetynet {
  public:
-  explicit PutSafetynet(LedgerImpl& ledger);
+  PutSafetynet();
   ~PutSafetynet();
 
   void Request(const std::string& token,
@@ -61,8 +57,6 @@ class PutSafetynet {
   void OnRequest(PutSafetynetCallback callback, mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_PUT_SAFETYNET_PUT_SAFETYNET_H_

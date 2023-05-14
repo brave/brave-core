@@ -12,11 +12,9 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PutSafetynet::PutSafetynet(LedgerImpl& ledger) : ledger_(ledger) {}
+PutSafetynet::PutSafetynet() = default;
 
 PutSafetynet::~PutSafetynet() = default;
 
@@ -81,6 +79,4 @@ void PutSafetynet::OnRequest(PutSafetynetCallback callback,
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

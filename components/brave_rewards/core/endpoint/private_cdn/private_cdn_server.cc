@@ -6,13 +6,10 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
-PrivateCDNServer::PrivateCDNServer(LedgerImpl& ledger)
-    : get_publisher_(ledger) {}
+PrivateCDNServer::PrivateCDNServer() = default;
 
 PrivateCDNServer::~PrivateCDNServer() = default;
 
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

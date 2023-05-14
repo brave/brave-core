@@ -16,11 +16,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-PostDevicecheck::PostDevicecheck(LedgerImpl& ledger) : ledger_(ledger) {}
+PostDevicecheck::PostDevicecheck() = default;
 
 PostDevicecheck::~PostDevicecheck() = default;
 
@@ -114,6 +112,4 @@ void PostDevicecheck::OnRequest(PostDevicecheckCallback callback,
   std::move(callback).Run(result, nonce);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

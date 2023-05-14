@@ -17,11 +17,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
-GetCard::GetCard(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCard::GetCard() = default;
 
 GetCard::~GetCard() = default;
 
@@ -97,6 +95,4 @@ void GetCard::OnRequest(GetCardCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace uphold
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

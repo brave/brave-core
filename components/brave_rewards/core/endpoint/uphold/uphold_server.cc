@@ -5,20 +5,10 @@
 
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+namespace brave_rewards::internal::endpoint {
 
-namespace brave_rewards::internal {
-namespace endpoint {
-
-UpholdServer::UpholdServer(LedgerImpl& ledger)
-    : get_capabilities_(ledger),
-      get_cards_(ledger),
-      get_card_(ledger),
-      get_me_(ledger),
-      post_cards_(ledger),
-      patch_card_(ledger) {}
+UpholdServer::UpholdServer() = default;
 
 UpholdServer::~UpholdServer() = default;
 
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

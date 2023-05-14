@@ -43,11 +43,7 @@
 //   ]
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using GetAvailableCallback = base::OnceCallback<void(
     mojom::Result result,
@@ -56,7 +52,7 @@ using GetAvailableCallback = base::OnceCallback<void(
 
 class GetAvailable {
  public:
-  explicit GetAvailable(LedgerImpl& ledger);
+  GetAvailable();
   ~GetAvailable();
 
   void Request(const std::string& platform, GetAvailableCallback callback);
@@ -73,8 +69,6 @@ class GetAvailable {
   void OnRequest(GetAvailableCallback callback, mojom::UrlResponsePtr response);
 };
 
-}  // namespace promotion
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_AVAILABLE_GET_AVAILABLE_H_

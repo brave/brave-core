@@ -76,17 +76,14 @@
 //   ]
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint::uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
 using PostCardsCallback =
     base::OnceCallback<void(mojom::Result, std::string&& id)>;
 
 class PostCards {
  public:
-  explicit PostCards(LedgerImpl& ledger);
+  PostCards();
   ~PostCards();
 
   void Request(const std::string& token, PostCardsCallback);
@@ -103,7 +100,6 @@ class PostCards {
   void OnRequest(PostCardsCallback, mojom::UrlResponsePtr);
 };
 
-}  // namespace endpoint::uphold
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_POST_CARDS_POST_CARDS_H_
