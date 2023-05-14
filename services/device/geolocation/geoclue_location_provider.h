@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/sequence_checker.h"
 #include "dbus/bus.h"
 #include "dbus/message.h"
 #include "dbus/object_path.h"
@@ -25,7 +25,8 @@ namespace device {
 
 struct GeoClueLocationProperties;
 
-class GeoClueLocationProvider : public LocationProvider {
+class COMPONENT_EXPORT(BRAVE_GEOLOCATION) GeoClueLocationProvider
+    : public LocationProvider {
  public:
   GeoClueLocationProvider();
 
@@ -92,10 +93,9 @@ class GeoClueLocationProvider : public LocationProvider {
                          const std::string& signal_name,
                          bool success);
 
-  // Step 5: Start the client. This is safe to call before permission is granted
-  // or while the client is starting up, it will just be ignored if we aren't
-  // ready to start. It will be invoked again when everything is ready.
-  void StartClient();
+  // Step 5: Start the client. This can be called before permission has been
+  // granted or while the client is starting up but it will have no effect.
+  void MaybeStartClient();
   void OnClientStarted(dbus::Response* response);
 
   // Functions for triggering the read of a new GeoClue2.Location, and a
@@ -103,8 +103,6 @@ class GeoClueLocationProvider : public LocationProvider {
   void ReadGeoClueLocation(const dbus::ObjectPath& path);
   void OnReadGeoClueLocation(
       std::unique_ptr<GeoClueLocationProperties> properties);
-
-  SEQUENCE_CHECKER(sequence_checker_);
 
   scoped_refptr<dbus::Bus> bus_;
   scoped_refptr<dbus::ObjectProxy> gclue_client_;
@@ -114,6 +112,9 @@ class GeoClueLocationProvider : public LocationProvider {
 
   base::WeakPtrFactory<GeoClueLocationProvider> weak_ptr_factory_{this};
 };
+
+COMPONENT_EXPORT(BRAVE_GEOLOCATION)
+std::unique_ptr<GeoClueLocationProvider> MaybeCreateGeoClueLocationProvider();
 
 }  // namespace device
 

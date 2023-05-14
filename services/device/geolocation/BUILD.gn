@@ -9,10 +9,27 @@ source_set("unit_tests") {
   sources = [ "geoclue_location_provider_unittest.cc" ]
 
   deps = [
+    ":geolocation",
     "//content/test:test_support",
     "//dbus",
-    "//services/device/geolocation",
     "//services/device/public/cpp:device_features",
     "//testing/gtest",
+  ]
+}
+
+component("geolocation") {
+  output_name = "brave_geolocation"
+  defines = [ "IS_BRAVE_GEOLOCATION_IMPL" ]
+
+  sources = [
+    "geoclue_location_provider.cc",
+    "geoclue_location_provider.h",
+  ]
+  deps = [
+    "//components/dbus/thread_linux",
+    "//dbus",
+    "//services/device/public/cpp:device_features",
+    "//services/device/public/cpp/geolocation",
+    "//services/device/public/mojom:mojom",
   ]
 }

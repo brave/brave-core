@@ -16,13 +16,13 @@
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/location.h"
+#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "components/dbus/thread_linux/dbus_thread_linux.h"
 #include "dbus/property.h"
 #include "services/device/public/cpp/device_features.h"
-#include "services/device/public/cpp/geolocation/geolocation_manager.h"
 #include "services/device/public/cpp/geolocation/geoposition.h"
 
 namespace device {
@@ -50,22 +50,13 @@ mojom::Geoposition GetErrorPosition() {
 }
 
 // Note: This method blocks because the call to NewSystemProvider is not
-// asynchronous. Fortunately it happens in the background, so this is safe. As
-// it's pretty unlikely that the presence of the GeoClue2 service changes in a
-// browser session, we cache the result here, so we only calculate this once.
+// asynchronous, but it happens on the background geolocation thread.
 //
 // The easiest way to determine if a DBus service exists is to try and call a
 // method on it, and see if it fails. For this, I chose
 // |GeoClue2.Manager.GetClient| (this is cached on the GeoClue2 side, so it will
 // be the same client we get when we start our service).
 bool GeoClueAvailable() {
-  static bool checked = false;
-  static bool available = false;
-
-  if (checked) {
-    return available;
-  }
-
   dbus::Bus::Options options;
   options.bus_type = dbus::Bus::SYSTEM;
   options.connection_type = dbus::Bus::PRIVATE;
@@ -79,8 +70,7 @@ bool GeoClueAvailable() {
       proxy->CallMethodAndBlock(&call, dbus::ObjectProxy::TIMEOUT_USE_DEFAULT);
 
   // If the response is |nullptr| then the GeoClue2.Manager does not exist.
-  available = response.get();
-  checked = true;
+  bool available = response.get();
 
   // Shutdown this bus - we'll use one on the DBus thread for our actual
   // provider.
@@ -124,7 +114,8 @@ struct GeoClueLocationProperties : public dbus::PropertySet {
 
   ~GeoClueLocationProperties() override = default;
 
-  void GetAllWithCallback(base::OnceCallback<void()> on_got_all) {
+  using dbus::PropertySet::GetAll;
+  void GetAll(base::OnceCallback<void()> on_got_all) {
     // We only support this one at a time. It's fine for now.
     DCHECK(!on_got_all_);
     on_got_all_ = std::move(on_got_all);
@@ -145,8 +136,6 @@ struct GeoClueLocationProperties : public dbus::PropertySet {
 };
 
 GeoClueLocationProvider::GeoClueLocationProvider() {
-  DETACH_FROM_SEQUENCE(sequence_checker_);
-
   dbus::Bus::Options options;
   options.bus_type = dbus::Bus::SYSTEM;
   options.connection_type = dbus::Bus::PRIVATE;
@@ -156,22 +145,16 @@ GeoClueLocationProvider::GeoClueLocationProvider() {
 }
 
 GeoClueLocationProvider::~GeoClueLocationProvider() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   dbus_thread_linux::GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&dbus::Bus::ShutdownAndBlock, std::move(bus_)));
+      FROM_HERE, base::BindOnce(&dbus::Bus::ShutdownAndBlock, bus_));
 }
 
 void GeoClueLocationProvider::SetUpdateCallback(
     const LocationProviderUpdateCallback& callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   position_update_callback_ = callback;
 }
 
 void GeoClueLocationProvider::StartProvider(bool high_accuracy) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   // The GeoClue2 Client doesn't provide a location with the updated accuracy
   // unless it is restarted, so if the accuracy level has changed we need to
   // restart the provider.
@@ -198,8 +181,6 @@ void GeoClueLocationProvider::StartProvider(bool high_accuracy) {
 }
 
 void GeoClueLocationProvider::StopProvider() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   if (client_state_ == kStopped) {
     return;
   }
@@ -227,15 +208,11 @@ const mojom::Geoposition& GeoClueLocationProvider::GetPosition() {
 }
 
 void GeoClueLocationProvider::OnPermissionGranted() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   permission_granted_ = true;
-  StartClient();
+  MaybeStartClient();
 }
 
 void GeoClueLocationProvider::SetPosition(const mojom::Geoposition& position) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   last_position_ = position;
 
   if (client_state_ != kStarted) {
@@ -250,8 +227,6 @@ void GeoClueLocationProvider::SetPosition(const mojom::Geoposition& position) {
 }
 
 void GeoClueLocationProvider::OnGetClientCompleted(dbus::Response* response) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   if (!response) {
     SetPosition(GetErrorPosition());
     return;
@@ -269,30 +244,27 @@ void GeoClueLocationProvider::OnGetClientCompleted(dbus::Response* response) {
 }
 
 void GeoClueLocationProvider::SetClientProperties() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  auto* raw_ptr = new GeoClueProperties(gclue_client_.get());
-  std::unique_ptr<dbus::PropertySet> properties(raw_ptr);
+  auto properties = std::make_unique<GeoClueProperties>(gclue_client_.get());
+  auto* properties_raw = properties.get();
 
   // Wait for all properties to be set before starting the client.
   const auto callback = base::BarrierCallback<bool>(
       2, base::BindOnce(&GeoClueLocationProvider::OnSetClientProperties,
                         weak_ptr_factory_.GetWeakPtr(), std::move(properties)));
 
-  raw_ptr->requested_accuracy_level.Set(
+  properties_raw->requested_accuracy_level.Set(
       high_accuracy_requested_ ? kGeoClueAccuracyHigh : kGeoClueAccuracyLow,
       callback);
 
-  raw_ptr->desktop_id.Set(kBraveDesktopId, callback);
+  properties_raw->desktop_id.Set(kBraveDesktopId, callback);
 }
+
 void GeoClueLocationProvider::OnSetClientProperties(
     std::unique_ptr<dbus::PropertySet> property_set,
     std::vector<bool> success) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   if (base::ranges::any_of(success, [](const auto& value) { return !value; })) {
-    LOG(ERROR) << "Failed to set properties. GeoClue2 location provider will "
-                  "not work properly";
+    VLOG(1) << "Failed to set properties. GeoClue2 location provider will "
+               "not work properly";
     SetPosition(GetErrorPosition());
     return;
   }
@@ -301,7 +273,7 @@ void GeoClueLocationProvider::OnSetClientProperties(
 }
 
 void GeoClueLocationProvider::ConnectSignal() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(gclue_client_);
 
   gclue_client_->ConnectToSignal(
       kClientInterfaceName, "LocationUpdated",
@@ -332,23 +304,19 @@ void GeoClueLocationProvider::OnSignalConnected(
     const std::string& interface_name,
     const std::string& signal_name,
     bool success) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   if (!success) {
-    LOG(ERROR) << "Failed to connect to LocationUpdated Signal. GeoClue2 "
-                  "location provider will "
-                  "not work properly";
+    VLOG(1) << "Failed to connect to LocationUpdated Signal. GeoClue2 "
+               "location provider will "
+               "not work properly";
     SetPosition(GetErrorPosition());
     return;
   }
 
   client_state_ = kInitialized;
-  StartClient();
+  MaybeStartClient();
 }
 
-void GeoClueLocationProvider::StartClient() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
+void GeoClueLocationProvider::MaybeStartClient() {
   if (!gclue_client_ || !permission_granted_ || client_state_ != kInitialized) {
     return;
   }
@@ -363,26 +331,20 @@ void GeoClueLocationProvider::StartClient() {
 }
 
 void GeoClueLocationProvider::OnClientStarted(dbus::Response* response) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   client_state_ = kStarted;
 }
 
 void GeoClueLocationProvider::ReadGeoClueLocation(
     const dbus::ObjectPath& location_path) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   auto location_properties = std::make_unique<GeoClueLocationProperties>(
       bus_->GetObjectProxy(kServiceName, location_path));
-  location_properties.get()->GetAllWithCallback(base::BindOnce(
+  location_properties->GetAll(base::BindOnce(
       &GeoClueLocationProvider::OnReadGeoClueLocation,
       weak_ptr_factory_.GetWeakPtr(), std::move(location_properties)));
 }
 
 void GeoClueLocationProvider::OnReadGeoClueLocation(
     std::unique_ptr<GeoClueLocationProperties> properties) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   mojom::Geoposition position;
   position.latitude = properties->latitude.value();
   position.longitude = properties->longitude.value();
@@ -395,9 +357,7 @@ void GeoClueLocationProvider::OnReadGeoClueLocation(
   SetPosition(position);
 }
 
-std::unique_ptr<LocationProvider> NewSystemLocationProvider(
-    scoped_refptr<base::SingleThreadTaskRunner> main_task_runner,
-    GeolocationManager* geolocation_manager) {
+std::unique_ptr<GeoClueLocationProvider> MaybeCreateGeoClueLocationProvider() {
   if (!base::FeatureList::IsEnabled(features::kLinuxGeoClueLocationBackend)) {
     return nullptr;
   }
