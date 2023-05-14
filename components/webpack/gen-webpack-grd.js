@@ -17,7 +17,7 @@ function getIncludesString (fileList) {
     const resourcePath = resourcePathPrefix
       ? path.join(resourcePathPrefix, relativePath)
       : relativePath
-    return `<include name="${fileId}" file="${filePath}" resource_path="${resourcePath}" use_base_dir="false" type="BINDATA" />`
+    return `<` + `include name="${fileId}" file="${filePath}" resource_path="${resourcePath}" use_base_dir="false" type="BINDATA" />`
   }).join('\n')
 }
 
