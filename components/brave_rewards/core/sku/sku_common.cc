@@ -62,7 +62,7 @@ void SKUCommon::SendExternalTransaction(const std::string& order_id,
   auto get_callback =
       std::bind(&SKUCommon::GetSKUTransactionByOrderId, this, _1, callback);
 
-  ledger_->database()->GetSKUTransactionByOrderId(order_id, get_callback);
+  ledger().database()->GetSKUTransactionByOrderId(order_id, get_callback);
 }
 
 void SKUCommon::GetSKUTransactionByOrderId(

@@ -43,7 +43,7 @@ void DatabaseExternalTransactions::Insert(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  ledger().RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseExternalTransactions::OnInsert,
                      base::Unretained(this), std::move(callback)));
@@ -82,7 +82,7 @@ void DatabaseExternalTransactions::GetTransaction(
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  ledger().RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseExternalTransactions::OnGetTransaction,
                      base::Unretained(this), std::move(callback)));

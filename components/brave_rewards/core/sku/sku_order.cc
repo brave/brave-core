@@ -47,7 +47,7 @@ void SKUOrder::OnCreate(const mojom::Result result,
   auto save_callback =
       std::bind(&SKUOrder::OnCreateSave, this, _1, order->order_id, callback);
 
-  ledger_->database()->SaveSKUOrder(order->Clone(), save_callback);
+  ledger().database()->SaveSKUOrder(order->Clone(), save_callback);
 }
 
 void SKUOrder::OnCreateSave(const mojom::Result result,

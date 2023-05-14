@@ -52,7 +52,7 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
@@ -94,7 +94,7 @@ void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
   auto transaction_callback =
       std::bind(&DatabaseMediaPublisherInfo::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseMediaPublisherInfo::OnGetRecord(

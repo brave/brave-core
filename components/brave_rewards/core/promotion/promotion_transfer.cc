@@ -27,7 +27,7 @@ void PromotionTransfer::Start(PostSuggestionsClaimCallback callback) {
       base::BindOnce(&PromotionTransfer::OnGetSpendableUnblindedTokens,
                      base::Unretained(this), std::move(callback));
 
-  ledger_->database()->GetSpendableUnblindedTokens(
+  ledger().database()->GetSpendableUnblindedTokens(
       [callback = std::make_shared<decltype(tokens_callback)>(std::move(
            tokens_callback))](std::vector<mojom::UnblindedTokenPtr> tokens) {
         std::move(*callback).Run(std::move(tokens));
@@ -62,7 +62,7 @@ void PromotionTransfer::OnDrainTokens(PostSuggestionsClaimCallback callback,
                                       mojom::Result result,
                                       std::string drain_id) const {
   if (result == mojom::Result::LEDGER_OK) {
-    ledger_->database()->SaveEventLog(log::kPromotionVBATDrained,
+    ledger().database()->SaveEventLog(log::kPromotionVBATDrained,
                                       base::NumberToString(transfer_amount));
   }
 

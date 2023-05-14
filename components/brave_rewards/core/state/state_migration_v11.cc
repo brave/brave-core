@@ -22,9 +22,9 @@ void StateMigrationV11::Migrate(LegacyResultCallback callback) {
   // their operating system we are reverting this change
 
   const auto decrypted_wallet =
-      ledger_->state()->GetEncryptedString(kWalletBrave);
+      ledger().state()->GetEncryptedString(kWalletBrave);
   if (decrypted_wallet) {
-    ledger_->SetState(kWalletBrave, decrypted_wallet.value());
+    ledger().SetState(kWalletBrave, decrypted_wallet.value());
   }
 
   callback(mojom::Result::LEDGER_OK);

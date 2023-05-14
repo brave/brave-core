@@ -59,7 +59,7 @@ void DatabaseCredsBatch::InsertOrUpdate(mojom::CredsBatchPtr creds,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::GetRecordByTrigger(
@@ -97,7 +97,7 @@ void DatabaseCredsBatch::GetRecordByTrigger(
   auto transaction_callback =
       std::bind(&DatabaseCredsBatch::OnGetRecordByTrigger, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::OnGetRecordByTrigger(
@@ -164,7 +164,7 @@ void DatabaseCredsBatch::SaveSignedCreds(mojom::CredsBatchPtr creds,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::GetAllRecords(GetCredsBatchListCallback callback) {
@@ -194,7 +194,7 @@ void DatabaseCredsBatch::GetAllRecords(GetCredsBatchListCallback callback) {
   auto transaction_callback =
       std::bind(&DatabaseCredsBatch::OnGetRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::OnGetRecords(mojom::DBCommandResponsePtr response,
@@ -257,7 +257,7 @@ void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::UpdateRecordsStatus(
@@ -288,7 +288,7 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseCredsBatch::GetRecordsByTriggers(
@@ -321,7 +321,7 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
   auto transaction_callback =
       std::bind(&DatabaseCredsBatch::OnGetRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace brave_rewards::internal

@@ -58,7 +58,7 @@ class RequestFor {
       return;
     }
 
-    ledger_->LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,
+    ledger().LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,
                                                           std::move(callback)));
   }
 

@@ -77,7 +77,7 @@ void PostCards::Request(const std::string& token, PostCardsCallback callback) {
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PostCards::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }

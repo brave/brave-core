@@ -78,7 +78,7 @@ void PostCredentials::Request(const std::string& order_id,
   request->content = GeneratePayload(item_id, type, std::move(blinded_creds));
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostCredentials::OnRequest(PostCredentialsCallback callback,

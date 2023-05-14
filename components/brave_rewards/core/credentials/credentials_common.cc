@@ -54,7 +54,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
       base::BindOnce(&CredentialsCommon::BlindedCredsSaved,
                      base::Unretained(this), std::move(callback));
 
-  ledger_->database()->SaveCredsBatch(
+  ledger().database()->SaveCredsBatch(
       std::move(creds_batch),
       [callback =
            std::make_shared<decltype(save_callback)>(std::move(save_callback))](
@@ -95,7 +95,7 @@ void CredentialsCommon::SaveUnblindedCreds(
       base::BindOnce(&CredentialsCommon::OnSaveUnblindedCreds,
                      base::Unretained(this), std::move(callback), trigger);
 
-  ledger_->database()->SaveUnblindedTokenList(
+  ledger().database()->SaveUnblindedTokenList(
       std::move(list), [callback = std::make_shared<decltype(save_callback)>(
                             std::move(save_callback))](mojom::Result result) {
         std::move(*callback).Run(result);
@@ -111,7 +111,7 @@ void CredentialsCommon::OnSaveUnblindedCreds(ResultCallback callback,
     return;
   }
 
-  ledger_->database()->UpdateCredsBatchStatus(
+  ledger().database()->UpdateCredsBatchStatus(
       trigger.id, trigger.type, mojom::CredsBatchStatus::FINISHED,
       [callback = std::make_shared<decltype(callback)>(std::move(callback))](
           mojom::Result result) { std::move(*callback).Run(result); });

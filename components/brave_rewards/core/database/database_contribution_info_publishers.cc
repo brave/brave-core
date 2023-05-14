@@ -87,7 +87,7 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
       &DatabaseContributionInfoPublishers::OnGetRecordByContributionList, this,
       _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
@@ -157,7 +157,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
       &DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap,
       this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
@@ -223,7 +223,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace brave_rewards::internal

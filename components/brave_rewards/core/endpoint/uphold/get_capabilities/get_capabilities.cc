@@ -27,7 +27,7 @@ void GetCapabilities::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetServerUrl("/v0/me/capabilities");
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&GetCapabilities::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }

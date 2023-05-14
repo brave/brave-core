@@ -74,7 +74,7 @@ void PostBalance::Request(const std::string& token,
   request->url = GetUrl();
   request->method = mojom::UrlMethod::POST;
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostBalance::OnRequest(PostBalanceCallback callback,

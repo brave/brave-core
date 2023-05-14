@@ -92,7 +92,7 @@ void DatabaseMigration::Start(uint32_t table_version,
   // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
   std::string migration_v32 = "";
-  if (ledger_->IsBitFlyerRegion()) {
+  if (ledger().IsBitFlyerRegion()) {
     migration_v30 = migration::v30;
     migration_v32 = migration::v32;
   }
@@ -163,14 +163,14 @@ void DatabaseMigration::Start(uint32_t table_version,
   const std::string message =
       base::StringPrintf("%d->%d", start_version, migrated_version);
 
-  ledger_->RunDBTransaction(
+  ledger().RunDBTransaction(
       std::move(transaction), [this, callback, message, migrated_version](
                                   mojom::DBCommandResponsePtr response) {
         if (response &&
             response->status == mojom::DBCommandResponse::Status::RESPONSE_OK) {
           // The event_log table was introduced in v29.
           if (migrated_version >= 29) {
-            ledger_->database()->SaveEventLog(log::kDatabaseMigrated, message);
+            ledger().database()->SaveEventLog(log::kDatabaseMigrated, message);
           }
           callback(mojom::Result::LEDGER_OK);
           return;

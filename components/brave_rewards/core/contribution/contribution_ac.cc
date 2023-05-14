@@ -24,21 +24,21 @@ ContributionAC::ContributionAC() = default;
 ContributionAC::~ContributionAC() = default;
 
 void ContributionAC::Process(const uint64_t reconcile_stamp) {
-  if (!ledger_->state()->GetAutoContributeEnabled()) {
+  if (!ledger().state()->GetAutoContributeEnabled()) {
     BLOG(1, "Auto contribution is off");
     return;
   }
 
   BLOG(1, "Starting auto contribution");
 
-  auto filter = ledger_->publisher()->CreateActivityFilter(
+  auto filter = ledger().publisher()->CreateActivityFilter(
       "", mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED, true,
-      reconcile_stamp, false, ledger_->state()->GetPublisherMinVisits());
+      reconcile_stamp, false, ledger().state()->GetPublisherMinVisits());
 
   auto get_callback =
       std::bind(&ContributionAC::PreparePublisherList, this, _1);
 
-  ledger_->database()->GetActivityInfoList(0, 0, std::move(filter),
+  ledger().database()->GetActivityInfoList(0, 0, std::move(filter),
                                            get_callback);
 }
 
@@ -46,7 +46,7 @@ void ContributionAC::PreparePublisherList(
     std::vector<mojom::PublisherInfoPtr> list) {
   std::vector<mojom::PublisherInfoPtr> normalized_list;
 
-  ledger_->publisher()->NormalizeContributeWinners(&normalized_list, &list, 0);
+  ledger().publisher()->NormalizeContributeWinners(&normalized_list, &list, 0);
 
   if (normalized_list.empty()) {
     BLOG(1, "AC list is empty");
@@ -74,16 +74,16 @@ void ContributionAC::PreparePublisherList(
   auto queue = mojom::ContributionQueue::New();
   queue->id = base::GenerateGUID();
   queue->type = mojom::RewardsType::AUTO_CONTRIBUTE;
-  queue->amount = ledger_->state()->GetAutoContributionAmount();
+  queue->amount = ledger().state()->GetAutoContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
 
-  ledger_->database()->SaveEventLog(log::kACAddedToQueue,
+  ledger().database()->SaveEventLog(log::kACAddedToQueue,
                                     std::to_string(queue->amount));
 
   auto save_callback = std::bind(&ContributionAC::QueueSaved, this, _1);
 
-  ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
+  ledger().database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
 void ContributionAC::QueueSaved(const mojom::Result result) {
@@ -92,7 +92,7 @@ void ContributionAC::QueueSaved(const mojom::Result result) {
     return;
   }
 
-  ledger_->contribution()->CheckContributionQueue();
+  ledger().contribution()->CheckContributionQueue();
 }
 
 }  // namespace brave_rewards::internal

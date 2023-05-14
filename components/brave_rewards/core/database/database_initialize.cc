@@ -27,7 +27,7 @@ void DatabaseInitialize::Start(LegacyResultCallback callback) {
   command->type = mojom::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  ledger().RunDBTransaction(
       std::move(transaction),
       std::bind(&DatabaseInitialize::OnInitialize, this, _1, callback));
 }

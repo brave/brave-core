@@ -73,7 +73,7 @@ void PostOauth::Request(const std::string& external_account_id,
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }

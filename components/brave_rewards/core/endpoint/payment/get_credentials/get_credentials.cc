@@ -99,7 +99,7 @@ void GetCredentials::Request(const std::string& order_id,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(order_id, item_id);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetCredentials::OnRequest(GetCredentialsCallback callback,

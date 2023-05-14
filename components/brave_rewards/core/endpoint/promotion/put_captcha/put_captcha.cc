@@ -73,7 +73,7 @@ void PutCaptcha::Request(const int x,
   request->content = GeneratePayload(x, y);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PUT;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PutCaptcha::OnRequest(PutCaptchaCallback callback,

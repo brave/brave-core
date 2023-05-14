@@ -16,7 +16,7 @@ StateMigrationV4::StateMigrationV4() = default;
 StateMigrationV4::~StateMigrationV4() = default;
 
 void StateMigrationV4::Migrate(ResultCallback callback) {
-  ledger_->client()->DeleteLog(std::move(callback));
+  ledger().client()->DeleteLog(std::move(callback));
 }
 
 }  // namespace brave_rewards::internal

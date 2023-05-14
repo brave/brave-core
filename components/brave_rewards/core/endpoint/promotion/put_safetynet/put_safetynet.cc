@@ -69,7 +69,7 @@ void PutSafetynet::Request(const std::string& token,
   request->content = GeneratePayload(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PUT;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PutSafetynet::OnRequest(PutSafetynetCallback callback,

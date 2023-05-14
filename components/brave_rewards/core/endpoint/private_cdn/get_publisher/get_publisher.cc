@@ -219,7 +219,7 @@ void GetPublisher::Request(const std::string& publisher_key,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(hash_prefix);
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void GetPublisher::OnRequest(mojom::UrlResponsePtr response,

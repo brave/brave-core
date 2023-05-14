@@ -26,7 +26,7 @@ absl::optional<std::string> PostConnectUphold::Content() const {
     return absl::nullopt;
   }
 
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;

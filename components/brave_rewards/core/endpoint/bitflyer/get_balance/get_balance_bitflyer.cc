@@ -92,7 +92,7 @@ void GetBalance::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetBalance::OnRequest(GetBalanceCallback callback,

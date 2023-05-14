@@ -110,7 +110,7 @@ void DatabaseServerPublisherBanner::GetRecord(
       std::bind(&DatabaseServerPublisherBanner::OnGetRecord, this, _1,
                 publisher_key, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherBanner::OnGetRecord(

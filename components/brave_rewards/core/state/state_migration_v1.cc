@@ -33,16 +33,16 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
                                    LegacyResultCallback callback) {
   if (result == mojom::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
-    ledger_->publisher()->CalcScoreConsts(
-        ledger_->GetState<int>(kMinVisitTime));
+    ledger().publisher()->CalcScoreConsts(
+        ledger().GetState<int>(kMinVisitTime));
 
     callback(mojom::Result::LEDGER_OK);
     return;
   }
 
   if (result != mojom::Result::LEDGER_OK) {
-    ledger_->publisher()->CalcScoreConsts(
-        ledger_->GetState<int>(kMinVisitTime));
+    ledger().publisher()->CalcScoreConsts(
+        ledger().GetState<int>(kMinVisitTime));
 
     BLOG(0, "Failed to load publisher state file, setting default values");
     callback(mojom::Result::LEDGER_OK);
@@ -51,12 +51,12 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
 
   legacy_data_migrated_ = true;
 
-  ledger_->SetState(
+  ledger().SetState(
       kMinVisitTime,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));
-  ledger_->publisher()->CalcScoreConsts(ledger_->GetState<int>(kMinVisitTime));
+  ledger().publisher()->CalcScoreConsts(ledger().GetState<int>(kMinVisitTime));
 
-  ledger_->SetState(
+  ledger().SetState(
       kMinVisits, static_cast<int>(legacy_publisher_->GetPublisherMinVisits()));
 
   std::vector<mojom::BalanceReportInfoPtr> reports;
@@ -65,7 +65,7 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
     auto save_callback =
         std::bind(&StateMigrationV1::BalanceReportsSaved, this, _1, callback);
 
-    ledger_->database()->SaveBalanceReportInfoList(std::move(reports),
+    ledger().database()->SaveBalanceReportInfoList(std::move(reports),
                                                    save_callback);
   }
 }

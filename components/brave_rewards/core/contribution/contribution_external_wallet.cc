@@ -37,7 +37,7 @@ void ContributionExternalWallet::Process(const std::string& contribution_id,
 
   auto get_callback = std::bind(&ContributionExternalWallet::ContributionInfo,
                                 this, _1, callback);
-  ledger_->database()->GetContributionInfo(contribution_id, get_callback);
+  ledger().database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void ContributionExternalWallet::ContributionInfo(
@@ -53,15 +53,15 @@ void ContributionExternalWallet::ContributionInfo(
   switch (contribution->processor) {
     case mojom::ContributionProcessor::BITFLYER:
       wallet =
-          ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected});
+          ledger().bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected});
       break;
     case mojom::ContributionProcessor::GEMINI:
       wallet =
-          ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
+          ledger().gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
       break;
     case mojom::ContributionProcessor::UPHOLD:
       wallet =
-          ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
+          ledger().uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
       break;
     default:
       break;
@@ -73,7 +73,7 @@ void ContributionExternalWallet::ContributionInfo(
   }
 
   if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-    ledger_->contribution()->SKUAutoContribution(contribution->contribution_id,
+    ledger().contribution()->SKUAutoContribution(contribution->contribution_id,
                                                  wallet->type, callback);
     return;
   }
@@ -91,7 +91,7 @@ void ContributionExternalWallet::ContributionInfo(
                   contribution->type, contribution->processor, single_publisher,
                   callback);
 
-    ledger_->publisher()->GetServerPublisherInfo(publisher->publisher_key,
+    ledger().publisher()->GetServerPublisherInfo(publisher->publisher_key,
                                                  get_callback);
     return;
   }
@@ -145,15 +145,15 @@ void ContributionExternalWallet::OnServerPublisherInfo(
 
   switch (processor) {
     case mojom::ContributionProcessor::UPHOLD:
-      ledger_->uphold()->StartContribution(contribution_id, std::move(info),
+      ledger().uphold()->StartContribution(contribution_id, std::move(info),
                                            amount, start_callback);
       break;
     case mojom::ContributionProcessor::BITFLYER:
-      ledger_->bitflyer()->StartContribution(contribution_id, std::move(info),
+      ledger().bitflyer()->StartContribution(contribution_id, std::move(info),
                                              amount, start_callback);
       break;
     case mojom::ContributionProcessor::GEMINI:
-      ledger_->gemini()->StartContribution(contribution_id, std::move(info),
+      ledger().gemini()->StartContribution(contribution_id, std::move(info),
                                            amount, start_callback);
       break;
     default:

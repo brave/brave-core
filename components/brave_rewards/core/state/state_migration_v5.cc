@@ -19,7 +19,7 @@ StateMigrationV5::StateMigrationV5() = default;
 StateMigrationV5::~StateMigrationV5() = default;
 
 void StateMigrationV5::Migrate(LegacyResultCallback callback) {
-  const auto seed = ledger_->GetState<std::string>(kRecoverySeed);
+  const auto seed = ledger().GetState<std::string>(kRecoverySeed);
   if (seed.empty()) {
     callback(mojom::Result::LEDGER_OK);
     return;
@@ -28,7 +28,7 @@ void StateMigrationV5::Migrate(LegacyResultCallback callback) {
   std::map<std::string, std::string> events;
 
   // Auto contribute
-  auto enabled = ledger_->GetState<bool>(kAutoContributeEnabled);
+  auto enabled = ledger().GetState<bool>(kAutoContributeEnabled);
   events.insert(
       std::make_pair(kAutoContributeEnabled, std::to_string(enabled)));
 
@@ -40,22 +40,22 @@ void StateMigrationV5::Migrate(LegacyResultCallback callback) {
 
   // Payment id
   events.insert(
-      std::make_pair(kPaymentId, ledger_->GetState<std::string>(kPaymentId)));
+      std::make_pair(kPaymentId, ledger().GetState<std::string>(kPaymentId)));
 
   // Enabled
-  enabled = ledger_->GetState<bool>("enabled");
+  enabled = ledger().GetState<bool>("enabled");
   events.insert(std::make_pair("enabled", std::to_string(enabled)));
 
   // Next reconcile
-  const auto reconcile_stamp = ledger_->GetState<uint64_t>(kNextReconcileStamp);
+  const auto reconcile_stamp = ledger().GetState<uint64_t>(kNextReconcileStamp);
   events.insert(
       std::make_pair(kNextReconcileStamp, std::to_string(reconcile_stamp)));
 
   // Creation stamp
-  const auto creation_stamp = ledger_->GetState<uint64_t>(kCreationStamp);
+  const auto creation_stamp = ledger().GetState<uint64_t>(kCreationStamp);
   events.insert(std::make_pair(kCreationStamp, std::to_string(creation_stamp)));
 
-  ledger_->database()->SaveEventLogs(events, callback);
+  ledger().database()->SaveEventLogs(events, callback);
 }
 
 }  // namespace brave_rewards::internal

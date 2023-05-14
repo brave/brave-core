@@ -37,7 +37,7 @@ void GetPrefixList::Request(GetPrefixListCallback callback) {
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void GetPrefixList::OnRequest(mojom::UrlResponsePtr response,

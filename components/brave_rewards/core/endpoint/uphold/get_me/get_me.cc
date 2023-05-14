@@ -74,7 +74,7 @@ void GetMe::Request(const std::string& token, GetMeCallback callback) {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetMe::OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response) {

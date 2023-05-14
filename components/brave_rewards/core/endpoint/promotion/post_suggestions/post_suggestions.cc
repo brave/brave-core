@@ -84,7 +84,7 @@ void PostSuggestions::Request(const credential::CredentialsRedeem& redeem,
   request->content = GeneratePayload(redeem);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void PostSuggestions::OnRequest(mojom::UrlResponsePtr response,

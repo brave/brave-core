@@ -83,7 +83,7 @@ void Media::OnMediaActivityError(mojom::VisitDataPtr visit_data,
   visit_data->path = "/";
   visit_data->name = name;
 
-  ledger_->publisher()->GetPublisherActivityFromUrl(window_id,
+  ledger().publisher()->GetPublisherActivityFromUrl(window_id,
                                                     std::move(visit_data), "");
 }
 

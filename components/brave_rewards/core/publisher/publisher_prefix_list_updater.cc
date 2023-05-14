@@ -92,7 +92,7 @@ void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
   retry_count_ = 0;
 
   BLOG(1, "Resetting publisher prefix list table");
-  ledger_->database()->ResetPublisherPrefixList(
+  ledger().database()->ResetPublisherPrefixList(
       std::move(reader),
       std::bind(&PublisherPrefixListUpdater::OnPrefixListInserted, this, _1));
 }
@@ -104,7 +104,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
   // successful fetch time for calculation of next refresh interval.
   // In order to avoid unecessary server load, do not attempt to retry
   // using a failure delay if the database insert was unsuccessful.
-  ledger_->state()->SetServerPublisherListStamp(util::GetCurrentTimeStamp());
+  ledger().state()->SetServerPublisherListStamp(util::GetCurrentTimeStamp());
 
   if (auto_update_) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
@@ -121,7 +121,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
 }
 
 base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
-  uint64_t last_fetch_sec = ledger_->state()->GetServerPublisherListStamp();
+  uint64_t last_fetch_sec = ledger().state()->GetServerPublisherListStamp();
 
   auto now = base::Time::Now();
   auto fetch_time =

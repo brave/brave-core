@@ -20,17 +20,17 @@ StateMigrationV6::StateMigrationV6() = default;
 StateMigrationV6::~StateMigrationV6() = default;
 
 void StateMigrationV6::Migrate(LegacyResultCallback callback) {
-  auto uphold_wallet = ledger_->GetLegacyWallet();
-  ledger_->SetState(kWalletUphold, uphold_wallet);
-  ledger_->client()->ClearState("external_wallets");
+  auto uphold_wallet = ledger().GetLegacyWallet();
+  ledger().SetState(kWalletUphold, uphold_wallet);
+  ledger().client()->ClearState("external_wallets");
 
   base::Value::Dict brave;
-  brave.Set("payment_id", ledger_->GetState<std::string>(kPaymentId));
-  brave.Set("recovery_seed", ledger_->GetState<std::string>(kRecoverySeed));
+  brave.Set("payment_id", ledger().GetState<std::string>(kPaymentId));
+  brave.Set("recovery_seed", ledger().GetState<std::string>(kRecoverySeed));
 
   std::string brave_json;
   base::JSONWriter::Write(brave, &brave_json);
-  ledger_->SetState(kWalletBrave, std::move(brave_json));
+  ledger().SetState(kWalletBrave, std::move(brave_json));
 
   callback(mojom::Result::LEDGER_OK);
 }

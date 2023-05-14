@@ -63,7 +63,7 @@ void PostClobberedClaims::Request(base::Value::List corrupted_claims,
   request->content = GeneratePayload(std::move(corrupted_claims));
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void PostClobberedClaims::OnRequest(mojom::UrlResponsePtr response,

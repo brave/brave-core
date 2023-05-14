@@ -60,7 +60,7 @@ void PatchCard::Request(const std::string& token,
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PATCH;
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PatchCard::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }

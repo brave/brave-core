@@ -16,10 +16,10 @@ StateMigrationV8::StateMigrationV8() = default;
 StateMigrationV8::~StateMigrationV8() = default;
 
 void StateMigrationV8::Migrate(LegacyResultCallback callback) {
-  const bool enabled = ledger_->GetState<bool>("enabled");
+  const bool enabled = ledger().GetState<bool>("enabled");
 
   if (!enabled) {
-    ledger_->SetState(kAutoContributeEnabled, false);
+    ledger().SetState(kAutoContributeEnabled, false);
   }
 
   callback(mojom::Result::LEDGER_OK);

@@ -72,7 +72,7 @@ void PostRecipientId::Request(const std::string& token,
   request->headers = RequestAuthorization(token);
   request->headers.push_back("X-GEMINI-PAYLOAD: " + GeneratePayload());
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PostRecipientId::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }

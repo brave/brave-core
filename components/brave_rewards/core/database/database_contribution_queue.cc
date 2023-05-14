@@ -67,7 +67,7 @@ void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
       std::bind(&DatabaseContributionQueue::OnInsertOrUpdate, this, _1,
                 shared_info, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueue::OnInsertOrUpdate(
@@ -115,7 +115,7 @@ void DatabaseContributionQueue::GetFirstRecord(
   auto transaction_callback = std::bind(
       &DatabaseContributionQueue::OnGetFirstRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueue::OnGetFirstRecord(
@@ -191,7 +191,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace brave_rewards::internal

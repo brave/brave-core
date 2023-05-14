@@ -25,7 +25,7 @@ GetAvailable::GetAvailable() = default;
 GetAvailable::~GetAvailable() = default;
 
 std::string GetAvailable::GetUrl(const std::string& platform) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   std::string payment_id;
   if (wallet) {
     payment_id =
@@ -203,7 +203,7 @@ void GetAvailable::Request(const std::string& platform,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(platform);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetAvailable::OnRequest(GetAvailableCallback callback,

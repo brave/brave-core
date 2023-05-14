@@ -99,7 +99,7 @@ void GetSignedCreds::Request(const std::string& promotion_id,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(promotion_id, claim_id);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,

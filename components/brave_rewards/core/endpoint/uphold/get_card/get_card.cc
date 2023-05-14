@@ -75,7 +75,7 @@ void GetCard::Request(const std::string& address,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(address);
   request->headers = RequestAuthorization(token);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetCard::OnRequest(GetCardCallback callback,

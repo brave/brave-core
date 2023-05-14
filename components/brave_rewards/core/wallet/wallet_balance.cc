@@ -41,7 +41,7 @@ void WalletBalance::Fetch(FetchBalanceCallback callback) {
       base::BindOnce(&WalletBalance::OnGetUnblindedTokens,
                      base::Unretained(this), std::move(callback));
 
-  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
+  ledger().database()->GetSpendableUnblindedTokensByBatchTypes(
       {mojom::CredsBatchType::PROMOTION},
       [callback = std::make_shared<decltype(tokens_callback)>(std::move(
            tokens_callback))](std::vector<mojom::UnblindedTokenPtr> list) {

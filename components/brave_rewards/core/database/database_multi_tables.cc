@@ -27,7 +27,7 @@ void DatabaseMultiTables::GetTransactionReport(
   auto promotion_callback =
       std::bind(&DatabaseMultiTables::OnGetTransactionReportPromotion, this, _1,
                 month, year, callback);
-  ledger_->database()->GetAllPromotions(promotion_callback);
+  ledger().database()->GetAllPromotions(promotion_callback);
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(

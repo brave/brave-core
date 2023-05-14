@@ -80,7 +80,7 @@ void PostAccount::Request(const std::string& token,
   request->headers = RequestAuthorization(token);
   request->method = mojom::UrlMethod::POST;
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PostAccount::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }

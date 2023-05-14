@@ -14,7 +14,7 @@ Recovery::Recovery() = default;
 Recovery::~Recovery() = default;
 
 void Recovery::Check() {
-  if (!ledger_->state()->GetEmptyBalanceChecked()) {
+  if (!ledger().state()->GetEmptyBalanceChecked()) {
     BLOG(1, "Running empty balance check...")
     empty_balance_.Check();
   }

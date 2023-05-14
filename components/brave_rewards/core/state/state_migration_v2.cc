@@ -41,32 +41,32 @@ void StateMigrationV2::OnLoadState(mojom::Result result,
     return;
   }
 
-  ledger_->SetState("enabled", legacy_state_->GetRewardsMainEnabled());
+  ledger().SetState("enabled", legacy_state_->GetRewardsMainEnabled());
 
-  ledger_->SetState(kAutoContributeEnabled,
+  ledger().SetState(kAutoContributeEnabled,
                     legacy_state_->GetAutoContributeEnabled());
 
   if (legacy_state_->GetUserChangedContribution()) {
-    ledger_->SetState(kAutoContributeAmount,
+    ledger().SetState(kAutoContributeAmount,
                       legacy_state_->GetAutoContributionAmount());
   }
 
-  ledger_->SetState(kNextReconcileStamp, legacy_state_->GetReconcileStamp());
+  ledger().SetState(kNextReconcileStamp, legacy_state_->GetReconcileStamp());
 
-  ledger_->SetState(kCreationStamp, legacy_state_->GetCreationStamp());
+  ledger().SetState(kCreationStamp, legacy_state_->GetCreationStamp());
 
   const auto seed = legacy_state_->GetRecoverySeed();
-  ledger_->SetState(kRecoverySeed, base::Base64Encode(seed));
+  ledger().SetState(kRecoverySeed, base::Base64Encode(seed));
 
-  ledger_->SetState(kPaymentId, legacy_state_->GetPaymentId());
+  ledger().SetState(kPaymentId, legacy_state_->GetPaymentId());
 
-  ledger_->SetState(kInlineTipRedditEnabled,
+  ledger().SetState(kInlineTipRedditEnabled,
                     legacy_state_->GetInlineTipSetting("reddit"));
 
-  ledger_->SetState(kInlineTipTwitterEnabled,
+  ledger().SetState(kInlineTipTwitterEnabled,
                     legacy_state_->GetInlineTipSetting("twitter"));
 
-  ledger_->SetState(kInlineTipGithubEnabled,
+  ledger().SetState(kInlineTipGithubEnabled,
                     legacy_state_->GetInlineTipSetting("github"));
 
   callback(mojom::Result::LEDGER_OK);

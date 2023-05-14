@@ -97,7 +97,7 @@ void DatabaseServerPublisherLinks::GetRecord(
   auto transaction_callback =
       std::bind(&DatabaseServerPublisherLinks::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherLinks::OnGetRecord(

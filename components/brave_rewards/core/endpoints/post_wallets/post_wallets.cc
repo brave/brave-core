@@ -81,7 +81,7 @@ absl::optional<std::string> PostWallets::Url() const {
 
 absl::optional<std::vector<std::string>> PostWallets::Headers(
     const std::string& content) const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;

@@ -75,7 +75,7 @@ void GetCards::Request(const std::string& token, GetCardsCallback callback) {
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&GetCards::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }

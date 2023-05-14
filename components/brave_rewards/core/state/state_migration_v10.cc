@@ -36,7 +36,7 @@ StateMigrationV10::~StateMigrationV10() = default;
 // mojom::WalletStatus::kLoggedOut (4).
 
 void StateMigrationV10::Migrate(LegacyResultCallback callback) {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
+  auto uphold_wallet = ledger().uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(1, "Uphold wallet is null.");
     return callback(mojom::Result::LEDGER_OK);
@@ -97,7 +97,7 @@ void StateMigrationV10::Migrate(LegacyResultCallback callback) {
   }
 
   uphold_wallet = uphold::GenerateLinks(std::move(uphold_wallet));
-  callback(ledger_->uphold()->SetWallet(std::move(uphold_wallet))
+  callback(ledger().uphold()->SetWallet(std::move(uphold_wallet))
                ? mojom::Result::LEDGER_OK
                : mojom::Result::LEDGER_ERROR);
 }
@@ -106,7 +106,7 @@ void StateMigrationV10::OnGetWallet(mojom::Result result,
                                     const std::string& custodian,
                                     bool linked,
                                     LegacyResultCallback callback) {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
+  auto uphold_wallet = ledger().uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
     return callback(mojom::Result::LEDGER_ERROR);
@@ -126,7 +126,7 @@ void StateMigrationV10::OnGetWallet(mojom::Result result,
   }
 
   uphold_wallet = uphold::GenerateLinks(std::move(uphold_wallet));
-  callback(ledger_->uphold()->SetWallet(std::move(uphold_wallet))
+  callback(ledger().uphold()->SetWallet(std::move(uphold_wallet))
                ? mojom::Result::LEDGER_OK
                : mojom::Result::LEDGER_ERROR);
 }

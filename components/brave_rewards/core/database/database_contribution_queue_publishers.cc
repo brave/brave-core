@@ -59,7 +59,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
@@ -93,7 +93,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
       std::bind(&DatabaseContributionQueuePublishers::OnGetRecordsByQueueId,
                 this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(

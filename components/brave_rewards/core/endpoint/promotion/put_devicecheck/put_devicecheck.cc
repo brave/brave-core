@@ -72,7 +72,7 @@ void PutDevicecheck::Request(const std::string& blob,
   request->content = GeneratePayload(blob, signature);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PUT;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PutDevicecheck::OnRequest(PutDevicecheckCallback callback,

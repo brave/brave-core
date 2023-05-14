@@ -25,7 +25,7 @@ std::string PostCaptcha::GetUrl() {
 }
 
 std::string PostCaptcha::GeneratePayload() {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -93,7 +93,7 @@ void PostCaptcha::Request(PostCaptchaCallback callback) {
   request->content = GeneratePayload();
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostCaptcha::OnRequest(PostCaptchaCallback callback,

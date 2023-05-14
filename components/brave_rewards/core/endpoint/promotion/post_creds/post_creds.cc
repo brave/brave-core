@@ -29,7 +29,7 @@ std::string PostCreds::GetUrl(const std::string& promotion_id) {
 }
 
 std::string PostCreds::GeneratePayload(base::Value::List&& blinded_creds) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -104,7 +104,7 @@ mojom::Result PostCreds::ParseBody(const std::string& body,
 void PostCreds::Request(const std::string& promotion_id,
                         base::Value::List&& blinded_creds,
                         PostCredsCallback callback) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
@@ -126,7 +126,7 @@ void PostCreds::Request(const std::string& promotion_id,
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostCreds::OnRequest(PostCredsCallback callback,

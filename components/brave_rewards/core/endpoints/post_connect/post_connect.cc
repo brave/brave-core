@@ -158,7 +158,7 @@ PostConnect::PostConnect() = default;
 PostConnect::~PostConnect() = default;
 
 absl::optional<std::string> PostConnect::Url() const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;
@@ -172,7 +172,7 @@ absl::optional<std::string> PostConnect::Url() const {
 
 absl::optional<std::vector<std::string>> PostConnect::Headers(
     const std::string& content) const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;

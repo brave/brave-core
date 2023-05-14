@@ -30,7 +30,7 @@ void Database::Close(LegacyResultCallback callback) {
   transaction->commands.push_back(std::move(command));
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 /**
