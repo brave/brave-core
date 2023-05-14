@@ -59,7 +59,7 @@ void Publisher::RefreshPublisher(const std::string& publisher_key,
 
 void Publisher::SetPublisherServerListTimer() {
   prefix_list_updater_.StartAutoUpdate(
-      [this]() { ledger().client()->OnPublisherRegistryUpdated(); });
+      []() { ledger().client()->OnPublisherRegistryUpdated(); });
 }
 
 void Publisher::CalcScoreConsts(const int min_duration_seconds) {

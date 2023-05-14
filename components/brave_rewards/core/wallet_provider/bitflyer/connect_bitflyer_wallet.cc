@@ -29,7 +29,7 @@ using wallet_provider::ConnectExternalWallet;
 
 namespace bitflyer {
 
-ConnectBitFlyerWallet::ConnectBitFlyerWallet() : bitflyer_server_(ledger()) {}
+ConnectBitFlyerWallet::ConnectBitFlyerWallet() = default;
 
 ConnectBitFlyerWallet::~ConnectBitFlyerWallet() = default;
 
@@ -100,7 +100,7 @@ void ConnectBitFlyerWallet::OnAuthorize(ConnectExternalWalletCallback callback,
       base::BindOnce(&ConnectBitFlyerWallet::OnConnect, base::Unretained(this),
                      std::move(callback), std::move(token), std::move(address));
 
-  RequestFor<PostConnectBitflyer>(ledger(), std::move(linking_info))
+  RequestFor<PostConnectBitflyer>(std::move(linking_info))
       .Send(std::move(on_connect));
 }
 

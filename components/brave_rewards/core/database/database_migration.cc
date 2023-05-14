@@ -164,7 +164,7 @@ void DatabaseMigration::Start(uint32_t table_version,
       base::StringPrintf("%d->%d", start_version, migrated_version);
 
   ledger().RunDBTransaction(
-      std::move(transaction), [this, callback, message, migrated_version](
+      std::move(transaction), [callback, message, migrated_version](
                                   mojom::DBCommandResponsePtr response) {
         if (response &&
             response->status == mojom::DBCommandResponse::Status::RESPONSE_OK) {

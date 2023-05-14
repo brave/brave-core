@@ -39,7 +39,7 @@ void APIParameters::Fetch(GetRewardsParametersCallback callback) {
 
   refresh_timer_.Stop();
 
-  RequestFor<GetParameters>(*ledger_).Send(
+  RequestFor<GetParameters>().Send(
       base::BindOnce(&APIParameters::OnFetch, base::Unretained(this)));
 }
 

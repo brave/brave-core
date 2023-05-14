@@ -42,7 +42,7 @@ void ConnectUpholdWallet::Authorize(OAuthInfo&& oauth_info,
                                     ConnectExternalWalletCallback callback) {
   DCHECK(!oauth_info.code.empty());
 
-  RequestFor<PostOAuthUphold>(ledger(), std::move(oauth_info.code))
+  RequestFor<PostOAuthUphold>(std::move(oauth_info.code))
       .Send(base::BindOnce(&ConnectUpholdWallet::OnAuthorize,
                            base::Unretained(this), std::move(callback)));
 }
@@ -193,7 +193,7 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
       base::BindOnce(&ConnectUpholdWallet::OnConnect, base::Unretained(this),
                      std::move(callback), access_token, id);
 
-  RequestFor<PostConnectUphold>(ledger(), std::move(id))
+  RequestFor<PostConnectUphold>(std::move(id))
       .Send(std::move(on_connect));
 }
 

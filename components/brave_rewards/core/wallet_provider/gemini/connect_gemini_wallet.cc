@@ -30,7 +30,7 @@ using wallet_provider::ConnectExternalWallet;
 
 namespace gemini {
 
-ConnectGeminiWallet::ConnectGeminiWallet() : gemini_server_(ledger()) {}
+ConnectGeminiWallet::ConnectGeminiWallet() = default;
 
 ConnectGeminiWallet::~ConnectGeminiWallet() = default;
 
@@ -85,7 +85,7 @@ void ConnectGeminiWallet::OnAuthorize(ConnectExternalWalletCallback callback,
       base::BindOnce(&ConnectGeminiWallet::OnGetRecipientID,
                      base::Unretained(this), std::move(callback), token);
 
-  RequestFor<GetRecipientIDGemini>(ledger(), std::move(token))
+  RequestFor<GetRecipientIDGemini>(std::move(token))
       .Send(std::move(on_get_recipient_id));
 }
 
@@ -197,7 +197,7 @@ void ConnectGeminiWallet::OnPostAccount(ConnectExternalWalletCallback callback,
       base::BindOnce(&ConnectGeminiWallet::OnConnect, base::Unretained(this),
                      std::move(callback), std::move(token), recipient_id);
 
-  RequestFor<PostConnectGemini>(ledger(), std::move(linking_info),
+  RequestFor<PostConnectGemini>(std::move(linking_info),
                                 std::move(recipient_id))
       .Send(std::move(on_connect));
 }

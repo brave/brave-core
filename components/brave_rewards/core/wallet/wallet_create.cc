@@ -77,7 +77,7 @@ void WalletCreate::CreateWallet(absl::optional<std::string>&& geo_country,
           &WalletCreate::OnResult<PatchWallets::Result>, base::Unretained(this),
           std::move(callback), geo_country);
 
-      return RequestFor<PatchWallets>(*ledger_, std::move(*geo_country))
+      return RequestFor<PatchWallets>(std::move(*geo_country))
           .Send(std::move(on_update_wallet));
     } else {
       BLOG(1, "Rewards wallet already exists.");
@@ -90,7 +90,7 @@ void WalletCreate::CreateWallet(absl::optional<std::string>&& geo_country,
       base::BindOnce(&WalletCreate::OnResult<PostWallets::Result>,
                      base::Unretained(this), std::move(callback), geo_country);
 
-  RequestFor<PostWallets>(*ledger_, std::move(geo_country))
+  RequestFor<PostWallets>(std::move(geo_country))
       .Send(std::move(on_create_wallet));
 }
 

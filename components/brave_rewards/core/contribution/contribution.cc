@@ -877,10 +877,10 @@ void Contribution::Retry(
 
 void Contribution::GetRecurringTips(GetRecurringTipsCallback callback) {
   ledger().database()->GetRecurringTips(
-      [this, callback](std::vector<mojom::PublisherInfoPtr> list) {
+      [callback](std::vector<mojom::PublisherInfoPtr> list) {
         // The publisher status field may be expired. Attempt to refresh
         // expired publisher status values before executing callback.
-        publisher::RefreshPublisherStatus(*ledger_, std::move(list), callback);
+        publisher::RefreshPublisherStatus(std::move(list), callback);
       });
 }
 

@@ -44,7 +44,7 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
 
   // Find the first map element that has an expired status.
   task_info->current = std::find_if(
-      task_info->current, task_info->map.end(), [&task_info](auto& key_value) {
+      task_info->current, task_info->map.end(), [](auto& key_value) {
         mojom::ServerPublisherInfo server_info;
         server_info.status = key_value.second.status;
         server_info.updated_at = key_value.second.updated_at;

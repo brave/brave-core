@@ -39,7 +39,7 @@ void GeminiTransfer::CommitTransaction(
       base::BindOnce(&GeminiTransfer::OnCommitTransaction,
                      base::Unretained(this), std::move(callback));
 
-  RequestFor<PostCommitTransactionGemini>(ledger(), std::move(wallet->token),
+  RequestFor<PostCommitTransactionGemini>(std::move(wallet->token),
                                           std::move(wallet->address),
                                           std::move(transaction))
       .Send(std::move(on_commit_transaction));

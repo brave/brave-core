@@ -24,7 +24,7 @@
 
 namespace brave_rewards::internal::bitflyer {
 
-Bitflyer::Bitflyer() : bitflyer_server_(ledger()) {}
+Bitflyer::Bitflyer() = default;
 
 Bitflyer::~Bitflyer() = default;
 

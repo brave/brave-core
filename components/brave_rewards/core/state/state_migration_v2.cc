@@ -19,7 +19,7 @@ StateMigrationV2::StateMigrationV2() = default;
 StateMigrationV2::~StateMigrationV2() = default;
 
 void StateMigrationV2::Migrate(LegacyResultCallback callback) {
-  legacy_state_ = std::make_unique<LegacyBatState>(*ledger_);
+  legacy_state_ = std::make_unique<LegacyBatState>();
 
   auto load_callback =
       std::bind(&StateMigrationV2::OnLoadState, this, _1, callback);

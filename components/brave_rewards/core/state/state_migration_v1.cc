@@ -21,7 +21,7 @@ StateMigrationV1::~StateMigrationV1() = default;
 
 void StateMigrationV1::Migrate(LegacyResultCallback callback) {
   legacy_publisher_ =
-      std::make_unique<publisher::LegacyPublisherState>(*ledger_);
+      std::make_unique<publisher::LegacyPublisherState>();
 
   auto load_callback =
       std::bind(&StateMigrationV1::OnLoadState, this, _1, callback);

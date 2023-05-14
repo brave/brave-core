@@ -159,7 +159,7 @@ void DatabaseActivityInfo::NormalizeList(
 
   ledger().RunDBTransaction(
       std::move(transaction),
-      [this, shared_list, callback](mojom::DBCommandResponsePtr response) {
+      [shared_list, callback](mojom::DBCommandResponsePtr response) {
         if (!response ||
             response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
           callback(mojom::Result::LEDGER_ERROR);

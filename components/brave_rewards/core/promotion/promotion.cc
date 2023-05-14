@@ -42,7 +42,6 @@ const int kFetchPromotionsThresholdInSeconds =
     10 * base::Time::kSecondsPerMinute;
 
 void HandleExpiredPromotions(
-    LedgerImpl& ledger_impl,
     base::flat_map<std::string, mojom::PromotionPtr>* promotions) {
   DCHECK(promotions);
   if (!promotions) {
@@ -63,7 +62,7 @@ void HandleExpiredPromotions(
 
     if (item.second->expires_at > 0 &&
         item.second->expires_at <= current_time) {
-      ledger_impl.database()->UpdatePromotionStatus(
+      ledger().database()->UpdatePromotionStatus(
           item.second->id, mojom::PromotionStatus::OVER,
           [](const mojom::Result _) {});
     }
@@ -157,7 +156,7 @@ void Promotion::OnGetAllPromotions(
     FetchPromotionsCallback callback,
     std::vector<mojom::PromotionPtr> list,
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
-  HandleExpiredPromotions(*ledger_, &promotions);
+  HandleExpiredPromotions(&promotions);
 
   std::vector<mojom::PromotionPtr> promotions_ui;
   for (const auto& item : list) {
@@ -218,7 +217,7 @@ void Promotion::OnGetAllPromotions(
 void Promotion::OnGetAllPromotionsFromDatabase(
     FetchPromotionsCallback callback,
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
-  HandleExpiredPromotions(*ledger_, &promotions);
+  HandleExpiredPromotions(&promotions);
 
   std::vector<mojom::PromotionPtr> promotions_ui;
   for (const auto& item : promotions) {
@@ -475,7 +474,7 @@ void Promotion::CredentialsProcessed(ResultCallback callback,
 
 void Promotion::Retry(
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
-  HandleExpiredPromotions(*ledger_, &promotions);
+  HandleExpiredPromotions(&promotions);
 
   for (auto& promotion : promotions) {
     if (!promotion.second) {

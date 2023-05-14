@@ -27,7 +27,7 @@
 
 namespace brave_rewards::internal::uphold {
 
-Uphold::Uphold() : card_(ledger()), uphold_server_(ledger()) {}
+Uphold::Uphold() = default;
 
 Uphold::~Uphold() = default;
 

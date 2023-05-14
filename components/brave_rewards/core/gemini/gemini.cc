@@ -24,7 +24,7 @@
 
 namespace brave_rewards::internal::gemini {
 
-Gemini::Gemini() : gemini_server_(ledger()) {}
+Gemini::Gemini() = default;
 
 Gemini::~Gemini() = default;
 

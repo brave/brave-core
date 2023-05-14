@@ -61,7 +61,7 @@ void WalletBalance::OnGetUnblindedTokens(
   balance->total = total;
   balance->wallets.emplace(constant::kWalletUnBlinded, balance->total);
 
-  const auto wallet_type = GetConnectedWalletType(*ledger_);
+  const auto wallet_type = GetConnectedWalletType();
   if (wallet_type.empty()) {
     return std::move(callback).Run(std::move(balance));
   }
