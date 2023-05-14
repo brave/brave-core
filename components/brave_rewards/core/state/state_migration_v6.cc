@@ -13,10 +13,9 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
-StateMigrationV6::StateMigrationV6(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV6::StateMigrationV6() = default;
 
 StateMigrationV6::~StateMigrationV6() = default;
 
@@ -36,5 +35,4 @@ void StateMigrationV6::Migrate(LegacyResultCallback callback) {
   callback(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace state
 }  // namespace brave_rewards::internal

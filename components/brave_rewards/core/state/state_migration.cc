@@ -18,22 +18,9 @@ const int kCurrentVersionNumber = 13;
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
-StateMigration::StateMigration(LedgerImpl& ledger)
-    : ledger_(ledger),
-      v1_(ledger),
-      v2_(ledger),
-      v4_(ledger),
-      v5_(ledger),
-      v6_(ledger),
-      v7_(ledger),
-      v8_(ledger),
-      v10_(ledger),
-      v11_(ledger),
-      v12_(),
-      v13_() {}
+StateMigration::StateMigration() = default;
 
 StateMigration::~StateMigration() = default;
 
@@ -154,5 +141,4 @@ void StateMigration::OnMigration(ResultCallback callback,
   Migrate(std::move(callback));
 }
 
-}  // namespace state
 }  // namespace brave_rewards::internal

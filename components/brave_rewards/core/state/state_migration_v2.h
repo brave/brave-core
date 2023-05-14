@@ -12,14 +12,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/bat_state.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace state {
+namespace brave_rewards::internal::state {
 
 class StateMigrationV2 {
  public:
-  explicit StateMigrationV2(LedgerImpl& ledger);
+  StateMigrationV2();
   ~StateMigrationV2();
 
   void Migrate(LegacyResultCallback callback);
@@ -30,7 +27,6 @@ class StateMigrationV2 {
   std::unique_ptr<LegacyBatState> legacy_state_;
 };
 
-}  // namespace state
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V2_H_

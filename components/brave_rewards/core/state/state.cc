@@ -154,7 +154,7 @@ std::string ConvertInlineTipPlatformToKey(
 
 namespace state {
 
-State::State(LedgerImpl& ledger) : ledger_(ledger), migration_(ledger) {}
+State::State() = default;
 
 State::~State() = default;
 

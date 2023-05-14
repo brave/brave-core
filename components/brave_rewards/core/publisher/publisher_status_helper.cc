@@ -28,15 +28,12 @@ struct PublisherStatusData {
 using PublisherStatusMap = std::map<std::string, PublisherStatusData>;
 
 struct RefreshTaskInfo {
-  RefreshTaskInfo(LedgerImpl& ledger,
-                  PublisherStatusMap&& status_map,
+  RefreshTaskInfo(PublisherStatusMap&& status_map,
                   std::function<void(PublisherStatusMap)> callback)
-      : ledger(ledger),
-        map(std::move(status_map)),
+      : map(std::move(status_map)),
         current(map.begin()),
         callback(callback) {}
 
-  const raw_ref<LedgerImpl> ledger;
   PublisherStatusMap map;
   PublisherStatusMap::iterator current;
   std::function<void(PublisherStatusMap)> callback;
@@ -51,7 +48,7 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
         mojom::ServerPublisherInfo server_info;
         server_info.status = key_value.second.status;
         server_info.updated_at = key_value.second.updated_at;
-        return task_info->ledger->publisher()->ShouldFetchServerPublisherInfo(
+        return ledger().publisher()->ShouldFetchServerPublisherInfo(
             &server_info);
       });
 
@@ -63,7 +60,7 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
 
   // Look for publisher key in hash index.
   auto& key = task_info->current->first;
-  task_info->ledger->database()->SearchPublisherPrefixList(
+  ledger().database()->SearchPublisherPrefixList(
       key, [task_info](bool exists) {
         // If the publisher key does not exist in the hash index look for
         // next expired entry.
@@ -74,7 +71,7 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
         }
         // Fetch current publisher info.
         auto& key = task_info->current->first;
-        task_info->ledger->publisher()->GetServerPublisherInfo(
+        ledger().publisher()->GetServerPublisherInfo(
             key, [task_info](mojom::ServerPublisherInfoPtr server_info) {
               // Update status map and continue looking for expired entries.
               task_info->current->second.status = server_info->status;
@@ -85,10 +82,9 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
 }
 
 void RefreshPublisherStatusMap(
-    LedgerImpl& ledger,
     PublisherStatusMap&& status_map,
     std::function<void(PublisherStatusMap)> callback) {
-  RefreshNext(std::make_shared<RefreshTaskInfo>(ledger, std::move(status_map),
+  RefreshNext(std::make_shared<RefreshTaskInfo>(std::move(status_map),
                                                 callback));
 }
 
@@ -96,8 +92,7 @@ void RefreshPublisherStatusMap(
 
 namespace publisher {
 
-void RefreshPublisherStatus(LedgerImpl& ledger,
-                            std::vector<mojom::PublisherInfoPtr>&& info_list,
+void RefreshPublisherStatus(std::vector<mojom::PublisherInfoPtr>&& info_list,
                             GetRecurringTipsCallback callback) {
   PublisherStatusMap map;
   for (const auto& info : info_list) {
@@ -107,7 +102,7 @@ void RefreshPublisherStatus(LedgerImpl& ledger,
   auto shared_list = std::make_shared<std::vector<mojom::PublisherInfoPtr>>(
       std::move(info_list));
 
-  RefreshPublisherStatusMap(ledger, std::move(map),
+  RefreshPublisherStatusMap(std::move(map),
                             [shared_list, callback](auto map) {
                               for (const auto& info : *shared_list) {
                                 info->status = map[info->id].status;
@@ -117,7 +112,6 @@ void RefreshPublisherStatus(LedgerImpl& ledger,
 }
 
 void RefreshPublisherStatus(
-    LedgerImpl& ledger,
     std::vector<mojom::PendingContributionInfoPtr>&& info_list,
     GetPendingContributionsCallback callback) {
   PublisherStatusMap map;
@@ -129,7 +123,7 @@ void RefreshPublisherStatus(
       std::make_shared<std::vector<mojom::PendingContributionInfoPtr>>(
           std::move(info_list));
 
-  RefreshPublisherStatusMap(ledger, std::move(map),
+  RefreshPublisherStatusMap(std::move(map),
                             [shared_list, callback](auto map) {
                               for (const auto& info : *shared_list) {
                                 info->status = map[info->publisher_key].status;

@@ -12,10 +12,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
-StateMigrationV2::StateMigrationV2(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV2::StateMigrationV2() = default;
 
 StateMigrationV2::~StateMigrationV2() = default;
 
@@ -73,5 +72,4 @@ void StateMigrationV2::OnLoadState(mojom::Result result,
   callback(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace state
 }  // namespace brave_rewards::internal

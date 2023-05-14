@@ -17,12 +17,10 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
-StateMigrationV10::StateMigrationV10(LedgerImpl& ledger)
-    : ledger_(ledger),
-      get_wallet_{std::make_unique<endpoint::promotion::GetWallet>(ledger)} {}
+StateMigrationV10::StateMigrationV10()
+    : get_wallet_{std::make_unique<endpoint::promotion::GetWallet>()} {}
 
 StateMigrationV10::~StateMigrationV10() = default;
 
@@ -133,5 +131,4 @@ void StateMigrationV10::OnGetWallet(mojom::Result result,
                : mojom::Result::LEDGER_ERROR);
 }
 
-}  // namespace state
 }  // namespace brave_rewards::internal

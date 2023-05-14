@@ -30,9 +30,8 @@ template <typename Endpoint>
 class RequestFor {
  public:
   template <typename... Ts>
-  RequestFor(LedgerImpl& ledger, Ts&&... ts)
-      : ledger_(ledger),
-        request_(Endpoint(ledger, std::forward<Ts>(ts)...).Request()) {
+  RequestFor(Ts&&... ts)
+      : request_(Endpoint(std::forward<Ts>(ts)...).Request()) {
     static_assert(std::is_base_of_v<RequestBuilder, Endpoint>,
                   "Endpoint should be derived from RequestBuilder!");
   }

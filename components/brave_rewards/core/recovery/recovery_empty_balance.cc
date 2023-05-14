@@ -23,11 +23,9 @@ const int32_t kVersion = 1;
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace recovery {
+namespace brave_rewards::internal::recovery {
 
-EmptyBalance::EmptyBalance(LedgerImpl& ledger)
-    : ledger_(ledger), promotion_server_(ledger) {}
+EmptyBalance::EmptyBalance() = default;
 
 EmptyBalance::~EmptyBalance() = default;
 
@@ -197,5 +195,4 @@ void EmptyBalance::Sent(const mojom::Result result) {
   ledger_->state()->SetEmptyBalanceChecked(true);
 }
 
-}  // namespace recovery
 }  // namespace brave_rewards::internal

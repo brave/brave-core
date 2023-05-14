@@ -15,14 +15,11 @@
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
 #include "brave/components/brave_rewards/core/sku/sku_transaction.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 class SKUCommon {
  public:
-  explicit SKUCommon(LedgerImpl& ledger);
+  SKUCommon();
   ~SKUCommon();
 
   void CreateOrder(const std::vector<mojom::SKUOrderItem>& items,
@@ -50,7 +47,6 @@ class SKUCommon {
   SKUTransaction transaction_;
 };
 
-}  // namespace sku
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_COMMON_H_

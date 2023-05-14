@@ -12,14 +12,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 class SKU {
  public:
-  explicit SKU(LedgerImpl& ledger);
+  SKU();
   ~SKU();
 
   void Process(const std::vector<mojom::SKUOrderItem>& items,
@@ -54,7 +51,6 @@ class SKU {
   SKUCommon common_;
 };
 
-}  // namespace sku
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_H_

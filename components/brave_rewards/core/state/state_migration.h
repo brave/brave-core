@@ -21,14 +21,11 @@
 #include "brave/components/brave_rewards/core/state/state_migration_v8.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v9.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace state {
+namespace brave_rewards::internal::state {
 
 class StateMigration {
  public:
-  explicit StateMigration(LedgerImpl& ledger);
+  StateMigration();
   ~StateMigration();
 
   void Start(ResultCallback callback);
@@ -55,7 +52,6 @@ class StateMigration {
   StateMigrationV13 v13_;
 };
 
-}  // namespace state
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_H_

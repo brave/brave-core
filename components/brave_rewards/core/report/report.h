@@ -13,12 +13,11 @@
 
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-namespace report {
+namespace brave_rewards::internal::report {
 
 class Report {
  public:
-  explicit Report(LedgerImpl& ledger);
+  Report();
 
   ~Report();
 
@@ -51,7 +50,6 @@ class Report {
                               GetAllMonthlyReportIdsCallback callback);
 };
 
-}  // namespace report
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REPORT_REPORT_H_

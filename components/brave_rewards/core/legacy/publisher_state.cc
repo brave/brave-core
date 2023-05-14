@@ -12,11 +12,9 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
-LegacyPublisherState::LegacyPublisherState(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+LegacyPublisherState::LegacyPublisherState() = default;
 
 LegacyPublisherState::~LegacyPublisherState() = default;
 
@@ -78,5 +76,4 @@ void LegacyPublisherState::GetAllBalanceReports(
   }
 }
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal

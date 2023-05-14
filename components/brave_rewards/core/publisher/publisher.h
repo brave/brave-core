@@ -16,14 +16,11 @@
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 class Publisher {
  public:
-  explicit Publisher(LedgerImpl& ledger);
+  Publisher();
 
   ~Publisher();
 
@@ -205,7 +202,6 @@ class Publisher {
   FRIEND_TEST_ALL_PREFIXES(PublisherTest, synopsisNormalizerInternal);
 };
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_H_

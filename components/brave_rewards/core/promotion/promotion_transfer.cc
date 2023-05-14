@@ -16,11 +16,9 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 
-namespace brave_rewards::internal {
-namespace promotion {
+namespace brave_rewards::internal::promotion {
 
-PromotionTransfer::PromotionTransfer(LedgerImpl& ledger)
-    : ledger_(ledger), credentials_(ledger) {}
+PromotionTransfer::PromotionTransfer() = default;
 
 PromotionTransfer::~PromotionTransfer() = default;
 
@@ -71,5 +69,4 @@ void PromotionTransfer::OnDrainTokens(PostSuggestionsClaimCallback callback,
   std::move(callback).Run(result, std::move(drain_id));
 }
 
-}  // namespace promotion
 }  // namespace brave_rewards::internal

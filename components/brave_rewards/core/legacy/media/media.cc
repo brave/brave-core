@@ -14,8 +14,7 @@
 
 namespace brave_rewards::internal {
 
-Media::Media(LedgerImpl& ledger)
-    : ledger_(ledger), media_youtube_(ledger), media_github_(ledger) {}
+Media::Media() = default;
 
 Media::~Media() = default;
 

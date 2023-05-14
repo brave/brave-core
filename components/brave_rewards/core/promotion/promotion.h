@@ -19,14 +19,11 @@
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace promotion {
+namespace brave_rewards::internal::promotion {
 
 class Promotion {
  public:
-  explicit Promotion(LedgerImpl& ledger);
+  Promotion();
   ~Promotion();
 
   void Initialize();
@@ -133,7 +130,6 @@ class Promotion {
   base::OneShotTimer retry_timer_;
 };
 
-}  // namespace promotion
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PROMOTION_PROMOTION_H_

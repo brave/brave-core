@@ -17,7 +17,7 @@ using std::placeholders::_2;
 
 namespace brave_rewards::internal {
 
-LegacyBatState::LegacyBatState(LedgerImpl& ledger) : ledger_(ledger) {}
+LegacyBatState::LegacyBatState() = default;
 
 LegacyBatState::~LegacyBatState() = default;
 

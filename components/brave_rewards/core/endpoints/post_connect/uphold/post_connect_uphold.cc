@@ -15,8 +15,8 @@
 
 namespace brave_rewards::internal::endpoints {
 
-PostConnectUphold::PostConnectUphold(LedgerImpl& ledger, std::string&& address)
-    : PostConnect(ledger), address_(std::move(address)) {}
+PostConnectUphold::PostConnectUphold(std::string&& address)
+    : address_(std::move(address)) {}
 
 PostConnectUphold::~PostConnectUphold() = default;
 

@@ -66,9 +66,8 @@ Result PostWallets::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-PostWallets::PostWallets(LedgerImpl& ledger,
-                         absl::optional<std::string>&& geo_country)
-    : RequestBuilder(ledger), geo_country_(std::move(geo_country)) {}
+PostWallets::PostWallets(absl::optional<std::string>&& geo_country)
+    : geo_country_(std::move(geo_country)) {}
 
 PostWallets::~PostWallets() = default;
 

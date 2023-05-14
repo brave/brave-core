@@ -27,7 +27,7 @@ using std::placeholders::_3;
 
 namespace brave_rewards::internal {
 
-GitHub::GitHub(LedgerImpl& ledger) : ledger_(ledger) {}
+GitHub::GitHub() = default;
 
 GitHub::~GitHub() = default;
 

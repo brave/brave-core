@@ -40,8 +40,7 @@ int64_t GetCacheExpiryInSeconds() {
 
 namespace publisher {
 
-ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl& ledger)
-    : ledger_(ledger), private_cdn_server_(ledger) {}
+ServerPublisherFetcher::ServerPublisherFetcher() = default;
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 

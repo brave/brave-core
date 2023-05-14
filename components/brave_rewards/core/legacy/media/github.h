@@ -18,11 +18,9 @@
 
 namespace brave_rewards::internal {
 
-class LedgerImpl;
-
 class GitHub {
  public:
-  explicit GitHub(LedgerImpl& ledger);
+  GitHub();
 
   static std::string GetLinkType(const std::string& url);
 

@@ -15,14 +15,11 @@
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 class SKUTransaction {
  public:
-  explicit SKUTransaction(LedgerImpl& ledger);
+  SKUTransaction();
   ~SKUTransaction();
 
   void Run(mojom::SKUOrderPtr order,
@@ -79,7 +76,6 @@ class SKUTransaction {
   endpoint::PaymentServer payment_server_;
 };
 
-}  // namespace sku
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_TRANSACTION_H_

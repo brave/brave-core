@@ -34,8 +34,7 @@ using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::SignedToken;
 using challenge_bypass_ristretto::UnblindedToken;
 
-namespace brave_rewards::internal {
-namespace promotion {
+namespace brave_rewards::internal::promotion {
 
 namespace {
 
@@ -73,12 +72,7 @@ void HandleExpiredPromotions(
 
 }  // namespace
 
-Promotion::Promotion(LedgerImpl& ledger)
-    : ledger_(ledger),
-      attestation_(ledger),
-      transfer_(ledger),
-      credentials_(ledger),
-      promotion_server_(ledger) {}
+Promotion::Promotion() = default;
 
 Promotion::~Promotion() = default;
 
@@ -698,5 +692,4 @@ void Promotion::OnLastCheckTimerElapsed() {
   Fetch(base::DoNothing());
 }
 
-}  // namespace promotion
 }  // namespace brave_rewards::internal

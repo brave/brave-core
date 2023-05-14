@@ -153,7 +153,7 @@ ConnectExternalWalletResult PostConnect::ToConnectExternalWalletResult(
   return {};
 }
 
-PostConnect::PostConnect(LedgerImpl& ledger) : RequestBuilder(ledger) {}
+PostConnect::PostConnect() = default;
 
 PostConnect::~PostConnect() = default;
 

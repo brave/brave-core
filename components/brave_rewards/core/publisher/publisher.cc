@@ -29,13 +29,9 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
-Publisher::Publisher(LedgerImpl& ledger)
-    : ledger_(ledger),
-      prefix_list_updater_(ledger),
-      server_publisher_fetcher_(ledger) {}
+Publisher::Publisher() = default;
 
 Publisher::~Publisher() = default;
 
@@ -827,5 +823,4 @@ std::string Publisher::GetShareURL(
   return share_url;
 }
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal

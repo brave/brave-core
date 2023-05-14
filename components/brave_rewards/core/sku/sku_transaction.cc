@@ -46,8 +46,7 @@ mojom::SKUTransactionType GetTransactionTypeFromWalletType(
 
 namespace sku {
 
-SKUTransaction::SKUTransaction(LedgerImpl& ledger)
-    : ledger_(ledger), payment_server_(ledger) {}
+SKUTransaction::SKUTransaction() = default;
 
 SKUTransaction::~SKUTransaction() = default;
 

@@ -12,10 +12,7 @@
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class RequestBuilder {
  public:
@@ -26,7 +23,7 @@ class RequestBuilder {
   absl::optional<mojom::UrlRequestPtr> Request() const;
 
  protected:
-  explicit RequestBuilder(LedgerImpl& ledger);
+  RequestBuilder();
 
   virtual absl::optional<std::string> Url() const = 0;
 
@@ -44,7 +41,6 @@ class RequestBuilder {
   virtual uint32_t LoadFlags() const;
 };
 
-}  // namespace endpoints
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_REQUEST_BUILDER_H_

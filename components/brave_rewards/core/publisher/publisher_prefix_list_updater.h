@@ -15,10 +15,7 @@
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 using PublisherPrefixListUpdatedCallback = std::function<void()>;
 
@@ -26,7 +23,7 @@ using PublisherPrefixListUpdatedCallback = std::function<void()>;
 // intervals.
 class PublisherPrefixListUpdater {
  public:
-  explicit PublisherPrefixListUpdater(LedgerImpl& ledger);
+  PublisherPrefixListUpdater();
 
   PublisherPrefixListUpdater(const PublisherPrefixListUpdater&) = delete;
   PublisherPrefixListUpdater& operator=(const PublisherPrefixListUpdater&) =
@@ -58,7 +55,6 @@ class PublisherPrefixListUpdater {
   endpoint::RewardsServer rewards_server_;
 };
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_

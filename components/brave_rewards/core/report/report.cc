@@ -16,10 +16,9 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace report {
+namespace brave_rewards::internal::report {
 
-Report::Report(LedgerImpl& ledger) : ledger_(ledger) {}
+Report::Report() = default;
 
 Report::~Report() = default;
 
@@ -138,5 +137,4 @@ void Report::OnGetAllBalanceReports(
   callback(ids);
 }
 
-}  // namespace report
 }  // namespace brave_rewards::internal

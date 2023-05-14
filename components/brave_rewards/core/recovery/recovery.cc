@@ -7,11 +7,9 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
-namespace brave_rewards::internal {
-namespace recovery {
+namespace brave_rewards::internal::recovery {
 
-Recovery::Recovery(LedgerImpl& ledger)
-    : ledger_(ledger), empty_balance_(ledger) {}
+Recovery::Recovery() = default;
 
 Recovery::~Recovery() = default;
 
@@ -22,5 +20,4 @@ void Recovery::Check() {
   }
 }
 
-}  // namespace recovery
 }  // namespace brave_rewards::internal

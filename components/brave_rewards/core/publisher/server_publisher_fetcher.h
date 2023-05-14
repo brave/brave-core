@@ -14,10 +14,7 @@
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 using FetchCallbackVector =
     std::vector<database::GetServerPublisherInfoCallback>;
@@ -26,7 +23,7 @@ using FetchCallbackVector =
 // whether a server publisher info record is expired
 class ServerPublisherFetcher {
  public:
-  explicit ServerPublisherFetcher(LedgerImpl& ledger);
+  ServerPublisherFetcher();
 
   ServerPublisherFetcher(const ServerPublisherFetcher&) = delete;
   ServerPublisherFetcher& operator=(const ServerPublisherFetcher&) = delete;
@@ -58,7 +55,6 @@ class ServerPublisherFetcher {
   endpoint::PrivateCDNServer private_cdn_server_;
 };
 
-}  // namespace publisher
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_

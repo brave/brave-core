@@ -15,11 +15,9 @@
 
 namespace brave_rewards::internal {
 
-class LedgerImpl;
-
 class Media {
  public:
-  explicit Media(LedgerImpl& ledger);
+  Media();
 
   ~Media();
 

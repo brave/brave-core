@@ -16,11 +16,9 @@
 
 namespace brave_rewards::internal {
 
-class LedgerImpl;
-
 class YouTube {
  public:
-  explicit YouTube(LedgerImpl& ledger);
+  YouTube();
 
   ~YouTube();
 

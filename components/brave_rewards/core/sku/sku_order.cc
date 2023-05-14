@@ -16,11 +16,9 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace brave_rewards::internal {
-namespace sku {
+namespace brave_rewards::internal::sku {
 
-SKUOrder::SKUOrder(LedgerImpl& ledger)
-    : ledger_(ledger), payment_server_(ledger) {}
+SKUOrder::SKUOrder() = default;
 
 SKUOrder::~SKUOrder() = default;
 
@@ -64,5 +62,4 @@ void SKUOrder::OnCreateSave(const mojom::Result result,
   callback(mojom::Result::LEDGER_OK, order_id);
 }
 
-}  // namespace sku
 }  // namespace brave_rewards::internal

@@ -25,7 +25,7 @@ using std::placeholders::_3;
 
 namespace brave_rewards::internal {
 
-YouTube::YouTube(LedgerImpl& ledger) : ledger_(ledger) {}
+YouTube::YouTube() = default;
 
 YouTube::~YouTube() = default;
 

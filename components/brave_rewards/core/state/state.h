@@ -13,14 +13,11 @@
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace state {
+namespace brave_rewards::internal::state {
 
 class State {
  public:
-  explicit State(LedgerImpl& ledger);
+  State();
   ~State();
 
   void Initialize(ResultCallback callback);
@@ -112,7 +109,6 @@ class State {
   StateMigration migration_;
 };
 
-}  // namespace state
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_

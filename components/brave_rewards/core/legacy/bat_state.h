@@ -16,11 +16,9 @@
 
 namespace brave_rewards::internal {
 
-class LedgerImpl;
-
 class LegacyBatState {
  public:
-  explicit LegacyBatState(LedgerImpl& ledger);
+  LegacyBatState();
   ~LegacyBatState();
 
   void Load(LegacyResultCallback callback);

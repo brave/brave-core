@@ -9,10 +9,9 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
-StateMigrationV4::StateMigrationV4(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV4::StateMigrationV4() = default;
 
 StateMigrationV4::~StateMigrationV4() = default;
 
@@ -20,5 +19,4 @@ void StateMigrationV4::Migrate(ResultCallback callback) {
   ledger_->client()->DeleteLog(std::move(callback));
 }
 
-}  // namespace state
 }  // namespace brave_rewards::internal
