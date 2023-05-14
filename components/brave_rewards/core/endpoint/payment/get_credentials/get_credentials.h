@@ -43,18 +43,14 @@
 //   "data": {}
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 using GetCredentialsCallback =
     base::OnceCallback<void(mojom::Result, mojom::CredsBatchPtr)>;
 
 class GetCredentials {
  public:
-  explicit GetCredentials(LedgerImpl& ledger);
+  GetCredentials();
   ~GetCredentials();
 
   void Request(const std::string& order_id,
@@ -72,8 +68,6 @@ class GetCredentials {
                  mojom::UrlResponsePtr response);
 };
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_GET_CREDENTIALS_GET_CREDENTIALS_H_

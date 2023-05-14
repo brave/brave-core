@@ -110,14 +110,7 @@ Contribution::ContributionRequest& Contribution::ContributionRequest::operator=(
 
 Contribution::ContributionRequest::~ContributionRequest() = default;
 
-Contribution::Contribution(LedgerImpl& ledger)
-    : ledger_(ledger),
-      unblinded_(ledger),
-      sku_(ledger),
-      monthly_(ledger),
-      ac_(ledger),
-      tip_(ledger),
-      external_wallet_(ledger) {}
+Contribution::Contribution() = default;
 
 Contribution::~Contribution() = default;
 

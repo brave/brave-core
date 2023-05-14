@@ -35,17 +35,13 @@
 // Response body:
 // {Empty}
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 using PostCredentialsCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PostCredentials {
  public:
-  explicit PostCredentials(LedgerImpl& ledger);
+  PostCredentials();
   ~PostCredentials();
 
   void Request(const std::string& order_id,
@@ -67,8 +63,6 @@ class PostCredentials {
                  mojom::UrlResponsePtr response);
 };
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_CREDENTIALS_POST_CREDENTIALS_H_

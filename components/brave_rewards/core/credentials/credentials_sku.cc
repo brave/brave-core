@@ -72,8 +72,7 @@ std::string ConvertItemTypeToString(const std::string& type) {
 
 namespace credential {
 
-CredentialsSKU::CredentialsSKU(LedgerImpl& ledger)
-    : ledger_(ledger), common_(ledger), payment_server_(ledger) {}
+CredentialsSKU::CredentialsSKU() = default;
 
 CredentialsSKU::~CredentialsSKU() = default;
 

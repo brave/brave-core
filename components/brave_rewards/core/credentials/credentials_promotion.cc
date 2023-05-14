@@ -17,11 +17,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace credential {
+namespace brave_rewards::internal::credential {
 
-CredentialsPromotion::CredentialsPromotion(LedgerImpl& ledger)
-    : ledger_(ledger), common_(ledger), promotion_server_(ledger) {}
+CredentialsPromotion::CredentialsPromotion() = default;
 
 CredentialsPromotion::~CredentialsPromotion() = default;
 
@@ -532,5 +530,4 @@ void CredentialsPromotion::OnDrainTokens(
       });
 }
 
-}  // namespace credential
 }  // namespace brave_rewards::internal

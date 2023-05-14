@@ -25,14 +25,11 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class Contribution {
  public:
-  explicit Contribution(LedgerImpl& ledger);
+  Contribution();
 
   ~Contribution();
 
@@ -192,6 +189,5 @@ class Contribution {
   bool monthly_contributions_processing_ = false;
 };
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_H_

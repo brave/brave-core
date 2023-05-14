@@ -41,18 +41,14 @@
 //   ]
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace gemini {
+namespace brave_rewards::internal::endpoint::gemini {
 
 using PostBalanceCallback = base::OnceCallback<void(const mojom::Result result,
                                                     const double available)>;
 
 class PostBalance {
  public:
-  explicit PostBalance(LedgerImpl& ledger);
+  PostBalance();
   ~PostBalance();
 
   void Request(const std::string& token, PostBalanceCallback callback);
@@ -65,8 +61,6 @@ class PostBalance {
   void OnRequest(PostBalanceCallback callback, mojom::UrlResponsePtr response);
 };
 
-}  // namespace gemini
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_POST_BALANCE_POST_BALANCE_GEMINI_H_

@@ -12,14 +12,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class ContributionMonthly {
  public:
-  explicit ContributionMonthly(LedgerImpl& ledger);
+  ContributionMonthly();
 
   ~ContributionMonthly();
 
@@ -38,6 +35,5 @@ class ContributionMonthly {
       bool success);
 };
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_

@@ -15,11 +15,9 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
-ContributionMonthly::ContributionMonthly(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+ContributionMonthly::ContributionMonthly() = default;
 
 ContributionMonthly::~ContributionMonthly() = default;
 
@@ -100,5 +98,4 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
   callback(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal

@@ -13,11 +13,9 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-PostCredentials::PostCredentials(LedgerImpl& ledger) : ledger_(ledger) {}
+PostCredentials::PostCredentials() = default;
 
 PostCredentials::~PostCredentials() = default;
 
@@ -90,6 +88,4 @@ void PostCredentials::OnRequest(PostCredentialsCallback callback,
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

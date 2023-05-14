@@ -12,8 +12,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -21,8 +20,7 @@ const char kTableName[] = "creds_batch";
 
 }  // namespace
 
-DatabaseCredsBatch::DatabaseCredsBatch(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseCredsBatch::DatabaseCredsBatch() = default;
 
 DatabaseCredsBatch::~DatabaseCredsBatch() = default;
 
@@ -326,5 +324,4 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

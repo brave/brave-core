@@ -37,17 +37,14 @@
 //   "memo_reference_code": "GEMAPLLV"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint::gemini {
+namespace brave_rewards::internal::endpoint::gemini {
 
 using PostAccountCallback = base::OnceCallback<
     void(mojom::Result, std::string&& linking_info, std::string&& user_name)>;
 
 class PostAccount {
  public:
-  explicit PostAccount(LedgerImpl& ledger);
+  PostAccount();
   ~PostAccount();
 
   void Request(const std::string& token, PostAccountCallback);
@@ -62,7 +59,6 @@ class PostAccount {
   void OnRequest(PostAccountCallback, mojom::UrlResponsePtr);
 };
 
-}  // namespace endpoint::gemini
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_POST_ACCOUNT_POST_ACCOUNT_GEMINI_H_

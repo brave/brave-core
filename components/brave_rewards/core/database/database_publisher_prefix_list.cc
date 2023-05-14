@@ -48,8 +48,7 @@ std::tuple<publisher::PrefixIterator, std::string, size_t> GetPrefixInsertList(
 
 namespace database {
 
-DatabasePublisherPrefixList::DatabasePublisherPrefixList(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabasePublisherPrefixList::DatabasePublisherPrefixList() = default;
 
 DatabasePublisherPrefixList::~DatabasePublisherPrefixList() = default;
 

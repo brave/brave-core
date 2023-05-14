@@ -19,7 +19,7 @@
 
 namespace brave_rewards::internal::contribution {
 
-ContributionTip::ContributionTip(LedgerImpl& ledger) : ledger_(ledger) {}
+ContributionTip::ContributionTip() = default;
 
 ContributionTip::~ContributionTip() = default;
 

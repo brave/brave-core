@@ -15,8 +15,7 @@ namespace brave_rewards::internal::database {
 
 constexpr char kTableName[] = "external_transactions";
 
-DatabaseExternalTransactions::DatabaseExternalTransactions(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseExternalTransactions::DatabaseExternalTransactions() = default;
 
 DatabaseExternalTransactions::~DatabaseExternalTransactions() = default;
 

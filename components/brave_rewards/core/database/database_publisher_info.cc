@@ -23,11 +23,9 @@ const char kTableName[] = "publisher_info";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-DatabasePublisherInfo::DatabasePublisherInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabasePublisherInfo::DatabasePublisherInfo() = default;
 
 DatabasePublisherInfo::~DatabasePublisherInfo() = default;
 
@@ -332,5 +330,4 @@ void DatabasePublisherInfo::OnGetExcludedList(
   callback(std::move(list));
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

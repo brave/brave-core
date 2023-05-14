@@ -21,11 +21,9 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
-ContributionExternalWallet::ContributionExternalWallet(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+ContributionExternalWallet::ContributionExternalWallet() = default;
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;
 
@@ -181,5 +179,4 @@ void ContributionExternalWallet::Retry(mojom::ContributionInfoPtr contribution,
   Process(contribution->contribution_id, callback);
 }
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal

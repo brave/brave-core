@@ -13,8 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -22,9 +21,8 @@ const char kTableName[] = "contribution_info_publishers";
 
 }  // namespace
 
-DatabaseContributionInfoPublishers::DatabaseContributionInfoPublishers(
-    LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseContributionInfoPublishers::DatabaseContributionInfoPublishers() =
+    default;
 
 DatabaseContributionInfoPublishers::~DatabaseContributionInfoPublishers() =
     default;
@@ -228,5 +226,4 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

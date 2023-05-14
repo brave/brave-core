@@ -17,8 +17,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -35,8 +34,7 @@ void MapDatabaseResultToSuccess(base::OnceCallback<void(bool)> callback,
 
 }  // namespace
 
-DatabaseRecurringTip::DatabaseRecurringTip(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseRecurringTip::DatabaseRecurringTip() = default;
 
 DatabaseRecurringTip::~DatabaseRecurringTip() = default;
 
@@ -284,5 +282,4 @@ void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

@@ -11,10 +11,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace attestation {
+namespace brave_rewards::internal::attestation {
 
 using StartCallback =
     base::OnceCallback<void(mojom::Result, const std::string&)>;
@@ -23,7 +20,7 @@ using ConfirmCallback = base::OnceCallback<void(mojom::Result)>;
 
 class Attestation {
  public:
-  explicit Attestation(LedgerImpl& ledger);
+  Attestation();
   virtual ~Attestation();
 
   virtual void Start(const std::string& payload, StartCallback callback) = 0;
@@ -32,6 +29,5 @@ class Attestation {
                        ConfirmCallback callback) = 0;
 };
 
-}  // namespace attestation
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ATTESTATION_ATTESTATION_H_

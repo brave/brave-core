@@ -17,10 +17,9 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
-ContributionAC::ContributionAC(LedgerImpl& ledger) : ledger_(ledger) {}
+ContributionAC::ContributionAC() = default;
 
 ContributionAC::~ContributionAC() = default;
 
@@ -96,5 +95,4 @@ void ContributionAC::QueueSaved(const mojom::Result result) {
   ledger_->contribution()->CheckContributionQueue();
 }
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal

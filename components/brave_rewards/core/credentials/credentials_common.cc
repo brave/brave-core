@@ -14,10 +14,9 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace brave_rewards::internal {
-namespace credential {
+namespace brave_rewards::internal::credential {
 
-CredentialsCommon::CredentialsCommon(LedgerImpl& ledger) : ledger_(ledger) {}
+CredentialsCommon::CredentialsCommon() = default;
 
 CredentialsCommon::~CredentialsCommon() = default;
 
@@ -118,5 +117,4 @@ void CredentialsCommon::OnSaveUnblindedCreds(ResultCallback callback,
           mojom::Result result) { std::move(*callback).Run(result); });
 }
 
-}  // namespace credential
 }  // namespace brave_rewards::internal

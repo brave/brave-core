@@ -42,10 +42,7 @@
 //   "linking_info": "xxxxx"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint::bitflyer {
+namespace brave_rewards::internal::endpoint::bitflyer {
 
 using PostOauthCallback = base::OnceCallback<void(mojom::Result,
                                                   std::string&& token,
@@ -54,7 +51,7 @@ using PostOauthCallback = base::OnceCallback<void(mojom::Result,
 
 class PostOauth {
  public:
-  explicit PostOauth(LedgerImpl& ledger);
+  PostOauth();
   ~PostOauth();
 
   void Request(const std::string& external_account_id,
@@ -79,7 +76,6 @@ class PostOauth {
   void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
 };
 
-}  // namespace endpoint::bitflyer
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_BITFLYER_POST_OAUTH_POST_OAUTH_BITFLYER_H_

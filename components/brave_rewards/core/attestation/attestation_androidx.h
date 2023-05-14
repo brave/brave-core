@@ -12,14 +12,11 @@
 #include "brave/components/brave_rewards/core/attestation/attestation.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace attestation {
+namespace brave_rewards::internal::attestation {
 
 class AttestationAndroid : public Attestation {
  public:
-  explicit AttestationAndroid(LedgerImpl& ledger);
+  AttestationAndroid();
   ~AttestationAndroid() override;
 
   void Start(const std::string& payload, StartCallback callback) override;
@@ -40,6 +37,5 @@ class AttestationAndroid : public Attestation {
   endpoint::PromotionServer promotion_server_;
 };
 
-}  // namespace attestation
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ATTESTATION_ATTESTATION_ANDROIDX_H_

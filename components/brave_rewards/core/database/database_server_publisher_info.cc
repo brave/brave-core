@@ -19,12 +19,9 @@ const char kTableName[] = "server_publisher_info";
 
 }  // namespace
 
-namespace brave_rewards::internal {
+namespace brave_rewards::internal::database {
 
-namespace database {
-
-DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger), banner_(ledger) {}
+DatabaseServerPublisherInfo::DatabaseServerPublisherInfo() = default;
 
 DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;
 
@@ -204,5 +201,4 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
                             std::bind(&OnResultCallback, _1, callback));
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

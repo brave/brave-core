@@ -17,7 +17,7 @@
 
 namespace brave_rewards::internal::endpoint::gemini {
 
-PostOauth::PostOauth(LedgerImpl& ledger) : ledger_(ledger) {}
+PostOauth::PostOauth() = default;
 
 PostOauth::~PostOauth() = default;
 

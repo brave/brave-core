@@ -15,14 +15,11 @@
 #include "brave/components/brave_rewards/core/credentials/credentials.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace credential {
+namespace brave_rewards::internal::credential {
 
 class CredentialsCommon {
  public:
-  explicit CredentialsCommon(LedgerImpl& ledger);
+  CredentialsCommon();
   ~CredentialsCommon();
 
   void GetBlindedCreds(const CredentialsTrigger& trigger,
@@ -44,7 +41,6 @@ class CredentialsCommon {
                             mojom::Result result);
 };
 
-}  // namespace credential
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_COMMON_H_

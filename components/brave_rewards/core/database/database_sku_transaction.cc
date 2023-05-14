@@ -13,8 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -22,8 +21,7 @@ const char kTableName[] = "sku_transaction";
 
 }  // namespace
 
-DatabaseSKUTransaction::DatabaseSKUTransaction(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseSKUTransaction::DatabaseSKUTransaction() = default;
 
 DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;
 
@@ -167,5 +165,4 @@ void DatabaseSKUTransaction::OnGetRecord(mojom::DBCommandResponsePtr response,
   callback(std::move(info));
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

@@ -16,11 +16,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace gemini {
+namespace brave_rewards::internal::endpoint::gemini {
 
-PostBalance::PostBalance(LedgerImpl& ledger) : ledger_(ledger) {}
+PostBalance::PostBalance() = default;
 
 PostBalance::~PostBalance() = default;
 
@@ -96,6 +94,4 @@ void PostBalance::OnRequest(PostBalanceCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace gemini
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

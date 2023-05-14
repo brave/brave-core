@@ -48,8 +48,7 @@ std::string GetTypeColumn(mojom::ReportType type) {
 
 namespace database {
 
-DatabaseBalanceReport::DatabaseBalanceReport(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseBalanceReport::DatabaseBalanceReport() = default;
 
 DatabaseBalanceReport::~DatabaseBalanceReport() = default;
 

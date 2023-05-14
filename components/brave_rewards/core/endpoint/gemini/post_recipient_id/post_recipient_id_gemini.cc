@@ -17,7 +17,7 @@
 
 namespace brave_rewards::internal::endpoint::gemini {
 
-PostRecipientId::PostRecipientId(LedgerImpl& ledger) : ledger_(ledger) {}
+PostRecipientId::PostRecipientId() = default;
 
 PostRecipientId::~PostRecipientId() = default;
 

@@ -11,14 +11,11 @@
 
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace database {
+namespace brave_rewards::internal::database {
 
 class DatabaseMultiTables {
  public:
-  explicit DatabaseMultiTables(LedgerImpl& ledger);
+  DatabaseMultiTables();
   ~DatabaseMultiTables();
 
   void GetTransactionReport(const mojom::ActivityMonth month,
@@ -33,7 +30,6 @@ class DatabaseMultiTables {
       GetTransactionReportCallback callback);
 };
 
-}  // namespace database
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MULTI_TABLES_H_

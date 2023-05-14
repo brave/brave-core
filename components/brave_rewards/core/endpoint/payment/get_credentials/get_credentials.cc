@@ -14,11 +14,9 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-GetCredentials::GetCredentials(LedgerImpl& ledger) : ledger_(ledger) {}
+GetCredentials::GetCredentials() = default;
 
 GetCredentials::~GetCredentials() = default;
 
@@ -120,6 +118,4 @@ void GetCredentials::OnRequest(GetCredentialsCallback callback,
   std::move(callback).Run(result, std::move(batch));
 }
 
-}  // namespace payment
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

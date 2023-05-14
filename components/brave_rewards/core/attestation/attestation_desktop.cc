@@ -10,11 +10,9 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_desktop.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace brave_rewards::internal {
-namespace attestation {
+namespace brave_rewards::internal::attestation {
 
-AttestationDesktop::AttestationDesktop(LedgerImpl& ledger)
-    : Attestation(ledger), promotion_server_(ledger) {}
+AttestationDesktop::AttestationDesktop() = default;
 
 AttestationDesktop::~AttestationDesktop() = default;
 
@@ -133,5 +131,4 @@ void AttestationDesktop::OnConfirm(ConfirmCallback callback,
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace attestation
 }  // namespace brave_rewards::internal

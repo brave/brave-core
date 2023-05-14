@@ -13,11 +13,9 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-DatabaseInitialize::DatabaseInitialize(LedgerImpl& ledger)
-    : ledger_(ledger), migration_(ledger) {}
+DatabaseInitialize::DatabaseInitialize() = default;
 
 DatabaseInitialize::~DatabaseInitialize() = default;
 
@@ -54,5 +52,4 @@ void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
   migration_.Start(current_table_version, callback);
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

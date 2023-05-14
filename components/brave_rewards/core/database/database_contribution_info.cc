@@ -15,8 +15,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -44,8 +43,7 @@ mojom::ReportType ConvertRewardsTypeToReportType(
 
 }  // namespace
 
-DatabaseContributionInfo::DatabaseContributionInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger), publishers_(ledger) {}
+DatabaseContributionInfo::DatabaseContributionInfo() = default;
 
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
@@ -610,5 +608,4 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

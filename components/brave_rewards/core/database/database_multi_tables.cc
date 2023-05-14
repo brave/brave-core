@@ -14,11 +14,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-DatabaseMultiTables::DatabaseMultiTables(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+DatabaseMultiTables::DatabaseMultiTables() = default;
 
 DatabaseMultiTables::~DatabaseMultiTables() = default;
 
@@ -65,5 +63,4 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
   callback(std::move(list));
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

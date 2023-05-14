@@ -15,8 +15,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -24,8 +23,7 @@ const char kTableName[] = "event_log";
 
 }  // namespace
 
-DatabaseEventLog::DatabaseEventLog(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseEventLog::DatabaseEventLog() = default;
 
 DatabaseEventLog::~DatabaseEventLog() = default;
 
@@ -145,5 +143,4 @@ void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,
   callback(std::move(list));
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

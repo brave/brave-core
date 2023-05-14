@@ -16,11 +16,9 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace bitflyer {
+namespace brave_rewards::internal::endpoint::bitflyer {
 
-GetBalance::GetBalance(LedgerImpl& ledger) : ledger_(ledger) {}
+GetBalance::GetBalance() = default;
 
 GetBalance::~GetBalance() = default;
 
@@ -114,6 +112,4 @@ void GetBalance::OnRequest(GetBalanceCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace bitflyer
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

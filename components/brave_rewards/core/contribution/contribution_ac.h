@@ -10,14 +10,11 @@
 
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class ContributionAC {
  public:
-  explicit ContributionAC(LedgerImpl& ledger);
+  ContributionAC();
 
   ~ContributionAC();
 
@@ -29,6 +26,5 @@ class ContributionAC {
   void QueueSaved(const mojom::Result result);
 };
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_AC_H_

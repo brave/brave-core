@@ -21,7 +21,7 @@ using endpoints::RequestFor;
 
 namespace api {
 
-APIParameters::APIParameters(LedgerImpl& ledger) : ledger_(ledger) {}
+APIParameters::APIParameters() = default;
 
 APIParameters::~APIParameters() = default;
 

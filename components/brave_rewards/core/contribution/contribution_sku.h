@@ -14,14 +14,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class ContributionSKU {
  public:
-  explicit ContributionSKU(LedgerImpl& ledger);
+  ContributionSKU();
   ~ContributionSKU();
 
   void AutoContribution(const std::string& contribution_id,
@@ -84,6 +81,5 @@ class ContributionSKU {
   sku::SKU sku_;
 };
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_SKU_H_

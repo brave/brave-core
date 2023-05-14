@@ -34,14 +34,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace database {
+namespace brave_rewards::internal::database {
 
 class Database {
  public:
-  explicit Database(LedgerImpl& ledger);
+  Database();
   virtual ~Database();
 
   void Initialize(LegacyResultCallback callback);
@@ -370,7 +367,6 @@ class Database {
   DatabaseUnblindedToken unblinded_token_;
 };
 
-}  // namespace database
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_H_

@@ -92,10 +92,7 @@ void GetStatisticalVotingWinners(
 
 }  // namespace
 
-Unblinded::Unblinded(LedgerImpl& ledger)
-    : ledger_(ledger),
-      credentials_promotion_(ledger),
-      credentials_sku_(ledger) {}
+Unblinded::Unblinded() = default;
 
 Unblinded::~Unblinded() = default;
 

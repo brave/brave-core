@@ -17,8 +17,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -26,8 +25,7 @@ const char kTableName[] = "promotion";
 
 }  // namespace
 
-DatabasePromotion::DatabasePromotion(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabasePromotion::DatabasePromotion() = default;
 
 DatabasePromotion::~DatabasePromotion() = default;
 
@@ -443,5 +441,4 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

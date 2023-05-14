@@ -77,8 +77,7 @@ void GetCredentialTrigger(mojom::SKUOrderPtr order,
 
 namespace contribution {
 
-ContributionSKU::ContributionSKU(LedgerImpl& ledger)
-    : ledger_(ledger), credentials_(ledger), sku_(ledger) {}
+ContributionSKU::ContributionSKU() = default;
 
 ContributionSKU::~ContributionSKU() = default;
 

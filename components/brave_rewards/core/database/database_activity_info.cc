@@ -124,8 +124,7 @@ void GenerateActivityFilterBind(mojom::DBCommand* command,
 
 namespace database {
 
-DatabaseActivityInfo::DatabaseActivityInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseActivityInfo::DatabaseActivityInfo() = default;
 
 DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 

@@ -41,18 +41,14 @@
 //   ]
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace bitflyer {
+namespace brave_rewards::internal::endpoint::bitflyer {
 
 using GetBalanceCallback = base::OnceCallback<void(const mojom::Result result,
                                                    const double available)>;
 
 class GetBalance {
  public:
-  explicit GetBalance(LedgerImpl& ledger);
+  GetBalance();
   ~GetBalance();
 
   void Request(const std::string& token, GetBalanceCallback callback);
@@ -67,8 +63,6 @@ class GetBalance {
   void OnRequest(GetBalanceCallback callback, mojom::UrlResponsePtr response);
 };
 
-}  // namespace bitflyer
-}  // namespace endpoint
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_BITFLYER_GET_BALANCE_GET_BALANCE_BITFLYER_H_

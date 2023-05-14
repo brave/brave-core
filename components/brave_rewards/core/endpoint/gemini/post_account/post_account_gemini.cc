@@ -17,7 +17,7 @@
 
 namespace brave_rewards::internal::endpoint::gemini {
 
-PostAccount::PostAccount(LedgerImpl& ledger) : ledger_(ledger) {}
+PostAccount::PostAccount() = default;
 
 PostAccount::~PostAccount() = default;
 

@@ -15,8 +15,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -24,8 +23,7 @@ const char kTableName[] = "contribution_queue";
 
 }  // namespace
 
-DatabaseContributionQueue::DatabaseContributionQueue(LedgerImpl& ledger)
-    : DatabaseTable(ledger), publishers_(ledger) {}
+DatabaseContributionQueue::DatabaseContributionQueue() = default;
 
 DatabaseContributionQueue::~DatabaseContributionQueue() = default;
 
@@ -196,5 +194,4 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

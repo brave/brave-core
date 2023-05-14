@@ -12,15 +12,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class ContributionTip {
  public:
-  explicit ContributionTip(LedgerImpl& ledger);
+  ContributionTip();
 
   ~ContributionTip();
 
@@ -43,7 +39,6 @@ class ContributionTip {
   void OnPendingTipSaved(mojom::Result result);
 };
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_TIP_H_

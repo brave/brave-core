@@ -13,8 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -22,8 +21,7 @@ const char kTableName[] = "media_publisher_info";
 
 }  // namespace
 
-DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo() = default;
 
 DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
 
@@ -132,5 +130,4 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   callback(mojom::Result::LEDGER_OK, std::move(info));
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

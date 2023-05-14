@@ -13,8 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -22,8 +21,7 @@ const char kTableName[] = "sku_order";
 
 }  // namespace
 
-DatabaseSKUOrder::DatabaseSKUOrder(LedgerImpl& ledger)
-    : DatabaseTable(ledger), items_(ledger) {}
+DatabaseSKUOrder::DatabaseSKUOrder() = default;
 
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
@@ -242,5 +240,4 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

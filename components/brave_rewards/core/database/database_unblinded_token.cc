@@ -17,8 +17,7 @@
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -26,8 +25,7 @@ const char kTableName[] = "unblinded_tokens";
 
 }  // namespace
 
-DatabaseUnblindedToken::DatabaseUnblindedToken(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
+DatabaseUnblindedToken::DatabaseUnblindedToken() = default;
 
 DatabaseUnblindedToken::~DatabaseUnblindedToken() = default;
 
@@ -366,5 +364,4 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

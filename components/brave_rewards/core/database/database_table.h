@@ -13,10 +13,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace database {
+namespace brave_rewards::internal::database {
 
 using ContributionPublisherInfoPair =
     std::pair<std::string, mojom::PublisherInfoPtr>;
@@ -36,7 +33,6 @@ using ContributionPublisherListCallback =
 using ContributionPublisherPairListCallback =
     std::function<void(std::vector<ContributionPublisherInfoPair>)>;
 
-}  // namespace database
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_TABLE_H_
