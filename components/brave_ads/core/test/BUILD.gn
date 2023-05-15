@@ -302,7 +302,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/conversions/conversions_unittest.cc",
     "//brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h",
     "//brave/components/brave_ads/core/internal/conversions/conversions_util_unittest.cc",
-    "//brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_unittest.cc",
     "//brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_unittest_util.cc",
     "//brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_unittest_util.h",
     "//brave/components/brave_ads/core/internal/creatives/campaigns_database_table_unittest.cc",

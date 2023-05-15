@@ -23,7 +23,6 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
-#include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_factory.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
@@ -195,14 +194,6 @@ ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
   return filtered_conversions;
 }
 
-ConversionList SortConversions(const ConversionList& conversions) {
-  const auto sort =
-      ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
-  CHECK(sort);
-
-  return sort->Apply(conversions);
-}
-
 }  // namespace
 
 Conversions::Conversions() {
@@ -314,7 +305,10 @@ void Conversions::GetAllConversionsCallback(
       FilterConversions(redirect_chain, conversions);
 
   // Sort conversions in descending order
-  filtered_conversions = SortConversions(filtered_conversions);
+  base::ranges::sort(filtered_conversions,
+                     [](const ConversionInfo& lhs, const ConversionInfo& rhs) {
+                       return lhs.type == "postclick" && rhs.type == "postview";
+                     });
 
   // Create list of creative set ids for already converted ads
   std::set<std::string> creative_set_ids = GetConvertedCreativeSets(ad_events);
