@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="24dp"
         android:layout_weight="1"
-        android:src="@drawable/ic_help"
+        app:srcCompat="@drawable/ic_help"
         android:contentDescription="@null"/>
 
 	 <ImageView
@@ -56,7 +56,8 @@
         android:layout_width="0dp"
         android:layout_height="24dp"
         android:layout_weight="1"
-        android:src="@drawable/ic_share"
+        app:srcCompat="@drawable/ic_share"
+        app:tint="@color/shield_text_color"
         android:contentDescription="@null"/>
 
 </LinearLayout>
