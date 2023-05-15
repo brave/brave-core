@@ -5,7 +5,11 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory, useLocation } from 'react-router-dom'
 import Checkbox from '@brave/leo/react/checkbox'
+
+// Types
+import { WalletRoutes } from '../../../constants/types'
 
 // Actions
 import { WalletActions } from '../../../common/actions'
@@ -38,6 +42,9 @@ import {
 } from '../../shared/style'
 
 export const PortfolioOverviewMenu = () => {
+  // Routing
+  const history = useHistory()
+  const { pathname: walletLocation } = useLocation()
 
   // Redux
   const dispatch = useDispatch()
@@ -46,6 +53,8 @@ export const PortfolioOverviewMenu = () => {
     useSafeWalletSelector(WalletSelectors.hidePortfolioGraph)
   const hidePortfolioBalances =
     useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
+  const hidePortfolioNFTsTab =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioNFTsTab)
 
   // Methods
   const onToggleHideGraph = React.useCallback(() => {
@@ -76,6 +85,23 @@ export const PortfolioOverviewMenu = () => {
         ))
   }, [hidePortfolioBalances])
 
+  const onToggleHideNFTsTab = React.useCallback(() => {
+    if (walletLocation.includes(WalletRoutes.PortfolioNFTs)) {
+      history.push(WalletRoutes.PortfolioAssets)
+    }
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
+      hidePortfolioNFTsTab
+        ? 'false'
+        : 'true'
+    )
+    dispatch(
+      WalletActions
+        .setHidePortfolioNFTsTab(
+          !hidePortfolioNFTsTab
+        ))
+  }, [hidePortfolioNFTsTab, walletLocation])
+
   return (
     <StyledWrapper yPosition={42}>
       <CheckBoxRow onClick={onToggleHideBalances}>
@@ -105,6 +131,21 @@ export const PortfolioOverviewMenu = () => {
           size='normal'
         />
       </CheckBoxRow>
+
+      <CheckBoxRow onClick={onToggleHideNFTsTab}>
+        <Row>
+          <ButtonIcon name='nft' />
+          <PopupButtonText>
+            {getLocale('braveWalletWalletNFTsTab')}
+          </PopupButtonText>
+        </Row>
+        <Checkbox
+          checked={!hidePortfolioNFTsTab}
+          onChanged={onToggleHideNFTsTab}
+          size='normal'
+        />
+      </CheckBoxRow>
+
     </StyledWrapper>
   )
 }
