@@ -34,7 +34,7 @@ import {
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
-import { getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
+import { getAssetIdKey, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
 import { getVisibleNetworksList } from '../slices/api.slice'
 
@@ -62,7 +62,7 @@ export const getERC20Allowance = (
     const { braveWalletService, jsonRpcService } = getAPIProxy()
     const { chainId }
       = await braveWalletService.getChainIdForActiveOrigin(
-          BraveWallet.CoinType.ETH)
+        BraveWallet.CoinType.ETH)
     const result = await jsonRpcService.getERC20TokenAllowance(
       contractAddress,
       ownerAddress,
@@ -488,8 +488,14 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
     const visibleAssets = targetNetwork
       ? await inner(targetNetwork)
       : await Promise.all(networkList.map(async (item) => await inner(item)))
-
-    const userVisibleTokensInfo = visibleAssets.flat(1)
+    const removedAssetIds =
+      [
+        ...getState().wallet.removedFungibleTokenIds,
+        ...getState().wallet.removedNonFungibleTokenIds
+      ]
+    const userVisibleTokensInfo = visibleAssets
+      .flat(1)
+      .filter(token => !removedAssetIds.includes(getAssetIdKey(token)))
     await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
     const nfts = userVisibleTokensInfo.filter((asset) => asset.isErc721 || asset.isNft)
     dispatch(WalletPageActions.getNftsPinningStatus(nfts))
@@ -497,8 +503,8 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
 }
 
 function reportActiveWalletsToP3A (accounts: WalletAccountType[],
-                                   nativeBalances: BalancePayload[][],
-                                   blockchainTokenBalances: BalancePayload[][]) {
+  nativeBalances: BalancePayload[][],
+  blockchainTokenBalances: BalancePayload[][]) {
   const { braveWalletP3A } = getAPIProxy()
   const coinsActiveAddresses: {
     [coin: BraveWallet.CoinType]: {
@@ -632,7 +638,12 @@ export function refreshBalances () {
                 await jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address, token?.chainId ?? '')
             } else {
               balanceInfo =
-               await jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address, token?.chainId ?? '')
+                await jsonRpcService
+                  .getERC20TokenBalance(
+                    token.contractAddress,
+                    account.address,
+                    token?.chainId ?? ''
+                  )
             }
           }
           return {
@@ -1125,7 +1136,7 @@ export const areSupportedForPinning = async (urls: string[]) => {
 export const extractIpfsUrl = async (url: string | undefined) => {
   const { braveWalletIpfsService } = getAPIProxy()
   const trimmedUrl = url ? url.trim() : ''
-   if (isIpfs(trimmedUrl)) {
+  if (isIpfs(trimmedUrl)) {
     return trimmedUrl
   }
   return (await braveWalletIpfsService

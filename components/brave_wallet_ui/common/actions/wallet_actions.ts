@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import { WalletActions } from '../slices/wallet.slice'
+import { WalletActions } from '../slices/wallet.slice'
 
- // We must re-export actions here until we remove all imports of this file
- export const {
+// We must re-export actions here until we remove all imports of this file
+export const {
   accountsChanged,
   activeOriginChanged,
   addAccount,
@@ -98,5 +98,7 @@
   updateUnapprovedTransactionSpendAllowance,
   updateUserAsset,
   setHidePortfolioGraph,
-  setHidePortfolioBalances
+  setHidePortfolioBalances,
+  setRemovedFungibleTokenIds,
+  setRemovedNonFungibleTokenIds
 } = WalletActions

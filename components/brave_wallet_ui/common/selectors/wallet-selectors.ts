@@ -59,3 +59,7 @@ export const transactionSpotPrices = ({ wallet }: State) => wallet.transactionSp
 export const transactions = ({ wallet }: State) => wallet.transactions
 export const userVisibleTokensInfo = ({ wallet }: State) => wallet.userVisibleTokensInfo
 export const selectedAccountFilter = ({ wallet }: State) => wallet.selectedAccountFilter
+export const removedFungibleTokenIds = ({ wallet }: State) =>
+  wallet.removedFungibleTokenIds
+export const removedNonFungibleTokenIds = ({ wallet }: State) =>
+  wallet.removedNonFungibleTokenIds

@@ -165,7 +165,7 @@ export type GetBlockchainTokenIdArg = Pick<
  * @returns an id that can be used as a react element key
  */
 export const getAssetIdKey = (asset: GetBlockchainTokenIdArg) => {
-  return asset.isErc721
+  return asset.tokenId
     ? `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`
     : `${asset.contractAddress}-${asset.chainId}`
 }

@@ -313,5 +313,7 @@ export const mockWalletState: WalletState = {
   isNftPinningFeatureEnabled: false,
   isPanelV2FeatureEnabled: false,
   hidePortfolioBalances: false,
-  hidePortfolioGraph: false
+  hidePortfolioGraph: false,
+  removedFungibleTokenIds: [],
+  removedNonFungibleTokenIds: []
 }

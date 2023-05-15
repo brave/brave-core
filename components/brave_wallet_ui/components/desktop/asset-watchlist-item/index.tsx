@@ -32,9 +32,13 @@ import {
 } from './style'
 
 export interface Props {
-  onSelectAsset: (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => void
+  onSelectAsset: (
+    key: string,
+    selected: boolean,
+    token: BraveWallet.BlockchainToken
+  ) => void
   onRemoveAsset: (token: BraveWallet.BlockchainToken) => void
-  isCustom: boolean
+  isRemovable: boolean
   isSelected: boolean
   token: BraveWallet.BlockchainToken
 }
@@ -44,7 +48,7 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
     const {
       onSelectAsset,
       onRemoveAsset,
-      isCustom,
+      isRemovable,
       token,
       isSelected
     } = props
@@ -54,12 +58,12 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
 
     // callbacks
     const onCheck = React.useCallback((key: string, selected: boolean) => {
-      onSelectAsset(key, selected, token, isCustom)
-    }, [onSelectAsset, token, isCustom])
+      onSelectAsset(key, selected, token)
+    }, [onSelectAsset, token])
 
     const onClickAsset = React.useCallback(() => {
-      onSelectAsset(token.contractAddress, !isSelected, token, isCustom)
-    }, [onSelectAsset, token, isSelected, isCustom])
+      onSelectAsset(token.contractAddress, !isSelected, token)
+    }, [onSelectAsset, token, isSelected])
 
     const onClickRemoveAsset = React.useCallback(() => {
       onRemoveAsset(token)
@@ -91,7 +95,7 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
           </NameAndSymbol>
         </NameAndIcon>
         <RightSide>
-          {isCustom &&
+          {isRemovable &&
             <DeleteButton onClick={onClickRemoveAsset}>
               <DeleteIcon />
             </DeleteButton>

@@ -19,10 +19,14 @@ import { assetWatchListItemHeight } from '../../asset-watchlist-item/style'
 
 interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
-  isCustomToken: (token: BraveWallet.BlockchainToken) => boolean
+  isRemovable: (token: BraveWallet.BlockchainToken) => boolean
   onRemoveAsset: (token: BraveWallet.BlockchainToken) => void
   isAssetSelected: (token: BraveWallet.BlockchainToken) => boolean
-  onCheckWatchlistItem: (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => void
+  onCheckWatchlistItem: (
+    key: string,
+    selected: boolean,
+    token: BraveWallet.BlockchainToken
+  ) => void
 }
 
 interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
@@ -42,7 +46,7 @@ const ListItem = (props: ListItemProps) => {
     data,
     style,
     index,
-    isCustomToken,
+    isRemovable,
     isAssetSelected,
     onCheckWatchlistItem,
     onRemoveAsset,
@@ -59,7 +63,7 @@ const ListItem = (props: ListItemProps) => {
     <div style={style}>
       <AssetWatchlistItem
         ref={handleSetSize}
-        isCustom={isCustomToken(data)}
+        isRemovable={isRemovable(data)}
         token={data}
         onRemoveAsset={onRemoveAsset}
         isSelected={isAssetSelected(data)}
@@ -72,7 +76,7 @@ const ListItem = (props: ListItemProps) => {
 export const VirtualizedVisibleAssetsList = (props: VirtualizedTokensListProps) => {
   const {
     tokenList,
-    isCustomToken,
+    isRemovable,
     isAssetSelected,
     onCheckWatchlistItem,
     onRemoveAsset
@@ -109,7 +113,7 @@ export const VirtualizedVisibleAssetsList = (props: VirtualizedTokensListProps) 
       children={({ data, index, style }) => (
         <ListItem
           data={data[index]}
-          isCustomToken={isCustomToken}
+          isRemovable={isRemovable}
           onRemoveAsset={onRemoveAsset}
           isAssetSelected={isAssetSelected}
           onCheckWatchlistItem={onCheckWatchlistItem}
