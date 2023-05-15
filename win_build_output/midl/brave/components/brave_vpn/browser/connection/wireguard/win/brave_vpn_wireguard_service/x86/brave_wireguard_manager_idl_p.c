@@ -146,8 +146,8 @@ extern const MIDL_STUB_DESC Object_StubDesc;
 #endif
 
 
-extern const MIDL_SERVER_INFO IBraveWireguardManager_ServerInfo;
-extern const MIDL_STUBLESS_PROXY_INFO IBraveWireguardManager_ProxyInfo;
+extern const MIDL_SERVER_INFO IBraveVpnWireguardManager_ServerInfo;
+extern const MIDL_STUBLESS_PROXY_INFO IBraveVpnWireguardManager_ProxyInfo;
 
 
 extern const USER_MARSHAL_ROUTINE_QUADRUPLE UserMarshalRoutines[ WIRE_MARSHAL_TABLE_SIZE ];
@@ -356,54 +356,54 @@ static const USER_MARSHAL_ROUTINE_QUADRUPLE UserMarshalRoutines[ WIRE_MARSHAL_TA
    GUID={0x00000000,0x0000,0x0000,{0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x46}} */
 
 
-/* Object interface: IBraveWireguardManager, ver. 0.0,
+/* Object interface: IBraveVpnWireguardManager, ver. 0.0,
    GUID={0x053057AB,0xCF06,0x4E6C,{0xBB,0xAD,0xF8,0xDA,0x64,0x36,0xD9,0x33}} */
 
 #pragma code_seg(".orpc")
-static const unsigned short IBraveWireguardManager_FormatStringOffsetTable[] =
+static const unsigned short IBraveVpnWireguardManager_FormatStringOffsetTable[] =
     {
     0,
     42,
     78
     };
 
-static const MIDL_STUBLESS_PROXY_INFO IBraveWireguardManager_ProxyInfo =
+static const MIDL_STUBLESS_PROXY_INFO IBraveVpnWireguardManager_ProxyInfo =
     {
     &Object_StubDesc,
     brave_wireguard_manager_idl__MIDL_ProcFormatString.Format,
-    &IBraveWireguardManager_FormatStringOffsetTable[-3],
+    &IBraveVpnWireguardManager_FormatStringOffsetTable[-3],
     0,
     0,
     0
     };
 
 
-static const MIDL_SERVER_INFO IBraveWireguardManager_ServerInfo = 
+static const MIDL_SERVER_INFO IBraveVpnWireguardManager_ServerInfo = 
     {
     &Object_StubDesc,
     0,
     brave_wireguard_manager_idl__MIDL_ProcFormatString.Format,
-    &IBraveWireguardManager_FormatStringOffsetTable[-3],
+    &IBraveVpnWireguardManager_FormatStringOffsetTable[-3],
     0,
     0,
     0,
     0};
-CINTERFACE_PROXY_VTABLE(6) _IBraveWireguardManagerProxyVtbl = 
+CINTERFACE_PROXY_VTABLE(6) _IBraveVpnWireguardManagerProxyVtbl = 
 {
-    &IBraveWireguardManager_ProxyInfo,
-    &IID_IBraveWireguardManager,
+    &IBraveVpnWireguardManager_ProxyInfo,
+    &IID_IBraveVpnWireguardManager,
     IUnknown_QueryInterface_Proxy,
     IUnknown_AddRef_Proxy,
     IUnknown_Release_Proxy ,
-    (void *) (INT_PTR) -1 /* IBraveWireguardManager::EnableVpn */ ,
-    (void *) (INT_PTR) -1 /* IBraveWireguardManager::DisableVpn */ ,
-    (void *) (INT_PTR) -1 /* IBraveWireguardManager::GenerateKeypair */
+    (void *) (INT_PTR) -1 /* IBraveVpnWireguardManager::EnableVpn */ ,
+    (void *) (INT_PTR) -1 /* IBraveVpnWireguardManager::DisableVpn */ ,
+    (void *) (INT_PTR) -1 /* IBraveVpnWireguardManager::GenerateKeypair */
 };
 
-const CInterfaceStubVtbl _IBraveWireguardManagerStubVtbl =
+const CInterfaceStubVtbl _IBraveVpnWireguardManagerStubVtbl =
 {
-    &IID_IBraveWireguardManager,
-    &IBraveWireguardManager_ServerInfo,
+    &IID_IBraveVpnWireguardManager,
+    &IBraveVpnWireguardManager_ServerInfo,
     6,
     0, /* pure interpreted */
     CStdStubBuffer_METHODS
@@ -441,19 +441,19 @@ static const MIDL_STUB_DESC Object_StubDesc =
 
 const CInterfaceProxyVtbl * const _brave_wireguard_manager_idl_ProxyVtblList[] = 
 {
-    ( CInterfaceProxyVtbl *) &_IBraveWireguardManagerProxyVtbl,
+    ( CInterfaceProxyVtbl *) &_IBraveVpnWireguardManagerProxyVtbl,
     0
 };
 
 const CInterfaceStubVtbl * const _brave_wireguard_manager_idl_StubVtblList[] = 
 {
-    ( CInterfaceStubVtbl *) &_IBraveWireguardManagerStubVtbl,
+    ( CInterfaceStubVtbl *) &_IBraveVpnWireguardManagerStubVtbl,
     0
 };
 
 PCInterfaceName const _brave_wireguard_manager_idl_InterfaceNamesList[] = 
 {
-    "IBraveWireguardManager",
+    "IBraveVpnWireguardManager",
     0
 };
 

@@ -17,28 +17,28 @@
 
 namespace brave_vpn {
 
-bool InstallService() {
+bool InstallBraveWireguardService() {
   base::FilePath exe_dir;
   base::PathService::Get(base::DIR_EXE, &exe_dir);
   base::CommandLine service_cmd(
-      exe_dir.Append(brave_vpn::kBraveWireguardServiceExecutable));
+      exe_dir.Append(brave_vpn::kBraveVpnWireguardServiceExecutable));
   installer::InstallServiceWorkItem install_service_work_item(
-      brave_vpn::GetBraveWireguardServiceName(),
-      brave_vpn::GetBraveWireguardServiceDisplayName(), SERVICE_AUTO_START,
+      brave_vpn::GetBraveVpnWireguardServiceName(),
+      brave_vpn::GetBraveVpnWireguardServiceDisplayName(), SERVICE_AUTO_START,
       service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
-      brave_vpn::kBraveVpnServiceRegistryStoragePath,
-      {brave_vpn::GetBraveWireguardServiceClsid()},
-      {brave_vpn::GetBraveWireguardServiceIid()});
+      brave_vpn::kBraveVpnWireguardServiceRegistryStoragePath,
+      {brave_vpn::GetBraveVpnWireguardServiceClsid()},
+      {brave_vpn::GetBraveVpnWireguardServiceIid()});
   install_service_work_item.set_best_effort(true);
   install_service_work_item.set_rollback_enabled(false);
   if (install_service_work_item.Do()) {
-    return brave_vpn::ConfigureService(
-        brave_vpn::GetBraveWireguardServiceName());
+    return brave_vpn::ConfigureBraveWireguardService(
+        brave_vpn::GetBraveVpnWireguardServiceName());
   }
   return false;
 }
 
-bool ConfigureService(const std::wstring& service_name) {
+bool ConfigureBraveWireguardService(const std::wstring& service_name) {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS));
   if (!scm.IsValid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: " << service_name
@@ -65,7 +65,7 @@ bool ConfigureService(const std::wstring& service_name) {
             << HRESULTFromLastError();
     return false;
   }
-  if (!SetServiceFailActions(service.Get())) {
+  if (!SetBraveWireguardServiceFailActions(service.Get())) {
     VLOG(1) << "SetServiceFailActions failed:" << std::hex
             << HRESULTFromLastError();
     return false;
@@ -73,9 +73,9 @@ bool ConfigureService(const std::wstring& service_name) {
   return true;
 }
 
-bool SetServiceFailActions(SC_HANDLE service) {
+bool SetBraveWireguardServiceFailActions(SC_HANDLE service) {
   SC_ACTION failActions[] = {
-      {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}};
+      {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}, {SC_ACTION_NONE, 1}};
   // The time after which to reset the failure count to zero if there are no
   // failures, in seconds.
   SERVICE_FAILURE_ACTIONS servFailActions = {

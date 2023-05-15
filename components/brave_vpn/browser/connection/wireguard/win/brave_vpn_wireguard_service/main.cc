@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
 
   // Register vpn helper service in the system.
   if (command_line->HasSwitch(brave_vpn::kBraveWgServiceInstall)) {
-    auto success = brave_vpn::InstallService();
+    auto success = brave_vpn::InstallBraveWireguardService();
     return success ? 0 : 1;
   }
 

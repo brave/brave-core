@@ -7,6 +7,7 @@
 
 #include <guiddef.h>
 
+#include "base/containers/cxx20_erase.h"
 #include "chrome/install_static/install_util.h"
 
 namespace brave_vpn {
@@ -29,23 +30,23 @@ constexpr CLSID kBraveWireguardServiceCLSID = {
 
 // Returns the Brave Vpn Service CLSID, IID, Name, and Display Name
 // respectively.
-const CLSID& GetBraveWireguardServiceClsid() {
+const CLSID& GetBraveVpnWireguardServiceClsid() {
   return kBraveWireguardServiceCLSID;
 }
 
-const IID& GetBraveWireguardServiceIid() {
+const IID& GetBraveVpnWireguardServiceIid() {
   return kBraveWireguardServiceIID;
 }
 
-std::wstring GetBraveWireguardServiceDisplayName() {
+std::wstring GetBraveVpnWireguardServiceDisplayName() {
   static constexpr wchar_t kBraveWireguardServiceDisplayName[] =
       L" Vpn Wireguard Service";
   return install_static::GetBaseAppName() + kBraveWireguardServiceDisplayName;
 }
 
-std::wstring GetBraveWireguardServiceName() {
-  std::wstring name = GetBraveWireguardServiceDisplayName();
-  name.erase(std::remove_if(name.begin(), name.end(), isspace), name.end());
+std::wstring GetBraveVpnWireguardServiceName() {
+  std::wstring name = GetBraveVpnWireguardServiceDisplayName();
+  base::EraseIf(name, isspace);
   return name;
 }
 

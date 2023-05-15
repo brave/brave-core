@@ -17,7 +17,7 @@ namespace brave_vpn {
 class BraveWireguardManager
     : public Microsoft::WRL::RuntimeClass<
           Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::ClassicCom>,
-          IBraveWireguardManager> {
+          IBraveVpnWireguardManager> {
  public:
   BraveWireguardManager() = default;
 

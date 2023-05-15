@@ -11,16 +11,16 @@
 
 namespace brave_vpn {
 
-constexpr wchar_t kBraveWireguardServiceExecutable[] =
+constexpr wchar_t kBraveVpnWireguardServiceExecutable[] =
     L"brave_vpn_wireguard_service.exe";
-constexpr wchar_t kBraveVpnServiceRegistryStoragePath[] =
+constexpr wchar_t kBraveVpnWireguardServiceRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Brave\\Vpn\\BraveWireguardService";
 constexpr char kBraveWgServiceInstall[] = "install";
 
-const CLSID& GetBraveWireguardServiceClsid();
-const IID& GetBraveWireguardServiceIid();
-std::wstring GetBraveWireguardServiceName();
-std::wstring GetBraveWireguardServiceDisplayName();
+const CLSID& GetBraveVpnWireguardServiceClsid();
+const IID& GetBraveVpnWireguardServiceIid();
+std::wstring GetBraveVpnWireguardServiceName();
+std::wstring GetBraveVpnWireguardServiceDisplayName();
 
 }  // namespace brave_vpn
 

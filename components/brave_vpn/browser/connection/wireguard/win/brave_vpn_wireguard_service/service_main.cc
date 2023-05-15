@@ -75,7 +75,7 @@ HRESULT ServiceMain::RegisterClassObject() {
   static_assert(std::extent<decltype(cookies_)>() == std::size(class_factories),
                 "Arrays cookies_ and class_factories must be the same size.");
 
-  IID class_ids[] = {GetBraveWireguardServiceClsid()};
+  IID class_ids[] = {GetBraveVpnWireguardServiceClsid()};
 
   DCHECK_EQ(std::size(cookies_), std::size(class_ids));
   static_assert(std::extent<decltype(cookies_)>() == std::size(class_ids),
@@ -112,7 +112,8 @@ ServiceMain::ServiceMain()
 ServiceMain::~ServiceMain() = default;
 
 int ServiceMain::RunAsService() {
-  const std::wstring& service_name(brave_vpn::GetBraveWireguardServiceName());
+  const std::wstring& service_name(
+      brave_vpn::GetBraveVpnWireguardServiceName());
   const SERVICE_TABLE_ENTRY dispatch_table[] = {
       {const_cast<LPTSTR>(service_name.c_str()),
        &ServiceMain::ServiceMainEntry},
@@ -129,7 +130,7 @@ int ServiceMain::RunAsService() {
 
 void ServiceMain::ServiceMainImpl() {
   service_status_handle_ = ::RegisterServiceCtrlHandler(
-      brave_vpn::GetBraveWireguardServiceName().c_str(),
+      brave_vpn::GetBraveVpnWireguardServiceName().c_str(),
       &ServiceMain::ServiceControlHandler);
   if (service_status_handle_ == nullptr) {
     VLOG(1) << "RegisterServiceCtrlHandler failed";

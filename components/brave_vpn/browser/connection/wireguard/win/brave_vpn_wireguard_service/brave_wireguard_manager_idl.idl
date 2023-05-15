@@ -5,10 +5,10 @@ import "ocidl.idl";
   object,
   oleautomation,
   uuid(053057AB-CF06-4E6C-BBAD-F8DA6436D933),
-  helpstring("IBraveWireguardManager Interface"),
+  helpstring("IBraveVpnWireguardManager Interface"),
   pointer_default(unique)
 ]
-interface IBraveWireguardManager : IUnknown
+interface IBraveVpnWireguardManager : IUnknown
 {
   HRESULT EnableVpn([in, string] const WCHAR* config, [out] DWORD* last_error);
 
@@ -27,5 +27,5 @@ interface IBraveWireguardManager : IUnknown
 library BraveVpnWireguardServiceLib {
   importlib("stdole2.tlb");
 
-  interface IBraveWireguardManager;
+  interface IBraveVpnWireguardManager;
 };

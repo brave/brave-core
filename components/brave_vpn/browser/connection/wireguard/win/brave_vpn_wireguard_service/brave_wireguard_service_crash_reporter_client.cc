@@ -27,7 +27,7 @@ namespace {
 // Split into two places to avoid patching:
 // chromium_src\components\crash\core\app\crashpad.cc
 // Need keep it in sync.
-constexpr char kBraveWireguardProcessType[] = "brave-wireguard-vpn";
+constexpr char kBraveWireguardProcessType[] = "brave-wireguard";
 
 // The service starts under sytem user so we save crashes to
 // %PROGRAMDATA%\BraveSoftware\{service name}\Crashpad
@@ -38,7 +38,7 @@ base::FilePath GetBraveWireguardServiceProfileDir() {
   }
   return base::FilePath(base::UTF8ToWide(program_data))
       .Append(install_static::kCompanyPathName)
-      .Append(brave_vpn::GetBraveWireguardServiceName());
+      .Append(brave_vpn::GetBraveVpnWireguardServiceName());
 }
 
 }  // namespace
@@ -89,7 +89,7 @@ void BraveWireguardCrashReporterClient::GetProductNameAndVersion(
     std::wstring* version,
     std::wstring* special_build,
     std::wstring* channel_name) {
-  *product_name = brave_vpn::GetBraveWireguardServiceName();
+  *product_name = brave_vpn::GetBraveVpnWireguardServiceName();
   std::unique_ptr<FileVersionInfo> version_info(
       FileVersionInfo::CreateFileVersionInfo(base::FilePath(exe_path)));
   if (version_info) {
@@ -108,13 +108,13 @@ bool BraveWireguardCrashReporterClient::ShouldShowRestartDialog(
     std::wstring* title,
     std::wstring* message,
     bool* is_rtl_locale) {
-  // There is no UX associated with brave_vpn_helper, so no dialog should be
-  // shown.
+  // There is no UX associated with brave_vpn_wireguard_service, so no dialog
+  // should be shown.
   return false;
 }
 
 bool BraveWireguardCrashReporterClient::AboutToRestart() {
-  // The brave_vpn_helper should never be restarted after a crash.
+  // The brave_vpn_wireguard_service should never be restarted after a crash.
   return false;
 }
 

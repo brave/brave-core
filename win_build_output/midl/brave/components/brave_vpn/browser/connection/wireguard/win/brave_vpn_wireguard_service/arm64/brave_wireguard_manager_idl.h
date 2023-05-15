@@ -53,18 +53,18 @@
 
 /* Forward Declarations */ 
 
-#ifndef __IBraveWireguardManager_FWD_DEFINED__
-#define __IBraveWireguardManager_FWD_DEFINED__
-typedef interface IBraveWireguardManager IBraveWireguardManager;
+#ifndef __IBraveVpnWireguardManager_FWD_DEFINED__
+#define __IBraveVpnWireguardManager_FWD_DEFINED__
+typedef interface IBraveVpnWireguardManager IBraveVpnWireguardManager;
 
-#endif 	/* __IBraveWireguardManager_FWD_DEFINED__ */
+#endif 	/* __IBraveVpnWireguardManager_FWD_DEFINED__ */
 
 
-#ifndef __IBraveWireguardManager_FWD_DEFINED__
-#define __IBraveWireguardManager_FWD_DEFINED__
-typedef interface IBraveWireguardManager IBraveWireguardManager;
+#ifndef __IBraveVpnWireguardManager_FWD_DEFINED__
+#define __IBraveVpnWireguardManager_FWD_DEFINED__
+typedef interface IBraveVpnWireguardManager IBraveVpnWireguardManager;
 
-#endif 	/* __IBraveWireguardManager_FWD_DEFINED__ */
+#endif 	/* __IBraveVpnWireguardManager_FWD_DEFINED__ */
 
 
 /* header files for imported files */
@@ -76,19 +76,19 @@ extern "C"{
 #endif 
 
 
-#ifndef __IBraveWireguardManager_INTERFACE_DEFINED__
-#define __IBraveWireguardManager_INTERFACE_DEFINED__
+#ifndef __IBraveVpnWireguardManager_INTERFACE_DEFINED__
+#define __IBraveVpnWireguardManager_INTERFACE_DEFINED__
 
-/* interface IBraveWireguardManager */
+/* interface IBraveVpnWireguardManager */
 /* [unique][helpstring][uuid][oleautomation][object] */ 
 
 
-EXTERN_C const IID IID_IBraveWireguardManager;
+EXTERN_C const IID IID_IBraveVpnWireguardManager;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
     
     MIDL_INTERFACE("053057AB-CF06-4E6C-BBAD-F8DA6436D933")
-    IBraveWireguardManager : public IUnknown
+    IBraveVpnWireguardManager : public IUnknown
     {
     public:
         virtual HRESULT STDMETHODCALLTYPE EnableVpn( 
@@ -108,49 +108,49 @@ EXTERN_C const IID IID_IBraveWireguardManager;
     
 #else 	/* C style interface */
 
-    typedef struct IBraveWireguardManagerVtbl
+    typedef struct IBraveVpnWireguardManagerVtbl
     {
         BEGIN_INTERFACE
         
         DECLSPEC_XFGVIRT(IUnknown, QueryInterface)
         HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
-            IBraveWireguardManager * This,
+            IBraveVpnWireguardManager * This,
             /* [in] */ REFIID riid,
             /* [annotation][iid_is][out] */ 
             _COM_Outptr_  void **ppvObject);
         
         DECLSPEC_XFGVIRT(IUnknown, AddRef)
         ULONG ( STDMETHODCALLTYPE *AddRef )( 
-            IBraveWireguardManager * This);
+            IBraveVpnWireguardManager * This);
         
         DECLSPEC_XFGVIRT(IUnknown, Release)
         ULONG ( STDMETHODCALLTYPE *Release )( 
-            IBraveWireguardManager * This);
+            IBraveVpnWireguardManager * This);
         
-        DECLSPEC_XFGVIRT(IBraveWireguardManager, EnableVpn)
+        DECLSPEC_XFGVIRT(IBraveVpnWireguardManager, EnableVpn)
         HRESULT ( STDMETHODCALLTYPE *EnableVpn )( 
-            IBraveWireguardManager * This,
+            IBraveVpnWireguardManager * This,
             /* [string][in] */ const WCHAR *config,
             /* [out] */ DWORD *last_error);
         
-        DECLSPEC_XFGVIRT(IBraveWireguardManager, DisableVpn)
+        DECLSPEC_XFGVIRT(IBraveVpnWireguardManager, DisableVpn)
         HRESULT ( STDMETHODCALLTYPE *DisableVpn )( 
-            IBraveWireguardManager * This,
+            IBraveVpnWireguardManager * This,
             /* [out] */ DWORD *last_error);
         
-        DECLSPEC_XFGVIRT(IBraveWireguardManager, GenerateKeypair)
+        DECLSPEC_XFGVIRT(IBraveVpnWireguardManager, GenerateKeypair)
         HRESULT ( STDMETHODCALLTYPE *GenerateKeypair )( 
-            IBraveWireguardManager * This,
+            IBraveVpnWireguardManager * This,
             /* [out] */ BSTR *public_key,
             /* [out] */ BSTR *private_key,
             /* [out] */ DWORD *last_error);
         
         END_INTERFACE
-    } IBraveWireguardManagerVtbl;
+    } IBraveVpnWireguardManagerVtbl;
 
-    interface IBraveWireguardManager
+    interface IBraveVpnWireguardManager
     {
-        CONST_VTBL struct IBraveWireguardManagerVtbl *lpVtbl;
+        CONST_VTBL struct IBraveVpnWireguardManagerVtbl *lpVtbl;
     };
 
     
@@ -158,23 +158,23 @@ EXTERN_C const IID IID_IBraveWireguardManager;
 #ifdef COBJMACROS
 
 
-#define IBraveWireguardManager_QueryInterface(This,riid,ppvObject)	\
+#define IBraveVpnWireguardManager_QueryInterface(This,riid,ppvObject)	\
     ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
 
-#define IBraveWireguardManager_AddRef(This)	\
+#define IBraveVpnWireguardManager_AddRef(This)	\
     ( (This)->lpVtbl -> AddRef(This) ) 
 
-#define IBraveWireguardManager_Release(This)	\
+#define IBraveVpnWireguardManager_Release(This)	\
     ( (This)->lpVtbl -> Release(This) ) 
 
 
-#define IBraveWireguardManager_EnableVpn(This,config,last_error)	\
+#define IBraveVpnWireguardManager_EnableVpn(This,config,last_error)	\
     ( (This)->lpVtbl -> EnableVpn(This,config,last_error) ) 
 
-#define IBraveWireguardManager_DisableVpn(This,last_error)	\
+#define IBraveVpnWireguardManager_DisableVpn(This,last_error)	\
     ( (This)->lpVtbl -> DisableVpn(This,last_error) ) 
 
-#define IBraveWireguardManager_GenerateKeypair(This,public_key,private_key,last_error)	\
+#define IBraveVpnWireguardManager_GenerateKeypair(This,public_key,private_key,last_error)	\
     ( (This)->lpVtbl -> GenerateKeypair(This,public_key,private_key,last_error) ) 
 
 #endif /* COBJMACROS */
@@ -185,7 +185,7 @@ EXTERN_C const IID IID_IBraveWireguardManager;
 
 
 
-#endif 	/* __IBraveWireguardManager_INTERFACE_DEFINED__ */
+#endif 	/* __IBraveVpnWireguardManager_INTERFACE_DEFINED__ */
 
 
 
