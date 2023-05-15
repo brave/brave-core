@@ -17,16 +17,15 @@ namespace {
 std::u16string BraveCreateTitleLabel() {
   auto wallet_title =
       brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_WALLET);
-  return l10n_util::GetStringFUTF16(IDS_HID_CHOOSER_PROMPT_ORIGIN,
-                                    wallet_title);
+  return l10n_util::GetStringFUTF16(IDS_HID_CHOOSER_PROMPT, wallet_title);
 }
 
 }  // namespace
 
-#define CreateExtensionAwareChooserTitle           \
+#define CreateChooserTitle                         \
   brave_wallet::IsBraveWalletOrigin(               \
       render_frame_host->GetLastCommittedOrigin()) \
       ? BraveCreateTitleLabel()                    \
-      : CreateExtensionAwareChooserTitle
+      : CreateChooserTitle
 #include "src/chrome/browser/ui/hid/hid_chooser_controller.cc"
-#undef CreateExtensionAwareChooserTitle
+#undef CreateChooserTitle

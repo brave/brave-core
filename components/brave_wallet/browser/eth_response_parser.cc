@@ -112,7 +112,7 @@ bool ParseEthGetFeeHistory(const base::Value& json_value,
       reward->push_back(std::vector<std::string>());
       std::vector<std::string>& current_reward_vector = reward->back();
       if (!json_schema_compiler::util::PopulateArrayFromList(
-              *reward_list, &current_reward_vector)) {
+              *reward_list, current_reward_vector)) {
         return false;
       }
     }

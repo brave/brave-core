@@ -35,6 +35,10 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   // TestingBraveBrowserProcess*.
   static TestingBraveBrowserProcess* GetGlobal();
 
+  // Convenience method to both teardown and destroy the TestingBrowserProcess
+  // instance
+  static void TearDownAndDeleteInstance();
+
   TestingBraveBrowserProcess(const TestingBraveBrowserProcess&) = delete;
   TestingBraveBrowserProcess& operator=(const TestingBraveBrowserProcess&) =
       delete;
@@ -87,6 +91,9 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   void SetAdBlockService(std::unique_ptr<brave_shields::AdBlockService>);
 
  private:
+  // Perform necessary cleanup prior to destruction of |g_browser_process|
+  static void StartTearDown();
+
   // See CreateInstance() and DestroyInstance() above.
   TestingBraveBrowserProcess();
   ~TestingBraveBrowserProcess() override;

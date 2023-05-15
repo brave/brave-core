@@ -11,9 +11,6 @@
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if !BUILDFLAG(IS_ANDROID)
-    {kGetTheMostOutOfProgram, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

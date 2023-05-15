@@ -12,6 +12,7 @@
 namespace segmentation_platform::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kSegmentationPlatformDeviceTier, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSegmentationPlatformFeature, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

@@ -38,7 +38,8 @@ UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
 UntrustedLedgerUI::~UntrustedLedgerUI() = default;
 
 std::unique_ptr<content::WebUIController>
-UntrustedLedgerUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedLedgerUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                               const GURL& url) {
   return std::make_unique<UntrustedLedgerUI>(web_ui);
 }
 

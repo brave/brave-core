@@ -64,7 +64,7 @@ testing::AssertionResult VerifyTemplateURLServiceLoad(
 
 // An observer that returns back to test code after a new profile is
 // initialized.
-void OnProfileCreation(base::RunLoop* run_loop, Profile* profile) {
+void OnProfileCreation(base::RunLoop* run_loop, Browser* browser) {
   run_loop->Quit();
 }
 

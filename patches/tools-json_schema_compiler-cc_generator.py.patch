@@ -1,5 +1,5 @@
 diff --git a/tools/json_schema_compiler/cc_generator.py b/tools/json_schema_compiler/cc_generator.py
-index 3e0044f60fa7bfdf88b075f4f27ce396134cdcd8..f0c01efff35e4e0dc34b1ea20153640ed77946bc 100644
+index 02c7e48ea3f91b39972dd940d8a79cb4afe8c168..43cfced5bcc113117b89d8660aa54240e8e4c253 100644
 --- a/tools/json_schema_compiler/cc_generator.py
 +++ b/tools/json_schema_compiler/cc_generator.py
 @@ -28,6 +28,7 @@ class _Generator(object):
@@ -10,7 +10,7 @@ index 3e0044f60fa7bfdf88b075f4f27ce396134cdcd8..f0c01efff35e4e0dc34b1ea20153640e
  
    def Generate(self):
      """Generates a Code object with the .cc for a single namespace.
-@@ -338,7 +339,7 @@ class _Generator(object):
+@@ -397,7 +398,7 @@ class _Generator(object):
      c.Append('const base::Value* %(value_var)s = %(src)s.Find("%(key)s");')
      if prop.optional:
        (c.Sblock(

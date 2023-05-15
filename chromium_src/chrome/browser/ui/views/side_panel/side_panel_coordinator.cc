@@ -25,6 +25,13 @@ absl::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
 
 }  // namespace
 
+// Undef upstream's to avoid redefined error.
+#undef IDS_TOOLTIP_SIDE_PANEL_HIDE
+#undef IDS_TOOLTIP_SIDE_PANEL_SHOW
+
+#define IDS_TOOLTIP_SIDE_PANEL_HIDE IDS_TOOLTIP_SIDEBAR_HIDE
+#define IDS_TOOLTIP_SIDE_PANEL_SHOW IDS_TOOLTIP_SIDEBAR_SHOW
+
 // Brave has its own side panel navigation in the form of the SideBar, so
 // hide the Chromium combobox-style header.
 #define BRAVE_SIDE_PANEL_COORDINATOR_CREATE_HEADER header->SetVisible(false);

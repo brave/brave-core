@@ -38,10 +38,12 @@ public class BraveClassAdapter {
         chain = new BraveDropdownItemViewInfoListManagerClassAdapter(chain);
         chain = new BraveDynamicColorsClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
+        chain = new BraveExternalNavigationHandlerClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFeedSurfaceMediatorClassAdapter(chain);
         chain = new BraveFourStateCookieSettingsPreferenceBaseClassAdapter(chain);
         chain = new BraveFreIntentCreatorClassAdapter(chain);
+        chain = new BraveHelpAndFeedbackLauncherImplClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
         chain = new BraveIncognitoToggleTabLayoutClassAdapter(chain);
         chain = new BraveIntentHandlerClassAdapter(chain);

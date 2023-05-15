@@ -103,6 +103,13 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "License File": \
                 "/brave/third_party/rust/cxx/v1/crate/LICENSE-APACHE",
         },
+        os.path.join('brave', 'third_party', 'rust'): {
+            "Name": "rust-cxx",
+            "URL": "https://crates.io/crates/either",
+            "License": "MIT",
+            "License File": \
+                "/brave/third_party/rust/either/v1/crate/LICENSE-MIT",
+        },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'): {
             "Name": "zlib",
             "URL": "https://zlib.net",

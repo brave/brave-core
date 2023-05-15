@@ -48,7 +48,7 @@ path = "../../../third_party/rust/cfg_if/v1/crate"
 package = "cfg-if"
 
 [patch.crates-io.either_v1]
-path = "../../../third_party/rust/either/v1/crate"
+path = "../../third_party/rust/either/v1/crate"
 package = "either"
 
 [patch.crates-io.lazy_static_v1]

@@ -11,6 +11,8 @@
 namespace ntp_features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kNtpAlphaBackgroundCollections, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNtpChromeCartModule, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpHistoryClustersModule, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpHistoryClustersModuleLoad, base::FEATURE_DISABLED_BY_DEFAULT},
 }});

@@ -79,8 +79,8 @@
 
     if ([guid length] > 0) {
       std::u16string guid_string = base::SysNSStringToUTF16(guid);
-      DCHECK(base::IsValidGUID(guid_string));
       guid_ = base::GUID::ParseCaseInsensitive(guid_string);
+      DCHECK(guid_.is_valid());
     } else {
       guid_ = base::GUID::GenerateRandomV4();
     }
@@ -130,25 +130,25 @@
 }
 
 + (NSString*)rootNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kRootNodeGuid);
+  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kRootNodeUuid);
 }
 
 + (NSString*)bookmarkBarNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kBookmarkBarNodeGuid);
+  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kBookmarkBarNodeUuid);
 }
 
 + (NSString*)otherBookmarksNodeGuid {
   return base::SysUTF8ToNSString(
-      bookmarks::BookmarkNode::kOtherBookmarksNodeGuid);
+      bookmarks::BookmarkNode::kOtherBookmarksNodeUuid);
 }
 
 + (NSString*)mobileBookmarksNodeGuid {
   return base::SysUTF8ToNSString(
-      bookmarks::BookmarkNode::kMobileBookmarksNodeGuid);
+      bookmarks::BookmarkNode::kMobileBookmarksNodeUuid);
 }
 
 + (NSString*)managedNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kManagedNodeGuid);
+  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kManagedNodeUuid);
 }
 
 - (bool)isPermanentNode {
@@ -170,7 +170,7 @@
 
 - (NSString*)guid {
   DCHECK(node_);
-  return base::SysUTF8ToNSString(node_->guid().AsLowercaseString());
+  return base::SysUTF8ToNSString(node_->uuid().AsLowercaseString());
 }
 
 - (NSURL*)url {

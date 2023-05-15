@@ -205,11 +205,10 @@ void AIChatTabHelper::RequestSummary() {
   }
 
   // TODO(@nullhook): Add a timeout and test this on real pages
-  rfh->GetMainFrame()->RequestAXTreeSnapshot(
+  web_contents()->RequestAXTreeSnapshot(
       base::BindOnce(&AIChatTabHelper::OnSnapshotFinished,
                      base::Unretained(this)),
       ui::AXMode::kWebContents,
-      /* exclude_offscreen= */ false,
       /* max_nodes= */ 5000,
       /* timeout= */ {});
 }

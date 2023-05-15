@@ -4,6 +4,7 @@
 ../../build/android/gyp/util/build_utils.py
 ../../build/android/gyp/util/resource_utils.py
 ../../build/gn_helpers.py
+../../build/zip_helpers.py
 ../../third_party/jinja2/__init__.py
 ../../third_party/jinja2/_identifier.py
 ../../third_party/jinja2/async_utils.py

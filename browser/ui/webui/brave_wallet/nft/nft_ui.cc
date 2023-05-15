@@ -68,7 +68,8 @@ UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
 UntrustedNftUI::~UntrustedNftUI() = default;
 
 std::unique_ptr<content::WebUIController>
-UntrustedNftUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedNftUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                            const GURL& url) {
   return std::make_unique<UntrustedNftUI>(web_ui);
 }
 

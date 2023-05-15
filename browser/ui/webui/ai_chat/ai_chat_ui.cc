@@ -85,7 +85,8 @@ void AIChatUI::BindInterface(
 }
 
 std::unique_ptr<content::WebUIController>
-UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                             const GURL& url) {
   return std::make_unique<AIChatUI>(web_ui);
 }
 

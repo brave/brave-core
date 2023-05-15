@@ -14,7 +14,7 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
  public:
   METADATA_HEADER(BraveCompoundTabContainer);
 
-  BraveCompoundTabContainer(raw_ref<TabContainerController> controller,
+  BraveCompoundTabContainer(TabContainerController& controller,
                             TabHoverCardController* hover_card_controller,
                             TabDragContextBase* drag_context,
                             TabSlotController& tab_slot_controller,

@@ -416,12 +416,9 @@ class DownloadDisplayControllerTest : public testing::Test {
     controller().OnNewItem(/*show_animation=*/false);
   }
 
-  void UpdateOfflineItem(int item_index,
-                         OfflineItemState state,
-                         bool is_pending_deep_scanning) {
+  void UpdateOfflineItem(int item_index, OfflineItemState state) {
     offline_items_[item_index].state = state;
     controller().OnUpdatedItem(state == OfflineItemState::COMPLETE,
-                               is_pending_deep_scanning,
                                /*may_show_details=*/true);
   }
 
@@ -443,10 +440,8 @@ class DownloadDisplayControllerTest : public testing::Test {
     } else {
       EXPECT_CALL(item(item_index), IsDone()).WillRepeatedly(Return(false));
     }
-    controller().OnUpdatedItem(
-        state == DownloadState::COMPLETE,
-        danger_type == download::DOWNLOAD_DANGER_TYPE_PROMPT_FOR_SCANNING,
-        may_show_details);
+    controller().OnUpdatedItem(state == DownloadState::COMPLETE,
+                               may_show_details);
   }
 
   void OnRemovedItem(const std::string& id) {
