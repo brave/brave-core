@@ -217,10 +217,12 @@ export const FundWalletScreen = () => {
 
   // effects
   React.useEffect(() => {
+    if (buyAssetNetworks.length === 0) return
+
     if (assetsForFilteredNetwork.length === 0) {
       getAllBuyOptionsAllChains()
     }
-  }, [assetsForFilteredNetwork.length])
+  }, [assetsForFilteredNetwork.length, buyAssetNetworks.length])
 
   React.useEffect(() => {
     // unselect asset if  AllNetworksOption is not selected
