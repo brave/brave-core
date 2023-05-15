@@ -52,13 +52,10 @@ class PromotedContentAdEventHandler final
       bool success,
       const std::string& creative_instance_id,
       const CreativePromotedContentAdInfo& creative_ad);
-
-  void FireEvent(const PromotedContentAdInfo& ad,
-                 mojom::PromotedContentAdEventType event_type);
-  void GetAdEventsCallback(const PromotedContentAdInfo& ad,
-                           mojom::PromotedContentAdEventType event_type,
-                           bool success,
-                           const AdEventList& ad_events);
+  void GetForTypeCallback(const PromotedContentAdInfo& ad,
+                          mojom::PromotedContentAdEventType event_type,
+                          bool success,
+                          const AdEventList& ad_events);
 
   void SuccessfullyFiredEvent(
       const PromotedContentAdInfo& ad,

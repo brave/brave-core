@@ -138,7 +138,7 @@ CreativeAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(
+void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetCreativeAdCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
@@ -228,7 +228,7 @@ void CreativeAds::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
                      std::move(callback)));
 }
 

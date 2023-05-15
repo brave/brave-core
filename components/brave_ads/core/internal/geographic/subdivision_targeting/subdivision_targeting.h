@@ -60,6 +60,8 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
   void Fetch();
   void FetchCallback(const mojom::UrlResponseInfo& url_response);
   void Retry();
+  void RetryCallback();
+  void StopRetrying();
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;

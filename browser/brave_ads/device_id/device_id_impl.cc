@@ -37,7 +37,8 @@ bool ComputeHmacSha256(const std::string& key,
   return result;
 }
 
-void OnGetRawDeviceId(DeviceIdCallback callback, std::string raw_device_id) {
+void GetRawDeviceIdCallback(DeviceIdCallback callback,
+                            std::string raw_device_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (raw_device_id.empty()) {
@@ -181,7 +182,7 @@ void DeviceIdImpl::GetDeviceId(DeviceIdCallback callback) {
 
   // Forward call to platform specific implementation, then compute the HMAC
   // in the callback.
-  GetRawDeviceId(base::BindOnce(&OnGetRawDeviceId, std::move(callback)));
+  GetRawDeviceId(base::BindOnce(&GetRawDeviceIdCallback, std::move(callback)));
 }
 
 // static

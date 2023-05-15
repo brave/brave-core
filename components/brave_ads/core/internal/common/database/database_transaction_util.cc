@@ -15,8 +15,8 @@ namespace brave_ads::database {
 
 namespace {
 
-void OnRunTransaction(ResultCallback callback,
-                      mojom::DBCommandResponseInfoPtr command_response) {
+void RunTransactionCallback(ResultCallback callback,
+                            mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -30,11 +30,9 @@ void OnRunTransaction(ResultCallback callback,
 
 void RunTransaction(mojom::DBTransactionInfoPtr transaction,
                     ResultCallback callback) {
-  CHECK(transaction);
-
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnRunTransaction, std::move(callback)));
+      base::BindOnce(&RunTransactionCallback, std::move(callback)));
 }
 
 }  // namespace brave_ads::database

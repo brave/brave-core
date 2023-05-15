@@ -126,14 +126,14 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   NotifyWillMigrateDatabase(from_version, to_version);
 
   database::MigrateFromVersion(
-      from_version, base::BindOnce(&DatabaseManager::MigrateCallback,
+      from_version, base::BindOnce(&DatabaseManager::MigrateFromVersionCallback,
                                    weak_factory_.GetWeakPtr(), from_version,
                                    std::move(callback)));
 }
 
-void DatabaseManager::MigrateCallback(const int from_version,
-                                      ResultCallback callback,
-                                      const bool success) const {
+void DatabaseManager::MigrateFromVersionCallback(const int from_version,
+                                                 ResultCallback callback,
+                                                 const bool success) const {
   const int to_version = database::kVersion;
 
   if (!success) {

@@ -31,12 +31,12 @@ namespace {
 
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
-constexpr base::TimeDelta kExpiredNextTokenRedemptionAfter = base::Minutes(1);
+constexpr base::TimeDelta kExpiredNextRedemptionAfter = base::Minutes(1);
 
-constexpr base::TimeDelta kNextTokenRedemptionAfter = base::Days(1);
-constexpr base::TimeDelta kDebugNextTokenRedemptionAfter = base::Minutes(25);
+constexpr base::TimeDelta kNextRedemptionAfter = base::Days(1);
+constexpr base::TimeDelta kDebugNextRedemptionAfter = base::Minutes(25);
 
-base::TimeDelta CalculateTokenRedemptionDelay() {
+base::TimeDelta CalculateRedemptionDelay() {
   const base::Time next_token_redemption_at =
       AdsClientHelper::GetInstance()->GetTimePref(
           prefs::kNextTokenRedemptionAt);
@@ -45,16 +45,16 @@ base::TimeDelta CalculateTokenRedemptionDelay() {
 
   if (now >= next_token_redemption_at) {
     // Browser was launched after the next token redemption date
-    return kExpiredNextTokenRedemptionAfter;
+    return kExpiredNextRedemptionAfter;
   }
 
   return next_token_redemption_at - now;
 }
 
-base::Time CalculateNextTokenRedemptionDate() {
+base::Time CalculateNextRedemptionDate() {
   return base::Time::Now() + RandTimeDelta(ShouldDebug()
-                                               ? kDebugNextTokenRedemptionAfter
-                                               : kNextTokenRedemptionAfter);
+                                               ? kDebugNextRedemptionAfter
+                                               : kNextRedemptionAfter);
 }
 
 }  // namespace
@@ -73,18 +73,17 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
 
   if (!wallet.IsValid()) {
     BLOG(0, "Failed to redeem unblinded payment tokens due to invalid wallet");
-    return FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ false);
+    return FailedToRedeem(/*should_retry*/ false);
   }
 
   wallet_ = wallet;
 
   const base::Time redeem_at =
-      timer_.Start(FROM_HERE, CalculateTokenRedemptionDelay(),
+      timer_.Start(FROM_HERE, CalculateRedemptionDelay(),
                    base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
                                   base::Unretained(this)));
 
-  BLOG(1, "Redeem unblinded payment tokens "
-              << FriendlyDateAndTime(redeem_at, /*use_sentence_style*/ true));
+  BLOG(1, "Redeem unblinded payment tokens " << FriendlyDateAndTime(redeem_at));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,7 +95,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 
   if (privacy::UnblindedPaymentTokensIsEmpty()) {
     BLOG(1, "No unblinded payment tokens to redeem");
-    return ScheduleNextTokenRedemption();
+    return ScheduleNextRedemption();
   }
 
   BLOG(2, "PUT /v3/confirmation/payment/{paymentId}");
@@ -109,14 +108,12 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
   user_data_builder.Build(
-      base::BindOnce(&RedeemUnblindedPaymentTokens::
-                         RedeemUnblindedPaymentTokensUserDataBuiltCallback,
+      base::BindOnce(&RedeemUnblindedPaymentTokens::BuildUserDataCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RedeemUnblindedPaymentTokens::
-    RedeemUnblindedPaymentTokensUserDataBuiltCallback(
-        base::Value::Dict user_data) {
+void RedeemUnblindedPaymentTokens::BuildUserDataCallback(
+    base::Value::Dict user_data) {
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetAllUnblindedPaymentTokens();
 
@@ -141,19 +138,19 @@ void RedeemUnblindedPaymentTokens::RedeemCallback(
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code != net::HTTP_OK) {
-    return FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ true);
+    return FailedToRedeem(/*should_retry*/ true);
   }
 
-  SuccessfullyRedeemedUnblindedPaymentTokens(unblinded_payment_tokens);
+  SuccessfullyRedeemed(unblinded_payment_tokens);
 }
 
-void RedeemUnblindedPaymentTokens::SuccessfullyRedeemedUnblindedPaymentTokens(
+void RedeemUnblindedPaymentTokens::SuccessfullyRedeemed(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
   BLOG(1, "Successfully redeemed unblinded payment tokens");
 
   is_processing_ = false;
 
-  retry_timer_.Stop();
+  StopRetrying();
 
   privacy::RemoveUnblindedPaymentTokens(unblinded_payment_tokens);
 
@@ -161,11 +158,10 @@ void RedeemUnblindedPaymentTokens::SuccessfullyRedeemedUnblindedPaymentTokens(
     delegate_->OnDidRedeemUnblindedPaymentTokens(unblinded_payment_tokens);
   }
 
-  ScheduleNextTokenRedemption();
+  ScheduleNextRedemption();
 }
 
-void RedeemUnblindedPaymentTokens::FailedToRedeemUnblindedPaymentTokens(
-    const bool should_retry) {
+void RedeemUnblindedPaymentTokens::FailedToRedeem(const bool should_retry) {
   BLOG(1, "Failed to redeem unblinded payment tokens");
 
   if (delegate_) {
@@ -177,14 +173,14 @@ void RedeemUnblindedPaymentTokens::FailedToRedeemUnblindedPaymentTokens(
   }
 }
 
-void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
-  const base::Time redeem_at = CalculateNextTokenRedemptionDate();
+void RedeemUnblindedPaymentTokens::ScheduleNextRedemption() {
+  const base::Time redeem_at = CalculateNextRedemptionDate();
 
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
                                               redeem_at);
 
   if (delegate_) {
-    delegate_->OnDidScheduleNextUnblindedPaymentTokensRedemption(redeem_at);
+    delegate_->OnDidScheduleNextUnblindedPaymentTokenRedemption(redeem_at);
   }
 
   MaybeRedeemAfterDelay(wallet_);
@@ -197,7 +193,7 @@ void RedeemUnblindedPaymentTokens::Retry() {
                      weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry redeeming unblinded payment tokens "
-              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
+              << FriendlyDateAndTime(retry_at));
 
   if (delegate_) {
     delegate_->OnWillRetryRedeemingUnblindedPaymentTokens(retry_at);
@@ -214,6 +210,10 @@ void RedeemUnblindedPaymentTokens::RetryCallback() {
   is_processing_ = false;
 
   Redeem();
+}
+
+void RedeemUnblindedPaymentTokens::StopRetrying() {
+  retry_timer_.Stop();
 }
 
 }  // namespace brave_ads

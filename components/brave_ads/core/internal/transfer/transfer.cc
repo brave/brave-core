@@ -72,10 +72,8 @@ void Transfer::TransferAd(const int32_t tab_id,
       base::BindOnce(&Transfer::TransferAdCallback, base::Unretained(this),
                      tab_id, redirect_chain));
 
-  BLOG(1, "Transfer ad for "
-              << last_clicked_ad_.target_url << " "
-              << FriendlyDateAndTime(transfer_ad_at,
-                                     /*use_sentence_style*/ true));
+  BLOG(1, "Transfer ad for " << last_clicked_ad_.target_url << " "
+                             << FriendlyDateAndTime(transfer_ad_at));
 
   NotifyWillTransferAd(last_clicked_ad_, transfer_ad_at);
 }

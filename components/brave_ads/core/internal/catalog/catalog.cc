@@ -131,7 +131,7 @@ void Catalog::FetchCallback(const mojom::UrlResponseInfo& url_response) {
 }
 
 void Catalog::FetchAfterDelay() {
-  retry_timer_.Stop();
+  StopRetrying();
 
   const base::TimeDelta delay =
       ShouldDebug() ? kDebugCatalogPing : GetCatalogPing();
@@ -140,8 +140,7 @@ void Catalog::FetchAfterDelay() {
       FROM_HERE, delay,
       base::BindOnce(&Catalog::Fetch, weak_factory_.GetWeakPtr()));
 
-  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at,
-                                                  /*use_sentence_style*/ true));
+  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at));
 }
 
 void Catalog::Retry() {
@@ -149,14 +148,17 @@ void Catalog::Retry() {
       FROM_HERE, kRetryAfter,
       base::BindOnce(&Catalog::RetryCallback, weak_factory_.GetWeakPtr()));
 
-  BLOG(1, "Retry fetching catalog "
-              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
+  BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(retry_at));
 }
 
 void Catalog::RetryCallback() {
   BLOG(1, "Retry fetching catalog");
 
   Fetch();
+}
+
+void Catalog::StopRetrying() {
+  retry_timer_.Stop();
 }
 
 void Catalog::NotifyDidUpdateCatalog(const CatalogInfo& catalog) const {

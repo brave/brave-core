@@ -29,10 +29,6 @@ void PurgeStaleTextEmbeddingHtmlEvents(
 
 void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback);
-void OnGetTextEmbeddingHtmlEventsFromDatabase(
-    database::table::GetTextEmbeddingHtmlEventsCallback callback,
-    bool success,
-    const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
 }  // namespace brave_ads
 

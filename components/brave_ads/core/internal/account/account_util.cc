@@ -21,7 +21,6 @@ bool ShouldRewardUser() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
 }
 
-// TODO(tmancey): Foo
 void ResetRewards(ResetRewardsCallback callback) {
   RemoveAllTransactions(base::BindOnce(
       [](ResetRewardsCallback callback, const bool success) {

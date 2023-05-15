@@ -87,8 +87,8 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return ad_event;
 }
 
-void OnGetAdEvents(GetAdEventsCallback callback,
-                   mojom::DBCommandResponseInfoPtr command_response) {
+void GetCallback(GetAdEventsCallback callback,
+                 mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -234,7 +234,7 @@ void AdEvents::GetIf(const std::string& condition,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetAdEvents, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::GetAll(GetAdEventsCallback callback) const {
@@ -251,7 +251,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetAdEvents, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
@@ -272,7 +272,7 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetAdEvents, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) const {

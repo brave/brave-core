@@ -194,10 +194,10 @@ void UnitTestBase::Initialize() {
 
   global_state_->Flags() = *BuildFlags();
 
-  global_state_->GetClientStateManager().Initialize(
+  global_state_->GetClientStateManager().Load(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  global_state_->GetConfirmationStateManager().Initialize(
+  global_state_->GetConfirmationStateManager().Load(
       GetWalletForTesting(),  // IN-TEST
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 

@@ -138,8 +138,9 @@ class AdsImpl final : public Ads,
   void CreateOrOpenDatabaseCallback(InitializeCallback callback, bool success);
   void PurgeExpiredAdEventsCallback(InitializeCallback callback, bool success);
   void PurgeOrphanedAdEventsCallback(InitializeCallback callback, bool success);
-  void MigrateConversionsCallback(InitializeCallback callback, bool success);
-  void MigrateRewardsCallback(InitializeCallback callback, bool success);
+  void MigrateConversionStateCallback(InitializeCallback callback,
+                                      bool success);
+  void MigrateRewardsStateCallback(InitializeCallback callback, bool success);
   void MigrateClientStateCallback(InitializeCallback callback, bool success);
   void LoadClientStateCallback(InitializeCallback callback, bool success);
   void MigrateConfirmationStateCallback(InitializeCallback callback,

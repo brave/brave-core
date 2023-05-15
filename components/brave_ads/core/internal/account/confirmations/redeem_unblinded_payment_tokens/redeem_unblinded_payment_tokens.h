@@ -43,20 +43,20 @@ class RedeemUnblindedPaymentTokens final {
 
  private:
   void Redeem();
-  void RedeemUnblindedPaymentTokensUserDataBuiltCallback(
-      base::Value::Dict user_data);
+  void BuildUserDataCallback(base::Value::Dict user_data);
   void RedeemCallback(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
       const mojom::UrlResponseInfo& url_response);
 
-  void SuccessfullyRedeemedUnblindedPaymentTokens(
+  void SuccessfullyRedeemed(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
-  void FailedToRedeemUnblindedPaymentTokens(bool should_retry);
+  void FailedToRedeem(bool should_retry);
 
-  void ScheduleNextTokenRedemption();
+  void ScheduleNextRedemption();
 
   void Retry();
   void RetryCallback();
+  void StopRetrying();
 
   raw_ptr<RedeemUnblindedPaymentTokensDelegate> delegate_ = nullptr;
 

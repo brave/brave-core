@@ -46,7 +46,7 @@ class Issuers {
 
   void FetchAfterDelay();
 
-  void RetryAfterDelay();
+  void Retry();
   void RetryCallback();
   void StopRetrying();
 

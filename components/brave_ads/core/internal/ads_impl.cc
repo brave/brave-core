@@ -354,24 +354,24 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(InitializeCallback callback,
 
   RebuildAdEventHistoryFromDatabase();
 
-  conversions::Migrate(base::BindOnce(&AdsImpl::MigrateConversionsCallback,
+  conversions::Migrate(base::BindOnce(&AdsImpl::MigrateConversionStateCallback,
                                       weak_factory_.GetWeakPtr(),
                                       std::move(callback)));
 }
 
-void AdsImpl::MigrateConversionsCallback(InitializeCallback callback,
-                                         const bool success) {
+void AdsImpl::MigrateConversionStateCallback(InitializeCallback callback,
+                                             const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
-  rewards::Migrate(base::BindOnce(&AdsImpl::MigrateRewardsCallback,
+  rewards::Migrate(base::BindOnce(&AdsImpl::MigrateRewardsStateCallback,
                                   weak_factory_.GetWeakPtr(),
                                   std::move(callback)));
 }
 
-void AdsImpl::MigrateRewardsCallback(InitializeCallback callback,
-                                     const bool success) {
+void AdsImpl::MigrateRewardsStateCallback(InitializeCallback callback,
+                                          const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
@@ -387,7 +387,7 @@ void AdsImpl::MigrateClientStateCallback(InitializeCallback callback,
     return FailedToInitialize(std::move(callback));
   }
 
-  ClientStateManager::GetInstance().Initialize(
+  ClientStateManager::GetInstance().Load(
       base::BindOnce(&AdsImpl::LoadClientStateCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -409,7 +409,7 @@ void AdsImpl::MigrateConfirmationStateCallback(InitializeCallback callback,
     return FailedToInitialize(std::move(callback));
   }
 
-  ConfirmationStateManager::GetInstance().Initialize(
+  ConfirmationStateManager::GetInstance().Load(
       account_.GetWallet(),
       base::BindOnce(&AdsImpl::LoadConfirmationStateCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));

@@ -110,7 +110,7 @@ void Issuers::FailedToFetchIssuers(const bool should_retry) {
   }
 
   if (should_retry) {
-    RetryAfterDelay();
+    Retry();
   }
 }
 
@@ -121,19 +121,17 @@ void Issuers::FetchAfterDelay() {
       FROM_HERE, GetFetchDelay(),
       base::BindOnce(&Issuers::Fetch, weak_factory_.GetWeakPtr()));
 
-  BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at,
-                                                  /*use_sentence_style*/ true));
+  BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at));
 }
 
-void Issuers::RetryAfterDelay() {
+void Issuers::Retry() {
   CHECK(!timer_.IsRunning());
 
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
       base::BindOnce(&Issuers::RetryCallback, weak_factory_.GetWeakPtr()));
 
-  BLOG(1, "Retry fetching issuers "
-              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
+  BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(retry_at));
 
   if (delegate_) {
     delegate_->OnWillRetryFetchingIssuers(retry_at);

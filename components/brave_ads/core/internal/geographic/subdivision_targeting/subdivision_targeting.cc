@@ -215,8 +215,7 @@ void SubdivisionTargeting::FetchAfterDelay() {
       FROM_HERE, ShouldDebug() ? kDebugFetchAfter : kFetchAfter,
       base::BindOnce(&SubdivisionTargeting::Fetch, weak_factory_.GetWeakPtr()));
 
-  BLOG(1, "Fetch subdivision target "
-              << FriendlyDateAndTime(fetch_at, /*use_sentence_style*/ true));
+  BLOG(1, "Fetch subdivision target " << FriendlyDateAndTime(fetch_at));
 }
 
 void SubdivisionTargeting::Fetch() {
@@ -254,7 +253,7 @@ void SubdivisionTargeting::FetchCallback(
     return Retry();
   }
 
-  retry_timer_.Stop();
+  StopRetrying();
 
   SetAutoDetectedSubdivisionCode(*subdivision_code);
 
@@ -266,10 +265,21 @@ void SubdivisionTargeting::FetchCallback(
 void SubdivisionTargeting::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&SubdivisionTargeting::Fetch, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&SubdivisionTargeting::RetryCallback,
+                     weak_factory_.GetWeakPtr()));
 
-  BLOG(1, "Retry fetching subdivision target "
-              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
+  BLOG(1,
+       "Retry fetching subdivision target " << FriendlyDateAndTime(retry_at));
+}
+
+void SubdivisionTargeting::RetryCallback() {
+  BLOG(1, "Retry fetching subdivision target");
+
+  Fetch();
+}
+
+void SubdivisionTargeting::StopRetrying() {
+  retry_timer_.Stop();
 }
 
 void SubdivisionTargeting::OnNotifyLocaleDidChange(const std::string& locale) {

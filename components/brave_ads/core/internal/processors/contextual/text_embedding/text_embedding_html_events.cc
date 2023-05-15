@@ -16,6 +16,21 @@
 
 namespace brave_ads {
 
+namespace {
+
+void GetTextEmbeddingHtmlEventsFromDatabaseCallback(
+    database::table::GetTextEmbeddingHtmlEventsCallback callback,
+    const bool success,
+    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+  if (!success) {
+    BLOG(1, "Failed to get text embedding HTML events");
+  }
+
+  std::move(callback).Run(success, text_embedding_html_events);
+}
+
+}  // namespace
+
 TextEmbeddingHtmlEventInfo BuildTextEmbeddingHtmlEvent(
     const ml::pipeline::TextEmbeddingInfo& text_embedding) {
   TextEmbeddingHtmlEventInfo text_embedding_html_event;
@@ -56,19 +71,7 @@ void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback) {
   const database::table::TextEmbeddingHtmlEvents database_table;
   database_table.GetAll(base::BindOnce(
-      &OnGetTextEmbeddingHtmlEventsFromDatabase, std::move(callback)));
-}
-
-void OnGetTextEmbeddingHtmlEventsFromDatabase(
-    database::table::GetTextEmbeddingHtmlEventsCallback callback,
-    const bool success,
-    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-  if (!success) {
-    BLOG(1, "Failed to get text embedding HTML events");
-    return std::move(callback).Run(success,
-                                   /*text_embedding_html_events*/ {});
-  }
-  std::move(callback).Run(success, text_embedding_html_events);
+      &GetTextEmbeddingHtmlEventsFromDatabaseCallback, std::move(callback)));
 }
 
 }  // namespace brave_ads

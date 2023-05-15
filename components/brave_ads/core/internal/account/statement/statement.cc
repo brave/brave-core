@@ -22,7 +22,6 @@ void BuildStatement(BuildStatementCallback callback) {
   const base::Time from_time = GetTimeInDistantPast();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
-  // TODO(tmancey): Foo
   GetTransactionsForDateRange(
       from_time, to_time,
       base::BindOnce(

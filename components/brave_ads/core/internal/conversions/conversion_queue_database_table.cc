@@ -93,8 +93,8 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return conversion_queue_item;
 }
 
-void OnGetAll(GetConversionQueueCallback callback,
-              mojom::DBCommandResponseInfoPtr command_response) {
+void GetCallback(GetConversionQueueCallback callback,
+                 mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -114,7 +114,7 @@ void OnGetAll(GetConversionQueueCallback callback,
   std::move(callback).Run(/*success*/ true, conversion_queue_items);
 }
 
-void OnGetForCreativeInstanceId(
+void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetConversionQueueForCreativeInstanceIdCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
@@ -370,7 +370,8 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAll, std::move(callback)));
+      std::move(transaction),
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void ConversionQueue::GetUnprocessed(
@@ -389,7 +390,8 @@ void ConversionQueue::GetUnprocessed(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAll, std::move(callback)));
+      std::move(transaction),
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void ConversionQueue::GetForCreativeInstanceId(
@@ -415,7 +417,7 @@ void ConversionQueue::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
                      std::move(callback)));
 }
 

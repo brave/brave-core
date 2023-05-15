@@ -80,8 +80,8 @@ ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return conversion;
 }
 
-void OnGetConversions(GetConversionsCallback callback,
-                      mojom::DBCommandResponseInfoPtr command_response) {
+void GetCallback(GetConversionsCallback callback,
+                 mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -190,7 +190,7 @@ void Conversions::GetAll(GetConversionsCallback callback) const {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetConversions, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void Conversions::PurgeExpired(ResultCallback callback) const {

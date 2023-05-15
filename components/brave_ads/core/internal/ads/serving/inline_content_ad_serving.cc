@@ -61,6 +61,8 @@ void InlineContentAdServing::MaybeServeAd(
                                 std::move(callback)));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void InlineContentAdServing::BuildUserModelCallback(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
@@ -72,8 +74,6 @@ void InlineContentAdServing::BuildUserModelCallback(
                      weak_factory_.GetWeakPtr(), user_model, dimensions,
                      std::move(callback)));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void InlineContentAdServing::GetForUserModelCallback(
     const UserModelInfo& user_model,

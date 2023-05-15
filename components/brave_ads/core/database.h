@@ -54,7 +54,7 @@ class ADS_EXPORT Database final {
 
   void ErrorCallback(int error, sql::Statement* statement);
 
-  void MemoryPressureCallback(
+  void MemoryPressureListenerCallback(
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   base::FilePath db_path_;

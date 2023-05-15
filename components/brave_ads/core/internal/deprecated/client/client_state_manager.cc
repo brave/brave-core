@@ -79,15 +79,6 @@ bool IsMutated(const std::string& value) {
          GenerateHash(value);
 }
 
-void OnSaved(const bool success) {
-  if (!success) {
-    BLOG(0, "Failed to save client state");
-    return;
-  }
-
-  BLOG(9, "Successfully saved client state");
-}
-
 }  // namespace
 
 ClientStateManager::ClientStateManager() = default;
@@ -118,8 +109,13 @@ const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
   return client_.ad_preferences.flagged_ads;
 }
 
-void ClientStateManager::Initialize(InitializeCallback callback) {
-  Load(std::move(callback));
+void ClientStateManager::Load(InitializeCallback callback) {
+  BLOG(3, "Loading client state");
+
+  AdsClientHelper::GetInstance()->Load(
+      kClientStateFilename,
+      base::BindOnce(&ClientStateManager::LoadCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
@@ -501,22 +497,18 @@ void ClientStateManager::Save() {
     SetHash(json);
   }
 
-  AdsClientHelper::GetInstance()->Save(kClientStateFilename, json,
-                                       base::BindOnce(&OnSaved));
+  AdsClientHelper::GetInstance()->Save(
+      kClientStateFilename, json, base::BindOnce([](const bool success) {
+        if (!success) {
+          return BLOG(0, "Failed to save client state");
+        }
+
+        BLOG(9, "Successfully saved client state");
+      }));
 }
 
-void ClientStateManager::Load(InitializeCallback callback) {
-  BLOG(3, "Loading client state");
-
-  AdsClientHelper::GetInstance()->Load(
-      kClientStateFilename,
-      base::BindOnce(&ClientStateManager::LoadedCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void ClientStateManager::LoadedCallback(
-    InitializeCallback callback,
-    const absl::optional<std::string>& json) {
+void ClientStateManager::LoadCallback(InitializeCallback callback,
+                                      const absl::optional<std::string>& json) {
   if (!json) {
     BLOG(3, "Client state does not exist, creating default state");
 

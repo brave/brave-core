@@ -54,7 +54,7 @@ base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
 }
 
 template <typename T>
-void ReadFileAndParseResource(LoadAndParseResourceCallback<T> callback,
+void LoadFileResourceCallback(LoadAndParseResourceCallback<T> callback,
                               base::File file) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
@@ -69,7 +69,7 @@ void LoadAndParseResource(const std::string& id,
                           LoadAndParseResourceCallback<T> callback) {
   AdsClientHelper::GetInstance()->LoadFileResource(
       id, version,
-      base::BindOnce(&ReadFileAndParseResource<T>, std::move(callback)));
+      base::BindOnce(&LoadFileResourceCallback<T>, std::move(callback)));
 }
 
 }  // namespace brave_ads

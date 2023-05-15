@@ -40,9 +40,9 @@ class DatabaseManager final {
   void CreateCallback(ResultCallback callback, bool success) const;
 
   void MaybeMigrate(int from_version, ResultCallback callback) const;
-  void MigrateCallback(int from_version,
-                       ResultCallback callback,
-                       bool success) const;
+  void MigrateFromVersionCallback(int from_version,
+                                  ResultCallback callback,
+                                  bool success) const;
 
   void NotifyWillCreateOrOpenDatabase() const;
   void NotifyDidCreateOrOpenDatabase() const;

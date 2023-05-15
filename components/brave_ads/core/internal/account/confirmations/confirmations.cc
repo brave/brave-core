@@ -108,8 +108,8 @@ void Confirmations::Retry() {
       base::BindOnce(&Confirmations::RetryCallback,
                      weak_factory_.GetWeakPtr()));
 
-  BLOG(1, "Retry sending failed confirmations "
-              << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
+  BLOG(1,
+       "Retry sending failed confirmations " << FriendlyDateAndTime(retry_at));
 }
 
 void Confirmations::RetryCallback() {
@@ -126,7 +126,7 @@ void Confirmations::RetryCallback() {
     return RecreateOptedInDynamicUserDataAndRedeem(confirmation_copy);
   }
 
-  return Redeem(confirmation_copy);
+  Redeem(confirmation_copy);
 }
 
 void Confirmations::StopRetrying() {
@@ -225,8 +225,7 @@ void Confirmations::OnDidRedeemOptedInConfirmation(
 
   BLOG(1, "You have " << privacy::UnblindedPaymentTokenCount()
                       << " unblinded payment tokens which will be redeemed "
-                      << FriendlyDateAndTime(next_token_redemption_at,
-                                             /*use_sentence_style*/ true));
+                      << FriendlyDateAndTime(next_token_redemption_at));
 
   if (delegate_) {
     delegate_->OnDidConfirm(confirmation);

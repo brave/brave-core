@@ -112,7 +112,8 @@ NotificationAdPopup::~NotificationAdPopup() {
 }
 
 // static
-void NotificationAdPopup::SetDisableFadeInAnimationForTesting(bool disable) {
+void NotificationAdPopup::SetDisableFadeInAnimationForTesting(
+    const bool disable) {
   g_disable_fade_in_animation_for_testing = disable;
 }
 

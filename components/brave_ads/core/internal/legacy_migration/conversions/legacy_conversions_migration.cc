@@ -116,8 +116,8 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
   return GetFromList(*list);
 }
 
-void OnMigrate(InitializeCallback callback,
-               const absl::optional<std::string>& json) {
+void MigrateCallback(InitializeCallback callback,
+                     const absl::optional<std::string>& json) {
   if (!json) {
     // Conversion state does not exist
     return SuccessfullyMigrated(std::move(callback));
@@ -156,7 +156,7 @@ void Migrate(InitializeCallback callback) {
   }
 
   AdsClientHelper::GetInstance()->Load(
-      kFilename, base::BindOnce(&OnMigrate, std::move(callback)));
+      kFilename, base::BindOnce(&MigrateCallback, std::move(callback)));
 }
 
 }  // namespace brave_ads::conversions

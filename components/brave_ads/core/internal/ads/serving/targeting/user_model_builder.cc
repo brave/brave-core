@@ -24,7 +24,7 @@ namespace brave_ads {
 
 namespace {
 
-void OnGetTextEmbeddingHtmlEvents(
+void GetTextEmbeddingHtmlEventsCallback(
     UserModelInfo user_model,
     BuildUserModelCallback callback,
     const bool success,
@@ -62,7 +62,7 @@ void BuildUserModel(BuildUserModelCallback callback) {
 
   if (IsTextEmbeddingFeatureEnabled()) {
     GetTextEmbeddingHtmlEventsFromDatabase(base::BindOnce(
-        &OnGetTextEmbeddingHtmlEvents, user_model, std::move(callback)));
+        &GetTextEmbeddingHtmlEventsCallback, user_model, std::move(callback)));
   } else {
     std::move(callback).Run(user_model);
   }

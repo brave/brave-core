@@ -59,6 +59,8 @@ void NewTabPageAdServing::MaybeServeAd(
                                 std::move(callback)));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void NewTabPageAdServing::BuildUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,
     const UserModelInfo& user_model) {
@@ -68,8 +70,6 @@ void NewTabPageAdServing::BuildUserModelCallback(
                                  weak_factory_.GetWeakPtr(),
                                  std::move(callback), user_model));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void NewTabPageAdServing::GetForUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,

@@ -42,7 +42,8 @@ class ClientStateManager final {
 
   static ClientStateManager& GetInstance();
 
-  void Initialize(InitializeCallback callback);
+  void Load(InitializeCallback callback);
+
   const FilteredAdvertiserList& GetFilteredAdvertisers() const;
   const FilteredCategoryList& GetFilteredCategories() const;
   const FlaggedAdList& GetFlaggedAds() const;
@@ -94,9 +95,8 @@ class ClientStateManager final {
  private:
   void Save();
 
-  void Load(InitializeCallback callback);
-  void LoadedCallback(InitializeCallback callback,
-                      const absl::optional<std::string>& json);
+  void LoadCallback(InitializeCallback callback,
+                    const absl::optional<std::string>& json);
 
   bool FromJson(const std::string& json);
 

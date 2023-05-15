@@ -176,7 +176,7 @@ CreativePromotedContentAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(
+void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetCreativePromotedContentAdCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
@@ -202,9 +202,9 @@ void OnGetForCreativeInstanceId(
   std::move(callback).Run(/*success*/ true, creative_instance_id, creative_ad);
 }
 
-void OnGetForSegments(const SegmentList& segments,
-                      GetCreativePromotedContentAdsCallback callback,
-                      mojom::DBCommandResponseInfoPtr command_response) {
+void GetForSegmentsCallback(const SegmentList& segments,
+                            GetCreativePromotedContentAdsCallback callback,
+                            mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -219,8 +219,8 @@ void OnGetForSegments(const SegmentList& segments,
   std::move(callback).Run(/*success*/ true, segments, creative_ads);
 }
 
-void OnGetAll(GetCreativePromotedContentAdsCallback callback,
-              mojom::DBCommandResponseInfoPtr command_response) {
+void GetAllCallback(GetCreativePromotedContentAdsCallback callback,
+                    mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -327,7 +327,7 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
                      std::move(callback)));
 }
 
@@ -372,7 +372,7 @@ void CreativePromotedContentAds::GetForSegments(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForSegments, segments, std::move(callback)));
+      base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
 
 void CreativePromotedContentAds::GetAll(
@@ -400,7 +400,8 @@ void CreativePromotedContentAds::GetAll(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAll, std::move(callback)));
+      std::move(transaction),
+      base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 
 std::string CreativePromotedContentAds::GetTableName() const {

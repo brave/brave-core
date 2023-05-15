@@ -51,13 +51,10 @@ class InlineContentAdEventHandler final
       bool success,
       const std::string& creative_instance_id,
       const CreativeInlineContentAdInfo& creative_ad);
-
-  void FireEvent(const InlineContentAdInfo& ad,
-                 mojom::InlineContentAdEventType event_type);
-  void GetAdEventsCallback(const InlineContentAdInfo& ad,
-                           mojom::InlineContentAdEventType event_type,
-                           bool success,
-                           const AdEventList& ad_events);
+  void GetForTypeCallback(const InlineContentAdInfo& ad,
+                          mojom::InlineContentAdEventType event_type,
+                          bool success,
+                          const AdEventList& ad_events);
 
   void SuccessfullyFiredEvent(const InlineContentAdInfo& ad,
                               mojom::InlineContentAdEventType event_type) const;

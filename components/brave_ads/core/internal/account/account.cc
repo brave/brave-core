@@ -134,9 +134,9 @@ void Account::Deposit(const std::string& creative_instance_id,
 
   deposit->GetValue(
       creative_instance_id,
-      base::BindOnce(&Account::GetDepositValueCallback,
-                     weak_factory_.GetWeakPtr(), creative_instance_id, ad_type,
-                     segment, confirmation_type));
+      base::BindOnce(&Account::DepositCallback, weak_factory_.GetWeakPtr(),
+                     creative_instance_id, ad_type, segment,
+                     confirmation_type));
 }
 
 // static
@@ -174,12 +174,12 @@ void Account::MaybeGetIssuers() const {
   issuers_->MaybeFetch();
 }
 
-void Account::GetDepositValueCallback(const std::string& creative_instance_id,
-                                      const AdType& ad_type,
-                                      const std::string& segment,
-                                      const ConfirmationType& confirmation_type,
-                                      const bool success,
-                                      const double value) const {
+void Account::DepositCallback(const std::string& creative_instance_id,
+                              const AdType& ad_type,
+                              const std::string& segment,
+                              const ConfirmationType& confirmation_type,
+                              const bool success,
+                              const double value) const {
   if (!success) {
     return FailedToProcessDeposit(creative_instance_id, ad_type,
                                   confirmation_type);
@@ -211,6 +211,11 @@ void Account::ProcessDepositCallback(const std::string& creative_instance_id,
                                   confirmation_type);
   }
 
+  SuccessfullyProcessedDeposit(transaction);
+}
+
+void Account::SuccessfullyProcessedDeposit(
+    const TransactionInfo& transaction) const {
   BLOG(3, "Successfully processed deposit for "
               << transaction.ad_type << " with creative instance id "
               << transaction.creative_instance_id << " and "
@@ -268,11 +273,11 @@ void Account::WalletDidChange(const WalletInfo& wallet) const {
 
   NotifyWalletDidChange(wallet);
 
-  ResetRewards(base::BindOnce(&Account::RewardsResetCallback,
+  ResetRewards(base::BindOnce(&Account::ResetRewardsCallback,
                               weak_factory_.GetWeakPtr()));
 }
 
-void Account::RewardsResetCallback(const bool success) const {
+void Account::ResetRewardsCallback(const bool success) const {
   if (!success) {
     return BLOG(0, "Failed to reset rewards state");
   }

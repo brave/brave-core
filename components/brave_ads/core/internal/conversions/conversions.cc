@@ -232,14 +232,13 @@ void Conversions::MaybeConvert(
 
 void Conversions::Process() {
   const database::table::ConversionQueue database_table;
-  database_table.GetUnprocessed(
-      base::BindOnce(&Conversions::GetUnprocessedConversionsCallback,
-                     weak_factory_.GetWeakPtr()));
+  database_table.GetUnprocessed(base::BindOnce(&Conversions::ProcessCallback,
+                                               weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Conversions::GetUnprocessedConversionsCallback(
+void Conversions::ProcessCallback(
     const bool success,
     const ConversionQueueItemList& conversion_queue_items) {
   if (!success) {
@@ -391,41 +390,30 @@ void Conversions::AddItemToQueue(
 
   database::table::ConversionQueue database_table;
   database_table.Save({conversion_queue_item},
-                      base::BindOnce(&Conversions::SaveConversionQueueCallback,
+                      base::BindOnce(&Conversions::AddItemToQueueCallback,
                                      weak_factory_.GetWeakPtr()));
 }
 
-void Conversions::SaveConversionQueueCallback(const bool success) {
+void Conversions::AddItemToQueueCallback(const bool success) {
   if (!success) {
-    return BLOG(1, "Failed to append conversion to queue");
+    return BLOG(1, "Failed to add conversion to queue");
   }
 
-  BLOG(3, "Successfully appended conversion to queue");
+  BLOG(3, "Successfully added conversion to queue");
 
   Process();
 }
 
-void Conversions::ProcessQueueItem(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  if (!conversion_queue_item.IsValid()) {
-    return RemoveInvalidQueueItem(conversion_queue_item);
-  }
-
-  MarkQueueItemAsProcessed(conversion_queue_item);
-}
-
 void Conversions::FailedToConvertQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  BLOG(1, "Failed to convert "
-              << conversion_queue_item.ad_type << " with campaign id "
-              << conversion_queue_item.campaign_id << ", creative set id "
-              << conversion_queue_item.creative_set_id
-              << ", creative instance id "
-              << conversion_queue_item.creative_instance_id
-              << " and advertiser id " << conversion_queue_item.advertiser_id
-              << " "
-              << LongFriendlyDateAndTime(conversion_queue_item.process_at,
-                                         /*use_sentence_style*/ true));
+  BLOG(1,
+       "Failed to convert "
+           << conversion_queue_item.ad_type << " with campaign id "
+           << conversion_queue_item.campaign_id << ", creative set id "
+           << conversion_queue_item.creative_set_id << ", creative instance id "
+           << conversion_queue_item.creative_instance_id
+           << " and advertiser id " << conversion_queue_item.advertiser_id
+           << " " << LongFriendlyDateAndTime(conversion_queue_item.process_at));
 
   NotifyConversionFailed(conversion_queue_item);
 
@@ -434,16 +422,14 @@ void Conversions::FailedToConvertQueueItem(
 
 void Conversions::ConvertedQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  BLOG(1, "Successfully converted "
-              << conversion_queue_item.ad_type << " with campaign id "
-              << conversion_queue_item.campaign_id << ", creative set id "
-              << conversion_queue_item.creative_set_id
-              << ", creative instance id "
-              << conversion_queue_item.creative_instance_id
-              << " and advertiser id " << conversion_queue_item.advertiser_id
-              << " "
-              << LongFriendlyDateAndTime(conversion_queue_item.process_at,
-                                         /*use_sentence_style*/ true));
+  BLOG(1,
+       "Successfully converted "
+           << conversion_queue_item.ad_type << " with campaign id "
+           << conversion_queue_item.campaign_id << ", creative set id "
+           << conversion_queue_item.creative_set_id << ", creative instance id "
+           << conversion_queue_item.creative_instance_id
+           << " and advertiser id " << conversion_queue_item.advertiser_id
+           << " " << LongFriendlyDateAndTime(conversion_queue_item.process_at));
 
   NotifyConversion(conversion_queue_item);
 
@@ -453,10 +439,10 @@ void Conversions::ConvertedQueueItem(
 void Conversions::ProcessQueue() {
   const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(base::BindOnce(
-      &Conversions::GetConversionQueueCallback, weak_factory_.GetWeakPtr()));
+      &Conversions::ProcessQueueCallback, weak_factory_.GetWeakPtr()));
 }
 
-void Conversions::GetConversionQueueCallback(
+void Conversions::ProcessQueueCallback(
     const bool success,
     const ConversionQueueItemList& conversion_queue_items) {
   if (!success) {
@@ -471,6 +457,15 @@ void Conversions::GetConversionQueueCallback(
       conversion_queue_items.front();
 
   ProcessQueueItem(conversion_queue_item);
+}
+
+void Conversions::ProcessQueueItem(
+    const ConversionQueueItemInfo& conversion_queue_item) {
+  if (!conversion_queue_item.IsValid()) {
+    return RemoveInvalidQueueItem(conversion_queue_item);
+  }
+
+  MarkQueueItemAsProcessed(conversion_queue_item);
 }
 
 void Conversions::RemoveInvalidQueueItem(
@@ -534,8 +529,7 @@ void Conversions::StartTimer(
                      << conversion_queue_item.creative_instance_id
                      << " and advertiser id "
                      << conversion_queue_item.advertiser_id << " "
-                     << FriendlyDateAndTime(process_queue_at,
-                                            /*use_sentence_style*/ true));
+                     << FriendlyDateAndTime(process_queue_at));
 }
 
 void Conversions::NotifyConversion(

@@ -351,7 +351,7 @@ void RefillUnblindedTokens::GetSignedTokensCallback(
 void RefillUnblindedTokens::SuccessfullyRefilledUnblindedTokens() {
   BLOG(1, "Successfully refilled unblinded tokens");
 
-  retry_timer_.Stop();
+  StopRetrying();
 
   blinded_tokens_.clear();
   tokens_.clear();
@@ -399,10 +399,14 @@ void RefillUnblindedTokens::RetryCallback() {
   }
 
   if (nonce_.empty()) {
-    RequestSignedTokens();
-  } else {
-    GetSignedTokens();
+    return RequestSignedTokens();
   }
+
+  GetSignedTokens();
+}
+
+void RefillUnblindedTokens::StopRetrying() {
+  retry_timer_.Stop();
 }
 
 }  // namespace brave_ads

@@ -124,6 +124,8 @@ void NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback(
     const bool success,
     const std::string& creative_instance_id,
     const CreativeNewTabPageAdInfo& creative_ad) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
+
   if (!success) {
     BLOG(1,
          "Failed to fire new tab page ad event due to missing creative "
@@ -133,26 +135,21 @@ void NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback(
   }
 
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad, placement_id);
-  FireEvent(ad, event_type);
-}
-
-void NewTabPageAdEventHandler::FireEvent(
-    const NewTabPageAdInfo& ad,
-    const mojom::NewTabPageAdEventType event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&NewTabPageAdEventHandler::GetAdEventsCallback,
+      base::BindOnce(&NewTabPageAdEventHandler::GetForTypeCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type));
 }
 
-void NewTabPageAdEventHandler::GetAdEventsCallback(
+void NewTabPageAdEventHandler::GetForTypeCallback(
     const NewTabPageAdInfo& ad,
     const mojom::NewTabPageAdEventType event_type,
     const bool success,
     const AdEventList& ad_events) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
+
   if (!success) {
     BLOG(1, "New tab page ad: Failed to get ad events");
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,

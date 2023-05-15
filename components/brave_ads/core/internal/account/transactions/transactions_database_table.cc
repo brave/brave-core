@@ -93,8 +93,8 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return transaction;
 }
 
-void OnGetTransactions(GetTransactionsCallback callback,
-                       mojom::DBCommandResponseInfoPtr command_response) {
+void GetCallback(GetTransactionsCallback callback,
+                 mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -204,7 +204,7 @@ void Transactions::GetAll(GetTransactionsCallback callback) const {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetTransactions, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void Transactions::GetForDateRange(const base::Time from_time,
@@ -225,7 +225,7 @@ void Transactions::GetForDateRange(const base::Time from_time,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetTransactions, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void Transactions::Update(
