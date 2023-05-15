@@ -1,0 +1,94 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+namespace blockchain_lists {
+
+  dictionary DappMetrics {
+    // e.g. 2348167
+    long transactions;
+
+    // e.g. 387445
+    long uaw;
+
+    // e.g. 65982226285.39
+    double volume;
+
+    // e.g. 1904817795.53
+    double balance;
+  };
+
+  dictionary Dapp {
+    // e.g. 7000
+    long dappId;
+
+    // e.g. "Uniswap V3"
+    DOMString name;
+
+    // e.g. "A protocol for trading and automated liquidity provision on Ethereum."
+    DOMString description;
+
+    // An url for the dapp logo.
+    DOMString logo;
+
+    // e.g. "https://dappradar.com/ethereum/exchanges/uniswap-v3"
+    DOMString link;
+
+    // e.g. "https://app.uniswap.org/#/swap"
+    DOMString website;
+
+    // e.g. ["ethereum", "polygon", "optimism", "celo", "arbitrum", "binance-smart-chain"]
+    DOMString[] chains;
+
+    // e.g. ["exchanges"]
+    DOMString[] categories;
+
+    // Dapp metrics
+    DappMetrics metrics;
+  };
+
+  dictionary DappList {
+    // e.g. true
+    boolean success;
+
+    // e.g. "ethereum"
+    DOMString chain;
+
+    // e.g. "30d"
+    DOMString range;
+
+    // e.g. 10
+    long top;
+
+    // A results list.
+    Dapp[] results;
+  };
+
+  dictionary DappLists {
+    // Dapps on Ethereum chain
+    DappList ethereum;
+
+    // Dapps on Solana chain
+    DappList solana;
+
+    // Dapps on Polygon chain
+    DappList polygon;
+
+    // Dapps on Binance Smart Chain
+    DappList binance_smart_chain;
+
+    // Dapps on Optimism chain
+    DappList optimism;
+
+    // Dapps on Aurora chain
+    DappList aurora;
+
+    // Dapps on Avalanche chain
+    DappList avalanche;
+
+    // Dapps on Fantom chain
+    DappList fantom;
+  };
+
+};
