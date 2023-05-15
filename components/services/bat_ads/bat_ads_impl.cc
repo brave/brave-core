@@ -219,14 +219,14 @@ void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
 void BatAdsImpl::ToggleLikeAd(base::Value::Dict value,
                               ToggleLikeAdCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.user_reaction_type = GetAds()->ToggleLikeAd(std::move(value));
+  ad_content.user_reaction_type = GetAds()->ToggleLikeAd(value);
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
 void BatAdsImpl::ToggleDislikeAd(base::Value::Dict value,
                                  ToggleDislikeAdCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.user_reaction_type = GetAds()->ToggleDislikeAd(std::move(value));
+  ad_content.user_reaction_type = GetAds()->ToggleDislikeAd(value);
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
@@ -251,7 +251,7 @@ void BatAdsImpl::ToggleDislikeCategory(
 void BatAdsImpl::ToggleSaveAd(base::Value::Dict value,
                               ToggleSaveAdCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.is_saved = GetAds()->ToggleSaveAd(std::move(value));
+  ad_content.is_saved = GetAds()->ToggleSaveAd(value);
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
@@ -259,8 +259,7 @@ void BatAdsImpl::ToggleMarkAdAsInappropriate(
     base::Value::Dict value,
     ToggleMarkAdAsInappropriateCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.is_flagged =
-      GetAds()->ToggleMarkAdAsInappropriate(std::move(value));
+  ad_content.is_flagged = GetAds()->ToggleMarkAdAsInappropriate(value);
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
