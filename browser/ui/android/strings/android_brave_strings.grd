@@ -390,17 +390,17 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_YOUTUBE" desc="Text for youtube">
         Youtube
       </message>
-      <message name="IDS_HIDE_YOUTUBE_RECOMMENDED_CONTENT" desc="Hide YouTube Recommended Content">
-        Hide YouTube Recommended Content
+      <message name="IDS_BLOCK_YOUTUBE_RECOMMENDED_CONTENT" desc="Hide YouTube Recommended Content">
+        Block YouTube recommended content
       </message>
-      <message name="IDS_HIDE_YOUTUBE_RECOMMENDED_CONTENT_DESCRIPTION" desc="Hides the up next, home feed and end card elements on YouTube.">
-        Hides the up next and end card elements on YouTube.
+      <message name="IDS_BLOCK_YOUTUBE_RECOMMENDED_CONTENT_DESCRIPTION" desc="Hides the up next, home feed and end card elements on YouTube.">
+        Blocks the up next and end card elements on youtube.com.
       </message>
-      <message name="IDS_HIDE_YOUTUBE_DISTRACTING_ELEMENTS" desc="Hide YouTube Distracting Elements">
-        Hide YouTube Distracting Elements
+      <message name="IDS_BLOCK_YOUTUBE_DISTRACTING_ELEMENTS" desc="Hide YouTube Distracting Elements">
+        Block YouTube distracting elements
       </message>
-      <message name="IDS_HIDE_YOUTUBE_DISTRACTING_ELEMENTS_DESCRIPTION" desc="Hides the sign in, menu, comments and video info elements on YouTube.">
-        Hides the sign in, menu, comments and video info elements on YouTube.
+      <message name="IDS_BLOCK_YOUTUBE_DISTRACTING_ELEMENTS_DESCRIPTION" desc="Hides the sign in, menu, comments and video info elements on YouTube.">
+        Blocks the sign in, menu, comments, and video info elements on youtube.com.
       </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
         Social Media Blocking
