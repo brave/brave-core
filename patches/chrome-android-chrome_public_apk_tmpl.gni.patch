@@ -1,17 +1,16 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 28fe2423c40e908a6a22f1d24675386b4edd1378..a3910f172553e4a09e738f151664d4afa2f2b3c7 100644
+index 28fe2423c40e908a6a22f1d24675386b4edd1378..5f1cc8af9c2ea6fec36148932a6dc0b4a5e11306 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -200,7 +200,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
-       } else if (_is_monochrome) {
-         input = "//chrome/android/java/AndroidManifest_monochrome.xml"
-         includes = [
--          "//android_webview/nonembedded/java/AndroidManifest.xml",
-+#          "//android_webview/nonembedded/java/AndroidManifest.xml",
+@@ -203,6 +203,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+           "//android_webview/nonembedded/java/AndroidManifest.xml",
            "//chrome/android/java/AndroidManifest.xml",
          ]
++        includes -= ["//android_webview/nonembedded/java/AndroidManifest.xml" ]
          variables += monochrome_android_manifest_jinja_variables
-@@ -275,6 +275,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+         if (_is_64_bit_browser) {
+           variables += [ "webview_library=libmonochrome_64.so" ]
+@@ -275,6 +276,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        "*ic_file_download_white*",  # Bottom edge seems misaligned.
        "*ic_lock.*",  # Bottom edge seems misaligned.
      ]
@@ -19,7 +18,7 @@ index 28fe2423c40e908a6a22f1d24675386b4edd1378..a3910f172553e4a09e738f151664d4af
  
      # Note most of these, with the exception of resource_exclusion_exceptions,
      # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -380,6 +381,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -380,6 +382,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
          proguard_configs = []
        }
        proguard_configs += [ "//chrome/android/proguard/main.flags" ]
@@ -27,14 +26,11 @@ index 28fe2423c40e908a6a22f1d24675386b4edd1378..a3910f172553e4a09e738f151664d4af
      }
  
      if (use_chromium_linker) {
-@@ -621,8 +623,8 @@ template("monochrome_public_common_apk_or_module_tmpl") {
-         }
- 
-         deps += [
--          "//android_webview/glue:glue_java",
--          "//android_webview/nonembedded:nonembedded_java",
-+          # "//android_webview/glue:glue_java",
-+          # "//android_webview/nonembedded:nonembedded_java",
+@@ -624,6 +627,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+           "//android_webview/glue:glue_java",
+           "//android_webview/nonembedded:nonembedded_java",
          ]
++        deps -= ["//android_webview/glue:glue_java", "//android_webview/nonembedded:nonembedded_java" ]
          if (!_is_bundle_module) {
            deps += [ "//chrome/android:monochrome_java" ]
+         }
