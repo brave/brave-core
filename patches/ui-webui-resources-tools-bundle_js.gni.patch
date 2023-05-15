@@ -1,8 +1,8 @@
-diff --git a/ui/webui/resources/tools/optimize_webui.gni b/ui/webui/resources/tools/optimize_webui.gni
-index 697a4526bbe325d72890d9cdecdde5e01f32b042..c738715ef3be48d12293189f13cb6d0d4d0f86a7 100644
---- a/ui/webui/resources/tools/optimize_webui.gni
-+++ b/ui/webui/resources/tools/optimize_webui.gni
-@@ -83,6 +83,7 @@ template("optimize_webui") {
+diff --git a/ui/webui/resources/tools/bundle_js.gni b/ui/webui/resources/tools/bundle_js.gni
+index 6ef57e0cd1de46342a9fc8892fb121b7b2222265..79fb3fbc77e63eb4a9914c094ce7a3882a8aa904 100644
+--- a/ui/webui/resources/tools/bundle_js.gni
++++ b/ui/webui/resources/tools/bundle_js.gni
+@@ -102,6 +102,7 @@ template("bundle_js") {
      external_paths += [ "//resources/polymer/v3_0/|$polymer_path" ]
  
      if (!is_chrome_untrusted) {
