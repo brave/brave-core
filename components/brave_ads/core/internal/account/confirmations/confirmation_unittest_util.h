@@ -14,6 +14,10 @@ namespace brave_ads {
 struct ConfirmationInfo;
 struct TransactionInfo;
 
+constexpr char kTransactionId[] = "8b742869-6e4a-490c-ac31-31b49130098a";
+
+constexpr char kGetSignedTokensNonce[] = "2f0e2891-e7a5-4262-835b-550b13e58e5c";
+
 absl::optional<ConfirmationInfo> BuildConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction);

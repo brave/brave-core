@@ -268,7 +268,8 @@ void OnURLResponseStarted(
   }
 }
 
-void OnResetState(const bool success) {
+// TODO(tmancey): Foo
+void ResetStateCallback(const bool success) {
   if (!success) {
     return VLOG(1) << "Failed to reset ads state";
   }
@@ -276,7 +277,8 @@ void OnResetState(const bool success) {
   VLOG(6) << "Successfully reset ads state";
 }
 
-void OnAddTrainingSample(const bool success) {
+// TODO(tmancey): Foo
+void AddTrainingSampleCallback(const bool success) {
   if (!success) {
     return VLOG(6) << "Failed to add training sample";
   }
