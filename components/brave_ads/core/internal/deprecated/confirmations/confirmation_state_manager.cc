@@ -109,9 +109,9 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
       }
       unblinded_token.Set("public_key", *public_key_base64);
 
-      const absl::optional<std::string> signature =
+      const std::string signature =
           confirmation.opted_in->unblinded_token.signature;
-      unblinded_token.Set("signature", *signature);
+      unblinded_token.Set("signature", signature);
 
       confirmation_dict.Set("token_info", std::move(unblinded_token));
 
@@ -123,8 +123,19 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
       if (!confirmation.opted_in->credential_base64url) {
         continue;
       }
-      confirmation_dict.Set("credential",
-                            *confirmation.opted_in->credential_base64url);
+
+      // Dynamic user data is not persisted for failed confirmations because the
+      // user data is recreated when redeeming the confirmation tokens, so we
+      // must create a new credential excluding the dynamic user data.
+      ConfirmationInfo confirmation_copy(confirmation);
+      confirmation_copy.opted_in->user_data.dynamic = {};
+      const absl::optional<std::string> opted_in_credential =
+          CreateOptedInCredential(confirmation_copy);
+      if (!opted_in_credential) {
+        continue;
+      }
+
+      dict.Set("credential", *opted_in_credential);
     }
 
     list.Append(std::move(confirmation_dict));
