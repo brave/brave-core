@@ -12,7 +12,7 @@ class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
  public:
   using AvatarToolbarButtonDelegate::AvatarToolbarButtonDelegate;
   BraveAvatarToolbarButtonDelegate(AvatarToolbarButton* button,
-                                   Profile* profile);
+                                   Browser* browser);
   BraveAvatarToolbarButtonDelegate(const BraveAvatarToolbarButtonDelegate&) =
       delete;
   BraveAvatarToolbarButtonDelegate& operator=(

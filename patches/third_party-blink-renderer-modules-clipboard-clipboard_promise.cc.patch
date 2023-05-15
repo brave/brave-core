@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-index 92b72c553d8966da6d8a4a4ae2517d6fc7271f12..632622148a9e56ce42e8f5e3f2033261c35ded6c 100644
+index 0a89ccacf4b05f8cb001e3644e629958d329671e..9415f5808a872c65c6c67995789b551fbe587741 100644
 --- a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
 +++ b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-@@ -588,6 +588,7 @@ void ClipboardPromise::RequestPermission(
+@@ -591,6 +591,7 @@ void ClipboardPromise::RequestPermission(
    // TODO(ansollan): Remove this block as custom formats don't need both a user
    // gesture and a permission grant to use custom clipboard.
    if (!will_be_sanitized &&

@@ -1,16 +1,25 @@
 #!/usr/bin/env python
-# Copyright 2020 The Brave Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 """Wraps bin/helper/java_bytecode_rewriter and expands @FileArgs."""
 
 import argparse
+import os
 import subprocess
 import sys
 
-sys.path.append('../../build/android/gyp/util')
-import build_utils
+sys.path.append(
+    os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, os.pardir,
+                 os.pardir, 'build'))
+import action_helpers  # pylint: disable=wrong-import-position
+
+sys.path.append(
+    os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, os.pardir,
+                 os.pardir, 'build', 'android', 'gyp'))
+from util import build_utils  # pylint: disable=no-name-in-module,wrong-import-position
 
 
 def _AddSwitch(parser, val):
@@ -37,16 +46,16 @@ def main(argv):
     _AddSwitch(parser, '--enable-check-class-path')
     args = parser.parse_args(argv)
 
-    sdk_jars = build_utils.ParseGnList(args.sdk_classpath_jars)
+    sdk_jars = action_helpers.parse_gn_list(args.sdk_classpath_jars)
     assert len(sdk_jars) > 0
 
-    direct_jars = build_utils.ParseGnList(args.direct_classpath_jars)
+    direct_jars = action_helpers.parse_gn_list(args.direct_classpath_jars)
     assert len(direct_jars) > 0
 
     extra_classpath_jars = []
     for a in args.extra_jars:
-        extra_classpath_jars.extend(build_utils.ParseGnList(a))
-    args.missing_classes_allowlist = build_utils.ParseGnList(
+        extra_classpath_jars.extend(action_helpers.parse_gn_list(a))
+    args.missing_classes_allowlist = action_helpers.parse_gn_list(
         args.missing_classes_allowlist)
 
     if args.verbose:

@@ -77,6 +77,7 @@ namespace {
 namespace brave {
 
 void NewOffTheRecordWindowTor(Browser* browser) {
+  CHECK(browser);
   if (browser->profile()->IsTor()) {
     chrome::OpenEmptyWindow(browser->profile());
     return;

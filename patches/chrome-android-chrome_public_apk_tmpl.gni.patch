@@ -1,20 +1,36 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 28fe2423c40e908a6a22f1d24675386b4edd1378..def90d8031f9ea26a6eb583088cf55489d70af4c 100644
+index eeb286b07aae69c3d12a4f62ab0c1c22500bda7b..c604fc99ccd9693aa6e0c17ba3ee563c550ec6b1 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -275,6 +275,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -312,6 +312,7 @@ template("chrome_common_apk_or_module_tmpl") {
        "*ic_file_download_white*",  # Bottom edge seems misaligned.
        "*ic_lock.*",  # Bottom edge seems misaligned.
      ]
 +    resource_exclusion_exceptions += brave_resources_exclusion_exceptions
  
-     # Note most of these, with the exception of resource_exclusion_exceptions,
+     # Most of these, with the exception of resource_exclusion_exceptions,
      # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -380,6 +381,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
-         proguard_configs = []
-       }
-       proguard_configs += [ "//chrome/android/proguard/main.flags" ]
-+      proguard_configs += [ "//brave/android/java/proguard.flags" ]
-     }
+@@ -336,6 +337,7 @@ template("chrome_common_apk_or_module_tmpl") {
  
-     if (use_chromium_linker) {
+       proguard_enabled = true
+       proguard_configs = [ "//chrome/android/proguard/main.flags" ]
++      proguard_configs += [ "//brave/android/java/proguard.flags" ]
+       if (_is_monochrome) {
+         proguard_configs +=
+             [ "//android_webview/nonembedded/java/proguard.flags" ]
+@@ -457,6 +459,7 @@ template("chrome_common_apk_or_module_tmpl") {
+       assert(!_is_trichrome)
+       deps += [ "//chrome/android:chrome_apk_pak_assets" ]
+     }
++    deps += brave_public_apk_or_module_tmpl_deps loadable_modules = brave_public_apk_or_module_tmpl_loadable_modules
+ 
+     if (defined(invoker.add_upstream_only_deps) &&
+         invoker.add_upstream_only_deps) {
+@@ -749,6 +752,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+     if (!defined(is_monochrome)) {
+       is_trichrome = true
+     }
++    deps += brave_monochrome_public_apk_or_module_tmpl_deps loadable_modules = brave_monochrome_public_apk_or_module_tmpl_loadable_modules secondary_abi_loadable_modules = brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules
+   }
+ }
+ template("chrome_public_common_apk_or_module_tmpl") {

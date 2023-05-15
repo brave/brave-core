@@ -13,7 +13,6 @@
 #include "chrome/grit/generated_resources.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/permissions/chooser_title_util.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/test/web_contents_tester.h"
 #include "services/device/public/mojom/hid.mojom.h"
@@ -24,8 +23,7 @@ namespace {
 std::u16string BraveCreateTitleLabel() {
   auto wallet_title =
       brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_WALLET);
-  return l10n_util::GetStringFUTF16(IDS_HID_CHOOSER_PROMPT_ORIGIN,
-                                    wallet_title);
+  return l10n_util::GetStringFUTF16(IDS_HID_CHOOSER_PROMPT, wallet_title);
 }
 
 std::u16string GetHIDTitle(content::WebContents* content, const GURL& url) {

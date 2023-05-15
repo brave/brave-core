@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.html b/chrome/browser/resources/history/synced_device_manager.html
-index 12d27b8ce89778bc57a6f67c2dac898d7b7c5634..12dfdc30becd1aa5993e061a0bb3963eb64ad2c8 100644
+index 29bfb59551de19095847bc97e5d290fb0d178c85..6b734a18a7c29b6396b60f7f5e860f5ba82d3361 100644
 --- a/chrome/browser/resources/history/synced_device_manager.html
 +++ b/chrome/browser/resources/history/synced_device_manager.html
 @@ -73,6 +73,7 @@

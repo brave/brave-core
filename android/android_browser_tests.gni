@@ -97,8 +97,6 @@ android_test_exception_sources = [
   "//chrome/browser/extensions/browsertest_util.h",
   "//chrome/browser/extensions/extension_browsertest.cc",
   "//chrome/browser/extensions/extension_browsertest.h",
-  "//chrome/browser/extensions/extension_function_test_utils.cc",
-  "//chrome/browser/extensions/extension_function_test_utils.h",
   "//chrome/browser/media/media_browsertest.cc",
   "//chrome/browser/media/media_browsertest.h",
   "//chrome/browser/ui/test/test_browser_dialog.cc",

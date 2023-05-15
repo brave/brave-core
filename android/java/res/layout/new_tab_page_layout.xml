@@ -115,6 +115,13 @@
                 android:layout_marginTop="16dp"
                 android:visibility="gone"/>
 
+            <!-- Single tab card -->
+            <ViewStub
+                android:id="@+id/tab_switcher_module_container_stub"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout="@layout/tab_switcher_module_container" />
+
             <ViewStub
                 android:id="@+id/search_resumption_module_container_stub"
                 android:layout_width="match_parent"

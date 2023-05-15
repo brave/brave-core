@@ -18,6 +18,9 @@
 -ChromeBlocklistTrialTest.VerifyFirstRun
 -ChromeBlocklistTrialTest.VersionChanged
 
+# This test fails because we disable SafeBrowsingEnhancedProtection
+-GetUserPopulationForProfileWithCookieTheftExperiments.PopulatesExperimentsForEsb
+
 -All/AppMenuIconControllerTest.*
 -AppServiceProxyTest.*
 -BookmarkEditorViewTest.*

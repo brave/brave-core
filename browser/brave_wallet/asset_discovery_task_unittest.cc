@@ -418,8 +418,8 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   std::unique_ptr<AssetDiscoveryTask> asset_discovery_task_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
-  JsonRpcService* json_rpc_service_;
-  TxService* tx_service;
+  raw_ptr<JsonRpcService> json_rpc_service_;
+  raw_ptr<TxService> tx_service;
   base::test::ScopedFeatureList scoped_feature_list_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
