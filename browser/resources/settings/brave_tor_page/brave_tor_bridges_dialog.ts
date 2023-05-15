@@ -13,7 +13,7 @@ import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js';
 import { PrefsMixin } from '../prefs/prefs_mixin.js';
 import '../settings_shared.css.js';
 import { BraveTorBrowserProxyImpl } from './brave_tor_browser_proxy.js'
-import {getTemplate} from './brave_tor_bridges_dialog.html.js'
+import { getTemplate } from './brave_tor_bridges_dialog.html.js'
 
 const RequestBridgesDialogBase = I18nMixin(PrefsMixin(PolymerElement))
 
@@ -31,8 +31,15 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
       status_: String,
       captcha_: String,
       captchaResolve_: String,
-      renewDisabled_: Boolean,
-      submitDisabled_: Boolean,
+      renewDisabled_: {
+        type: Boolean,
+        value: true
+      },
+      submitDisabled_: {
+        type: Boolean,
+        value: true,
+        computed: 'computeSubmitDisabled_(captchaResolve_)'
+      },
       bridges_: Array
     }
   }
@@ -48,7 +55,6 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
   }
 
   submitClicked_() {
-    this.enableSubmit_(false)
     this.browserProxy_.resolveBridgesCaptcha(this.captchaResolve_).then(
       (response) => {
         this.bridges_ = response.bridges
@@ -57,6 +63,9 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
       () => {
         this.requestCaptcha_()
       })
+
+    this.renewDisabled_ = true
+    this.captchaResolve_ = ''
   }
 
   cancelClicked_() {
@@ -65,22 +74,22 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
 
   requestCaptcha_() {
     this.captchaResolve_ = ''
+    this.renewDisabled_ = true
     this.status_ = this.i18n('torRequestBridgeDialogWaiting')
     this.captcha_ = ''
-    this.enableSubmit_(false)
+
     this.browserProxy_.requestBridgesCaptcha().then((result) => {
       this.captcha_ = result.captcha
       this.status_ = this.i18n('torRequestBridgeDialogSolve')
-      this.enableSubmit_(true)
+      this.renewDisabled_ = false
     }, () => {
       this.status_ = this.i18n('torRequestBridgeDialogError')
       this.renewDisabled_ = false
     })
   }
 
-  enableSubmit_(enabled) {
-    this.renewDisabled_ = !enabled
-    this.submitDisabled_ = !enabled
+  computeSubmitDisabled_(captchaResolve: String) {
+    return captchaResolve.length === 0
   }
 }
 
