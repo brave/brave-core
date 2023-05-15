@@ -59,6 +59,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmati
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.SolanaTransactionsGasHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -270,6 +271,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             associatedSplTokenInfo.setText(associatedSPLTokenAccountInfo);
         }
         mCoinType = TransactionUtils.getCoinFromTxDataUnion(mTxInfo.txDataUnion);
+        if (JavaUtils.anyNull(mWalletModel)) return;
         var selectedNetwork = mWalletModel.getNetworkModel().getNetwork(mTxInfo.chainId);
         networkName.setText(selectedNetwork.chainName);
         keyringService.getKeyringInfo(AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
