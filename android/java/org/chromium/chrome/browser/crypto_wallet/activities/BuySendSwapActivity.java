@@ -611,12 +611,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (blockchainToken == null) return;
 
         if (blockchainToken.contractAddress.isEmpty()) {
-            if (mSelectedAccount.coin == CoinType.ETH) {
-                mJsonRpcService.getBalance(address, CoinType.ETH, mSelectedNetwork.chainId,
+            if (mSelectedAccount.coin == CoinType.ETH || mSelectedAccount.coin == CoinType.FIL) {
+                mJsonRpcService.getBalance(address, mSelectedAccount.coin, mSelectedNetwork.chainId,
                         (balance, error, errorMessage) -> {
                             warnWhenError(TAG, "getBalance", error, errorMessage);
                             if (error != ProviderError.SUCCESS
-                                    || mSelectedNetwork.coin != CoinType.ETH
+                                    || mSelectedNetwork.coin != mSelectedAccount.coin
                                     || !mSelectedAccount.address.equals(address)) {
                                 return;
                             }
@@ -704,6 +704,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             int tokenCoin = token.coin;
             fromToBalance = Utils.getBalanceForCoinType(tokenCoin, decimals, balance);
         } catch (NumberFormatException | NullPointerException e) {
+            Log.e(TAG, "Error while parsing token balance.", e);
             clearBalance(from);
             return;
         }
