@@ -1,8 +1,8 @@
-diff --git a/ui/webui/resources/tools/optimize_webui.gni b/ui/webui/resources/tools/optimize_webui.gni
-index 697a4526bbe325d72890d9cdecdde5e01f32b042..4c6246cd0ef318c6f1085effb77a8a3dd478d19c 100644
---- a/ui/webui/resources/tools/optimize_webui.gni
-+++ b/ui/webui/resources/tools/optimize_webui.gni
-@@ -64,6 +64,7 @@ template("optimize_webui") {
+diff --git a/ui/webui/resources/tools/bundle_js.gni b/ui/webui/resources/tools/bundle_js.gni
+index 56dc603dc7ed6781af6961e274ec466663d9885d..3d338d333c508f05cf072c8c0d4e72512d1ba5c0 100644
+--- a/ui/webui/resources/tools/bundle_js.gni
++++ b/ui/webui/resources/tools/bundle_js.gni
+@@ -67,6 +67,7 @@ template("bundle_js") {
          rebase_path("$root_gen_dir/ui/webui/resources/tsc/", root_build_dir)
      is_chrome_untrusted =
          string_replace(invoker.host, "chrome-untrusted://", "") != invoker.host
@@ -10,7 +10,7 @@ index 697a4526bbe325d72890d9cdecdde5e01f32b042..4c6246cd0ef318c6f1085effb77a8a3d
  
      external_paths = []
      if (is_chromeos_ash) {
-@@ -83,6 +84,7 @@ template("optimize_webui") {
+@@ -86,6 +87,7 @@ template("bundle_js") {
      external_paths += [ "//resources/polymer/v3_0/|$polymer_path" ]
  
      if (!is_chrome_untrusted) {
