@@ -449,15 +449,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   nw_path_monitor_start(networkMonitor);
 }
 
-- (void)removeAllHistory:(void (^)(BOOL))completion {
-  if (![self isAdsServiceRunning]) {
-    return;
-  }
-  ads->RemoveAllHistory(base::BindOnce(^(const bool success) {
-    completion(success);
-  }));
-}
-
 #pragma mark - Observers
 
 - (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer {

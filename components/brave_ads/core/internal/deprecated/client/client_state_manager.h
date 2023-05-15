@@ -89,8 +89,6 @@ class ClientStateManager final {
   const TextClassificationProbabilityList&
   GetTextClassificationProbabilitiesHistory() const;
 
-  void RemoveAllHistory();
-
   bool is_mutated() const { return is_mutated_; }
 
  private:

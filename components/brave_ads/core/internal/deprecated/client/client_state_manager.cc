@@ -486,16 +486,6 @@ ClientStateManager::GetTextClassificationProbabilitiesHistory() const {
   return client_.text_classification_probabilities;
 }
 
-void ClientStateManager::RemoveAllHistory() {
-  CHECK(is_initialized_);
-
-  BLOG(1, "Successfully reset client state");
-
-  client_ = {};
-
-  Save();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void ClientStateManager::Save() {

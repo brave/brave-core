@@ -91,10 +91,6 @@ OBJC_EXPORT
 /// Automatically detected ads subdivision targeting code
 @property(nonatomic, copy) NSString* autoDetectedSubdivisionTargetingCode;
 
-/// Remove all cached history (should be called when the user clears their
-/// browser history)
-- (void)removeAllHistory:(void (^)(BOOL))completion;
-
 #pragma mark - Notificiations
 
 - (nullable NotificationAdIOS*)notificationAdForIdentifier:

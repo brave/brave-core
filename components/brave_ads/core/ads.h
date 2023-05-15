@@ -148,10 +148,6 @@ class ADS_EXPORT Ads {
                                      base::Time from_time,
                                      base::Time to_time) = 0;
 
-  // Called to remove all history. The callback takes one argument - |bool| is
-  // set to |true| if successful otherwise |false|.
-  virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
-
   // Called to like an advertiser. This is a toggle, so calling it again returns
   // the setting to the neutral state. Returns |UserReactionType| containing the
   // current state.

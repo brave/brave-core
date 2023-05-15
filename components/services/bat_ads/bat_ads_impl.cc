@@ -192,10 +192,6 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
   GetAds()->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
 }
 
-void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
-  GetAds()->RemoveAllHistory(std::move(callback));
-}
-
 void BatAdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
                                           const std::string& recovery_seed) {
   GetAds()->OnRewardsWalletDidChange(payment_id, recovery_seed);

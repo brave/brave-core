@@ -231,16 +231,6 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
           ad_type, std::move(callback)));
 }
 
-void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
-  if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
-  }
-
-  ClientStateManager::GetInstance().RemoveAllHistory();
-
-  std::move(callback).Run(/*success*/ true);
-}
-
 HistoryItemList AdsImpl::GetHistory(const HistoryFilterType filter_type,
                                     const HistorySortType sort_type,
                                     const base::Time from_time,
