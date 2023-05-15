@@ -136,7 +136,7 @@ void NotificationAdServing::GetForUserModelCallback(
   ServeAd(ad);
 }
 
-void NotificationAdServing::OnAdsPerHourPrefChanged() {
+void NotificationAdServing::UpdateMaximumAdsPerHour() {
   const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
   BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
@@ -226,7 +226,7 @@ void NotificationAdServing::FailedToServeAd() {
 
 void NotificationAdServing::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kMaximumNotificationAdsPerHour) {
-    OnAdsPerHourPrefChanged();
+    UpdateMaximumAdsPerHour();
   }
 }
 
