@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..9d4c7cb6191a79dfbe8562af5df71431be7a99ba 100644
+index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..cc7d8183b42c51a9c4301d0d3c851bc2f4787c60 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -102,6 +102,7 @@ if (current_toolchain == default_toolchain) {
@@ -50,41 +50,7 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..9d4c7cb6191a79dfbe8562af5df71431
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -2101,6 +2107,7 @@ if (current_toolchain == default_toolchain) {
-       _lib_path = "/lib.unstripped/" + _lib + shlib_extension
- 
-       generate_resource_allowlist(_resource_allowlist_target) {
-+print("at generate_resource_allowlist(_resource_allowlist_target) target_name=", target_name)         
-         _fat_lib_toolchain = current_toolchain
-         if (_is_monochrome || _is_trichrome) {
-           # TODO(agrieve): For 64-bit primary, using libmonochrome_64 would be
-@@ -2128,6 +2135,7 @@ if (current_toolchain == default_toolchain) {
-             "${_variant}_system_webview_locale_resource_id_list.txt"
- 
-         action(_system_webview_locale_allowlist_target) {
-+print("at action(_system_webview_locale_allowlist_target) target_name=", target_name)
-           script = "//tools/grit/pak_util.py"
- 
-           _system_webview_en_US_locale_pak =
-@@ -2176,6 +2184,17 @@ if (current_toolchain == default_toolchain) {
-     }
- 
-     chrome_paks("${_variant}_paks") {
-+print("at chrome_paks _variant _paks _variant=", _variant)
-+print("at chrome_paks _variant _paks enable_resource_allowlist_generation=", enable_resource_allowlist_generation)
-+if (enable_resource_allowlist_generation) {
-+print("at chrome_paks _variant _paks _resource_allowlist_target=", _resource_allowlist_target)
-+if (defined(_locale_allowlist_target)){
-+print("at chrome_paks _variant _paks _locale_allowlist_target=$_locale_allowlist_target")
-+}else{
-+print("at chrome_paks _variant _paks _locale_allowlist_target not defined")
-+}
-+}
-+
-       output_dir = "$target_gen_dir/${_variant}_paks"
-       deps = []
- 
-@@ -2230,8 +2249,9 @@ if (current_toolchain == default_toolchain) {
+@@ -2230,8 +2236,9 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -95,7 +61,7 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..9d4c7cb6191a79dfbe8562af5df71431
          if (webview_includes_weblayer && !_is_bundle_module) {
            deps += [ "//weblayer:locale_pak_assets" ]
          }
-@@ -2422,6 +2442,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2422,6 +2429,7 @@ if (current_toolchain == default_toolchain) {
        shared_libraries = [ ":libchrome" ]
  
        version_name = chrome_version_name
@@ -103,7 +69,7 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..9d4c7cb6191a79dfbe8562af5df71431
      }
    }
  
-@@ -2435,7 +2456,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2435,7 +2443,7 @@ if (current_toolchain == default_toolchain) {
      deps = [
        ":base_module_java",
        ":base_monochrome_module_java",
@@ -112,7 +78,7 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..9d4c7cb6191a79dfbe8562af5df71431
        "//base:base_java",
        "//chrome/android:chrome_java",
        "//components/version_info/android:version_constants_java",
-@@ -2451,7 +2472,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2451,7 +2459,7 @@ if (current_toolchain == default_toolchain) {
      sources = [ "java/src/org/chromium/chrome/browser/base/SplitMonochromeApplication.java" ]
      deps = [
        ":base_module_java",
@@ -121,7 +87,7 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..9d4c7cb6191a79dfbe8562af5df71431
        "//base:base_java",
        "//build/android:build_java",
        "//components/version_info/android:version_constants_java",
-@@ -2557,6 +2578,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2557,6 +2565,7 @@ if (current_toolchain == default_toolchain) {
        "//components/payments/content/android:service_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -129,7 +95,7 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..9d4c7cb6191a79dfbe8562af5df71431
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
-@@ -2640,9 +2662,9 @@ if (current_toolchain == default_toolchain) {
+@@ -2640,9 +2649,9 @@ if (current_toolchain == default_toolchain) {
        }
        if (!_is_trichrome) {
          deps += [
@@ -142,7 +108,7 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..9d4c7cb6191a79dfbe8562af5df71431
          ]
          if (!_is_bundle) {
            deps += [ ":monochrome_java" ]
-@@ -2651,6 +2673,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2651,6 +2660,7 @@ if (current_toolchain == default_toolchain) {
            deps += [ "//weblayer/browser/java:upstream_java" ]
          }
        }
@@ -150,7 +116,7 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..9d4c7cb6191a79dfbe8562af5df71431
      }
    }
  
-@@ -3802,8 +3825,8 @@ template("libmonochrome_apk_or_bundle_tmpl") {
+@@ -3802,8 +3812,8 @@ template("libmonochrome_apk_or_bundle_tmpl") {
    chrome_common_shared_library(target_name) {
      sources = [ "../browser/android/monochrome_entry_point.cc" ]
      deps = [
