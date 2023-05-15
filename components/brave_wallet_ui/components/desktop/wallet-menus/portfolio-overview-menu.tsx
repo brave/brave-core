@@ -92,8 +92,6 @@ export const PortfolioOverviewMenu = () => {
 
       <CheckBoxRow onClick={onToggleHideGraph}>
         <Row>
-          {/* This graph icon needs to be updated to the
-              one in figma once it is added to leo. */}
           <ButtonIcon name='graph' />
           <PopupButtonText>
             {getLocale('braveWalletWalletPopupShowGraph')}
