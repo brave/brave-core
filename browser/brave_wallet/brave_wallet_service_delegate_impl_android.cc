@@ -30,7 +30,9 @@ content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
   }
 
   auto* active_contents = (*iter)->GetActiveWebContents();
-  DCHECK(active_contents);
+  if (!active_contents) {
+    return nullptr;
+  }
   DCHECK_EQ(active_contents->GetBrowserContext(), context);
   return active_contents;
 }
