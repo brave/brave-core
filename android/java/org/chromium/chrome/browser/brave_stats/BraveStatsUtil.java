@@ -280,7 +280,8 @@ public class BraveStatsUtil {
     }
 
     public static boolean hasWritePermission(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             if (activity == null) {
                 return false;
             }
