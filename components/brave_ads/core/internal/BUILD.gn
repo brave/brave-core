@@ -846,6 +846,8 @@ source_set("internal") {
     "geographic/subdivision_targeting/subdivision_targeting.cc",
     "geographic/subdivision_targeting/subdivision_targeting.h",
     "geographic/subdivision_targeting/subdivision_targeting_constants.h",
+    "geographic/subdivision_targeting/subdivision_targeting_json_reader_util.cc",
+    "geographic/subdivision_targeting/subdivision_targeting_json_reader_util.h",
     "geographic/subdivision_targeting/subdivision_targeting_util.cc",
     "geographic/subdivision_targeting/subdivision_targeting_util.h",
     "geographic/subdivision_targeting/supported_subdivision_codes.cc",

@@ -11,16 +11,24 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsSubdivisionTargetingUtilTest,
-     IsSupportedCountryCodeForSubdivisionTargeting) {
+TEST(BraveAdsSubdivisionTargetingUtilTest, DoesSupportSubdivisionTargeting) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(IsSupportedCountryCodeForSubdivisionTargeting("US"));
-  EXPECT_TRUE(IsSupportedCountryCodeForSubdivisionTargeting("CA"));
-  EXPECT_FALSE(IsSupportedCountryCodeForSubdivisionTargeting("ES"));
+  EXPECT_TRUE(
+      DoesSupportSubdivisionTargeting(/*United States of America*/ "US"));
+  EXPECT_TRUE(DoesSupportSubdivisionTargeting(/*Canada*/ "CA"));
+}
+
+TEST(BraveAdsSubdivisionTargetingUtilTest, DoesNotSupportSubdivisionTargeting) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(DoesSupportSubdivisionTargeting("XX"));
 }
 
 }  // namespace brave_ads

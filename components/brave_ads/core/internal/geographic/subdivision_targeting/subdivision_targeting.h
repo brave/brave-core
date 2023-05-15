@@ -29,12 +29,11 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
 
   ~SubdivisionTargeting() override;
 
-  static bool ShouldAllow();
-
   bool IsDisabled() const;
 
   bool ShouldAutoDetect() const;
 
+  static bool ShouldAllow();
   void MaybeAllow();
 
   void MaybeFetch();
@@ -42,22 +41,25 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
   const std::string& GetSubdivisionCode() const;
 
  private:
-  void OnAutoDetectedSubdivisionTargetingCodePrefChanged();
-  void OnSubdivisionTargetingCodePrefChanged();
-
+  void SetAutoDetectedSubdivisionCode(const std::string& subdivision_code);
+  void UpdateAutoDetectedSubdivisionCode();
   const std::string& GetLazyAutoDetectedSubdivisionCode() const;
+
+  void SetSubdivisionCode(const std::string& subdivision_code);
+  void UpdateSubdivisionCode();
   const std::string& GetLazySubdivisionCode() const;
 
+  void MaybeDisable();
+
+  void MaybeAutoDetectSubdivisionCode();
+
   void MaybeAllowForLocale(const std::string& locale);
-  void MaybeResetSubdivisionCodeToAutoDetect();
-  void MaybeResetSubdivisionCodeToDisabled();
 
   void MaybeFetchForLocale(const std::string& locale);
+  void FetchAfterDelay();
   void Fetch();
   void FetchCallback(const mojom::UrlResponseInfo& url_response);
-  bool ParseJson(const std::string& json);
   void Retry();
-  void FetchAfterDelay();
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;

@@ -357,6 +357,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/flags/flags_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_unittest.cc",
     "//brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_json_reader_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_unittest.cc",
     "//brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_unittest_util.cc",
     "//brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_unittest_util.h",

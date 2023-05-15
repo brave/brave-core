@@ -18,18 +18,15 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesAdSupportSubdivisionTargetingCode(
-    const CreativeAdInfo& creative_ad,
-    const std::string& subdivision_targeting_code) {
-  const std::string country_code = GetCountryCode(subdivision_targeting_code);
-
-  return creative_ad.geo_targets.find(subdivision_targeting_code) !=
+bool DoesCreativeAdSupportSubdivisionCode(const CreativeAdInfo& creative_ad,
+                                          const std::string& subdivision_code) {
+  return creative_ad.geo_targets.find(subdivision_code) !=
              creative_ad.geo_targets.cend() ||
-         creative_ad.geo_targets.find(country_code) !=
+         creative_ad.geo_targets.find(GetCountryCode(subdivision_code)) !=
              creative_ad.geo_targets.cend();
 }
 
-bool DoesAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
+bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
   const auto iter = base::ranges::find_if(
       creative_ad.geo_targets, [](const std::string& geo_target) {
         const std::vector<std::string> components = base::SplitString(
@@ -71,12 +68,9 @@ SubdivisionTargetingExclusionRule::ShouldInclude(
 
 bool SubdivisionTargetingExclusionRule::DoesRespectCap(
     const CreativeAdInfo& creative_ad) const {
-  if (!SubdivisionTargeting::ShouldAllow()) {
-    return !DoesAdTargetSubdivision(creative_ad);
-  }
-
-  if (subdivision_targeting_->IsDisabled()) {
-    return !DoesAdTargetSubdivision(creative_ad);
+  if (!SubdivisionTargeting::ShouldAllow() ||
+      subdivision_targeting_->IsDisabled()) {
+    return !DoesCreativeAdTargetSubdivision(creative_ad);
   }
 
   const std::string& subdivision_code =
@@ -85,7 +79,7 @@ bool SubdivisionTargetingExclusionRule::DoesRespectCap(
     return false;
   }
 
-  return DoesAdSupportSubdivisionTargetingCode(creative_ad, subdivision_code);
+  return DoesCreativeAdSupportSubdivisionCode(creative_ad, subdivision_code);
 }
 
 }  // namespace brave_ads
