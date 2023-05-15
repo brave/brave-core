@@ -40,9 +40,9 @@ namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
 }  // namespace https_upgrade_exceptions
 
-namespace localhost_permission_allowlist {
-class LocalhostPermissionAllowlistService;
-}  // namespace localhost_permission_allowlist
+namespace localhost_permission {
+class LocalhostPermissionService;
+}  // namespace localhost_permission
 
 namespace brave_stats {
 class BraveStatsUpdater;
@@ -108,8 +108,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_shields::AdBlockService* ad_block_service() override;
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() override;
-  localhost_permission_allowlist::LocalhostPermissionAllowlistService*
-  localhost_permission_allowlist_service() override;
+  localhost_permission::LocalhostPermissionService*
+  localhost_permission_service() override;
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
@@ -175,9 +175,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;
-  std::unique_ptr<
-      localhost_permission_allowlist::LocalhostPermissionAllowlistService>
-      localhost_permission_allowlist_service_;
+  std::unique_ptr<localhost_permission::LocalhostPermissionService>
+      localhost_permission_service_;
 #if BUILDFLAG(ENABLE_GREASELION)
   std::unique_ptr<greaselion::GreaselionDownloadService>
       greaselion_download_service_;

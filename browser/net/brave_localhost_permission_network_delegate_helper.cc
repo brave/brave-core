@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/localhost_permission_allowlist/browser/localhost_permission_allowlist_service.h"
+#include "brave/components/localhost_permission/localhost_permission_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
@@ -132,8 +132,11 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
 
     case blink::mojom::PermissionStatus::ASK: {
       // Check if website is allowed to ask for permission.
-      if (g_brave_browser_process->localhost_permission_allowlist_service()
-              ->CanAskForLocalhostPermission((request_initiator_url))) {
+      auto* localhost_permission_service =
+          g_brave_browser_process->localhost_permission_service();
+      if (localhost_permission_service &&
+          localhost_permission_service->CanAskForLocalhostPermission(
+              request_initiator_url)) {
         permission_controller->RequestPermissionsFromCurrentDocument(
             {blink::PermissionType::BRAVE_LOCALHOST_ACCESS},
             /* rfh */ contents->GetPrimaryMainFrame(), true,

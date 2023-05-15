@@ -3,24 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_LOCALHOST_PERMISSION_ALLOWLIST_BROWSER_LOCALHOST_PERMISSION_ALLOWLIST_SERVICE_H_
-#define BRAVE_COMPONENTS_LOCALHOST_PERMISSION_ALLOWLIST_BROWSER_LOCALHOST_PERMISSION_ALLOWLIST_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_LOCALHOST_PERMISSION_LOCALHOST_PERMISSION_SERVICE_H_
+#define BRAVE_COMPONENTS_LOCALHOST_PERMISSION_LOCALHOST_PERMISSION_SERVICE_H_
 
 #include <memory>
 #include <set>
 #include <string>
 
+#include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/strings/string_piece.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 
-namespace localhost_permission_allowlist {
+namespace localhost_permission {
 
-class LocalhostPermissionAllowlistService
+class LocalhostPermissionService
     : public brave_component_updater::LocalDataFilesObserver {
  public:
-  explicit LocalhostPermissionAllowlistService(
+  explicit LocalhostPermissionService(
       brave_component_updater::LocalDataFilesService* local_data_files_service);
 
   // implementation of brave_component_updater::LocalDataFilesObserver
@@ -29,21 +30,16 @@ class LocalhostPermissionAllowlistService
                         const std::string& manifest) override;
 
   bool CanAskForLocalhostPermission(const GURL& url);
-  ~LocalhostPermissionAllowlistService() override;
+  ~LocalhostPermissionService() override;
   void OnDATFileDataReady(const std::string& contents);
 
  private:
   void LoadLocalhostPermissionAllowlist(const base::FilePath& install_dir);
-  std::set<std::string> allowed_domains_;
+  base::flat_set<std::string> allowed_domains_;
   bool is_ready_ = false;
-  base::WeakPtrFactory<LocalhostPermissionAllowlistService> weak_factory_{this};
+  base::WeakPtrFactory<LocalhostPermissionService> weak_factory_{this};
 };
 
-// Creates the LocalhostPermissionAllowlistService
-std::unique_ptr<LocalhostPermissionAllowlistService>
-LocalhostPermissionAllowlistServiceFactory(
-    brave_component_updater::LocalDataFilesService* local_data_files_service);
+}  // namespace localhost_permission
 
-}  // namespace localhost_permission_allowlist
-
-#endif  // BRAVE_COMPONENTS_LOCALHOST_PERMISSION_ALLOWLIST_BROWSER_LOCALHOST_PERMISSION_ALLOWLIST_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_LOCALHOST_PERMISSION_LOCALHOST_PERMISSION_SERVICE_H_

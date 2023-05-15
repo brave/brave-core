@@ -37,7 +37,7 @@
 #include "brave/components/debounce/browser/debounce_component_installer.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
-#include "brave/components/localhost_permission_allowlist/browser/localhost_permission_allowlist_service.h"
+#include "brave/components/localhost_permission/localhost_permission_service.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
@@ -216,7 +216,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveLocalhostAccessPermission)) {
-    localhost_permission_allowlist_service();
+    localhost_permission_service();
   }
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -271,13 +271,19 @@ BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
   return https_upgrade_exceptions_service_.get();
 }
 
-localhost_permission_allowlist::LocalhostPermissionAllowlistService*
-BraveBrowserProcessImpl::localhost_permission_allowlist_service() {
-  if (!localhost_permission_allowlist_service_) {
-    localhost_permission_allowlist_service_ = localhost_permission_allowlist::
-        LocalhostPermissionAllowlistServiceFactory(local_data_files_service());
+localhost_permission::LocalhostPermissionService*
+BraveBrowserProcessImpl::localhost_permission_service() {
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveLocalhostAccessPermission)) {
+    return nullptr;
   }
-  return localhost_permission_allowlist_service_.get();
+
+  if (!localhost_permission_service_) {
+    localhost_permission_service_ =
+        std::make_unique<localhost_permission::LocalhostPermissionService>(
+            local_data_files_service());
+  }
+  return localhost_permission_service_.get();
 }
 
 #if BUILDFLAG(ENABLE_GREASELION)

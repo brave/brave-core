@@ -74,8 +74,8 @@ TestingBraveBrowserProcess::https_upgrade_exceptions_service() {
   return nullptr;
 }
 
-localhost_permission_allowlist::LocalhostPermissionAllowlistService*
-TestingBraveBrowserProcess::localhost_permission_allowlist_service() {
+localhost_permission::LocalhostPermissionService*
+TestingBraveBrowserProcess::localhost_permission_service() {
   return nullptr;
 }
 
