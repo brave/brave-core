@@ -36,15 +36,15 @@ class CommunicationAdapter {
       const net::BackoffEntry::Policy request_task_policy);
   ~CommunicationAdapter();
 
-  using PostResultCallback = base::OnceCallback<void(TaskResultResponse)>;
+  using UploadResultCallback = base::OnceCallback<void(TaskResultResponse)>;
   using GetTaskCallback = base::OnceCallback<void(TaskList, int)>;
 
   void GetTasks(GetTaskCallback callback);
   void OnGetTasks(GetTaskCallback callback,
                   const std::unique_ptr<std::string> response_body);
-  void PostTaskResult(TaskResult result, PostResultCallback callback);
-  void OnPostTaskResult(PostResultCallback callback,
-                        const std::unique_ptr<std::string> response_body);
+  void UploadTaskResult(TaskResult result, UploadResultCallback callback);
+  void OnUploadTaskResult(UploadResultCallback callback,
+                          const std::unique_ptr<std::string> response_body);
 
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

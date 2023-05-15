@@ -9,14 +9,17 @@
 #include <string>
 
 #include "brave/components/brave_federated/task/typing.h"
+#include "brave/third_party/flower/src/proto/flwr/proto/task.pb.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_federated {
 
 std::string BuildGetTasksPayload();
 
+absl::optional<Task> ParseTask(flower::TaskIns task_instruction);
 TaskList ParseTaskListFromResponseBody(const std::string& response_body);
 
-std::string BuildPostTaskResultsPayload(const TaskResult& result);
+std::string BuildUploadTaskResultsPayload(const TaskResult& result);
 
 }  // namespace brave_federated
 

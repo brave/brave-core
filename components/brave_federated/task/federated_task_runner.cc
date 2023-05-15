@@ -17,7 +17,7 @@
 
 namespace brave_federated {
 
-FederatedTaskRunner::FederatedTaskRunner(Task task,
+FederatedTaskRunner::FederatedTaskRunner(const Task& task,
                                          std::unique_ptr<Model> model)
     : task_(task), model_(std::move(model)) {
   DCHECK(model_);
@@ -57,15 +57,15 @@ absl::optional<TaskResult> FederatedTaskRunner::Run() {
   return absl::optional<TaskResult>(result);
 }
 
-void FederatedTaskRunner::SetTrainingData(DataSet training_data) {
+void FederatedTaskRunner::SetTrainingData(const DataSet& training_data) {
   training_data_ = training_data;
 }
 
-void FederatedTaskRunner::SetTestData(DataSet test_data) {
+void FederatedTaskRunner::SetTestData(const DataSet& test_data) {
   test_data_ = test_data;
 }
 
-void FederatedTaskRunner::SetWeights(ModelWeights weights) {
+void FederatedTaskRunner::SetWeights(const ModelWeights& weights) {
   model_->SetWeights(std::get<0>(weights));
   model_->SetBias(std::get<1>(weights));
 }

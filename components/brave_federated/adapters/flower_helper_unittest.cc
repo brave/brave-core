@@ -19,9 +19,9 @@
 
 namespace brave_federated {
 
-std::vector<Weights> test_parameters = {{1, 2, 3}, {4, 5, 6}};
-std::map<std::string, double> config_metrics = {{"loss", 0.42},
-                                                {"accuracy", 42.0}};
+std::vector<Weights> g_test_parameters = {{1, 2, 3}, {4, 5, 6}};
+std::map<std::string, double> g_config_metrics = {{"loss", 0.42},
+                                                  {"accuracy", 42.0}};
 
 TEST(BraveFederatedLearningFlowerHelperTest, BuildAnonymousGetTasksPayload) {
   // Arrange
@@ -51,8 +51,8 @@ TEST(BraveFederatedLearningFlowerHelperTest, ParseFitTaskListFromResponseBody) {
   flower::ServerMessage server_message;
   flower::ServerMessage_FitIns fit_instruction;
   *fit_instruction.mutable_parameters() =
-      GetParametersFromVectors(test_parameters);
-  *fit_instruction.mutable_config() = MetricsToProto(config_metrics);
+      GetParametersFromVectors(g_test_parameters);
+  *fit_instruction.mutable_config() = MetricsToProto(g_config_metrics);
   *server_message.mutable_fit_ins() = fit_instruction;
   *flower_task.mutable_legacy_server_message() = server_message;
   *task_instruction->mutable_task() = flower_task;
@@ -77,13 +77,13 @@ TEST(BraveFederatedLearningFlowerHelperTest, ParseFitTaskListFromResponseBody) {
 
   std::vector<Weights> task_parameters = task.GetParameters();
   EXPECT_EQ(task_parameters.size(), 2U);
-  EXPECT_EQ(task_parameters, test_parameters);
+  EXPECT_EQ(task_parameters, g_test_parameters);
 
   std::map<std::string, float> task_config = task.GetConfig();
   EXPECT_EQ(task_config.size(), 2U);
-  EXPECT_EQ(task_config["loss"], static_cast<float>(config_metrics["loss"]));
+  EXPECT_EQ(task_config["loss"], static_cast<float>(g_config_metrics["loss"]));
   EXPECT_EQ(task_config["accuracy"],
-            static_cast<float>(config_metrics["accuracy"]));
+            static_cast<float>(g_config_metrics["accuracy"]));
 }
 
 TEST(BraveFederatedLearningFlowerHelperTest,
@@ -100,8 +100,8 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   flower::ServerMessage server_message;
   flower::ServerMessage_EvaluateIns eval_instruction;
   *eval_instruction.mutable_parameters() =
-      GetParametersFromVectors(test_parameters);
-  *eval_instruction.mutable_config() = MetricsToProto(config_metrics);
+      GetParametersFromVectors(g_test_parameters);
+  *eval_instruction.mutable_config() = MetricsToProto(g_config_metrics);
   *server_message.mutable_evaluate_ins() = eval_instruction;
   *flower_task.mutable_legacy_server_message() = server_message;
   *task_instruction->mutable_task() = flower_task;
@@ -126,13 +126,13 @@ TEST(BraveFederatedLearningFlowerHelperTest,
 
   std::vector<Weights> task_parameters = task.GetParameters();
   EXPECT_EQ(task_parameters.size(), 2U);
-  EXPECT_EQ(task_parameters, test_parameters);
+  EXPECT_EQ(task_parameters, g_test_parameters);
 
   std::map<std::string, float> task_config = task.GetConfig();
   EXPECT_EQ(task_config.size(), 2U);
-  EXPECT_EQ(task_config["loss"], static_cast<float>(config_metrics["loss"]));
+  EXPECT_EQ(task_config["loss"], static_cast<float>(g_config_metrics["loss"]));
   EXPECT_EQ(task_config["accuracy"],
-            static_cast<float>(config_metrics["accuracy"]));
+            static_cast<float>(g_config_metrics["accuracy"]));
 }
 
 TEST(BraveFederatedLearningFlowerHelperTest,
@@ -148,8 +148,8 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   flower::ServerMessage server_message;
   flower::ServerMessage_EvaluateIns eval_instruction;
   *eval_instruction.mutable_parameters() =
-      GetParametersFromVectors(test_parameters);
-  *eval_instruction.mutable_config() = MetricsToProto(config_metrics);
+      GetParametersFromVectors(g_test_parameters);
+  *eval_instruction.mutable_config() = MetricsToProto(g_config_metrics);
   *server_message.mutable_evaluate_ins() = eval_instruction;
   *flower_task.mutable_legacy_server_message() = server_message;
   *task_instruction->mutable_task() = flower_task;
@@ -176,7 +176,7 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   flower::Task flower_task;
   flower::ServerMessage server_message;
   flower::ServerMessage_EvaluateIns eval_instruction;
-  *eval_instruction.mutable_config() = MetricsToProto(config_metrics);
+  *eval_instruction.mutable_config() = MetricsToProto(g_config_metrics);
   *server_message.mutable_evaluate_ins() = eval_instruction;
   *flower_task.mutable_legacy_server_message() = server_message;
   *task_instruction->mutable_task() = flower_task;
@@ -202,12 +202,12 @@ TEST(BraveFederatedLearningFlowerHelperTest, BuildPostTrainTaskResultsPayload) {
   float accuracy = 42.0;
   std::map<std::string, double> metrics = {{"alpha", 0.42}, {"beta", 42.0}};
 
-  PerformanceReport performance_report =
-      PerformanceReport(dataset_size, loss, accuracy, test_parameters, metrics);
+  PerformanceReport performance_report = PerformanceReport(
+      dataset_size, loss, accuracy, g_test_parameters, metrics);
   TaskResult task_result = TaskResult(task, performance_report);
 
   // Act
-  const std::string payload = BuildPostTaskResultsPayload(task_result);
+  const std::string payload = BuildUploadTaskResultsPayload(task_result);
 
   // Assert
   flower::PushTaskResRequest request;
@@ -226,7 +226,7 @@ TEST(BraveFederatedLearningFlowerHelperTest, BuildPostTrainTaskResultsPayload) {
   std::vector<Weights> parameters =
       GetVectorsFromParameters(fit_result.parameters());
   EXPECT_EQ(parameters.size(), 2U);
-  EXPECT_EQ(parameters, test_parameters);
+  EXPECT_EQ(parameters, g_test_parameters);
 
   std::map<std::string, float> flower_metrics =
       ConfigsFromProto(fit_result.metrics());
@@ -247,12 +247,12 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   float accuracy = 42.0;
   std::map<std::string, double> metrics = {{"alpha", 0.42}, {"beta", 42.0}};
 
-  PerformanceReport performance_report =
-      PerformanceReport(dataset_size, loss, accuracy, test_parameters, metrics);
+  PerformanceReport performance_report = PerformanceReport(
+      dataset_size, loss, accuracy, g_test_parameters, metrics);
   TaskResult task_result = TaskResult(task, performance_report);
 
   // Act
-  const std::string payload = BuildPostTaskResultsPayload(task_result);
+  const std::string payload = BuildUploadTaskResultsPayload(task_result);
 
   // Assert
   flower::PushTaskResRequest request;
