@@ -43,7 +43,7 @@ CreativeAdInfo BuildCreativeAd(const bool should_use_random_guids) {
 
   creative_ad.priority = 2;
 
-  creative_ad.ptr = 1.0;
+  creative_ad.pass_through_rate = 1.0;
 
   creative_ad.per_day = 3;
   creative_ad.per_week = 4;

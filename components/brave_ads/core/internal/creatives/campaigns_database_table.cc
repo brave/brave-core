@@ -36,7 +36,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindInt(command, index++, creative_ad.daily_cap);
     BindString(command, index++, creative_ad.advertiser_id);
     BindInt(command, index++, creative_ad.priority);
-    BindDouble(command, index++, creative_ad.ptr);
+    BindDouble(command, index++, creative_ad.pass_through_rate);
 
     count++;
   }

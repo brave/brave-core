@@ -127,7 +127,7 @@ CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.company_name = ColumnString(record, 17);
   creative_ad.image_url = GURL(ColumnString(record, 18));
   creative_ad.alt = ColumnString(record, 19);
-  creative_ad.ptr = ColumnDouble(record, 20);
+  creative_ad.pass_through_rate = ColumnDouble(record, 20);
 
   CreativeDaypartInfo daypart;
   daypart.days_of_week = ColumnString(record, 21);

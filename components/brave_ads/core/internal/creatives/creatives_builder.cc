@@ -91,7 +91,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         }
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
-        creative_ad.ptr = campaign.ptr;
+        creative_ad.pass_through_rate = campaign.pass_through_rate;
         creative_ad.has_conversion = !creative_set.conversions.empty();
         creative_ad.per_day = creative_set.per_day;
         creative_ad.per_week = creative_set.per_week;
@@ -156,7 +156,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         }
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
-        creative_ad.ptr = campaign.ptr;
+        creative_ad.pass_through_rate = campaign.pass_through_rate;
         creative_ad.has_conversion = !creative_set.conversions.empty();
         creative_ad.per_day = creative_set.per_day;
         creative_ad.per_week = creative_set.per_week;
@@ -222,7 +222,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         }
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
-        info.ptr = campaign.ptr;
+        info.pass_through_rate = campaign.pass_through_rate;
         info.has_conversion = !creative_set.conversions.empty();
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;
@@ -301,7 +301,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         }
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
-        info.ptr = campaign.ptr;
+        info.pass_through_rate = campaign.pass_through_rate;
         info.has_conversion = !creative_set.conversions.empty();
         info.per_day = creative_set.per_day;
         info.per_week = creative_set.per_week;

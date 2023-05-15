@@ -128,7 +128,7 @@ CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.image_url = GURL(ColumnString(record, 20));
   creative_ad.dimensions = ColumnString(record, 21);
   creative_ad.cta_text = ColumnString(record, 22);
-  creative_ad.ptr = ColumnDouble(record, 23);
+  creative_ad.pass_through_rate = ColumnDouble(record, 23);
 
   CreativeDaypartInfo daypart;
   daypart.days_of_week = ColumnString(record, 24);

@@ -117,7 +117,7 @@ CreativePromotedContentAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.target_url = GURL(ColumnString(record, 16));
   creative_ad.title = ColumnString(record, 17);
   creative_ad.description = ColumnString(record, 18);
-  creative_ad.ptr = ColumnDouble(record, 19);
+  creative_ad.pass_through_rate = ColumnDouble(record, 19);
 
   CreativeDaypartInfo daypart;
   daypart.days_of_week = ColumnString(record, 20);

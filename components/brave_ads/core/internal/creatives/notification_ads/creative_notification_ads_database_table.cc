@@ -122,7 +122,7 @@ CreativeNotificationAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.target_url = GURL(ColumnString(record, 18));
   creative_ad.title = ColumnString(record, 19);
   creative_ad.body = ColumnString(record, 20);
-  creative_ad.ptr = ColumnDouble(record, 21);
+  creative_ad.pass_through_rate = ColumnDouble(record, 21);
 
   CreativeDaypartInfo daypart;
   daypart.days_of_week = ColumnString(record, 22);
