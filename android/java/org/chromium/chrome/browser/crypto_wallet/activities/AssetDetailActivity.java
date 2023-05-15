@@ -36,8 +36,6 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
@@ -62,6 +60,7 @@ import org.chromium.chrome.browser.util.TabUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -85,7 +84,7 @@ public class AssetDetailActivity
     private BlockchainToken mAsset;
     private ExecutorService mExecutor;
     private Handler mHandler;
-    private AccountInfo[] accountInfos;
+    private AccountInfo[] mAccountInfos;
     private WalletCoinAdapter mWalletTxCoinAdapter;
     private Button mBtnBuy;
     private Button mBtnSwap;
@@ -320,29 +319,32 @@ public class AssetDetailActivity
         mWalletModel.getKeyringModel().getKeyringPerId(
                 AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
                     if (keyringInfo == null) return;
-                    accountInfos = keyringInfo.accountInfos;
+                    mAccountInfos = keyringInfo.accountInfos;
                     WalletListItemModel thisAssetItemModel = new WalletListItemModel(
                             R.drawable.ic_eth, mAsset.name, mAsset.symbol, mAsset.tokenId, "", "");
                     LiveDataUtil.observeOnce(
                             mWalletModel.getNetworkModel().mCryptoNetworks, allNetworks -> {
                                 Utils.getTxExtraInfo(new WeakReference<>(this),
                                         TokenUtils.TokenType.ALL, allNetworks, mAssetNetwork,
-                                        accountInfos, new BlockchainToken[] {mAsset}, false,
+                                        mAccountInfos, new BlockchainToken[] {mAsset}, false,
                                         (assetPrices, fullTokenList, nativeAssetsBalances,
                                                 blockchainTokensBalances) -> {
                                             thisAssetItemModel.setBlockchainToken(mAsset);
-                                            Utils.setUpTransactionList(this, accountInfos,
-                                                    thisAssetItemModel, assetPrices, fullTokenList,
-                                                    nativeAssetsBalances, blockchainTokensBalances,
-                                                    findViewById(R.id.rv_transactions), this,
-                                                    mWalletTxCoinAdapter);
+                                            Utils.setUpTransactionList(this, mAccountInfos,
+                                                    allNetworks, thisAssetItemModel, assetPrices,
+                                                    fullTokenList, nativeAssetsBalances,
+                                                    blockchainTokensBalances, mAssetNetwork,
+                                                    walletListItemModelList -> {
+                                                        showTransactionList(
+                                                                walletListItemModelList);
+                                                    });
 
                                             double assetPrice = Utils.getOrDefault(assetPrices,
                                                     mAsset.symbol.toLowerCase(Locale.ENGLISH),
                                                     0.0d);
 
                                             List<WalletListItemModel> walletListItemModelList =
-                                                    createAccountList(accountInfos, assetPrice,
+                                                    createAccountList(mAccountInfos, assetPrice,
                                                             nativeAssetsBalances,
                                                             blockchainTokensBalances);
 
@@ -351,6 +353,17 @@ public class AssetDetailActivity
                                         });
                             });
                 });
+    }
+
+    private void showTransactionList(List<WalletListItemModel> walletListItemModelList) {
+        mWalletTxCoinAdapter.setWalletCoinAdapterType(
+                WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+
+        mWalletTxCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        mWalletTxCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
+        mWalletTxCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
+        RecyclerView rvTransactions = findViewById(R.id.rv_transactions);
+        rvTransactions.setAdapter(mWalletTxCoinAdapter);
     }
 
     private Double getAccountBalance(HashMap<String, Double> nativeAssetsBalances,
@@ -407,7 +420,7 @@ public class AssetDetailActivity
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(txInfo, mJsonRpcService, this, accountInfos, mCoinType);
+        Utils.openTransaction(txInfo, mJsonRpcService, this, mAccountInfos, mCoinType);
     }
 
     @Override

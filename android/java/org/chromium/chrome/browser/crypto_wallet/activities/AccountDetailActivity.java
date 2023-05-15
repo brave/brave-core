@@ -51,6 +51,7 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -178,15 +179,15 @@ public class AccountDetailActivity
                 return;
             }
 
-            AccountInfo[] accounts = keyringInfo.accountInfos;
+            AccountInfo[] allAccountInfos = keyringInfo.accountInfos;
             LiveDataUtil.observeOnce(
                     mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
                     allNetworks -> {
                         Utils.getTxExtraInfo(new WeakReference<>(this), TokenUtils.TokenType.ALL,
-                                allNetworks, selectedNetwork, accounts, null, false,
+                                allNetworks, selectedNetwork, allAccountInfos, null, false,
                                 (assetPrices, fullTokenList, nativeAssetsBalances,
                                         blockchainTokensBalances) -> {
-                                    for (AccountInfo accountInfo : accounts) {
+                                    for (AccountInfo accountInfo : allAccountInfos) {
                                         if (accountInfo.address.equals(mAddress)
                                                 && accountInfo.name.equals(mName)) {
                                             AccountInfo[] accountInfos = new AccountInfo[1];
@@ -196,17 +197,30 @@ public class AccountDetailActivity
                                                             Utils.getCoinIcon(mCoinType), mName,
                                                             mAddress, null, null, mIsImported);
                                             Utils.setUpTransactionList(this, accountInfos,
-                                                    thisAccountItemModel, assetPrices,
+                                                    allNetworks, thisAccountItemModel, assetPrices,
                                                     fullTokenList, nativeAssetsBalances,
-                                                    blockchainTokensBalances,
-                                                    findViewById(R.id.rv_transactions), this,
-                                                    mWalletTxCoinAdapter);
+                                                    blockchainTokensBalances, selectedNetwork,
+                                                    walletListItemModelList -> {
+                                                        showTransactionList(
+                                                                walletListItemModelList);
+                                                    });
                                             break;
                                         }
                                     }
                                 });
                     });
         });
+    }
+
+    private void showTransactionList(List<WalletListItemModel> walletListItemModelList) {
+        mWalletTxCoinAdapter.setWalletCoinAdapterType(
+                WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+
+        mWalletTxCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        mWalletTxCoinAdapter.setOnWalletListItemClick(AccountDetailActivity.this);
+        mWalletTxCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
+        RecyclerView rvTransactions = findViewById(R.id.rv_transactions);
+        rvTransactions.setAdapter(mWalletTxCoinAdapter);
     }
 
     @Override
