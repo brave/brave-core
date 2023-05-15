@@ -18,9 +18,9 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
 
     public BraveBookmarkManagerCoordinator(Context context, ComponentName openBookmarkComponentName,
             boolean isDialogUi, boolean isIncognito, SnackbarManager snackbarManager,
-            Profile profile) {
-        super(context, openBookmarkComponentName, isDialogUi, isIncognito, snackbarManager,
-                profile);
+            Profile profile, BookmarkUiPrefs bookmarkUiPrefs) {
+        super(context, openBookmarkComponentName, isDialogUi, isIncognito, snackbarManager, profile,
+                bookmarkUiPrefs);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

@@ -35,9 +35,9 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
-import org.chromium.chrome.browser.bookmarks.BookmarkItemsAdapter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.BookmarkOpener;
+import org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs;
 import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -121,6 +121,7 @@ import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
+import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
@@ -801,21 +802,23 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/bookmarks/BookmarkToolbarCoordinator",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator",
-                SelectableListLayout.class, SelectionDelegate.class, SearchDelegate.class,
-                BookmarkItemsAdapter.class, boolean.class, OneshotSupplier.class,
-                BookmarkModel.class, BookmarkOpener.class));
+                Context.class, SelectableListLayout.class, SelectionDelegate.class,
+                SearchDelegate.class, DragReorderableRecyclerViewAdapter.class, boolean.class,
+                OneshotSupplier.class, BookmarkModel.class, BookmarkOpener.class,
+                BookmarkUiPrefs.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator",
                 Context.class, ComponentName.class, boolean.class, boolean.class,
-                SnackbarManager.class, Profile.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
-                "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerMediator", Context.class,
-                BookmarkModel.class, BookmarkOpener.class, SelectableListLayout.class,
-                SelectionDelegate.class, RecyclerView.class, BookmarkItemsAdapter.class,
-                LargeIconBridge.class, boolean.class, boolean.class, ObservableSupplierImpl.class,
-                Profile.class, BookmarkUndoController.class));
+                SnackbarManager.class, Profile.class, BookmarkUiPrefs.class));
+        Assert.assertTrue(
+                constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
+                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerMediator",
+                        Context.class, BookmarkModel.class, BookmarkOpener.class,
+                        SelectableListLayout.class, SelectionDelegate.class, RecyclerView.class,
+                        DragReorderableRecyclerViewAdapter.class, LargeIconBridge.class,
+                        boolean.class, boolean.class, ObservableSupplierImpl.class, Profile.class,
+                        BookmarkUndoController.class, ModelList.class, BookmarkUiPrefs.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkModel",

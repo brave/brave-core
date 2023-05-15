@@ -5,8 +5,11 @@
 
 package org.chromium.chrome.browser.bookmarks;
 
+import android.content.Context;
+
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.components.bookmarks.BookmarkId;
+import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
@@ -15,13 +18,16 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
     // Overridden Chromium's BookmarkToolbarCoordinator.mToolbar
     private BookmarkToolbar mToolbar;
 
-    BraveBookmarkToolbarCoordinator(SelectableListLayout<BookmarkId> selectableListLayout,
+    BraveBookmarkToolbarCoordinator(Context context,
+            SelectableListLayout<BookmarkId> selectableListLayout,
             SelectionDelegate selectionDelegate, SearchDelegate searchDelegate,
-            BookmarkItemsAdapter bookmarkItemsAdapter, boolean isDialogUi,
-            OneshotSupplier<BookmarkDelegate> bookmarkDelegateSupplier, BookmarkModel bookmarkModel,
-            BookmarkOpener bookmarkOpener) {
-        super(selectableListLayout, selectionDelegate, searchDelegate, bookmarkItemsAdapter,
-                isDialogUi, bookmarkDelegateSupplier, bookmarkModel, bookmarkOpener);
+            DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
+            boolean isDialogUi, OneshotSupplier<BookmarkDelegate> bookmarkDelegateSupplier,
+            BookmarkModel bookmarkModel, BookmarkOpener bookmarkOpener,
+            BookmarkUiPrefs bookmarkUiPrefs) {
+        super(context, selectableListLayout, selectionDelegate, searchDelegate,
+                dragReorderableRecyclerViewAdapter, isDialogUi, bookmarkDelegateSupplier,
+                bookmarkModel, bookmarkOpener, bookmarkUiPrefs);
 
         if (mToolbar instanceof BraveBookmarkToolbar) {
             ((BraveBookmarkToolbar) mToolbar).setBraveBookmarkDelegate(bookmarkDelegateSupplier);

@@ -26,11 +26,13 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.bookmarks.BookmarkId;
+import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,13 +53,15 @@ class BraveBookmarkManagerMediator
     BraveBookmarkManagerMediator(Context context, BookmarkModel bookmarkModel,
             BookmarkOpener bookmarkOpener, SelectableListLayout<BookmarkId> selectableListLayout,
             SelectionDelegate<BookmarkId> selectionDelegate, RecyclerView recyclerView,
-            BookmarkItemsAdapter bookmarkItemsAdapter, LargeIconBridge largeIconBridge,
-            boolean isDialogUi, boolean isIncognito,
+            DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
+            LargeIconBridge largeIconBridge, boolean isDialogUi, boolean isIncognito,
             ObservableSupplierImpl<Boolean> backPressStateSupplier, Profile profile,
-            BookmarkUndoController bookmarkUndoController) {
+            BookmarkUndoController bookmarkUndoController, ModelList modelList,
+            BookmarkUiPrefs bookmarkUiPrefs) {
         super(context, bookmarkModel, bookmarkOpener, selectableListLayout, selectionDelegate,
-                recyclerView, bookmarkItemsAdapter, largeIconBridge, isDialogUi, isIncognito,
-                backPressStateSupplier, profile, bookmarkUndoController);
+                recyclerView, dragReorderableRecyclerViewAdapter, largeIconBridge, isDialogUi,
+                isIncognito, backPressStateSupplier, profile, bookmarkUndoController, modelList,
+                bookmarkUiPrefs);
     }
 
     public void setWindow(ActivityWindowAndroid window) {
