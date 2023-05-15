@@ -103,15 +103,15 @@
         android:title="@string/youtube">
             <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="hide_youtube_recommended_content"
-            android:title="@string/hide_youtube_recommended_content"
+            android:title="@string/block_youtube_recommended_content"
             android:order="25"
-            android:summary="@string/hide_youtube_recommended_content_description"
+            android:summary="@string/block_youtube_recommended_content_description"
             android:defaultValue="true" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="hide_youtube_distracting_elements"
-            android:title="@string/hide_youtube_distracting_elements"
+            android:title="@string/block_youtube_distracting_elements"
             android:order="25"
-            android:summary="@string/hide_youtube_distracting_elements_description"
+            android:summary="@string/block_youtube_distracting_elements_description"
             android:defaultValue="true" />
     </PreferenceCategory>
         <PreferenceCategory
