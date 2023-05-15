@@ -173,11 +173,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
-#include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "brave/components/speedreader/speedreader_util.h"
-#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
+#include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
+#endif
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
