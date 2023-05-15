@@ -46,4 +46,26 @@ extension BraveWalletTxService {
       }
     )
   }
+  
+  // Fetches all transactions for a given AccountInfo
+  func allTransactions(
+    networks: [BraveWallet.NetworkInfo],
+    for accountInfo: BraveWallet.AccountInfo
+  ) async -> [BraveWallet.TransactionInfo] {
+    return await withTaskGroup(
+      of: [BraveWallet.TransactionInfo].self,
+      body: { @MainActor group in
+        for network in networks {
+          group.addTask { @MainActor in
+            await self.allTransactionInfo(accountInfo.coin, chainId: network.chainId, from: accountInfo.address)
+          }
+        }
+        var allTx: [BraveWallet.TransactionInfo] = []
+        for await transactions in group {
+          allTx.append(contentsOf: transactions)
+        }
+        return allTx
+      }
+    )
+  }
 }

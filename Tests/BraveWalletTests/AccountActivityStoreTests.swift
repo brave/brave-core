@@ -13,18 +13,22 @@ class AccountActivityStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = .init()
 
   let networks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-    .eth: [.mockMainnet],
-    .sol: [.mockSolana]
+    .eth: [.mockMainnet, .mockGoerli],
+    .sol: [.mockSolana, .mockSolanaTestnet]
   ]
   let visibleAssetsForCoins: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [
     .eth: [
       BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
       .mockERC721NFTToken.copy(asVisibleAsset: true),
-      .mockUSDCToken.copy(asVisibleAsset: true)],
+      .mockUSDCToken.copy(asVisibleAsset: true),
+      BraveWallet.NetworkInfo.mockGoerli.nativeToken.copy(asVisibleAsset: true)
+    ],
     .sol: [
       BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
       .mockSolanaNFTToken.copy(asVisibleAsset: true),
-      .mockSpdToken.copy(asVisibleAsset: true)]
+      .mockSpdToken.copy(asVisibleAsset: true),
+      BraveWallet.NetworkInfo.mockSolanaTestnet.nativeToken.copy(asVisibleAsset: true)
+    ]
   ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
@@ -35,10 +39,6 @@ class AccountActivityStoreTests: XCTestCase {
     .init(fromAsset: BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(),
           toAsset: "usd", price: "0.50", assetTimeframeChange: "-57.23")
   ]
-  let transactions: [BraveWallet.CoinType: [BraveWallet.TransactionInfo]] = [
-    .eth: [.previewConfirmedSend, .previewConfirmedSwap],
-    .sol: [.previewConfirmedSolSystemTransfer]
-  ]
 
   private func setupServices(
     mockEthBalanceWei: String = "",
@@ -46,7 +46,7 @@ class AccountActivityStoreTests: XCTestCase {
     mockERC721BalanceWei: String = "",
     mockLamportBalance: UInt64 = 0,
     mockSplTokenBalances: [String: String] = [:], // [tokenMintAddress: balance]
-    selectedNetwork: BraveWallet.NetworkInfo
+    transactions: [BraveWallet.TransactionInfo]
   ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService, BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy, IpfsAPI) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -56,9 +56,6 @@ class AccountActivityStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._network = { coin, _, completion in
-      completion(selectedNetwork)
-    }
     rpcService._allNetworks = { coin, completion in
       completion(self.networks[coin] ?? [])
     }
@@ -103,7 +100,8 @@ class AccountActivityStoreTests: XCTestCase {
     walletService._addObserver = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     walletService._userAssets = { chainId, coin, completion in
-      completion(self.visibleAssetsForCoins[coin] ?? [])
+      let assets = self.visibleAssetsForCoins[coin] ?? []
+      completion(assets.filter({ $0.chainId == chainId }))
     }
 
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
@@ -118,8 +116,8 @@ class AccountActivityStoreTests: XCTestCase {
     
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
-    txService._allTransactionInfo = { coin, _, _, completion in
-      completion(self.transactions[coin] ?? [])
+    txService._allTransactionInfo = { coin, chainId, _, completion in
+      completion(transactions.filter({ $0.chainId == chainId }))
     }
     
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
@@ -143,11 +141,15 @@ class AccountActivityStoreTests: XCTestCase {
     
     let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
     
+    let ethSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo // default in mainnet
+    let goerliSwapTxCopy = BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
+    goerliSwapTxCopy.chainId = BraveWallet.GoerliChainId
+    
     let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
       mockERC721BalanceWei: mockERC721BalanceWei,
-      selectedNetwork: .mockMainnet
+      transactions: [ethSendTxCopy, goerliSwapTxCopy]
     )
     
     let accountActivityStore = AccountActivityStore(
@@ -174,7 +176,7 @@ class AccountActivityStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedVisibleAssets.count, 2)
+        XCTAssertEqual(lastUpdatedVisibleAssets.count, 3)
         
         XCTAssertEqual(lastUpdatedVisibleAssets[0].token.symbol, BraveWallet.NetworkInfo.mockMainnet.nativeToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleAssets[0].network, BraveWallet.NetworkInfo.mockMainnet)
@@ -216,8 +218,10 @@ class AccountActivityStoreTests: XCTestCase {
         defer { transactionSummariesExpectation.fulfill() }
         // summaries are tested in `TransactionParserTests`, just verify they are populated with correct tx
         XCTAssertEqual(transactionSummaries.count, 2)
-        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo, self.transactions[.eth]?[safe: 0] ?? .init())
-        XCTAssertEqual(transactionSummaries[safe: 1]?.txInfo, self.transactions[.eth]?[safe: 1] ?? .init())
+        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo, ethSendTxCopy)
+        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo.chainId, ethSendTxCopy.chainId)
+        XCTAssertEqual(transactionSummaries[safe: 1]?.txInfo, goerliSwapTxCopy)
+        XCTAssertEqual(transactionSummaries[safe: 1]?.txInfo.chainId, goerliSwapTxCopy.chainId)
       }.store(in: &cancellables)
     
     accountActivityStore.update()
@@ -242,10 +246,14 @@ class AccountActivityStoreTests: XCTestCase {
     
     let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description")
     
+    let solSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSolSystemTransfer.copy() as! BraveWallet.TransactionInfo // default in mainnet
+    let solTestnetSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSolTokenTransfer.copy() as! BraveWallet.TransactionInfo
+    solTestnetSendTxCopy.chainId = BraveWallet.SolanaTestnet
+    
     let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
       mockLamportBalance: mockLamportBalance,
       mockSplTokenBalances: mockSplTokenBalances,
-      selectedNetwork: .mockMainnet
+      transactions: [solSendTxCopy, solTestnetSendTxCopy]
     )
     
     let accountActivityStore = AccountActivityStore(
@@ -272,7 +280,7 @@ class AccountActivityStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedVisibleAssets.count, 2)
+        XCTAssertEqual(lastUpdatedVisibleAssets.count, 3)
         
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol, BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.network, BraveWallet.NetworkInfo.mockSolana)
@@ -313,8 +321,11 @@ class AccountActivityStoreTests: XCTestCase {
       .sink { transactionSummaries in
         defer { transactionSummariesExpectation.fulfill() }
         // summaries are tested in `TransactionParserTests`, just verify they are populated with correct tx
-        XCTAssertEqual(transactionSummaries.count, 1)
-        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo, self.transactions[.sol]?[safe: 0] ?? .init())
+        XCTAssertEqual(transactionSummaries.count, 2)
+        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo, solSendTxCopy)
+        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo.chainId, solSendTxCopy.chainId)
+        XCTAssertEqual(transactionSummaries[safe: 1]?.txInfo, solTestnetSendTxCopy)
+        XCTAssertEqual(transactionSummaries[safe: 1]?.txInfo.chainId, solTestnetSendTxCopy.chainId)
       }.store(in: &cancellables)
     
     accountActivityStore.update()

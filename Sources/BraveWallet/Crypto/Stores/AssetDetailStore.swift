@@ -303,10 +303,7 @@ class AssetDetailStore: ObservableObject {
     }
     var solEstimatedTxFees: [String: UInt64] = [:]
     if token.coin == .sol {
-      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(
-        chainId: network.chainId,
-        for: allTransactions.map(\.id)
-      )
+      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: allTransactions)
     }
     return allTransactions
       .filter { tx in

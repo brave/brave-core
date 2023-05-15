@@ -107,7 +107,7 @@ extension BraveWallet.BlockchainToken {
     visible: true,
     tokenId: "30934",
     coingeckoId: "",
-    chainId: "0x1",
+    chainId: BraveWallet.MainnetChainId,
     coin: .eth
   )
   
@@ -124,7 +124,7 @@ extension BraveWallet.BlockchainToken {
     visible: true,
     tokenId: "",
     coingeckoId: "",
-    chainId: "0x65",
+    chainId: BraveWallet.SolanaMainnet,
     coin: .sol
   )
 }
@@ -157,7 +157,7 @@ extension BraveWallet.TransactionInfo {
             signOnly: false,
             signedTransaction: nil
           ),
-          chainId: "0x3",
+          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x2540be400",
           maxFeePerGas: "0x25b7f3d400",
           gasEstimation: nil
@@ -195,7 +195,7 @@ extension BraveWallet.TransactionInfo {
             signOnly: false,
             signedTransaction: nil
           ),
-          chainId: "0x3",
+          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x77359400",
           maxFeePerGas: "0x39bdf3b000",
           gasEstimation: nil
@@ -231,7 +231,7 @@ extension BraveWallet.TransactionInfo {
             signOnly: false,
             signedTransaction: nil
           ),
-          chainId: "0x3",
+          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x77359400",
           maxFeePerGas: "0x39bdf3b000",
           gasEstimation: nil
