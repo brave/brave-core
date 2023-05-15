@@ -184,7 +184,11 @@ void SimulationService::ScanSolanaTransaction(
     mojom::SolanaTransactionRequestUnionPtr request,
     const std::string& language,
     ScanSolanaTransactionCallback callback) {
-  DCHECK(request);
+  if (!request) {
+    std::move(callback).Run(
+        nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
 
   std::string chain_id;
   if (request->is_transaction_info()) {
@@ -259,7 +263,11 @@ void SimulationService::ScanEVMTransaction(
     mojom::TransactionInfoPtr tx_info,
     const std::string& language,
     ScanEVMTransactionCallback callback) {
-  DCHECK(tx_info);
+  if (!tx_info) {
+    std::move(callback).Run(
+        nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
 
   const auto chain_id = tx_info->chain_id;
 

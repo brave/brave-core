@@ -414,8 +414,12 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnexpectedErrorResponse) {
 TEST_F(SimulationServiceUnitTest, ScanEVMTransactionNullParams) {
   base::MockCallback<mojom::SimulationService::ScanEVMTransactionCallback>
       callback;
-  EXPECT_DCHECK_DEATH(simulation_service_->ScanEVMTransaction(nullptr, "en-US",
-                                                              callback.Get()));
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::EVMSimulationResponsePtr()), "",
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+
+  simulation_service_->ScanEVMTransaction(nullptr, "en-US", callback.Get());
+
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -608,8 +612,12 @@ TEST_F(SimulationServiceUnitTest,
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionNullParams) {
   base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
       callback;
-  EXPECT_DCHECK_DEATH(simulation_service_->ScanSolanaTransaction(
-      nullptr, "en-US", callback.Get()));
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+
+  simulation_service_->ScanSolanaTransaction(nullptr, "en-US", callback.Get());
+
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }

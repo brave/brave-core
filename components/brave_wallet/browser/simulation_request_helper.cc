@@ -44,7 +44,9 @@ namespace evm {
 
 absl::optional<std::string> EncodeScanTransactionParams(
     mojom::TransactionInfoPtr tx_info) {
-  DCHECK(tx_info);
+  if (!tx_info) {
+    return absl::nullopt;
+  }
 
   base::Value::Dict tx_object;
   tx_object.Set("from", tx_info->from_address);
@@ -145,7 +147,9 @@ absl::optional<std::string> GetBase64TransactionFromTxDataUnion(
 
 absl::optional<std::string> EncodeScanTransactionParams(
     mojom::SolanaTransactionRequestUnionPtr request) {
-  DCHECK(request);
+  if (!request) {
+    return absl::nullopt;
+  }
 
   base::Value::Dict params;
 

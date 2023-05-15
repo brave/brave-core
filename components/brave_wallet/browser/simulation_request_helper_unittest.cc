@@ -248,7 +248,7 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMNullParams) {
-  EXPECT_DCHECK_DEATH(evm::EncodeScanTransactionParams(nullptr));
+  EXPECT_EQ(evm::EncodeScanTransactionParams(nullptr), absl::nullopt);
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -420,7 +420,7 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaNullParams) {
-  EXPECT_DCHECK_DEATH(solana::EncodeScanTransactionParams(nullptr));
+  EXPECT_EQ(solana::EncodeScanTransactionParams(nullptr), absl::nullopt);
 }
 
 }  // namespace brave_wallet
