@@ -78,11 +78,8 @@ TEST_F(BraveAdsIssuersTest, FetchIssuersInvalidJsonResponseBody) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
-  ASSERT_TRUE(issuers);
-
   const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, *issuers);
+  EXPECT_EQ(expected_issuers, GetIssuers());
 }
 
 TEST_F(BraveAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
@@ -104,11 +101,8 @@ TEST_F(BraveAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
-  ASSERT_TRUE(issuers);
-
   const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, *issuers);
+  EXPECT_EQ(expected_issuers, GetIssuers());
 }
 
 }  // namespace brave_ads

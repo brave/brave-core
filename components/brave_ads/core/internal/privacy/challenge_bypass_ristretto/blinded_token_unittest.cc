@@ -84,12 +84,9 @@ TEST_F(BraveAdsBlindedTokenTest, EncodeBase64) {
   const BlindedToken blinded_token(kBlindedTokenBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      blinded_token.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kBlindedTokenBase64, *encoded_base64);
+  EXPECT_EQ(kBlindedTokenBase64, blinded_token.EncodeBase64());
 }
 
 TEST_F(BraveAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
@@ -97,11 +94,9 @@ TEST_F(BraveAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   const BlindedToken blinded_token;
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      blinded_token.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64);
+  EXPECT_FALSE(blinded_token.EncodeBase64());
 }
 
 TEST_F(BraveAdsBlindedTokenTest, IsEqual) {

@@ -81,12 +81,9 @@ TEST(BraveAdsAdEventUtilTest, GetLastSeenAdTime) {
   ad_events.push_back(ad_event_1);
 
   // Act
-  const absl::optional<base::Time> last_seen_ad_time =
-      GetLastSeenAdTime(ad_events, creative_ad_1);
-  ASSERT_TRUE(last_seen_ad_time);
 
   // Assert
-  EXPECT_EQ(now - base::Hours(6), *last_seen_ad_time);
+  EXPECT_EQ(now - base::Hours(6), GetLastSeenAdTime(ad_events, creative_ad_1));
 }
 
 }  // namespace brave_ads

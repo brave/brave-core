@@ -82,11 +82,9 @@ TEST_F(BraveAdsPublicKeyTest, EncodeBase64) {
   const PublicKey public_key(kPublicKeyBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 = public_key.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kPublicKeyBase64, *encoded_base64);
+  EXPECT_EQ(kPublicKeyBase64, public_key.EncodeBase64());
 }
 
 TEST_F(BraveAdsPublicKeyTest, FailToEncodeBase64WhenUninitialized) {
@@ -94,10 +92,9 @@ TEST_F(BraveAdsPublicKeyTest, FailToEncodeBase64WhenUninitialized) {
   const PublicKey public_key;
 
   // Act
-  const absl::optional<std::string> encoded_base64 = public_key.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64);
+  EXPECT_FALSE(public_key.EncodeBase64());
 }
 
 TEST_F(BraveAdsPublicKeyTest, IsEqual) {

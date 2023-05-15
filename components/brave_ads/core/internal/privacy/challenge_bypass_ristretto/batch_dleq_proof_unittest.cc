@@ -135,12 +135,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, EncodeBase64) {
   const BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      batch_dleq_proof.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kBatchDLEQProofBase64, *encoded_base64);
+  EXPECT_EQ(kBatchDLEQProofBase64, batch_dleq_proof.EncodeBase64());
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
@@ -148,11 +145,9 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
   const BatchDLEQProof batch_dleq_proof;
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      batch_dleq_proof.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64);
+  EXPECT_FALSE(batch_dleq_proof.EncodeBase64());
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, Verify) {
@@ -226,13 +221,11 @@ TEST_F(BraveAdsBatchDLEQProofTest, VerifyAndUnblind) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
-      batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
-                                        GetSignedTokens(), GetPublicKey());
-  ASSERT_TRUE(unblinded_tokens);
 
   // Assert
-  EXPECT_EQ(GetUnblindedTokens(), *unblinded_tokens);
+  EXPECT_EQ(GetUnblindedTokens(), batch_dleq_proof.VerifyAndUnblind(
+                                      GetTokens(), GetBlindedTokens(),
+                                      GetSignedTokens(), GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWhenUninitialized) {
@@ -240,12 +233,10 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWhenUninitialized) {
   BatchDLEQProof batch_dleq_proof;
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
-      batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
-                                        GetSignedTokens(), GetPublicKey());
 
   // Assert
-  ASSERT_FALSE(unblinded_tokens);
+  ASSERT_FALSE(batch_dleq_proof.VerifyAndUnblind(
+      GetTokens(), GetBlindedTokens(), GetSignedTokens(), GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidTokens) {
@@ -253,12 +244,11 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidTokens) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
-      batch_dleq_proof.VerifyAndUnblind(GetInvalidTokens(), GetBlindedTokens(),
-                                        GetSignedTokens(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens);
+  EXPECT_FALSE(
+      batch_dleq_proof.VerifyAndUnblind(GetInvalidTokens(), GetBlindedTokens(),
+                                        GetSignedTokens(), GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest,
@@ -267,12 +257,11 @@ TEST_F(BraveAdsBatchDLEQProofTest,
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
-      batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetInvalidBlindedTokens(),
-                                        GetSignedTokens(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens);
+  EXPECT_FALSE(
+      batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetInvalidBlindedTokens(),
+                                        GetSignedTokens(), GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest,
@@ -281,13 +270,11 @@ TEST_F(BraveAdsBatchDLEQProofTest,
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
-      batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
-                                        GetInvalidSignedTokens(),
-                                        GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens);
+  EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
+      GetTokens(), GetBlindedTokens(), GetInvalidSignedTokens(),
+      GetPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest,
@@ -296,13 +283,11 @@ TEST_F(BraveAdsBatchDLEQProofTest,
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
-      batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
-                                        GetSignedTokens(),
-                                        GetMismatchingPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens);
+  EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
+      GetTokens(), GetBlindedTokens(), GetSignedTokens(),
+      GetMismatchingPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidPublicKey) {
@@ -310,13 +295,11 @@ TEST_F(BraveAdsBatchDLEQProofTest, FailToVerifyAndUnblindWithInvalidPublicKey) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const absl::optional<std::vector<UnblindedToken>> unblinded_tokens =
-      batch_dleq_proof.VerifyAndUnblind(GetTokens(), GetBlindedTokens(),
-                                        GetSignedTokens(),
-                                        GetInvalidPublicKey());
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens);
+  EXPECT_FALSE(batch_dleq_proof.VerifyAndUnblind(
+      GetTokens(), GetBlindedTokens(), GetSignedTokens(),
+      GetInvalidPublicKey()));
 }
 
 TEST_F(BraveAdsBatchDLEQProofTest, IsEqual) {

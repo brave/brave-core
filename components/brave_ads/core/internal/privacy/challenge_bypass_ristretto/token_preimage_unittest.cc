@@ -84,12 +84,9 @@ TEST_F(BraveAdsTokenPreimageTest, EncodeBase64) {
   const TokenPreimage token_preimage(kTokenPreimageBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      token_preimage.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kTokenPreimageBase64, *encoded_base64);
+  EXPECT_EQ(kTokenPreimageBase64, token_preimage.EncodeBase64());
 }
 
 TEST_F(BraveAdsTokenPreimageTest, FailToEncodeBase64WhenUninitialized) {
@@ -97,11 +94,9 @@ TEST_F(BraveAdsTokenPreimageTest, FailToEncodeBase64WhenUninitialized) {
   const TokenPreimage token_preimage;
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      token_preimage.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64);
+  EXPECT_FALSE(token_preimage.EncodeBase64());
 }
 
 TEST_F(BraveAdsTokenPreimageTest, IsEqual) {

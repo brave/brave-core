@@ -23,12 +23,9 @@ TEST(BraveAdsConversionUserDataUtilTest, GetEnvelope) {
                                /*should_use_random_guids*/ false);
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope =
-          MaybeBuildVerifiableConversionEnvelope(conversion_queue_item);
 
   // Assert
-  EXPECT_TRUE(verifiable_conversion_envelope);
+  EXPECT_TRUE(MaybeBuildVerifiableConversionEnvelope(conversion_queue_item));
 }
 
 TEST(BraveAdsConversionUserDataUtilTest,
@@ -40,12 +37,10 @@ TEST(BraveAdsConversionUserDataUtilTest,
                                /*should_use_random_guids*/ false);
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope =
-          MaybeBuildVerifiableConversionEnvelope(conversion_queue_item);
+  ;
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope);
+  EXPECT_FALSE(MaybeBuildVerifiableConversionEnvelope(conversion_queue_item));
 }
 
 TEST(BraveAdsConversionUserDataUtilTest,
@@ -57,12 +52,9 @@ TEST(BraveAdsConversionUserDataUtilTest,
                                /*should_use_random_guids*/ false);
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope =
-          MaybeBuildVerifiableConversionEnvelope(conversion_queue_item);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope);
+  EXPECT_FALSE(MaybeBuildVerifiableConversionEnvelope(conversion_queue_item));
 }
 
 TEST(BraveAdsConversionUserDataUtilTest,
@@ -74,12 +66,9 @@ TEST(BraveAdsConversionUserDataUtilTest,
                                /*should_use_random_guids*/ false);
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope =
-          MaybeBuildVerifiableConversionEnvelope(conversion_queue_item);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope);
+  EXPECT_FALSE(MaybeBuildVerifiableConversionEnvelope(conversion_queue_item));
 }
 
 }  // namespace brave_ads

@@ -34,10 +34,7 @@ TEST_F(BraveAdsConversionUserDataTest, GetForConversionConfirmationType) {
   BuildConversionUserData(
       kCreativeInstanceId, ConfirmationType::kConversion,
       base::BindOnce([](base::Value::Dict user_data) {
-        const absl::optional<VerifiableConversionEnvelopeInfo>
-            verifiable_conversion_envelope =
-                GetVerifiableConversionEnvelopeForUserData(user_data);
-        ASSERT_TRUE(verifiable_conversion_envelope);
+        ASSERT_TRUE(GetVerifiableConversionEnvelopeForUserData(user_data));
       }));
 }
 
@@ -55,10 +52,7 @@ TEST_F(BraveAdsConversionUserDataTest,
   BuildConversionUserData(
       kCreativeInstanceId, ConfirmationType::kViewed,
       base::BindOnce([](base::Value::Dict user_data) {
-        const absl::optional<VerifiableConversionEnvelopeInfo>
-            verifiable_conversion_envelope =
-                GetVerifiableConversionEnvelopeForUserData(user_data);
-        ASSERT_FALSE(verifiable_conversion_envelope);
+        ASSERT_FALSE(GetVerifiableConversionEnvelopeForUserData(user_data));
       }));
 }
 

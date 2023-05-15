@@ -98,11 +98,9 @@ TEST(BraveAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {
       ad_predictor_3;
 
   // Act
-  const absl::optional<CreativeNotificationAdInfo> creative_ad =
-      SampleAdFromPredictors(creative_ad_predictors);
 
   // Assert
-  EXPECT_FALSE(creative_ad);
+  EXPECT_FALSE(SampleAdFromPredictors(creative_ad_predictors));
 }
 
 TEST(BraveAdsSampleAdsTest,
@@ -139,11 +137,7 @@ TEST(BraveAdsSampleAdsTest,
 
   // Act
   for (int i = 0; i < 10; i++) {
-    const absl::optional<CreativeNotificationAdInfo> creative_ad =
-        SampleAdFromPredictors(creative_ad_predictors);
-    ASSERT_TRUE(creative_ad);
-
-    EXPECT_EQ(creative_ad_2, *creative_ad);
+    EXPECT_EQ(creative_ad_2, SampleAdFromPredictors(creative_ad_predictors));
   }
 
   // Assert

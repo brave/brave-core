@@ -927,7 +927,7 @@ TEST_F(BraveAdsConversionsTest, ConvertMultipleAds) {
   ConversionList conversions;
 
   ConversionInfo conversion_1;
-  conversion_1.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion_1.creative_set_id = kCreativeSetId;
   conversion_1.type = "postview";
   conversion_1.url_pattern = "https://www.foo.com/*";
   conversion_1.observation_window = base::Days(3);
@@ -999,7 +999,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*bar*";
   conversion.observation_window = base::Days(3);
@@ -1045,7 +1045,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/bar";
   conversion.observation_window = base::Days(3);
@@ -1100,7 +1100,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/bar";
   conversion.observation_window = base::Days(3);
@@ -1162,7 +1162,7 @@ TEST_F(BraveAdsConversionsTest,
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
   conversion.observation_window = base::Days(3);
@@ -1210,7 +1210,7 @@ TEST_F(BraveAdsConversionsTest,
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/bar/*";
   conversion.observation_window = base::Days(3);
@@ -1247,7 +1247,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfConversionIsOnTheCuspOfExpiring) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://*.bar.com/*";
   conversion.observation_window = base::Days(3);
@@ -1292,7 +1292,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfTheConversionHasExpired) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/b*r/*";
   conversion.observation_window = base::Days(3);
@@ -1331,7 +1331,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfIntermediateUrlIsInRedirectChain) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/baz";
   conversion.observation_window = base::Days(3);
@@ -1376,7 +1376,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfOriginalUrlIsInRedirectChain) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/bar";
   conversion.observation_window = base::Days(3);
@@ -1421,7 +1421,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfUrlIsInRedirectChain) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/qux";
   conversion.observation_window = base::Days(3);
@@ -1472,7 +1472,7 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
 
   ConversionInfo conversion;
   conversion.advertiser_public_key = kConversionAdvertiserPublicKey;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/thankyou";
   conversion.observation_window = base::Days(3);
@@ -1523,7 +1523,7 @@ TEST_F(BraveAdsConversionsTest,
 
   ConversionInfo conversion;
   conversion.advertiser_public_key = kConversionAdvertiserPublicKey;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/foobar";
   conversion.observation_window = base::Days(3);
@@ -1575,7 +1575,7 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
 
   ConversionInfo conversion;
   conversion.advertiser_public_key = kConversionAdvertiserPublicKey;
-  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.creative_set_id = kCreativeSetId;
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/foobar?conversion_id=*";
   conversion.observation_window = base::Days(3);

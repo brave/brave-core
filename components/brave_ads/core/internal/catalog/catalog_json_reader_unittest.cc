@@ -452,7 +452,7 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
   expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
 
-  EXPECT_EQ(expected_catalog, *catalog);
+  EXPECT_EQ(expected_catalog, catalog);
 }
 
 TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
@@ -473,7 +473,7 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
   expected_catalog.campaigns.push_back(BuildCatalogCampaign2());
 
-  EXPECT_EQ(expected_catalog, *catalog);
+  EXPECT_EQ(expected_catalog, catalog);
 }
 
 TEST_F(BraveAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
@@ -492,18 +492,16 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
 
-  EXPECT_EQ(expected_catalog, *catalog);
+  EXPECT_EQ(expected_catalog, catalog);
 }
 
 TEST_F(BraveAdsCatalogJsonReaderTest, InvalidCatalog) {
   // Arrange
 
   // Act
-  const absl::optional<CatalogInfo> catalog =
-      json::reader::ReadCatalog(kInvalidCatalog);
 
   // Assert
-  EXPECT_FALSE(catalog);
+  EXPECT_FALSE(json::reader::ReadCatalog(kInvalidCatalog));
 }
 
 }  // namespace brave_ads

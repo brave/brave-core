@@ -79,11 +79,9 @@ TEST_F(BraveAdsSigningKeyTest, EncodeBase64) {
   const SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 = signing_key.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kSigningKeyBase64, *encoded_base64);
+  EXPECT_EQ(kSigningKeyBase64, signing_key.EncodeBase64());
 }
 
 TEST_F(BraveAdsSigningKeyTest, Sign) {
@@ -91,12 +89,9 @@ TEST_F(BraveAdsSigningKeyTest, Sign) {
   const SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<SignedToken> signed_token =
-      signing_key.Sign(GetBlindedToken());
-  ASSERT_TRUE(signed_token);
 
   // Assert
-  EXPECT_EQ(GetSignedToken(), *signed_token);
+  EXPECT_EQ(GetSignedToken(), signing_key.Sign(GetBlindedToken()));
 }
 
 TEST_F(BraveAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
@@ -104,11 +99,9 @@ TEST_F(BraveAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
   const SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<SignedToken> signed_token =
-      signing_key.Sign(GetInvalidBlindedToken());
 
   // Assert
-  EXPECT_FALSE(signed_token);
+  EXPECT_FALSE(signing_key.Sign(GetInvalidBlindedToken()));
 }
 
 TEST_F(BraveAdsSigningKeyTest, RederiveUnblindedToken) {
@@ -116,12 +109,10 @@ TEST_F(BraveAdsSigningKeyTest, RederiveUnblindedToken) {
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<UnblindedToken> unblinded_token =
-      signing_key.RederiveUnblindedToken(GetTokenPreimage());
-  ASSERT_TRUE(unblinded_token);
 
   // Assert
-  EXPECT_EQ(GetUnblindedToken(), *unblinded_token);
+  EXPECT_EQ(GetUnblindedToken(),
+            signing_key.RederiveUnblindedToken(GetTokenPreimage()));
 }
 
 TEST_F(BraveAdsSigningKeyTest,
@@ -130,11 +121,9 @@ TEST_F(BraveAdsSigningKeyTest,
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<UnblindedToken> unblinded_token =
-      signing_key.RederiveUnblindedToken(GetInvalidTokenPreimage());
 
   // Assert
-  EXPECT_FALSE(unblinded_token);
+  EXPECT_FALSE(signing_key.RederiveUnblindedToken(GetInvalidTokenPreimage()));
 }
 
 TEST_F(BraveAdsSigningKeyTest, GetPublicKey) {
@@ -142,11 +131,9 @@ TEST_F(BraveAdsSigningKeyTest, GetPublicKey) {
   SigningKey signing_key(kSigningKeyBase64);
 
   // Act
-  const absl::optional<PublicKey> public_key = signing_key.GetPublicKey();
-  ASSERT_TRUE(public_key);
 
   // Assert
-  EXPECT_EQ(PublicKey(kPublicKeyBase64), *public_key);
+  EXPECT_EQ(PublicKey(kPublicKeyBase64), signing_key.GetPublicKey());
 }
 
 TEST_F(BraveAdsSigningKeyTest, IsEqual) {

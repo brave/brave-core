@@ -177,9 +177,6 @@ TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
   // Act
-  const absl::optional<IssuerInfo> issuer =
-      GetIssuerForType(issuers, IssuerType::kPayments);
-  ASSERT_TRUE(issuer);
 
   // Assert
   IssuerInfo expected_issuer;
@@ -188,7 +185,7 @@ TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
       {"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}};
 
-  EXPECT_EQ(expected_issuer, *issuer);
+  EXPECT_EQ(expected_issuer, GetIssuerForType(issuers, IssuerType::kPayments));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
@@ -200,11 +197,9 @@ TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
                    {});
 
   // Act
-  const absl::optional<IssuerInfo> issuer =
-      GetIssuerForType(issuers, IssuerType::kPayments);
 
   // Assert
-  EXPECT_FALSE(issuer);
+  EXPECT_FALSE(GetIssuerForType(issuers, IssuerType::kPayments));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {

@@ -85,12 +85,9 @@ TEST_F(BraveAdsUnblindedTokenTest, EncodeBase64) {
   const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      unblinded_token.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kUnblindedTokenBase64, *encoded_base64);
+  EXPECT_EQ(kUnblindedTokenBase64, unblinded_token.EncodeBase64());
 }
 
 TEST_F(BraveAdsUnblindedTokenTest, FailToEncodeBase64WhenUninitialized) {
@@ -98,11 +95,9 @@ TEST_F(BraveAdsUnblindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   const UnblindedToken unblinded_token;
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      unblinded_token.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64);
+  EXPECT_FALSE(unblinded_token.EncodeBase64());
 }
 
 TEST_F(BraveAdsUnblindedTokenTest, IsEqual) {
@@ -185,11 +180,9 @@ TEST_F(BraveAdsUnblindedTokenTest, DeriveVerificationKey) {
   const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
-  const absl::optional<VerificationKey> verification_key =
-      unblinded_token.DeriveVerificationKey();
 
   // Assert
-  EXPECT_TRUE(verification_key);
+  EXPECT_TRUE(unblinded_token.DeriveVerificationKey());
 }
 
 TEST_F(BraveAdsUnblindedTokenTest,
@@ -198,11 +191,9 @@ TEST_F(BraveAdsUnblindedTokenTest,
   const UnblindedToken unblinded_token;
 
   // Act
-  const absl::optional<VerificationKey> verification_key =
-      unblinded_token.DeriveVerificationKey();
 
   // Assert
-  EXPECT_FALSE(verification_key);
+  EXPECT_FALSE(unblinded_token.DeriveVerificationKey());
 }
 
 TEST_F(BraveAdsUnblindedTokenTest,
@@ -211,11 +202,9 @@ TEST_F(BraveAdsUnblindedTokenTest,
   const UnblindedToken unblinded_token(kInvalidBase64);
 
   // Act
-  const absl::optional<VerificationKey> verification_key =
-      unblinded_token.DeriveVerificationKey();
 
   // Assert
-  EXPECT_FALSE(verification_key);
+  EXPECT_FALSE(unblinded_token.DeriveVerificationKey());
 }
 
 TEST_F(BraveAdsUnblindedTokenTest, GetTokenPreimage) {
@@ -223,12 +212,9 @@ TEST_F(BraveAdsUnblindedTokenTest, GetTokenPreimage) {
   const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
   // Act
-  const absl::optional<TokenPreimage> token_preimage =
-      unblinded_token.GetTokenPreimage();
-  ASSERT_TRUE(token_preimage);
 
   // Assert
-  EXPECT_EQ(GetTokenPreimage(), *token_preimage);
+  EXPECT_EQ(GetTokenPreimage(), unblinded_token.GetTokenPreimage());
 }
 
 TEST_F(BraveAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {
@@ -236,11 +222,9 @@ TEST_F(BraveAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {
   const UnblindedToken unblinded_token;
 
   // Act
-  const absl::optional<TokenPreimage> token_preimage =
-      unblinded_token.GetTokenPreimage();
 
   // Assert
-  EXPECT_FALSE(token_preimage);
+  EXPECT_FALSE(unblinded_token.GetTokenPreimage());
 }
 
 TEST_F(BraveAdsUnblindedTokenTest,
@@ -249,11 +233,9 @@ TEST_F(BraveAdsUnblindedTokenTest,
   const UnblindedToken unblinded_token(kInvalidBase64);
 
   // Act
-  const absl::optional<TokenPreimage> token_preimage =
-      unblinded_token.GetTokenPreimage();
 
   // Assert
-  EXPECT_FALSE(token_preimage);
+  EXPECT_FALSE(unblinded_token.GetTokenPreimage());
 }
 
 }  // namespace brave_ads::privacy::cbr
