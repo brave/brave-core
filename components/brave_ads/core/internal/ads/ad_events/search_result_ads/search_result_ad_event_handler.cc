@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_builder.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_factory.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/search_result_ads/search_result_ad_permission_rules.h"
