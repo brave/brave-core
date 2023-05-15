@@ -14,6 +14,30 @@ struct TransactionsActivityView: View {
   @State private var isPresentingNetworkFilter = false
   @State private var transactionDetails: TransactionDetailsStore?
   
+  private var networkFilterButton: some View {
+    Button(action: {
+      self.isPresentingNetworkFilter = true
+    }) {
+      HStack {
+        Text(store.networkFilter.title)
+        Image(braveSystemName: "leo.list")
+      }
+      .font(.footnote.weight(.medium))
+      .foregroundColor(Color(.braveBlurpleTint))
+    }
+    .sheet(isPresented: $isPresentingNetworkFilter) {
+      NavigationView {
+        NetworkFilterView(
+          networkFilter: $store.networkFilter,
+          networkStore: networkStore
+        )
+      }
+      .onDisappear {
+        networkStore.closeNetworkSelectionStore()
+      }
+    }
+  }
+  
   var body: some View {
     List {
       Section {
@@ -32,6 +56,15 @@ struct TransactionsActivityView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
+      } header: {
+        HStack {
+          Text(Strings.Wallet.assetsTitle)
+          Spacer()
+          networkFilterButton
+        }
+        .textCase(nil)
+        .padding(.horizontal, -8)
+        .frame(maxWidth: .infinity, alignment: .leading)
       }
     }
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))

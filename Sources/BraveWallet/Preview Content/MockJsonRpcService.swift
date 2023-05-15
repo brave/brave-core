@@ -327,7 +327,7 @@ extension BraveWallet.NetworkInfo {
     rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
     symbol: "SOL",
     symbolName: "Solana",
-    decimals: 18,
+    decimals: 9,
     coin: .sol,
     isEip1559: false
   )

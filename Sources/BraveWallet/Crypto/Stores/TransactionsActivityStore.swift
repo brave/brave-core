@@ -16,6 +16,11 @@ class TransactionsActivityStore: ObservableObject {
       update()
     }
   }
+  @Published var networkFilter: NetworkFilter = .allNetworks {
+    didSet {
+      update()
+    }
+  }
   
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
   
@@ -59,32 +64,41 @@ class TransactionsActivityStore: ObservableObject {
   func update() {
     updateTask?.cancel()
     updateTask = Task { @MainActor in
-      let allKeyrings = await keyringService.keyrings(
+      let allKeyrings = await self.keyringService.keyrings(
         for: WalletConstants.supportedCoinTypes
       )
       let allAccountInfos = allKeyrings.flatMap(\.accountInfos)
-      // Only transactions for the selected network
-      // for each coin type are returned
-      var selectedNetworkForCoin: [BraveWallet.CoinType: BraveWallet.NetworkInfo] = [:]
-      for coin in WalletConstants.supportedCoinTypes {
-        selectedNetworkForCoin[coin] = await rpcService.network(coin, origin: nil)
+      var networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
+      
+      switch networkFilter {
+      case .allNetworks:
+        for coin in WalletConstants.supportedCoinTypes {
+          networksForCoin[coin] = await rpcService.allNetworks(coin)
+        }
+      case .network(let networkInfo):
+        networksForCoin = [networkInfo.coin: [networkInfo]]
       }
+      
+      let chainIdsForCoin = networksForCoin.mapValues { networks in
+        networks.map(\.chainId)
+      }
+      let allNetworksAllCoins = networksForCoin.values.flatMap { $0 }
+      
       let allTransactions = await txService.allTransactions(
-        chainIdsForCoin: selectedNetworkForCoin.mapValues { [$0.chainId] },
-        for: allKeyrings
+        chainIdsForCoin: chainIdsForCoin, for: allKeyrings
       ).filter { $0.txStatus != .rejected }
       let userVisibleTokens = await walletService.allVisibleUserAssets(
-        in: Array(selectedNetworkForCoin.values)
+        in: allNetworksAllCoins
       ).flatMap(\.tokens)
       let allTokens = await blockchainRegistry.allTokens(
-        in: Array(selectedNetworkForCoin.values)
+        in: allNetworksAllCoins
       ).flatMap(\.tokens)
       guard !Task.isCancelled else { return }
       // display transactions prior to network request to fetch
       // estimated solana tx fees & asset prices
       self.transactionSummaries = self.transactionSummaries(
         transactions: allTransactions,
-        selectedNetworkForCoin: selectedNetworkForCoin,
+        networksForCoin: networksForCoin,
         accountInfos: allAccountInfos,
         userVisibleTokens: userVisibleTokens,
         allTokens: allTokens,
@@ -93,10 +107,9 @@ class TransactionsActivityStore: ObservableObject {
       )
       guard !self.transactionSummaries.isEmpty else { return }
 
-      if allTransactions.contains(where: { $0.coin == .sol }),
-         let selectedSolNetwork = selectedNetworkForCoin[.sol] {
-        let solTransactionIds = allTransactions.filter { $0.coin == .sol }.map(\.id)
-        await updateSolEstimatedTxFeesCache(chainId: selectedSolNetwork.chainId, solTransactionIds: solTransactionIds)
+      if allTransactions.contains(where: { $0.coin == .sol }) {
+        let solTransactions = allTransactions.filter { $0.coin == .sol }
+        await updateSolEstimatedTxFeesCache(solTransactions)
       }
 
       let allVisibleTokenAssetRatioIds = userVisibleTokens.map(\.assetRatioId)
@@ -105,7 +118,7 @@ class TransactionsActivityStore: ObservableObject {
       guard !Task.isCancelled else { return }
       self.transactionSummaries = self.transactionSummaries(
         transactions: allTransactions,
-        selectedNetworkForCoin: selectedNetworkForCoin,
+        networksForCoin: networksForCoin,
         accountInfos: allAccountInfos,
         userVisibleTokens: userVisibleTokens,
         allTokens: allTokens,
@@ -117,7 +130,7 @@ class TransactionsActivityStore: ObservableObject {
   
   private func transactionSummaries(
     transactions: [BraveWallet.TransactionInfo],
-    selectedNetworkForCoin: [BraveWallet.CoinType: BraveWallet.NetworkInfo],
+    networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
     accountInfos: [BraveWallet.AccountInfo],
     userVisibleTokens: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
@@ -125,7 +138,7 @@ class TransactionsActivityStore: ObservableObject {
     solEstimatedTxFees: [String: UInt64]
   ) -> [TransactionSummary] {
     transactions.compactMap { transaction in
-      guard let network = selectedNetworkForCoin[transaction.coin] else {
+      guard let networks = networksForCoin[transaction.coin], let network = networks.first(where: { $0.chainId == transaction.chainId }) else {
         return nil
       }
       return TransactionParser.transactionSummary(
@@ -141,8 +154,8 @@ class TransactionsActivityStore: ObservableObject {
     }.sorted(by: { $0.createdTime > $1.createdTime })
   }
   
-  @MainActor private func updateSolEstimatedTxFeesCache(chainId: String, solTransactionIds: [String]) async {
-    let fees = await solTxManagerProxy.estimatedTxFees(chainId: chainId, for: solTransactionIds)
+  @MainActor private func updateSolEstimatedTxFeesCache(_ solTransactions: [BraveWallet.TransactionInfo]) async {
+    let fees = await solTxManagerProxy.estimatedTxFees(for: solTransactions)
     for (key, value) in fees { // update cached values
       self.solEstimatedTxFeesCache[key] = value
     }

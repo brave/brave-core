@@ -73,7 +73,7 @@ class AccountActivityStore: ObservableObject {
   func update() {
     Task { @MainActor in
       let coin = account.coin
-      let networks = await rpcService.allNetworks(coin)
+      let networksForAccountCoin = await rpcService.allNetworks(coin)
         .filter { $0.chainId != BraveWallet.LocalhostChainId } // localhost not supported
       
       struct NetworkAssets: Equatable {
@@ -81,8 +81,8 @@ class AccountActivityStore: ObservableObject {
         let tokens: [BraveWallet.BlockchainToken]
         let sortOrder: Int
       }
-      let allVisibleUserAssets = await walletService.allVisibleUserAssets(in: networks)
-      let allTokens = await blockchainRegistry.allTokens(in: networks).flatMap(\.tokens)
+      let allVisibleUserAssets = await walletService.allVisibleUserAssets(in: networksForAccountCoin)
+      let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(\.tokens)
       var updatedUserVisibleAssets: [AssetViewModel] = []
       var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
       for networkAssets in allVisibleUserAssets {
@@ -187,14 +187,14 @@ class AccountActivityStore: ObservableObject {
       self.userVisibleAssets = updatedUserVisibleAssets
       self.userVisibleNFTs = updatedUserVisibleNFTs
       
-      let selectedNetworkForAccountCoin = await rpcService.network(coin, origin: nil)
       let assetRatios = self.userVisibleAssets.reduce(into: [String: Double](), {
         $0[$1.token.assetRatioId.lowercased()] = Double($1.price)
       })
+      
       self.transactionSummaries = await fetchTransactionSummarys(
-        network: selectedNetworkForAccountCoin,
+        networksForAccountCoin: networksForAccountCoin,
         accountInfos: keyringForAccount.accountInfos,
-        userVisibleTokens: userVisibleAssets.map(\.token).filter { $0.chainId == selectedNetworkForAccountCoin.chainId },
+        userVisibleTokens: userVisibleAssets.map(\.token),
         allTokens: allTokens,
         assetRatios: assetRatios
       )
@@ -202,19 +202,16 @@ class AccountActivityStore: ObservableObject {
   }
   
   @MainActor private func fetchTransactionSummarys(
-    network: BraveWallet.NetworkInfo,
+    networksForAccountCoin: [BraveWallet.NetworkInfo],
     accountInfos: [BraveWallet.AccountInfo],
     userVisibleTokens: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double]
   ) async -> [TransactionSummary] {
-    let transactions = await txService.allTransactionInfo(account.coin, chainId: network.chainId, from: account.address)
+    let transactions = await txService.allTransactions(networks: networksForAccountCoin, for: account)
     var solEstimatedTxFees: [String: UInt64] = [:]
     if account.coin == .sol {
-      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(
-        chainId: network.chainId,
-        for: transactions.map(\.id)
-      )
+      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: transactions)
     }
     let unknownTokenContractAddresses = transactions
       .flatMap { $0.tokenContractAddresses }
@@ -232,9 +229,11 @@ class AccountActivityStore: ObservableObject {
       allTokens.append(contentsOf: unknownTokens)
     }
     return transactions
-      .sorted(by: { $0.createdTime > $1.createdTime })
-      .map { transaction in
-        TransactionParser.transactionSummary(
+      .compactMap { transaction in
+        guard let network = networksForAccountCoin.first(where: { $0.chainId == transaction.chainId }) else {
+          return nil
+        }
+        return TransactionParser.transactionSummary(
           from: transaction,
           network: network,
           accountInfos: accountInfos,
@@ -244,7 +243,7 @@ class AccountActivityStore: ObservableObject {
           solEstimatedTxFee: solEstimatedTxFees[transaction.id],
           currencyFormatter: currencyFormatter
         )
-      }
+      }.sorted(by: { $0.createdTime > $1.createdTime })
   }
   
   func transactionDetailsStore(for transaction: BraveWallet.TransactionInfo) -> TransactionDetailsStore {
