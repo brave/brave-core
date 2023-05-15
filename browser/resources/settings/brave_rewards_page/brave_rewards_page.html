@@ -1,123 +1,13 @@
 <style include="settings-shared md-select iron-flex">
-  .label.rewards-primary-title {
-    font-weight: 500;
-    font-size: 1.05em;
-  }
   .settings-row:not(:first-child) {
     border-top: var(--cr-separator-line);
   }
-  .space-between {
-    display: flex;
-    padding-right: 0;
-    justify-content: space-between;
-  }
-  .flex {
-    align-self: center;
-    flex: 1 1 auto;
-  }
-  .flex-container {
-    display: flex;
-    padding: 8px 1em;
-  }
 </style>
-<template is="dom-if" if="[[prefs.brave.rewards.enabled.value]]" restamp>
-  <div class="settings-box first">
-    <div class="label rewards-primary-title">$i18n{braveRewardsAppearanceTitle}</div>
-  </div>
-  <settings-toggle-button
-    label="$i18n{braveRewardsShowBraveRewardsButtonLabel}"
-    pref="{{prefs.brave.rewards.show_brave_rewards_button_in_location_bar}}">
-  </settings-toggle-button>
-  <div class="settings-box continuation">
-    <div class="label rewards-primary-title">$i18n{braveRewardsPrivateAdsTitle}</div>
-  </div>
-  <settings-toggle-button
-    label="$i18n{braveRewardsPrivateAdsEarnTokensLabel}"
-    pref="{{prefs.brave.brave_ads.enabled}}">
-  </settings-toggle-button>
-  <div class="settings-box continuation">
-    <div class="flex cr-padded-text">
-      <div>$i18n{braveRewardsMaxAdsToDisplayLabel}</div>
-    </div>
-    <settings-dropdown-menu
-      label="$i18n{braveRewardsMaxAdsToDisplayLabel}"
-      pref="{{prefs.brave.brave_ads.ads_per_hour}}"
-      menu-options="[[maxAdsToDisplay_]]"
-      disabled="[[!prefs.brave.brave_ads.enabled.value]]">
-    </settings-dropdown-menu>
-  </div>
-  <template is="dom-if" if="[[shouldAllowAdsSubdivisionTargeting_]]" restamp>
-    <div class="settings-box continuation">
-      <div class="flex cr-padded-text">
-        <div>$i18n{braveRewardsStateLevelAdTargetingLabel}</div>
-      </div>
-      <settings-dropdown-menu
-        label="$i18n{braveRewardsStateLevelAdTargetingLabel}"
-        pref="{{prefs.brave.brave_ads.ads_subdivision_targeting_code}}"
-        menu-options="[[adsSubdivisionTargetingCodes_()]]"
-        disabled="[[!prefs.brave.brave_ads.enabled.value]]">
-      </settings-dropdown-menu>
-    </div>
-    <div class="settings-box continuation">
-      <p>$i18nRaw{braveRewardsStateLevelAdTargetingDescLabel}</p>
-    </div>
-  </template>
-  <template is="dom-if" if="[[shouldShowAutoContributeSettings_]]">
-    <div class="settings-box space-between">
-      <div class="label rewards-primary-title">$i18n{braveRewardsAutoContributeTitle}</div>
-      <settings-toggle-button
-        pref="{{prefs.brave.rewards.ac.enabled}}">
-      </settings-toggle-button>
-    </div>
-    <div class="settings-box continuation">
-      <div class="flex cr-padded-text">
-        <div>$i18n{braveRewardsAutoContributeMonthlyLimitLabel}</div>
-      </div>
-      <settings-dropdown-menu
-        label="$i18n{braveRewardsAutoContributeMonthlyLimitLabel}"
-        pref="{{prefs.brave.rewards.ac.amount}}"
-        menu-options="[[autoContributeMonthlyLimit_]]"
-        disabled="[[!prefs.brave.rewards.ac.enabled.value]]">
-      </settings-dropdown-menu>
-    </div>
-    <div class="settings-box continuation">
-      <div class="flex cr-padded-text">
-        <div>$i18n{braveRewardsAutoContributeMinVisitTimeLabel}</div>
-      </div>
-      <settings-dropdown-menu
-        label="$i18n{braveRewardsAutoContributeMinVisitTimeLabel}"
-        pref="{{prefs.brave.rewards.ac.min_visit_time}}"
-        menu-options="[[autoContributeMinVisitTimeOptions_]]"
-        disabled="[[!prefs.brave.rewards.ac.enabled.value]]">
-      </settings-dropdown-menu>
-    </div>
-    <div class="settings-box continuation">
-      <div class="flex cr-padded-text">
-        <div>$i18n{braveRewardsAutoContributeMinVisitsLabel}</div>
-      </div>
-      <settings-dropdown-menu
-        label="$i18n{braveRewardsAutoContributeMinVisitsLabel}"
-        pref="{{prefs.brave.rewards.ac.min_visits}}"
-        menu-options="[[autoContributeMinVisitsOptions_]]"
-        disabled="[[!prefs.brave.rewards.ac.enabled.value]]">
-      </settings-dropdown-menu>
-    </div>
-    <div class="settings-box continuation">
-      <p>$i18nRaw{braveRewardsAutoContributeDescLabel}</p></p>
-    </div>
-  </template>
-</template>
-<template is="dom-if" if="[[!prefs.brave.rewards.enabled.value]]" restamp>
-    <div class="settings-row" id="braveRewardsDisabledRow">
-        <cr-link-row label="$i18n{braveRewardsDisabledLabel}"
-                     sub-label="$i18n{braveRewardsDisabledSubLabel}"
-                     on-click="openRewardsPanel_" external>
-        </cr-link-row>
-    </div>
-    <settings-toggle-button label="$i18n{braveRewardsShowBraveRewardsButtonLabel}"
-                            pref="{{prefs.brave.rewards.show_brave_rewards_button_in_location_bar}}">
-    </settings-toggle-button>
-</template>
+<settings-toggle-button
+  class="cr-row"
+  label="$i18n{braveRewardsShowBraveRewardsButtonLabel}"
+  pref="{{prefs.brave.rewards.show_brave_rewards_button_in_location_bar}}">
+</settings-toggle-button>
 <settings-toggle-button
   class="cr-row"
   label="$i18n{braveRewardsShowTipButtonsLabel}"
@@ -152,3 +42,16 @@
     </settings-checkbox>
   </div>
 </template>
+<div class="settings-row">
+  <template is="dom-if" if="[[prefs.brave.rewards.enabled.value]]" restamp>
+    <cr-link-row label="$i18n{braveRewardsPageLabel}"
+                 on-click="openRewardsPage_" external>
+    </cr-link-row>
+  </template>
+  <template is="dom-if" if="[[!prefs.brave.rewards.enabled.value]]" restamp>
+    <cr-link-row label="$i18n{braveRewardsDisabledLabel}"
+                 sub-label="$i18n{braveRewardsDisabledSubLabel}"
+                 on-click="openRewardsPanel_" external>
+    </cr-link-row>
+  </template>
+</div>
