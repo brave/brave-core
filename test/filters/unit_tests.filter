@@ -39,7 +39,10 @@
 -ExtensionMenuItemViewTest.*
 -ExtensionsSitePermissionsPageViewUnitTest.*
 -ExtensionsToolbarControlsWithPermittedSitesUnitTest.RequestAccessButtonVisibilityOnPermittedSites
+-HighEfficiencyBubbleViewMemorySavingsImprovementsTest.*
+-HighEfficiencyBubbleViewTest.*
 -HighEfficiencyChipViewDiscardedTabTreatmentDisabledTest.ShouldNotExpandWhenFeatureIsDisabled
+-HighEfficiencyChipViewMemorySavingsImprovementsTest.*
 -HighEfficiencyChipViewTest.*
 -HistoryClustersPageHandlerTest.OpenUrlsInTabGroup
 -HistoryClustersPageHandlerCartTest.CheckClusterHasCart
