@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/check_op.h"
-#include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -191,12 +190,12 @@ void LearningService::OnTaskResultComputed(absl::optional<TaskResult> result) {
     return;
   }
 
-  communication_adapter_->PostTaskResult(
-      result.value(), base::BindOnce(&LearningService::OnPostTaskResults,
+  communication_adapter_->UploadTaskResult(
+      result.value(), base::BindOnce(&LearningService::OnUploadTaskResults,
                                      weak_factory_.GetWeakPtr()));
 }
 
-void LearningService::OnPostTaskResults(TaskResultResponse response) {
+void LearningService::OnUploadTaskResults(TaskResultResponse response) {
   post_results_backoff_entry_->InformOfRequest(response.IsSuccessful());
 
   if (response.IsSuccessful()) {

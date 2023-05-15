@@ -33,6 +33,66 @@ std::string BuildGetTasksPayload() {
   return request;
 }
 
+absl::optional<Task> ParseTask(flower::TaskIns task_instruction) {
+  const std::string& id = task_instruction.task_id();
+  const std::string& group_id = task_instruction.group_id();
+  const std::string& workload_id = task_instruction.workload_id();
+  if (id.empty() || group_id.empty() || workload_id.empty()) {
+    VLOG(2) << "Invalid task id received from FL service";
+    return absl::nullopt;
+  }
+  const TaskId& task_id = {
+      .id = id, .group_id = group_id, .family_id = workload_id};
+
+  if (!task_instruction.has_task()) {
+    VLOG(2) << "Task object is missing from task instruction";
+    return absl::nullopt;
+  }
+  flower::Task flower_task = task_instruction.task();
+
+  if (!flower_task.has_legacy_server_message()) {
+    VLOG(2) << "Server message is missing from task object";
+    return absl::nullopt;
+  }
+  flower::ServerMessage message = flower_task.legacy_server_message();
+
+  TaskType type;
+  std::vector<Weights> parameters;
+  Configs config;
+  if (message.has_fit_ins()) {
+    type = TaskType::Training;
+
+    if (!message.fit_ins().has_parameters()) {
+      VLOG(2) << "Parameters are missing from fit instruction";
+      return absl::nullopt;
+    }
+    parameters = GetVectorsFromParameters(message.fit_ins().parameters());
+    if (parameters.empty()) {
+      VLOG(2) << "Parameters vectors received from FL service are empty";
+      return absl::nullopt;
+    }
+    config = ConfigsFromProto(message.fit_ins().config());
+  } else if (message.has_evaluate_ins()) {
+    type = TaskType::Evaluation;
+
+    if (!message.evaluate_ins().has_parameters()) {
+      VLOG(2) << "Parameters are missing from eval instruction";
+      return absl::nullopt;
+    }
+    parameters = GetVectorsFromParameters(message.evaluate_ins().parameters());
+    if (parameters.empty()) {
+      VLOG(3) << "Parameters vectors received from FL service are empty";
+      return absl::nullopt;
+    }
+    config = ConfigsFromProto(message.evaluate_ins().config());
+  } else {
+    VLOG(2) << "**: Received unrecognized instruction from FL service";
+    return absl::nullopt;
+  }
+
+  return Task(task_id, type, "token", parameters, config);
+}
+
 TaskList ParseTaskListFromResponseBody(const std::string& response_body) {
   flower::PullTaskInsResponse response;
   if (!response.ParseFromString(response_body)) {
@@ -49,65 +109,13 @@ TaskList ParseTaskListFromResponseBody(const std::string& response_body) {
   for (int i = 0; i < response.task_ins_list_size(); i++) {
     flower::TaskIns task_instruction = response.task_ins_list(i);
 
-    const std::string& id = task_instruction.task_id();
-    const std::string& group_id = task_instruction.group_id();
-    const std::string& workload_id = task_instruction.workload_id();
-    if (id.empty() || group_id.empty() || workload_id.empty()) {
-      VLOG(2) << "Invalid task id received from FL service";
-      continue;
-    }
-    const TaskId& task_id = {
-        .id = id, .group_id = group_id, .family_id = workload_id};
-
-    if (!task_instruction.has_task()) {
-      VLOG(2) << "Task object is missing from task instruction";
-      continue;
-    }
-    flower::Task flower_task = task_instruction.task();
-
-    if (!flower_task.has_legacy_server_message()) {
-      VLOG(2) << "Server message is missing from task object";
-      continue;
-    }
-    flower::ServerMessage message = flower_task.legacy_server_message();
-
-    TaskType type;
-    std::vector<Weights> parameters = {};
-    Configs config = {};
-    if (message.has_fit_ins()) {
-      type = TaskType::Training;
-
-      if (!message.fit_ins().has_parameters()) {
-        VLOG(2) << "Parameters are missing from fit instruction";
-        continue;
-      }
-      parameters = GetVectorsFromParameters(message.fit_ins().parameters());
-      if (parameters.empty()) {
-        VLOG(2) << "Parameters vectors received from FL service are empty";
-        continue;
-      }
-      config = ConfigsFromProto(message.fit_ins().config());
-    } else if (message.has_evaluate_ins()) {
-      type = TaskType::Evaluation;
-
-      if (!message.evaluate_ins().has_parameters()) {
-        VLOG(2) << "Parameters are missing from eval instruction";
-        continue;
-      }
-      parameters =
-          GetVectorsFromParameters(message.evaluate_ins().parameters());
-      if (parameters.empty()) {
-        VLOG(3) << "Parameters vectors received from FL service are empty";
-        continue;
-      }
-      config = ConfigsFromProto(message.evaluate_ins().config());
-    } else {
-      VLOG(2) << "**: Received unrecognized instruction from FL service";
+    absl::optional<Task> task = ParseTask(task_instruction);
+    if (!task.has_value()) {
+      VLOG(1) << "Failed to parse task instruction";
       continue;
     }
 
-    Task task = Task(task_id, type, "token", parameters, config);
-    task_list.push_back(std::move(task));
+    task_list.push_back(std::move(task.value()));
 
     return task_list;
   }
@@ -116,7 +124,7 @@ TaskList ParseTaskListFromResponseBody(const std::string& response_body) {
   return {};
 }
 
-std::string BuildPostTaskResultsPayload(const TaskResult& result) {
+std::string BuildUploadTaskResultsPayload(const TaskResult& result) {
   const Task task = result.GetTask();
   const TaskId task_id = task.GetId();
   const TaskType task_type = task.GetType();

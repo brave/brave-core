@@ -80,7 +80,7 @@ class Model {
   PerformanceReport Evaluate(const DataSet& test_dataset);
 
   Weights GetWeights();
-  void SetWeights(Weights new_weights);
+  void SetWeights(const Weights& new_weights);
 
   float GetBias();
   void SetBias(float new_bias);

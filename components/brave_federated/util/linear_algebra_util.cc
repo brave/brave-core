@@ -7,92 +7,80 @@
 
 namespace brave_federated {
 
-Vector LinearAlgebraUtil::MatrixXfToVector(Eigen::MatrixXf v) {
-  Vector returned_v = Vector(v.rows());
-  Eigen::VectorXf::Map(returned_v.data(), v.rows()) = v;
+Vector LinearAlgebraUtil::MatrixXfToVector(Eigen::MatrixXf vector) {
+  Vector returned_vector = Vector(vector.rows());
+  Eigen::VectorXf::Map(returned_vector.data(), vector.rows()) = vector;
 
-  return returned_v;
+  return returned_vector;
 }
 
-Matrix LinearAlgebraUtil::MatrixXfToMatrix(Eigen::MatrixXf mat) {
-  Matrix returned_mat = Matrix(mat.rows(), Vector(mat.cols(), 0.0f));
-  for (size_t i = 0; i < returned_mat.size(); ++i) {
-    Eigen::VectorXf::Map(returned_mat.at(i).data(), mat.row(i).cols()) =
-        mat.row(i);
+Matrix LinearAlgebraUtil::MatrixXfToMatrix(Eigen::MatrixXf matrix) {
+  Matrix returned_matrix = Matrix(matrix.rows(), Vector(matrix.cols(), 0.0f));
+  for (size_t i = 0; i < returned_matrix.size(); ++i) {
+    Eigen::VectorXf::Map(returned_matrix.at(i).data(), matrix.row(i).cols()) =
+        matrix.row(i);
   }
 
-  return returned_mat;
+  return returned_matrix;
 }
 
-Eigen::MatrixXf LinearAlgebraUtil::MatrixToMatrixXf(Matrix mat) {
-  Eigen::MatrixXf mat_(mat.size(), mat.at(0).size());
-  for (size_t i = 0; i < mat.size(); ++i) {
-    mat_.row(i) =
-        Eigen::Map<Eigen::VectorXf>(mat.at(i).data(), mat.at(i).size());
+Eigen::MatrixXf LinearAlgebraUtil::MatrixToMatrixXf(Matrix matrix) {
+  Eigen::MatrixXf matrix_eigen(matrix.size(), matrix.at(0).size());
+  for (size_t i = 0; i < matrix.size(); ++i) {
+    matrix_eigen.row(i) =
+        Eigen::Map<Eigen::VectorXf>(matrix.at(i).data(), matrix.at(i).size());
   }
 
-  return mat_;
+  return matrix_eigen;
 }
 
-Vector LinearAlgebraUtil::SubtractVector(Vector v1, Vector v2) {
-  Eigen::Map<Eigen::VectorXf> v1_(v1.data(), v1.size());
-  Eigen::Map<Eigen::VectorXf> v2_(v2.data(), v2.size());
+Vector LinearAlgebraUtil::SubtractVector(Vector vector_1, Vector vector_2) {
+  Eigen::Map<Eigen::VectorXf> vector_1_eigen(vector_1.data(), vector_1.size());
+  Eigen::Map<Eigen::VectorXf> vector_2_eigen(vector_2.data(), vector_2.size());
+  vector_1_eigen -= vector_2_eigen;
 
-  v1_ -= v2_;
-  v1 = MatrixXfToVector(v1_);
-
-  return v1;
+  return MatrixXfToVector(vector_1_eigen);
 }
 
-Vector LinearAlgebraUtil::MultiplyMatrixVector(Matrix mat, Vector v) {
-  Eigen::MatrixXf mat_ = MatrixToMatrixXf(mat);
-  Eigen::Map<Eigen::VectorXf> v_(v.data(), v.size());
+Vector LinearAlgebraUtil::MultiplyMatrixVector(Matrix matrix, Vector vector) {
+  Eigen::MatrixXf matrix_eigen = MatrixToMatrixXf(matrix);
+  Eigen::Map<Eigen::VectorXf> vector_eigen(vector.data(), vector.size());
 
-  Eigen::MatrixXf result_ = mat_ * v_;
-  Vector result = MatrixXfToVector(result_);
-
-  return result;
+  Eigen::MatrixXf result = matrix_eigen * vector_eigen;
+  return MatrixXfToVector(result);
 }
 
-Vector LinearAlgebraUtil::AddVectorScalar(Vector v, float a) {
-  Eigen::Map<Eigen::VectorXf> v_(v.data(), v.size());
+Vector LinearAlgebraUtil::AddVectorScalar(Vector vector, float scalar) {
+  Eigen::Map<Eigen::VectorXf> vector_eigen(vector.data(), vector.size());
 
-  auto array_ = v_.array();
-  array_ += a;
-  v_ = array_.matrix();
-  v = MatrixXfToVector(v_);
-
-  return v;
+  auto array = vector_eigen.array();
+  array += scalar;
+  vector_eigen = array.matrix();
+  return MatrixXfToVector(vector_eigen);
 }
 
-Vector LinearAlgebraUtil::AddVectors(Vector v1, Vector v2) {
-  Eigen::Map<Eigen::VectorXf> v1_(v1.data(), v1.size());
-  Eigen::Map<Eigen::VectorXf> v2_(v2.data(), v2.size());
+Vector LinearAlgebraUtil::AddVectors(Vector vector_1, Vector vector_2) {
+  Eigen::Map<Eigen::VectorXf> vector_1_eigen(vector_1.data(), vector_1.size());
+  Eigen::Map<Eigen::VectorXf> vector_2_eigen(vector_2.data(), vector_2.size());
 
-  v1_ += v2_;
-  v1 = MatrixXfToVector(v1_);
-
-  return v1;
+  vector_1_eigen += vector_2_eigen;
+  return MatrixXfToVector(vector_1_eigen);
 }
 
-Vector LinearAlgebraUtil::MultiplyVectorScalar(Vector v, float a) {
-  Eigen::Map<Eigen::VectorXf> v_(v.data(), v.size());
+Vector LinearAlgebraUtil::MultiplyVectorScalar(Vector vector, float scalar) {
+  Eigen::Map<Eigen::VectorXf> vector_eigen(vector.data(), vector.size());
 
-  auto array_ = v_.array();
-  array_ *= a;
-  v_ = array_.matrix();
-  v = MatrixXfToVector(v_);
-
-  return v;
+  auto array = vector_eigen.array();
+  array *= scalar;
+  vector_eigen = array.matrix();
+  return MatrixXfToVector(vector_eigen);
 }
 
-Matrix LinearAlgebraUtil::TransposeMatrix(Matrix mat) {
-  Eigen::MatrixXf mat_ = MatrixToMatrixXf(mat);
+Matrix LinearAlgebraUtil::TransposeMatrix(Matrix matrix) {
+  Eigen::MatrixXf matrix_eigen = MatrixToMatrixXf(matrix);
 
-  mat_.transposeInPlace();
-  Matrix matT = MatrixXfToMatrix(mat_);
-
-  return matT;
+  matrix_eigen.transposeInPlace();
+  return MatrixXfToMatrix(matrix_eigen);
 }
 
 }  // namespace brave_federated
