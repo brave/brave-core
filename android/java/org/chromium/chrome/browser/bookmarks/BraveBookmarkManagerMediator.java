@@ -57,11 +57,11 @@ class BraveBookmarkManagerMediator
             LargeIconBridge largeIconBridge, boolean isDialogUi, boolean isIncognito,
             ObservableSupplierImpl<Boolean> backPressStateSupplier, Profile profile,
             BookmarkUndoController bookmarkUndoController, ModelList modelList,
-            BookmarkUiPrefs bookmarkUiPrefs) {
+            BookmarkUiPrefs bookmarkUiPrefs, Runnable hideKeyboardRunnable) {
         super(context, bookmarkModel, bookmarkOpener, selectableListLayout, selectionDelegate,
                 recyclerView, dragReorderableRecyclerViewAdapter, largeIconBridge, isDialogUi,
                 isIncognito, backPressStateSupplier, profile, bookmarkUndoController, modelList,
-                bookmarkUiPrefs);
+                bookmarkUiPrefs, hideKeyboardRunnable);
     }
 
     public void setWindow(ActivityWindowAndroid window) {
