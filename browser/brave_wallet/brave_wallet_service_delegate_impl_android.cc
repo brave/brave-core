@@ -132,12 +132,13 @@ void BraveWalletServiceDelegateImpl::ResetWebSitePermission(
           *type, context_, formed_website));
 }
 
-mojom::OriginInfoPtr BraveWalletServiceDelegateImpl::GetActiveOrigin() {
+void BraveWalletServiceDelegateImpl::GetActiveOrigin(
+    GetActiveOriginCallback callback) {
   content::WebContents* contents = GetActiveWebContents(context_);
   auto origin = contents
                     ? contents->GetPrimaryMainFrame()->GetLastCommittedOrigin()
                     : url::Origin();
-  return MakeOriginInfo(origin);
+  std::move(callback).Run(MakeOriginInfo(origin));
 }
 
 }  // namespace brave_wallet
