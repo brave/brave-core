@@ -13,6 +13,7 @@
 #include "brave/components/brave_federated/adapters/flower_helper.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/task/typing.h"
+#include "net/base/load_flags.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -84,6 +85,7 @@ void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
   request->headers.SetHeader("Accept", "application/protobuf");
   request->headers.SetHeader("X-Brave-FL-Federated-Learning", "?1");
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
   request->method = net::HttpRequestHeaders::kPostMethod;
 
   VLOG(2) << "Requesting tasks list " << request->method << " " << request->url;
@@ -138,32 +140,33 @@ void CommunicationAdapter::OnGetTasks(
   VLOG(1) << "Failed to request tasks. Response code: " << response_code;
 }
 
-void CommunicationAdapter::PostTaskResult(TaskResult result,
-                                          PostResultCallback callback) {
+void CommunicationAdapter::UploadTaskResult(TaskResult result,
+                                            UploadResultCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(features::GetFederatedLearningResultsEndpoint());
   request->headers.SetHeader("Content-Type", "application/protobuf");
   request->headers.SetHeader("Accept", "application/protobuf");
   request->headers.SetHeader("X-Brave-FL-Federated-Learning", "?1");
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
   request->method = net::HttpRequestHeaders::kPostMethod;
 
   VLOG(2) << "Posting Task results " << request->method << " " << request->url;
 
-  const std::string& payload = BuildPostTaskResultsPayload(result);
+  const std::string& payload = BuildUploadTaskResultsPayload(result);
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   url_loader_->AttachStringForUpload(payload, "application/protobuf");
   url_loader_->DownloadToString(
       url_loader_factory_.get(),
-      base::BindOnce(&CommunicationAdapter::OnPostTaskResult,
+      base::BindOnce(&CommunicationAdapter::OnUploadTaskResult,
                      weak_factory_.GetWeakPtr(), std::move(callback)),
       kMaxFederatedServerResponseSizeBytes);
 }
 
-void CommunicationAdapter::OnPostTaskResult(
-    PostResultCallback callback,
+void CommunicationAdapter::OnUploadTaskResult(
+    UploadResultCallback callback,
     std::unique_ptr<std::string> response_body) {
   if (!url_loader_->ResponseInfo() || !url_loader_->ResponseInfo()->headers) {
     VLOG(1) << "Failed to post task results";

@@ -1,0 +1,10 @@
+static_library("brave_flwr") {
+  sources = [
+    "serde.cc",
+    "serde.h",
+  ]
+  deps = [
+    "//brave/third_party/flower/src/proto/flwr/proto:transport_proto",
+    "//third_party/protobuf:protobuf_lite",
+  ]
+}

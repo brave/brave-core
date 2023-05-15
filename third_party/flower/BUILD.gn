@@ -1,11 +1,4 @@
 static_library("flower") {
-  include_dirs = [ "src/cc/flwr/include" ]
-  sources = [
-    "src/brave/flwr/serde.cc",
-    "src/brave/flwr/serde.h",
-  ]
-  deps = [
-    "//brave/third_party/flower/src/proto/flwr/proto:transport_proto",
-    "//third_party/protobuf:protobuf_lite",
-  ]
+  include_dirs = [ "src/brave/flwr" ]
+  deps = [ "//brave/third_party/flower/src/brave/flwr:brave_flwr" ]
 }

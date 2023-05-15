@@ -25,15 +25,15 @@ using ModelWeights = std::tuple<Weights, float>;
 
 class FederatedTaskRunner final {
  public:
-  FederatedTaskRunner(Task task, std::unique_ptr<Model> model);
+  FederatedTaskRunner(const Task& task, std::unique_ptr<Model> model);
   ~FederatedTaskRunner();
 
   absl::optional<TaskResult> Run();
 
-  void SetTrainingData(DataSet training_data);
-  void SetTestData(DataSet test_data);
+  void SetTrainingData(const DataSet& training_data);
+  void SetTestData(const DataSet& test_data);
 
-  void SetWeights(ModelWeights weights);
+  void SetWeights(const ModelWeights& weights);
   ModelWeights GetWeights() const;
 
  private:

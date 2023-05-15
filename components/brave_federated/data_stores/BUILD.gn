@@ -1,0 +1,21 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//testing/test.gni")
+
+static_library("data_stores") {
+  sources = [
+    "async_data_store.cc",
+    "async_data_store.h",
+    "data_store.cc",
+    "data_store.h",
+  ]
+
+  deps = [
+    "//sql",
+    "//third_party/abseil-cpp:absl",
+  ]
+}

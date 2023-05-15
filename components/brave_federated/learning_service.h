@@ -51,7 +51,7 @@ class LearningService : public EligibilityObserver {
   void HandleTasksOrReconnect(TaskList tasks, int reconnect);
 
   void OnTaskResultComputed(absl::optional<TaskResult> result);
-  void OnPostTaskResults(TaskResultResponse response);
+  void OnUploadTaskResults(TaskResultResponse response);
 
   scoped_refptr<network::SharedURLLoaderFactory>
       url_loader_factory_;  // NOT OWNED

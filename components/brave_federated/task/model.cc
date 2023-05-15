@@ -51,7 +51,7 @@ Weights Model::GetWeights() {
   return weights_;
 }
 
-void Model::SetWeights(Weights new_weights) {
+void Model::SetWeights(const Weights& new_weights) {
   weights_ = std::move(new_weights);
 }
 
