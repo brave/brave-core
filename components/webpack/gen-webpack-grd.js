@@ -15,7 +15,8 @@ function getIncludesString (fileList) {
     const relativePath = filePath.replace(targetDir, '')
     const fileId = idPrefix + relativePath.replace(/[^a-z0-9]/gi, '_').toUpperCase()
     const resourcePath = resourcePathPrefix
-      ? path.join(resourcePathPrefix, relativePath)
+      // Note: We want to use forwardslash regardless of platform.
+      ? path.posix.join(resourcePathPrefix, relativePath)
       : relativePath
     return `<include name="${fileId}" file="${filePath}" resource_path="${resourcePath}" use_base_dir="false" type="BINDATA" />`
   }).join('\n')

@@ -153,7 +153,7 @@
     "CheckWebDevStyle": [
       "components/speedreader/resources/speedreader-desktop.css",
       "components/speedreader/resources/third_party/",
-      "components/webpack/gen-webpack-grd.js",
+      "components/webpack/gen-webpack-grd\\.js",
       "test/data/speedreader/",
     ]
   },
