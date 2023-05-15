@@ -216,7 +216,6 @@ void CreativeAds::GetForCreativeInstanceId(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(

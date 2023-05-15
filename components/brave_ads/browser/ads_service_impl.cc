@@ -1949,6 +1949,8 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
 
 void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                                       RunDBTransactionCallback callback) {
+  CHECK(transaction);
+
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),

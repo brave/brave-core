@@ -335,7 +335,6 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -419,7 +418,6 @@ void CreativeInlineContentAds::GetForDimensions(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(
@@ -450,7 +448,6 @@ void CreativeInlineContentAds::GetForDimensions(
 void CreativeInlineContentAds::GetAll(
     GetCreativeInlineContentAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(

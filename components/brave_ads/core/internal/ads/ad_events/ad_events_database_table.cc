@@ -222,7 +222,6 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
 void AdEvents::GetIf(const std::string& condition,
                      GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -241,7 +240,6 @@ void AdEvents::GetIf(const std::string& condition,
 
 void AdEvents::GetAll(GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -262,7 +260,6 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
   CHECK(mojom::IsKnownEnumValue(ad_type));
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -281,7 +278,6 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
 
 void AdEvents::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
@@ -300,7 +296,6 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
   CHECK(mojom::IsKnownEnumValue(ad_type));
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(

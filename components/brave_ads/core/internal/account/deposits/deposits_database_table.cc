@@ -187,7 +187,6 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
 
 void Deposits::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(

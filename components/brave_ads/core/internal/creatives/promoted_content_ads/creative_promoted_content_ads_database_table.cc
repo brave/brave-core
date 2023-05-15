@@ -305,7 +305,6 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -379,7 +378,6 @@ void CreativePromotedContentAds::GetForSegments(
 void CreativePromotedContentAds::GetAll(
     GetCreativePromotedContentAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(

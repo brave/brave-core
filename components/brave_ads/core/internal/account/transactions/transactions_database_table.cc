@@ -193,7 +193,6 @@ void Transactions::Save(const TransactionList& transactions,
 
 void Transactions::GetAll(GetTransactionsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -212,7 +211,6 @@ void Transactions::GetForDateRange(const base::Time from_time,
                                    const base::Time to_time,
                                    GetTransactionsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(
@@ -240,7 +238,6 @@ void Transactions::Update(
   transaction_ids.emplace_back(rewards::kMigrationUnreconciledTransactionId);
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
   command->sql = base::StringPrintf(

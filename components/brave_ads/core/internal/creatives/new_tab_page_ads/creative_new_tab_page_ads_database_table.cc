@@ -329,7 +329,6 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -408,7 +407,6 @@ void CreativeNewTabPageAds::GetForSegments(
 void CreativeNewTabPageAds::GetAll(
     GetCreativeNewTabPageAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(

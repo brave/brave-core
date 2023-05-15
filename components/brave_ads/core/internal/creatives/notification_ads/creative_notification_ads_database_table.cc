@@ -287,7 +287,6 @@ void CreativeNotificationAds::GetForSegments(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(
@@ -326,7 +325,6 @@ void CreativeNotificationAds::GetForSegments(
 void CreativeNotificationAds::GetAll(
     GetCreativeNotificationAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(

@@ -331,7 +331,6 @@ void ConversionQueue::Delete(
     const ConversionQueueItemInfo& conversion_queue_item,
     ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
@@ -346,7 +345,6 @@ void ConversionQueue::Update(
     const ConversionQueueItemInfo& conversion_queue_item,
     ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
@@ -360,7 +358,6 @@ void ConversionQueue::Update(
 
 void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -379,7 +376,6 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
 void ConversionQueue::GetUnprocessed(
     GetConversionQueueCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -406,7 +402,6 @@ void ConversionQueue::GetForCreativeInstanceId(
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT cq.ad_type, cq.campaign_id, cq.creative_set_id, "

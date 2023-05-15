@@ -141,6 +141,7 @@ size_t GetAdEventCount(const AdType& ad_type,
 
 void ResetAdEvents(ResultAdEventsCallback callback) {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+
   database::DeleteTable(&*transaction, "ad_events");
 
   AdsClientHelper::GetInstance()->RunDBTransaction(

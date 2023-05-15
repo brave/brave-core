@@ -31,6 +31,8 @@ void OnRunTransaction(ResultCallback callback,
 
 void RunTransaction(mojom::DBTransactionInfoPtr transaction,
                     ResultCallback callback) {
+  CHECK(transaction);
+
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&OnRunTransaction, std::move(callback)));

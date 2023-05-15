@@ -140,7 +140,6 @@ void TextEmbeddingHtmlEvents::LogEvent(
 void TextEmbeddingHtmlEvents::GetAll(
     GetTextEmbeddingHtmlEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -157,7 +156,6 @@ void TextEmbeddingHtmlEvents::GetAll(
 
 void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::StringPrintf(
