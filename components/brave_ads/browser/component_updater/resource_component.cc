@@ -90,8 +90,7 @@ void ResourceComponent::RegisterComponentForCountryCode(
   const absl::optional<ComponentInfo> component =
       GetComponentInfo(country_code);
   if (!component) {
-    VLOG(1) << "Ads resource not supported for " << country_code;
-    return;
+    return VLOG(1) << "Ads resource not supported for " << country_code;
   }
 
   const std::string component_name =
@@ -109,8 +108,7 @@ void ResourceComponent::RegisterComponentForLanguageCode(
   const absl::optional<ComponentInfo> component =
       GetComponentInfo(language_code);
   if (!component) {
-    VLOG(1) << "Ads resource not supported for " << language_code;
-    return;
+    return VLOG(1) << "Ads resource not supported for " << language_code;
   }
 
   const std::string component_name =
@@ -150,33 +148,28 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
 
   const absl::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root || !root->is_dict()) {
-    VLOG(1) << "Failed to parse resource json";
-    return;
+    return VLOG(1) << "Failed to parse resource json";
   }
   const base::Value::Dict& dict = root->GetDict();
 
   const absl::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (!schema_version) {
-    VLOG(1) << "Resource schema version is missing";
-    return;
+    return VLOG(1) << "Resource schema version is missing";
   }
 
   if (*schema_version != kCurrentSchemaVersion) {
-    VLOG(1) << "Resource schema version mismatch";
-    return;
+    return VLOG(1) << "Resource schema version mismatch";
   }
 
   const auto* const resources_list = dict.FindList(kResourcesKey);
   if (!resources_list) {
-    VLOG(1) << "Resource is missing";
-    return;
+    return VLOG(1) << "Resource is missing";
   }
 
   for (const auto& item : *resources_list) {
     const auto* item_dict = item.GetIfDict();
     if (!item_dict) {
-      VLOG(1) << "Failed to parse resource manifest";
-      return;
+      return VLOG(1) << "Failed to parse resource manifest";
     }
 
     const std::string* const resource_id =

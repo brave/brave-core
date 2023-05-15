@@ -21,8 +21,8 @@ void NotificationAdEventDismissed::FireEvent(const NotificationAdInfo& ad) {
   LogAdEvent(ad, ConfirmationType::kDismissed,
              base::BindOnce([](const bool success) {
                if (!success) {
-                 BLOG(1, "Failed to log notification ad dismissed event");
-                 return;
+                 return BLOG(1,
+                             "Failed to log notification ad dismissed event");
                }
 
                BLOG(6, "Successfully logged notification ad dismissed event");

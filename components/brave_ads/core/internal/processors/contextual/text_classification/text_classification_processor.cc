@@ -46,16 +46,14 @@ TextClassificationProcessor::~TextClassificationProcessor() {
 
 void TextClassificationProcessor::Process(const std::string& text) {
   if (!resource_->IsInitialized()) {
-    BLOG(1,
-         "Failed to process text classification as resource not initialized");
-    return;
+    return BLOG(
+        1, "Failed to process text classification as resource not initialized");
   }
 
   const TextClassificationProbabilityMap probabilities =
       resource_->get().ClassifyPage(text);
   if (probabilities.empty()) {
-    BLOG(1, "Text not classified as not enough content");
-    return;
+    return BLOG(1, "Text not classified as not enough content");
   }
 
   const std::string segment = GetTopSegmentFromPageProbabilities(probabilities);
@@ -79,17 +77,15 @@ void TextClassificationProcessor::OnTextContentDidChange(
   const GURL& url = redirect_chain.back();
 
   if (!url.SchemeIsHTTPOrHTTPS()) {
-    BLOG(
-        1,
-        url.scheme() << " scheme is not supported for processing text content");
-    return;
+    return BLOG(1,
+                url.scheme()
+                    << " scheme is not supported for processing text content");
   }
 
   if (IsSearchEngine(url) && !IsSearchEngineResultsPage(url)) {
-    BLOG(1,
-         "Search engine landing pages are not supported for processing text "
-         "content");
-    return;
+    return BLOG(1,
+                "Search engine landing pages are not supported for processing "
+                "text content");
   }
 
   Process(content);

@@ -93,11 +93,11 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
   }
 
   if (!ShouldRefillUnblindedTokens()) {
-    BLOG(1, "No need to refill unblinded tokens as we already have "
-                << privacy::UnblindedTokenCount()
-                << " unblinded tokens which is above the minimum threshold of "
-                << kMinimumUnblindedTokens);
-    return;
+    return BLOG(
+        1, "No need to refill unblinded tokens as we already have "
+               << privacy::UnblindedTokenCount()
+               << " unblinded tokens which is above the minimum threshold of "
+               << kMinimumUnblindedTokens);
   }
 
   wallet_ = wallet;

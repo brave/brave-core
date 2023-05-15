@@ -233,8 +233,7 @@ void Conversions::MaybeConvert(
 
   const GURL& url = redirect_chain.back();
   if (!DoesSupportUrl(url)) {
-    BLOG(1, "URL is not supported for conversions");
-    return;
+    return BLOG(1, "URL is not supported for conversions");
   }
 
   CheckRedirectChain(redirect_chain, html, conversion_id_patterns);
@@ -253,13 +252,11 @@ void Conversions::GetUnprocessedConversionsCallback(
     const bool success,
     const ConversionQueueItemList& conversion_queue_items) {
   if (!success) {
-    BLOG(1, "Failed to get unprocessed conversions");
-    return;
+    return BLOG(1, "Failed to get unprocessed conversions");
   }
 
   if (conversion_queue_items.empty()) {
-    BLOG(1, "Conversion queue is empty");
-    return;
+    return BLOG(1, "Conversion queue is empty");
   }
 
   const ConversionQueueItemInfo& conversion_queue_item =
@@ -287,8 +284,7 @@ void Conversions::GetAllAdEventsCallback(
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    BLOG(1, "Failed to get ad events");
-    return;
+    return BLOG(1, "Failed to get ad events");
   }
 
   const database::table::Conversions conversions_database_table;
@@ -306,13 +302,11 @@ void Conversions::GetAllConversionsCallback(
     const bool success,
     const ConversionList& conversions) {
   if (!success) {
-    BLOG(1, "Failed to get conversions");
-    return;
+    return BLOG(1, "Failed to get conversions");
   }
 
   if (conversions.empty()) {
-    BLOG(1, "There are no conversions");
-    return;
+    return BLOG(1, "There are no conversions");
   }
 
   // Filter conversions by url pattern
@@ -380,8 +374,7 @@ void Conversions::AddItemToQueue(
 
   LogAdEvent(conversion_ad_event, base::BindOnce([](const bool success) {
                if (!success) {
-                 BLOG(1, "Failed to log conversion event");
-                 return;
+                 return BLOG(1, "Failed to log conversion event");
                }
 
                BLOG(6, "Successfully logged conversion event");
@@ -410,8 +403,7 @@ void Conversions::AddItemToQueue(
 
 void Conversions::SaveConversionQueueCallback(const bool success) {
   if (!success) {
-    BLOG(1, "Failed to append conversion to queue");
-    return;
+    return BLOG(1, "Failed to append conversion to queue");
   }
 
   BLOG(3, "Successfully appended conversion to queue");
@@ -474,13 +466,11 @@ void Conversions::GetConversionQueueCallback(
     const bool success,
     const ConversionQueueItemList& conversion_queue_items) {
   if (!success) {
-    BLOG(1, "Failed to get conversion queue");
-    return;
+    return BLOG(1, "Failed to get conversion queue");
   }
 
   if (conversion_queue_items.empty()) {
-    BLOG(1, "Conversion queue is empty");
-    return;
+    return BLOG(1, "Conversion queue is empty");
   }
 
   const ConversionQueueItemInfo& conversion_queue_item =

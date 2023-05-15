@@ -21,8 +21,7 @@ void InlineContentAdEventServed::FireEvent(const InlineContentAdInfo& ad) {
   LogAdEvent(ad, ConfirmationType::kServed,
              base::BindOnce([](const bool success) {
                if (!success) {
-                 BLOG(1, "Failed to log inline content ad served event");
-                 return;
+                 return BLOG(1, "Failed to log inline content ad served event");
                }
 
                BLOG(1, "Successfully logged inline content ad served event");

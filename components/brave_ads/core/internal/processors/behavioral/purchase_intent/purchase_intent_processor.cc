@@ -71,26 +71,21 @@ PurchaseIntentProcessor::~PurchaseIntentProcessor() {
 
 void PurchaseIntentProcessor::Process(const GURL& url) {
   if (!resource_->IsInitialized()) {
-    BLOG(1,
-         "Failed to process purchase intent signal for visited URL due to "
-         "uninitialized purchase intent resource");
-
-    return;
+    return BLOG(1,
+                "Failed to process purchase intent signal for visited URL due "
+                "to uninitialized purchase intent resource");
   }
 
   if (!url.is_valid()) {
-    BLOG(1,
-         "Failed to process purchase intent signal for visited URL due to "
-         "an invalid url");
-
-    return;
+    return BLOG(1,
+                "Failed to process purchase intent signal for visited URL due "
+                "to an invalid url");
   }
 
   const PurchaseIntentSignalInfo purchase_intent_signal = ExtractSignal(url);
 
   if (purchase_intent_signal.segments.empty()) {
-    BLOG(1, "No purchase intent matches found for visited URL");
-    return;
+    return BLOG(1, "No purchase intent matches found for visited URL");
   }
 
   BLOG(1, "Extracted purchase intent signal from visited URL");

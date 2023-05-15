@@ -211,8 +211,7 @@ void ConfirmationStateManager::Save() {
   AdsClientHelper::GetInstance()->Save(
       kConfirmationStateFilename, json, base::BindOnce([](const bool success) {
         if (!success) {
-          BLOG(0, "Failed to save confirmations state");
-          return;
+          return BLOG(0, "Failed to save confirmations state");
         }
 
         BLOG(9, "Successfully saved confirmations state");

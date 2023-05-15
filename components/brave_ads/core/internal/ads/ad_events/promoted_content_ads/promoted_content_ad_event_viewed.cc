@@ -21,8 +21,8 @@ void PromotedContentAdEventViewed::FireEvent(const PromotedContentAdInfo& ad) {
   LogAdEvent(ad, ConfirmationType::kViewed,
              base::BindOnce([](const bool success) {
                if (!success) {
-                 BLOG(1, "Failed to log promoted content ad viewed event");
-                 return;
+                 return BLOG(1,
+                             "Failed to log promoted content ad viewed event");
                }
 
                BLOG(6, "Successfully logged promoted content ad viewed event");

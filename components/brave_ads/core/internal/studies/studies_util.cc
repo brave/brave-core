@@ -35,8 +35,7 @@ void LogActiveStudies() {
   const base::FieldTrial::ActiveGroups active_field_trial_groups =
       GetActiveFieldTrialStudyGroups();
   if (active_field_trial_groups.empty()) {
-    BLOG(1, "No active studies");
-    return;
+    return BLOG(1, "No active studies");
   }
 
   for (const auto& active_field_trial_group : active_field_trial_groups) {

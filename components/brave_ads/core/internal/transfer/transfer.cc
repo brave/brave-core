@@ -49,13 +49,11 @@ void Transfer::MaybeTransferAd(const int32_t tab_id,
   }
 
   if (transferring_ad_tab_id_ == tab_id) {
-    BLOG(1, "Already transferring ad for tab id " << tab_id);
-    return;
+    return BLOG(1, "Already transferring ad for tab id " << tab_id);
   }
 
   if (!DomainOrHostExists(redirect_chain, last_clicked_ad_.target_url)) {
-    BLOG(1, "Visited URL does not match the last clicked ad");
-    return;
+    return BLOG(1, "Visited URL does not match the last clicked ad");
   }
 
   TransferAd(tab_id, redirect_chain);

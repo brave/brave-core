@@ -51,14 +51,13 @@ void RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
 
   if (!ConfirmationStateManager::GetInstance().RemoveFailedConfirmation(
           confirmation)) {
-    BLOG(0, "Failed to remove "
-                << confirmation.type << " confirmation for "
-                << confirmation.ad_type << " with transaction id "
-                << confirmation.transaction_id << " and creative instance id "
-                << confirmation.creative_instance_id
-                << " from the confirmations queue");
-
-    return;
+    return BLOG(0, "Failed to remove "
+                       << confirmation.type << " confirmation for "
+                       << confirmation.ad_type << " with transaction id "
+                       << confirmation.transaction_id
+                       << " and creative instance id "
+                       << confirmation.creative_instance_id
+                       << " from the confirmations queue");
   }
 
   BLOG(1, "Removed " << confirmation.type << " confirmation for "
@@ -100,8 +99,7 @@ void Confirmations::Retry() {
   const ConfirmationList& failed_confirmations =
       ConfirmationStateManager::GetInstance().GetFailedConfirmations();
   if (failed_confirmations.empty()) {
-    BLOG(1, "No failed confirmations to retry");
-    return;
+    return BLOG(1, "No failed confirmations to retry");
   }
 
   CHECK(!retry_timer_.IsRunning());
@@ -171,8 +169,7 @@ void Confirmations::CreateAndRedeem(
   const absl::optional<ConfirmationInfo> confirmation =
       CreateConfirmation(token_generator_, transaction, opted_in_user_data);
   if (!confirmation) {
-    BLOG(0, "Failed to create confirmation");
-    return;
+    return BLOG(0, "Failed to create confirmation");
   }
 
   Redeem(*confirmation);

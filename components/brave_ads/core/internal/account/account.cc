@@ -274,8 +274,7 @@ void Account::WalletDidChange(const WalletInfo& wallet) const {
 
 void Account::RewardsResetCallback(const bool success) const {
   if (!success) {
-    BLOG(0, "Failed to reset rewards state");
-    return;
+    return BLOG(0, "Failed to reset rewards state");
   }
 
   BLOG(3, "Successfully reset rewards state");
@@ -388,8 +387,7 @@ void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
 
 void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
   if (!IsIssuersValid(issuers)) {
-    BLOG(0, "Invalid issuers");
-    return;
+    return BLOG(0, "Invalid issuers");
   }
 
   if (HasIssuersChanged(issuers)) {
@@ -408,8 +406,7 @@ void Account::OnDidRedeemUnblindedPaymentTokens(
   database_table.Update(unblinded_payment_tokens,
                         base::BindOnce([](const bool success) {
                           if (!success) {
-                            BLOG(0, "Failed to update transactions");
-                            return;
+                            return BLOG(0, "Failed to update transactions");
                           }
 
                           BLOG(3, "Successfully updated transactions");

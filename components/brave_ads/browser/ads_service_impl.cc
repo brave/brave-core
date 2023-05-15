@@ -270,8 +270,7 @@ void OnURLResponseStarted(
 
 void OnResetState(const bool success) {
   if (!success) {
-    VLOG(1) << "Failed to reset ads state";
-    return;
+    return VLOG(1) << "Failed to reset ads state";
   }
 
   VLOG(6) << "Successfully reset ads state";
@@ -279,8 +278,7 @@ void OnResetState(const bool success) {
 
 void OnAddTrainingSample(const bool success) {
   if (!success) {
-    VLOG(6) << "Failed to add training sample";
-    return;
+    return VLOG(6) << "Failed to add training sample";
   }
 
   VLOG(6) << "Successfully added training sample";
@@ -351,8 +349,7 @@ void AdsServiceImpl::MigrateConfirmationState() {
 
 void AdsServiceImpl::OnMigrateConfirmationState(const bool success) {
   if (!success) {
-    VLOG(1) << "Failed to migrate confirmation state";
-    return;
+    return VLOG(1) << "Failed to migrate confirmation state";
   }
 
   GetDeviceId();
@@ -390,9 +387,8 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
   }
 
   if (!IsSupportedRegion()) {
-    VLOG(6) << brave_l10n::GetDefaultISOCountryCodeString()
-            << " region does not support ads";
-    return;
+    return VLOG(6) << brave_l10n::GetDefaultISOCountryCodeString()
+                   << " region does not support ads";
   }
 
   StartBatAdsService();
@@ -893,8 +889,7 @@ void AdsServiceImpl::OnPrefetchNewTabPageAd(
   is_prefetching_new_tab_page_ad_ = false;
 
   if (!dict) {
-    VLOG(1) << "Failed to prefetch new tab page ad";
-    return;
+    return VLOG(1) << "Failed to prefetch new tab page ad";
   }
   prefetched_new_tab_page_ad_ = NewTabPageAdFromValue(*dict);
 }
@@ -933,8 +928,7 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 void AdsServiceImpl::OnOpenNewTabWithAd(
     absl::optional<base::Value::Dict> dict) {
   if (!dict) {
-    VLOG(1) << "Failed to get notification ad";
-    return;
+    return VLOG(1) << "Failed to get notification ad";
   }
 
   const NotificationAdInfo notification = NotificationAdFromValue(*dict);
@@ -948,8 +942,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   }
 
   if (!url.is_valid()) {
-    VLOG(1) << "Failed to open new tab due to invalid URL: " << url;
-    return;
+    return VLOG(1) << "Failed to open new tab due to invalid URL: " << url;
   }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -1931,8 +1924,7 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
 
   if (pref_service->GetBoolean(
           brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
-    VLOG(1) << "Ads paused; support intervention required";
-    return;
+    return VLOG(1) << "Ads paused; support intervention required";
   }
 
   const int snooze_count = pref_service->GetInteger(

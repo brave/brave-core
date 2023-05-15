@@ -31,8 +31,7 @@ void OnGetTextEmbeddingHtmlEvents(
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
   if (!success) {
     BLOG(1, "Failed to get text embedding events");
-    std::move(callback).Run(user_model);
-    return;
+    return std::move(callback).Run(user_model);
   }
 
   user_model.text_embedding_html_events = text_embedding_html_events;

@@ -21,8 +21,7 @@ void InlineContentAdEventViewed::FireEvent(const InlineContentAdInfo& ad) {
   LogAdEvent(ad, ConfirmationType::kViewed,
              base::BindOnce([](const bool success) {
                if (!success) {
-                 BLOG(1, "Failed to log inline content ad viewed event");
-                 return;
+                 return BLOG(1, "Failed to log inline content ad viewed event");
                }
 
                BLOG(6, "Successfully logged inline content ad viewed event");

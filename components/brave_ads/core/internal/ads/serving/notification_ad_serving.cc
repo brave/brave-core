@@ -74,16 +74,14 @@ void NotificationAdServing::StopServingAdsAtRegularIntervals() {
 
 void NotificationAdServing::MaybeServeAd() {
   if (is_serving_) {
-    BLOG(1, "Already serving notification ad");
-    return;
+    return BLOG(1, "Already serving notification ad");
   }
 
   is_serving_ = true;
 
   if (!IsNotificationAdServingFeatureEnabled()) {
     BLOG(1, "Notification ad not served: Feature is disabled");
-    FailedToServeAd();
-    return;
+    return FailedToServeAd();
   }
 
   if (!IsSupported()) {
