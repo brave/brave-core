@@ -540,17 +540,17 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
   })";
 
   // Parse the dapp list
-  DappListMap dapp_list_map;
-  EXPECT_TRUE(ParseDappLists(dapp_list, &dapp_list_map));
+  absl::optional<DappListMap> dapp_list_map = ParseDappLists(dapp_list);
+  ASSERT_TRUE(dapp_list_map);
 
   // There should be eight lists, for Ethereum, Solana, Polygon, Binance Smart
   // Chain, Optimism, Aurora, Avalanche, and Fantom
-  ASSERT_EQ(8u, dapp_list_map.size());
+  ASSERT_EQ(8u, dapp_list_map->size());
 
   // There should be one dapp in the Ethereum list
-  auto it = dapp_list_map.find(
+  auto it = dapp_list_map->find(
       GetTokenListKey(mojom::CoinType::ETH, mojom::kMainnetChainId));
-  EXPECT_TRUE(it != dapp_list_map.end());
+  EXPECT_TRUE(it != dapp_list_map->end());
   const auto& eth_dapp_list = it->second;
   EXPECT_EQ(eth_dapp_list.size(), 1u);
   const auto& eth_dapp = eth_dapp_list[0];
@@ -578,9 +578,9 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
   EXPECT_DOUBLE_EQ(eth_dapp->balance, 1887202135.14);
 
   // There should be one dapp in the Solana list
-  auto it_s = dapp_list_map.find(
+  auto it_s = dapp_list_map->find(
       GetTokenListKey(mojom::CoinType::SOL, mojom::kSolanaMainnet));
-  EXPECT_TRUE(it_s != dapp_list_map.end());
+  EXPECT_TRUE(it_s != dapp_list_map->end());
   const auto& sol_dapp_list = it_s->second;
   EXPECT_EQ(sol_dapp_list.size(), 1u);
   const auto& sol_dapp = sol_dapp_list[0];

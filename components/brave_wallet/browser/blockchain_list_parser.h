@@ -25,7 +25,7 @@ bool ParseTokenList(const std::string& json,
                     mojom::CoinType coin);
 std::string GetTokenListKey(mojom::CoinType coin, const std::string& chain_id);
 bool ParseChainList(const std::string& json, ChainList* chain_list);
-bool ParseDappLists(const std::string& json, DappListMap* dapp_list);
+absl::optional<DappListMap> ParseDappLists(const std::string& json);
 
 }  // namespace brave_wallet
 

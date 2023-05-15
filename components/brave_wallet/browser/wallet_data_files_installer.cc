@@ -86,18 +86,17 @@ void OnSanitizedChainList(data_decoder::JsonSanitizer::Result result) {
 }
 
 void OnSanitizedDappLists(data_decoder::JsonSanitizer::Result result) {
-  DappListMap lists;
   if (!result.has_value()) {
     VLOG(1) << "DappLists JSON validation error:" << result.error();
     return;
   }
-
-  if (!ParseDappLists(*result, &lists)) {
+  absl::optional<DappListMap> lists = ParseDappLists(*result);
+  if (!lists) {
     VLOG(1) << "Can't parse dapp lists.";
     return;
   }
 
-  BlockchainRegistry::GetInstance()->UpdateDappList(std::move(lists));
+  BlockchainRegistry::GetInstance()->UpdateDappList(std::move(*lists));
 }
 
 void HandleParseTokenList(base::FilePath absolute_install_dir,

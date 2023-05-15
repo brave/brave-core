@@ -296,9 +296,7 @@ bool ParseChainList(const std::string& json, ChainList* result) {
   return true;
 }
 
-bool ParseDappLists(const std::string& json, DappListMap* dapp_lists) {
-  DCHECK(dapp_lists);
-
+absl::optional<DappListMap> ParseDappLists(const std::string& json) {
   // {
   //   "solana": {
   //     "success": true,
@@ -370,46 +368,47 @@ bool ParseDappLists(const std::string& json, DappListMap* dapp_lists) {
   //   }
   //   ...
   // }
-
+  //
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v || !records_v->is_dict()) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
+    return absl::nullopt;
   }
 
   auto dapp_lists_from_component =
       blockchain_lists::DappLists::FromValue(records_v->GetDict());
   if (!dapp_lists_from_component) {
-    return false;
+    return absl::nullopt;
   }
 
+  DappListMap dapp_lists;
   AddDappListToMap(
       GetTokenListKey(mojom::CoinType::ETH, mojom::kMainnetChainId),
-      dapp_lists_from_component->ethereum, dapp_lists);
+      dapp_lists_from_component->ethereum, &dapp_lists);
   AddDappListToMap(GetTokenListKey(mojom::CoinType::SOL, mojom::kSolanaMainnet),
-                   dapp_lists_from_component->solana, dapp_lists);
+                   dapp_lists_from_component->solana, &dapp_lists);
   AddDappListToMap(
       GetTokenListKey(mojom::CoinType::ETH, mojom::kPolygonMainnetChainId),
-      dapp_lists_from_component->polygon, dapp_lists);
+      dapp_lists_from_component->polygon, &dapp_lists);
   AddDappListToMap(GetTokenListKey(mojom::CoinType::ETH,
                                    mojom::kBinanceSmartChainMainnetChainId),
-                   dapp_lists_from_component->binance_smart_chain, dapp_lists);
+                   dapp_lists_from_component->binance_smart_chain, &dapp_lists);
   AddDappListToMap(
       GetTokenListKey(mojom::CoinType::ETH, mojom::kOptimismMainnetChainId),
-      dapp_lists_from_component->optimism, dapp_lists);
+      dapp_lists_from_component->optimism, &dapp_lists);
   AddDappListToMap(
       GetTokenListKey(mojom::CoinType::ETH, mojom::kAuroraMainnetChainId),
-      dapp_lists_from_component->aurora, dapp_lists);
+      dapp_lists_from_component->aurora, &dapp_lists);
   AddDappListToMap(
       GetTokenListKey(mojom::CoinType::ETH, mojom::kAvalancheMainnetChainId),
-      dapp_lists_from_component->avalanche, dapp_lists);
+      dapp_lists_from_component->avalanche, &dapp_lists);
   AddDappListToMap(
       GetTokenListKey(mojom::CoinType::ETH, mojom::kFantomMainnetChainId),
-      dapp_lists_from_component->fantom, dapp_lists);
+      dapp_lists_from_component->fantom, &dapp_lists);
 
-  return true;
+  return dapp_lists;
 }
 
 }  // namespace brave_wallet

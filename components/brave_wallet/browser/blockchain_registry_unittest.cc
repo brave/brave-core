@@ -814,9 +814,9 @@ TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
 TEST(BlockchainRegistryUnitTest, GetTopDapps) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
-  DappListMap dapp_lists_map;
-  ASSERT_TRUE(ParseDappLists(dapp_lists_json, &dapp_lists_map));
-  registry->UpdateDappList(std::move(dapp_lists_map));
+  absl::optional<DappListMap> dapp_lists_map = ParseDappLists(dapp_lists_json);
+  ASSERT_TRUE(dapp_lists_map);
+  registry->UpdateDappList(std::move(*dapp_lists_map));
 
   // Top Ethereum dapps
   for (size_t i = 0; i < 2; ++i) {
