@@ -19,6 +19,7 @@ brave_android_manifest_includes = [
 ]
 
 brave_chrome_java_deps = [
+  "//brave/android/java/org/chromium/android_webview/nonembedded:java",
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/browser/download/android:java",
   "//brave/browser/download/internal/android:java",
