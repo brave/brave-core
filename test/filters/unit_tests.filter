@@ -240,6 +240,10 @@
 # consent level
 -SignoutAllowed/SigninManagerTest.*
 
+# Failed because we disabled upstream's entire client-side field trials.
+# See ChromeBrowserFieldTrials.
+-ChromeBrowserFieldTrialsTest.SamplingTrials
+
 # These tests crash because we disable 
 # enterprise_connectors::kLocalContentAnalysisEnabled feature
 -FilesRequestHandlerTest.FileIsEncrypted_LocalAnalysis
