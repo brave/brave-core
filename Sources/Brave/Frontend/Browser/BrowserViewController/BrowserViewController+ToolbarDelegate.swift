@@ -459,20 +459,38 @@ extension BrowserViewController: TopToolbarDelegate {
       // In 1.6 we "reload" the whole web view state, dumping caches, etc. (reload():BraveWebView.swift:495)
       // BRAVE TODO: Port over proper tab reloading with Shields
     }
+    
     shields.showGlobalShieldsSettings = { [unowned self] vc in
       vc.dismiss(animated: true) {
-        let shieldsAndPrivacy = BraveShieldsAndPrivacySettingsController(
+        weak var spinner: SpinnerView?
+        let controller = UIHostingController(rootView: AdvancedShieldsSettingsView(
           profile: self.profile,
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
           historyAPI: self.braveCore.historyAPI,
-          p3aUtilities: self.braveCore.p3aUtils
-        )
-        let container = SettingsNavigationController(rootViewController: shieldsAndPrivacy)
+          p3aUtilities: self.braveCore.p3aUtils,
+          clearDataCallback: { [weak self] isLoading in
+            guard let view = self?.navigationController?.view, view.window != nil else {
+              assertionFailure()
+              return
+            }
+            
+            if isLoading, spinner == nil {
+              let newSpinner = SpinnerView()
+              newSpinner.present(on: view)
+              spinner = newSpinner
+            } else {
+              spinner?.dismiss()
+              spinner = nil
+            }
+          }
+        ))
+        
+        let container = SettingsNavigationController(rootViewController: controller)
         container.isModalInPresentation = true
         container.modalPresentationStyle =
           UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
-        shieldsAndPrivacy.navigationItem.rightBarButtonItem = .init(
+        controller.navigationItem.rightBarButtonItem = .init(
           barButtonSystemItem: .done,
           target: container,
           action: #selector(SettingsNavigationController.done)

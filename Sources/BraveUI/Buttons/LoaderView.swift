@@ -24,6 +24,9 @@ public class LoaderView: UIView {
     case small
     case normal
     case large
+    
+    public var width: CGFloat { return size.width }
+    public var height: CGFloat { return size.height }
 
     fileprivate var size: CGSize {
       switch self {

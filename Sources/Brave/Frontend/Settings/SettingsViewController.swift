@@ -134,10 +134,10 @@ class SettingsViewController: TableViewController {
   }
 
   // Do not use `sections` directly to access sections/rows. Use DataSource.sections instead.
-  private var sections: [Static.Section] {
+  private func makeSections() -> [Static.Section] {
     var list = [
       defaultBrowserSection,
-      featuresSection,
+      makeFeaturesSection(),
       generalSection,
       displaySection,
       tabsSection,
@@ -210,22 +210,43 @@ class SettingsViewController: TableViewController {
     return section
   }()
 
-  private lazy var featuresSection: Static.Section = {
+  private func makeFeaturesSection() -> Static.Section {
+    weak var spinner: SpinnerView?
+    
     var section = Static.Section(
       header: .title(Strings.features),
       rows: [
         Row(
           text: Strings.braveShieldsAndPrivacy,
           selection: { [unowned self] in
-            let controller = BraveShieldsAndPrivacySettingsController(
+            let controller = UIHostingController(rootView: AdvancedShieldsSettingsView(
               profile: self.profile,
               tabManager: self.tabManager,
               feedDataSource: self.feedDataSource,
               historyAPI: self.historyAPI,
-              p3aUtilities: self.p3aUtilities
-            )
+              p3aUtilities: self.p3aUtilities,
+              clearDataCallback: { [weak self] isLoading in
+                guard let view = self?.navigationController?.view, view.window != nil else {
+                  assertionFailure()
+                  return
+                }
+                
+                if isLoading, spinner == nil {
+                  let newSpinner = SpinnerView()
+                  newSpinner.present(on: view)
+                  spinner = newSpinner
+                } else {
+                  spinner?.dismiss()
+                  spinner = nil
+                }
+              }
+            ))
+            
             self.navigationController?.pushViewController(controller, animated: true)
-          }, image: UIImage(braveSystemNamed: "leo.shield.done"), accessory: .disclosureIndicator)
+          },
+          image: UIImage(braveSystemNamed: "leo.shield.done"),
+          accessory: .disclosureIndicator
+        )
       ],
       uuid: featureSectionUUID.uuidString
     )
@@ -283,7 +304,7 @@ class SettingsViewController: TableViewController {
     )
 
     return section
-  }()
+  }
 
   private lazy var generalSection: Static.Section = {
     var general = Static.Section(
@@ -742,13 +763,15 @@ class SettingsViewController: TableViewController {
   }()
 
   private func setUpSections() {
-    var copyOfSections = self.sections
-    if let featureSectionIndex = self.sections.firstIndex(where: {
+    var copyOfSections = self.makeSections()
+    
+    if let featureSectionIndex = copyOfSections.firstIndex(where: {
       $0.uuid == self.featureSectionUUID.uuidString
     }) {
       let walletRowIndex = copyOfSections[featureSectionIndex].rows.firstIndex(where: {
         $0.uuid == self.walletRowUUID.uuidString
       })
+      
       if walletRowIndex == nil {
         let settingsStore = cryptoStore?.settingsStore
         copyOfSections[featureSectionIndex].rows.append(
