@@ -6,10 +6,11 @@ import UIKit
 import Shared
 import BraveShared
 import BraveUI
+import BraveShields
 
 class AdvancedShieldsView: UIStackView {
   let siteTitle = HeaderTitleView()
-  let adsTrackersControl = ToggleView(title: Strings.blockAdsAndTracking)
+  let adsTrackersControl = ToggleView(title: Strings.Shields.trackersAndAdsBlocking)
   let blockScriptsControl = ToggleView(title: Strings.blockScripts)
   let fingerprintingControl = ToggleView(title: Strings.fingerprintingProtection)
   let globalControlsTitleView = HeaderTitleView().then {

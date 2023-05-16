@@ -66,23 +66,23 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
       domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
     }
 
-    if let domain = domain {
-      shieldsUpSwitch.isOn = !domain.isShieldExpected(.AllOff, considerAllShieldsOption: false)
-    } else {
-      shieldsUpSwitch.isOn = true
-    }
+    shieldsUpSwitch.isOn = domain?.isShieldExpected(.AllOff, considerAllShieldsOption: false) == false
 
-    shieldControlMapping.forEach { shield, view, option in
-      // Updating based on global settings
-      if let option = option {
-        // Sets the default setting
-        view.toggleSwitch.isOn = option.value
-      }
-      // Domain specific overrides after defaults have already been setup
-
+    shieldControlMapping.forEach { shield, view in
       if let domain = domain {
         // site-specific shield has been overridden, update
         view.toggleSwitch.isOn = domain.isShieldExpected(shield, considerAllShieldsOption: false)
+      } else {
+        switch shield {
+        case .AdblockAndTp:
+          view.toggleSwitch.isOn = ShieldPreferences.blockAdsAndTrackingLevel.isEnabled
+        case .AllOff:
+          assertionFailure()
+        case .FpProtection:
+          view.toggleSwitch.isOn = Preferences.Shields.fingerprintingProtection.value
+        case .NoScript:
+          view.toggleSwitch.isOn = Preferences.Shields.blockScripts.value
+        }
       }
     }
     updateGlobalShieldState(shieldsUpSwitch.isOn)
@@ -94,7 +94,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     )
   }
 
-  private func updateBraveShieldState(shield: BraveShield, on: Bool, option: Preferences.Option<Bool>?) {
+  private func updateBraveShieldState(shield: BraveShield, on: Bool) {
     guard let url = url else { return }
     let allOff = shield == .AllOff
     // `.AllOff` uses inverse logic. Technically we set "all off" when the switch is OFF, unlike all the others
@@ -211,10 +211,10 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   // MARK: -
 
   /// Groups the shield types with their control and global preference
-  private lazy var shieldControlMapping: [(BraveShield, AdvancedShieldsView.ToggleView, Preferences.Option<Bool>?)] = [
-    (.AdblockAndTp, shieldsView.advancedShieldView.adsTrackersControl, Preferences.Shields.blockAdsAndTracking),
-    (.NoScript, shieldsView.advancedShieldView.blockScriptsControl, Preferences.Shields.blockScripts),
-    (.FpProtection, shieldsView.advancedShieldView.fingerprintingControl, Preferences.Shields.fingerprintingProtection),
+  private lazy var shieldControlMapping: [(BraveShield, AdvancedShieldsView.ToggleView)] = [
+    (.AdblockAndTp, shieldsView.advancedShieldView.adsTrackersControl),
+    (.NoScript, shieldsView.advancedShieldView.blockScriptsControl),
+    (.FpProtection, shieldsView.advancedShieldView.fingerprintingControl),
   ]
 
   var shieldsView: View {
@@ -264,11 +264,11 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
       updatePreferredContentSize()
     }
 
-    shieldControlMapping.forEach { shield, toggle, option in
+    shieldControlMapping.forEach { shield, toggle in
       toggle.valueToggled = { [weak self] on in
         guard let self = self else { return }
         // Localized / per domain toggles triggered here
-        self.updateBraveShieldState(shield: shield, on: on, option: option)
+        self.updateBraveShieldState(shield: shield, on: on)
         // Wait a fraction of a second to allow DB write to complete otherwise it will not use the
         // updated shield settings when reloading the page
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -281,7 +281,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   @objc private func shieldsOverrideSwitchValueChanged() {
     let isOn = shieldsUpSwitch.isOn
     self.updateGlobalShieldState(isOn, animated: true)
-    self.updateBraveShieldState(shield: .AllOff, on: isOn, option: nil)
+    self.updateBraveShieldState(shield: .AllOff, on: isOn)
     // Wait a fraction of a second to allow DB write to complete otherwise it will not use the updated
     // shield settings when reloading the page
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

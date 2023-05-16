@@ -109,7 +109,7 @@ public final class Domain: NSManagedObject, CRUD {
       case .AllOff:
         return self.shield_allOff?.boolValue ?? false
       case .AdblockAndTp:
-        return self.shield_adblockAndTp?.boolValue ?? Preferences.Shields.blockAdsAndTracking.value
+        return self.shield_adblockAndTp?.boolValue ?? ShieldPreferences.blockAdsAndTrackingLevel.isEnabled
       case .FpProtection:
         return self.shield_fpProtection?.boolValue ?? Preferences.Shields.fingerprintingProtection.value
       case .NoScript:
@@ -156,7 +156,7 @@ public final class Domain: NSManagedObject, CRUD {
   }
   
   public class func totalDomainsWithAdblockShieldsLoweredFromGlobal() -> Int {
-    guard Preferences.Shields.blockAdsAndTracking.value,
+    guard ShieldPreferences.blockAdsAndTrackingLevel.isEnabled,
           let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil")) else {
       return 0 // Can't be lower than off
     }
@@ -164,7 +164,7 @@ public final class Domain: NSManagedObject, CRUD {
   }
   
   public class func totalDomainsWithAdblockShieldsIncreasedFromGlobal() -> Int {
-    guard !Preferences.Shields.blockAdsAndTracking.value,
+    guard !ShieldPreferences.blockAdsAndTrackingLevel.isEnabled,
           let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil")) else {
       return 0 // Can't be higher than on
     }
@@ -402,20 +402,6 @@ extension Domain {
     case .AdblockAndTp: shield_adblockAndTp = setting
     case .FpProtection: shield_fpProtection = setting
     case .NoScript: shield_noScript = setting
-    }
-  }
-
-  /// Get whether or not a shield override is set for a given shield.
-  private func getBraveShield(_ shield: BraveShield) -> Bool? {
-    switch shield {
-    case .AllOff:
-      return self.shield_allOff?.boolValue
-    case .AdblockAndTp:
-      return self.shield_adblockAndTp?.boolValue
-    case .FpProtection:
-      return self.shield_fpProtection?.boolValue
-    case .NoScript:
-      return self.shield_noScript?.boolValue
     }
   }
 

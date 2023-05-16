@@ -6,6 +6,7 @@
 import Foundation
 import WebKit
 import Shared
+import BraveShields
 import os.log
 
 class SiteStateListenerScriptHandler: TabContentScript {
@@ -67,7 +68,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
           if domain.areAllShieldsOff { return }
           
           let models = await AdBlockStats.shared.cosmeticFilterModels(forFrameURL: frameURL, domain: domain)
-          let args = try self.makeArgs(from: models, frameURL: frameURL)
+          let args = try self.makeArgs(from: models, frameURL: frameURL, isAggressive: ShieldPreferences.blockAdsAndTrackingLevel.isAggressive)
           let source = try ScriptFactory.shared.makeScriptSource(of: .selectorsPoller).replacingOccurrences(of: "$<args>", with: args)
           
           let secureSource = CosmeticFiltersScriptHandler.secureScript(
@@ -97,7 +98,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
     }
   }
   
-  @MainActor private func makeArgs(from modelTuples: [CachedAdBlockEngine.CosmeticFilterModelTuple], frameURL: URL) throws -> String {
+  @MainActor private func makeArgs(from modelTuples: [CachedAdBlockEngine.CosmeticFilterModelTuple], frameURL: URL, isAggressive: Bool) throws -> String {
     var standardSelectors: Set<String> = []
     var agressiveSelectors: Set<String> = []
     var styleSelectors: [String: Set<String>] = [:]
@@ -126,7 +127,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
     // (i.e. we don't hide first party content on standard mode)
     let setup = UserScriptType.SelectorsPollerSetup(
       frameURL: frameURL,
-      hideFirstPartyContent: false,
+      hideFirstPartyContent: isAggressive,
       genericHide: modelTuples.contains { $0.model.genericHide },
       firstSelectorsPollingDelayMs: nil,
       switchToSelectorsPollingThreshold: 1000,

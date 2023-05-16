@@ -9,7 +9,7 @@ import Data
 import DesignSystem
 import BraveUI
 import Preferences
-import Strings
+import BraveShields
 
 struct DefaultShieldsViewView: View {
   enum CookieAlertType: String, Identifiable {
@@ -24,11 +24,20 @@ struct DefaultShieldsViewView: View {
   
   var body: some View {
     Section {
-      OptionToggleView(
-        title: Strings.blockAdsAndTracking,
-        subtitle: Strings.blockAdsAndTrackingDescription,
-        option: Preferences.Shields.blockAdsAndTracking
-      )
+      Picker(selection: $settings.adBlockAndTrackingPreventionLevel) {
+        ForEach(ShieldLevel.allCases) { level in
+          Text(level.localizedTitle)
+            .foregroundColor(Color(.secondaryBraveLabel))
+            .tag(level)
+        }
+      } label: {
+        ShieldLabelView(
+          title: Strings.Shields.trackersAndAdsBlocking,
+          subtitle: Strings.Shields.trackersAndAdsBlockingDescription
+        )
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      
       OptionToggleView(
         title: Strings.HTTPSEverywhere,
         subtitle: Strings.HTTPSEverywhereDescription,
@@ -131,6 +140,20 @@ struct DefaultShieldsViewView: View {
       }
       
       cookieAlertType = .failed
+    }
+  }
+}
+
+extension ShieldLevel: Identifiable {
+  public var id: String {
+    return rawValue
+  }
+  
+  public var localizedTitle: String {
+    switch self {
+    case .aggressive: return Strings.Shields.trackersAndAdsBlockingAggressive
+    case .disabled: return Strings.Shields.trackersAndAdsBlockingDisabled
+    case .standard: return Strings.Shields.trackersAndAdsBlockingStandard
     }
   }
 }

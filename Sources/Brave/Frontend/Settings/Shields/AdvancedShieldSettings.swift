@@ -8,6 +8,7 @@ import Combine
 import BraveCore
 import BraveNews
 import Preferences
+import BraveShields
 import Data
 import Growth
 import os
@@ -42,6 +43,14 @@ import os
       p3aUtilities.isP3AEnabled = isP3AEnabled
     }
   }
+  @Published var adBlockAndTrackingPreventionLevel: ShieldLevel {
+    didSet {
+      ShieldPreferences.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
+      if adBlockAndTrackingPreventionLevel != oldValue {
+        recordGlobalAdBlockShieldsP3A()
+      }
+    }
+  }
   
   typealias ClearDataCallback = @MainActor (Bool) -> Void
   @Published var clearableSettings: [ClearableSetting]
@@ -61,6 +70,7 @@ import os
     self.tabManager = tabManager
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
     self.clearDataCallback = clearDataCallback
+    self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
     
     cookieConsentBlocking = FilterListStorage.shared.isEnabled(
       for: FilterList.cookieConsentNoticesComponentID
@@ -189,12 +199,6 @@ import os
       }
       .store(in: &subscriptions)
     
-    Preferences.Shields.blockAdsAndTracking.$value
-      .sink { [weak self] _ in
-        self?.recordGlobalAdBlockShieldsP3A()
-      }
-      .store(in: &subscriptions)
-    
     Preferences.Shields.fingerprintingProtection.$value
       .sink { [weak self] _ in
         self?.recordGlobalFingerprintingShieldsP3A()
@@ -211,7 +215,15 @@ import os
       case standard = 1
       case aggressive = 2
     }
-    let answer: Answer = Preferences.Shields.blockAdsAndTracking.value ? .standard : .disabled
+    
+    let answer = { () -> Answer in
+      switch ShieldPreferences.blockAdsAndTrackingLevel {
+      case .disabled: return .disabled
+      case .standard: return .standard
+      case .aggressive: return .aggressive
+      }
+    }()
+    
     UmaHistogramEnumeration("Brave.Shields.AdBlockSetting", sample: answer)
   }
   
