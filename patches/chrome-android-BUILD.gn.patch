@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..adfe1b427b4254d7b3654a3607db0f90584a3146 100644
+index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..ad42b17f2cf11871331a5c25687ee8da10d9e757 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -102,6 +102,7 @@ if (current_toolchain == default_toolchain) {
@@ -81,7 +81,7 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..adfe1b427b4254d7b3654a3607db0f90
        "//components/version_info/android:version_constants_java",
        "//content/public/android:content_java",
      ]
-+    deps -= [ "//android_webview:android_webview_no_weblayer_java" ]
++    deps -= [ "//android_webview:android_webview_no_weblayer_java" ] deps += [ "//brave/android/java/org/chromium/android_webview/nonembedded:java" ]
      if (webview_includes_weblayer) {
        deps += [ "//weblayer/browser/java:base_module_java" ]
      }
