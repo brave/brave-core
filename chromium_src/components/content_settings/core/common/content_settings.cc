@@ -11,8 +11,10 @@
 namespace {
 
 // Do not change the value arbitrarily. This is used to validate we have a gap
-// between Chromium's and Brave's histograms.
-constexpr int kBraveValuesStart = 1000;
+// between Chromium's and Brave's histograms. This value must be less than 1000
+// as upstream performs a sanity check that the total number of buckets isn't
+// unreasonably large.
+constexpr int kBraveValuesStart = 900;
 
 constexpr int brave_value(int incr) {
   return kBraveValuesStart + incr;
