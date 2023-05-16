@@ -65,6 +65,14 @@ public class SettingsStore: ObservableObject {
       rpcService.setUnstoppableDomainsResolveMethod(udResolveMethod)
     }
   }
+  
+  /// The current preference for enabling NFT discovery (Enabled / Disabled)
+  @Published var isNFTDiscoveryEnabled: Bool = false {
+    didSet {
+      guard oldValue != isNFTDiscoveryEnabled else { return }
+      walletService.setNftDiscoveryEnabled(isNFTDiscoveryEnabled)
+    }
+  }
 
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
@@ -104,6 +112,8 @@ public class SettingsStore: ObservableObject {
       self.ensResolveMethod = await rpcService.ensResolveMethod()
       self.ensOffchainResolveMethod = await rpcService.ensOffchainLookupResolveMethod()
       self.udResolveMethod = await rpcService.unstoppableDomainsResolveMethod()
+      
+      self.isNFTDiscoveryEnabled = await walletService.nftDiscoveryEnabled()
     }
   }
 

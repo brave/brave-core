@@ -41,6 +41,7 @@ class SettingsStoreTests: XCTestCase {
     walletService._addObserver = { _ in }
     walletService._setDefaultBaseCurrency = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) } // default is USD
+    walletService._nftDiscoveryEnabled = { _ in }
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._ensResolveMethod = { $0(.ask) }
@@ -64,6 +65,7 @@ class SettingsStoreTests: XCTestCase {
     let (keyringService, walletService, rpcService, txService, ipfsApi) = setupServices()
     keyringService._autoLockMinutes = { $0(1) }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.cad.code) }
+    walletService._nftDiscoveryEnabled = { $0(false) }
     rpcService._ensResolveMethod = { $0(.disabled) }
     rpcService._ensOffchainLookupResolveMethod = { $0(.disabled) }
     rpcService._snsResolveMethod = { $0(.disabled) }
@@ -93,6 +95,14 @@ class SettingsStoreTests: XCTestCase {
       .sink { currencyCode in
         defer { currencyCodeExpectation.fulfill() }
         XCTAssertEqual(currencyCode, CurrencyCode.cad)
+      }
+      .store(in: &cancellables)
+    let nftDiscoveryExpectation = expectation(description: "setup-nftDiscovery")
+    sut.$isNFTDiscoveryEnabled
+      .dropFirst()
+      .sink { isNFTDiscoveryEnabled in
+        defer { nftDiscoveryExpectation.fulfill() }
+        XCTAssertFalse(isNFTDiscoveryEnabled)
       }
       .store(in: &cancellables)
     

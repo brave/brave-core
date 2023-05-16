@@ -229,6 +229,16 @@ private struct WalletSettingsView: View {
       }
     }
     Section(
+      footer: Text(LocalizedStringKey(String.localizedStringWithFormat(Strings.Wallet.web3SettingsEnableNFTDiscoveryFooter, WalletConstants.nftDiscoveryURL.absoluteDisplayString)))
+        .foregroundColor(Color(.secondaryBraveLabel))
+        .tint(Color(.braveBlurpleTint))
+    ) {
+      Toggle(Strings.Wallet.web3SettingsEnableNFTDiscovery, isOn: $settingsStore.isNFTDiscoveryEnabled)
+        .foregroundColor(Color(.braveLabel))
+        .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    }
+    Section(
       footer: Text(Strings.Wallet.networkFooter)
         .foregroundColor(Color(.secondaryBraveLabel))
     ) {

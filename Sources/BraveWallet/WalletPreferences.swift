@@ -86,6 +86,9 @@ extension Preferences {
     }
     
     public static let resolveIPFSResources = Option<Int>(key: "web3.resolve-ipfs-resources", default: Web3IPFSOption.ask.rawValue)
+    
+    /// Used to track whether to prompt user to enable NFT discovery
+    public static let shouldShowNFTDiscoveryPermissionCallout = Option<Bool>(key: "wallet.show-nft-discovery-permission-callout", default: true)
   }
 }
 
