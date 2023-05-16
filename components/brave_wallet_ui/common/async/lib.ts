@@ -1078,12 +1078,29 @@ export function getEthTxManagerProxy () {
 
 export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
   const { jsonRpcService } = getAPIProxy()
+  const assetId = getAssetIdKey(token)
+  const metadataCache = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.NFT_METADATA_RESPONSE_CACHE) || '{}')
+
+  if(metadataCache[assetId]) {
+    // return cached response
+    return metadataCache[assetId]
+  }
+
+  let response = null
   if (token.coin === BraveWallet.CoinType.ETH) {
-    return await jsonRpcService.getERC721Metadata(
+    response = await jsonRpcService.getERC721Metadata(
       token.contractAddress, token.tokenId, token.chainId)
-  } else if (token.coin === BraveWallet.CoinType.SOL) {
-    return await jsonRpcService.getSolTokenMetadata(
+    } else if (token.coin === BraveWallet.CoinType.SOL) {
+    response = await jsonRpcService.getSolTokenMetadata(
       token.chainId, token.contractAddress)
+  }
+
+  if(response !== null && !response?.error) {
+    // store response in localstorage
+    metadataCache[assetId] = response
+    localStorage.setItem(LOCAL_STORAGE_KEYS.NFT_METADATA_RESPONSE_CACHE, JSON.stringify(metadataCache))
+
+    return response
   }
 
   return undefined
