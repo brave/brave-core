@@ -38,7 +38,8 @@ struct AddSuggestedTokenView: View {
           }
           .accessibilityElement(children: .combine)
           Button(action: {
-            if let baseURL = cryptoStore.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+            if let tokenNetwork = cryptoStore.networkStore.allChains.first(where: { $0.chainId == token.chainId }),
+               let baseURL = tokenNetwork.blockExplorerUrls.first.map(URL.init(string:)),
                let url = baseURL?.appendingPathComponent("token/\(token.contractAddress)") {
               openWalletURL(url)
             }

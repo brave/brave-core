@@ -61,7 +61,8 @@ struct TransactionDetailsView: View {
           detailRow(title: Strings.Wallet.transactionDetailsDateTitle, value: dateFormatter.string(from: transactionDetailsStore.transaction.createdTime))
           if !transactionDetailsStore.transaction.txHash.isEmpty {
             Button(action: {
-              if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+              if let txNetwork = self.networkStore.allChains.first(where: { $0.chainId == transactionDetailsStore.transaction.chainId }),
+                 let baseURL = txNetwork.blockExplorerUrls.first.map(URL.init(string:)),
                  let url = baseURL?.appendingPathComponent("tx/\(transactionDetailsStore.transaction.txHash)") {
                 openWalletURL(url)
               }
