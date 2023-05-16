@@ -10,7 +10,7 @@
 #include "base/logging.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/scoped_sc_handle.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 

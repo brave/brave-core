@@ -22,13 +22,13 @@ source_set("common") {
     "brave_vpn_helper_constants.h",
     "brave_vpn_helper_state.cc",
     "brave_vpn_helper_state.h",
-    "scoped_sc_handle.h",
   ]
 
   public_deps = [ "//brave/components/brave_vpn/common/buildflags" ]
 
   deps = [
     "//base",
+    "//brave/components/brave_vpn/browser/connection/common/win",
     "//brave/components/brave_vpn/common",
     "//chrome/install_static:install_static_util",
   ]
@@ -52,6 +52,7 @@ source_set("lib") {
     "//base",
     "//brave//components/brave_vpn/browser/connection/ikev2/win:utils",
     "//brave//components/brave_vpn/common",
+    "//brave/components/brave_vpn/browser/connection/common/win",
     "//third_party/abseil-cpp:absl",
   ]
 

@@ -15,18 +15,14 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
 #include "base/win/windows_version.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/scoped_sc_handle.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
 namespace {
-
-HRESULT HRESULTFromLastError() {
-  const auto error_code = ::GetLastError();
-  return (error_code != NO_ERROR) ? HRESULT_FROM_WIN32(error_code) : E_FAIL;
-}
 
 // Microsoft-Windows-NetworkProfile
 // fbcfac3f-8459-419f-8e48-1f0b49cdb85e
