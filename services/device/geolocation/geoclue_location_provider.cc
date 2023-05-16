@@ -79,8 +79,6 @@ bool GeoClueAvailable() {
   return available;
 }
 
-}  // namespace
-
 struct GeoClueProperties : public dbus::PropertySet {
   dbus::Property<std::string> desktop_id;
   dbus::Property<uint32_t> requested_accuracy_level;
@@ -93,6 +91,8 @@ struct GeoClueProperties : public dbus::PropertySet {
 
   ~GeoClueProperties() override = default;
 };
+
+}  // namespace
 
 struct GeoClueLocationProperties : public dbus::PropertySet {
   dbus::Property<double> latitude;
