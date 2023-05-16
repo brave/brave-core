@@ -19,3 +19,38 @@ extension Strings {
     public static let shieldsTimeStatsDays = NSLocalizedString("ShieldsTimeStatsDays", bundle: .module, value: "d", comment: "Time Saved Days")
   }
 }
+
+// MARK: - Trackers and Ad-Blocking
+
+public extension Strings.Shields {
+  /// A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive.
+  static let trackersAndAdsBlocking = NSLocalizedString(
+    "TrackersAndAdsBlocking", tableName: "BraveShared", bundle: .module,
+    value: "Trackers & Ads Blocking",
+    comment: "A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive."
+  )
+  /// A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive.
+  static let trackersAndAdsBlockingDescription = NSLocalizedString(
+    "BlockAdsAndTrackingDescription", tableName: "BraveShared", bundle: .module,
+    value: "Prevents ads, popups, and trackers from loading.",
+    comment: "A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive."
+  )
+  /// The option the user can select to disable ad and tracker blocking
+  static let trackersAndAdsBlockingDisabled = NSLocalizedString(
+    "BlockAdsAndTrackingDisabled", tableName: "BraveShared", bundle: .module,
+    value: "Disabled",
+    comment: "The option the user can select to disable ad and tracker blocking"
+  )
+  /// The option the user can select to do aggressive ad and tracker blocking
+  static let trackersAndAdsBlockingAggressive = NSLocalizedString(
+    "BlockAdsAndTrackingAggressive", tableName: "BraveShared", bundle: .module,
+    value: "Aggressive",
+    comment: "The option the user can select to do aggressive ad and tracker blocking"
+  )
+  /// The option the user can select to do standard (non-aggressive) ad and tracker blocking
+  static let trackersAndAdsBlockingStandard = NSLocalizedString(
+    "BlockAdsAndTrackingStandard", tableName: "BraveShared", bundle: .module,
+    value: "Standard",
+    comment: "The option the user can select to do standard (non-aggressive) ad and tracker blocking"
+  )
+}

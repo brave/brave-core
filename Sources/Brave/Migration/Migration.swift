@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import Preferences
+import BraveShields
 import SwiftKeychainWrapper
 import Data
 import BraveCore
@@ -22,8 +23,8 @@ public class Migration {
 
   public func launchMigrations(keyPrefix: String, profile: Profile) {
     Preferences.migratePreferences(keyPrefix: keyPrefix)
-    
     Preferences.migrateWalletPreferences()
+    Preferences.migrateAdAndTrackingProtection()
 
     if !Preferences.Migration.documentsDirectoryCleanupCompleted.value {
       documentsDirectoryCleanup()
@@ -182,6 +183,10 @@ public class Migration {
 }
 
 fileprivate extension Preferences {
+  private final class DeprecatedPreferences {
+    static let blockAdsAndTracking = Option<Bool>(key: "shields.block-ads-and-tracking", default: true)
+  }
+  
   /// Migration preferences
   final class Migration {
     static let completed = Option<Bool>(key: "migration.completed", default: false)
@@ -202,6 +207,12 @@ fileprivate extension Preferences {
     Option<Bool>(key: "migration.wallet-provider-account-request-completed", default: false)
 
     static let tabMigrationToInteractionStateCompleted = Option<Bool>(key: "migration.tab-to-interaction-state", default: false)
+    
+    /// A more complicated ad blocking and tracking protection preference  in `1.52.x`
+    /// allows a user to select between `standard`, `aggressive` and `disabled` instead of a simple on/off `Bool`
+    static let adBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
+      key: "migration.ad-block-and-tracking-protection-shield-level-completed", default: false
+    )
   }
 
   /// Migrate a given key from `Prefs` into a specific option
@@ -282,7 +293,7 @@ fileprivate extension Preferences {
     }
 
     // Shields
-    migrate(key: "braveBlockAdsAndTracking", to: Preferences.Shields.blockAdsAndTracking)
+    migrate(key: "braveBlockAdsAndTracking", to: DeprecatedPreferences.blockAdsAndTracking)
     migrate(key: "braveHttpsEverywhere", to: Preferences.Shields.httpsEverywhere)
     migrate(key: "noscript_on", to: Preferences.Shields.blockScripts)
     migrate(key: "fingerprintprotection_on", to: Preferences.Shields.fingerprintingProtection)
@@ -309,8 +320,21 @@ fileprivate extension Preferences {
     // On 1.6 lastLaunchInfo is used to check if it's first app launch or not.
     // This needs to be translated to our new preference.
     Preferences.General.isFirstLaunch.value = Preferences.DAU.lastLaunchInfo.value == nil
-
     Preferences.Migration.completed.value = true
+  }
+  
+  class func migrateAdAndTrackingProtection() {
+    guard !Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value else { return }
+    
+    // Migrate old tracking protection setting to new BraveShields setting
+    DeprecatedPreferences.blockAdsAndTracking.migrate() { isEnabled in
+      if !isEnabled {
+        // We only need to migrate `disabled`. `standard` is the default.
+        ShieldPreferences.blockAdsAndTrackingLevel = .disabled
+      }
+    }
+    
+    Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true
   }
   
   /// Migrate Wallet Preferences from version <1.43
@@ -321,5 +345,25 @@ fileprivate extension Preferences {
     migrate(keyPrefix: "", key: "wallet.allow-eth-provider-account-requests", to: Preferences.Wallet.allowEthProviderAccess)
     
     Preferences.Migration.walletProviderAccountRequestCompleted.value = true
+  }
+}
+
+private extension Preferences.Option {
+  /// Migrate this preference to another one using the given transform
+  ///
+  /// This method will return any stored value (if it is available). If nothing is stored, the callback is not triggered.
+  /// Any stored value is then removed from the container.
+  func migrate(onStoredValue: ((ValueType) -> Void)) {
+    // Have to do two checks because T may be an Optional, since object(forKey:) returns Any? it will succeed
+    // as casting to T if T is Optional even if the key doesnt exist.
+    if let value = container.object(forKey: key) {
+      if let value = value as? ValueType {
+        onStoredValue(value)
+      }
+      
+      container.removeObject(forKey: key)
+    } else {
+      Logger.module.info("Could not migrate legacy pref with key: \"\(self.key)\".")
+    }
   }
 }

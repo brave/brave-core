@@ -509,6 +509,7 @@ public class BrowserViewController: UIViewController {
     Preferences.Playlist.enablePlaylistMenuBadge.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
     Preferences.Playlist.syncSharedFoldersAutomatically.observe(from: self)
+    ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
     
     pageZoomListener = NotificationCenter.default.addObserver(forName: PageZoomView.notificationName, object: nil, queue: .main) { [weak self] _ in
       self?.tabManager.allTabs.forEach({
@@ -2990,7 +2991,7 @@ extension BrowserViewController: PreferencesObserver {
       tabManager.reloadSelectedTab()
     case Preferences.General.enablePullToRefresh.key:
       tabManager.selectedTab?.updatePullToRefreshVisibility()
-    case Preferences.Shields.blockAdsAndTracking.key,
+    case ShieldPreferences.blockAdsAndTrackingLevelRaw.key,
       Preferences.Shields.blockScripts.key,
       Preferences.Shields.blockImages.key,
       Preferences.Shields.fingerprintingProtection.key,
