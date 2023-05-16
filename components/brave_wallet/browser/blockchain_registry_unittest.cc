@@ -227,7 +227,7 @@ const char dapp_lists_json[] = R"({
         {
           "dappId": 7000,
           "name": "Uniswap V3",
-          "description": "A protocol for trading and automated liquidity provision on Ethereum.",
+          "description": "A protocol for trading and automated liquidity.",
           "logo": "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
           "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
           "website": "https://app.uniswap.org/#/swap",
@@ -361,7 +361,7 @@ const char dapp_lists_json[] = R"({
         {
           "dappId": 30927,
           "name": "motoDEX",
-          "description": "MotoDEX is a Blockchain Game, in which users participate in motorcycle races, \ndevelop their riders and improve high-speed tracks.",
+          "description": "MotoDEX is a Blockchain Game.",
           "logo": "https://dashboard-assets.dappradar.com/document/30927/motodex-dapp-games-aurora-logo_9fc42a38e10cde705d67a9b7bf4982f1.png",
           "link": "https://dappradar.com/aurora/games/motodex",
           "website": "https://motodex.openbisea.com?chain=aurora",
@@ -827,8 +827,7 @@ TEST(BlockchainRegistryUnitTest, GetTopDapps) {
           ASSERT_EQ(dapp_list.size(), 1UL);
           EXPECT_EQ(dapp_list[0]->name, "Uniswap V3");
           EXPECT_EQ(dapp_list[0]->description,
-                    "A protocol for trading and automated liquidity provision "
-                    "on Ethereum.");
+                    "A protocol for trading and automated liquidity.");
           EXPECT_EQ(dapp_list[0]->chains.size(), 6UL);
           EXPECT_EQ(dapp_list[0]->chains[0], "ethereum");
           EXPECT_EQ(dapp_list[0]->chains[1], "polygon");

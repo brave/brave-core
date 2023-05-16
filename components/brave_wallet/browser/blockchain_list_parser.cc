@@ -368,7 +368,7 @@ absl::optional<DappListMap> ParseDappLists(const std::string& json) {
   //   }
   //   ...
   // }
-  //
+
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
