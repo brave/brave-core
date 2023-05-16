@@ -54,6 +54,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
   void ResetWebSitePermission(mojom::CoinType coin,
                               const std::string& formed_website,
                               ResetWebSitePermissionCallback callback) override;
+  void GetActiveOrigin(GetActiveOriginCallback callback) override;
 
  private:
   raw_ptr<content::BrowserContext> context_ = nullptr;
