@@ -30,7 +30,9 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.SignMessagePagerAdapter;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.url.GURL;
 
@@ -54,6 +56,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private TextView mWebSite;
     private ExecutorService mExecutor;
     private Handler mHandler;
+    private WalletModel mWalletModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,12 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         mHandler = new Handler(Looper.getMainLooper());
         mTabTitles = new ArrayList<>();
         mTabTitles.add(getString(R.string.details));
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            mWalletModel = activity.getWalletModel();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "onCreate ", e);
+        }
     }
 
     @Override
@@ -121,7 +130,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                                 mCurrentSignMessageRequest.originInfo.eTldPlusOne));
             }
             updateAccount(mCurrentSignMessageRequest.address);
-            updateNetwork(mCurrentSignMessageRequest.coin);
+            updateNetwork(mCurrentSignMessageRequest.chainId);
         });
     }
 
@@ -140,8 +149,9 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         }
     }
 
-    private void updateNetwork(@CoinType.EnumType int coin) {
-        getJsonRpcService().getNetwork(coin, null,
-                selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
+    private void updateNetwork(String chainId) {
+        if (JavaUtils.anyNull(mWalletModel, chainId)) return;
+        var selectedNetwork = mWalletModel.getNetworkModel().getNetwork(chainId);
+        mNetworkName.setText(selectedNetwork.chainName);
     }
 }

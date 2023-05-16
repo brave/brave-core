@@ -1130,40 +1130,26 @@ public class Utils {
     }
 
     public static void setUpTransactionList(BraveWalletBaseActivity activity,
-            AccountInfo[] accounts, WalletListItemModel walletListItemModel,
-            HashMap<String, Double> assetPrices, BlockchainToken[] fullTokenList,
-            HashMap<String, Double> nativeAssetsBalances,
+            AccountInfo[] accounts, List<NetworkInfo> allNetworks,
+            WalletListItemModel walletListItemModel, HashMap<String, Double> assetPrices,
+            BlockchainToken[] fullTokenList, HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
-            RecyclerView rvTransactions, OnWalletListItemClick callback,
-            WalletCoinAdapter walletTxCoinAdapter) {
-        JsonRpcService jsonRpcService = activity.getJsonRpcService();
+            NetworkInfo selectedNetwork, Callbacks.Callback1<List<WalletListItemModel>> callback) {
         TxService txService = activity.getTxService();
-        assert jsonRpcService != null;
         assert txService != null;
-        int coinType = CoinType.ETH;
-        if (walletListItemModel.isAccount()) {
-            AccountInfo account = findAccount(accounts, walletListItemModel.getSubTitle());
-            coinType = account != null ? account.coin : CoinType.ETH;
-        } else {
-            coinType = walletListItemModel.getBlockchainToken().coin;
-        }
 
-        jsonRpcService.getNetwork(coinType, null, selectedNetwork -> {
-            PendingTxHelper pendingTxHelper = new PendingTxHelper(txService, accounts, true);
+        PendingTxHelper pendingTxHelper = new PendingTxHelper(txService, accounts, true);
 
-            pendingTxHelper.fetchTransactions(() -> {
-                HashMap<String, TransactionInfo[]> pendingTxInfos =
-                        pendingTxHelper.getTransactions();
-                pendingTxHelper.destroy();
-                SolanaTransactionsGasHelper solanaTransactionsGasHelper =
-                        new SolanaTransactionsGasHelper(
-                                activity, getTransactionArray(pendingTxInfos));
-                solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
-                    workWithTransactions(activity, selectedNetwork, pendingTxInfos, accounts,
-                            walletListItemModel, assetPrices, fullTokenList, nativeAssetsBalances,
-                            blockchainTokensBalances, rvTransactions, callback, walletTxCoinAdapter,
-                            solanaTransactionsGasHelper.getPerTxFee());
-                });
+        pendingTxHelper.fetchTransactions(() -> {
+            HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
+            pendingTxHelper.destroy();
+            SolanaTransactionsGasHelper solanaTransactionsGasHelper =
+                    new SolanaTransactionsGasHelper(activity, getTransactionArray(pendingTxInfos));
+            solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
+                workWithTransactions(activity, selectedNetwork, allNetworks, pendingTxInfos,
+                        accounts, walletListItemModel, assetPrices, fullTokenList,
+                        nativeAssetsBalances, blockchainTokensBalances,
+                        solanaTransactionsGasHelper.getPerTxFee(), callback);
             });
         });
     }
@@ -1187,19 +1173,15 @@ public class Utils {
     }
 
     private static void workWithTransactions(BraveWalletBaseActivity activity,
-            NetworkInfo selectedNetwork, HashMap<String, TransactionInfo[]> pendingTxInfos,
-            AccountInfo[] accounts, WalletListItemModel walletListItemModel,
-            HashMap<String, Double> assetPrices, BlockchainToken[] fullTokenList,
-            HashMap<String, Double> nativeAssetsBalances,
+            NetworkInfo selectedNetwork, List<NetworkInfo> allNetworks,
+            HashMap<String, TransactionInfo[]> pendingTxInfos, AccountInfo[] accounts,
+            WalletListItemModel walletListItemModel, HashMap<String, Double> assetPrices,
+            BlockchainToken[] fullTokenList, HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
-            RecyclerView rvTransactions, OnWalletListItemClick callback,
-            WalletCoinAdapter walletTxCoinAdapter, HashMap<String, Long> perTxSolanaFee) {
-        walletTxCoinAdapter.setWalletCoinAdapterType(
-                WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+            HashMap<String, Long> perTxSolanaFee,
+            Callbacks.Callback1<List<WalletListItemModel>> callback) {
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
 
-        BlockchainToken filterByToken =
-                walletListItemModel.isAccount() ? null : walletListItemModel.getBlockchainToken();
         for (String accountName : pendingTxInfos.keySet()) {
             TransactionInfo[] txInfos = pendingTxInfos.get(accountName);
             for (TransactionInfo txInfo : txInfos) {
@@ -1207,11 +1189,13 @@ public class Utils {
                 if (perTxSolanaFee.get(txInfo.id) != null) {
                     solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
                 }
-                ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo,
-                        selectedNetwork, accounts, assetPrices, solanaEstimatedTxFee, fullTokenList,
+                var txNetwork = JavaUtils.safeVal(
+                        NetworkUtils.findNetwork(allNetworks, txInfo.chainId), selectedNetwork);
+                ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo, txNetwork,
+                        accounts, assetPrices, solanaEstimatedTxFee, fullTokenList,
                         nativeAssetsBalances, blockchainTokensBalances);
                 WalletListItemModel itemModel =
-                        makeWalletItem((Context) activity, txInfo, selectedNetwork, parsedTx);
+                        makeWalletItem((Context) activity, txInfo, txNetwork, parsedTx);
                 // Filter by token. Account is already filtered in the accounts array.
                 if (!walletListItemModel.isAccount()
                         && !walletListItemModel.getBlockchainToken().symbol.equals(
@@ -1220,11 +1204,7 @@ public class Utils {
                 walletListItemModelList.add(itemModel);
             }
         }
-        walletTxCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletTxCoinAdapter.setOnWalletListItemClick(callback);
-        walletTxCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
-        rvTransactions.setAdapter(walletTxCoinAdapter);
-        rvTransactions.setLayoutManager(new LinearLayoutManager((Context) activity));
+        callback.call(walletListItemModelList);
     }
 
     private static WalletListItemModel makeWalletItem(Context context, TransactionInfo txInfo,
