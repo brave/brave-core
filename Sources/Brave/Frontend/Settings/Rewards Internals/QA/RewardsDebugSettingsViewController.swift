@@ -16,12 +16,10 @@ private typealias EnvironmentOverride = Preferences.Rewards.EnvironmentOverride
 class RewardsDebugSettingsViewController: TableViewController {
 
   let rewards: BraveRewards
-  let legacyWallet: BraveLedger?
   private var adsInfo: (viewed: Int, amount: Double, paymentDate: Date?)?
 
-  init(rewards: BraveRewards, legacyWallet: BraveLedger?) {
+  init(rewards: BraveRewards) {
     self.rewards = rewards
-    self.legacyWallet = legacyWallet
 
     super.init(style: .grouped)
 
@@ -184,28 +182,6 @@ class RewardsDebugSettingsViewController: TableViewController {
               Task {
                 await self.fetchAndClaimPromotions()
               }
-            }, cellClass: ButtonCell.self),
-        ]
-      ),
-      Section(
-        header: .title("Legacy Wallet"),
-        rows: [
-          Row(
-            text: "Internals",
-            selection: { [unowned self] in
-              guard let legacyWallet = legacyWallet else {
-                let alert = UIAlertController(title: "Legacy Wallet", message: "No Wallet Found. Use \"Create Legacy Wallet\" action below to duplicate the current wallet", preferredStyle: .alert)
-                alert.addAction(.init(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true)
-                return
-              }
-              let controller = RewardsInternalsDebugViewController(ledger: legacyWallet)
-              self.navigationController?.pushViewController(controller, animated: true)
-            }, accessory: .disclosureIndicator),
-          Row(
-            text: "Create Legacy Wallet",
-            selection: { [unowned self] in
-              self.createLegacyLedger()
             }, cellClass: ButtonCell.self),
         ]
       ),

@@ -32,7 +32,7 @@ extension BrowserViewController {
   func showRewardsDebugSettings() {
     if AppConstants.buildChannel.isPublic { return }
 
-    let settings = RewardsDebugSettingsViewController(rewards: rewards, legacyWallet: legacyWallet)
+    let settings = RewardsDebugSettingsViewController(rewards: rewards)
     let container = UINavigationController(rootViewController: settings)
     present(container, animated: true)
   }
@@ -67,8 +67,7 @@ extension BrowserViewController {
     
     let braveRewardsPanel = BraveRewardsViewController(
       tab: tab,
-      rewards: rewards,
-      legacyWallet: legacyWallet
+      rewards: rewards
     )
     braveRewardsPanel.actionHandler = { [weak self] action in
       switch action {

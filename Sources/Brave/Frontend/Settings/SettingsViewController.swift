@@ -52,7 +52,6 @@ class SettingsViewController: TableViewController {
   private let profile: Profile
   private let tabManager: TabManager
   private let rewards: BraveRewards?
-  private let legacyWallet: BraveLedger?
   private let feedDataSource: FeedDataSource
   private let historyAPI: BraveHistoryAPI
   private let passwordAPI: BravePasswordAPI
@@ -72,7 +71,6 @@ class SettingsViewController: TableViewController {
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards? = nil,
-    legacyWallet: BraveLedger? = nil,
     windowProtection: WindowProtection?,
     braveCore: BraveCoreMain,
     keyringStore: KeyringStore? = nil,
@@ -82,7 +80,6 @@ class SettingsViewController: TableViewController {
     self.tabManager = tabManager
     self.feedDataSource = feedDataSource
     self.rewards = rewards
-    self.legacyWallet = legacyWallet
     self.windowProtection = windowProtection
     self.historyAPI = braveCore.historyAPI
     self.passwordAPI = braveCore.passwordAPI
@@ -117,7 +114,7 @@ class SettingsViewController: TableViewController {
 
   private func displayRewardsDebugMenu() {
     guard let rewards = rewards else { return }
-    let settings = RewardsDebugSettingsViewController(rewards: rewards, legacyWallet: legacyWallet)
+    let settings = RewardsDebugSettingsViewController(rewards: rewards)
     navigationController?.pushViewController(settings, animated: true)
   }
 
@@ -256,7 +253,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.braveRewardsTitle,
           selection: { [unowned self] in
-            let rewardsVC = BraveRewardsSettingsViewController(rewards, legacyWallet: self.legacyWallet)
+            let rewardsVC = BraveRewardsSettingsViewController(rewards)
             rewardsVC.walletTransferLearnMoreTapped = { [weak self] in
               guard let self = self else { return }
               self.dismiss(animated: true) {
