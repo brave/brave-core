@@ -236,7 +236,9 @@ extension BrowserViewController {
     guard Preferences.FullScreenCallout.omniboxCalloutCompleted.value else { return }
 
     let popover = PopoverController(
-      contentController: CookieNotificationBlockingConsentViewController(),
+      contentController: CookieNotificationBlockingConsentViewController(yesCallback: {
+        FilterListStorage.shared.enableFilterList(for: FilterList.cookieConsentNoticesComponentID, isEnabled: true)
+      }),
       contentSizeBehavior: .preferredContentSize)
     popover.addsConvenientDismissalMargins = false
     popover.present(from: topToolbar.locationView.shieldsButton, on: self)

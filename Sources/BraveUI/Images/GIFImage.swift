@@ -7,11 +7,11 @@ import UIKit
 import SwiftUI
 
 public struct GIFImage: UIViewRepresentable {
-  private let asset: String
+  private let asset: NSDataAsset
   private let animationRepeatCount: Int
   private let animate: Bool
 
-  public init(asset: String, animationRepeatCount: Int = 1, animate: Bool) {
+  public init(asset: NSDataAsset, animationRepeatCount: Int = 1, animate: Bool) {
     self.asset = asset
     self.animationRepeatCount = animationRepeatCount
     self.animate = animate
@@ -27,8 +27,8 @@ public struct GIFImage: UIViewRepresentable {
 }
 
 public class GIFImageView: UIView, CAAnimationDelegate {
-  private var assetName: String = ""
-  private var animationRepeatCount: Int = 1
+  private var asset: NSDataAsset
+  private var animationRepeatCount: Int
   
   private let imageView = UIImageView()
   private var firstFrame: UIImage?
@@ -40,10 +40,11 @@ public class GIFImageView: UIView, CAAnimationDelegate {
     fatalError("init(coder:) has not been implemented")
   }
 
-  public init(asset: String, animationRepeatCount: Int = 1) {
-    super.init(frame: .zero)
-    self.assetName = asset
+  public init(asset: NSDataAsset, animationRepeatCount: Int = 1) {
+    self.asset = asset
     self.animationRepeatCount = animationRepeatCount
+    
+    super.init(frame: .zero)
     initView()
   }
   
@@ -53,7 +54,7 @@ public class GIFImageView: UIView, CAAnimationDelegate {
   }
   
   private func loadAsset() {
-    let frames = Self.getFramesFrom(asset: assetName)
+    let frames = Self.getFramesFrom(asset: asset)
     firstFrame = frames.first
     lastFrame = frames.last
     framesCount = frames.count
@@ -84,8 +85,7 @@ public class GIFImageView: UIView, CAAnimationDelegate {
   }
   
   /// Get `gif` image frames (an array of images) from an asset by its name
-  private class func getFramesFrom(asset: String) -> [UIImage] {
-    guard let asset = getAsset(name: asset) else { return [] }
+  private class func getFramesFrom(asset: NSDataAsset) -> [UIImage] {
     return getFrames(from: asset.data)
   }
   

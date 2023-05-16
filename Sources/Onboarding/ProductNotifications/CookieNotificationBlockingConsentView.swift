@@ -11,6 +11,7 @@ import Growth
 import BraveUI
 
 public struct CookieNotificationBlockingConsentView: View {
+  public typealias YesCallback = () -> Void
   public static let contentHeight = 480.0
   public static let contentWidth = 344.0
   private static let gifHeight = 328.0
@@ -22,11 +23,9 @@ public struct CookieNotificationBlockingConsentView: View {
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   @State private var showAnimation = false
-  
-  public var onYesButtonPressed: (() -> Void)?
+  public let onYesButtonPressed: YesCallback
 
   private var yesButton: some View {
-    
     Button(Strings.yesBlockCookieConsentNotices,
       action: {
         withAnimation(animation) {
@@ -35,7 +34,9 @@ public struct CookieNotificationBlockingConsentView: View {
       
         Task { @MainActor in
           recordCookieListPromptP3A(answer: .tappedYes)
-          onYesButtonPressed?()
+          onYesButtonPressed()
+          // Allow the animation to play before dismissing
+          try await Task.sleep(seconds: 3.5)
           self.dismiss()
         }
       }
@@ -59,27 +60,16 @@ public struct CookieNotificationBlockingConsentView: View {
   public var body: some View {
     ScrollView {
       VStack {
-        VStack {
-          if !showAnimation {
-            VStack(spacing: Self.textPadding) {
-              Text(Strings.blockCookieConsentNoticesPopupTitle).font(.title)
-              Text(Strings.blockCookieConsentNoticesPopupDescription).font(.body)
-            }
-            .transition(transition)
-            .padding(Self.textPadding)
-            .padding(.top, 80)
-            .foregroundColor(Color(UIColor.braveLabel))
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
-          }
+        if let asset = cookieConsentAnimation {
+          content
+            .background(
+              GIFImage(asset: asset, animate: showAnimation)
+                .frame(width: Self.contentWidth, height: Self.gifHeight, alignment: .top),
+              alignment: .top
+            )
+        } else {
+          content
         }
-        .frame(width: Self.contentWidth)
-        .frame(minHeight: Self.gifHeight)
-        .background(
-          GIFImage(asset: "cookie-consent-animation", animate: showAnimation)
-            .frame(width: Self.contentWidth, height: Self.gifHeight, alignment: .top),
-          alignment: .top
-        )
         
         VStack(spacing: Self.textPadding) {
           if !showAnimation {
@@ -101,6 +91,25 @@ public struct CookieNotificationBlockingConsentView: View {
     }
   }
   
+  private var content: some View {
+    VStack {
+      if !showAnimation {
+        VStack(spacing: Self.textPadding) {
+          Text(Strings.blockCookieConsentNoticesPopupTitle).font(.title)
+          Text(Strings.blockCookieConsentNoticesPopupDescription).font(.body)
+        }
+        .transition(transition)
+        .padding(Self.textPadding)
+        .padding(.top, 80)
+        .foregroundColor(Color(UIColor.braveLabel))
+        .multilineTextAlignment(.center)
+        .fixedSize(horizontal: false, vertical: true)
+      }
+    }
+    .frame(width: Self.contentWidth)
+    .frame(minHeight: Self.gifHeight)
+  }
+  
   private func dismiss() {
     presentationMode.dismiss()
   }
@@ -116,19 +125,42 @@ public struct CookieNotificationBlockingConsentView: View {
     // Q68 If you have viewed the cookie consent block prompt, how did you react?
     UmaHistogramEnumeration("Brave.Shields.CookieListPrompt", sample: answer)
   }
+  
+  private var cookieConsentAnimation: NSDataAsset? {
+    guard let asset = getAsset(name: "cookie-consent-animation") else {
+      assertionFailure()
+      return nil
+    }
+    
+    return asset
+  }
+  
+  /// Get `gif` image asset by its name. Will append `-dark` to the name when dark mode is enabled
+  private func getAsset(name: String) -> NSDataAsset? {
+    switch UITraitCollection.current.userInterfaceStyle {
+    case .light, .unspecified:
+      return NSDataAsset(name: name, bundle: .module)
+    case .dark:
+      return NSDataAsset(name: [name, "dark"].joined(separator: "-"), bundle: .module)
+    @unknown default:
+      return NSDataAsset(name: name, bundle: .module)
+    }
+  }
 }
+
+
 
 #if DEBUG
 struct CookieNotificationBlockingConsentView_Previews: PreviewProvider {
   static var previews: some View {
-    CookieNotificationBlockingConsentView()
+    CookieNotificationBlockingConsentView(onYesButtonPressed: {})
   }
 }
 #endif
 
 public class CookieNotificationBlockingConsentViewController: UIHostingController<CookieNotificationBlockingConsentView>, PopoverContentComponent {
-  public init() {
-    super.init(rootView: CookieNotificationBlockingConsentView())
+  public init(yesCallback: @escaping CookieNotificationBlockingConsentView.YesCallback) {
+    super.init(rootView: CookieNotificationBlockingConsentView(onYesButtonPressed: yesCallback))
     
     self.preferredContentSize = CGSize(
       width: CookieNotificationBlockingConsentView.contentWidth,
