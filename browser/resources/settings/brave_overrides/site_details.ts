@@ -149,39 +149,6 @@ RegisterPolymerTemplateModifications({
       usageSection.insertAdjacentHTML(
         'afterend',
         getTrustedHTML`
-          <div id="shields">
-            <div id="shieldsHeader"
-              style="padding: 0 var(--cr-section-padding);">
-              <h2 class="first"></h2>
-            </div>
-            <div class="list-frame">
-              <site-details-permission
-                category="[[contentSettingsTypesEnum_.BRAVE_SHIELDS]]">
-              </site-details-permission>
-            </div>
-          </div>
-        `)
-      const shieldsHeader =
-        templateContent.querySelector('div#shieldsHeader h2')
-      if (!shieldsHeader) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find Shields header')
-      } else {
-        shieldsHeader.textContent =
-            loadTimeData.getString('siteSettingsShields')
-      }
-      const shieldsSettings = templateContent.querySelector(
-        'div#shields div.list-frame > site-details-permission:nth-child(1)')
-      if (!shieldsSettings) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find Shields settings')
-      } else {
-        shieldsSettings.setAttribute(
-            'label', loadTimeData.getString('siteSettingsShieldsStatus'))
-      }
-      usageSection.insertAdjacentHTML(
-        'afterend',
-        getTrustedHTML`
 
           <cr-link-row id="cookiesLink" on-click="onCookiesDetailClicked_">
           </cr-link-row>
