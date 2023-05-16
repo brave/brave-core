@@ -27,7 +27,7 @@ namespace {
 // Split into two places to avoid patching:
 // chromium_src\components\crash\core\app\crashpad.cc
 // Need keep it in sync.
-constexpr char kBraveWireguardProcessType[] = "brave-wireguard";
+constexpr char kBraveWireguardProcessType[] = "brave-vpn-wireguard-service";
 
 // The service starts under sytem user so we save crashes to
 // %PROGRAMDATA%\BraveSoftware\{service name}\Crashpad
