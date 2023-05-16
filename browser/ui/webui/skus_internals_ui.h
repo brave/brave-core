@@ -8,8 +8,11 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
+
+class PrefService;
 
 class SkusInternalsUI : public content::WebUIController,
                         public skus::mojom::SkusInternals {
@@ -25,7 +28,10 @@ class SkusInternalsUI : public content::WebUIController,
  private:
   // skus::mojom::SkusInternals overrides:
   void GetEventLog(GetEventLogCallback callback) override;
+  void GetSkusState(GetSkusStateCallback callback) override;
+  void ResetSkusState() override;
 
+  raw_ptr<PrefService> local_state_ = nullptr;
   mojo::Receiver<skus::mojom::SkusInternals> skus_internals_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
