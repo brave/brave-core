@@ -43,7 +43,8 @@ struct AccountTransactionListView: View {
               .contextMenu {
                 if !txSummary.txHash.isEmpty {
                   Button(action: {
-                    if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+                    if let txNetwork = self.networkStore.allChains.first(where: { $0.chainId == txSummary.txInfo.chainId }),
+                       let baseURL = txNetwork.blockExplorerUrls.first.map(URL.init(string:)),
                        let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
                       openWalletURL(url)
                     }
