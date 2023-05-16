@@ -804,6 +804,8 @@ source_set("internal") {
     "fl/predictors/variables/number_of_user_activity_events_predictor_variable.h",
     "fl/predictors/variables/predictor_variable_constants.h",
     "fl/predictors/variables/predictor_variable_interface.h",
+    "fl/predictors/variables/shopping_intensity_predictor_variable.cc",
+    "fl/predictors/variables/shopping_intensity_predictor_variable.h",
     "fl/predictors/variables/time_since_last_user_activity_event_predictor_variable.cc",
     "fl/predictors/variables/time_since_last_user_activity_event_predictor_variable.h",
     "flags/debug/debug_command_line_switch_parser_util.cc",

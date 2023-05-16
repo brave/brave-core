@@ -7,7 +7,6 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 

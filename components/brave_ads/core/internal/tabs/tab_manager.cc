@@ -13,6 +13,7 @@
 #include "url/gurl.h"
 
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/average_tab_lifespan_predictor_variable.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/shopping_intensity_predictor_variable.h"
 
 namespace brave_ads {
 
@@ -126,15 +127,25 @@ void TabManager::NotifyHtmlContentDidChange(
 
 void TabManager::NotifyDidCloseTab(const int32_t id) const {
 
+  //
   BLOG(2, "Tab id " << id << " closed start");
-  std::unique_ptr<PredictorVariableInterface> predictor_variable =
+
+  std::unique_ptr<PredictorVariableInterface> predictor_tab_lifespan =
       std::make_unique<AverageTabLifespanPredictorVariable>(
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
-  const std::string value = predictor_variable->GetValue();
-  BLOG(2, value);
-  BLOG(2, "Tab id " << id << " closed stop");
+  const std::string value_tab_lifespan = predictor_tab_lifespan->GetValue();
+  BLOG(2, value_tab_lifespan);
 
+  std::unique_ptr<PredictorVariableInterface> predictor_shopping_intensity =
+      std::make_unique<ShoppingIntensityPredictorVariable>(
+          brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
+  const std::string value_shopping_intensity =
+      predictor_shopping_intensity->GetValue();
+  BLOG(2, value_shopping_intensity);
+
+  BLOG(2, "Tab id " << id << " closed stop");
   //
+
   for (TabManagerObserver &observer : observers_) {
     observer.OnDidCloseTab(id);
   }
