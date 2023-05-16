@@ -24,42 +24,10 @@ namespace brave_rewards {
 
 namespace {
 
-// The tip dialog is anchored to the center of the location bar, and must be
-// drawn with rounded bottom borders. We implement these customizations by
-// subclassing `WebUIBubbleDialogView`. This implementation is then used by
-// `TipPanelBubbleManager` when creating the dialog view.
-class TipPanelDialogView : public WebUIBubbleDialogView {
- public:
-  TipPanelDialogView(views::View* anchor_view,
-                     BubbleContentsWrapper* contents_wrapper,
-                     const absl::optional<gfx::Rect>& anchor_rect)
-      : WebUIBubbleDialogView(anchor_view, contents_wrapper, anchor_rect) {
-    SetArrow(views::BubbleBorder::TOP_CENTER);
-    SetPaintClientToLayer(true);
-    set_use_round_corners(true);
-    set_corner_radius(16);
-  }
-
-  // views::Widget:
-  std::unique_ptr<views::NonClientFrameView> CreateNonClientFrameView(
-      views::Widget* widget) override {
-    auto frame = WebUIBubbleDialogView::CreateNonClientFrameView(widget);
-    auto* bubble_frame = static_cast<views::BubbleFrameView*>(frame.get());
-    auto* bubble_border = bubble_frame->bubble_border();
-    DCHECK(bubble_border);
-    bubble_border->SetRoundedCorners(0, 0, 16, 16);
-    return frame;
-  }
-
-  // views::View:
-  void AddedToWidget() override {
-    WebUIBubbleDialogView::AddedToWidget();
-    web_view()->holder()->SetCornerRadii(gfx::RoundedCornersF(0, 0, 16, 16));
-  }
-};
-
-// In order to use `TipPanelDialogView` as the dialog view implementation, we
-// must override the `CreateWebUIBubbleDialog` of `WebUIBubbleManager`.
+// In order to customize the borders and alignment of the bubble panel, we must
+// override the `CreateWebUIBubbleDialog` of `WebUIBubbleManager`. Note that
+// originally only the bottom borders were rounded but at the time that resulted
+// in inconsistent cross-platform rendering.
 class TipPanelBubbleManager : public WebUIBubbleManager {
  public:
   TipPanelBubbleManager(views::View* anchor_view, Profile* profile)
@@ -82,8 +50,12 @@ class TipPanelBubbleManager : public WebUIBubbleManager {
     set_cached_contents_wrapper(std::move(contents_wrapper));
     cached_contents_wrapper()->ReloadWebContents();
 
-    auto bubble_view = std::make_unique<TipPanelDialogView>(
+    auto bubble_view = std::make_unique<WebUIBubbleDialogView>(
         anchor_view_, cached_contents_wrapper(), anchor);
+    bubble_view->SetArrow(views::BubbleBorder::TOP_CENTER);
+    bubble_view->SetPaintClientToLayer(true);
+    bubble_view->set_use_round_corners(true);
+    bubble_view->set_corner_radius(16);
 
     auto weak_ptr = bubble_view->GetWeakPtr();
     views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
