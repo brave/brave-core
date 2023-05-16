@@ -237,7 +237,6 @@ mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
     mojom::DBTransactionInfoPtr transaction,
     Database* database) {
   CHECK(transaction);
-  CHECK(database);
 
   mojom::DBCommandResponseInfoPtr command_response =
       mojom::DBCommandResponseInfo::New();
