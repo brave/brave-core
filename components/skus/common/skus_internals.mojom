@@ -7,4 +7,6 @@ module skus.mojom;
 
 interface SkusInternals {
   GetEventLog() => (string response);
+  GetSkusState() => (string response);
+  ResetSkusState();
 };
