@@ -310,8 +310,10 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     const mojom::NewTabPageAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  new_tab_page_ad_handler_->TriggerEvent(placement_id, creative_instance_id,
-                                         event_type);
+  if (IsInitialized()) {
+    new_tab_page_ad_handler_->TriggerEvent(placement_id, creative_instance_id,
+                                           event_type);
+  }
 }
 
 void AdsImpl::TriggerPromotedContentAdEvent(
@@ -320,8 +322,10 @@ void AdsImpl::TriggerPromotedContentAdEvent(
     const mojom::PromotedContentAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  promoted_content_ad_handler_->TriggerEvent(placement_id, creative_instance_id,
-                                             event_type);
+  if (IsInitialized()) {
+    promoted_content_ad_handler_->TriggerEvent(
+        placement_id, creative_instance_id, event_type);
+  }
 }
 
 void AdsImpl::MaybeServeInlineContentAd(
@@ -340,8 +344,10 @@ void AdsImpl::TriggerInlineContentAdEvent(
     const mojom::InlineContentAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  inline_content_ad_handler_->TriggerEvent(placement_id, creative_instance_id,
-                                           event_type);
+  if (IsInitialized()) {
+    inline_content_ad_handler_->TriggerEvent(placement_id, creative_instance_id,
+                                             event_type);
+  }
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
@@ -358,6 +364,10 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
     const mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
   DCHECK(mojom::IsKnownEnumValue(ad_type));
+
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   PurgeOrphanedAdEvents(
       ad_type,
@@ -379,6 +389,10 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
 }
 
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
   ClientStateManager::GetInstance()->RemoveAllHistory();
 
   std::move(callback).Run(/*success*/ true);
@@ -404,20 +418,36 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*diagnostics*/ absl::nullopt);
+  }
+
   DiagnosticManager::GetInstance()->GetDiagnostics(std::move(callback));
 }
 
 AdContentLikeActionType AdsImpl::ToggleAdThumbUp(base::Value::Dict value) {
+  if (!IsInitialized()) {
+    return AdContentLikeActionType::kNeutral;
+  }
+
   return HistoryManager::GetInstance()->LikeAd(AdContentFromValue(value));
 }
 
 AdContentLikeActionType AdsImpl::ToggleAdThumbDown(base::Value::Dict value) {
+  if (!IsInitialized()) {
+    return AdContentLikeActionType::kNeutral;
+  }
+
   return HistoryManager::GetInstance()->DislikeAd(AdContentFromValue(value));
 }
 
 CategoryContentOptActionType AdsImpl::ToggleAdOptIn(
     const std::string& category,
     const CategoryContentOptActionType& action_type) {
+  if (!IsInitialized()) {
+    return CategoryContentOptActionType::kNone;
+  }
+
   return HistoryManager::GetInstance()->MarkToReceiveAdsForCategory(
       category, action_type);
 }
@@ -425,16 +455,28 @@ CategoryContentOptActionType AdsImpl::ToggleAdOptIn(
 CategoryContentOptActionType AdsImpl::ToggleAdOptOut(
     const std::string& category,
     const CategoryContentOptActionType& action_type) {
+  if (!IsInitialized()) {
+    return CategoryContentOptActionType::kNone;
+  }
+
   return HistoryManager::GetInstance()->MarkToNoLongerReceiveAdsForCategory(
       category, action_type);
 }
 
 bool AdsImpl::ToggleFlaggedAd(base::Value::Dict value) {
+  if (!IsInitialized()) {
+    return false;
+  }
+
   return HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(
       AdContentFromValue(value));
 }
 
 bool AdsImpl::ToggleSavedAd(base::Value::Dict value) {
+  if (!IsInitialized()) {
+    return false;
+  }
+
   return HistoryManager::GetInstance()->ToggleSavedAd(
       AdContentFromValue(value));
 }
