@@ -12,6 +12,7 @@
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -23,11 +24,13 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/chrome_paths.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/country_codes/country_codes.h"
+#include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_engines_test_util.h"
 #include "components/search_engines/template_url_data_util.h"
@@ -247,6 +250,89 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   EXPECT_EQ(tor_service->GetDefaultSearchProvider()->prepopulate_id(),
             default_provider_id);
 #endif
+}
+
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
+                       DefaultSearchSuggestEnabledTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  auto* search_suggest_pref =
+      prefs->FindPreference(prefs::kSearchSuggestEnabled);
+  auto brave_search_data = TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_search);
+  auto brave_template_url = std::make_unique<TemplateURL>(*brave_search_data);
+
+  auto bing_search_data = TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_bing);
+  auto bing_template_url = std::make_unique<TemplateURL>(*bing_search_data);
+
+  // Test with supported country for search suggestions on by default for Brave
+  // Search.
+  {
+    brave_l10n::test::ScopedDefaultLocale test_locale("en_US");
+    EXPECT_TRUE(search_suggest_pref->IsDefaultValue());
+
+    // Set Brave Search and check default value is true.
+    service->SetUserSelectedDefaultSearchProvider(brave_template_url.get());
+    EXPECT_TRUE(prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+    EXPECT_TRUE(
+        prefs->GetDefaultPrefValue(prefs::kSearchSuggestEnabled)->GetBool());
+
+    // Set Bing and check default value is false.
+    service->SetUserSelectedDefaultSearchProvider(bing_template_url.get());
+    EXPECT_FALSE(prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+    EXPECT_FALSE(
+        prefs->GetDefaultPrefValue(prefs::kSearchSuggestEnabled)->GetBool());
+
+    // Set Brave Search again and check default value is true.
+    service->SetUserSelectedDefaultSearchProvider(brave_template_url.get());
+    EXPECT_TRUE(prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+    EXPECT_TRUE(
+        prefs->GetDefaultPrefValue(prefs::kSearchSuggestEnabled)->GetBool());
+
+    // Set on explicitely.
+    prefs->SetBoolean(prefs::kSearchSuggestEnabled, true);
+
+    // Set Bing and check default value changed to false but current value is
+    // not changed after explicitely turned it on above.
+    service->SetUserSelectedDefaultSearchProvider(bing_template_url.get());
+    EXPECT_TRUE(prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+    EXPECT_FALSE(
+        prefs->GetDefaultPrefValue(prefs::kSearchSuggestEnabled)->GetBool());
+  }
+
+  // Clear to test for non supported country.
+  prefs->ClearPref(prefs::kSearchSuggestEnabled);
+
+  // Test witn non-supported country and default is always off regardless of
+  // providers.
+  {
+    brave_l10n::test::ScopedDefaultLocale test_locale("ko_KR");
+    EXPECT_TRUE(search_suggest_pref->IsDefaultValue());
+
+    // Set Brave Search and check default value and current value are false.
+    service->SetUserSelectedDefaultSearchProvider(brave_template_url.get());
+    EXPECT_FALSE(prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+    EXPECT_FALSE(
+        prefs->GetDefaultPrefValue(prefs::kSearchSuggestEnabled)->GetBool());
+
+    // Set Bing and check both are still false.
+    service->SetUserSelectedDefaultSearchProvider(bing_template_url.get());
+    EXPECT_FALSE(prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+    EXPECT_FALSE(
+        prefs->GetDefaultPrefValue(prefs::kSearchSuggestEnabled)->GetBool());
+
+    // Set on explicitely.
+    prefs->SetBoolean(prefs::kSearchSuggestEnabled, true);
+
+    // Set Brave Search and check default value is still false but current value
+    // is true.
+    service->SetUserSelectedDefaultSearchProvider(brave_template_url.get());
+    EXPECT_TRUE(prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+    EXPECT_FALSE(
+        prefs->GetDefaultPrefValue(prefs::kSearchSuggestEnabled)->GetBool());
+  }
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

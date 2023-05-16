@@ -5,10 +5,17 @@
 
 #include "brave/browser/search_engines/normal_window_search_engine_provider_service.h"
 
+#include <string>
+
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_service.h"
 
@@ -22,6 +29,8 @@ NormalWindowSearchEngineProviderService::
           base::Unretained(this)));
 
   auto* service = TemplateURLServiceFactory::GetForProfile(profile_);
+  observation_.Observe(service);
+
   if (service->loaded()) {
     PrepareInitialPrivateSearchProvider();
     return;
@@ -40,6 +49,7 @@ NormalWindowSearchEngineProviderService::
 void NormalWindowSearchEngineProviderService::Shutdown() {
   template_url_service_subscription_ = {};
   private_search_provider_guid_.Destroy();
+  observation_.Reset();
 }
 
 void NormalWindowSearchEngineProviderService::OnTemplateURLServiceLoaded(
@@ -55,4 +65,37 @@ void NormalWindowSearchEngineProviderService::
 
 void NormalWindowSearchEngineProviderService::OnPreferenceChanged() {
   brave::UpdateDefaultPrivateSearchProviderData(profile_);
+}
+
+void NormalWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
+  UpdateSearchSuggestionsDefaultValue();
+}
+
+void NormalWindowSearchEngineProviderService::
+    UpdateSearchSuggestionsDefaultValue() {
+  // As we want to have different default value for search suggestions option,
+  // we should update whenever default provider is changed.
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile_);
+  auto* template_url = service->GetDefaultSearchProvider();
+  if (!template_url) {
+    return;
+  }
+
+  const std::string default_country_code =
+      brave_l10n::GetDefaultISOCountryCodeString();
+  constexpr std::array<const char*, 11> kSupportedCountries = {
+      "IN", "CA", "DE", "FR", "GB", "US", "AT", "ES", "MX", "BR", "AR"};
+  const bool search_suggestions_default_value =
+      (template_url->prepopulate_id() ==
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE) &&
+      base::Contains(kSupportedCountries, default_country_code);
+
+  profile_->GetPrefs()->SetDefaultPrefValue(
+      prefs::kSearchSuggestEnabled,
+      base::Value(search_suggestions_default_value));
+}
+
+void NormalWindowSearchEngineProviderService::
+    OnTemplateURLServiceShuttingDown() {
+  observation_.Reset();
 }

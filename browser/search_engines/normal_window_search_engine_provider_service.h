@@ -8,10 +8,13 @@
 
 #include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
+#include "components/search_engines/template_url_service_observer.h"
 
 class Profile;
+class TemplateURLService;
 
 // Set default prefs for private search provider as it's stored in normal
 // profile. And update TemplateURLData for private search provider whenever
@@ -21,7 +24,9 @@ class Profile;
 // In this situation, previous default provider should be default one with
 // new list. To do that, cached TemplateURLData can be added to
 // TemplateURLService.
-class NormalWindowSearchEngineProviderService : public KeyedService {
+class NormalWindowSearchEngineProviderService
+    : public KeyedService,
+      public TemplateURLServiceObserver {
  public:
   explicit NormalWindowSearchEngineProviderService(Profile* profile);
   ~NormalWindowSearchEngineProviderService() override;
@@ -35,13 +40,20 @@ class NormalWindowSearchEngineProviderService : public KeyedService {
   // KeyedService overrides:
   void Shutdown() override;
 
+  // TemplateURLServiceObserver overrides:
+  void OnTemplateURLServiceChanged() override;
+  void OnTemplateURLServiceShuttingDown() override;
+
   void OnTemplateURLServiceLoaded(Profile* profile);
   void PrepareInitialPrivateSearchProvider();
   void OnPreferenceChanged();
+  void UpdateSearchSuggestionsDefaultValue();
 
   raw_ptr<Profile> profile_ = nullptr;
   StringPrefMember private_search_provider_guid_;
   base::CallbackListSubscription template_url_service_subscription_;
+  base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
+      observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_NORMAL_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_
