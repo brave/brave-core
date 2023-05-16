@@ -235,14 +235,16 @@ struct AssetDetailView: View {
     .background(
       WalletPromptView(
         isPresented: $isShowingAuroraBridgeAlert,
-        buttonTitle: Strings.Wallet.auroraBridgeButtonTitle,
-        action: { proceed, _ in
-          isShowingAuroraBridgeAlert = false
-          if proceed, let link = WalletConstants.auroraBridgeLink {
-            openWalletURL(link)
+        primaryButton: .init(
+          title: Strings.Wallet.auroraBridgeButtonTitle,
+          action: { _ in
+            isShowingAuroraBridgeAlert = false
+            if let link = WalletConstants.auroraBridgeLink {
+              openWalletURL(link)
+            }
           }
-          return true
-        },
+        ),
+        showCloseButton: false,
         content: {
           VStack(spacing: 10) {
             Text(Strings.Wallet.auroraBridgeAlertTitle)

@@ -213,27 +213,32 @@ private struct RestoreWalletView: View {
     .background(
       WalletPromptView(
         isPresented: $keyringStore.isRestoreFromUnlockBiometricsPromptVisible,
-        buttonTitle: Strings.Wallet.biometricsSetupEnableButtonTitle,
-        action: { enabled, navController in
-          defer {
-            keyringStore.isRestoreFromUnlockBiometricsPromptVisible = false
-            keyringStore.markOnboardingCompleted()
+        primaryButton: .init(
+          title: Strings.Wallet.biometricsSetupEnableButtonTitle,
+          action: { navController in
+            defer {
+              keyringStore.isRestoreFromUnlockBiometricsPromptVisible = false
+              keyringStore.markOnboardingCompleted()
+            }
+            // Store password in keychain
+            if case let status = keyringStore.storePasswordInKeychain(password),
+               status != errSecSuccess {
+              let isPublic = AppConstants.buildChannel.isPublic
+              let alert = UIAlertController(
+                title: Strings.Wallet.biometricsSetupErrorTitle,
+                message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
+                preferredStyle: .alert
+              )
+              alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
+              navController?.presentedViewController?.present(alert, animated: true)
+              // Unfortunately nothing else we can do here, the wallet is already restored. Maybe later can add
+              // an option to enable in `UnlockWalletView`
+            }
           }
-          // Store password in keychain
-          if enabled, case let status = keyringStore.storePasswordInKeychain(password),
-             status != errSecSuccess {
-            let isPublic = AppConstants.buildChannel.isPublic
-            let alert = UIAlertController(
-              title: Strings.Wallet.biometricsSetupErrorTitle,
-              message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
-              preferredStyle: .alert
-            )
-            alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
-            navController?.presentedViewController?.present(alert, animated: true)
-            // Unfortunately nothing else we can do here, the wallet is already restored. Maybe later can add
-            // an option to enable in `UnlockWalletView`
-          }
-          return false
+        ),
+        dismissAction: { _ in
+          keyringStore.isRestoreFromUnlockBiometricsPromptVisible = false
+          keyringStore.markOnboardingCompleted()
         },
         content: {
           VStack {

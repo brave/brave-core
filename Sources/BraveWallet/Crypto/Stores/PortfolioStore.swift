@@ -150,10 +150,6 @@ public class PortfolioStore: ObservableObject {
     }
   }
   
-  func discoverAssetsOnAllSupportedChains() {
-    walletService.discoverAssetsOnAllSupportedChains()
-  }
-  
   func update() {
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in

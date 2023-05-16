@@ -1489,7 +1489,7 @@ extension Strings {
       "wallet.customTokenTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Custom",
+      value: "Add Custom Asset",
       comment: "The title displayed on the add custom token screen"
     )
     public static let tokenName = NSLocalizedString(
@@ -4015,6 +4015,62 @@ extension Strings {
       bundle: .module,
       value: "No market information available yet",
       comment: "The message will be displayed when there is no coin market loaded or having an error."
+    )
+    public static let web3SettingsEnableNFTDiscovery = NSLocalizedString(
+      "wallet.web3SettingsEnableNFTDiscovery",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Enable NFT Discovery",
+      comment: "The title of the toggle for user to enable/disable NFT discovery inside Web3 settings."
+    )
+    public static let web3SettingsEnableNFTDiscoveryFooter = NSLocalizedString(
+      "wallet.web3SettingsEnableNFTDiscoveryFooter",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Automatically add NFTs you own to the Wallet using third party APIs. [Learn more](%@)",
+      comment: "The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings."
+    )
+    public static let nftDiscoveryCalloutTitle = NSLocalizedString(
+      "wallet.nftDiscoveryCalloutTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Want your NFTs displayed automatically?",
+      comment: "The title of the alert that asks users either to enable NFT discovery or import manually."
+    )
+    public static let nftDiscoveryCalloutDescription = NSLocalizedString(
+      "wallet.nftDiscoveryCalloutDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with SimpleHash to provide this service. Learn more.",
+      comment: "The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated."
+    )
+    public static let nftDiscoveryCalloutDescriptionLearnMore = NSLocalizedString(
+      "wallet.nftDiscoveryCalloutDescriptionLearnMore",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Learn more",
+      comment: "This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings."
+    )
+    public static let nftDiscoveryCalloutDisable = NSLocalizedString(
+      "wallet.nftDiscoveryCalloutDisable",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "No thanks, I'll do it manually",
+      comment: "The title of the button that user clicks to disable NFT discovery."
+    )
+    public static let nftDiscoveryCalloutEnable = NSLocalizedString(
+      "wallet.nftDiscoveryCalloutEnable",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Yes, proceed",
+      comment: "The title of the button that user clicks to enable NFT discovery."
+    )
+    public static let nftEmptyImportNFT = NSLocalizedString(
+      "wallet.nftEmptyImportNFT",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Import NFT",
+      comment: "The title of the button that user clicks to add his/her first NFT"
     )
   }
 }

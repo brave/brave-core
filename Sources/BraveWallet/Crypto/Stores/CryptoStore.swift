@@ -339,7 +339,7 @@ public class CryptoStore: ObservableObject {
   func prepare(isInitialOpen: Bool = false) {
     Task { @MainActor in
       if isInitialOpen {
-        portfolioStore.discoverAssetsOnAllSupportedChains()
+        walletService.discoverAssetsOnAllSupportedChains()
       }
       
       let pendingTransactions = await fetchPendingTransactions()

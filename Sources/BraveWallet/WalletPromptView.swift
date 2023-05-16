@@ -10,18 +10,27 @@ import Shared
 
 struct WalletPromptContentView<Content, Footer>: View where Content: View, Footer: View {
   let content: () -> Content
-  let buttonTitle: String
-  let action: (_ proceed: Bool) -> Void
+  var primaryButton: WalletPromptButton
+  var secondaryButton: WalletPromptButton?
+  var buttonsAxis: Axis
+  let showCloseButton: Bool
+  let dismissAction: (() -> Void)?
   let footer: () -> Footer
   
   init(
-    buttonTitle: String,
-    action: @escaping (_ proceed: Bool) -> Void,
+    primaryButton: WalletPromptButton,
+    secondaryButton: WalletPromptButton?,
+    buttonsAxis: Axis,
+    showCloseButton: Bool,
+    dismissAction: (() -> Void)?,
     @ViewBuilder content: @escaping () -> Content,
     @ViewBuilder footer: @escaping () -> Footer
   ) {
-    self.buttonTitle = buttonTitle
-    self.action = action
+    self.primaryButton = primaryButton
+    self.secondaryButton = secondaryButton
+    self.buttonsAxis = buttonsAxis
+    self.showCloseButton = showCloseButton
+    self.dismissAction = dismissAction
     self.content = content
     self.footer = footer
   }
@@ -29,34 +38,80 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
   var body: some View {
     VStack {
       content()
-        .padding(.bottom)
-      Button(action: { action(true) }) {
-        Text(buttonTitle)
+      if let secondaryButton = self.secondaryButton {
+        if buttonsAxis == .vertical {
+          VStack(spacing: 12) {
+            Button(primaryButton.title, action: { primaryButton.action(nil) })
+              .buttonStyle(BraveFilledButtonStyle(size: .large))
+            Button(secondaryButton.title, action: { secondaryButton.action(nil) })
+              .foregroundColor(Color(.braveLabel))
+          }
+        } else {
+          HStack {
+            Button(secondaryButton.title, action: { secondaryButton.action(nil) })
+              .buttonStyle(BraveOutlineButtonStyle(size: .large))
+            Button(primaryButton.title, action: { primaryButton.action(nil) })
+              .buttonStyle(BraveFilledButtonStyle(size: .large))
+          }
+        }
+      } else {
+        Button(primaryButton.title, action: { primaryButton.action(nil) })
+          .buttonStyle(BraveFilledButtonStyle(size: .large))
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
       footer()
     }
     .frame(maxWidth: .infinity)
     .padding(20)
     .overlay(
-      Button(action: { action(false) }) {
+      showCloseButton ?
+      Button(action: { dismissAction?() }) {
         Image(systemName: "xmark")
           .padding(16)
       }
         .font(.headline)
-        .foregroundColor(.gray),
+        .foregroundColor(.gray)
+      : nil
+      ,
       alignment: .topTrailing
     )
     .accessibilityEmbedInScrollView()
   }
 }
 
+struct WalletPromptButton {
+  let title: String
+  let action: (UINavigationController?) -> Void
+}
+
 struct WalletPromptView<Content, Footer>: UIViewControllerRepresentable where Content: View, Footer: View {
   @Binding var isPresented: Bool
-  var buttonTitle: String
-  var action: (Bool, UINavigationController?) -> Bool
+  var primaryButton: WalletPromptButton
+  var secondaryButton: WalletPromptButton?
+  var buttonsAxis: Axis
+  var showCloseButton: Bool
+  var dismissAction: ((UINavigationController?) -> Void)?
   var content: () -> Content
   var footer: () -> Footer
+  
+  init(
+    isPresented: Binding<Bool>,
+    primaryButton: WalletPromptButton,
+    secondaryButton: WalletPromptButton? = nil,
+    buttonsAxis: Axis = .vertical,
+    showCloseButton: Bool = true,
+    dismissAction: ((UINavigationController?) -> Void)? = nil,
+    @ViewBuilder content: @escaping () -> Content,
+    @ViewBuilder footer: @escaping () -> Footer
+  ) {
+    _isPresented = isPresented
+    self.primaryButton = primaryButton
+    self.secondaryButton = secondaryButton
+    self.buttonsAxis = buttonsAxis
+    self.showCloseButton = showCloseButton
+    self.dismissAction = dismissAction
+    self.content = content
+    self.footer = footer
+  }
   
   func makeUIViewController(context: Context) -> UIViewController {
     .init()
@@ -67,15 +122,23 @@ struct WalletPromptView<Content, Footer>: UIViewControllerRepresentable where Co
       if uiViewController.presentedViewController != nil {
         return
       }
+      let newPrimaryButton = WalletPromptButton(title: primaryButton.title, action: { _ in
+        primaryButton.action(uiViewController.navigationController)
+      })
+      var newSecodaryButton: WalletPromptButton?
+      if let button = secondaryButton {
+        newSecodaryButton = WalletPromptButton(title: button.title, action: { _ in
+          button.action(uiViewController.navigationController)
+        })
+      }
       let controller = PopupViewController(
         rootView: WalletPromptContentView(
-          buttonTitle: buttonTitle,
-          action: { proceed in
-            if action(proceed, uiViewController.navigationController) {
-              uiViewController.dismiss(animated: true) {
-                isPresented = false
-              }
-            }
+          primaryButton: newPrimaryButton,
+          secondaryButton: newSecodaryButton,
+          buttonsAxis: buttonsAxis,
+          showCloseButton: showCloseButton,
+          dismissAction: {
+            dismissAction?(uiViewController.navigationController)
           },
           content: content,
           footer: footer
@@ -103,13 +166,19 @@ struct WalletPromptView<Content, Footer>: UIViewControllerRepresentable where Co
 extension WalletPromptView where Content: View, Footer == EmptyView {
   init(
     isPresented: Binding<Bool>,
-    buttonTitle: String,
-    action: @escaping (Bool, UINavigationController?) -> Bool,
+    primaryButton: WalletPromptButton,
+    secondaryButton: WalletPromptButton? = nil,
+    buttonsAxis: Axis = .vertical,
+    showCloseButton: Bool = true,
+    dismissAction: ((UINavigationController?) -> Void)? = nil,
     @ViewBuilder content: @escaping () -> Content
   ) {
     _isPresented = isPresented
-    self.buttonTitle = buttonTitle
-    self.action = action
+    self.primaryButton = primaryButton
+    self.secondaryButton = secondaryButton
+    self.buttonsAxis = buttonsAxis
+    self.showCloseButton = showCloseButton
+    self.dismissAction = dismissAction
     self.content = content
     self.footer = { EmptyView() }
   }

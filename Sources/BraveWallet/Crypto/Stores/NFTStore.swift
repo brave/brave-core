@@ -30,6 +30,7 @@ public class NFTStore: ObservableObject {
       update()
     }
   }
+  @Published var isLoadingDiscoverAssets: Bool = false
   
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     walletService: self.walletService,
@@ -69,6 +70,7 @@ public class NFTStore: ObservableObject {
     
     self.rpcService.add(self)
     self.keyringService.add(self)
+    self.walletService.add(self)
     
     keyringService.isLocked { [self] isLocked in
       if !isLocked {
@@ -141,6 +143,14 @@ public class NFTStore: ObservableObject {
       userVisibleNFTs[index] = NFTAssetViewModel(token: viewModel.token, network: viewModel.network, balance: viewModel.balance, nftMetadata: metadata)
     }
   }
+  
+  @MainActor func isNFTDiscoveryEnabled() async -> Bool {
+    await walletService.nftDiscoveryEnabled()
+  }
+  
+  func enableNFTDiscovery() {
+    walletService.setNftDiscoveryEnabled(true)
+  }
 }
 
 extension NFTStore: BraveWalletJsonRpcServiceObserver {
@@ -184,5 +194,39 @@ extension NFTStore: BraveWalletKeyringServiceObserver {
   }
   
   public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  }
+}
+
+extension NFTStore: BraveWalletBraveWalletServiceObserver {
+  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
+  }
+  
+  public func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDefaultBaseCurrencyChanged(_ currency: String) {
+  }
+  
+  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
+  }
+  
+  public func onNetworkListChanged() {
+  }
+  
+  public func onDiscoverAssetsStarted() {
+    isLoadingDiscoverAssets = true
+  }
+  
+  public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
+    isLoadingDiscoverAssets = false
+    if !discoveredAssets.isEmpty {
+      update()
+    }
+  }
+  
+  public func onResetWallet() {
   }
 }

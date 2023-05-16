@@ -195,7 +195,8 @@ struct EditUserAssetsView: View {
         networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
         keyringStore: keyringStore,
         userAssetStore: userAssetsStore,
-        tokenNeedsTokenId: tokenNeedsTokenId
+        tokenNeedsTokenId: tokenNeedsTokenId,
+        supportedTokenTypes: [.nft]
       )
       .onDisappear {
         networkStore.closeNetworkSelectionStore()

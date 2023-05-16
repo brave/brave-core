@@ -49,6 +49,9 @@ public struct WalletConstants {
   
   /// The url to the privacy policy for Jupiter swaps
   static let jupiterPrivacyPolicy = URL(string: "https://docs.jup.ag/legal/privacy-policy")!
+  
+  /// The url to learn more about NFT Discovery
+  public static let nftDiscoveryURL = URL(string: "https://github.com/brave/brave-browser/wiki/NFT-Discovery")!
 
   /// The currently supported test networks.
   static let supportedTestNetworkChainIds = [

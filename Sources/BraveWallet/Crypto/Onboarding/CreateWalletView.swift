@@ -125,53 +125,65 @@ private struct CreateWalletView: View {
           Text(Strings.Wallet.continueButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
+        .background(
+          WalletPromptView(
+            isPresented: $isShowingBiometricsPrompt,
+            primaryButton: .init(
+              title: Strings.Wallet.biometricsSetupEnableButtonTitle,
+              action: { navController in
+                // Store password in keychain
+                if case let status = keyringStore.storePasswordInKeychain(password),
+                   status != errSecSuccess {
+                  let isPublic = AppConstants.buildChannel.isPublic
+                  let alert = UIAlertController(
+                    title: Strings.Wallet.biometricsSetupErrorTitle,
+                    message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
+                    preferredStyle: .alert
+                  )
+                  alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
+                  navController?.presentedViewController?.present(alert, animated: true)
+                }
+                
+                let controller = UIHostingController(
+                  rootView: BackupWalletView(
+                    password: password,
+                    keyringStore: keyringStore
+                  )
+                )
+                navController?.pushViewController(controller, animated: true)
+                isShowingBiometricsPrompt = false
+              }
+            ),
+            dismissAction: { navController in
+              let controller = UIHostingController(
+                rootView: BackupWalletView(
+                  password: password,
+                  keyringStore: keyringStore
+                )
+              )
+              navController?.pushViewController(controller, animated: true)
+              isShowingBiometricsPrompt = false
+            },
+            content: {
+              VStack {
+                Image(sharedName: "pin-migration-graphic")
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .frame(maxWidth: 250)
+                  .padding()
+                Text(Strings.Wallet.biometricsSetupTitle)
+                  .font(.headline)
+                  .fixedSize(horizontal: false, vertical: true)
+                  .multilineTextAlignment(.center)
+                  .padding(.bottom)
+              }
+            }
+          )
+        )
       }
       .frame(maxHeight: .infinity, alignment: .top)
       .padding()
       .padding(.vertical)
-      .background(
-        WalletPromptView(
-          isPresented: $isShowingBiometricsPrompt,
-          buttonTitle: Strings.Wallet.biometricsSetupEnableButtonTitle,
-          action: { enabled, navController in
-            // Store password in keychain
-            if enabled, case let status = keyringStore.storePasswordInKeychain(password),
-               status != errSecSuccess {
-              let isPublic = AppConstants.buildChannel.isPublic
-              let alert = UIAlertController(
-                title: Strings.Wallet.biometricsSetupErrorTitle,
-                message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
-                preferredStyle: .alert
-              )
-              alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
-              navController?.presentedViewController?.present(alert, animated: true)
-              return false
-            }
-            let controller = UIHostingController(
-              rootView: BackupWalletView(
-                password: password,
-                keyringStore: keyringStore
-              )
-            )
-            navController?.pushViewController(controller, animated: true)
-            return true
-          },
-          content: {
-            VStack {
-              Image(sharedName: "pin-migration-graphic")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: 250)
-                .padding()
-              Text(Strings.Wallet.biometricsSetupTitle)
-                .font(.headline)
-                .fixedSize(horizontal: false, vertical: true)
-                .multilineTextAlignment(.center)
-                .padding(.bottom)
-            }
-          }
-        )
-      )
       .background(
         NavigationLink(
           destination: BackupWalletView(password: password, keyringStore: keyringStore),

@@ -14,9 +14,12 @@ struct AddCustomAssetView: View {
   var keyringStore: KeyringStore
   @ObservedObject var userAssetStore: UserAssetsStore
   var tokenNeedsTokenId: BraveWallet.BlockchainToken?
+  var supportedTokenTypes: [TokenType] = [.token, .nft]
+  var onNewAssetAdded: (() -> Void)?
+  
   @Environment(\.presentationMode) @Binding private var presentationMode
 
-  enum TokenType: Int, Identifiable, CaseIterable {
+  enum TokenType: Int, Identifiable {
     case token
     case nft
     
@@ -63,11 +66,11 @@ struct AddCustomAssetView: View {
   var body: some View {
     NavigationView {
       Form {
-        if tokenNeedsTokenId == nil {
+        if supportedTokenTypes.count != 1 {
           Section {
           } header: {
             Picker("", selection: $selectedTokenType) {
-              ForEach(TokenType.allCases) { type in
+              ForEach(supportedTokenTypes) { type in
                 Text(type.title)
               }
             }
@@ -283,9 +286,13 @@ struct AddCustomAssetView: View {
           }
       )
       .onAppear {
-        if let token = tokenNeedsTokenId {
+        if supportedTokenTypes.count == 1, let tokenType = supportedTokenTypes.first, selectedTokenType != tokenType {
           Task { @MainActor in
-            selectedTokenType = .nft
+            selectedTokenType = tokenType
+          }
+        }
+        if case .nft = selectedTokenType, let token = tokenNeedsTokenId {
+          Task { @MainActor in
             networkSelectionStore.networkSelectionInForm = await userAssetStore.networkInfo(by: token.chainId, coin: token.coin)
             nameInput = token.name
             symbolInput = token.symbol
@@ -370,6 +377,7 @@ struct AddCustomAssetView: View {
     }
     userAssetStore.addUserAsset(token) { [self] success in
       if success {
+        onNewAssetAdded?()
         presentationMode.dismiss()
       } else {
         showError = true

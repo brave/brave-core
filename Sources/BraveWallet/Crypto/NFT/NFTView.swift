@@ -4,6 +4,8 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SwiftUI
+import DesignSystem
+import Preferences
 
 struct NFTView: View {
   var cryptoStore: CryptoStore
@@ -14,9 +16,13 @@ struct NFTView: View {
   @State private var isPresentingNetworkFilter: Bool = false
   @State private var isPresentingEditUserAssets: Bool = false
   @State private var selectedNFTViewModel: NFTAssetViewModel?
+  @State private var isShowingNFTDiscoveryAlert: Bool = false
+  @State private var isShowingAddCustomNFT: Bool = false
+  @State private var isNFTDiscoveryEnabled: Bool = false
   
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
+  @Environment(\.openURL) private var openWalletURL
   
   private var emptyView: some View {
     VStack(alignment: .center, spacing: 10) {
@@ -26,6 +32,11 @@ struct NFTView: View {
       Text(Strings.Wallet.nftPageEmptyDescription)
         .font(.subheadline.weight(.semibold))
         .foregroundColor(Color(.secondaryLabel))
+      Button(Strings.Wallet.nftEmptyImportNFT) {
+        isShowingAddCustomNFT = true
+      }
+      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .padding(.top, 8)
     }
     .multilineTextAlignment(.center)
     .frame(maxWidth: .infinity)
@@ -115,14 +126,34 @@ struct NFTView: View {
   private var nftHeaderView: some View {
     HStack {
       Text(Strings.Wallet.assetsTitle)
-        .font(.caption)
+        .font(.footnote)
         .foregroundColor(Color(.secondaryBraveLabel))
+      if nftStore.isLoadingDiscoverAssets && isNFTDiscoveryEnabled {
+        ProgressView()
+          .padding(.leading, 5)
+      }
       Spacer()
       networkFilterButton
     }
     .textCase(nil)
     .padding(.horizontal, 10)
     .frame(maxWidth: .infinity, alignment: .leading)
+  }
+  
+  private var nftDiscoveryDescriptionText: NSAttributedString? {
+    let attributedString = NSMutableAttributedString(
+      string: Strings.Wallet.nftDiscoveryCalloutDescription,
+      attributes: [.foregroundColor: UIColor.braveLabel, .font: UIFont.preferredFont(for: .subheadline, weight: .regular)]
+    )
+    
+    attributedString.addAttributes([.underlineStyle: NSUnderlineStyle.single.rawValue], range: (attributedString.string as NSString).range(of: "SimpleHash")) // `SimpleHash` won't get translated
+    attributedString.addAttribute(
+      .link,
+      value: WalletConstants.nftDiscoveryURL.absoluteString,
+      range: (attributedString.string as NSString).range(of: Strings.Wallet.nftDiscoveryCalloutDescriptionLearnMore)
+    )
+    
+    return attributedString
   }
   
   var body: some View {
@@ -155,15 +186,16 @@ struct NFTView: View {
               }
             }
           }
+          VStack(spacing: 16) {
+            Divider()
+            editUserAssetsButton
+          }
+          .padding(.top, 20)
         }
-        VStack(spacing: 16) {
-          Divider()
-          editUserAssetsButton
-        }
-        .padding(.top, 20)
       }
       .padding(24)
     }
+    .background(Color(UIColor.braveGroupedBackground))
     .background(
       NavigationLink(
         isActive: Binding(
@@ -187,7 +219,68 @@ struct NFTView: View {
           EmptyView()
         })
     )
-    .background(Color(UIColor.braveGroupedBackground))
+    .background(
+      WalletPromptView(
+        isPresented: $isShowingNFTDiscoveryAlert,
+        primaryButton: .init(
+          title: Strings.Wallet.nftDiscoveryCalloutEnable,
+          action: { _ in
+            isNFTDiscoveryEnabled = true
+            nftStore.enableNFTDiscovery()
+            Preferences.Wallet.shouldShowNFTDiscoveryPermissionCallout.value = false
+            isShowingNFTDiscoveryAlert = false
+          }
+        ),
+        secondaryButton: .init(
+          title: Strings.Wallet.nftDiscoveryCalloutDisable,
+          action: { _ in
+            isNFTDiscoveryEnabled = false
+            Preferences.Wallet.shouldShowNFTDiscoveryPermissionCallout.value = false
+            // don't need to setDiscovery(false) since the default value is false
+            // and when nftDiscoveryEnabled() is true, this WalletPromptView won't
+            // get prompt
+            isShowingNFTDiscoveryAlert = false
+          }
+        ),
+        showCloseButton: false,
+        content: {
+          VStack(spacing: 10) {
+            Text(Strings.Wallet.nftDiscoveryCalloutTitle)
+              .font(.headline.weight(.bold))
+              .multilineTextAlignment(.center)
+            if let attrString = nftDiscoveryDescriptionText {
+              AdjustableHeightAttributedTextView(
+                attributedString: attrString,
+                openLink: { url in
+                  if let url {
+                    openWalletURL(url)
+                  }
+                }
+              )
+            }
+          }
+        }
+      )
+    )
+    .sheet(isPresented: $isShowingAddCustomNFT) {
+      AddCustomAssetView(
+        networkStore: networkStore,
+        networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
+        keyringStore: keyringStore,
+        userAssetStore: nftStore.userAssetsStore,
+        supportedTokenTypes: [.nft]
+      ) {
+        cryptoStore.updateAssets()
+      }
+    }
+    .onAppear {
+      Task {
+        isNFTDiscoveryEnabled = await nftStore.isNFTDiscoveryEnabled()
+        if !isNFTDiscoveryEnabled && Preferences.Wallet.shouldShowNFTDiscoveryPermissionCallout.value {
+          self.isShowingNFTDiscoveryAlert = true
+        }
+      }
+    }
   }
 }
 
