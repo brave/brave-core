@@ -50,6 +50,10 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#else
+#include "ui/android/view_android.h"
+#include "ui/events/android/gesture_event_android.h"
+#include "ui/events/android/gesture_event_type.h"
 #endif
 
 namespace speedreader {
@@ -621,6 +625,21 @@ void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
            distill_state_ == DistillState::kReaderMode);
   }
 
+#if BUILDFLAG(IS_ANDROID)
+  // Attempt to reset page scale after a successful distillation.
+  // This is done by mocking a pinch gesture on Android,
+  // see chrome/android/java/src/org/chromium/chrome/browser/ZoomController.java
+  // and ui/android/event_forwarder.cc
+  if (distill_state_ == DistillState::kSpeedreaderMode ||
+      distill_state_ == DistillState::kReaderMode) {
+    ui::ViewAndroid* view = web_contents()->GetNativeView();
+    int64_t time_ms = base::TimeTicks::Now().ToUptimeMillis();
+    SendGestureEvent(view, ui::GESTURE_EVENT_TYPE_PINCH_BEGIN, time_ms, 0.f);
+    SendGestureEvent(view, ui::GESTURE_EVENT_TYPE_PINCH_BY, time_ms, -1.f);
+    SendGestureEvent(view, ui::GESTURE_EVENT_TYPE_PINCH_END, time_ms, 0.f);
+  }
+#endif
+
   UpdateButtonIfNeeded();
 }
 
@@ -670,6 +689,24 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
   single_show_content_.swap(html);
   ReloadContents();
 }
+
+#if BUILDFLAG(IS_ANDROID)
+bool SpeedreaderTabHelper::SendGestureEvent(ui::ViewAndroid* view,
+                                            int type,
+                                            int64_t time_ms,
+                                            float scale) {
+  float dip_scale = view->GetDipScale();
+  auto size = view->GetSize();
+  float x = size.width() / 2;
+  float y = size.height() / 2;
+  gfx::PointF root_location =
+      ScalePoint(view->GetLocationOnScreen(x, y), 1.f / dip_scale);
+  return view->OnGestureEvent(ui::GestureEventAndroid(
+      type, gfx::PointF(x / dip_scale, y / dip_scale), root_location, time_ms,
+      scale, 0, 0, 0, 0, /*target_viewport*/ false, /*synthetic_scroll*/ false,
+      /*prevent_boosting*/ false));
+}
+#endif
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper);
 
