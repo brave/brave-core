@@ -52,8 +52,7 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
 
 class LedgerImpl : public mojom::Ledger {
  public:
-  explicit LedgerImpl(
-      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote);
+  explicit LedgerImpl(mojom::LedgerClient* ledger_client);
 
   ~LedgerImpl() override;
 
@@ -440,7 +439,7 @@ class LedgerImpl : public mojom::Ledger {
   template <typename T>
   void WhenReady(T callback);
 
-  mojo::AssociatedRemote<mojom::LedgerClient> ledger_client_;
+  mojom::LedgerClient* ledger_client_;
 
   promotion::Promotion promotion_;
   publisher::Publisher publisher_;
@@ -463,15 +462,13 @@ class LedgerImpl : public mojom::Ledger {
   ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
-inline LedgerImpl& ledger(
-    absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>>
-        ledger_client_remote = absl::nullopt) {
-  thread_local LedgerImpl ledger([&] {
-    CHECK(ledger_client_remote);
-    return *std::exchange(ledger_client_remote, absl::nullopt);
+inline LedgerImpl& ledger(LedgerImpl* init = nullptr) {
+  thread_local LedgerImpl& ledger([&]() -> LedgerImpl& {
+    CHECK(init);
+    return *std::exchange(init, nullptr);
   }());
 
-  CHECK(!ledger_client_remote);
+  CHECK(!init);
 
   return ledger;
 }

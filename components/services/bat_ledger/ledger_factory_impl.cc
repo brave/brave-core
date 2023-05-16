@@ -49,40 +49,44 @@ void LedgerFactoryImpl::CreateLedger(
                      profile, std::move(callback)));
 }
 
-class SelfOwnedLedgerReceiver {
+class SelfOwnedLedger {
  public:
-  static void Create(mojo::PendingAssociatedRemote<mojom::LedgerClient> remote,
-                     mojo::PendingAssociatedReceiver<mojom::Ledger> receiver,
-                     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-                     base::OnceClosure disconnect_handler) {
-    new SelfOwnedLedgerReceiver(std::move(remote), std::move(receiver),
-                                std::move(task_runner),
-                                std::move(disconnect_handler));
+  static void Create(
+      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
+      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
+      scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+      base::OnceClosure disconnect_handler) {
+    new SelfOwnedLedger(std::move(ledger_client_remote),
+                        std::move(ledger_receiver), std::move(task_runner),
+                        std::move(disconnect_handler));
   }
 
-  SelfOwnedLedgerReceiver(const SelfOwnedLedgerReceiver&) = delete;
-  SelfOwnedLedgerReceiver& operator=(const SelfOwnedLedgerReceiver&) = delete;
+  SelfOwnedLedger(const SelfOwnedLedger&) = delete;
+  SelfOwnedLedger& operator=(const SelfOwnedLedger&) = delete;
 
  private:
   void Delete() { delete this; }
 
-  SelfOwnedLedgerReceiver(
-      mojo::PendingAssociatedRemote<mojom::LedgerClient> remote,
-      mojo::PendingAssociatedReceiver<mojom::Ledger> receiver,
+  SelfOwnedLedger(
+      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
+      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
       scoped_refptr<base::SingleThreadTaskRunner> task_runner,
       base::OnceClosure disconnect_handler)
-      : receiver_(&ledger(std::move(remote)),
-                  std::move(receiver),
-                  std::move(task_runner)) {
-    receiver_.set_disconnect_handler(
-        std::move(disconnect_handler)
-            .Then(base::BindOnce(&SelfOwnedLedgerReceiver::Delete,
-                                 base::Unretained(this))));
+      : ledger_client_remote_(std::move(ledger_client_remote), task_runner),
+        ledger_(std::make_unique<LedgerImpl>(ledger_client_remote_.get())),
+        ledger_receiver_(&ledger(ledger_.get()),
+                         std::move(ledger_receiver),
+                         task_runner) {
+    ledger_receiver_.set_disconnect_handler(
+        base::BindOnce(&SelfOwnedLedger::Delete, base::Unretained(this))
+            .Then(std::move(disconnect_handler)));
   }
 
-  ~SelfOwnedLedgerReceiver() = default;
+  ~SelfOwnedLedger() = default;
 
-  mojo::AssociatedReceiver<mojom::Ledger> receiver_;
+  mojo::AssociatedRemote<mojom::LedgerClient> ledger_client_remote_;
+  std::unique_ptr<LedgerImpl> ledger_;
+  mojo::AssociatedReceiver<mojom::Ledger> ledger_receiver_;
 };
 
 void LedgerFactoryImpl::CreateLedgerOnTaskRunner(
@@ -93,7 +97,7 @@ void LedgerFactoryImpl::CreateLedgerOnTaskRunner(
     scoped_refptr<base::SingleThreadTaskRunner> ledger_task_runner) {
   VLOG(0) << "Creating ledger for " << profile << "...";
 
-  SelfOwnedLedgerReceiver::Create(
+  SelfOwnedLedger::Create(
       std::move(ledger_client_remote), std::move(ledger_receiver),
       std::move(ledger_task_runner),
       base::BindPostTask(
