@@ -69,7 +69,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate " + e);
+            Log.e(TAG, "onCreate ", e);
         }
     }
 
