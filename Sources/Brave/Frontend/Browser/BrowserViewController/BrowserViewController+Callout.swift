@@ -47,7 +47,7 @@ extension BrowserViewController {
   // MARK: Conditional Callout Methods
   
   private func presentP3AScreenCallout() {
-    // Check the blockCookieConsentNotices callout can be shown
+    // Check the p3a callout can be shown
     guard shouldShowCallout(calloutType: .p3a) else {
       return
     }
@@ -93,8 +93,8 @@ extension BrowserViewController {
   private func presentBottomBarCallout() {
     guard traitCollection.userInterfaceIdiom == .phone else { return }
     
-    // Check the blockCookieConsentNotices callout can be shown
-    guard shouldShowCallout(calloutType: .blockCookieConsentNotices) else {
+    // Check the bottom bar callout can be shown
+    guard shouldShowCallout(calloutType: .bottomBar) else {
       return
     }
 
@@ -163,7 +163,7 @@ extension BrowserViewController {
   }
   
   private func presentDefaultBrowserScreenCallout() {
-    // Check the blockCookieConsentNotices callout can be shown
+    // Check the defaultbrowser callout can be shown
     guard shouldShowCallout(calloutType: .defaultBrowser) else {
       return
     }
@@ -201,7 +201,7 @@ extension BrowserViewController {
   }
   
   private func presentBraveRewardsScreenCallout() {
-    // Check the blockCookieConsentNotices callout can be shown
+    // Check the rewards callout can be shown
     guard shouldShowCallout(calloutType: .rewards) else {
       return
     }
