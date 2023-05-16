@@ -273,7 +273,10 @@ void GeoClueLocationProvider::OnSetClientProperties(
 }
 
 void GeoClueLocationProvider::ConnectSignal() {
-  CHECK(gclue_client_);
+  // If the client has been shutdown don't try and connect the signal.
+  if (!gclue_client_) {
+    return;
+  }
 
   gclue_client_->ConnectToSignal(
       kClientInterfaceName, "LocationUpdated",

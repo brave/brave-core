@@ -8,9 +8,3 @@ include_rules = [
   "+dbus",
   "+services/device",
 ]
-
-specific_include_rules = {
-  ".*_unittest.cc": [
-    "+gtest"
-  ]
-}

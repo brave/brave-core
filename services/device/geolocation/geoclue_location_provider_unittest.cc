@@ -12,7 +12,6 @@
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "content/public/test/browser_task_environment.h"
-#include "gtest/gtest.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/device/public/mojom/geoposition.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
