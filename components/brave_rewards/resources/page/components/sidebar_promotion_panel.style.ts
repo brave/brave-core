@@ -46,6 +46,8 @@ export const promotion = styled.div`
 
   &.promotion-gemini {
     background-image: url(/${getBackgroundImage('gemini')});
+    background-position: 4% center;
+    background-size: auto;
   }
 
   &.promotion-tap-network {

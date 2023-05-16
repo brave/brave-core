@@ -35,7 +35,8 @@ function getPromotionMessages (
     case 'gemini':
       return {
         title: 'geminiPromoTitle',
-        text1: 'geminiPromoInfo'
+        text1: 'geminiPromoInfo1',
+        text2: 'geminiPromoInfo2',
       }
     case 'tap-network':
       return {
