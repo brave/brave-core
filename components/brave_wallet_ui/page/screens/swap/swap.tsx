@@ -18,7 +18,6 @@ import {
   useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
-import { hasEIP1559Support } from '../../../utils/network-utils'
 
 // Hooks
 import { useLib } from '../../../common/hooks'
@@ -118,9 +117,8 @@ export const Swap = () => {
       getERC20ApproveData: makeGetERC20ApproveData(),
       sendTransaction: makeETHSendTransaction(
         sendEthTransaction,
-        !!selectedNetwork &&
-          !!selectedAccount &&
-          hasEIP1559Support(selectedAccount.accountType, selectedNetwork)
+        selectedNetwork,
+        selectedAccount
       )
     }
   }, [selectedAccount, selectedNetwork])
@@ -143,7 +141,7 @@ export const Swap = () => {
           network={makeNetworkInfo(selectedNetwork)}
           account={makeWalletAccount(selectedAccount)}
           walletAccounts={walletAccounts}
-          switchAccount={makeSwitchAccount()}
+          switchAccount={makeSwitchAccount(accounts)}
           switchNetwork={switchNetworkFunc}
           getBalance={getBalanceForChainId}
           getTokenBalance={getTokenBalanceForChainId}

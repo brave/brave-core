@@ -71,7 +71,6 @@ export const {
   setAllTokensList,
   setAssetAutoDiscoveryCompleted,
   setCoinMarkets,
-  setDefaultAccounts,
   setGasEstimates,
   setHasFeeEstimatesError,
   setMetaMaskInstalled,

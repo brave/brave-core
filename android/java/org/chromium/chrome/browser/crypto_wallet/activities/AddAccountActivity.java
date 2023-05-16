@@ -248,10 +248,10 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         String accountName = mAddAccountText.getText().toString();
 
         if (mIsImported) {
-            mKeyringService.setKeyringImportedAccountName(
+            mKeyringService.setKeyringImportedAccountName(mCryptoAccountTypeInfo.getCoinType(),
                     keyring, mAddress, accountName, result -> { handleUpdateAccount(result); });
         } else {
-            mKeyringService.setKeyringDerivedAccountName(
+            mKeyringService.setKeyringDerivedAccountName(mCryptoAccountTypeInfo.getCoinType(),
                     keyring, mAddress, accountName, result -> { handleUpdateAccount(result); });
         }
     }

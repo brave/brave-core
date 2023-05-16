@@ -123,3 +123,18 @@ export function isHardwareAccount(
 ) {
   return !!account.hardware?.deviceId
 }
+
+export const findAccountInList = (
+  account: WalletAccountType | undefined,
+  accounts: WalletAccountType[]
+) => {
+  if (!account)
+    return account;
+
+  return (
+    accounts.find(
+      (acc) =>
+        acc.address.toLowerCase() === account.address.toLowerCase()
+    ) ?? account
+  )
+}

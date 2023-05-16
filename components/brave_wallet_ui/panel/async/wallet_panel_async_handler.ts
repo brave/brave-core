@@ -69,9 +69,16 @@ function getWalletState (store: Store): WalletState {
 }
 
 async function refreshWalletInfo (store: Store) {
-  const walletHandler = getWalletPanelApiProxy().walletHandler
-  const result = (await walletHandler.getWalletInfo()).walletInfo
-  store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
+  const proxy = getWalletPanelApiProxy()
+  const { walletInfo } = await proxy.walletHandler.getWalletInfo()
+  const { allAccounts } = await proxy.keyringService.getAllAccounts()
+  store.dispatch(
+    WalletActions.initialized({
+      ...walletInfo,
+      accountInfos: allAccounts.accounts,
+      selectedAccount: ''
+    })
+  )
 }
 
 async function hasPendingUnlockRequest () {

@@ -18,8 +18,16 @@ export { TimeDelta }
 interface TokenBalanceRegistry {
   [contractAddress: string]: string
 }
-const BraveKeyringsTypes = [BraveWallet.DEFAULT_KEYRING_ID, BraveWallet.FILECOIN_KEYRING_ID, BraveWallet.SOLANA_KEYRING_ID] as const
-export type BraveKeyrings = typeof BraveKeyringsTypes[number]
+
+const BraveKeyringsTypes = [
+  BraveWallet.DEFAULT_KEYRING_ID,
+  BraveWallet.FILECOIN_KEYRING_ID,
+  BraveWallet.FILECOIN_TESTNET_KEYRING_ID,
+  BraveWallet.SOLANA_KEYRING_ID,
+  BraveWallet.BITCOIN_KEYRING84_ID,
+  BraveWallet.BITCOIN_KEYRING84_TEST_ID
+] as const
+export type BraveKeyrings = (typeof BraveKeyringsTypes)[number]
 
 export type WalletAccountTypeName =
   | 'Primary'
@@ -27,16 +35,13 @@ export type WalletAccountTypeName =
   | 'Ledger'
   | 'Trezor'
 
-export interface WalletAccountType {
+export interface WalletAccountType extends BraveWallet.AccountInfo {
   id: string
-  name: string
-  address: string
+  keyringId: BraveKeyrings
   tokenBalanceRegistry: TokenBalanceRegistry
   nativeBalanceRegistry: TokenBalanceRegistry
   accountType: WalletAccountTypeName
   deviceId?: string
-  coin: BraveWallet.CoinType
-  keyringId: string
 }
 
 export interface UserAccountType {
@@ -270,7 +275,6 @@ export interface WalletState {
   selectedNetworkFilter: NetworkFilterType
   selectedAssetFilter: string
   selectedAccountFilter: string
-  defaultAccounts: BraveWallet.AccountInfo[]
   onRampCurrencies: BraveWallet.OnRampCurrency[]
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
   passwordAttempts: number
@@ -349,21 +353,8 @@ export interface WalletPanelState {
   ui: UIState
 }
 
-export interface WalletInfoBase {
-  isWalletCreated: boolean
-  isWalletLocked: boolean
-  favoriteApps: BraveWallet.AppItem[]
-  isWalletBackedUp: boolean
+export interface WalletInfo extends BraveWallet.WalletInfo {
   accountInfos: BraveWallet.AccountInfo[]
-  isFilecoinEnabled: boolean
-  isSolanaEnabled: boolean
-  isBitcoinEnabled: boolean
-  isNftPinningFeatureEnabled: boolean
-  isPanelV2FeatureEnabled: boolean
-}
-
-export interface WalletInfo extends WalletInfoBase {
-  visibleTokens: string[]
   selectedAccount: string
 }
 
@@ -429,7 +420,8 @@ export interface PortfolioTokenHistoryAndInfo {
 }
 
 interface BaseTransactionParams {
-  from: string
+  network: BraveWallet.NetworkInfo
+  fromAccount: WalletAccountType
   to: string
   value: string
   coin: BraveWallet.CoinType
@@ -473,7 +465,6 @@ export interface SolanaSerializedTransactionParams {
 
 export interface SendEthTransactionParams extends BaseEthTransactionParams {
   data?: number[]
-  hasEIP1559Support: boolean
 }
 
 export type SendTransactionParams = SendEthTransactionParams | SendFilTransactionParams | SendSolTransactionParams
@@ -488,10 +479,16 @@ export interface ERC721TransferFromParams extends BaseEthTransactionParams {
 }
 
 export interface ApproveERC20Params {
-  from: string
+  network: BraveWallet.NetworkInfo
+  fromAccount: WalletAccountType
   contractAddress: string
   spenderAddress: string
   allowance: string
+}
+
+export interface RefreshGasEstimatesParams {
+  network?: BraveWallet.NetworkInfo
+  txInfo: SerializableTransactionInfo
 }
 
 /**
@@ -723,6 +720,8 @@ export type TransactionPanelPayload = {
 }
 
 export type UpdateAccountNamePayloadType = {
+  coin: BraveWallet.CoinType
+  keyringId: BraveKeyrings
   address: string
   name: string
   isDerived: boolean

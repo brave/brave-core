@@ -65,6 +65,7 @@ export type TxDataPresence = {
 export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T): BraveWallet.CoinType => {
   if (txDataUnion.filTxData) { return BraveWallet.CoinType.FIL }
   if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
+  // TODO(apaymyshev): bitcoin support
   return BraveWallet.CoinType.ETH
 }
 

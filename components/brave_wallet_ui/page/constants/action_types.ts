@@ -9,7 +9,8 @@ import {
   GetPriceHistoryReturnObjectInfo,
   AssetPriceWithContractAndChainId,
   BitcoinKeyring,
-  BitcoinNetwork
+  BitcoinNetwork,
+  BraveKeyrings
 } from '../../constants/types'
 
 export type CreateWalletPayloadType = {
@@ -51,14 +52,16 @@ export type ImportAccountFromJsonPayloadType = {
 }
 
 export type RemoveImportedAccountPayloadType = {
-  address: string
   coin: BraveWallet.CoinType
+  keyringId: BraveKeyrings
+  address: string
   password: string
 }
 
 export type RemoveHardwareAccountPayloadType = {
-  address: string
   coin: BraveWallet.CoinType
+  keyringId: BraveKeyrings
+  address: string
 }
 
 export type RestoreWalletPayloadType = {

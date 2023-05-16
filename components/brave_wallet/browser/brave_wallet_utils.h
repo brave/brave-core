@@ -210,6 +210,8 @@ absl::optional<std::string> CoinTypeToKeyringId(
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
+std::vector<std::string> GetSupportedKeyrings();
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

@@ -316,7 +316,7 @@ public class DappsModel implements KeyringServiceObserver {
     public void accountsChanged() {}
 
     @Override
-    public void accountsAdded(int coin, String[] addresses) {}
+    public void accountsAdded(AccountInfo[] addedAccounts) {}
 
     @Override
     public void autoLockMinutesChanged() {}

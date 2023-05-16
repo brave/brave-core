@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { WalletAccountType } from '../constants/types'
+import { BraveWallet, WalletAccountType } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
 export const AllAccountsOption: WalletAccountType = {
@@ -14,5 +14,7 @@ export const AllAccountsOption: WalletAccountType = {
   name: getLocale('braveWalletAccountFilterAllAccounts'),
   nativeBalanceRegistry: {},
   tokenBalanceRegistry: {},
-  keyringId: ''
+  keyringId: BraveWallet.DEFAULT_KEYRING_ID,
+  isImported: false,
+  hardware: undefined
 }

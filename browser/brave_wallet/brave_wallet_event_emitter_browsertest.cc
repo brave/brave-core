@@ -161,7 +161,7 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
   void SetSelectedAccount(const std::string& address) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        address, brave_wallet::mojom::CoinType::ETH,
+        mojom::CoinType::ETH, brave_wallet::mojom::kDefaultKeyringId, address,
         base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
           run_loop.Quit();

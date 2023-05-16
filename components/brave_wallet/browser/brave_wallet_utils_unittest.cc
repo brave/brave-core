@@ -15,12 +15,14 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/gtest_util.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -1391,6 +1393,44 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
   for (auto coin :
        {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
     getChainIdByNetworkIdCheck(coin);
+  }
+}
+
+TEST(BraveWalletUtilsUnitTest, GetSupportedKeyrings) {
+  base::test::ScopedFeatureList disabled_feature_list;
+  disabled_feature_list.InitWithFeatures(
+      {}, {features::kBraveWalletSolanaFeature,
+           features::kBraveWalletFilecoinFeature});
+
+  for (auto enable_solana : {true, false}) {
+    for (auto enable_filecoin : {true, false}) {
+      std::vector<base::test::FeatureRef> enabled_features;
+      if (enable_solana) {
+        enabled_features.emplace_back(features::kBraveWalletSolanaFeature);
+      }
+      if (enable_filecoin) {
+        enabled_features.emplace_back(features::kBraveWalletFilecoinFeature);
+      }
+
+      base::test::ScopedFeatureList feature_list;
+      feature_list.InitWithFeatures(enabled_features, {});
+
+      auto keyrings = GetSupportedKeyrings();
+      size_t last_pos = 0;
+
+      EXPECT_EQ(keyrings[last_pos++], mojom::kDefaultKeyringId);
+
+      if (enable_filecoin) {
+        EXPECT_EQ(keyrings[last_pos++], mojom::kFilecoinKeyringId);
+        EXPECT_EQ(keyrings[last_pos++], mojom::kFilecoinTestnetKeyringId);
+      }
+
+      if (enable_solana) {
+        EXPECT_EQ(keyrings[last_pos++], mojom::kSolanaKeyringId);
+      }
+
+      EXPECT_EQ(last_pos, keyrings.size());
+    }
   }
 }
 

@@ -36,18 +36,20 @@ public class AccountDetailsWithQrActivity extends BraveWalletBaseActivity {
 
     private ImageView qrCodeImage;
 
+    private int mCoinType;
+    private String mKeyringId;
     private String mAddress;
     private String mName;
-    private int mCoinType;
 
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_details_with_qr);
 
         if (getIntent() != null) {
+            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
+            mKeyringId = getIntent().getStringExtra(Utils.KEYRING_ID);
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mName = getIntent().getStringExtra(Utils.NAME);
-            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -76,8 +78,9 @@ public class AccountDetailsWithQrActivity extends BraveWalletBaseActivity {
             public void onClick(View v) {
                 Intent accountPrivateKeyActivityIntent = new Intent(
                         AccountDetailsWithQrActivity.this, AccountPrivateKeyActivity.class);
-                accountPrivateKeyActivityIntent.putExtra(Utils.ADDRESS, mAddress);
                 accountPrivateKeyActivityIntent.putExtra(Utils.COIN_TYPE, mCoinType);
+                accountPrivateKeyActivityIntent.putExtra(Utils.KEYRING_ID, mKeyringId);
+                accountPrivateKeyActivityIntent.putExtra(Utils.ADDRESS, mAddress);
                 startActivity(accountPrivateKeyActivityIntent);
             }
         });

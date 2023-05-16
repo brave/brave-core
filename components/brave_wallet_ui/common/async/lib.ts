@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { assert } from 'chrome://resources/js/assert_ts.js'
-
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -13,7 +11,6 @@ import {
   BraveWallet,
   BalancePayload,
   WalletAccountType,
-  BraveKeyrings,
   GetBlockchainTokenInfoReturnInfo,
   SupportedCoinTypes,
   SupportedTestNetworks,
@@ -29,7 +26,8 @@ import * as WalletActions from '../actions/wallet_actions'
 // Utils
 import {
   getFilecoinKeyringIdFromNetwork,
-  getNetworksByCoinType
+  getNetworksByCoinType,
+  hasEIP1559Support
 } from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
@@ -210,9 +208,9 @@ export async function getBlockchainTokenInfo (contractAddress: string): Promise<
 export async function findHardwareAccountInfo (
   address: string
 ): Promise<BraveWallet.AccountInfo | false> {
-  const apiProxy = getAPIProxy()
-  const result = (await apiProxy.walletHandler.getWalletInfo()).walletInfo
-  for (const account of result.accountInfos) {
+  const { keyringService } = getAPIProxy()
+  const { accounts }= (await keyringService.getAllAccounts()).allAccounts
+  for (const account of accounts) {
     if (!account.hardware) {
       continue
     }
@@ -415,28 +413,6 @@ export const getAllSellAssets = async (): Promise<{
   }
 
   return results
-}
-
-export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {
-  if (coin === BraveWallet.CoinType.FIL) {
-    return BraveWallet.FILECOIN_KEYRING_ID
-  }
-  if (coin === BraveWallet.CoinType.SOL) {
-    return BraveWallet.SOLANA_KEYRING_ID
-  }
-  assert(coin === BraveWallet.CoinType.ETH, '')
-  return BraveWallet.DEFAULT_KEYRING_ID
-}
-
-export async function getKeyringIdFromAddress (address: string): Promise<string> {
-  const apiProxy = getAPIProxy()
-  const result = (await apiProxy.walletHandler.getWalletInfo()).walletInfo
-  for (const account of result.accountInfos) {
-    if (account.address === address) {
-      return getKeyringIdFromCoin(account.coin)
-    }
-  }
-  return getKeyringIdFromCoin(BraveWallet.CoinType.ETH)
 }
 
 export async function getIsSwapSupported (network: BraveWallet.NetworkInfo): Promise<boolean> {
@@ -866,25 +842,14 @@ export function refreshKeyringInfo () {
     const apiProxy = getAPIProxy()
     const { keyringService, walletHandler, jsonRpcService } = apiProxy
     const walletInfoBase = (await walletHandler.getWalletInfo()).walletInfo
-    const walletInfo = { ...walletInfoBase, visibleTokens: [], selectedAccount: '' }
+    const { allAccounts } = (await apiProxy.keyringService.getAllAccounts())
+    const walletInfo = { ...walletInfoBase, accountInfos: allAccounts.accounts, selectedAccount: '' }
 
     // Get/Set selectedAccount
     if (!walletInfo.isWalletCreated) {
       dispatch(WalletActions.initialized(walletInfo))
       return
     }
-
-    // Get default accounts for each CoinType
-    const defaultAccounts = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-      const { chainId } = await jsonRpcService.getDefaultChainId(coin)
-      const defaultAccount = coin === BraveWallet.CoinType.FIL
-        ? await keyringService.getFilecoinSelectedAccount(chainId)
-        : await keyringService.getSelectedAccount(coin)
-      const defaultAccountAddress = defaultAccount.address
-      return walletInfo.accountInfos.find((account) => account.address.toLowerCase() === defaultAccountAddress?.toLowerCase()) ?? {} as BraveWallet.AccountInfo
-    }))
-    const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
-    dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
 
     const { coin: selectedCoin } =
       await apiProxy.braveWalletService.getSelectedCoin()
@@ -910,7 +875,7 @@ export function refreshKeyringInfo () {
 
     // If selectedAccount is null will setSelectedAccount to fallback address
     if (!selectedAddress) {
-      await keyringService.setSelectedAccount(fallbackAccount.address, fallbackAccount.coin)
+      await keyringService.setSelectedAccount(fallbackAccount.coin, fallbackAccount.keyringId, fallbackAccount.address)
       walletInfo.selectedAccount = fallbackAccount.address
     } else {
       // If a user has already created an wallet but then chooses to restore
@@ -920,7 +885,7 @@ export function refreshKeyringInfo () {
       // payload, if not it will setSelectedAccount to the fallback address
       if (!walletInfo.accountInfos.find((account) => account.address.toLowerCase() === selectedAddress?.toLowerCase())) {
         walletInfo.selectedAccount = fallbackAccount.address
-        await keyringService.setSelectedAccount(fallbackAccount.address, fallbackAccount.coin)
+        await keyringService.setSelectedAccount(fallbackAccount.coin, fallbackAccount.keyringId, fallbackAccount.address)
       } else {
         walletInfo.selectedAccount = selectedAddress
       }
@@ -978,7 +943,7 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
 
     // Check if network and keyring support EIP-1559.
     default:
-      isEIP1559 = payload.hasEIP1559Support
+      isEIP1559 = hasEIP1559Support(payload.fromAccount.accountType, payload.network)
   }
 
   const { chainId } =
@@ -1011,11 +976,11 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
     }
     // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
     const txDataUnion: BraveWallet.TxDataUnion = { ethTxData1559: txData1559 }
-    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.from, null, null)
+    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.fromAccount.address, null, null)
   } else {
     // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
     const txDataUnion: BraveWallet.TxDataUnion = { ethTxData: txData }
-    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.from, null, null)
+    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.fromAccount.address, null, null)
   }
   return addResult
 }
@@ -1029,7 +994,7 @@ export async function sendFilTransaction (payload: SendFilTransactionParams) {
     gasLimit: payload.gasLimit || '',
     maxFee: payload.maxFee || '0',
     to: payload.to,
-    from: payload.from,
+    from: payload.fromAccount.address,
     value: payload.value
   }
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
@@ -1038,7 +1003,7 @@ export async function sendFilTransaction (payload: SendFilTransactionParams) {
 
 export async function sendSolTransaction (payload: SendSolTransactionParams) {
   const { solanaTxManagerProxy, txService } = getAPIProxy()
-  const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(payload.from, payload.to, BigInt(payload.value))
+  const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(payload.fromAccount.address, payload.to, BigInt(payload.value))
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
   return await txService.addUnapprovedTransaction({ solanaTxData: value.txData }, payload.from, null, null)
 }

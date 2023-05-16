@@ -156,16 +156,16 @@ public class KeyringModel implements KeyringServiceObserver {
         mAccountsPermissionsHelper = new AccountsPermissionsHelper(
                 mBraveWalletService, keyringInfo.accountInfos, Utils.getCurrentMojomOrigin());
         mAccountsPermissionsHelper.checkAccounts(() -> {
-            String selectedAccountAddress = null;
+            AccountInfo selectedAccount = null;
             HashSet<AccountInfo> permissionAccounts =
                     mAccountsPermissionsHelper.getAccountsWithPermissions();
             if (!permissionAccounts.isEmpty()) {
-                selectedAccountAddress = permissionAccounts.iterator().next().address;
+                selectedAccount = permissionAccounts.iterator().next();
             } else if (keyringInfo.accountInfos.length > 0) {
-                selectedAccountAddress = keyringInfo.accountInfos[0].address;
+                selectedAccount = keyringInfo.accountInfos[0];
             }
-            if (selectedAccountAddress != null) {
-                setSelectedAccount(selectedAccountAddress, mSharedData.getCoinType());
+            if (selectedAccount != null) {
+                setSelectedAccount(selectedAccount);
             }
         });
     }
@@ -184,7 +184,7 @@ public class KeyringModel implements KeyringServiceObserver {
         } else if (accountInfoList.size() > 0) {
             AccountInfo accountInfo = accountInfoList.get(0);
             _mSelectedAccount.postValue(accountInfo);
-            setSelectedAccount(accountInfo.address, accountInfo.coin);
+            setSelectedAccount(accountInfo);
         }
     }
 
@@ -214,19 +214,21 @@ public class KeyringModel implements KeyringServiceObserver {
         return mSelectedAccount;
     }
 
-    public void setSelectedAccount(String accountAddress, int coin) {
+    public void setSelectedAccount(AccountInfo accountInfoToSelect) {
         synchronized (mLock) {
-            if (mKeyringService == null) {
+            if (mKeyringService == null || accountInfoToSelect == null) {
                 return;
             }
             AccountInfo selectedAccount = _mSelectedAccount.getValue();
-            if (selectedAccount != null && selectedAccount.address.equals(accountAddress)
-                    && selectedAccount.coin == coin)
+            if (selectedAccount != null
+                    && selectedAccount.address.equals(accountInfoToSelect.address)
+                    && selectedAccount.keyringId.equals(accountInfoToSelect.keyringId)) {
                 return;
-            mKeyringService.setSelectedAccount(accountAddress, coin, isAccountSelected -> {
-                mBraveWalletService.setSelectedCoin(coin);
-                mCryptoSharedActions.updateCoinType();
-            });
+            }
+
+            mKeyringService.setSelectedAccount(accountInfoToSelect.coin,
+                    accountInfoToSelect.keyringId, accountInfoToSelect.address,
+                    isAccountSelected -> { mCryptoSharedActions.updateCoinType(); });
         }
     }
 
@@ -371,7 +373,7 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void accountsAdded(int coin, String[] addresses) {}
+    public void accountsAdded(AccountInfo[] addedAccounts) {}
 
     @Override
     public void autoLockMinutesChanged() {}

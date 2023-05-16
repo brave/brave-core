@@ -70,7 +70,7 @@ public class AccountSelectorActivity
         for (AccountInfo accountInfo : mAccountInfos) {
             if (walletListItemModel.getTitle().equals(accountInfo.name)
                     && walletListItemModel.getSubTitle().equals(accountInfo.address)) {
-                mKeyringModel.setSelectedAccount(accountInfo.address, accountInfo.coin);
+                mKeyringModel.setSelectedAccount(accountInfo);
                 finish();
             }
         }
