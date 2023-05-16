@@ -516,6 +516,7 @@
 -PersistentBackground/ExtensionApiTabTestWithContextType.OnRemoved/0
 -PersistentBackground/ExtensionApiTabTestWithContextType.OnUpdated/0
 -PersistentBackground/ExtensionApiTabTestWithContextType.RemoveMultiple/0
+-ServiceWorker/ExtensionApiTabTestWithContextType.Connect/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.Move/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.NoPermissions/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.OnRemoved/0
