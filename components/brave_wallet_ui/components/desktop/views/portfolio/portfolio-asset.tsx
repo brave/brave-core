@@ -25,25 +25,12 @@ import {
   sortTransactionByDate
 } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
-import {
-  CommandMessage,
-  NftUiCommand,
-  sendMessageToNftUiFrame,
-  ToggleNftModal,
-  UpdateLoadingMessage,
-  UpdateNFtMetadataErrorMessage,
-  UpdateNFtMetadataMessage,
-  UpdateSelectedAssetMessage,
-  UpdateTokenNetworkMessage,
-  braveNftDisplayOrigin,
-  UpdateNftPinningStatus
-} from '../../../../nft/nft-ui-messages'
+
 import {
   auroraSupportedContractAddresses,
   getAssetIdKey
 } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
-import { stripERC20TokenImageURL } from '../../../../utils/string-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 
 // actions
@@ -57,13 +44,13 @@ import { PageSelectors } from '../../../../page/selectors'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
 
 // Components
-import { BackButton } from '../../../shared'
 import { LineChart } from '../../'
 import {
   LineChartControls
 } from '../../line-chart/line-chart-controls/line-chart-controls'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
 import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
+import { NftScreen } from '../../../../nft/components/nft-details/nft-screen'
 
 // Hooks
 import { usePricing, useMultiChainBuyAssets } from '../../../../common/hooks'
@@ -73,7 +60,6 @@ import {
   useUnsafePageSelector,
   useUnsafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
-import { useNftPin } from '../../../../common/hooks/nft-pin'
 import {
   useGetNetworkQuery,
   useGetSelectedChainQuery
@@ -81,11 +67,8 @@ import {
 
 // Styled Components
 import {
-  BalanceRow,
   BridgeToAuroraButton,
-  NftMultimedia,
   StyledWrapper,
-  TopRow,
   ButtonRow
 } from './style'
 import { Row, Column } from '../../../shared/style'
@@ -94,19 +77,13 @@ import { CoinStats } from './components/coin-stats/coin-stats'
 import { TokenDetailsModal } from './components/token-details-modal/token-details-modal'
 import { WalletActions } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
-import { NftModal } from './components/nft-modal/nft-modal'
-import { IpfsNodeStatus } from './components/ipfs-node-status/ipfs-node-status'
-import {
-  areSupportedForPinning,
-  extractIpfsUrl
-} from '../../../../common/async/lib'
-import { NftDetails } from '../../../../nft/components/nft-details/nft-details'
 import {
   WalletPageWrapper
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import {
   AssetDetailsHeader
 } from '../../card-headers/asset-details-header'
+import NftAssetHeader from '../../card-headers/nft-asset-header'
 
 const rainbowbridgeLink = 'https://rainbowbridge.app'
 const bridgeToAuroraDontShowAgainKey = 'bridgeToAuroraDontShowAgain'
@@ -122,13 +99,11 @@ export const PortfolioAsset = (props: Props) => {
   const [dontShowAuroraWarning, setDontShowAuroraWarning] = React.useState<boolean>(false)
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
-  const [showNftModal, setshowNftModal] = React.useState<boolean>(false)
 
   // routing
   const history = useHistory()
   const { chainIdOrMarketSymbol, contractOrSymbol, tokenId } = useParams<{ chainIdOrMarketSymbol?: string, contractOrSymbol?: string, tokenId?: string }>()
-  const nftDetailsRef = React.useRef<HTMLIFrameElement>(null)
-  const [nftIframeLoaded, setNftIframeLoaded] = React.useState(false)
+
   // redux
   const dispatch = useDispatch()
 
@@ -147,12 +122,7 @@ export const PortfolioAsset = (props: Props) => {
   const selectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
   const selectedAssetPriceHistory = useUnsafePageSelector(PageSelectors.selectedAssetPriceHistory)
   const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
-  const isFetchingNFTMetadata = useSafePageSelector(PageSelectors.isFetchingNFTMetadata)
-  const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
-  const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
-  const nftPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
-  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
 
   // queries
   const { data: assetsNetwork } = useGetNetworkQuery(selectedAsset, {
@@ -165,7 +135,6 @@ export const PortfolioAsset = (props: Props) => {
 
   // custom hooks
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
-  const { getNftPinningStatus } = useNftPin()
 
   // memos
   // This will scrape all the user's accounts and combine the asset balances for a single asset
@@ -401,32 +370,6 @@ export const PortfolioAsset = (props: Props) => {
     return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
   }, [fullTokenList, selectedAsset?.symbol])
 
-  const [ipfsImageUrl, setIpfsImageUrl] = React.useState<string>()
-  const [nftPinnable, setNftPinnable] = React.useState<boolean>()
-
-  React.useEffect(() => {
-    let ignore = false
-    if (nftMetadata?.imageURL) {
-      areSupportedForPinning([nftMetadata?.imageURL]).then(
-        (v) => { if (!ignore) setNftPinnable(v) })
-      extractIpfsUrl(nftMetadata?.imageURL).then(
-        (v) => { if (!ignore) setIpfsImageUrl(v) })
-    }
-    return () => {
-      ignore = true
-    }
-  }, [nftMetadata])
-
-  const currentNftPinningStatus = React.useMemo(() => {
-    if (!isAutoPinEnabled) {
-      return undefined
-    }
-    if (isNftAsset && selectedAsset && nftPinnable) {
-      return getNftPinningStatus(selectedAsset)
-    }
-    return undefined
-  }, [nftPinnable, isNftAsset, selectedAsset, nftPinningStatus, isAutoPinEnabled])
-
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
     history.push(WalletRoutes.AddAccountModal)
@@ -450,10 +393,6 @@ export const PortfolioAsset = (props: Props) => {
     userAssetList,
     selectedTimeline
   ])
-
-  const onNftDetailsLoad = React.useCallback(() => {
-    setNftIframeLoaded(true)
-  }, [])
 
   const onOpenRainbowAppClick = React.useCallback(() => {
     chrome.tabs.create({ url: rainbowbridgeLink }, () => {
@@ -498,21 +437,6 @@ export const PortfolioAsset = (props: Props) => {
     history.push(WalletRoutes.PortfolioAssets)
   }, [selectedAsset, showTokenDetailsModal])
 
-  const onCloseNftModal = React.useCallback(() => {
-    setshowNftModal(false)
-  }, [])
-
-  const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
-    // validate message origin
-    if (event.origin !== braveNftDisplayOrigin) return
-
-    const message = event.data
-    if (message.command === NftUiCommand.ToggleNftModal) {
-      const { payload } = message as ToggleNftModal
-      setshowNftModal(payload)
-    }
-  }, [])
-
   const onSelectBuy = React.useCallback(() => {
     history.push(`${WalletRoutes.FundWalletPageStart}/${selectedAsset?.symbol}`)
   }, [selectedAsset?.symbol])
@@ -520,6 +444,8 @@ export const PortfolioAsset = (props: Props) => {
   const onSelectDeposit = React.useCallback(() => {
     history.push(`${WalletRoutes.DepositFundsPageStart}/${selectedAsset?.symbol}`)
   }, [selectedAsset?.symbol])
+
+  const onSend = React.useCallback(() => history.push(WalletRoutes.Send), [])
 
   // effects
   React.useEffect(() => {
@@ -534,105 +460,8 @@ export const PortfolioAsset = (props: Props) => {
   }, [selectedAssetFromParams])
 
   React.useEffect(() => {
-    if (!nftIframeLoaded) return
-
-    if (nftDetailsRef?.current) {
-      const command: UpdateLoadingMessage = {
-        command: NftUiCommand.UpdateLoading,
-        payload: isFetchingNFTMetadata
-      }
-      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-  }, [nftIframeLoaded, nftDetailsRef, isFetchingNFTMetadata])
-
-  React.useEffect(() => {
-    if (!nftIframeLoaded) return
-
-    if (selectedAsset && nftDetailsRef?.current) {
-      const command: UpdateSelectedAssetMessage = {
-        command: NftUiCommand.UpdateSelectedAsset,
-        payload: selectedAsset
-      }
-      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-
-    if (selectedAsset && selectedAssetsNetwork && nftDetailsRef?.current) {
-      const command: UpdateTokenNetworkMessage = {
-        command: NftUiCommand.UpdateTokenNetwork,
-        payload: selectedAssetsNetwork
-      }
-      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-
-    if (nftMetadata && nftDetailsRef?.current) {
-      const command: UpdateNFtMetadataMessage = {
-        command: NftUiCommand.UpdateNFTMetadata,
-        payload: {
-          displayMode: 'details',
-          nftMetadata
-        }
-      }
-      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-
-    if (nftMetadataError && nftDetailsRef?.current) {
-      const command: UpdateNFtMetadataErrorMessage = {
-        command: NftUiCommand.UpdateNFTMetadataError,
-        payload: {
-          displayMode: 'details',
-          error: nftMetadataError
-        }
-      }
-      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-
-    if (nftDetailsRef?.current) {
-      const command: UpdateNftPinningStatus = {
-        command: NftUiCommand.UpdateNftPinningStatus,
-        payload: {
-          status: currentNftPinningStatus,
-          url: ipfsImageUrl
-        }
-      }
-      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-
-    // check if selectedAsset has an icon
-    if (
-      selectedAsset &&
-      nftMetadata?.imageURL &&
-      stripERC20TokenImageURL(selectedAsset.logo) === ''
-    ) {
-      // update asset logo
-      const updated = { ...selectedAsset, logo: nftMetadata?.imageURL || '' }
-      dispatch(
-        WalletActions.updateUserAsset({
-          existing: selectedAsset,
-          updated
-        })
-      )
-    }
-  }, [
-    currentNftPinningStatus,
-    ipfsImageUrl,
-    nftDetailsRef,
-    nftIframeLoaded,
-    nftMetadata,
-    nftMetadataError,
-    nftPinningStatus,
-    selectedAsset,
-    selectedAssetsNetwork
-  ])
-
-  React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
   }, [])
-
-  // Receive postMessage from chrome-untrusted://nft-display
-  React.useEffect(() => {
-    window.addEventListener('message', onMessageEventListener)
-    return () => window.removeEventListener('message', onMessageEventListener)
-  }, [onMessageEventListener])
 
   React.useEffect(() => {
     if (allAssetOptions.length === 0) {
@@ -668,23 +497,15 @@ export const PortfolioAsset = (props: Props) => {
               () => setShowHideTokenModal(true)
             }
           />
-          : undefined
+          : <NftAssetHeader
+            onBack={goBack}  
+            assetName={selectedAsset?.name}
+            tokenId={selectedAsset?.tokenId}
+            onSend={onSend}
+          />
       }
     >
       <StyledWrapper>
-        <TopRow>
-          {isNftAsset &&
-            <BalanceRow gap='16px'>
-              <BackButton onSubmit={goBack} />
-              {
-                currentNftPinningStatus?.code ===
-                BraveWallet.TokenPinStatusCode.STATUS_PINNED &&
-                <IpfsNodeStatus />
-              }
-            </BalanceRow>
-          }
-        </TopRow>
-
         {!isNftAsset &&
           <Row
             margin='20px 0px 8px 0px'
@@ -787,37 +608,14 @@ export const PortfolioAsset = (props: Props) => {
           />
         }
 
-        {!nftMetadataError &&
-          <NftMultimedia
-            onLoad={onNftDetailsLoad}
-            visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
-            ref={nftDetailsRef}
-            sandbox="allow-scripts allow-popups allow-same-origin"
-            allow="clipboard-write"
-            src='chrome-untrusted://nft-display'
-            allowFullScreen
-          />
-        }
+         {isNftAsset && selectedAsset &&
+            <NftScreen
+              selectedAsset={selectedAsset}
+              tokenNetwork={selectedAssetsNetwork}
+            />
+          }
 
-        {isNftAsset && selectedAsset &&
-          <NftDetails
-            selectedAsset={selectedAsset}
-            nftMetadata={nftMetadata}
-            nftMetadataError={nftMetadataError}
-            tokenNetwork={selectedAssetsNetwork}
-            nftPinningStatus={currentNftPinningStatus}
-            imageIpfsUrl={ipfsImageUrl}
-          />
-        }
-
-        {showNftModal && nftMetadata?.imageURL &&
-          <NftModal
-            nftImageUrl={nftMetadata.imageURL}
-            onClose={onCloseNftModal}
-          />
-        }
-
-        {!isShowingMarketData &&
+        {!isShowingMarketData && !isNftAsset &&
           <Column
             padding='0px 20px 20px 20px'
             fullWidth={true}

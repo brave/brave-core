@@ -4,9 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { loadTimeData } from '../../common/loadTimeData'
-import { BraveWallet, NFTMetadataReturnType } from '../constants/types'
+import { NFTMetadataReturnType } from '../constants/types'
 import { isComponentInStorybook } from '../utils/string-utils'
-import { PinningStatusType } from '../page/constants/action_types'
 
 const nftDisplayOrigin = loadTimeData.getString('braveWalletNftBridgeUrl') || ''
 // remove trailing /
@@ -17,13 +16,9 @@ export const braveWalletPanelOrigin = 'chrome://wallet-panel.top-chrome'
 
 export const enum NftUiCommand {
   UpdateLoading = 'update-loading',
-  UpdateSelectedAsset = 'update-selected-asset',
   UpdateNFTMetadata = 'update-nft-metadata',
   UpdateNFTMetadataError = 'update-nft-metadata-error',
-  UpdateTokenNetwork = 'update-token-network',
-  UpdateNftPinningStatus = 'update-nft-pinning-status',
-  ToggleNftModal = 'toggle-nft-modal',
-  IframeSize = 'iframe-size'
+  UpdateNftImageLoading = 'update-nft-image-loading'
 }
 
 export type CommandMessage = {
@@ -34,14 +29,15 @@ export type UpdateLoadingMessage = CommandMessage & {
   payload: boolean
 }
 
-export type UpdateSelectedAssetMessage = CommandMessage & {
-  payload: BraveWallet.BlockchainToken
+export type UpdateNftImageLoadingMessage = CommandMessage & {
+  payload: boolean
 }
 
 export type DisplayMode =
 | 'icon'
 | 'grid'
 | 'details'
+
 
 export type UpdateNFtMetadataMessage = CommandMessage & {
   payload: {
@@ -59,20 +55,6 @@ export type UpdateNFtMetadataErrorMessage = CommandMessage & {
   }
 }
 
-export type UpdateTokenNetworkMessage = CommandMessage & {
-  payload: BraveWallet.NetworkInfo
-}
-
-export type UpdateNftPinningStatus = CommandMessage & {
-  payload: {
-    status: PinningStatusType | undefined
-    url: string | undefined
-  }
-}
-
-export type ToggleNftModal = CommandMessage & {
-  payload: boolean
-}
 
 export const sendMessageToNftUiFrame = (targetWindow: Window | null, message: CommandMessage) => {
   if (targetWindow && !isComponentInStorybook()) {

@@ -11,9 +11,11 @@ import {
   WalletAccountType,
   AssetPriceWithContractAndChainId
 } from '../../constants/types'
+import { NftsPinningStatusType } from '../../page/constants/action_types'
 
 // mocks
 import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-options'
+import { getAssetIdKey } from '../../utils/asset-utils'
 
 
 type EIP1559SerializableTransactionInfo = SerializableTransactionInfo & {
@@ -157,7 +159,31 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
-export const mockAccount: WalletAccountType & BraveWallet.AccountInfo = {
+export const mockErc721Token: BraveWallet.BlockchainToken = {
+  contractAddress: '0x59468516a8259058bad1ca5f8f4bff190d30e066',
+  name: 'Invisible Friends',
+  symbol: 'INVSBLE',
+  logo: 'https://ipfs.io/ipfs/QmX4nfgA35MiW5APoc4P815hMcH8hAt7edi5H3wXkFm485/2D/2585.gif',
+  isErc20: false,
+  isErc721: true,
+  isErc1155: false,
+  isNft: true,
+  decimals: 18,
+  visible: true,
+  tokenId: '0x0a19',
+  coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID
+}
+
+export const mockNftPinningStatus: NftsPinningStatusType = {
+  [getAssetIdKey(mockErc721Token)]: {
+    code: BraveWallet.TokenPinStatusCode.STATUS_PINNED,
+    error: undefined
+  }
+}
+
+export const mockAccount: WalletAccountType = {
   id: 'mockId',
   name: 'mockAccountName',
   address: 'mockAddress',
@@ -167,9 +193,7 @@ export const mockAccount: WalletAccountType & BraveWallet.AccountInfo = {
   coin: BraveWallet.CoinType.ETH,
   accountType: 'Primary',
   tokenBalanceRegistry: {},
-  keyringId: 'default',
-  hardware: undefined,
-  isImported: false,
+  keyringId: 'default'
 }
 
 export const mockEthAccountInfo: BraveWallet.AccountInfo = {

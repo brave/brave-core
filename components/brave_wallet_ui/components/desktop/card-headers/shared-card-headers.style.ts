@@ -57,3 +57,16 @@ export const ButtonIcon = styled(Icon) <{
   }px;
   color: ${leo.color.icon.interactive};
 `
+
+export const SendButton = styled(WalletButton)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-end;
+  padding: 12px 16px;
+  background: ${leo.color.interaction.buttonPrimaryBackground};
+  border-radius: 1000px;
+  color: ${leo.color.white};
+  border: none;
+`

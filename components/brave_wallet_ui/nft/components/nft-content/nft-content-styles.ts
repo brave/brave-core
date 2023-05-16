@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { LoaderIcon } from 'brave-ui/components/icons'
 
 export const ImageWrapper = styled.div`
   display: flex;
@@ -34,23 +33,4 @@ export const Image = styled.img<{
   max-height: 100%;
   position: relative;
   object-fit: contain;
-`
-
-export const LoadingOverlay = styled.div<{ isLoading: boolean }>`
-  display: ${(p) => p.isLoading ? 'flex' : 'none'};
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 10;
-  backdrop-filter: blur(5px);
-`
-
-export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
-  height: 70px;
-  width: 70px;
-  opacity: .4;
 `

@@ -17,13 +17,13 @@ import { NftIpfsBanner } from '../components/desktop/nft-ipfs-banner/nft-ipfs-ba
 import { LocalIpfsNodeScreen } from '../components/desktop/local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../components/desktop/inspect-nfts/inspect-nfts'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
-import { NftDetails } from '../nft/components/nft-details/nft-details'
-import { mockNewAssetOptions } from './mock-data/mock-asset-options'
-import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
-import { mockNetwork } from '../common/constants/mocks'
+import { mockErc721Token, mockNetwork, mockNftPinningStatus } from '../common/constants/mocks'
 import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
 import { NftsEmptyState } from '../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
 import { EnableNftDiscoveryModal } from '../components/desktop/popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
+import { NftScreen } from '../nft/components/nft-details/nft-screen'
+import { ContainerCard, LayoutCardWrapper } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
 import { AutoDiscoveryEmptyState } from '../components/desktop/views/nfts/components/auto-discovery-empty-state/auto-discovery-empty-state'
 
 export default {
@@ -178,20 +178,6 @@ _InspectNftsScreen.story = {
   name: 'Inspect NFTs Screen'
 }
 
-export const _NftDetails = () => {
-  return (
-    <NftDetails
-      selectedAsset={{ ...mockNewAssetOptions[2], contractAddress: '0x7b539F7Cc90De458B60c2ab52eEf504B5de6D035', isErc721: true }}
-      nftMetadata={mockNFTMetadata[0]}
-      tokenNetwork={mockNetwork}
-    />
-  )
-}
-
-_NftDetails.story = {
-  name: 'NFT Details'
-}
-
 export const _NftPinningStatus = () => {
   return (
     <div style={{ display: 'grid', gap: 10 }}>
@@ -236,6 +222,33 @@ export const _EnableNftDiscoveryModal = () => {
 
 _EnableNftDiscoveryModal.story = {
   title: 'Enable NFT Discovery Modal'
+}
+
+export const _NftScreen = () => {
+  return (
+    <WalletPageStory
+      pageStateOverride={{
+        isAutoPinEnabled: true,
+        isFetchingNFTMetadata: false,
+        nftMetadata: mockNFTMetadata[0],
+        nftMetadataError: '',
+        selectedAsset: mockErc721Token,
+        nftsPinningStatus: mockNftPinningStatus
+      }}
+    >
+      <LayoutCardWrapper
+        headerHeight={92}
+      >
+        <ContainerCard
+        >
+          <NftScreen
+            selectedAsset={mockErc721Token}
+            tokenNetwork={mockNetwork}
+          />
+        </ContainerCard>
+    </LayoutCardWrapper>
+    </WalletPageStory>
+  )
 }
 
 export const _AutoDiscoveryEmptyState = () => {

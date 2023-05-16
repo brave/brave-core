@@ -188,6 +188,7 @@ leo_icons = [
   "edit-pencil.svg",
   "qr-code.svg",
   "key.svg",
+  "copy.svg",
   "warning-circle-filled.svg",
   "warning-triangle-filled.svg",
   "check-circle-filled.svg",

@@ -20,7 +20,7 @@ export const StyledWrapper = styled.div<
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-conent: center;
+  justify-content: center;
   padding: 8px 8px 0px 8px;
   background-color: ${leo.color.container.background};
   border-radius: 8px;
