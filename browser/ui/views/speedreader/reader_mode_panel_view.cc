@@ -73,7 +73,7 @@ void ReaderModePanelView::ChildPreferredSizeChanged(views::View* view) {
 void ReaderModePanelView::UpdateToolbarBounds() {
   auto toolbar_size = toolbar_->GetPreferredSize();
 
-  auto toolbar_bounds = bounds();
+  auto toolbar_bounds = GetLocalBounds();
   toolbar_size.SetToMin(bounds().size());
   toolbar_bounds.ClampToCenteredSize(toolbar_size);
   toolbar_->SetBoundsRect(toolbar_bounds);
