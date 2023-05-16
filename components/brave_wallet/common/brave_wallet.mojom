@@ -515,6 +515,7 @@ struct JupiterRoute {
   uint64 other_amount_threshold;
   string swap_mode;
   double price_impact_pct;
+  int32 slippage_bps;
   array<JupiterMarketInfo> market_infos;
 };
 
@@ -526,7 +527,8 @@ struct JupiterQuoteParams {
   string input_mint;
   string output_mint;
   string amount;
-  double slippage_percentage;
+  int32 slippage_bps;
+  string user_public_key;
 };
 
 struct JupiterSwapParams {
@@ -536,9 +538,7 @@ struct JupiterSwapParams {
 };
 
 struct JupiterSwapTransactions {
-  string setup_transaction;
   string swap_transaction;
-  string cleanup_transaction;
 };
 
 struct JupiterErrorResponse {

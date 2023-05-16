@@ -67,8 +67,8 @@ namespace swap_responses {
     DOMString inAmount;
     DOMString outAmount;
     DOMString amount;
+    DOMString slippageBps;
     DOMString otherAmountThreshold;
-    DOMString outAmountWithSlippage;
     DOMString swapMode;
     any priceImpactPct; // nullable
     JupiterMarketInfo[] marketInfos;
@@ -80,9 +80,7 @@ namespace swap_responses {
   };
 
   dictionary JupiterSwapTransactions {
-    DOMString? setupTransaction;
     DOMString swapTransaction;
-    DOMString? cleanupTransaction;
   };
 
   dictionary JupiterErrorResponse {

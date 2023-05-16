@@ -139,24 +139,27 @@ GURL AppendJupiterQuoteParams(
   if (!params.input_mint.empty()) {
     url = net::AppendQueryParameter(url, "inputMint", params.input_mint);
   }
+
   if (!params.output_mint.empty()) {
     url = net::AppendQueryParameter(url, "outputMint", params.output_mint);
   }
+
   if (!params.amount.empty()) {
     url = net::AppendQueryParameter(url, "amount", params.amount);
   }
+
+  url = net::AppendQueryParameter(url, "swapMode", "ExactIn");
+
+  url = net::AppendQueryParameter(
+      url, "slippageBps", base::StringPrintf("%d", params.slippage_bps));
 
   if (brave_wallet::HasJupiterFeesForTokenMint(params.output_mint)) {
     url = net::AppendQueryParameter(url, "feeBps", GetFee(chain_id));
   }
 
-  url = net::AppendQueryParameter(
-      url, "slippage", base::StringPrintf("%.6f", params.slippage_percentage));
+  // TODO(onyb): append userPublicKey to get information on fees and ATA
+  // deposits.
 
-  // Indirect routes requires multiple transactions to complete the swap,
-  // which must be confirmed sequentially. We currently use direct routes only
-  // until there's a reliable way to get around this UX issue.
-  url = net::AppendQueryParameter(url, "onlyDirectRoutes", "true");
   return url;
 }
 
@@ -280,7 +283,7 @@ GURL SwapService::GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params,
   DCHECK(params);
 
   std::string spec =
-      base::StringPrintf("%sv1/quote", GetBaseSwapURL(chain_id).c_str());
+      base::StringPrintf("%sv4/quote", GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   url = AppendJupiterQuoteParams(url, *params, chain_id);
 
@@ -290,7 +293,7 @@ GURL SwapService::GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params,
 // static
 GURL SwapService::GetJupiterSwapTransactionsURL(const std::string& chain_id) {
   std::string spec =
-      base::StringPrintf("%sv1/swap", GetBaseSwapURL(chain_id).c_str());
+      base::StringPrintf("%sv4/swap", GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   return url;
 }
