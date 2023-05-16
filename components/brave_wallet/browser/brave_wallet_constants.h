@@ -281,6 +281,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_WALLET_POPUP_HIDE_BALANCES},
     {"braveWalletWalletPopupShowGraph",
      IDS_BRAVE_WALLET_WALLET_POPUP_SHOW_GRAPH},
+    {"braveWalletWalletNFTsTab", IDS_BRAVE_WALLET_WALLET_NFTS_TAB},
     {"braveWalletBackupWarningText", IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT},
     {"braveWalletBackupButton", IDS_BRAVE_WALLET_BACKUP_BUTTON},
     {"braveWalletDismissButton", IDS_BRAVE_WALLET_DISMISS_BUTTON},

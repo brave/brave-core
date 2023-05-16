@@ -170,7 +170,13 @@ const defaultState: WalletState = {
         .getItem(
           LOCAL_STORAGE_KEYS
             .USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
-        ) || '[]')
+        ) || '[]'),
+  hidePortfolioNFTsTab: window
+    .localStorage
+    .getItem(
+      LOCAL_STORAGE_KEYS
+        .HIDE_PORTFOLIO_NFTS_TAB
+    ) === 'true'
 }
 
 // async actions
@@ -513,6 +519,14 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           { payload }: PayloadAction<boolean>
         ) {
         state.hidePortfolioBalances = payload
+      },
+
+      setHidePortfolioNFTsTab
+        (
+          state: WalletState,
+          { payload }: PayloadAction<boolean>
+        ) {
+        state.hidePortfolioNFTsTab = payload
       },
 
       setSitePermissions (state: WalletState, { payload }: PayloadAction<SitePermissionsPayloadType>) {

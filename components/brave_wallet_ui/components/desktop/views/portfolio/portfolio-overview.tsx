@@ -121,6 +121,8 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
   const portfolioPriceHistory =
     useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
+  const hidePortfolioNFTsTab =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioNFTsTab)
 
 
   // queries
@@ -316,6 +318,11 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
       <Column
         fullWidth={true}
         justifyContent='flex-start'
+        margin={
+          hidePortfolioNFTsTab
+            ? '0px 0px 15px 0px'
+            : '0px'
+        }
       >
         <BalanceAndButtonsWrapper
           fullWidth={true}
@@ -390,12 +397,14 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
         </ColumnReveal>
       </Column>
 
-      <ControlsRow padding='24px 0px'>
-        <SegmentedControl
-          navOptions={PortfolioNavOptions}
-          width={384}
-        />
-      </ControlsRow>
+      {!hidePortfolioNFTsTab &&
+        <ControlsRow padding='24px 0px'>
+          <SegmentedControl
+            navOptions={PortfolioNavOptions}
+            width={384}
+          />
+        </ControlsRow>
+      }
 
       <Switch>
         <Route path={WalletRoutes.PortfolioAssets} exact>

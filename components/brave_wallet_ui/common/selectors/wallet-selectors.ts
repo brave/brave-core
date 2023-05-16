@@ -33,6 +33,8 @@ export const hidePortfolioGraph = ({ wallet }: State) =>
   wallet.hidePortfolioGraph
 export const hidePortfolioBalances = ({ wallet }: State) =>
   wallet.hidePortfolioBalances
+export const hidePortfolioNFTsTab = ({ wallet }: State) =>
+  wallet.hidePortfolioNFTsTab
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const accounts = ({ wallet }: State) => wallet.accounts

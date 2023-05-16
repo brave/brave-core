@@ -278,9 +278,10 @@ export interface WalletState {
   isNftPinningFeatureEnabled: boolean
   isPanelV2FeatureEnabled: boolean
   hidePortfolioGraph: boolean
-  hidePortfolioBalances: boolean,
+  hidePortfolioBalances: boolean
   removedFungibleTokenIds: string[]
   removedNonFungibleTokenIds: string[]
+  hidePortfolioNFTsTab: boolean
 }
 
 export interface PanelState {
