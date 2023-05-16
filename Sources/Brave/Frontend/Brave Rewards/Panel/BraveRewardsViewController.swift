@@ -18,7 +18,6 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
 
   let tab: Tab
   let rewards: BraveRewards
-  let legacyWallet: BraveLedger?
   var actionHandler: ((Action) -> Void)?
 
   private var ledgerObserver: LedgerObserver?
@@ -45,10 +44,9 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
 
   private var supportedListCount: Int = 0
 
-  init(tab: Tab, rewards: BraveRewards, legacyWallet: BraveLedger?) {
+  init(tab: Tab, rewards: BraveRewards) {
     self.tab = tab
     self.rewards = rewards
-    self.legacyWallet = legacyWallet
 
     super.init(nibName: nil, bundle: nil)
   }
@@ -117,13 +115,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
           }
         }
       }
-      if let legacyWallet = self.legacyWallet, !legacyWallet.isInitialized {
-        legacyWallet.initializeLedgerService({
-          self.reloadData()
-        })
-      } else {
-        self.reloadData()
-      }
+      self.reloadData()
     }
 
     view.snp.makeConstraints {

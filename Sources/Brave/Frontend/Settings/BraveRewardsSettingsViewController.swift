@@ -14,12 +14,10 @@ import Combine
 class BraveRewardsSettingsViewController: TableViewController {
 
   let rewards: BraveRewards
-  let legacyWallet: BraveLedger?
   var walletTransferLearnMoreTapped: (() -> Void)?
 
-  init(_ rewards: BraveRewards, legacyWallet: BraveLedger?) {
+  init(_ rewards: BraveRewards) {
     self.rewards = rewards
-    self.legacyWallet = legacyWallet
 
     super.init(style: .insetGrouped)
   }
@@ -53,7 +51,7 @@ class BraveRewardsSettingsViewController: TableViewController {
                 text: Strings.RewardsInternals.title,
                 selection: {
                   guard let self = self else { return }
-                  let controller = RewardsInternalsViewController(ledger: ledger, legacyLedger: self.legacyWallet)
+                  let controller = RewardsInternalsViewController(ledger: ledger)
                   self.navigationController?.pushViewController(controller, animated: true)
                 }, accessory: .disclosureIndicator)
             ])
@@ -70,13 +68,7 @@ class BraveRewardsSettingsViewController: TableViewController {
 
     rewards.startLedgerService { [weak self] in
       guard let self = self else { return }
-      if let legacyWallet = self.legacyWallet, !legacyWallet.isInitialized {
-        legacyWallet.initializeLedgerService {
-          self.reloadSections()
-        }
-      } else {
-        self.reloadSections()
-      }
+      self.reloadSections()
     }
   }
 }

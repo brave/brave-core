@@ -177,7 +177,6 @@ extension BrowserViewController {
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
           rewards: self.rewards,
-          legacyWallet: self.legacyWallet,
           windowProtection: self.windowProtection,
           braveCore: self.braveCore,
           keyringStore: keyringStore,

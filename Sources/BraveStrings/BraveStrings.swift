@@ -3676,7 +3676,6 @@ extension Strings {
   public struct RewardsInternals {
     public static let title = NSLocalizedString("RewardsInternalsTitle", tableName: "BraveShared", bundle: .module, value: "Rewards Internals", comment: "'Rewards' as in 'Brave Rewards'")
     public static let walletInfoHeader = NSLocalizedString("RewardsInternalsWalletInfoHeader", tableName: "BraveShared", bundle: .module, value: "Rewards Profile Info", comment: "")
-    public static let legacyWalletInfoHeader = NSLocalizedString("RewardsInternalsLegacyWalletInfoHeader", tableName: "BraveShared", bundle: .module, value: "Legacy Wallet Info", comment: "")
     public static let keyInfoSeed = NSLocalizedString("RewardsInternalsKeyInfoSeed", tableName: "BraveShared", bundle: .module, value: "Key Info Seed", comment: "")
     public static let valid = NSLocalizedString("RewardsInternalsValid", tableName: "BraveShared", bundle: .module, value: "Valid", comment: "")
     public static let invalid = NSLocalizedString("RewardsInternalsInvalid", tableName: "BraveShared", bundle: .module, value: "Invalid", comment: "")
