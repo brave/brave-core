@@ -34,6 +34,11 @@ class Toolbar : public views::WebView {
     // Ignore context menu.
     return true;
   }
+
+  gfx::Size CalculatePreferredSize() const override {
+    // Returning non-empty size to enable sizing from web contents on Mac.
+    return gfx::Size(1, 1);
+  }
 };
 
 }  // namespace
@@ -71,6 +76,5 @@ void ReaderModePanelView::UpdateToolbarBounds() {
   auto toolbar_bounds = bounds();
   toolbar_size.SetToMin(bounds().size());
   toolbar_bounds.ClampToCenteredSize(toolbar_size);
-  toolbar_bounds.Offset(-10, 0);
   toolbar_->SetBoundsRect(toolbar_bounds);
 }
