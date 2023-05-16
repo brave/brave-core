@@ -292,7 +292,8 @@ void AssetRatioService::GetPrice(
   if (env->HasVar("BRAVE_SERVICES_KEY")) {
     env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
   }
-  request_headers["x-brave-key"] = std::move(brave_key);
+  request_headers[kBraveServicesKeyHeader] = std::move(brave_key);
+
   api_request_helper_->Request(
       "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
       std::move(internal_callback), request_headers,

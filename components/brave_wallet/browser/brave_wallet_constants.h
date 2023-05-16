@@ -17,6 +17,8 @@
 
 namespace brave_wallet {
 
+constexpr char kBraveServicesKeyHeader[] = "x-brave-key";
+
 constexpr char kAssetRatioBaseURL[] = "https://ratios.rewards.brave.com/";
 
 constexpr uint256_t kDefaultSendEthGasLimit = 21000;
@@ -1237,6 +1239,11 @@ constexpr char kSolanaSwapBaseAPIURL[] = "https://quote-api.jup.ag/";
 constexpr char kSolanaBuyTokenFeeBps[] = "85";
 constexpr char kSolanaFeeRecipient[] =
     "3NUW8hWoCnLgJwWCVnwdFo2Dsz8bKwLac9A3VgS2jLUQ";
+
+// Blowfish simulations constants
+constexpr char kBlowfishBaseAPIURL[] = "https://blowfish.wallet.brave.com";
+constexpr char kBlowfishAPIVersionHeader[] = "X-Api-Version";
+constexpr char kBlowfishAPIVersion[] = "2023-03-08";
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;

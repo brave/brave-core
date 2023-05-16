@@ -16,6 +16,7 @@ import {
   SerializableSwitchChainRequest,
   SerializableTimeDelta,
   SerializableTransactionInfo,
+  SerializableTxDataUnion,
   SerializableUnguessableToken,
   TimeDelta,
   WithSerializableOriginInfo
@@ -150,12 +151,9 @@ export function makeSerializableTransaction (tx: BraveWallet.TransactionInfo): S
   return {
     ...tx,
     originInfo: makeSerializableOriginInfo(tx.originInfo),
-    txDataUnion: {
-      ...tx.txDataUnion,
-      solanaTxData: tx.txDataUnion.solanaTxData
-        ? makeSerializableSolanaTxData(tx.txDataUnion.solanaTxData)
-        : undefined
-    },
+    txDataUnion: tx.txDataUnion.solanaTxData
+      ? { solanaTxData: makeSerializableSolanaTxData(tx.txDataUnion.solanaTxData) }
+      : tx.txDataUnion as SerializableTxDataUnion,
     confirmedTime: makeSerializableTimeDelta(tx.confirmedTime),
     createdTime: makeSerializableTimeDelta(tx.createdTime),
     submittedTime: makeSerializableTimeDelta(tx.submittedTime)
@@ -165,20 +163,16 @@ export function makeSerializableTransaction (tx: BraveWallet.TransactionInfo): S
 export function deserializeTransaction(
   tx: SerializableTransactionInfo
 ): BraveWallet.TransactionInfo {
+  const txDataUnion = tx.txDataUnion.solanaTxData
+    ? { solanaTxData: deserializeSolanaTxData(tx.txDataUnion.solanaTxData) }
+    : tx.txDataUnion
+
   return {
     ...tx,
     originInfo: tx.originInfo
       ? deserializeOriginInfo(tx.originInfo)
       : tx.originInfo,
-    txDataUnion: {
-      ...tx.txDataUnion,
-      ethTxData: tx.txDataUnion.ethTxData,
-      ethTxData1559: tx.txDataUnion.ethTxData1559,
-      filTxData: tx.txDataUnion.filTxData,
-      solanaTxData: tx.txDataUnion.solanaTxData
-        ? deserializeSolanaTxData(tx.txDataUnion.solanaTxData)
-        : undefined
-    },
+    txDataUnion: txDataUnion as BraveWallet.TxDataUnion,
     confirmedTime: deserializeTimeDelta(tx.confirmedTime),
     createdTime: deserializeTimeDelta(tx.createdTime),
     submittedTime: deserializeTimeDelta(tx.submittedTime)

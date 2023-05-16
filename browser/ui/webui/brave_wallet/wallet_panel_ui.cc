@@ -15,6 +15,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
@@ -25,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
@@ -105,6 +107,8 @@ void WalletPanelUI::CreatePanelHandler(
         bitcoin_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::SimulationService>
+        simulation_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
         asset_ratio_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
@@ -140,6 +144,8 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(bitcoin_rpc_service_receiver));
   brave_wallet::SwapServiceFactory::BindForContext(
       profile, std::move(swap_service_receiver));
+  brave_wallet::SimulationServiceFactory::BindForContext(
+      profile, std::move(simulation_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(
       profile, std::move(asset_ratio_service_receiver));
   brave_wallet::KeyringServiceFactory::BindForContext(

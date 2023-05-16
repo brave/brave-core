@@ -10,6 +10,7 @@
 
 #include "base/environment.h"
 #include "base/json/json_writer.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -69,7 +70,7 @@ base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
   if (env->HasVar("BRAVE_SERVICES_KEY")) {
     env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
   }
-  request_headers["x-brave-key"] = std::move(brave_key);
+  request_headers[kBraveServicesKeyHeader] = std::move(brave_key);
 
   return request_headers;
 }

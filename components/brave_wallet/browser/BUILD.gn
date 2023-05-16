@@ -128,6 +128,12 @@ static_library("browser") {
     "nonce_tracker.h",
     "password_encryptor.cc",
     "password_encryptor.h",
+    "simulation_request_helper.cc",
+    "simulation_request_helper.h",
+    "simulation_response_parser.cc",
+    "simulation_response_parser.h",
+    "simulation_service.cc",
+    "simulation_service.h",
     "sns_resolver_task.cc",
     "sns_resolver_task.h",
     "solana_account_meta.cc",
@@ -196,6 +202,7 @@ static_library("browser") {
   deps = [
     ":constants",
     ":generated_json_rpc_responses",
+    ":generated_simulation_responses",
     ":generated_swap_responses",
     ":hd_keyring",
     ":pref_names",
@@ -364,6 +371,16 @@ source_set("transaction") {
 
 generated_types("generated_json_rpc_responses") {
   sources = [ "json_rpc_responses.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
+  ]
+}
+
+generated_types("generated_simulation_responses") {
+  sources = [ "simulation_responses.idl" ]
   root_namespace = "brave_wallet::%(namespace)s"
   deps = [ "//base" ]
   visibility = [

@@ -553,6 +553,13 @@ export type WithSerializableOriginInfo<T extends ObjWithOriginInfo = ObjWithOrig
   originInfo: SerializableOriginInfo
 }
 
+export type SerializableTxDataUnion = {
+  solanaTxData?: SerializableSolanaTxData
+  ethTxData?: BraveWallet.TxData
+  ethTxData1559?: BraveWallet.TxData1559
+  filTxData?: BraveWallet.FilTxData
+}
+
 /**
  * Used to properly store BraveWallet.TransactionInfo in redux store,
  * since bigints are not serializable by default
@@ -568,12 +575,7 @@ export type SerializableTransactionInfo = Omit<
   confirmedTime: SerializableTimeDelta
   createdTime: SerializableTimeDelta
   submittedTime: SerializableTimeDelta
-  txDataUnion: {
-    solanaTxData?: SerializableSolanaTxData
-    ethTxData?: BraveWallet.TxData
-    ethTxData1559?: BraveWallet.TxData1559
-    filTxData?: BraveWallet.FilTxData
-  }
+  txDataUnion: SerializableTxDataUnion
   originInfo: SerializableOriginInfo | undefined
 }
 
