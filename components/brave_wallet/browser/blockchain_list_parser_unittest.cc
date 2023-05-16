@@ -554,6 +554,7 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
   const auto& eth_dapp_list = it->second;
   EXPECT_EQ(eth_dapp_list.size(), 1u);
   const auto& eth_dapp = eth_dapp_list[0];
+  EXPECT_EQ(eth_dapp->range, "30d");
   EXPECT_EQ(eth_dapp->name, "Uniswap V3");
   EXPECT_EQ(eth_dapp->description,
             "A protocol for trading and automated liquidity.");
@@ -583,6 +584,7 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
   const auto& sol_dapp_list = it_s->second;
   EXPECT_EQ(sol_dapp_list.size(), 1u);
   const auto& sol_dapp = sol_dapp_list[0];
+  EXPECT_EQ(sol_dapp->range, "30d");
   EXPECT_EQ(sol_dapp->name, "GameTrade Market");
   EXPECT_EQ(sol_dapp->description,
             "Discover, buy, sell and trade in-game NFTs");

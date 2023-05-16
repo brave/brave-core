@@ -450,6 +450,7 @@ struct Dapp {
   uint32 uaw;
   double volume;
   double balance;
+  string range;
 };
 
 // Structs to model 0x (swap) HTTP API interactions

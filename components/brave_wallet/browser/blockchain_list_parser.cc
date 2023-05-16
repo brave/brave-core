@@ -44,6 +44,7 @@ void AddDappListToMap(
   std::vector<brave_wallet::mojom::DappPtr> dapp_list;
   for (const auto& dapp_from_component : dapp_list_from_component.results) {
     auto dapp = brave_wallet::mojom::Dapp::New();
+    dapp->range = dapp_list_from_component.range;
     dapp->id = dapp_from_component.dapp_id;
     dapp->name = dapp_from_component.name;
     dapp->description = dapp_from_component.description;
