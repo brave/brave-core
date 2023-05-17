@@ -60,7 +60,6 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
   base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<question>", "");
   base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</question>", "");
 
-
   active_chat_tab_helper_->MakeAPIRequestWithConversationHistoryUpdate(
       {CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE, input_copy});
 }
