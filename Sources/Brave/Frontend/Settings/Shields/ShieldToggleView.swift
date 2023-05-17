@@ -9,7 +9,7 @@ import DesignSystem
 struct ShieldToggleView: View {
   typealias OnChangeCallback = (Bool) -> Void
   let title: String
-  let subtitle: String?
+  var subtitle: String?
   @Binding var toggle: Bool
   let onChange: OnChangeCallback?
   

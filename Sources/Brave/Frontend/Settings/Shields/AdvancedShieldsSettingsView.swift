@@ -14,6 +14,8 @@ struct AdvancedShieldsSettingsView: View {
   @ObservedObject private var settings: AdvancedShieldsSettings
   @State private var showManageWebsiteData = false
   
+  var openURLAction: ((URL) -> Void)?
+  
   init(
     profile: Profile, tabManager: TabManager,
     feedDataSource: FeedDataSource, historyAPI: BraveHistoryAPI, p3aUtilities: BraveP3AUtils,
@@ -67,5 +69,9 @@ struct AdvancedShieldsSettingsView: View {
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.braveShieldsAndPrivacy)
+    .environment(\.openURL, .init(handler: { [openURLAction] url in
+      openURLAction?(url)
+      return .handled
+    }))
   }
 }

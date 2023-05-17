@@ -239,6 +239,11 @@ class SettingsViewController: TableViewController {
               }
             ))
             
+            controller.rootView.openURLAction = { [unowned self] url in
+              self.settingsDelegate?.settingsOpenURLInNewTab(url)
+              self.dismiss(animated: true)
+            }
+            
             self.navigationController?.pushViewController(controller, animated: true)
           },
           image: UIImage(braveSystemNamed: "leo.shield.done"),

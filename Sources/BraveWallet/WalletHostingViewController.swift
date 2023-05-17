@@ -15,7 +15,7 @@ public protocol BraveWalletDelegate: AnyObject {
   /// Open a specific URL that comes from the wallet UI. For instance, when purchasing tokens through Ramp.Network
   ///
   /// This will be called after the wallet UI is dismissed
-  func openWalletURL(_ url: URL)
+  func openDestinationURL(_ url: URL)
   /// Requests App Review pop-up after send - swap and add account
   ///
   /// This will be called after the wallet UI is dismissed
@@ -70,7 +70,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
     )
     rootView.openWalletURLAction = { [unowned self] url in
       (self.presentingViewController ?? self).dismiss(animated: true) { [self] in
-        self.delegate?.openWalletURL(url)
+        self.delegate?.openDestinationURL(url)
       }
     }
     rootView.appRatingRequestAction = { [unowned self] in

@@ -7,14 +7,14 @@ import SwiftUI
 
 struct ShieldLabelView: View {
   let title: String
-  let subtitle: String?
+  var subtitle: String?
   
   var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       Text(title)
         .foregroundColor(Color(.bravePrimary))
       if let subtitle = subtitle {
-        Text(subtitle)
+        Text(LocalizedStringKey(subtitle))
           .foregroundColor(Color(.braveLabel))
           .font(.caption)
       }

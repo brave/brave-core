@@ -8,11 +8,13 @@ import Preferences
 
 struct OptionToggleView: View {
   let title: String
-  let subtitle: String?
+  var subtitle: String?
+  var markdownSubtitle: LocalizedStringKey?
   @ObservedObject var option: Preferences.Option<Bool>
   let onChange: ShieldToggleView.OnChangeCallback?
   
-  init(title: String, subtitle: String?, option: Preferences.Option<Bool>, onChange: ShieldToggleView.OnChangeCallback? = nil) {
+  init(title: String, subtitle: String?,
+       option: Preferences.Option<Bool>, onChange: ShieldToggleView.OnChangeCallback? = nil) {
     self.title = title
     self.subtitle = subtitle
     self.option = option

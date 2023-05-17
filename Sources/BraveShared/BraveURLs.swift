@@ -24,6 +24,7 @@ extension URL {
     public static let braveVPNLinkReceiptProd = URL(string: "https://account.brave.com/?intent=connect-receipt&product=vpn")!
     public static let braveVPNLinkReceiptStaging = URL(string: "https://account.bravesoftware.com/?intent=connect-receipt&product=vpn")!
     public static let braveVPNLinkReceiptDev = URL(string: "https://account.brave.software/?intent=connect-receipt&product=vpn")!
+    public static let safeBrowsingHelp = URL(string: "https://brave.com/privacy/browser/#safe-browsing")!
   }
   public static let brave = Brave.self
 }

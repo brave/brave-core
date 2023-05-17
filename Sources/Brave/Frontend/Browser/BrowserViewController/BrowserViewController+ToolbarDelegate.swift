@@ -486,6 +486,10 @@ extension BrowserViewController: TopToolbarDelegate {
           }
         ))
         
+        controller.rootView.openURLAction = { [unowned self] url in
+          openDestinationURL(url)
+        }
+        
         let container = SettingsNavigationController(rootViewController: controller)
         container.isModalInPresentation = true
         container.modalPresentationStyle =
