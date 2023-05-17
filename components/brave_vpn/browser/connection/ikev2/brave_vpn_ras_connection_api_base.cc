@@ -28,57 +28,13 @@ BraveVPNOSConnectionAPIBase::BraveVPNOSConnectionAPIBase(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
     version_info::Channel channel)
-    : target_vpn_entry_name_(GetBraveVPNEntryName(channel)),
-      local_prefs_(local_prefs),
-      url_loader_factory_(url_loader_factory),
-      region_data_manager_(url_loader_factory_, local_prefs_) {
-  DCHECK(url_loader_factory_ && local_prefs_);
-
-  // Safe to use Unretained here because |region_data_manager_| is owned
-  // instance.
-  region_data_manager_.set_selected_region_changed_callback(base::BindRepeating(
-      &BraveVPNOSConnectionAPIBase::NotifySelectedRegionChanged,
-      base::Unretained(this)));
-  region_data_manager_.set_region_data_ready_callback(
-      base::BindRepeating(&BraveVPNOSConnectionAPIBase::NotifyRegionDataReady,
-                          base::Unretained(this)));
-  net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
+    : BraveVPNOSConnectionAPI(url_loader_factory, local_prefs),
+      target_vpn_entry_name_(GetBraveVPNEntryName(channel)),
+      local_prefs_(local_prefs) {
+  DCHECK(local_prefs_);
 }
 
-BraveVPNOSConnectionAPIBase::~BraveVPNOSConnectionAPIBase() {
-  net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
-}
-
-void BraveVPNOSConnectionAPIBase::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void BraveVPNOSConnectionAPIBase::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
-}
-
-void BraveVPNOSConnectionAPIBase::SetConnectionState(
-    mojom::ConnectionState state) {
-  UpdateAndNotifyConnectionStateChange(state);
-}
-
-void BraveVPNOSConnectionAPIBase::ResetConnectionState() {
-  // Don't use UpdateAndNotifyConnectionStateChange() to update connection state
-  // and set state directly because we have a logic to ignore disconnected state
-  // when connect failed.
-  connection_state_ = ConnectionState::DISCONNECTED;
-  for (auto& obs : observers_) {
-    obs.OnConnectionStateChanged(connection_state_);
-  }
-}
-
-std::string BraveVPNOSConnectionAPIBase::GetLastConnectionError() const {
-  return last_connection_error_;
-}
-
-BraveVPNRegionDataManager& BraveVPNOSConnectionAPIBase::GetRegionDataManager() {
-  return region_data_manager_;
-}
+BraveVPNOSConnectionAPIBase::~BraveVPNOSConnectionAPIBase() = default;
 
 void BraveVPNOSConnectionAPIBase::SetSelectedRegion(const std::string& name) {
   // TODO(simonhong): Can remove this when UI block region changes while
@@ -92,11 +48,11 @@ void BraveVPNOSConnectionAPIBase::SetSelectedRegion(const std::string& name) {
                "is in-progress";
     // This is workaround to prevent UI changes seleted region.
     // Early return by notify again with current region name.
-    NotifySelectedRegionChanged(region_data_manager_.GetSelectedRegion());
+    NotifySelectedRegionChanged(GetRegionDataManager().GetSelectedRegion());
     return;
   }
 
-  region_data_manager_.SetSelectedRegion(name);
+  GetRegionDataManager().SetSelectedRegion(name);
 
   // As new selected region is used, |connection_info_| for previous selected
   // should be cleared.
@@ -104,8 +60,8 @@ void BraveVPNOSConnectionAPIBase::SetSelectedRegion(const std::string& name) {
 }
 
 bool BraveVPNOSConnectionAPIBase::IsInProgress() const {
-  return connection_state_ == ConnectionState::DISCONNECTING ||
-         connection_state_ == ConnectionState::CONNECTING;
+  return GetConnectionState() == ConnectionState::DISCONNECTING ||
+         GetConnectionState() == ConnectionState::CONNECTING;
 }
 
 void BraveVPNOSConnectionAPIBase::CreateVPNConnection() {
@@ -128,7 +84,7 @@ void BraveVPNOSConnectionAPIBase::SetPreventCreationForTesting(bool value) {
 
 void BraveVPNOSConnectionAPIBase::Connect() {
   if (IsInProgress()) {
-    VLOG(2) << __func__ << ": Current state: " << connection_state_
+    VLOG(2) << __func__ << ": Current state: " << GetConnectionState()
             << " : prevent connecting while previous operation is in-progress";
     return;
   }
@@ -148,7 +104,7 @@ void BraveVPNOSConnectionAPIBase::Connect() {
   }
 
   VLOG(2) << __func__ << " : start connecting!";
-  last_connection_error_.clear();
+  SetLastConnectionError(std::string());
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
 
   if (connection_info_.IsValid()) {
@@ -159,9 +115,9 @@ void BraveVPNOSConnectionAPIBase::Connect() {
   }
 
   // If user doesn't select region explicitely, use default device region.
-  std::string target_region_name = region_data_manager_.GetSelectedRegion();
+  std::string target_region_name = GetRegionDataManager().GetSelectedRegion();
   if (target_region_name.empty()) {
-    target_region_name = region_data_manager_.GetDeviceRegion();
+    target_region_name = GetRegionDataManager().GetDeviceRegion();
     VLOG(2) << __func__ << " : start connecting with valid default_region: "
             << target_region_name;
   }
@@ -170,17 +126,17 @@ void BraveVPNOSConnectionAPIBase::Connect() {
 }
 
 void BraveVPNOSConnectionAPIBase::Disconnect() {
-  if (connection_state_ == ConnectionState::DISCONNECTED) {
+  if (GetConnectionState() == ConnectionState::DISCONNECTED) {
     VLOG(2) << __func__ << " : already disconnected";
     return;
   }
 
-  if (connection_state_ == ConnectionState::DISCONNECTING) {
+  if (GetConnectionState() == ConnectionState::DISCONNECTING) {
     VLOG(2) << __func__ << " : disconnecting in progress";
     return;
   }
 
-  if (connection_state_ != ConnectionState::CONNECTING) {
+  if (GetConnectionState() != ConnectionState::CONNECTING) {
     VLOG(2) << __func__ << " : start disconnecting!";
     UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
     DisconnectImpl(target_vpn_entry_name_);
@@ -200,8 +156,8 @@ void BraveVPNOSConnectionAPIBase::Disconnect() {
 
 void BraveVPNOSConnectionAPIBase::ToggleConnection() {
   const bool can_disconnect =
-      (connection_state_ == ConnectionState::CONNECTED ||
-       connection_state_ == ConnectionState::CONNECTING);
+      (GetConnectionState() == ConnectionState::CONNECTED ||
+       GetConnectionState() == ConnectionState::CONNECTING);
   can_disconnect ? Disconnect() : Connect();
 }
 
@@ -292,24 +248,10 @@ void BraveVPNOSConnectionAPIBase::OnIsDisconnecting() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
 }
 
-void BraveVPNOSConnectionAPIBase::SetLastConnectionError(
-    const std::string& error) {
-  VLOG(2) << __func__ << " : " << error;
-  last_connection_error_ = error;
-}
-
-void BraveVPNOSConnectionAPIBase::OnNetworkChanged(
-    net::NetworkChangeNotifier::ConnectionType type) {
-  // It's rare but sometimes Brave doesn't get vpn status update from OS.
-  // Checking here will make vpn status update properly in that situation.
-  VLOG(2) << __func__ << " : " << type;
-  CheckConnection();
-}
-
 void BraveVPNOSConnectionAPIBase::UpdateAndNotifyConnectionStateChange(
     ConnectionState state) {
   // this is a simple state machine for handling connection state
-  if (connection_state_ == state) {
+  if (GetConnectionState() == state) {
     return;
   }
 
@@ -320,7 +262,7 @@ void BraveVPNOSConnectionAPIBase::UpdateAndNotifyConnectionStateChange(
   // it could give disconnected vpn connection during that situation.
   // So, don't notify this disconnected state change while connecting because
   // it's temporal state.
-  if (connection_state_ == ConnectionState::CONNECTING &&
+  if (GetConnectionState() == ConnectionState::CONNECTING &&
       state == ConnectionState::DISCONNECTED && !cancel_connecting_) {
     VLOG(2) << __func__ << ": Ignore disconnected state while connecting";
     return;
@@ -328,43 +270,16 @@ void BraveVPNOSConnectionAPIBase::UpdateAndNotifyConnectionStateChange(
 #if BUILDFLAG(IS_WIN)
   // On Windows, we could get disconnected state after connect failed.
   // To make connect failed state as a last state, ignore disconnected state.
-  if (connection_state_ == ConnectionState::CONNECT_FAILED &&
+  if (GetConnectionState() == ConnectionState::CONNECT_FAILED &&
       state == ConnectionState::DISCONNECTED) {
     VLOG(2) << __func__ << ": Ignore disconnected state after connect failed";
     return;
   }
 #endif  // BUILDFLAG(IS_WIN)
-  VLOG(2) << __func__ << " : changing from " << connection_state_ << " to "
+  VLOG(2) << __func__ << " : changing from " << GetConnectionState() << " to "
           << state;
 
-  connection_state_ = state;
-  for (auto& obs : observers_) {
-    obs.OnConnectionStateChanged(connection_state_);
-  }
-}
-
-bool BraveVPNOSConnectionAPIBase::QuickCancelIfPossible() {
-  if (!api_request_) {
-    return false;
-  }
-
-  // We're waiting responce from vpn server.
-  // Can do quick cancel in this situation by cancel that request.
-  api_request_.reset();
-  return true;
-}
-
-BraveVpnAPIRequest* BraveVPNOSConnectionAPIBase::GetAPIRequest() {
-  if (!url_loader_factory_) {
-    CHECK_IS_TEST();
-    return nullptr;
-  }
-
-  if (!api_request_) {
-    api_request_ = std::make_unique<BraveVpnAPIRequest>(url_loader_factory_);
-  }
-
-  return api_request_.get();
+  BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange(state);
 }
 
 std::string BraveVPNOSConnectionAPIBase::GetCurrentEnvironment() const {
@@ -403,7 +318,7 @@ void BraveVPNOSConnectionAPIBase::OnFetchHostnames(const std::string& region,
     return;
   }
 
-  api_request_.reset();
+  ResetAPIRequestInstance();
 
   absl::optional<base::Value> value = base::JSONReader::Read(hostnames);
   if (value && value->is_list()) {
@@ -463,7 +378,7 @@ void BraveVPNOSConnectionAPIBase::OnGetProfileCredentials(
     return;
   }
 
-  api_request_.reset();
+  ResetAPIRequestInstance();
 
   VLOG(2) << __func__ << " : received profile credential";
 
@@ -495,23 +410,6 @@ void BraveVPNOSConnectionAPIBase::OnGetProfileCredentials(
 const BraveVPNConnectionInfo& BraveVPNOSConnectionAPIBase::connection_info()
     const {
   return connection_info_;
-}
-
-mojom::ConnectionState BraveVPNOSConnectionAPIBase::GetConnectionState() const {
-  return connection_state_;
-}
-
-void BraveVPNOSConnectionAPIBase::NotifyRegionDataReady(bool ready) const {
-  for (auto& obs : observers_) {
-    obs.OnRegionDataReady(ready);
-  }
-}
-
-void BraveVPNOSConnectionAPIBase::NotifySelectedRegionChanged(
-    const std::string& name) const {
-  for (auto& obs : observers_) {
-    obs.OnSelectedRegionChanged(name);
-  }
 }
 
 }  // namespace brave_vpn

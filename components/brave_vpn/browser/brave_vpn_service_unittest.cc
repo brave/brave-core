@@ -689,7 +689,7 @@ TEST_F(BraveVPNServiceTest, ResetConnectionStateTest) {
   auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
 
   // Set failed state before setting observer.
-  test_api->SetConnectionState(ConnectionState::CONNECT_FAILED);
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECT_FAILED);
 
   TestBraveVPNServiceObserver observer;
   AddObserver(observer.GetReceiver());
@@ -715,9 +715,9 @@ TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
   AddObserver(observer.GetReceiver());
   std::string env = skus::GetDefaultEnvironment();
   SetPurchasedState(env, PurchasedState::PURCHASED);
-  test_api->SetConnectionState(ConnectionState::CONNECTING);
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTING);
   base::RunLoop().RunUntilIdle();
-  test_api->SetConnectionState(ConnectionState::CONNECTED);
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTED);
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
 }
@@ -730,7 +730,7 @@ TEST_F(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy) {
   AddObserver(observer.GetReceiver());
   std::string env = skus::GetDefaultEnvironment();
   SetPurchasedState(env, PurchasedState::PURCHASED);
-  test_api->SetConnectionState(ConnectionState::CONNECTED);
+  test_api->SetConnectionStateForTesting(ConnectionState::CONNECTED);
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
   BlockVPNByPolicy(true);

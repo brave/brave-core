@@ -520,7 +520,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest,
   auto* test_api =
       static_cast<BraveVPNOSConnectionAPIBase*>(GetConnectionAPI());
 
-  test_api->SetConnectionState(mojom::ConnectionState::CONNECTING);
+  test_api->SetConnectionStateForTesting(mojom::ConnectionState::CONNECTING);
   test_api->UpdateAndNotifyConnectionStateChange(
       mojom::ConnectionState::DISCONNECTED);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());

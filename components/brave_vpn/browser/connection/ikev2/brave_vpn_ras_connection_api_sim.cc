@@ -108,11 +108,6 @@ void BraveVPNOSConnectionAPISim::OnCreated(const std::string& name,
   BraveVPNOSConnectionAPIBase::OnCreated();
 }
 
-void BraveVPNOSConnectionAPISim::SetConnectionState(
-    mojom::ConnectionState state) {
-  BraveVPNOSConnectionAPIBase::SetConnectionState(state);
-}
-
 void BraveVPNOSConnectionAPISim::Disconnect() {
   BraveVPNOSConnectionAPIBase::Disconnect();
 }

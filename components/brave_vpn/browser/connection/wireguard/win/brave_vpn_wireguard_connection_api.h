@@ -14,17 +14,13 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
-#include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class PrefService;
 
 namespace brave_vpn {
 
-class BraveVPNWireguardConnectionAPI
-    : public BraveVPNOSConnectionAPI,
-      public net::NetworkChangeNotifier::NetworkChangeObserver {
+class BraveVPNWireguardConnectionAPI : public BraveVPNOSConnectionAPI {
  public:
   BraveVPNWireguardConnectionAPI(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -40,8 +36,6 @@ class BraveVPNWireguardConnectionAPI
   void FetchProfileCredentials();
 
   // BraveVPNOSConnectionAPI
-  mojom::ConnectionState GetConnectionState() const override;
-  void ResetConnectionState() override;
   void RemoveVPNConnection() override;
   void Connect() override;
   void Disconnect() override;
@@ -49,24 +43,8 @@ class BraveVPNWireguardConnectionAPI
   void CheckConnection() override;
   void ResetConnectionInfo() override;
   std::string GetHostname() const override;
-  void AddObserver(Observer* observer) override;
-  void RemoveObserver(Observer* observer) override;
-  void SetConnectionState(mojom::ConnectionState state) override;
-  // Returns user friendly error string if existed.
-  // Otherwise returns empty.
-  std::string GetLastConnectionError() const override;
-  BraveVPNRegionDataManager& GetRegionDataManager() override;
   void SetSelectedRegion(const std::string& name) override;
 
-  // net::NetworkChangeNotifier::NetworkChangeObserver
-  void OnNetworkChanged(
-      net::NetworkChangeNotifier::ConnectionType type) override;
-  // BraveVPNRegionDataManager callbacks
-  // Notify it's ready when |regions_| is not empty.
-  void NotifyRegionDataReady(bool ready) const;
-  void NotifySelectedRegionChanged(const std::string& name) const;
-  void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state);
-  BraveVpnAPIRequest* GetAPIRequest();
   std::string GetCurrentEnvironment() const;
 
  private:
@@ -77,12 +55,9 @@ class BraveVPNWireguardConnectionAPI
   // We can cancel connecting request quickly when fetching hostnames or
   // profile credentials is not yet finished by reset this.
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
-  mojom::ConnectionState connection_state_ =
-      mojom::ConnectionState::DISCONNECTED;
-  base::ObserverList<Observer> observers_;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  BraveVPNRegionDataManager region_data_manager_;
+
   base::WeakPtrFactory<BraveVPNWireguardConnectionAPI> weak_factory_{this};
 };
 

@@ -33,7 +33,6 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
   friend class base::NoDestructor<BraveVPNOSConnectionAPISim>;
 
   // BraveVPNOSConnectionAPI overrides:
-  void SetConnectionState(mojom::ConnectionState state) override;
   void Connect() override;
   void Disconnect() override;
   void ToggleConnection() override;
