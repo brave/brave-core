@@ -195,7 +195,12 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
 absl::optional<std::string> FilTransaction::GetMessageToSign() const {
   auto value = ToValue();
   value.Remove("MaxFee");
-  value.Set("Method", 0);
+  if (to_.protocol() == mojom::FilecoinAddressProtocol::DELEGATED) {
+    // https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0054.md#invokecontract-method-number-38444508371
+    value.Set("Method", "3844450837");
+  } else {
+    value.Set("Method", "0");
+  }
   value.Set("Version", 0);
   value.Set("Params", "");
   const std::string* nonce_value = value.FindString("Nonce");
@@ -219,6 +224,9 @@ absl::optional<std::string> FilTransaction::GetMessageToSign() const {
                          "/Nonce", converted_json.c_str(), false)
                          .c_str();
   }
+  converted_json = json::convert_string_value_to_uint64(
+                       "/Method", converted_json.c_str(), false)
+                       .c_str();
   return converted_json;
 }
 
@@ -232,7 +240,7 @@ absl::optional<std::string> FilTransaction::GetSignedTransaction(
   base::Value::Dict signature;
   {
     std::string data(filecoin::transaction_sign(
-        *message,
+        from_.network() == mojom::kFilecoinMainnet, *message,
         rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
     if (data.empty()) {
       return absl::nullopt;

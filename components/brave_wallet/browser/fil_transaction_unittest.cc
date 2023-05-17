@@ -279,7 +279,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                           private_key_decoded.end());
   auto private_key = rust::Slice<const uint8_t>(private_key_binary.data(),
                                                 private_key_binary.size());
-  EXPECT_EQ(std::string(filecoin::transaction_sign(R"({
+  EXPECT_EQ(std::string(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -296,7 +296,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
             "j9K0wIVVU10ZJPgaV0yM6a+xwKgA=");
 
   // No From
-  EXPECT_TRUE(filecoin::transaction_sign(R"({
+  EXPECT_TRUE(filecoin::transaction_sign(false, R"({
                  "GasFeeCap": "3",
                  "GasLimit": 1,
                  "GasPremium": "2",
@@ -310,7 +310,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                          private_key)
                   .empty());
   // No GasFeeCap
-  EXPECT_TRUE(filecoin::transaction_sign(R"({
+  EXPECT_TRUE(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasLimit": 1,
                  "GasPremium": "2",
@@ -324,7 +324,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                          private_key)
                   .empty());
   // No GasLimit
-  EXPECT_TRUE(filecoin::transaction_sign(R"({
+  EXPECT_TRUE(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasPremium": "2",
@@ -338,7 +338,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                          private_key)
                   .empty());
   // No GasPremium
-  EXPECT_TRUE(filecoin::transaction_sign(R"({
+  EXPECT_TRUE(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -352,7 +352,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                          private_key)
                   .empty());
   // No Method
-  EXPECT_TRUE(filecoin::transaction_sign(R"({
+  EXPECT_TRUE(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -366,7 +366,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                          private_key)
                   .empty());
   // No Params
-  EXPECT_TRUE(filecoin::transaction_sign(R"({
+  EXPECT_TRUE(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -380,7 +380,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                          private_key)
                   .empty());
   // No Nonce
-  EXPECT_TRUE(filecoin::transaction_sign(R"({
+  EXPECT_TRUE(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -394,7 +394,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                          private_key)
                   .empty());
   // No To
-  EXPECT_TRUE(filecoin::transaction_sign(R"({
+  EXPECT_TRUE(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -409,7 +409,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                   .empty());
   // No Value
 
-  EXPECT_TRUE(filecoin::transaction_sign(R"({
+  EXPECT_TRUE(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -423,7 +423,7 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                          private_key)
                   .empty());
   // No Version
-  EXPECT_EQ(std::string(filecoin::transaction_sign(R"({
+  EXPECT_EQ(std::string(filecoin::transaction_sign(false, R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -437,10 +437,29 @@ TEST(FilTransactionUnitTest, TransactionSign) {
                                                    private_key)),
             "SozNIZGNAvALCWtc38OUhO9wdFl82qESGhjnVVhI6CYNN0gP5qa+hZtyFh+"
             "j9K0wIVVU10ZJPgaV0yM6a+xwKgA=");
+
+  // f1->f4
+  EXPECT_EQ(std::string(filecoin::transaction_sign(false, R"({
+                 "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
+                 "GasFeeCap": "3",
+                 "GasLimit": 1,
+                 "GasPremium": "2",
+                 "Method": 3844450837,
+                 "Params": "",
+                 "Nonce": 1,
+                 "To": "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
+                 "Value": "6",
+                 "Version": 0
+               })",
+                                                   private_key)),
+            "cJny5ecvdcWNblL8NcFrsrDy8b47UZ5uz7+Djvb4Nx5sRkb/"
+            "B5JaDpBgxuFRqd8Src/jyr3R4YQ/QvdeAjeTGAE=");
+
   // Broken json
-  EXPECT_TRUE(filecoin::transaction_sign(R"({broken})", private_key).empty());
+  EXPECT_TRUE(
+      filecoin::transaction_sign(false, R"({broken})", private_key).empty());
   // Empty json
-  EXPECT_TRUE(filecoin::transaction_sign("", private_key).empty());
+  EXPECT_TRUE(filecoin::transaction_sign(false, "", private_key).empty());
 }
 
 }  // namespace brave_wallet
