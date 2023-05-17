@@ -265,6 +265,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "brave-ads-cxx"
+version = "0.1.0"
+dependencies = [
+ "cxx",
+ "lazy_static",
+ "regex",
+]
+
+[[package]]
 name = "brave-news-cxx"
 version = "1.0.0"
 dependencies = [
@@ -280,6 +289,7 @@ name = "brave-rust"
 version = "0.1.0"
 dependencies = [
  "adblock-ffi",
+ "brave-ads-cxx",
  "brave-news-cxx",
  "brave-wallet-cxx",
  "challenge-bypass-ristretto-ffi",

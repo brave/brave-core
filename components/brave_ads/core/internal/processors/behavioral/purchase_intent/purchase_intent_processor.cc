@@ -10,7 +10,6 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
-#include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.h"
@@ -19,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+#include "brave/components/brave_ads/rust/string_strip_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
@@ -45,7 +45,7 @@ KeywordList ToKeywords(const std::string& value) {
   const std::string lowercase_value = base::ToLowerASCII(value);
 
   const std::string stripped_value =
-      StripNonAlphaNumericCharacters(lowercase_value);
+      rust::StripNonAlphaNumericCharacters(lowercase_value);
 
   return base::SplitString(stripped_value, " ", base::TRIM_WHITESPACE,
                            base::SPLIT_WANT_NONEMPTY);

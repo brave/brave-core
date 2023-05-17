@@ -8,8 +8,8 @@
 #include "base/check.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
+#include "brave/components/brave_ads/rust/string_strip_util.h"
 
 namespace brave_ads::privacy::p2a {
 
@@ -26,7 +26,8 @@ std::vector<std::string> CreateAdOpportunityQuestions(
   for (const auto& segment : parent_segments) {
     CHECK(!segment.empty());
 
-    std::string stripped_segment = StripNonAlphaNumericCharacters(segment);
+    std::string stripped_segment =
+        rust::StripNonAlphaNumericCharacters(segment);
 
     base::ReplaceChars(stripped_segment, " ", "", &stripped_segment);
     CHECK(!stripped_segment.empty());

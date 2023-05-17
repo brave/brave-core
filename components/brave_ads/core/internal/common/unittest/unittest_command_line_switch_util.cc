@@ -8,8 +8,8 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/strings/strcat.h"
-#include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_string_util.h"
+#include "brave/components/brave_ads/rust/string_strip_util.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 
 namespace brave_ads {
@@ -31,7 +31,7 @@ std::string CommandLineSwitchToString(
 std::string SanitizeCommandLineSwitchFromString(
     const std::string& command_line_switch) {
   return CapitalizeFirstCharacterOfEachWordAndTrimWhitespace(
-      StripNonAlphaNumericCharacters(command_line_switch));
+      rust::StripNonAlphaNumericCharacters(command_line_switch));
 }
 
 }  // namespace

@@ -13,9 +13,9 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+#include "brave/components/brave_ads/rust/parse_and_sanitize_html_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -35,7 +35,7 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
         1, "Failed to process text embeddings as resource not initialized");
   }
 
-  const std::string text = SanitizeHtml(html);
+  const std::string text = rust::ParseAndSanitizeOgTagAttribute(html);
   if (text.empty()) {
     return BLOG(1, "No text available for embedding");
   }

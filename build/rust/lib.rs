@@ -13,6 +13,8 @@ pub use speedreader_ffi;
 
 pub use skus_cxx;
 
+pub use brave_ads_cxx;
+
 pub use brave_news_cxx;
 
 pub use brave_wallet_cxx;

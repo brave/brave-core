@@ -10,11 +10,11 @@
 
 #include "base/check.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_util.h"
+#include "brave/components/brave_ads/rust/string_strip_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::ml::pipeline {
@@ -91,9 +91,11 @@ PredictionMap TextProcessing::Apply(
 
 PredictionMap TextProcessing::GetTopPredictions(
     const std::string& content) const {
-  std::string stripped_content = StripNonAlphaCharacters(content);
+  std::string sanitized_content =
+      brave_ads::rust::StripNonAlphaCharacters(content);
+
   const PredictionMap predictions =
-      Apply(std::make_unique<TextData>(std::move(stripped_content)));
+      Apply(std::make_unique<TextData>(std::move(sanitized_content)));
   const double expected_prob =
       1.0 / std::max(1.0, static_cast<double>(predictions.size()));
   PredictionMap rtn;
