@@ -131,7 +131,13 @@ std::string ToKeysString(const ui::Accelerator& accelerator) {
   auto domcode = ui::UsLayoutKeyboardCodeToDomCode(accelerator.key_code());
   ui::DomKey domkey;
   ui::KeyboardCode out_code;
-  if (!ui::DomCodeToUsLayoutDomKey(domcode, 0, &domkey, &out_code)) {
+
+  if (accelerator.key_code() == ui::VKEY_LMENU ||
+      accelerator.key_code() == ui::VKEY_MENU) {
+    parts.push_back(kMenu);
+  } else if (accelerator.key_code() == ui::VKEY_RMENU) {
+    parts.push_back(kRMenu);
+  } else if (!ui::DomCodeToUsLayoutDomKey(domcode, 0, &domkey, &out_code)) {
     parts.push_back("Unknown Key: " +
                     base::NumberToString(accelerator.key_code()));
   } else {
