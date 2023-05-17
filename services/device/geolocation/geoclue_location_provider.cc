@@ -24,6 +24,7 @@
 #include "dbus/property.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/device/public/cpp/geolocation/geoposition.h"
+#include "services/device/public/mojom/geoposition.mojom.h"
 
 namespace device {
 
@@ -42,11 +43,11 @@ constexpr uint32_t kGeoClueAccuracyLow = 5;
 // This corresponds to the GeoClue2 AccuracyLevel: Exact
 constexpr uint32_t kGeoClueAccuracyHigh = 8;
 
-mojom::Geoposition GetErrorPosition() {
-  mojom::Geoposition response;
-  response.error_code = mojom::Geoposition_ErrorCode::POSITION_UNAVAILABLE;
-  response.error_message = "Unable to create instance of Geolocation API";
-  return response;
+mojom::GeopositionResultPtr GetError() {
+  auto error = mojom::GeopositionError::New();
+  error->error_code = mojom::GeopositionErrorCode::kPositionUnavailable;
+  error->error_message = "Unable to create instance of Geolocation API";
+  return mojom::GeopositionResult::NewError(std::move(error));
 }
 
 // Note: This method blocks because the call to NewSystemProvider is not
@@ -203,8 +204,8 @@ void GeoClueLocationProvider::StopProvider() {
   gclue_client_.reset();
 }
 
-const mojom::Geoposition& GeoClueLocationProvider::GetPosition() {
-  return last_position_;
+const mojom::GeopositionResult* GeoClueLocationProvider::GetPosition() {
+  return last_position_.get();
 }
 
 void GeoClueLocationProvider::OnPermissionGranted() {
@@ -212,30 +213,31 @@ void GeoClueLocationProvider::OnPermissionGranted() {
   MaybeStartClient();
 }
 
-void GeoClueLocationProvider::SetPosition(const mojom::Geoposition& position) {
-  last_position_ = position;
+void GeoClueLocationProvider::SetPosition(
+    mojom::GeopositionResultPtr position) {
+  last_position_ = std::move(position);
 
   if (client_state_ != kStarted) {
     return;
   }
 
-  if (last_position_.error_code == mojom::Geoposition_ErrorCode::NONE &&
-      !device::ValidateGeoposition(last_position_)) {
+  if (last_position_->is_position() &&
+      device::ValidateGeoposition(*last_position_->get_position())) {
+    position_update_callback_.Run(this, last_position_.Clone());
     return;
   }
-  position_update_callback_.Run(this, last_position_);
 }
 
 void GeoClueLocationProvider::OnGetClientCompleted(dbus::Response* response) {
   if (!response) {
-    SetPosition(GetErrorPosition());
+    SetPosition(GetError());
     return;
   }
 
   dbus::MessageReader reader(response);
   dbus::ObjectPath path;
   if (!reader.PopObjectPath(&path)) {
-    SetPosition(GetErrorPosition());
+    SetPosition(GetError());
     return;
   }
 
@@ -265,7 +267,7 @@ void GeoClueLocationProvider::OnSetClientProperties(
   if (base::ranges::any_of(success, [](const auto& value) { return !value; })) {
     VLOG(1) << "Failed to set properties. GeoClue2 location provider will "
                "not work properly";
-    SetPosition(GetErrorPosition());
+    SetPosition(GetError());
     return;
   }
 
@@ -289,7 +291,7 @@ void GeoClueLocationProvider::ConnectSignal() {
             if (!reader.PopObjectPath(&old_location) ||
                 !reader.PopObjectPath(&new_location)) {
               if (provider) {
-                provider->SetPosition(GetErrorPosition());
+                provider->SetPosition(GetError());
               }
               return;
             }
@@ -311,7 +313,7 @@ void GeoClueLocationProvider::OnSignalConnected(
     VLOG(1) << "Failed to connect to LocationUpdated Signal. GeoClue2 "
                "location provider will "
                "not work properly";
-    SetPosition(GetErrorPosition());
+    SetPosition(GetError());
     return;
   }
 
@@ -348,16 +350,16 @@ void GeoClueLocationProvider::ReadGeoClueLocation(
 
 void GeoClueLocationProvider::OnReadGeoClueLocation(
     std::unique_ptr<GeoClueLocationProperties> properties) {
-  mojom::Geoposition position;
-  position.latitude = properties->latitude.value();
-  position.longitude = properties->longitude.value();
-  position.accuracy = properties->accuracy.value();
-  position.altitude = properties->altitude.value();
-  position.heading = properties->heading.value();
-  position.speed = properties->speed.value();
-  position.error_code = mojom::Geoposition::ErrorCode::NONE;
-  position.timestamp = base::Time::Now();
-  SetPosition(position);
+  auto position = mojom::Geoposition::New();
+  position->latitude = properties->latitude.value();
+  position->longitude = properties->longitude.value();
+  position->accuracy = properties->accuracy.value();
+  position->altitude = properties->altitude.value();
+  position->heading = properties->heading.value();
+  position->speed = properties->speed.value();
+  position->timestamp = base::Time::Now();
+
+  SetPosition(mojom::GeopositionResult::NewPosition(std::move(position)));
 }
 
 std::unique_ptr<GeoClueLocationProvider> MaybeCreateGeoClueLocationProvider() {

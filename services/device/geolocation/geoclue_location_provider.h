@@ -40,7 +40,7 @@ class COMPONENT_EXPORT(BRAVE_GEOLOCATION) GeoClueLocationProvider
       const LocationProviderUpdateCallback& callback) override;
   void StartProvider(bool high_accuracy) override;
   void StopProvider() override;
-  const mojom::Geoposition& GetPosition() override;
+  const mojom::GeopositionResult* GetPosition() override;
   void OnPermissionGranted() override;
 
  protected:
@@ -58,7 +58,7 @@ class COMPONENT_EXPORT(BRAVE_GEOLOCATION) GeoClueLocationProvider
   bool permission_granted_ = false;
   bool high_accuracy_requested_ = false;
 
-  void SetPosition(const mojom::Geoposition& position);
+  void SetPosition(mojom::GeopositionResultPtr position);
 
  private:
   // There is a bit of a process to setup a GeoClue2.Client and start listening
@@ -107,7 +107,7 @@ class COMPONENT_EXPORT(BRAVE_GEOLOCATION) GeoClueLocationProvider
   scoped_refptr<dbus::Bus> bus_;
   scoped_refptr<dbus::ObjectProxy> gclue_client_;
 
-  mojom::Geoposition last_position_;
+  mojom::GeopositionResultPtr last_position_;
   LocationProviderUpdateCallback position_update_callback_;
 
   base::WeakPtrFactory<GeoClueLocationProvider> weak_ptr_factory_{this};
