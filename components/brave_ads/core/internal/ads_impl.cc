@@ -153,8 +153,10 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     const mojom::NewTabPageAdEventType event_type) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  new_tab_page_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                        event_type);
+  if (IsInitialized()) {
+    new_tab_page_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
+                                          event_type);
+  }
 }
 
 void AdsImpl::TriggerPromotedContentAdEvent(
@@ -163,8 +165,10 @@ void AdsImpl::TriggerPromotedContentAdEvent(
     const mojom::PromotedContentAdEventType event_type) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  promoted_content_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                            event_type);
+  if (IsInitialized()) {
+    promoted_content_ad_handler_.TriggerEvent(placement_id,
+                                              creative_instance_id, event_type);
+  }
 }
 
 void AdsImpl::MaybeServeInlineContentAd(
@@ -183,8 +187,10 @@ void AdsImpl::TriggerInlineContentAdEvent(
     const mojom::InlineContentAdEventType event_type) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  inline_content_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                          event_type);
+  if (IsInitialized()) {
+    inline_content_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
+                                            event_type);
+  }
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
@@ -201,6 +207,10 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
     const mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
   CHECK(mojom::IsKnownEnumValue(ad_type));
+
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   PurgeOrphanedAdEvents(
       ad_type,
@@ -222,6 +232,10 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
 }
 
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
   ClientStateManager::GetInstance().RemoveAllHistory();
 
   std::move(callback).Run(/*success*/ true);
@@ -247,21 +261,37 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*diagnostics*/ absl::nullopt);
+  }
+
   DiagnosticManager::GetInstance().GetDiagnostics(std::move(callback));
 }
 
 mojom::UserReactionType AdsImpl::ToggleLikeAd(const base::Value::Dict& value) {
+  if (!IsInitialized()) {
+    return mojom::UserReactionType::kNeutral;
+  }
+
   return HistoryManager::GetInstance().LikeAd(AdContentFromValue(value));
 }
 
 mojom::UserReactionType AdsImpl::ToggleDislikeAd(
     const base::Value::Dict& value) {
+  if (!IsInitialized()) {
+    return mojom::UserReactionType::kNeutral;
+  }
+
   return HistoryManager::GetInstance().DislikeAd(AdContentFromValue(value));
 }
 
 mojom::UserReactionType AdsImpl::ToggleLikeCategory(
     const std::string& category,
     const mojom::UserReactionType user_reaction_type) {
+  if (!IsInitialized()) {
+    return mojom::UserReactionType::kNeutral;
+  }
+
   return HistoryManager::GetInstance().LikeCategory(category,
                                                     user_reaction_type);
 }
@@ -269,15 +299,27 @@ mojom::UserReactionType AdsImpl::ToggleLikeCategory(
 mojom::UserReactionType AdsImpl::ToggleDislikeCategory(
     const std::string& category,
     const mojom::UserReactionType user_reaction_type) {
+  if (!IsInitialized()) {
+    return mojom::UserReactionType::kNeutral;
+  }
+
   return HistoryManager::GetInstance().DislikeCategory(category,
                                                        user_reaction_type);
 }
 
 bool AdsImpl::ToggleSaveAd(const base::Value::Dict& value) {
+  if (!IsInitialized()) {
+    return false;
+  }
+
   return HistoryManager::GetInstance().ToggleSaveAd(AdContentFromValue(value));
 }
 
 bool AdsImpl::ToggleMarkAdAsInappropriate(const base::Value::Dict& value) {
+  if (!IsInitialized()) {
+    return false;
+  }
+
   return HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
       AdContentFromValue(value));
 }
