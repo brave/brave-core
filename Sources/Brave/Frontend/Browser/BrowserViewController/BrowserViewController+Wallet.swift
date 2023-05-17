@@ -123,7 +123,7 @@ extension BrowserViewController: BraveWalletDelegate {
     }
   }
   
-  public func openWalletURL(_ destinationURL: URL) {
+  public func openDestinationURL(_ destinationURL: URL) {
     if presentedViewController != nil {
       // dismiss to show the new tab
       self.dismiss(animated: true)

@@ -6,10 +6,13 @@
 import SwiftUI
 import Preferences
 import Strings
+import BraveShared
 
 struct OtherPrivacySettingsSectionView: View {
   @State private var showPrivateBrowsingConfirmation = false
   @ObservedObject var settings: AdvancedShieldsSettings
+  
+  @Environment(\.openURL) private var openSettingsURL
   
   var body: some View {
     Section {
@@ -61,7 +64,7 @@ struct OtherPrivacySettingsSectionView: View {
       )
       OptionToggleView(
         title: Strings.googleSafeBrowsing,
-        subtitle: Strings.googleSafeBrowsingUsingWebKitDescription,
+        subtitle: String.localizedStringWithFormat(Strings.googleSafeBrowsingUsingWebKitDescription, URL.brave.safeBrowsingHelp.absoluteString),
         option: Preferences.Shields.googleSafeBrowsing
       )
       ShieldToggleView(
