@@ -19,6 +19,7 @@ source_set("api") {
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
+    "//components/prefs",
     "//services/network/public/cpp",
   ]
 }

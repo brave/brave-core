@@ -37,30 +37,6 @@ bool IsBraveVPNHelperServiceInstalled() {
   return service.IsValid();
 }
 
-bool IsBraveVPNHelperServiceRunning() {
-  ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
-  if (!scm.IsValid()) {
-    VLOG(1) << "::OpenSCManager failed. service_name: "
-            << brave_vpn::GetBraveVpnHelperServiceName()
-            << ", error: " << std::hex << HRESULTFromLastError();
-    return false;
-  }
-  ScopedScHandle service(::OpenService(
-      scm.Get(), brave_vpn::GetBraveVpnHelperServiceName().c_str(),
-      SERVICE_QUERY_STATUS));
-
-  // Service registered and has not exceeded the number of auto-configured
-  // restarts.
-  if (!service.IsValid()) {
-    return false;
-  }
-  SERVICE_STATUS service_status = {0};
-  if (!::QueryServiceStatus(service.Get(), &service_status)) {
-    return false;
-  }
-  return service_status.dwCurrentState == SERVICE_RUNNING;
-}
-
 std::wstring GetBraveVPNConnectionName() {
   return base::UTF8ToWide(
       brave_vpn::GetBraveVPNEntryName(install_static::GetChromeChannel()));

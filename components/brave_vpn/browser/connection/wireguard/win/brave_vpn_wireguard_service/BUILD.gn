@@ -40,6 +40,8 @@ executable("brave_vpn_wireguard_service") {
     "service_main.h",
     "service_utils.cc",
     "service_utils.h",
+    "wireguard_tunnel_service.cc",
+    "wireguard_tunnel_service.h",
   ]
 
   deps = [

@@ -35,10 +35,7 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
   // BraveVPNOSConnectionAPI overrides:
   void Connect() override;
   void Disconnect() override;
-  void ToggleConnection() override;
   void CheckConnection() override;
-  void ResetConnectionInfo() override;
-  std::string GetHostname() const override;
 
   // BraveVPNOSConnectionAPIBase interfaces:
   void CreateVPNConnectionImpl(const BraveVPNConnectionInfo& info) override;

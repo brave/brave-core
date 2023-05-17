@@ -6,8 +6,11 @@
 #include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
 
 #include <wrl/client.h>
+#include <string>
 
+#include "base/logging.h"
 #include "base/win/windows_types.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
 
 namespace brave_vpn {
 
@@ -16,4 +19,25 @@ HRESULT HRESULTFromLastError() {
   return (error_code != NO_ERROR) ? HRESULT_FROM_WIN32(error_code) : E_FAIL;
 }
 
+bool IsWindowsServiceRunning(const std::wstring& service_name) {
+  ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
+  if (!scm.IsValid()) {
+    VLOG(1) << "::OpenSCManager failed. service_name: " << service_name
+            << ", error: " << std::hex << HRESULTFromLastError();
+    return false;
+  }
+  ScopedScHandle service(
+      ::OpenService(scm.Get(), service_name.c_str(), SERVICE_QUERY_STATUS));
+
+  // Service registered and has not exceeded the number of auto-configured
+  // restarts.
+  if (!service.IsValid()) {
+    return false;
+  }
+  SERVICE_STATUS service_status = {0};
+  if (!::QueryServiceStatus(service.Get(), &service_status)) {
+    return false;
+  }
+  return service_status.dwCurrentState == SERVICE_RUNNING;
+}
 }  // namespace brave_vpn
