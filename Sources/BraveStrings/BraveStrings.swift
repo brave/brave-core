@@ -3062,6 +3062,20 @@ extension Strings {
         "sync.syncChainAccountDeletionErrorDescription", tableName: "BraveShared", bundle: .module,
         value: "Sync Device",
         comment: "Alert description for error while deleting sync chain")
+    public static let syncSetPasscodeAlertTitle =
+      NSLocalizedString(
+        "sync.syncSetPasscodeAlertTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Set a Passcode",
+        comment: "The title displayed in alert when a user needs to set passcode")
+    public static let syncSetPasscodeAlertDescription =
+      NSLocalizedString(
+        "login.loginInfoSetPasscodeAlertDescription",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "To setup sync chain or see settings, you must first set a passcode on your device..",
+        comment: "The message displayed in alert when a user needs to set a passcode")
   }
 }
 

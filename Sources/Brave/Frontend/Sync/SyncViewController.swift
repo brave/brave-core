@@ -5,19 +5,30 @@ import Shared
 import BraveShared
 import Data
 
-class RoundInterfaceView: UIView {
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    layer.cornerRadius = min(bounds.height, bounds.width) / 2.0
-  }
-}
-
 class SyncViewController: UIViewController {
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  let windowProtection: WindowProtection?
+  private let requiresAuthentication: Bool
+
+  // MARK: Lifecycle
+
+  init(windowProtection: WindowProtection? = nil, requiresAuthentication: Bool = false) {
+    self.windowProtection = windowProtection
+    self.requiresAuthentication = requiresAuthentication
     
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func viewDidLoad() {
     view.backgroundColor = .secondaryBraveBackground
+
+    if requiresAuthentication {
+      askForAuthentication()
+    }
   }
 
   /// Perform a block of code only if user has a network connection, shows an error alert otherwise.
@@ -29,5 +40,42 @@ class SyncViewController: UIViewController {
     }
 
     code()
+  }
+  
+  /// A method to ask biometric authentication to user
+  /// - Parameter completion: block returning authentication status
+  func askForAuthentication(completion: ((Bool) -> Void)? = nil) {
+    guard let windowProtection = windowProtection else {
+      completion?(false)
+      return
+    }
+
+    if !windowProtection.isPassCodeAvailable {
+      showSetPasscodeError() {
+        completion?(false)
+      }
+    } else {
+      windowProtection.presentAuthenticationForViewController(
+        determineLockWithPasscode: false) { status in
+          completion?(status)
+      }
+    }
+  }
+  
+  /// An alert presenter for passcode error to warn user to setup passcode to use feature
+  /// - Parameter completion: block after Ok button is pressed
+  private func showSetPasscodeError(completion: @escaping (() -> Void)) {
+    let alert = UIAlertController(
+      title: Strings.Sync.syncSetPasscodeAlertTitle,
+      message: Strings.Sync.syncSetPasscodeAlertDescription,
+      preferredStyle: .alert)
+
+    alert.addAction(
+      UIAlertAction(title: Strings.OKString, style: .default, handler: { _ in
+          completion()
+      })
+    )
+    
+    present(alert, animated: true, completion: nil)
   }
 }

@@ -74,13 +74,17 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
   
   // MARK: Lifecycle
 
-  init(showDoneButton: Bool = false, syncAPI: BraveSyncAPI, syncProfileService: BraveSyncProfileServiceIOS, tabManager: TabManager) {
+  init(showDoneButton: Bool = false,
+       syncAPI: BraveSyncAPI,
+       syncProfileService: BraveSyncProfileServiceIOS,
+       tabManager: TabManager,
+       windowProtection: WindowProtection?) {
     self.showDoneButton = showDoneButton
     self.syncAPI = syncAPI
     self.syncProfileService = syncProfileService
     self.tabManager = tabManager
     
-    super.init(nibName: nil, bundle: nil)
+    super.init(windowProtection: windowProtection, requiresAuthentication: syncAPI.isInSyncGroup)
   }
 
   required init?(coder: NSCoder) {

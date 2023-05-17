@@ -326,11 +326,24 @@ class SettingsViewController: TableViewController {
                 self.present(SyncAlerts.noConnection, animated: true)
                 return
               }
+              
+              let syncSettingsViewController = SyncSettingsTableViewController(
+                syncAPI: syncAPI,
+                syncProfileService:
+                  syncProfileServices,
+                tabManager: tabManager,
+                windowProtection: windowProtection)
 
               self.navigationController?
-                .pushViewController(SyncSettingsTableViewController(syncAPI: syncAPI, syncProfileService: syncProfileServices, tabManager: tabManager), animated: true)
+                .pushViewController(syncSettingsViewController, animated: true)
             } else {
-              self.navigationController?.pushViewController(SyncWelcomeViewController(syncAPI: syncAPI, syncProfileServices: syncProfileServices, tabManager: tabManager), animated: true)
+              let syncWelcomeViewController = SyncWelcomeViewController(
+                syncAPI: syncAPI,
+                syncProfileServices: syncProfileServices,
+                tabManager: tabManager,
+                windowProtection: windowProtection)
+              
+              self.navigationController?.pushViewController(syncWelcomeViewController, animated: true)
             }
           }, image: UIImage(braveSystemNamed: "leo.sync"), accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self),

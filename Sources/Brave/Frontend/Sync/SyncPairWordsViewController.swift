@@ -58,7 +58,7 @@ class SyncPairWordsViewController: SyncViewController {
   
   init(syncAPI: BraveSyncAPI) {
     self.syncAPI = syncAPI
-    super.init(nibName: nil, bundle: nil)
+    super.init()
   }
 
   @available(*, unavailable)
