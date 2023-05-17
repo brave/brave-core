@@ -55,6 +55,11 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
   base::ReplaceSubstringsAfterOffset(&input_copy, 0, ai_chat::kAIPrompt, "");
   base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<article>", "");
   base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</article>", "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<history>", "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</history>", "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<question>", "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</question>", "");
+
 
   active_chat_tab_helper_->MakeAPIRequestWithConversationHistoryUpdate(
       {CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE, input_copy});
