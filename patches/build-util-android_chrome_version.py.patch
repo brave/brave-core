@@ -1,8 +1,8 @@
 diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
-index 876f485466959e1d6ac57fcf237ea305880e64ab..e0457dbb68e0e4cb4d31a2767bda92ed00d9219e 100755
+index b50847f4de283a0a409bd5abe5f32800e9083084..f099941b29bed1297888320dffd694a7338c056a 100755
 --- a/build/util/android_chrome_version.py
 +++ b/build/util/android_chrome_version.py
-@@ -286,7 +286,7 @@ def GenerateVersionCodes(version_values, arch, is_next_build):
+@@ -314,7 +314,7 @@ def GenerateVersionCodes(version_values, arch, is_next_build):
    """
  
    base_version_code = int(
