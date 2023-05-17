@@ -45,11 +45,10 @@ class TabManager final : public AdsClientNotifierObserver {
   absl::optional<TabInfo> GetVisible() const;
   absl::optional<TabInfo> GetLastVisible() const;
 
-  absl::optional<TabInfo> GetForId(int32_t id) const;
+  absl::optional<TabInfo> MaybeGetForId(int32_t id) const;
 
  private:
-  void Add(const TabInfo& tab);
-  void Update(const TabInfo& tab);
+  TabInfo& GetOrCreateForId(int32_t id);
   void Remove(int32_t id);
 
   void NotifyTabDidChangeFocus(int32_t id) const;

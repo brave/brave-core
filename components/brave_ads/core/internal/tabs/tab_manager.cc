@@ -38,31 +38,23 @@ void TabManager::RemoveObserver(TabManagerObserver* observer) {
 }
 
 bool TabManager::IsVisible(const int32_t id) const {
-  if (id == 0) {
-    return false;
-  }
-
-  return visible_tab_id_ == id;
+  return id != 0 && visible_tab_id_ == id;
 }
 
 bool TabManager::IsPlayingMedia(const int32_t id) const {
-  const absl::optional<TabInfo> tab = GetForId(id);
-  if (!tab) {
-    return false;
-  }
-
-  return tab->is_playing_media;
+  const absl::optional<TabInfo> tab = MaybeGetForId(id);
+  return tab ? tab->is_playing_media : false;
 }
 
 absl::optional<TabInfo> TabManager::GetVisible() const {
-  return GetForId(visible_tab_id_);
+  return MaybeGetForId(visible_tab_id_);
 }
 
 absl::optional<TabInfo> TabManager::GetLastVisible() const {
-  return GetForId(last_visible_tab_id_);
+  return MaybeGetForId(last_visible_tab_id_);
 }
 
-absl::optional<TabInfo> TabManager::GetForId(const int32_t id) const {
+absl::optional<TabInfo> TabManager::MaybeGetForId(const int32_t id) const {
   if (tabs_.find(id) == tabs_.cend()) {
     return absl::nullopt;
   }
@@ -72,14 +64,14 @@ absl::optional<TabInfo> TabManager::GetForId(const int32_t id) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TabManager::Add(const TabInfo& tab) {
-  CHECK(!GetForId(tab.id));
-  tabs_[tab.id] = tab;
-}
+TabInfo& TabManager::GetOrCreateForId(const int32_t id) {
+  if (tabs_.find(id) == tabs_.cend()) {
+    TabInfo tab;
+    tab.id = id;
+    tabs_[id] = tab;
+  }
 
-void TabManager::Update(const TabInfo& tab) {
-  CHECK(GetForId(tab.id));
-  tabs_[tab.id] = tab;
+  return tabs_[id];
 }
 
 void TabManager::Remove(const int32_t id) {
@@ -147,14 +139,12 @@ void TabManager::OnNotifyTabHtmlContentDidChange(
   CHECK(!redirect_chain.empty());
 
   const uint32_t hash = base::FastHash(content);
-  if (hash == last_html_content_hash_) {
-    return;
+  if (hash != last_html_content_hash_) {
+    last_html_content_hash_ = hash;
+
+    BLOG(2, "Tab id " << id << " HTML content changed");
+    NotifyHtmlContentDidChange(id, redirect_chain, content);
   }
-  last_html_content_hash_ = hash;
-
-  BLOG(2, "Tab id " << id << " HTML content changed");
-
-  NotifyHtmlContentDidChange(id, redirect_chain, content);
 }
 
 void TabManager::OnNotifyTabTextContentDidChange(
@@ -164,38 +154,32 @@ void TabManager::OnNotifyTabTextContentDidChange(
   CHECK(!redirect_chain.empty());
 
   const uint32_t hash = base::FastHash(content);
-  if (hash == last_text_content_hash_) {
-    return;
+  if (hash != last_text_content_hash_) {
+    last_text_content_hash_ = hash;
+
+    BLOG(2, "Tab id " << id << " text content changed");
+    NotifyTextContentDidChange(id, redirect_chain, content);
   }
-  last_text_content_hash_ = hash;
-
-  BLOG(2, "Tab id " << id << " text content changed");
-
-  NotifyTextContentDidChange(id, redirect_chain, content);
 }
 
 void TabManager::OnNotifyTabDidStartPlayingMedia(const int32_t id) {
-  if (tabs_[id].is_playing_media) {
-    return;
+  TabInfo& tab = GetOrCreateForId(id);
+  if (!tab.is_playing_media) {
+    tab.is_playing_media = true;
+
+    BLOG(2, "Tab id " << id << " started playing media");
+    NotifyTabDidStartPlayingMedia(id);
   }
-
-  BLOG(2, "Tab id " << id << " is playing media");
-
-  tabs_[id].is_playing_media = true;
-
-  NotifyTabDidStartPlayingMedia(id);
 }
 
 void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t id) {
-  if (!tabs_[id].is_playing_media) {
-    return;
+  TabInfo& tab = GetOrCreateForId(id);
+  if (tab.is_playing_media) {
+    tab.is_playing_media = false;
+
+    BLOG(2, "Tab id " << id << " stopped playing media");
+    NotifyTabDidStopPlayingMedia(id);
   }
-
-  BLOG(2, "Tab id " << id << " stopped playing media");
-
-  tabs_[id].is_playing_media = false;
-
-  NotifyTabDidStopPlayingMedia(id);
 }
 
 void TabManager::OnNotifyTabDidChange(const int32_t id,
@@ -203,67 +187,48 @@ void TabManager::OnNotifyTabDidChange(const int32_t id,
                                       const bool is_visible,
                                       const bool is_incognito) {
   if (is_incognito) {
-    BLOG(7, "Tab id " << id << " is incognito");
-    return;
+    return BLOG(7, "Tab id " << id << " is incognito");
+  }
+
+  const bool is_existing_tab = static_cast<bool>(MaybeGetForId(id));
+
+  TabInfo& tab = GetOrCreateForId(id);
+
+  const bool redirect_chain_did_change = tab.redirect_chain != redirect_chain;
+  if (redirect_chain_did_change) {
+    tab.redirect_chain = redirect_chain;
   }
 
   if (!is_visible) {
     BLOG(7, "Tab id " << id << " is occluded");
-
-    if (!GetForId(id)) {
-      // Re-add reloaded tabs when browser is restarted
-      TabInfo tab;
-      tab.id = id;
-      tab.redirect_chain = redirect_chain;
-      Add(tab);
-    } else {
-      if (tabs_[id].redirect_chain == redirect_chain) {
-        return;
-      }
-
-      BLOG(2, "Tab id " << id << " did change");
-
-      tabs_[id].redirect_chain = redirect_chain;
-
-      NotifyTabDidChange(tabs_[id]);
-    }
-
-    return;
-  }
-
-  if (visible_tab_id_ == id) {
-    if (tabs_[id].redirect_chain == redirect_chain) {
+    if (!redirect_chain_did_change) {
       return;
     }
 
-    BLOG(2, "Tab id " << id << " was updated");
+    BLOG(2, "Tab id " << id << " did change");
+    return NotifyTabDidChange(tab);
+  }
 
-    tabs_[id].redirect_chain = redirect_chain;
+  if (visible_tab_id_ == id) {
+    if (!redirect_chain_did_change) {
+      return;
+    }
 
-    return NotifyTabDidChange(tabs_[id]);
+    BLOG(2, "Tab id " << id << " did change");
+    return NotifyTabDidChange(tab);
   }
 
   BLOG(2, "Tab id " << id << " is visible");
 
   last_visible_tab_id_ = visible_tab_id_;
-
   visible_tab_id_ = id;
 
-  if (const absl::optional<TabInfo> tab = GetForId(id)) {
-    BLOG(2, "Focused on existing tab id " << id);
-
-    Update(*tab);
-
+  if (is_existing_tab) {
+    BLOG(2, "Focused on existing tab with id " << id);
     return NotifyTabDidChangeFocus(id);
   }
 
   BLOG(2, "Opened a new tab with id " << id);
-
-  TabInfo tab;
-  tab.id = id;
-  tab.redirect_chain = redirect_chain;
-  Add(tab);
-
   NotifyDidOpenNewTab(tab);
 }
 

@@ -101,7 +101,8 @@ TEST_F(BraveAdsTabManagerTest, OpenNewTab) {
       /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
+  const absl::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -149,7 +150,7 @@ TEST_F(BraveAdsTabManagerTest, DoNotUpdateIncognitoTab) {
       /*is_incognito*/ true);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance().GetForId(1));
+  EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(1));
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -172,7 +173,8 @@ TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
       /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
+  const absl::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetForId(1);
   ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
@@ -202,7 +204,8 @@ TEST_F(BraveAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
       /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
+  const absl::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetForId(1);
   ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
@@ -234,7 +237,8 @@ TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
       /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
+  const absl::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetForId(1);
   ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
@@ -265,7 +269,8 @@ TEST_F(BraveAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
       /*is_visible*/ true, /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
+  const absl::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetForId(1);
   ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
@@ -294,7 +299,7 @@ TEST_F(BraveAdsTabManagerTest, CloseTab) {
   NotifyDidCloseTab(/*id*/ 1);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance().GetForId(1));
+  EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(1));
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -432,7 +437,8 @@ TEST_F(BraveAdsTabManagerTest, GetForId) {
   ResetObserver();
 
   // Act
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
+  const absl::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetForId(1);
   ASSERT_TRUE(tab);
 
   // Assert
@@ -455,7 +461,7 @@ TEST_F(BraveAdsTabManagerTest, DoNotGetTabForMissingId) {
   // Act
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance().GetForId(2));
+  EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(2));
 }
 
 }  // namespace brave_ads
