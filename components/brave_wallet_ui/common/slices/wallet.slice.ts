@@ -430,7 +430,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         }).flat(1)
 
         const filteredTransactions = newPendingTransactions?.filter((tx) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
-        const sortedTransactionList = sortTransactionByDate(filteredTransactions)
+        const sortedTransactionList = sortTransactionByDate(filteredTransactions, 'descending')
 
         state.transactions = payload
         state.pendingTransactions = sortedTransactionList
