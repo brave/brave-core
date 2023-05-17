@@ -570,8 +570,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)reportTabUpdated:(NSInteger)tabId
                      url:(NSURL*)url
       redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-              isSelected:(BOOL)isSelected
-               isPrivate:(BOOL)isPrivate {
+              isSelected:(BOOL)isSelected {
   if (![self isAdsServiceRunning]) {
     return;
   }
@@ -581,8 +580,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
   urls.push_back(net::GURLWithNSURL(url));
   const bool isVisible = isSelected && [self isBrowserActive];
-  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isVisible,
-                                        isPrivate);
+  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isVisible);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {

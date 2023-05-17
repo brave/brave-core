@@ -113,11 +113,10 @@ class MockAdsService : public AdsService {
                     const std::string& html));
   MOCK_METHOD1(NotifyTabDidStartPlayingMedia, void(int32_t tab_id));
   MOCK_METHOD1(NotifyTabDidStopPlayingMedia, void(int32_t tab_id));
-  MOCK_METHOD4(NotifyTabDidChange,
+  MOCK_METHOD3(NotifyTabDidChange,
                void(int32_t tab_id,
                     const std::vector<GURL>& redirect_chain,
-                    bool is_visible,
-                    bool is_incognito));
+                    bool is_visible));
   MOCK_METHOD1(NotifyDidCloseTab, void(int32_t tab_id));
   MOCK_METHOD1(NotifyUserGestureEventTriggered, void(int32_t));
   MOCK_METHOD0(NotifyBrowserDidBecomeActive, void());

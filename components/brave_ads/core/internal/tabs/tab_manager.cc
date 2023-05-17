@@ -184,12 +184,7 @@ void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t id) {
 
 void TabManager::OnNotifyTabDidChange(const int32_t id,
                                       const std::vector<GURL>& redirect_chain,
-                                      const bool is_visible,
-                                      const bool is_incognito) {
-  if (is_incognito) {
-    return BLOG(7, "Tab id " << id << " is incognito");
-  }
-
+                                      const bool is_visible) {
   const bool is_existing_tab = static_cast<bool>(MaybeGetForId(id));
 
   TabInfo& tab = GetOrCreateForId(id);

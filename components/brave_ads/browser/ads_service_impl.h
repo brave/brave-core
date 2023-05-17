@@ -300,8 +300,7 @@ class AdsServiceImpl : public AdsService,
   void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
-                          bool is_visible,
-                          bool is_incognito) override;
+                          bool is_visible) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
 
   void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;

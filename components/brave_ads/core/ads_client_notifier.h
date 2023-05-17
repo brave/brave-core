@@ -75,12 +75,10 @@ class AdsClientNotifier {
   // page. The current page is the last one in the list (so even when there's no
   // redirect, there should be one entry in the list). |is_visible| should be
   // set to |true| if |tab_id| refers to the currently visible tab otherwise
-  // should be set to |false|. |is_incognito| should be set to |true| if the tab
-  // is incognito otherwise |false|. Incognito tabs are no-op.
+  // should be set to |false|.
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
-                          bool is_visible,
-                          bool is_incognito) const;
+                          bool is_visible) const;
 
   // Invoked when a browser tab with the specified |tab_id| is closed.
   void NotifyDidCloseTab(int32_t tab_id) const;

@@ -34,8 +34,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true,
-      /*is_incognito*/ false);
+      /*is_active*/ true);
 
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
 
@@ -50,8 +49,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true,
-      /*is_incognito*/ false);
+      /*is_active*/ true);
 
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
   NotifyTabDidStartPlayingMedia(/*id*/ 2);
@@ -69,8 +67,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true,
-      /*is_incognito*/ false);
+      /*is_active*/ true);
 
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
   NotifyTabDidStartPlayingMedia(/*id*/ 2);
@@ -87,8 +84,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true,
-      /*is_incognito*/ false);
+      /*is_active*/ true);
 
   // Act
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
@@ -113,8 +109,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true,
-      /*is_incognito*/ false);
+      /*is_active*/ true);
 
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
 
@@ -129,8 +124,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true,
-      /*is_incognito*/ false);
+      /*is_active*/ true);
 
   // Act
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
@@ -145,8 +139,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true,
-      /*is_incognito*/ false);
+      /*is_active*/ true);
 
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
   NotifyTabDidStartPlayingMedia(/*id*/ 2);

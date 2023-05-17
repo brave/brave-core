@@ -77,11 +77,9 @@ void AdsClientNotifier::NotifyTabDidStopPlayingMedia(
 void AdsClientNotifier::NotifyTabDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const bool is_visible,
-    const bool is_incognito) const {
+    const bool is_visible) const {
   for (auto& observer : observers_) {
-    observer.OnNotifyTabDidChange(tab_id, redirect_chain, is_visible,
-                                  is_incognito);
+    observer.OnNotifyTabDidChange(tab_id, redirect_chain, is_visible);
   }
 }
 

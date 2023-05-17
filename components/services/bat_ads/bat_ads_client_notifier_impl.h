@@ -77,15 +77,12 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   // Invoked when a browser tab is updated with the specified |redirect_chain|
   // containing a list of redirect URLs that occurred on the way to the current
   // page. The current page is the last one in the list (so even when there's no
-  // redirect, there should be one entry in the list). |is_active| is set to
-  // |true| if |tab_id| refers to the currently active tab otherwise is set to
-  // |false|. |is_browser_active| is set to |true| if the browser window is
-  // active otherwise |false|. |is_incognito| is set to |true| if the tab is
-  // incognito otherwise |false|.
+  // redirect, there should be one entry in the list). |is_visible| should be
+  // set to |true| if |tab_id| refers to the currently visible tab otherwise
+  // should be set to |false|.
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
-                          bool is_visible,
-                          bool is_incognito) override;
+                          bool is_visible) override;
 
   // Invoked when a browser tab with the specified |tab_id| is closed.
   void NotifyDidCloseTab(int32_t tab_id) override;

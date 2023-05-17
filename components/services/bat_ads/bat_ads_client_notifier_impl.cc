@@ -73,10 +73,8 @@ void BatAdsClientNotifierImpl::NotifyTabDidStopPlayingMedia(
 void BatAdsClientNotifierImpl::NotifyTabDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const bool is_visible,
-    const bool is_incognito) {
-  notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_visible,
-                               is_incognito);
+    const bool is_visible) {
+  notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_visible);
 }
 
 void BatAdsClientNotifierImpl::NotifyDidCloseTab(const int32_t tab_id) {
