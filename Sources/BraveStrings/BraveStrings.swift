@@ -1522,7 +1522,7 @@ extension Strings {
 
     public static let savedForOfflineLabelTitle =
       NSLocalizedString("playList.savedForOfflineLabelTitle", tableName: "BraveShared", bundle: .module,
-        value: "Saved for Offline",
+        value: "Added to Offline",
         comment: "Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline")
 
     public static let noItemLabelTitle =
