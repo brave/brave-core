@@ -345,8 +345,17 @@
       kOsWin | kOsMac | kOsLinux,                                        \
       FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabs),            \
   })
+#define BRAVE_VERTICAL_TABS_STICKY_PINNED_TABS_FEATURE_ENTRY                  \
+  EXPAND_FEATURE_ENTRIES({                                                    \
+      "brave-vertical-tabs-stick-pinned-tabs",                                \
+      "Vertical tabs - sticky pinned tabs",                                   \
+      "Pinned tabs will be on top of unpinned tabs regardless scroll state",  \
+      kOsWin | kOsMac | kOsLinux,                                             \
+      FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabsStickyPinnedTabs), \
+  })
 #else
 #define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
+#define BRAVE_VERTICAL_TABS_STICKY_PINNED_TABS_FEATURE_ENTRY
 #endif
 
 #if BUILDFLAG(IS_LINUX)
@@ -822,6 +831,7 @@
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                            \
+  BRAVE_VERTICAL_TABS_STICKY_PINNED_TABS_FEATURE_ENTRY                         \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \

@@ -191,6 +191,17 @@ void BraveTab::UpdateIconVisibility() {
   }
 }
 
+void BraveTab::ViewHierarchyChanged(
+    const views::ViewHierarchyChangedDetails& details) {
+  if (details.child != this) {
+    return;
+  }
+
+  if (details.is_add && shadow_layer_) {
+    AddLayerToBelowThis();
+  }
+}
+
 void BraveTab::OnLayerBoundsChanged(const gfx::Rect& old_bounds,
                                     ui::PropertyChangeReason reason) {
   Tab::OnLayerBoundsChanged(old_bounds, reason);
@@ -246,6 +257,8 @@ void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
 
   DCHECK_EQ(shadow_layer_->parent(), layer()->parent());
   layer()->parent()->StackBelow(shadow_layer_.get(), layer());
+
+  LayoutShadowLayer();
 }
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,

@@ -72,7 +72,7 @@ class VerticalTabStripRegionView : public views::View,
 
   TabSearchBubbleHost* GetTabSearchBubbleHost();
 
-  int GetScrollViewViewportHeight() const;
+  int GetTabStripViewportHeight() const;
 
   void set_layout_dirty(base::PassKey<VerticalTabStripScrollContentsView>) {
     layout_dirty_ = true;
@@ -89,13 +89,15 @@ class VerticalTabStripRegionView : public views::View,
   void PreferredSizeChanged() override;
 
   // TabStripModelObserver:
+  // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
+  // https://github.com/brave/brave-browser/issues/29935
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
  private:
-  class ScrollHeaderView;
+  class HeaderView;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
 
@@ -122,6 +124,8 @@ class VerticalTabStripRegionView : public views::View,
   // Returns valid object only when the related flag is enabled.
   TabStripScrollContainer* GetTabStripScrollContainer();
 
+  // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
+  // https://github.com/brave/brave-browser/issues/29935
   void ScrollActiveTabToBeVisible();
 
   std::u16string GetShortcutTextForNewTabButton(BrowserView* browser_view);
@@ -132,9 +136,12 @@ class VerticalTabStripRegionView : public views::View,
   raw_ptr<TabStripRegionView> original_region_view_ = nullptr;
 
   // Contains TabStripRegion.
+  // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
+  // https://github.com/brave/brave-browser/issues/29935
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
-  raw_ptr<views::View> scroll_contents_view_ = nullptr;
-  raw_ptr<ScrollHeaderView> scroll_view_header_ = nullptr;
+
+  raw_ptr<HeaderView> header_view_ = nullptr;
+  raw_ptr<views::View> contents_view_ = nullptr;
 
   // New tab button created for vertical tabs
   raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
