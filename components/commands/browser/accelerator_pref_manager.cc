@@ -77,6 +77,13 @@ void AcceleratorPrefManager::AddAccelerator(
   auto* list = update->EnsureList(base::NumberToString(command_id));
   auto accelerator_string = ToCodesString(accelerator);
   DCHECK(!accelerator_string.empty());
+
+  // If the value is already in the list, erase it.
+  list->EraseIf([&accelerator_string](const base::Value& value) {
+    auto* string_value = value.GetIfString();
+    return string_value && *string_value == accelerator_string;
+  });
+
   list->Append(accelerator_string);
 }
 

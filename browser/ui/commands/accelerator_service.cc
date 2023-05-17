@@ -14,10 +14,12 @@
 #include "base/containers/contains.h"
 #include "base/containers/cxx20_erase_vector.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "brave/app/command_utils.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
+#include "brave/components/commands/common/commands.mojom-forward.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -34,11 +36,18 @@ mojom::CommandPtr ToMojoCommand(
   auto command = mojom::Command::New();
   command->id = command_id;
   command->name = std::string(commands::GetCommandName(command_id));
-  command->modified = accelerators.size() != default_accelerators.size() ||
-                      base::ranges::find_if(
-                          accelerators, [default_accelerators](const auto& a) {
-                            return !base::Contains(default_accelerators, a);
-                          }) != accelerators.end();
+
+  // Note: Default accelerators sometimes contains duplicate accelerators, so we
+  // create a set before we check to see if something has been modified.
+  auto default_accelerator_codes =
+      base::MakeFlatSet<std::string>(default_accelerators, {}, &ToCodesString);
+
+  command->modified =
+      accelerators.size() != default_accelerator_codes.size() ||
+      base::ranges::find_if(
+          accelerators, [&default_accelerator_codes](const auto& a) {
+            return !default_accelerator_codes.contains(ToCodesString(a));
+          }) != accelerators.end();
 
   for (const auto& accelerator : accelerators) {
     auto a = mojom::Accelerator::New();
@@ -227,6 +236,11 @@ const Accelerators& AcceleratorService::GetAcceleratorsForTesting() {
   return accelerators_;
 }
 
+mojom::CommandPtr AcceleratorService::GetCommandForTesting(int command_id) {
+  return ToMojoCommand(command_id, accelerators_[command_id],
+                       default_accelerators_[command_id]);
+}
+
 void AcceleratorService::Shutdown() {
   observers_.Clear();
   mojo_listeners_.Clear();
@@ -240,8 +254,9 @@ std::vector<int> AcceleratorService::AssignAccelerator(
 
   // Find any other commands with this accelerator and remove it from them.
   for (auto& [other_command_id, accelerators] : accelerators_) {
-    if (base::Contains(accelerators, accelerator)) {
-      base::Erase(accelerators, accelerator);
+    if (base::EraseIf(accelerators, [&accelerator](const auto& other) {
+          return ToCodesString(accelerator) == ToCodesString(other);
+        })) {
       pref_manager_.RemoveAccelerator(other_command_id, accelerator);
       modified_commands.push_back(other_command_id);
     }

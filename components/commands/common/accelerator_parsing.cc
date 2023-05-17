@@ -41,7 +41,7 @@ struct ModifierName {
 };
 
 const std::vector<ModifierName>& GetAllModifierNames() {
-  static const base::NoDestructor<std::vector<ModifierName>> modifier_names({
+  static const base::NoDestructor<std::vector<ModifierName>> kModifierNames({
 #if BUILDFLAG(IS_MAC)
     {.modifier = ui::EF_COMMAND_DOWN, .name = "Command"},
 #else
@@ -54,7 +54,7 @@ const std::vector<ModifierName>& GetAllModifierNames() {
         {.modifier = ui::EF_FUNCTION_DOWN, .name = "Fn"},
   });
 
-  return *modifier_names;
+  return *kModifierNames;
 }
 
 std::string KeyboardCodeToDomCodeString(ui::KeyboardCode code) {
@@ -131,7 +131,13 @@ std::string ToKeysString(const ui::Accelerator& accelerator) {
   auto domcode = ui::UsLayoutKeyboardCodeToDomCode(accelerator.key_code());
   ui::DomKey domkey;
   ui::KeyboardCode out_code;
-  if (!ui::DomCodeToUsLayoutDomKey(domcode, 0, &domkey, &out_code)) {
+
+  if (accelerator.key_code() == ui::VKEY_LMENU ||
+      accelerator.key_code() == ui::VKEY_MENU) {
+    parts.push_back(kMenu);
+  } else if (accelerator.key_code() == ui::VKEY_RMENU) {
+    parts.push_back(kRMenu);
+  } else if (!ui::DomCodeToUsLayoutDomKey(domcode, 0, &domkey, &out_code)) {
     parts.push_back("Unknown Key: " +
                     base::NumberToString(accelerator.key_code()));
   } else {

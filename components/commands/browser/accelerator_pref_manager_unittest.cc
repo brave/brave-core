@@ -104,3 +104,14 @@ TEST_F(AcceleratorPrefManagerTest, CanRemoveAccelerators) {
   ASSERT_EQ(1u, accelerators[100].size());
   EXPECT_EQ(accelerator3, accelerators[100][0]);
 }
+
+TEST_F(AcceleratorPrefManagerTest, AcceleratorsAreNotDuplicated) {
+  ui::Accelerator accelerator1 = commands::FromCodesString("Shift+Alt+KeyC");
+  ui::Accelerator accelerator1_dupe =
+      commands::FromCodesString("Shift+Alt+KeyC");
+  ui::Accelerator accelerator2 = commands::FromCodesString("Ctrl+KeyM");
+  manager().AddAccelerator(1, accelerator1);
+  manager().AddAccelerator(1, accelerator1_dupe);
+  manager().AddAccelerator(1, accelerator2);
+  EXPECT_EQ(2u, manager().GetAccelerators()[1].size());
+}
