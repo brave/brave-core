@@ -56,6 +56,7 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   void RemoveObserver(Observer* observer);
 
   const Accelerators& GetAcceleratorsForTesting();
+  mojom::CommandPtr GetCommandForTesting(int command_id);
 
   // KeyedService:
   void Shutdown() override;

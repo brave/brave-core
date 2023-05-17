@@ -19,6 +19,7 @@
 #include "brave/app/command_utils.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
+#include "brave/components/commands/common/commands.mojom-forward.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -233,6 +234,11 @@ void AcceleratorService::RemoveObserver(Observer* observer) {
 
 const Accelerators& AcceleratorService::GetAcceleratorsForTesting() {
   return accelerators_;
+}
+
+mojom::CommandPtr AcceleratorService::GetCommandForTesting(int command_id) {
+  return ToMojoCommand(command_id, accelerators_[command_id],
+                       default_accelerators_[command_id]);
 }
 
 void AcceleratorService::Shutdown() {

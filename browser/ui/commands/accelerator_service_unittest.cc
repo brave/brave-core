@@ -169,3 +169,49 @@ TEST_F(AcceleratorServiceUnitTest, DefaultAcceleratorsCanBeUpdated) {
   EXPECT_EQ("Alt+KeyP",
             commands::ToCodesString(accelerators[IDC_PIN_TARGET_TAB][0]));
 }
+
+TEST_F(AcceleratorServiceUnitTest, DuplicateDefaultsAreIgnored) {
+  commands::AcceleratorService service(
+      profile().GetPrefs(),
+      {{IDC_FOCUS_MENU_BAR,
+        {commands::FromCodesString("Alt"), commands::FromCodesString("Alt"),
+         commands::FromCodesString("AltGr")}}});
+  auto accelerators = service.GetAcceleratorsForTesting();
+  ASSERT_EQ(2u, accelerators[IDC_FOCUS_MENU_BAR].size());
+  EXPECT_EQ("Alt",
+            commands::ToCodesString(accelerators[IDC_FOCUS_MENU_BAR][0]));
+  EXPECT_EQ("AltGr",
+            commands::ToCodesString(accelerators[IDC_FOCUS_MENU_BAR][1]));
+
+  // Check that the modified flag is false - it has the same shortcuts as the
+  // default even though the default has two Alt accelerators.
+  auto command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(2u, command->accelerators.size());
+  EXPECT_FALSE(command->modified);
+
+  // Add a new accelerator - we should detect the command was modified.
+  service.AssignAcceleratorToCommand(IDC_FOCUS_MENU_BAR, "F6");
+  command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(3u, command->accelerators.size());
+  EXPECT_TRUE(command->modified);
+
+  // Resetting should remove the new accelerator and the modified flag should be
+  // false again.
+  service.ResetAcceleratorsForCommand(IDC_FOCUS_MENU_BAR);
+  command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(2u, command->accelerators.size());
+  EXPECT_FALSE(command->modified);
+
+  // If we delete one of the Alt accelerators the command should be marked as
+  // modified.
+  service.UnassignAcceleratorFromCommand(IDC_FOCUS_MENU_BAR, "Alt");
+  command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(1u, command->accelerators.size());
+  EXPECT_TRUE(command->modified);
+
+  // Resetting should add back the Alt accelerator.
+  service.ResetAcceleratorsForCommand(IDC_FOCUS_MENU_BAR);
+  command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
+  EXPECT_EQ(2u, command->accelerators.size());
+  EXPECT_FALSE(command->modified);
+}

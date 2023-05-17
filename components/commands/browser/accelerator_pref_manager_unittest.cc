@@ -107,7 +107,8 @@ TEST_F(AcceleratorPrefManagerTest, CanRemoveAccelerators) {
 
 TEST_F(AcceleratorPrefManagerTest, AcceleratorsAreNotDuplicated) {
   ui::Accelerator accelerator1 = commands::FromCodesString("Shift+Alt+KeyC");
-  ui::Accelerator accelerator1_dupe = commands::FromCodesString("Shift+Alt+KeyC");
+  ui::Accelerator accelerator1_dupe =
+      commands::FromCodesString("Shift+Alt+KeyC");
   ui::Accelerator accelerator2 = commands::FromCodesString("Ctrl+KeyM");
   manager().AddAccelerator(1, accelerator1);
   manager().AddAccelerator(1, accelerator1_dupe);
