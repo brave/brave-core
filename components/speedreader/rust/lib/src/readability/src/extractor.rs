@@ -265,7 +265,12 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         Some(x) if x.name.local != local_name!("body") => {
             let name = QualName::new(None, ns!(), local_name!("body"));
             let body = dom.create_element(name, vec![], ElementFlags::default());
-            dom.reparent_children(&top_candidate, &body);
+            let main = dom::create_element_simple(dom, "main", "", None);
+            let article = dom::create_element_simple(dom, "article", "", None);
+
+            dom.reparent_children(&top_candidate, &article);
+            dom.append(&main, NodeOrText::AppendNode(article));
+            dom.append(&body, NodeOrText::AppendNode(main));
 
             // Our CSS formats based on id="article".
             dom::set_attr("id", "article", body.clone(), true);

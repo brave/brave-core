@@ -422,11 +422,17 @@ pub fn create_element_simple(
     content: Option<&str>,
 ) -> Handle {
     let name = QualName::new(None, ns!(), LocalName::from(local_name));
-    let class_attr = Attribute {
-        name: QualName::new(None, ns!(), local_name!("class")),
-        value: StrTendril::from_str(classes).unwrap_or_default(),
-    };
-    let elem = dom.create_element(name, vec![class_attr], ElementFlags::default());
+    let mut class_attr = vec![];
+
+    if !classes.trim().is_empty() {
+        let attr = Attribute {
+            name: QualName::new(None, ns!(), local_name!("class")),
+            value: StrTendril::from_str(classes).unwrap_or_default(),
+        };
+        class_attr.push(attr);
+    }
+
+    let elem = dom.create_element(name, class_attr, ElementFlags::default());
     if let Some(text) = content {
         dom.append(
             &elem,
