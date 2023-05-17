@@ -819,6 +819,8 @@ TEST(BlockchainRegistryUnitTest, GetTopDapps) {
   registry->UpdateDappList(std::move(*dapp_lists_map));
 
   // Top Ethereum dapps
+  // Loop twice to make sure getting the same list twice works
+  // For example, make sure nothing is std::move'd
   for (size_t i = 0; i < 2; ++i) {
     base::RunLoop run_loop;
     registry->GetTopDapps(
@@ -845,6 +847,8 @@ TEST(BlockchainRegistryUnitTest, GetTopDapps) {
   }
 
   // Top Solana dapps
+  // Loop twice to make sure getting the same list twice works
+  // For example, make sure nothing is std::move'd
   for (size_t i = 0; i < 2; ++i) {
     base::RunLoop run_loop;
     registry->GetTopDapps(
