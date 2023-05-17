@@ -46,6 +46,8 @@ class TabTrayController: LoadingViewController {
 
   let tabManager: TabManager
   let braveCore: BraveCoreMain
+  
+  private let windowProtection: WindowProtection?
   private var openTabsSessionServiceListener: OpenTabsSessionStateListener?
   private var syncServicStateListener: AnyObject?
 
@@ -183,9 +185,11 @@ class TabTrayController: LoadingViewController {
 
   // MARK: Lifecycle
   
-  init(tabManager: TabManager, braveCore: BraveCoreMain) {
+  init(tabManager: TabManager, braveCore: BraveCoreMain, windowProtection: WindowProtection?) {
     self.tabManager = tabManager
     self.braveCore = braveCore
+    self.windowProtection = windowProtection
+    
     super.init(nibName: nil, bundle: nil)
 
     if !UIAccessibility.isReduceMotionEnabled {
@@ -638,7 +642,8 @@ class TabTrayController: LoadingViewController {
           with: SyncWelcomeViewController(
             syncAPI: braveCore.syncAPI,
             syncProfileServices: braveCore.syncProfileService,
-            tabManager: tabManager))
+            tabManager: tabManager,
+            windowProtection: windowProtection))
       case .openTabsDisabled, .noSyncedSessions:
         if !DeviceInfo.hasConnectivity() {
           present(SyncAlerts.noConnection, animated: true)
@@ -649,7 +654,8 @@ class TabTrayController: LoadingViewController {
           SyncSettingsTableViewController(
             syncAPI: braveCore.syncAPI,
             syncProfileService: braveCore.syncProfileService,
-            tabManager: tabManager))
+            tabManager: tabManager,
+            windowProtection: windowProtection))
       default:
         return
     }

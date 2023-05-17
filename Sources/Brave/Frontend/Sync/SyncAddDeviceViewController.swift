@@ -128,7 +128,7 @@ class SyncAddDeviceViewController: SyncViewController {
   init(title: String, type: SyncDeviceType, syncAPI: BraveSyncAPI) {
     self.syncAPI = syncAPI
     qrCodeView = SyncQRCodeView(syncApi: syncAPI)
-    super.init(nibName: nil, bundle: nil)
+    super.init()
 
     pageTitle = title
     deviceType = type
