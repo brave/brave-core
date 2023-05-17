@@ -19,7 +19,7 @@ type AmountLike =
 export default class Amount {
   public readonly value?: BigNumber
 
-  public constructor (value: BigNumberIsh) {
+  public constructor(value: BigNumberIsh) {
     this.value = value === ''
       ? undefined
       : new BigNumber(value)
@@ -245,14 +245,14 @@ export default class Amount {
 
     const valueDP = this.value && this.value.decimalPlaces()
     if (
-        this.value === undefined ||
-        this.value.isNaN() ||
-        valueDP === null ||
-        valueDP === undefined
+      this.value === undefined ||
+      this.value.isNaN() ||
+      valueDP === null ||
+      valueDP === undefined
     ) {
       return ''
     } else if (
-        valueDP < 2 || this.value.isGreaterThanOrEqualTo(10)
+      valueDP < 2 || this.value.isGreaterThanOrEqualTo(10)
     ) {
       decimals = 2
       value = this.value.toNumber()
@@ -319,6 +319,14 @@ export default class Amount {
 
   isNegative (): boolean {
     return this.value !== undefined && this.value.isNegative()
+  }
+
+  parseInteger (): Amount {
+    if (this.value === undefined) {
+      return Amount.empty()
+    }
+
+    return new Amount(this.value.integerValue(BigNumber.ROUND_DOWN))
   }
 
   // Abbreviate number in units of 1000 e.g., 100000 becomes 100k

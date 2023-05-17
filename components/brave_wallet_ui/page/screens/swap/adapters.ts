@@ -318,8 +318,8 @@ export function makeSwitchAccount(accounts: WalletAccountType[]) {
   return switchAccount
 }
 
-export function makeSwitchNetwork(dispatch: ThunkDispatch<any, any, any>) {
-  async function switchNetwork({ chainId, coin }: NetworkInfo) {
+export function makeSwitchNetwork (dispatch: ThunkDispatch<any, any, any>) {
+  async function switchNetwork ({ chainId, coin }: NetworkInfo) {
     await dispatch(
       walletApi.endpoints.setNetwork.initiate({
         chainId,

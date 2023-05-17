@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Warstwa_1" xmlns:serif="http://www.serif.com/"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 474.8 357.9"
+	 style="enable-background:new 0 0 474.8 357.9;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#2EE09A;}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_1_);}
+</style>
+<g transform="matrix(1,0,0,1,-3280.09,0)">
+	<g id="invariant_icon_color" transform="matrix(1,0,0,1,3280.09,0)">
+		<g transform="matrix(5.62364,0,0,5.62364,-982.255,-1666.35)">
+			<g>
+				<g transform="matrix(1.12525,0,0,1.12525,-5284.37,246.576)">
+					<path class="st0" d="M4872.6,76.2h32.6l-16.3,24.6L4872.6,76.2z"/>
+				</g>
+				<g transform="matrix(1.12525,0,0,1.12525,-5284.37,246.576)">
+					<path class="st0" d="M4895.8,68.4l-16.1-24.2h-28.4l16.1,24.2H4895.8z"/>
+				</g>
+				<g transform="matrix(1.12525,0,0,1.12525,-5284.37,246.576)">
+					
+						<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="4822.3975" y1="126.2333" x2="4823.3975" y2="126.2333" gradientTransform="matrix(-119.6907 128.9831 128.9831 119.6907 565828.6875 -637072.8125)">
+						<stop  offset="0" style="stop-color:#EF84F5"/>
+						<stop  offset="1" style="stop-color:#EF84F5;stop-opacity:0"/>
+					</linearGradient>
+					<path class="st1" d="M4895.8,44.2l-4.9,7.4l11.2,16.9h8.2l16.1-24.2H4895.8z"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>
