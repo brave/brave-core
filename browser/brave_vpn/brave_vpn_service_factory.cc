@@ -67,10 +67,15 @@ BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
 KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  if (!IsBraveVPNEnabled() ||
-      !g_brave_browser_process->brave_vpn_os_connection_api()) {
+  if (!IsBraveVPNEnabled()) {
     return nullptr;
   }
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (!g_brave_browser_process->brave_vpn_os_connection_api()) {
+    return nullptr;
+  }
+#endif
 
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
