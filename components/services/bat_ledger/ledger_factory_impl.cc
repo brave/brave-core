@@ -73,8 +73,8 @@ class SelfOwnedLedger {
       scoped_refptr<base::SingleThreadTaskRunner> task_runner,
       base::OnceClosure disconnect_handler)
       : ledger_client_remote_(std::move(ledger_client_remote), task_runner),
-        ledger_(std::make_unique<LedgerImpl>(ledger_client_remote_.get())),
-        ledger_receiver_(&ledger(ledger_.get()),
+        ledger_(ledger_client_remote_.get()),
+        ledger_receiver_(&ledger(&ledger_),
                          std::move(ledger_receiver),
                          task_runner) {
     ledger_receiver_.set_disconnect_handler(
@@ -85,7 +85,7 @@ class SelfOwnedLedger {
   ~SelfOwnedLedger() = default;
 
   mojo::AssociatedRemote<mojom::LedgerClient> ledger_client_remote_;
-  std::unique_ptr<LedgerImpl> ledger_;
+  LedgerImpl ledger_;
   mojo::AssociatedReceiver<mojom::Ledger> ledger_receiver_;
 };
 
