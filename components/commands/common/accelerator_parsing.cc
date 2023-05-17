@@ -41,7 +41,7 @@ struct ModifierName {
 };
 
 const std::vector<ModifierName>& GetAllModifierNames() {
-  static const base::NoDestructor<std::vector<ModifierName>> modifier_names({
+  static const base::NoDestructor<std::vector<ModifierName>> kModifierNames({
 #if BUILDFLAG(IS_MAC)
     {.modifier = ui::EF_COMMAND_DOWN, .name = "Command"},
 #else
@@ -54,7 +54,7 @@ const std::vector<ModifierName>& GetAllModifierNames() {
         {.modifier = ui::EF_FUNCTION_DOWN, .name = "Fn"},
   });
 
-  return *modifier_names;
+  return *kModifierNames;
 }
 
 std::string KeyboardCodeToDomCodeString(ui::KeyboardCode code) {
