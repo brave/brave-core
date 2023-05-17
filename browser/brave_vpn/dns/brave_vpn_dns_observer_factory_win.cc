@@ -45,7 +45,8 @@ KeyedService* BraveVpnDnsObserverFactory::BuildServiceInstanceFor(
 BraveVpnDnsObserverService* BraveVpnDnsObserverFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!base::FeatureList::IsEnabled(
-          brave_vpn::features::kBraveVPNDnsProtection)) {
+          brave_vpn::features::kBraveVPNDnsProtection) ||
+      base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService)) {
     return nullptr;
   }
   DCHECK(brave_vpn::IsAllowedForContext(context));

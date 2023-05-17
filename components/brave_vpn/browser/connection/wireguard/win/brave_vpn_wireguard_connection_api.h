@@ -14,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/wireguard_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class PrefService;
@@ -33,20 +34,25 @@ class BraveVPNWireguardConnectionAPI : public BraveVPNOSConnectionAPI {
       const BraveVPNWireguardConnectionAPI&) = delete;
   ~BraveVPNWireguardConnectionAPI() override;
 
-  void FetchProfileCredentials();
+  void FetchProfileCredentials() override;
 
   // BraveVPNOSConnectionAPI
   void Connect() override;
   void Disconnect() override;
-  void ToggleConnection() override;
   void CheckConnection() override;
-  void ResetConnectionInfo() override;
-  std::string GetHostname() const override;
   void SetSelectedRegion(const std::string& name) override;
 
   std::string GetCurrentEnvironment() const;
 
  private:
+  void OnWireguardServiceLaunched(bool success);
+  void OnGetProfileCredentials(const std::string& client_private_key,
+                               const std::string& profile_credential,
+                               bool success);
+  void OnWireguardKeypairGenerated(
+      brave_vpn::internal::WireguardKeyPair key_pair);
+  void OnDisconnected(bool success);
+
   raw_ptr<PrefService> local_prefs_ = nullptr;
   // Only not null when there is active network request.
   // When network request is done, we reset this so we can know
@@ -54,8 +60,6 @@ class BraveVPNWireguardConnectionAPI : public BraveVPNOSConnectionAPI {
   // We can cancel connecting request quickly when fetching hostnames or
   // profile credentials is not yet finished by reset this.
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
-
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   base::WeakPtrFactory<BraveVPNWireguardConnectionAPI> weak_factory_{this};
 };

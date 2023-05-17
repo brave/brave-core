@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
@@ -29,6 +30,7 @@ class PrefService;
 namespace brave_vpn {
 
 class BraveVPNRegionDataManager;
+struct Hostname;
 
 // Interface for managing OS' vpn connection.
 class BraveVPNOSConnectionAPI
@@ -52,34 +54,40 @@ class BraveVPNOSConnectionAPI
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
   BraveVPNRegionDataManager& GetRegionDataManager();
-
+  std::string GetHostname() const;
   void ResetConnectionState();
   // Returns user friendly error string if existed.
   // Otherwise returns empty.
   std::string GetLastConnectionError() const;
+  void ToggleConnection();
 
   // Connection dependent APIs.
   virtual void Connect() = 0;
   virtual void Disconnect() = 0;
-  virtual void ToggleConnection() = 0;
   virtual void CheckConnection() = 0;
-  virtual void ResetConnectionInfo() = 0;
   virtual void UpdateAndNotifyConnectionStateChange(
       mojom::ConnectionState state);
-  virtual std::string GetHostname() const = 0;
   virtual void SetSelectedRegion(const std::string& name) = 0;
+  virtual void FetchProfileCredentials() = 0;
 
  protected:
   explicit BraveVPNOSConnectionAPI(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_prefs);
 
+  std::string GetCurrentEnvironment() const;
+  PrefService* local_prefs() { return local_prefs_; }
   // True when do quick cancel.
   bool QuickCancelIfPossible();
   void ResetAPIRequestInstance();
   BraveVpnAPIRequest* GetAPIRequest();
   void SetLastConnectionError(const std::string& error);
-
+  void FetchHostnamesForRegion(const std::string& name);
+  void OnFetchHostnames(const std::string& region,
+                        const std::string& hostnames,
+                        bool success);
+  void ParseAndCacheHostnames(const std::string& region,
+                              const base::Value::List& hostnames_value);
   // BraveVPNRegionDataManager callbacks
   // Notify it's ready when |regions_| is not empty.
   void NotifyRegionDataReady(bool ready) const;
@@ -99,9 +107,13 @@ class BraveVPNOSConnectionAPI
   FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            IgnoreDisconnectedStateWhileConnecting);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, HostnamesTest);
 
   void SetConnectionStateForTesting(mojom::ConnectionState state);
 
+  raw_ptr<PrefService> local_prefs_;
+
+  std::unique_ptr<Hostname> hostname_;
   std::string last_connection_error_;
   // Only not null when there is active network request.
   // When network request is done, we reset this so we can know

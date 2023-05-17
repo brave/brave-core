@@ -452,7 +452,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest) {
 
   // Check cached connection info is cleared when user set new selected region.
   test_api->connection_state_ = mojom::ConnectionState::DISCONNECTED;
-  GetConnectionAPI()->ResetConnectionInfo();
+  test_api->ResetConnectionInfo();
   EXPECT_FALSE(test_api->connection_info().IsValid());
 
   // Fill connection info again.
