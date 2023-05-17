@@ -29,4 +29,18 @@ bool IsAllowed(PrefService* prefs) {
   return !IsDisabledByPolicy(prefs);
 }
 
+std::vector<uint8_t> Leb128Encode(size_t value) {
+  value |= 0;
+  std::vector<uint8_t> result;
+  while (true) {
+    uint8_t byte = value & 0x7f;
+    value >>= 7;
+    if ((value == 0 && (byte & 0x40) == 0)) {
+      result.push_back(byte);
+      return result;
+    }
+    result.push_back(byte | 0x80);
+  }
+}
+
 }  // namespace brave_wallet
