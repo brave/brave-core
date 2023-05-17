@@ -992,6 +992,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
 
                 if (to.isEmpty()) {
+                    Log.e(TAG, "Destination address cannot be empty.");
                     return;
                 }
                 if (mSelectedAccount.coin == CoinType.ETH) {
@@ -1022,6 +1023,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 // error_message is localized, do not disable send button
                                 setSendToFromValueValidationResult(errorMessage, false, true);
                             });
+                } else if (mSelectedAccount.coin == CoinType.FIL) {
+                    // TODO: implement Filecoin send action.
+                    // https://github.com/brave/brave-browser/issues/30402
                 }
             } else if (mActivityType == ActivityType.BUY) {
                 Intent selectPurchaseMethodIntent = SelectPurchaseMethodActivity.getIntent(this,
