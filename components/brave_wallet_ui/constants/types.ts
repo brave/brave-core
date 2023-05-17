@@ -282,7 +282,6 @@ export interface WalletState {
   removedFungibleTokenIds: string[]
   removedNonFungibleTokenIds: string[]
   hidePortfolioNFTsTab: boolean
-  removedNonFungibleTokenIds: string[],
   removedNonFungibleTokens: BraveWallet.BlockchainToken[]
 }
 

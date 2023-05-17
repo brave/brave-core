@@ -36,7 +36,6 @@ import {
 } from './style'
 import { translateToNftGateway } from '../../../../../../common/async/lib'
 
-
 interface Props {
   token: BraveWallet.BlockchainToken
   isHidden: boolean
@@ -49,8 +48,6 @@ export const NFTGridViewItem = (props: Props) => {
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
-
-  // redux
 
   // hooks
   const dispatch = useDispatch()
@@ -75,13 +72,13 @@ export const NFTGridViewItem = (props: Props) => {
     setShowMore(false)
     addOrRemoveTokenInLocalStorage(token, 'remove')
     dispatch(WalletActions.refreshNetworksAndTokens())
-  }, [token])
+  }, [token, addOrRemoveTokenInLocalStorage])
 
   const onUnHideNft = React.useCallback(() => {
     setShowMore(false)
     addOrRemoveTokenInLocalStorage(token, 'add')
     dispatch(WalletActions.refreshNetworksAndTokens())
-  }, [token])
+  }, [token, addOrRemoveTokenInLocalStorage])
 
   const [remoteImage, setRemoteImage] = React.useState<string>()
   React.useEffect(() => {
