@@ -212,13 +212,15 @@ public class AccountDetailActivity
                                                                     mName, mAddress, null, null,
                                                                     mIsImported);
                                                     Utils.setUpTransactionList(this, accountInfos,
-                                                    allNetworks, thisAccountItemModel, assetPrices,
-                                                    fullTokenList, nativeAssetsBalances,
-                                                    blockchainTokensBalances, selectedNetwork,
-                                                    walletListItemModelList -> {
-                                                        showTransactionList(
-                                                                walletListItemModelList);
-                                                    });
+                                                            allNetworks, thisAccountItemModel,
+                                                            assetPrices, fullTokenList,
+                                                            nativeAssetsBalances,
+                                                            blockchainTokensBalances,
+                                                            selectedNetwork,
+                                                            walletListItemModelList -> {
+                                                                showTransactionList(
+                                                                        walletListItemModelList);
+                                                            });
                                                     break;
                                                 }
                                             }
