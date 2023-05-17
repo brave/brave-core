@@ -1094,11 +1094,6 @@ bool PlaylistService::GetMediaPath(const std::string& id,
     GURL url(item->media_source);
     auto path = url.path();
     if (!path.empty()) {
-      if (path.at(0) == '/') {
-        // Drop the leading '/'.
-        path = std::string(path.begin() + 1, path.end());
-      }
-
       auto parts = base::SplitString(path, ".", base::TRIM_WHITESPACE,
                                      base::SPLIT_WANT_NONEMPTY);
       DCHECK(parts.size());
