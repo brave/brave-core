@@ -325,40 +325,9 @@ class PlaylistListViewController: UIViewController {
         return
       }
 
-      delegate.playItem(item: item) { [weak self] item, error in
-        PlaylistCarplayManager.shared.currentPlaylistItem = nil
-
-        guard let self = self,
-          let delegate = self.delegate
-        else {
-          self?.commitPlayerItemTransaction(
-            at: indexPath,
-            isExpired: false)
-          return
-        }
-
-        switch error {
-        case .cancelled:
-          self.commitPlayerItemTransaction(
-            at: indexPath,
-            isExpired: false)
-        case .other(let err):
-          Logger.module.error("\(err.localizedDescription)")
-          self.commitPlayerItemTransaction(
-            at: indexPath,
-            isExpired: false)
-          delegate.displayLoadingResourceError()
-        case .cannotLoadMedia:
-          self.commitPlayerItemTransaction(
-            at: indexPath,
-            isExpired: false)
-          delegate.displayLoadingResourceError()
-        case .expired:
-          self.commitPlayerItemTransaction(
-            at: indexPath,
-            isExpired: true)
-          delegate.displayExpiredResourceError(item: item)
-        case .none:
+      PlaylistManager.shared.playbackTask = Task { @MainActor in
+        do {
+          let item = try await delegate.playItem(item: item)
           PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
           PlaylistCarplayManager.shared.currentPlaylistItem = item
           self.commitPlayerItemTransaction(
@@ -374,6 +343,14 @@ class PlaylistListViewController: UIViewController {
           // Even if the item was NOT previously the last played item,
           // it is now as it has begun to play
           delegate.updateLastPlayedItem(item: item)
+        } catch {
+          PlaylistCarplayManager.shared.currentPlaylistItem = nil
+          self.commitPlayerItemTransaction(
+            at: indexPath,
+            isExpired: false)
+          
+          delegate.displayLoadingResourceError()
+          Logger.module.error("Playlist Playback Error: \(error)")
         }
       }
     }

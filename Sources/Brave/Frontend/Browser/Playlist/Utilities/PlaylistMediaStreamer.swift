@@ -30,156 +30,130 @@ class PlaylistMediaStreamer {
     self.playerView = playerView
   }
 
-  func loadMediaStreamingAsset(_ item: PlaylistInfo) -> AnyPublisher<PlaylistInfo, PlaybackError> {
+  @MainActor
+  func loadMediaStreamingAsset(_ item: PlaylistInfo) async throws -> PlaylistInfo {
     // We need to check if the item is cached locally.
     // If the item is cached (downloaded)
     // then we can play it directly without having to stream it.
     let cacheState = PlaylistManager.shared.state(for: item.tagId)
     if cacheState != .invalid {
-      return Future { resolver in
-        resolver(.success(item))
-      }.eraseToAnyPublisher()
+      return item
     }
 
     // Determine if an item can be streamed and stream it directly
     guard !item.src.isEmpty, let url = URL(string: item.src) else {
       // Fallback to the webview because there was no stream URL somehow..
-      return self.streamingFallback(item).eraseToAnyPublisher()
+      return try await streamingFallback(item)
     }
 
     // Try to stream the asset from its url..
-    return canStreamURL(url).flatMap { canStream -> AnyPublisher<PlaylistInfo, PlaybackError> in
-      // Stream failed so fallback to the webview
-      // It's possible the URL expired..
-      if !canStream {
-        return self.streamingFallback(item).eraseToAnyPublisher()
-      }
-
-      return Future { resolver in
-        resolver(.success(item))
-      }.eraseToAnyPublisher()
-    }.eraseToAnyPublisher()
+    let isStreamable = await canStreamURL(url)
+    
+    // Stream failed so fallback to the webview
+    // It's possible the URL expired..
+    if !isStreamable {
+      return try await streamingFallback(item)
+    }
+    
+    return item
   }
   
-  static func loadAssetPlayability(asset: AVURLAsset, completion: @escaping (Bool) -> Void) {
+  static func loadAssetPlayability(asset: AVURLAsset) async -> Bool {
     let isAssetPlayable = { () -> Bool in
-      var error: NSError?
-      let status = asset.statusOfValue(forKey: "playable", error: &error)
-      let isPlayable = status == .loaded
-
-      if let error = error {
-        Logger.module.error("Couldn't load asset's playability: \(error.localizedDescription)")
+      let status = asset.status(of: .isPlayable)
+      if case .loaded(let value) = status {
+        return value
       }
-      return isPlayable
+      
+      return false
     }
 
     // Performance improvement to check the status first
     // before attempting to load the playable status
     if isAssetPlayable() {
-      DispatchQueue.main.async {
-        completion(true)
-      }
-      return
+      return true
     }
 
     switch Reach().connectionStatus() {
     case .offline, .unknown:
       Logger.module.error("Couldn't load asset's playability -- Offline")
-      DispatchQueue.main.async {
-        // We have no other way of knowing the playable status
-        // It is best to assume the item can be played
-        // In the worst case, if it can't be played, it will show an error
-        completion(isAssetPlayable())
-      }
+      
+      // We have no other way of knowing the playable status
+      // It is best to assume the item can be played
+      // In the worst case, if it can't be played, it will show an error
+      return isAssetPlayable()
+      
     case .online:
       // Fetch the playable status asynchronously
-      asset.loadValuesAsynchronously(forKeys: ["playable"]) {
-        DispatchQueue.main.async {
-          completion(isAssetPlayable())
-        }
-      }
+      return (try? await asset.load(.isPlayable)) == true
     }
   }
 
   // MARK: - Private
 
-  private func streamingFallback(_ item: PlaylistInfo) -> Deferred<AnyPublisher<PlaylistInfo, PlaybackError>> {
+  @MainActor
+  private func streamingFallback(_ item: PlaylistInfo) async throws -> PlaylistInfo {
     // Fallback to web stream
-    return Deferred {
-      var cancelled = false
-
-      return Future { [weak self] resolver in
-        guard let self = self else {
-          resolver(.failure(.cancelled))
-          return
+    try await withTaskCancellationHandler { @MainActor in
+      self.webLoader = PlaylistWebLoader().then {
+        // If we don't do this, youtube shows ads 100% of the time.
+        // It's some weird race-condition in WKWebView where the content blockers may not load until
+        // The WebView is visible!
+        self.playerView?.insertSubview($0, at: 0)
+      }
+      
+      guard let url = URL(string: item.pageSrc) else {
+        throw PlaybackError.cannotLoadMedia
+      }
+      
+      let newItem = await webLoader?.load(url: url)
+      webLoader?.removeFromSuperview()
+      webLoader = nil
+      
+      guard let newItem = newItem, URL(string: newItem.src) != nil else {
+        throw PlaybackError.cannotLoadMedia
+      }
+      
+      let updatedItem = PlaylistInfo(name: newItem.name,
+                                     src: newItem.src,
+                                     pageSrc: item.pageSrc,  // Keep the same pageSrc
+                                     pageTitle: newItem.pageTitle,
+                                     mimeType: newItem.mimeType,
+                                     duration: newItem.duration,
+                                     lastPlayedOffset: 0.0,
+                                     detected: newItem.detected,
+                                     dateAdded: item.dateAdded, // Keep the same dateAdded
+                                     tagId: item.tagId,  // Keep the same tagId
+                                     order: item.order) // Keep the same order
+      
+      let item = try await withCheckedThrowingContinuation { continuation in
+        PlaylistItem.updateItem(updatedItem) {
+          continuation.resume(returning: updatedItem)
         }
-
-        self.webLoader = PlaylistWebLoader().then {
-          // If we don't do this, youtube shows ads 100% of the time.
-          // It's some weird race-condition in WKWebView where the content blockers may not load until
-          // The WebView is visible!
-          self.playerView?.insertSubview($0, at: 0)
-        }
-
-        if let url = URL(string: item.pageSrc) {
-          self.webLoader?.load(url: url) { [weak self] newItem in
-            guard let self = self else { return }
-            defer {
-              // Destroy the web loader when the callback is complete.
-              self.webLoader?.removeFromSuperview()
-              self.webLoader = nil
-            }
-
-            if let newItem = newItem, URL(string: newItem.src) != nil {
-              let updatedItem = PlaylistInfo(name: newItem.name,
-                                             src: newItem.src,
-                                             pageSrc: item.pageSrc,  // Keep the same pageSrc
-                                             pageTitle: newItem.pageTitle,
-                                             mimeType: newItem.mimeType,
-                                             duration: newItem.duration,
-                                             lastPlayedOffset: 0.0,
-                                             detected: newItem.detected,
-                                             dateAdded: item.dateAdded, // Keep the same dateAdded
-                                             tagId: item.tagId,  // Keep the same tagId
-                                             order: item.order) // Keep the same order
-              
-              PlaylistItem.updateItem(updatedItem) {
-                resolver(.success(updatedItem))
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                  PlaylistManager.shared.autoDownload(item: updatedItem)
-                }
-              }
-            } else if cancelled {
-              resolver(.failure(.cancelled))
-            } else {
-              resolver(.failure(.expired))
-            }
-          }
-        } else {
-          resolver(.failure(.cannotLoadMedia))
-        }
-      }.handleEvents(receiveCancel: { [weak self] in
-        cancelled = true
-        self?.webLoader?.stop()
-      }).eraseToAnyPublisher()
+      }
+        
+      Task {
+        try await Task.sleep(seconds: 1)
+        PlaylistManager.shared.autoDownload(item: updatedItem)
+      }
+      return item
+    } onCancel: {
+      Task { @MainActor in
+        webLoader?.stop()
+        webLoader?.removeFromSuperview()
+        webLoader = nil
+      }
     }
   }
 
   // Would be nice if AVPlayer could detect the mime-type from the URL for my delegate without a head request..
   // This function only exists because I can't figure out why videos from URLs don't play unless I explicitly specify a mime-type..
-  private func canStreamURL(_ url: URL) -> Deferred<AnyPublisher<Bool, PlaybackError>> {
-    return Deferred {
-      return Future { resolver in
-        PlaylistMediaStreamer.getMimeType(url) { mimeType in
-          if let mimeType = mimeType {
-            resolver(.success(!mimeType.isEmpty))
-          } else {
-            resolver(.success(false))
-          }
-        }
-      }.eraseToAnyPublisher()
+  private func canStreamURL(_ url: URL) async -> Bool {
+    guard let mimeType = await PlaylistMediaStreamer.getMimeType(url), !mimeType.isEmpty else {
+      return false
     }
+    
+    return true
   }
 
   // MARK: - Static
@@ -245,7 +219,7 @@ class PlaylistMediaStreamer {
     }
   }
 
-  static func getMimeType(_ url: URL, _ completion: @escaping (String?) -> Void) {
+  static func getMimeType(_ url: URL) async -> String? {
     let request: URLRequest = {
       var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10.0)
 
@@ -257,26 +231,22 @@ class PlaylistMediaStreamer {
     }()
 
     let session = URLSession(configuration: .ephemeral)
-    session.dataTask(with: request) { data, response, error in
-      DispatchQueue.main.async {
-        if let error = error {
-          Logger.module.error("Error fetching MimeType: \(error.localizedDescription)")
-          return completion(nil)
+    
+    do {
+      let (_, response) = try await session.data(for: request)
+      session.finishTasksAndInvalidate()
+      
+      if let response = response as? HTTPURLResponse, response.statusCode == 302 || response.statusCode >= 200 && response.statusCode <= 299 {
+        if let contentType = response.allHeaderFields["Content-Type"] as? String {
+          return contentType
         }
-
-        if let response = response as? HTTPURLResponse, response.statusCode == 302 || response.statusCode >= 200 && response.statusCode <= 299 {
-          if let contentType = response.value(forHTTPHeaderField: "Content-Type") {
-            completion(contentType)
-            return
-          } else {
-            completion("video/*")
-            return
-          }
-        }
-
-        completion(nil)
+        return "video/*"
       }
-    }.resume()
-    session.finishTasksAndInvalidate()
+      return nil
+    } catch {
+      session.finishTasksAndInvalidate()
+      Logger.module.error("Error fetching MimeType: \(error.localizedDescription)")
+      return nil
+    }
   }
 }

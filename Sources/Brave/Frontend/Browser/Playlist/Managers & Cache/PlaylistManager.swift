@@ -20,6 +20,19 @@ public class PlaylistManager: NSObject {
   private let downloadManager = PlaylistDownloadManager()
   private var frc = PlaylistItem.frc()
   private var didRestoreSession = false
+  
+  private var _playbackTask: Task<Void, Error>?
+  
+  var playbackTask: Task<Void, Error>? {
+    get {
+      _playbackTask
+    }
+    
+    set(newValue) {
+      _playbackTask?.cancel()
+      _playbackTask = newValue
+    }
+  }
 
   // Observers
   private let onContentWillChange = PassthroughSubject<Void, Never>()
@@ -257,9 +270,9 @@ public class PlaylistManager: NSObject {
 
   func download(item: PlaylistInfo) {
     guard downloadManager.downloadTask(for: item.tagId) == nil, let assetUrl = URL(string: item.src) else { return }
-
-    PlaylistMediaStreamer.getMimeType(assetUrl) { [weak self] mimeType in
-      guard let self = self, let mimeType = mimeType?.lowercased() else { return }
+    Task {
+      let mimeType = await PlaylistMediaStreamer.getMimeType(assetUrl)
+      guard let mimeType = mimeType?.lowercased() else { return }
 
       if mimeType.contains("x-mpegurl") || mimeType.contains("application/vnd.apple.mpegurl") || mimeType.contains("mpegurl") {
         DispatchQueue.main.async {
