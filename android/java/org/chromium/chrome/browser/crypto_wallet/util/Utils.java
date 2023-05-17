@@ -1175,7 +1175,7 @@ public class Utils {
         callback.call(walletListItemModelList);
     }
 
-    private static WalletListItemModel makeWalletItem(Context context, TransactionInfo txInfo,
+    public static WalletListItemModel makeWalletItem(Context context, TransactionInfo txInfo,
             NetworkInfo selectedNetwork, ParsedTransaction parsedTx) {
         Pair<String, String> itemTitles = parsedTx.makeTxListItemTitles(context);
         WalletListItemModel itemModel =

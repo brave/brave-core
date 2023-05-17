@@ -11,16 +11,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/brave_wallet_toolbar" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/frag_trs_rv_transactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:layout_marginHorizontal="16dp"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_marginTop="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
