@@ -165,7 +165,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     }
   }
 
-  private func loadAssetPlayability(url: URL, completion: @escaping (Bool) -> Void) {
+  private func loadAssetPlayability(url: URL) async -> Bool {
     if asset == nil {
       // We have to create an AVURLAsset here to determine if the item is playable
       // because otherwise it will add an invalid item to playlist that can't be played.
@@ -175,11 +175,10 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     }
     
     guard let asset = asset else {
-      completion(false)
-      return
+      return false
     }
 
-    PlaylistMediaStreamer.loadAssetPlayability(asset: asset, completion: completion)
+    return await PlaylistMediaStreamer.loadAssetPlayability(asset: asset)
   }
 
   private func updateItem(_ item: PlaylistInfo, detected: Bool) {

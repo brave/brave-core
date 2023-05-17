@@ -649,12 +649,14 @@ class VideoView: UIView, VideoTrackerBarDelegate {
           changeHandler: { [weak self] _, change in
             guard let self = self else { return }
             
-            if let tracks = change.newValue,
-               !(tracks?.isEmpty ?? true),
-               !(self.delegate?.isVideoTracksAvailable ?? true) {
-              self.particleView.alpha = 1.0
-            } else {
-              self.particleView.alpha = 0.0
+            DispatchQueue.main.async {
+              if let tracks = change.newValue,
+                 !(tracks?.isEmpty ?? true),
+                 !(self.delegate?.isVideoTracksAvailable ?? true) {
+                self.particleView.alpha = 1.0
+              } else {
+                self.particleView.alpha = 0.0
+              }
             }
           }
         )
