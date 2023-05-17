@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use bls_signatures::Serialize;
 pub mod message;
 pub mod signature;
@@ -6,8 +11,8 @@ use crate::signature::transaction_sign;
 #[cxx::bridge(namespace = filecoin)]
 mod ffi {
     extern "Rust" {
-      fn bls_private_key_to_public_key(private_key: &[u8]) -> [u8; 48];
-      fn transaction_sign(transaction: &str, private_key: &[u8]) -> String;
+        fn bls_private_key_to_public_key(private_key: &[u8]) -> [u8; 48];
+        fn transaction_sign(is_mainnet: bool, transaction: &str, private_key: &[u8]) -> String;
     }
 }
 

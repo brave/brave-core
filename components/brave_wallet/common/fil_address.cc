@@ -21,6 +21,9 @@ constexpr size_t kHashLengthSecp256K = 20;
 constexpr size_t kAddressSizeSecp256K = 41;
 constexpr size_t kPublicKeySizeBLS = 48;
 constexpr size_t kAddressSizeBLS = 86;
+// Only f410 is supported
+constexpr size_t kAddressSizeDelegatedF410 = 44;
+constexpr size_t kPayloadSizeDelegatedF410 = 20;
 
 absl::optional<std::vector<uint8_t>> BlakeHash(
     const std::vector<uint8_t>& payload,
@@ -50,10 +53,12 @@ bool IsValidNetwork(const std::string& network) {
 absl::optional<mojom::FilecoinAddressProtocol> ToProtocol(char input) {
   if ((input - '0') == static_cast<int>(mojom::FilecoinAddressProtocol::BLS)) {
     return mojom::FilecoinAddressProtocol::BLS;
-  }
-  if ((input - '0') ==
-      static_cast<int>(mojom::FilecoinAddressProtocol::SECP256K1)) {
+  } else if ((input - '0') ==
+             static_cast<int>(mojom::FilecoinAddressProtocol::SECP256K1)) {
     return mojom::FilecoinAddressProtocol::SECP256K1;
+  } else if ((input - '0') ==
+             static_cast<int>(mojom::FilecoinAddressProtocol::DELEGATED)) {
+    return mojom::FilecoinAddressProtocol::DELEGATED;
   }
   return absl::nullopt;
 }
@@ -90,10 +95,17 @@ bool FilAddress::operator!=(const FilAddress& other) const {
 // |  network   | protocol | payload | checksum |
 // |------------|----------|---------|----------|
 // | 'f' or 't' |  1 byte  | n bytes | 4 bytes  |
+// For delegated addresses
+// |------------|----------|----------|-----------|---------|----------|
+// |  network   | protocol | agent id | delimiter | payload | checksum |
+// |------------|----------|----------|-----------|---------|----------|
+// | 'f' or 't' |   '4'    |   '10'   |    'f'    | n bytes | 4 bytes  |
+// https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0048.md
 // static
 FilAddress FilAddress::FromAddress(const std::string& address) {
   if (address.size() != kAddressSizeBLS &&
-      address.size() != kAddressSizeSecp256K) {
+      address.size() != kAddressSizeSecp256K &&
+      address.size() != kAddressSizeDelegatedF410) {
     return FilAddress();
   }
 
@@ -107,8 +119,18 @@ FilAddress FilAddress::FromAddress(const std::string& address) {
     return FilAddress();
   }
 
-  std::string payload_decoded{
-      base32::Base32Decode(base::ToUpperASCII(address.substr(2)))};
+  std::string payload_decoded;
+  if (protocol == mojom::FilecoinAddressProtocol::DELEGATED) {
+    if (address.substr(2, 3) != "10f") {
+      return FilAddress();
+    }
+    payload_decoded =
+        base32::Base32Decode(base::ToUpperASCII(address.substr(5)));
+  } else {
+    payload_decoded =
+        base32::Base32Decode(base::ToUpperASCII(address.substr(2)));
+  }
+
   if (payload_decoded.empty()) {
     return FilAddress();
   }
@@ -174,6 +196,12 @@ FilAddress FilAddress::FromPayload(const std::vector<uint8_t>& payload,
     if (payload.size() != kPublicKeySizeBLS) {
       return FilAddress();
     }
+  } else if (protocol == mojom::FilecoinAddressProtocol::DELEGATED) {
+    if (payload.size() != kPayloadSizeDelegatedF410) {
+      return FilAddress();
+    }
+  } else {
+    NOTREACHED();
   }
   return FilAddress(payload, protocol, network);
 }
@@ -189,6 +217,11 @@ bool FilAddress::IsValidAddress(const std::string& address) {
 // |  network   | protocol | payload | checksum |
 // |------------|----------|---------|----------|
 // | 'f' or 't' |  1 byte  | n bytes | 4 bytes  |
+// For delegated addresses
+// |------------|----------|----------|-----------|---------|----------|
+// |  network   | protocol | agent id | delimiter | payload | checksum |
+// |------------|----------|----------|-----------|---------|----------|
+// | 'f' or 't' |   '4'    |   '10'   |    'f'    | n bytes | 4 bytes  |
 // Protocol value 1: addresses represent secp256k1 public encryption keys.
 // The payload field contains the Blake2b 160 hash of the uncompressed public
 // key (65 bytes).
@@ -196,6 +229,9 @@ bool FilAddress::IsValidAddress(const std::string& address) {
 // The payload field contains 48 byte BLS PubKey public key. All payloads
 // except the payload of the ID protocol are base32 encoded using the lowercase
 // alphabet when seralized to their human readable format.
+// Protocol value 4: addresses represent a combination of agent id and agent
+// namespace addresses.
+// https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0048.md
 // Filecoin checksums are calculated over the address protocol and
 // payload using blake2b-4. Checksums are base32 encoded and
 // only added to an address when encoding to a string.
@@ -206,6 +242,9 @@ std::string FilAddress::EncodeAsString() const {
   }
   std::vector<uint8_t> payload_hash(bytes_);
   std::vector<uint8_t> checksum(bytes_);
+  if (protocol_ == mojom::FilecoinAddressProtocol::DELEGATED) {
+    checksum.insert(checksum.begin(), 0x0A /* Agent id is 10*/);
+  }
   checksum.insert(checksum.begin(), static_cast<int>(protocol_));
   auto checksum_hash = BlakeHash(checksum, kChecksumSize);
   if (!checksum_hash) {
@@ -219,8 +258,15 @@ std::string FilAddress::EncodeAsString() const {
   // and https://github.com/multiformats/multibase/blob/master/multibase.csv
   std::string encoded_output = base::ToLowerASCII(
       base32::Base32Encode(input, base32::Base32EncodePolicy::OMIT_PADDING));
-  return network_ + std::to_string(static_cast<int>(protocol_)) +
-         encoded_output;
+  if (protocol_ == mojom::FilecoinAddressProtocol::DELEGATED) {
+    auto r = network_ + std::to_string(static_cast<int>(protocol_)) +
+             // Agent id + delimiter
+             "10f" + encoded_output;
+    return r;
+  } else {
+    return network_ + std::to_string(static_cast<int>(protocol_)) +
+           encoded_output;
+  }
 }
 
 std::vector<uint8_t> FilAddress::GetBytes() const {
