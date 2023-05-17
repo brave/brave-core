@@ -142,7 +142,7 @@ public class AssetUtils {
                 return BraveWalletConstants.SOLANA_KEYRING_ID;
             case CoinType.FIL:
                 throw new IllegalArgumentException(
-                        "Keyring Id for Filecoin cannot be obtained by coin type. Returning default keyring Id. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
+                        "Keyring Id for Filecoin cannot be obtained by coin type. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
             default:
                 Log.e(TAG,
                         String.format(Locale.ENGLISH,
