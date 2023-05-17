@@ -1096,8 +1096,9 @@ bool PlaylistService::GetMediaPath(const std::string& id,
     if (!path.empty()) {
       auto parts = base::SplitString(path, ".", base::TRIM_WHITESPACE,
                                      base::SPLIT_WANT_NONEMPTY);
-      DCHECK(parts.size());
-      extension = parts.back();
+      if (parts.size() > 1) {
+        extension = parts.back();
+      }
     }
   }
 
