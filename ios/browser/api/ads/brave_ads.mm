@@ -683,7 +683,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                                                         .ToDoubleT()];
         }
         completion(statement->ads_received_this_month,
-                   statement->earnings_this_month, nextPaymentDate);
+                   statement->max_earnings_this_month, nextPaymentDate);
       }));
 }
 

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -39,7 +40,9 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.0;
-    expected_statement->earnings_this_month = 0.02;
+    expected_statement->min_earnings_this_month =
+        0.02 * kMinEstimatedEarningsMultiplier;
+    expected_statement->max_earnings_this_month = 0.02;
     expected_statement->next_payment_date =
         TimeFromString("7 December 2020 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 2;
@@ -101,7 +104,9 @@ TEST_F(BraveAdsStatementTest,
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.01;
-    expected_statement->earnings_this_month = 0.05;
+    expected_statement->min_earnings_this_month =
+        0.05 * kMinEstimatedEarningsMultiplier;
+    expected_statement->max_earnings_this_month = 0.05;
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 3;
@@ -152,7 +157,9 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.01;
-    expected_statement->earnings_this_month = 0.04;
+    expected_statement->min_earnings_this_month =
+        0.04 * kMinEstimatedEarningsMultiplier;
+    expected_statement->max_earnings_this_month = 0.04;
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 3;
@@ -173,10 +180,47 @@ TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.0;
-    expected_statement->earnings_this_month = 0.0;
+    expected_statement->min_earnings_this_month = 0.0;
+    expected_statement->max_earnings_this_month = 0.0;
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
     expected_statement->ads_received_this_month = 0;
+
+    EXPECT_EQ(expected_statement, statement);
+  }));
+
+  // Assert
+}
+
+TEST_F(BraveAdsStatementTest, GetWithFilteredTransactionsForThisMonth) {
+  // Arrange
+  AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
+
+  TransactionList transactions;
+
+  const TransactionInfo transaction_1 =
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  transactions.push_back(transaction_1);
+
+  TransactionInfo transaction_2 =
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+  transaction_2.ad_type = AdType::kNewTabPageAd;
+  transactions.push_back(transaction_2);
+
+  SaveTransactions(transactions);
+
+  // Act
+  BuildStatement(base::BindOnce([](mojom::StatementInfoPtr statement) {
+    ASSERT_TRUE(statement);
+
+    mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
+    expected_statement->earnings_last_month = 0.0;
+    expected_statement->min_earnings_this_month =
+        0.01 * kMinEstimatedEarningsMultiplier;
+    expected_statement->max_earnings_this_month = 0.02;
+    expected_statement->next_payment_date =
+        TimeFromString("7 December 2020 23:59:59.999", /*is_local*/ false);
+    expected_statement->ads_received_this_month = 2;
 
     EXPECT_EQ(expected_statement, statement);
   }));
