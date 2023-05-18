@@ -201,6 +201,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       base::FeatureList::IsEnabled(commands::features::kBraveCommands));
 
   UpdateCommandEnabled(IDC_SHOW_BRAVE_TALK, true);
+  UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -374,6 +375,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_BRAVE_TALK:
       brave::ShowBraveTalk(&*browser_);
+      break;
+    case IDC_TOGGLE_SHIELDS:
+      brave::ToggleShieldsEnabled(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
