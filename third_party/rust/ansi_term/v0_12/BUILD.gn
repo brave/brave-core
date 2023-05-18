@@ -38,7 +38,7 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   if (is_win) {
     deps = [
-      "//third_party/rust/winapi/v3:lib"
+      "//third_party/rust/winapi/v0_3:lib"
     ]
   }
 }
