@@ -34,21 +34,21 @@ RegisterPolymerTemplateModifications({
         blockThirdPartyIncognitoRadioButton.setAttribute('hidden', 'true')
       }
     }
-    const preloadingToggleTemplate = templateContent.querySelector(
-      'template[is=dom-if][if="[[!showPreloadingSubPage_]]"]')
-    if (!preloadingToggleTemplate) {
+    const preloadingLinkRowTemplate = templateContent.querySelector(
+      'template[is=dom-if][if="[[showPreloadingSubPage_]]"]')
+    if (!preloadingLinkRowTemplate) {
       console.error(
-        '[Brave Settings Overrides] Could not find preloading toggle template')
+        '[Brave Settings Overrides] Could not find preloading template')
       return
     }
-    const networkPredictionToggle = preloadingToggleTemplate.content.
-      getElementById('preloadingToggle')
-    if (!networkPredictionToggle) {
+    const networkPredictionLinkRow = preloadingLinkRowTemplate.content.
+      getElementById('preloadingLinkRow')
+    if (!networkPredictionLinkRow) {
       console.error(
-        '[Brave Settings Overrides] Could not find preloadingToggle id ' +
+        '[Brave Settings Overrides] Could not find preloadingLinkRow id ' +
         'on cookies page.')
     } else {
-      networkPredictionToggle.setAttribute('hidden', 'true')
+      networkPredictionLinkRow.setAttribute('hidden', 'true')
     }
   }
 })
