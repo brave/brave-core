@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/scoped_observation.h"
 #include "brave/components/ai_chat/ai_chat.mojom.h"
@@ -22,11 +23,16 @@
 
 class TabStripModel;
 
+namespace content {
+class WebContents;
+}
+
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                             public TabStripModelObserver,
                             public AIChatTabHelper::Observer {
  public:
   AIChatUIPageHandler(
+      content::WebContents* owner_web_contents,
       TabStripModel* tab_strip_model,
       Profile* profile,
       mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver);
@@ -41,14 +47,18 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       mojo::PendingRemote<ai_chat::mojom::ChatUIPage> page) override;
   void SubmitHumanConversationEntry(const std::string& input) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
-  void RequestSummary() override;
   void MarkAgreementAccepted() override;
+  void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
+  void GenerateQuestions() override;
+  void SetAutoGenerateQuestions(bool can_auto_generate_questions) override;
 
  private:
   // ChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
-  void OnRequestSummaryFailed() override;
+  void OnSuggestedQuestionsChanged(std::vector<std::string> questions,
+                                   bool has_generated,
+                                   bool auto_generate) override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(
