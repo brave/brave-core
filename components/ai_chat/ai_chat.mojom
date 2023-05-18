@@ -29,13 +29,18 @@ struct ConversationTurn {
 interface PageHandler {
   SetClientPage(pending_remote<ChatUIPage> page);
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
+  GetSuggestedQuestions() => (array<string> questions, bool can_generate, bool auto_generate);
+  GenerateQuestions();
   SubmitHumanConversationEntry(string input);
-  RequestSummary();
   MarkAgreementAccepted();
+  SetAutoGenerateQuestions(bool can_auto_generate_questions);
 };
 
 interface ChatUIPage {
   OnConversationHistoryUpdate();
   OnAPIRequestInProgress(bool in_progress);
-  OnContentSummarizationFailed();
+  OnSuggestedQuestionsChanged(array<string> questions, bool has_generated, bool auto_generate);
+  // Event for when active tab changes, if it is the target of this chat
+  // conversation.
+  OnTargetTabChanged();
 };

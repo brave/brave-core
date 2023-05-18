@@ -24,13 +24,23 @@ const DATA = [
   {text: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.', characterType: CharacterType.ASSISTANT, visibility: ConversationTurnVisibility.VISIBLE },
 ]
 
+const SAMPLE_QUESTIONS = [
+  "Summarize this article",
+  "What was the score?",
+  "Any injuries?"
+]
+
+interface StoryProps {
+  hasQuestions: boolean
+}
+
 export default {
   title: 'Chat/Page',
   parameters: {
     layout: 'centered'
   },
-  argTypes: {
-    locked: { control: { type: 'boolean', lock: false } }
+  args: {
+    hasQuestions: true
   },
   decorators: [
     (Story: any) => {
@@ -44,7 +54,7 @@ export default {
   ]
 }
 
-export const _Main = () => {
+export const _Main = (props: StoryProps) => {
   const { value, setValue } = useInput();
   const [hasSeenAgreement] = React.useState(true)
 
@@ -64,6 +74,12 @@ export const _Main = () => {
       <ConversationList
         list={DATA}
         isLoading={false}
+        canGenerateQuestions={!props.hasQuestions}
+        suggestedQuestions={props.hasQuestions ? SAMPLE_QUESTIONS : []}
+        userAllowsAutoGenerating={false}
+        onSetUserAllowsAutoGenerating={() => {}}
+        onGenerateSuggestedQuestions={() => {}}
+        onQuestionSubmit={() => {}}
       />
     )
   }

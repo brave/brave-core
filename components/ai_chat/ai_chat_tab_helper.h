@@ -13,8 +13,11 @@
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/ai_chat.mojom.h"
 #include "brave/components/ai_chat/ai_chat_api.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+
+class PrefService;
 
 namespace network {
 class SimpleURLLoader;
@@ -32,8 +35,13 @@ class AIChatTabHelper : public content::WebContentsObserver,
     ~Observer() override {}
 
     virtual void OnHistoryUpdate() {}
+    // We are on a page where we can read the content, so we can perform
+    // page-specific actions.
+    virtual void OnPageTextIsAvailable(bool is_available) {}
     virtual void OnAPIRequestInProgress(bool in_progress) {}
-    virtual void OnRequestSummaryFailed() {}
+    virtual void OnSuggestedQuestionsChanged(std::vector<std::string> questions,
+                                             bool has_generated,
+                                             bool auto_generate) {}
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
@@ -48,10 +56,12 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
-
-  // Retrieves the AXTree of the mainframe and sends it to
-  // the AIChat API for summarization
-  void RequestSummary();
+  // On-demand request to fetch questions related to the content. If no content
+  // is available for the current page, or if questions
+  // are already generated, nothing will happen.
+  void GenerateQuestions();
+  std::vector<std::string> GetSuggestedQuestions(bool& can_generate,
+                                                 bool& auto_generate);
 
  private:
   using OnArticleSummaryCallback =
@@ -63,19 +73,24 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   explicit AIChatTabHelper(content::WebContents* web_contents);
 
+  bool HasUserOptedIn();
   const std::string& GetConversationHistoryString();
+  void GeneratePageText();
   void OnSnapshotFinished(const ui::AXTreeUpdate& result);
   void DistillViaAlgorithm(const ui::AXTree& tree);
-  void SetArticleSummaryString(const std::string& text);
   void CleanUp();
   void OnAPIStreamDataReceived(data_decoder::DataDecoder::ValueOrError result);
-  void OnAPIStreamDataComplete(bool is_summarize_prompt,
-                               api_request_helper::APIRequestResult result);
+  void OnAPIStreamDataComplete(api_request_helper::APIRequestResult result);
+  void OnSuggestedQuestionsChanged();
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
+  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void WebContentsDestroyed() override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
+  raw_ref<PrefService> pref_service_;
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
   SimpleURLLoaderList url_loaders_;
 
@@ -85,9 +100,13 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::vector<ai_chat::mojom::ConversationTurn> chat_history_;
   std::string article_text_;
   std::string history_text_;
-  std::string article_summary_;
-
   bool is_request_in_progress_ = false;
+  std::vector<std::string> suggested_questions_;
+  bool has_generated_questions_ = false;
+  // Store the unique ID for each navigation so that
+  // we can ignore API responses for previous navigations.
+  int64_t current_navigation_id_;
+
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

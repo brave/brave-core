@@ -41,6 +41,7 @@ source_set("ai_chat") {
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//components/prefs",
+    "//components/user_prefs",
     "//content/public/browser",
     "//net/traffic_annotation",
     "//services/data_decoder/public/cpp",

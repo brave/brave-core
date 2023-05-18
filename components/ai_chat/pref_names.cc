@@ -11,6 +11,7 @@ namespace ai_chat::prefs {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBraveChatHasSeenDisclaimer, false);
+  registry->RegisterBooleanPref(kBraveChatAutoGenerateQuestions, false);
 }
 
 }  // namespace ai_chat::prefs
