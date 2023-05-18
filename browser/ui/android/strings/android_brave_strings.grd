@@ -1712,7 +1712,7 @@ Are you sure you want to do this?
         Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.
       </message>
       <message name="IDS_SAY_THANK_YOU_WITH_TIPS" desc="Brave rewards onboarding title">
-        Say thank you with contributios
+        Say thank you with contributions
       </message>
       <message name="IDS_SAY_THANK_YOU_WITH_TIPS_TEXT" desc="Brave rewards onboarding title">
         Tipping is a way to personally encourage and support content or creators that you love. Get tippin'!
@@ -2812,12 +2812,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AUTO_CONTRIBUTE" desc="Title text for `Auto-Contribute` section in Brave rewards panel">
       Auto-Contribute
     </message>
-    <message name="IDS_ONE_TIME_TIP" desc="Title text for `One-Time Tip` section in Brave rewards panel">
-      One-Time Contributions
-    </message>
-    <message name="IDS_MONTHLY_TIPS" desc="Title text for `Monthly Tips` section in Brave rewards panel">
-      Monthly Contributions
-    </message>
     <message name="IDS_ESTIMATED_EARNINGS" desc="Title text for `Estimated earnings` section in Brave rewards panel">
       Estimated earnings
     </message>
@@ -2837,7 +2831,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Unverified Creator
     </message>
     <message name="IDS_MONTHLY_TIP" desc="Title text for `Monthly tip` section in Brave rewards panel">
-      Monthly contribution
+      Monthly Contribution
     </message>
     <message name="IDS_BAT_TEXT" desc="Brave rewards panel text" translateable="false">
       BAT
