@@ -99,7 +99,7 @@ hooks = [
 ]
 
 include_rules = [
-#Everybody can use some things.
+  #Everybody can use some things.
   "+brave_base",
   "+crypto",
   "+net",
@@ -119,7 +119,7 @@ include_rules = [
 
 # Temporary workaround for massive nummber of incorrect test includes
 specific_include_rules = {
-  ".*test.*(\.cc|\.mm|\.h)" : [
+  ".*test.*(\.cc|\.mm|\.h)": [
     "+bat",
     "+brave",
     "+chrome",

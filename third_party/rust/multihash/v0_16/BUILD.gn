@@ -36,20 +36,16 @@ cargo_crate("lib") {
   ]
 
   features = [
+    "std",
+    "derive",
+    "multihash-impl",
     "alloc",
     "blake2b",
     "blake2b_simd",
-    # "blake2s",
-    # "blake3",
-    "derive",
     "multihash-derive",
-    "multihash-impl",
     "serde",
     "serde-big-array",
-    # "serde-codec",
-    # "sha2",
-    # "sha3",
-    "std",
+    "serde-codec",
   ]
 
   cargo_manifest_dir = rebase_path("//brave/third_party/rust/multihash/v0_16/crate")
