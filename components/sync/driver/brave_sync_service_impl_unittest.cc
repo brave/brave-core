@@ -263,6 +263,19 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+
+  // By default Brave enables Bookmarks datatype when sync is enabled.
+  // This caused DCHECK at DataTypeManagerImpl::DataTypeManagerImpl
+  // after OnEngineInitialized(true, false) call.
+  // Current unit test is intended to verify fix for brave/brave-browser#22898
+  // and is about set encryption passphrase later setup after right after
+  // enabling sync, for example when internet connection is unstable. Related
+  // Chromium commit 3241d114b8036bb6d53931ba34b3bf819258c29d Prior to this
+  // commit DataTypeManagerImpl wasn't created for bookmarks at
+  // ForcedSetDecryptionPassphrase test.
+  brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
+      false, syncer::UserSelectableTypeSet());
+
   task_environment_.RunUntilIdle();
 
   brave_sync_service_impl()->GetUserSettings()->SetFirstSetupComplete(
