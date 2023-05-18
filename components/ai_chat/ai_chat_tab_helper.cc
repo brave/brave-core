@@ -150,18 +150,16 @@ void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
   }
 }
 
-void AIChatTabHelper::UpdateLastEntryInConversationHistory(
+void AIChatTabHelper::UpdateOrCreateLastAssistantEntry(
     const std::string& updated_text) {
-  ConversationTurn& prev_turn = chat_history_.back();
-
-  if (prev_turn.character_type != CharacterType::ASSISTANT) {
+  if (chat_history_.empty() ||
+      chat_history_.back().character_type != CharacterType::ASSISTANT) {
     AddToConversationHistory({CharacterType::ASSISTANT,
                               ConversationTurnVisibility::VISIBLE,
                               updated_text});
-    return;
+  } else {
+    chat_history_.back().text = updated_text;
   }
-
-  prev_turn.text = updated_text;
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -331,7 +329,7 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   // the incoming response is expected to include the AI-generated summary.
   // TODO(nullhook): Improve this heuristic, as it may or may not be true.
   bool is_summarize_prompt =
-      turn.visibility == ConversationTurnVisibility::HIDDEN ? true : false;
+      turn.visibility == ConversationTurnVisibility::INTERNAL ? true : false;
 
   ai_chat_api_->QueryPrompt(
       base::BindRepeating(&AIChatTabHelper::OnAPIStreamDataReceived,
@@ -348,7 +346,7 @@ bool AIChatTabHelper::IsRequestInProgress() {
 }
 
 void AIChatTabHelper::OnAPIStreamDataReceived(const std::string& text) {
-  UpdateLastEntryInConversationHistory(text);
+  UpdateOrCreateLastAssistantEntry(text);
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -359,8 +357,11 @@ void AIChatTabHelper::OnAPIStreamDataReceived(const std::string& text) {
 void AIChatTabHelper::OnAPIStreamDataComplete(bool is_summarize_prompt,
                                               bool success,
                                               int response_code) {
-  if (is_summarize_prompt && success) {
-    SetArticleSummaryString(chat_history_.back().text);
+  if (is_summarize_prompt && success && !chat_history_.empty()) {
+    const ConversationTurn& last_turn = chat_history_.back();
+    if (last_turn.character_type == CharacterType::ASSISTANT) {
+      SetArticleSummaryString(last_turn.text);
+    }
   }
 
   if (!success || response_code != 200) {

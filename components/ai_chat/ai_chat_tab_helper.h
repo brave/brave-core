@@ -38,7 +38,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   const std::vector<ai_chat::mojom::ConversationTurn>& GetConversationHistory();
   void AddToConversationHistory(const ai_chat::mojom::ConversationTurn& turn);
-  void UpdateLastEntryInConversationHistory(const std::string& text);
+  void UpdateOrCreateLastAssistantEntry(const std::string& text);
   void MakeAPIRequestWithConversationHistoryUpdate(
       const ai_chat::mojom::ConversationTurn& turn);
   bool IsRequestInProgress();
