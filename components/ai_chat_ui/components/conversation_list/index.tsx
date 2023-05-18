@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import classnames from 'classnames'
+import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
 import { ConversationTurn, CharacterType } from '../../api/page_handler'
@@ -12,7 +13,9 @@ import { getLocale } from '$web-common/locale'
 
 interface ConversationListProps {
   list: ConversationTurn[]
+  suggestedQuestions: string[]
   isLoading: boolean
+  onQuestionSubmit: (question: string) => void
 }
 
 const elementScrollBehavior: ScrollIntoViewOptions = {
@@ -72,6 +75,13 @@ function ConversationList (props: ConversationListProps) {
           </p>
         </div>
       )}
+      <div className={styles.suggestedQuestions}>
+        {props.suggestedQuestions.map(question => (
+          <Button size='small' kind='outline' onClick={() => props.onQuestionSubmit(question)}>
+            {question}
+          </Button>
+        ))}
+      </div>
     </div>
   )
 }

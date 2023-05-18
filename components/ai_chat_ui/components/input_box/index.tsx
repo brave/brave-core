@@ -14,10 +14,7 @@ interface InputBoxProps {
   onSubmit?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   onSummaryClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
-  showSummarizeButton?: boolean
-  showInput?: boolean
   value: string
-  hasSummarizationFailed?: boolean
   hasSeenAgreement: boolean
   onHandleAgreeClick: Function
 }
@@ -30,7 +27,7 @@ function InputBox (props: InputBoxProps) {
 
     return (
       <div className={styles.container}>
-        <button disabled={props.hasSummarizationFailed} className={styles.buttonPrimary} onClick={handleAgreeClick}>{getLocale('acceptButtonLabel')}</button>
+        <button className={styles.buttonPrimary} onClick={handleAgreeClick}>{getLocale('acceptButtonLabel')}</button>
       </div>
     )
   }
@@ -43,10 +40,6 @@ function InputBox (props: InputBoxProps) {
     props.onSubmit?.(e)
   }
 
-  const handleSummaryClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    props.onSummaryClick?.(e)
-  }
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       if (!e.repeat) {
@@ -57,19 +50,8 @@ function InputBox (props: InputBoxProps) {
     }
   }
 
-  const summaryFailedView = props.hasSummarizationFailed && (
-    <div className={styles.alert}>
-      {getLocale('summarizeFailedLabel')}
-    </div>
-  )
-
   return (
     <div className={styles.container}>
-      {summaryFailedView}
-      {props.showSummarizeButton &&
-      <button disabled={props.hasSummarizationFailed} className={styles.buttonPrimary} onClick={handleSummaryClick}>{getLocale('summarizeButtonLabel')}</button>
-      }
-      {props.showInput &&
       <form className={styles.form}>
         <textarea
           className={styles.textbox}
@@ -84,7 +66,6 @@ function InputBox (props: InputBoxProps) {
           </button>
         </div>
       </form>
-      }
     </div>
   )
 }

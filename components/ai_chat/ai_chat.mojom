@@ -29,13 +29,19 @@ struct ConversationTurn {
 interface PageHandler {
   SetClientPage(pending_remote<ChatUIPage> page);
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
+  GetSuggestedQuestions() => (array<string> questions);
   SubmitHumanConversationEntry(string input);
-  RequestSummary();
   MarkAgreementAccepted();
 };
 
 interface ChatUIPage {
   OnConversationHistoryUpdate();
   OnAPIRequestInProgress(bool in_progress);
-  OnContentSummarizationFailed();
+  OnSuggestedQuestionsChanged(array<string> questions);
+  // We are on a page where we can read the content, so we can perform
+  // page-specific actions
+  OnPageTextIsAvailable();
+  // Event for when active tab changes, if it is the target of this chat
+  // conversation.
+  OnTargetTabChanged();
 };

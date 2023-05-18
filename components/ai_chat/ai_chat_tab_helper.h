@@ -13,6 +13,7 @@
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/ai_chat.mojom.h"
 #include "brave/components/ai_chat/ai_chat_api.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -28,8 +29,12 @@ class AIChatTabHelper : public content::WebContentsObserver,
     ~Observer() override {}
 
     virtual void OnHistoryUpdate() {}
+    // We are on a page where we can read the content, so we can perform
+    // page-specific actions.
+    virtual void OnPageTextIsAvailable() {}
     virtual void OnAPIRequestInProgress(bool in_progress) {}
-    virtual void OnRequestSummaryFailed() {}
+    virtual void OnSuggestedQuestionsChanged(
+        std::vector<std::string> questions) {}
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
@@ -46,7 +51,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // Retrieves the AXTree of the mainframe and sends it to
   // the AIChat API for summarization
-  void RequestSummary();
+  void GenerateQuestions();
+  std::vector<std::string> GetSuggestedQuestions();
 
  private:
   using OnArticleSummaryCallback =
@@ -58,6 +64,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   explicit AIChatTabHelper(content::WebContents* web_contents);
 
   const std::string& GetConversationHistoryString();
+  void GeneratePageText();
   void OnSnapshotFinished(const ui::AXTreeUpdate& result);
   void DistillViaAlgorithm(const ui::AXTree& tree);
   void SetArticleSummaryString(const std::string& text);
@@ -69,7 +76,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
+  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void WebContentsDestroyed() override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
 
@@ -80,6 +90,11 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string article_text_;
   std::string history_text_;
   std::string article_summary_;
+  std::vector<std::string> suggested_questions_;
+  // Store the unique ID for each navigation so that
+  // we can ignore API responses for previous navigations.
+  int64_t current_navigation_id_;
+
   bool is_request_in_progress_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

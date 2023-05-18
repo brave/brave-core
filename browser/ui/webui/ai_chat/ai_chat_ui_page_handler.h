@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/scoped_observation.h"
 #include "brave/components/ai_chat/ai_chat.mojom.h"
@@ -41,14 +42,15 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       mojo::PendingRemote<ai_chat::mojom::ChatUIPage> page) override;
   void SubmitHumanConversationEntry(const std::string& input) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
-  void RequestSummary() override;
   void MarkAgreementAccepted() override;
+  void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
 
  private:
   // ChatTabHelper::Observer
   void OnHistoryUpdate() override;
+  void OnPageTextIsAvailable() override;
   void OnAPIRequestInProgress(bool in_progress) override;
-  void OnRequestSummaryFailed() override;
+  void OnSuggestedQuestionsChanged(std::vector<std::string> questions) override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(

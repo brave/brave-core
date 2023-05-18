@@ -83,8 +83,9 @@ void AIChatUIPageHandler::GetConversationHistory(
   std::move(callback).Run(std::move(list));
 }
 
-void AIChatUIPageHandler::RequestSummary() {
-  active_chat_tab_helper_->RequestSummary();
+void AIChatUIPageHandler::GetSuggestedQuestions(
+    GetSuggestedQuestionsCallback callback) {
+  std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions());
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
@@ -98,15 +99,22 @@ void AIChatUIPageHandler::OnHistoryUpdate() {
   }
 }
 
+void AIChatUIPageHandler::OnPageTextIsAvailable() {
+  if (page_.is_bound()) {
+    page_->OnPageTextIsAvailable();
+  }
+}
+
 void AIChatUIPageHandler::OnAPIRequestInProgress(bool in_progress) {
   if (page_.is_bound()) {
     page_->OnAPIRequestInProgress(in_progress);
   }
 }
 
-void AIChatUIPageHandler::OnRequestSummaryFailed() {
+void AIChatUIPageHandler::OnSuggestedQuestionsChanged(
+    std::vector<std::string> questions) {
   if (page_.is_bound()) {
-    page_->OnContentSummarizationFailed();
+    page_->OnSuggestedQuestionsChanged(std::move(questions));
   }
 }
 
@@ -125,5 +133,7 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
           AIChatTabHelper::FromWebContents(selection.new_contents);
       chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
     }
+    // Reset state
+    page_->OnTargetTabChanged();
   }
 }
