@@ -14,7 +14,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
-#include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
@@ -23,7 +22,6 @@
 #include "base/time/time.h"
 #include "brave/services/device/geolocation/geoclue_client_object.h"
 #include "components/dbus/thread_linux/dbus_thread_linux.h"
-#include "dbus/property.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/device/public/cpp/geolocation/geoposition.h"
 #include "services/device/public/mojom/geoposition.mojom.h"
@@ -32,8 +30,6 @@ namespace device {
 
 namespace {
 
-constexpr char kManagerInterfaceName[] = "org.freedesktop.GeoClue2.Manager";
-constexpr char kManagerObjectPath[] = "/org/freedesktop/GeoClue2/Manager";
 constexpr char kBraveDesktopId[] = "com.brave.Browser";
 
 mojom::GeopositionResultPtr GetError() {
@@ -60,9 +56,11 @@ bool GeoClueAvailable() {
   auto bus = base::MakeRefCounted<dbus::Bus>(options);
 
   dbus::ObjectProxy* proxy = bus->GetObjectProxy(
-      GeoClueClientObject::kServiceName, dbus::ObjectPath(kManagerObjectPath));
+      GeoClueClientObject::kServiceName,
+      dbus::ObjectPath(GeoClueClientObject::kManagerObjectPath));
 
-  dbus::MethodCall call(kManagerInterfaceName, "GetClient");
+  dbus::MethodCall call(GeoClueClientObject::kManagerInterfaceName,
+                        "GetClient");
   auto response =
       proxy->CallMethodAndBlock(&call, dbus::ObjectProxy::TIMEOUT_USE_DEFAULT);
 
@@ -113,14 +111,9 @@ void GeoClueLocationProvider::StartProvider(bool high_accuracy) {
   }
   client_state_ = kInitializing;
 
-  dbus::ObjectProxy* proxy = bus_->GetObjectProxy(
-      GeoClueClientObject::kServiceName, dbus::ObjectPath(kManagerObjectPath));
-
-  dbus::MethodCall call(kManagerInterfaceName, "GetClient");
-  proxy->CallMethod(
-      &call, dbus::ObjectProxy::TIMEOUT_USE_DEFAULT,
-      base::BindOnce(&GeoClueLocationProvider::OnGetClientCompleted,
-                     weak_ptr_factory_.GetWeakPtr()));
+  GeoClueClientObject::GetClient(
+      bus_, base::BindOnce(&GeoClueLocationProvider::OnGetClientCompleted,
+                           weak_ptr_factory_.GetWeakPtr()));
 }
 
 void GeoClueLocationProvider::StopProvider() {
@@ -133,7 +126,7 @@ void GeoClueLocationProvider::StopProvider() {
   // Invalidate weak pointers, so we don't continue any async operations.
   weak_ptr_factory_.InvalidateWeakPtrs();
 
-  // Stop can be called before the gclue_client_ has resolved.
+  // Stop can be called before the client_ has resolved.
   if (!client_) {
     return;
   }
@@ -168,20 +161,14 @@ void GeoClueLocationProvider::SetPosition(
   }
 }
 
-void GeoClueLocationProvider::OnGetClientCompleted(dbus::Response* response) {
-  if (!response) {
+void GeoClueLocationProvider::OnGetClientCompleted(
+    std::unique_ptr<GeoClueClientObject> client) {
+  if (!client) {
     SetPosition(GetError());
     return;
   }
 
-  dbus::MessageReader reader(response);
-  dbus::ObjectPath path;
-  if (!reader.PopObjectPath(&path)) {
-    SetPosition(GetError());
-    return;
-  }
-
-  client_ = std::make_unique<GeoClueClientObject>(bus_, path);
+  client_ = std::move(client);
   SetClientProperties();
 }
 

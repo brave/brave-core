@@ -20,6 +20,10 @@
 class GeoClueClientObject {
  public:
   static constexpr char kServiceName[] = "org.freedesktop.GeoClue2";
+  static constexpr char kManagerInterfaceName[] =
+      "org.freedesktop.GeoClue2.Manager";
+  static constexpr char kManagerObjectPath[] =
+      "/org/freedesktop/GeoClue2/Manager";
   static constexpr char kInterfaceName[] = "org.freedesktop.GeoClue2.Client";
   static constexpr char kLocationInterfaceName[] =
       "org.freedesktop.GeoClue2.Location";
@@ -62,8 +66,9 @@ class GeoClueClientObject {
     ~Properties() override;
   };
 
-  explicit GeoClueClientObject(scoped_refptr<dbus::Bus> bus,
-                               const dbus::ObjectPath& object_path);
+  static void GetClient(
+      scoped_refptr<dbus::Bus> bus,
+      base::OnceCallback<void(std::unique_ptr<GeoClueClientObject>)> callback);
 
   GeoClueClientObject(const GeoClueClientObject&) = delete;
   GeoClueClientObject& operator=(const GeoClueClientObject&) = delete;
@@ -81,6 +86,9 @@ class GeoClueClientObject {
   Properties* properties() { return properties_.get(); }
 
  private:
+  GeoClueClientObject(scoped_refptr<dbus::Bus> bus,
+                      const dbus::ObjectPath& object_path);
+
   scoped_refptr<dbus::Bus> bus_;
   scoped_refptr<dbus::ObjectProxy> proxy_;
   std::unique_ptr<Properties> properties_;

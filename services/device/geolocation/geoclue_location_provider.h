@@ -79,7 +79,7 @@ class COMPONENT_EXPORT(BRAVE_GEOLOCATION) GeoClueLocationProvider
 
   // Step 2
   void GetClient();
-  void OnGetClientCompleted(dbus::Response* response);
+  void OnGetClientCompleted(std::unique_ptr<GeoClueClientObject> client);
 
   // Step 3
   void SetClientProperties();

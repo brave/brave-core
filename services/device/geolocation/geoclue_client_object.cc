@@ -17,8 +17,6 @@
 #include "dbus/object_path.h"
 #include "dbus/object_proxy.h"
 
-namespace {}
-
 GeoClueClientObject::LocationProperties::LocationProperties(
     dbus::ObjectProxy* proxy)
     : dbus::PropertySet(proxy, kLocationInterfaceName, base::NullCallback()) {
@@ -59,6 +57,37 @@ GeoClueClientObject::Properties::Properties(dbus::ObjectProxy* proxy)
 }
 
 GeoClueClientObject::Properties::~Properties() = default;
+
+using GetClientCallback =
+    base::OnceCallback<void(std::unique_ptr<GeoClueClientObject>)>;
+// static
+void GeoClueClientObject::GetClient(scoped_refptr<dbus::Bus> bus,
+                                    GetClientCallback callback) {
+  auto* manager_proxy =
+      bus->GetObjectProxy(kServiceName, dbus::ObjectPath(kManagerObjectPath));
+  dbus::MethodCall get_client(kManagerInterfaceName, "GetClient");
+  manager_proxy->CallMethod(
+      &get_client, dbus::ObjectProxy::TIMEOUT_USE_DEFAULT,
+      base::BindOnce(
+          [](scoped_refptr<dbus::Bus> bus, GetClientCallback callback,
+             dbus::Response* response) {
+            if (!response) {
+              std::move(callback).Run(nullptr);
+              return;
+            }
+
+            dbus::MessageReader reader(response);
+            dbus::ObjectPath client_path;
+            if (!reader.PopObjectPath(&client_path)) {
+              std::move(callback).Run(nullptr);
+              return;
+            }
+
+            std::move(callback).Run(std::unique_ptr<GeoClueClientObject>(
+                new GeoClueClientObject(bus, client_path)));
+          },
+          bus, std::move(callback)));
+}
 
 GeoClueClientObject::GeoClueClientObject(scoped_refptr<dbus::Bus> bus,
                                          const dbus::ObjectPath& object_path)
