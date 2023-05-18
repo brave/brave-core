@@ -1,12 +1,12 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..ba36d1f95d2dca331829e2c24a339e31ecf17000 100644
+index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..ab9c765b01057a7500ad82d0d6fa3d68abc193be 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -906,6 +906,10 @@ config("compiler") {
    if (is_official_build) {
      rustflags += [ "-Ccodegen-units=1" ]
    }
-+  if (libcxx_is_shared) {
++  if (libcxx_is_shared && is_mac) {
 +    rustflags += [ "-Clink-arg=-Wl,-rpath," + rebase_path(root_build_dir) ]
 +  }
 +  rustflags -= brave_remove_rustflags
