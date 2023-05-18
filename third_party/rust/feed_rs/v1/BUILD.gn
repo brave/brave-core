@@ -31,8 +31,8 @@ cargo_crate("lib") {
     "//brave/third_party/rust/siphasher/v0_3:lib",
     "//brave/third_party/rust/url/v2:lib",
     "//brave/third_party/rust/uuid/v1:lib",
+    "//third_party/rust/serde/v1:lib",
     "//third_party/rust/lazy_static/v1:lib",
     "//third_party/rust/serde_json/v1:lib",
-    "//third_party/rust/serde/v1:lib",
   ]
 }
