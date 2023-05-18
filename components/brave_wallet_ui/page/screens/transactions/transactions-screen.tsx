@@ -55,8 +55,7 @@ import {
   Column,
   LoadingIcon,
   Text,
-  VerticalSpacer,
-  ScrollableColumn
+  VerticalSpacer
 } from '../../../components/shared/style'
 import {
   LoadingSkeletonStyleProps,
@@ -288,7 +287,6 @@ export const TransactionsScreen: React.FC = () => {
               </Column>
             }
 
-          <ScrollableColumn>
             {filteredTransactions.map(tx =>
               <PortfolioTransactionItem
                 key={tx.id}
@@ -296,7 +294,6 @@ export const TransactionsScreen: React.FC = () => {
                 transaction={tx}
               />
             )}
-          </ScrollableColumn>
 
             {txsForSelectedChain &&
               txsForSelectedChain.length !== 0 &&
