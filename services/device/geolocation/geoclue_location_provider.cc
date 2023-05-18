@@ -37,12 +37,6 @@ constexpr char kManagerInterfaceName[] = "org.freedesktop.GeoClue2.Manager";
 constexpr char kManagerObjectPath[] = "/org/freedesktop/GeoClue2/Manager";
 constexpr char kBraveDesktopId[] = "com.brave.Browser";
 
-// This corresponds to the GeoClue2 AccuracyLevel: Neighborhood
-constexpr uint32_t kGeoClueAccuracyLow = 5;
-
-// This corresponds to the GeoClue2 AccuracyLevel: Exact
-constexpr uint32_t kGeoClueAccuracyHigh = 8;
-
 mojom::GeopositionResultPtr GetError() {
   auto error = mojom::GeopositionError::New();
   error->error_code = mojom::GeopositionErrorCode::kPositionUnavailable;
@@ -202,7 +196,7 @@ void GeoClueLocationProvider::SetClientProperties() {
                         weak_ptr_factory_.GetWeakPtr()));
 
   properties->requested_accuracy_level.Set(
-      high_accuracy_requested_ ? kGeoClueAccuracyHigh : kGeoClueAccuracyLow,
+      high_accuracy_requested_ ? GeoClueClientObject::AccuracyLevel::kExact : GeoClueClientObject::AccuracyLevel::kCity,
       callback);
 
   properties->desktop_id.Set(kBraveDesktopId, callback);

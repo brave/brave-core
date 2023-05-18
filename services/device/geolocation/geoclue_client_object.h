@@ -16,7 +16,7 @@ class GeoClueClientObject {
   static constexpr char kLocationInterfaceName[] =
       "org.freedesktop.GeoClue2.Location";
 
-  enum class AccuracyLevel : uint32_t {
+  enum AccuracyLevel : uint32_t {
     kNone = 0,
     kCountry = 1,
     kCity = 4,
