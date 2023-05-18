@@ -72,8 +72,6 @@
 
 using content::WebContents;
 
-namespace {}  // namespace
-
 namespace brave {
 
 void NewOffTheRecordWindowTor(Browser* browser) {
@@ -318,6 +316,24 @@ void ToggleShieldsEnabled(Browser* browser) {
   }
 
   shields->SetBraveShieldsEnabled(!shields->GetBraveShieldsEnabled());
+}
+
+void ToggleJavascriptEnabled(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+  auto* shields =
+      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+  if (!shields) {
+    return;
+  }
+
+  shields->SetIsNoScriptEnabled(!shields->GetNoScriptEnabled());
 }
 
 }  // namespace brave
