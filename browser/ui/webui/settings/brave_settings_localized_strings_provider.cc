@@ -61,10 +61,6 @@ const char16_t kUnstoppableDomainsLearnMoreURL[] =
     u"Resolve-Methods-for-Unstoppable-Domains";
 const char16_t kEnsOffchainLookupLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
-const char16_t kBraveAdsLearnMoreURL[] =
-    u"https://support.brave.com/hc/en-us/articles/360026361072-Brave-Ads-FAQ";
-const char16_t kBraveTermsOfUseURL[] = u"https://brave.com/terms-of-use/";
-const char16_t kBravePrivacyPolicyURL[] = u"https://brave.com/privacy/browser/";
 const char16_t kBraveSyncGuideUrl[] =
     u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
 const char16_t kDeAmpLearnMoreUrl[] =
@@ -376,48 +372,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveRewardsDisabledLabel", IDS_SETTINGS_BRAVE_REWARDS_DISABLED_LABEL},
     {"braveRewardsDisabledSubLabel",
      IDS_SETTINGS_BRAVE_REWARDS_DISABLED_SUB_LABEL},
-    {"braveRewardsAutoDetectedItem",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_DETECTED_ITEM},
-    {"braveRewardsDefaultItem", IDS_SETTINGS_BRAVE_REWARDS_DEFAULT_ITEM},
-    {"braveRewardsDisabledItem", IDS_SETTINGS_BRAVE_REWARDS_DISABLED_ITEM},
-    {"braveRewardsPrivateAdsTitle",
-     IDS_SETTINGS_BRAVE_REWARDS_PRIVATE_ADS_TITLE},
-    {"braveRewardsPrivateAdsEarnTokensLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_PRIVATE_ADS_EARN_TOKENS_LABEL},
-    {"braveRewardsMaxAdsToDisplayLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_MAX_ADS_TO_DISPLAY_LABEL},
-    {"braveRewardsMaxAdsPerHour0", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_0},
-    {"braveRewardsMaxAdsPerHour1", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1},
-    {"braveRewardsMaxAdsPerHour2", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2},
-    {"braveRewardsMaxAdsPerHour3", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3},
-    {"braveRewardsMaxAdsPerHour4", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4},
-    {"braveRewardsMaxAdsPerHour5", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5},
-    {"braveRewardsMaxAdsPerHour10", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10},
-    {"braveRewardsStateLevelAdTargetingLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_LABEL},
-    {"braveRewardsAppearanceTitle",
-     IDS_SETTINGS_BRAVE_REWARDS_APPEARANCE_TITLE},
-    {"braveRewardsAutoContributeTitle",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_TITLE},
-    {"braveRewardsAutoContributeMonthlyLimitLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MONTHLY_LIMIT_LABEL},
-    {"braveRewardsContributionUpTo", IDS_BRAVE_REWARDS_LOCAL_CONTR_UP_TO},
-    {"braveRewardsAutoContributeMinVisitTimeLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MIN_VISIT_TIME_LABEL},
-    {"braveRewardsAutoContributeMinVisitTime5",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_5},
-    {"braveRewardsAutoContributeMinVisitTime8",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_8},
-    {"braveRewardsAutoContributeMinVisitTime60",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60},
-    {"braveRewardsAutoContributeMinVisitsLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MIN_VISITS_LABEL},
-    {"braveRewardsAutoContributeMinVisits1",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1},
-    {"braveRewardsAutoContributeMinVisits5",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5},
-    {"braveRewardsAutoContributeMinVisits10",
-     IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_10},
+    {"braveRewardsPageLabel", IDS_SETTINGS_BRAVE_REWARDS_PAGE_LABEL},
     {"braveRewardsShowBraveRewardsButtonLabel",
      IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
     {"braveRewardsShowTipButtonsLabel",
@@ -735,18 +690,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
                                  kEnsOffchainLookupLearnMoreURL));
-
-  html_source->AddString(
-      "braveRewardsStateLevelAdTargetingDescLabel",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_DESC_LABEL,
-          kBraveAdsLearnMoreURL));
-
-  html_source->AddString(
-      "braveRewardsAutoContributeDescLabel",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL,
-          kBraveTermsOfUseURL, kBravePrivacyPolicyURL));
 
   html_source->AddString("braveShieldsDefaultsSectionDescription2",
                          l10n_util::GetStringFUTF16(
