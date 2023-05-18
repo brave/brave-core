@@ -1,5 +1,5 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619a2d23f9a 100644
+index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..890f44bd3847bd9fe0c5fb51f0ea7add3a573fbb 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
 @@ -2,8 +2,9 @@
@@ -61,7 +61,16 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619
    # Executables need to have unique names. Work out a prefix.
    if (defined(invoker.build_root)) {
      _epochlabel = "vunknown"
-@@ -119,9 +144,36 @@ template("cargo_crate") {
+@@ -107,6 +132,8 @@ template("cargo_crate") {
+   if (defined(invoker.rustenv)) {
+     _rustenv = invoker.rustenv
+   }
++  _rustenv += [ "CARGO_CFG_TARGET_OS=$current_os" ]
++  _rustenv += [ "CARGO_CFG_TARGET_ARCH=$current_cpu" ]
+   if (defined(invoker.cargo_pkg_authors)) {
+     _rustenv += [ "CARGO_PKG_AUTHORS=${invoker.cargo_pkg_authors}" ]
+   }
+@@ -119,9 +146,36 @@ template("cargo_crate") {
    if (defined(invoker.cargo_pkg_description)) {
      _rustenv += [ "CARGO_PKG_DESCRIPTION=${invoker.cargo_pkg_description}" ]
    }
@@ -99,7 +108,7 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619
      forward_variables_from(invoker,
                             "*",
                             TESTONLY_AND_VISIBILITY + [
-@@ -130,39 +182,49 @@ template("cargo_crate") {
+@@ -130,39 +184,49 @@ template("cargo_crate") {
                                   "build_sources",
                                   "build_script_inputs",
                                   "build_script_outputs",
@@ -165,7 +174,7 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619
      }
  
      # The unit tests for each target, if generated, should be unique as well.
-@@ -184,13 +246,17 @@ template("cargo_crate") {
+@@ -184,13 +248,17 @@ template("cargo_crate") {
      }
      unit_test_target = "${_unit_test_unique_target_name}${_crate_name}_${_unit_test_unique_epoch}unittests"
  
@@ -184,7 +193,7 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619
      if (defined(invoker.build_root)) {
        # Uh-oh, we have a build script
        if (!defined(deps)) {
-@@ -199,9 +265,6 @@ template("cargo_crate") {
+@@ -199,9 +267,6 @@ template("cargo_crate") {
        if (!defined(sources)) {
          sources = []
        }
@@ -194,7 +203,7 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619
  
        # This... is a bit weird. We generate a file called cargo_flags.rs which
        # does not actually contain Rust code, but instead some flags to add
-@@ -235,17 +298,15 @@ template("cargo_crate") {
+@@ -235,17 +300,15 @@ template("cargo_crate") {
      # Extra targets required to make build script work
      action("${_build_script_name}_output") {
        script = rebase_path("//build/rust/run_build_script.py")
@@ -219,7 +228,7 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619
        if (is_win) {
          _build_script_exe = "${_build_script_exe}.exe"
        }
-@@ -266,12 +327,12 @@ template("cargo_crate") {
+@@ -266,12 +329,12 @@ template("cargo_crate") {
          "--src-dir",
          rebase_path(get_path_info(invoker.build_root, "dir"), root_build_dir),
        ]
@@ -238,7 +247,7 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619
        if (defined(invoker.features)) {
          args += [ "--features" ]
          args += invoker.features
-@@ -292,20 +353,25 @@ template("cargo_crate") {
+@@ -292,20 +355,25 @@ template("cargo_crate") {
        }
      }
  
@@ -272,7 +281,7 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619
          rustenv = _rustenv
          forward_variables_from(invoker,
                                 [
-@@ -313,8 +379,22 @@ template("cargo_crate") {
+@@ -313,8 +381,22 @@ template("cargo_crate") {
                                   "edition",
                                   "rustflags",
                                 ])
@@ -297,7 +306,7 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c230d1306a446ce45a38ab1f710c3619
        }
      } else {
        not_needed(invoker,
-@@ -337,4 +417,5 @@ template("cargo_crate") {
+@@ -337,4 +419,5 @@ template("cargo_crate") {
  set_defaults("cargo_crate") {
    library_configs = default_compiler_configs
    executable_configs = default_executable_configs
