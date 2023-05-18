@@ -14,7 +14,7 @@ namespace brave_vpn {
 
 class BraveVPNConnectionInfo;
 
-namespace internal {
+namespace ras {
 
 enum class CheckConnectionResult {
   CONNECTED,
@@ -40,7 +40,7 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name);
 RasOperationResult ConnectEntry(const std::wstring& entry_name);
 CheckConnectionResult CheckConnection(const std::wstring& entry_name);
 
-}  // namespace internal
+}  // namespace ras
 
 }  // namespace brave_vpn
 

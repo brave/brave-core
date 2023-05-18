@@ -39,8 +39,6 @@ std::string BraveVPNWireguardConnectionAPI::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }
 
-void BraveVPNWireguardConnectionAPI::RemoveVPNConnection() {}
-
 void BraveVPNWireguardConnectionAPI::Connect() {}
 
 void BraveVPNWireguardConnectionAPI::Disconnect() {}

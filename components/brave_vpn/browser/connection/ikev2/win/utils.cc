@@ -80,7 +80,7 @@ absl::optional<std::string> SetCredentials(LPCTSTR phone_book_path,
       RasSetCredentials(phone_book_path, entry_name, &credentials, FALSE);
   if (dw_ret != ERROR_SUCCESS) {
     return base::StrCat(
-        {"RasSetCredential() - ", internal::GetRasErrorMessage(dw_ret)});
+        {"RasSetCredential() - ", ras::GetRasErrorMessage(dw_ret)});
   }
 
   return absl::nullopt;
@@ -153,15 +153,15 @@ std::wstring TryGetPhonebookPath(int key, const std::wstring& entry_name) {
   return L"";
 }
 
-internal::RasOperationResult GetRasSuccessResult() {
-  internal::RasOperationResult result;
+ras::RasOperationResult GetRasSuccessResult() {
+  ras::RasOperationResult result;
   result.success = true;
   return result;
 }
 
-internal::RasOperationResult GetRasErrorResult(const std::string& error,
-                                               const std::string& caller = {}) {
-  internal::RasOperationResult result;
+ras::RasOperationResult GetRasErrorResult(const std::string& error,
+                                          const std::string& caller = {}) {
+  ras::RasOperationResult result;
   result.success = false;
   result.error_description =
       caller.empty() ? error : base::StrCat({caller, " - ", error});
@@ -170,7 +170,7 @@ internal::RasOperationResult GetRasErrorResult(const std::string& error,
 
 }  // namespace
 
-namespace internal {
+namespace ras {
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgeterrorstringa
 std::string GetRasErrorMessage(DWORD error) {
@@ -593,6 +593,6 @@ CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
   return result;
 }
 
-}  // namespace internal
+}  // namespace ras
 
 }  // namespace brave_vpn

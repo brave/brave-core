@@ -88,13 +88,6 @@ void BraveVPNOSConnectionAPISim::Connect() {
   BraveVPNOSConnectionAPIBase::Connect();
 }
 
-void BraveVPNOSConnectionAPISim::RemoveVPNConnectionImpl(
-    const std::string& name) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnRemoved,
-                                weak_factory_.GetWeakPtr(), name, true));
-}
-
 void BraveVPNOSConnectionAPISim::CheckConnectionImpl(const std::string& name) {
   check_connection_called_ = true;
 }
@@ -156,8 +149,5 @@ void BraveVPNOSConnectionAPISim::OnDisconnected(const std::string& name,
 void BraveVPNOSConnectionAPISim::OnIsDisconnecting(const std::string& name) {
   BraveVPNOSConnectionAPIBase::OnIsDisconnecting();
 }
-
-void BraveVPNOSConnectionAPISim::OnRemoved(const std::string& name,
-                                           bool success) {}
 
 }  // namespace brave_vpn

@@ -21,22 +21,22 @@
 // Most of Windows implementations are based on Brian Clifton
 // (brian@clifton.me)'s work (https://github.com/bsclifton/winvpntool).
 
-using brave_vpn::internal::CheckConnectionResult;
-using brave_vpn::internal::CreateEntry;
-using brave_vpn::internal::GetPhonebookPath;
-using brave_vpn::internal::RasOperationResult;
-using brave_vpn::internal::RemoveEntry;
+using brave_vpn::ras::CheckConnectionResult;
+using brave_vpn::ras::CreateEntry;
+using brave_vpn::ras::GetPhonebookPath;
+using brave_vpn::ras::RasOperationResult;
+using brave_vpn::ras::RemoveEntry;
 
 namespace brave_vpn {
 
 namespace {
 
 RasOperationResult ConnectEntry(const std::wstring& name) {
-  return brave_vpn::internal::ConnectEntry(name);
+  return brave_vpn::ras::ConnectEntry(name);
 }
 
 RasOperationResult DisconnectEntry(const std::wstring& name) {
-  return brave_vpn::internal::DisconnectEntry(name);
+  return brave_vpn::ras::DisconnectEntry(name);
 }
 
 }  // namespace
@@ -87,19 +87,10 @@ void BraveVPNOSConnectionAPIWin::DisconnectImpl(const std::string& name) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void BraveVPNOSConnectionAPIWin::RemoveVPNConnectionImpl(
-    const std::string& name) {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&RemoveEntry, base::UTF8ToWide(name)),
-      base::BindOnce(&BraveVPNOSConnectionAPIWin::OnRemoved,
-                     weak_factory_.GetWeakPtr(), name));
-}
-
 void BraveVPNOSConnectionAPIWin::CheckConnectionImpl(const std::string& name) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&internal::CheckConnection, base::UTF8ToWide(name)),
+      base::BindOnce(&ras::CheckConnection, base::UTF8ToWide(name)),
       base::BindOnce(&BraveVPNOSConnectionAPIWin::OnCheckConnection,
                      weak_factory_.GetWeakPtr(), name));
 }
@@ -166,13 +157,6 @@ void BraveVPNOSConnectionAPIWin::OnDisconnected(
     return;
   }
   SetLastConnectionError(result.error_description);
-}
-
-void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
-                                           const RasOperationResult& result) {
-  if (!result.success) {
-    SetLastConnectionError(result.error_description);
-  }
 }
 
 void BraveVPNOSConnectionAPIWin::StartVPNConnectionChangeMonitoring() {

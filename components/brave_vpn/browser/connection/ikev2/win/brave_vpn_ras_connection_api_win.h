@@ -16,9 +16,9 @@
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/utils.h"
 
 namespace brave_vpn {
-namespace internal {
+namespace ras {
 enum class CheckConnectionResult;
-}  // namespace internal
+}  // namespace ras
 
 class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
                                    public base::win::ObjectWatcher::Delegate {
@@ -35,7 +35,6 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
  private:
   // BraveVPNOSConnectionAPIBase interfaces:
   void CreateVPNConnectionImpl(const BraveVPNConnectionInfo& info) override;
-  void RemoveVPNConnectionImpl(const std::string& name) override;
   void ConnectImpl(const std::string& name) override;
   void DisconnectImpl(const std::string& name) override;
   void CheckConnectionImpl(const std::string& name) override;
@@ -44,13 +43,11 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
   void OnObjectSignaled(HANDLE object) override;
 
   void OnCreated(const std::string& name,
-                 const internal::RasOperationResult& result);
-  void OnConnected(const internal::RasOperationResult& result);
-  void OnDisconnected(const internal::RasOperationResult& result);
-  void OnRemoved(const std::string& name,
-                 const internal::RasOperationResult& result);
+                 const ras::RasOperationResult& result);
+  void OnConnected(const ras::RasOperationResult& result);
+  void OnDisconnected(const ras::RasOperationResult& result);
   void OnCheckConnection(const std::string& name,
-                         internal::CheckConnectionResult result);
+                         ras::CheckConnectionResult result);
 
   void StartVPNConnectionChangeMonitoring();
 

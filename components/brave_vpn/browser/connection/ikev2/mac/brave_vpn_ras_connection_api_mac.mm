@@ -62,21 +62,6 @@ NSData* GetPasswordRefForAccount() {
   return (__bridge NSData*)copy_result;
 }
 
-OSStatus RemoveKeychainItemForAccount() {
-  NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
-  NSDictionary* query = @{
-    (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-    (__bridge id)kSecAttrService : bundle_id,
-    (__bridge id)kSecAttrAccount : kBraveVPNKey,
-    (__bridge id)kSecReturnPersistentRef : (__bridge id)kCFBooleanTrue,
-  };
-  OSStatus result = SecItemDelete((__bridge CFDictionaryRef)query);
-  if (result != errSecSuccess && result != errSecItemNotFound) {
-    LOG(ERROR) << "Error: deleting password entry(status:" << result << ")";
-  }
-  return result;
-}
-
 OSStatus StorePassword(const NSString* password, std::string* error_str) {
   DCHECK(error_str);
   std::string error;
@@ -248,31 +233,6 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnectionImpl(
         }];
       }];
     }];
-  }];
-}
-
-void BraveVPNOSConnectionAPIMac::RemoveVPNConnectionImpl(
-    const std::string& name) {
-  NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
-  [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
-    if (error) {
-      SetLastConnectionError(
-          base::SysNSStringToUTF8([error localizedDescription]));
-      LOG(ERROR) << "RemoveVPNConnection - loadFromPrefs: "
-                 << GetLastConnectionError();
-    } else {
-      [vpn_manager
-          removeFromPreferencesWithCompletionHandler:^(NSError* remove_error) {
-            if (remove_error) {
-              SetLastConnectionError(
-                  base::SysNSStringToUTF8([remove_error localizedDescription]));
-              LOG(ERROR) << "RemoveVPNConnection - removeFromPrefs: "
-                         << GetLastConnectionError();
-            }
-            VLOG(2) << "RemoveVPNConnection - successfully removed";
-          }];
-    }
-    RemoveKeychainItemForAccount();
   }];
 }
 
