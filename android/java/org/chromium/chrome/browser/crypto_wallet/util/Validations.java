@@ -72,8 +72,10 @@ public class Validations {
                     if (!receiverAccountAddress.isEmpty()
                             && bytesReceiverAccountAddress.length
                                     != VALID_ACCOUNT_ADDRESS_BYTE_LENGTH) {
-                        callback.call(
-                                resources.getString(R.string.wallet_not_valid_eth_address), true);
+                        int invalidAddressId = coinType == CoinType.FIL
+                                ? R.string.invalid_fil_address
+                                : R.string.wallet_not_valid_eth_address;
+                        callback.call(resources.getString(invalidAddressId), true);
                         return;
                     }
 

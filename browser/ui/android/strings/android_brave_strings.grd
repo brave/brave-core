@@ -3208,6 +3208,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_SOLANA_DESCRIPTION" desc="Add account modal create account Solana description">
       Supports SPL compatible assets on the Solana blockchain
     </message>
+    <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION" desc="Add account modal create account Filecoin description">
+      Store FIL asset
+    </message>
     <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_DESCRIPTION" desc="Create Account Tab Description">
       You don’t yet have a <ph name="ACCOUNT_TYPE"><ex>Solana</ex>%1$s</ph> account. Create one now?
     </message>
@@ -3223,11 +3226,20 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_ACTION_CANCEL" desc="Action text to cancel something">
       Cancel
     </message>
-    <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype">
+    <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype" translateable="false">
       Ethereum
     </message>
-    <message name="IDS_WALLET_SOL_NAME" desc="Name of SOL cointype">
+    <message name="IDS_WALLET_SOL_NAME" desc="Name of SOL cointype" translateable="false">
       Solana
+    </message>
+    <message name="IDS_WALLET_FIL_NAME" desc="Name of FIL cointype" translateable="false">
+      Filecoin
+    </message>
+    <message name="IDS_WALLET_FILECOIN_MAINNET" desc="Name of Filecoin Mainnet" translateable="false">
+      Filecoin Mainnet
+    </message>
+    <message name="IDS_WALLET_FILECOIN_TESTNET" desc="Name of Filecoin Testnet" translateable="false">
+      Filecoin Testnet
     </message>
     <message name="IDS_EXCLUDED_APPS" desc="Vpn splittunnel, Excluded apps title text">
       Excluded Apps
@@ -3249,6 +3261,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_INVALID_SOL_ADDRESS" desc="Message to indicate invalid Solana address">
       Not a valid SOL address
+    </message>
+        <message name="IDS_INVALID_FIL_ADDRESS" desc="Message to indicate invalid Filecoin address">
+      Not a valid FIL address
     </message>
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">
       The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>

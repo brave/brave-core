@@ -145,16 +145,6 @@ public class CryptoModel {
             if (mKeyringService == null || mPendingTxHelper == null) {
                 return;
             }
-            // TODO(pav): uncomment the below and move to refreshTransactions.
-            // To process pending tx from all networks and full network name
-
-            //            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(),
-            //            keyringInfos -> {
-            //                List<AccountInfo> accountInfos =
-            //                        WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-            //                mPendingTxHelper.setAccountInfos(accountInfos);
-            //            });
-
             refreshTransactions();
 
             // Filter out a separate list of unapproved transactions
@@ -206,7 +196,8 @@ public class CryptoModel {
 
     public void refreshTransactions() {
         synchronized (mLock) {
-            if (mKeyringService == null || mPendingTxHelper == null) {
+            if (mKeyringService == null || mPendingTxHelper == null
+                    || mBraveWalletService == null) {
                 return;
             }
             List<Integer> coins = new ArrayList<>();
@@ -218,7 +209,8 @@ public class CryptoModel {
             mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
                 List<AccountInfo> accountInfos =
                         WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-                new SelectedAccountResponsesCollector(mKeyringService, coins, accountInfos)
+                new SelectedAccountResponsesCollector(
+                        mKeyringService, mBraveWalletService, coins, accountInfos)
                         .getAccounts(defaultAccountPerCoin -> {
                             mPendingTxHelper.setAccountInfos(
                                     new ArrayList<>(defaultAccountPerCoin));
@@ -251,15 +243,22 @@ public class CryptoModel {
 
     public List<CryptoAccountTypeInfo> getSupportedCryptoAccountTypes() {
         List<CryptoAccountTypeInfo> cryptoAccountTypeInfos = new ArrayList<>();
+        cryptoAccountTypeInfos.add(new CryptoAccountTypeInfo(
+                mContext.getString(R.string.brave_wallet_create_account_ethereum_description),
+                mContext.getString(R.string.wallet_eth_name), CoinType.ETH, R.drawable.eth));
+
         if (isSolanaEnabled()) {
             cryptoAccountTypeInfos.add(new CryptoAccountTypeInfo(
                     mContext.getString(R.string.brave_wallet_create_account_solana_description),
                     mContext.getString(R.string.wallet_sol_name), CoinType.SOL,
                     R.drawable.ic_sol_asset_icon));
         }
-        cryptoAccountTypeInfos.add(new CryptoAccountTypeInfo(
-                mContext.getString(R.string.brave_wallet_create_account_ethereum_description),
-                mContext.getString(R.string.wallet_eth_name), CoinType.ETH, R.drawable.eth));
+        if (isFilecoinEnabled()) {
+            cryptoAccountTypeInfos.add(new CryptoAccountTypeInfo(
+                    mContext.getString(R.string.brave_wallet_create_account_filecoin_description),
+                    mContext.getString(R.string.wallet_fil_name), CoinType.FIL,
+                    R.drawable.ic_fil_asset_icon));
+        }
         return cryptoAccountTypeInfos;
     }
 
@@ -301,6 +300,10 @@ public class CryptoModel {
 
     public boolean isSolanaEnabled() {
         return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_SOLANA);
+    }
+
+    public boolean isFilecoinEnabled() {
+        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_FILECOIN);
     }
 
     public void updateCoinType() {
@@ -390,6 +393,10 @@ public class CryptoModel {
             keyRings.add(BraveWalletConstants.DEFAULT_KEYRING_ID);
             if (isSolanaEnabled()) {
                 keyRings.add(BraveWalletConstants.SOLANA_KEYRING_ID);
+            }
+            if (isFilecoinEnabled()) {
+                keyRings.add(BraveWalletConstants.FILECOIN_KEYRING_ID);
+                keyRings.add(BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID);
             }
             return keyRings.toArray(new String[0]);
         }

@@ -166,6 +166,9 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         if (walletListItemModel.getAccountInfo() != null) {
             accountDetailActivityIntent.putExtra(
                     Utils.COIN_TYPE, walletListItemModel.getAccountInfo().coin);
+
+            accountDetailActivityIntent.putExtra(
+                    Utils.KEYRING_ID, walletListItemModel.getAccountInfo().keyringId);
         }
         accountDetailActivityIntent.putExtra(
                 Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());

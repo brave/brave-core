@@ -164,6 +164,7 @@ public class Utils {
     public static final String ASSET_LOGO = "assetLogo";
     public static final String ASSET_DECIMALS = "assetDecimals";
     public static final String CHAIN_ID = "chainId";
+    public static final String KEYRING_ID = "keyringId";
     public static final String IS_FROM_DAPPS = "isFromDapps";
     public static final String RESTART_WALLET_ACTIVITY = "restartWalletActivity";
     public static final String RESTART_WALLET_ACTIVITY_SETUP = "restartWalletActivitySetup";
@@ -173,8 +174,7 @@ public class Utils {
     public static final BigInteger MAX_UINT256 =
             BigInteger.ONE.shiftLeft(256).subtract(BigInteger.ONE);
 
-    // TODO(djandries): Add Filecoin when implemented
-    public static int[] P3ACoinTypes = {CoinType.ETH, CoinType.SOL};
+    public static int[] P3ACoinTypes = {CoinType.ETH, CoinType.SOL, CoinType.FIL};
 
     private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
 
@@ -1039,6 +1039,8 @@ public class Utils {
             case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
                 logo = "ftm.png";
                 break;
+            case BraveWalletConstants.FILECOIN_MAINNET:
+            case BraveWalletConstants.FILECOIN_TESTNET:
             case BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID:
             case BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID:
                 logo = "fil.png";
@@ -1554,7 +1556,7 @@ public class Utils {
      * Gets tokens, prices and balances, all at the same time for a given token type.
      * See {@link TokenUtils.TokenType}.
      *
-     * @param activityRef Weak reference to Brave Wallet base a ctivity.
+     * @param activityRef Weak reference to Brave Wallet base activity.
      * @param tokenType Token type used for filtering (e.g. {@code TokenType.NON_NFTS}).
      * @param allNetworks List of all networks, used to log P3A records.
      * @param selectedNetwork Currently selected network.
@@ -1632,6 +1634,14 @@ public class Utils {
                 });
     }
 
+    /**
+     * Gets P3A networks (i.e. networks with chain Id contained in {@link
+     * WalletConstants.KNOWN_TEST_CHAIN_IDS)} excluding testnet chains by default. Testnet chain
+     * counting can be enabled using the switch
+     * `--p3a-count-wallet-test-networks`.
+     * @param allNetworks Given network list that will be filtered.
+     * @param callback Callback containing a filtered list of P3A networks.
+     */
     public static void getP3ANetworks(
             List<NetworkInfo> allNetworks, Callbacks.Callback1<List<NetworkInfo>> callback) {
         ArrayList<NetworkInfo> relevantNetworks = new ArrayList<NetworkInfo>();
@@ -1665,7 +1675,7 @@ public class Utils {
                 drawableId = R.drawable.ic_sol_asset_icon;
                 break;
             case CoinType.FIL:
-                // TODO(sergz): Add FIL asset icon
+                drawableId = R.drawable.ic_fil_asset_icon;
                 break;
             default:
                 drawableId = R.drawable.ic_eth;
@@ -1675,27 +1685,7 @@ public class Utils {
         return drawableId;
     }
 
-    public static String getKeyringForCoinType(int coinType) {
-        String keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-        switch (coinType) {
-            case CoinType.ETH:
-                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-                break;
-            case CoinType.SOL:
-                keyring = BraveWalletConstants.SOLANA_KEYRING_ID;
-                break;
-            case CoinType.FIL:
-                keyring = BraveWalletConstants.FILECOIN_KEYRING_ID;
-                break;
-            default:
-                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-                break;
-        }
-
-        return keyring;
-    }
-
-    // TODO(sergz): Move getCoinIcon, getKeyringForCoinType, getBalanceForCoinType
+    // TODO(sergz): Move getCoinIcon, getKeyringForEthOrSolOnly, getBalanceForCoinType
     // to some kind of a separate Utils file that is related to diff networks only
     public static double getBalanceForCoinType(int coinType, int decimals, String balance) {
         double result = 0.0d;
@@ -1704,10 +1694,8 @@ public class Utils {
                 result = Utils.fromHexWei(balance, decimals);
                 break;
             case CoinType.SOL:
-                result = Utils.fromWei(balance, decimals);
-                break;
             case CoinType.FIL:
-                // TODO(sergz): Add FIL asset balance
+                result = Utils.fromWei(balance, decimals);
                 break;
             default:
                 result = Utils.fromHexWei(balance, decimals);

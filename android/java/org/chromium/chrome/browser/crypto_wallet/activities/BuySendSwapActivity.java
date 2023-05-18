@@ -611,12 +611,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (blockchainToken == null) return;
 
         if (blockchainToken.contractAddress.isEmpty()) {
-            if (mSelectedAccount.coin == CoinType.ETH) {
-                mJsonRpcService.getBalance(address, CoinType.ETH, mSelectedNetwork.chainId,
+            if (mSelectedAccount.coin == CoinType.ETH || mSelectedAccount.coin == CoinType.FIL) {
+                mJsonRpcService.getBalance(address, mSelectedAccount.coin, mSelectedNetwork.chainId,
                         (balance, error, errorMessage) -> {
                             warnWhenError(TAG, "getBalance", error, errorMessage);
                             if (error != ProviderError.SUCCESS
-                                    || mSelectedNetwork.coin != CoinType.ETH
+                                    || mSelectedNetwork.coin != mSelectedAccount.coin
                                     || !mSelectedAccount.address.equals(address)) {
                                 return;
                             }
@@ -704,6 +704,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             int tokenCoin = token.coin;
             fromToBalance = Utils.getBalanceForCoinType(tokenCoin, decimals, balance);
         } catch (NumberFormatException | NullPointerException e) {
+            Log.e(TAG, "Error while parsing token balance.", e);
             clearBalance(from);
             return;
         }
@@ -991,6 +992,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
 
                 if (to.isEmpty()) {
+                    Log.e(TAG, "Destination address cannot be empty.");
                     return;
                 }
                 if (mSelectedAccount.coin == CoinType.ETH) {
@@ -1021,6 +1023,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 // error_message is localized, do not disable send button
                                 setSendToFromValueValidationResult(errorMessage, false, true);
                             });
+                } else if (mSelectedAccount.coin == CoinType.FIL) {
+                    // TODO: implement Filecoin send action.
+                    // https://github.com/brave/brave-browser/issues/30402
                 }
             } else if (mActivityType == ActivityType.BUY) {
                 Intent selectPurchaseMethodIntent = SelectPurchaseMethodActivity.getIntent(this,
