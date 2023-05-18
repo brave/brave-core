@@ -50,7 +50,7 @@ def parse_args():
 
 
 def check_root():
-    if os.geteuid() == 0:
+    if os.geteuid() == 0:  # pylint: disable=no-member
         print("We suggest not running this as root, unless you're really sure.")
         choice = input("Do you want to continue? [y/N]: ")
         if choice not in ('y', 'Y'):
