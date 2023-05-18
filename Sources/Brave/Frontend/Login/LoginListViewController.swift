@@ -192,7 +192,8 @@ extension LoginListViewController {
         $0.detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
         $0.setLines(loginInfo.displayURLString, detailText: loginInfo.usernameValue)
         $0.selectionStyle = .none
-         $0.accessoryType = .disclosureIndicator
+        $0.accessoryType = .disclosureIndicator
+        $0.backgroundColor = .braveBackground
       }
 
       cell.imageIconView.do {
@@ -431,8 +432,6 @@ private class LoginListTableViewCell: UITableViewCell, TableViewReusable {
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-    contentView.backgroundColor = UIColor { $0.userInterfaceStyle == .dark ? .black : .white }
     
     contentView.addSubview(imageIconView)
     contentView.addSubview(labelStackView)
