@@ -19,6 +19,7 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
+#include "base/threading/scoped_blocking_call.h"
 #include "base/time/time.h"
 #include "brave/services/device/geolocation/geoclue_client_object.h"
 #include "components/dbus/thread_linux/dbus_thread_linux.h"
@@ -57,6 +58,9 @@ mojom::GeopositionResultPtr GetError() {
 // |GeoClue2.Manager.GetClient| (this is cached on the GeoClue2 side, so it will
 // be the same client we get when we start our service).
 bool GeoClueAvailable() {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
+
   dbus::Bus::Options options;
   options.bus_type = dbus::Bus::SYSTEM;
   options.connection_type = dbus::Bus::PRIVATE;
