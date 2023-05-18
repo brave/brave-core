@@ -52,7 +52,7 @@ hooks = [
   {
     'name': 'bootstrap',
     'pattern': '.',
-    'action': ['python', 'script/bootstrap.py'],
+    'action': ['vpython3', 'script/bootstrap.py'],
   },
   {
     # Download hermetic xcode for goma
