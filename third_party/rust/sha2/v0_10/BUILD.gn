@@ -27,9 +27,13 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/cpufeatures/v0_2:lib",
     "//brave/third_party/rust/digest/v0_10:lib",
     "//third_party/rust/cfg_if/v1:lib",
   ]
+
+  if (target_cpu == "arm64" || target_cpu == "x64" || target_cpu == "x86") {
+    deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+  }
+
   features = [ "std" ]
 }
