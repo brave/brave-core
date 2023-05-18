@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
@@ -89,6 +90,7 @@
 #include "chrome/grit/chromium_strings.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/embedder_support/switches.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/user_prefs/user_prefs.h"
@@ -1205,6 +1207,10 @@ blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
       ChromeContentBrowserClient::GetUserAgentMetadata();
   // Expect the brand version lists to have brand version, chromium_version, and
   // greased version.
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(embedder_support::kUserAgent)) {
+    return metadata;
+  }
   DCHECK_EQ(3UL, metadata.brand_version_list.size());
   DCHECK_EQ(3UL, metadata.brand_full_version_list.size());
   // Zero out the last 3 version components in full version list versions.
