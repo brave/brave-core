@@ -5,7 +5,7 @@
 
 module.exports = {
   'root': true /* Don't read chromium's eslint config (https://eslint.org/docs/user-guide/configuring/configuration-files#cascading-and-hierarchy) */,
-  'extends': ['standard-with-typescript', 'prettier'],
+  'extends': ['standard-with-typescript', 'prettier', 'plugin:react-hooks/recommended'],
   'ignorePatterns': [
     '.storybook/*',
     'build/*',
@@ -119,6 +119,8 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-invalid-void-type': 0,
     'prefer-const': 0,
-    '@typescript-eslint/return-await': 0
+    '@typescript-eslint/return-await': 0,
+    'react-hooks/rules-of-hooks': 'warn',
+    'react-hooks/exhaustive-deps': 'warn'
   }
 }
