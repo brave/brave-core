@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -74,6 +75,7 @@ public class RewardsTippingPanelFragment
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private String mWalletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
 
+    private static final String CUSTOM_UK = "Custom";
     private TextView mRadioTipAmount[] = new TextView[4];
     private double[] mTipChoices;
     private TextView mCurrency1TextView;
@@ -510,9 +512,21 @@ public class RewardsTippingPanelFragment
         mRadioTipAmount[1] = view.findViewById(R.id.tipChoice2);
         mRadioTipAmount[2] = view.findViewById(R.id.tipChoice3);
         mRadioTipAmount[3] = view.findViewById(R.id.tipChoiceCustom);
+        if (getCurrentLocale().getLanguage().equals(
+                    Locale.UK.getLanguage())) { // This need to override for this language
+            mRadioTipAmount[3].setText(CUSTOM_UK);
+        }
 
         for (TextView tb : mRadioTipAmount) {
             tb.setOnClickListener(radio_clicker);
+        }
+    }
+
+    Locale getCurrentLocale() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return getResources().getConfiguration().getLocales().get(0);
+        } else {
+            return getResources().getConfiguration().locale;
         }
     }
 

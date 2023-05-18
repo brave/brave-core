@@ -352,7 +352,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Upgrade connections to HTTPS
       </message>
       <message name="IDS_PROCESSING_FEE"  desc="Text for Brave collects 5% of the tip amount as a processing fee">
-        Brave collects 5% of the tip amount as a processing fee.
+        Brave collects 5% of the sent amount as a processing fee.
       </message>
       <message name="IDS_BAT" desc="Text for BAT" translateable="false">
         BAT
@@ -880,16 +880,16 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Thank you
       </message>
       <message name="IDS_BRAVE_UI_TIP_TEXT" desc="string from Thank you screen">
-        You've just sent a tip to:
+        You've just sent a contribution to:
       </message>
       <message name="IDS_BRAVE_UI_AUTO_TIP_TEXT" desc="string from Thank you screen">
-        You are automatically sending a tip to:
+        You are automatically sending a contribution to:
       </message>
       <message name="IDS_BRAVE_UI_MONTHLY_TEXT" desc="string from Thank you screen">
         Monthly
       </message>
       <message name="IDS_BRAVE_UI_FIRST_TIP_TEXT" desc="string from Thank you screen">
-        Your first monthly tip will be sent on:
+        Your first monthly contribution will be sent on:
       </message>
       <message name="IDS_LOGGED_OUT_STATE_DIALOG_TEXT" desc="Rewards logged out state text">
         Log in to <ph name="WALLET_PROVIDER">%1$s</ph> to see your balance
@@ -1274,10 +1274,10 @@ Are you sure you want to do this?
         Download history
       </message> -->
       <message name="IDS_BRAVE_UI_CONTRIBUTION_TIPS" desc="Title for monthly tips processed notification">
-        Contributions &amp; tips
+        Contributions
       </message>
       <message name="IDS_BRAVE_UI_TIPS_PROCESSED_NOTIFICATION" desc="Message for monthly tips processed notification">
-        Your monthly tips have been processed.
+        Your monthly contributions have been processed.
       </message>
       <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="Prompt to turn on Ads via notification">
         Turn on Ads
@@ -1727,7 +1727,7 @@ Are you sure you want to do this?
         Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.
       </message>
       <message name="IDS_SAY_THANK_YOU_WITH_TIPS" desc="Brave rewards onboarding title">
-        Say thank you with tips
+        Say thank you with contributios
       </message>
       <message name="IDS_SAY_THANK_YOU_WITH_TIPS_TEXT" desc="Brave rewards onboarding title">
         Tipping is a way to personally encourage and support content or creators that you love. Get tippin'!
@@ -2828,10 +2828,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Auto-Contribute
     </message>
     <message name="IDS_ONE_TIME_TIP" desc="Title text for `One-Time Tip` section in Brave rewards panel">
-      One-Time Tips
+      One-Time Contributions
     </message>
     <message name="IDS_MONTHLY_TIPS" desc="Title text for `Monthly Tips` section in Brave rewards panel">
-      Monthly Tips
+      Monthly Contributions
     </message>
     <message name="IDS_ESTIMATED_EARNINGS" desc="Title text for `Estimated earnings` section in Brave rewards panel">
       Estimated earnings
@@ -2852,7 +2852,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Unverified Creator
     </message>
     <message name="IDS_MONTHLY_TIP" desc="Title text for `Monthly tip` section in Brave rewards panel">
-      Monthly tip
+      Monthly contribution
     </message>
     <message name="IDS_BAT_TEXT" desc="Brave rewards panel text" translateable="false">
       BAT
@@ -3605,7 +3605,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       This can happen to keep your account secure. Press below to reconnect now.
     </message>
     <message name="IDS_MONTHLY_TIP_FAILED_NOTIFICATION_TITLE" desc="Rewards panel monthly tip failed notification title">
-      Monthly tip failed
+      Monthly contribution failed
     </message>
     <message name="IDS_MONTHLY_TIP_FAILED_NOTIFICATION_TEXT" desc="Rewards panel monthly tip failed notification text">
       There was a problem processing your contribution.
