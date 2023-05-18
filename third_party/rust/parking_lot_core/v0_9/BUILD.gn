@@ -37,6 +37,6 @@ cargo_crate("lib") {
   }
 
   if (is_win) {
-    deps += [ "//third_party/rust/windows_sys/v0_45:lib" ]
+    deps += [ "//brave/third_party/rust/windows_sys/v0_45:lib" ]
   }
 }
