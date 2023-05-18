@@ -23,6 +23,14 @@ using brave_component_updater::LocalDataFilesService;
 #define LOCALHOST_PERMISSION_TXT_FILE "localhost-permission-allow-list.txt"
 #define LOCALHOST_PERMISSION_TXT_FILE_VERSION "1"
 
+namespace {
+std::string GetDomain(const GURL& url) {
+  return net::registry_controlled_domains::GetDomainAndRegistry(
+      url.host(), net::registry_controlled_domains::PrivateRegistryFilter::
+                      EXCLUDE_PRIVATE_REGISTRIES);
+}
+}  // namespace
+
 namespace localhost_permission {
 
 LocalhostPermissionComponent::LocalhostPermissionComponent(
@@ -42,12 +50,6 @@ void LocalhostPermissionComponent::LoadLocalhostPermissionAllowlist(
                      txt_file_path),
       base::BindOnce(&LocalhostPermissionComponent::OnDATFileDataReady,
                      weak_factory_.GetWeakPtr()));
-}
-
-std::string GetDomain(const GURL& url) {
-  return net::registry_controlled_domains::GetDomainAndRegistry(
-      url.host(), net::registry_controlled_domains::PrivateRegistryFilter::
-                      EXCLUDE_PRIVATE_REGISTRIES);
 }
 
 void LocalhostPermissionComponent::SetAllowedDomainsForTesting(

@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_LOCALHOST_PERMISSION_LOCALHOST_PERMISSION_COMPONENT_H_
 
 #include <memory>
-#include <set>
 #include <string>
 
 #include "base/containers/flat_set.h"
