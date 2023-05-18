@@ -39,15 +39,22 @@ public enum AppBuildChannel: String {
   }
 }
 
-public enum KVOConstants: String {
-  case loading = "loading"
-  case estimatedProgress = "estimatedProgress"
-  case URL = "URL"
-  case title = "title"
-  case canGoBack = "canGoBack"
-  case canGoForward = "canGoForward"
-  case hasOnlySecureContent = "hasOnlySecureContent"
-  case serverTrust = "serverTrust"
+public struct KVOConstants: Equatable {
+  public var keyPath: String
+  
+  public init(keyPath: String) {
+    self.keyPath = keyPath
+  }
+  
+  public static let loading: Self = .init(keyPath: "loading")
+  public static let estimatedProgress: Self = .init(keyPath: "estimatedProgress")
+  public static let URL: Self = .init(keyPath: "URL")
+  public static let title: Self = .init(keyPath: "title")
+  public static let canGoBack: Self = .init(keyPath: "canGoBack")
+  public static let canGoForward: Self = .init(keyPath: "canGoForward")
+  public static let hasOnlySecureContent: Self = .init(keyPath: "hasOnlySecureContent")
+  public static let serverTrust: Self = .init(keyPath: "serverTrust")
+  public static let _sampledPageTopColor: Self = .init(keyPath: "_sampl\("edPageTopC")olor")
 }
 
 public struct AppConstants {

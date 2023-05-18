@@ -311,6 +311,7 @@ class Tab: NSObject {
       // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
       configuration!.ignoresViewportScaleLimits = true
       configuration!.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsEverywhere.value
+      configuration!.enablePageTopColorSampling()
 
       if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
         configuration!.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
@@ -330,7 +331,7 @@ class Tab: NSObject {
       restore(webView, restorationData: self.sessionData)
 
       self.webView = webView
-      self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
+      self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.keyPath, options: .new, context: nil)
       
       tabDelegate?.tab(self, didCreateWebView: webView)
       
@@ -414,7 +415,7 @@ class Tab: NSObject {
     contentScriptManager.uninstall(from: self)
 
     if let webView = webView {
-      webView.removeObserver(self, forKeyPath: KVOConstants.URL.rawValue)
+      webView.removeObserver(self, forKeyPath: KVOConstants.URL.keyPath)
       tabDelegate?.tab(self, willDeleteWebView: webView)
     }
     webView = nil
@@ -744,7 +745,7 @@ class Tab: NSObject {
 
   override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
     guard let webView = object as? BraveWebView, webView == self.webView,
-      let path = keyPath, path == KVOConstants.URL.rawValue
+      let path = keyPath, path == KVOConstants.URL.keyPath
     else {
       return assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
     }

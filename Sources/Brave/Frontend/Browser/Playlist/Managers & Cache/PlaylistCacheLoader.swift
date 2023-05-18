@@ -353,7 +353,7 @@ class PlaylistWebLoader: UIView {
       ]
 
       browserViewController.tab(tab, didCreateWebView: webView)
-      KVOs.forEach { webView.removeObserver(browserViewController, forKeyPath: $0.rawValue) }
+      KVOs.forEach { webView.removeObserver(browserViewController, forKeyPath: $0.keyPath) }
 
       // When creating a tab, TabManager automatically adds a uiDelegate
       // This webView is invisible and we don't want any UI being handled.
