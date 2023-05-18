@@ -81,7 +81,8 @@ void AIChatUI::BindInterface(
   DCHECK(browser_);
 
   page_handler_ = std::make_unique<AIChatUIPageHandler>(
-      browser_->tab_strip_model(), profile_, std::move(receiver));
+      web_ui()->GetWebContents(), browser_->tab_strip_model(), profile_,
+      std::move(receiver));
 }
 
 std::unique_ptr<content::WebUIController>
