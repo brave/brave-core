@@ -1,0 +1,23 @@
+diff --git a/build/rust/rust_executable.gni b/build/rust/rust_executable.gni
+index ea22aa3b5bd0dea2b3c55054d906ed3a35beac26..478f529a3197c26cf090df5e3448e16667f7d941 100644
+--- a/build/rust/rust_executable.gni
++++ b/build/rust/rust_executable.gni
+@@ -52,14 +52,12 @@ import("//build/rust/rust_target.gni")
+ # This template is intended to serve the same purpose as 'rustc_library'
+ # in Fuchsia.
+ template("rust_executable") {
+-  exclude_forwards = TESTONLY_AND_VISIBILITY + [ "configs" ]
+   rust_target(target_name) {
+-    forward_variables_from(invoker, "*", exclude_forwards)
++    forward_variables_from(invoker,
++                           "*",
++                           TESTONLY_AND_VISIBILITY + [ "configs" ])
+     forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+-    if (defined(invoker.configs)) {
+-      library_configs = []
+-      library_configs = invoker.configs
+-    }
++    executable_configs = invoker.configs
+     target_type = "executable"
+     assert(!defined(cxx_bindings))
+   }

@@ -1,0 +1,23 @@
+diff --git a/build/rust/rust_shared_library.gni b/build/rust/rust_shared_library.gni
+index 6bea51d09b8df11d091f40424d0b705d43b2ecbb..ce68af26d44ce46a9d1e3dc0ec14482ee97a06ad 100644
+--- a/build/rust/rust_shared_library.gni
++++ b/build/rust/rust_shared_library.gni
+@@ -8,14 +8,12 @@ import("//build/rust/rust_target.gni")
+ # available as a rust_static_library. See rust_static_library.gni for
+ # documentation.
+ template("rust_shared_library") {
+-  exclude_forwards = TESTONLY_AND_VISIBILITY + [ "configs" ]
+   rust_target(target_name) {
+-    forward_variables_from(invoker, "*", exclude_forwards)
++    forward_variables_from(invoker,
++                           "*",
++                           TESTONLY_AND_VISIBILITY + [ "configs" ])
+     forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+-    if (defined(invoker.configs)) {
+-      library_configs = []
+-      library_configs = invoker.configs
+-    }
++    shared_library_configs = invoker.configs
+     target_type = "shared_library"
+     crate_type = "cdylib"
+   }

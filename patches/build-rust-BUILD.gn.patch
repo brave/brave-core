@@ -1,0 +1,38 @@
+diff --git a/build/rust/BUILD.gn b/build/rust/BUILD.gn
+index d7ae149c265f42a86861bfa02463607f79f54bb7..3c33c0d626d3eb0c749ad92b028ae946c39ba846 100644
+--- a/build/rust/BUILD.gn
++++ b/build/rust/BUILD.gn
+@@ -37,19 +37,7 @@ if (toolchain_has_rust) {
+     # Depending on the C++ bindings side of cxx then requires also depending
+     # on the Rust bindings, since one calls the other. And the Rust bindings
+     # require the Rust standard library.
+-    # Normally the Rust stdlib is brought in as a dependency by depending
+-    # on any first-party Rust target. But in this case, it's conceivable
+-    # that pure-C++ targets will not depend on any 1p Rust code so we'll add
+-    # the Rust stdlib explicitly.
+     deps = [ ":cxx_rustdeps" ]
+-
+-    if (use_local_std_by_default) {
+-      deps += [ "//build/rust/std:link_local_std" ]
+-    } else {
+-      assert(prebuilt_libstd_supported,
+-             "Prebuilt Rust stdlib is not available for this target")
+-      deps += [ "//build/rust/std:link_prebuilt_std" ]
+-    }
+   }
+ 
+   # The required dependencies for cxx-generated bindings, that must be included
+@@ -82,3 +70,13 @@ config("proc_macro_extern") {
+ config("forbid_unsafe") {
+   rustflags = [ "-Funsafe_code" ]
+ }
++
++config("panic_immediate_abort") {
++  visibility = [ "//build/rust/std/rules:*" ]
++  if (is_official_build) {
++    rustflags = [
++      "--cfg",
++      "panic_immediate_abort",
++    ]
++  }
++}

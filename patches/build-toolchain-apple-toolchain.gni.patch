@@ -1,0 +1,40 @@
+diff --git a/build/toolchain/apple/toolchain.gni b/build/toolchain/apple/toolchain.gni
+index 70d7c036392a3afc6b6f1a728a890e97c2fd8a76..9981f2d0a0e83e30680fc317d06d8070c0b91ce3 100644
+--- a/build/toolchain/apple/toolchain.gni
++++ b/build/toolchain/apple/toolchain.gni
+@@ -104,10 +104,6 @@ template("single_apple_toolchain") {
+       # ensure that it's always the same, regardless of the values that may be
+       # set on those toolchains.
+       host_toolchain = host_toolchain
+-
+-      # Similarly for the host toolchain which can be used to make .dylibs
+-      # that will successfully load into prebuilt tools.
+-      host_toolchain_no_sanitizers = host_toolchain_no_sanitizers
+     }
+ 
+     # When the invoker has explicitly overridden use_goma or cc_wrapper in the
+@@ -809,9 +805,10 @@ template("apple_toolchain") {
+     # toolchains, but presubmit checks require that we explicitly exclude them
+   }
+ 
+-  if (using_sanitizer) {
+-    # Make an additional toolchain with no sanitizers.
+-    single_apple_toolchain("${target_name}_no_sanitizers") {
++  if (enable_rust && current_toolchain == default_toolchain) {
++    # Make an additional toolchain which uses the prebuilt stdlib shipped with
++    # rustc.
++    single_apple_toolchain("${target_name}_for_rust_host_build_tools") {
+       assert(defined(invoker.toolchain_args),
+              "Toolchains must declare toolchain_args")
+       forward_variables_from(invoker,
+@@ -824,7 +821,9 @@ template("apple_toolchain") {
+       toolchain_args = {
+         # Populate toolchain args from the invoker.
+         forward_variables_from(invoker.toolchain_args, "*")
+-        toolchain_disables_sanitizers = true
++        toolchain_for_rust_host_build_tools = true
++        is_debug = false
++        is_component_build = false
+       }
+     }
+   }

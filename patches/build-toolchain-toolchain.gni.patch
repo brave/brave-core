@@ -1,0 +1,38 @@
+diff --git a/build/toolchain/toolchain.gni b/build/toolchain/toolchain.gni
+index d32d7d0e9dd960cde356481d208672d97dac0655..42973fa8281a6381fa83469a375b34f4da9a7af1 100644
+--- a/build/toolchain/toolchain.gni
++++ b/build/toolchain/toolchain.gni
+@@ -20,10 +20,10 @@ declare_args() {
+   # Used for binary size analysis.
+   generate_linker_map = is_android && is_official_build
+ 
+-  # Whether this toolchain should avoid building any sanitizer support
+-  # because it's a host toolchain where we aim to make shared objects that may
+-  # be loaded by prebuilt binaries without sanitizer support.
+-  toolchain_disables_sanitizers = false
++  # Whether this toolchain is to be used for building host tools that are
++  # consumed during the build process. That includes proc macros and Cargo build
++  # scripts.
++  toolchain_for_rust_host_build_tools = false
+ }
+ 
+ if (generate_linker_map) {
+@@ -83,17 +83,12 @@ if (host_os == "win") {
+       rebase_path("//build/toolchain/win/tool_wrapper.py", root_build_dir)
+ 
+   stamp_command = "cmd /c type nul > \"{{output}}\""
+-  copy_command =
+-      "\"$python_path\" $_tool_wrapper_path recursive-mirror {{source}} {{output}}"
++  copy_command = "\"$python_path\" $_tool_wrapper_path recursive-mirror {{source}} {{output}}"
+ } else {
+   stamp_command = "touch {{output}}"
+   copy_command = "ln -f {{source}} {{output}} 2>/dev/null || (rm -rf {{output}} && cp -af {{source}} {{output}})"
+ }
+ 
+-if (!defined(toolchain_disables_sanitizers)) {
+-  toolchain_disables_sanitizers = false
+-}
+-
+ # This variable is true if the current toolchain is one of the target
+ # toolchains, i.e. a toolchain which is being used to build the main Chrome
+ # binary. This generally means "not the host toolchain", but in the case where

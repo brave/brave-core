@@ -1,0 +1,11 @@
+diff --git a/build/rust/tests/test_simple_rust_exe/BUILD.gn b/build/rust/tests/test_simple_rust_exe/BUILD.gn
+index a800720fbcb2b993c0f2d7529eac8615827340a7..9e94819f7e912bb21aaadd88b0ec947d5e9984dd 100644
+--- a/build/rust/tests/test_simple_rust_exe/BUILD.gn
++++ b/build/rust/tests/test_simple_rust_exe/BUILD.gn
+@@ -8,5 +8,5 @@
+ # //build/rust/rust_executable.gni.
+ executable("test_simple_rust_exe") {
+   crate_root = "main.rs"
+-  deps = [ "//build/rust/std:local_std_for_rustc" ]
++  deps = [ "//build/rust/std:stdlib_for_rustc" ]
+ }
