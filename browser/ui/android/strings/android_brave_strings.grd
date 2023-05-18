@@ -876,21 +876,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_BRAVE_REWARDS" desc="Title for brave rewards menu item">
         Brave Rewards
       </message>
-      <message name="IDS_BRAVE_UI_THANK_YOU" desc="A message that appears after tipping">
-        Thank you
-      </message>
-      <message name="IDS_BRAVE_UI_TIP_TEXT" desc="string from Thank you screen">
-        You've just sent a contribution to:
-      </message>
-      <message name="IDS_BRAVE_UI_AUTO_TIP_TEXT" desc="string from Thank you screen">
-        You are automatically sending a contribution to:
-      </message>
-      <message name="IDS_BRAVE_UI_MONTHLY_TEXT" desc="string from Thank you screen">
-        Monthly
-      </message>
-      <message name="IDS_BRAVE_UI_FIRST_TIP_TEXT" desc="string from Thank you screen">
-        Your first monthly contribution will be sent on:
-      </message>
       <message name="IDS_LOGGED_OUT_STATE_DIALOG_TEXT" desc="Rewards logged out state text">
         Log in to <ph name="WALLET_PROVIDER">%1$s</ph> to see your balance
       </message>
