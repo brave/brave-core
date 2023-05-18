@@ -53,6 +53,12 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
   // TODO(nullhook): Abstract prompt injection cleanups to a central place
   base::ReplaceSubstringsAfterOffset(&input_copy, 0, ai_chat::kHumanPrompt, "");
   base::ReplaceSubstringsAfterOffset(&input_copy, 0, ai_chat::kAIPrompt, "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<article>", "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</article>", "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<history>", "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</history>", "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<question>", "");
+  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</question>", "");
 
   active_chat_tab_helper_->MakeAPIRequestWithConversationHistoryUpdate(
       {CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE, input_copy});

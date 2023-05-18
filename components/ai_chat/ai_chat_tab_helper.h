@@ -77,6 +77,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // TODO(nullhook): Abstract the data model
   std::vector<ai_chat::mojom::ConversationTurn> chat_history_;
+  std::string article_text_;
   std::string history_text_;
   std::string article_summary_;
   bool is_request_in_progress_;

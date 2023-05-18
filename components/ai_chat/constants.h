@@ -13,9 +13,11 @@ namespace ai_chat {
 
 // prefix for for user input
 extern const char kHumanPrompt[];
+extern const char kHumanPromptPlaceholder[];
 
 // prefix for AI assistant output
 extern const char kAIPrompt[];
+extern const char kAIPromptPlaceholder[];
 
 extern const char kAIChatCompletionPath[];
 
