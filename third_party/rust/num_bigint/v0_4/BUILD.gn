@@ -30,7 +30,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/num_integer/v0_1:lib",
     "//brave/third_party/rust/num_traits/v0_2:lib",
   ]
-  build_deps = [ "//brave/third_party/rust/autocfg/v1:buildrs_support" ]
+  build_deps = [ "//third_party/rust/autocfg/v1:buildrs_support" ]
   features = [ "std" ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]

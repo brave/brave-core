@@ -31,7 +31,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/scopeguard/v1:lib",
     "//third_party/rust/cfg_if/v1:lib",
   ]
-  build_deps = [ "//brave/third_party/rust/autocfg/v1:buildrs_support" ]
+  build_deps = [ "//third_party/rust/autocfg/v1:buildrs_support" ]
   features = [
     "alloc",
     "std",

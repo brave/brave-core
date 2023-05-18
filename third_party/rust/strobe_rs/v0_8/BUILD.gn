@@ -28,10 +28,10 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/bitflags/v1:lib",
     "//brave/third_party/rust/byteorder/v1:lib",
     "//brave/third_party/rust/keccak/v0_1:lib",
     "//brave/third_party/rust/subtle/v2:lib",
     "//brave/third_party/rust/zeroize/v1:lib",
+    "//third_party/rust/bitflags/v1:lib",
   ]
 }
