@@ -39,7 +39,9 @@ void ToggleActiveTabAudioMute(Browser* browser);
 void ToggleSidebarPosition(Browser* browser);
 void ToggleSidebar(Browser* browser);
 
-}  // namespace brave
+void ToggleShieldsEnabled(Browser* browser);
+void ToggleJavascriptEnabled(Browser* browser);
 
+}  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_

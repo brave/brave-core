@@ -11,6 +11,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/net/brave_query_filter.h"
+#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -71,9 +72,6 @@
 
 using content::WebContents;
 
-namespace {
-}  // namespace
-
 namespace brave {
 
 void NewOffTheRecordWindowTor(Browser* browser) {
@@ -91,12 +89,12 @@ void NewTorConnectionForSite(Browser* browser) {
   Profile* profile = browser->profile();
   DCHECK(profile);
   tor::TorProfileService* service =
-    TorProfileServiceFactory::GetForContext(profile);
+      TorProfileServiceFactory::GetForContext(profile);
   DCHECK(service);
-  WebContents* current_tab =
-    browser->tab_strip_model()->GetActiveWebContents();
-  if (!current_tab)
+  WebContents* current_tab = browser->tab_strip_model()->GetActiveWebContents();
+  if (!current_tab) {
     return;
+  }
   service->SetNewTorCircuit(current_tab);
 #endif
 }
@@ -116,8 +114,9 @@ void OpenGuestProfile() {
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
-  if (!contents)
+  if (!contents) {
     return;
+  }
   if (auto* tab_helper =
           speedreader::SpeedreaderTabHelper::FromWebContents(contents)) {
     tab_helper->ProcessIconClick();
@@ -257,8 +256,9 @@ void ToggleVerticalTabStripFloatingMode(Browser* browser) {
 
 void ToggleActiveTabAudioMute(Browser* browser) {
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
-  if (!contents || !contents->IsCurrentlyAudible())
+  if (!contents || !contents->IsCurrentlyAudible()) {
     return;
+  }
 
   bool mute_tab = !contents->IsAudioMuted();
   chrome::SetTabAudioMuted(contents, mute_tab, TabMutedReason::AUDIO_INDICATOR,
@@ -299,4 +299,41 @@ void CleanAndCopySelectedURL(Browser* browser) {
     brave_browser_window->CleanAndCopySelectedURL();
   }
 }
+
+void ToggleShieldsEnabled(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+  auto* shields =
+      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+  if (!shields) {
+    return;
+  }
+
+  shields->SetBraveShieldsEnabled(!shields->GetBraveShieldsEnabled());
+}
+
+void ToggleJavascriptEnabled(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+  auto* shields =
+      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+  if (!shields) {
+    return;
+  }
+
+  shields->SetIsNoScriptEnabled(!shields->GetNoScriptEnabled());
+}
+
 }  // namespace brave
