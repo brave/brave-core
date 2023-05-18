@@ -33,6 +33,7 @@ class BraveWebMainParts : public web::WebMainParts {
   void PreMainMessageLoopRun() override;
   void PostMainMessageLoopRun() override;
   void PostDestroyThreads() override;
+  void PostCreateThreads() override;
   void SetupFieldTrials();
 
   std::unique_ptr<ApplicationContextImpl> application_context_;
