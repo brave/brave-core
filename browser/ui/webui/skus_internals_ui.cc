@@ -65,6 +65,11 @@ void SkusInternalsUI::GetSkusState(GetSkusStateCallback callback) {
 #endif
 
   for (const auto kv : skus_state) {
+    // Only shows "skus:xx" kv in webui.
+    if (!base::StartsWith(kv.first, "skus:")) {
+      continue;
+    }
+
     if (auto value = base::JSONReader::Read(kv.second.GetString()); value) {
       dict.Set(kv.first, std::move(*value));
     }
