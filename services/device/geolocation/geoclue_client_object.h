@@ -1,3 +1,8 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #ifndef BRAVE_SERVICES_DEVICE_GEOLOCATION_GEOCLUE_CLIENT_OBJECT_H_
 #define BRAVE_SERVICES_DEVICE_GEOLOCATION_GEOCLUE_CLIENT_OBJECT_H_
 
@@ -6,12 +11,14 @@
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
+#include "dbus/bus.h"
 #include "dbus/message.h"
 #include "dbus/object_proxy.h"
 #include "dbus/property.h"
 
 class GeoClueClientObject {
  public:
+  static constexpr char kServiceName[] = "org.freedesktop.GeoClue2";
   static constexpr char kInterfaceName[] = "org.freedesktop.GeoClue2.Client";
   static constexpr char kLocationInterfaceName[] =
       "org.freedesktop.GeoClue2.Location";
@@ -54,7 +61,8 @@ class GeoClueClientObject {
     ~Properties() override;
   };
 
-  explicit GeoClueClientObject(scoped_refptr<dbus::ObjectProxy> object_proxy);
+  explicit GeoClueClientObject(scoped_refptr<dbus::Bus> bus,
+                               const dbus::ObjectPath& object_path);
 
   GeoClueClientObject(const GeoClueClientObject&) = delete;
   GeoClueClientObject& operator=(const GeoClueClientObject&) = delete;
@@ -64,13 +72,15 @@ class GeoClueClientObject {
   void Start(dbus::ObjectProxy::ResponseCallback callback = base::DoNothing());
   void Stop(dbus::ObjectProxy::ResponseCallback callback = base::DoNothing());
 
-  void ConnectToSignal(const std::string& signal,
-                       dbus::ObjectProxy::SignalCallback callback,
-                       dbus::ObjectProxy::OnConnectedCallback on_connected);
+  void ConnectToLocationUpdatedSignal(
+      base::RepeatingCallback<
+          void(std::unique_ptr<LocationProperties> location)> callback,
+      dbus::ObjectProxy::OnConnectedCallback on_connected);
 
   Properties* properties() { return properties_.get(); }
 
  private:
+  scoped_refptr<dbus::Bus> bus_;
   scoped_refptr<dbus::ObjectProxy> proxy_;
   std::unique_ptr<Properties> properties_;
 };

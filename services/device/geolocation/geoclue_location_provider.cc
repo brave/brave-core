@@ -32,7 +32,6 @@ namespace device {
 
 namespace {
 
-constexpr char kServiceName[] = "org.freedesktop.GeoClue2";
 constexpr char kManagerInterfaceName[] = "org.freedesktop.GeoClue2.Manager";
 constexpr char kManagerObjectPath[] = "/org/freedesktop/GeoClue2/Manager";
 constexpr char kBraveDesktopId[] = "com.brave.Browser";
@@ -60,8 +59,8 @@ bool GeoClueAvailable() {
   options.connection_type = dbus::Bus::PRIVATE;
   auto bus = base::MakeRefCounted<dbus::Bus>(options);
 
-  dbus::ObjectProxy* proxy =
-      bus->GetObjectProxy(kServiceName, dbus::ObjectPath(kManagerObjectPath));
+  dbus::ObjectProxy* proxy = bus->GetObjectProxy(
+      GeoClueClientObject::kServiceName, dbus::ObjectPath(kManagerObjectPath));
 
   dbus::MethodCall call(kManagerInterfaceName, "GetClient");
   auto response =
@@ -114,8 +113,8 @@ void GeoClueLocationProvider::StartProvider(bool high_accuracy) {
   }
   client_state_ = kInitializing;
 
-  dbus::ObjectProxy* proxy =
-      bus_->GetObjectProxy(kServiceName, dbus::ObjectPath(kManagerObjectPath));
+  dbus::ObjectProxy* proxy = bus_->GetObjectProxy(
+      GeoClueClientObject::kServiceName, dbus::ObjectPath(kManagerObjectPath));
 
   dbus::MethodCall call(kManagerInterfaceName, "GetClient");
   proxy->CallMethod(
@@ -141,7 +140,7 @@ void GeoClueLocationProvider::StopProvider() {
 
   client_->Stop();
 
-  // Reset pointers to dbus objects.
+  // Reset the client.
   client_.reset();
 }
 
@@ -182,8 +181,7 @@ void GeoClueLocationProvider::OnGetClientCompleted(dbus::Response* response) {
     return;
   }
 
-  client_ = std::make_unique<GeoClueClientObject>(
-      bus_->GetObjectProxy(kServiceName, path));
+  client_ = std::make_unique<GeoClueClientObject>(bus_, path);
   SetClientProperties();
 }
 
@@ -196,7 +194,8 @@ void GeoClueLocationProvider::SetClientProperties() {
                         weak_ptr_factory_.GetWeakPtr()));
 
   properties->requested_accuracy_level.Set(
-      high_accuracy_requested_ ? GeoClueClientObject::AccuracyLevel::kExact : GeoClueClientObject::AccuracyLevel::kCity,
+      high_accuracy_requested_ ? GeoClueClientObject::AccuracyLevel::kExact
+                               : GeoClueClientObject::AccuracyLevel::kCity,
       callback);
 
   properties->desktop_id.Set(kBraveDesktopId, callback);
@@ -219,27 +218,9 @@ void GeoClueLocationProvider::ConnectSignal() {
     return;
   }
 
-  client_->ConnectToSignal(
-      "LocationUpdated",
-      base::BindRepeating(
-          [](base::WeakPtr<GeoClueLocationProvider> provider,
-             dbus::Signal* signal) {
-            dbus::MessageReader reader(signal);
-            dbus::ObjectPath old_location;
-            dbus::ObjectPath new_location;
-            if (!reader.PopObjectPath(&old_location) ||
-                !reader.PopObjectPath(&new_location)) {
-              if (provider) {
-                provider->SetPosition(GetError());
-              }
-              return;
-            }
-
-            if (provider) {
-              provider->ReadGeoClueLocation(new_location);
-            }
-          },
-          weak_ptr_factory_.GetWeakPtr()),
+  client_->ConnectToLocationUpdatedSignal(
+      base::BindRepeating(&GeoClueLocationProvider::OnReadGeoClueLocation,
+                          weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&GeoClueLocationProvider::OnSignalConnected,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -275,18 +256,13 @@ void GeoClueLocationProvider::OnClientStarted(dbus::Response* response) {
   client_state_ = kStarted;
 }
 
-void GeoClueLocationProvider::ReadGeoClueLocation(
-    const dbus::ObjectPath& location_path) {
-  auto location_properties =
-      std::make_unique<GeoClueClientObject::LocationProperties>(
-          bus_->GetObjectProxy(kServiceName, location_path));
-  location_properties->GetAll(base::BindOnce(
-      &GeoClueLocationProvider::OnReadGeoClueLocation,
-      weak_ptr_factory_.GetWeakPtr(), std::move(location_properties)));
-}
-
 void GeoClueLocationProvider::OnReadGeoClueLocation(
     std::unique_ptr<GeoClueClientObject::LocationProperties> properties) {
+  if (!properties) {
+    SetPosition(GetError());
+    return;
+  }
+
   auto position = mojom::Geoposition::New();
   position->latitude = properties->latitude.value();
   position->longitude = properties->longitude.value();

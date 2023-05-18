@@ -9,7 +9,12 @@
 #include <string>
 #include <utility>
 
-#include "base/strings/string_piece_forward.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
+#include "base/memory/scoped_refptr.h"
+#include "dbus/bus.h"
+#include "dbus/message.h"
+#include "dbus/object_path.h"
 #include "dbus/object_proxy.h"
 
 namespace {}
@@ -55,9 +60,10 @@ GeoClueClientObject::Properties::Properties(dbus::ObjectProxy* proxy)
 
 GeoClueClientObject::Properties::~Properties() = default;
 
-GeoClueClientObject::GeoClueClientObject(
-    scoped_refptr<dbus::ObjectProxy> object_proxy)
-    : proxy_(object_proxy) {
+GeoClueClientObject::GeoClueClientObject(scoped_refptr<dbus::Bus> bus,
+                                         const dbus::ObjectPath& object_path)
+    : bus_(bus) {
+  proxy_ = bus_->GetObjectProxy(kServiceName, object_path);
   properties_ = std::make_unique<Properties>(proxy_.get());
 }
 
@@ -75,9 +81,28 @@ void GeoClueClientObject::Stop(dbus::ObjectProxy::ResponseCallback callback) {
                      std::move(callback));
 }
 
-void GeoClueClientObject::ConnectToSignal(
-    const std::string& signal,
-    dbus::ObjectProxy::SignalCallback signal_callback,
+using LocationChangedCallback = base::RepeatingCallback<void(
+    std::unique_ptr<GeoClueClientObject::LocationProperties>)>;
+void GeoClueClientObject::ConnectToLocationUpdatedSignal(
+    LocationChangedCallback callback,
     dbus::ObjectProxy::OnConnectedCallback on_connected) {
-      proxy_->ConnectToSignal(kInterfaceName, signal, std::move(signal_callback), std::move(on_connected));
-    }
+  proxy_->ConnectToSignal(
+      kInterfaceName, "LocationUpdated",
+      base::BindRepeating(
+          [](scoped_refptr<dbus::Bus> bus, LocationChangedCallback callback,
+             dbus::Signal* signal) {
+            dbus::MessageReader reader(signal);
+            dbus::ObjectPath old_location;
+            dbus::ObjectPath new_location;
+            if (!reader.PopObjectPath(&old_location) ||
+                !reader.PopObjectPath(&new_location)) {
+              callback.Run(nullptr);
+              return;
+            }
+            auto properties = std::make_unique<LocationProperties>(
+                bus->GetObjectProxy(kServiceName, new_location));
+            properties->GetAll(base::BindOnce(callback, std::move(properties)));
+          },
+          bus_, std::move(callback)),
+      std::move(on_connected));
+}
