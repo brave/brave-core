@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import styles from './style.module.scss'
+import Icon from '@brave/leo/react/icon'
 
 interface MainProps {
   conversationList: React.ReactNode
@@ -16,7 +17,7 @@ function Main (props: MainProps) {
     <main className={styles.main}>
       <div className={styles.header}>
         <div className={styles.logoBox}>
-          <div className={styles.logo} />
+          <Icon name="product-brave-ai" />
           <span>Brave</span>
         </div>
       </div>

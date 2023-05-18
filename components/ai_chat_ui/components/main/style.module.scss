@@ -34,12 +34,3 @@
   font: var(--leo-font-primary-large-regular);
   color: var(--leo-color-text-secondary);
 }
-
-.logo {
-  width: 18px;
-  height: 18px;
-  background: currentColor;
-  display: inline-block;
-  -webkit-mask-image: url('../../assets/logo.svg');
-  -webkit-mask-repeat: no-repeat;
-}
