@@ -202,7 +202,6 @@ void AIChatAPI::OnComplete(bool success) {
   }
 
   is_request_in_progress_ = false;
-  current_request_->reset(nullptr);
   std::move(completion_callback_).Run(success, response_code);
   api_request_helper_.Cancel(current_request_);
 }
