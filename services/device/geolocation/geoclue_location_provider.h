@@ -13,6 +13,7 @@
 #include "base/component_export.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/services/device/geolocation/geoclue_client_object.h"
 #include "dbus/bus.h"
 #include "dbus/message.h"
 #include "dbus/object_path.h"
@@ -22,8 +23,6 @@
 #include "services/device/public/mojom/geoposition.mojom.h"
 
 namespace device {
-
-struct GeoClueLocationProperties;
 
 class COMPONENT_EXPORT(BRAVE_GEOLOCATION) GeoClueLocationProvider
     : public LocationProvider {
@@ -84,8 +83,7 @@ class COMPONENT_EXPORT(BRAVE_GEOLOCATION) GeoClueLocationProvider
 
   // Step 3
   void SetClientProperties();
-  void OnSetClientProperties(std::unique_ptr<dbus::PropertySet> property_set,
-                             std::vector<bool> success);
+  void OnSetClientProperties(std::vector<bool> success);
 
   // Step 4
   void ConnectSignal();
@@ -102,10 +100,10 @@ class COMPONENT_EXPORT(BRAVE_GEOLOCATION) GeoClueLocationProvider
   // callback for when it has been read.
   void ReadGeoClueLocation(const dbus::ObjectPath& path);
   void OnReadGeoClueLocation(
-      std::unique_ptr<GeoClueLocationProperties> properties);
+      std::unique_ptr<GeoClueClientObject::LocationProperties> properties);
 
   scoped_refptr<dbus::Bus> bus_;
-  scoped_refptr<dbus::ObjectProxy> gclue_client_;
+  std::unique_ptr<GeoClueClientObject> client_;
 
   mojom::GeopositionResultPtr last_position_;
   LocationProviderUpdateCallback position_update_callback_;
