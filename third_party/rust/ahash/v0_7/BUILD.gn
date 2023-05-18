@@ -34,6 +34,4 @@ cargo_crate("lib") {
   build_deps = [ "//brave/third_party/rust/version_check/v0_9:buildrs_support" ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
-  rustenv = [ "CARGO_CFG_TARGET_OS=$target_os" ]
-
 }
