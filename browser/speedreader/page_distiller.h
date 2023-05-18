@@ -41,6 +41,7 @@ class PageDistiller {
 
   using DistillContentCallback =
       base::OnceCallback<void(bool success, std::string content)>;
+  using TextToSpeechContentCallback = base::OnceCallback<void(base::Value)>;
 
   State GetState() const;
 
@@ -49,6 +50,7 @@ class PageDistiller {
 
   void GetDistilledHTML(DistillContentCallback callback);
   void GetDistilledText(DistillContentCallback callback);
+  void GetTextToSpeak(TextToSpeechContentCallback callback);
 
  protected:
   explicit PageDistiller(content::WebContents* web_contents);
@@ -60,7 +62,8 @@ class PageDistiller {
  private:
   void StartDistill(DistillContentCallback callback);
   void OnGetOuterHTML(DistillContentCallback callback, base::Value result);
-  void OnGetText(DistillContentCallback callback, base::Value result);
+  void OnGetTextToSpeak(TextToSpeechContentCallback callback,
+                        base::Value result);
   void OnPageDistilled(DistillContentCallback callback,
                        DistillationResult result,
                        std::string original_data,

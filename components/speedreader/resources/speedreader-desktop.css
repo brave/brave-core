@@ -548,6 +548,7 @@ iframe {
 
 html,
 html[data-theme='light'] {
+  position: relative; !important;
   scrollbar-gutter: stable;
   background-color: var(--background-color);
 
@@ -644,4 +645,33 @@ html[data-font-family='dyslexic'] {
 
 html[data-content-style='text-only'] img {
   display: none !important;
+}
+
+.tts-highlighted, .tts-highlighted * {
+  position: relative;
+}
+
+@keyframes tts-fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.tts-highlighted::after {
+  animation: tts-fade-in 0.75s;
+
+  content: '';
+  background: linear-gradient(90deg, rgba(168, 168, 168, 0.5), rgba(128, 128, 128, 0.1));
+  mix-blend-mode: luminosity;
+
+  background-size: 100%;
+  border-radius: 10px;
+
+  position: absolute;
+
+  left: -1.5rem;
+  right: -1.5rem;
+  top: -0.5rem;
+  bottom: -0.5rem;
+
+  pointer-events: none;
 }

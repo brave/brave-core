@@ -448,7 +448,7 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
 }
 
 void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
-  if (!success) {
+  if (!success || html.empty()) {
     // TODO(boocmp): Show error dialog [Distillation failed on this page].
     TransitStateTo(DistillStates::DistillReverting(
         DistillStates::DistillReverting::Reason::kError, false));
@@ -456,7 +456,7 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
     return;
   }
 
-  single_show_content_.swap(html);
+  single_show_content_ = std::move(html);
   TransitStateTo(
       DistillStates::Distilling(DistillStates::Distilling::Reason::kManual));
 }

@@ -46,6 +46,20 @@ void PageDistiller::GetDistilledText(DistillContentCallback callback) {
                               weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
+void PageDistiller::GetTextToSpeak(TextToSpeechContentCallback callback) {
+  if (state_ != State::kDistilled) {
+    return std::move(callback).Run(base::Value());
+  }
+
+  constexpr const char16_t kGetTextToSpeak[] = uR"js( extractTextToSpeak() )js";
+
+  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      kGetTextToSpeak,
+      base::BindOnce(&PageDistiller::OnGetTextToSpeak,
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+}
+
 void PageDistiller::UpdateState(State state) {
   state_ = state;
   for (auto& observer : observers_) {
@@ -62,22 +76,17 @@ void PageDistiller::StartDistill(DistillContentCallback callback) {
     return std::move(callback).Run(false, {});
   }
 
-  if (state_ == State::kDistilled) {
-    constexpr const char16_t kScript[] = uR"js( extractText() )js";
-    web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-        kScript,
-        base::BindOnce(&PageDistiller::OnGetText, weak_factory_.GetWeakPtr(),
-                       std::move(callback)),
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-  } else {
-    constexpr const char16_t kScript[] =
-        uR"js( document.documentElement.outerHTML )js";
-    web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-        kScript,
-        base::BindOnce(&PageDistiller::OnGetOuterHTML,
-                       weak_factory_.GetWeakPtr(), std::move(callback)),
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-  }
+  constexpr const char16_t kGetDocumentSource[] =
+      uR"js( document.documentElement.outerHTML )js";
+
+  constexpr const char16_t kGetBodySource[] =
+      uR"js( document.body.outerHTML )js";
+
+  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      (state_ != State::kDistilled) ? kGetDocumentSource : kGetBodySource,
+      base::BindOnce(&PageDistiller::OnGetOuterHTML, weak_factory_.GetWeakPtr(),
+                     std::move(callback)),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void PageDistiller::OnGetOuterHTML(DistillContentCallback callback,
@@ -104,14 +113,12 @@ void PageDistiller::OnGetOuterHTML(DistillContentCallback callback,
   }
 }
 
-void PageDistiller::OnGetText(DistillContentCallback callback,
-                              base::Value result) {
-  if (!web_contents_ || !result.is_dict() ||
-      !result.GetDict().FindString("content")) {
-    return std::move(callback).Run(false, {});
+void PageDistiller::OnGetTextToSpeak(TextToSpeechContentCallback callback,
+                                     base::Value result) {
+  if (!result.is_dict()) {
+    return std::move(callback).Run(base::Value());
   }
-  std::move(callback).Run(true,
-                          std::move(*result.GetDict().FindString("content")));
+  std::move(callback).Run(std::move(result));
 }
 
 void PageDistiller::OnPageDistilled(DistillContentCallback callback,
@@ -147,6 +154,7 @@ void PageDistiller::ExtractText(DistillContentCallback callback,
     return std::move(callback).Run(false, {});
   }
 
+  re2::RE2::GlobalReplace(&html_content, "<[^>]*>", " ");
   std::move(callback).Run(true, html_content);
 }
 

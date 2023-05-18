@@ -47,12 +47,61 @@ const defaultSpeedreaderData = {
     minutesText: 'min. read',
 }
 
-const extractText = () => {
+const extractTextToSpeak = () => {
+    const textTags = ['P', 'DIV', 'MAIN', 'ARTICLE']
+
+    const extractParagraphs = (node) => {
+        let paragraphs = []
+        if (!node) {
+            return paragraphs
+        }
+        for (const child of node.children) {
+            if (textTags.indexOf(child.tagName) >= 0) {
+                const childParagraphs = extractParagraphs(child)
+                if (childParagraphs.length == 0) {
+                    paragraphs.push(child)
+                } else {
+                    paragraphs = paragraphs.concat(childParagraphs)
+                }
+            }
+        }
+        return paragraphs
+    }
+
+    const paragraphs = extractParagraphs($(contentDivId))
+
+    const textToSpeak = []
+    for (const p of paragraphs) {
+        const text = p.innerText.replace(/\n|\r +/g, ' ').trim()
+        if (text) {
+            p.setAttribute('tts-paragraph-index', textToSpeak.length)
+            textToSpeak.push(p.innerText.replace(/\n|\r +/g, ' '))
+        }
+    }
+
     return {
         title: document.title,
         author: $(metaDataDivId)?.querySelector('.author')?.textContent,
         desciption: $(metaDataDivId)?.querySelector('.subhead')?.textContent,
-        content: $(contentDivId)?.innerText.replace(/\n|\r +/g, ' ')
+        paragraphs: textToSpeak
+    }
+}
+
+const highlightText = (ttsParagraphIndex, charIndex, length) => {
+    document.querySelectorAll('.tts-highlighted').forEach((e) => {
+        if (e.getAttribute('tts-paragraph-index') != ttsParagraphIndex) {
+            e.classList.remove('tts-highlighted')
+        }
+    })
+
+    const paragraph = document.querySelector(
+        '[tts-paragraph-index="' + ttsParagraphIndex + '"]')
+    if (paragraph) {
+        paragraph.classList.add('tts-highlighted')
+        const ttsContent = document.createElement('tts-content')
+        ttsContent.append(...paragraph.childNodes)
+        paragraph.append(ttsContent)
+        document.documentElement.style.setProperty('--tts-highlight-progress', (charIndex / paragraph.textContent.length) * 100 + '%')
     }
 }
 

@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "base/observer_list.h"
+#include "base/values.h"
 #include "content/public/browser/tts_utterance.h"
 #include "content/public/browser/web_contents_observer.h"
 
@@ -34,8 +35,7 @@ class TtsPlayer {
 
     virtual void RequestReadingContent(
         content::WebContents* web_contents,
-        base::OnceCallback<void(bool success, std::string content)>
-            result_cb) = 0;
+        base::OnceCallback<void(base::Value content)> result_cb) = 0;
   };
 
   class Observer : public base::CheckedObserver {
@@ -43,7 +43,7 @@ class TtsPlayer {
     virtual void OnReadingStart(content::WebContents* web_contents) {}
     virtual void OnReadingStop(content::WebContents* web_contents) {}
     virtual void OnReadingProgress(content::WebContents* web_contents,
-                                   const std::string& element_id,
+                                   int tts_order,
                                    int char_index,
                                    int length) {}
 
@@ -77,6 +77,9 @@ class TtsPlayer {
 
     void Resume(bool recreate_utterance);
 
+    bool HasNextParagraph();
+    const std::string& GetParagraphToRead();
+
     // content::WebContentsObserver:
     void DidStartNavigation(content::NavigationHandle* handle) override;
     void WebContentsDestroyed() override;
@@ -89,17 +92,17 @@ class TtsPlayer {
                     const std::string& error_message) override;
 
     void OnContentReady(content::WebContents* web_contents,
-                        bool success,
-                        std::string content);
+                        base::Value content);
 
     raw_ptr<TtsPlayer> owner_ = nullptr;
 
     raw_ptr<content::WebContents> playing_web_contents_ = nullptr;
     raw_ptr<content::WebContents> request_web_contents_ = nullptr;
 
+    int paragraph_index_ = -1;
     int reading_start_position_ = 0;
     int reading_position_ = 0;
-    std::string reading_content_;
+    base::Value reading_content_;
 
     double current_speed_ = 1.0;
     std::string current_voice_;

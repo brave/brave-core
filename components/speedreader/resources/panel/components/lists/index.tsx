@@ -36,7 +36,6 @@ const mainButtonsOptions = [
     id: 'tts',
     type: MainButtonType.TextToSpeech,
     iconName: 'headphones',
-    hidden: true,  // TODO(boocmp): Enable in future PR.
     title: getLocale('braveReaderModeTextToSpeech')
   },
   {
