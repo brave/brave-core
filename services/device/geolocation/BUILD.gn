@@ -22,10 +22,10 @@ component("geolocation") {
   defines = [ "IS_BRAVE_GEOLOCATION_IMPL" ]
 
   sources = [
-    "geoclue_location_provider.cc",
-    "geoclue_location_provider.h",
     "geoclue_client_object.cc",
     "geoclue_client_object.h",
+    "geoclue_location_provider.cc",
+    "geoclue_location_provider.h",
   ]
   deps = [
     "//components/dbus/thread_linux",

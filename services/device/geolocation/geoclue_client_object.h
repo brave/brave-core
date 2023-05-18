@@ -7,6 +7,7 @@
 #define BRAVE_SERVICES_DEVICE_GEOLOCATION_GEOCLUE_CLIENT_OBJECT_H_
 
 #include <memory>
+#include <string>
 
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
