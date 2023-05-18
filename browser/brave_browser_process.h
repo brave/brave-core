@@ -59,7 +59,7 @@ class HttpsUpgradeExceptionsService;
 }  // namespace https_upgrade_exceptions
 
 namespace localhost_permission {
-class LocalhostPermissionService;
+class LocalhostPermissionComponent;
 }  // namespace localhost_permission
 
 namespace misc_metrics {
@@ -100,8 +100,8 @@ class BraveBrowserProcess {
   virtual brave_shields::AdBlockService* ad_block_service() = 0;
   virtual https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() = 0;
-  virtual localhost_permission::LocalhostPermissionService*
-  localhost_permission_service() = 0;
+  virtual localhost_permission::LocalhostPermissionComponent*
+  localhost_permission_component() = 0;
 #if BUILDFLAG(ENABLE_GREASELION)
   virtual greaselion::GreaselionDownloadService*
   greaselion_download_service() = 0;

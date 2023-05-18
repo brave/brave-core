@@ -7,8 +7,8 @@ import("//brave/build/config.gni")
 
 static_library("localhost_permission") {
   sources = [
-    "localhost_permission_service.cc",
-    "localhost_permission_service.h",
+    "localhost_permission_component.cc",
+    "localhost_permission_component.h",
   ]
 
   deps = [

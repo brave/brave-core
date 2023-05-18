@@ -51,8 +51,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() override;
-  localhost_permission::LocalhostPermissionService*
-  localhost_permission_service() override;
+  localhost_permission::LocalhostPermissionComponent*
+  localhost_permission_component() override;
   brave_component_updater::LocalDataFilesService* local_data_files_service()
       override;
 #if BUILDFLAG(ENABLE_TOR)

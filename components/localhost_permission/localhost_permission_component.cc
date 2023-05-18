@@ -1,12 +1,11 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/localhost_permission/localhost_permission_service.h"
+#include "brave/components/localhost_permission/localhost_permission_component.h"
 
 #include <memory>
-#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,22 +15,23 @@
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+
+using brave_component_updater::LocalDataFilesObserver;
+using brave_component_updater::LocalDataFilesService;
 
 #define LOCALHOST_PERMISSION_TXT_FILE "localhost-permission-allow-list.txt"
 #define LOCALHOST_PERMISSION_TXT_FILE_VERSION "1"
 
 namespace localhost_permission {
 
-using brave_component_updater::LocalDataFilesObserver;
-using brave_component_updater::LocalDataFilesService;
-
-LocalhostPermissionService::LocalhostPermissionService(
+LocalhostPermissionComponent::LocalhostPermissionComponent(
     LocalDataFilesService* local_data_files_service)
     : LocalDataFilesObserver(local_data_files_service) {}
 
-void LocalhostPermissionService::LoadLocalhostPermissionAllowlist(
+LocalhostPermissionComponent::~LocalhostPermissionComponent() = default;
+
+void LocalhostPermissionComponent::LoadLocalhostPermissionAllowlist(
     const base::FilePath& install_dir) {
   base::FilePath txt_file_path =
       install_dir.AppendASCII(LOCALHOST_PERMISSION_TXT_FILE_VERSION)
@@ -40,7 +40,7 @@ void LocalhostPermissionService::LoadLocalhostPermissionAllowlist(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      txt_file_path),
-      base::BindOnce(&LocalhostPermissionService::OnDATFileDataReady,
+      base::BindOnce(&LocalhostPermissionComponent::OnDATFileDataReady,
                      weak_factory_.GetWeakPtr()));
 }
 
@@ -50,7 +50,12 @@ std::string GetDomain(const GURL& url) {
                       EXCLUDE_PRIVATE_REGISTRIES);
 }
 
-void LocalhostPermissionService::OnDATFileDataReady(
+void LocalhostPermissionComponent::SetAllowedDomainsForTesting(
+    const base::flat_set<std::string>& allowed_domains) {
+  allowed_domains_ = allowed_domains;
+}
+
+void LocalhostPermissionComponent::OnDATFileDataReady(
     const std::string& contents) {
   if (contents.empty()) {
     // We don't have the file yet.
@@ -66,33 +71,27 @@ void LocalhostPermissionService::OnDATFileDataReady(
     }
     // Construct a GURL from the line, and store the eTLD+1.
     const auto url = GURL("https://" + std::move(line));
-    allowed_domains_.insert(GetDomain(url));
+    if (url.is_valid()) {
+      allowed_domains_.insert(GetDomain(url));
+    }
   }
   is_ready_ = true;
   return;
 }
 
-bool LocalhostPermissionService::CanAskForLocalhostPermission(const GURL& url) {
-  if (!is_ready_) {
-    // We don't have the allowlist loaded yet;
-    // by default do the more privacy-friendly thing.
-    return false;
-  }
+bool LocalhostPermissionComponent::CanAskForLocalhostPermission(
+    const GURL& url) {
   // Allow asking for permission only if the URL
   // matches an eTLD+1 on the allowlist.
   return base::Contains(allowed_domains_, GetDomain(url));
 }
 
 // implementation of LocalDataFilesObserver
-void LocalhostPermissionService::OnComponentReady(
+void LocalhostPermissionComponent::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
   LoadLocalhostPermissionAllowlist(install_dir);
-}
-
-LocalhostPermissionService::~LocalhostPermissionService() {
-  allowed_domains_.clear();
 }
 
 }  // namespace localhost_permission

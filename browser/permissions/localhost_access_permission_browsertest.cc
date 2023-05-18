@@ -13,7 +13,7 @@
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/localhost_permission/localhost_permission_service.h"
+#include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -60,10 +60,11 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     current_browser_ = InProcessBrowserTest::browser();
-    auto* localhost_permission_service =
-        g_brave_browser_process->localhost_permission_service();
-    if (localhost_permission_service) {
-      localhost_permission_service->OnDATFileDataReady(kTestEmbeddingDomain);
+    localhost_permission_component_ =
+        g_brave_browser_process->localhost_permission_component();
+    if (localhost_permission_component_) {
+      localhost_permission_component_->SetAllowedDomainsForTesting(
+          {kTestEmbeddingDomain});
     }
 
     // Embedding website server
@@ -267,6 +268,8 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
   Browser* current_browser_;
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
+  localhost_permission::LocalhostPermissionComponent*
+      localhost_permission_component_;
 
  private:
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
@@ -442,8 +445,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebsiteNotOnAllowlist) {
   std::string test_domain = "localhost";
   // Note: we're also testing that comments are handled correctly here
   // because we inserted #b.com into the allowlist.
-  g_brave_browser_process->localhost_permission_service()->OnDATFileDataReady(
-      base::StrCat({kTestEmbeddingDomain, "\n", "#b.com"}));
+  localhost_permission_component_->SetAllowedDomainsForTesting(
+      {base::StrCat({kTestEmbeddingDomain, "\n", "#b.com"})});
   embedding_url_ = https_server_->GetURL("b.com", kSimplePage);
   const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
   CheckNoPromptFlow(false, target_url);
@@ -455,8 +458,7 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest,
                        WebsiteNotOnAllowlistButManuallyAdded) {
   std::string test_domain = "localhost";
   // Clear out the allowlist.
-  g_brave_browser_process->localhost_permission_service()->OnDATFileDataReady(
-      "");
+  localhost_permission_component_->SetAllowedDomainsForTesting({""});
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
   const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
   SetCurrentStatus(ContentSetting::CONTENT_SETTING_ALLOW);
