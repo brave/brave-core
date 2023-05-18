@@ -48,6 +48,7 @@ export interface Props {
   isDepositSupported: (coinMarket: BraveWallet.CoinMarket) => boolean
   onClickBuy: (coinMarket: BraveWallet.CoinMarket) => void
   onClickDeposit: (coinMarket: BraveWallet.CoinMarket) => void
+  onUpdateIframeHeight: (height: number) => void
   fiatCurrency: string
 }
 
@@ -160,9 +161,10 @@ export const MarketDataTable = (props: Props) => {
     isBuySupported,
     isDepositSupported,
     onClickBuy,
-    onClickDeposit
+    onClickDeposit,
+    onUpdateIframeHeight
   } = props
-
+  const wrapperRef = React.useRef<HTMLDivElement>(null)
   // Memos
   const rows: Row[] = React.useMemo(() => {
     return coinMarketData.map((coinMarketItem: BraveWallet.CoinMarket) => {
@@ -178,8 +180,17 @@ export const MarketDataTable = (props: Props) => {
     })
   }, [coinMarketData, isBuySupported, isDepositSupported, onClickBuy, onClickDeposit])
 
+  const onContentLoad = React.useCallback(() => {
+    if (wrapperRef.current) {
+      onUpdateIframeHeight(wrapperRef.current.scrollHeight)
+    }
+  }, [onUpdateIframeHeight, wrapperRef.current])
+
   return (
-    <StyledWrapper>
+    <StyledWrapper
+      onLoad={onContentLoad}
+      ref={wrapperRef}
+    >
       <TableWrapper>
         <Table
           headers={headers}

@@ -33,7 +33,8 @@ import {
   UpdateCoinMarketMessage,
   UpdateTradableAssetsMessage,
   UpdateBuyableAssetsMessage,
-  UpdateDepositableAssetsMessage
+  UpdateDepositableAssetsMessage,
+  UpdateIframeHeightMessage
 } from '../../../../market/market-ui-messages'
 
 const defaultCurrency = 'usd'
@@ -43,6 +44,7 @@ export const MarketView = () => {
   // State
   const [buyAssets, setBuyAssets] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [iframeLoaded, setIframeLoaded] = React.useState<boolean>(false)
+  const [iframeHeight, setIframeHeight] = React.useState<number>(0)
   const marketDataIframeRef = React.useRef<HTMLIFrameElement>(null)
 
   // Redux
@@ -93,6 +95,11 @@ export const MarketView = () => {
       case MarketUiCommand.SelectDeposit: {
         const { payload } = message as SelectDepositMessage
         onSelectDeposit(payload)
+      }
+
+      case MarketUiCommand.UpdateIframeHeight: {
+        const { payload } = message as UpdateIframeHeightMessage
+        setIframeHeight(payload)
       }
     }
   }, [onSelectCoinMarket, onSelectBuy, onSelectDeposit])
@@ -161,6 +168,7 @@ export const MarketView = () => {
           <LoadIcon />
         </LoadIconWrapper>
         : <MarketDataIframe
+          iframeHeight={iframeHeight}
           ref={marketDataIframeRef}
           onLoad={onMarketDataFrameLoad}
           src="chrome-untrusted://market-display"
