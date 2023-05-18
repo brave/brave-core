@@ -1,0 +1,13 @@
+diff --git a/build/rust/rust_target.gni b/build/rust/rust_target.gni
+index 1a2bf1db549182a5fbd18f3ac3f54bfca8a2fae3..e37131b7c8835b750674e5dc83279eea26301b6a 100644
+--- a/build/rust/rust_target.gni
++++ b/build/rust/rust_target.gni
+@@ -193,6 +193,8 @@ template("rust_target") {
+   _metadata = "0"
+   if (defined(invoker.epoch)) {
+     _metadata = invoker.epoch
++    # upstream change to replace this https://chromium-review.googlesource.com/c/chromium/src/+/4545777
++    if (defined(invoker.crate_name)) { _metadata += invoker.crate_name }
+   }
+ 
+   # We require that all source files are listed, even though this is

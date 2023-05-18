@@ -1,0 +1,12 @@
+diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
+index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..a53cc5eff86f2795adb41c5ce56b5b99cedb46ec 100644
+--- a/build/rust/cargo_crate.gni
++++ b/build/rust/cargo_crate.gni
+@@ -136,6 +136,7 @@ template("cargo_crate") {
+                                  "rustenv",
+                                ])
+     forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
++    if (defined(visibility)) { visibility += [ "//brave/*" ] }
+ 
+     # Work out what we're building.
+     crate_type = "rlib"

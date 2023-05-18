@@ -81,6 +81,7 @@ function buildDefaultGClientConfig() {
         'src/chrome/tools/test/reference_build/chrome_win': '%None%'
       },
       custom_vars: {
+        'checkout_rust': '%True%',
         'checkout_pgo_profiles': config.isBraveReleaseBuild() ? '%True%' :
                                                                 '%False%'
       }
