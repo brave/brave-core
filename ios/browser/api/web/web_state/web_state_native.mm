@@ -201,6 +201,7 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
 
   CRWSessionStorage* session_storage = [[CRWSessionStorage alloc] init];
   session_storage.stableIdentifier = [[NSUUID UUID] UUIDString];
+  session_storage.uniqueIdentifier = SessionID::NewUnique();
   session_storage.itemStorages = [item_storages copy];
   session_storage.userAgentType = web::UserAgentType::MOBILE;
 
