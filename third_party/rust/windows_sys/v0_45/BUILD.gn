@@ -31,6 +31,8 @@ cargo_crate("lib") {
   ]
 
   features = [
+    "Win32",
+    "Win32_System",
     "Win32_Foundation",
     "Win32_System_LibraryLoader",
     "Win32_System_SystemServices",
