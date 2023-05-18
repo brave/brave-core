@@ -172,11 +172,12 @@ const defaultState: WalletState = {
             .USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
         ) || '[]'),
   hidePortfolioNFTsTab: window
-    .localStorage
-    .getItem(
-      LOCAL_STORAGE_KEYS
-        .HIDE_PORTFOLIO_NFTS_TAB
-    ) === 'true'
+  .localStorage
+  .getItem(
+    LOCAL_STORAGE_KEYS
+      .HIDE_PORTFOLIO_NFTS_TAB
+  ) === 'true',
+  removedNonFungibleTokens: [] as BraveWallet.BlockchainToken[],
 }
 
 // async actions
@@ -511,6 +512,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           { payload }: PayloadAction<string[]>
         ) {
         state.removedNonFungibleTokenIds = payload
+      },
+
+      setRemovedNonFungibleTokens (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
+        state.removedNonFungibleTokens = payload
       },
 
       setHidePortfolioBalances

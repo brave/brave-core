@@ -181,6 +181,7 @@ export default function useAssetManagement () {
   return {
     onUpdateVisibleAssets,
     onAddCustomAsset,
-    makeTokenVisible
+    makeTokenVisible,
+    addOrRemoveTokenInLocalStorage
   }
 }

@@ -21,15 +21,15 @@ export const FilterTokenRow = styled.div`
 
 export const NftGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 25px;
   box-sizing: border-box;
   width: 100%;
   @media screen and (max-width: 700px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
   @media screen and (max-width: 545px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 `
 

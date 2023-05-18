@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import { WalletButton } from '../../../../../shared/style'
+import * as leo from '@brave/leo/tokens/css'
 import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
 import MoreVertical from '../../../../../../assets/svg-icons/more-vertical.svg'
 
@@ -108,8 +109,8 @@ export const VerticalMenu = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   background-color: transparent;
   position: absolute;
   right: 8px;
@@ -117,12 +118,15 @@ export const VerticalMenu = styled(WalletButton)`
   z-index: 3;
   border: none;
   cursor: pointer;
+  background: rgba(102, 109, 137, 0.5);
+  backdrop-filter: blur(27.5px);
+  border-radius: 1000px;
 `
 
 export const VerticalMenuIcon = styled.div`
   width: 4px;
   height: 14px;
-  filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.1));
+  box-shadow: 0px 3px 10px ${leo.effect.elevation['02']};
   mask-image: url(${MoreVertical});
   -webkit-mask-image: url(${MoreVertical});
   background-color: #fff;

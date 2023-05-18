@@ -4,9 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
+
+// hooks
+import { useAssetManagement } from '../../../../../../common/hooks'
+
+// actions
+import { WalletActions } from '../../../../../../common/actions'
 
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
@@ -29,18 +36,22 @@ import {
 } from './style'
 import { translateToNftGateway } from '../../../../../../common/async/lib'
 
-
 interface Props {
   token: BraveWallet.BlockchainToken
+  isHidden: boolean
   onSelectAsset: () => void
 }
 
 export const NFTGridViewItem = (props: Props) => {
-  const { token, onSelectAsset } = props
+  const { token, isHidden, onSelectAsset } = props
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
+
+  // hooks
+  const dispatch = useDispatch()
+  const { addOrRemoveTokenInLocalStorage } = useAssetManagement()
 
   // methods
   const onToggleShowMore = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,6 +68,18 @@ export const NFTGridViewItem = (props: Props) => {
     setShowMore(false)
   }, [])
 
+  const onHideNft = React.useCallback(() => {
+    setShowMore(false)
+    addOrRemoveTokenInLocalStorage(token, 'remove')
+    dispatch(WalletActions.refreshNetworksAndTokens())
+  }, [token, addOrRemoveTokenInLocalStorage])
+
+  const onUnHideNft = React.useCallback(() => {
+    setShowMore(false)
+    addOrRemoveTokenInLocalStorage(token, 'add')
+    dispatch(WalletActions.refreshNetworksAndTokens())
+  }, [token, addOrRemoveTokenInLocalStorage])
+
   const [remoteImage, setRemoteImage] = React.useState<string>()
   React.useEffect(() => {
     let ignore = false
@@ -71,15 +94,20 @@ export const NFTGridViewItem = (props: Props) => {
   return (
     <>
       <NFTWrapper>
-        <VerticalMenu onClick={onToggleShowMore}>
+        <VerticalMenu
+          onClick={onToggleShowMore}
+        >
           <VerticalMenuIcon />
         </VerticalMenu>
-        {showMore &&
+        {showMore && (
           <NftMorePopup
+            isHidden={isHidden}
             onEditNft={onEditNft}
+            onHideNft={onHideNft}
+            onUnHideNft={onUnHideNft}
           />
-        }
-        <DIVForClickableArea onClick={onSelectAsset}/>
+        )}
+        <DIVForClickableArea onClick={onSelectAsset} />
         <IconWrapper>
           <NftIconWithNetworkIcon
             icon={remoteImage}
@@ -88,16 +116,19 @@ export const NFTGridViewItem = (props: Props) => {
             coinType={token?.coin}
           />
         </IconWrapper>
-        <NFTText>{token.name} {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
+        <NFTText>
+          {token.name}{' '}
+          {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}
+        </NFTText>
         {token.symbol !== '' && <NFTSymbol>{token.symbol}</NFTSymbol>}
       </NFTWrapper>
-      {showEditModal &&
+      {showEditModal && (
         <AddOrEditNftModal
           nftToken={token}
           onHideForm={onHideModal}
           onClose={onHideModal}
         />
-      }
+      )}
     </>
   )
 }

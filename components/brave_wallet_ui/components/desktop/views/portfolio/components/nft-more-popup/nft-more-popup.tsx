@@ -10,24 +10,44 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  EditIcon
+  ButtonIcon,
 } from './nft-more-popup.styles'
+import { getLocale } from '../../../../../../../common/locale'
 
 interface Props {
+  isHidden: boolean
   onEditNft: () => void
+  onHideNft: () => void
+  onUnHideNft: () => void
 }
 
 export const NftMorePopup = (props: Props) => {
   const {
-    onEditNft
+    isHidden,
+    onEditNft,
+    onHideNft,
+    onUnHideNft
   } = props
 
   return (
     <StyledWrapper>
       <PopupButton onClick={onEditNft}>
-        <EditIcon />
-        <PopupButtonText>Edit</PopupButtonText>
+        <ButtonIcon name='edit-pencil' />
+        <PopupButtonText>{getLocale('braveNftsTabEdit')}</PopupButtonText>
       </PopupButton>
+      {isHidden
+        ? (
+          <PopupButton onClick={onUnHideNft}>
+            <ButtonIcon name='eye-on' />
+            <PopupButtonText>{getLocale('braveNftsTabUnhide')}</PopupButtonText>
+          </PopupButton>
+        ) : (
+          <PopupButton onClick={onHideNft}>
+            <ButtonIcon name='eye-off' />
+            <PopupButtonText>{getLocale('braveNftsTabHide')}</PopupButtonText>
+         </PopupButton>
+        )
+      }
     </StyledWrapper>
   )
 }
