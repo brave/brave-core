@@ -11,9 +11,8 @@
 
 namespace brave_ads {
 
-absl::optional<base::Time> GetLastSeenAdTime(
-    const AdEventList& ad_events,
-    const CreativeAdInfo& creative_ad) {
+absl::optional<base::Time> GetLastSeenAdAt(const AdEventList& ad_events,
+                                           const CreativeAdInfo& creative_ad) {
   const auto iter = base::ranges::find_if(
       ad_events, [&creative_ad](const AdEventInfo& ad_event) -> bool {
         return ad_event.creative_instance_id ==

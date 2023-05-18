@@ -17,7 +17,7 @@ namespace brave_ads {
 
 struct CreativeAdInfo;
 
-absl::optional<base::Time> GetLastSeenAdvertiserTime(
+absl::optional<base::Time> GetLastSeenAdvertiserAt(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad);
 

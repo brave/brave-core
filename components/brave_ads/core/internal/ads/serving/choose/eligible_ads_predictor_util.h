@@ -94,13 +94,13 @@ AdPredictorInfo<T> ComputePredictorFeatures(
   const base::Time now = base::Time::Now();
 
   if (const absl::optional<base::Time> last_seen_ad_at =
-          GetLastSeenAdTime(ad_events, ad_predictor.creative_ad)) {
+          GetLastSeenAdAt(ad_events, ad_predictor.creative_ad)) {
     const base::TimeDelta time_delta = now - *last_seen_ad_at;
     mutable_ad_predictor.ad_last_seen_hours_ago = time_delta.InHours();
   }
 
   if (const absl::optional<base::Time> last_seen_advertiser_at =
-          GetLastSeenAdvertiserTime(ad_events, ad_predictor.creative_ad)) {
+          GetLastSeenAdvertiserAt(ad_events, ad_predictor.creative_ad)) {
     const base::TimeDelta time_delta = now - *last_seen_advertiser_at;
     mutable_ad_predictor.advertiser_last_seen_hours_ago = time_delta.InHours();
   }

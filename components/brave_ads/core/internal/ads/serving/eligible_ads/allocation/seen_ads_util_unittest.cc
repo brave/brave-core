@@ -15,7 +15,7 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsAdEventUtilTest, DoNotGetLastSeenAdTimeForEmptyAdEvents) {
+TEST(BraveAdsAdEventUtilTest, DoNotGetLastSeenAdAtForEmptyAdEvents) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -23,10 +23,10 @@ TEST(BraveAdsAdEventUtilTest, DoNotGetLastSeenAdTimeForEmptyAdEvents) {
   // Act
 
   // Assert
-  EXPECT_FALSE(GetLastSeenAdTime(/*ad_events*/ {}, creative_ad));
+  EXPECT_FALSE(GetLastSeenAdAt(/*ad_events*/ {}, creative_ad));
 }
 
-TEST(BraveAdsAdEventUtilTest, DoNotGetLastSeenAdTimeForUnseenAd) {
+TEST(BraveAdsAdEventUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
   // Arrange
   AdEventList ad_events;
 
@@ -45,10 +45,10 @@ TEST(BraveAdsAdEventUtilTest, DoNotGetLastSeenAdTimeForUnseenAd) {
   // Act
 
   // Assert
-  EXPECT_FALSE(GetLastSeenAdTime(ad_events, creative_ad_2));
+  EXPECT_FALSE(GetLastSeenAdAt(ad_events, creative_ad_2));
 }
 
-TEST(BraveAdsAdEventUtilTest, GetLastSeenAdTime) {
+TEST(BraveAdsAdEventUtilTest, GetLastSeenAdAt) {
   // Arrange
   AdEventList ad_events;
 
@@ -83,7 +83,7 @@ TEST(BraveAdsAdEventUtilTest, GetLastSeenAdTime) {
   // Act
 
   // Assert
-  EXPECT_EQ(now - base::Hours(6), GetLastSeenAdTime(ad_events, creative_ad_1));
+  EXPECT_EQ(now - base::Hours(6), GetLastSeenAdAt(ad_events, creative_ad_1));
 }
 
 }  // namespace brave_ads
