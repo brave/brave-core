@@ -45,11 +45,10 @@ class TabManager final : public AdsClientNotifierObserver {
   absl::optional<TabInfo> GetVisible() const;
   absl::optional<TabInfo> GetLastVisible() const;
 
-  absl::optional<TabInfo> GetForId(int32_t id) const;
+  absl::optional<TabInfo> MaybeGetForId(int32_t id) const;
 
  private:
-  void Add(const TabInfo& tab);
-  void Update(const TabInfo& tab);
+  TabInfo& GetOrCreateForId(int32_t id);
   void Remove(int32_t id);
 
   void NotifyTabDidChangeFocus(int32_t id) const;
@@ -76,8 +75,7 @@ class TabManager final : public AdsClientNotifierObserver {
   void OnNotifyTabDidStopPlayingMedia(int32_t id) override;
   void OnNotifyTabDidChange(int32_t id,
                             const std::vector<GURL>& redirect_chain,
-                            bool is_visible,
-                            bool is_incognito) override;
+                            bool is_visible) override;
   void OnNotifyDidCloseTab(int32_t id) override;
 
   base::ObserverList<TabManagerObserver> observers_;

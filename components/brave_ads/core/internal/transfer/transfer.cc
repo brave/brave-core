@@ -95,7 +95,7 @@ void Transfer::TransferAdCallback(const int32_t tab_id,
   }
 
   const absl::optional<TabInfo> tab =
-      TabManager::GetInstance().GetForId(tab_id);
+      TabManager::GetInstance().MaybeGetForId(tab_id);
   if (!tab) {
     return FailedToTransferAd(ad);
   }

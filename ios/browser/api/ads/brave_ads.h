@@ -130,8 +130,7 @@ OBJC_EXPORT
 - (void)reportTabUpdated:(NSInteger)tabId
                      url:(NSURL*)url
       redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-              isSelected:(BOOL)isSelected
-               isPrivate:(BOOL)isPrivate;
+              isSelected:(BOOL)isSelected;
 
 /// Report that a tab with a given id was closed by the user
 - (void)reportTabClosedWithTabId:(NSInteger)tabId
