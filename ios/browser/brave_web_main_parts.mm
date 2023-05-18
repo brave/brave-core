@@ -162,3 +162,7 @@ void BraveWebMainParts::PostMainMessageLoopRun() {
 void BraveWebMainParts::PostDestroyThreads() {
   application_context_->PostDestroyThreads();
 }
+
+void BraveWebMainParts::PostCreateThreads() {
+  application_context_->PostCreateThreads();
+}
