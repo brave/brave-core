@@ -99,6 +99,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     updateToolbarUsingTabManager(tabManager)
+    updateStatusBarOverlayColor()
 
     removeAllBars()
     if let bars = selected?.bars {

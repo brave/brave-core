@@ -89,4 +89,21 @@ public extension WKWebView {
       }
     }
   }
+  
+  var sampledPageTopColor: UIColor? {
+    let selector = Selector("_sampl\("edPageTopC")olor")
+    if responds(to: selector), let result = perform(selector) {
+      return result.takeUnretainedValue() as? UIColor
+    }
+    return nil
+  }
+}
+
+extension WKWebViewConfiguration {
+  public func enablePageTopColorSampling() {
+    let selector = Selector("_setSa\("mpledPageTopColorMaxDiff")erence:")
+    if responds(to: selector) {
+      perform(selector, with: 5.0 as Double)
+    }
+  }
 }

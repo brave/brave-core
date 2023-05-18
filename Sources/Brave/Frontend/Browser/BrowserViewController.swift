@@ -43,6 +43,7 @@ private let KVOs: [KVOConstants] = [
   .title,
   .hasOnlySecureContent,
   .serverTrust,
+  ._sampledPageTopColor
 ]
 
 public class BrowserViewController: UIViewController {
@@ -662,7 +663,7 @@ public class BrowserViewController: UIViewController {
     coordinator.animate(
       alongsideTransition: { context in
         if self.isViewLoaded {
-          self.statusBarOverlay.backgroundColor = self.topToolbar.backgroundColor
+          self.updateStatusBarOverlayColor()
           self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
           self.setNeedsStatusBarAppearanceUpdate()
         }
@@ -758,6 +759,7 @@ public class BrowserViewController: UIViewController {
       bottomBarKeyboardBackground.isHidden = !isUsingBottomBar
       topToolbar.displayTabTraySwipeGestureRecognizer?.isEnabled = isUsingBottomBar
       updateTabsBarVisibility()
+      updateStatusBarOverlayColor()
       updateViewConstraints()
     }
   }
@@ -880,12 +882,7 @@ public class BrowserViewController: UIViewController {
       .$isPrivateBrowsing
       .removeDuplicates()
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
-        if isPrivateBrowsing {
-          self?.statusBarOverlay.backgroundColor = .privateModeBackground
-        } else {
-          self?.statusBarOverlay.backgroundColor =
-          Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
-        }
+        self?.updateStatusBarOverlayColor()
         self?.bottomBarKeyboardBackground.backgroundColor = self?.statusBarOverlay.backgroundColor
       })
     
@@ -906,12 +903,7 @@ public class BrowserViewController: UIViewController {
     Preferences.General.nightModeEnabled.objectWillChange
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
-        if PrivateBrowsingManager.shared.isPrivateBrowsing {
-          self?.statusBarOverlay.backgroundColor = .privateModeBackground
-        } else {
-          self?.statusBarOverlay.backgroundColor =
-          Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
-        }
+        self?.updateStatusBarOverlayColor()
         self?.bottomBarKeyboardBackground.backgroundColor = self?.statusBarOverlay.backgroundColor
       }
       .store(in: &cancellables)
@@ -1594,11 +1586,12 @@ public class BrowserViewController: UIViewController {
     }
 
     // Must handle ALL keypaths
-    guard let kp = keyPath, let path = KVOConstants(rawValue: kp) else {
+    guard let kp = keyPath else {
       assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
       return
     }
 
+    let path = KVOConstants(keyPath: kp)
     switch path {
     case .estimatedProgress:
       guard tab === tabManager.selectedTab,
@@ -1751,6 +1744,10 @@ public class BrowserViewController: UIViewController {
         
         self.updateURLBar()
       }
+    case ._sampledPageTopColor:
+      updateStatusBarOverlayColor()
+    default:
+      assertionFailure("Unhandled KVO key: \(kp)")
     }
   }
 
@@ -2182,6 +2179,26 @@ public class BrowserViewController: UIViewController {
       tab.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
     }
   }
+  
+  public override var preferredStatusBarStyle: UIStatusBarStyle {
+    if isUsingBottomBar, let webView = tabManager.selectedTab?.webView, let color = webView.sampledPageTopColor {
+      return color.isLight ? .darkContent : .lightContent
+    }
+    return super.preferredStatusBarStyle
+  }
+  
+  func updateStatusBarOverlayColor() {
+    defer { setNeedsStatusBarAppearanceUpdate() }
+    guard isUsingBottomBar, let color = tabManager.selectedTab?.webView?.sampledPageTopColor else {
+      if PrivateBrowsingManager.shared.isPrivateBrowsing {
+        statusBarOverlay.backgroundColor = .privateModeBackground
+      } else {
+        statusBarOverlay.backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
+      }
+      return
+    }
+    statusBarOverlay.backgroundColor = color
+  }
 
   func navigateInTab(tab: Tab, to navigation: WKNavigation? = nil) {
     tabManager.expireSnackbars()
@@ -2225,6 +2242,8 @@ public class BrowserViewController: UIViewController {
     }
 
     if tab === tabManager.selectedTab {
+      updateStatusBarOverlayColor()
+      
       UIAccessibility.post(notification: .screenChanged, argument: nil)
       // must be followed by LayoutChanged, as ScreenChanged will make VoiceOver
       // cursor land on the correct initial element, but if not followed by LayoutChanged,
@@ -2428,7 +2447,7 @@ extension BrowserViewController: TabDelegate {
     webView.frame = webViewContainer.frame
     
     // Observers that live as long as the tab. Make sure these are all cleared in willDeleteWebView below!
-    KVOs.forEach { webView.addObserver(self, forKeyPath: $0.rawValue, options: .new, context: nil) }
+    KVOs.forEach { webView.addObserver(self, forKeyPath: $0.keyPath, options: .new, context: nil) }
     webView.uiDelegate = self
     
     var injectedScripts: [TabContentScript] = [
@@ -2505,7 +2524,7 @@ extension BrowserViewController: TabDelegate {
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
     tab.cancelQueuedAlerts()
-    KVOs.forEach { webView.removeObserver(self, forKeyPath: $0.rawValue) }
+    KVOs.forEach { webView.removeObserver(self, forKeyPath: $0.keyPath) }
     toolbarVisibilityViewModel.endScrollViewObservation(webView.scrollView)
     webView.uiDelegate = nil
     webView.removeFromSuperview()
