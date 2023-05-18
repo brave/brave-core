@@ -7,9 +7,10 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import { Row } from '../../shared/style'
 
-const minCardHeight = 531
+const minCardHeight = 497
 const maxCardWidth = 768
 const layoutScaleWithNav = 1374
+const layoutSmallCardBottom = 67
 export const layoutSmallWidth = 980
 export const layoutPanelWidth = 660
 export const layoutTopPosition = 68
@@ -40,15 +41,16 @@ export const LayoutCardWrapper = styled.div<{
   --header-top-position:
     calc(${layoutTopPosition}px + ${(p) => p.headerHeight}px);
   --no-header-top-position: ${layoutTopPosition}px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  top: ${(p) =>
+  --top-position: ${(p) =>
     p.hideCardHeader
       ? 'var(--no-header-top-position)'
       : 'var(--header-top-position)'
   };
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  top: var(--top-position);
   bottom: 0px;
   position: absolute;
   width: 100%;
@@ -63,7 +65,7 @@ export const LayoutCardWrapper = styled.div<{
     align-items: flex-start;
   }
   @media screen and (max-width: ${layoutSmallWidth}px) {
-    bottom: 67px;
+    bottom: ${layoutSmallCardBottom}px;
     padding: 0px 32px 32px 32px;
     align-items: center;
   }
@@ -104,6 +106,7 @@ export const ContainerCard = styled.div<
     width: 100%;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
+    min-height: calc(100vh - ${layoutSmallCardBottom}px - var(--top-position));
     border-radius: ${(p) =>
     p.hideCardHeader
       ? '24px 24px 0px 0px'
