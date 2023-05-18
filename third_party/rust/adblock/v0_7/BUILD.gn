@@ -54,15 +54,16 @@ cargo_crate("lib") {
     "debug-info",
     "css-validation",
     "cssparser",
-    # "c",
     "lifeguard",
-    "object-pooling",
     "selectors",
-    "unsync-regex-caching",
   ]
 
   if (is_ios) {
-    # thread?
-    features += "content-blocking"
+    features += [ "content-blocking" ]
+  } else {
+    features += [
+      "object-pooling",
+      "unsync-regex-caching",
+    ]
   }
 }
