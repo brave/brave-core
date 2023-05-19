@@ -38,6 +38,10 @@ declare_args() {
   brave_android_keystore_name = ""
   brave_android_keystore_password = ""
   brave_android_key_password = ""
+  brave_android_keystore_path_solana = "."
+  brave_android_keystore_name_solana = ""
+  brave_android_keystore_password_solana = ""
+  brave_android_key_password_solana = ""
 
   skip_signing = false
 

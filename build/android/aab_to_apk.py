@@ -6,6 +6,7 @@
 import argparse
 import os
 import shlex
+import shutil
 import subprocess
 import sys
 import zipfile
@@ -25,6 +26,7 @@ def main():
     argument_parser.add_argument('zipalign_path')
     argument_parser.add_argument('apksigner_path')
     argument_parser.add_argument('jarsigner_path')
+    argument_parser.add_argument('key_info_solana', type=str, nargs='+')
     args = argument_parser.parse_args()
 
     apks_name = os.path.splitext(args.output_apk_path)[0] + ".apks"
@@ -48,17 +50,34 @@ def main():
     with zipfile.ZipFile(apks_name, 'r') as z:
         z.extract('universal.apk', args.output_path)
         z.close()
-
-    if os.path.isfile(args.output_apk_path):
-        os.remove(args.output_apk_path)
-    os.rename(universal_apk, args.output_apk_path)
-
+    utils_path = [args.zipalign_path, args.apksigner_path, args.jarsigner_path]
+    transform(args.output_apk_path, universal_apk, \
+        utils_path, args.key_path, args.key_passwd, \
+        args.prvt_key_passwd, args.key_name)
+    if len(args.key_info_solana) >= 5:
+        transform(args.key_info_solana[0], universal_apk, \
+            utils_path, args.key_info_solana[1], \
+            args.key_info_solana[2], args.key_info_solana[3], \
+            args.key_info_solana[4])
     if os.path.isfile(apks_name):
         os.remove(apks_name)
+    if os.path.isfile(universal_apk):
+        os.remove(universal_apk)
 
-    sign_apk.sign(args.zipalign_path, args.apksigner_path, \
-        args.jarsigner_path, [ args.output_apk_path ], args.key_path, \
-        args.key_passwd, args.prvt_key_passwd, args.key_name)
+
+def transform(output_apk_path, universal_apk, utils_path, key_path, \
+    key_passwd, prvt_key_passwd, key_name):
+    if os.path.isfile(output_apk_path):
+        os.remove(output_apk_path)
+    try:
+        shutil.copy(universal_apk, output_apk_path)
+    except IOError as e:
+        print("Unable to copy file. %s" % e)
+        return
+
+    sign_apk.sign(utils_path[0], utils_path[1], \
+        utils_path[2], [ output_apk_path ], key_path, \
+        key_passwd, prvt_key_passwd, key_name)
 
 
 if __name__ == '__main__':

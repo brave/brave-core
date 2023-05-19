@@ -199,6 +199,14 @@ const Config = function () {
   this.braveAndroidKeystoreName = getNPMConfig(['brave_android_keystore_name'])
   this.braveAndroidKeystorePassword = getNPMConfig(['brave_android_keystore_password'])
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
+  this.braveAndroidKeystorePathSolana =
+    getNPMConfig(['brave_android_keystore_path_solana']) || '.'
+  this.braveAndroidKeystoreNameSolana =
+    getNPMConfig(['brave_android_keystore_name_solana']) || ''
+  this.braveAndroidKeystorePasswordSolana =
+    getNPMConfig(['brave_android_keystore_password_solana']) || ''
+  this.braveAndroidKeyPasswordSolana =
+    getNPMConfig(['brave_android_key_password_solana']) || ''
   this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.use_goma = getNPMConfig(['brave_use_goma']) || false
@@ -396,6 +404,14 @@ Config.prototype.buildArgs = function () {
       args.brave_android_keystore_name = this.braveAndroidKeystoreName
       args.brave_android_keystore_password = this.braveAndroidKeystorePassword
       args.brave_android_key_password = this.braveAndroidKeyPassword
+      args.brave_android_keystore_path_solana =
+        this.braveAndroidKeystorePathSolana
+      args.brave_android_keystore_name_solana =
+        this.braveAndroidKeystoreNameSolana
+      args.brave_android_keystore_password_solana =
+        this.braveAndroidKeystorePasswordSolana
+      args.brave_android_key_password_solana =
+        this.braveAndroidKeyPasswordSolana
     }
   }
 

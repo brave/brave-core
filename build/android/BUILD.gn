@@ -21,6 +21,7 @@ action("sign_app_convert_aab_to_apk") {
   output_apk_path = "$root_out_dir/apks/Bravearm64Universal.apk"
   output_path = "$root_out_dir/apks/"
   bundletool = "//third_party/android_build_tools/bundletool/bundletool.jar"
+  output_apk_path_solana = "$root_out_dir/apks/Bravearm64UniversalSolana.apk"
 
   outputs = [ output_apk_path ]
 
@@ -36,6 +37,11 @@ action("sign_app_convert_aab_to_apk") {
     rebase_path(_zipalign, root_out_dir),
     rebase_path(_apksigner, root_out_dir),
     rebase_path(_jarsigner, root_out_dir),
+    rebase_path(output_apk_path_solana, root_out_dir),
+    rebase_path("$brave_android_keystore_path_solana", root_out_dir),
+    "$brave_android_keystore_password_solana",
+    "$brave_android_key_password_solana",
+    "$brave_android_keystore_name_solana",
   ]
 }
 
