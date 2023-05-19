@@ -1050,6 +1050,7 @@ export type ERC721Metadata = {
 export type AddressMessageInfo = {
   title: string
   description?: string
+  placeholder?: string
   url?: string
   type?: 'error' | 'warning'
 }

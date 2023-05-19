@@ -16,6 +16,7 @@ import CaratDownIcon from '../../assets/carat-down-icon.svg'
 // Hooks
 import { useOnClickOutside } from '../../../../../common/hooks/useOnClickOutside'
 import {
+  useGetFVMAddressQuery,
   useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery //
 } from '../../../../../common/slices/api.slice'
@@ -26,6 +27,7 @@ import { AccountListItem } from '../account-list-item/account-list-item'
 // Styled Components
 import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
 import { BraveWallet } from '../../../../../constants/types'
+import { CoinType } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 
 interface Props {
   asset: BraveWallet.BlockchainToken | undefined
@@ -75,6 +77,14 @@ export const AccountSelector = (props: Props) => {
       return []
     }
 
+    if (selectedNetwork.coin === BraveWallet.CoinType.FIL) {
+      let filecoinAccounts = accounts.filter((account) =>
+        (account.accountId.keyringId === selectedAccountId?.keyringId))
+      let fevmAccounts = accounts.filter((account) =>
+        (account.accountId.coin === CoinType.ETH))
+      return filecoinAccounts.concat(fevmAccounts)
+    }
+
     // TODO(apaymyshev): for bitcoin should allow sending to my account, but
     // from different keyring (i.e. segwit -> taproot)
     // https://github.com/brave/brave-browser/issues/29262
@@ -84,6 +94,13 @@ export const AccountSelector = (props: Props) => {
         account.accountId.keyringId === selectedAccountId.keyringId ||
         (asset?.contractAddress === "" && isFVMAccount(account)))
   }, [accounts, selectedNetwork, selectedAccountId, asset])
+
+  const { data: fvmTranslatedAddresses } = useGetFVMAddressQuery({
+    addresses: accountsByNetwork
+      .filter(account => account.accountId.coin === CoinType.ETH)
+      .map(account => account.accountId.address),
+    isMainNet: selectedNetwork?.chainId === BraveWallet.FILECOIN_MAINNET
+  })
 
   // Hooks
   useOnClickOutside(
@@ -109,6 +126,7 @@ export const AccountSelector = (props: Props) => {
               isSelected={
                 account.accountId.uniqueKey === selectedAccountId?.uniqueKey
               }
+              accountAlias={fvmTranslatedAddresses?.[account.accountId.address] || ''}
             />
           )}
         </DropDown>
