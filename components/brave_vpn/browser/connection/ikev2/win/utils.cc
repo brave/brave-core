@@ -369,7 +369,7 @@ RasOperationResult RemoveEntry(const std::wstring& entry_name) {
     return GetRasErrorResult(error_get_phone_book_path,
                              "GetPhonebookPath() from RemoveEntry()");
   }
-
+  DisconnectEntry(entry_name);
   DWORD dw_ret = RasDeleteEntry(phone_book_path.c_str(), entry_name.c_str());
   if (dw_ret != ERROR_SUCCESS) {
     return GetRasErrorResult(GetRasErrorMessage(dw_ret), "RasDeleteEntry()");
