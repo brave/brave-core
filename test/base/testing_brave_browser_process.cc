@@ -91,6 +91,11 @@ TestingBraveBrowserProcess::https_upgrade_exceptions_service() {
   return nullptr;
 }
 
+localhost_permission::LocalhostPermissionComponent*
+TestingBraveBrowserProcess::localhost_permission_component() {
+  return nullptr;
+}
+
 brave_shields::HTTPSEverywhereService*
 TestingBraveBrowserProcess::https_everywhere_service() {
   NOTREACHED();
