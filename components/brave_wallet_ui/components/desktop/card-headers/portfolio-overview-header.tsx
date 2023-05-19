@@ -59,7 +59,7 @@ export const PortfolioOverviewHeader = () => {
           }
         >
           <ButtonIcon
-            name='more-vertical'
+            name='tune'
           />
         </CircleButton>
         {showPortfolioOverviewMenu &&

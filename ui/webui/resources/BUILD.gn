@@ -196,6 +196,7 @@ leo_icons = [
   "arrow-small-down.svg",
   "info-outline.svg",
   "nft.svg",
+  "tune.svg",
 ]
 
 generate_grd("icons_grdp") {
