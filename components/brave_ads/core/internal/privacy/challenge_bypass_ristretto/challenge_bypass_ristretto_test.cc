@@ -47,7 +47,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
       signing_key.Sign(*blinded_token);
   EXPECT_TRUE(signed_token);
 
-  // Server signs a DLEQ proof.
+  // Server signs a DLEQ (Discrete Log Equivalence) proof.
   DLEQProof dleq_proof(*blinded_token, *signed_token, signing_key);
   EXPECT_TRUE(dleq_proof.has_value());
 
@@ -96,7 +96,8 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
         server_unblinded_token->DeriveVerificationKey();
     EXPECT_TRUE(server_verification_key);
 
-    // Server proves and verifies the validity of the unblinded_token.
+    // Server proves and verifies the message using the shared verification
+    // signature.
     EXPECT_TRUE(
         server_verification_key->Verify(*verification_signature, kMessage));
   }
