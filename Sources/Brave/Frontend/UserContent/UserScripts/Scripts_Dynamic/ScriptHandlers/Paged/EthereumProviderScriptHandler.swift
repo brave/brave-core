@@ -60,7 +60,7 @@ class EthereumProviderScriptHandler: TabContentScript {
     }
   }
   
-  func userContentController(
+  @MainActor func userContentController(
     _ userContentController: WKUserContentController,
     didReceiveScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
@@ -99,7 +99,7 @@ class EthereumProviderScriptHandler: TabContentScript {
       firstAllowedAccount: String,
       updateJSProperties: Bool
     ) {
-      Task {
+      Task { @MainActor in
         if updateJSProperties {
           await tab.updateEthereumProperties()
         }

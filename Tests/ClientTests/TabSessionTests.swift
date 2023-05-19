@@ -74,7 +74,7 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
   }
 }
 
-class TabSessionTests: XCTestCase {
+@MainActor class TabSessionTests: XCTestCase {
   private var tabManager: TabManager!
   private let maxTimeout = 60.0
 

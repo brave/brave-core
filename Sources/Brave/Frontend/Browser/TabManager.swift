@@ -387,7 +387,7 @@ class TabManager: NSObject {
     }
   }
 
-  func addPopupForParentTab(_ parentTab: Tab, configuration: WKWebViewConfiguration) -> Tab {
+  @MainActor func addPopupForParentTab(_ parentTab: Tab, configuration: WKWebViewConfiguration) -> Tab {
     let popup = Tab(configuration: configuration, id: UUID(), type: parentTab.type, tabGeneratorAPI: tabGeneratorAPI)
     configureTab(popup, request: nil, afterTab: parentTab, flushToDisk: true, zombie: false, isPopup: true)
 
@@ -402,13 +402,13 @@ class TabManager: NSObject {
   }
 
   @discardableResult
-  func addTabAndSelect(_ request: URLRequest! = nil, afterTab: Tab? = nil, isPrivate: Bool) -> Tab {
+  @MainActor func addTabAndSelect(_ request: URLRequest! = nil, afterTab: Tab? = nil, isPrivate: Bool) -> Tab {
     let tab = addTab(request, afterTab: afterTab, isPrivate: isPrivate)
     selectTab(tab)
     return tab
   }
 
-  func addTabsForURLs(_ urls: [URL], zombie: Bool, isPrivate: Bool = false) {
+  @MainActor func addTabsForURLs(_ urls: [URL], zombie: Bool, isPrivate: Bool = false) {
     assert(Thread.isMainThread)
 
     if urls.isEmpty {
@@ -452,7 +452,7 @@ class TabManager: NSObject {
   }
 
   @discardableResult
-  func addTab(_ request: URLRequest? = nil, afterTab: Tab? = nil, flushToDisk: Bool = true, zombie: Bool = false, id: UUID? = nil, isPrivate: Bool) -> Tab {
+  @MainActor func addTab(_ request: URLRequest? = nil, afterTab: Tab? = nil, flushToDisk: Bool = true, zombie: Bool = false, id: UUID? = nil, isPrivate: Bool) -> Tab {
     assert(Thread.isMainThread)
 
     let tabId = id ?? UUID()
@@ -492,7 +492,7 @@ class TabManager: NSObject {
     SessionTab.saveTabOrder(tabIds: allTabIds)
   }
 
-  func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, isPopup: Bool = false) {
+  @MainActor func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, isPopup: Bool = false) {
     assert(Thread.isMainThread)
 
     let isPrivate = tab.type == .private
@@ -611,7 +611,7 @@ class TabManager: NSObject {
     }
   }
 
-  func removeTab(_ tab: Tab) {
+  @MainActor func removeTab(_ tab: Tab) {
     assert(Thread.isMainThread)
 
     guard let removalIndex = allTabs.firstIndex(where: { $0 === tab }) else {
@@ -734,7 +734,7 @@ class TabManager: NSObject {
       completionHandler: completionHandler)
   }
 
-  func removeTabsWithUndoToast(_ tabs: [Tab]) {
+  @MainActor func removeTabsWithUndoToast(_ tabs: [Tab]) {
     tempTabs = tabs
     var tabsCopy = tabs
 
@@ -769,7 +769,7 @@ class TabManager: NSObject {
     delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: toast) }
   }
 
-  func undoCloseTabs() {
+  @MainActor func undoCloseTabs() {
     guard let tempTabs = self.tempTabs, !tempTabs.isEmpty else {
       return
     }
@@ -799,17 +799,17 @@ class TabManager: NSObject {
     tempTabs?.removeAll()
   }
 
-  func removeTabs(_ tabs: [Tab]) {
+  @MainActor func removeTabs(_ tabs: [Tab]) {
     for tab in tabs {
       self.removeTab(tab)
     }
   }
 
-  func removeAll() {
+  @MainActor func removeAll() {
     removeTabs(self.allTabs)
   }
   
-  func removeAllForCurrentMode() {
+  @MainActor func removeAllForCurrentMode() {
     removeTabs(tabsForCurrentMode)
   }
 
@@ -905,7 +905,7 @@ class TabManager: NSObject {
     }
   }
 
-  fileprivate var restoreTabsInternal: Tab? {
+  @MainActor fileprivate var restoreTabsInternal: Tab? {
     var savedTabs = [SessionTab]()
 
     if let autocloseTime = Preferences.AutoCloseTabsOption(
@@ -1008,7 +1008,7 @@ class TabManager: NSObject {
 
   /// Restores all tabs.
   /// Returns the tab that has to be selected after restoration.
-  var restoreAllTabs: Tab {
+  @MainActor var restoreAllTabs: Tab {
     defer {
       metricsHeartbeat?.fire()
       RunLoop.current.add(metricsHeartbeat!, forMode: .default)
@@ -1080,7 +1080,7 @@ class TabManager: NSObject {
   /// This function adss a new tab, populates this tab with necessary information
   /// Also executes restore function on this tab to load History Snapshot to the webview
   /// - Parameter recentlyClosed: Recently Closed item to be processed
-  func addAndSelectRecentlyClosed(_ recentlyClosed: RecentlyClosed) {
+  @MainActor func addAndSelectRecentlyClosed(_ recentlyClosed: RecentlyClosed) {
     guard let url = NSURL(idnString: recentlyClosed.url) as? URL ?? URL(string: recentlyClosed.url) else { return }
     
     let tab = addTab(URLRequest(url: url), isPrivate: false)
