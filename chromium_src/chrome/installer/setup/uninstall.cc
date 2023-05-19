@@ -8,6 +8,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #endif
 #define UninstallProduct UninstallProduct_ChromiumImpl
 
@@ -63,6 +64,7 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
        ShellUtil::QuickIsChromeRegisteredInHKLM(chrome_exe, suffix))) {
     DeleteBraveFileKeys(HKEY_LOCAL_MACHINE);
   }
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (installer_state->system_install()) {
     if (!InstallServiceWorkItem::DeleteService(
             brave_vpn::GetBraveVpnHelperServiceName(),
@@ -71,6 +73,8 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
                    << brave_vpn::GetBraveVpnHelperServiceName();
     }
   }
+  brave_vpn::ras::RemoveEntry(brave_vpn::GetBraveVPNConnectionName());
+#endif
   return UninstallProduct_ChromiumImpl(modify_params, remove_all,
                                        force_uninstall, cmd_line);
 }

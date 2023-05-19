@@ -187,12 +187,6 @@ bool BraveVpnService::IsConnected() const {
   return GetConnectionState() == ConnectionState::CONNECTED;
 }
 
-void BraveVpnService::RemoveVPNConnection() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  VLOG(2) << __func__;
-  connection_api_->RemoveVPNConnection();
-}
-
 void BraveVpnService::Connect() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 

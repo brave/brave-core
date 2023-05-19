@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_UTILS_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_UTILS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_RAS_UTILS_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_RAS_UTILS_H_
 
 #include <string>
 
@@ -14,7 +14,7 @@ namespace brave_vpn {
 
 class BraveVPNConnectionInfo;
 
-namespace internal {
+namespace ras {
 
 enum class CheckConnectionResult {
   CONNECTED,
@@ -40,8 +40,8 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name);
 RasOperationResult ConnectEntry(const std::wstring& entry_name);
 CheckConnectionResult CheckConnection(const std::wstring& entry_name);
 
-}  // namespace internal
+}  // namespace ras
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_UTILS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_RAS_UTILS_H_

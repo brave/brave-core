@@ -81,7 +81,6 @@ class BraveVpnService :
   bool IsBraveVPNEnabled() const;
 #if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
-  void RemoveVPNConnection();
   mojom::ConnectionState GetConnectionState() const;
   bool IsConnected() const;
 

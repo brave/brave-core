@@ -59,7 +59,6 @@ class BraveVPNOSConnectionAPI
   std::string GetLastConnectionError() const;
 
   // Connection dependent APIs.
-  virtual void RemoveVPNConnection() = 0;
   virtual void Connect() = 0;
   virtual void Disconnect() = 0;
   virtual void ToggleConnection() = 0;

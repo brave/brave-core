@@ -36,7 +36,6 @@ class BraveVPNWireguardConnectionAPI : public BraveVPNOSConnectionAPI {
   void FetchProfileCredentials();
 
   // BraveVPNOSConnectionAPI
-  void RemoveVPNConnection() override;
   void Connect() override;
   void Disconnect() override;
   void ToggleConnection() override;

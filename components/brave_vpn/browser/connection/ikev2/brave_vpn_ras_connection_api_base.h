@@ -42,7 +42,6 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   void Connect() override;
   void Disconnect() override;
   void ToggleConnection() override;
-  void RemoveVPNConnection() override;
   void CheckConnection() override;
   void ResetConnectionInfo() override;
   std::string GetHostname() const override;
@@ -61,7 +60,6 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   virtual void CreateVPNConnectionImpl(const BraveVPNConnectionInfo& info) = 0;
   virtual void ConnectImpl(const std::string& name) = 0;
   virtual void DisconnectImpl(const std::string& name) = 0;
-  virtual void RemoveVPNConnectionImpl(const std::string& name) = 0;
   virtual void CheckConnectionImpl(const std::string& name) = 0;
 
   // Subclass should call below callbacks whenever corresponding event happens.

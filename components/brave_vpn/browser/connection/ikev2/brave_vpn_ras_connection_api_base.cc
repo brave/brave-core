@@ -161,11 +161,6 @@ void BraveVPNOSConnectionAPIBase::ToggleConnection() {
   can_disconnect ? Disconnect() : Connect();
 }
 
-void BraveVPNOSConnectionAPIBase::RemoveVPNConnection() {
-  VLOG(2) << __func__;
-  RemoveVPNConnectionImpl(target_vpn_entry_name_);
-}
-
 void BraveVPNOSConnectionAPIBase::CheckConnection() {
   CheckConnectionImpl(target_vpn_entry_name_);
 }
