@@ -11,6 +11,7 @@ import {
   StyledAdsPerHourText,
   StyledAdsSaveFiltered,
   StyledLink,
+  StyledModalWrapper,
   StyledNoActivity,
   StyledNotSelectedLink,
   StyledSeparatorText,
@@ -92,87 +93,89 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
     const { id, onClose, adsPerHour, hasSavedEntries, hasLikedEntries, rows, totalDays } = this.props
 
     return (
-      <Modal id={id} onClose={onClose} testId={'show-ads-history-modal'}>
-        <StyledWrapper>
-          <StyledAdsHistoryTitle>
-            {getLocale('adsHistoryTitle')}
-          </StyledAdsHistoryTitle>
-          <StyledSubTitleText>
-            {getLocale('adsHistorySubTitle', { totalDays: totalDays || '0' })}
-          </StyledSubTitleText>
-          <StyledAdsHeaderWrapper>
-            <StyledAdsInfoTextWrapper>
-              <StyledAdsInfoText>
-                {getLocale('adsCurrentlyViewing')}
-              </StyledAdsInfoText>
-              <StyledAdsPerHourText>
-                {adsPerHour || '0'}
-              </StyledAdsPerHourText>
-            </StyledAdsInfoTextWrapper>
+      <StyledModalWrapper>
+        <Modal id={id} onClose={onClose} testId={'show-ads-history-modal'}>
+          <StyledWrapper>
+            <StyledAdsHistoryTitle>
+              {getLocale('adsHistoryTitle')}
+            </StyledAdsHistoryTitle>
+            <StyledSubTitleText>
+              {getLocale('adsHistorySubTitle', { totalDays: totalDays || '0' })}
+            </StyledSubTitleText>
+            <StyledAdsHeaderWrapper>
+              <StyledAdsInfoTextWrapper>
+                <StyledAdsInfoText>
+                  {getLocale('adsCurrentlyViewing')}
+                </StyledAdsInfoText>
+                <StyledAdsPerHourText>
+                  {adsPerHour || '0'}
+                </StyledAdsPerHourText>
+              </StyledAdsInfoTextWrapper>
+              {
+                rows && (hasSavedEntries || hasLikedEntries || this.state.filterStatus !== 0)
+                  ? <StyledAdsSaveFiltered>
+                    <StyledText>
+                      {
+                        this.state.filterStatus !== 0
+                          ? <StyledLink onClick={this.onAllFilterClick}>
+                            {
+                              getLocale('all')
+                            }
+                          </StyledLink>
+                          : <StyledNotSelectedLink>
+                            {
+                              getLocale('all')
+                            }
+                          </StyledNotSelectedLink>
+                      }
+                    </StyledText>
+                    <StyledSeparatorText>|</StyledSeparatorText>
+                    <StyledText>
+                      {
+                        this.state.filterStatus !== 1
+                          ? <StyledLink onClick={this.onSavedFilterClick}>
+                            {
+                              getLocale('saved')
+                            }
+                          </StyledLink>
+                          : <StyledNotSelectedLink>
+                            {
+                              getLocale('saved')
+                            }
+                          </StyledNotSelectedLink>
+                      }
+                    </StyledText>
+                    <StyledSeparatorText>|</StyledSeparatorText>
+                    <StyledText>
+                      {
+                        this.state.filterStatus !== 2
+                          ? <StyledThumbDownFilter onClick={this.onThumbFilterClick}>
+                            <ThumbsupSIcon />
+                          </StyledThumbDownFilter>
+                          : <StyledThumbDownNotSelectedFilter>
+                            <ThumbsupSIcon />
+                          </StyledThumbDownNotSelectedFilter>
+                      }
+                    </StyledText>
+                  </StyledAdsSaveFiltered>
+                  : null
+              }
+            </StyledAdsHeaderWrapper>
+            <TableAdsHistory
+              rows={rows}
+              allItems={this.state.filterStatus}
+              header={this.headers}
+            />
             {
-              rows && (hasSavedEntries || hasLikedEntries || this.state.filterStatus !== 0)
-                ? <StyledAdsSaveFiltered>
-                  <StyledText>
-                    {
-                      this.state.filterStatus !== 0
-                        ? <StyledLink onClick={this.onAllFilterClick}>
-                          {
-                            getLocale('all')
-                          }
-                        </StyledLink>
-                        : <StyledNotSelectedLink>
-                          {
-                            getLocale('all')
-                          }
-                        </StyledNotSelectedLink>
-                    }
-                  </StyledText>
-                  <StyledSeparatorText>|</StyledSeparatorText>
-                  <StyledText>
-                    {
-                      this.state.filterStatus !== 1
-                        ? <StyledLink onClick={this.onSavedFilterClick}>
-                          {
-                            getLocale('saved')
-                          }
-                        </StyledLink>
-                        : <StyledNotSelectedLink>
-                          {
-                            getLocale('saved')
-                          }
-                        </StyledNotSelectedLink>
-                    }
-                  </StyledText>
-                  <StyledSeparatorText>|</StyledSeparatorText>
-                  <StyledText>
-                    {
-                      this.state.filterStatus !== 2
-                        ? <StyledThumbDownFilter onClick={this.onThumbFilterClick}>
-                          <ThumbsupSIcon />
-                        </StyledThumbDownFilter>
-                        : <StyledThumbDownNotSelectedFilter>
-                          <ThumbsupSIcon />
-                        </StyledThumbDownNotSelectedFilter>
-                    }
-                  </StyledText>
-                </StyledAdsSaveFiltered>
-                : null
+              !rows || rows.length === 0
+                ? <StyledNoActivity>
+                  {getLocale('adsHistoryNone').replace('$1', String(totalDays || 0))}
+                </StyledNoActivity>
+              : null
             }
-          </StyledAdsHeaderWrapper>
-          <TableAdsHistory
-            rows={rows}
-            allItems={this.state.filterStatus}
-            header={this.headers}
-          />
-          {
-            !rows || rows.length === 0
-              ? <StyledNoActivity>
-                {getLocale('adsHistoryNone').replace('$1', String(totalDays || 0))}
-              </StyledNoActivity>
-            : null
-          }
-        </StyledWrapper>
-      </Modal>
+          </StyledWrapper>
+        </Modal>
+      </StyledModalWrapper>
     )
   }
 }

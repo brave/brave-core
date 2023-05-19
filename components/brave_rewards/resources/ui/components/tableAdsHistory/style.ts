@@ -32,7 +32,7 @@ export const StyledAdTH = styled('th')<{}>`
 
 export const StyledCategoryTH = styled('th')<{}>`
   text-transform: uppercase;
-  text-align: left;
+  text-align: center;
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 12px;
   font-weight: 500;
@@ -65,6 +65,7 @@ export const StyledAdTable = styled('table')<{}>`
 `
 export const StyledAdContentDiv = styled('div')<{}>`
   min-width: 550px;
+  width: 100%;
   border: 1px solid;
   border-collapse: separate;
   border-radius: 5px;
