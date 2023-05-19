@@ -90,7 +90,15 @@ export const AccountListItem = ({
   }, [onClick, account])
 
   const onRemoveAccount = React.useCallback(() => {
-    dispatch(AccountsTabActions.setAccountToRemove({ address: account.address, hardware: isHardwareWallet, coin: account.coin, name: account.name }))
+    dispatch(
+      AccountsTabActions.setAccountToRemove({
+        coin: account.coin,
+        keyringId: account.keyringId,
+        address: account.address,
+        hardware: isHardwareWallet,
+        name: account.name
+      })
+    )
   }, [account, isHardwareWallet])
 
   const onShowAccountsModal = React.useCallback((modalType: AccountModalTypes) => {

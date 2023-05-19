@@ -269,7 +269,7 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
   raw_ptr<Browser> current_browser_;
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
-  localhost_permission::LocalhostPermissionComponent*
+  raw_ptr<localhost_permission::LocalhostPermissionComponent>
       localhost_permission_component_;
 
  private:

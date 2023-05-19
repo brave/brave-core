@@ -310,7 +310,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
         address, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-        mojom::CoinType::ETH, absl::nullopt));
+        mojom::CoinType::ETH, mojom::kDefaultKeyringId));
 
     keyring_service_->AddHardwareAccounts(std::move(hw_accounts));
   }
@@ -330,10 +330,13 @@ class EthereumProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
   }
 
-  void SetSelectedAccount(const std::string& address, mojom::CoinType coin) {
+  void SetSelectedAccount(mojom::CoinType coin,
+                          const std::string& keyring_id,
+                          const std::string& address) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        address, coin, base::BindLambdaForTesting([&](bool success) {
+        coin, keyring_id, address,
+        base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));
@@ -1573,13 +1576,13 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
 
   // Selected account should filter the accounts returned
   AddEthereumPermission(GetOrigin(), 1);
-  SetSelectedAccount(from(0), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(0));
   EXPECT_EQ(RequestEthereumPermissions(),
             std::vector<std::string>{from_lower(0)});
-  SetSelectedAccount(from(1), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(1));
   EXPECT_EQ(RequestEthereumPermissions(),
             std::vector<std::string>{from_lower(1)});
-  SetSelectedAccount(from(2), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(2));
   EXPECT_EQ(RequestEthereumPermissions(),
             (std::vector<std::string>{from_lower(0), from_lower(1)}));
 
@@ -1910,7 +1913,8 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   // this account may be used for signin process.
   // address[1] is not allowed because it has no permission.
   // Also see EthereumProviderImpl.FilterAccounts method.
-  SetSelectedAccount(addresses[1], mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
+                     addresses[1]);
 
   const std::string message1 = "0x68656c6c6f20776f726c64";
   const std::string message2 = "0x4120756e69636f646520c68e20737472696e6720c3b1";
@@ -2052,7 +2056,7 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
   // Does not fire for a different origin that has no permissions
   Navigate(GURL("https://bravesoftware.com"));
   AddEthereumPermission(GetOrigin(), 1);
-  SetSelectedAccount(from(0), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(0));
   EXPECT_FALSE(observer_->AccountsChangedFired());
 }
 
@@ -2343,21 +2347,21 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
   observer_->Reset();
 
   // Changing the selected account only returns that account
-  SetSelectedAccount(from(0), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(0));
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from_lower(0)}),
             observer_->GetLowercaseAccounts());
   observer_->Reset();
 
   // Changing to a different allowed account only returns that account
-  SetSelectedAccount(from(1), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(1));
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from_lower(1)}),
             observer_->GetLowercaseAccounts());
   observer_->Reset();
 
   // Changing gto a not allowed account returns all allowed accounts
-  SetSelectedAccount(from(2), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(2));
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from_lower(0), from_lower(1)}),
             observer_->GetLowercaseAccounts());
@@ -2414,13 +2418,13 @@ TEST_F(EthereumProviderImplUnitTest, GetAllowedAccounts) {
 
   // Selected account should filter the accounts returned
   AddEthereumPermission(GetOrigin(), 1);
-  SetSelectedAccount(from(0), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(0));
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account0});
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
-  SetSelectedAccount(from(1), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(1));
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account1});
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account1});
-  SetSelectedAccount(from(2), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(2));
   EXPECT_EQ(GetAllowedAccounts(false),
             (std::vector<std::string>{account0, account1}));
   EXPECT_EQ(GetAllowedAccounts(true),

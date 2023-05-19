@@ -133,15 +133,20 @@ void AssetDiscoveryManager::FinishTask() {
 }
 
 void AssetDiscoveryManager::AccountsAdded(
-    mojom::CoinType coin,
-    const std::vector<std::string>& addresses) {
-  if (!(coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL) ||
-      addresses.empty()) {
+    std::vector<mojom::AccountInfoPtr> added_accounts) {
+  std::map<mojom::CoinType, std::vector<std::string>> account_addresses_map;
+  for (const auto& account : added_accounts) {
+    if (account->coin != mojom::CoinType::ETH &&
+        account->coin != mojom::CoinType::SOL) {
+      continue;
+    }
+    account_addresses_map[account->coin].push_back(account->address);
+  }
+
+  if (account_addresses_map.empty()) {
     return;
   }
 
-  std::map<mojom::CoinType, std::vector<std::string>> account_addresses_map;
-  account_addresses_map[coin] = std::move(addresses);
   DiscoverAssetsOnAllSupportedChains(account_addresses_map, true);
 }
 

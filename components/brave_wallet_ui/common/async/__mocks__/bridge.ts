@@ -8,7 +8,7 @@ import { createStore, combineReducers } from 'redux'
 import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import { BraveKeyrings, BraveWallet } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -305,6 +305,13 @@ export class MockedWalletApiProxy {
     getSelectedAccount: async () => {
       return { address: this.selectedAccountAddress }
     },
+    getAllAccounts: async () => {
+      return {
+        allAccounts: {
+          accounts: this.accountInfos,
+        }
+      }
+    },
     validatePassword: async (password: string) => ({
       result: password === 'password'
     }),
@@ -313,9 +320,10 @@ export class MockedWalletApiProxy {
       alert('wallet locked')
     },
     encodePrivateKeyForExport: async (
+      coin: BraveWallet.CoinType,
+      keyringId: BraveKeyrings,
       address: string,
-      password: string,
-      coin: number
+      password: string
     ) =>
       password === 'password'
         ? { privateKey: 'secret-private-key' }
@@ -511,11 +519,9 @@ export class MockedWalletApiProxy {
   walletHandler: Partial<
     InstanceType<typeof BraveWallet.WalletHandlerInterface>
   > = {
-    getWalletInfo: async () => {
+    getWalletInfo: async (): Promise<{ walletInfo: BraveWallet.WalletInfo }> => {
       return {
         walletInfo: {
-          accountInfos: this.accountInfos,
-          favoriteApps: [],
           isSolanaEnabled: true,
           isFilecoinEnabled: true,
           isBitcoinEnabled: true,

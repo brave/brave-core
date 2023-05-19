@@ -270,8 +270,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
         } else if (parent.getId() == R.id.accounts_spinner) {
             AccountInfo accountInfo = mCustomAccountAdapter.getSelectedAccountAt(position);
-            mWalletModel.getKeyringModel().setSelectedAccount(
-                    accountInfo.address, accountInfo.coin);
+            mWalletModel.getKeyringModel().setSelectedAccount(accountInfo);
         }
     }
 

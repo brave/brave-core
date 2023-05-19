@@ -395,6 +395,7 @@ interface PageHandler {
   ShowApprovePanelUI();
 };
 
+// TODO(apaymyshev): remove favorite apps ui
 struct AppItem {
   string description;
   string icon;
@@ -581,7 +582,7 @@ struct HardwareWalletAccount {
   string hardware_vendor;
   string device_id;
   CoinType coin;
-  string? network;
+  string keyring_id;
 };
 
 struct HardwareInfo {
@@ -599,6 +600,12 @@ struct AccountInfo {
   string keyring_id;
 };
 
+struct AllAccountsInfo {
+  array<AccountInfo> accounts;
+  // TODO(apaymyshev): support selected index
+  // uint32 selected_index;
+};
+
 struct KeyringInfo {
   string id;
   bool is_keyring_created;
@@ -608,28 +615,20 @@ struct KeyringInfo {
 };
 
 struct WalletInfo {
-  bool isWalletCreated;
-  bool isWalletLocked;
-  array<AppItem> favoriteApps;
-  bool isWalletBackedUp;
-  array<AccountInfo> accountInfos;
-  bool isFilecoinEnabled;
-  bool isSolanaEnabled;
-  bool isBitcoinEnabled;
-  bool isNftPinningFeatureEnabled;
-  bool IsPanelV2FeatureEnabled;
+  bool is_wallet_created;
+  bool is_wallet_locked;
+  bool is_wallet_backed_up;
+  bool is_filecoin_enabled;
+  bool is_solana_enabled;
+  bool is_bitcoin_enabled;
+  bool is_nft_pinning_feature_enabled;
+  bool is_panel_v2_feature_enabled;
 };
 
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   // Obtains basic information about the wallet that is needed for first render
   GetWalletInfo() => (WalletInfo walletInfo);
-
-  // Adds a favorite app to the apps list
-  AddFavoriteApp(AppItem appItem);
-
-  // Removes a favorite app to the apps list
-  RemoveFavoriteApp(AppItem appItem);
 };
 
 struct BlockchainToken {
@@ -679,7 +678,7 @@ interface KeyringServiceObserver {
   AccountsChanged();
 
   // Fired when accounts are added
-  AccountsAdded(CoinType coin, array<string> addresses);
+  AccountsAdded(array<AccountInfo> added_accounts);
 
   // Fired when the autolock setting changes
   AutoLockMinutesChanged();
@@ -764,7 +763,7 @@ interface KeyringService {
   AddBitcoinAccount(string account_name, string network_id, string keyring_id) => (bool success);
 
   // Encodes the private key for exporting.
-  EncodePrivateKeyForExport(string address, string password, CoinType coin)
+  EncodePrivateKeyForExport(CoinType coin, string keyring_id, string address, string password)
     => (string privateKey);
 
   // Imports an account with a specific private key to the corresponding keyring
@@ -782,7 +781,7 @@ interface KeyringService {
     => (bool success, string address);
 
   // Removes an imported account
-  RemoveImportedAccount(string address, string password, CoinType coin) => (bool success);
+  RemoveImportedAccount(CoinType coin, string keyring_id, string address, string password) => (bool success);
 
   // Determines if the keyring has been backed up
   IsWalletBackedUp() => (bool backed_up);
@@ -799,22 +798,25 @@ interface KeyringService {
   AddObserver(pending_remote<KeyringServiceObserver> observer);
 
   // Sets the account name for a derived account
-  SetKeyringDerivedAccountName(string keyring_id, string address, string name) => (bool success);
+  SetKeyringDerivedAccountName(CoinType coin, string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for an imported account
-  SetKeyringImportedAccountName(string keyring_id, string address, string name) => (bool success);
+  SetKeyringImportedAccountName(CoinType coin, string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for a hardware account
-  SetHardwareAccountName(string address, string name, CoinType coin) => (bool success);
+  SetHardwareAccountName(CoinType coin, string keyring_id, string address, string name) => (bool success);
 
   // Adds hardware accounts
   AddHardwareAccounts(array<HardwareWalletAccount> info);
 
   // Removes a hardware account
-  RemoveHardwareAccount(string address, CoinType coin) => (bool success);
+  RemoveHardwareAccount(CoinType coin, string keyring_id, string address) => (bool success);
 
   // Informs the user that user interaction occurred so auto-lock doesn't occur
   NotifyUserInteraction();
+
+  // Returns list of all accounts (TODO(apaymyshev): and selected index of one of them)
+  GetAllAccounts() => (AllAccountsInfo all_accounts);
 
   // Obtains the selected account
   // For filecoin strictly use GetFilecoinSelectedAccount
@@ -824,7 +826,7 @@ interface KeyringService {
   GetFilecoinSelectedAccount(string network) => (string? address);
 
   // Sets the selected account
-  SetSelectedAccount(string address, CoinType coin) => (bool success);
+  SetSelectedAccount(CoinType coin, string keyring_id, string address) => (bool success);
 
   // Obtains the number of minutes that the keyring will auto-lock in
   GetAutoLockMinutes() => (int32 minutes);

@@ -15,7 +15,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -151,6 +150,7 @@ class BraveWalletService : public KeyedService,
   void GetChainIdForActiveOrigin(
       mojom::CoinType coin,
       GetChainIdForActiveOriginCallback callback) override;
+  std::string GetChainIdForActiveOriginSync(mojom::CoinType coin);
   void SetChainIdForActiveOrigin(
       mojom::CoinType coin,
       const std::string& chain_id,

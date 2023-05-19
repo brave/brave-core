@@ -224,23 +224,21 @@ export function isSolanaTransaction (tx?: TransactionInfo): tx is SolanaTransact
     (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)
 }
 
-export function shouldReportTransactionP3A (
+export function shouldReportTransactionP3A(
+{ txInfo }: {
   txInfo: Pick<
-    BraveWallet.TransactionInfo | SerializableTransactionInfo,
-    'txType'
-  >,
-  network: BraveWallet.NetworkInfo,
-  coin: BraveWallet.CoinType
-) {
+    BraveWallet.TransactionInfo | SerializableTransactionInfo, 'txType' | 'chainId' | 'txDataUnion'
+  >
+}) {
   if (
     P3ASendTransactionTypes.includes(txInfo.txType) ||
-    (coin === BraveWallet.CoinType.FIL &&
+    (getCoinFromTxDataUnion(txInfo.txDataUnion) === BraveWallet.CoinType.FIL &&
       txInfo.txType === BraveWallet.TransactionType.Other)
   ) {
     const countTestNetworks = loadTimeData.getBoolean(
       BraveWallet.P3A_COUNT_TEST_NETWORKS_LOAD_TIME_KEY
     )
-    return countTestNetworks || !SupportedTestNetworks.includes(network.chainId)
+    return countTestNetworks || !SupportedTestNetworks.includes(txInfo.chainId)
   }
   return false
 }

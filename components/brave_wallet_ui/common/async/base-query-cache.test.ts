@@ -48,24 +48,24 @@ describe('BaseQueryCache', () => {
   })
 
   it('should cache accounts after fetching', async () => {
-    const getWalletInfoSpy = jest.spyOn(
-      getMockedAPIProxy().walletHandler,
-      'getWalletInfo'
+    const getAllAcountsSpy = jest.spyOn(
+      getMockedAPIProxy().keyringService,
+      'getAllAccounts'
     )
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(0)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(0)
 
     const cache = new BaseQueryCache()
 
     // access the uncached registry
     const accounts = await cache.getAccountsRegistry()
     expect(accounts).toBeDefined()
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(1)
 
     // re-access the registry, this time from cache
     const cachedAccounts = await cache.getAccountsRegistry()
     expect(cachedAccounts).toBeDefined()
     // no additional calls made
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(1)
 
     // clear the cache manually
     cache.clearWalletInfo()
@@ -73,11 +73,11 @@ describe('BaseQueryCache', () => {
     // access again, repopulating cache with fresh value
     const reCachedAccounts = await cache.getAccountsRegistry()
     expect(reCachedAccounts).toBeDefined()
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(2)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(2)
 
     // reset spy
-    getWalletInfoSpy.mockReset();
-    getWalletInfoSpy.mockRestore();
+    getAllAcountsSpy.mockReset();
+    getAllAcountsSpy.mockRestore();
   })
 
   it('should cache selected account address after fetching', async () => {

@@ -1686,4 +1686,18 @@ GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
   return GURL();
 }
 
+std::vector<std::string> GetSupportedKeyrings() {
+  std::vector<std::string> ids = {mojom::kDefaultKeyringId};
+  if (IsFilecoinEnabled()) {
+    ids.push_back(mojom::kFilecoinKeyringId);
+    ids.push_back(mojom::kFilecoinTestnetKeyringId);
+  }
+  if (IsSolanaEnabled()) {
+    ids.push_back(mojom::kSolanaKeyringId);
+  }
+
+  DCHECK_GT(ids.size(), 0u);
+  return ids;
+}
+
 }  // namespace brave_wallet

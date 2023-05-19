@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.observers;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.mojo.system.MojoException;
 
@@ -19,7 +20,7 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
         default void keyringReset() {}
         default void unlocked() {}
         default void accountsChanged() {}
-        default void accountsAdded(int coin, String[] addresses) {}
+        default void accountsAdded(AccountInfo[] addedAccounts) {}
         default void autoLockMinutesChanged() {}
         default void selectedAccountChanged(int coin) {}
     }
@@ -66,8 +67,8 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     }
 
     @Override
-    public void accountsAdded(int coin, String[] addresses) {
-        if (isActive()) getRef().accountsAdded(coin, addresses);
+    public void accountsAdded(AccountInfo[] addedAccounts) {
+        if (isActive()) getRef().accountsAdded(addedAccounts);
     }
 
     @Override

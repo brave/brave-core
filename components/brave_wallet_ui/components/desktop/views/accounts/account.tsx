@@ -211,7 +211,15 @@ export const Account = ({
   // methods
   const onRemoveAccount = React.useCallback(() => {
     if (selectedAccount) {
-      dispatch(AccountsTabActions.setAccountToRemove({ address: selectedAccount.address, hardware: isHardwareWallet, coin: selectedAccount.coin, name: selectedAccount.name }))
+      dispatch(
+        AccountsTabActions.setAccountToRemove({
+          coin: selectedAccount.coin,
+          keyringId: selectedAccount.keyringId,
+          address: selectedAccount.address,
+          hardware: isHardwareWallet,
+          name: selectedAccount.name
+        })
+      )
     }
   }, [selectedAccount, isHardwareWallet, dispatch])
 

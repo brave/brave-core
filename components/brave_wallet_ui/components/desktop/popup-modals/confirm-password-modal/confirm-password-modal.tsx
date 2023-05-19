@@ -52,14 +52,14 @@ export const ConfirmPasswordModal = () => {
       return
     }
 
-    const { address, coin, hardware } = accountToRemove
+    const { coin, keyringId, address, hardware } = accountToRemove
 
     if (hardware) {
-      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
+      dispatch(WalletPageActions.removeHardwareAccount({ coin, keyringId, address }))
     }
 
     if (!hardware) {
-      dispatch(WalletPageActions.removeImportedAccount({ address, coin, password }))
+      dispatch(WalletPageActions.removeImportedAccount({ coin, keyringId, address, password }))
     }
 
     dispatch(AccountsTabActions.setAccountToRemove(undefined)) // close modal

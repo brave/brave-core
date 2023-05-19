@@ -13,7 +13,6 @@ import {
   IsBase58EncodedSolanaPubkeyReturnInfo,
   AmountValidationErrorType,
   WalletState,
-  SendFilTransactionParams,
   GetSolAddrReturnInfo,
   CoinTypesMap
 } from '../../constants/types'
@@ -348,8 +347,14 @@ export default function useSend (isSendTab?: boolean) {
       return
     }
 
+    if (!selectedNetwork) {
+      console.log('Failed to submit Send transaction: no network selected')
+      return
+    }
+
     selectedSendAsset.isErc20 && dispatch(WalletActions.sendERC20Transfer({
-      from: selectedAccount.address,
+      network: selectedNetwork,
+      fromAccount: selectedAccount,
       to: toAddress,
       value: new Amount(sendAmount)
         .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
@@ -359,7 +364,8 @@ export default function useSend (isSendTab?: boolean) {
     }))
 
     selectedSendAsset.isErc721 && dispatch(WalletActions.sendERC721TransferFrom({
-      from: selectedAccount.address,
+      network: selectedNetwork,
+      fromAccount: selectedAccount,
       to: toAddress,
       value: '',
       contractAddress: selectedSendAsset.contractAddress,
@@ -373,7 +379,8 @@ export default function useSend (isSendTab?: boolean) {
       !selectedSendAsset.isErc20 && !selectedSendAsset.isErc721
     ) {
       dispatch(WalletActions.sendSPLTransfer({
-        from: selectedAccount.address,
+        network: selectedNetwork,
+        fromAccount: selectedAccount,
         to: toAddress,
         value: !selectedSendAsset.isNft ? new Amount(sendAmount)
           .multiplyByDecimals(selectedSendAsset.decimals)
@@ -387,12 +394,13 @@ export default function useSend (isSendTab?: boolean) {
 
     if (selectedAccount.coin === BraveWallet.CoinType.FIL) {
       dispatch(WalletActions.sendTransaction({
-        from: selectedAccount.address,
+        network: selectedNetwork,
+        fromAccount: selectedAccount,
         to: toAddress,
         value: new Amount(sendAmount)
           .multiplyByDecimals(selectedSendAsset.decimals).toNumber().toString(),
         coin: selectedAccount.coin
-      } as SendFilTransactionParams))
+      }))
       resetSendFields()
       return
     }
@@ -405,7 +413,8 @@ export default function useSend (isSendTab?: boolean) {
     }
 
     dispatch(WalletActions.sendTransaction({
-      from: selectedAccount.address,
+      network: selectedNetwork,
+      fromAccount: selectedAccount,
       to: toAddress,
       coin: selectedAccount.coin,
       value: selectedAccount.coin === BraveWallet.CoinType.FIL
@@ -417,6 +426,7 @@ export default function useSend (isSendTab?: boolean) {
   }, [
     selectedSendAsset,
     selectedAccount,
+    selectedNetwork,
     sendAmount,
     toAddress,
     resetSendFields,

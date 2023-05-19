@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { assert } from 'chrome://resources/js/assert_ts.js'
-import { BraveWallet } from '../../../constants/types'
+import { BraveKeyrings, BraveWallet } from '../../../constants/types'
 import { LedgerSolanaKeyring } from '../interfaces'
 import {
   GetAccountsHardwareOperationResult,
@@ -33,6 +33,10 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
 
   coin = (): BraveWallet.CoinType => {
     return BraveWallet.CoinType.SOL
+  }
+
+  keyringId = (): BraveKeyrings => {
+    return BraveWallet.SOLANA_KEYRING_ID
   }
 
   getAccounts = async (from: number, to: number, scheme: SolDerivationPaths): Promise<GetAccountsHardwareOperationResult> => {
@@ -131,7 +135,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
         coin: this.coin(),
-        network: undefined
+        keyringId: this.keyringId()
       })
     }
     return { success: true, payload: accounts }
