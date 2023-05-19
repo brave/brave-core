@@ -11,7 +11,7 @@ transpile_web_ui("leo") {
 
   entry_points = [ [
         "leo",
-        rebase_path("components.js"),
+        rebase_path("components.ts"),
       ] ]
 
   resource_name = "leo"
