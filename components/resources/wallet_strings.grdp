@@ -174,8 +174,8 @@
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_BACKUP" desc="Wallet popup backup wallet button">Backup Wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_CONNECTED_SITES" desc="Wallet popup connected sites button">Connected sites</message>
-  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_HIDE_BALANCES" desc="Wallet popup hide balances checkbox">Hide balances</message>
-  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SHOW_GRAPH" desc="Wallet popup show graph checkbox">Show graph</message>
+  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_HIDE_BALANCES" desc="Wallet popup hide balances checkbox">Balances</message>
+  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SHOW_GRAPH" desc="Wallet popup show graph checkbox">Graph</message>
   <message name="IDS_BRAVE_WALLET_WALLET_NFTS_TAB" desc="Wallet popup show NFTs tab checkbox">NFTs tab</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT" desc="Backup warning banner description">Back up your wallet now to protect your assets and ensure you never lose access.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_BUTTON" desc="Backup warning banner back up button">Back up now</message>

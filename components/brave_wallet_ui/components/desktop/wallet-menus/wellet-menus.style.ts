@@ -73,13 +73,12 @@ export const ButtonIcon = styled(Icon)`
   margin-right: 16px;
 `
 
-export const CheckBoxRow = styled.label`
+export const ToggleRow = styled.label`
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   width: 220px;
-  border-radius: 8px;
   padding: 12px 8px;
   margin: 0px 0px 8px 0px;
   background-color: transparent;
