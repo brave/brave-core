@@ -427,7 +427,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     if (connection_api_->GetRegionDataManager().IsRegionDataReady()) {
       VLOG(2) << __func__
               << ": Set as a purchased user as we have valid subscriber "
-                 "L:ntials & region data";
+                 "credentials & region data";
       SetPurchasedState(requested_env, PurchasedState::PURCHASED);
     } else {
       VLOG(2) << __func__ << ": Wait till we get valid region data.";
@@ -727,6 +727,7 @@ void BraveVpnService::SetPurchasedState(
     return;
   }
 
+  VLOG(2) << __func__ << " : " << state;
   purchased_state_ = mojom::PurchasedInfo(state, description);
 
   for (const auto& obs : observers_)
