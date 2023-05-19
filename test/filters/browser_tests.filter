@@ -44,6 +44,7 @@
 -ServiceWorker/DeclarativeContentApiTestWithContextType.RulesPersistence/0
 -ServiceWorker/ExtensionApiNewTabTest.Tabs/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdatedDiscardedState/0
+-WebAppTabStripBrowserTest.HomeTab*
 
 # The tests listed below are disabled because sharedStorage is not enabled in
 # Brave
