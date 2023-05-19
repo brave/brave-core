@@ -40,8 +40,8 @@ import {
   UpdateBuyableAssetsMessage,
   UpdateDepositableAssetsMessage,
   UpdateCoinMarketMessage,
-  UpdateTradableAssetsMessage
-
+  UpdateTradableAssetsMessage,
+  UpdateIframeHeightMessage
 } from './market-ui-messages'
 import { filterCoinMarkets, searchCoinMarkets, sortCoinMarkets } from '../utils/coin-market-utils'
 
@@ -99,6 +99,15 @@ const App = () => {
     }
     sendMessageToWalletUi(parent, message)
   }, [])
+
+  const onUpdateIframeHeight = React.useCallback(
+    (height: number) => {
+      const message: UpdateIframeHeightMessage = {
+        command: MarketUiCommand.UpdateIframeHeight,
+        payload: height
+      }
+      sendMessageToWalletUi(parent, message)
+    }, [])
 
   const onSelectFilter = (value: MarketAssetFilterOption) => {
     setCurrentFilter(value)
@@ -202,6 +211,7 @@ const App = () => {
             isDepositSupported={isDepositSupported}
             onClickBuy={onClickBuy}
             onClickDeposit={onClickDeposit}
+            onUpdateIframeHeight={onUpdateIframeHeight}
           />
         </>
       </BraveCoreThemeProvider>

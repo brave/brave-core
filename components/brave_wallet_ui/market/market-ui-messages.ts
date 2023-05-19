@@ -27,7 +27,8 @@ export const enum MarketUiCommand {
   SelectDeposit = 'select-deposit',
   UpdateTradableAssets = 'update-tradable-assets',
   UpdateBuyableAssets = 'update-buyable-assets',
-  UpdateDepositableAssets = 'update-depositable-assets'
+  UpdateDepositableAssets = 'update-depositable-assets',
+  UpdateIframeHeight = 'update-iframe-height'
 }
 
 export type MarketCommandMessage = {
@@ -64,6 +65,11 @@ export type UpdateBuyableAssetsMessage = MarketCommandMessage & {
 export type UpdateDepositableAssetsMessage = MarketCommandMessage & {
   payload: BraveWallet.BlockchainToken[]
 }
+
+export type UpdateIframeHeightMessage =
+  MarketCommandMessage & {
+    payload: number
+  }
 
 export const sendMessageToMarketUiFrame = (targetWindow: Window | null, message: MarketCommandMessage) => {
   if (targetWindow && !isComponentInStorybook()) {
