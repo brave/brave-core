@@ -1,3 +1,8 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use crate::{dom, nlp, scorer, util};
 use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
@@ -76,8 +81,8 @@ pub struct Meta {
 }
 
 impl Meta {
-    /// Performs a merge of two meta structs, preferencing self except description.
-    /// The shortest description will be taken.
+    /// Performs a merge of two meta structs, preferencing self except
+    /// description. The shortest description will be taken.
     /// Takes ownership of both structs and returns the merged metadata.
     pub fn merge(mut self, other: Self) -> Meta {
         if self.title.is_empty() {
@@ -265,7 +270,12 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         Some(x) if x.name.local != local_name!("body") => {
             let name = QualName::new(None, ns!(), local_name!("body"));
             let body = dom.create_element(name, vec![], ElementFlags::default());
-            dom.reparent_children(&top_candidate, &body);
+            let main = dom::create_element_simple(dom, "main", "", None);
+            let article = dom::create_element_simple(dom, "article", "", None);
+
+            dom.reparent_children(&top_candidate, &article);
+            dom.append(&main, NodeOrText::AppendNode(article));
+            dom.append(&body, NodeOrText::AppendNode(main));
 
             // Our CSS formats based on id="article".
             dom::set_attr("id", "article", body.clone(), true);
@@ -401,7 +411,8 @@ pub fn clean_title(dom: &Sink, title: String) -> String {
     } else if let Some(m) = END_DASH.find(&title) {
         let trailing_title = title.substring(m.start(), title.len());
         if trailing_title.split_whitespace().count() <= 4 {
-            // We have 3 distinct words and the dash. Probably the website title. Trim it off.
+            // We have 3 distinct words and the dash. Probably the website title. Trim it
+            // off.
             title.substring(0, m.start())
         } else {
             title
@@ -608,8 +619,8 @@ mod tests {
 
     #[test]
     fn test_description_complex() {
-        // We grab the description, HTML decode it, keep the punctuation entites, but delete the <b> tag.
-        // This was found on Buzzfeed.
+        // We grab the description, HTML decode it, keep the punctuation entites, but
+        // delete the <b> tag. This was found on Buzzfeed.
         let data = r#"
         <head>
         <meta property="og:description" content="&lt;b&gt;An inquest into Eloise Parry&#x27;s death has been adjourned.&lt;/b&gt;"/>
@@ -1026,7 +1037,8 @@ mod tests {
 
     #[test]
     fn test_clean_title_ascii_dash_separator() {
-        // A common pattern found it <title> tags is the site name being included after a final dash
+        // A common pattern found it <title> tags is the site name being included after
+        // a final dash
         let input =
             "House committee votes to approve bill that would grant DC statehood - CNNPolitics";
         let expected = "House committee votes to approve bill that would grant DC statehood";
@@ -1036,9 +1048,10 @@ mod tests {
 
     #[test]
     fn test_clean_title_unicode_dash_separator() {
-        // A follow up to the last test with common unicode dashes. For example &#8211; converts to an en dash.
+        // A follow up to the last test with common unicode dashes. For example &#8211;
+        // converts to an en dash.
         let dashes = [
-            "-",   // hyphen
+            "-", // hyphen
             "–", // en dash
             "—", // em dash
         ];
@@ -1052,7 +1065,8 @@ mod tests {
 
     #[test]
     fn test_clean_title_preserve_dash() {
-        // In this case, we don't want to delete the content after the " - ", because it is part of the title
+        // In this case, we don't want to delete the content after the " - ", because it
+        // is part of the title
         let input = "Raspberry Pi 3 - All-time bestselling computer in UK";
         let output = clean_title(&Sink::default(), input.to_string());
         assert_eq!(input, output);

@@ -1,3 +1,8 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use crate::html5ever::tree_builder::TreeSink;
 use crate::util::count_ignore_consecutive_whitespace;
 use html5ever::tendril::StrTendril;
@@ -11,7 +16,8 @@ use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use std::str::FromStr;
 
-/// A small wrapper function that creates a NodeOrText from a Text handle or an Element handle.
+/// A small wrapper function that creates a NodeOrText from a Text handle or an
+/// Element handle.
 #[inline]
 pub fn node_or_text(handle: Handle) -> Option<NodeOrText<Handle>> {
     match handle.data() {
@@ -33,7 +39,8 @@ pub fn get_tag_name<'a>(handle: &'a Handle) -> Option<&'a LocalName> {
     }
 }
 
-/// Overrite the value of an element attribute, optionally creating the attribute if it doesn't exist.
+/// Overrite the value of an element attribute, optionally creating the
+/// attribute if it doesn't exist.
 #[inline]
 pub fn set_attr<S>(attr_name: &str, attr_value: S, handle: Handle, create_if_missing: bool)
 where
@@ -51,8 +58,8 @@ where
     }
 }
 
-/// Append a new attribute to an element. It is assumed the attribute doesn't exist. If you aren't
-/// sure about that, use set_attr(..) instead.
+/// Append a new attribute to an element. It is assumed the attribute doesn't
+/// exist. If you aren't sure about that, use set_attr(..) instead.
 #[inline]
 pub fn append_attr(attr_name: &str, value: &str, attrs: &mut Vec<Attribute>) {
     if let Ok(value) = StrTendril::from_str(value) {
@@ -82,9 +89,7 @@ pub fn document_head(dom: &Sink) -> Option<Handle> {
         .document_node
         .children()
         .find(|child| get_tag_name(&child) == Some(&local_name!("html")));
-    html?
-        .children()
-        .find(|child| get_tag_name(&child) == Some(&local_name!("head")))
+    html?.children().find(|child| get_tag_name(&child) == Some(&local_name!("head")))
 }
 
 /// Get HTML <body> from a document
@@ -94,9 +99,7 @@ pub fn document_body(dom: &Sink) -> Option<Handle> {
         .document_node
         .children()
         .find(|child| get_tag_name(&child) == Some(&local_name!("html")));
-    html?
-        .children()
-        .find(|child| get_tag_name(&child) == Some(&local_name!("body")))
+    html?.children().find(|child| get_tag_name(&child) == Some(&local_name!("body")))
 }
 
 /// Recursively checks if an element or any of its children have text content.
@@ -156,12 +159,10 @@ pub fn has_link(handle: &Handle) -> bool {
     false
 }
 
-/// Returns all text data for an element, optionally traversing the entire tree rooted at handle.
+/// Returns all text data for an element, optionally traversing the entire tree
+/// rooted at handle.
 pub fn extract_text(handle: &Handle, text: &mut String, deep: bool) {
-    debug_assert!(
-        handle.as_element().is_some(),
-        "extract_text() should be called on Element"
-    );
+    debug_assert!(handle.as_element().is_some(), "extract_text() should be called on Element");
     for child in handle.children() {
         match child.data() {
             Text(ref contents) => {
@@ -258,8 +259,8 @@ pub fn has_nodes(handle: &Handle, tag_names: &[&'static LocalName]) -> bool {
     false
 }
 
-/// Returns the first child of handle by tag. If handle has more than one child, don't return
-/// anything. This is usually used for unwrapping divs.
+/// Returns the first child of handle by tag. If handle has more than one child,
+/// don't return anything. This is usually used for unwrapping divs.
 #[inline]
 pub fn get_only_child_by_tag(handle: &Handle, tag: &LocalName) -> Option<Handle> {
     let mut elems = handle.children().filter(|child| !is_whitespace(&child));
@@ -272,8 +273,8 @@ pub fn get_only_child_by_tag(handle: &Handle, tag: &LocalName) -> Option<Handle>
     None
 }
 
-/// Returns the number of text in elements in the subtree rooted at handle. A text element is only
-/// considered if it has 20 or more characters.
+/// Returns the number of text in elements in the subtree rooted at handle. A
+/// text element is only considered if it has 20 or more characters.
 pub fn text_children_count(handle: &Handle) -> usize {
     let mut count = 0;
     for child in handle.children() {
@@ -422,16 +423,19 @@ pub fn create_element_simple(
     content: Option<&str>,
 ) -> Handle {
     let name = QualName::new(None, ns!(), LocalName::from(local_name));
-    let class_attr = Attribute {
-        name: QualName::new(None, ns!(), local_name!("class")),
-        value: StrTendril::from_str(classes).unwrap_or_default(),
-    };
-    let elem = dom.create_element(name, vec![class_attr], ElementFlags::default());
+    let mut class_attr = vec![];
+
+    if !classes.trim().is_empty() {
+        let attr = Attribute {
+            name: QualName::new(None, ns!(), local_name!("class")),
+            value: StrTendril::from_str(classes).unwrap_or_default(),
+        };
+        class_attr.push(attr);
+    }
+
+    let elem = dom.create_element(name, class_attr, ElementFlags::default());
     if let Some(text) = content {
-        dom.append(
-            &elem,
-            NodeOrText::AppendText(StrTendril::from_str(&text).unwrap_or_default()),
-        );
+        dom.append(&elem, NodeOrText::AppendText(StrTendril::from_str(&text).unwrap_or_default()));
     }
     elem
 }
