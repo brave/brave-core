@@ -411,7 +411,6 @@ static_library("ledger") {
     "logging/event_log_keys.h",
     "logging/event_log_util.cc",
     "logging/event_log_util.h",
-    "logging/logging.cc",
     "logging/logging.h",
     "logging/logging_util.cc",
     "logging/logging_util.h",

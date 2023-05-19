@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {

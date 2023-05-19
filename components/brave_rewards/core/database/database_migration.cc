@@ -52,6 +52,7 @@
 #include "brave/components/brave_rewards/core/database/migration/migration_v9.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // NOTICE!!

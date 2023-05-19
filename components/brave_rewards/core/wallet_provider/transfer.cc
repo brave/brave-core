@@ -12,6 +12,7 @@
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 namespace brave_rewards::internal::wallet_provider {
 

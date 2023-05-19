@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"

@@ -11,6 +11,7 @@
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/report/report.h"
 
 using std::placeholders::_1;

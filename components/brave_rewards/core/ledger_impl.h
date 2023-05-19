@@ -21,7 +21,6 @@
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
-#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
@@ -278,14 +277,17 @@ class LedgerImpl : public mojom::Ledger {
   void LoadURL(mojom::UrlRequestPtr request, Callback callback) {
     DCHECK(request);
     if (IsShuttingDown()) {
-      BLOG(1, request->url + " will not be executed as we are shutting down");
+      client()->Log(
+          __FILE__, __LINE__, 1,
+          request->url + " will not be executed as we are shutting down");
       return;
     }
 
     if (!request->skip_log) {
-      BLOG(5,
-           UrlRequestToString(request->url, request->headers, request->content,
-                              request->content_type, request->method));
+      client()->Log(
+          __FILE__, __LINE__, 5,
+          UrlRequestToString(request->url, request->headers, request->content,
+                             request->content_type, request->method));
     }
 
     if constexpr (std::is_same_v<Callback, LoadURLCallback>) {

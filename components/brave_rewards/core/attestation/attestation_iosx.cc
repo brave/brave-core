@@ -10,6 +10,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_iosx.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 namespace brave_rewards::internal::attestation {
 

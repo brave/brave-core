@@ -11,6 +11,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/common/security_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
 namespace brave_rewards::internal::endpoints {

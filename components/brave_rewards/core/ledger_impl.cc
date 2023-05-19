@@ -14,6 +14,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
 
 using std::placeholders::_1;
@@ -22,14 +23,10 @@ namespace brave_rewards::internal {
 
 LedgerImpl::LedgerImpl(mojom::LedgerClient* ledger_client)
     : ledger_client_(ledger_client) {
-  DCHECK(base::ThreadPoolInstance::Get());
   DCHECK(ledger_client_);
-  set_ledger_client_for_logging(ledger_client_);
 }
 
-LedgerImpl::~LedgerImpl() {
-  set_ledger_client_for_logging(nullptr);
-}
+LedgerImpl::~LedgerImpl() = default;
 
 // mojom::Ledger implementation begin (in the order of appearance in Mojom)
 void LedgerImpl::Initialize(InitializeCallback callback) {

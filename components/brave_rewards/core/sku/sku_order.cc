@@ -9,6 +9,7 @@
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
 #include "brave/components/brave_rewards/core/sku/sku_util.h"
 
