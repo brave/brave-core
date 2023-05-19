@@ -13,7 +13,7 @@
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_base.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/utils.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 
 namespace brave_vpn {
 namespace ras {

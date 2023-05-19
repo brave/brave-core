@@ -15,7 +15,7 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/utils.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 
 // Simple Windows VPN configuration tool (using RAS API)
 // By Brian Clifton (brian@clifton.me)

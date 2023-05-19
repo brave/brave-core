@@ -15,7 +15,7 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/utils.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 
 // Most of Windows implementations are based on Brian Clifton
