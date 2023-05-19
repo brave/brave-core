@@ -129,7 +129,6 @@ template("transpile_web_ui") {
     # entry point or a GRDP file that includes all the resources.
     grd_name = "$resource_name.grd"
     if (defined(invoker.generate_grdp) && invoker.generate_grdp) {
-      assert(defined(invoker.resource_path_prefix))
       grd_name = "$resource_name.grdp"
     }
 
