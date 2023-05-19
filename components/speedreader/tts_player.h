@@ -85,7 +85,7 @@ class TtsPlayer {
                         bool success,
                         std::string content);
 
-    TtsPlayer* owner_ = nullptr;
+    raw_ptr<TtsPlayer> owner_ = nullptr;
 
     raw_ptr<content::WebContents> playing_web_contents_ = nullptr;
     raw_ptr<content::WebContents> request_web_contents_ = nullptr;
