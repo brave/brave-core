@@ -23,9 +23,9 @@ jobs:
         # Use XCODE_VERSION env variable to set the XCode version you want.
         run: sudo xcode-select --switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Update node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
       - uses: actions/cache@v3
