@@ -22,23 +22,18 @@ TEST_F(BraveAdsUnblindedPaymentTokenUtilTest, GetUnblindedPaymentToken) {
       privacy::SetUnblindedPaymentTokens(/*count*/ 2);
 
   // Act
-  const absl::optional<UnblindedPaymentTokenInfo> unblinded_payment_token =
-      MaybeGetUnblindedPaymentToken();
-  ASSERT_TRUE(unblinded_payment_token);
 
   // Assert
-  EXPECT_EQ(unblinded_payment_tokens.front(), *unblinded_payment_token);
+  EXPECT_EQ(unblinded_payment_tokens.front(), MaybeGetUnblindedPaymentToken());
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokenUtilTest, DoNotGetUnblindedPaymentToken) {
   // Arrange
 
   // Act
-  const absl::optional<UnblindedPaymentTokenInfo> unblinded_payment_token =
-      MaybeGetUnblindedPaymentToken();
 
   // Assert
-  EXPECT_FALSE(unblinded_payment_token);
+  EXPECT_FALSE(MaybeGetUnblindedPaymentToken());
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokenUtilTest, AddUnblindedPaymentTokens) {

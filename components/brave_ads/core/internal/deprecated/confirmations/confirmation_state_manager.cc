@@ -153,19 +153,19 @@ ConfirmationStateManager& ConfirmationStateManager::GetInstance() {
   return GlobalState::GetInstance()->GetConfirmationStateManager();
 }
 
-void ConfirmationStateManager::Initialize(const WalletInfo& wallet,
-                                          InitializeCallback callback) {
+void ConfirmationStateManager::Load(const WalletInfo& wallet,
+                                    InitializeCallback callback) {
   BLOG(3, "Loading confirmations state");
 
   wallet_ = wallet;
 
   AdsClientHelper::GetInstance()->Load(
       kConfirmationStateFilename,
-      base::BindOnce(&ConfirmationStateManager::LoadedCallback,
+      base::BindOnce(&ConfirmationStateManager::LoadCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ConfirmationStateManager::LoadedCallback(
+void ConfirmationStateManager::LoadCallback(
     InitializeCallback callback,
     const absl::optional<std::string>& json) {
   if (!json) {
@@ -211,8 +211,7 @@ void ConfirmationStateManager::Save() {
   AdsClientHelper::GetInstance()->Save(
       kConfirmationStateFilename, json, base::BindOnce([](const bool success) {
         if (!success) {
-          BLOG(0, "Failed to save confirmations state");
-          return;
+          return BLOG(0, "Failed to save confirmations state");
         }
 
         BLOG(9, "Successfully saved confirmations state");

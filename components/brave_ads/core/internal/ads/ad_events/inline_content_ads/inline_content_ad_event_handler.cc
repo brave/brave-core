@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_factory.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -114,6 +114,8 @@ void InlineContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const bool success,
     const std::string& creative_instance_id,
     const CreativeInlineContentAdInfo& creative_ad) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
+
   if (!success) {
     BLOG(1,
          "Failed to fire inline content ad event due to missing creative "
@@ -124,26 +126,21 @@ void InlineContentAdEventHandler::GetForCreativeInstanceIdCallback(
 
   const InlineContentAdInfo ad =
       BuildInlineContentAd(creative_ad, placement_id);
-  FireEvent(ad, event_type);
-}
-
-void InlineContentAdEventHandler::FireEvent(
-    const InlineContentAdInfo& ad,
-    const mojom::InlineContentAdEventType event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
-      base::BindOnce(&InlineContentAdEventHandler::GetAdEventsCallback,
+      base::BindOnce(&InlineContentAdEventHandler::GetForTypeCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type));
 }
 
-void InlineContentAdEventHandler::GetAdEventsCallback(
+void InlineContentAdEventHandler::GetForTypeCallback(
     const InlineContentAdInfo& ad,
     const mojom::InlineContentAdEventType event_type,
     const bool success,
     const AdEventList& ad_events) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
+
   if (!success) {
     BLOG(1, "Inline content ad: Failed to get ad events");
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,

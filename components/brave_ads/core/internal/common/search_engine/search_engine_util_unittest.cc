@@ -184,7 +184,7 @@ TEST(BraveAdsSearchEngineUtilTest, IsNotSearchEngine) {
 
 TEST(BraveAdsSearchEngineUtilTest, IsNotSearchEngineWithInvalidUrl) {
   // Arrange
-  const GURL url = GURL("INVALID_URL");
+  const GURL url = GURL("INVALID");
 
   // Act
 

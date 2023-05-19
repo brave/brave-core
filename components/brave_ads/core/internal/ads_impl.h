@@ -120,7 +120,6 @@ class AdsImpl final : public Ads,
                              HistorySortType sort_type,
                              base::Time from_time,
                              base::Time to_time) override;
-  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
   mojom::UserReactionType ToggleLikeAd(const base::Value::Dict& value) override;
   mojom::UserReactionType ToggleDislikeAd(
@@ -139,8 +138,9 @@ class AdsImpl final : public Ads,
   void CreateOrOpenDatabaseCallback(InitializeCallback callback, bool success);
   void PurgeExpiredAdEventsCallback(InitializeCallback callback, bool success);
   void PurgeOrphanedAdEventsCallback(InitializeCallback callback, bool success);
-  void MigrateConversionsCallback(InitializeCallback callback, bool success);
-  void MigrateRewardsCallback(InitializeCallback callback, bool success);
+  void MigrateConversionStateCallback(InitializeCallback callback,
+                                      bool success);
+  void MigrateRewardsStateCallback(InitializeCallback callback, bool success);
   void MigrateClientStateCallback(InitializeCallback callback, bool success);
   void LoadClientStateCallback(InitializeCallback callback, bool success);
   void MigrateConfirmationStateCallback(InitializeCallback callback,

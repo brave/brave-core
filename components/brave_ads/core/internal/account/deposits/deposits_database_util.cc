@@ -15,8 +15,7 @@ void PurgeExpiredDeposits() {
   const database::table::Deposits database_table;
   database_table.PurgeExpired(base::BindOnce([](const bool success) {
     if (!success) {
-      BLOG(0, "Failed to purge expired deposits");
-      return;
+      return BLOG(0, "Failed to purge expired deposits");
     }
 
     BLOG(3, "Successfully purged expired deposits");

@@ -25,9 +25,9 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_test_suite_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -194,10 +194,10 @@ void UnitTestBase::Initialize() {
 
   global_state_->Flags() = *BuildFlags();
 
-  global_state_->GetClientStateManager().Initialize(
+  global_state_->GetClientStateManager().Load(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  global_state_->GetConfirmationStateManager().Initialize(
+  global_state_->GetConfirmationStateManager().Load(
       GetWalletForTesting(),  // IN-TEST
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 

@@ -22,12 +22,9 @@ TEST_F(BraveAdsUnblindedTokenUtilTest, GetUnblindedToken) {
   ASSERT_EQ(2U, unblinded_tokens.size());
 
   // Act
-  const absl::optional<UnblindedTokenInfo> unblinded_token =
-      MaybeGetUnblindedToken();
-  ASSERT_TRUE(unblinded_token);
 
   // Assert
-  EXPECT_EQ(unblinded_tokens.front(), *unblinded_token);
+  EXPECT_EQ(unblinded_tokens.front(), MaybeGetUnblindedToken());
 }
 
 TEST_F(BraveAdsUnblindedTokenUtilTest, DoNotGetUnblindedToken) {

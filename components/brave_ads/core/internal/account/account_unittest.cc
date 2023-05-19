@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_opted_in_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder_util.h"
@@ -205,10 +206,7 @@ TEST_F(BraveAdsAccountTest, GetIssuersWhenWalletIsCreated) {
   EXPECT_FALSE(wallet_did_change_);
   EXPECT_FALSE(invalid_wallet_);
 
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
-  ASSERT_TRUE(issuers);
-
-  EXPECT_EQ(BuildIssuers(), *issuers);
+  EXPECT_EQ(BuildIssuers(), GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest,
@@ -227,10 +225,7 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_FALSE(wallet_did_change_);
   EXPECT_FALSE(invalid_wallet_);
 
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
-  ASSERT_TRUE(issuers);
-
-  EXPECT_EQ(BuildIssuers(), *issuers);
+  EXPECT_EQ(BuildIssuers(), GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, GetIssuersIfAdsAreEnabled) {
@@ -242,11 +237,9 @@ TEST_F(BraveAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   account_->Process();
 
   // Act
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
-  ASSERT_TRUE(issuers);
 
   // Assert
-  EXPECT_EQ(BuildIssuers(), *issuers);
+  EXPECT_EQ(BuildIssuers(), GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
@@ -258,12 +251,10 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   account_->Process();
 
   // Act
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
-  ASSERT_TRUE(issuers);
 
   // Assert
   const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, *issuers);
+  EXPECT_EQ(expected_issuers, GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetInvalidIssuers) {
@@ -349,12 +340,10 @@ TEST_F(BraveAdsAccountTest, DoNotGetInvalidIssuers) {
   account_->Process();
 
   // Act
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
-  ASSERT_TRUE(issuers);
 
   // Assert
   const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, *issuers);
+  EXPECT_EQ(expected_issuers, GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetMissingIssuers) {
@@ -370,12 +359,10 @@ TEST_F(BraveAdsAccountTest, DoNotGetMissingIssuers) {
   account_->Process();
 
   // Act
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
-  ASSERT_TRUE(issuers);
 
   // Assert
   const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, *issuers);
+  EXPECT_EQ(expected_issuers, GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
@@ -387,12 +374,10 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   account_->Process();
 
   // Act
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
-  ASSERT_TRUE(issuers);
 
   // Assert
   const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, *issuers);
+  EXPECT_EQ(expected_issuers, GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DepositForCash) {

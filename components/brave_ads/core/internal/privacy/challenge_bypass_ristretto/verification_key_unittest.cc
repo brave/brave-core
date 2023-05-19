@@ -26,12 +26,9 @@ TEST_F(BraveAdsVerificationKeyTest, Sign) {
   VerificationKey verification_key = GetVerificationKey();
 
   // Act
-  const absl::optional<VerificationSignature> verification_signature =
-      verification_key.Sign(kMessage);
-  ASSERT_TRUE(verification_signature);
 
   // Assert
-  EXPECT_EQ(GetVerificationSignature(), *verification_signature);
+  EXPECT_EQ(GetVerificationSignature(), verification_key.Sign(kMessage));
 }
 
 TEST_F(BraveAdsVerificationKeyTest, Verify) {

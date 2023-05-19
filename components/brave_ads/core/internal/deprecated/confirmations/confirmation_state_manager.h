@@ -34,7 +34,8 @@ class ConfirmationStateManager final {
 
   static ConfirmationStateManager& GetInstance();
 
-  void Initialize(const WalletInfo& wallet, InitializeCallback callback);
+  void Load(const WalletInfo& wallet, InitializeCallback callback);
+
   bool IsInitialized() const { return is_initialized_; }
 
   void Save();
@@ -74,8 +75,8 @@ class ConfirmationStateManager final {
   bool is_mutated() const { return is_mutated_; }
 
  private:
-  void LoadedCallback(InitializeCallback callback,
-                      const absl::optional<std::string>& json);
+  void LoadCallback(InitializeCallback callback,
+                    const absl::optional<std::string>& json);
 
   bool ParseFailedConfirmationsFromDictionary(const base::Value::Dict& dict);
 

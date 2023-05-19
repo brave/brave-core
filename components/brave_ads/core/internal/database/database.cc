@@ -120,8 +120,9 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
 
     is_initialized_ = true;
     memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
-        FROM_HERE, base::BindRepeating(&Database::MemoryPressureCallback,
-                                       weak_factory_.GetWeakPtr()));
+        FROM_HERE,
+        base::BindRepeating(&Database::MemoryPressureListenerCallback,
+                            weak_factory_.GetWeakPtr()));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }
@@ -225,7 +226,7 @@ void Database::ErrorCallback(const int error, sql::Statement* statement) {
   VLOG(0) << "Database error: " << db_.GetDiagnosticInfo(error, statement);
 }
 
-void Database::MemoryPressureCallback(
+void Database::MemoryPressureListenerCallback(
     base::MemoryPressureListener::
         MemoryPressureLevel /*memory_pressure_level*/) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

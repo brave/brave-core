@@ -37,13 +37,13 @@ void ConfirmationUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   BuildConversionUserData(
       transaction_.creative_instance_id, transaction_.confirmation_type,
-      base::BindOnce(&ConfirmationUserDataBuilder::GetConversionCallback,
+      base::BindOnce(&ConfirmationUserDataBuilder::BuildCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void ConfirmationUserDataBuilder::GetConversionCallback(
+void ConfirmationUserDataBuilder::BuildCallback(
     UserDataBuilderCallback callback,
     base::Value::Dict user_data) const {
   user_data.Merge(BuildBuildChannelUserData());

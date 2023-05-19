@@ -93,11 +93,11 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
   }
 
   if (!ShouldRefillUnblindedTokens()) {
-    BLOG(1, "No need to refill unblinded tokens as we already have "
-                << privacy::UnblindedTokenCount()
-                << " unblinded tokens which is above the minimum threshold of "
-                << kMinimumUnblindedTokens);
-    return;
+    return BLOG(
+        1, "No need to refill unblinded tokens as we already have "
+               << privacy::UnblindedTokenCount()
+               << " unblinded tokens which is above the minimum threshold of "
+               << kMinimumUnblindedTokens);
   }
 
   wallet_ = wallet;
@@ -351,7 +351,7 @@ void RefillUnblindedTokens::GetSignedTokensCallback(
 void RefillUnblindedTokens::SuccessfullyRefilledUnblindedTokens() {
   BLOG(1, "Successfully refilled unblinded tokens");
 
-  retry_timer_.Stop();
+  StopRetrying();
 
   blinded_tokens_.clear();
   tokens_.clear();
@@ -399,10 +399,14 @@ void RefillUnblindedTokens::RetryCallback() {
   }
 
   if (nonce_.empty()) {
-    RequestSignedTokens();
-  } else {
-    GetSignedTokens();
+    return RequestSignedTokens();
   }
+
+  GetSignedTokens();
+}
+
+void RefillUnblindedTokens::StopRetrying() {
+  retry_timer_.Stop();
 }
 
 }  // namespace brave_ads

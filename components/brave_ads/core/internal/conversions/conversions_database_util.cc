@@ -15,8 +15,7 @@ void PurgeExpiredConversions() {
   const table::Conversions database_table;
   database_table.PurgeExpired(base::BindOnce([](const bool success) {
     if (!success) {
-      BLOG(0, "Failed to purge expired conversions");
-      return;
+      return BLOG(0, "Failed to purge expired conversions");
     }
 
     BLOG(3, "Successfully purged expired conversions");
@@ -27,8 +26,7 @@ void SaveConversions(const ConversionList& conversions) {
   table::Conversions database_table;
   database_table.Save(conversions, base::BindOnce([](const bool success) {
                         if (!success) {
-                          BLOG(0, "Failed to save conversions");
-                          return;
+                          return BLOG(0, "Failed to save conversions");
                         }
 
                         BLOG(3, "Successfully saved conversions");

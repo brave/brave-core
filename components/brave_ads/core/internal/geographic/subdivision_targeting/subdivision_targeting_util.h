@@ -10,8 +10,7 @@
 
 namespace brave_ads {
 
-bool IsSupportedCountryCodeForSubdivisionTargeting(
-    const std::string& country_code);
+bool DoesSupportSubdivisionTargeting(const std::string& country_code);
 
 }  // namespace brave_ads
 

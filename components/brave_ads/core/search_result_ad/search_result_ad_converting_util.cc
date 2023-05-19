@@ -227,17 +227,15 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
     const base::StringPiece property_name = ad_property->name;
     if (base::Contains(kSearchResultAdRequiredAttributes, property_name)) {
       if (!SetSearchAdProperty(ad_property, search_result_ad.get())) {
-        VLOG(6) << "Cannot read search result ad attribute value: "
-                << property_name;
-        return;
+        return VLOG(6) << "Cannot read search result ad attribute value: "
+                       << property_name;
       }
       found_attributes.insert(property_name);
     } else if (base::Contains(kSearchResultAdConversionAttributes,
                               property_name)) {
       if (!SetConversionProperty(ad_property, conversion.get())) {
-        VLOG(6) << "Cannot read search result ad attribute value: "
-                << property_name;
-        return;
+        return VLOG(6) << "Cannot read search result ad attribute value: "
+                       << property_name;
       }
       found_conversion_attributes.insert(property_name);
     }
@@ -251,9 +249,8 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
 
   // Not all of required attributes were specified.
   if (!absent_attributes.empty()) {
-    VLOG(6) << "Some of search result ad attributes were not specified: "
-            << base::JoinString(absent_attributes, ", ");
-    return;
+    return VLOG(6) << "Some of search result ad attributes were not specified: "
+                   << base::JoinString(absent_attributes, ", ");
   }
 
   if (!found_conversion_attributes.empty()) {

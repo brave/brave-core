@@ -60,6 +60,7 @@ class RefillUnblindedTokens final {
 
   void Retry();
   void RetryCallback();
+  void StopRetrying();
 
   const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED

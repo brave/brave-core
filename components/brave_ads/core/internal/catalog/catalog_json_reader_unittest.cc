@@ -231,7 +231,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
 
   catalog_campaign.campaign_id = "27a624a1-9c80-494a-bf1b-af327b563f85";
   catalog_campaign.priority = 1;
-  catalog_campaign.ptr = 1.0;
+  catalog_campaign.pass_through_rate = 1.0;
   catalog_campaign.start_at = DistantPastAsISO8601();
   catalog_campaign.end_at = DistantFutureAsISO8601();
   catalog_campaign.daily_cap = 10;
@@ -419,7 +419,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCampaignInfo catalog_campaign;
   catalog_campaign.campaign_id = "856fc4bc-a21b-4582-bab7-a20d412359aa";
   catalog_campaign.priority = 2;
-  catalog_campaign.ptr = 0.5;
+  catalog_campaign.pass_through_rate = 0.5;
   catalog_campaign.start_at = DistantPastAsISO8601();
   catalog_campaign.end_at = DistantFutureAsISO8601();
   catalog_campaign.daily_cap = 25;
@@ -452,7 +452,7 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
   expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
 
-  EXPECT_EQ(expected_catalog, *catalog);
+  EXPECT_EQ(expected_catalog, catalog);
 }
 
 TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
@@ -473,7 +473,7 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
   expected_catalog.campaigns.push_back(BuildCatalogCampaign2());
 
-  EXPECT_EQ(expected_catalog, *catalog);
+  EXPECT_EQ(expected_catalog, catalog);
 }
 
 TEST_F(BraveAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
@@ -492,18 +492,16 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
 
-  EXPECT_EQ(expected_catalog, *catalog);
+  EXPECT_EQ(expected_catalog, catalog);
 }
 
 TEST_F(BraveAdsCatalogJsonReaderTest, InvalidCatalog) {
   // Arrange
 
   // Act
-  const absl::optional<CatalogInfo> catalog =
-      json::reader::ReadCatalog(kInvalidCatalog);
 
   // Assert
-  EXPECT_FALSE(catalog);
+  EXPECT_FALSE(json::reader::ReadCatalog(kInvalidCatalog));
 }
 
 }  // namespace brave_ads

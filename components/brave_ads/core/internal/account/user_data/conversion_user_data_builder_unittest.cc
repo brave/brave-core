@@ -31,12 +31,9 @@ TEST_F(BraveAdsConversionUserDataBuilderTest, BuildConversionUserData) {
   // Assert
   BuildVerifiableConversionUserData(
       kCreativeInstanceId, base::BindOnce([](base::Value::Dict user_data) {
-        const absl::optional<std::string> message =
-            OpenEnvelopeForUserDataAndAdvertiserSecretKey(
-                user_data, kConversionAdvertiserSecretKey);
-        ASSERT_TRUE(message);
-
-        EXPECT_EQ(kConversionId, *message);
+        EXPECT_EQ(kConversionId,
+                  OpenEnvelopeForUserDataAndAdvertiserSecretKey(
+                      user_data, kConversionAdvertiserSecretKey));
       }));
 }
 

@@ -42,6 +42,7 @@ class Catalog final : public DatabaseManagerObserver {
 
   void Retry();
   void RetryCallback();
+  void StopRetrying();
 
   void NotifyDidUpdateCatalog(const CatalogInfo& catalog) const;
   void NotifyFailedToUpdateCatalog() const;

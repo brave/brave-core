@@ -128,11 +128,9 @@ TEST_F(BraveAdsDLEQProofTest, EncodeBase64) {
   const DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 = dleq_proof.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kDLEQProofBase64, *encoded_base64);
+  EXPECT_EQ(kDLEQProofBase64, dleq_proof.EncodeBase64());
 }
 
 TEST_F(BraveAdsDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
@@ -140,10 +138,9 @@ TEST_F(BraveAdsDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
   const DLEQProof dleq_proof;
 
   // Act
-  const absl::optional<std::string> encoded_base64 = dleq_proof.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64);
+  EXPECT_FALSE(dleq_proof.EncodeBase64());
 }
 
 TEST_F(BraveAdsDLEQProofTest, Verify) {

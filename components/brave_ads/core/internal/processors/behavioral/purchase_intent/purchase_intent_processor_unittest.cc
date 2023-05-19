@@ -59,7 +59,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   ASSERT_TRUE(LoadResource());
 
   // Act
-  const GURL url = GURL("invalid_url");
+  const GURL url = GURL("INVALID");
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(url);
 

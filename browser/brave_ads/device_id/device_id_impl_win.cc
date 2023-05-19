@@ -185,9 +185,9 @@ void GetMacAddress(IsValidMacAddressCallback is_valid_mac_address_callback,
       FROM_HERE, base::BindOnce(std::move(callback), mac_address));
 }
 
-void OnGetMachineId(std::string mac_address,
-                    DeviceIdCallback callback,
-                    std::string machine_id) {
+void GetMachineIdCallback(std::string mac_address,
+                          DeviceIdCallback callback,
+                          std::string machine_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   std::string raw_device_id;
@@ -198,13 +198,13 @@ void OnGetMachineId(std::string mac_address,
   std::move(callback).Run(raw_device_id);
 }
 
-void OnGetMacAddress(DeviceIdCallback callback, std::string mac_address) {
+void GetMacAddressCallback(DeviceIdCallback callback, std::string mac_address) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
       base::BindOnce(&metrics::MachineIdProvider::GetMachineId),
-      base::BindOnce(&OnGetMachineId, mac_address, std::move(callback)));
+      base::BindOnce(&GetMachineIdCallback, mac_address, std::move(callback)));
 }
 
 }  // namespace
@@ -215,9 +215,9 @@ void DeviceIdImpl::GetRawDeviceId(DeviceIdCallback callback) {
 
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
-      base::BindOnce(&GetMacAddress,
-                     base::BindRepeating(&DeviceIdImpl::IsValidMacAddress),
-                     base::BindOnce(&OnGetMacAddress, std::move(callback))));
+      base::BindOnce(
+          &GetMacAddress, base::BindRepeating(&DeviceIdImpl::IsValidMacAddress),
+          base::BindOnce(&GetMacAddressCallback, std::move(callback))));
 }
 
 }  // namespace brave_ads

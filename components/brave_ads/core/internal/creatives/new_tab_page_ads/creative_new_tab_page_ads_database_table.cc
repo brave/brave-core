@@ -127,7 +127,7 @@ CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.company_name = ColumnString(record, 17);
   creative_ad.image_url = GURL(ColumnString(record, 18));
   creative_ad.alt = ColumnString(record, 19);
-  creative_ad.ptr = ColumnDouble(record, 20);
+  creative_ad.pass_through_rate = ColumnDouble(record, 20);
 
   CreativeDaypartInfo daypart;
   daypart.days_of_week = ColumnString(record, 21);
@@ -199,7 +199,7 @@ CreativeNewTabPageAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(
+void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetCreativeNewTabPageAdCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
@@ -225,9 +225,9 @@ void OnGetForCreativeInstanceId(
   std::move(callback).Run(/*success*/ true, creative_instance_id, creative_ad);
 }
 
-void OnGetForSegments(const SegmentList& segments,
-                      GetCreativeNewTabPageAdsCallback callback,
-                      mojom::DBCommandResponseInfoPtr command_response) {
+void GetForSegmentsCallback(const SegmentList& segments,
+                            GetCreativeNewTabPageAdsCallback callback,
+                            mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -242,8 +242,8 @@ void OnGetForSegments(const SegmentList& segments,
   std::move(callback).Run(/*success*/ true, segments, creative_ads);
 }
 
-void OnGetAll(GetCreativeNewTabPageAdsCallback callback,
-              mojom::DBCommandResponseInfoPtr command_response) {
+void GetAllCallback(GetCreativeNewTabPageAdsCallback callback,
+                    mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -329,7 +329,6 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -354,7 +353,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
                      std::move(callback)));
 }
 
@@ -402,13 +401,12 @@ void CreativeNewTabPageAds::GetForSegments(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForSegments, segments, std::move(callback)));
+      base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
 
 void CreativeNewTabPageAds::GetAll(
     GetCreativeNewTabPageAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(
@@ -434,7 +432,8 @@ void CreativeNewTabPageAds::GetAll(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAll, std::move(callback)));
+      std::move(transaction),
+      base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 
 std::string CreativeNewTabPageAds::GetTableName() const {

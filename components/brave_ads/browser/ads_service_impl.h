@@ -97,7 +97,8 @@ class AdsServiceImpl : public AdsService,
   void InitializeNotificationsForCurrentProfile() const;
 
   void MigrateConfirmationState();
-  void OnMigrateConfirmationState(bool success);
+  void MigrateConfirmationStateCallback(bool success);
+
   void GetDeviceId();
   void OnGetDeviceId(std::string device_id);
 

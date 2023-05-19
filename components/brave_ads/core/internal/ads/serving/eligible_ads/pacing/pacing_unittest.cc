@@ -33,7 +33,7 @@ TEST_F(BraveAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
 
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad.ptr = 0.0;
+  creative_ad.pass_through_rate = 0.0;
   creative_ads.push_back(creative_ad);
 
   // Act
@@ -53,7 +53,7 @@ TEST_F(BraveAdsPacingTest, DoNotPaceCreativeAdsWithMaxPassThroughRate) {
 
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad.ptr = 1.0;
+  creative_ad.pass_through_rate = 1.0;
   creative_ads.push_back(creative_ad);
 
   // Act
@@ -76,7 +76,7 @@ TEST_F(BraveAdsPacingTest,
 
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad.ptr = 0.5;
+  creative_ad.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad);
 
   // Act
@@ -95,12 +95,12 @@ TEST_F(BraveAdsPacingTest,
 
   CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad_1.ptr = 0.1;
+  creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad_2.ptr = 0.5;
+  creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
 
   // Act

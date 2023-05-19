@@ -19,15 +19,13 @@ TEST_F(BraveAdsOptedInCredentialJsonWriterTest, WriteJson) {
   // Arrange
 
   // Act
-  const absl::optional<std::string> json = json::writer::WriteOptedInCredential(
-      privacy::BuildUnblindedToken(),
-      /*payload*/ "definition: the weight of a payload");
-  ASSERT_TRUE(json);
 
   // Assert
   EXPECT_EQ(
       R"({"signature":"XsaQ/XqKiWfeTCjFDhkyldsx0086qu6tjgJDCKo+f7kA0eA+mdf3Ae+BjPcDDQ8JfVbVQkI5ub394qdTmE2bRw==","t":"PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgCw=="})",
-      *json);
+      json::writer::WriteOptedInCredential(
+          privacy::BuildUnblindedToken(),
+          /*payload*/ "definition: the weight of a payload"));
 }
 
 }  // namespace brave_ads

@@ -50,9 +50,8 @@ class Conversions final : public TabManagerObserver {
   void Process();
 
  private:
-  void GetUnprocessedConversionsCallback(
-      bool success,
-      const ConversionQueueItemList& conversion_queue_items);
+  void ProcessCallback(bool success,
+                       const ConversionQueueItemList& conversion_queue_items);
 
   void CheckRedirectChain(const std::vector<GURL>& redirect_chain,
                           const std::string& html,
@@ -75,26 +74,29 @@ class Conversions final : public TabManagerObserver {
 
   void AddItemToQueue(const AdEventInfo& ad_event,
                       const VerifiableConversionInfo& verifiable_conversion);
-  void SaveConversionQueueCallback(bool success);
+  void AddItemToQueueCallback(bool success);
 
-  void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
-  void GetConversionQueueCallback(
+  void ProcessQueue();
+  void ProcessQueueCallback(
       bool success,
       const ConversionQueueItemList& conversion_queue_items);
-  void ProcessQueue();
+  void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
 
   void RemoveInvalidQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item);
   void RemoveInvalidQueueItemCallback(
       const ConversionQueueItemInfo& conversion_queue_item,
       bool success);
+
   void MarkQueueItemAsProcessed(
       const ConversionQueueItemInfo& conversion_queue_item);
   void MarkQueueItemAsProcessedCallback(
       const ConversionQueueItemInfo& conversion_queue_item,
       bool success);
+
   void FailedToConvertQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item);
+
   void ConvertedQueueItem(const ConversionQueueItemInfo& conversion_queue_item);
 
   void StartTimer(const ConversionQueueItemInfo& queue_item);

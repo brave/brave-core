@@ -98,13 +98,11 @@ void NotificationAdHandler::OnNotifyUserDidBecomeActive(
   }
 
   if (MaybeScreenWasLocked(screen_was_locked)) {
-    BLOG(1, "Notification ad not served: Screen was locked");
-    return;
+    return BLOG(1, "Notification ad not served: Screen was locked");
   }
 
   if (HasExceededMaximumIdleTime(idle_time)) {
-    BLOG(1, "Notification ad not served: Exceeded maximum idle time");
-    return;
+    return BLOG(1, "Notification ad not served: Exceeded maximum idle time");
   }
 
   serving_.MaybeServeAd();

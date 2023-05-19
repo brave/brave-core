@@ -92,7 +92,6 @@ class BatAdsImpl : public mojom::BatAds {
   void GetHistory(base::Time from_time,
                   base::Time to_time,
                   GetHistoryCallback callback) override;
-  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
   void ToggleLikeAd(base::Value::Dict value,
                     ToggleLikeAdCallback callback) override;

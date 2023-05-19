@@ -63,7 +63,8 @@ bool IsSupportedSubdivisionCode(const std::string& country_code,
     return false;
   }
 
-  const auto& subdivisions = iter->second;
+  const auto& [_, subdivisions] = *iter;
+
   return subdivisions.find(subdivision_code) != subdivisions.cend();
 }
 

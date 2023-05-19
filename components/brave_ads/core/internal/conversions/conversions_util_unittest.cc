@@ -26,11 +26,9 @@ TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithShortMessage) {
   verifiable_conversion.public_key = kConversionAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope);
+  EXPECT_FALSE(SealEnvelope(verifiable_conversion));
 }
 
 TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithLongMessage) {
@@ -41,11 +39,9 @@ TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithLongMessage) {
   verifiable_conversion.public_key = kConversionAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope);
+  EXPECT_FALSE(SealEnvelope(verifiable_conversion));
 }
 
 TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidMessage) {
@@ -55,11 +51,9 @@ TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidMessage) {
   verifiable_conversion.public_key = kConversionAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope);
+  EXPECT_FALSE(SealEnvelope(verifiable_conversion));
 }
 
 TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidPublicKey) {
@@ -69,11 +63,9 @@ TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidPublicKey) {
   verifiable_conversion.public_key = kInvalidConversionAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_FALSE(verifiable_conversion_envelope);
+  EXPECT_FALSE(SealEnvelope(verifiable_conversion));
 }
 
 TEST(BraveAdsConversionsUtilTest, SealEnvelope) {
@@ -87,12 +79,10 @@ TEST(BraveAdsConversionsUtilTest, SealEnvelope) {
       verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
   ASSERT_TRUE(verifiable_conversion_envelope);
 
-  const absl::optional<std::string> message = OpenEnvelope(
-      *verifiable_conversion_envelope, kConversionAdvertiserSecretKey);
-  ASSERT_TRUE(message);
-
   // Assert
-  EXPECT_EQ(verifiable_conversion.id, *message);
+  EXPECT_EQ(verifiable_conversion.id,
+            OpenEnvelope(*verifiable_conversion_envelope,
+                         kConversionAdvertiserSecretKey));
 }
 
 }  // namespace brave_ads

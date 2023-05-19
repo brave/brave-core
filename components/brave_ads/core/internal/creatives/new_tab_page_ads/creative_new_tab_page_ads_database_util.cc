@@ -16,8 +16,7 @@ void DeleteCreativeNewTabPageAds() {
   const table::CreativeNewTabPageAds database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      BLOG(0, "Failed to delete creative new tab page ads");
-      return;
+      return BLOG(0, "Failed to delete creative new tab page ads");
     }
 
     BLOG(3, "Successfully deleted creative new tab page ads");
@@ -28,8 +27,7 @@ void DeleteCreativeNewTabPageAdWallpapers() {
   const table::CreativeNewTabPageAdWallpapers database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      BLOG(0, "Failed to delete creative new tab page ad wallpapers");
-      return;
+      return BLOG(0, "Failed to delete creative new tab page ad wallpapers");
     }
 
     BLOG(3, "Successfully deleted creative new tab page ad wallpapers");
@@ -41,8 +39,8 @@ void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads) {
 
   database_table.Save(creative_ads, base::BindOnce([](const bool success) {
                         if (!success) {
-                          BLOG(0, "Failed to save creative new tab page ads");
-                          return;
+                          return BLOG(
+                              0, "Failed to save creative new tab page ads");
                         }
 
                         BLOG(3, "Successfully saved creative new tab page ads");

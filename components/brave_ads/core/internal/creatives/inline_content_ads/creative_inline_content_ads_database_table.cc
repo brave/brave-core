@@ -128,7 +128,7 @@ CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.image_url = GURL(ColumnString(record, 20));
   creative_ad.dimensions = ColumnString(record, 21);
   creative_ad.cta_text = ColumnString(record, 22);
-  creative_ad.ptr = ColumnDouble(record, 23);
+  creative_ad.pass_through_rate = ColumnDouble(record, 23);
 
   CreativeDaypartInfo daypart;
   daypart.days_of_week = ColumnString(record, 24);
@@ -188,7 +188,7 @@ CreativeInlineContentAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(
+void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetCreativeInlineContentAdCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
@@ -214,7 +214,7 @@ void OnGetForCreativeInstanceId(
   std::move(callback).Run(/*success*/ true, creative_instance_id, creative_ad);
 }
 
-void OnGetForSegmentsAndDimensions(
+void GetForSegmentsAndDimensionsCallback(
     const SegmentList& segments,
     GetCreativeInlineContentAdsCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
@@ -232,7 +232,7 @@ void OnGetForSegmentsAndDimensions(
   std::move(callback).Run(/*success*/ true, segments, creative_ads);
 }
 
-void OnGetForDimensions(
+void GetForDimensionsCallback(
     GetCreativeInlineContentAdsForDimensionsCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
@@ -248,8 +248,8 @@ void OnGetForDimensions(
   std::move(callback).Run(/*success*/ true, creative_ads);
 }
 
-void OnGetAll(GetCreativeInlineContentAdsCallback callback,
-              mojom::DBCommandResponseInfoPtr command_response) {
+void GetAllCallback(GetCreativeInlineContentAdsCallback callback,
+                    mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -335,7 +335,6 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -359,7 +358,7 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
                      std::move(callback)));
 }
 
@@ -407,8 +406,9 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetForSegmentsAndDimensions,
-                                             segments, std::move(callback)));
+      std::move(transaction),
+      base::BindOnce(&GetForSegmentsAndDimensionsCallback, segments,
+                     std::move(callback)));
 }
 
 void CreativeInlineContentAds::GetForDimensions(
@@ -419,7 +419,6 @@ void CreativeInlineContentAds::GetForDimensions(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(
@@ -444,13 +443,12 @@ void CreativeInlineContentAds::GetForDimensions(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForDimensions, std::move(callback)));
+      base::BindOnce(&GetForDimensionsCallback, std::move(callback)));
 }
 
 void CreativeInlineContentAds::GetAll(
     GetCreativeInlineContentAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(
@@ -474,7 +472,8 @@ void CreativeInlineContentAds::GetAll(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAll, std::move(callback)));
+      std::move(transaction),
+      base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 
 std::string CreativeInlineContentAds::GetTableName() const {

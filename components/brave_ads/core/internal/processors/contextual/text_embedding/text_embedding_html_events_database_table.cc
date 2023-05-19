@@ -79,9 +79,8 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return text_embedding_html_event;
 }
 
-void OnGetTextEmbeddingHtmlEvents(
-    GetTextEmbeddingHtmlEventsCallback callback,
-    mojom::DBCommandResponseInfoPtr command_response) {
+void GetAllCallback(GetTextEmbeddingHtmlEventsCallback callback,
+                    mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -140,7 +139,6 @@ void TextEmbeddingHtmlEvents::LogEvent(
 void TextEmbeddingHtmlEvents::GetAll(
     GetTextEmbeddingHtmlEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -152,12 +150,11 @@ void TextEmbeddingHtmlEvents::GetAll(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetTextEmbeddingHtmlEvents, std::move(callback)));
+      base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 
 void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::StringPrintf(

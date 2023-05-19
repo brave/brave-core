@@ -93,8 +93,8 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return transaction;
 }
 
-void OnGetTransactions(GetTransactionsCallback callback,
-                       mojom::DBCommandResponseInfoPtr command_response) {
+void GetCallback(GetTransactionsCallback callback,
+                 mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -193,7 +193,6 @@ void Transactions::Save(const TransactionList& transactions,
 
 void Transactions::GetAll(GetTransactionsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -205,14 +204,13 @@ void Transactions::GetAll(GetTransactionsCallback callback) const {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetTransactions, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void Transactions::GetForDateRange(const base::Time from_time,
                                    const base::Time to_time,
                                    GetTransactionsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(
@@ -227,7 +225,7 @@ void Transactions::GetForDateRange(const base::Time from_time,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetTransactions, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void Transactions::Update(
@@ -240,7 +238,6 @@ void Transactions::Update(
   transaction_ids.emplace_back(rewards::kMigrationUnreconciledTransactionId);
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
   command->sql = base::StringPrintf(

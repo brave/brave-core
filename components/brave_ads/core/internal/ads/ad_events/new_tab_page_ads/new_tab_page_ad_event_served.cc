@@ -21,8 +21,7 @@ void NewTabPageAdEventServed::FireEvent(const NewTabPageAdInfo& ad) {
   LogAdEvent(ad, ConfirmationType::kServed,
              base::BindOnce([](const bool success) {
                if (!success) {
-                 BLOG(1, "Failed to log new tab page ad served event");
-                 return;
+                 return BLOG(1, "Failed to log new tab page ad served event");
                }
 
                BLOG(6, "Successfully logged new tab page ad served event");

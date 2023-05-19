@@ -20,8 +20,6 @@ namespace brave_ads {
 using InitializeCallback = base::OnceCallback<void(bool success)>;
 using ShutdownCallback = base::OnceCallback<void(bool success)>;
 
-using RemoveAllHistoryCallback = base::OnceCallback<void(bool success)>;
-
 using MaybeServeNewTabPageAdCallback =
     base::OnceCallback<void(const absl::optional<NewTabPageAdInfo>& ad)>;
 

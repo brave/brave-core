@@ -62,7 +62,7 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
                                bool had_opportunity,
                                const CreativeNotificationAdList& creative_ads);
 
-  void OnAdsPerHourPrefChanged();
+  void UpdateMaximumAdsPerHour();
 
   void RetryServingAdAtNextInterval();
   base::Time MaybeServeAdAfter(base::TimeDelta delay);

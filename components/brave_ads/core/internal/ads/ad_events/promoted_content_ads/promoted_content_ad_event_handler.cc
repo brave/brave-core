@@ -7,7 +7,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_factory.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/promoted_content_ads/promoted_content_ad_permission_rules.h"
@@ -114,12 +114,16 @@ void PromotedContentAdEventHandler::FireEvent(
           weak_factory_.GetWeakPtr(), placement_id, event_type));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const std::string& placement_id,
     const mojom::PromotedContentAdEventType event_type,
     const bool success,
     const std::string& creative_instance_id,
     const CreativePromotedContentAdInfo& creative_ad) {
+  CHECK(mojom::IsKnownEnumValue(event_type));
+
   if (!success) {
     BLOG(1,
          "Failed to fire promoted content ad event due to missing "
@@ -130,24 +134,15 @@ void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
 
   const PromotedContentAdInfo ad =
       BuildPromotedContentAd(creative_ad, placement_id);
-  FireEvent(ad, event_type);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void PromotedContentAdEventHandler::FireEvent(
-    const PromotedContentAdInfo& ad,
-    const mojom::PromotedContentAdEventType event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kPromotedContentAd,
-      base::BindOnce(&PromotedContentAdEventHandler::GetAdEventsCallback,
+      base::BindOnce(&PromotedContentAdEventHandler::GetForTypeCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type));
 }
 
-void PromotedContentAdEventHandler::GetAdEventsCallback(
+void PromotedContentAdEventHandler::GetForTypeCallback(
     const PromotedContentAdInfo& ad,
     const mojom::PromotedContentAdEventType event_type,
     const bool success,

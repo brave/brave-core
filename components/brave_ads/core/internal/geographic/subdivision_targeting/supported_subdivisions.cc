@@ -14,15 +14,15 @@
 namespace brave_ads {
 
 SupportedSubdivisions GetSupportedSubdivisions() {
-  const std::string country_code = brave_l10n::GetDefaultISOCountryCodeString();
-
   const auto& subdivision_codes = GetSupportedSubdivisionCodes();
-  const auto iter = subdivision_codes.find(country_code);
+  const auto iter =
+      subdivision_codes.find(brave_l10n::GetDefaultISOCountryCodeString());
   if (iter == subdivision_codes.cend()) {
     return {};
   }
+  const auto& [_, subdivisions] = *iter;
 
-  return iter->second;
+  return subdivisions;
 }
 
 }  // namespace brave_ads

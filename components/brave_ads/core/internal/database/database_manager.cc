@@ -65,8 +65,7 @@ void DatabaseManager::CreateOrOpenCallback(
       !command_response->result) {
     BLOG(0, "Failed to open or create database");
     NotifyFailedToCreateOrOpenDatabase();
-    std::move(callback).Run(/*success*/ false);
-    return;
+    return std::move(callback).Run(/*success*/ false);
   }
 
   CHECK(command_response->result->get_value()->which() ==
@@ -118,8 +117,7 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   const int to_version = database::kVersion;
   if (from_version == to_version) {
     BLOG(1, "Database is up to date on schema version " << from_version);
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   BLOG(1, "Migrating database from schema version "
@@ -128,14 +126,14 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   NotifyWillMigrateDatabase(from_version, to_version);
 
   database::MigrateFromVersion(
-      from_version, base::BindOnce(&DatabaseManager::MigrateCallback,
+      from_version, base::BindOnce(&DatabaseManager::MigrateFromVersionCallback,
                                    weak_factory_.GetWeakPtr(), from_version,
                                    std::move(callback)));
 }
 
-void DatabaseManager::MigrateCallback(const int from_version,
-                                      ResultCallback callback,
-                                      const bool success) const {
+void DatabaseManager::MigrateFromVersionCallback(const int from_version,
+                                                 ResultCallback callback,
+                                                 const bool success) const {
   const int to_version = database::kVersion;
 
   if (!success) {

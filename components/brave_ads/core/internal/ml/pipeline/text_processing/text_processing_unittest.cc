@@ -133,12 +133,12 @@ TEST_F(BraveAdsTextProcessingTest, InitValidModelTest) {
 
   base::Value::Dict dict = base::test::ParseJsonDict(*json);
 
-  // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.SetPipeline(std::move(dict));
+
+  // Act
 
   // Assert
-  EXPECT_TRUE(success);
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
 }
 
 TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
@@ -149,12 +149,12 @@ TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
 
   base::Value::Dict dict = base::test::ParseJsonDict(*json);
 
-  // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.SetPipeline(std::move(dict));
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(success);
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(dict)));
 }
 
 TEST_F(BraveAdsTextProcessingTest, EmptyModelTest) {

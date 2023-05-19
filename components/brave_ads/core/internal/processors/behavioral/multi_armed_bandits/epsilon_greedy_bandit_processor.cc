@@ -79,15 +79,13 @@ void InitializeArms() {
 void UpdateArm(const double reward, const std::string& segment) {
   EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   if (arms.empty()) {
-    BLOG(1, "No epsilon greedy bandit arms");
-    return;
+    return BLOG(1, "No epsilon greedy bandit arms");
   }
 
   const auto iter = arms.find(segment);
   if (iter == arms.cend()) {
-    BLOG(1, "Epsilon greedy bandit arm was not found for " << segment
-                                                           << " segment");
-    return;
+    return BLOG(1, "Epsilon greedy bandit arm was not found for "
+                       << segment << " segment");
   }
 
   EpsilonGreedyBanditArmInfo arm = iter->second;

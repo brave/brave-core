@@ -16,13 +16,13 @@ namespace brave_ads {
 template <typename T>
 bool ShouldPaceAd(const T& ad) {
   const double rand = GeneratePacingRandomNumber();
-  if (rand < ad.ptr) {
+  if (rand < ad.pass_through_rate) {
     return false;
   }
 
   BLOG(2, std::fixed << "Pacing delivery for creative instance id "
-                     << ad.creative_instance_id << " [Roll(" << ad.ptr
-                     << "):" << rand << "]");
+                     << ad.creative_instance_id << " [Roll("
+                     << ad.pass_through_rate << "):" << rand << "]");
 
   return true;
 }

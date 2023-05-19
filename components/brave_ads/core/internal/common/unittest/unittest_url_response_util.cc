@@ -14,9 +14,9 @@
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_test_suite_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_headers_util.h"
 #include "url/gurl.h"
 

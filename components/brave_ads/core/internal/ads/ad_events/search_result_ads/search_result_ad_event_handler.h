@@ -63,19 +63,15 @@ class SearchResultAdEventHandler final
   void SaveConversionsCallback(const SearchResultAdInfo& ad,
                                FireAdEventHandlerCallback callback,
                                bool success) const;
-  void GetAdEventsForViewedSearchResultAdCallback(
-      const SearchResultAdInfo& ad,
-      FireAdEventHandlerCallback callback,
-      bool success,
-      const AdEventList& ad_events) const;
 
   void FireClickedEvent(const SearchResultAdInfo& ad,
                         FireAdEventHandlerCallback callback) const;
-  void GetAdEventsForClickedSearchResultAdCallback(
-      const SearchResultAdInfo& ad,
-      FireAdEventHandlerCallback callback,
-      bool success,
-      const AdEventList& ad_events) const;
+
+  void GetForTypeCallback(const SearchResultAdInfo& ad,
+                          mojom::SearchResultAdEventType event_type,
+                          FireAdEventHandlerCallback callback,
+                          bool success,
+                          const AdEventList& ad_events) const;
 
   void SuccessfullyFiredEvent(const SearchResultAdInfo& ad,
                               mojom::SearchResultAdEventType event_type,

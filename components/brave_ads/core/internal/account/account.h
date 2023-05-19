@@ -75,12 +75,13 @@ class Account final : public AdsClientNotifierObserver,
 
   void MaybeGetIssuers() const;
 
-  void GetDepositValueCallback(const std::string& creative_instance_id,
-                               const AdType& ad_type,
-                               const std::string& segment,
-                               const ConfirmationType& confirmation_type,
-                               bool success,
-                               double value) const;
+  void DepositCallback(const std::string& creative_instance_id,
+                       const AdType& ad_type,
+                       const std::string& segment,
+                       const ConfirmationType& confirmation_type,
+                       bool success,
+                       double value) const;
+
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const std::string& segment,
@@ -91,6 +92,8 @@ class Account final : public AdsClientNotifierObserver,
                               const ConfirmationType& confirmation_type,
                               bool success,
                               const TransactionInfo& transaction) const;
+
+  void SuccessfullyProcessedDeposit(const TransactionInfo& transaction) const;
   void FailedToProcessDeposit(const std::string& creative_instance_id,
                               const AdType& ad_type,
                               const ConfirmationType& confirmation_type) const;
@@ -101,7 +104,8 @@ class Account final : public AdsClientNotifierObserver,
   void WalletWasCreated(const WalletInfo& wallet) const;
   void WalletDidUpdate(const WalletInfo& wallet) const;
   void WalletDidChange(const WalletInfo& wallet) const;
-  void RewardsResetCallback(bool success) const;
+
+  void ResetRewardsCallback(bool success) const;
 
   void MaybeResetIssuersAndConfirmations();
 

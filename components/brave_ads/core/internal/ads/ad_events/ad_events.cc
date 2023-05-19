@@ -78,8 +78,7 @@ void RebuildAdEventHistoryFromDatabase() {
   database_table.GetAll(
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         if (!success) {
-          BLOG(1, "Failed to get ad events");
-          return;
+          return BLOG(1, "Failed to get ad events");
         }
 
         const std::string& id = GetInstanceId();

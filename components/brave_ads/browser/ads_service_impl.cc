@@ -260,30 +260,12 @@ void RegisterResourceComponentsForDefaultLocale() {
   RegisterResourceComponentsForLocale(brave_l10n::GetDefaultLocaleString());
 }
 
-void OnURLResponseStarted(
+void OnUrlLoaderResponseStartedCallback(
     const GURL& /*final_url*/,
     const network::mojom::URLResponseHead& response_head) {
   if (response_head.headers->response_code() == -1) {
     VLOG(6) << "Response headers are malformed!!";
   }
-}
-
-void OnResetState(const bool success) {
-  if (!success) {
-    VLOG(1) << "Failed to reset ads state";
-    return;
-  }
-
-  VLOG(6) << "Successfully reset ads state";
-}
-
-void OnAddTrainingSample(const bool success) {
-  if (!success) {
-    VLOG(6) << "Failed to add training sample";
-    return;
-  }
-
-  VLOG(6) << "Successfully added training sample";
 }
 
 }  // namespace
@@ -346,13 +328,13 @@ void AdsServiceImpl::MigrateConfirmationState() {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&MigrateConfirmationStateOnFileTaskRunner, path),
-      base::BindOnce(&AdsServiceImpl::OnMigrateConfirmationState, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::MigrateConfirmationStateCallback,
+                     AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnMigrateConfirmationState(const bool success) {
+void AdsServiceImpl::MigrateConfirmationStateCallback(const bool success) {
   if (!success) {
-    VLOG(1) << "Failed to migrate confirmation state";
-    return;
+    return VLOG(1) << "Failed to migrate confirmation state";
   }
 
   GetDeviceId();
@@ -390,9 +372,8 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
   }
 
   if (!IsSupportedRegion()) {
-    VLOG(6) << brave_l10n::GetDefaultISOCountryCodeString()
-            << " region does not support ads";
-    return;
+    return VLOG(6) << brave_l10n::GetDefaultISOCountryCodeString()
+                   << " region does not support ads";
   }
 
   StartBatAdsService();
@@ -561,7 +542,13 @@ void AdsServiceImpl::ShutdownAndResetState() {
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, base_path_),
-      base::BindOnce(&OnResetState));
+      base::BindOnce([](const bool success) {
+        if (!success) {
+          return VLOG(1) << "Failed to reset ads state";
+        }
+
+        VLOG(6) << "Successfully reset ads state";
+      }));
 }
 
 void AdsServiceImpl::SetSysInfo() {
@@ -893,8 +880,7 @@ void AdsServiceImpl::OnPrefetchNewTabPageAd(
   is_prefetching_new_tab_page_ad_ = false;
 
   if (!dict) {
-    VLOG(1) << "Failed to prefetch new tab page ad";
-    return;
+    return VLOG(1) << "Failed to prefetch new tab page ad";
   }
   prefetched_new_tab_page_ad_ = NewTabPageAdFromValue(*dict);
 }
@@ -933,8 +919,7 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 void AdsServiceImpl::OnOpenNewTabWithAd(
     absl::optional<base::Value::Dict> dict) {
   if (!dict) {
-    VLOG(1) << "Failed to get notification ad";
-    return;
+    return VLOG(1) << "Failed to get notification ad";
   }
 
   const NotificationAdInfo notification = NotificationAdFromValue(*dict);
@@ -948,8 +933,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   }
 
   if (!url.is_valid()) {
-    VLOG(1) << "Failed to open new tab due to invalid URL: " << url;
-    return;
+    return VLOG(1) << "Failed to open new tab due to invalid URL: " << url;
   }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -1826,7 +1810,7 @@ void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr url_request,
   }
 
   url_loader->SetOnResponseStartedCallback(
-      base::BindOnce(&OnURLResponseStarted));
+      base::BindOnce(&OnUrlLoaderResponseStartedCallback));
 
   url_loader->SetRetryOptions(
       kMaximumNumberOfTimesToRetryNetworkRequests,
@@ -1931,8 +1915,7 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
 
   if (pref_service->GetBoolean(
           brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
-    VLOG(1) << "Ads paused; support intervention required";
-    return;
+    return VLOG(1) << "Ads paused; support intervention required";
   }
 
   const int snooze_count = pref_service->GetInteger(
@@ -1949,6 +1932,8 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
 
 void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                                       RunDBTransactionCallback callback) {
+  CHECK(transaction);
+
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
@@ -1972,7 +1957,13 @@ void AdsServiceImpl::AddTrainingSample(
   }
 
   notification_ad_timing_data_store_->AddTrainingInstance(
-      std::move(training_sample), base::BindOnce(&OnAddTrainingSample));
+      std::move(training_sample), base::BindOnce([](const bool success) {
+        if (!success) {
+          return VLOG(6) << "Failed to add training sample";
+        }
+
+        VLOG(6) << "Successfully added training sample";
+      }));
 }
 
 void AdsServiceImpl::GetBooleanPref(const std::string& path,

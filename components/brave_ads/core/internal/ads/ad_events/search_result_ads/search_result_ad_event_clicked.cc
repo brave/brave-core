@@ -21,8 +21,7 @@ void SearchResultAdEventClicked::FireEvent(const SearchResultAdInfo& ad) {
   LogAdEvent(ad, ConfirmationType::kClicked,
              base::BindOnce([](const bool success) {
                if (!success) {
-                 BLOG(1, "Failed to log search result ad clicked event");
-                 return;
+                 return BLOG(1, "Failed to log search result ad clicked event");
                }
 
                BLOG(6, "Successfully logged search result ad clicked event");

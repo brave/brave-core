@@ -24,7 +24,7 @@ class RedeemUnblindedPaymentTokensDelegate {
 
   // Invoked to tell the delegate that unblinded payment token redemption is
   // scheduled for |redeem_at|.
-  virtual void OnDidScheduleNextUnblindedPaymentTokensRedemption(
+  virtual void OnDidScheduleNextUnblindedPaymentTokenRedemption(
       const base::Time redeem_at) {}
 
   // Invoked to tell the delegate that we will retry redeeming unblinded payment

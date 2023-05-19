@@ -80,8 +80,8 @@ ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return conversion;
 }
 
-void OnGetConversions(GetConversionsCallback callback,
-                      mojom::DBCommandResponseInfoPtr command_response) {
+void GetCallback(GetConversionsCallback callback,
+                 mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
@@ -177,7 +177,6 @@ void Conversions::Save(const ConversionList& conversions,
 
 void Conversions::GetAll(GetConversionsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::StringPrintf(
@@ -191,12 +190,11 @@ void Conversions::GetAll(GetConversionsCallback callback) const {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetConversions, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void Conversions::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::StringPrintf(

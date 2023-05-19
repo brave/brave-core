@@ -24,13 +24,12 @@ std::string CatalogLastUpdatedDiagnosticEntry::GetName() const {
 }
 
 std::string CatalogLastUpdatedDiagnosticEntry::GetValue() const {
-  const base::Time catalog_last_updated = GetCatalogLastUpdated();
-  if (catalog_last_updated.is_null()) {
+  const base::Time last_updated_at = GetCatalogLastUpdated();
+  if (last_updated_at.is_null()) {
     return {};
   }
 
-  return LongFriendlyDateAndTime(catalog_last_updated,
-                                 /*use_sentence_style*/ false);
+  return LongFriendlyDateAndTime(last_updated_at, /*use_sentence_style*/ false);
 }
 
 }  // namespace brave_ads

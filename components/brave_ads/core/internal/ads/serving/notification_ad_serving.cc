@@ -58,8 +58,7 @@ void NotificationAdServing::StartServingAdsAtRegularIntervals() {
 
   const base::TimeDelta delay = CalculateDelayBeforeServingAnAd();
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve notification ad "
-              << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));
+  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }
 
 void NotificationAdServing::StopServingAdsAtRegularIntervals() {
@@ -74,16 +73,14 @@ void NotificationAdServing::StopServingAdsAtRegularIntervals() {
 
 void NotificationAdServing::MaybeServeAd() {
   if (is_serving_) {
-    BLOG(1, "Already serving notification ad");
-    return;
+    return BLOG(1, "Already serving notification ad");
   }
 
   is_serving_ = true;
 
   if (!IsNotificationAdServingFeatureEnabled()) {
     BLOG(1, "Notification ad not served: Feature is disabled");
-    FailedToServeAd();
-    return;
+    return FailedToServeAd();
   }
 
   if (!IsSupported()) {
@@ -136,7 +133,7 @@ void NotificationAdServing::GetForUserModelCallback(
   ServeAd(ad);
 }
 
-void NotificationAdServing::OnAdsPerHourPrefChanged() {
+void NotificationAdServing::UpdateMaximumAdsPerHour() {
   const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
   BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
@@ -163,8 +160,7 @@ void NotificationAdServing::MaybeServeAdAtNextRegularInterval() {
 
   const base::TimeDelta delay = base::Hours(1) / ads_per_hour;
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve notification ad "
-              << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));
+  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }
 
 void NotificationAdServing::RetryServingAdAtNextInterval() {
@@ -173,8 +169,7 @@ void NotificationAdServing::RetryServingAdAtNextInterval() {
   }
 
   const base::Time serve_ad_at = MaybeServeAdAfter(kRetryServingAdAfterDelay);
-  BLOG(1, "Maybe serve notification ad "
-              << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));
+  BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }
 
 base::Time NotificationAdServing::MaybeServeAdAfter(
@@ -226,7 +221,7 @@ void NotificationAdServing::FailedToServeAd() {
 
 void NotificationAdServing::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kMaximumNotificationAdsPerHour) {
-    OnAdsPerHourPrefChanged();
+    UpdateMaximumAdsPerHour();
   }
 }
 

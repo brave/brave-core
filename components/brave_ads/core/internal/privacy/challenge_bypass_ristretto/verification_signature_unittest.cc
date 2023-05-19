@@ -86,12 +86,10 @@ TEST_F(BraveAdsVerificationSignatureTest, EncodeBase64) {
       kVerificationSignatureBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      verification_signature.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kVerificationSignatureBase64, *encoded_base64);
+  EXPECT_EQ(kVerificationSignatureBase64,
+            verification_signature.EncodeBase64());
 }
 
 TEST_F(BraveAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
@@ -99,11 +97,9 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
   const VerificationSignature verification_signature;
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      verification_signature.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64);
+  EXPECT_FALSE(verification_signature.EncodeBase64());
 }
 
 TEST_F(BraveAdsVerificationSignatureTest, IsEqual) {

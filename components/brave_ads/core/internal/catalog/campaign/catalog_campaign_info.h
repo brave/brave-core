@@ -31,7 +31,7 @@ struct CatalogCampaignInfo final {
 
   std::string campaign_id;
   int priority = 0;
-  double ptr = 0.0;
+  double pass_through_rate = 0.0;
   std::string start_at;
   std::string end_at;
   int daily_cap = 0;

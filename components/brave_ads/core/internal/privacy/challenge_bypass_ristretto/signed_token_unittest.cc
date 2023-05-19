@@ -83,12 +83,9 @@ TEST_F(BraveAdsSignedTokenTest, EncodeBase64) {
   const SignedToken signed_token(kSignedTokenBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      signed_token.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kSignedTokenBase64, *encoded_base64);
+  EXPECT_EQ(kSignedTokenBase64, signed_token.EncodeBase64());
 }
 
 TEST_F(BraveAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
@@ -96,11 +93,9 @@ TEST_F(BraveAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
   const SignedToken signed_token;
 
   // Act
-  const absl::optional<std::string> encoded_base64 =
-      signed_token.EncodeBase64();
 
   // Assert
-  EXPECT_FALSE(encoded_base64);
+  EXPECT_FALSE(signed_token.EncodeBase64());
 }
 
 TEST_F(BraveAdsSignedTokenTest, IsEqual) {

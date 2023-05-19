@@ -20,8 +20,7 @@ void NotificationAdEventClicked::FireEvent(const NotificationAdInfo& ad) {
   LogAdEvent(ad, ConfirmationType::kClicked,
              base::BindOnce([](const bool success) {
                if (!success) {
-                 BLOG(1, "Failed to log notification ad clicked event");
-                 return;
+                 return BLOG(1, "Failed to log notification ad clicked event");
                }
 
                BLOG(1, "Successfully logged notification ad clicked event");

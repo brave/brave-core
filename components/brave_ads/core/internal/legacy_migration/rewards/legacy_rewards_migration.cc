@@ -37,8 +37,8 @@ void SuccessfullyMigrated(InitializeCallback callback) {
   std::move(callback).Run(/*success*/ true);
 }
 
-void OnMigrate(InitializeCallback callback,
-               const absl::optional<std::string>& json) {
+void MigrateCallback(InitializeCallback callback,
+                     const absl::optional<std::string>& json) {
   if (!json) {
     // Confirmations state does not exist
     return SuccessfullyMigrated(std::move(callback));
@@ -77,7 +77,7 @@ void Migrate(InitializeCallback callback) {
 
   AdsClientHelper::GetInstance()->Load(
       kConfirmationStateFilename,
-      base::BindOnce(&OnMigrate, std::move(callback)));
+      base::BindOnce(&MigrateCallback, std::move(callback)));
 }
 
 }  // namespace brave_ads::rewards

@@ -87,14 +87,13 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return ad_event;
 }
 
-void OnGetAdEvents(GetAdEventsCallback callback,
-                   mojom::DBCommandResponseInfoPtr command_response) {
+void GetCallback(GetAdEventsCallback callback,
+                 mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
-    std::move(callback).Run(/*success*/ false, /*ad_events*/ {});
-    return;
+    return std::move(callback).Run(/*success*/ false, /*ad_events*/ {});
   }
 
   AdEventList ad_events;
@@ -222,7 +221,6 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
 void AdEvents::GetIf(const std::string& condition,
                      GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -236,12 +234,11 @@ void AdEvents::GetIf(const std::string& condition,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetAdEvents, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::GetAll(GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -254,7 +251,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetAdEvents, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
@@ -262,7 +259,6 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
   CHECK(mojom::IsKnownEnumValue(ad_type));
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -276,12 +272,11 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetAdEvents, std::move(callback)));
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
@@ -300,7 +295,6 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
   CHECK(mojom::IsKnownEnumValue(ad_type));
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(

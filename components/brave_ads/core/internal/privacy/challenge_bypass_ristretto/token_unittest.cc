@@ -82,11 +82,9 @@ TEST_F(BraveAdsTokenTest, EncodeBase64) {
   const Token token(kTokenBase64);
 
   // Act
-  const absl::optional<std::string> encoded_base64 = token.EncodeBase64();
-  ASSERT_TRUE(encoded_base64);
 
   // Assert
-  EXPECT_EQ(kTokenBase64, *encoded_base64);
+  EXPECT_EQ(kTokenBase64, token.EncodeBase64());
 }
 
 TEST_F(BraveAdsTokenTest, EncodeRandomBase64) {
@@ -94,10 +92,9 @@ TEST_F(BraveAdsTokenTest, EncodeRandomBase64) {
   const Token token;
 
   // Act
-  const absl::optional<std::string> encoded_base64 = token.EncodeBase64();
 
   // Assert
-  EXPECT_TRUE(encoded_base64);
+  EXPECT_TRUE(token.EncodeBase64());
 }
 
 TEST_F(BraveAdsTokenTest, IsEqual) {

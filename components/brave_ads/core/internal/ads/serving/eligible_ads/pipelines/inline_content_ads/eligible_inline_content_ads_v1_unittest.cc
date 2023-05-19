@@ -293,13 +293,13 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   CreativeInlineContentAdInfo creative_ad_1 =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
-  creative_ad_1.ptr = 0.1;
+  creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "food & drink";
-  creative_ad_2.ptr = 0.5;
+  creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeInlineContentAds(creative_ads);

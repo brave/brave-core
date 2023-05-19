@@ -21,8 +21,7 @@ void NotificationAdEventServed::FireEvent(const NotificationAdInfo& ad) {
   LogAdEvent(ad, ConfirmationType::kServed,
              base::BindOnce([](const bool success) {
                if (!success) {
-                 BLOG(1, "Failed to log notification ad served event");
-                 return;
+                 return BLOG(1, "Failed to log notification ad served event");
                }
 
                BLOG(1, "Successfully logged notification ad served event");
