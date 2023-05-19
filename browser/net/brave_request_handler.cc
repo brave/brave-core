@@ -33,6 +33,7 @@
 #include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/constants.h"
+#include "net/base/features.h"
 #include "net/base/net_errors.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -68,8 +69,10 @@ void BraveRequestHandler::SetupCallbacks() {
   callback = base::BindRepeating(brave::OnBeforeURLRequest_AdBlockTPPreWork);
   before_url_request_callbacks_.push_back(callback);
 
-  callback = base::BindRepeating(brave::OnBeforeURLRequest_HttpsePreFileWork);
-  before_url_request_callbacks_.push_back(callback);
+  if (!base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
+    callback = base::BindRepeating(brave::OnBeforeURLRequest_HttpsePreFileWork);
+    before_url_request_callbacks_.push_back(callback);
+  }
 
   callback =
       base::BindRepeating(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
