@@ -9,7 +9,7 @@ import Shared
 
 import XCTest
 
-class SearchTests: XCTestCase {
+@MainActor class SearchTests: XCTestCase {
   
   override func setUp() {
     super.setUp()

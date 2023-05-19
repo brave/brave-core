@@ -8,7 +8,7 @@ import WebKit
 
 @testable import Brave
 
-class TabManagerNavDelegateTests: XCTestCase {
+@MainActor class TabManagerNavDelegateTests: XCTestCase {
     let navigation = WKNavigation()
 
     func test_webViewDidCommit_sendsCorrectMessage() {

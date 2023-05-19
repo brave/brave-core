@@ -11,7 +11,7 @@ import BraveCore
 
 import XCTest
 
-class URLFormatTests: XCTestCase {
+@MainActor class URLFormatTests: XCTestCase {
   
   override func setUp() {
     super.setUp()

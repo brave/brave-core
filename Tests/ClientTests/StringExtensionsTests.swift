@@ -6,7 +6,7 @@ import Foundation
 import XCTest
 @testable import Brave
 
-class StringExtensionsTests: XCTestCase {
+@MainActor class StringExtensionsTests: XCTestCase {
 
   func testStringByTrimmingLeadingCharactersInSet() {
     XCTAssertEqual("foo   ", "   foo   ".stringByTrimmingLeadingCharactersInSet(.whitespaces))

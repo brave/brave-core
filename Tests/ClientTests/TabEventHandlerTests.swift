@@ -8,7 +8,7 @@ import WebKit
 
 import XCTest
 
-class TabEventHandlerTests: XCTestCase {
+@MainActor class TabEventHandlerTests: XCTestCase {
 
   func testEventDelivery() {
     let tab = Tab(configuration: WKWebViewConfiguration())
