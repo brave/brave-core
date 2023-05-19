@@ -1,0 +1,4 @@
+executable("mojo_vs_task_runners") {
+  sources = [ "main.cc" ]
+  deps = [ "//brave/mojo_vs_task_runners/mojom" ]
+}

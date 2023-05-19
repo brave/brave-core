@@ -1,0 +1,12 @@
+diff --git a/base/memory/ref_counted.h b/base/memory/ref_counted.h
+index 9ef94d84769df23762e556f4fae7ead70801e585..4715feebb8a8cfb74f62cabf40c939d06b486500 100644
+--- a/base/memory/ref_counted.h
++++ b/base/memory/ref_counted.h
+@@ -155,6 +155,7 @@ class BASE_EXPORT RefCountedThreadSafeBase {
+ 
+   bool HasOneRef() const;
+   bool HasAtLeastOneRef() const;
++  int GetCountForTesting() { return ref_count_.SubtleRefCountForDebug(); }
+ 
+  protected:
+   explicit constexpr RefCountedThreadSafeBase(StartRefCountFromZeroTag) {}

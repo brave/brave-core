@@ -619,6 +619,10 @@ group("tools") {
   }
 }
 
+group("szilard") {
+  deps = [ "//brave/mojo_vs_task_runners" ]
+}
+
 if (is_redirect_cc_build) {
   group("redirect_cc") {
     deps = [ "//brave/tools/redirect_cc" ]
