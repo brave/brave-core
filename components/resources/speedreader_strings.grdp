@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <if expr="enable_speedreader">
-    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL" desc="Used for a checkbox label">Always display in reader mode for this site</message>
-    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL" desc="Used for a checkbox label">Always display in reader mode for all sites</message>
+    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL" desc="Used for a checkbox label">Always use reader mode for this site</message>
+    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL" desc="Used for a checkbox label">Always use reader mode for all sites</message>
     <message name="IDS_READER_MODE_NOTE_LABEL" desc="Used for note label">Not all sites provide reader mode capabilities.</message>
-
     <message name="IDS_READER_MODE_CAPTION" desc="Used for toolbar label">Reader mode</message>
     <message name="IDS_READER_MODE_CLOSE" desc="Used for close button in toolbar">Close</message>
   </if>
