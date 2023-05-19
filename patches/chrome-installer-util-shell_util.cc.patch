@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 51aca4179bafb38dc09dfd6b1197f8896c7a59ce..ad457b824a971931010be1a4d1a2dc9d04932aff 100644
+index d32b663370c0a568928579560cef97bd4aff8d3d..6b2716b6f8fb008d3b583ad123cb9de1dbe6db18 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
 @@ -365,6 +365,7 @@ void GetChromeProgIdEntries(
@@ -26,7 +26,7 @@ index 51aca4179bafb38dc09dfd6b1197f8896c7a59ce..ad457b824a971931010be1a4d1a2dc9d
    entries->push_back(
        std::make_unique<RegistryEntry>(key_name, prog_id, std::wstring()));
  }
-@@ -1739,8 +1742,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
+@@ -1740,8 +1743,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
  const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"http", L"https",
