@@ -167,7 +167,7 @@
                 android:fontFamily="@font/poppins_600"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/one_time_tip"
+                android:text="@string/brave_ui_contribution_tips"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="14sp" />
 
@@ -216,7 +216,7 @@
                 android:fontFamily="@font/poppins_600"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="@string/monthly_tips"
+                android:text="@string/monthly_contributions"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="14sp" />
 

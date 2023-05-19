@@ -2,10 +2,6 @@
     android:exported="false">
 </receiver>
 
-<activity android:name="org.chromium.chrome.browser.BraveRewardsDonationSentActivity"
-    android:theme="@android:style/Theme.Translucent.NoTitleBar"
-    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" />
-
 <activity
     android:name="org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity"
     android:theme="@style/TippingBraveTranslucent"
