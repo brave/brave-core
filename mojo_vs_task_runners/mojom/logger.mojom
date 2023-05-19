@@ -1,0 +1,5 @@
+module mojom;
+
+interface Logger {
+  Log(string message);
+};
