@@ -309,36 +309,6 @@ TEST_F(BraveNewsP3ATest, TestLastUsageTime) {
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 6, 2);
 }
 
-TEST_F(BraveNewsP3ATest, TestDaysInMonthUsedCount) {
-  PrefService* prefs = GetPrefs();
-  RecordAtInit(prefs);
-  // Should not report if News was never used
-  histogram_tester_.ExpectTotalCount(kDaysInMonthUsedCountHistogramName, 0);
-
-  RecordAtSessionStart(prefs);
-  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedCountHistogramName, 1, 1);
-  task_environment_.AdvanceClock(base::Days(1));
-  RecordAtSessionStart(prefs);
-  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedCountHistogramName, 2, 1);
-  task_environment_.AdvanceClock(base::Days(14));
-  RecordAtSessionStart(prefs);
-  RecordAtSessionStart(prefs);
-  RecordAtSessionStart(prefs);
-  task_environment_.AdvanceClock(base::Days(1));
-  RecordAtSessionStart(prefs);
-  RecordAtSessionStart(prefs);
-  RecordAtSessionStart(prefs);
-
-  histogram_tester_.ExpectTotalCount(kDaysInMonthUsedCountHistogramName, 8);
-  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedCountHistogramName, 3, 6);
-
-  task_environment_.AdvanceClock(base::Days(20));
-  RecordAtInit(prefs);
-
-  histogram_tester_.ExpectTotalCount(kDaysInMonthUsedCountHistogramName, 9);
-  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedCountHistogramName, 2, 2);
-}
-
 TEST_F(BraveNewsP3ATest, TestNewUserReturningFollowingDay) {
   PrefService* prefs = GetPrefs();
   RecordAtInit(prefs);
@@ -393,6 +363,31 @@ TEST_F(BraveNewsP3ATest, TestNewUserReturningNotFollowingDay) {
   RecordAtInit(prefs);
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 6);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 1, 1);
+}
+
+TEST_F(BraveNewsP3ATest, TestIsEnabled) {
+  PrefService* prefs = GetPrefs();
+
+  prefs->SetBoolean(prefs::kBraveNewsOptedIn, true);
+  prefs->SetBoolean(prefs::kNewTabPageShowToday, true);
+  RecordFeatureEnabledChange(prefs);
+  histogram_tester_.ExpectUniqueSample(kIsEnabledHistogramName, 1, 1);
+
+  prefs->SetBoolean(prefs::kNewTabPageShowToday, false);
+  RecordFeatureEnabledChange(prefs);
+  histogram_tester_.ExpectBucketCount(kIsEnabledHistogramName, 0, 1);
+}
+
+TEST_F(BraveNewsP3ATest, TestGeneralUsage) {
+  PrefService* prefs = GetPrefs();
+
+  RecordAtInit(prefs);
+  histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kUsageMonthlyHistogramName, 0);
+
+  RecordAtSessionStart(prefs);
+  histogram_tester_.ExpectUniqueSample(kUsageDailyHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(kUsageMonthlyHistogramName, 1, 1);
 }
 
 }  // namespace p3a

@@ -8,9 +8,7 @@
 #include <algorithm>
 
 #include "base/logging.h"
-#include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/time/time.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -20,6 +18,27 @@
 
 namespace brave_news {
 namespace p3a {
+
+constexpr char kWeeklySessionCountHistogramName[] =
+    "Brave.Today.WeeklySessionCount";
+constexpr char kWeeklyMaxCardVisitsHistogramName[] =
+    "Brave.Today.WeeklyMaxCardVisitsCount";
+constexpr char kWeeklyMaxCardViewsHistogramName[] =
+    "Brave.Today.WeeklyMaxCardViewsCount";
+constexpr char kTotalCardViewsHistogramName[] =
+    "Brave.Today.WeeklyTotalCardViews";
+constexpr char kWeeklyDisplayAdsViewedHistogramName[] =
+    "Brave.Today.WeeklyDisplayAdsViewedCount";
+constexpr char kDirectFeedsTotalHistogramName[] =
+    "Brave.Today.DirectFeedsTotal";
+constexpr char kWeeklyAddedDirectFeedsHistogramName[] =
+    "Brave.Today.WeeklyAddedDirectFeedsCount";
+constexpr char kLastUsageTimeHistogramName[] = "Brave.Today.LastUsageTime";
+constexpr char kNewUserReturningHistogramName[] =
+    "Brave.Today.NewUserReturning";
+constexpr char kIsEnabledHistogramName[] = "Brave.Today.IsEnabled";
+constexpr char kUsageMonthlyHistogramName[] = "Brave.Today.UsageMonthly";
+constexpr char kUsageDailyHistogramName[] = "Brave.Today.UsageDaily";
 
 namespace {
 
@@ -55,13 +74,6 @@ void RecordNewUserReturning(PrefService* prefs) {
       kNewUserReturningHistogramName);
 }
 
-void RecordDaysInMonthUsedCount(PrefService* prefs, bool is_add) {
-  p3a_utils::RecordFeatureDaysInMonthUsed(prefs, is_add,
-                                          prefs::kBraveNewsLastSessionTime,
-                                          prefs::kBraveNewsDaysInMonthUsedCount,
-                                          kDaysInMonthUsedCountHistogramName);
-}
-
 void RecordWeeklySessionCount(PrefService* prefs, bool is_add) {
   // Track how many times in the past week
   // user has scrolled to Brave News.
@@ -77,6 +89,11 @@ void ResetCurrSessionTotalViewsCount(PrefService* prefs) {
   VLOG(1) << "NewsP3A: reset curr session total card views count";
 }
 
+void RecordGeneralUsage() {
+  UMA_HISTOGRAM_BOOLEAN(kUsageMonthlyHistogramName, true);
+  UMA_HISTOGRAM_BOOLEAN(kUsageDailyHistogramName, true);
+}
+
 }  // namespace
 
 void RecordAtSessionStart(PrefService* prefs) {
@@ -85,7 +102,7 @@ void RecordAtSessionStart(PrefService* prefs) {
 
   RecordLastUsageTime(prefs);
   RecordNewUserReturning(prefs);
-  RecordDaysInMonthUsedCount(prefs, true);
+  RecordGeneralUsage();
 
   RecordWeeklySessionCount(prefs, true);
   ResetCurrSessionTotalViewsCount(prefs);
@@ -167,12 +184,17 @@ void RecordTotalCardViews(PrefService* prefs,
                                      total);
 }
 
+void RecordFeatureEnabledChange(PrefService* prefs) {
+  bool enabled = prefs->GetBoolean(prefs::kBraveNewsOptedIn) &&
+                 prefs->GetBoolean(prefs::kNewTabPageShowToday);
+  UMA_HISTOGRAM_BOOLEAN(kIsEnabledHistogramName, enabled);
+}
+
 void RecordAtInit(PrefService* prefs) {
   ResetCurrSessionTotalViewsCount(prefs);
 
   RecordLastUsageTime(prefs);
   RecordNewUserReturning(prefs);
-  RecordDaysInMonthUsedCount(prefs, false);
 
   RecordDirectFeedsTotal(prefs);
   RecordWeeklyAddedDirectFeedsCount(prefs, 0);

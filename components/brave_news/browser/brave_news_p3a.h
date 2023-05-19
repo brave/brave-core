@@ -14,25 +14,18 @@ class PrefService;
 namespace brave_news {
 namespace p3a {
 
-constexpr char kDaysInMonthUsedCountHistogramName[] =
-    "Brave.Today.DaysInMonthUsedCount";
-constexpr char kWeeklySessionCountHistogramName[] =
-    "Brave.Today.WeeklySessionCount";
-constexpr char kWeeklyMaxCardVisitsHistogramName[] =
-    "Brave.Today.WeeklyMaxCardVisitsCount";
-constexpr char kWeeklyMaxCardViewsHistogramName[] =
-    "Brave.Today.WeeklyMaxCardViewsCount";
-constexpr char kTotalCardViewsHistogramName[] =
-    "Brave.Today.WeeklyTotalCardViews";
-constexpr char kWeeklyDisplayAdsViewedHistogramName[] =
-    "Brave.Today.WeeklyDisplayAdsViewedCount";
-constexpr char kDirectFeedsTotalHistogramName[] =
-    "Brave.Today.DirectFeedsTotal";
-constexpr char kWeeklyAddedDirectFeedsHistogramName[] =
-    "Brave.Today.WeeklyAddedDirectFeedsCount";
-constexpr char kLastUsageTimeHistogramName[] = "Brave.Today.LastUsageTime";
-constexpr char kNewUserReturningHistogramName[] =
-    "Brave.Today.NewUserReturning";
+extern const char kWeeklySessionCountHistogramName[];
+extern const char kWeeklyMaxCardVisitsHistogramName[];
+extern const char kWeeklyMaxCardViewsHistogramName[];
+extern const char kTotalCardViewsHistogramName[];
+extern const char kWeeklyDisplayAdsViewedHistogramName[];
+extern const char kDirectFeedsTotalHistogramName[];
+extern const char kWeeklyAddedDirectFeedsHistogramName[];
+extern const char kLastUsageTimeHistogramName[];
+extern const char kNewUserReturningHistogramName[];
+extern const char kIsEnabledHistogramName[];
+extern const char kUsageMonthlyHistogramName[];
+extern const char kUsageDailyHistogramName[];
 
 void RecordAtInit(PrefService* prefs);
 void RecordAtSessionStart(PrefService* prefs);
@@ -46,6 +39,7 @@ void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change);
 void RecordDirectFeedsTotal(PrefService* prefs);
 void RecordTotalCardViews(PrefService* prefs,
                           uint64_t cards_viewed_session_total_count);
+void RecordFeatureEnabledChange(PrefService* prefs);
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace p3a

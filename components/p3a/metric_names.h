@@ -71,7 +71,6 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Shields.UsageStatus",
     "Brave.SpeedReader.Enabled",
     "Brave.SpeedReader.ToggleCount",
-    "Brave.Today.DaysInMonthUsedCount",
     "Brave.Today.DirectFeedsTotal",
     "Brave.Today.LastUsageTime",
     "Brave.Today.NewUserReturning",
@@ -186,6 +185,7 @@ constexpr inline auto kCollectedSlowHistograms =
     "Brave.Rewards.TipsSent",
     "Brave.Sync.EnabledTypes",
     "Brave.Sync.SyncedObjectsCount",
+    "Brave.Today.UsageMonthly",
     "Brave.Wallet.UsageMonthly"
 });
 
@@ -193,6 +193,8 @@ constexpr inline auto kCollectedExpressHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Core.UsageDaily",
     "Brave.Rewards.EnabledInstallationTime",
+    "Brave.Today.IsEnabled",
+    "Brave.Today.UsageDaily",
     "Brave.Wallet.UsageDaily"
 });
 
@@ -207,6 +209,9 @@ constexpr inline auto kEphemeralHistograms =
     "Brave.Rewards.InlineTipTrigger",
     "Brave.Rewards.TipsSent",
     "Brave.Rewards.ToolbarButtonTrigger",
+    "Brave.Today.IsEnabled",
+    "Brave.Today.UsageDaily",
+    "Brave.Today.UsageMonthly",
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageMonthly",
     "Brave.Wallet.UsageWeekly"
