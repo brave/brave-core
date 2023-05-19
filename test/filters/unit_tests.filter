@@ -307,6 +307,9 @@
 # the empty string.
 -CommanderFuzzyFinder.EmptyStringDoesNotMatch
 
+# Flaky upstream test.
+-EncryptedReportingUploadProviderTest.SuccessfullyUploadsRecord
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
