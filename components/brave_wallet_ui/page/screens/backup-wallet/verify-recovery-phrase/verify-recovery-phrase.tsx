@@ -17,7 +17,7 @@ import {
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { OnboardingAction, WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // actions
@@ -72,10 +72,10 @@ export const VerifyRecoveryPhrase = () => {
   }, [])
 
   const onSkip = React.useCallback(() => {
-    braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+    braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.CompleteRecoverySkipped);
     dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.OnboardingComplete)
-  }, [])
+  }, [braveWalletP3A])
 
   const onSkipBackup = React.useCallback(() => {
     history.push(WalletRoutes.PortfolioAssets)
@@ -83,7 +83,7 @@ export const VerifyRecoveryPhrase = () => {
 
   const onNextStep = React.useCallback(() => {
     if (isOnboarding) {
-      braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE);
+      braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.Complete);
       dispatch(WalletPageActions.walletSetupComplete(true))
     }
     dispatch(WalletPageActions.walletBackupComplete())

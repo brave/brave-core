@@ -26,7 +26,7 @@ import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/impo
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 
 // types
-import { OnboardingAction, PageState, WalletRoutes, WalletState } from '../../../constants/types'
+import { BraveWallet, PageState, WalletRoutes, WalletState } from '../../../constants/types'
 import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 import { OnboardingConnectHardwareWallet } from './connect-hardware/onboarding-connect-hardware-wallet'
 
@@ -53,18 +53,18 @@ export const OnboardingRoutes = () => {
 
   // p3a onboarding updates
   React.useEffect(() => {
-    let action: OnboardingAction | null = null;
+    let action: BraveWallet.OnboardingAction | null = null;
     switch (location.pathname) {
       case WalletRoutes.OnboardingWelcome:
-        action = OnboardingAction.SHOWN;
+        action = BraveWallet.OnboardingAction.Shown;
         break;
       case WalletRoutes.OnboardingCreatePassword:
-        action = OnboardingAction.LEGAL_AND_PASSWORD;
+        action = BraveWallet.OnboardingAction.LegalAndPassword;
         break;
       case WalletRoutes.OnboardingExplainRecoveryPhrase:
       case WalletRoutes.OnboardingBackupRecoveryPhrase:
       case WalletRoutes.OnboardingVerifyRecoveryPhrase:
-        action = OnboardingAction.RECOVERY_SETUP;
+        action = BraveWallet.OnboardingAction.RecoverySetup;
         break;
     }
     if (action) {

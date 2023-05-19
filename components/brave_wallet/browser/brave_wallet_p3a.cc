@@ -199,14 +199,12 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
 
 absl::optional<mojom::OnboardingAction>
 BraveWalletP3A::GetLastOnboardingAction() {
-  absl::optional<mojom::OnboardingAction> action;
-  int pref_value = local_state_->GetInteger(kBraveWalletP3AOnboardingLastStep);
-  if (pref_value >= 0 &&
-      pref_value <= static_cast<int>(mojom::OnboardingAction::kMaxValue)) {
-    action =
-        absl::make_optional(static_cast<mojom::OnboardingAction>(pref_value));
+  if (local_state_->HasPrefPath(kBraveWalletP3AOnboardingLastStep)) {
+    int pref_value =
+        local_state_->GetInteger(kBraveWalletP3AOnboardingLastStep);
+    return static_cast<mojom::OnboardingAction>(pref_value);
   }
-  return action;
+  return absl::nullopt;
 }
 
 void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {

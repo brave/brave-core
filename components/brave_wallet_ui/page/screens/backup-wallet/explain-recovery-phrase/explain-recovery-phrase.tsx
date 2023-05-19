@@ -11,7 +11,7 @@ import { getLocale, splitStringForTag } from '../../../../../common/locale'
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { OnboardingAction, WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // images
@@ -61,7 +61,7 @@ export const RecoveryPhraseExplainer = () => {
 
   // methods
   const skipToOnboardingSuccess = () => {
-    braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+    braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.CompleteRecoverySkipped);
     history.push(WalletRoutes.OnboardingComplete)
   }
 

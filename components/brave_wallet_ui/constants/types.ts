@@ -929,15 +929,6 @@ export enum CoinTypesMap {
   SOL = BraveWallet.CoinType.SOL
 }
 
-export enum OnboardingAction {
-  SHOWN = 0,
-  LEGAL_AND_PASSWORD = 1,
-  RECOVERY_SETUP = 2,
-  COMPLETE = 3,
-  COMPLETE_RECOVERY_SKIPPED = 4,
-  START_RESTORE = 5
-}
-
 export type BuyOption = {
   id: BraveWallet.OnRampProvider
   icon: string

@@ -22,7 +22,7 @@ import {
 } from '../disclosures/disclosures'
 
 // routes
-import { OnboardingAction, PageState, WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, PageState, WalletRoutes } from '../../../../constants/types'
 
 // styles
 import { Row, VerticalSpace, WalletWelcomeGraphic } from '../../../../components/shared/style'
@@ -75,17 +75,17 @@ export const OnboardingWelcome = () => {
   }, [setupStillInProgress])
 
   React.useEffect(() => {
-    let action = OnboardingAction.SHOWN;
+    let action = BraveWallet.OnboardingAction.Shown;
     switch (nextStep) {
       case WalletRoutes.OnboardingImportOrRestore:
-        action = OnboardingAction.START_RESTORE
+        action = BraveWallet.OnboardingAction.StartRestore
         break
       case WalletRoutes.OnboardingCreatePassword:
-        action = OnboardingAction.LEGAL_AND_PASSWORD
+        action = BraveWallet.OnboardingAction.LegalAndPassword
         break
     }
     braveWalletP3A.reportOnboardingAction(action)
-  }, [nextStep])
+  }, [nextStep, braveWalletP3A])
 
   // render
   if (nextStep !== undefined) {
