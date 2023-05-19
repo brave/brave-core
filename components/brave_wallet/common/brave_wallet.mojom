@@ -1710,6 +1710,8 @@ interface BraveWalletService {
 
   // Resets the keyring and the related preferences
   Reset();
+
+  ConvertFEVMToFVMAddress(bool isMainnet, string fevm_address) => (string? result);
 };
 
 // For reporting wallet related P3A metrics.

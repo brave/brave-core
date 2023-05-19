@@ -1340,6 +1340,21 @@ TEST(BraveWalletUtilsUnitTest, GetSnsRpcUrl) {
   EXPECT_EQ(GURL("https://mainnet-beta-solana.brave.com/rpc"), GetSnsRpcUrl());
 }
 
+TEST(BraveWalletUtilsUnitTest, ConvertFEVMtoFVM) {
+  EXPECT_EQ("f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
+            ConvertFEVMtoFVM(true, "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                .value());
+
+  EXPECT_EQ(
+      "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
+      ConvertFEVMtoFVM(false, "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+          .value());
+
+  EXPECT_FALSE(
+      ConvertFEVMtoFVM(false, "8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+          .has_value());
+}
+
 TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);

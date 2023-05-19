@@ -85,6 +85,35 @@ export default function useSend (isSendTab?: boolean) {
     setSelectedSendAsset(asset)
   }
 
+
+function validateETHAddress(addressOrUrl: string) {
+  setToAddress(addressOrUrl)
+  if (!isValidAddress(addressOrUrl, 20)) {
+    setAddressWarning('')
+    setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
+    return
+  }
+
+  getChecksumEthAddress(addressOrUrl).then((value: GetChecksumEthAddressReturnInfo) => {
+    const { checksumAddress } = value
+    if (checksumAddress === addressOrUrl) {
+      setAddressWarning('')
+      setAddressError('')
+      return
+    }
+
+    if ([addressOrUrl.toLowerCase(), addressOrUrl.toUpperCase()].includes(addressOrUrl)) {
+      setAddressError('')
+      setAddressWarning(getLocale('braveWalletAddressMissingChecksumInfoWarning'))
+      return
+    }
+    setAddressWarning('')
+    setAddressError(getLocale('braveWalletNotValidChecksumAddressError'))
+  }).catch(e => console.log(e))
+  return
+}
+}
+
   const setNotRegisteredError = React.useCallback(() => {
     setAddressError(getLocale('braveWalletNotDomain').replace('$1', CoinTypesMap[selectedNetwork?.coin ?? 0]))
   }, [selectedNetwork?.coin])
@@ -228,11 +257,41 @@ export default function useSend (isSendTab?: boolean) {
     }
 
     setToAddress(valueToLowerCase)
-    if (!isValidFilAddress(valueToLowerCase)) {
-      setAddressWarning('')
-      setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
+
+    // If value starts with 0x, will check if it's a valid address
+    if (valueToLowerCase.startsWith('0x')) {
+      setToAddress(addressOrUrl)
+      if (!isValidAddress(addressOrUrl, 20)) {
+        setAddressWarning('')
+        setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
+        return
+      }
+
+      getChecksumEthAddress(addressOrUrl).then((value: GetChecksumEthAddressReturnInfo) => {
+        const { checksumAddress } = value
+        if (checksumAddress === addressOrUrl) {
+          setAddressWarning('')
+          setAddressError('')
+          return
+        }
+
+        if ([addressOrUrl.toLowerCase(), addressOrUrl.toUpperCase()].includes(addressOrUrl)) {
+          setAddressError('')
+          setAddressWarning(getLocale('braveWalletAddressMissingChecksumInfoWarning'))
+          return
+        }
+        setAddressWarning('')
+        setAddressError(getLocale('braveWalletNotValidChecksumAddressError'))
+      }).catch(e => console.log(e))
       return
+    } else {
+      if (!isValidFilAddress(valueToLowerCase)) {
+        setAddressWarning('')
+        setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
+        return
+      }
     }
+
 
     // Reset error and warning state back to normal
     setAddressWarning('')

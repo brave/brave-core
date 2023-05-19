@@ -13,15 +13,18 @@ import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-se
 // Styled Components
 import { Button, AccountCircle } from './account-list-item.style'
 import { Text, Column } from '../../shared.styles'
+import getAPIProxy from '../../../../../common/async/bridge'
+import { FILECOIN_KEYRING_ID, FILECOIN_TESTNET_KEYRING_ID } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 
 interface Props {
   onClick: (address: string) => void
   address: string
   name: string
+  selectedAccountKeyring: string | undefined
 }
 
 export const AccountListItem = (props: Props) => {
-  const { onClick, address, name } = props
+  const { onClick, address, name, selectedAccountKeyring } = props
 
   // Selectors
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
@@ -35,12 +38,27 @@ export const AccountListItem = (props: Props) => {
     return create({ seed: address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [address])
 
+  const apiProxy = getAPIProxy()
+  const [fvmAddress, setFvmAddress] = React.useState<string>()
+  if (address.startsWith("0x") && (selectedAccountKeyring === FILECOIN_KEYRING_ID ||
+      selectedAccountKeyring === FILECOIN_TESTNET_KEYRING_ID)) {
+    apiProxy.braveWalletService.convertFEVMToFVMAddress(
+      selectedAccountKeyring === FILECOIN_KEYRING_ID, address).then(v => {
+        if (v.result) {
+          setFvmAddress(v.result)
+        }
+      })
+  }
+
   return (
     <Button disabled={isAccountDisabled} onClick={() => onClick(address)}>
       <AccountCircle orb={orb} />
       <Column horizontalAlign='flex-start' verticalAlign='center'>
         <Text textColor='text03' textSize='12px' isBold={false}>{name}</Text>
         <Text textColor='text01' textSize='12px' isBold={false}>{address}</Text>
+        {fvmAddress &&
+          <Text textColor='text02' textSize='12px' isBold={false}>{fvmAddress}</Text>
+        }
       </Column>
     </Button>
 

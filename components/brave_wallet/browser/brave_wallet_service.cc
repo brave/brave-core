@@ -1684,6 +1684,13 @@ void BraveWalletService::GetBalanceScannerSupportedChains(
   std::move(callback).Run(chain_ids);
 }
 
+void BraveWalletService::ConvertFEVMToFVMAddress(
+    bool isMainnet,
+    const std::string& fevm_address,
+    ConvertFEVMToFVMAddressCallback callback) {
+  std::move(callback).Run(ConvertFEVMtoFVM(isMainnet, fevm_address));
+}
+
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
   add_suggest_token_requests_.clear();
   // Reject pending suggest token requests when network changed.

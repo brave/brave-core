@@ -210,6 +210,9 @@ absl::optional<std::string> CoinTypeToKeyringId(
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
+absl::optional<std::string> ConvertFEVMtoFVM(bool isMainnet,
+                                             const std::string& fevm_address);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

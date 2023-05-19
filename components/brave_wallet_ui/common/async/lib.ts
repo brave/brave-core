@@ -1018,13 +1018,18 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
 
 export async function sendFilTransaction (payload: SendFilTransactionParams) {
   const apiProxy = getAPIProxy()
+  var to = payload.to
+  if (payload.to.startsWith("0x")) {
+    to = (await apiProxy.braveWalletService.convertFEVMToFVMAddress(
+      payload.from.startsWith('f'), payload.to)).result || ''
+  }
   const filTxData: BraveWallet.FilTxData = {
     nonce: payload.nonce || '',
     gasPremium: payload.gasPremium || '',
     gasFeeCap: payload.gasFeeCap || '',
     gasLimit: payload.gasLimit || '',
     maxFee: payload.maxFee || '0',
-    to: payload.to,
+    to: to,
     from: payload.from,
     value: payload.value
   }

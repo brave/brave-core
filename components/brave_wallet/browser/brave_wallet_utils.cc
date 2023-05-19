@@ -30,11 +30,14 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/version_info/version_info.h"
+#include "brave/third_party/argon2/src/src/blake2/blake2.h"
 #include "brave/third_party/bip39wally-core-native/include/wally_bip39.h"
+#include "components/base32/base32.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
@@ -1684,6 +1687,42 @@ GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
     return chain.rpc_endpoints[chain.active_rpc_endpoint_index];
   }
   return GURL();
+}
+
+absl::optional<std::string> ConvertFEVMtoFVM(bool isMainnet,
+                                             const std::string& fevm_address) {
+  if (!EthAddress::IsValidAddress(fevm_address)) {
+    return absl::nullopt;
+  }
+  std::vector<uint8_t> payload;
+  base::HexStringToBytes(base::ToLowerASCII(fevm_address.substr(2)), &payload);
+  std::vector<uint8_t> prefix = {4, 10};
+
+  blake2b_state blakeState;
+  if (blake2b_init(&blakeState, 4) != 0) {
+    return absl::nullopt;
+  }
+
+  if (blake2b_update(&blakeState, prefix.data(), prefix.size()) != 0) {
+    return absl::nullopt;
+  }
+
+  if (blake2b_update(&blakeState, payload.data(), payload.size()) != 0) {
+    return absl::nullopt;
+  }
+
+  std::vector<uint8_t> checksum(4, 0);
+  if (blake2b_final(&blakeState, checksum.data(), 4) != 0) {
+    return absl::nullopt;
+  }
+
+  payload.insert(payload.end(), checksum.begin(), checksum.end());
+
+  std::string encoded = base32::Base32Encode(
+      base::StringPiece(reinterpret_cast<const char*>(payload.data()),
+                        payload.size()),
+      base32::Base32EncodePolicy::OMIT_PADDING);
+  return (isMainnet ? "f410f" : "t410f") + base::ToLowerASCII(encoded);
 }
 
 }  // namespace brave_wallet

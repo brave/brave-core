@@ -231,6 +231,11 @@ class BraveWalletService : public KeyedService,
   void GetBalanceScannerSupportedChains(
       GetBalanceScannerSupportedChainsCallback callback) override;
 
+  void ConvertFEVMToFVMAddress(
+      bool isMainnet,
+      const std::string& fevm_address,
+      ConvertFEVMToFVMAddressCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 

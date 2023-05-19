@@ -24,6 +24,7 @@ import { AccountListItem } from '../account-list-item/account-list-item'
 
 // Styled Components
 import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
+import { CoinType } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 
 interface Props {
   onSelectAddress: (value: string) => void
@@ -60,7 +61,13 @@ export const AccountSelector = (props: Props) => {
 
   // Memos
   const accountsByNetwork = React.useMemo(() => {
-    return accounts.filter((account) => account.coin === selectedNetwork?.coin && account.keyringId === selectedAccount?.keyringId)
+    let filecoinAccounts = accounts.filter((account) =>
+    (account.coin === selectedNetwork?.coin &&
+      account.keyringId === selectedAccount?.keyringId))
+    let fevmAccounts = accounts.filter((account) =>
+    (selectedAccount?.coin === CoinType.FIL &&
+      account.coin === CoinType.ETH))
+    return filecoinAccounts.concat(fevmAccounts)
   }, [accounts, selectedNetwork, selectedAccount])
 
   // Hooks
@@ -85,6 +92,7 @@ export const AccountSelector = (props: Props) => {
               onClick={handleOnSelectAccount}
               address={account.address}
               name={account.name}
+              selectedAccountKeyring={selectedAccount?.keyringId}
             />
           )}
         </DropDown>
