@@ -650,12 +650,17 @@ class TabTrayController: LoadingViewController {
           return
         }
       
-        openInsideSettingsNavigation(with:
-          SyncSettingsTableViewController(
-            syncAPI: braveCore.syncAPI,
-            syncProfileService: braveCore.syncProfileService,
-            tabManager: tabManager,
-            windowProtection: windowProtection))
+      let syncSettingsScreen = SyncSettingsTableViewController(
+        isModallyPresented: true,
+        syncAPI: braveCore.syncAPI,
+        syncProfileService: braveCore.syncProfileService,
+        tabManager: tabManager,
+        windowProtection: windowProtection,
+        requiresAuthentication: true)
+      
+        syncSettingsScreen.syncStatusDelegate = self
+      
+        openInsideSettingsNavigation(with: syncSettingsScreen)
       default:
         return
     }
@@ -765,5 +770,11 @@ extension TabTrayController: UIScrollViewAccessibilityDelegate {
     } else {
       return String(format: Strings.tabTrayMultiTabPositionFormatVoiceOverText, NSNumber(value: firstTabRow as Int), NSNumber(value: lastTabRow), NSNumber(value: tabCount))
     }
+  }
+}
+
+extension TabTrayController: SyncStatusDelegate {
+  func syncStatusChanged() {
+    tabSyncView.updateSyncStatusPanel(for: emptyPanelState)
   }
 }

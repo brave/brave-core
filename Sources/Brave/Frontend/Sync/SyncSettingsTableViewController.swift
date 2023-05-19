@@ -9,6 +9,10 @@ import BraveCore
 import BraveUI
 import os.log
 
+protocol SyncStatusDelegate: AnyObject {
+  func syncStatusChanged()
+}
+
 class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, UITableViewDataSource {
   
   private enum Sections: Int, CaseIterable {
@@ -43,6 +47,8 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
     case syncChainDeleteError
   }
   
+  weak var syncStatusDelegate: SyncStatusDelegate?
+  
   // MARK: Private
 
   private let syncAPI: BraveSyncAPI
@@ -55,7 +61,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
 
   /// After synchronization is completed, user needs to tap on `Done` to go back.
   /// Standard navigation is disabled then.
-  private var showDoneButton = false
+  private var isModallyPresented = false
   
   private var tableView = UITableView(frame: .zero, style: .grouped)
   private let loadingView = UIView().then {
@@ -74,17 +80,18 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
   
   // MARK: Lifecycle
 
-  init(showDoneButton: Bool = false,
+  init(isModallyPresented: Bool = false,
        syncAPI: BraveSyncAPI,
        syncProfileService: BraveSyncProfileServiceIOS,
        tabManager: TabManager,
-       windowProtection: WindowProtection?) {
-    self.showDoneButton = showDoneButton
+       windowProtection: WindowProtection?,
+       requiresAuthentication: Bool) {
+    self.isModallyPresented = isModallyPresented
     self.syncAPI = syncAPI
     self.syncProfileService = syncProfileService
     self.tabManager = tabManager
     
-    super.init(windowProtection: windowProtection, requiresAuthentication: syncAPI.isInSyncGroup)
+    super.init(windowProtection: windowProtection, requiresAuthentication: requiresAuthentication)
   }
 
   required init?(coder: NSCoder) {
@@ -120,7 +127,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    if showDoneButton {
+    if isModallyPresented {
       navigationController?.interactivePopGestureRecognizer?.isEnabled = false
       navigationItem.setHidesBackButton(true, animated: false)
       navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -230,10 +237,16 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
             default:
               // Clearing local preferences and calling reset chain on brave-core side
               self.syncAPI.leaveSyncGroup(preservingObservers: true)
+              self.syncStatusDelegate?.syncStatusChanged()
             }
             
             self.disableNavigationPrevention()
-            self.navigationController?.popToRootViewController(animated: true)
+            
+            if self.isModallyPresented {
+              self.navigationController?.dismiss(animated: true)
+            } else {
+              self.navigationController?.popToRootViewController(animated: true)
+            }
           }
         }
       case .syncChainDeleteError:
