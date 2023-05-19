@@ -45,6 +45,7 @@ export const verified = styled.div`
 
 export const name = styled.span`
   flex: 1 1 auto;
+  overflow-wrap: anywhere;
 `
 
 export const platform = styled.span``
