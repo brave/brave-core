@@ -35,48 +35,48 @@ class UpholdUtilTest
           std::tuple<mojom::Environment, mojom::WalletStatus>> {};
 
 TEST_F(UpholdUtilTest, GetClientId) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetClientId(), BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_ID));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetClientId(), BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetClientId(), BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID));
 }
 
 TEST_F(UpholdUtilTest, GetClientSecret) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_SECRET));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(UPHOLD_SANDBOX_CLIENT_SECRET));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(UPHOLD_SANDBOX_CLIENT_SECRET));
 }
 
 TEST_F(UpholdUtilTest, GetFeeAddress) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(UPHOLD_PRODUCTION_FEE_ADDRESS));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(UPHOLD_SANDBOX_FEE_ADDRESS));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(UPHOLD_SANDBOX_FEE_ADDRESS));
 }
 
 TEST_F(UpholdUtilTest, GetServerUrl) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(endpoint::uphold::GetServerUrl("/test"),
             base::StrCat({BUILDFLAG(UPHOLD_PRODUCTION_API_URL), "/test"}));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(endpoint::uphold::GetServerUrl("/test"),
             base::StrCat({BUILDFLAG(UPHOLD_SANDBOX_API_URL), "/test"}));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(endpoint::uphold::GetServerUrl("/test"),
             base::StrCat({BUILDFLAG(UPHOLD_SANDBOX_API_URL), "/test"}));
 }

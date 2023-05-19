@@ -17,19 +17,19 @@ namespace rewards {
 class RewardsUtilTest : public testing::Test {};
 
 TEST(RewardsUtilTest, GetServerUrlDevelopment) {
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://rewards-dev.brave.software/test");
 }
 
 TEST(RewardsUtilTest, GetServerUrlStaging) {
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://rewards-stg.bravesoftware.com/test");
 }
 
 TEST(RewardsUtilTest, GetServerUrlProduction) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://rewards.brave.com/test");
 }

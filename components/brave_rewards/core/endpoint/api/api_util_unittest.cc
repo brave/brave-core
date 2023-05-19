@@ -17,19 +17,19 @@ namespace api {
 class APIUtilTest : public testing::Test {};
 
 TEST(APIUtilTest, GetServerUrlDevelopment) {
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://api.rewards.brave.software/test");
 }
 
 TEST(APIUtilTest, GetServerUrlStaging) {
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://api.rewards.bravesoftware.com/test");
 }
 
 TEST(APIUtilTest, GetServerUrlProduction) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://api.rewards.brave.com/test");
 }

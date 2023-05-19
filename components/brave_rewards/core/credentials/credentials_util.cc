@@ -197,7 +197,7 @@ base::Value::List GenerateCredentials(
   base::Value::List credentials;
   for (auto& item : token_list) {
     absl::optional<base::Value::Dict> token;
-    if (is_testing) {
+    if (ledger().GetTesting()) {
       token = GenerateSuggestionMock(item.token_value, item.public_key, body);
     } else {
       token = GenerateSuggestion(item.token_value, item.public_key, body);

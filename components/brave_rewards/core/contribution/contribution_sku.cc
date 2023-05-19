@@ -40,15 +40,15 @@ const char kACSKUProduction[] =
     "B0OfoiPn0NPVfI602J";  // NOLINT
 
 std::string GetACSKU() {
-  if (_environment == mojom::Environment::PRODUCTION) {
+  if (ledger().GetEnvironment() == mojom::Environment::PRODUCTION) {
     return kACSKUProduction;
   }
 
-  if (_environment == mojom::Environment::STAGING) {
+  if (ledger().GetEnvironment() == mojom::Environment::STAGING) {
     return kACSKUStaging;
   }
 
-  if (_environment == mojom::Environment::DEVELOPMENT) {
+  if (ledger().GetEnvironment() == mojom::Environment::DEVELOPMENT) {
     return kACSKUDev;
   }
 

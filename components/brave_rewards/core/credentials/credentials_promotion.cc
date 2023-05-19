@@ -372,7 +372,7 @@ void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
   }
 
   std::vector<std::string> unblinded_encoded_creds;
-  if (is_testing) {
+  if (ledger().GetTesting()) {
     unblinded_encoded_creds = UnBlindCredsMock(creds);
   } else {
     auto result = UnBlindCreds(creds);

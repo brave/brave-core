@@ -31,7 +31,7 @@ namespace brave_rewards::internal {
 namespace util {
 
 std::string GenerateRandomHexString() {
-  if (is_testing) {
+  if (ledger().GetTesting()) {
     return "123456789";
   }
 

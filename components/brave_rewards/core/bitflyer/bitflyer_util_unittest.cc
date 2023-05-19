@@ -35,48 +35,48 @@ class BitflyerUtilTest
           std::tuple<mojom::Environment, mojom::WalletStatus>> {};
 
 TEST_F(BitflyerUtilTest, GetClientId) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetClientId(), BUILDFLAG(BITFLYER_PRODUCTION_CLIENT_ID));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetClientId(), BUILDFLAG(BITFLYER_SANDBOX_CLIENT_ID));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetClientId(), BUILDFLAG(BITFLYER_SANDBOX_CLIENT_ID));
 }
 
 TEST_F(BitflyerUtilTest, GetClientSecret) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(BITFLYER_PRODUCTION_CLIENT_SECRET));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(BITFLYER_SANDBOX_CLIENT_SECRET));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(BITFLYER_SANDBOX_CLIENT_SECRET));
 }
 
 TEST_F(BitflyerUtilTest, GetFeeAddress) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(BITFLYER_PRODUCTION_FEE_ADDRESS));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(BITFLYER_SANDBOX_FEE_ADDRESS));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(BITFLYER_SANDBOX_FEE_ADDRESS));
 }
 
 TEST_F(BitflyerUtilTest, GetServerUrl) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(endpoint::bitflyer::GetServerUrl("/test"),
             base::StrCat({BUILDFLAG(BITFLYER_PRODUCTION_URL), "/test"}));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(endpoint::bitflyer::GetServerUrl("/test"),
             base::StrCat({BUILDFLAG(BITFLYER_SANDBOX_URL), "/test"}));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(endpoint::bitflyer::GetServerUrl("/test"),
             base::StrCat({BUILDFLAG(BITFLYER_SANDBOX_URL), "/test"}));
 }
@@ -152,7 +152,7 @@ INSTANTIATE_TEST_SUITE_P(GenerateLinks,
 TEST_P(BitflyerUtilTest, Paths) {
   const auto [environment, wallet_status] = GetParam();
 
-  _environment = environment;
+  ledger().SetEnvironment(environment);
   auto wallet = mojom::ExternalWallet::New();
   wallet->status = wallet_status;
   wallet->one_time_string = "one_time_string";

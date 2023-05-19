@@ -33,14 +33,6 @@
 
 namespace brave_rewards::internal {
 
-inline thread_local mojom::Environment _environment =
-    mojom::Environment::PRODUCTION;
-inline thread_local bool is_debug = false;
-inline thread_local bool is_testing = false;
-inline thread_local int state_migration_target_version_for_testing = -1;
-inline thread_local int reconcile_interval = 0;  // minutes
-inline thread_local int retry_interval = 0;      // seconds
-
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
 inline constexpr uint64_t kPublisherListRefreshInterval =
     7 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
@@ -410,8 +402,20 @@ class LedgerImpl : public mojom::Ledger {
 
   bool IsShuttingDown() const;
 
-  // This method is virtualised for test-only purposes.
+  // This method is virtual for test-only purposes.
   virtual database::Database* database();
+
+  mojom::Environment GetEnvironment() { return environment_; }
+
+  int StateMigrationTargetVersionForTesting() {
+    return state_migration_target_version_for_testing_;
+  }
+
+  bool GetTesting() { return is_testing_; }
+
+  int GetReconcileInterval() { return reconcile_interval_; }
+
+  int GetRetryInterval() { return retry_interval_; }
 
  private:
   enum class ReadyState {
@@ -456,6 +460,13 @@ class LedgerImpl : public mojom::Ledger {
   bitflyer::Bitflyer bitflyer_;
   gemini::Gemini gemini_;
   uphold::Uphold uphold_;
+
+  mojom::Environment environment_ = mojom::Environment::PRODUCTION;
+  bool is_debug_ = false;
+  bool is_testing_ = false;
+  int state_migration_target_version_for_testing_ = -1;
+  int reconcile_interval_ = 0;  // minutes
+  int retry_interval_ = 0;      // seconds
 
   std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;

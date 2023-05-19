@@ -40,47 +40,47 @@ void LedgerImpl::Initialize(InitializeCallback callback) {
 }
 
 void LedgerImpl::SetEnvironment(mojom::Environment environment) {
-  DCHECK(IsUninitialized() || is_testing);
-  _environment = environment;
+  DCHECK(IsUninitialized() || is_testing_);
+  environment_ = environment;
 }
 
 void LedgerImpl::SetDebug(bool debug) {
-  DCHECK(IsUninitialized() || is_testing);
-  is_debug = debug;
+  DCHECK(IsUninitialized() || is_testing_);
+  is_debug_ = debug;
 }
 
 void LedgerImpl::SetReconcileInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || is_testing);
-  reconcile_interval = interval;
+  DCHECK(IsUninitialized() || is_testing_);
+  reconcile_interval_ = interval;
 }
 
 void LedgerImpl::SetRetryInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || is_testing);
-  retry_interval = interval;
+  DCHECK(IsUninitialized() || is_testing_);
+  retry_interval_ = interval;
 }
 
 void LedgerImpl::SetTesting() {
-  is_testing = true;
+  is_testing_ = true;
 }
 
 void LedgerImpl::SetStateMigrationTargetVersionForTesting(int32_t version) {
-  state_migration_target_version_for_testing = version;
+  state_migration_target_version_for_testing_ = version;
 }
 
 void LedgerImpl::GetEnvironment(GetEnvironmentCallback callback) {
-  std::move(callback).Run(_environment);
+  std::move(callback).Run(environment_);
 }
 
 void LedgerImpl::GetDebug(GetDebugCallback callback) {
-  std::move(callback).Run(is_debug);
+  std::move(callback).Run(is_debug_);
 }
 
 void LedgerImpl::GetReconcileInterval(GetReconcileIntervalCallback callback) {
-  std::move(callback).Run(reconcile_interval);
+  std::move(callback).Run(reconcile_interval_);
 }
 
 void LedgerImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
-  std::move(callback).Run(retry_interval);
+  std::move(callback).Run(retry_interval_);
 }
 
 void LedgerImpl::CreateRewardsWallet(const std::string& country,
@@ -233,7 +233,7 @@ void LedgerImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
   // When performing automated testing, ignore changes in browser window
   // activation. When running tests in parallel, activation changes can
   // interfere with AC calculations on some platforms.
-  if (is_testing) {
+  if (is_testing_) {
     return;
   }
 
@@ -252,7 +252,7 @@ void LedgerImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
   // When performing automated testing, ignore changes in browser window
   // activation. When running tests in parallel, activation changes can
   // interfere with AC calculations on some platforms.
-  if (is_testing) {
+  if (is_testing_) {
     return;
   }
 

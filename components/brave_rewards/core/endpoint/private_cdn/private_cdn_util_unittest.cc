@@ -17,19 +17,19 @@ namespace private_cdn {
 class PrivateCDNTest : public testing::Test {};
 
 TEST(PrivateCDNTest, GetServerUrlDevelopment) {
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://pcdn.brave.software/test");
 }
 
 TEST(PrivateCDNTest, GetServerUrlStaging) {
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://pcdn.bravesoftware.com/test");
 }
 
 TEST(PrivateCDNTest, GetServerUrlProduction) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://pcdn.brave.com/test");
 }

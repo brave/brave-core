@@ -16,7 +16,7 @@ std::string GetServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  switch (_environment) {
+  switch (ledger().GetEnvironment()) {
     case mojom::Environment::DEVELOPMENT:
       url = BUILDFLAG(REWARDS_GRANT_DEV_ENDPOINT);
       break;

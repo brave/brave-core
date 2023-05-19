@@ -130,7 +130,7 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
 
   if constexpr (std::is_same_v<Result, PostWallets::Result>) {
     ledger().state()->ResetReconcileStamp();
-    if (!is_testing) {
+    if (!ledger().GetTesting()) {
       ledger().state()->SetEmptyBalanceChecked(true);
       ledger().state()->SetPromotionCorruptedMigrated(true);
     }

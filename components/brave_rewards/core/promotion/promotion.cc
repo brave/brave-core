@@ -92,7 +92,8 @@ void Promotion::Initialize() {
 void Promotion::Fetch(FetchPromotionsCallback callback) {
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
-  if (!is_testing && _environment != mojom::Environment::STAGING) {
+  if (!ledger().GetTesting() &&
+      ledger().GetEnvironment() != mojom::Environment::STAGING) {
     const uint64_t last_promo_stamp =
         ledger().state()->GetPromotionLastFetchStamp();
     const uint64_t now = util::GetCurrentTimeStamp();

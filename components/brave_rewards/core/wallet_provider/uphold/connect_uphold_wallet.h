@@ -23,6 +23,8 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
   ConnectUpholdWallet();
 
  private:
+  void StartEligibilityChecker();
+
   const char* WalletType() const override;
 
   void Authorize(OAuthInfo&&, ConnectExternalWalletCallback) override;

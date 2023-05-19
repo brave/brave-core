@@ -72,7 +72,7 @@ void DatabaseMigration::Start(uint32_t table_version,
 
   auto transaction = mojom::DBTransaction::New();
   int migrated_version = table_version;
-  const uint32_t target_version = is_testing && test_target_version_
+  const uint32_t target_version = ledger().GetTesting() && test_target_version_
                                       ? test_target_version_
                                       : database::GetCurrentVersion();
 

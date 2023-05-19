@@ -28,7 +28,14 @@ using endpoints::RequestFor;
 namespace uphold {
 
 ConnectUpholdWallet::ConnectUpholdWallet() {
-  eligibility_checker_.Start(FROM_HERE, base::Minutes(is_testing ? 3 : 15),
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&ConnectUpholdWallet::StartEligibilityChecker,
+                                base::Unretained(this)));
+}
+
+void ConnectUpholdWallet::StartEligibilityChecker() {
+  eligibility_checker_.Start(FROM_HERE,
+                             base::Minutes(ledger().GetTesting() ? 3 : 15),
                              this, &ConnectUpholdWallet::CheckEligibility);
 }
 
