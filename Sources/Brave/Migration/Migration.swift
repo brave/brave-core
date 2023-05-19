@@ -122,16 +122,25 @@ public class Migration {
         let historySnapshot = oldTab.urlHistorySnapshot as? [String] ?? []
         
         for url in historySnapshot {
-          guard let url = NSURL(idnString: url) as? URL ?? URL(string: url) else { continue }
+          guard let url = NSURL(idnString: url) as? URL ?? URL(string: url) else {
+            Logger.module.error("Failed to parse URL: \(url) during Migration!")
+            continue
+          }
           if let internalUrl = InternalURL(url), !internalUrl.isAuthorized, let authorizedURL = InternalURL.authorize(url: url) {
             historyURLs.append(authorizedURL)
           } else {
             historyURLs.append(url)
           }
         }
+        
+        if historyURLs.count == 0 {
+          Logger.module.error("User has zero history to migrate!")
+          return
+        }
 
         // currentPage is -webView.backForwardList.forwardList.count
-        let currentPage = (historyURLs.count - 1) + Int(oldTab.urlHistoryCurrentIndex)
+        // If for some reason current page can be negative, we clamp it to [0, inf].
+        let currentPage = max((historyURLs.count - 1) + Int(oldTab.urlHistoryCurrentIndex), 0)
         
         // Create WebKit interactionState
         let interactionState = SynthesizedSessionRestore.serialize(withTitle: tabTitle,
