@@ -21,6 +21,8 @@ import androidx.annotation.Nullable;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveDialogFragment;
+import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.ui.base.DeviceFormFactor;
 
 public class BraveBookmarkImportExportDialogFragment
         extends BraveDialogFragment implements View.OnClickListener {
@@ -89,10 +91,14 @@ public class BraveBookmarkImportExportDialogFragment
         if (mIsImport) {
             Activity activity = getActivity();
             if (activity != null) {
-                activity.finish();
-                activity.overridePendingTransition(0, 0);
-                activity.startActivity(activity.getIntent());
-                activity.overridePendingTransition(0, 0);
+                if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity)) {
+                    TabUtils.reloadIgnoringCache();
+                } else {
+                    activity.finish();
+                    activity.overridePendingTransition(0, 0);
+                    activity.startActivity(activity.getIntent());
+                    activity.overridePendingTransition(0, 0);
+                }
             }
         }
     }
