@@ -27,6 +27,7 @@ import { BatIcon } from '../../shared/components/icons/bat_icon'
 import { SettingsIcon } from '../../shared/components/icons/settings_icon'
 
 import * as style from './settings.style'
+import { Action } from 'redux'
 
 export function Settings () {
   const { isAndroid } = React.useContext(PlatformContext)
@@ -37,7 +38,24 @@ export function Settings () {
 
   const [showRewardsTour, setShowRewardsTour] = React.useState(false)
 
-  const handleURL = () => {
+  const scrollToDeeplinkId = (deeplinkId: string) => {
+    if (deeplinkId) {
+      if (deeplinkId === 'top') {
+        window.scrollTo(0, 0)
+        return true
+      }
+
+      const element = document.querySelector(
+        `[data-deeplink-id="${deeplinkId}"`)
+      if (element) {
+        element.scrollIntoView()
+        return true
+      }
+    }
+    return false
+  }
+
+  const handleURLActions = () => {
     const { pathname } = location
 
     // Used to enable Rewards directly from the Welcome UI.
@@ -52,6 +70,61 @@ export function Settings () {
     }
 
     return false
+  }
+
+  class HashHandler {
+    hash: string;
+    deeplinkId: string;
+    action: (() => Action<any>) | null;
+    actionIsForSettings: boolean;
+
+    constructor(
+      hash: string,
+      action?: () => Action<any>,
+      actionIsForSettings?: boolean,
+      deeplinkId?: string) {
+      this.hash = hash
+      this.action = action ?? null
+      this.actionIsForSettings = actionIsForSettings ?? false
+      this.deeplinkId = deeplinkId ?? this.hash
+    }
+  }
+
+  const hashHandlers: HashHandler[] = [
+    new HashHandler('ads', actions.onAdsSettingsOpen, true),
+    new HashHandler(
+      'auto-contribute', actions.onAutoContributeSettingsOpen, true),
+    new HashHandler(
+      'contributions', actions.onContributionsSettingsOpen, true),
+    new HashHandler('monthly-contributions'),
+    new HashHandler('ads-history', actions.onModalAdsHistoryOpen, false, 'ads'),
+    new HashHandler('reset', actions.onModalResetOpen, false, 'top')
+  ]
+
+  const handleURLDeepLinks = () => {
+    if (!location.hash) {
+      return
+    }
+    hashHandlers.every((handler) => {
+      if (location.hash === '#' + handler.hash) {
+        if (scrollToDeeplinkId(handler.deeplinkId)) {
+          if (handler.action) {
+            if (!handler.actionIsForSettings) {
+              handler.action()
+            } else if (location.search === '?settings') {
+              handler.action()
+            }
+          }
+          clearURLPath()
+        }
+        return false
+      }
+      return true
+    })
+  }
+
+  const clearURLPath = () => {
+    history.replaceState({}, '', '/')
   }
 
   React.useEffect(() => {
@@ -74,8 +147,10 @@ export function Settings () {
     actions.getOnboardingStatus()
     actions.getEnabledInlineTippingPlatforms()
 
-    if (handleURL()) {
-      history.replaceState({}, '', '/')
+    if (handleURLActions()) {
+      clearURLPath()
+    } else {
+      handleURLDeepLinks()
     }
   }, [rewardsData.initializing])
 

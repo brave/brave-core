@@ -122,7 +122,7 @@ export function MonthlyTipsPanel () {
   }
 
   return (
-    <SettingsPanel>
+    <SettingsPanel deeplinkId='monthly-contributions'>
       <style.root>
         {
           showAllModal &&

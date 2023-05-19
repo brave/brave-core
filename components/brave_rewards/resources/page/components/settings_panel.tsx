@@ -21,10 +21,12 @@ const monthDayFormat = new Intl.DateTimeFormat(undefined, {
 
 interface PanelProps {
   children: React.ReactNode
+  deeplinkId?: string
 }
 
-export function SettingsPanel (props: PanelProps) {
-  return <style.panel>{props.children}</style.panel>
+export function SettingsPanel(props: PanelProps) {
+  return <style.panel
+    data-deeplink-id={props.deeplinkId}>{props.children}</style.panel>
 }
 
 interface HeaderProps {

@@ -89,6 +89,78 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
+    case types.ON_MODAL_ADS_HISTORY_CLOSE: {
+      let ui = state.ui
+      ui.modalAdsHistory = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_MODAL_ADS_HISTORY_OPEN: {
+      let ui = state.ui
+      ui.modalAdsHistory = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_ADS_SETTINGS_CLOSE: {
+      let ui = state.ui
+      ui.adsSettings = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_ADS_SETTINGS_OPEN: {
+      let ui = state.ui
+      ui.adsSettings = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_AUTO_CONTRIBUTE_SETTINGS_CLOSE: {
+      let ui = state.ui
+      ui.autoContributeSettings = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_AUTO_CONTRIBUTE_SETTINGS_OPEN: {
+      let ui = state.ui
+      ui.autoContributeSettings = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_CONTRIBUTIONS_SETTINGS_CLOSE: {
+      let ui = state.ui
+      ui.contributionsSettings = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_CONTRIBUTIONS_SETTINGS_OPEN: {
+      let ui = state.ui
+      ui.contributionsSettings = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
     case types.ON_MODAL_CONNECT_CLOSE: {
       let ui = state.ui
       ui.modalConnect = false

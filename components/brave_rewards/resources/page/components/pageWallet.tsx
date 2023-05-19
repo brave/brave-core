@@ -61,10 +61,11 @@ class PageWallet extends React.Component<Props, State> {
     this.isVerifyUrl()
     this.actions.getMonthlyReportIds()
     this.actions.getExternalWalletProviders()
+    this.isMonthlyStatementsUrl()
   }
 
   onModalResetClose = () => {
-    // Used the by settings page to clear browsing data.
+    // Used by the settings page to clear browsing data.
     if (this.urlHashIs('#manage-wallet')) {
       window.location.hash = ''
     }
@@ -88,6 +89,10 @@ class PageWallet extends React.Component<Props, State> {
     this.setState({
       modalActivity: !this.state.modalActivity
     })
+
+    if (!this.state.modalActivity && this.urlHashIs('#monthly-statements')) {
+      history.replaceState({}, '', '/')
+    }
   }
 
   urlHashIs = (hash: string) => {
@@ -114,6 +119,12 @@ class PageWallet extends React.Component<Props, State> {
   isVerifyUrl = () => {
     if (this.urlHashIs('#verify')) {
       this.toggleVerifyModal()
+    }
+  }
+
+  isMonthlyStatementsUrl = () => {
+    if (this.urlHashIs('#monthly-statements')) {
+      this.onModalActivityToggle()
     }
   }
 

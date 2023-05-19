@@ -42,12 +42,12 @@ export function AutoContributePanel () {
     excludedList: state.excludedList,
     externalWallet: state.externalWallet,
     externalWalletProviderList: state.externalWalletProviderList,
-    userType: state.userType
+    userType: state.userType,
+    showSettings: state.ui.autoContributeSettings
   }))
 
   const [showModal, setShowModal] = React.useState(false)
   const [modalTab, setModalTab] = React.useState(0)
-  const [showConfig, setShowConfig] = React.useState(false)
   const [publisherCountText, setPublisherCountText] = React.useState('')
 
   React.useEffect(() => {
@@ -77,6 +77,14 @@ export function AutoContributePanel () {
 
   const onRestore = () => {
     actions.restorePublishers()
+  }
+
+  const onShowConfigChange = (showConfig: boolean) => {
+    if (showConfig) {
+      actions.onAutoContributeSettingsOpen()
+    } else {
+      actions.onAutoContributeSettingsClose()
+    }
   }
 
   const settingSelectHandler = (key: string) => {
@@ -365,19 +373,19 @@ export function AutoContributePanel () {
   }
 
   return (
-    <SettingsPanel>
+    <SettingsPanel deeplinkId='auto-contribute'>
       <style.root data-test-id='auto-contribute-panel'>
         {renderModal()}
         <PanelHeader
           title={getString('contributionTitle')}
           enabled={data.enabledContribute}
-          showConfig={showConfig}
+          showConfig={data.showSettings}
           onShowConfigChange={
-            data.userType === 'unconnected' ? undefined : setShowConfig
+            data.userType === 'unconnected' ? undefined : onShowConfigChange
           }
           onEnabledChange={onEnabledChange}
         />
-        {showConfig ? renderConfig() : renderContent()}
+        {data.showSettings ? renderConfig() : renderContent()}
       </style.root>
     </SettingsPanel>
   )
