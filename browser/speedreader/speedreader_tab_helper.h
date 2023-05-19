@@ -27,6 +27,12 @@ class NavigationHandle;
 class WebContents;
 }  // namespace content
 
+#if BUILDFLAG(IS_ANDROID)
+namespace ui {
+class ViewAndroid;
+}
+#endif
+
 namespace speedreader {
 using mojom::ContentStyle;
 using mojom::FontFamily;
@@ -177,6 +183,15 @@ class SpeedreaderTabHelper
                             const std::string& value);
 
   void OnGetDocumentSource(bool success, std::string html);
+
+#if BUILDFLAG(IS_ANDROID)
+  friend class ui::ViewAndroid;
+  // Non-JNI equivalent of ui::EventForwarder::OnGestureEvent
+  bool SendGestureEvent(ui::ViewAndroid* view,
+                        int type,
+                        int64_t time_ms,
+                        float scale);
+#endif
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
