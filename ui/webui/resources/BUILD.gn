@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/css_to_wrapper.gni")
 import("//tools/polymer/html_to_wrapper.gni")
@@ -25,6 +26,7 @@ group("grdp") {
   public_deps = [
     ":fonts_grdp",
     ":icons_grdp",
+    ":leo_web_components",
     ":static_grdp",
   ]
   if (include_polymer) {
@@ -88,6 +90,18 @@ if (include_polymer) {
     "page_specific/extensions/extensions_loading_shim.css",
     "br_elements/br_toolbar/br_toolbar_selection_overlay_overrides.css",
   ]
+}
+
+transpile_web_ui("leo_web_components") {
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  entry_points = [ [
+        "leo",
+        rebase_path("leo/web_components.ts"),
+      ] ]
+
+  resource_name = "leo"
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
@@ -213,8 +227,6 @@ leo_icons = [
   "tune.svg",
   "verification-filled.svg",
   "verification-filled-color.svg",
-  "nft.svg",
-  "tune.svg",
   "arrow-down.svg",
   "search-fuel-tank.svg",
   "swap-horizontal.svg",
