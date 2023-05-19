@@ -283,11 +283,13 @@ class SyncWelcomeViewController: SyncViewController {
     }
 
     let syncSettingsVC = SyncSettingsTableViewController(
-      showDoneButton: true,
+      isModallyPresented: true,
       syncAPI: syncAPI,
       syncProfileService: syncProfileServices,
       tabManager: tabManager,
-      windowProtection: windowProtection)
+      windowProtection: windowProtection,
+      requiresAuthentication: false)
+    
     navigationController?.pushViewController(syncSettingsVC, animated: true)
   }
   
