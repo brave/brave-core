@@ -27,27 +27,10 @@ pack_web_resources("brave_vpn_panel_generated") {
 }
 
 repack("resources") {
-  sources = [
-    "$root_gen_dir/brave/components/brave_vpn/resources/panel/brave_vpn_panel_generated.pak",
-    "$root_gen_dir/brave/components/brave_vpn/resources/panel/brave_vpn_static.pak",
-  ]
+  sources = [ "$root_gen_dir/brave/components/brave_vpn/resources/panel/brave_vpn_panel_generated.pak" ]
 
-  deps = [
-    ":brave_vpn_panel_generated",
-    ":brave_vpn_static_resources",
-  ]
+  deps = [ ":brave_vpn_panel_generated" ]
 
   output =
       "$root_gen_dir/brave/components/brave_vpn/brave_vpn_panel_resources.pak"
-}
-
-brave_grit("brave_vpn_static_resources") {
-  source = "static_resources.grd"
-
-  outputs = [
-    "grit/brave_vpn_static_resources.h",
-    "grit/brave_vpn_static_resources_map.cc",
-    "grit/brave_vpn_static_resources_map.h",
-    "brave_vpn_static.pak",
-  ]
 }

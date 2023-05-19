@@ -71,9 +71,6 @@
   "brave/components/brave_rewards/resources/brave_rewards_static_resources.grd": {
     "includes": [53600],
   },
-  "brave/components/brave_vpn/resources/panel/static_resources.grd": {
-    "includes": [53700],
-  },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_page/brave_rewards_page.grd": {
     "META": {"sizes": {"includes": [500]}},
