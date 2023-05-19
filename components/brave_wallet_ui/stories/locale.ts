@@ -257,8 +257,8 @@ provideStrings({
   braveWalletWalletPopupLock: 'Lock wallet',
   braveWalletWalletPopupBackup: 'Backup Wallet',
   braveWalletWalletPopupConnectedSites: 'Connected sites',
-  braveWalletWalletPopupHideBalances: 'Hide balances',
-  braveWalletWalletPopupShowGraph: 'Show graph',
+  braveWalletWalletPopupHideBalances: 'Balances',
+  braveWalletWalletPopupShowGraph: 'Graph',
   braveWalletWalletNFTsTab: 'NFTs tab',
 
   // Backup Warning

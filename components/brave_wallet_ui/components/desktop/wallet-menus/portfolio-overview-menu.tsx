@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
-import Checkbox from '@brave/leo/react/checkbox'
+import Toggle from '@brave/leo/react/toggle'
 
 // Types
 import { WalletRoutes } from '../../../constants/types'
@@ -35,7 +35,7 @@ import {
   StyledWrapper,
   PopupButtonText,
   ButtonIcon,
-  CheckBoxRow
+  ToggleRow
 } from './wellet-menus.style'
 import {
   Row
@@ -104,45 +104,47 @@ export const PortfolioOverviewMenu = () => {
 
   return (
     <StyledWrapper yPosition={42}>
-      <CheckBoxRow onClick={onToggleHideBalances}>
-        <ButtonIcon name='eye-off' />
-        <PopupButtonText>
-          {getLocale('braveWalletWalletPopupHideBalances')}
-        </PopupButtonText>
-        <Checkbox
-          checked={hidePortfolioBalances}
-          onChanged={onToggleHideBalances}
-          size='normal'
-        />
-      </CheckBoxRow>
+      <ToggleRow onClick={onToggleHideBalances}>
+        <Row>
+          <ButtonIcon name='eye-on' />
+          <PopupButtonText>
+            {getLocale('braveWalletWalletPopupHideBalances')}
+          </PopupButtonText>
+          <Toggle
+            checked={!hidePortfolioBalances}
+            onChanged={onToggleHideBalances}
+            size='small'
+          />
+        </Row>
+      </ToggleRow>
 
-      <CheckBoxRow onClick={onToggleHideGraph}>
+      <ToggleRow onClick={onToggleHideGraph}>
         <Row>
           <ButtonIcon name='graph' />
           <PopupButtonText>
             {getLocale('braveWalletWalletPopupShowGraph')}
           </PopupButtonText>
         </Row>
-        <Checkbox
+        <Toggle
           checked={!hidePortfolioGraph}
           onChanged={onToggleHideGraph}
-          size='normal'
+          size='small'
         />
-      </CheckBoxRow>
+      </ToggleRow>
 
-      <CheckBoxRow onClick={onToggleHideNFTsTab}>
+      <ToggleRow onClick={onToggleHideNFTsTab}>
         <Row>
           <ButtonIcon name='nft' />
           <PopupButtonText>
             {getLocale('braveWalletWalletNFTsTab')}
           </PopupButtonText>
         </Row>
-        <Checkbox
+        <Toggle
           checked={!hidePortfolioNFTsTab}
           onChanged={onToggleHideNFTsTab}
-          size='normal'
+          size='small'
         />
-      </CheckBoxRow>
+      </ToggleRow>
 
     </StyledWrapper>
   )
