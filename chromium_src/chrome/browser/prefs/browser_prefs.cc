@@ -55,6 +55,10 @@
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#include "brave/components/sidebar/pref_names.h"
+#endif
+
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteProfilePrefs(Profile* profile) {
   // BEGIN_MIGRATE_OBSOLETE_PROFILE_PREFS
@@ -132,6 +136,18 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   profile->GetPrefs()->ClearPref(kBinanceRefreshToken);
   profile->GetPrefs()->ClearPref(kNewTabPageShowBinance);
   profile->GetPrefs()->ClearPref(kBraveSuggestedSiteSuggestionsEnabled);
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+  // Added May 2023
+  if (profile->GetPrefs()->GetBoolean(
+          sidebar::kSidebarAlignmentChangedTemporarily)) {
+    // If temporarily changed, it means sidebar is set to right.
+    // Just clear alignment prefs as default alignment is changed to right.
+    profile->GetPrefs()->ClearPref(prefs::kSidePanelHorizontalAlignment);
+  }
+
+  profile->GetPrefs()->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
 #endif
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

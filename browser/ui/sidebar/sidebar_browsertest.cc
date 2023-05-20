@@ -23,6 +23,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -351,6 +352,22 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
             widget->GetWindowBoundsInScreen().right());
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_PrefsMigrationTest) {
+  // Prepare temporarily changed condition.
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(sidebar::kSidebarAlignmentChangedTemporarily, true);
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PrefsMigrationTest) {
+  // Check all prefs are changed to default.
+  auto* prefs = browser()->profile()->GetPrefs();
+  EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
+                  ->IsDefaultValue());
+  EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
+                  ->IsDefaultValue());
+}
+
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithPlaylist() {
@@ -405,27 +422,23 @@ class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
                        SidebarRightSideTest) {
-  // Sidebar is on left by default
-  EXPECT_TRUE(IsSidebarUIOnLeft());
+  // Sidebar is on right by default
+  EXPECT_FALSE(IsSidebarUIOnLeft());
 
   brave::ToggleVerticalTabStrip(browser());
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
 
   auto* prefs = browser()->profile()->GetPrefs();
-
   auto* vertical_tabs_container = GetVerticalTabsContainer();
   auto* sidebar_container =
       static_cast<SidebarContainerView*>(controller()->sidebar());
-
-  // Sidebar will be moved to the right when enabling vertical tab strip.
-  EXPECT_FALSE(IsSidebarUIOnLeft());
 
   // Check if vertical tabs is located at first and sidebar is located on the
   // right side.
   EXPECT_LT(vertical_tabs_container->GetBoundsInScreen().x(),
             sidebar_container->GetBoundsInScreen().x());
 
-  // Changed to sidebar on left side again.
+  // Changed to sidebar on left side.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   EXPECT_TRUE(IsSidebarUIOnLeft());
 

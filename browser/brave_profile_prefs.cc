@@ -119,6 +119,7 @@
 #endif
 
 #if defined(TOOLKIT_VIEWS)
+#include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #endif
 
@@ -188,6 +189,12 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
 
   brave_rewards::RewardsService::RegisterProfilePrefsForMigration(registry);
+
+  // Added May 2023
+#if defined(TOOLKIT_VIEWS)
+  registry->RegisterBooleanPref(sidebar::kSidebarAlignmentChangedTemporarily,
+                                false);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
