@@ -15,7 +15,8 @@ import {
 import { Row } from '../../shared-swap.styles'
 
 // Assets
-import CheckIcon from '~/assets/check-icon.svg'
+// FIXME(douglashdaniel): This is not the correct icon
+import CheckIcon from '../../../assets/lp-icons/0x.svg'
 
 interface Props {
   label: string

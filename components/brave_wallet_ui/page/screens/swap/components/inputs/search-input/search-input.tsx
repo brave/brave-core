@@ -6,7 +6,8 @@
 import * as React from 'react'
 
 // Assets
-import SearchIcon from '~/assets/search-icon.svg'
+// FIXME(douglashdaniel): This is not the correct icon
+import SearchIcon from '../../../assets/lp-icons/0x.svg'
 
 // Styled Components
 import {

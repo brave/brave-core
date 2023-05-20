@@ -80,7 +80,7 @@ export const useGetCombinedTokensListQuery = (
     if (isLoadingUserTokens || isLoadingKnownTokens) {
       return {
         isLoading: true,
-        data: []
+        data: [] as BraveWallet.BlockchainToken[]
       }
     }
     const combinedList = selectCombinedTokensList(knownTokens, userTokens)

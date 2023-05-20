@@ -18,7 +18,8 @@ import {
 } from '../../../../../../constants/types'
 
 // Assets
-import CloseIcon from '~/assets/close-icon.svg'
+// FIXME(douglashdaniel): This is not the correct icon
+import CloseIcon from '../../../assets/lp-icons/0x.svg'
 
 import {
   useGetSelectedChainQuery

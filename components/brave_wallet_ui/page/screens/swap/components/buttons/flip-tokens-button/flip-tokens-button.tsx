@@ -6,7 +6,8 @@
 import * as React from 'react'
 
 // Assets
-import ArrowIcon from '~/assets/arrow-icon.svg'
+// FIXME(douglashdaniel): This is not the correct icon
+import ArrowIcon from '../../../assets/lp-icons/0x.svg'
 
 // Styled Components
 import {

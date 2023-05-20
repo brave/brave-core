@@ -21,7 +21,8 @@ import {
 } from '../../../../../../../common/locale'
 
 // Assets
-import FlashIcon from '~/assets/flash-icon.svg'
+// FIXME(douglashdaniel): This is not the correct icon
+import FlashIcon from '../../../assets/lp-icons/0x.svg'
 
 // Components
 import {

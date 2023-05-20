@@ -8,6 +8,7 @@ import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wal
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 import { NftsPinningStatusType } from '../page/constants/action_types'
 import Amount from '../utils/amount'
+import { AccountInfoEntity } from '../common/slices/entities/account-info.entity'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
@@ -422,7 +423,8 @@ export interface PortfolioTokenHistoryAndInfo {
 
 interface BaseTransactionParams {
   network: BraveWallet.NetworkInfo
-  fromAccount: WalletAccountType
+  // FIXME(josheleonard): Should be just AccountInfoEntity
+  fromAccount: WalletAccountType | AccountInfoEntity
   to: string
   value: string
   coin: BraveWallet.CoinType

@@ -5,41 +5,36 @@
 
 import * as React from 'react'
 
-// Redux
-import {
-  useDispatch
-} from 'react-redux'
-import {
-  WalletActions
-} from '../../../../../../common/actions'
-
 // Utils
 import {
   getLocale
 } from '../../../../../../../common/locale'
 
 // Assets
-import HelpIcon from '~/assets/info-icon.svg'
-import CloseIcon from '~/assets/close-icon.svg'
+// FIXME(douglashdaniel): This is not the correct icon
+import HelpIcon from '../../../assets/lp-icons/0x.svg'
+import CloseIcon from '../../../assets/lp-icons/0x.svg'
 
 // Hiding Portfolio Section until we support it.
-// import PortfolioIcon from '~/assets/portfolio-icon.svg'
-
-// Selectors
-import {
-  WalletSelectors
-} from '../../../../../../common/selectors'
-import {
-  useUnsafeWalletSelector
-} from '../../../../../../common/hooks/use-safe-selector'
+// import PortfolioIcon from '../../../assets/portfolio-icon.svg'
 
 import {
-  useGetSelectedChainQuery
+  useGetAccountInfosRegistryQuery,
+  useGetSelectedChainQuery,
+  useSetSelectedAccountMutation
 } from '../../../../../../common/slices/api.slice'
+import {
+  AccountInfoEntity,
+  accountInfoEntityAdaptorInitialState
+} from '../../../../../../common/slices/entities/account-info.entity'
+
+import {
+  getAllAccountsFromRegistry
+} from '../../../../../../utils/account-utils'
 
 // Types
-import { WalletAccountType } from '../../../../../../constants/types'
-// import { RefreshBlockchainStateParams } from '~/constants/types'
+import { BraveKeyrings } from '../../../../../../constants/types'
+import { RefreshBlockchainStateParams } from '../../../constants/types'
 
 // Components
 import { AccountListItemButton } from './account-list-item-button'
@@ -55,23 +50,23 @@ import {
   ShownResponsiveRow
 } from '../../shared-swap.styles'
 
+
 interface Props {
   onHideModal: () => void
-  // refreshBlockchainState: (
-  //   overrides: Partial<RefreshBlockchainStateParams>
-  // ) => Promise<void>
+  refreshBlockchainState: (
+    overrides: Partial<RefreshBlockchainStateParams>
+  ) => Promise<void>
 }
 
 export const AccountModal = (props: Props) => {
-  const { onHideModal } = props
-  // Redux
-  const dispatch = useDispatch()
+  const { onHideModal, refreshBlockchainState } = props
 
-  // Queries
+  // Queries / mutations
   const { data: selectedNetwork } = useGetSelectedChainQuery()
-
-  // Selectors
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const [setSelectedAccount] = useSetSelectedAccountMutation()
+  const { data: accountInfosRegistry = accountInfoEntityAdaptorInitialState } =
+    useGetAccountInfosRegistryQuery(undefined)
+  const accounts = getAllAccountsFromRegistry(accountInfosRegistry)
 
   // Memos
   const networkAccounts = React.useMemo(() => {
@@ -80,14 +75,17 @@ export const AccountModal = (props: Props) => {
 
   // Methods
   const onSelectAccount = React.useCallback(
-    (account: WalletAccountType) => {
-      dispatch(WalletActions.setSelectedAccount(account))
+    async (account: AccountInfoEntity) => {
+      await setSelectedAccount({
+        ...account,
+        keyringId: account.keyringId as BraveKeyrings,
+      })
       onHideModal()
-      // await refreshBlockchainState({ account })
+      await refreshBlockchainState({ account })
     },
     [
-      onHideModal
-      // refreshBlockchainState
+      onHideModal,
+      refreshBlockchainState
     ]
   )
 

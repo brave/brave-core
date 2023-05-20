@@ -18,6 +18,7 @@ import {
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
+import { RefreshBlockchainStateParams } from '../../../constants/types'
 
 // Components
 import {
@@ -40,13 +41,15 @@ interface Props {
   onSearchChanged: (value: string) => void
   searchValue: string
   networkSelectorDisabled: boolean
+  refreshBlockchainState: (overrides: Partial<RefreshBlockchainStateParams>) => Promise<void>
 }
 
 export const SearchWithNetworkSelector = (props: Props) => {
   const {
     onSearchChanged,
     searchValue,
-    networkSelectorDisabled
+    networkSelectorDisabled,
+    refreshBlockchainState
   } = props
 
   // Queries
@@ -58,12 +61,13 @@ export const SearchWithNetworkSelector = (props: Props) => {
 
   const onSelectNetwork = React.useCallback(
     async (network: BraveWallet.NetworkInfo) => {
-      await setNetwork({
+      const { selectedAccount: account } = await setNetwork({
         chainId: network.chainId,
         coin: network.coin
-      })
+      }).unwrap()
       setShowNetworkSelector(false)
-    }, [])
+      await refreshBlockchainState({ network, account })
+    }, [setNetwork, refreshBlockchainState])
 
   return (
     <Wrapper>

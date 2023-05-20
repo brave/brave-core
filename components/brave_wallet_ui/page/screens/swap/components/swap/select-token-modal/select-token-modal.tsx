@@ -19,9 +19,11 @@ import {
 import {
   BraveWallet
 } from '../../../../../../constants/types'
+import { RefreshBlockchainStateParams } from '../../../constants/types'
 
 // Assets
-import CloseIcon from '~/assets/close-icon.svg'
+// FIXME(douglashdaniel): This is not the correct icon
+import CloseIcon from '../../../assets/lp-icons/0x.svg'
 
 // Components
 import {
@@ -54,11 +56,12 @@ interface Props {
   disabledToken: BraveWallet.BlockchainToken | undefined
   selectingFromOrTo: 'from' | 'to'
   getNetworkAssetsList: (network: BraveWallet.NetworkInfo) => BraveWallet.BlockchainToken[]
+  refreshBlockchainState: (overrides: Partial<RefreshBlockchainStateParams>) => Promise<void>
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
-    const { onClose, onSelectToken, getCachedAssetBalance, getNetworkAssetsList, disabledToken, selectingFromOrTo } = props
+    const { onClose, onSelectToken, getCachedAssetBalance, getNetworkAssetsList, disabledToken, selectingFromOrTo, refreshBlockchainState } = props
 
     // Queries
     const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -143,6 +146,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             onSearchChanged={handleOnSearchChanged}
             searchValue={searchValue}
             networkSelectorDisabled={selectingFromOrTo === 'to'}
+            refreshBlockchainState={refreshBlockchainState}
           />
         </Row>
         <HiddenResponsiveRow maxWidth={570}>

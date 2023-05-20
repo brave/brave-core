@@ -33,7 +33,8 @@ import {
 } from '../../../../../../constants/types'
 
 // Assets
-import CaratDownIcon from '~/assets/carat-down-icon.svg'
+// FIXME(douglashdaniel): This is not the correct icon
+import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
 
 // Components
 import { AccountListButton } from '../../buttons/account-list-button/account-list-button'

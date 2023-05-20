@@ -14,9 +14,6 @@ import {
 // Constants
 import LPMetadata from '../../../constants/LpMetadata'
 
-// Context
-// import { useWalletState } from '~/state/wallet'
-
 // Utils
 import Amount from '../../../../../../utils/amount'
 import {
@@ -24,9 +21,10 @@ import {
 } from '../../../../../../../common/locale'
 
 // Assets
-import HorizontalArrowsIcon from '~/assets/horizontal-arrows-icon.svg'
-import FuelTankIcon from '~/assets/fuel-tank-icon.svg'
-import CaratDownIcon from '~/assets/carat-down-icon.svg'
+// FIXME(douglashdaniel): This is not the correct icon
+import HorizontalArrowsIcon from '../../../assets/lp-icons/0x.svg'
+import FuelTankIcon from '../../../assets/lp-icons/0x.svg'
+import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
 
 // Styled Components
 import {

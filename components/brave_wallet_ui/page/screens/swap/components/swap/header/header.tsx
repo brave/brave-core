@@ -14,6 +14,7 @@ import {
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
+import { RefreshBlockchainStateParams } from '../../../constants/types'
 
 // Utils
 import {
@@ -54,7 +55,12 @@ import {
   HiddenResponsiveRow
 } from '../../shared-swap.styles'
 
-export const Header = () => {
+interface Props {
+  refreshBlockchainState: (overrides: Partial<RefreshBlockchainStateParams>) => Promise<void>
+}
+
+export const Header = (props: Props) => {
+  const { refreshBlockchainState } = props
 
   // Queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -71,12 +77,13 @@ export const Header = () => {
 
   // Methods
   const onSelectNetwork = React.useCallback(async (network: BraveWallet.NetworkInfo) => {
-    await setNetwork({
+    const { selectedAccount: account }  = await setNetwork({
       chainId: network.chainId,
       coin: network.coin
-    })
+    }).unwrap()
     setShowNetworkSelector(false)
-  }, [setNetwork])
+    await refreshBlockchainState({ network, account })
+  }, [setNetwork, refreshBlockchainState])
 
   // Hooks
   // const { getNetworkFeeFiatEstimate } = useNetworkFees()
@@ -139,6 +146,7 @@ export const Header = () => {
           {showAccountModal && (
             <AccountModal
               onHideModal={() => setShowAccountModal(false)}
+              refreshBlockchainState={refreshBlockchainState}
             />
           )}
         </SelectorWrapper>

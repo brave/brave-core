@@ -1,28 +1,20 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at http://mozilla.org/MPL/2.0/.
 import BigNumber from 'bignumber.js'
 
 import { CurrencySymbols } from './currency-symbols'
-import { AbbreviationOptions } from '../constants/types'
 
-type BigNumberIsh =
-  | BigNumber
-  | string
-  | number
-
-type AmountLike =
-  | Amount
-  | BigNumberIsh
+export type AbbreviationOptions = 'thousand' | 'million' | 'billion' | 'trillion'
+type BigNumberIsh = BigNumber | string | number
+type AmountLike = Amount | BigNumberIsh
 
 export default class Amount {
   public readonly value?: BigNumber
 
-  public constructor(value: BigNumberIsh) {
-    this.value = value === ''
-      ? undefined
-      : new BigNumber(value)
+  public constructor (value: BigNumberIsh) {
+    this.value = value === '' ? undefined : new BigNumber(value)
   }
 
   static zero (): Amount {
@@ -195,9 +187,7 @@ export default class Amount {
 
     // Format number with commas.
     // https://stackoverflow.com/a/2901298/1946230
-    return commas
-      ? trimmedResult.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-      : trimmedResult
+    return commas ? trimmedResult.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') : trimmedResult
   }
 
   format (significantDigits?: number, commas: boolean = false): string {
@@ -206,26 +196,17 @@ export default class Amount {
     }
 
     if (significantDigits === undefined) {
-      return Amount.formatAmountWithCommas(
-        this.value.toFixed(),
-        commas
-      )
+      return Amount.formatAmountWithCommas(this.value.toFixed(), commas)
     }
 
     // Handle the case where the value is large enough that formatting with
     // significant figures will result in an undesirable loss of precision.
     const desiredDecimalPlaces = 2
     if (this.value.isGreaterThanOrEqualTo(10 ** (significantDigits - desiredDecimalPlaces))) {
-      return Amount.formatAmountWithCommas(
-        this.value.toFixed(desiredDecimalPlaces),
-        commas
-      )
+      return Amount.formatAmountWithCommas(this.value.toFixed(desiredDecimalPlaces), commas)
     }
 
-    return Amount.formatAmountWithCommas(
-      this.value.precision(significantDigits).toFixed(),
-      commas
-    )
+    return Amount.formatAmountWithCommas(this.value.precision(significantDigits).toFixed(), commas)
   }
 
   formatAsAsset (significantDigits?: number, symbol?: string): string {
@@ -234,25 +215,19 @@ export default class Amount {
       return result
     }
 
-    return result === ''
-      ? ''
-      : `${result} ${symbol}`
+    return result === '' ? '' : `${result} ${symbol}`
   }
 
   formatAsFiat (currency?: string): string {
     let decimals
     let value
 
-    const valueDP = this.value && this.value.decimalPlaces()
-    if (
-      this.value === undefined ||
-      this.value.isNaN() ||
-      valueDP === null ||
-      valueDP === undefined
-    ) {
+    if (this.value === undefined || this.value.isNaN()) {
       return ''
     } else if (
-      valueDP < 2 || this.value.isGreaterThanOrEqualTo(10)
+      // @ts-expect-error
+      this.value.decimalPlaces() < 2 ||
+      this.value.isGreaterThanOrEqualTo(10)
     ) {
       decimals = 2
       value = this.value.toNumber()
@@ -269,10 +244,7 @@ export default class Amount {
       maximumFractionDigits: decimals || 20
     }
 
-    // currency code must be upper-case
-    const upperCaseCurrency = currency?.toUpperCase()
-
-    if (upperCaseCurrency && CurrencySymbols[upperCaseCurrency]) {
+    if (currency && CurrencySymbols[currency]) {
       options.style = 'currency'
       options.currency = currency
       options.currencyDisplay = 'narrowSymbol'
@@ -330,7 +302,11 @@ export default class Amount {
   }
 
   // Abbreviate number in units of 1000 e.g., 100000 becomes 100k
-  abbreviate (decimals: number, currency?: string, forceAbbreviation?: AbbreviationOptions): string {
+  abbreviate (
+    decimals: number,
+    currency?: string,
+    forceAbbreviation?: AbbreviationOptions
+  ): string {
     const powers = {
       trillion: Math.pow(10, 12),
       billion: Math.pow(10, 9),

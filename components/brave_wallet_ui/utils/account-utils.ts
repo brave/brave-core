@@ -17,6 +17,7 @@ import registry from '../common/constants/registry'
 import { reduceAddress } from './reduce-address'
 import { EntityState } from '@reduxjs/toolkit'
 import { AccountInfoEntity } from '../common/slices/entities/account-info.entity'
+import { getEntitiesListFromEntityState } from './entities.utils'
 
 export const sortAccountsByName = (accounts: WalletAccountType[]) => {
   return [...accounts].sort(function (a: WalletAccountType, b: WalletAccountType) {
@@ -124,6 +125,8 @@ export function isHardwareAccount(
   return !!account.hardware?.deviceId
 }
 
+
+// FIXME(onyb): replace with findAccountFromRegistry
 export const findAccountInList = (
   account: WalletAccountType | undefined,
   accounts: WalletAccountType[]
@@ -137,4 +140,10 @@ export const findAccountInList = (
         acc.address.toLowerCase() === account.address.toLowerCase()
     ) ?? account
   )
+}
+
+export const getAllAccountsFromRegistry = (
+  entityState: EntityState<AccountInfoEntity>
+): Array<AccountInfoEntity> => {
+  return getEntitiesListFromEntityState(entityState)
 }

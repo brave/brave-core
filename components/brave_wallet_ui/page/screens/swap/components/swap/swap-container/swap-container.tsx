@@ -14,6 +14,9 @@ import {
   useGetSelectedChainQuery
 } from '../../../../../../common/slices/api.slice'
 
+// Types
+import { RefreshBlockchainStateParams } from '../../../constants/types'
+
 // Components
 import { Header } from '../header/header'
 
@@ -28,10 +31,11 @@ import {
 interface Props {
   children?: React.ReactNode
   showPrivacyModal: () => void
+  refreshBlockchainState: (overrides: Partial<RefreshBlockchainStateParams>) => Promise<void>
 }
 
 export const SwapContainer = (props: Props) => {
-  const { children, showPrivacyModal } = props
+  const { children, showPrivacyModal, refreshBlockchainState } = props
 
   // Queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -59,7 +63,9 @@ export const SwapContainer = (props: Props) => {
 
   return (
     <Wrapper>
-      <Header />
+      <Header
+        refreshBlockchainState={refreshBlockchainState}
+      />
       <Container ref={ref}>{children}</Container>
       <PrivacyButton onClick={showPrivacyModal}>{getLocale('braveSwapPrivacyPolicy')}</PrivacyButton>
       <Background
