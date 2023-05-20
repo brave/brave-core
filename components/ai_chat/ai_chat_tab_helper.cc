@@ -331,12 +331,15 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   bool is_summarize_prompt =
       turn.visibility == ConversationTurnVisibility::INTERNAL ? true : false;
 
-  ai_chat_api_->QueryPrompt(
-      base::BindRepeating(&AIChatTabHelper::OnAPIStreamDataReceived,
-                          base::Unretained(this)),
+  auto callbacks = std::make_unique<api_request_helper::StreamCallbacks>();
+  callbacks->data_completed_callback =
       base::BindOnce(&AIChatTabHelper::OnAPIStreamDataComplete,
-                     base::Unretained(this), is_summarize_prompt),
-      std::move(prompt_with_history));
+                     base::Unretained(this), is_summarize_prompt);
+  callbacks->data_received_callback = base::BindRepeating(
+      &AIChatTabHelper::OnAPIStreamDataReceived, base::Unretained(this));
+
+  ai_chat_api_->QueryPrompt(std::move(callbacks),
+                            std::move(prompt_with_history));
 }
 
 bool AIChatTabHelper::IsRequestInProgress() {

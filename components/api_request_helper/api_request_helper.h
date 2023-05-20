@@ -17,7 +17,10 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "services/data_decoder/public/mojom/json_parser.mojom.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
@@ -80,15 +83,27 @@ struct APIRequestOptions {
   absl::optional<base::TimeDelta> timeout;
 };
 
+struct StreamCallbacks {
+  StreamCallbacks();
+  ~StreamCallbacks();
+  using DataReceivedCallback =
+      base::RepeatingCallback<void(const std::string&)>;
+  using DataCompletedCallback =
+      base::OnceCallback<void(bool success, int response_code)>;
+
+  DataReceivedCallback data_received_callback = base::DoNothing();
+  DataCompletedCallback data_completed_callback = base::DoNothing();
+};
+
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
-class APIRequestHelper {
+class APIRequestHelper : public network::SimpleURLLoaderStreamConsumer {
  public:
   using Ticket = std::list<std::unique_ptr<network::SimpleURLLoader>>::iterator;
 
   APIRequestHelper(
       net::NetworkTrafficAnnotationTag annotation_tag,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~APIRequestHelper();
+  ~APIRequestHelper() override;
 
   using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
   using ResponseConversionCallback =
@@ -110,17 +125,14 @@ class APIRequestHelper {
       const APIRequestOptions& request_options = {},
       ResponseConversionCallback conversion_callback = base::NullCallback());
 
-  Ticket Request(const std::string& method,
-                 const GURL& url,
-                 const std::string& payload,
-                 const std::string& payload_content_type,
-                 network::SimpleURLLoaderStreamConsumer* consumer,
-                 const base::flat_map<std::string, std::string>& headers = {},
-                 const APIRequestOptions& request_options = {},
-                 network::SimpleURLLoader::OnResponseStartedCallback
-                     on_response_started_cb = base::NullCallback(),
-                 network::SimpleURLLoader::DownloadProgressCallback
-                     download_progress_cb = base::NullCallback());
+  Ticket RequestSSE(
+      const std::string& method,
+      const GURL& url,
+      const std::string& payload,
+      const std::string& payload_content_type,
+      std::unique_ptr<api_request_helper::StreamCallbacks> callbacks,
+      const base::flat_map<std::string, std::string>& headers = {},
+      const APIRequestOptions& request_options = {});
 
   using DownloadCallback = base::OnceCallback<void(
       base::FilePath,
@@ -134,6 +146,7 @@ class APIRequestHelper {
                   const APIRequestOptions& request_options = {});
 
   void Cancel(const Ticket& ticket);
+  bool IsRequestInProgress();
 
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;
@@ -158,6 +171,30 @@ class APIRequestHelper {
   void OnDownload(SimpleURLLoaderList::iterator iter,
                   DownloadCallback callback,
                   base::FilePath path);
+
+  // network::SimpleURLLoaderStreamConsumer implementation:
+  void OnDataReceived(base::StringPiece string_piece,
+                      base::OnceClosure resume) override;
+  void OnComplete(bool success) override;
+  void OnRetry(base::OnceClosure start_retry) override;
+
+  void OnResponseStarted(const GURL& final_url,
+                         const network::mojom::URLResponseHead& response_head);
+  void OnDownloadProgress(uint64_t current);
+  void OnParseJsonFromStreams(data_decoder::DataDecoder::ValueOrError result);
+
+  bool is_request_in_progress_ = false;
+
+  // To ensure ordered processing of stream chunks, we create our own instances
+  // of DataDecoder and remote for JsonParser. This avoids the issue of
+  // unordered chunks that can occur when calling the static function, which
+  // creates a new instance of the process for each call. By using a single
+  // instance of the parser, we can reuse it for consecutive calls.
+  std::unique_ptr<data_decoder::DataDecoder> data_decoder_;
+  mojo::Remote<data_decoder::mojom::JsonParser> json_parser_;
+
+  std::unique_ptr<StreamCallbacks> stream_callbacks_ = nullptr;
+  api_request_helper::APIRequestHelper::Ticket current_request_;
 
   net::NetworkTrafficAnnotationTag annotation_tag_;
   SimpleURLLoaderList url_loaders_;
