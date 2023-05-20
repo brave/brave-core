@@ -13,7 +13,6 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_split.h"
 #include "brave/components/ai_chat/buildflags.h"
 #include "brave/components/ai_chat/constants.h"
 #include "brave/components/ai_chat/features.h"
@@ -21,7 +20,6 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
 
 namespace {
@@ -82,26 +80,16 @@ AIChatAPI::AIChatAPI(
     CHECK(api_base_url.is_valid()) << "API Url generated was invalid."
                                       "Please check configuration parameter.";
   }
-
-  // We need our own instance of DataDecoder and remote for JsonParser to ensure
-  // ordered processing of stream chunks. Calling the static function creates a
-  // new instance of the process for each call, which may result in unordered
-  // chunks. Thus, we create a single instance of the parser and reuse it for
-  // consecutive calls
-  data_decoder_ = std::make_unique<data_decoder::DataDecoder>();
-  data_decoder_->GetService()->BindJsonParser(
-      json_parser_.BindNewPipeAndPassReceiver());
 }
 
 AIChatAPI::~AIChatAPI() = default;
 
-bool AIChatAPI::IsRequestInProgress() {
-  return is_request_in_progress_;
-}
-
-void AIChatAPI::QueryPrompt(ResponseCallback response_callback,
-                            CompletionCallback completion_callback,
-                            const std::string& prompt) {
+void AIChatAPI::QueryPrompt(
+    api_request_helper::APIRequestHelper::DataReceivedCallback
+        data_received_callback,
+    api_request_helper::APIRequestHelper::DataCompletedCallback
+        data_completed_callback,
+    const std::string& prompt) {
   const GURL api_base_url = GetEndpointBaseUrl();
 
   // Validate that the path is valid
@@ -114,29 +102,10 @@ void AIChatAPI::QueryPrompt(ResponseCallback response_callback,
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
 
-  if (IsRequestInProgress()) {
-    // TODO(nullhook): Send an event for this so UI can reject further inputs
-    DVLOG(1) << __func__ << "There is a request in progress\n";
-    return;
-  }
-
-  // TODO(@nullhook): Add a response started callback
-  response_callback_ = response_callback;
-  completion_callback_ = std::move(completion_callback);
-
-  current_request_ = api_request_helper_.Request(
-      "POST", api_url, CreateJSONRequestBody(dict), "application/json", this,
-      headers, {},
-      base::BindOnce(&AIChatAPI::OnResponseStarted,
-                     weak_ptr_factory_.GetWeakPtr()),
-      base::BindRepeating(&AIChatAPI::OnDownloadProgress,
-                          weak_ptr_factory_.GetWeakPtr()));
-
-  DVLOG(1) << __func__ << " API Request sent\n";
-}
-
-void AIChatAPI::SendDataForTesting(const std::string& text) {
-  OnDataReceived(text, base::BindOnce([]() {}));
+  api_request_helper_.RequestSSE(
+      "POST", api_url, CreateJSONRequestBody(dict), "application/json",
+      std::move(data_received_callback), std::move(data_completed_callback),
+      headers, {});
 }
 
 base::Value::Dict AIChatAPI::CreateApiParametersDict(
@@ -162,74 +131,4 @@ base::Value::Dict AIChatAPI::CreateApiParametersDict(
   DVLOG(1) << __func__ << " Using model: " << model_name;
 
   return dict;
-}
-
-void AIChatAPI::OnDataReceived(base::StringPiece string_piece,
-                               base::OnceClosure resume) {
-  std::vector<std::string> stream_data = base::SplitString(
-      string_piece, "\r\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  static constexpr char kDataPrefix[] = "data: {";
-
-  // Binding a remote will guarantee the order of the messages being sent, so we
-  // must ensure that it is connected.
-  DCHECK(data_decoder_);
-  DCHECK(json_parser_.is_connected());
-
-  for (const auto& data : stream_data) {
-    if (!base::StartsWith(data, kDataPrefix)) {
-      continue;
-    }
-
-    std::string json = data.substr(strlen(kDataPrefix) - 1);
-
-    data_decoder_->ParseJson(json,
-                             base::BindOnce(&AIChatAPI::OnParseJsonIsolated,
-                                            weak_ptr_factory_.GetWeakPtr()));
-  }
-
-  std::move(resume).Run();
-}
-
-void AIChatAPI::OnComplete(bool success) {
-  DCHECK(completion_callback_);
-  DCHECK(current_request_->get());
-
-  int response_code = -1;
-
-  if (network::SimpleURLLoader* simple_url_loader = current_request_->get();
-      simple_url_loader && simple_url_loader->ResponseInfo()->headers) {
-    response_code = simple_url_loader->ResponseInfo()->headers->response_code();
-  }
-
-  is_request_in_progress_ = false;
-  std::move(completion_callback_).Run(success, response_code);
-  api_request_helper_.Cancel(current_request_);
-}
-
-void AIChatAPI::OnRetry(base::OnceClosure start_retry) {
-  // Retries are not enabled for these requests.
-  NOTREACHED();
-}
-
-void AIChatAPI::OnParseJsonIsolated(
-    data_decoder::DataDecoder::ValueOrError result) {
-  if (!result.has_value()) {
-    return;
-  }
-
-  DCHECK(response_callback_);
-
-  if (const std::string* completion = result->FindStringKey("completion")) {
-    response_callback_.Run(*completion);
-  }
-}
-
-void AIChatAPI::OnResponseStarted(
-    const GURL& final_url,
-    const network::mojom::URLResponseHead& response_head) {
-  is_request_in_progress_ = true;
-}
-
-void AIChatAPI::OnDownloadProgress(uint64_t current) {
-  is_request_in_progress_ = true;
 }

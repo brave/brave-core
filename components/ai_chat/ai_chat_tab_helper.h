@@ -82,6 +82,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string history_text_;
   std::string article_summary_;
 
+  bool is_request_in_progress_ = false;
+
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 

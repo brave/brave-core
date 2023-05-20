@@ -6,14 +6,14 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/json/json_writer.h"
+#include "base/strings/string_split.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace api_request_helper {
@@ -102,8 +102,11 @@ bool APIRequestResult::IsResponseCodeValid() const {
 APIRequestHelper::APIRequestHelper(
     net::NetworkTrafficAnnotationTag annotation_tag,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : annotation_tag_(annotation_tag),
-      url_loader_factory_(url_loader_factory) {}
+    : annotation_tag_(annotation_tag), url_loader_factory_(url_loader_factory) {
+  data_decoder_ = std::make_unique<data_decoder::DataDecoder>();
+  data_decoder_->GetService()->BindJsonParser(
+      json_parser_.BindNewPipeAndPassReceiver());
+}
 
 APIRequestHelper::~APIRequestHelper() = default;
 
@@ -116,24 +119,27 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const base::flat_map<std::string, std::string>& headers,
     const APIRequestOptions& request_options,
     ResponseConversionCallback conversion_callback) {
-  auto loader = CreateLoader(method, url, payload, payload_content_type,
-                             request_options.auto_retry_on_network_change,
-                             request_options.enable_cache,
-                             true /* allow_http_error_result*/, headers);
+  auto loader_wrapper_handler = CreateLoaderWrapperHandler(
+      method, url, payload, payload_content_type,
+      request_options.auto_retry_on_network_change,
+      request_options.enable_cache, true /* allow_http_error_result*/, headers);
 
   if (request_options.timeout) {
-    loader->SetTimeoutDuration(request_options.timeout.value());
+    loader_wrapper_handler->url_loader_->SetTimeoutDuration(
+        request_options.timeout.value());
   }
 
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
+  auto iter = url_loaders_.insert(url_loaders_.begin(),
+                                  std::move(loader_wrapper_handler));
+
   if (request_options.max_body_size == -1u) {
-    iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+    iter->get()->url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
         url_loader_factory_.get(),
         base::BindOnce(&APIRequestHelper::OnResponse,
                        weak_ptr_factory_.GetWeakPtr(), iter,
                        std::move(callback), std::move(conversion_callback)));
   } else {
-    iter->get()->DownloadToString(
+    iter->get()->url_loader_->DownloadToString(
         url_loader_factory_.get(),
         base::BindOnce(&APIRequestHelper::OnResponse,
                        weak_ptr_factory_.GetWeakPtr(), iter,
@@ -144,26 +150,28 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
   return iter;
 }
 
-APIRequestHelper::Ticket APIRequestHelper::Request(
+APIRequestHelper::Ticket APIRequestHelper::RequestSSE(
     const std::string& method,
     const GURL& url,
     const std::string& payload,
     const std::string& payload_content_type,
-    network::SimpleURLLoaderStreamConsumer* consumer,
+    DataReceivedCallback data_received_callback,
+    DataCompletedCallback data_completed_callback,
     const base::flat_map<std::string, std::string>& headers,
-    const APIRequestOptions& request_options,
-    network::SimpleURLLoader::OnResponseStartedCallback on_response_started_cb,
-    network::SimpleURLLoader::DownloadProgressCallback download_progress_cb) {
-  auto loader = CreateLoader(method, url, payload, payload_content_type,
-                             request_options.auto_retry_on_network_change,
-                             request_options.enable_cache,
-                             true /* allow_http_error_result*/, headers);
+    const APIRequestOptions& request_options) {
+  auto loader_wrapper_handler = CreateLoaderWrapperHandler(
+      method, url, payload, payload_content_type,
+      request_options.auto_retry_on_network_change,
+      request_options.enable_cache, true /* allow_http_error_result*/, headers);
 
-  loader->SetOnResponseStartedCallback(std::move(on_response_started_cb));
-  loader->SetOnDownloadProgressCallback(download_progress_cb);
+  auto iter = url_loaders_.insert(url_loaders_.begin(),
+                                  std::move(loader_wrapper_handler));
 
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
-  iter->get()->DownloadAsStream(url_loader_factory_.get(), consumer);
+  iter->get()->data_received_callback_ = std::move(data_received_callback);
+  iter->get()->data_completed_callback_ = std::move(data_completed_callback);
+
+  iter->get()->url_loader_->DownloadAsStream(url_loader_factory_.get(),
+                                             iter->get());
 
   return iter;
 }
@@ -178,11 +186,11 @@ APIRequestHelper::Ticket APIRequestHelper::Download(
     const APIRequestOptions& request_options) {
   auto iter = url_loaders_.insert(
       url_loaders_.begin(),
-      CreateLoader({}, url, payload, payload_content_type,
-                   request_options.auto_retry_on_network_change,
-                   request_options.enable_cache,
-                   false /*allow_http_error_result*/, headers));
-  iter->get()->DownloadToFile(
+      CreateLoaderWrapperHandler({}, url, payload, payload_content_type,
+                                 request_options.auto_retry_on_network_change,
+                                 request_options.enable_cache,
+                                 false /*allow_http_error_result*/, headers));
+  iter->get()->url_loader_->DownloadToFile(
       url_loader_factory_.get(),
       base::BindOnce(&APIRequestHelper::OnDownload,
                      weak_ptr_factory_.GetWeakPtr(), iter, std::move(callback)),
@@ -195,7 +203,19 @@ void APIRequestHelper::Cancel(const Ticket& ticket) {
   url_loaders_.erase(ticket);
 }
 
-std::unique_ptr<network::SimpleURLLoader> APIRequestHelper::CreateLoader(
+void APIRequestHelper::Cancel(LoaderWrapperHandler* request_handler) {
+  Ticket iter = base::ranges::find_if(
+      url_loaders_,
+      [request_handler](std::unique_ptr<LoaderWrapperHandler>& handler) {
+        return handler.get() == request_handler;
+      });
+  if (iter != url_loaders_.end()) {
+    Cancel(iter);
+  }
+}
+
+std::unique_ptr<APIRequestHelper::LoaderWrapperHandler>
+APIRequestHelper::CreateLoaderWrapperHandler(
     const std::string& method,
     const GURL& url,
     const std::string& payload,
@@ -232,15 +252,20 @@ std::unique_ptr<network::SimpleURLLoader> APIRequestHelper::CreateLoader(
           ? network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE
           : network::SimpleURLLoader::RetryMode::RETRY_NEVER);
   url_loader->SetAllowHttpErrorResults(allow_http_error_result);
-  return url_loader;
+
+  auto loader_wrapper_handler = std::make_unique<LoaderWrapperHandler>(this);
+  loader_wrapper_handler->RegisterURLLoader(std::move(url_loader));
+
+  return loader_wrapper_handler;
 }
 
 void APIRequestHelper::OnResponse(
-    SimpleURLLoaderList::iterator iter,
+    Ticket iter,
     ResultCallback callback,
     ResponseConversionCallback conversion_callback,
     const std::unique_ptr<std::string> response_body) {
-  auto* loader = iter->get();
+  std::unique_ptr<network::SimpleURLLoader> loader =
+      std::move(iter->get()->url_loader_);
   auto response_code = -1;
   auto error_code = loader->NetError();
   auto final_url = loader->GetFinalURL();
@@ -259,7 +284,8 @@ void APIRequestHelper::OnResponse(
     }
   }
 
-  url_loaders_.erase(iter);
+  Cancel(iter);
+
   if (!response_body) {
     std::move(callback).Run(APIRequestResult(response_code, "", base::Value(),
                                              std::move(headers), error_code,
@@ -283,10 +309,11 @@ void APIRequestHelper::OnResponse(
                      error_code, final_url, std::move(callback)));
 }
 
-void APIRequestHelper::OnDownload(SimpleURLLoaderList::iterator iter,
+void APIRequestHelper::OnDownload(Ticket iter,
                                   DownloadCallback callback,
                                   base::FilePath path) {
-  auto* loader = iter->get();
+  std::unique_ptr<network::SimpleURLLoader> loader =
+      std::move(iter->get()->url_loader_);
   base::flat_map<std::string, std::string> headers;
   if (loader->ResponseInfo()) {
     auto headers_list = loader->ResponseInfo()->headers;
@@ -301,8 +328,83 @@ void APIRequestHelper::OnDownload(SimpleURLLoaderList::iterator iter,
     }
   }
 
-  url_loaders_.erase(iter);
+  Cancel(iter);
   std::move(callback).Run(path, std::move(headers));
+}
+
+APIRequestHelper::LoaderWrapperHandler::LoaderWrapperHandler(
+    APIRequestHelper* api_request_helper)
+    : api_request_helper_(api_request_helper) {}
+APIRequestHelper::LoaderWrapperHandler::~LoaderWrapperHandler() = default;
+
+void APIRequestHelper::LoaderWrapperHandler::OnDataReceived(
+    base::StringPiece string_piece,
+    base::OnceClosure resume) {
+  // Binding a remote will guarantee the order of the messages being sent, so we
+  // must ensure that it is connected.
+  DCHECK(api_request_helper_->data_decoder_);
+  DCHECK(api_request_helper_->json_parser_.is_connected());
+
+  // We split the string into multiple chunks because there are cases where
+  // multiple chunks are received in a single call.
+  std::vector<std::string> stream_data = base::SplitString(
+      string_piece, "\r\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  static constexpr char kDataPrefix[] = "data: {";
+
+  for (const auto& data : stream_data) {
+    if (!base::StartsWith(data, kDataPrefix)) {
+      continue;
+    }
+
+    std::string json = data.substr(strlen(kDataPrefix) - 1);
+
+    api_request_helper_->data_decoder_->ParseJson(
+        json,
+        base::BindOnce(
+            &APIRequestHelper::LoaderWrapperHandler::OnParseJsonFromStream,
+            weak_ptr_factory_.GetWeakPtr()));
+  }
+
+  std::move(resume).Run();
+}
+
+void APIRequestHelper::LoaderWrapperHandler::OnComplete(bool success) {
+  DCHECK(data_completed_callback_);
+  DVLOG(1) << "[[" << __func__ << "]]"
+           << " Response completed\n";
+
+  int response_code = -1;
+
+  if (url_loader_ && url_loader_->ResponseInfo()->headers) {
+    response_code = url_loader_->ResponseInfo()->headers->response_code();
+  }
+
+  std::move(data_completed_callback_).Run(success, response_code);
+  api_request_helper_->Cancel(this);
+}
+
+void APIRequestHelper::LoaderWrapperHandler::OnRetry(
+    base::OnceClosure start_retry) {
+  // Retries are not enabled for these requests.
+  NOTREACHED();
+}
+
+void APIRequestHelper::LoaderWrapperHandler::OnParseJsonFromStream(
+    data_decoder::DataDecoder::ValueOrError result) {
+  DCHECK(data_received_callback_);
+
+  if (!result.has_value()) {
+    return;
+  }
+
+  if (const std::string* completion = result->FindStringKey("completion")) {
+    data_received_callback_.Run(*completion);
+  }
+}
+
+void APIRequestHelper::LoaderWrapperHandler::RegisterURLLoader(
+    std::unique_ptr<network::SimpleURLLoader> loader) {
+  url_loader_ = std::move(loader);
 }
 
 }  // namespace api_request_helper

@@ -331,18 +331,23 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   bool is_summarize_prompt =
       turn.visibility == ConversationTurnVisibility::INTERNAL ? true : false;
 
-  ai_chat_api_->QueryPrompt(
-      base::BindRepeating(&AIChatTabHelper::OnAPIStreamDataReceived,
-                          base::Unretained(this)),
+  auto data_received_callback = base::BindRepeating(
+      &AIChatTabHelper::OnAPIStreamDataReceived, base::Unretained(this));
+
+  auto data_completed_callback =
       base::BindOnce(&AIChatTabHelper::OnAPIStreamDataComplete,
-                     base::Unretained(this), is_summarize_prompt),
-      std::move(prompt_with_history));
+                     base::Unretained(this), is_summarize_prompt);
+
+  is_request_in_progress_ = true;
+  ai_chat_api_->QueryPrompt(std::move(data_received_callback),
+                            std::move(data_completed_callback),
+                            std::move(prompt_with_history));
 }
 
 bool AIChatTabHelper::IsRequestInProgress() {
   DCHECK(ai_chat_api_);
 
-  return ai_chat_api_->IsRequestInProgress();
+  return is_request_in_progress_;
 }
 
 void AIChatTabHelper::OnAPIStreamDataReceived(const std::string& text) {
@@ -370,6 +375,8 @@ void AIChatTabHelper::OnAPIStreamDataComplete(bool is_summarize_prompt,
         CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,
         l10n_util::GetStringUTF8(IDS_CHAT_UI_API_ERROR)});
   }
+
+  is_request_in_progress_ = !success;
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {

@@ -9,66 +9,34 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
-#include "services/data_decoder/public/mojom/json_parser.mojom.h"
-#include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
-#include "services/network/public/mojom/url_response_head.mojom-forward.h"
 
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
-class AIChatAPI : public network::SimpleURLLoaderStreamConsumer {
+class AIChatAPI {
  public:
   explicit AIChatAPI(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   AIChatAPI(const AIChatAPI&) = delete;
   AIChatAPI& operator=(const AIChatAPI&) = delete;
-  ~AIChatAPI() override;
+  ~AIChatAPI();
 
   using ResponseCallback = base::RepeatingCallback<void(const std::string&)>;
   using CompletionCallback =
       base::OnceCallback<void(bool success, int response_code)>;
 
-  bool IsRequestInProgress();
-  void QueryPrompt(ResponseCallback response_callback,
-                   CompletionCallback completion_callback,
+  void QueryPrompt(api_request_helper::APIRequestHelper::DataReceivedCallback
+                       data_received_callback,
+                   api_request_helper::APIRequestHelper::DataCompletedCallback
+                       data_completed_callback,
                    const std::string& prompt);
-
-  void set_response_callback_for_testing(ResponseCallback response_callback) {
-    response_callback_ = response_callback;
-  }
-
-  void SendDataForTesting(const std::string& text);
 
  private:
   base::Value::Dict CreateApiParametersDict(const std::string& prompt);
 
-  // network::SimpleURLLoaderStreamConsumer implementation:
-  void OnDataReceived(base::StringPiece string_piece,
-                      base::OnceClosure resume) override;
-  void OnComplete(bool success) override;
-  void OnRetry(base::OnceClosure start_retry) override;
-
-  void OnParseJsonIsolated(data_decoder::DataDecoder::ValueOrError result);
-  void OnResponseStarted(const GURL& final_url,
-                         const network::mojom::URLResponseHead& response_head);
-  void OnDownloadProgress(uint64_t current);
-
-  ResponseCallback response_callback_;
-  CompletionCallback completion_callback_;
-
-  api_request_helper::APIRequestHelper::Ticket current_request_;
   api_request_helper::APIRequestHelper api_request_helper_;
-
-  std::unique_ptr<data_decoder::DataDecoder> data_decoder_;
-  mojo::Remote<data_decoder::mojom::JsonParser> json_parser_;
-
-  bool is_request_in_progress_ = false;
-
-  base::WeakPtrFactory<AIChatAPI> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_API_H_
