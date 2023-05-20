@@ -413,9 +413,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if defined(TOOLKIT_VIEWS)
   sidebar::SidebarService::RegisterProfilePrefs(registry, chrome::GetChannel());
-  // Set false for showing sidebar on left by default.
-  registry->SetDefaultPrefValue(prefs::kSidePanelHorizontalAlignment,
-                                base::Value(false));
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

@@ -315,20 +315,20 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_InitialHorizontalOptionTest) {
   auto* prefs = browser()->profile()->GetPrefs();
 
-  // Check default horizontal option is left-sided.
-  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-  EXPECT_TRUE(IsSidebarUIOnLeft());
+  // Check default horizontal option is right-sided.
+  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+  EXPECT_FALSE(IsSidebarUIOnLeft());
 
-  // Set right-sided for next testing.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  // Set left-sided for next testing.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, InitialHorizontalOptionTest) {
   auto* prefs = browser()->profile()->GetPrefs();
 
   // Check horizontal option is right-sided.
-  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-  EXPECT_FALSE(IsSidebarUIOnLeft());
+  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+  EXPECT_TRUE(IsSidebarUIOnLeft());
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
