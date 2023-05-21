@@ -11,7 +11,9 @@
 #include <raserror.h>
 #include <stdio.h>
 
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/scoped_file.h"
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
@@ -79,6 +81,28 @@ absl::optional<std::string> SetCredentials(LPCTSTR phone_book_path,
         {"RasSetCredential() - ", internal::GetRasErrorMessage(dw_ret)});
   }
 
+  return absl::nullopt;
+}
+
+absl::optional<std::wstring> TryToCreateEmptyPhoneBookFile() {
+  base::FilePath dir;
+  if (!base::PathService::Get(base::DIR_ROAMING_APP_DATA, &dir)) {
+    return absl::nullopt;
+  }
+
+  dir = dir.Append(L"Microsoft")
+            .Append(L"Network")
+            .Append(L"Connections")
+            .Append(L"Pbk");
+  if (!base::CreateDirectoryAndGetError(dir, nullptr)) {
+    return absl::nullopt;
+  }
+
+  base::FilePath phone_book_path = dir.Append(L"rasphone.pbk");
+  base::ScopedFILE file_stream(base::OpenFile(phone_book_path, "w"));
+  if (file_stream) {
+    return phone_book_path.value();
+  }
   return absl::nullopt;
 }
 
@@ -182,9 +206,9 @@ std::wstring GetPhonebookPath(const std::wstring& entry_name,
   *error = "failed to get phonebook path from ALLUSERSPROFILE and APPDATA";
   VLOG(2) << __func__
           << " : did not find phone book file. This is required to add the VPN "
-             "entry.";
+             "entry. Try to create empty pbk file instead.";
 
-  return L"";
+  return TryToCreateEmptyPhoneBookFile().value_or(L"");
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumconnectionsa
