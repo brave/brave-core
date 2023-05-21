@@ -83,32 +83,52 @@ struct APIRequestOptions {
   absl::optional<base::TimeDelta> timeout;
 };
 
-struct StreamCallbacks {
-  StreamCallbacks();
-  ~StreamCallbacks();
-  using DataReceivedCallback =
-      base::RepeatingCallback<void(const std::string&)>;
-  using DataCompletedCallback =
-      base::OnceCallback<void(bool success, int response_code)>;
-
-  DataReceivedCallback data_received_callback = base::DoNothing();
-  DataCompletedCallback data_completed_callback = base::DoNothing();
-};
-
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
-class APIRequestHelper : public network::SimpleURLLoaderStreamConsumer {
+class APIRequestHelper {
  public:
-  using Ticket = std::list<std::unique_ptr<network::SimpleURLLoader>>::iterator;
-
-  APIRequestHelper(
-      net::NetworkTrafficAnnotationTag annotation_tag,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~APIRequestHelper() override;
-
   using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
   using ResponseConversionCallback =
       base::OnceCallback<absl::optional<std::string>(
           const std::string& raw_response)>;
+
+  using DataReceivedCallback =
+      base::RepeatingCallback<void(const base::Value&)>;
+  using DataCompletedCallback =
+      base::OnceCallback<void(bool success, int response_code)>;
+
+  class LoaderWrapper : public network::SimpleURLLoaderStreamConsumer {
+   public:
+    explicit LoaderWrapper(APIRequestHelper* api_request_helper);
+    ~LoaderWrapper() override = default;
+    LoaderWrapper(const LoaderWrapper&) = delete;
+    LoaderWrapper& operator=(const LoaderWrapper&) = delete;
+
+    // network::SimpleURLLoaderStreamConsumer implementation:
+    void OnDataReceived(base::StringPiece string_piece,
+                        base::OnceClosure resume) override;
+    void OnComplete(bool success) override;
+    void OnRetry(base::OnceClosure start_retry) override;
+    void OnParseJsonFromStream(data_decoder::DataDecoder::ValueOrError result);
+
+   private:
+    friend class APIRequestHelper;
+    std::unique_ptr<network::SimpleURLLoader> loader_;
+    raw_ptr<APIRequestHelper> api_request_helper_;
+
+    // Streaming callbacks
+    DataReceivedCallback data_received_callback_ = base::DoNothing();
+    DataCompletedCallback data_completed_callback_ = base::DoNothing();
+
+    base::WeakPtrFactory<LoaderWrapper> weak_ptr_factory_{this};
+  };
+
+  APIRequestHelper(
+      net::NetworkTrafficAnnotationTag annotation_tag,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  ~APIRequestHelper();
+
+  using Ticket = std::list<std::unique_ptr<LoaderWrapper>>::iterator;
+
   // Each response is expected in json format and will be validated through
   // JsonSanitizer. In cases where json contains values that are not supported
   // by the standard base/json parser it is necessary to convert such values
@@ -130,7 +150,8 @@ class APIRequestHelper : public network::SimpleURLLoaderStreamConsumer {
       const GURL& url,
       const std::string& payload,
       const std::string& payload_content_type,
-      std::unique_ptr<api_request_helper::StreamCallbacks> callbacks,
+      DataReceivedCallback data_received_callback,
+      DataCompletedCallback data_completed_callback,
       const base::flat_map<std::string, std::string>& headers = {},
       const APIRequestOptions& request_options = {});
 
@@ -146,13 +167,12 @@ class APIRequestHelper : public network::SimpleURLLoaderStreamConsumer {
                   const APIRequestOptions& request_options = {});
 
   void Cancel(const Ticket& ticket);
-  bool IsRequestInProgress();
 
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;
   APIRequestHelper& operator=(const APIRequestHelper&) = delete;
 
-  std::unique_ptr<network::SimpleURLLoader> CreateLoader(
+  std::unique_ptr<LoaderWrapper> CreateLoader(
       const std::string& method,
       const GURL& url,
       const std::string& payload,
@@ -162,28 +182,20 @@ class APIRequestHelper : public network::SimpleURLLoaderStreamConsumer {
       bool allow_http_error_result,
       const base::flat_map<std::string, std::string>& headers);
 
-  using SimpleURLLoaderList =
-      std::list<std::unique_ptr<network::SimpleURLLoader>>;
-  void OnResponse(SimpleURLLoaderList::iterator iter,
+  void Cancel(LoaderWrapper* loader_wrapper);
+
+  using LoaderList = std::list<std::unique_ptr<LoaderWrapper>>;
+  void OnResponse(LoaderList::iterator iter,
                   ResultCallback callback,
                   ResponseConversionCallback conversion_callback,
                   const std::unique_ptr<std::string> response_body);
-  void OnDownload(SimpleURLLoaderList::iterator iter,
+  void OnDownload(LoaderList::iterator iter,
                   DownloadCallback callback,
                   base::FilePath path);
-
-  // network::SimpleURLLoaderStreamConsumer implementation:
-  void OnDataReceived(base::StringPiece string_piece,
-                      base::OnceClosure resume) override;
-  void OnComplete(bool success) override;
-  void OnRetry(base::OnceClosure start_retry) override;
 
   void OnResponseStarted(const GURL& final_url,
                          const network::mojom::URLResponseHead& response_head);
   void OnDownloadProgress(uint64_t current);
-  void OnParseJsonFromStreams(data_decoder::DataDecoder::ValueOrError result);
-
-  bool is_request_in_progress_ = false;
 
   // To ensure ordered processing of stream chunks, we create our own instances
   // of DataDecoder and remote for JsonParser. This avoids the issue of
@@ -193,11 +205,8 @@ class APIRequestHelper : public network::SimpleURLLoaderStreamConsumer {
   std::unique_ptr<data_decoder::DataDecoder> data_decoder_;
   mojo::Remote<data_decoder::mojom::JsonParser> json_parser_;
 
-  std::unique_ptr<StreamCallbacks> stream_callbacks_ = nullptr;
-  api_request_helper::APIRequestHelper::Ticket current_request_;
-
   net::NetworkTrafficAnnotationTag annotation_tag_;
-  SimpleURLLoaderList url_loaders_;
+  LoaderList url_loaders_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WeakPtrFactory<APIRequestHelper> weak_ptr_factory_{this};
 };

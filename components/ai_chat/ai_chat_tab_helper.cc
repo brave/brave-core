@@ -331,14 +331,17 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   bool is_summarize_prompt =
       turn.visibility == ConversationTurnVisibility::INTERNAL ? true : false;
 
-  auto callbacks = std::make_unique<api_request_helper::StreamCallbacks>();
-  callbacks->data_completed_callback =
+
+  auto data_completed_callback =
       base::BindOnce(&AIChatTabHelper::OnAPIStreamDataComplete,
                      base::Unretained(this), is_summarize_prompt);
-  callbacks->data_received_callback = base::BindRepeating(
+  auto data_received_callback = base::BindRepeating(
       &AIChatTabHelper::OnAPIStreamDataReceived, base::Unretained(this));
 
-  ai_chat_api_->QueryPrompt(std::move(callbacks),
+  // Use the streaming API, since this is a conversation request.
+  // TODO: send the conversation entry ref as a callback param
+  ai_chat_api_->QueryPromptStreaming(std::move(data_received_callback),
+                            std::move(data_completed_callback),
                             std::move(prompt_with_history));
 }
 

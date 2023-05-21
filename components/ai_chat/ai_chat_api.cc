@@ -84,8 +84,31 @@ AIChatAPI::AIChatAPI(
 
 AIChatAPI::~AIChatAPI() = default;
 
-void AIChatAPI::QueryPrompt(
-    std::unique_ptr<api_request_helper::StreamCallbacks> callbacks,
+void AIChatAPI::QueryPrompt(ResponseCallback callback,
+                            const std::string& prompt) {
+  const GURL api_base_url = GetEndpointBaseUrl();
+
+  // Validate that the path is valid
+  GURL api_url = api_base_url.Resolve(ai_chat::kAIChatCompletionPath);
+  CHECK(api_url.is_valid())
+      << "Invalid API Url, check path: " << api_url.spec();
+
+  const base::Value::Dict& dict = CreateApiParametersDict(prompt);
+  base::flat_map<std::string, std::string> headers;
+  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  headers.emplace("Accept", "text/event-stream");
+
+  auto internal_callback =
+      base::BindOnce(&AIChatAPI::OnGetResponse, weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback));
+
+  api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
+                              "application/json", std::move(internal_callback),
+                              headers, {});
+}
+void AIChatAPI::QueryPromptStreaming(
+    StreamingResponseCallback on_received_callback,
+    StreamingCompletionCallback on_completed_callback,
     const std::string& prompt) {
   const GURL api_base_url = GetEndpointBaseUrl();
 
@@ -99,13 +122,16 @@ void AIChatAPI::QueryPrompt(
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
 
-  api_request_helper_.RequestSSE("POST", api_url, CreateJSONRequestBody(dict),
-                                 "application/json", std::move(callbacks),
-                                 headers, {});
-}
+  auto data_callback = base::BindRepeating(&AIChatAPI::OnStreamingDataReceived,
+                                           base::Unretained(this),
+                                           std::move(on_received_callback));
+  auto completed_callback = base::BindRepeating(
+      &AIChatAPI::OnStreamingDataCompleted, base::Unretained(this),
+      std::move(on_completed_callback));
 
-bool AIChatAPI::IsRequestInProgress() {
-  return api_request_helper_.IsRequestInProgress();
+  api_request_helper_.RequestSSE("POST", api_url, CreateJSONRequestBody(dict),
+                                 "application/json", std::move(data_callback),
+                                 std::move(completed_callback), headers, {});
 }
 
 base::Value::Dict AIChatAPI::CreateApiParametersDict(
