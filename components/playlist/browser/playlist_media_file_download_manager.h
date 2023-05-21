@@ -56,6 +56,7 @@ class PlaylistMediaFileDownloadManager
     virtual bool IsValidPlaylistItem(const std::string& id) = 0;
     virtual base::FilePath GetMediaPathForPlaylistItemItem(
         const std::string& id) = 0;
+    virtual base::SequencedTaskRunner* GetTaskRunner() = 0;
 
    protected:
     virtual ~Delegate() {}
@@ -88,6 +89,7 @@ class PlaylistMediaFileDownloadManager
   void OnMediaFileReady(const std::string& id,
                         const std::string& media_file_path) override;
   void OnMediaFileGenerationFailed(const std::string& id) override;
+  base::SequencedTaskRunner* GetTaskRunner() override;
 
   void TryStartingDownloadTask();
   std::unique_ptr<DownloadJob> PopNextJob();

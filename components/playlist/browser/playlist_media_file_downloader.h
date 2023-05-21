@@ -63,6 +63,9 @@ class PlaylistMediaFileDownloader
     // Called when target media file generation failed.
     virtual void OnMediaFileGenerationFailed(const std::string& id) = 0;
 
+    // Returns task runner to move file.
+    virtual base::SequencedTaskRunner* GetTaskRunner() = 0;
+
    protected:
     virtual ~Delegate() {}
   };
@@ -93,7 +96,8 @@ class PlaylistMediaFileDownloader
  private:
   void ResetDownloadStatus();
   void DownloadMediaFile(const GURL& url);
-  void OnMediaFileDownloaded(base::FilePath path);
+  void OnMediaFileDownloaded(const std::string& mime_type, base::FilePath path);
+  void OnRenameFile(const base::FilePath& new_path, bool result);
 
   void NotifyFail(const std::string& id);
   void NotifySucceed(const std::string& id, const std::string& media_file_path);

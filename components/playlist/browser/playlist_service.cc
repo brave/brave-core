@@ -31,6 +31,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "net/base/filename_util.h"
 
 namespace playlist {
 namespace {
@@ -898,6 +899,9 @@ void PlaylistService::RemoveLocalDataForItemImpl(
   if (!item->cached)
     return;
 
+  base::FilePath media_path;
+  CHECK(net::FileURLToFilePath(item->media_path, &media_path));
+
   item->cached = false;
   DCHECK(item->media_source.is_valid()) << "media_source should be valid";
   item->media_path = item->media_source;
@@ -905,12 +909,9 @@ void PlaylistService::RemoveLocalDataForItemImpl(
                           base::Value(ConvertPlaylistItemToValue(item)));
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemLocalDataRemoved, item->id);
 
-  base::FilePath media_path;
-  if (GetMediaPath(item->id, &media_path)) {
-    auto delete_file = base::BindOnce(
-        [](const base::FilePath& path) { base::DeleteFile(path); }, media_path);
-    GetTaskRunner()->PostTask(FROM_HERE, std::move(delete_file));
-  }
+  auto delete_file = base::BindOnce(
+      [](const base::FilePath& path) { base::DeleteFile(path); }, media_path);
+  GetTaskRunner()->PostTask(FROM_HERE, std::move(delete_file));
 }
 
 void PlaylistService::OnMediaFileDownloadFinished(
@@ -1085,14 +1086,15 @@ bool PlaylistService::GetMediaPath(const std::string& id,
                                    base::FilePath* media_path) {
   constexpr base::FilePath::CharType kMediaFileName[] =
       FILE_PATH_LITERAL("media_file");
-
-  std::string extension = "mp4";
+  CHECK(media_path);
+  *media_path = GetPlaylistItemDirPath(id).Append(kMediaFileName);
 
   if (HasPlaylistItem(id)) {
     // Try to infer file extension from the source URL.
     auto item = GetPlaylistItem(id);
     GURL url(item->media_source);
     auto path = url.path();
+    std::string extension;
     if (!path.empty()) {
       auto parts = base::SplitString(path, ".", base::TRIM_WHITESPACE,
                                      base::SPLIT_WANT_NONEMPTY);
@@ -1100,11 +1102,12 @@ bool PlaylistService::GetMediaPath(const std::string& id,
         extension = parts.back();
       }
     }
+
+    if (!extension.empty()) {
+      *media_path = media_path->AddExtensionASCII(extension);
+    }
   }
 
-  *media_path = GetPlaylistItemDirPath(id)
-                    .Append(kMediaFileName)
-                    .AddExtensionASCII(extension);
   DCHECK(!media_path->empty());
 
   if (media_path->ReferencesParent()) {

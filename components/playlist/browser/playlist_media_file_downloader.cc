@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
@@ -30,6 +31,46 @@
 #include "url/gurl.h"
 
 namespace playlist {
+
+// References
+// * List of mimetypes registered to IANA
+//   * Video:
+//   https://www.iana.org/assignments/media-types/media-types.xhtml#video
+//   * Audio:
+//   https://www.iana.org/assignments/media-types/media-types.xhtml#audio
+// * Chromium media framework supports
+//   * media/base/mime_util_internal.cc
+// * Mimetype to extension
+//   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+constexpr auto kMimeTypeToExtension =
+    base::MakeFixedFlatMap<base::StringPiece /*mime_type*/,
+                           base::StringPiece /*extension*/>({
+        {"audio/wav", "wav"},
+        {"audio/x-wav", "wav"},
+        {"audio/webm", "weba"},
+        {"video/webm", "webm"},
+        {"audio/ogg", "oga"},
+        {"video/ogg", "ogv"},
+        {"application/ogg", "ogx"},
+        {"audio/flac", "flac"},
+        {"audio/mpeg", "mp3"},
+        {"audio/mp3", "mp3"},
+        {"audio/x-mp3", "mp3"},
+        {"video/mpeg", "mpeg"},
+        {"audio/mp4", "mp4"},
+        {"video/mp4", "mp4"},
+        {"audio/aac", "aac"},
+        {"audio/x-m4a", "m4a"},
+        {"video/x-m4v", "m4v"},
+        {"video/3gpp", "3gp"},
+        // Stream types
+        {"application/x-mpegurl", "m3u8"},
+        {"application/vnd.apple.mpegurl", "m3u8"},
+        {"audio/mpegurl", "m3u8"},
+        {"audio/x-mpegurl", "m3u8"},
+        {"video/mp2t", "ts"},
+    });
+
 namespace {
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
@@ -194,7 +235,7 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
                << download::DownloadInterruptReasonToString(
                       item->GetLastReason());
     ScheduleToDetachCachedFile(item);
-    OnMediaFileDownloaded({});
+    OnMediaFileDownloaded({}, {});
     return;
   }
 
@@ -206,8 +247,25 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
 
   if (item->IsDone()) {
     ScheduleToDetachCachedFile(item);
-    OnMediaFileDownloaded(destination_path_);
+
+    auto header = item->GetResponseHeaders();
+    DCHECK(header);
+    std::string mime_type;
+    header->GetMimeType(&mime_type);
+    DVLOG(2) << "mime_type from response header: " << mime_type;
+    OnMediaFileDownloaded(mime_type, destination_path_);
     return;
+  }
+}
+
+void PlaylistMediaFileDownloader::OnRenameFile(const base::FilePath& new_path,
+                                               bool result) {
+  if (result) {
+    NotifySucceed(current_item_->id, new_path.AsUTF8Unsafe());
+  } else {
+    DLOG(WARNING)
+        << "Failed to rename file with extension, but shouldn't be fatal error";
+    NotifySucceed(current_item_->id, destination_path_.AsUTF8Unsafe());
   }
 }
 
@@ -230,7 +288,9 @@ void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
   download_manager_->DownloadUrl(std::move(params));
 }
 
-void PlaylistMediaFileDownloader::OnMediaFileDownloaded(base::FilePath path) {
+void PlaylistMediaFileDownloader::OnMediaFileDownloaded(
+    const std::string& mime_type,
+    base::FilePath path) {
   DVLOG(2) << __func__ << ": downloaded media file at " << path;
 
   DCHECK(current_item_);
@@ -245,7 +305,25 @@ void PlaylistMediaFileDownloader::OnMediaFileDownloaded(base::FilePath path) {
     return;
   }
 
-  NotifySucceed(current_item_->id, path.AsUTF8Unsafe());
+  DCHECK_EQ(path, destination_path_);
+  if (path.Extension().empty() && !mime_type.empty()) {
+    // Try to infer proper extension from mime_type
+    // TODO(sko) It's unlikely but there could be parameter or suffix delimited
+    // with "+" or ";" in |mime_type|.
+    if (kMimeTypeToExtension.count(mime_type)) {
+      auto new_path =
+          path.AddExtensionASCII(kMimeTypeToExtension.at(mime_type));
+      delegate_->GetTaskRunner()->PostTaskAndReplyWithResult(
+          FROM_HERE, base::BindOnce(&base::Move, path, new_path),
+          base::BindOnce(&PlaylistMediaFileDownloader::OnRenameFile,
+                         weak_factory_.GetWeakPtr(), new_path));
+      return;
+    }
+
+    DLOG(WARNING) << "We can't find out what extension the file should have.";
+  }
+
+  NotifySucceed(current_item_->id, destination_path_.AsUTF8Unsafe());
 }
 
 void PlaylistMediaFileDownloader::RequestCancelCurrentPlaylistGeneration() {

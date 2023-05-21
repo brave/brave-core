@@ -110,6 +110,9 @@ class PlaylistService : public KeyedService,
 #endif  // BUILDFLAG(IS_ANDROID)
 
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
+
+  // This returns candidate path, which possibly doesn't have file extension.
+  // Don't depend on this method to access the actual cache on the local disk.
   bool GetMediaPath(const std::string& id, base::FilePath* media_path);
 
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
@@ -242,8 +245,6 @@ class PlaylistService : public KeyedService,
                          bool update_media_src_and_retry_on_fail,
                          DownloadMediaFileCallback callback);
 
-  base::SequencedTaskRunner* GetTaskRunner();
-
   void CleanUpMalformedPlaylistItems();
 
   // Delete orphaned playlist item directories that are not included in prefs.
@@ -325,6 +326,7 @@ class PlaylistService : public KeyedService,
   bool IsValidPlaylistItem(const std::string& id) override;
   base::FilePath GetMediaPathForPlaylistItemItem(
       const std::string& id) override;
+  base::SequencedTaskRunner* GetTaskRunner() override;
 
   // PlaylistThumbnailDownloader::Delegate overrides:
   // Called when thumbnail image file is downloaded.

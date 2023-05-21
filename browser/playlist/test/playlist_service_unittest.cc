@@ -771,8 +771,9 @@ TEST_F(PlaylistServiceUnitTest, MediaFileExtension) {
   auto* service = playlist_service();
   base::FilePath media_path;
   EXPECT_TRUE(service->GetMediaPath("foo", &media_path));
-  // The default extension is mp4
-  EXPECT_EQ(media_path.Extension(), FILE_PATH_LITERAL(".mp4"));
+
+  // When a url doesn't have extension.
+  EXPECT_TRUE(media_path.Extension().empty());
 
   // When an item has url with file extension, the destination file path should
   // have the same extension.

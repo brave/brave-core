@@ -195,4 +195,8 @@ void PlaylistMediaFileDownloadManager::OnMediaFileGenerationFailed(
                      weak_factory_.GetWeakPtr()));
 }
 
+base::SequencedTaskRunner* PlaylistMediaFileDownloadManager::GetTaskRunner() {
+  return delegate_->GetTaskRunner();
+}
+
 }  // namespace playlist
