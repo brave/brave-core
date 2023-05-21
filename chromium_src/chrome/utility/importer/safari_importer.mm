@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/files/file_util.h"
 #include "base/logging.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/grit/generated_resources.h"
@@ -34,17 +33,9 @@ void CorrectSafariReadingListPath(
 }
 }  // namespace
 
-#define fileSystemRepresentation fileSystemRepresentation];                   \
-  int64_t file_size = 0;                                                      \
-  if (base::GetFileSize(base::FilePath(db_path), &file_size) && !file_size) { \
-    return false;                                                             \
-  }                                                                           \
-  VLOG(1) << [favicons_db_path fileSystemRepresentation
-
 #undef IDS_BOOKMARK_GROUP_FROM_SAFARI
 #define IDS_BOOKMARK_GROUP_FROM_SAFARI GetBookmarkGroupFromSafariID()); \
   CorrectSafariReadingListPath(bookmarks
 #include "src/chrome/utility/importer/safari_importer.mm"
 #undef IDS_BOOKMARK_GROUP_FROM_SAFARI
 #define IDS_BOOKMARK_GROUP_FROM_SAFARI GetBookmarkGroupFromSafariID()
-#undef fileSystemRepresentation
