@@ -30,5 +30,5 @@ Here is the conversational history (between the user and you) prior to the quest
 &lt;/history&gt;</message>
 
 <message name="IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT" translateable="false">
-Propose up to 3 very short questions that a reader may ask about that article. The questions should find the different and most important sections of the article. The questions should be short and colloquial - 4 words maximum. Separate each suggested question with the character "|". End the question list with a &lt;/response&gt; tag.</message>
+Propose up to 3 very short questions that a reader may ask about that article. Consider questions left unanswered, intriguing or unusual elements of the story, or other information that might be related to the story that was not discussed. Separate each suggested question with the character "|". End the question list with a &lt;/response&gt; tag.</message>
 </grit-part>
