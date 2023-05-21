@@ -26,6 +26,10 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   }
 
   prefs->ClearPref(prefs::kShowButton);
+
+  // Added 05/2023
+  prefs->ClearPref(prefs::kAdsWereDisabled);
+  prefs->ClearPref(prefs::kHasAdsP3AState);
 }
 
 }  // namespace brave_rewards

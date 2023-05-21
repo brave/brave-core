@@ -179,6 +179,8 @@ void RegisterProfilePrefsForMigration(
 
   // Added Feb 2023
   registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
+
+  brave_rewards::RewardsService::RegisterProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

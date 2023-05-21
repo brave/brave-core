@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 
-#include <string>
-
 #include "base/time/time.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -21,7 +19,6 @@ extern const char kInlineTipTriggerHistogramName[];
 extern const char kToolbarButtonTriggerHistogramName[];
 extern const char kTipsSentHistogramName[];
 extern const char kAutoContributionsStateHistogramName[];
-extern const char kAdsStateHistogramName[];
 extern const char kAdsEnabledDurationHistogramName[];
 
 enum class AutoContributionsState {
@@ -51,15 +48,6 @@ enum class AdsState {
 void RecordTipsSent(size_t tip_count);
 
 void RecordAutoContributionsState(bool ac_enabled);
-
-void RecordAdsState(AdsState state);
-
-void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
-                                      const std::string& pref);
-
-// Records an initial metric state ("disabled" or "enabled") if it was not done
-// before. Intended to be called if the user has already created a wallet.
-void MaybeRecordInitialAdsState(PrefService* local_state);
 
 void RecordNoWalletCreatedForAllMetrics();
 

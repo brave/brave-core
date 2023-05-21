@@ -78,6 +78,10 @@ extern const char kWalletBitflyer[];
 extern const char kWalletGemini[];
 extern const char kWalletCreationEnvironment[];
 
+// deprecated p3a prefs
+extern const char kAdsWereDisabled[];
+extern const char kHasAdsP3AState[];
+
 }  // namespace brave_rewards::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_PREF_NAMES_H_

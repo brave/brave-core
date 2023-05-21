@@ -266,6 +266,7 @@ class RewardsService : public KeyedService {
   void RemoveObserver(RewardsServiceObserver* observer);
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
 
   // DEPRECATED: Use `SetMonthlyContribution`.
   virtual void SaveRecurringTip(const std::string& publisher_key,

@@ -11,9 +11,7 @@ namespace brave_ads::prefs {
 // Brave Ads version pref
 extern const char kVersion[];
 
-// p2a and p3a prefs
-extern const char kAdsWereDisabled[];
-extern const char kHasAdsP3AState[];
+// p2a pref
 extern const char kP2AStoragePrefNamePrefix[];
 
 // Notification prefs
