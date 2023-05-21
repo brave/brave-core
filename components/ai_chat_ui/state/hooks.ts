@@ -11,16 +11,34 @@ export function useConversationHistory() {
   const [conversationHistory, setConversationHistory] = React.useState<ConversationTurn[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
+  const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
+  const [userAllowsAutoGenerating, setUserAllowsAutoGeneratingState] = React.useState(false)
 
   const getConversationHistory = () => {
     getPageHandlerInstance().pageHandler.getConversationHistory().then(res => setConversationHistory(res.conversationHistory))
   }
 
+  const setUserAllowsAutoGenerating = (value: boolean) => {
+    getPageHandlerInstance().pageHandler.setAutoGenerateQuestions(value)
+  }
+
   const getSuggestedQuestions = () => {
-    getPageHandlerInstance().pageHandler.getSuggestedQuestions().then(r => setSuggestedQuestions(r.questions))
+    getPageHandlerInstance().pageHandler.getSuggestedQuestions().then(r => {
+      setSuggestedQuestions(r.questions)
+      setCanGenerateQuestions(r.canGenerate)
+      setUserAllowsAutoGeneratingState(r.autoGenerate)
+    })
+  }
+
+  const generateSuggestedQuestions = () => {
+    getPageHandlerInstance().pageHandler.generateQuestions()
   }
 
   const initialiseForTargetTab = () => {
+    // Replace state from backend
+    // TODO(petemill): Perhaps we need a simple GetState mojom function
+    // and OnStateChanged event so we
+    // don't need to call multiple functions or handle multiple events.
     getConversationHistory()
     getSuggestedQuestions()
   }
@@ -28,14 +46,17 @@ export function useConversationHistory() {
   React.useEffect(() => {
     initialiseForTargetTab()
 
-    // We have a direct function for getting questions so that we only perform the expensive API operation
-    // when this WebUI is active. If we only had onSuggestedQuestionsChanged, then the TabHelper
-    // would always fetch questions from the remote API when the text is available
-    getPageHandlerInstance().callbackRouter.onPageTextIsAvailable.addListener(getSuggestedQuestions)
-
-    getPageHandlerInstance().callbackRouter.onConversationHistoryUpdate.addListener(getConversationHistory)
+    getPageHandlerInstance().callbackRouter.onConversationHistoryUpdate.addListener(() => {
+      getConversationHistory()
+      setCanGenerateQuestions(false)
+    })
     getPageHandlerInstance().callbackRouter.onAPIRequestInProgress.addListener(setIsGenerating)
-    getPageHandlerInstance().callbackRouter.onSuggestedQuestionsChanged.addListener(setSuggestedQuestions)
+    getPageHandlerInstance().callbackRouter.onSuggestedQuestionsChanged
+      .addListener((questions: string[], hasGenerated: boolean, autoGenerate: boolean) => {
+        setSuggestedQuestions(questions)
+        setCanGenerateQuestions(!hasGenerated)
+        setUserAllowsAutoGeneratingState(autoGenerate)
+      })
 
     // When the target tab changes, clean tab-specific data
     getPageHandlerInstance().callbackRouter.onTargetTabChanged.addListener(initialiseForTargetTab)
@@ -44,7 +65,11 @@ export function useConversationHistory() {
   return {
     conversationHistory,
     isGenerating,
-    suggestedQuestions
+    suggestedQuestions,
+    canGenerateQuestions,
+    userAllowsAutoGenerating,
+    generateSuggestedQuestions,
+    setUserAllowsAutoGenerating
   }
 }
 

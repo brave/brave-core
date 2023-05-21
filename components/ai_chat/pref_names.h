@@ -12,6 +12,8 @@ namespace ai_chat::prefs {
 
 constexpr char kBraveChatHasSeenDisclaimer[] =
     "brave.ai_chat.has_seen_disclaimer";
+constexpr char kBraveChatAutoGenerateQuestions[] =
+    "brave.ai_chat.auto_generate_questions";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 

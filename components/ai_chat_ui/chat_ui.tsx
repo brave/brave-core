@@ -23,7 +23,7 @@ import getPageHandlerInstance from './api/page_handler'
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 function App () {
-  const { conversationHistory, isGenerating, suggestedQuestions } = useConversationHistory()
+  const model = useConversationHistory()
   const { value, setValue } = useInput();
   const { hasSeenAgreement, handleAgreeClick } = useAgreement()
 
@@ -49,9 +49,13 @@ function App () {
     conversationList = (
       <>
         <ConversationList
-          list={conversationHistory}
-          isLoading={isGenerating}
-          suggestedQuestions={suggestedQuestions}
+          list={model.conversationHistory}
+          isLoading={model.isGenerating}
+          suggestedQuestions={model.suggestedQuestions}
+          canGenerateQuestions={model.canGenerateQuestions}
+          userAllowsAutoGenerating={model.userAllowsAutoGenerating}
+          onSetUserAllowsAutoGenerating={model.setUserAllowsAutoGenerating}
+          onGenerateSuggestedQuestions={model.generateSuggestedQuestions}
           onQuestionSubmit={handleQuestionSubmit}
         />
       </>

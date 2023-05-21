@@ -102,7 +102,22 @@ void AIChatUIPageHandler::GetConversationHistory(
 
 void AIChatUIPageHandler::GetSuggestedQuestions(
     GetSuggestedQuestionsCallback callback) {
-  std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions());
+  bool can_generate;
+  bool auto_generate;
+  std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions(
+                              can_generate, auto_generate),
+                          can_generate, auto_generate);
+}
+
+void AIChatUIPageHandler::GenerateQuestions() {
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->GenerateQuestions();
+  }
+}
+
+void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
+  profile_->GetOriginalProfile()->GetPrefs()->SetBoolean(
+      ai_chat::prefs::kBraveChatAutoGenerateQuestions, value);
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
@@ -116,12 +131,6 @@ void AIChatUIPageHandler::OnHistoryUpdate() {
   }
 }
 
-void AIChatUIPageHandler::OnPageTextIsAvailable() {
-  if (page_.is_bound()) {
-    page_->OnPageTextIsAvailable();
-  }
-}
-
 void AIChatUIPageHandler::OnAPIRequestInProgress(bool in_progress) {
   if (page_.is_bound()) {
     page_->OnAPIRequestInProgress(in_progress);
@@ -129,9 +138,12 @@ void AIChatUIPageHandler::OnAPIRequestInProgress(bool in_progress) {
 }
 
 void AIChatUIPageHandler::OnSuggestedQuestionsChanged(
-    std::vector<std::string> questions) {
+    std::vector<std::string> questions,
+    bool has_generated,
+    bool auto_generate) {
   if (page_.is_bound()) {
-    page_->OnSuggestedQuestionsChanged(std::move(questions));
+    page_->OnSuggestedQuestionsChanged(std::move(questions), has_generated,
+                                       auto_generate);
   }
 }
 

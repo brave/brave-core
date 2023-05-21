@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
@@ -18,7 +17,10 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/constants.h"
+#include "brave/components/ai_chat/pref_names.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "ui/accessibility/ax_node.h"
@@ -119,7 +121,9 @@ void AddTextNodesToVector(const ui::AXNode* node,
 
 AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<AIChatTabHelper>(*web_contents) {
+      content::WebContentsUserData<AIChatTabHelper>(*web_contents),
+      pref_service_(
+          *user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())) {
   ai_chat_api_ =
       std::make_unique<AIChatAPI>(web_contents->GetBrowserContext()
                                       ->GetDefaultStoragePartition()
@@ -131,6 +135,10 @@ AIChatTabHelper::~AIChatTabHelper() = default;
 
 const std::vector<ConversationTurn>& AIChatTabHelper::GetConversationHistory() {
   return chat_history_;
+}
+
+bool AIChatTabHelper::HasUserOptedIn() {
+  return pref_service_->GetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer);
 }
 
 const std::string& AIChatTabHelper::GetConversationHistoryString() {
@@ -153,10 +161,6 @@ void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
   }
-}
-
-void AIChatTabHelper::SetArticleSummaryString(const std::string& text) {
-  article_summary_ = text;
 }
 
 void AIChatTabHelper::AddObserver(Observer* observer) {
@@ -258,41 +262,49 @@ void AIChatTabHelper::DistillViaAlgorithm(const ui::AXTree& tree) {
       << " suggested questions: "
       << base::JoinString(suggested_questions_, ", ");
   suggested_questions_.emplace_back("Summarize this page");
-  DVLOG(1) << "Got content text, notifying observers.";
-  for (auto& obs : observers_) {
-    obs.OnPageTextIsAvailable();
+  OnSuggestedQuestionsChanged();
+  // Automatically fetch questions related to page content, if allowed
+  bool can_auto_fetch_questions =
+      HasUserOptedIn() &&
+      pref_service_->GetBoolean(
+          ai_chat::prefs::kBraveChatAutoGenerateQuestions) &&
+      !article_text_.empty() && (suggested_questions_.size() <= 1);
+  if (can_auto_fetch_questions) {
+    GenerateQuestions();
   }
 }
 
 void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
-  article_summary_.clear();
   article_text_.clear();
   suggested_questions_.clear();
+
+  has_generated_questions_ = false;
+  OnSuggestedQuestionsChanged();
+
   SetRequestInProgress(false);
 
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
-    obs.OnSuggestedQuestionsChanged(suggested_questions_);
   }
 }
 
-std::vector<std::string> AIChatTabHelper::GetSuggestedQuestions() {
-  // The first call here should make the API call to fetch suggested questions.
-  // We can fetch questions if we have article text and we haven't already
-  // got some.
-  bool can_fetch_questions =
-      !article_text_.empty() && (suggested_questions_.size() <= 1);
-  if (can_fetch_questions) {
-    GenerateQuestions();
-  }
-  // Meanwhile, return what we have so far
-  // (might be empty or the summarize prompt).
+std::vector<std::string> AIChatTabHelper::GetSuggestedQuestions(
+    bool& can_generate,
+    bool& auto_generate) {
+  // Can we get suggested questions
+  can_generate = !has_generated_questions_ && !article_text_.empty();
+  // Are we allowed to auto-generate
+  auto_generate = pref_service_->GetBoolean(
+      ai_chat::prefs::kBraveChatAutoGenerateQuestions);
   return suggested_questions_;
 }
 
 void AIChatTabHelper::GenerateQuestions() {
   DVLOG(1) << __func__;
+  // This function should not be presented in the UI if the user has not
+  // opted-in yet.
+  DCHECK(HasUserOptedIn());
   // Can't operate if we don't have an article text
   if (article_text_.empty()) {
     return;
@@ -301,6 +313,10 @@ void AIChatTabHelper::GenerateQuestions() {
   if (suggested_questions_.size() > 1u) {
     return;
   }
+
+  has_generated_questions_ = true;
+  OnSuggestedQuestionsChanged();
+
   DCHECK(!is_request_in_progress_);
   std::string prompt = base::StrCat(
       {base::ReplaceStringPlaceholders(
@@ -337,9 +353,7 @@ void AIChatTabHelper::GenerateQuestions() {
               tab_helper->suggested_questions_.emplace_back(question);
             }
             // Notify observers
-            for (auto& obs : tab_helper->observers_) {
-              obs.OnSuggestedQuestionsChanged(tab_helper->suggested_questions_);
-            }
+            tab_helper->OnSuggestedQuestionsChanged();
             VLOG(1) << "Got questions:"
                     << base::JoinString(tab_helper->suggested_questions_, "\n");
           },
@@ -349,15 +363,16 @@ void AIChatTabHelper::GenerateQuestions() {
 
 void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
     const ConversationTurn& turn) {
+  // This function should not be presented in the UI if the user has not
+  // opted-in yet.
+  DCHECK(HasUserOptedIn());
   // If it's a suggested question, remove it
   if (turn.character_type == CharacterType::HUMAN) {
     auto found_question_iter =
         base::ranges::find(suggested_questions_, turn.text);
     if (found_question_iter != suggested_questions_.end()) {
       suggested_questions_.erase(found_question_iter);
-      for (auto& obs : observers_) {
-        obs.OnSuggestedQuestionsChanged(suggested_questions_);
-      }
+      OnSuggestedQuestionsChanged();
     }
   }
 
@@ -393,20 +408,12 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
 
   SetRequestInProgress(true);
 
-  // Assuming a hidden conversation has a summary prompt,
-  // the incoming response is expected to include the AI-generated summary.
-  // TODO(nullhook): Improve this heuristic, as it may or may not be true.
-  bool is_summarize_prompt =
-      turn.visibility == ConversationTurnVisibility::INTERNAL ? true : false;
-
   ai_chat_api_->QueryPrompt(
-      base::BindOnce(&AIChatTabHelper::OnAPIResponse, base::Unretained(this),
-                     is_summarize_prompt),
+      base::BindOnce(&AIChatTabHelper::OnAPIResponse, base::Unretained(this)),
       std::move(prompt));
 }
 
-void AIChatTabHelper::OnAPIResponse(bool contains_summary,
-                                    const std::string& assistant_input,
+void AIChatTabHelper::OnAPIResponse(const std::string& assistant_input,
                                     bool success) {
   SetRequestInProgress(false);
 
@@ -423,10 +430,6 @@ void AIChatTabHelper::OnAPIResponse(bool contains_summary,
                            ConversationTurnVisibility::VISIBLE,
                            assistant_input};
 
-  if (contains_summary && !assistant_input.empty()) {
-    SetArticleSummaryString(assistant_input);
-  }
-
   AddToConversationHistory(turn);
 }
 
@@ -435,6 +438,15 @@ void AIChatTabHelper::SetRequestInProgress(bool in_progress) {
 
   for (auto& obs : observers_) {
     obs.OnAPIRequestInProgress(IsRequestInProgress());
+  }
+}
+
+void AIChatTabHelper::OnSuggestedQuestionsChanged() {
+  auto auto_generate = pref_service_->GetBoolean(
+      ai_chat::prefs::kBraveChatAutoGenerateQuestions);
+  for (auto& obs : observers_) {
+    obs.OnSuggestedQuestionsChanged(suggested_questions_,
+                                    has_generated_questions_, auto_generate);
   }
 }
 

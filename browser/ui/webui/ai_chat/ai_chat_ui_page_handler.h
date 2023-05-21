@@ -49,13 +49,16 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void MarkAgreementAccepted() override;
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
+  void GenerateQuestions() override;
+  void SetAutoGenerateQuestions(bool can_auto_generate_questions) override;
 
  private:
   // ChatTabHelper::Observer
   void OnHistoryUpdate() override;
-  void OnPageTextIsAvailable() override;
   void OnAPIRequestInProgress(bool in_progress) override;
-  void OnSuggestedQuestionsChanged(std::vector<std::string> questions) override;
+  void OnSuggestedQuestionsChanged(std::vector<std::string> questions,
+                                   bool has_generated,
+                                   bool auto_generate) override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(
