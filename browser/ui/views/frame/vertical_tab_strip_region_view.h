@@ -139,6 +139,9 @@ class VerticalTabStripRegionView : public views::View,
   // New tab button created for vertical tabs
   raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
 
+  // A pointer storing the global tab style to be used.
+  const raw_ptr<const TabStyle> tab_style_;
+
   State state_ = State::kExpanded;
 
   BooleanPrefMember show_vertical_tabs_;

@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Callback;
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -76,7 +75,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderOneshotSupplier,
             @NonNull Supplier<Tab> startSurfaceParentTabSupplier,
             @NonNull BrowserControlsManager browserControlsManager,
-            @NonNull ActivityWindowAndroid windowAndroid, @NonNull JankTracker jankTracker,
+            @NonNull ActivityWindowAndroid windowAndroid,
             @NonNull ActivityLifecycleDispatcher activityLifecycleDispatcher,
             @NonNull ObservableSupplier<LayoutManagerImpl> layoutManagerSupplier,
             @NonNull MenuOrKeyboardActionController menuOrKeyboardActionController,
@@ -106,7 +105,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 contextualSearchManagerSupplier, tabModelSelectorSupplier, startSurfaceSupplier,
                 tabSwitcherSupplier, intentMetadataOneshotSupplier,
                 layoutStateProviderOneshotSupplier, startSurfaceParentTabSupplier,
-                browserControlsManager, windowAndroid, jankTracker, activityLifecycleDispatcher,
+                browserControlsManager, windowAndroid, activityLifecycleDispatcher,
                 layoutManagerSupplier, menuOrKeyboardActionController, activityThemeColorSupplier,
                 modalDialogManagerSupplier, appMenuBlocker, supportsAppMenuSupplier,
                 supportsFindInPage, tabCreatorManagerSupplier, fullscreenManager,

@@ -13,8 +13,10 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#import "base/mac/foundation_util.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
+#import "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 
 #include "net/base/host_port_pair.h"
@@ -71,10 +73,9 @@ namespace {
     return nil;
   }
 
-  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
-      net::X509Certificate::CreateCertBufferFromBytes(base::make_span(
-          CFDataGetBytePtr(cert_data),
-          base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
+  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(net::x509_util::CreateCryptoBuffer(
+      base::make_span(CFDataGetBytePtr(cert_data),
+                      base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
 
   if (!cert_buffer) {
     return nil;
@@ -96,10 +97,9 @@ namespace {
     return nil;
   }
 
-  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
-      net::X509Certificate::CreateCertBufferFromBytes(base::make_span(
-          CFDataGetBytePtr(cert_data),
-          base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
+  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(net::x509_util::CreateCryptoBuffer(
+      base::make_span(CFDataGetBytePtr(cert_data),
+                      base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
 
   if (!cert_buffer) {
     return nil;
@@ -142,15 +142,21 @@ namespace {
     }
 
     std::vector<base::ScopedCFTypeRef<SecCertificateRef>> intermediates;
-    for (CFIndex i = 1; i < cert_count; ++i) {
-      intermediates.emplace_back(SecTrustGetCertificateAtIndex(trust, i),
-                                 base::scoped_policy::RETAIN);
-    }
 
+    base::ScopedCFTypeRef<CFArrayRef> certificateChain(
+        SecTrustCopyCertificateChain(trust));
+    for (CFIndex i = 1; i < cert_count; i++) {
+      SecCertificateRef secCertificate =
+          base::mac::CFCastStrict<SecCertificateRef>(
+              CFArrayGetValueAtIndex(certificateChain, i));
+      intermediates.emplace_back(secCertificate, base::scoped_policy::RETAIN);
+    }
+    SecCertificateRef secCertificate =
+        base::mac::CFCastStrict<SecCertificateRef>(
+            CFArrayGetValueAtIndex(certificateChain, 0));
     return net::x509_util::CreateX509CertificateFromSecCertificate(
-        /*root_cert=*/base::ScopedCFTypeRef<SecCertificateRef>(
-            SecTrustGetCertificateAtIndex(trust, 0),
-            base::scoped_policy::RETAIN),
+        base::ScopedCFTypeRef<SecCertificateRef>(secCertificate,
+                                                 base::scoped_policy::RETAIN),
         intermediates);
   };
 
@@ -161,14 +167,13 @@ namespace {
 
   // Validate the chain of Trust
   net::CertVerifyResult verify_result;
-  scoped_refptr<net::CRLSet> crl_set = net::CRLSet::BuiltinCRLSet();
   scoped_refptr<net::CertVerifyProc> verifier =
-      base::MakeRefCounted<net::CertVerifyProcIOS>();
+      base::MakeRefCounted<net::CertVerifyProcIOS>(
+          net::CRLSet::BuiltinCRLSet());
   verifier->Verify(cert.get(), base::SysNSStringToUTF8(host),
                    /*ocsp_response=*/std::string(),
                    /*sct_list=*/std::string(),
                    /*flags=*/0,
-                   /*crl_set=*/crl_set.get(),
                    /*additional_trust_anchors=*/net::CertificateList(),
                    &verify_result, net::NetLogWithSource());
 

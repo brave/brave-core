@@ -1,8 +1,8 @@
 diff --git a/base/trace_event/builtin_categories.h b/base/trace_event/builtin_categories.h
-index 7146ce14ee1a235b134ed4c7b16fb2a37f63a865..65062aef035a549b22af27e83180354b84a3ff7d 100644
+index 3c8faea2c2391a0172504d524129702cb3c43cf0..db1e339c432a58dcb59ea182ee71d6df15a371ef 100644
 --- a/base/trace_event/builtin_categories.h
 +++ b/base/trace_event/builtin_categories.h
-@@ -187,6 +187,7 @@
+@@ -188,6 +188,7 @@
    X("webrtc")                                                            \
    X("webrtc_stats")                                                      \
    X("xr")                                                                \

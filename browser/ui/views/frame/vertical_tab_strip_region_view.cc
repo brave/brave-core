@@ -490,7 +490,9 @@ END_METADATA
 VerticalTabStripRegionView::VerticalTabStripRegionView(
     BrowserView* browser_view,
     TabStripRegionView* region_view)
-    : browser_(browser_view->browser()), original_region_view_(region_view) {
+    : browser_(browser_view->browser()),
+      original_region_view_(region_view),
+      tab_style_(TabStyle::Get()) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
       << "This view should be created only when this flag is on";
 
@@ -900,7 +902,7 @@ int VerticalTabStripRegionView::GetPreferredWidthForState(
     State state,
     bool include_border) const {
   if (state == State::kExpanded || state == State::kFloating)
-    return TabStyle::GetStandardWidth() +
+    return tab_style_->GetStandardWidth() +
            (include_border ? GetInsets().width() : 0);
 
   CHECK_EQ(state, State::kCollapsed) << "If a new state was added, "

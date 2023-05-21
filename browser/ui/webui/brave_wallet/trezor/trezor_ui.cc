@@ -49,7 +49,8 @@ UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
 UntrustedTrezorUI::~UntrustedTrezorUI() = default;
 
 std::unique_ptr<content::WebUIController>
-UntrustedTrezorUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedTrezorUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                               const GURL& url) {
   return std::make_unique<UntrustedTrezorUI>(web_ui);
 }
 

@@ -50,26 +50,4 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
 
         return false;
     }
-
-    private void completeWalletProviderVerification(ExternalNavigationParams params) {
-        mBraveWalletProvider = new BraveWalletProvider();
-        mBraveWalletProvider.completeWalletProviderVerification(params, this);
-    }
-
-    @SuppressLint("VisibleForTests")
-    public OverrideUrlLoadingResult clobberCurrentTabWithFallbackUrl(
-            String browserFallbackUrl, ExternalNavigationParams params) {
-        // Below is an actual code that was used prior to deletion of
-        // clobberCurrentTabWithFallbackUrl introduced here
-        // https://chromium.googlesource.com/chromium/src/+/37b5b744bc83f630d3121b46868818bb4e848c2a
-        if (!params.isMainFrame()) {
-            return OverrideUrlLoadingResult.forNoOverride();
-        }
-
-        if (params.getRedirectHandler() != null) {
-            params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
-        }
-        GURL browserFallbackGURL = new GURL(browserFallbackUrl);
-        return OverrideUrlLoadingResult.forNavigateTab(browserFallbackGURL, params);
-    }
 }

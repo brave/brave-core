@@ -1,12 +1,12 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index d787d25a8613c8360c8a9eecbbacdaced393b783..23830d5db2b3a2ce10a4b6576ce85801919701cb 100644
+index b6f32fab07ea85cfb00b956927814dab24405b90..2db875783d6152b0cce7b79710917a8bfb1ae8c1 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
-@@ -253,6 +253,7 @@ static_library("metrics") {
-       "motherboard_metrics_provider.h",
-     ]
+@@ -274,6 +274,7 @@ if (!is_cronet_build || is_ios) {
+         "motherboard_metrics_provider.h",
+       ]
+     }
++    import("//brave/components/metrics/sources.gni") deps += brave_components_metrics_deps
    }
-+  import("//brave/components/metrics/sources.gni") deps += brave_components_metrics_deps
- }
  
- # The component metrics provider is a separate target because it depends upon
+   static_library("test_support") {

@@ -7,19 +7,19 @@
 
 #include "base/feature_override.h"
 
-namespace history_clusters {
+namespace history_clusters::internal {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {internal::kHideVisits, base::FEATURE_DISABLED_BY_DEFAULT},
-    {internal::kHistoryClustersInternalsPage,
+    {kHideVisits, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kHistoryClustersInternalsPage, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kHistoryClustersNavigationContextClustering,
      base::FEATURE_DISABLED_BY_DEFAULT},
-    {internal::kOmniboxHistoryClusterProvider,
-     base::FEATURE_DISABLED_BY_DEFAULT},
-    {internal::kJourneys, base::FEATURE_DISABLED_BY_DEFAULT},
-    {internal::kOmniboxAction, base::FEATURE_DISABLED_BY_DEFAULT},
-    {internal::kPersistedClusters, base::FEATURE_DISABLED_BY_DEFAULT},
-    {internal::kPersistContextAnnotationsInHistoryDb,
-     base::FEATURE_DISABLED_BY_DEFAULT},
+    {kJourneys, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kJourneysZeroStateFiltering, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kOmniboxAction, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kOmniboxHistoryClusterProvider, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPersistedClusters, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPersistContextAnnotationsInHistoryDb, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSidePanelJourneys, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
-}  // namespace history_clusters
+}  // namespace history_clusters::internal

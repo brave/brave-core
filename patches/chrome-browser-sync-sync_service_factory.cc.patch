@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sync/sync_service_factory.cc b/chrome/browser/sync/sync_service_factory.cc
-index 1e9e145a857d5b2e2c9559a4dc1136ec6d370b93..d62c56768a7abc08ca5853107b23b8bb2ebb98fe 100644
+index 704ada3684bbbe05cfcd6565fea59fc8ac3cb8ac..587e1e7127d3cf520ae33fe36ce7550f32eca048 100644
 --- a/chrome/browser/sync/sync_service_factory.cc
 +++ b/chrome/browser/sync/sync_service_factory.cc
-@@ -171,7 +171,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
+@@ -173,7 +173,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
    }
  
    auto sync_service =
@@ -10,4 +10,4 @@ index 1e9e145a857d5b2e2c9559a4dc1136ec6d370b93..d62c56768a7abc08ca5853107b23b8bb
 +      BRAVE_BUILD_SERVICE_INSTANCE_FOR
    sync_service->Initialize();
  
-   // Hook |sync_service| into PersonalDataManager (a circular dependency).
+   // Notify PasswordStore of complete initialisation to resolve a circular

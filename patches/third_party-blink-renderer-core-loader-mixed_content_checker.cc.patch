@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/mixed_content_checker.cc b/third_party/blink/renderer/core/loader/mixed_content_checker.cc
-index 9100774ccf0363d5bdedab6a3acc276843fe3beb..927f200ea0e2f51fc34f301b9229e383f2a99fd4 100644
+index d611b09547bb871a13df9bdfd61d813f1d5ca62f..5b9879c3b74cb2332e228d4a8388b1213afcc646 100644
 --- a/third_party/blink/renderer/core/loader/mixed_content_checker.cc
 +++ b/third_party/blink/renderer/core/loader/mixed_content_checker.cc
-@@ -268,6 +268,7 @@ bool RequestIsSubframeSubresource(Frame* frame) {
+@@ -270,6 +270,7 @@ bool RequestIsSubframeSubresource(Frame* frame) {
  // static
  bool MixedContentChecker::IsMixedContent(const SecurityOrigin* security_origin,
                                           const KURL& url) {

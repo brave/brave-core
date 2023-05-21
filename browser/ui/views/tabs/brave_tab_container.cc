@@ -34,7 +34,8 @@ BraveTabContainer::BraveTabContainer(
                        drag_context,
                        tab_slot_controller,
                        scroll_contents_view),
-      drag_context_(static_cast<TabDragContext*>(drag_context)) {
+      drag_context_(static_cast<TabDragContext*>(drag_context)),
+      tab_style_(TabStyle::Get()) {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return;
 
@@ -139,7 +140,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
     height += tabs::kMarginForVerticalTabContainers;
   }
 
-  return gfx::Size(TabStyle::GetStandardWidth(), height);
+  return gfx::Size(tab_style_->GetStandardWidth(), height);
 }
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
@@ -233,8 +234,9 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
   auto* new_tab = GetTabAtModelIndex(model_index);
   gfx::Rect bounds = new_tab->bounds();
   bounds.set_height(tabs::kVerticalTabHeight);
-  const auto tab_width = new_tab->data().pinned ? tabs::kVerticalTabMinWidth
-                                                : TabStyle::GetStandardWidth();
+  const auto tab_width = new_tab->data().pinned
+                             ? tabs::kVerticalTabMinWidth
+                             : tab_style_->GetStandardWidth();
   bounds.set_width(tab_width);
   bounds.set_x(-tab_width);
   bounds.set_y((model_index > 0)

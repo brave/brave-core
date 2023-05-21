@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
@@ -86,6 +87,7 @@
 #include "chrome/grit/chromium_strings.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/embedder_support/switches.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/user_prefs/user_prefs.h"
@@ -927,6 +929,10 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
   }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (extensions::ChromeContentBrowserClientExtensionsPart::
+          AreExtensionsDisabledForProfile(profile)) {
+    return url;
+  }
   return ChromeContentBrowserClientExtensionsPart::GetEffectiveURL(profile,
                                                                    url);
 #else
@@ -1055,17 +1061,22 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(decentralized_dns_navigation_throttle));
   }
 
-  if (std::unique_ptr<
-          content::NavigationThrottle> domain_block_navigation_throttle =
-          brave_shields::DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
-              handle, g_brave_browser_process->ad_block_service(),
-              g_brave_browser_process->ad_block_service()
-                  ->custom_filters_provider(),
-              EphemeralStorageServiceFactory::GetForContext(context),
-              HostContentSettingsMapFactory::GetForProfile(
-                  Profile::FromBrowserContext(context)),
-              g_browser_process->GetApplicationLocale())) {
-    throttles.push_back(std::move(domain_block_navigation_throttle));
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(context);
+  if (host_content_settings_map) {
+    if (std::unique_ptr<content::NavigationThrottle>
+            domain_block_navigation_throttle = brave_shields::
+                DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
+                    handle, g_brave_browser_process->ad_block_service(),
+                    g_brave_browser_process->ad_block_service()
+                        ->custom_filters_provider(),
+                    EphemeralStorageServiceFactory::GetForContext(context),
+                    host_content_settings_map,
+                    g_browser_process->GetApplicationLocale())) {
+      throttles.push_back(std::move(domain_block_navigation_throttle));
+    }
   }
 
   // Debounce
@@ -1083,11 +1094,18 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
                                    WebPreferences* prefs) {
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(profile);
+  if (!host_content_settings_map) {
+    return false;
+  }
   const GURL url = web_contents->GetLastCommittedURL();
-  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile), url);
+  const bool shields_up =
+      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
   auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile), url);
+      host_content_settings_map, url);
   // https://github.com/brave/brave-browser/issues/15265
   // Always use color scheme Light if fingerprinting mode strict
   if (base::FeatureList::IsEnabled(
@@ -1133,6 +1151,10 @@ blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
       ChromeContentBrowserClient::GetUserAgentMetadata();
   // Expect the brand version lists to have brand version, chromium_version, and
   // greased version.
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(embedder_support::kUserAgent)) {
+    return metadata;
+  }
   DCHECK_EQ(3UL, metadata.brand_version_list.size());
   DCHECK_EQ(3UL, metadata.brand_full_version_list.size());
   // Zero out the last 3 version components in full version list versions.

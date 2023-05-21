@@ -1,0 +1,13 @@
+diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
+index e4f917be1206411bada8e4677497a95668c64c95..121f2db7ada62ea9a26b37e42b51740563ad7521 100644
+--- a/content/browser/web_contents/web_contents_impl.cc
++++ b/content/browser/web_contents/web_contents_impl.cc
+@@ -4172,7 +4172,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
+ 
+   // Save the window for later if we're not suppressing the opener (since it
+   // will be shown immediately).
+-  if (!params.opener_suppressed) {
++  if (!params.opener_suppressed && !params.no_javascript_access) {
+     if (!is_guest) {
+       WebContentsView* new_view = new_contents_impl->view_.get();
+ 

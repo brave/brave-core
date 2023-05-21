@@ -23,6 +23,9 @@
   <message name="IDS_SETTINGS_LEARN_MORE" desc="The label in the settings UI if users can obtain more information.">
     Learn more
   </message>
+  <message name="IDS_OS_SETTINGS_OPENS_IN_NEW_TAB_A11Y_LABEL" desc="ARIA (accessibility) label describing an external link which opens in a new tab.">
+    Opens in new tab
+  </message>
 
   <!--Main Page-->
   <message name="IDS_SETTINGS_SECONDARY_USER_BANNER" desc="Banner displayed in settings page when the user is secondary in a multi-profile session.">
@@ -263,6 +266,23 @@
     Keep updates
   </message>
 
+ <!-- ChromeOS End Of Life Incentive -->
+  <message name="IDS_SETTINGS_END_OF_LIFE_INCENTIVE_OFFER_TITLE" desc="The title of the end of life incentive which informs the user of an offer with a dollar amount they can get save when upgrading to a new Chromebook.">
+    Save &#36;50 or more on a new Chromebook, when you upgrade today
+  </message>
+  <message name="IDS_SETTINGS_END_OF_LIFE_INCENTIVE_NO_OFFER_TITLE" desc="The title of the end of life incentive which informs the user that they should upgrade their device to continue getting software updates.">
+    Upgrade to a new Chromebook for the latest security and software
+  </message>
+  <message name="IDS_SETTINGS_END_OF_LIFE_INCENTIVE_OFFER_MESSAGE" desc="The message of the end of life incentive which informs the user that their device will no longer get updates, and to upgrade the device for the latest features, using an offer.">
+    Your Chromebook is no longer receiving security and software updates. Upgrade your device for the latest security and new features. Offer terms apply.
+  </message>
+  <message name="IDS_SETTINGS_END_OF_LIFE_INCENTIVE_NO_OFFER_MESSAGE" desc="The message of the end of life incentive which informs the user that their device will no longer get updates, and they should get a new Chromebook.">
+    Your Chromebook is no longer receiving security and software updates. Get a new Chromebook for the best experience.
+  </message>
+  <message name="IDS_SETTINGS_END_OF_LIFE_INCENTIVE_OFFER_BUTTON" desc="The button label for the end of life incentive offer which will take the user to a URL to shop for a new device.">
+    Shop Now
+  </message>
+
   <!-- Profiles (OS settings) -->
   <message name="IDS_OS_SETTINGS_PROFILE_NAME" desc="Label with device account first name, showing which user is currently signed in.">
     Currently signed in as <ph name="NAME">$1<ex>John</ex></ph>
@@ -280,12 +300,12 @@
   </message>
   <if expr="reven">
     <message name="IDS_OS_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the OS sync feature.">
-      Your apps and settings will sync across all ChromeOS Flex devices where you are signed in with your Brave account. For browser sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Brave settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+      Your apps and settings will sync across all ChromeOS Flex devices where you are signed in with your Brave account. For browser sync options, go to <ph name="LINK_BEGIN">&lt;a href='#'&gt;</ph>Brave settings<ph name="LINK_END">&lt;/a&gt;</ph>.
     </message>
   </if>
   <if expr="not reven">
     <message name="IDS_OS_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the OS sync feature.">
-      Your apps and settings will sync across all ChromeOS devices where you are signed in with your Brave account. For browser sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Brave settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+      Your apps and settings will sync across all ChromeOS devices where you are signed in with your Brave account. For browser sync options, go to <ph name="LINK_BEGIN">&lt;a href='#'&gt;</ph>Brave settings<ph name="LINK_END">&lt;/a&gt;</ph>.
     </message>
   </if>
   <message name="IDS_OS_SETTINGS_SYNC_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of apps across devices.">
@@ -293,7 +313,23 @@
   </message>
   <message name="IDS_OS_SETTINGS_SYNC_APPS_CHECKBOX_SUBLABEL" translateable="false" desc="Disclaimer shown under label for the checkbox which enables syncing of apps across devices.">
     <!-- TODO(crbug.com/1330894): Remove "translateable=false" once definitive string is available. -->
-    Web apps are synced with Brave browser on non-Chrome OS devices
+    Apps installed from the Play Store and web apps from Brave browser
+  </message>
+  <message name="IDS_OS_SETTINGS_SYNC_SETTINGS_CHECKBOX_SUBLABEL" translateable="false" desc="Disclaimer shown under label for the checkbox which enables syncing of settings across devices.">
+    <!-- TODO(crbug.com/1330894): Remove "translateable=false" once definitive string is available. -->
+    Keyboard and mouse behavior, language preferences, and more
+  </message>
+  <message name="IDS_OS_SETTINGS_SYNC_WIFI_CHECKBOX_SUBLABEL" translateable="false" desc="Disclaimer shown under label for the checkbox which enables syncing of Wi-Fi networks  across devices.">
+    <!-- TODO(crbug.com/1330894): Remove "translateable=false" once definitive string is available. -->
+    Saved networks and passwords so you can connect instantly
+  </message>
+  <message name="IDS_OS_SETTINGS_SYNC_WALLPAPER_CHECKBOX_SUBLABEL" translateable="false" desc="Disclaimer shown under label for the checkbox which enables syncing of wallpaper across devices.">
+    <!-- TODO(crbug.com/1330894): Remove "translateable=false" once definitive string is available. -->
+    Desktop backgrounds match across devices
+  </message>
+  <message name="IDS_OS_SETTINGS_SYNC_APPS_TOOLTIP" translateable="false" desc="Tooltip shown next to the apps toggle in OS sync settings.">
+    <!-- TODO(crbug.com/1330894): Remove "translateable=false" once definitive string is available. -->
+    Once turned on, your apps will be available on any ChromeOS devices after you sign in with your Brave sync chain. Web apps will be synced through Brave even if other browser sync features are turned off.
   </message>
   <message name="IDS_OS_SETTINGS_SYNC_PRINTERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of printers across devices.">
     Printers
@@ -519,7 +555,7 @@
   <message name="IDS_SETTINGS_LANGUAGES_SHOW_IME_MENU" desc="The label for the toggle button controlling showing the IME menu in the shelf.">
     Show input options in the shelf
   </message>
-  <message name="IDS_SETTINGS_LANGUAGES_LANGUAGE_PACKS_NOTICE" desc="The label for the toggle button controlling showing the IME menu in the shelf.">
+  <message name="IDS_SETTINGS_LANGUAGES_LANGUAGE_PACKS_NOTICE" desc="Privacy notice on the language and input settings page that informs users that language files are visible to all users on the device. See go/language-pack-ux slide 4 for more details.">
     Choose which languages to install on this device. Language files are shared among users to save disk space. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
 
@@ -869,6 +905,7 @@
   <message name="IDS_SETTINGS_DISCONNECT_GOOGLE_DRIVE" desc="Label for the checkbox which enables disconnecting from Google Drive account.">
     Disconnect Google Drive account
   </message>
+  <!-- TODO(b/276391980): Remove translateable="false" when all the strings have been defined. -->
   <message name="IDS_SETTINGS_GOOGLE_DRIVE" translateable="false" desc="Label for the settings link that takes the user to the page where they can manage their Google Drive settings.">
     Google Drive
   </message>
@@ -881,23 +918,62 @@
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_DISCONNECT" translateable="false" desc="Action to disconnect from Google Drive in Settings: Files: Google Drive.">
     Disconnect
   </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_CONNECT" translateable="false" desc="Action to connect Google Drive in Settings: Files: Google Drive.">
+    Connect account
+  </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_SIGNED_IN_AS" translateable="false" desc="Label indicating account signed in with Google Drive in Settings: Files: Google Drive.">
-    Signed in as
+    Signed in as: <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_DISCONNECTED_FROM" translateable="false" desc="Label indicating account that Google Drive would sign in as in Settings: Files: Google Drive.">
+    Disconnected from <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_TITLE" translateable="false" desc="Title for the everything offline feature in Settings: Files: Google Drive.">
     Keep your files available when you're offline
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_SUBTITLE" translateable="false" desc="Subtitle for the everything offline feature in Settings: Files: Google Drive.">
-    This will store your Google Drive files on this Chromebook so you can view and edit them without an internet connection. This will use about 12.2 GB leaving 96.8 GB available.
+    This will store your Google Drive files on this Chromebook so you can view and edit them without an internet connection.
   </message>
-  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_TITLE" translateable="false" desc="Title for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_STORAGE_REQUIRED_SUBTITLE" translateable="false" desc="Subtitle to display the required and remaining space if all the google drive files are made available offline">
+    This will use about <ph name="REQUIRED_SPACE">$1<ex>12.2 GB</ex></ph> leaving <ph name="FREE_SPACE_LEFT">$2<ex>96.7 GB</ex></ph> available.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_STORAGE_TITLE" translateable="false" desc="Title for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
     Offline Storage
   </message>
-  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_SUBTITLE" translateable="false" desc="Subtitle for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
-    Using 0 GB
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_CALCULATING_SUBTITLE" translateable="false" desc="Subtitle for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
+    Calculating...
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_ERROR_SUBTITLE" translateable="false" desc="Subtitle for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
+    Unknown
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_ACTION" translateable="false" desc="Button for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
     Clear offline storage
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_DIALOG_TITLE" translateable="false" desc="Title text for the Offline Storage confirmation dialog where users can clear their offline storage in Settings: Files: Google Drive.">
+    Clear offline storage?
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_DIALOG_BODY" translateable="false" desc="Title text for the Offline Storage confirmation dialog where users can clear their offline storage in Settings: Files: Google Drive.">
+    This will remove <ph name="OFFLINE_STORAGE_SIZE">$1<ex>5.0 GB</ex></ph> of space used by your offline files.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_TURN_OFF_BUTTON_LABEL" translateable="false" desc="Button for the confirmation dialog that spawns when attempting to turn off bulk pinning in Settings: Files: Google Drive.">
+    Turn off
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_TURN_OFF_TITLE_TEXT" translateable="false" desc="Title text for the confirmation dialog that spawns when attempting to turn off bulk pinning in Settings: Files: Google Drive.">
+    Are you sure you want to turn off automatic syncing?
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_TURN_OFF_BODY_TEXT" translateable="false" desc="Body text for the confirmation dialog that spawns when attempting to turn off bulk pinning in Settings: Files: Google Drive.">
+    New Google Drive files will no longer be synced automatically, but files that are already synced will remain available.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_BULK_PINNING_NOT_ENOUGH_SPACE_TITLE_TEXT" translateable="false" desc="Title text for the confirmation dialog that spawns when attempting to turn on bulk pinning but the user doesn't have enough free space in Settings: Files: Google Drive.">
+    Low disk space
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_BULK_PINNING_NOT_ENOUGH_SPACE_BODY_TEXT" translateable="false" desc="Body text for the confirmation dialog that spawns when attempting to turn on bulk pinning but the user doesn't have enough free space in Settings: Files: Google Drive.">
+    Cannot enable this feature due to insufficient disk space.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_BULK_PINNING_UNEXPECTED_ERROR_TITLE_TEXT" translateable="false" desc="Title text for the confirmation dialog that spawns when attempting to turn on bulk pinning but an unexpected error occurred in Settings: Files: Google Drive.">
+    An unexpected error occurred
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_BULK_PINNING_UNEXPECTED_ERROR_BODY_TEXT" translateable="false" desc="Body text for the confirmation dialog that spawns when attempting to turn on bulk pinning but an unexpected error occurred in Settings: Files: Google Drive.">
+    Cannot enable this feature as an unexpected error has occurred.
   </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES" desc="In Downloads Settings, the title of the SMB shares setting section.">
     Network file shares
@@ -937,6 +1013,19 @@
   </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_SUCCESS_MESSAGE" desc="The message shown when a new SMB share is successfully mounted.">
     Share mounted successfully.
+  </message>
+  <!-- TODO(b/254586358): Finalise Office files strings -->
+  <message name="IDS_SETTINGS_OFFICE_LABEL" translateable="false" desc="Label for the Settings link that takes the user to the Office files settings.">
+    Office
+  </message>
+  <message name="IDS_SETTINGS_OFFICE_SUBPAGE_TITLE" translateable="false" desc="Title of the Office subpage.">
+    Office files
+  </message>
+  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_DRIVE_PREFERENCE_LABEL" translateable="false" desc="Label for the preference that allows users to always move files to Drive without asking for confirmation.">
+    Ask before moving Microsoft files to Google Drive
+  </message>
+  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_ONEDRIVE_PREFERENCE_LABEL" translateable="false" desc="Label for the preference that allows users to always move files to OneDrive without asking for confirmation.">
+    Ask before moving Microsoft files to OneDrive
   </message>
 
   <!-- Accessibility -->
@@ -1167,11 +1256,60 @@
   <message name="IDS_SETTINGS_CHROMEVOX_MENU_ENABLE_EVENT_STREAM_LOGGING" desc="In the ChromeVox settings subpage, under developer options the label for the toggle that enables event stream logging.">
     Enable event stream logging
   </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BRAILLE_TABLE_DESCRIPTION" desc="In the ChromeVox settings subpage, the label for the braille table type list box and braille table selection list box. A braille table describes how text gets converted from a unicode encoding into a pattern of dots. This varies based on locale and contraction. See http://en.wikipedia.org/wiki/Braille for more.">
+    Select a braille table
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BRAILLE_TABLE_6_DOT" desc="In the ChromeVox settings subpage, the label for the braille table type list item for 6-dot braille. A braille table describes how text gets converted from a unicode encoding into a pattern of dots. This varies based on locale and contraction. See http://en.wikipedia.org/wiki/Braille for more.">
+    6-dot
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BRAILLE_TABLE_8_DOT" desc="In the ChromeVox settings subpage, the label for the braille table type list item for 8-dot braille. A braille table describes how text gets converted from a unicode encoding into a pattern of dots. This varies based on locale and contraction. See http://en.wikipedia.org/wiki/Braille for more.">
+    8-dot
+  </message>
   <message name="IDS_SETTINGS_CHROMEVOX_BRAILLE_WORD_WRAP" desc="In the ChromeVox settings subpage, the label for the toggle that enables wrapping of words if a whole line doesn't fit on a braille display. When this option is enabled, an effort is made to keep the characters of words together on the display. Otherwise, as many characters as possible are put on each braille display line, possible splitting words between lines.">
     Enable word wrap
   </message>
   <message name="IDS_SETTINGS_CHROMEVOX_MENU_BRAILLE_COMMANDS" desc="In the ChromeVox settings subpage, the label for the toggle that enables displaying Perkins Brailler commands in the ChromeVox menus.">
     Show braille commands in the ChromeVox menus
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BLUETOOTH_BRAILLE_DISPLAY_CONNECT" desc="Labels a button which when pressed, connects to a selected bluetooth braille display.">
+    Connect
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BLUETOOTH_BRAILLE_DISPLAY_DISCONNECT" desc="Labels a button which when pressed, disconnects from a selected bluetooth braille display.">
+    Disconnect
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BLUETOOTH_BRAILLE_DISPLAY_CONNECTING" desc="Labels a button which is disabled and indicates the system is connecting to a bluetooth braille display.">
+    Connecting
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BLUETOOTH_BRAILLE_DISPLAY_FORGET" desc="Labels a button which when pressed, forgets the selected bluetooth braille display.">
+    Forget
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BLUETOOTH_BRAILLE_DISPLAY_PINCODE_LABEL" desc="Labels a text field which prompts the user for a pincode when pairing a bluetooth braille display.">
+    Please enter a pin
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_BLUETOOTH_BRAILLE_DISPLAY_SELECT_LABEL" desc="Labels a select control which lists all bluetooth braille displays.">
+    Select a bluetooth braille display
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_VIRTUAL_BRAILLE_DISPLAY" desc="In the ChromeVox settings subpage, a section header for options about the ChromeVox virtual braille display. This section lets users change the rows, columns, and display style of the virtual braille display.">
+    Virtual Braille Display
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_VIRTUAL_BRAILLE_DISPLAY_DETAILS" desc="In the ChromeVox settings subpage, an explanatory section description for options about the ChromeVox virtual braille display. Explains that the section on virtual braille display allows the user to control a simulation of a refreshable braille display (a physical hardware device) in the panel at the top of the screen.">
+    Simulates the output of a refreshable braille display
+    in the ChromeVox panel at the top of the screen
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_VIRTUAL_BRAILLE_DISPLAY_ROWS" desc="In the ChromeVox settings subpage, the label for a numberic input field where the user can choose the number of lines of text in a grid (virtual braille display) that allows the user to control a simulation of a refreshable braille display (a physical hardware device) in the panel at the top of the screen.">
+    Lines:
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_VIRTUAL_BRAILLE_DISPLAY_COLUMNS" desc="In the ChromeVox settings subpage, the label for a numberic input field where the user can choose the number of cells in each line of a grid (virtual braille display) that allows the user to control a simulation of a refreshable braille display (a physical hardware device) in the panel at the top of the screen.">
+    Cells in each line:
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_VIRTUAL_BRAILLE_DISPLAY_STYLE_LABEL" desc="A label for the dropdown that lets the user select the display style of the virtual display - interleaving braille and regular text (one on top of the other), or side by side where regular text is on the left and braille is on the right">
+    Display style
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_VIRTUAL_BRAILLE_DISPLAY_STYLE_INTERLEAVE" desc="A dropdown item that lets the user enable the display style of the virtual display that interleaves braille and regular text, one on top of the other.">
+    Interleave
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_VIRTUAL_BRAILLE_DISPLAY_STYLE_SIDE_BY_SIDE" desc="A dropdown item that lets the user enable the display style of the virtual display that is side by side, where regular text is on the left and braille is on the right.">
+    Side-by-side
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_LABEL" desc="Label for checkbox which enables the fullscreen magnifier">
     Full-screen magnifier
@@ -2793,6 +2931,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_FIRM_CLICK_LABEL" desc="In Device Settings, the text under the right (more sensitive) side of the slider for the touchpad haptic click sensitivity.">
     Firm
   </message>
+  <message name="IDS_SETTINGS_LEARN_MORE_LABEL" translateable="false" desc="In Device Settings, the learn more label for the cr toggle button.">
+    Learn more
+  </message>
 
   <!-- Printing Page (OS Settings)-->
   <message name="IDS_SETTINGS_PRINT_AND_SCAN" desc="Title of the printing and scanning page and navigation item to get there.">
@@ -2810,11 +2951,17 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_PRINTER" desc="In CUPS printing settings subpage, text for the link adding a new CUPS printer.">
     Add printer
   </message>
-    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_DETECTED_OR_NEW_PRINTER" desc="In CUPS printing settings subpage, explanatory text for the nearby printers list.">
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_DETECTED_OR_NEW_PRINTER" desc="In CUPS printing settings subpage, explanatory text for the nearby printers list.">
     Save detected printers to your profile, or add a new printer. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTERS_READY_SUBTEXT" desc="In CUPS printing settings subpage, explanatory text for the nearby printers list." translateable="false">
+    Connected printers will automatically appear here and ready to use or save to your profile.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTERS" desc="In CUPS printing settings subpage, title for the nearby printers list.">
     Add printers to your profile
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTERS_READY" desc="In CUPS printing settings subpage, title for the nearby printers list." translateable="false">
+    Available printers ready to use
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTERS_COUNT_MANY" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them on the number of printers showing on the screen that are available to save.">
     There are <ph name="PRINTER_COUNT">$1<ex>3</ex></ph> printers available to save.
@@ -2863,6 +3010,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_SAVED_PRINTERS_TITLE" desc="Text for the title of the user's saved printers list.">
     Your saved printers
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_SAVED_PRINTERS_SUBTEXT" desc="Subtext of the user's saved printers list." translateable="false">
+    Saved printers will appear here for easier managing and access.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_SAVED_PRINTERS_COUNT_MANY" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them on the number of printers previously saved by the user.">
     You have <ph name="PRINTER_COUNT">$1<ex>3</ex></ph> saved printers.
@@ -4062,6 +4212,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PEOPLE_RECOVERY_DISABLE_DIALOG_MESSAGE" desc="Text for the notification informing the user that local data recovery will be disabled">
     You will not be able to recover local data if you forget your password or PIN.
   </message>
+  <message name="IDS_SETTINGS_PEOPLE_RECOVERY_NOT_SUPPORTED_MESSAGE" desc="Text for the notification informing the user that local data recovery not supported">
+    Local data recovery is currently not supported.
+  </message>
 
   <!-- Kerberos section (OS settings) -->
   <message name="IDS_OS_SETTINGS_KERBEROS" desc="Name of a section in the OS settings page." meaning="Manage Kerberos authetication tickets.">
@@ -4640,6 +4793,15 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_SET_DATE_TIME" desc="Label for the button that shows the dialog for setting the system date and time.">
     Set date and time
   </message>
+  <message name="IDS_SETTINGS_TIME_ZONE_GEOLOCATION_DIALOG_TITLE" desc="Title for the dialog, that pops up when user wants to access precise location for better time zone resolution, but the system geoocation access is disabled. This dialog asks if the user wants to enable the system geolocation access.">
+    Turn on precise location access?
+  </message>
+  <message name="IDS_SETTINGS_TIME_ZONE_GEOLOCATION_DIALOG_BODY" desc="Description text of the dialog that prompts the user to enable system geolocation access. This gives detailed explanation of the outcomes, if the user accepts the dialog.">
+    This allows apps and websites with the location permission and ChromeOS to use the location determined by your Wi-Fi or mobile networks. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_TIME_ZONE_GEOLOCATION_DIALOG_CANCEL_BUTTON" desc="Label of the cancel button, that dismisses the geolocation dialog.">
+    Cancel
+  </message>
 
   <!-- Per Device Keyboard page (OS settings) -->
   <message name="IDS_SETTINGS_BUILT_IN_KEYBOARD_NAME" desc="In Device Settings, the name of the built-in/internal keyboard device within the settings app.">
@@ -4650,6 +4812,7 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_REMAP_KEYS_ROW_SUB_LABEL" desc="Sub-label with number of remapped keys for the Remap Keyboard Keys row.">
     {COUNT, plural,
+     =0 {No keys remapped}
      =1 {1 remapped key}
      other {{COUNT} remapped keys}}
   </message>
@@ -4673,6 +4836,36 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_NO_KEYBOARDS_HELP_MESSAGE" desc="In Keyboard remap keys subpage, the message that notifies users that no keyboards are connected.">
     No keyboard detected
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_LEFT_ALT" desc="In keyboard remap keys subpage, the label and dropdown list item for the Alt key.">
+    alt
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_ASSISTANT" desc="In keyboard remap keys subpage, the label and dropdown list item for the Assistant key.">
+    assistant
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_BACKSPACE" desc="In keyboard remap keys subpage, the dropdown list item for the Backspace key.">
+    backspace
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_CAPS_LOCK" desc="In keyboard remap keys subpage, the label and dropdown list item for the Caps Lock key.">
+    caps lock
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_LEFT_CTRL" desc="In keyboard remap keys subpage, the label and dropdown list item for the Ctrl key.">
+    ctrl
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_ESCAPE" desc="In keyboard remap keys subpage, the dropdown list item for the Escape key.">
+    escape
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_COMMAND" desc="In keyboard remap keys subpage, the dropdown list item for the external Command key on Apple keyboards when there's no internal keyboard on the device.">
+    command
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_EXTERNAL_META" desc="In keyboard remap keys subpage, the dropdown list item for the external Meta key (Search key on ChromeOS keyboards, and Windows key on Windows keyboards).">
+    external meta
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_SEARCH" desc="In keyboard remap keys subpage, the label and dropdown list item for the Search key.">
+    search
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_DISABLED" desc="In keyboard remap keys subpage, the dropdown list item for a disabled key.">
+    disabled
   </message>
 
   <!-- Device Keyboard page (OS settings) -->
@@ -4719,7 +4912,10 @@ Press an assigned switch or key to remove assignment.
     Treat top-row keys as function keys
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_AUTO_REPEAT_ENABLE" desc="The checkbox label for enabling keyboard auto-repeat.">
-    Enable auto-repeat
+    Repeat key press
+  </message>
+    <message name="IDS_SETTINGS_KEYBOARD_AUTO_REPEAT_ENABLE_SUB_LABEL" desc="The checkbox label for enabling keyboard auto-repeat.">
+If you hold down a key, the key’s character will repeat
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_AUTO_REPEAT_DELAY" desc="The label for the slider for the delay before auto-repeat begins. The delay is the amount of time a key must be held down before auto-repeating begins.">
     Delay before repeat
@@ -4760,6 +4956,16 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_KEYBOARD_SEND_FUNCTION_KEYS_DESCRIPTION" desc="In Device Settings, the label describing how to use the top-row keys' original actions when they are set to behave like function keys.">
     Hold the Search key to switch the behavior of the top-row keys
   </message>
+  <message name="IDS_SETTINGS_KEYBOARD_HOLDING_KEYS" desc="In Device Settings, a label for a section containing settings for key repeat and holding down keys">
+  Repeat keys and accent marks
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_ACCENT_MARKS" desc="In Device Settings a label for a setting that allows for holding down a key to produce a pop up for inserting letters with diacritics">
+  Show accent marks and special characters
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_ACCENT_MARKS_SUB_LABEL" desc="In Device Settings a label for a setting that allows for holding down a key to produce a pop up for inserting letters with diacritics - longer descriptive sublabel">
+Press &amp; hold keyboard keys to see accent marks and special characters. This turns off repeat key press for alphabet keys. Only available for English (US).
+  </message>
+
 
   <!-- Apps Section Page -->
   <message name="IDS_SETTINGS_APPS_TITLE" desc="The title of Apps section.">
@@ -5021,6 +5227,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_GEOLOCATION_TOGGLE_TITLE" desc="The title of the toggle to enable/disable geolocation from the privacy hub.">
     Location access
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_GEOLOCATION_TOGGLE_DESC" desc="The title of the toggle to enable/disable geolocation from the privacy hub.">
+    Allow apps and websites and the system time zone to use the location determined by Brave Location Service. If location access is turned off, your location may still be visible through your IP address.
   </message>
   <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable device hardware data collection and usage in ChromeOS Flex.">
     <ph name="DEVICE_OS">$1<ex>ChromeOS Flex</ex></ph> hardware support and stability

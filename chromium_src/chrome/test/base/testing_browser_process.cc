@@ -24,6 +24,12 @@ void TestingBrowserProcess::DeleteInstance() {
 }
 
 // static
+void TestingBrowserProcess::TearDownAndDeleteInstance() {
+  TestingBrowserProcess_ChromiumImpl::TearDownAndDeleteInstance();
+  TestingBraveBrowserProcess::TearDownAndDeleteInstance();
+}
+
+// static
 TestingBrowserProcess* TestingBrowserProcess::GetGlobal() {
   return static_cast<TestingBrowserProcess*>(
       TestingBrowserProcess_ChromiumImpl::GetGlobal());

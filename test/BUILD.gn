@@ -464,6 +464,7 @@ test("brave_unit_tests") {
       "//brave:brave_pak_assets",
       "//chrome:chrome_android_core",
       "//chrome/android:chrome_apk_paks",
+      "//chrome/android:chrome_public_base_module_java_for_test",
       "//chrome/test/android:chrome_java_test_support_common",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
     ]
@@ -791,8 +792,6 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/browsertest_util.h",
     "//chrome/browser/extensions/extension_browsertest.cc",
     "//chrome/browser/extensions/extension_browsertest.h",
-    "//chrome/browser/extensions/extension_function_test_utils.cc",
-    "//chrome/browser/extensions/extension_function_test_utils.h",
     "//chrome/browser/media/media_browsertest.cc",
     "//chrome/browser/media/media_browsertest.h",
     "//chrome/browser/ui/test/test_browser_dialog.cc",
@@ -1169,6 +1168,7 @@ if (is_android) {
     apk_name = "BravePublicTest"
     android_manifest = brave_public_test_apk_manifest
     android_manifest_dep = ":brave_public_test_apk_manifest"
+    manifest_package = brave_public_test_manifest_package
     shared_libraries = [ "//chrome/android:libchromefortest" ]
     if (!is_java_debug) {
       proguard_enabled = true
@@ -1228,15 +1228,17 @@ if (is_android) {
       "//components/browser_ui/site_settings/android:java",
       "//components/browser_ui/widget/android:java",
       "//components/embedder_support/android:browser_context_java",
+      "//components/external_intents/android:java",
+      "//components/favicon/android:java",
       "//components/omnibox/browser:browser_java",
       "//components/password_manager/core/browser:password_manager_java_enums",
       "//components/permissions/android:java",
       "//components/search_engines/android:java",
       "//components/sync/android:sync_java",
       "//content/public/android:content_full_java",
-      "//third_party/android_support_test_runner:runner_java",
       "//third_party/androidx:androidx_appcompat_appcompat_java",
       "//third_party/androidx:androidx_preference_preference_java",
+      "//third_party/androidx:androidx_recyclerview_recyclerview_java",
       "//third_party/androidx:androidx_test_runner_java",
       "//third_party/junit",
       "//ui/android:ui_no_recycler_view_java",

@@ -280,4 +280,6 @@ const char kChromeRootStoreSettingsHelpCenterURL[] =
 const char kAddressesAndPaymentMethodsLearnMoreURL[] =
     "https://support.brave.com";
 
+const char kPasswordManagerImportLearnMoreURL[] = "https://support.brave.com";
+
 }  // namespace chrome

@@ -16,14 +16,15 @@ import '../people_page/sync_controls.js';
 import './brave_sync_configure.js';
 import './brave_sync_setup.js';
 
-import { assert } from 'chrome://resources/js/assert_ts.js';
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js';
+import {StatusAction, SyncBrowserProxyImpl} from '/shared/settings/people_page/sync_browser_proxy.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
+import {assert} from 'chrome://resources/js/assert_ts.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
-import { Route, RouteObserverMixin, Router } from '../router.js';
-import { SyncBrowserProxyImpl, StatusAction } from '../people_page/sync_browser_proxy.js';
-import { BraveSyncBrowserProxy } from './brave_sync_browser_proxy.js';
-import { getTemplate } from './brave_sync_subpage.html.js'
+import {Route, RouteObserverMixin, Router} from '../router.js';
+
+import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+import {getTemplate} from './brave_sync_subpage.html.js'
 
 const SettingBraveSyncSubpageBase = I18nMixin(RouteObserverMixin(PolymerElement))
 

@@ -7,6 +7,7 @@
 #include "brave/components/update_client/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_features.h"
+#include "chrome/browser/companion/core/features.h"
 #include "chrome/browser/dips/dips_features.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
@@ -19,6 +20,7 @@
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/embedder_support/switches.h"
+#include "components/history/core/browser/features.h"
 #include "components/history_clusters/core/features.h"
 #include "components/history_clusters/core/on_device_clustering_features.h"
 #include "components/language/core/common/language_experiments.h"
@@ -26,6 +28,7 @@
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
+#include "components/page_image_service/features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/performance_manager/public/features.h"
 #include "components/permissions/features.h"
@@ -97,7 +100,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &android_webview::features::kWebViewServerSideSampling,
     &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
-    &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
     &autofill::features::test::kAutofillServerCommunication,
@@ -123,7 +125,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kPrivateAggregationApi,
     &blink::features::kSharedStorageAPI,
     &blink::features::kSharedStorageSelectURLLimit,
-    &blink::features::kSharedStorageReportEventLimit,
     &blink::features::kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
     &blink::features::kSpeculationRulesPrefetchFuture,
     &blink::features::kSpeculationRulesPrefetchProxy,
@@ -135,6 +136,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &commerce::kShoppingList,
     &commerce::kShoppingPDPMetrics,
     &commerce::kRetailCoupons,
+    &companion::features::kSidePanelCompanion,
     &dips::kFeature,
     &enterprise_connectors::kLocalContentAnalysisEnabled,
 #if !BUILDFLAG(IS_ANDROID)
@@ -143,26 +145,28 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN)
     &features::kAppBoundEncryptionMetrics,
 #endif
+    &features::kBookmarkTriggerForPrerender2,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
 #endif
+    &features::kAttributionFencedFrameReportingBeacon,
     &features::kDigitalGoodsApi,
     &features::kFedCm,
     &features::kFedCmIframeSupport,
     &features::kFedCmUserInfo,
     &features::kFedCmWithoutThirdPartyCookies,
     &features::kFirstPartySets,
-#if !BUILDFLAG(IS_ANDROID)
-    &features::kGetTheMostOutOfProgram,
-#endif
     &features::kIdleDetection,
     &features::kKAnonymityService,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
+    &features::kOmniboxTriggerForPrerender2,
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSCTAuditing,
     &features::kSignedExchangeReportingForDistributors,
     &features::kSignedHTTPExchange,
+    &features::kSupportSearchSuggestionForPrerender2,
+    &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kTrustSafetySentimentSurvey,
     &features::kTrustSafetySentimentSurveyV2,
@@ -171,12 +175,16 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kUseChromiumUpdater,
 #endif
     &features::kWebOTP,
+    &history::kOrganicRepeatableQueries,
+    &history::kSyncSegmentsData,
     &history_clusters::kSidePanelJourneys,
     &history_clusters::features::kOnDeviceClustering,
     &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
     &history_clusters::internal::kHideVisits,
     &history_clusters::internal::kHistoryClustersInternalsPage,
+    &history_clusters::internal::kHistoryClustersNavigationContextClustering,
     &history_clusters::internal::kJourneys,
+    &history_clusters::internal::kJourneysZeroStateFiltering,
     &history_clusters::internal::kOmniboxAction,
     &history_clusters::internal::kOmniboxHistoryClusterProvider,
     &history_clusters::internal::kPersistedClusters,
@@ -184,6 +192,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
     &kForYouFre,
 #endif
+    &lens::features::kEnableLensPing,
     &lens::features::kLensStandalone,
     &media::kLiveCaption,
     &net::features::kNoncedPartitionedCookies,
@@ -191,14 +200,18 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &net::features::kSamePartyAttributeEnabled,
     &network::features::kPrivateStateTokens,
     &network_time::kNetworkTimeServiceQuerying,
+    &ntp_features::kNtpAlphaBackgroundCollections,
+    &ntp_features::kNtpChromeCartModule,
     &ntp_features::kNtpHistoryClustersModule,
     &ntp_features::kNtpHistoryClustersModuleLoad,
     &optimization_guide::features::kOptimizationHints,
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
+    &page_image_service::kImageServiceSuggestPoweredImages,
 #if !BUILDFLAG(IS_ANDROID)
     &permissions::features::kPermissionsPromptSurvey,
+    &permissions::features::kPermissionStorageAccessAPI,
     &permissions::features::kRecordPermissionExpirationTimestamps,
 #endif
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
@@ -206,6 +219,8 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &privacy_sandbox::kPrivacySandboxSettings3,
     &privacy_sandbox::kPrivacySandboxSettings4,
     &safe_browsing::kExtensionTelemetry,
+    &safe_browsing::kExtensionTelemetryDeclarativeNetRequestSignal,
+    &segmentation_platform::features::kSegmentationPlatformDeviceTier,
     &segmentation_platform::features::kSegmentationPlatformFeature,
     &send_tab_to_self::kSendTabToSelfSigninPromo,
     &shared_highlighting::kIOSSharedHighlightingV2,
@@ -233,7 +248,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
     &performance_manager::features::kBatterySaverModeAvailable,
     &performance_manager::features::kHeuristicMemorySaver,
-    &performance_manager::features::kHighEfficiencyModeAvailable,
     &safe_browsing::kDownloadBubble,
     &safe_browsing::kDownloadBubbleV2,
     &sharing_hub::kDesktopScreenshots,
@@ -243,7 +257,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &net::features::kPartitionHttpServerPropertiesByNetworkIsolationKey,
     &net::features::kPartitionSSLSessionsByNetworkIsolationKey,
     &net::features::kSplitHostCacheByNetworkIsolationKey,
-    &password_manager::features::kPasswordImport,
   };
 
   for (const auto* feature : enabled_features)

@@ -44,11 +44,11 @@ class BraveStatsHelperBrowserTest : public PlatformBrowserTest {
 
   void CreateMultipleProfiles() {
     profile_one_path_ = profile_manager_->GenerateNextProfileDirectoryPath();
-    profile_one_ = profiles::testing::CreateProfileSync(profile_manager_,
-                                                        profile_one_path_);
+    profile_one_ = &profiles::testing::CreateProfileSync(profile_manager_,
+                                                         profile_one_path_);
     profile_two_path_ = profile_manager_->GenerateNextProfileDirectoryPath();
-    profile_two_ = profiles::testing::CreateProfileSync(profile_manager_,
-                                                        profile_two_path_);
+    profile_two_ = &profiles::testing::CreateProfileSync(profile_manager_,
+                                                         profile_two_path_);
   }
 
   base::FilePath profile_one_path_;

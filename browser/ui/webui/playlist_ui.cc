@@ -134,7 +134,8 @@ WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)
 // UntrustedPlaylistUIConfig
 //
 std::unique_ptr<content::WebUIController>
-UntrustedPlaylistUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedPlaylistUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                                 const GURL& url) {
   return std::make_unique<PlaylistUI>(web_ui, kPlaylistURL);
 }
 
@@ -153,7 +154,8 @@ UntrustedPlaylistPlayerUIConfig::UntrustedPlaylistPlayerUIConfig()
     : WebUIConfig(content::kChromeUIUntrustedScheme, kPlaylistPlayerHost) {}
 
 std::unique_ptr<content::WebUIController>
-UntrustedPlaylistPlayerUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedPlaylistPlayerUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                                       const GURL& url) {
   return std::make_unique<UntrustedPlayerUI>(web_ui);
 }
 

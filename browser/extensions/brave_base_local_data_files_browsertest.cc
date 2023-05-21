@@ -61,9 +61,8 @@ void BaseLocalDataFilesBrowserTest::WaitForService() {
   scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
       g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
   ASSERT_TRUE(tr_helper->Run());
-  scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-      base::ThreadPool::CreateSingleThreadTaskRunner({BrowserThread::IO})
-          .get()));
+  scoped_refptr<base::ThreadTestHelper> io_helper(
+      new base::ThreadTestHelper(content::GetIOThreadTaskRunner({}).get()));
   ASSERT_TRUE(io_helper->Run());
   base::RunLoop().RunUntilIdle();
 }

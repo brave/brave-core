@@ -33,13 +33,4 @@ public class BraveWalletProvider {
     public static final String UPHOLD = "uphold";
     public static final String BITFLYER = "bitflyer";
     public static final String GEMINI = "gemini";
-
-    private static int UNKNOWN_ERROR_CODE = -1;
-
-    public void completeWalletProviderVerification(
-            ExternalNavigationParams params, BraveExternalNavigationHandler handler) {
-        String originalUrl = params.getUrl().getSpec();
-        String url = originalUrl.replaceFirst("^rewards://", "brave://rewards/");
-        handler.clobberCurrentTabWithFallbackUrl(url, params);
-    }
 }

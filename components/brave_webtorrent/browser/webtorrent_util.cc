@@ -45,6 +45,9 @@ bool TorrentURLMatched(const GURL& url) {
 bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
   extensions::ExtensionRegistry* registry =
     extensions::ExtensionRegistry::Get(browser_context);
+  if (!registry) {
+    return false;
+  }
   return registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 

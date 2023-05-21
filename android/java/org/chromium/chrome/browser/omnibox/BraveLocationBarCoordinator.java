@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.back_press.BackPressManager;
@@ -24,6 +23,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarMediator.SaveOfflineButton
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.ActionChipsDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
+import org.chromium.chrome.browser.omnibox.suggestions.base.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -57,7 +57,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @NonNull SaveOfflineButtonState saveOfflineButtonState, @NonNull OmniboxUma omniboxUma,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
             @NonNull BookmarkState bookmarkState,
-            @NonNull BooleanSupplier isToolbarMicEnabledSupplier, JankTracker jankTracker,
+            @NonNull BooleanSupplier isToolbarMicEnabledSupplier,
             @Nullable Supplier<MerchantTrustSignalsCoordinator>
                     merchantTrustSignalsCoordinatorSupplier,
             @NonNull ActionChipsDelegate actionChipsDelegate,
@@ -65,17 +65,18 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             Callback<Throwable> reportExceptionCallback,
             @Nullable BackPressManager backPressManager,
             @NonNull OmniboxSuggestionsDropdownScrollListener
-                    omniboxSuggestionsDropdownScrollListener) {
+                    omniboxSuggestionsDropdownScrollListener,
+            @Nullable OpenHistoryClustersDelegate openHistoryClustersDelegate) {
         super(locationBarLayout, autocompleteAnchorView, profileObservableSupplier,
                 privacyPreferencesManager, locationBarDataProvider, actionModeCallback,
                 windowDelegate, windowAndroid, activityTabSupplier, modalDialogManagerSupplier,
                 shareDelegateSupplier, incognitoStateProvider, activityLifecycleDispatcher,
                 overrideUrlLoadingDelegate, backKeyBehavior, searchEngineLogoUtils, pageInfoAction,
                 bringTabToFrontCallback, saveOfflineButtonState, omniboxUma,
-                tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier, jankTracker,
+                tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier,
                 merchantTrustSignalsCoordinatorSupplier, actionChipsDelegate,
                 browserControlsVisibilityDelegate, reportExceptionCallback, backPressManager,
-                omniboxSuggestionsDropdownScrollListener);
+                omniboxSuggestionsDropdownScrollListener, openHistoryClustersDelegate);
 
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {
             mQRButton = locationBarLayout.findViewById(R.id.qr_button);

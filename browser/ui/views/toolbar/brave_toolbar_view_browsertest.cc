@@ -183,9 +183,8 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
       profile_manager->GetProfileAttributesStorage();
   base::FilePath current_profile_path = browser()->profile()->GetPath();
   base::FilePath new_path = profile_manager->GenerateNextProfileDirectoryPath();
-  Profile* new_profile =
+  Profile& new_profile =
       profiles::testing::CreateProfileSync(profile_manager, new_path);
-  EXPECT_TRUE(new_profile);
   ASSERT_EQ(2u, storage.GetNumberOfProfiles());
 
   // check it's now shown in first profile
@@ -196,13 +195,13 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
   profiles::OpenBrowserWindowForProfile(base::DoNothing(), false, true, true,
-                                        new_profile);
+                                        &new_profile);
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
   EXPECT_EQ(2U, BrowserList::GetInstance()->size());
 
   // Check it's shown in second profile
-  Browser* browser = chrome::FindAnyBrowser(new_profile, true);
+  Browser* browser = chrome::FindAnyBrowser(&new_profile, true);
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
