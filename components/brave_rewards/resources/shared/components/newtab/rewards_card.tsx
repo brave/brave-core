@@ -12,10 +12,10 @@ import { UserType } from '../../lib/user_type'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { BatIcon } from '../icons/bat_icon'
+import { OptInIcon } from '../icons/optin_icon'
 import { SettingsIcon } from '../icons/settings_icon'
 import { InfoIcon } from './icons/info_icon'
 import { ArrowNextIcon } from '../icons/arrow_next_icon'
-import { TermsOfService } from '../terms_of_service'
 import { EarningsRange } from '../earnings_range'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
@@ -202,20 +202,25 @@ export function RewardsCard (props: Props) {
     return (
       <style.root>
         <RewardsCardHeader />
-        <style.rewardsOptIn>
-          <style.rewardsOptInHeader>
-            {getString('rewardsOptInHeader')}
-          </style.rewardsOptInHeader>
+        <style.optInIcon>
+          <OptInIcon />
+        </style.optInIcon>
+        <style.optInHeaderText>
+          {getString('rewardsOptInHeader')}
+        </style.optInHeaderText>
+        <style.optInText>
           {getString('rewardsOptInText')}
-        </style.rewardsOptIn>
-        <style.primaryAction>
+        </style.optInText>
+        <style.optInAction>
           <button onClick={props.onEnableRewards}>
             {getString('rewardsStartUsingRewards')}
           </button>
-        </style.primaryAction>
-        <style.terms>
-          <TermsOfService text={getString('rewardsOptInTerms')} />
-        </style.terms>
+        </style.optInAction>
+        <style.optInLearnMore>
+          <NewTabLink href={urls.rewardsTourURL}>
+            {getString('rewardsLearnMore')}
+          </NewTabLink>
+        </style.optInLearnMore>
       </style.root>
     )
   }

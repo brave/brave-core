@@ -122,10 +122,10 @@
     You have <ph name="DAYS">$1<ex>80 days</ex></ph> left to claim
   </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_HEADER" desc="">
-    Earn tokens and give back
+    Earn tokens for private ads you see in Brave
   </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_TEXT" desc="">
-    Earn tokens by viewing Brave Private Ads and support content creators automatically.
+    Support content creators and use your tokens to buy gift cards, exchange for other currencies, and more.
   </message>
   <message name="IDS_REWARDS_WIDGET_SETTINGS" desc="">
     Rewards settings
