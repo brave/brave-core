@@ -1080,6 +1080,7 @@ source_set("internal") {
     "resources/behavioral/purchase_intent/purchase_intent_info.h",
     "resources/behavioral/purchase_intent/purchase_intent_resource.cc",
     "resources/behavioral/purchase_intent/purchase_intent_resource.h",
+    "resources/behavioral/purchase_intent/purchase_intent_resource_constants.h",
     "resources/behavioral/purchase_intent/purchase_intent_segment_keyword_info.cc",
     "resources/behavioral/purchase_intent/purchase_intent_segment_keyword_info.h",
     "resources/behavioral/purchase_intent/purchase_intent_signal_history_info.cc",

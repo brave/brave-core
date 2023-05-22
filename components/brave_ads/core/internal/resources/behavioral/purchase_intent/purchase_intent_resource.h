@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -27,23 +28,31 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
 
   ~PurchaseIntentResource() override;
 
-  bool IsInitialized() const { return is_initialized_; }
+  bool IsInitialized() const { return static_cast<bool>(purchase_intent_); }
 
-  void Load();
-
-  const PurchaseIntentInfo& get() const { return purchase_intent_; }
+  const absl::optional<PurchaseIntentInfo>& get() const {
+    return purchase_intent_;
+  }
 
  private:
-  void LoadAndParseResourceCallback(
-      ResourceParsingErrorOr<PurchaseIntentInfo> result);
+  void MaybeLoad();
+  void MaybeLoadOrReset();
+
+  bool DidLoad() const { return did_load_; }
+  void Load();
+  void LoadCallback(ResourceParsingErrorOr<PurchaseIntentInfo> result);
+
+  void MaybeReset();
+  void Reset();
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
-  bool is_initialized_ = false;
+  absl::optional<PurchaseIntentInfo> purchase_intent_;
 
-  PurchaseIntentInfo purchase_intent_;
+  bool did_load_ = false;
 
   base::WeakPtrFactory<PurchaseIntentResource> weak_factory_{this};
 };

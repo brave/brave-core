@@ -8,16 +8,24 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
+#include "brave/components/brave_news/common/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
-constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
+
+bool DoesRequireResource() {
+  return UserHasOptedIn();
+}
+
 }  // namespace
 
 PurchaseIntentResource::PurchaseIntentResource() {
@@ -28,51 +36,78 @@ PurchaseIntentResource::~PurchaseIntentResource() {
   AdsClientHelper::RemoveObserver(this);
 }
 
-void PurchaseIntentResource::Load() {
-  LoadAndParseResource(
-      kResourceId, kPurchaseIntentResourceVersion.Get(),
-      base::BindOnce(&PurchaseIntentResource::LoadAndParseResourceCallback,
-                     weak_factory_.GetWeakPtr()));
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
-void PurchaseIntentResource::LoadAndParseResourceCallback(
+void PurchaseIntentResource::MaybeLoad() {
+  if (DoesRequireResource()) {
+    Load();
+  }
+}
+
+void PurchaseIntentResource::MaybeLoadOrReset() {
+  DidLoad() ? MaybeReset() : MaybeLoad();
+}
+
+void PurchaseIntentResource::Load() {
+  did_load_ = true;
+
+  LoadAndParseResource(kPurchaseIntentResourceId,
+                       kPurchaseIntentResourceVersion.Get(),
+                       base::BindOnce(&PurchaseIntentResource::LoadCallback,
+                                      weak_factory_.GetWeakPtr()));
+}
+
+void PurchaseIntentResource::LoadCallback(
     ResourceParsingErrorOr<PurchaseIntentInfo> result) {
   if (!result.has_value()) {
-    BLOG(0, "Failed to initialize " << kResourceId
-                                    << " purchase intent resource ("
-                                    << result.error() << ")");
-    is_initialized_ = false;
-    return;
+    return BLOG(0, "Failed to initialize " << kPurchaseIntentResourceId
+                                           << " purchase intent resource ("
+                                           << result.error() << ")");
   }
 
   if (result.value().version == 0) {
-    BLOG(7, kResourceId << " purchase intent resource does not exist");
-    is_initialized_ = false;
-    return;
+    return BLOG(7, kPurchaseIntentResourceId
+                       << " purchase intent resource is not available");
   }
 
-  BLOG(1, "Successfully loaded " << kResourceId << " purchase intent resource");
+  BLOG(1, "Successfully loaded " << kPurchaseIntentResourceId
+                                 << " purchase intent resource");
 
   purchase_intent_ = std::move(result).value();
 
-  is_initialized_ = true;
-
-  BLOG(1, "Successfully initialized " << kResourceId
+  BLOG(1, "Successfully initialized " << kPurchaseIntentResourceId
                                       << " purchase intent resource version "
                                       << kPurchaseIntentResourceVersion.Get());
 }
 
+void PurchaseIntentResource::MaybeReset() {
+  if (DidLoad() && !DoesRequireResource()) {
+    Reset();
+  }
+}
+
+void PurchaseIntentResource::Reset() {
+  BLOG(1, "Reset " << kPurchaseIntentResourceId << " purchase intent resource");
+  purchase_intent_.reset();
+  did_load_ = false;
+}
+
 void PurchaseIntentResource::OnNotifyLocaleDidChange(
     const std::string& /*locale*/) {
-  Load();
+  MaybeLoad();
+}
+
+void PurchaseIntentResource::OnNotifyPrefDidChange(const std::string& path) {
+  if (path == prefs::kEnabled || path == brave_news::prefs::kBraveNewsOptedIn ||
+      path == brave_news::prefs::kNewTabPageShowToday) {
+    MaybeLoadOrReset();
+  }
 }
 
 void PurchaseIntentResource::OnNotifyDidUpdateResourceComponent(
     const std::string& id) {
   if (IsValidCountryComponentId(id)) {
-    Load();
+    MaybeLoad();
   }
 }
 

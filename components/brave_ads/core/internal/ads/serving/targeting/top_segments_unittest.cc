@@ -31,6 +31,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "url/gurl.h"
 
@@ -97,7 +98,7 @@ class BraveAdsTopSegmentsTest
     NotifyDidInitializeAds();
 
     purchase_intent_resource_ = std::make_unique<PurchaseIntentResource>();
-    purchase_intent_resource_->Load();
+    NotifyDidUpdateResourceComponent(kCountryComponentId);
     purchase_intent_processor_ =
         std::make_unique<PurchaseIntentProcessor>(*purchase_intent_resource_);
 

@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -30,7 +31,7 @@ class BraveAdsPurchaseIntentProcessorTest : public UnitTestBase {
   }
 
   bool LoadResource() {
-    resource_->Load();
+    NotifyDidUpdateResourceComponent(kCountryComponentId);
     task_environment_.RunUntilIdle();
     return resource_->IsInitialized();
   }
@@ -74,8 +75,9 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
-  // Act
   const PurchaseIntentModel model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
