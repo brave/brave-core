@@ -9,6 +9,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
@@ -18,7 +19,8 @@ namespace brave_ads {
 
 struct CatalogInfo;
 
-class Catalog final : public DatabaseManagerObserver {
+class Catalog final : public AdsClientNotifierObserver,
+                      public DatabaseManagerObserver {
  public:
   Catalog();
 
@@ -33,11 +35,10 @@ class Catalog final : public DatabaseManagerObserver {
   void AddObserver(CatalogObserver* observer);
   void RemoveObserver(CatalogObserver* observer);
 
-  void MaybeFetch();
-
  private:
   void Fetch();
   void FetchCallback(const mojom::UrlResponseInfo& url_response);
+
   void FetchAfterDelay();
 
   void Retry();
@@ -46,6 +47,9 @@ class Catalog final : public DatabaseManagerObserver {
 
   void NotifyDidUpdateCatalog(const CatalogInfo& catalog) const;
   void NotifyFailedToUpdateCatalog() const;
+
+  // AdsClientNotifierObserver:
+  void OnNotifyDidInitializeAds() override;
 
   // DatabaseManagerObserver:
   void OnDidMigrateDatabase(int from_version, int to_version) override;

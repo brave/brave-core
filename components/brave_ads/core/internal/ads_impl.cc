@@ -451,7 +451,6 @@ void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
 
   LogActiveStudies();
 
-  catalog_.MaybeFetch();
 }
 
 void AdsImpl::OnStatementOfAccountsDidChange() {

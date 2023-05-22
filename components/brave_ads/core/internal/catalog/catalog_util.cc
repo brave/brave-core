@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
-#include <cstdint>
-
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_util.h"
@@ -73,6 +71,8 @@ void ResetCatalog() {
   AdsClientHelper::GetInstance()->ClearPref(prefs::kCatalogVersion);
   AdsClientHelper::GetInstance()->ClearPref(prefs::kCatalogPing);
   AdsClientHelper::GetInstance()->ClearPref(prefs::kCatalogLastUpdated);
+
+  Delete();
 }
 
 std::string GetCatalogId() {
@@ -93,9 +93,8 @@ void SetCatalogVersion(const int version) {
 }
 
 base::TimeDelta GetCatalogPing() {
-  const int64_t ping =
-      AdsClientHelper::GetInstance()->GetInt64Pref(prefs::kCatalogPing);
-  return base::Milliseconds(ping);
+  return base::Milliseconds(
+      AdsClientHelper::GetInstance()->GetInt64Pref(prefs::kCatalogPing));
 }
 
 void SetCatalogPing(const base::TimeDelta ping) {

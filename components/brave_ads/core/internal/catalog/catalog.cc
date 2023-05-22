@@ -38,10 +38,12 @@ constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(15);
 }  // namespace
 
 Catalog::Catalog() {
+  AdsClientHelper::AddObserver(this);
   DatabaseManager::GetInstance().AddObserver(this);
 }
 
 Catalog::~Catalog() {
+  AdsClientHelper::RemoveObserver(this);
   DatabaseManager::GetInstance().RemoveObserver(this);
 }
 
@@ -55,18 +57,12 @@ void Catalog::RemoveObserver(CatalogObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Catalog::MaybeFetch() {
-  if (is_fetching_ || retry_timer_.IsRunning()) {
-    return;
-  }
-
-  Fetch();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void Catalog::Fetch() {
-  CHECK(!is_fetching_);
+  if (is_fetching_ || retry_timer_.IsRunning()) {
+    return;
+  }
 
   BLOG(1, "FetchCatalog " << BuildCatalogUrlPath());
 
@@ -126,18 +122,17 @@ void Catalog::FetchCallback(const mojom::UrlResponseInfo& url_response) {
   }
 
   SaveCatalog(*catalog);
+
   NotifyDidUpdateCatalog(*catalog);
+
   FetchAfterDelay();
 }
 
 void Catalog::FetchAfterDelay() {
   StopRetrying();
 
-  const base::TimeDelta delay =
-      ShouldDebug() ? kDebugCatalogPing : GetCatalogPing();
-
   const base::Time fetch_at = timer_.StartWithPrivacy(
-      FROM_HERE, delay,
+      FROM_HERE, ShouldDebug() ? kDebugCatalogPing : GetCatalogPing(),
       base::BindOnce(&Catalog::Fetch, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at));
@@ -171,6 +166,10 @@ void Catalog::NotifyFailedToUpdateCatalog() const {
   for (CatalogObserver& observer : observers_) {
     observer.OnFailedToUpdateCatalog();
   }
+}
+
+void Catalog::OnNotifyDidInitializeAds() {
+  Fetch();
 }
 
 void Catalog::OnDidMigrateDatabase(const int /*from_version*/,
