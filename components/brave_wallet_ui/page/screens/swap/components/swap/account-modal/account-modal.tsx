@@ -13,7 +13,7 @@ import {
 // Assets
 // FIXME(douglashdaniel): This is not the correct icon
 import HelpIcon from '../../../assets/lp-icons/0x.svg'
-import CloseIcon from '../../../assets/lp-icons/0x.svg'
+import CloseIcon from '../../../assets/lp-icons/aave.svg'
 
 // Hiding Portfolio Section until we support it.
 // import PortfolioIcon from '../../../assets/portfolio-icon.svg'

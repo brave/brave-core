@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { useCallback, useMemo, useState } from 'react'
 
@@ -55,23 +55,13 @@ export function useZeroEx (params: SwapParams) {
   // FIXME(josheleonard): convert to slices
   const getBraveFeeForAsset = useCallback(
     async (token: BraveWallet.BlockchainToken) => {
+      if (token.coin !== BraveWallet.CoinType.ETH) {
+        throw Error('Unsupported coin type')
+      }
+
       return {
         fee: '0.875',
         discount: '0'
-      } as SwapFee
-
-      if (token.coin === BraveWallet.CoinType.ETH) {
-        return {
-          fee: '0.875',
-          discount: '0'
-        } as SwapFee
-      }
-
-      const hasFee = (await swapService.hasJupiterFeesForTokenMint(token.contractAddress)).result
-
-      return {
-        fee: '0.85',
-        discount: hasFee ? '0' : '100'
       } as SwapFee
     },
     [swapService]

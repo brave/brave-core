@@ -7,24 +7,16 @@ import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
 // Selectors
-import {
-  WalletSelectors
-} from '../../../../../../common/selectors'
-import {
-  useUnsafeWalletSelector
-} from '../../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../../common/selectors'
+import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
 
 // Assets
 // FIXME(douglashdaniel): This is not the correct icon
 import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
 
 // Utils
-import {
-  reduceAddress
-} from '../../../../../../utils/reduce-address'
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { reduceAddress } from '../../../../../../utils/reduce-address'
+import { getLocale } from '../../../../../../../common/locale'
 
 // Styled Components
 import { AccountCircle, Button, ButtonIcon } from './connect-wallet-button.style'
@@ -64,19 +56,11 @@ export const ConnectWalletButton = (props: Props) => {
             </Text>
             <HorizontalSpacer size={4} />
           </HiddenResponsiveRow>
-          <Text
-            textSize='14px'
-            textColor='text02'
-            isBold={true}
-            responsiveTextSize='12px'
-          >
+          <Text textSize='14px' textColor='text02' isBold={true} responsiveTextSize='12px'>
             {reduceAddress(selectedAccount.address)}
           </Text>
           <HorizontalSpacer size={7} />
-          <ButtonIcon
-            size={12}
-            icon={CaratDownIcon}
-          />
+          <ButtonIcon size={12} icon={CaratDownIcon} />
         </>
       ) : (
         getLocale('braveSwapConnectWallet')

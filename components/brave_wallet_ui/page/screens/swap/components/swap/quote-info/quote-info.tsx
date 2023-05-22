@@ -23,8 +23,8 @@ import {
 // Assets
 // FIXME(douglashdaniel): This is not the correct icon
 import HorizontalArrowsIcon from '../../../assets/lp-icons/0x.svg'
-import FuelTankIcon from '../../../assets/lp-icons/0x.svg'
-import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
+import FuelTankIcon from '../../../assets/lp-icons/aave.svg'
+import CaratDownIcon from '../../../assets/lp-icons/apeswap.svg'
 
 // Styled Components
 import {

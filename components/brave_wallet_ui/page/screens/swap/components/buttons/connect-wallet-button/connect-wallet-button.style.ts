@@ -6,15 +6,13 @@
 import styled from 'styled-components'
 import { StyledButton, StyledDiv, Icon } from '../../shared-swap.styles'
 
-export const Button = styled(StyledButton) <{ isConnected: boolean }>`
-  --background-color-disconnected: ${(p) => p.theme.color.interactive04};
+export const Button = styled(StyledButton)<{ isConnected: boolean }>`
+  --background-color-disconnected: ${p => p.theme.color.interactive04};
   @media (prefers-color-scheme: dark) {
-    --background-color-disconnected: ${(p) => p.theme.color.interactive05};
+    --background-color-disconnected: ${p => p.theme.color.interactive05};
   }
   background-color: ${p =>
-    p.isConnected
-      ? p.theme.color.background01
-      : 'var(--background-color-disconnected)'};
+    p.isConnected ? p.theme.color.background01 : 'var(--background-color-disconnected)'};
   border-radius: 48px;
   color: ${p => (p.isConnected ? p.theme.color.text01 : p.theme.palette.white)};
   font-size: 14px;
@@ -26,7 +24,7 @@ export const Button = styled(StyledButton) <{ isConnected: boolean }>`
   }
 `
 
-export const AccountCircle = styled(StyledDiv) <{ orb: string }>`
+export const AccountCircle = styled(StyledDiv)<{ orb: string }>`
   width: 24px;
   height: 24px;
   border-radius: 100%;
@@ -37,7 +35,7 @@ export const AccountCircle = styled(StyledDiv) <{ orb: string }>`
 
 export const ButtonIcon = styled(Icon)`
   display: none;
-  background-color: ${(p) => p.theme.color.text01};
+  background-color: ${p => p.theme.color.text01};
   @media screen and (max-width: 570px) {
     display: block;
   }

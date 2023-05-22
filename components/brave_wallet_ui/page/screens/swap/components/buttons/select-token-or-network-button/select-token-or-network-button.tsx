@@ -18,7 +18,7 @@ import {
 // Assets
 // FIXME(douglashdaniel): This is not the correct icon
 import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
-import FuelTankIcon from '../../../assets/lp-icons/0x.svg'
+import FuelTankIcon from '../../../assets/lp-icons/aave.svg'
 
 // Components
 import withPlaceholderIcon from '../../../../../../components/shared/create-placeholder-icon'

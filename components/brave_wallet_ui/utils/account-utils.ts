@@ -144,6 +144,6 @@ export const findAccountInList = (
 
 export const getAllAccountsFromRegistry = (
   entityState: EntityState<AccountInfoEntity>
-): Array<AccountInfoEntity> => {
+): AccountInfoEntity[] => {
   return getEntitiesListFromEntityState(entityState)
 }
