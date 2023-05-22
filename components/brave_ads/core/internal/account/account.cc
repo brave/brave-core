@@ -191,6 +191,11 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const std::string& segment,
                              const ConfirmationType& confirmation_type,
                              const double value) const {
+  if (!ShouldRewardUser()) {
+    return SuccessfullyProcessedDeposit(BuildTransaction(
+        creative_instance_id, segment, value, ad_type, confirmation_type));
+  }
+
   AddTransaction(
       creative_instance_id, segment, value, ad_type, confirmation_type,
       base::BindOnce(&Account::ProcessDepositCallback,

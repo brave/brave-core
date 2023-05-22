@@ -18,13 +18,13 @@
 
 namespace brave_ads {
 
-TransactionInfo AddTransaction(const std::string& creative_instance_id,
-                               const std::string& segment,
-                               const double value,
-                               const AdType& ad_type,
-                               const ConfirmationType& confirmation_type,
-                               AddTransactionCallback callback) {
+TransactionInfo BuildTransaction(const std::string& creative_instance_id,
+                                 const std::string& segment,
+                                 const double value,
+                                 const AdType& ad_type,
+                                 const ConfirmationType& confirmation_type) {
   CHECK(!creative_instance_id.empty());
+  CHECK(!segment.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
@@ -36,6 +36,23 @@ TransactionInfo AddTransaction(const std::string& creative_instance_id,
   transaction.segment = segment;
   transaction.ad_type = ad_type;
   transaction.confirmation_type = confirmation_type;
+
+  return transaction;
+}
+
+TransactionInfo AddTransaction(const std::string& creative_instance_id,
+                               const std::string& segment,
+                               const double value,
+                               const AdType& ad_type,
+                               const ConfirmationType& confirmation_type,
+                               AddTransactionCallback callback) {
+  CHECK(!creative_instance_id.empty());
+  CHECK(!segment.empty());
+  CHECK_NE(AdType::kUndefined, ad_type);
+  CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
+
+  TransactionInfo transaction = BuildTransaction(
+      creative_instance_id, segment, value, ad_type, confirmation_type);
 
   database::table::Transactions database_table;
   database_table.Save(
