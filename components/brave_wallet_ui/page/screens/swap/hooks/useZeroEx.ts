@@ -285,13 +285,11 @@ export function useZeroEx (params: SwapParams) {
 
       try {
         await sendEthTransaction({
-          accountType: selectedAccount.accountType,
           fromAccount: selectedAccount,
           to,
           value: new Amount(value).toHex(),
           gas: new Amount(estimatedGas).toHex(),
           data: hexStrToNumberArray(data),
-          coin: BraveWallet.CoinType.ETH,
           network: selectedNetwork
         })
 
@@ -330,12 +328,10 @@ export function useZeroEx (params: SwapParams) {
       }
 
       await sendEthTransaction({
-        accountType: selectedAccount.accountType,
         fromAccount: selectedAccount,
         to: sellTokenAddress,
         value: '0x0',
         data,
-        coin: BraveWallet.CoinType.ETH,
         network: selectedNetwork
       })
     } catch (e) {

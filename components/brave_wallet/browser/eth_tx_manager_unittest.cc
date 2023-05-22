@@ -262,8 +262,8 @@ class EthTxManagerUnitTest : public testing::Test {
 
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();
-    keyring_service_->AddAccount("Account 1", mojom::CoinType::ETH,
-                                 base::DoNothing());
+    keyring_service_->AddAccountSync(mojom::CoinType::ETH,
+                                     mojom::kDefaultKeyringId, "Account 1");
     base::RunLoop().RunUntilIdle();
 
     ASSERT_TRUE(base::HexStringToBytes(

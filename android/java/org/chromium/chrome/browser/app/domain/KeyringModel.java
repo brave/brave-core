@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.app.domain;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
@@ -21,12 +22,14 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.SelectedAccountResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.Pair;
@@ -36,8 +39,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class KeyringModel implements KeyringServiceObserver {
+    private Context mContext;
     private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
     @FilecoinNetworkType
@@ -58,8 +63,9 @@ public class KeyringModel implements KeyringServiceObserver {
     public LiveData<AccountInfo> mSelectedAccount;
     public LiveData<KeyringInfo[]> mKeyringInfosLiveData;
 
-    public KeyringModel(KeyringService keyringService, CryptoSharedData sharedData,
+    public KeyringModel(Context context, KeyringService keyringService, CryptoSharedData sharedData,
             BraveWalletService braveWalletService, CryptoSharedActions cryptoSharedActions) {
+        mContext = context;
         mKeyringService = keyringService;
         mBraveWalletService = braveWalletService;
         mSharedData = sharedData;
@@ -221,13 +227,11 @@ public class KeyringModel implements KeyringServiceObserver {
             }
             AccountInfo selectedAccount = _mSelectedAccount.getValue();
             if (selectedAccount != null
-                    && selectedAccount.address.equals(accountInfoToSelect.address)
-                    && selectedAccount.keyringId.equals(accountInfoToSelect.keyringId)) {
+                    && WalletUtils.accountIdsEqual(selectedAccount, accountInfoToSelect)) {
                 return;
             }
 
-            mKeyringService.setSelectedAccount(accountInfoToSelect.coin,
-                    accountInfoToSelect.keyringId, accountInfoToSelect.address,
+            mKeyringService.setSelectedAccount(accountInfoToSelect.accountId,
                     isAccountSelected -> { mCryptoSharedActions.updateCoinType(); });
         }
     }
@@ -239,8 +243,11 @@ public class KeyringModel implements KeyringServiceObserver {
         });
     }
 
-    public void resetService(KeyringService keyringService, BraveWalletService braveWalletService) {
+    public void resetService(
+            Context context, KeyringService keyringService, BraveWalletService braveWalletService) {
         synchronized (mLock) {
+            mContext = context;
+
             if (mKeyringService != keyringService) {
                 mKeyringService = keyringService;
             }
@@ -275,27 +282,56 @@ public class KeyringModel implements KeyringServiceObserver {
         });
     }
 
-    public void addAccount(String accountName, @CoinType.EnumType int coinType,
-            Callbacks.Callback1<Boolean> callback) {
-        mKeyringService.addAccount(
-                accountName, coinType, result -> { handleAddAccountResult(result, callback); });
+    private void addAccountInternal(@CoinType.EnumType int coinType, String keyringId,
+            String accountName, Callbacks.Callback1<Boolean> callback) {
+        mKeyringService.addAccount(coinType, keyringId, accountName,
+                result -> { handleAddAccountResult(result, callback); });
     }
 
-    public void addFilecoinAccount(String accountName, @FilecoinNetworkType String filecoinNetwork,
+    private static String getTargetKeyringId(@CoinType.EnumType int coinType, String network) {
+        if (coinType == CoinType.ETH) {
+            return BraveWalletConstants.DEFAULT_KEYRING_ID;
+        }
+        if (coinType == CoinType.SOL) {
+            return BraveWalletConstants.SOLANA_KEYRING_ID;
+        }
+        if (coinType == CoinType.FIL) {
+            assert network != null;
+            if (network.equals(BraveWalletConstants.FILECOIN_MAINNET)) {
+                return BraveWalletConstants.FILECOIN_KEYRING_ID;
+            }
+            if (network.equals(BraveWalletConstants.FILECOIN_TESTNET)) {
+                return BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID;
+            }
+        }
+
+        assert false;
+        return null;
+    }
+
+    public void addAccount(@CoinType.EnumType int coinType, String chainId, String accountName,
             Callbacks.Callback1<Boolean> callback) {
-        mSelectedFilecoinNetwork = filecoinNetwork;
-        mKeyringService.addFilecoinAccount(accountName, mSelectedFilecoinNetwork,
-                result -> { handleAddAccountResult(result, callback); });
+        String keyringId = getTargetKeyringId(coinType, chainId);
+        if (accountName == null) {
+            LiveDataUtil.observeOnce(mAccountInfos, accounts -> {
+                addAccountInternal(coinType, keyringId,
+                        WalletUtils.generateUniqueAccountName(
+                                mContext, coinType, accounts.toArray(new AccountInfo[0])),
+                        callback);
+            });
+        } else {
+            addAccountInternal(coinType, keyringId, accountName, callback);
+        }
     }
 
     public void isWalletLocked(Callbacks.Callback1<Boolean> callback) {
         mKeyringService.isLocked(isWalletLocked -> callback.call(isWalletLocked));
     }
 
-    private void handleAddAccountResult(boolean result, Callbacks.Callback1<Boolean> callback) {
+    private void handleAddAccountResult(AccountInfo result, Callbacks.Callback1<Boolean> callback) {
         mCryptoSharedActions.updateCoinType();
         mCryptoSharedActions.onNewAccountAdded();
-        callback.call(result);
+        callback.call(result != null);
     }
 
     private void updateSelectedAccountAndState(@Nullable String accountAddress) {

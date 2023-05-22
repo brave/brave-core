@@ -242,7 +242,8 @@ export const DevBitcoin = () => {
   const hasBitcoinAccount =
     accounts.filter(
       (a) =>
-        a.coin === BraveWallet.CoinType.BTC && a.keyringId === defaultKeyringId
+        a.accountId.coin === BraveWallet.CoinType.BTC &&
+        a.accountId.keyringId === defaultKeyringId
     ).length > 0
 
   return hasBitcoinAccount ? <AccountSection /> : <CreateAccountSection />

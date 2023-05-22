@@ -78,25 +78,18 @@ class SolanaTransactionUnitTest : public testing::Test {
     return success;
   }
 
-  static bool AddAccount(KeyringService* service,
-                         const std::string& account_name,
-                         mojom::CoinType coin) {
-    bool success = false;
-    base::RunLoop run_loop;
-    service->AddAccount(account_name, coin,
-                        base::BindLambdaForTesting([&](bool v) {
-                          success = v;
-                          run_loop.Quit();
-                        }));
-    run_loop.Run();
-    return success;
+  static mojom::AccountInfoPtr AddAccount(KeyringService* service,
+                                          const std::string& account_name) {
+    return service->AddAccountSync(mojom::CoinType::SOL,
+                                   mojom::kSolanaKeyringId, account_name);
   }
 
   void SetSelectedAccount(const std::string& address) {
     bool success = false;
     base::RunLoop run_loop;
     keyring_service()->SetSelectedAccount(
-        mojom::CoinType::SOL, mojom::kSolanaKeyringId, address,
+        mojom::AccountId::New(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
+                              mojom::AccountKind::kDerived, address),
         base::BindLambdaForTesting([&](bool v) {
           success = v;
           run_loop.Quit();
@@ -124,8 +117,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       brave_wallet::features::kBraveWalletSolanaFeature);
   ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
 
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1", mojom::CoinType::SOL));
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2", mojom::CoinType::SOL));
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2"));
   SetSelectedAccount(kFromAccount);
 
   uint64_t last_valid_block_height = 3090;
@@ -794,8 +787,8 @@ TEST_F(SolanaTransactionUnitTest, GetSerializedMessage) {
 TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
 
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1", mojom::CoinType::SOL));
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2", mojom::CoinType::SOL));
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2"));
   SetSelectedAccount(kFromAccount);
 
   // Empty message is invalid

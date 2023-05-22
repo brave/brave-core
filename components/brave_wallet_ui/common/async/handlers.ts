@@ -17,14 +17,12 @@ import {
 } from '../constants/action_types'
 import {
   BraveWallet,
-  WalletAccountType,
   WalletState,
   WalletInfo,
   NetworkFilterType
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
-  AddFilecoinAccountPayloadType,
   AddBitcoinAccountPayloadType
 } from '../../page/constants/action_types'
 
@@ -195,15 +193,13 @@ handler.on(WalletActions.chainChangedEvent.type, async (store: Store, payload: C
 
 handler.on(
   WalletActions.selectAccount.type,
-  async (
-    store: Store,
-    { coin, address, keyringId }: Pick<WalletAccountType, 'coin' | 'address' | 'keyringId'>
-  ) => {
+  async (store: Store, accountId: BraveWallet.AccountId) => {
     await store.dispatch(
-      walletApi.endpoints.setSelectedAccount.initiate({ coin, keyringId, address })
+      walletApi.endpoints.setSelectedAccount.initiate(accountId)
     )
   }
 )
+
 
 handler.on(WalletActions.selectedAccountChanged.type, async (store, payload: SelectedAccountChangedPayloadType) => {
   await updateCoinAccountNetworkInfo(store, payload.coin)
@@ -362,13 +358,13 @@ handler.on(WalletActions.selectPortfolioTimeline.type, async (store: Store, payl
 
 handler.on(WalletActions.removeSitePermission.type, async (store: Store, payload: RemoveSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.resetPermission(payload.coin, deserializeOrigin(payload.origin), payload.account)
+  await braveWalletService.resetPermission(payload.accountId, deserializeOrigin(payload.origin))
   await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.addSitePermission.type, async (store: Store, payload: AddSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.addPermission(payload.coin, deserializeOrigin(payload.origin), payload.account)
+  await braveWalletService.addPermission(payload.accountId, deserializeOrigin(payload.origin))
   await refreshWalletInfo(store)
 })
 
@@ -400,20 +396,14 @@ handler.on(WalletActions.setSelectedAccountFilterItem.type, async (store: Store,
 
 handler.on(WalletActions.addAccount.type, async (_store: Store, payload: AddAccountPayloadType) => {
   const { keyringService } = getAPIProxy()
-  const result = await keyringService.addAccount(payload.accountName, payload.coin)
-  return result.success
-})
-
-handler.on(WalletActions.addFilecoinAccount.type, async (_store: Store, payload: AddFilecoinAccountPayloadType) => {
-  const { keyringService } = getAPIProxy()
-  const result = await keyringService.addFilecoinAccount(payload.accountName, payload.network)
-  return result.success
+  const result = await keyringService.addAccount(payload.coin, payload.keyringId, payload.accountName)
+  return !!result.accountInfo
 })
 
 handler.on(WalletActions.addBitcoinAccount.type, async (_store: Store, payload: AddBitcoinAccountPayloadType) => {
   const { keyringService } = getAPIProxy()
   const result = await keyringService.addBitcoinAccount(payload.accountName, payload.networkId, payload.keyringId)
-  return result.success
+  return !!result.accountInfo
 })
 
 handler.on(WalletActions.getOnRampCurrencies.type, async (store: Store) => {

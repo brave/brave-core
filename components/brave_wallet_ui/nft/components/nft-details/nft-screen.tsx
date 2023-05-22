@@ -114,7 +114,7 @@ export const NftScreen = (props: Props) => {
   const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
   const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
   const nftPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
-  
+
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
@@ -152,7 +152,7 @@ export const NftScreen = (props: Props) => {
 
         case BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED:
         return getLocale('braveWalletNFTDetailsPinningFailed')
-   
+
       default:
         return getLocale('braveWalletNFTDetailsNotAvailable')
     }
@@ -167,10 +167,9 @@ export const NftScreen = (props: Props) => {
   const ownerAccount = React.useMemo(() => {
     if (!accounts) return
     return accounts
-      .filter((account) => account.coin === selectedAsset.coin)
+      .filter((account) => account.accountId.coin === selectedAsset.coin)
       .find(acc => new Amount(getBalance(acc, selectedAsset)).gte('1'))
   }, [selectedAsset, accounts])
-
 
   // methods
   const onNftDetailsLoad = React.useCallback(() => {
@@ -180,7 +179,7 @@ export const NftScreen = (props: Props) => {
   const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
     // validate message origin
     if (event.origin !== braveNftDisplayOrigin) return
-    
+
     const message = event.data
     if (message.command === NftUiCommand.UpdateNftImageLoading) {
       const { payload } = message as UpdateNftImageLoadingMessage

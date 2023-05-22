@@ -118,7 +118,7 @@ export default function useSend (isSendTab?: boolean) {
     findUnstoppableDomainAddress(addressOrUrl, selectedSendAsset ?? null).then((value: GetUnstoppableDomainsWalletAddrReturnInfo) => {
       handleDomainLookupResponse(value.address, value.error, false)
     }).catch(e => console.log(e))
-  }, [findUnstoppableDomainAddress, handleDomainLookupResponse, selectedSendAsset, selectedAccount?.coin])
+  }, [findUnstoppableDomainAddress, handleDomainLookupResponse, selectedSendAsset, selectedAccount])
 
   const processEthereumAddress = React.useCallback((addressOrUrl: string) => {
     const valueToLowerCase = addressOrUrl.toLowerCase()
@@ -303,15 +303,19 @@ export default function useSend (isSendTab?: boolean) {
   }, [selectedAccount?.address, fullTokenList, handleUDAddressLookUp, handleDomainLookupResponse])
 
   const processAddressOrUrl = React.useCallback((addressOrUrl: string) => {
-    if (selectedAccount?.coin === BraveWallet.CoinType.ETH) {
+    if (!selectedAccount) {
+      return
+    }
+
+    if (selectedAccount.accountId.coin === BraveWallet.CoinType.ETH) {
       processEthereumAddress(addressOrUrl)
-    } else if (selectedAccount?.coin === BraveWallet.CoinType.FIL) {
+    } else if (selectedAccount.accountId.coin === BraveWallet.CoinType.FIL) {
       processFilecoinAddress(addressOrUrl)
-    } else if (selectedAccount?.coin === BraveWallet.CoinType.SOL) {
+    } else if (selectedAccount.accountId.coin === BraveWallet.CoinType.SOL) {
       processSolanaAddress(addressOrUrl)
     }
   }, [
-    selectedAccount?.coin,
+    selectedAccount,
     processEthereumAddress,
     processFilecoinAddress,
     processSolanaAddress
@@ -353,12 +357,10 @@ export default function useSend (isSendTab?: boolean) {
     }
 
     const fromAccount: BaseTransactionParams['fromAccount'] = {
+      accountId: selectedAccount.accountId,
       accountType: selectedAccount.accountType,
       address: selectedAccount.address,
-      coin: selectedAccount.coin,
       hardware: selectedAccount.hardware,
-      keyringId: selectedAccount.keyringId,
-      deviceId: selectedAccount.deviceId
     }
 
     selectedSendAsset.isErc20 &&
@@ -366,14 +368,12 @@ export default function useSend (isSendTab?: boolean) {
         walletApi.endpoints.sendERC20Transfer.initiate({
           network: selectedNetwork,
           fromAccount,
-          accountType: selectedAccount.accountType,
           to: toAddress,
           value: new Amount(sendAmount)
             // ETH → Wei conversion
             .multiplyByDecimals(selectedSendAsset.decimals)
             .toHex(),
           contractAddress: selectedSendAsset.contractAddress,
-          coin: selectedAccount.coin
         })
       )
 
@@ -381,18 +381,16 @@ export default function useSend (isSendTab?: boolean) {
       dispatch(
         walletApi.endpoints.sendERC721TransferFrom.initiate({
           network: selectedNetwork,
-          accountType: selectedAccount.accountType,
           fromAccount,
           to: toAddress,
           value: '',
           contractAddress: selectedSendAsset.contractAddress,
           tokenId: selectedSendAsset.tokenId ?? '',
-          coin: selectedAccount.coin
         })
       )
 
     if (
-      selectedAccount.coin === BraveWallet.CoinType.SOL &&
+      selectedAccount.accountId.coin === BraveWallet.CoinType.SOL &&
       selectedSendAsset.contractAddress !== '' &&
       !selectedSendAsset.isErc20 &&
       !selectedSendAsset.isErc721
@@ -407,7 +405,6 @@ export default function useSend (isSendTab?: boolean) {
                 .multiplyByDecimals(selectedSendAsset.decimals)
                 .toHex()
             : new Amount(sendAmount).toHex(),
-          coin: selectedAccount.coin,
           splTokenMintAddress: selectedSendAsset.contractAddress
         })
       )
@@ -415,7 +412,7 @@ export default function useSend (isSendTab?: boolean) {
       return
     }
 
-    if (selectedAccount.coin === BraveWallet.CoinType.FIL) {
+    if (selectedAccount.accountId.coin === BraveWallet.CoinType.FIL) {
       dispatch(
         walletApi.endpoints.sendTransaction.initiate({
           network: selectedNetwork,
@@ -425,7 +422,6 @@ export default function useSend (isSendTab?: boolean) {
             .multiplyByDecimals(selectedSendAsset.decimals)
             .toNumber()
             .toString(),
-          coin: selectedAccount.coin
         })
       )
       resetSendFields()
@@ -442,12 +438,10 @@ export default function useSend (isSendTab?: boolean) {
     dispatch(
       walletApi.endpoints.sendTransaction.initiate({
         network: selectedNetwork,
-        accountType: selectedAccount.accountType,
         fromAccount,
         to: toAddress,
-        coin: selectedAccount.coin,
         value:
-          selectedAccount.coin === BraveWallet.CoinType.FIL
+          selectedAccount.accountId.coin === BraveWallet.CoinType.FIL
             ? new Amount(sendAmount)
                 .multiplyByDecimals(selectedSendAsset.decimals)
                 .toString()

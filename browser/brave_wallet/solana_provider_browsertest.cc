@@ -470,21 +470,16 @@ class SolanaProviderTest : public InProcessBrowserTest {
     base::RunLoop().RunUntilIdle();
   }
 
-  void AddAccount(const std::string& name) {
-    base::RunLoop run_loop;
-    keyring_service_->AddAccount(
-        name, mojom::CoinType::SOL,
-        base::BindLambdaForTesting([&run_loop](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+  mojom::AccountInfoPtr AddAccount(const std::string& name) {
+    return keyring_service_->AddAccountSync(mojom::CoinType::SOL,
+                                            mojom::kSolanaKeyringId, name);
   }
 
   void SetSelectedAccount(const std::string& address) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        mojom::CoinType::SOL, mojom::kSolanaKeyringId, address,
+        mojom::AccountId::New(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
+                              mojom::AccountKind::kDerived, address),
         base::BindLambdaForTesting([&run_loop](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();

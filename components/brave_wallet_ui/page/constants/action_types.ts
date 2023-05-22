@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { FilecoinNetwork } from '../../common/hardware/types'
 import {
   BraveWallet,
   GetPriceHistoryReturnObjectInfo,
@@ -19,12 +18,8 @@ export type CreateWalletPayloadType = {
 
 export type AddAccountPayloadType = {
   accountName: string
+  keyringId: BraveKeyrings
   coin: BraveWallet.CoinType
-}
-
-export type AddFilecoinAccountPayloadType = {
-  accountName: string
-  network: FilecoinNetwork
 }
 
 export type AddBitcoinAccountPayloadType = {
@@ -51,17 +46,9 @@ export type ImportAccountFromJsonPayloadType = {
   json: string
 }
 
-export type RemoveImportedAccountPayloadType = {
-  coin: BraveWallet.CoinType
-  keyringId: BraveKeyrings
-  address: string
+export type RemoveAccountPayloadType = {
+  accountId: BraveWallet.AccountId
   password: string
-}
-
-export type RemoveHardwareAccountPayloadType = {
-  coin: BraveWallet.CoinType
-  keyringId: BraveKeyrings
-  address: string
 }
 
 export type RestoreWalletPayloadType = {

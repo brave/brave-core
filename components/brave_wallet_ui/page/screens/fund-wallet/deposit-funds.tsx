@@ -125,7 +125,7 @@ export const DepositFundsScreen = () => {
 
   const accountsForSelectedAssetNetwork: WalletAccountType[] = React.useMemo(() => {
     return selectedAssetNetwork
-      ? accounts.filter(a => a.coin === selectedAssetNetwork.coin)
+      ? accounts.filter(a => a.accountId.coin === selectedAssetNetwork.coin)
       : []
   }, [selectedAssetNetwork, accounts])
 
@@ -255,10 +255,11 @@ export const DepositFundsScreen = () => {
   // sync default selected account with selected asset
   React.useEffect(() => {
     if (
+      selectedAccount &&
       selectedAsset &&
       selectedAssetNetwork &&
       accountsForSelectedAssetNetwork.length && // asset is selected & account is available
-      selectedAccount?.coin !== selectedAsset.coin // needs to change accounts to one with correct network
+      selectedAccount.accountId.coin !== selectedAsset.coin // needs to change accounts to one with correct network
     ) {
       setSelectedAccount(accountsForSelectedAssetNetwork[0])
     }

@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/brave_wallet/browser/nft_metadata_fetcher.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
@@ -866,6 +868,8 @@ void JsonRpcService::GetBalance(const std::string& address,
                                 mojom::CoinType coin,
                                 const std::string& chain_id,
                                 JsonRpcService::GetBalanceCallback callback) {
+  DCHECK_NE(coin, mojom::CoinType::BTC);
+
   auto network_url = GetNetworkURL(prefs_, chain_id, coin);
   if (!network_url.is_valid()) {
     std::move(callback).Run(

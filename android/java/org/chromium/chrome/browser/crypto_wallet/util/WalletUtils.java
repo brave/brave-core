@@ -6,9 +6,11 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
@@ -17,34 +19,52 @@ import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class WalletUtils {
-    public static String getUniqueNextAccountName(Context context, AccountInfo[] accountInfos,
-            String cryptoAccountType, @CoinType.EnumType int coin) {
-        List<AccountInfo> accountInfoList = new ArrayList<>();
-        for (AccountInfo accountInfo : accountInfos) {
-            if (accountInfo.coin == coin) {
-                accountInfoList.add(accountInfo);
-            }
+    private static String getNewAccountPrefixForCoin(@CoinType.EnumType int coinType) {
+        switch (coinType) {
+            case CoinType.ETH:
+                return "Ethereum";
+            case CoinType.SOL:
+                return "Solana";
+            case CoinType.FIL:
+                return "Filecoin";
+            case CoinType.BTC:
+                return "Bitcoin";
         }
-        return getUniqueNextAccountName(context, accountInfoList.toArray(new AccountInfo[0]),
-                1 /* account name 1..n*/, cryptoAccountType);
+        assert false;
+        return "";
     }
 
-    private static String getUniqueNextAccountName(
-            Context context, AccountInfo[] accountInfos, int number, String cryptoAccountTypeInfo) {
-        String accountName = context.getString(R.string.new_account_prefix, cryptoAccountTypeInfo,
-                String.valueOf(accountInfos.length + number));
-        for (AccountInfo accountInfo : accountInfos) {
-            if (accountInfo.name.equals(accountName)) {
-                return getUniqueNextAccountName(
-                        context, accountInfos, number + 1, cryptoAccountTypeInfo);
+    public static String generateUniqueAccountName(
+            Context context, @CoinType.EnumType int coinType, AccountInfo[] accountInfos) {
+        Set<String> allNames = Arrays.stream(accountInfos)
+                                       .map(acc -> acc.name)
+                                       .collect(Collectors.toCollection(HashSet::new));
+
+        for (int number = 1; number < 1000; ++number) {
+            String accountName = context.getString(R.string.new_account_prefix,
+                    getNewAccountPrefixForCoin(coinType), String.valueOf(number));
+
+            if (!allNames.contains(accountName)) {
+                return accountName;
             }
         }
-        return accountName;
+        return "";
+    }
+
+    public static boolean accountIdsEqual(AccountId left, AccountId right) {
+        return left.serialize().equals(right.serialize());
+    }
+    public static boolean accountIdsEqual(AccountInfo left, AccountInfo right) {
+        return accountIdsEqual(left.accountId, right.accountId);
     }
 
     public static int getSelectedAccountIndex(
@@ -52,7 +72,7 @@ public class WalletUtils {
         if (accountInfo == null || accountInfos.size() == 0) return -1;
         for (int i = 0; i < accountInfos.size(); i++) {
             AccountInfo account = accountInfos.get(i);
-            if (account.address.equals(accountInfo.address) && account.coin == accountInfo.coin) {
+            if (accountIdsEqual(account, accountInfo)) {
                 return i;
             }
         }
@@ -72,5 +92,20 @@ public class WalletUtils {
             accountInfos.addAll(Arrays.asList(keyringInfo.accountInfos));
         }
         return accountInfos;
+    }
+
+    private static final String ACCOUNT_INFO = "accountInfo";
+
+    public static void addAccountInfoToIntent(
+            @NonNull Intent intent, @NonNull AccountInfo accountInfo) {
+        intent.putExtra(ACCOUNT_INFO, accountInfo.serialize().array());
+    }
+
+    public static AccountInfo getAccountInfoFromIntent(@NonNull Intent intent) {
+        byte[] bytes = intent.getByteArrayExtra(ACCOUNT_INFO);
+        if (bytes == null) {
+            return null;
+        }
+        return AccountInfo.deserialize(ByteBuffer.wrap(bytes));
     }
 }

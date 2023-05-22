@@ -305,12 +305,13 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (blockchainToken == null) return;
 
         if (blockchainToken.contractAddress.isEmpty()) {
-            if (mSelectedAccount.coin == CoinType.ETH || mSelectedAccount.coin == CoinType.FIL) {
-                mJsonRpcService.getBalance(address, mSelectedAccount.coin, mSelectedNetwork.chainId,
-                        (balance, error, errorMessage) -> {
+            if (mSelectedAccount.accountId.coin == CoinType.ETH
+                    || mSelectedAccount.accountId.coin == CoinType.FIL) {
+                mJsonRpcService.getBalance(address, mSelectedAccount.accountId.coin,
+                        mSelectedNetwork.chainId, (balance, error, errorMessage) -> {
                             warnWhenError(TAG, "getBalance", error, errorMessage);
                             if (error != ProviderError.SUCCESS
-                                    || mSelectedNetwork.coin != mSelectedAccount.coin
+                                    || mSelectedNetwork.coin != mSelectedAccount.accountId.coin
                                     || !mSelectedAccount.address.equals(address)) {
                                 return;
                             }
@@ -528,7 +529,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     Log.e(TAG, "Destination address cannot be empty.");
                     return;
                 }
-                if (mSelectedAccount.coin == CoinType.ETH) {
+                if (mSelectedAccount.accountId.coin == CoinType.ETH) {
                     if (mCurrentBlockchainToken == null
                             || mCurrentBlockchainToken.contractAddress.isEmpty()) {
                         TxData data = Utils.getTxData("", "", "", to,
@@ -542,7 +543,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         addUnapprovedTransactionERC721(from, to, mCurrentBlockchainToken.tokenId,
                                 mCurrentBlockchainToken.contractAddress);
                     }
-                } else if (mSelectedAccount.coin == CoinType.SOL) {
+                } else if (mSelectedAccount.accountId.coin == CoinType.SOL) {
                     if (mCurrentBlockchainToken.isNft) {
                         amount = "1";
                     }
@@ -556,7 +557,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 // error_message is localized, do not disable send button
                                 setSendToFromValueValidationResult(errorMessage, false, true);
                             });
-                } else if (mSelectedAccount.coin == CoinType.FIL) {
+                } else if (mSelectedAccount.accountId.coin == CoinType.FIL) {
                     // TODO: implement Filecoin send action.
                     // https://github.com/brave/brave-browser/issues/30402
                 }
@@ -1103,8 +1104,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             return;
         }
         if (mActivityType == ActivityType.BUY) {
-            mAccountInfos =
-                    JavaUtils.filter(mAllAccountInfos, item -> item.coin == mSelectedNetwork.coin);
+            mAccountInfos = JavaUtils.filter(
+                    mAllAccountInfos, item -> item.accountId.coin == mSelectedNetwork.coin);
         }
 
         mCustomAccountAdapter.setAccounts(mAccountInfos);
@@ -1115,7 +1116,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
         mAccountSpinner.setOnItemSelectedListener(this);
         // Before updating, make sure we are on a network with the same coin type
-        if (mSelectedNetwork != null && mSelectedAccount.coin == mSelectedNetwork.coin) {
+        if (mSelectedNetwork != null && mSelectedAccount.accountId.coin == mSelectedNetwork.coin) {
             resetFromAssets();
         }
     }
@@ -1145,7 +1146,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
                     // Before updating, make sure we are on a network with the same coin type
                     if (mSelectedAccount != null
-                            && mSelectedAccount.coin == mSelectedNetwork.coin) {
+                            && mSelectedAccount.accountId.coin == mSelectedNetwork.coin) {
                         resetFromAssets();
                     }
                     if (mActivityType == ActivityType.BUY) {
@@ -1162,48 +1163,49 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     initAccountsUI();
                 });
 
-        mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(this, networkInfo -> {
-            if (networkInfo == null) return;
-            MaterialAlertDialogBuilder builder =
-                    new MaterialAlertDialogBuilder(this, R.style.BraveWalletAlertDialogTheme)
-                            .setMessage(getString(R.string.brave_wallet_create_account_description,
-                                    networkInfo.symbolName))
-                            .setPositiveButton(R.string.brave_action_yes,
-                                    (dialog, which) -> {
-                                        mWalletModel.getCryptoModel().getNetworkModel().setNetwork(
-                                                networkInfo, success -> {
-                                                    if (success) {
-                                                        mWalletModel.getKeyringModel().addAccount(
-                                                                WalletUtils.getUniqueNextAccountName(
-                                                                        this,
-                                                                        mWalletModel
-                                                                                .getKeyringModel()
-                                                                                .mAccountInfos
-                                                                                .getValue()
-                                                                                .toArray(
-                                                                                        new AccountInfo
-                                                                                                [0]),
-                                                                        networkInfo.symbolName,
-                                                                        networkInfo.coin),
-                                                                networkInfo.coin,
-                                                                isAccountAdded -> {});
-                                                    }
-                                                    mWalletModel.getCryptoModel()
-                                                            .getNetworkModel()
-                                                            .clearCreateAccountState();
-                                                });
-                                    })
-                            .setNegativeButton(R.string.brave_action_no, (dialog, which) -> {
-                                // update mNetworkSpinner to current network
-                                setSelectedNetwork(mSelectedNetwork, mNetworks);
+        mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
+                this, networkInfo -> {
+                    if (networkInfo == null) {
+                        return;
+                    }
 
-                                mWalletModel.getCryptoModel()
-                                        .getNetworkModel()
-                                        .clearCreateAccountState();
-                                dialog.dismiss();
-                            });
-            builder.show();
-        });
+                    MaterialAlertDialogBuilder builder =
+                            new MaterialAlertDialogBuilder(
+                                    this, R.style.BraveWalletAlertDialogTheme)
+                                    .setMessage(getString(
+                                            R.string.brave_wallet_create_account_description,
+                                            networkInfo.symbolName))
+                                    .setPositiveButton(R.string.brave_action_yes,
+                                            (dialog, which) -> {
+                                                mWalletModel.getCryptoModel()
+                                                        .getNetworkModel()
+                                                        .setNetwork(networkInfo, success -> {
+                                                            if (success) {
+                                                                mWalletModel.getKeyringModel()
+                                                                        .addAccount(
+                                                                                networkInfo.coin,
+                                                                                networkInfo.chainId,
+                                                                                null,
+                                                                                isAccountAdded
+                                                                                -> {});
+                                                            }
+                                                            mWalletModel.getCryptoModel()
+                                                                    .getNetworkModel()
+                                                                    .clearCreateAccountState();
+                                                        });
+                                            })
+                                    .setNegativeButton(
+                                            R.string.brave_action_no, (dialog, which) -> {
+                                                // update mNetworkSpinner to current network
+                                                setSelectedNetwork(mSelectedNetwork, mNetworks);
+
+                                                mWalletModel.getCryptoModel()
+                                                        .getNetworkModel()
+                                                        .clearCreateAccountState();
+                                                dialog.dismiss();
+                                            });
+                    builder.show();
+                });
     }
 
     @Override

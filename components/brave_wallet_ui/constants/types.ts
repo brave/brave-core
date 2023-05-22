@@ -20,6 +20,7 @@ interface TokenBalanceRegistry {
   [contractAddress: string]: string
 }
 
+// TODO(apaymyshev): there should be mojo KeyringId enum.
 const BraveKeyringsTypes = [
   BraveWallet.DEFAULT_KEYRING_ID,
   BraveWallet.FILECOIN_KEYRING_ID,
@@ -30,15 +31,25 @@ const BraveKeyringsTypes = [
 ] as const
 export type BraveKeyrings = (typeof BraveKeyringsTypes)[number]
 
+export const FilecoinNetworkTypes = [
+  BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
+] as const
+export type FilecoinNetwork = typeof FilecoinNetworkTypes[number]
+
 export type WalletAccountTypeName =
   | 'Primary'
   | 'Secondary'
   | 'Ledger'
   | 'Trezor'
 
-export interface WalletAccountType extends BraveWallet.AccountInfo {
-  id: string
+export interface AccountId extends Omit<BraveWallet.AccountId, 'keyringId'> {
   keyringId: BraveKeyrings
+}
+
+export interface WalletAccountType
+  extends Omit<BraveWallet.AccountInfo, 'accountId'> {
+  id: string
+  accountId: AccountId
   tokenBalanceRegistry: TokenBalanceRegistry
   nativeBalanceRegistry: TokenBalanceRegistry
   accountType: WalletAccountTypeName
@@ -419,17 +430,13 @@ export interface BaseTransactionParams {
   network: BraveWallet.NetworkInfo
   fromAccount: Pick<
     WalletAccountType | AccountInfoEntity,
-    'accountType' | 'address' | 'coin' | 'hardware' | 'keyringId' | 'deviceId'
+    'accountId' | 'accountType' | 'address' | 'hardware'
   >
   to: string
   value: string
-  coin: BraveWallet.CoinType
 }
 
 interface BaseEthTransactionParams extends BaseTransactionParams {
-  // needed to check if EIP-1559 gas pricing is supported
-  accountType: WalletAccountTypeName
-
   gas?: string
 
   // Legacy gas pricing
@@ -438,8 +445,6 @@ interface BaseEthTransactionParams extends BaseTransactionParams {
   // EIP-1559 gas pricing
   maxPriorityFeePerGas?: string
   maxFeePerGas?: string
-
-  coin: BraveWallet.CoinType
 }
 
 export interface SendFilTransactionParams extends BaseTransactionParams {
@@ -713,11 +718,8 @@ export type TransactionPanelPayload = {
 }
 
 export type UpdateAccountNamePayloadType = {
-  coin: BraveWallet.CoinType
-  keyringId: BraveKeyrings
-  address: string
+  accountId: AccountId
   name: string
-  isDerived: boolean
 }
 
 export enum WalletRoutes {

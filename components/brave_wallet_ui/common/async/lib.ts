@@ -496,7 +496,7 @@ function reportActiveWalletsToP3A (accounts: WalletAccountType[],
     for (const [index, account] of accounts.entries()) {
       const balanceInfos = balances[index]
 
-      const coinIndex = SupportedCoinTypes.indexOf(account.coin)
+      const coinIndex = SupportedCoinTypes.indexOf(account.accountId.coin)
       if (coinIndex === -1) {
         continue
       }
@@ -545,7 +545,7 @@ export function refreshBalances () {
     }
 
     const getNativeAssetsBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
-      const networks = getNetworksByCoinType(networkList, account.coin)
+      const networks = getNetworksByCoinType(networkList, account.accountId.coin)
 
       return Promise.all(networks.map(async (network) => {
         // Get CoinType SOL balances
@@ -563,11 +563,11 @@ export function refreshBalances () {
         }
 
         // Get CoinType FIL balances
-        if (account.coin === BraveWallet.CoinType.FIL) {
+        if (account.accountId.coin === BraveWallet.CoinType.FIL) {
           if (networkList.some(n => n.chainId === network.chainId)) {
             // Get CoinType FIL balances
-            if (network.coin === BraveWallet.CoinType.FIL && account.keyringId === getFilecoinKeyringIdFromNetwork(network)) {
-              const balanceInfo = await jsonRpcService.getBalance(account.address, account.coin, network.chainId)
+            if (network.coin === BraveWallet.CoinType.FIL && account.accountId.keyringId === getFilecoinKeyringIdFromNetwork(network)) {
+              const balanceInfo = await jsonRpcService.getBalance(account.address, account.accountId.coin, network.chainId)
               return {
                 ...balanceInfo,
                 chainId: network.chainId
@@ -584,7 +584,7 @@ export function refreshBalances () {
         // LOCALHOST will return an error until a local instance is
         // detected, we now will will return a 0 balance until it's detected.
         if (network.chainId === BraveWallet.LOCALHOST_CHAIN_ID && network.coin !== BraveWallet.CoinType.SOL) {
-          const localhostBalanceInfo = await jsonRpcService.getBalance(account.address, account.coin, network.chainId)
+          const localhostBalanceInfo = await jsonRpcService.getBalance(account.address, account.accountId.coin, network.chainId)
           const info = localhostBalanceInfo.error === 0 ? localhostBalanceInfo : emptyBalance
           return {
             ...info,
@@ -593,7 +593,7 @@ export function refreshBalances () {
         }
 
         // Get CoinType ETH balances
-        const balanceInfo = await jsonRpcService.getBalance(account.address, account.coin, network.chainId)
+        const balanceInfo = await jsonRpcService.getBalance(account.address, account.accountId.coin, network.chainId)
         return {
           ...balanceInfo,
           chainId: network.chainId
@@ -608,8 +608,8 @@ export function refreshBalances () {
     const visibleTokens = userVisibleTokensInfo.filter(asset => asset.contractAddress !== '')
 
     const getBlockchainTokensBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
-      const networks = getNetworksByCoinType(networkList, account.coin)
-      if (account.coin === BraveWallet.CoinType.ETH) {
+      const networks = getNetworksByCoinType(networkList, account.accountId.coin)
+      if (account.accountId.coin === BraveWallet.CoinType.ETH) {
         return Promise.all(visibleTokens.map(async (token) => {
           let balanceInfo = emptyBalance
           if (networks.some(n => n.chainId === token.chainId)) {
@@ -631,7 +631,7 @@ export function refreshBalances () {
             chainId: token?.chainId ?? ''
           }
         }))
-      } else if (account.coin === BraveWallet.CoinType.SOL) {
+      } else if (account.accountId.coin === BraveWallet.CoinType.SOL) {
         return Promise.all(visibleTokens.map(async (token) => {
           if (networks.some(n => n.chainId === token.chainId)) {
             const getSolTokenBalance = await jsonRpcService.getSPLTokenAccountBalance(account.address, token.contractAddress, token.chainId)
@@ -848,7 +848,7 @@ export function refreshKeyringInfo () {
 
     // If selectedAccount is null will setSelectedAccount to fallback address
     if (!selectedAddress) {
-      await keyringService.setSelectedAccount(fallbackAccount.coin, fallbackAccount.keyringId, fallbackAccount.address)
+      await keyringService.setSelectedAccount(fallbackAccount.accountId)
       walletInfo.selectedAccount = fallbackAccount.address
     } else {
       // If a user has already created an wallet but then chooses to restore
@@ -858,7 +858,7 @@ export function refreshKeyringInfo () {
       // payload, if not it will setSelectedAccount to the fallback address
       if (!walletInfo.accountInfos.find((account) => account.address.toLowerCase() === selectedAddress?.toLowerCase())) {
         walletInfo.selectedAccount = fallbackAccount.address
-        await keyringService.setSelectedAccount(fallbackAccount.coin, fallbackAccount.keyringId, fallbackAccount.address)
+        await keyringService.setSelectedAccount(fallbackAccount.accountId)
       } else {
         walletInfo.selectedAccount = selectedAddress
       }
@@ -877,7 +877,7 @@ export function refreshSitePermissions () {
 
     // Get a list of accounts with permissions of the active origin
     const getAllPermissions = await Promise.all(accounts.map(async (account) => {
-      const result = await braveWalletService.hasPermission(account.coin, deserializeOrigin(activeOrigin.origin), account.address)
+      const result = await braveWalletService.hasPermission(account.accountId, deserializeOrigin(activeOrigin.origin))
       if (result.success && result.hasPermission) {
         return account
       }
@@ -916,7 +916,7 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
 
     // Check if network and keyring support EIP-1559.
     default:
-      isEIP1559 = hasEIP1559Support(payload.accountType, payload.network)
+      isEIP1559 = hasEIP1559Support(payload.fromAccount.accountType, payload.network)
   }
 
   const { chainId } =

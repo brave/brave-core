@@ -244,7 +244,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         _mNeedToCreateAccountForNetwork.addSource(accounts, accountInfos -> {
             if (_mNeedToCreateAccountForNetwork.getValue() == null) return;
             for (AccountInfo accountInfo : accountInfos) {
-                if (accountInfo.coin == _mNeedToCreateAccountForNetwork.getValue().coin) {
+                if (accountInfo.accountId.coin == _mNeedToCreateAccountForNetwork.getValue().coin) {
                     _mNeedToCreateAccountForNetwork.postValue(null);
                     break;
                 }
@@ -396,14 +396,12 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     boolean hasAccountOfNetworkType(NetworkInfo networkToBeSetAsSelected) {
         List<AccountInfo> accountInfos = mSharedData.getAccounts().getValue();
-        boolean hasAccountOfNetworkType = false;
         for (AccountInfo accountInfo : accountInfos) {
-            hasAccountOfNetworkType = accountInfo.coin == networkToBeSetAsSelected.coin;
-            if (hasAccountOfNetworkType) {
-                break;
+            if (accountInfo.accountId.coin == networkToBeSetAsSelected.coin) {
+                return true;
             }
         }
-        return hasAccountOfNetworkType;
+        return false;
     }
 
     private boolean isSameNetwork(

@@ -26,7 +26,7 @@ export const getBalance = (account?: WalletAccountType, token?: BraveWallet.Bloc
 
     // Since all coinTypes share the same chainId for localHost networks,
     // we want to make sure we return the right balance for that token.
-    account.coin === token.coin
+    account.accountId.coin === token.coin
   ) {
     return (account.nativeBalanceRegistry || {})[token.chainId || ''] || ''
   }

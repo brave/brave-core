@@ -57,7 +57,7 @@ export const SitePermissions = () => {
 
   // memos
   const accountByCoinType = React.useMemo((): WalletAccountType[] => {
-    return accounts.filter((account) => account.coin === selectedCoin)
+    return accounts.filter((account) => account.accountId.coin === selectedCoin)
   }, [accounts, selectedCoin])
 
   return (

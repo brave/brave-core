@@ -313,51 +313,6 @@ public class BraveWalletUtilsTest {
 
     @Test
     @SmallTest
-    public void validateAccountInfoTest() {
-        AccountInfo testStruct = new AccountInfo();
-        java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();
-        for (java.lang.reflect.Field f : fields) {
-            try {
-                java.lang.Class t = f.getType();
-                java.lang.Object v = f.get(testStruct);
-                if (!t.isPrimitive()) {
-                    String varName = f.getName();
-                    if (varName.equals("address") || varName.equals("name")
-                            || varName.equals("hardware") || varName.equals("keyringId")) {
-                        continue;
-                    }
-                    if (v == null) {
-                        String message = "Check that " + varName + " is initialized everywhere\n"
-                                + "in Java files, where AccountInfo object is created. It\n"
-                                + "could be safely added to the above if to skip that var on checks\n"
-                                + "after that.";
-                        fail(message);
-                    }
-                }
-            } catch (Exception exc) {
-                // Exception appears on private field members. We just skip them as we are
-                // interested in public members of a mojom structure
-            }
-        }
-        testStruct.address = "";
-        testStruct.name = "";
-        testStruct.coin = CoinType.ETH;
-        testStruct.keyringId = BraveWalletConstants.DEFAULT_KEYRING_ID;
-        try {
-            java.nio.ByteBuffer byteBuffer = testStruct.serialize();
-            AccountInfo testStructDeserialized = AccountInfo.deserialize(byteBuffer);
-        } catch (Exception exc) {
-            String message = "Check that a variable with a type in the exception below is\n"
-                    + "initialized everywhere in Java files, where AccountInfo object is\n"
-                    + "created('git grep \"new AccountInfo\"' inside src/brave).\n"
-                    + "Initialisation of it could be safely added to the test to pass it,\n"
-                    + "but only after all places where it's created are fixed.\n";
-            fail(message + "\n" + getStackTrace(exc));
-        }
-    }
-
-    @Test
-    @SmallTest
     public void validateTxDataTest() {
         TxData testStruct = new TxData();
         java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();

@@ -606,13 +606,26 @@ struct HardwareInfo {
   string device_id;
 };
 
+enum AccountKind {
+  kDerived,
+  kImported,
+  kHardware
+};
+
+struct AccountId {
+  CoinType coin;
+  // TODO(apaymyshev): that should be different keyrings for different kinds.
+  string keyring_id;
+  AccountKind kind;
+  // TODO(apaymyshev): should be an index within keyring.
+  string address;
+};
+
 struct AccountInfo {
+  AccountId account_id;
   string address;
   string name;
-  bool is_imported;
   HardwareInfo? hardware;
-  CoinType coin;
-  string keyring_id;
 };
 
 struct AllAccountsInfo {
@@ -771,17 +784,13 @@ interface KeyringService {
   IsLocked() => (bool isLocked);
 
   // Adds an account to the keyring.
-  // For filecoin strictly use AddFilecoinAccount.
-  AddAccount(string account_name, CoinType coin) => (bool success);
-
-  // Adds an account to the filecoin(keyring is choosed by network).
-  AddFilecoinAccount(string account_name, string filecoin_network) => (bool success);
+  AddAccount(CoinType coin, string keyring_id, string account_name) => (AccountInfo? account_info);
 
   // Adds bitcoin account.
-  AddBitcoinAccount(string account_name, string network_id, string keyring_id) => (bool success);
+  AddBitcoinAccount(string account_name, string network_id, string keyring_id) => (AccountInfo account_info);
 
   // Encodes the private key for exporting.
-  EncodePrivateKeyForExport(CoinType coin, string keyring_id, string address, string password)
+  EncodePrivateKeyForExport(AccountId account_id, string password)
     => (string privateKey);
 
   // Imports an account with a specific private key to the corresponding keyring
@@ -798,9 +807,6 @@ interface KeyringService {
   ImportAccountFromJson(string accountName, string password, string json)
     => (bool success, string address);
 
-  // Removes an imported account
-  RemoveImportedAccount(CoinType coin, string keyring_id, string address, string password) => (bool success);
-
   // Determines if the keyring has been backed up
   IsWalletBackedUp() => (bool backed_up);
 
@@ -816,19 +822,13 @@ interface KeyringService {
   AddObserver(pending_remote<KeyringServiceObserver> observer);
 
   // Sets the account name for a derived account
-  SetKeyringDerivedAccountName(CoinType coin, string keyring_id, string address, string name) => (bool success);
-
-  // Sets the account name for an imported account
-  SetKeyringImportedAccountName(CoinType coin, string keyring_id, string address, string name) => (bool success);
-
-  // Sets the account name for a hardware account
-  SetHardwareAccountName(CoinType coin, string keyring_id, string address, string name) => (bool success);
+  SetAccountName(AccountId account_id, string name) => (bool success);
 
   // Adds hardware accounts
-  AddHardwareAccounts(array<HardwareWalletAccount> info);
+  AddHardwareAccounts(array<HardwareWalletAccount> info) => (array<AccountInfo>? account_infos);
 
-  // Removes a hardware account
-  RemoveHardwareAccount(CoinType coin, string keyring_id, string address) => (bool success);
+  // Removes imported or hardware account
+  RemoveAccount(AccountId account_id, string password) => (bool success);
 
   // Informs the user that user interaction occurred so auto-lock doesn't occur
   NotifyUserInteraction();
@@ -844,7 +844,7 @@ interface KeyringService {
   GetFilecoinSelectedAccount(string network) => (string? address);
 
   // Sets the selected account
-  SetSelectedAccount(CoinType coin, string keyring_id, string address) => (bool success);
+  SetSelectedAccount(AccountId account_id) => (bool success);
 
   // Obtains the number of minutes that the keyring will auto-lock in
   GetAutoLockMinutes() => (int32 minutes);
@@ -1663,16 +1663,18 @@ interface BraveWalletService {
   GetChainIdForActiveOrigin(CoinType coin) => (string chain_id);
   SetChainIdForActiveOrigin(CoinType coin, string chain_id) => (bool success);
 
+  // TODO(apaymyshev): it seems these three permisisons methods should imply and
+  // use current active origin.
   // Adds the permission of coin type for the account
-  AddPermission(CoinType coin, url.mojom.Origin origin, string account)
+  AddPermission(AccountId account_id, url.mojom.Origin origin)
     => (bool success);
 
   // Checks if the permission of coin is allowed for the origin on the account
-  HasPermission(CoinType coin, url.mojom.Origin origin, string account)
+  HasPermission(AccountId account_id, url.mojom.Origin origin)
     => (bool success, bool has_permission);
 
   // Resets the permission of coin for the account
-  ResetPermission(CoinType coin, url.mojom.Origin origin, string account)
+  ResetPermission(AccountId account_id, url.mojom.Origin origin)
     => (bool success);
 
   // Check if permission is denied for the origin

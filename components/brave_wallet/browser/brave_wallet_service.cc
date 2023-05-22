@@ -771,34 +771,34 @@ void BraveWalletService::OnBraveWalletNftDiscoveryEnabled() {
   }
 }
 
-void BraveWalletService::AddPermission(mojom::CoinType coin,
+void BraveWalletService::AddPermission(mojom::AccountIdPtr account_id,
                                        const url::Origin& origin,
-                                       const std::string& account,
                                        AddPermissionCallback callback) {
   if (delegate_) {
-    delegate_->AddPermission(coin, origin, account, std::move(callback));
+    delegate_->AddPermission(account_id->coin, origin, account_id->address,
+                             std::move(callback));
   } else {
     std::move(callback).Run(false);
   }
 }
 
-void BraveWalletService::HasPermission(mojom::CoinType coin,
+void BraveWalletService::HasPermission(mojom::AccountIdPtr account_id,
                                        const url::Origin& origin,
-                                       const std::string& account,
                                        HasPermissionCallback callback) {
   if (delegate_) {
-    delegate_->HasPermission(coin, origin, account, std::move(callback));
+    delegate_->HasPermission(account_id->coin, origin, account_id->address,
+                             std::move(callback));
   } else {
     std::move(callback).Run(false, false);
   }
 }
 
-void BraveWalletService::ResetPermission(mojom::CoinType coin,
+void BraveWalletService::ResetPermission(mojom::AccountIdPtr account_id,
                                          const url::Origin& origin,
-                                         const std::string& account,
                                          ResetPermissionCallback callback) {
   if (delegate_) {
-    delegate_->ResetPermission(coin, origin, account, std::move(callback));
+    delegate_->ResetPermission(account_id->coin, origin, account_id->address,
+                               std::move(callback));
   } else {
     std::move(callback).Run(false);
   }

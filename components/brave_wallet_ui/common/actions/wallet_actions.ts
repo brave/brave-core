@@ -11,7 +11,6 @@ export const {
   activeOriginChanged,
   addAccount,
   addFavoriteApp,
-  addFilecoinAccount,
   addBitcoinAccount,
   addSitePermission,
   addUserAsset,

@@ -131,7 +131,7 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     const amounts = accounts
-      .filter((account) => account.coin === asset.coin)
+      .filter((account) => account.accountId.coin === asset.coin)
       .map((account) => getBalance(account, asset))
 
     // If a user has not yet created a FIL or SOL account,
@@ -176,7 +176,7 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
   const visibleTokensForFilteredAccount: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     return selectedAccountFilter === AllAccountsOption.id
       ? visibleTokensForSupportedChains
-      : visibleTokensForSupportedChains.filter((token) => token.coin === accounts.find(account => account.id === selectedAccountFilter)?.coin)
+      : visibleTokensForSupportedChains.filter((token) => token.coin === accounts.find(account => account.id === selectedAccountFilter)?.accountId?.coin)
   }, [visibleTokensForSupportedChains, selectedAccountFilter, accounts])
 
   // This looks at the users asset list and returns the full balance for each asset

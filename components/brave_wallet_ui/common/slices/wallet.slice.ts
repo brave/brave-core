@@ -37,7 +37,6 @@ import {
 } from '../constants/action_types'
 import {
   AddAccountPayloadType,
-  AddFilecoinAccountPayloadType,
   AddBitcoinAccountPayloadType
 } from '../../page/constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
@@ -220,9 +219,6 @@ export const WalletAsyncActions = {
     'setSelectedAccountFilterItem'
   ),
   addAccount: createAction<AddAccountPayloadType>('addAccount'), // alias for keyringService.addAccount
-  // alias for keyringService.addFilecoinAccount
-  addFilecoinAccount:
-    createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount'),
   addBitcoinAccount:
     createAction<AddBitcoinAccountPayloadType>('addBitcoinAccount'),
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
@@ -265,7 +261,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           (info: BraveWallet.AccountInfo, idx: number): WalletAccountType => {
             return {
               ...info,
-              keyringId: info.keyringId as BraveKeyrings,
+              accountId: {
+                ...info.accountId,
+                keyringId: info.accountId.keyringId as BraveKeyrings,
+              },
               id: `${idx + 1}`,
               accountType: getAccountType(info),
               deviceId: info.hardware ? info.hardware.deviceId : '',

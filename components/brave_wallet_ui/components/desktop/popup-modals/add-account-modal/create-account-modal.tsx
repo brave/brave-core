@@ -9,6 +9,7 @@ import { useHistory, useLocation, useParams } from 'react-router'
 
 // utils
 import { getLocale } from '$web-common/locale'
+import { keyringIdForNewAccount } from '../../../../utils/account-utils'
 
 // options
 import { CreateAccountOptions } from '../../../../options/create-account-options'
@@ -71,9 +72,17 @@ export const CreateAccountModal = () => {
   }, [accountTypeName])
 
   const suggestedAccountName = React.useMemo(() => {
-    const accountTypeLength = accounts.filter((account) => account.coin === selectedAccountType?.coin).length + 1
+    const accountTypeLength = accounts.filter((account) => account.accountId.coin === selectedAccountType?.coin).length + 1
     return `${selectedAccountType?.name} ${getLocale('braveWalletAccount')} ${accountTypeLength}`
   }, [accounts, selectedAccountType])
+
+  const targetKeyringId = React.useMemo(() => {
+    if (!selectedAccountType) {
+      return null
+    }
+
+    return keyringIdForNewAccount(selectedAccountType.coin, filecoinNetwork)
+  }, [selectedAccountType, filecoinNetwork])
 
   // methods
   const setImportAccountError = React.useCallback((hasError: ImportAccountErrorType) => {
@@ -95,16 +104,26 @@ export const CreateAccountModal = () => {
   }, [])
 
   const onClickCreateAccount = React.useCallback(() => {
-    const created =
-       (selectedAccountType?.coin === BraveWallet.CoinType.FIL)
-          ? dispatch(WalletActions.addFilecoinAccount({ accountName, network: filecoinNetwork }))
-          : dispatch(WalletActions.addAccount({ accountName, coin: selectedAccountType?.coin || BraveWallet.CoinType.ETH }))
-    if (created) {
+    if (!selectedAccountType) {
+      return
+    }
+    if (!targetKeyringId) {
+      return
+    }
+
+    const createdAccount = dispatch(
+      WalletActions.addAccount({
+        coin: selectedAccountType.coin,
+        keyringId: targetKeyringId,
+        accountName
+      })
+    )
+    if (createdAccount) {
       if (walletLocation.includes(WalletRoutes.Accounts)) {
         history.push(WalletRoutes.Accounts)
       }
     }
-  }, [accountName, selectedAccountType, filecoinNetwork])
+  }, [accountName, selectedAccountType, targetKeyringId])
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {

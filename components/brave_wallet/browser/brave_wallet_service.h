@@ -155,17 +155,14 @@ class BraveWalletService : public KeyedService,
       mojom::CoinType coin,
       const std::string& chain_id,
       SetChainIdForActiveOriginCallback callback) override;
-  void AddPermission(mojom::CoinType coin,
+  void AddPermission(mojom::AccountIdPtr account_id,
                      const url::Origin& origin,
-                     const std::string& account,
                      AddPermissionCallback callback) override;
-  void HasPermission(mojom::CoinType coin,
+  void HasPermission(mojom::AccountIdPtr account_id,
                      const url::Origin& origin,
-                     const std::string& account,
                      HasPermissionCallback callback) override;
-  void ResetPermission(mojom::CoinType coin,
+  void ResetPermission(mojom::AccountIdPtr account_id,
                        const url::Origin& origin,
-                       const std::string& account,
                        ResetPermissionCallback callback) override;
   void IsPermissionDenied(mojom::CoinType coin,
                           const url::Origin& origin,

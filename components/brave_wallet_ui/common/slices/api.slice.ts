@@ -125,7 +125,8 @@ export const setApiProxyFetcher = (fetcher: () => WalletApiProxy) => {
 const emptyBalance = '0x0'
 
 type GetAccountTokenCurrentBalanceArg = {
-  account: Pick<AccountInfoEntity, 'address' | 'coin'>
+  coin: BraveWallet.CoinType,
+  address: string,
   token: GetBlockchainTokenIdArg & Pick<BraveWallet.BlockchainToken, 'isNft'>
 }
 
@@ -191,9 +192,15 @@ const TOKEN_TAG_IDS = {
   REGISTRY: 'REGISTRY',
 } as const
 
-const accountInfoToAccountInfoEntity = (info: BraveWallet.AccountInfo) => {
+const accountInfoToAccountInfoEntity = (
+  info: BraveWallet.AccountInfo
+): AccountInfoEntity => {
   return {
     ...info,
+    accountId: {
+      ...info.accountId,
+      keyringId: info.accountId.keyringId as BraveKeyrings
+    },
     accountType: getAccountType(info),
     deviceId: info.hardware ? info.hardware.deviceId : ''
   }
@@ -530,15 +537,11 @@ export function createWalletApi (
             : [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }]
       }),
       setSelectedAccount: mutation<
-        string,
-        {
-          coin: BraveWallet.CoinType
-          keyringId: BraveKeyrings
-          address: string
-        }
+        BraveWallet.AccountId,
+        BraveWallet.AccountId
       >({
         queryFn: async (
-          { coin, keyringId, address },
+          accountId,
           api,
           extraOptions,
           baseQuery
@@ -549,11 +552,11 @@ export function createWalletApi (
             data: { keyringService }
           } = baseQuery(undefined)
 
-          await keyringService.setSelectedAccount(coin, keyringId, address)
+          await keyringService.setSelectedAccount(accountId)
           cache.clearSelectedAccount()
 
           return {
-            data: address
+            data: accountId
           }
         },
         invalidatesTags: [
@@ -1203,7 +1206,7 @@ export function createWalletApi (
         GetAccountTokenCurrentBalanceArg
       >({
         queryFn: async (
-          { account, token },
+          { coin, address, token },
           { dispatch },
           extraOptions,
           baseQuery
@@ -1212,11 +1215,11 @@ export function createWalletApi (
 
           // entity lookup ids
           const accountEntityId: EntityId = accountInfoEntityAdaptor.selectId({
-            address: account.address
+            address
           })
 
           const networkChainId = token.chainId
-          const networkCoinType = account.coin
+          const networkCoinType = coin
 
           const tokenEntityId: EntityId =
             blockchainTokenEntityAdaptor.selectId(token)
@@ -1240,7 +1243,7 @@ export function createWalletApi (
             ) {
               const { balance, error, errorMessage } =
                 await jsonRpcService.getBalance(
-                  account.address,
+                  address,
                   networkCoinType,
                   networkChainId
                 )
@@ -1265,7 +1268,7 @@ export function createWalletApi (
               case BraveWallet.CoinType.SOL: {
                 const { balance, error } =
                   await jsonRpcService.getSolanaBalance(
-                    account.address,
+                    address,
                     networkChainId
                   )
 
@@ -1289,7 +1292,7 @@ export function createWalletApi (
               default: {
                 const { balance, error, errorMessage } =
                   await jsonRpcService.getBalance(
-                    account.address,
+                    address,
                     networkCoinType,
                     token.chainId
                   )
@@ -1313,19 +1316,19 @@ export function createWalletApi (
           // Token Balances
           const tokenDefaultBalanceResult = emptyBalanceResult
 
-          switch (account.coin) {
+          switch (coin) {
             // Ethereum Network tokens
             case BraveWallet.CoinType.ETH: {
               const { balance, error, errorMessage } = token.isErc721
                 ? await jsonRpcService.getERC721TokenBalance(
                     token.contractAddress,
                     token.tokenId ?? '',
-                    account.address,
+                    address,
                     networkChainId
                   )
                 : await jsonRpcService.getERC20TokenBalance(
                     token.contractAddress,
-                    account.address,
+                    address,
                     token?.chainId ?? ''
                   )
 
@@ -1344,7 +1347,7 @@ export function createWalletApi (
             case BraveWallet.CoinType.SOL: {
               const { amount, uiAmountString, error, errorMessage } =
                 await jsonRpcService.getSPLTokenAccountBalance(
-                  account.address,
+                  address,
                   token.contractAddress,
                   token.chainId
                 )
@@ -1387,7 +1390,7 @@ export function createWalletApi (
           const { accounts } = await cache.getAllAcountsInfo()
 
           const accountsForAssetCoinType = accounts.filter(
-            (account) => account.coin === asset.coin
+            (account) => account.accountId.coin === asset.coin
           )
 
           const accountTokenBalancesForChainId: string[] = await Promise.all(
@@ -1395,10 +1398,8 @@ export function createWalletApi (
               const balanceResult: AccountTokenBalanceForChainId =
                 await dispatch(
                   walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
-                    account: {
-                      address: account.address,
-                      coin: account.coin
-                    },
+                    coin: account.accountId.coin,
+                    address: account.address,
                     token: {
                       chainId: asset.chainId,
                       contractAddress: asset.contractAddress,
@@ -1570,7 +1571,7 @@ export function createWalletApi (
                       ).accounts.map(async (account) => {
                         const { transactionInfos } =
                           await txService.getAllTransactionInfo(
-                            account.coin,
+                            account.accountId.coin,
                             chainId,
                             account.address
                           )
@@ -1640,7 +1641,7 @@ export function createWalletApi (
               payload.gasPrice === undefined ||
               // Check if network and keyring support EIP-1559.
               hasEIP1559Support(
-                payload.accountType,
+                payload.fromAccount.accountType,
                 payload.network
               )
 
@@ -1712,8 +1713,8 @@ export function createWalletApi (
           err
             ? []
             : TX_CACHE_TAGS.LISTS({
-                coin: arg.coin,
-                fromAddress: arg.fromAccount.address,
+                coin: arg.fromAccount.accountId.coin,
+                fromAddress: arg.fromAccount.accountId.address,
                 chainId: null
               })
       }),
@@ -1765,8 +1766,8 @@ export function createWalletApi (
           err
             ? []
             : TX_CACHE_TAGS.LISTS({
-                coin: arg.coin,
-                fromAddress: arg.fromAccount.address,
+                coin: arg.fromAccount.accountId.coin,
+                fromAddress: arg.fromAccount.accountId.address,
                 chainId: null
               })
       }),
@@ -1824,8 +1825,8 @@ export function createWalletApi (
           err
             ? []
             : TX_CACHE_TAGS.LISTS({
-                coin: arg.coin,
-                fromAddress: arg.fromAccount.address,
+                coin: arg.fromAccount.accountId.coin,
+                fromAddress: arg.fromAccount.accountId.address,
                 chainId: null
               })
       }),
@@ -1837,7 +1838,8 @@ export function createWalletApi (
       >({
         queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
           try {
-            switch (payload.coin) {
+            const coin = payload.fromAccount.accountId.coin
+            switch (coin) {
               case BraveWallet.CoinType.SOL: {
                 const result: { success: boolean } = await dispatch(
                   walletApi.endpoints.sendSolTransaction.initiate(
@@ -1870,7 +1872,7 @@ export function createWalletApi (
               }
               default: {
                 return {
-                  error: `Unsupported coin type" ${payload.coin}`
+                  error: `Unsupported coin type" ${coin}`
                 }
               }
             }
@@ -1918,7 +1920,6 @@ export function createWalletApi (
                 maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
                 maxFeePerGas: payload.maxFeePerGas,
                 data,
-                coin: BraveWallet.CoinType.ETH
               })
             ).unwrap()
 
@@ -1991,8 +1992,8 @@ export function createWalletApi (
         invalidatesTags: (res, err, arg) =>
           TX_CACHE_TAGS.LISTS({
             chainId: null,
-            coin: arg.coin,
-            fromAddress: arg.fromAccount.address
+            coin: arg.fromAccount.accountId.coin,
+            fromAddress: arg.fromAccount.accountId.address,
           })
       }),
       sendERC721TransferFrom: mutation<
@@ -2030,7 +2031,6 @@ export function createWalletApi (
                 maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
                 maxFeePerGas: payload.maxFeePerGas,
                 data,
-                coin: BraveWallet.CoinType.ETH
               })
             ).unwrap()
 
@@ -2044,8 +2044,8 @@ export function createWalletApi (
         invalidatesTags: (res, err, arg) =>
           TX_CACHE_TAGS.LISTS({
             chainId: null,
-            coin: arg.coin,
-            fromAddress: arg.fromAccount.address
+            coin: arg.fromAccount.accountId.coin,
+            fromAddress: arg.fromAccount.accountId.address,
           })
       }),
       approveERC20Allowance: mutation<{ success: boolean }, ApproveERC20Params>(
@@ -2078,7 +2078,6 @@ export function createWalletApi (
                   to: payload.contractAddress,
                   value: '0x0',
                   data,
-                  coin: BraveWallet.CoinType.ETH
                 })
               ).unwrap()
 
@@ -2259,14 +2258,14 @@ export function createWalletApi (
 
             if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
               let success, error, code
-              switch (foundAccount.coin) {
+              switch (foundAccount.accountId.coin) {
                 case BraveWallet.CoinType.ETH:
                   ;({ success, error, code } =
                     await signLedgerEthereumTransaction(
                       apiProxy,
                       hardwareAccount.path,
                       txInfo,
-                      foundAccount.coin
+                      foundAccount.accountId.coin
                     ))
                   break
                 case BraveWallet.CoinType.FIL:
@@ -2274,7 +2273,7 @@ export function createWalletApi (
                     await signLedgerFilecoinTransaction(
                       apiProxy,
                       txInfo,
-                      foundAccount.coin
+                      foundAccount.accountId.coin
                     ))
                   break
                 case BraveWallet.CoinType.SOL:
@@ -2283,7 +2282,7 @@ export function createWalletApi (
                       apiProxy,
                       hardwareAccount.path,
                       txInfo,
-                      foundAccount.coin
+                      foundAccount.accountId.coin
                     ))
                   break
                 default:

@@ -1633,10 +1633,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 for (CryptoAccountTypeInfo info :
                         mWalletModel.getCryptoModel().getSupportedCryptoAccountTypes()) {
                     if (info.getCoinType() == request.getCoinType()) {
-                        Intent addAccountActivityIntent =
-                                new Intent(this, AddAccountActivity.class);
-                        addAccountActivityIntent.putExtra(AddAccountActivity.ACCOUNT, info);
-                        startActivity(addAccountActivityIntent);
+                        Intent intent = AddAccountActivity.createIntentToAddAccount(
+                                this, info.getCoinType());
+                        startActivity(intent);
                         mWalletModel.getDappsModel().removeProcessedAccountCreationRequest(request);
                         break;
                     }
@@ -1659,21 +1658,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                                         .getNetworkModel()
                                                         .setNetwork(networkInfo, success -> {
                                                             if (success) {
-                                                                mWalletModel.getKeyringModel().addAccount(
-                                                                        WalletUtils.getUniqueNextAccountName(
-                                                                                this,
-                                                                                mWalletModel
-                                                                                        .getKeyringModel()
-                                                                                        .mAccountInfos
-                                                                                        .getValue()
-                                                                                        .toArray(
-                                                                                                new AccountInfo
-                                                                                                        [0]),
-                                                                                networkInfo
-                                                                                        .symbolName,
-                                                                                networkInfo.coin),
-                                                                        networkInfo.coin,
-                                                                        isAccountAdded -> {});
+                                                                mWalletModel.getKeyringModel()
+                                                                        .addAccount(
+                                                                                networkInfo.coin,
+                                                                                networkInfo.chainId,
+                                                                                null,
+                                                                                isAccountAdded
+                                                                                -> {});
                                                             }
                                                             mWalletModel.getCryptoModel()
                                                                     .getNetworkModel()

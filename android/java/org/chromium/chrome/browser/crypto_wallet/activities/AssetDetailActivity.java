@@ -405,19 +405,13 @@ public class AssetDetailActivity
 
     @Override
     public void onAccountClick(WalletListItemModel walletListItemModel) {
-        Intent accountDetailActivityIntent = new Intent(this, AccountDetailActivity.class);
-        accountDetailActivityIntent.putExtra(Utils.NAME, walletListItemModel.getTitle());
-        accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
-        accountDetailActivityIntent.putExtra(
-                Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
-        if (walletListItemModel.getAccountInfo() != null) {
-            accountDetailActivityIntent.putExtra(
-                    Utils.COIN_TYPE, walletListItemModel.getAccountInfo().coin);
-            accountDetailActivityIntent.putExtra(
-                    Utils.KEYRING_ID, walletListItemModel.getAccountInfo().keyringId);
+        if (walletListItemModel.getAccountInfo() == null) {
+            return;
         }
 
-        startActivityForResult(accountDetailActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
+        Intent intent =
+                AccountDetailActivity.createIntent(this, walletListItemModel.getAccountInfo());
+        startActivityForResult(intent, Utils.ACCOUNT_REQUEST_CODE);
     }
 
     @Override
@@ -465,11 +459,8 @@ public class AssetDetailActivity
             final String cryptoBalanceString =
                     String.format(Locale.ENGLISH, "%.4f %s", thisAccountBalance, mAsset.symbol);
 
-            WalletListItemModel model = new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
-                    accountInfo.address, fiatBalanceString, cryptoBalanceString,
-                    accountInfo.isImported);
-            model.setAccountInfo(accountInfo);
-            walletListItemModelList.add(model);
+            walletListItemModelList.add(WalletListItemModel.MakeForAccountInfoWithBalances(
+                    accountInfo, fiatBalanceString, cryptoBalanceString));
         }
         return walletListItemModelList;
     }

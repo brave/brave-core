@@ -65,14 +65,13 @@ export const AccountModal = (props: Props) => {
 
   // Memos
   const networkAccounts = React.useMemo(() => {
-    return accounts.filter(account => account.coin === selectedNetwork?.coin)
+    return accounts.filter(account => account.accountId.coin === selectedNetwork?.coin)
   }, [accounts, selectedNetwork])
 
   // Methods
   const onSelectAccount = React.useCallback(
     async (account: AccountInfoEntity) => {
-      // @ts-expect-error
-      await setSelectedAccount(account)
+      await setSelectedAccount(account.accountId)
       onHideModal()
       await refreshBlockchainState({ account })
     },

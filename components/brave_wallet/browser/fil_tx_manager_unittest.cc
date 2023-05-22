@@ -85,8 +85,8 @@ class FilTxManagerUnitTest : public testing::Test {
 
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();
-    keyring_service_->AddFilecoinAccount("Account 1", mojom::kFilecoinTestnet,
-                                         base::DoNothing());
+    keyring_service_->AddAccountSync(
+        mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId, "Account 1");
   }
 
   std::string from(const std::string& keyring_id) {

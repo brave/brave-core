@@ -17,8 +17,7 @@ import {
   CreateWalletPayloadType,
   UpdateSelectedAssetType,
   ImportAccountPayloadType,
-  RemoveImportedAccountPayloadType,
-  RemoveHardwareAccountPayloadType,
+  RemoveAccountPayloadType,
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
   ImportFilecoinAccountPayloadType,
@@ -28,7 +27,6 @@ import {
   UpdateNftPinningStatusType
 } from '../constants/action_types'
 import {
-  findHardwareAccountInfo,
   getNFTMetadata,
   translateToNftGateway
 } from '../../common/async/lib'
@@ -205,30 +203,9 @@ handler.on(WalletPageActions.importAccountFromJson.type, async (store: Store, pa
   }
 })
 
-handler.on(WalletPageActions.removeImportedAccount.type, async (
-  store: Store,
-  payload: RemoveImportedAccountPayloadType
-) => {
-  const { keyringService } = getWalletPageApiProxy()
-  await keyringService.removeImportedAccount(
-    payload.coin,
-    payload.keyringId,
-    payload.address,
-    payload.password,
-  )
-})
-
 handler.on(WalletPageActions.updateAccountName.type, async (store: Store, payload: UpdateAccountNamePayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
-  const hardwareAccount = await findHardwareAccountInfo(payload.address)
-  // TODO(apaymyshev): should have single setAccountName instead or three similar ones.
-  if (hardwareAccount && hardwareAccount.hardware) {
-    const result = await keyringService.setHardwareAccountName(payload.coin, payload.keyringId, payload.address, payload.name)
-    return result.success
-  }
-  const result = payload.isDerived
-    ? await keyringService.setKeyringDerivedAccountName(payload.coin, payload.keyringId, payload.address, payload.name)
-    : await keyringService.setKeyringImportedAccountName(payload.coin, payload.keyringId, payload.address, payload.name)
+  const result = await keyringService.setAccountName(payload.accountId, payload.name)
   return result.success
 })
 
@@ -238,12 +215,11 @@ handler.on(WalletPageActions.addHardwareAccounts.type, async (store: Store, acco
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
-handler.on(WalletPageActions.removeHardwareAccount.type, async (store: Store, payload: RemoveHardwareAccountPayloadType) => {
+handler.on(WalletPageActions.removeAccount.type, async (store: Store, payload: RemoveAccountPayloadType) => {
   const { keyringService } = getWalletPageApiProxy()
-  const { success } = await keyringService.removeHardwareAccount(
-    payload.coin,
-    payload.keyringId,
-    payload.address,
+  const { success } = await keyringService.removeAccount(
+    payload.accountId,
+    payload.password
   )
 
   if (success) {

@@ -9,12 +9,15 @@ import { getLocale } from '../../common/locale'
 export const AllAccountsOption: WalletAccountType = {
   accountType: 'Primary',
   address: 'all',
-  coin: 0,
+  accountId: {
+    coin: 0,
+    keyringId: BraveWallet.DEFAULT_KEYRING_ID,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: 'all'
+  },
   id: 'all',
   name: getLocale('braveWalletAccountFilterAllAccounts'),
   nativeBalanceRegistry: {},
   tokenBalanceRegistry: {},
-  keyringId: BraveWallet.DEFAULT_KEYRING_ID,
-  isImported: false,
   hardware: undefined
 }
