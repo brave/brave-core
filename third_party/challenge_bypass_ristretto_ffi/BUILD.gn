@@ -28,11 +28,14 @@ rust_static_library("rust_lib") {
   ]
 
   deps = [
-    ":wrapper",
     "//brave/third_party/rust/challenge_bypass_ristretto/v1:lib",
     "//brave/third_party/rust/base64/v0_9:lib",
     "//brave/third_party/rust/hmac/v0_10:lib",
     "//brave/third_party/rust/rand/v0_7:lib",
     "//brave/third_party/rust/sha2/v0_9:lib",
+  ]
+
+  public_deps = [
+    ":wrapper"
   ]
 }

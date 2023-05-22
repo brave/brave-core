@@ -29,4 +29,8 @@ rust_static_library("rust_lib") {
     "//third_party/rust/libc/v0_2:lib",
     "//third_party/rust/serde_json/v1:lib",
   ]
+
+  if (is_ios) {
+    features = [ "ios" ]
+  }
 }
