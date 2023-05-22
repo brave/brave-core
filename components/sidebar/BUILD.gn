@@ -16,7 +16,6 @@ static_library("sidebar") {
     "sidebar_item.h",
     "sidebar_service.cc",
     "sidebar_service.h",
-    "sidebar_service_delegate.h",
   ]
 
   deps = [

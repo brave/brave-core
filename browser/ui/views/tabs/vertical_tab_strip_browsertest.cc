@@ -370,42 +370,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, SidebarAlignment) {
-  // Pre-condition: sidebar is on the left by default.
-  auto* prefs = browser()->profile()->GetPrefs();
-  ASSERT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                  ->IsDefaultValue());
-  ASSERT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-
-  // When enabling vertical tab strip, sidebar moves to the right.
-  ToggleVerticalTabStrip();
-  EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                   ->IsDefaultValue());
-  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-
-  // When disabling vertical tab strip, sidebar should be restored to the
-  // default position.
-  ToggleVerticalTabStrip();
-  EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                  ->IsDefaultValue());
-  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-
-  // When user explicitly set position, sidebar shouldn't move.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
-  EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                   ->IsDefaultValue());
-  ToggleVerticalTabStrip();
-  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-
-  // Turning off vertical tab strip also shouldn't affect sidebar's position.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
-  ToggleVerticalTabStrip();
-  ToggleVerticalTabStrip();
-  EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
-                   ->IsDefaultValue());
-  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-}
-
 #if BUILDFLAG(IS_MAC)
 // Mac test bots are not able to enter fullscreen.
 #define MAYBE_Fullscreen DISABLED_Fullscreen
