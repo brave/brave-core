@@ -33,11 +33,11 @@ export const NftView = ({ onToggleShowIpfsBanner }: Props) => {
   const { data: networks = [] } = useGetVisibleNetworksQuery()
 
   // memos
-  const nonFungibleTokens = React.useMemo(() => {
+  const visibleNfts = React.useMemo(() => {
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
       return userVisibleTokensInfo.filter(
         (token) =>
-          !SupportedTestNetworks.includes(token.chainId) &&
+          !SupportedTestNetworks.includes(token.chainId) && token.visible &&
           (token.isErc721 || token.isNft)
       )
     }
@@ -52,7 +52,7 @@ export const NftView = ({ onToggleShowIpfsBanner }: Props) => {
   return (
     <Nfts
       networks={networks}
-      nftList={nonFungibleTokens}
+      nftList={visibleNfts}
       onToggleShowIpfsBanner={onToggleShowIpfsBanner}
     />
   )
