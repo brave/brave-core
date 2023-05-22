@@ -44,7 +44,7 @@ TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
-TEST_F(BraveAdsStatementUtilTest, GetEarningsForThisMonth) {
+TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -72,11 +72,17 @@ TEST_F(BraveAdsStatementUtilTest, GetEarningsForThisMonth) {
       BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
+  TransactionInfo transaction_6 =
+      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+  transaction_6.ad_type = AdType::kNewTabPageAd;
+  transactions.push_back(transaction_6);
+
   // Act
-  const double earnings = GetEarningsForThisMonth(transactions);
+  const auto [min, max] = GetEstimatedEarningsForThisMonth(transactions);
 
   // Assert
-  EXPECT_DOUBLE_EQ(0.07, earnings);
+  EXPECT_DOUBLE_EQ(0.07 * kMinEstimatedEarningsMultiplier, min);
+  EXPECT_DOUBLE_EQ(0.09, max);
 }
 
 TEST_F(BraveAdsStatementUtilTest, GetEarningsForLastMonth) {
