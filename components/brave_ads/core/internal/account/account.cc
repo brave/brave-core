@@ -37,6 +37,7 @@
 namespace brave_ads {
 
 namespace {
+
 bool ShouldResetIssuersAndConfirmations() {
   return ShouldRewardUser() && AdsClientHelper::GetInstance()->GetBooleanPref(
                                    prefs::kShouldMigrateVerifiedRewardsUser);
@@ -97,7 +98,7 @@ void Account::SetWallet(const std::string& payment_id,
     WalletWasCreated(wallet);
 
     if (!HasIssuers()) {
-      return MaybeGetIssuers();
+      return MaybeFetchIssuers();
     }
   }
 
@@ -106,16 +107,6 @@ void Account::SetWallet(const std::string& payment_id,
 
 const WalletInfo& Account::GetWallet() const {
   return wallet_.Get();
-}
-
-void Account::Process() {
-  MaybeResetIssuersAndConfirmations();
-
-  NotifyStatementOfAccountsDidChange();
-
-  MaybeGetIssuers();
-
-  ProcessClearingCycle();
 }
 
 void Account::Deposit(const std::string& creative_instance_id,
@@ -127,7 +118,7 @@ void Account::Deposit(const std::string& creative_instance_id,
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
   const std::unique_ptr<DepositInterface> deposit =
-      DepositsFactory::Build(ad_type, confirmation_type);
+      DepositsFactory::Build(confirmation_type);
   if (!deposit) {
     return;
   }
@@ -166,11 +157,17 @@ void Account::Initialize() {
   refill_unblinded_tokens_->SetDelegate(this);
 }
 
-void Account::MaybeGetIssuers() const {
-  if (!ShouldRewardUser()) {
-    return;
-  }
+void Account::Process() {
+  MaybeResetIssuersAndConfirmations();
 
+  NotifyStatementOfAccountsDidChange();
+
+  MaybeFetchIssuers();
+
+  ProcessClearingCycle();
+}
+
+void Account::MaybeFetchIssuers() const {
   issuers_->MaybeFetch();
 }
 
@@ -248,12 +245,9 @@ void Account::ProcessClearingCycle() const {
 }
 
 void Account::ProcessUnclearedTransactions() const {
-  if (!ShouldRewardUser()) {
-    return;
+  if (ShouldRewardUser()) {
+    redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(GetWallet());
   }
-
-  const WalletInfo& wallet = GetWallet();
-  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 }
 
 void Account::WalletWasCreated(const WalletInfo& wallet) const {
@@ -303,18 +297,15 @@ void Account::MaybeResetIssuersAndConfirmations() {
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kShouldMigrateVerifiedRewardsUser, false);
 
-  MaybeGetIssuers();
+  MaybeFetchIssuers();
 
   ProcessClearingCycle();
 }
 
 void Account::TopUpUnblindedTokens() const {
-  if (!ShouldRewardUser()) {
-    return;
+  if (ShouldRewardUser()) {
+    refill_unblinded_tokens_->MaybeRefill(GetWallet());
   }
-
-  const WalletInfo& wallet = GetWallet();
-  refill_unblinded_tokens_->MaybeRefill(wallet);
 }
 
 void Account::NotifyWalletWasCreated(const WalletInfo& wallet) const {
@@ -364,11 +355,14 @@ void Account::NotifyStatementOfAccountsDidChange() const {
   }
 }
 
+void Account::OnNotifyDidInitializeAds() {
+  Process();
+}
+
 void Account::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeResetIssuersAndConfirmations();
-
-    MaybeGetIssuers();
+    MaybeFetchIssuers();
   } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
     MaybeResetIssuersAndConfirmations();
   }
@@ -421,7 +415,6 @@ void Account::OnDidRedeemUnblindedPaymentTokens(
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
   const WalletInfo& wallet = GetWallet();
-
   AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
       wallet.payment_id, captcha_id);
 }

@@ -451,8 +451,6 @@ void AdsImpl::MigrateNotificationStateCallback(InitializeCallback callback,
 void AdsImpl::Start() {
   LogActiveStudies();
 
-  account_.Process();
-
   conversions_.Process();
 
   subdivision_targeting_.MaybeAllow();

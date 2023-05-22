@@ -61,8 +61,6 @@ class Account final : public AdsClientNotifierObserver,
                  const std::string& recovery_seed);
   const WalletInfo& GetWallet() const;
 
-  void Process();
-
   void Deposit(const std::string& creative_instance_id,
                const AdType& ad_type,
                const std::string& segment,
@@ -73,7 +71,9 @@ class Account final : public AdsClientNotifierObserver,
  private:
   void Initialize();
 
-  void MaybeGetIssuers() const;
+  void Process();
+
+  void MaybeFetchIssuers() const;
 
   void DepositCallback(const std::string& creative_instance_id,
                        const AdType& ad_type,
@@ -125,6 +125,7 @@ class Account final : public AdsClientNotifierObserver,
   void NotifyStatementOfAccountsDidChange() const;
 
   // AdsClientNotifierObserver:
+  void OnNotifyDidInitializeAds() override;
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidSolveAdaptiveCaptcha() override;
 

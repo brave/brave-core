@@ -235,7 +235,7 @@ TEST_F(BraveAdsAccountTest, GetIssuersIfAdsAreEnabled) {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  account_->Process();
+  NotifyDidInitializeAds();
 
   // Act
 
@@ -249,13 +249,12 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
 
   EXPECT_CALL(ads_client_mock_, UrlRequest(_, _)).Times(0);
 
-  account_->Process();
+  NotifyDidInitializeAds();
 
   // Act
 
   // Assert
-  const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, GetIssuers());
+  EXPECT_FALSE(GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetInvalidIssuers) {
@@ -337,14 +336,14 @@ TEST_F(BraveAdsAccountTest, DoNotGetInvalidIssuers) {
               }
             ]
           })"}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
 
-  account_->Process();
+  NotifyDidInitializeAds();
 
   // Act
 
   // Assert
-  const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, GetIssuers());
+  EXPECT_FALSE(GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetMissingIssuers) {
@@ -357,13 +356,12 @@ TEST_F(BraveAdsAccountTest, DoNotGetMissingIssuers) {
           })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  account_->Process();
+  NotifyDidInitializeAds();
 
   // Act
 
   // Assert
-  const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, GetIssuers());
+  EXPECT_FALSE(GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
@@ -372,13 +370,12 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body*/ "{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  account_->Process();
+  NotifyDidInitializeAds();
 
   // Act
 
   // Assert
-  const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, GetIssuers());
+  EXPECT_FALSE(GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest, DepositForCash) {
