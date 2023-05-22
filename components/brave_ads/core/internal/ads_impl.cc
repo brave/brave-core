@@ -434,6 +434,10 @@ void AdsImpl::MigrateNotificationStateCallback(InitializeCallback callback,
     return FailedToInitialize(std::move(callback));
   }
 
+  SuccessfullyInitialized(std::move(callback));
+}
+
+void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
   BLOG(1, "Successfully initialized ads");
 
   is_initialized_ = true;
@@ -445,16 +449,11 @@ void AdsImpl::MigrateNotificationStateCallback(InitializeCallback callback,
 
   std::move(callback).Run(/*success*/ true);
 
-  Start();
-}
-
-void AdsImpl::Start() {
   LogActiveStudies();
 
   conversions_.Process();
 
   catalog_.MaybeFetch();
-
 }
 
 void AdsImpl::OnStatementOfAccountsDidChange() {

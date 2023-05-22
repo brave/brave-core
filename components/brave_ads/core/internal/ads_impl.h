@@ -149,9 +149,9 @@ class AdsImpl final : public Ads,
   void MigrateNotificationStateCallback(InitializeCallback callback,
                                         bool success);
 
-  bool IsInitialized() const { return is_initialized_; }
+  void SuccessfullyInitialized(InitializeCallback callback);
 
-  void Start();
+  bool IsInitialized() const { return is_initialized_; }
 
   // AccountObserver:
   void OnStatementOfAccountsDidChange() override;
