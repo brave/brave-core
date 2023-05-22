@@ -4,8 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/cargo.gni")
-import("//build/config/sanitizers/sanitizers.gni")
 import("//build/config/coverage/coverage.gni")
+import("//build/config/sanitizers/sanitizers.gni")
 
 if (is_mac) {
   import("//build/config/mac/mac_sdk.gni")
@@ -17,7 +17,8 @@ config("strip_rust_symbols") {
       !using_sanitizer) {
     ldflags = [
       # prevent export of all rust symbols
-      "-Wl,-exported_symbols_list," + rebase_path("//brave/app/framework.exports", root_out_dir),
+      "-Wl,-exported_symbols_list," +
+          rebase_path("//brave/app/framework.exports", root_out_dir),
     ]
     # if (use_clang_coverage) {
     # framework_with_coverage.exports

@@ -1,3 +1,0 @@
-ignore = [
-  "third_party/rust/**/crate",
-]

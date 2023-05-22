@@ -25,8 +25,7 @@ import("//brave/components/update_client/sources.gni")
 import("//brave/installer/linux/sources.gni")
 import("//brave/net/sources.gni")
 import("//brave/third_party/blink/renderer/includes.gni")
-
 brave_remove_rustflags = [
   # remove this after fixing issues in Brave rust code
-  "-Dunsafe_op_in_unsafe_fn"
+  "-Dunsafe_op_in_unsafe_fn",
 ]
