@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import { SelectTokenButtonStyleProps } from './select-token-or-network-button'
+import { SelectTokenButtonStyleProps } from './select-token-or-network'
 import { StyledButton, Icon, Row, Text } from '../../shared-swap.styles'
 
 export const Button = styled(StyledButton) <SelectTokenButtonStyleProps>`

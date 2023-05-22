@@ -723,7 +723,9 @@ export function createWalletApi (
         ]
       }),
       setNetwork: mutation<
-        Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'> & { selectedAccount?: AccountInfoEntity },
+        Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'> & {
+          selectedAccount?: AccountInfoEntity
+        },
         Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
       >({
         queryFn: async (

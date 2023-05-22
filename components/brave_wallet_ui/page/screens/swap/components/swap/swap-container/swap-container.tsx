@@ -31,7 +31,9 @@ import {
 interface Props {
   children?: React.ReactNode
   showPrivacyModal: () => void
-  refreshBlockchainState: (overrides: Partial<RefreshBlockchainStateParams>) => Promise<void>
+  refreshBlockchainState: (
+    overrides: Partial<RefreshBlockchainStateParams>
+  ) => Promise<void>
 }
 
 export const SwapContainer = (props: Props) => {
@@ -67,7 +69,11 @@ export const SwapContainer = (props: Props) => {
         refreshBlockchainState={refreshBlockchainState}
       />
       <Container ref={ref}>{children}</Container>
-      <PrivacyButton onClick={showPrivacyModal}>{getLocale('braveSwapPrivacyPolicy')}</PrivacyButton>
+      <PrivacyButton
+        onClick={showPrivacyModal}
+      >
+        {getLocale('braveSwapPrivacyPolicy')}
+      </PrivacyButton>
       <Background
         height={backgroundHeight}
         network={selectedNetwork?.chainId ?? ''}

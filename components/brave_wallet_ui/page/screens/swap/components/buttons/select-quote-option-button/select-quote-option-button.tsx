@@ -42,7 +42,8 @@ export const SelectQuoteOptionButton = (props: Props) => {
   const { onClick, option, isSelected, isBest, spotPrice } = props
 
   // Selectors
-  const defaultFiatCurrency = useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
+  const defaultFiatCurrency =
+    useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
 
   // Methods
   const onSelectToken = React.useCallback(() => {
@@ -50,17 +51,37 @@ export const SelectQuoteOptionButton = (props: Props) => {
   }, [option, onClick])
 
   const quoteFiatValue = React.useMemo(() => {
-    return option.toAmount.times(spotPrice || 0).formatAsFiat(defaultFiatCurrency)
+    return option
+      .toAmount
+      .times(spotPrice || 0)
+      .formatAsFiat(defaultFiatCurrency)
   }, [spotPrice, option, defaultFiatCurrency])
 
   return (
     <Button onClick={onSelectToken} isSelected={isSelected}>
-      {isBest && <BestOptionBadge isSelected={isSelected}>{getLocale('braveSwapBest')}</BestOptionBadge>}
-      <Text isBold={true} textColor='text01' textSize='14px' textAlign='left'>
+      {
+        isBest &&
+        <BestOptionBadge
+          isSelected={isSelected}
+        >
+          {getLocale('braveSwapBest')}
+        </BestOptionBadge>
+      }
+      <Text
+        isBold={true}
+        textColor='text01'
+        textSize='14px'
+        textAlign='left'
+      >
         {option.label}
       </Text>
       <Column horizontalAlign='flex-end'>
-        <Text isBold={true} textColor='text01' textSize='14px' textAlign='right'>
+        <Text
+          isBold={true}
+          textColor='text01'
+          textSize='14px'
+          textAlign='right'
+        >
           {option.toAmount.formatAsAsset(6, option.toToken.symbol)}
         </Text>
         <Text textColor='text03' textSize='14px' textAlign='right'>

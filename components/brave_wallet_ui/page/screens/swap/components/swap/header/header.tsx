@@ -27,7 +27,7 @@ import {
 } from '../../buttons/connect-wallet-button/connect-wallet-button'
 import {
   SelectTokenOrNetworkButton
-} from '../../buttons/select-token-or-network-button/select-token-or-network-button'
+} from '../../buttons/select-token-or-network/select-token-or-network'
 import {
   NetworkSelector
 } from '../network-selector/network-selector'
@@ -56,7 +56,9 @@ import {
 } from '../../shared-swap.styles'
 
 interface Props {
-  refreshBlockchainState: (overrides: Partial<RefreshBlockchainStateParams>) => Promise<void>
+  refreshBlockchainState: (
+    overrides: Partial<RefreshBlockchainStateParams>
+  ) => Promise<void>
 }
 
 export const Header = (props: Props) => {
@@ -68,22 +70,27 @@ export const Header = (props: Props) => {
   const [setNetwork] = useSetNetworkMutation()
 
   // State
-  const [showNetworkSelector, setShowNetworkSelector] = React.useState<boolean>(false)
-  const [showAccountModal, setShowAccountModal] = React.useState<boolean>(false)
+  const [showNetworkSelector, setShowNetworkSelector] =
+    React.useState<boolean>(false)
+  const [showAccountModal, setShowAccountModal] =
+    React.useState<boolean>(false)
 
   // Refs
   const networkSelectorRef = React.useRef<HTMLDivElement>(null)
   const accountModalRef = React.useRef<HTMLDivElement>(null)
 
   // Methods
-  const onSelectNetwork = React.useCallback(async (network: BraveWallet.NetworkInfo) => {
-    const { selectedAccount: account } = await setNetwork({
-      chainId: network.chainId,
-      coin: network.coin
-    }).unwrap()
-    setShowNetworkSelector(false)
-    await refreshBlockchainState({ network, account })
-  }, [setNetwork, refreshBlockchainState])
+  const onSelectNetwork = React.useCallback(
+    async (
+      network: BraveWallet.NetworkInfo
+    ) => {
+      const { selectedAccount: account } = await setNetwork({
+        chainId: network.chainId,
+        coin: network.coin
+      }).unwrap()
+      setShowNetworkSelector(false)
+      await refreshBlockchainState({ network, account })
+    }, [setNetwork, refreshBlockchainState])
 
   // Hooks
   // const { getNetworkFeeFiatEstimate } = useNetworkFees()
@@ -103,7 +110,12 @@ export const Header = (props: Props) => {
   )
 
   const isNetworkSupported = React.useMemo(() => {
-    return supportedNetworks.some(supportedNetwork => supportedNetwork.chainId === selectedNetwork?.chainId)
+    return supportedNetworks
+      .some(
+        supportedNetwork =>
+          supportedNetwork.chainId ===
+          selectedNetwork?.chainId
+      )
   }, [selectedNetwork, supportedNetworks])
 
   const onClickConnectWalletButton = React.useCallback(async () => {
@@ -115,8 +127,16 @@ export const Header = (props: Props) => {
       <Row rowHeight='full' verticalAlign='center'>
         <BraveLogo />
         <HiddenResponsiveRow maxWidth={570}>
-          <HorizontalDivider height={22} marginRight={12} dividerTheme='darker' />
-          <Text textSize='18px' textColor='text02' isBold={true}>
+          <HorizontalDivider
+            height={22}
+            marginRight={12}
+            dividerTheme='darker'
+          />
+          <Text
+            textSize='18px'
+            textColor='text02'
+            isBold={true}
+          >
             {getLocale('braveSwap')}
           </Text>
         </HiddenResponsiveRow>

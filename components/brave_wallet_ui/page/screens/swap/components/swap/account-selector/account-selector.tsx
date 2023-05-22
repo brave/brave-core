@@ -33,7 +33,9 @@ import {
 } from '../../../../../../constants/types'
 
 // Components
-import { AccountListButton } from '../../buttons/account-list-button/account-list-button'
+import {
+  AccountListButton
+} from '../../buttons/account-list-button/account-list-button'
 
 // Styled Components
 import {
@@ -65,7 +67,8 @@ export const AccountSelector = (props: Props) => {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // Selectors
-  const accounts: WalletAccountType[] = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const accounts: WalletAccountType[] =
+    useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // Refs
   const accountSelectorRef = React.useRef<HTMLDivElement>(null)
@@ -97,9 +100,16 @@ export const AccountSelector = (props: Props) => {
 
   return (
     <SelectorWrapper ref={accountSelectorRef}>
-      <SelectButton onClick={onToggleShowAccountSelector} disabled={disabled}>
+      <SelectButton
+        onClick={onToggleShowAccountSelector}
+        disabled={disabled}
+      >
         <Text textSize='12px' textColor='text02'>
-          {selectedAccount ? selectedAccount.name : getLocale('braveSwapSelectAccount')}
+          {
+            selectedAccount
+              ? selectedAccount.name
+              : getLocale('braveSwapSelectAccount')
+          }
         </Text>
         <HorizontalSpacer size={8} />
         <StyledCaratDownIcon size={20} name='carat-down' />
@@ -107,7 +117,11 @@ export const AccountSelector = (props: Props) => {
       {showAccountSelector && (
         <SelectorBox>
           {networkAccounts.map(account => (
-            <AccountListButton account={account} onClick={onClickSelectAccount} key={account.address} />
+            <AccountListButton
+              account={account}
+              onClick={onClickSelectAccount}
+              key={account.address}
+            />
           ))}
         </SelectorBox>
       )}

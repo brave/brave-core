@@ -12,12 +12,19 @@ export const Button = styled(StyledButton) <{ isConnected: boolean }>`
     --background-color-disconnected: ${p => p.theme.color.interactive05};
   }
   background-color: ${p =>
-    p.isConnected ? p.theme.color.background01 : 'var(--background-color-disconnected)'};
+    p.isConnected
+      ? p.theme.color.background01
+      : 'var(--background-color-disconnected)'
+  };
   border-radius: 48px;
   color: ${p => (p.isConnected ? p.theme.color.text01 : p.theme.palette.white)};
   font-size: 14px;
   padding: ${p => (p.isConnected ? '8px 16px' : '10px 22px')};
-  box-shadow: ${p => (p.isConnected ? '0px 0px 10px rgba(0, 0, 0, 0.05)' : 'none')};
+  box-shadow: ${p =>
+    p.isConnected
+      ? '0px 0px 10px rgba(0, 0, 0, 0.05)'
+      : 'none'
+  };
   @media screen and (max-width: 570px) {
     font-size: 12px;
     padding: ${p => (p.isConnected ? '4px 8px' : '6px 16px')};

@@ -35,7 +35,10 @@ interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
 
 const itemSize = 72
 
-const getListItemKey = (index: number, tokenList: BraveWallet.BlockchainToken[]) => {
+const getListItemKey = (
+  index: number,
+  tokenList: BraveWallet.BlockchainToken[]
+) => {
   const token = tokenList[index]
   return `${token.contractAddress}-${token.symbol}-${token.chainId}`
 }

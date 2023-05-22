@@ -33,7 +33,7 @@ import {
 } from '../../swap-section-box/swap-section-box'
 import {
   SelectTokenOrNetworkButton
-} from '../../buttons/select-token-or-network-button/select-token-or-network-button'
+} from '../../buttons/select-token-or-network/select-token-or-network'
 import {
   PresetButton
 } from '../../buttons/preset-button/preset-button'
@@ -75,21 +75,32 @@ export const FromSection = (props: Props) => {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // Selectors
-  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
+  const selectedAccount =
+    useUnsafeWalletSelector(WalletSelectors.selectedAccount)
 
   // methods
   const onClickHalfPreset = () => {
     if (!token) {
       return
     }
-    onInputChange(tokenBalance.div(2).parseInteger().divideByDecimals(token.decimals).format(6))
+    onInputChange(
+      tokenBalance
+        .div(2)
+        .parseInteger()
+        .divideByDecimals(token.decimals)
+        .format(6)
+    )
   }
 
   const onClickMaxPreset = () => {
     if (!token) {
       return
     }
-    onInputChange(tokenBalance.divideByDecimals(token.decimals).format())
+    onInputChange(
+      tokenBalance
+        .divideByDecimals(token.decimals)
+        .format()
+    )
   }
 
   // render
@@ -123,11 +134,22 @@ export const FromSection = (props: Props) => {
             />
             {token && selectedAccount !== undefined && (
               <Row>
-                <HorizontalDivider height={28} marginLeft={8} marginLeftResponsive={6} marginRight={8} />
+                <HorizontalDivider
+                  height={28}
+                  marginLeft={8}
+                  marginLeftResponsive={6}
+                  marginRight={8}
+                />
                 <HiddenResponsiveRow maxWidth={570}>
-                  <PresetButton buttonText={getLocale('braveSwapHalf')} onClick={onClickHalfPreset} />
+                  <PresetButton
+                    buttonText={getLocale('braveSwapHalf')}
+                    onClick={onClickHalfPreset}
+                  />
                 </HiddenResponsiveRow>
-                <PresetButton buttonText={getLocale('braveSwapMax')} onClick={onClickMaxPreset} />
+                <PresetButton
+                  buttonText={getLocale('braveSwapMax')}
+                  onClick={onClickMaxPreset}
+                />
               </Row>
             )}
           </Row>
@@ -141,7 +163,11 @@ export const FromSection = (props: Props) => {
         <Row rowWidth='full' horizontalAlign='flex-end'>
           {/* Todo: Setup locale for currency symbol */}
           {token && (
-            <Text textSize='14px' textColor='text03' maintainHeight={true}>
+            <Text
+              textSize='14px'
+              textColor='text03'
+              maintainHeight={true}
+            >
               {fiatValue}
             </Text>
           )}

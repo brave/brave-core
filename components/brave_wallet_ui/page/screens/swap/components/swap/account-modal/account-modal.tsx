@@ -117,9 +117,19 @@ export const AccountModal = (props: Props) => {
         horizontalAlign='flex-start'
         verticalAlign='flex-start'
       >
-        <Row verticalPaddingResponsive={8} horizontalPadding={10} rowWidth='full' marginBottom={4}>
+        <Row
+          verticalPaddingResponsive={8}
+          horizontalPadding={10}
+          rowWidth='full'
+          marginBottom={4}
+        >
           <Row>
-            <Title textSize='12px' responsiveTextSize='16px' textColor='text02' isBold={false}>
+            <Title
+              textSize='12px'
+              responsiveTextSize='16px'
+              textColor='text02'
+              isBold={false}
+            >
               {getLocale('braveSwapAccounts')}
             </Title>
           </Row>

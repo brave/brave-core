@@ -16,7 +16,8 @@ import {
 } from '../../../../../../../common/locale'
 
 // Components
-import withPlaceholderIcon from '../../../../../../components/shared/create-placeholder-icon'
+import withPlaceholderIcon from
+  '../../../../../../components/shared/create-placeholder-icon'
 import {
   CreateNetworkIcon
 } from '../../../../../../components/shared'
@@ -28,7 +29,7 @@ import {
   FuelTank,
   NotSupportedText,
   GasBubble
-} from './select-token-or-network-button.style'
+} from './select-token-or-network.style'
 import {
   Text,
   HorizontalSpacer,

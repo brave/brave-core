@@ -83,7 +83,8 @@ export type SwapFee = {
   discount: string
 }
 
-export type AmountValidationErrorType = 'fromAmountDecimalsOverflow' | 'toAmountDecimalsOverflow'
+export type AmountValidationErrorType =
+  'fromAmountDecimalsOverflow' | 'toAmountDecimalsOverflow'
 
 export type SwapValidationErrorType =
   | AmountValidationErrorType
@@ -98,7 +99,8 @@ export type SwapParams = {
   toToken?: BraveWallet.BlockchainToken
   fromAmount: string
   toAmount: string
-  // This is the value as seen on the UI - should be converted to appropriate
+  // This is the value as seen on the UI -
+  // should be converted to appropriate
   // format for Jupiter and 0x swap providers.
   slippageTolerance: string
   fromAddress?: string

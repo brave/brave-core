@@ -8,15 +8,25 @@ import { create } from 'ethereum-blockies'
 
 // Selectors
 import { WalletSelectors } from '../../../../../../common/selectors'
-import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector
+} from '../../../../../../common/hooks/use-safe-selector'
 
 // Utils
 import { reduceAddress } from '../../../../../../utils/reduce-address'
 import { getLocale } from '../../../../../../../common/locale'
 
 // Styled Components
-import { AccountCircle, Button, ButtonIcon } from './connect-wallet-button.style'
-import { Text, HorizontalSpacer, HiddenResponsiveRow } from '../../shared-swap.styles'
+import {
+  AccountCircle,
+  Button,
+  ButtonIcon
+} from './connect-wallet-button.style'
+import {
+  Text,
+  HorizontalSpacer,
+  HiddenResponsiveRow
+} from '../../shared-swap.styles'
 
 interface Props {
   onClick: () => void
@@ -26,7 +36,8 @@ export const ConnectWalletButton = (props: Props) => {
   const { onClick } = props
 
   // Selectors
-  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
+  const selectedAccount =
+    useUnsafeWalletSelector(WalletSelectors.selectedAccount)
 
   // Memos
   const accountOrb: string | undefined = React.useMemo(() => {
@@ -52,7 +63,12 @@ export const ConnectWalletButton = (props: Props) => {
             </Text>
             <HorizontalSpacer size={4} />
           </HiddenResponsiveRow>
-          <Text textSize='14px' textColor='text02' isBold={true} responsiveTextSize='12px'>
+          <Text
+            textSize='14px'
+            textColor='text02'
+            isBold={true}
+            responsiveTextSize='12px'
+          >
             {reduceAddress(selectedAccount.address)}
           </Text>
           <HorizontalSpacer size={7} />

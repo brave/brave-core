@@ -35,7 +35,11 @@ export const Text = styled.span<{
   letter-spacing: 0.02em;
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   @media screen and (max-width: 570px) {
-    font-size: ${(p) => (p.responsiveTextSize ? p.responsiveTextSize : p.textSize ? p.textSize : '18px')};
+    font-size: ${(p) =>
+    p.responsiveTextSize
+      ? p.responsiveTextSize
+      : p.textSize ? p.textSize : '18px'
+  };
   }
 `
 
@@ -65,7 +69,11 @@ export const Row = styled(StyledDiv) <{
   --vertical-padding: ${(p) => p.verticalPadding ?? 0}px;
   --horizontal-padding: ${(p) => p.horizontalPadding ?? 0}px;
   @media screen and (max-width: 570px) {
-    --vertical-padding: ${(p) => p.verticalPaddingResponsive ?? p.verticalPadding ?? 0}px;
+    --vertical-padding: ${(p) =>
+    p.verticalPaddingResponsive
+    ?? p.verticalPadding
+    ?? 0
+  }px;
   }
   box-sizing: border-box;
   flex-direction: row;
@@ -192,7 +200,11 @@ export const IconButton = styled(StyledButton)`
   padding: 0px;
 `
 
-export const HiddenResponsiveRow = styled(Row) <{ dontHide?: boolean, maxWidth?: number }>`
+export const HiddenResponsiveRow = styled(Row) <
+  {
+    dontHide?: boolean,
+    maxWidth?: number
+  }>`
   display: flex;
   @media screen and (max-width: ${(p) => p.maxWidth ? p.maxWidth : 800}px) {
     display: ${(p) => (p.dontHide ? 'flex' : 'none')};

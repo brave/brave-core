@@ -14,7 +14,8 @@ import {
 import Amount from '../../../../../../utils/amount'
 
 // Components
-import withPlaceholderIcon from '../../../../../../components/shared/create-placeholder-icon'
+import withPlaceholderIcon from
+  '../../../../../../components/shared/create-placeholder-icon'
 
 // Styled Components
 import { Button, NameAndSymbol } from './token-list-button.style'
@@ -52,7 +53,12 @@ export const TokenListButton = (props: Props) => {
       <Row>
         <AssetIconWithPlaceholder asset={token} network={network} />
         <NameAndSymbol horizontalAlign='flex-start'>
-          <Text isBold={true} textColor='text01' textSize='14px' textAlign='left'>
+          <Text
+            isBold={true}
+            textColor='text01'
+            textSize='14px'
+            textAlign='left'
+          >
             {token.name}
           </Text>
           <Text textColor='text03' textSize='14px' textAlign='left'>
@@ -61,7 +67,10 @@ export const TokenListButton = (props: Props) => {
         </NameAndSymbol>
       </Row>
       <Text isBold={true} textColor='text01' textSize='14px'>
-        {balance.divideByDecimals(token.decimals).formatAsAsset(6, token.symbol)}
+        {
+          balance
+            .divideByDecimals(token.decimals)
+            .formatAsAsset(6, token.symbol)}
       </Text>
     </Button>
   )

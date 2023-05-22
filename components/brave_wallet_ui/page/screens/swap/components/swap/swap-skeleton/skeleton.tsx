@@ -23,7 +23,12 @@ export const Skeleton = (props: Props) => {
   const { width, height, borderRadius, background } = props
 
   return (
-    <Wrapper width={width} height={height} borderRadius={borderRadius} background={background}>
+    <Wrapper
+      width={width}
+      height={height}
+      borderRadius={borderRadius}
+      background={background}
+    >
       <SkeletonBox width={width}>
         <SkeletonIndicator />
       </SkeletonBox>

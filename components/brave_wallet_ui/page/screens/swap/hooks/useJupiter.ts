@@ -43,18 +43,25 @@ export function useJupiter (params: SwapParams) {
     : undefined
 
   // State
-  const [quote, setQuote] = useState<BraveWallet.JupiterQuote | undefined>(undefined)
-  const [error, setError] = useState<BraveWallet.JupiterErrorResponse | undefined>(undefined)
+  const [quote, setQuote] =
+    useState<BraveWallet.JupiterQuote | undefined>(undefined)
+  const [error, setError] =
+    useState<BraveWallet.JupiterErrorResponse | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
-  const [selectedRoute, setSelectedRoute] = useState<BraveWallet.JupiterRoute | undefined>(
-    undefined
-  )
+  const [selectedRoute, setSelectedRoute] =
+    useState<BraveWallet.JupiterRoute | undefined>(
+      undefined
+    )
   const [braveFee, setBraveFee] = useState<SwapFee | undefined>(undefined)
-  const [abortController, setAbortController] = useState<AbortController | undefined>(undefined)
+  const [abortController, setAbortController] =
+    useState<AbortController | undefined>(undefined)
 
   // Custom hooks
   // FIXME(josheleonard): use slices API
-  const { getSwapService, sendSolanaSerializedTransaction } = useLib()
+  const {
+    getSwapService,
+    sendSolanaSerializedTransaction
+  } = useLib()
   const swapService = getSwapService()
 
   // FIXME(josheleonard): convert to slices
@@ -64,7 +71,11 @@ export function useJupiter (params: SwapParams) {
         throw Error('Unsupported coin type')
       }
 
-      const hasFee = (await swapService.hasJupiterFeesForTokenMint(token.contractAddress)).result
+      const hasFee =
+        (
+          await swapService
+            .hasJupiterFeesForTokenMint(token.contractAddress)
+        ).result
 
       return {
         fee: '0.85',
@@ -106,20 +117,32 @@ export function useJupiter (params: SwapParams) {
       if (selectedNetwork?.coin !== BraveWallet.CoinType.SOL) {
         return
       }
-      if (!overriddenParams.fromToken || !overriddenParams.toToken) {
+      if (
+        !overriddenParams.fromToken ||
+        !overriddenParams.toToken
+      ) {
         return
       }
-      if (!overriddenParams.fromAmount && !overriddenParams.toAmount) {
+      if (
+        !overriddenParams.fromAmount &&
+        !overriddenParams.toAmount
+      ) {
         await reset()
         return
       }
 
-      const fromAmountWrapped = new Amount(overriddenParams.fromAmount)
-      const toAmountWrapped = new Amount(overriddenParams.toAmount)
+      const fromAmountWrapped =
+        new Amount(overriddenParams.fromAmount)
+      const toAmountWrapped =
+        new Amount(overriddenParams.toAmount)
       const isFromAmountEmpty =
-        fromAmountWrapped.isZero() || fromAmountWrapped.isNaN() || fromAmountWrapped.isUndefined()
+        fromAmountWrapped.isZero() ||
+        fromAmountWrapped.isNaN() ||
+        fromAmountWrapped.isUndefined()
       const isToAmountEmpty =
-        toAmountWrapped.isZero() || toAmountWrapped.isNaN() || toAmountWrapped.isUndefined()
+        toAmountWrapped.isZero() ||
+        toAmountWrapped.isNaN() ||
+        toAmountWrapped.isUndefined()
 
       if (isFromAmountEmpty && isToAmountEmpty) {
         await reset()
@@ -136,30 +159,37 @@ export function useJupiter (params: SwapParams) {
       setLoading(true)
 
       try {
-        const fee = await getBraveFeeForAsset(overriddenParams.toToken)
+        const fee =
+          await getBraveFeeForAsset(overriddenParams.toToken)
         setBraveFee(fee)
       } catch (e) {
-        console.log(`Error getting Brave fee (Jupiter): ${overriddenParams.toToken.symbol}`)
+        console.log(
+          `Error getting Brave fee (Jupiter): ${ //
+          overriddenParams.toToken.symbol}`
+        )
       }
 
       let jupiterQuoteResponse
       try {
-        jupiterQuoteResponse = await swapService.getJupiterQuote({
-          inputMint: overriddenParams.fromToken.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS,
-          outputMint: overriddenParams.toToken.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS,
-          amount: !isFromAmountEmpty
-            ? new Amount(overriddenParams.fromAmount)
-              .multiplyByDecimals(overriddenParams.fromToken.decimals)
-              .format()
-            : new Amount(overriddenParams.toAmount)
-              .multiplyByDecimals(overriddenParams.toToken.decimals)
-              .format(),
-          slippageBps: new Amount(overriddenParams.slippageTolerance)
-            .times(100)
-            .parseInteger()
-            .toNumber(),
-          userPublicKey: overriddenParams.fromAddress
-        })
+        jupiterQuoteResponse =
+          await swapService.getJupiterQuote({
+            inputMint: overriddenParams.fromToken.contractAddress ||
+              WRAPPED_SOL_CONTRACT_ADDRESS,
+            outputMint: overriddenParams.toToken.contractAddress ||
+              WRAPPED_SOL_CONTRACT_ADDRESS,
+            amount: !isFromAmountEmpty
+              ? new Amount(overriddenParams.fromAmount)
+                .multiplyByDecimals(overriddenParams.fromToken.decimals)
+                .format()
+              : new Amount(overriddenParams.toAmount)
+                .multiplyByDecimals(overriddenParams.toToken.decimals)
+                .format(),
+            slippageBps: new Amount(overriddenParams.slippageTolerance)
+              .times(100)
+              .parseInteger()
+              .toNumber(),
+            userPublicKey: overriddenParams.fromAddress
+          })
       } catch (e) {
         console.log(`Error getting Jupiter quote: ${e}`)
       }
@@ -184,7 +214,12 @@ export function useJupiter (params: SwapParams) {
       // Return undefined if response is null.
       return jupiterQuoteResponse?.response || undefined
     },
-    [selectedNetwork?.coin, params, reset, swapService, getBraveFeeForAsset]
+    [
+      selectedNetwork?.coin,
+      params, reset,
+      swapService,
+      getBraveFeeForAsset
+    ]
   )
 
   const exchange = useCallback(
@@ -206,11 +241,13 @@ export function useJupiter (params: SwapParams) {
       setLoading(true)
       let jupiterTransactionsPayloadResponse
       try {
-        jupiterTransactionsPayloadResponse = await swapService.getJupiterSwapTransactions({
-          userPublicKey: selectedAccount.address,
-          route: selectedRoute || quote.routes[0],
-          outputMint: params.toToken.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS
-        })
+        jupiterTransactionsPayloadResponse =
+          await swapService.getJupiterSwapTransactions({
+            userPublicKey: selectedAccount.address,
+            route: selectedRoute || quote.routes[0],
+            outputMint: params.toToken.contractAddress ||
+              WRAPPED_SOL_CONTRACT_ADDRESS
+          })
       } catch (e) {
         console.log(`Error getting Jupiter swap transactions: ${e}`)
       }
@@ -227,23 +264,26 @@ export function useJupiter (params: SwapParams) {
       const { swapTransaction } = jupiterTransactionsPayloadResponse.response
 
       try {
-        const { success, errorMessage } = await sendSolanaSerializedTransaction({
-          encodedTransaction: swapTransaction,
-          from: selectedAccount.address,
-          txType: BraveWallet.TransactionType.SolanaSwap,
-          sendOptions: {
-            skipPreflight: {
-              skipPreflight: true
-            },
-            maxRetries: {
-              maxRetries: BigInt(2)
-            },
-            preflightCommitment: undefined
-          }
-        })
+        const { success, errorMessage } =
+          await sendSolanaSerializedTransaction({
+            encodedTransaction: swapTransaction,
+            from: selectedAccount.address,
+            txType: BraveWallet.TransactionType.SolanaSwap,
+            sendOptions: {
+              skipPreflight: {
+                skipPreflight: true
+              },
+              maxRetries: {
+                maxRetries: BigInt(2)
+              },
+              preflightCommitment: undefined
+            }
+          })
 
         if (!success) {
-          console.error(`Error creating Solana transaction: ${errorMessage}`)
+          console.error(
+            `Error creating Solana transaction: ${errorMessage}`
+          )
         }
 
         await reset(callback)
@@ -276,54 +316,61 @@ export function useJupiter (params: SwapParams) {
 
     return quote.routes.map(
       route =>
-        ({
-          label: route.marketInfos.map(marketInfo => marketInfo.label).join(' x '),
-          fromAmount: new Amount(route.inAmount.toString()).divideByDecimals(
+      ({
+        label: route
+          .marketInfos
+          .map(marketInfo => marketInfo.label).join(' x '),
+        fromAmount: new Amount(route.inAmount.toString())
+          .divideByDecimals(
             // @ts-expect-error
             params.fromToken.decimals
           ),
-          toAmount: new Amount(route.outAmount.toString()).divideByDecimals(
+        toAmount: new Amount(route.outAmount.toString())
+          .divideByDecimals(
             // @ts-expect-error
             params.toToken.decimals
           ),
-          // TODO: minimumToAmount is applicable only for ExactIn swapMode.
-          // Create a maximumFromAmount field for ExactOut swapMode if needed.
-          minimumToAmount: new Amount(route.otherAmountThreshold.toString()).divideByDecimals(
+        // TODO: minimumToAmount is applicable only for ExactIn swapMode.
+        // Create a maximumFromAmount field for ExactOut swapMode if needed.
+        minimumToAmount: new Amount(route.otherAmountThreshold.toString())
+          .divideByDecimals(
             // @ts-expect-error
             params.toToken.decimals
           ),
-          fromToken: params.fromToken,
-          toToken: params.toToken,
-          rate: new Amount(route.outAmount.toString())
+        fromToken: params.fromToken,
+        toToken: params.toToken,
+        rate: new Amount(route.outAmount.toString())
+          // @ts-expect-error
+          .divideByDecimals(params.toToken.decimals)
+          .div(new Amount(route.inAmount.toString())
             // @ts-expect-error
-            .divideByDecimals(params.toToken.decimals)
-            // @ts-expect-error
-            .div(new Amount(route.inAmount.toString()).divideByDecimals(params.fromToken.decimals)),
-          impact: new Amount(route.priceImpactPct),
-          sources: route.marketInfos.flatMap(marketInfo =>
-            // Split "Cykura (95%) + Lifinity (5%)" into "Cykura (95%)" and "Lifinity (5%)"
-            marketInfo.label.split('+').map(label => {
-              // Extract name and proportion from Cykura (95%)
-              const match = label.match(/(.*)\s+\((\d+)%\)/)
-              if (match && match.length === 3) {
-                return {
-                  name: match[1].trim(),
-                  proportion: new Amount(match[2]).div(100)
-                }
-              }
-
+            .divideByDecimals(params.fromToken.decimals)),
+        impact: new Amount(route.priceImpactPct),
+        sources: route.marketInfos.flatMap(marketInfo =>
+          // Split "Cykura (95%) + Lifinity (5%)"
+          // into "Cykura (95%)" and "Lifinity (5%)"
+          marketInfo.label.split('+').map(label => {
+            // Extract name and proportion from Cykura (95%)
+            const match = label.match(/(.*)\s+\((\d+)%\)/)
+            if (match && match.length === 3) {
               return {
-                name: label.trim(),
-                proportion: new Amount(1)
+                name: match[1].trim(),
+                proportion: new Amount(match[2]).div(100)
               }
-            })
-          ),
-          routing: route.marketInfos.length > 1 ? 'flow' : 'split',
-          networkFee: networkFee
-            .times(params.spotPrices.nativeAsset)
-            .formatAsFiat(defaultFiatCurrency),
-          braveFee
-        } as QuoteOption)
+            }
+
+            return {
+              name: label.trim(),
+              proportion: new Amount(1)
+            }
+          })
+        ),
+        routing: route.marketInfos.length > 1 ? 'flow' : 'split',
+        networkFee: networkFee
+          .times(params.spotPrices.nativeAsset)
+          .formatAsFiat(defaultFiatCurrency),
+        braveFee
+      } as QuoteOption)
     )
   }, [
     quote,

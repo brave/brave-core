@@ -23,7 +23,7 @@ import {
 // Components
 import {
   SelectTokenOrNetworkButton
-} from '../../buttons/select-token-or-network-button/select-token-or-network-button'
+} from '../../buttons/select-token-or-network/select-token-or-network'
 import { SwapInput } from '../../inputs/swap-input/swap-input'
 
 // Styled Components

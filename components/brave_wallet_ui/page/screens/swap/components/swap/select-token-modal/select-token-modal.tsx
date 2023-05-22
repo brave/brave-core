@@ -53,13 +53,25 @@ interface Props {
   getCachedAssetBalance: (token: BraveWallet.BlockchainToken) => Amount
   disabledToken: BraveWallet.BlockchainToken | undefined
   selectingFromOrTo: 'from' | 'to'
-  getNetworkAssetsList: (network: BraveWallet.NetworkInfo) => BraveWallet.BlockchainToken[]
-  refreshBlockchainState: (overrides: Partial<RefreshBlockchainStateParams>) => Promise<void>
+  getNetworkAssetsList: (
+    network: BraveWallet.NetworkInfo
+  ) => BraveWallet.BlockchainToken[]
+  refreshBlockchainState: (
+    overrides: Partial<RefreshBlockchainStateParams>
+  ) => Promise<void>
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
-    const { onClose, onSelectToken, getCachedAssetBalance, getNetworkAssetsList, disabledToken, selectingFromOrTo, refreshBlockchainState } = props
+    const {
+      onClose,
+      onSelectToken,
+      getCachedAssetBalance,
+      getNetworkAssetsList,
+      disabledToken,
+      selectingFromOrTo,
+      refreshBlockchainState
+    } = props
 
     // Queries
     const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -92,32 +104,40 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         : getLocale('braveSwapHideTokensWithZeroBalances')
     }, [getLocale, hideTokensWithZeroBalances])
 
-    const filteredTokenListBySearch: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-      if (searchValue === '') {
-        return networkAssetsList
-      }
-      return networkAssetsList.filter(
-        (token: BraveWallet.BlockchainToken) =>
-          token.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
-          token.symbol.toLowerCase().startsWith(searchValue.toLowerCase())
-      )
-    }, [networkAssetsList, searchValue])
+    const filteredTokenListBySearch: BraveWallet.BlockchainToken[] =
+      React.useMemo(() => {
+        if (searchValue === '') {
+          return networkAssetsList
+        }
+        return networkAssetsList.filter(
+          (token: BraveWallet.BlockchainToken) =>
+            token.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
+            token.symbol.toLowerCase().startsWith(searchValue.toLowerCase())
+        )
+      }, [networkAssetsList, searchValue])
 
-    const tokenListWithBalances: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-      return filteredTokenListBySearch.filter((token: BraveWallet.BlockchainToken) =>
-        getCachedAssetBalance(token).gt(0)
-      )
-    }, [filteredTokenListBySearch, getCachedAssetBalance])
-
-    const filteredTokenList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-      if (tokenListWithBalances.length === 0) {
+    const tokenListWithBalances: BraveWallet.BlockchainToken[] =
+      React.useMemo(() => {
         return filteredTokenListBySearch
-      }
-      if (hideTokensWithZeroBalances) {
-        return tokenListWithBalances
-      }
-      return filteredTokenListBySearch
-    }, [filteredTokenListBySearch, hideTokensWithZeroBalances, tokenListWithBalances])
+          .filter((token: BraveWallet.BlockchainToken) =>
+            getCachedAssetBalance(token).gt(0)
+          )
+      }, [filteredTokenListBySearch, getCachedAssetBalance])
+
+    const filteredTokenList: BraveWallet.BlockchainToken[] =
+      React.useMemo(() => {
+        if (tokenListWithBalances.length === 0) {
+          return filteredTokenListBySearch
+        }
+        if (hideTokensWithZeroBalances) {
+          return tokenListWithBalances
+        }
+        return filteredTokenListBySearch
+      }, [
+        filteredTokenListBySearch,
+        hideTokensWithZeroBalances,
+        tokenListWithBalances
+      ])
 
     const showZeroBalanceButton: boolean = React.useMemo(() => {
       return tokenListWithBalances.length !== 0
@@ -132,7 +152,14 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // render
     return (
-      <StandardModal ref={forwardedRef} modalHeight={hideTokensWithZeroBalances ? 'standard' : 'full'}>
+      <StandardModal
+        ref={forwardedRef}
+        modalHeight={
+          hideTokensWithZeroBalances
+            ? 'standard'
+            : 'full'
+        }
+      >
         <Row rowWidth='full' horizontalPadding={24} verticalPadding={20}>
           <Text textSize='18px' responsiveTextSize='20px' isBold={true}>
             {getLocale('braveSwapSelectAToken')}

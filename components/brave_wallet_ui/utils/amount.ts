@@ -6,14 +6,15 @@ import BigNumber from 'bignumber.js'
 
 import { CurrencySymbols } from './currency-symbols'
 
-export type AbbreviationOptions = 'thousand' | 'million' | 'billion' | 'trillion'
+export type AbbreviationOptions =
+  'thousand' | 'million' | 'billion' | 'trillion'
 type BigNumberIsh = BigNumber | string | number
 type AmountLike = Amount | BigNumberIsh
 
 export default class Amount {
   public readonly value?: BigNumber
 
-  public constructor (value: BigNumberIsh) {
+  public constructor(value: BigNumberIsh) {
     this.value = value === '' ? undefined : new BigNumber(value)
   }
 
@@ -187,7 +188,9 @@ export default class Amount {
 
     // Format number with commas.
     // https://stackoverflow.com/a/2901298/1946230
-    return commas ? trimmedResult.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') : trimmedResult
+    return commas
+      ? trimmedResult.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+      : trimmedResult
   }
 
   format (significantDigits?: number, commas: boolean = false): string {
@@ -203,10 +206,18 @@ export default class Amount {
     // significant figures will result in an undesirable loss of precision.
     const desiredDecimalPlaces = 2
     if (this.value.isGreaterThanOrEqualTo(10 ** (significantDigits - desiredDecimalPlaces))) {
-      return Amount.formatAmountWithCommas(this.value.toFixed(desiredDecimalPlaces), commas)
+      return Amount
+        .formatAmountWithCommas(
+          this.value.toFixed(desiredDecimalPlaces),
+          commas
+        )
     }
 
-    return Amount.formatAmountWithCommas(this.value.precision(significantDigits).toFixed(), commas)
+    return Amount.
+      formatAmountWithCommas(
+        this.value.precision(significantDigits).toFixed(),
+        commas
+      )
   }
 
   formatAsAsset (significantDigits?: number, symbol?: string): string {

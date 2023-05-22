@@ -58,7 +58,13 @@ import {
 import { SwapSectionBox } from './components/boxes/swap-section-box'
 
 // Styled Components
-import { Row, Text, IconButton, Icon, StyledDiv } from './components/shared-swap.styles'
+import {
+  Row,
+  Text,
+  IconButton,
+  Icon,
+  StyledDiv
+} from './components/shared-swap.styles'
 
 export const Swap = () => {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -202,13 +208,16 @@ export const Swap = () => {
             isLoading={isFetchingQuote}
             disabled={selectedNetwork?.coin === BraveWallet.CoinType.SOL}
           />
-          {selectedNetwork?.coin === BraveWallet.CoinType.SOL && quoteOptions.length > 0 && (
-            <QuoteOptions
-              options={quoteOptions}
-              selectedQuoteOptionIndex={selectedQuoteOptionIndex}
-              onSelectQuoteOption={onSelectQuoteOption}
-            />
-          )}
+          {
+            selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
+            quoteOptions.length > 0 &&
+            (
+              <QuoteOptions
+                options={quoteOptions}
+                selectedQuoteOptionIndex={selectedQuoteOptionIndex}
+                onSelectQuoteOption={onSelectQuoteOption}
+              />
+            )}
         </SwapSectionBox>
         {quoteOptions.length > 0 && (
           <>

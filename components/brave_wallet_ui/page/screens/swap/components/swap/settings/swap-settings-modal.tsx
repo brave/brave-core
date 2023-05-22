@@ -106,7 +106,9 @@ export const SwapSettingsModal = (props: Props) => {
   }, [slippageTolerance])
 
   const modalTitle: string = React.useMemo(() => {
-    return showExchanges ? getLocale('braveSwapExchanges') : getLocale('braveSwapSettings')
+    return showExchanges
+      ? getLocale('braveSwapExchanges')
+      : getLocale('braveSwapSettings')
   }, [getLocale, showExchanges])
 
   // render
@@ -142,7 +144,8 @@ export const SwapSettingsModal = (props: Props) => {
             {exchanges.map(exchange => (
               <StandardCheckbox
                 id={exchange.id}
-                isChecked={userSelectedExchanges.some(e => e.id === exchange.id)}
+                isChecked={userSelectedExchanges
+                  .some(e => e.id === exchange.id)}
                 label={exchange.name}
                 key={exchange.id}
                 onChange={handleCheckExchange}
@@ -177,7 +180,10 @@ export const SwapSettingsModal = (props: Props) => {
                   />
                 ))}
               </Row>
-              <SlippageInput onChange={setSlippageTolerance} value={customSlippageInputValue} />
+              <SlippageInput
+                onChange={setSlippageTolerance}
+                value={customSlippageInputValue}
+              />
             </Row>
           </ExpandSection>
 
@@ -200,7 +206,9 @@ export const SwapSettingsModal = (props: Props) => {
               <ExpandSection
                 label={getLocale('braveSwapNetworkFee')}
                 value={`$${gasEstimates.gasFeeFiat}`}
-                secondaryValue={`${gasEstimates.gasFee} ${selectedNetwork?.symbol ?? ''}`}
+                secondaryValue={
+                  `${gasEstimates.gasFee} ${selectedNetwork?.symbol ?? ''}`
+                }
               >
                 <Column columnWidth='full'>
                   {gasFeeOptions.map((option) => (

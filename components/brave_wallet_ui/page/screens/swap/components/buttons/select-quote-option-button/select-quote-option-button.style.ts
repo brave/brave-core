@@ -21,7 +21,10 @@ export const Button = styled(StyledButton) <{
   position: relative;
   box-sizing: border-box;
   box-shadow: ${p =>
-    p.isSelected ? `0px 0px 0px 1px ${p.theme.color.interactive05} inset` : 'none'};
+    p.isSelected
+      ? `0px 0px 0px 1px ${p.theme.color.interactive05} inset`
+      : 'none'
+  };
   &:hover {
     --best-background: ${p => p.theme.color.interactive05};
     box-shadow: 0px 0px 0px 1px ${p => p.theme.color.interactive05} inset;

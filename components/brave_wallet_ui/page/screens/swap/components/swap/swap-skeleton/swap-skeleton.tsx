@@ -41,24 +41,52 @@ export const SwapSkeleton = () => {
         <Row rowHeight='full' verticalAlign='center'>
           <BraveLogo />
           <HiddenResponsiveRow maxWidth={570}>
-            <HorizontalDivider height={22} marginRight={12} dividerTheme='darker' />
-            <Text textSize='18px' textColor='text02' isBold={true}>
+            <HorizontalDivider
+              height={22}
+              marginRight={12}
+              dividerTheme='darker'
+            />
+            <Text
+              textSize='18px'
+              textColor='text02'
+              isBold={true}
+            >
               {getLocale('braveSwap')}
             </Text>
           </HiddenResponsiveRow>
         </Row>
         <Row>
           <HiddenResponsiveRow maxWidth={570}>
-            <Skeleton width={40} height={40} borderRadius={100} />
+            <Skeleton
+              width={40}
+              height={40}
+              borderRadius={100}
+            />
             <HorizontalSpacer size={16} />
-            <Skeleton width={154} height={40} borderRadius={48} />
+            <Skeleton
+              width={154}
+              height={40}
+              borderRadius={48}
+            />
             <HorizontalSpacer size={16} />
-            <Skeleton width={154} height={40} borderRadius={48} />
+            <Skeleton
+              width={154}
+              height={40}
+              borderRadius={48}
+            />
           </HiddenResponsiveRow>
           <ShownResponsiveRow>
-            <Skeleton width={68} height={32} borderRadius={100} />
+            <Skeleton
+              width={68}
+              height={32}
+              borderRadius={100}
+            />
             <HorizontalSpacer size={16} />
-            <Skeleton width={135} height={32} borderRadius={48} />
+            <Skeleton
+              width={135}
+              height={32}
+              borderRadius={48}
+            />
           </ShownResponsiveRow>
         </Row>
       </Header>
@@ -74,30 +102,73 @@ export const SwapSkeleton = () => {
         <SwapSectionBox boxType='primary'>
           <Row rowWidth='full'>
             <Row>
-              <Skeleton width={124} height={60} borderRadius={100} />
-              <HorizontalDivider height={28} marginLeft={8} marginRight={8} />
+              <Skeleton
+                width={124}
+                height={60}
+                borderRadius={100}
+              />
+              <HorizontalDivider
+                height={28}
+                marginLeft={8}
+                marginRight={8}
+              />
               <HiddenResponsiveRow maxWidth={570}>
-                <Skeleton width={46} height={24} borderRadius={4} />
+                <Skeleton
+                  width={46}
+                  height={24}
+                  borderRadius={4}
+                />
               </HiddenResponsiveRow>
               <HorizontalSpacer size={8} />
-              <Skeleton width={46} height={24} borderRadius={4} />
+              <Skeleton
+                width={46}
+                height={24}
+                borderRadius={4}
+              />
             </Row>
-            <Skeleton width={100} height={42} borderRadius={5} />
+            <Skeleton
+              width={100}
+              height={42}
+              borderRadius={5}
+            />
           </Row>
         </SwapSectionBox>
         <FlipWrapper>
           <FlipBox>
-            <Skeleton width={40} height={40} borderRadius={100} background='secondary' />
+            <Skeleton
+              width={40}
+              height={40}
+              borderRadius={100}
+              background='secondary'
+            />
           </FlipBox>
         </FlipWrapper>
         <SwapSectionBox boxType='secondary'>
           <Row rowWidth='full'>
-            <Skeleton width={160} height={40} borderRadius={100} background='secondary' />
-            <Skeleton width={100} height={42} borderRadius={5} background='secondary' />
+            <Skeleton
+              width={160}
+              height={40}
+              borderRadius={100}
+              background='secondary'
+            />
+            <Skeleton
+              width={100}
+              height={42}
+              borderRadius={5}
+              background='secondary'
+            />
           </Row>
         </SwapSectionBox>
-        <Row rowWidth='full' horizontalAlign='center' verticalPadding={16}>
-          <Skeleton height={56} borderRadius={48} background='secondary' />
+        <Row
+          rowWidth='full'
+          horizontalAlign='center'
+          verticalPadding={16}
+        >
+          <Skeleton
+            height={56}
+            borderRadius={48}
+            background='secondary'
+          />
         </Row>
       </Container>
     </SwapSkeletonWrapper>

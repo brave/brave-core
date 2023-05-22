@@ -23,7 +23,7 @@ import { RefreshBlockchainStateParams } from '../../../constants/types'
 // Components
 import {
   SelectTokenOrNetworkButton
-} from '../../buttons/select-token-or-network-button/select-token-or-network-button'
+} from '../../buttons/select-token-or-network/select-token-or-network'
 import { SearchInput } from '../../inputs/search-input/search-input'
 import { NetworkSelector } from '../network-selector/network-selector'
 
@@ -41,7 +41,9 @@ interface Props {
   onSearchChanged: (value: string) => void
   searchValue: string
   networkSelectorDisabled: boolean
-  refreshBlockchainState: (overrides: Partial<RefreshBlockchainStateParams>) => Promise<void>
+  refreshBlockchainState: (
+    overrides: Partial<RefreshBlockchainStateParams>
+  ) => Promise<void>
 }
 
 export const SearchWithNetworkSelector = (props: Props) => {
@@ -57,7 +59,8 @@ export const SearchWithNetworkSelector = (props: Props) => {
   const [setNetwork] = useSetNetworkMutation()
 
   // State
-  const [showNetworkSelector, setShowNetworkSelector] = React.useState<boolean>(false)
+  const [showNetworkSelector, setShowNetworkSelector] =
+    React.useState<boolean>(false)
 
   const onSelectNetwork = React.useCallback(
     async (network: BraveWallet.NetworkInfo) => {
@@ -88,7 +91,10 @@ export const SearchWithNetworkSelector = (props: Props) => {
             disabled={networkSelectorDisabled}
             iconType='network'
           />
-          {showNetworkSelector && <NetworkSelector onSelectNetwork={onSelectNetwork} />}
+          {
+            showNetworkSelector &&
+            <NetworkSelector onSelectNetwork={onSelectNetwork} />
+          }
         </SelectorWrapper>
       </HiddenResponsiveRow>
     </Wrapper>

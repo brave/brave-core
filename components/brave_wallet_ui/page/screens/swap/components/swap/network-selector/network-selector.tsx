@@ -70,7 +70,12 @@ export const NetworkSelector = (props: Props) => {
       </Row>
       <VerticalSpacer size={8} />
       <VerticalDivider /> */}
-      <HeaderRow isHeader={isHeader} rowWidth='full' horizontalPadding={20} verticalPadding={12}>
+      <HeaderRow
+        isHeader={isHeader}
+        rowWidth='full'
+        horizontalPadding={20}
+        verticalPadding={12}
+      >
         <Text textSize='20px' textColor='text01' isBold={true}>
           {getLocale('braveSwapChangeNetwork')}
         </Text>

@@ -68,7 +68,14 @@ export const QuoteInfo = (props: Props) => {
       return ''
     }
 
-    return `1 ${selectedQuoteOption.fromToken.symbol} ≈ ${selectedQuoteOption.rate.format(6)} ${selectedQuoteOption.toToken.symbol
+    return `1 ${selectedQuoteOption
+      .fromToken.symbol
+      } ≈ ${selectedQuoteOption
+        .rate
+        .format(6)
+      } ${selectedQuoteOption
+        .toToken
+        .symbol
       }`
   }, [selectedQuoteOption])
 
@@ -87,7 +94,8 @@ export const QuoteInfo = (props: Props) => {
       //   1 FROM = <R> TO
       //   1 FROM/USD = <R> TO/USD
       //   => <R> = (FROM/USD) / (TO/USD)
-      const coinGeckoRate = new Amount(spotPrices.makerAsset).div(spotPrices.takerAsset)
+      const coinGeckoRate =
+        new Amount(spotPrices.makerAsset).div(spotPrices.takerAsset)
 
       // Quote rate computation:
       //   <X> FROM = <Y> TO
@@ -104,11 +112,13 @@ export const QuoteInfo = (props: Props) => {
 
   const coinGeckoDeltaText: string = React.useMemo(() => {
     if (coinGeckoDelta.gte(0)) {
-      return getLocale('braveSwapCoinGeckoCheaper').replace('$1', coinGeckoDelta.format(2))
+      return getLocale('braveSwapCoinGeckoCheaper')
+        .replace('$1', coinGeckoDelta.format(2))
     }
 
     if (coinGeckoDelta.gte(-1)) {
-      return getLocale('braveSwapCoinGeckoWithin').replace('$1', coinGeckoDelta.times(-1).format(2))
+      return getLocale('braveSwapCoinGeckoWithin')
+        .replace('$1', coinGeckoDelta.times(-1).format(2))
     }
 
     return getLocale('braveSwapCoinGeckoExpensive').replace(
@@ -137,11 +147,16 @@ export const QuoteInfo = (props: Props) => {
   }, [selectedQuoteOption])
 
   const minimumReceived: string = React.useMemo(() => {
-    if (selectedQuoteOption === undefined || selectedQuoteOption.minimumToAmount === undefined) {
+    if (
+      selectedQuoteOption === undefined ||
+      selectedQuoteOption.minimumToAmount === undefined
+    ) {
       return ''
     }
 
-    return selectedQuoteOption.minimumToAmount.formatAsAsset(6, selectedQuoteOption.toToken.symbol)
+    return selectedQuoteOption
+      .minimumToAmount
+      .formatAsAsset(6, selectedQuoteOption.toToken.symbol)
   }, [selectedQuoteOption])
 
   const realBraveFee = React.useMemo(() => {
@@ -154,7 +169,10 @@ export const QuoteInfo = (props: Props) => {
       return
     }
 
-    return new Amount(100).minus(braveFee.discount).div(100).times(braveFee.fee)
+    return new Amount(100)
+      .minus(braveFee.discount)
+      .div(100)
+      .times(braveFee.fee)
   }, [selectedQuoteOption])
 
   return (
@@ -177,7 +195,11 @@ export const QuoteInfo = (props: Props) => {
       </Row>
       <Row rowWidth='full' marginBottom={10} horizontalPadding={16}>
         <Text textSize='14px'>{getLocale('braveSwapPriceImpact')}</Text>
-        <Text textSize='14px'>{swapImpact === '0' ? `${swapImpact}%` : `~ ${swapImpact}%`}</Text>
+        <Text
+          textSize='14px'
+        >
+          {swapImpact === '0' ? `${swapImpact}%` : `~ ${swapImpact}%`}
+        </Text>
       </Row>
       {minimumReceived !== '' && (
         <Row rowWidth='full' marginBottom={8} horizontalPadding={16}>
@@ -212,11 +234,19 @@ export const QuoteInfo = (props: Props) => {
             </Row>
           </Row>
           {showProviders &&
-            <Row rowWidth='full' horizontalAlign='flex-start' verticalPadding={6}>
+            <Row
+              rowWidth='full'
+              horizontalAlign='flex-start'
+              verticalPadding={6}
+            >
               {selectedQuoteOption.sources.map((source, idx) => (
                 <Row key={idx}>
                   <Bubble>
-                    <Text textSize='12px'>{source.name.split('_').join(' ')}</Text>
+                    <Text
+                      textSize='12px'
+                    >
+                      {source.name.split('_').join(' ')}
+                    </Text>
                     {LPMetadata[source.name] ? (
                       <LPIcon icon={LPMetadata[source.name]} size={12} />
                     ) : null}
