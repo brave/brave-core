@@ -20,8 +20,8 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -34,9 +34,17 @@ class BraveAdsConversionsTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     conversions_ = std::make_unique<Conversions>();
+    resource_ = std::make_unique<ConversionsResource>();
+  }
+
+  bool LoadResource() {
+    NotifyDidUpdateResourceComponent(kCountryComponentId);
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
   }
 
   std::unique_ptr<Conversions> conversions_;
+  std::unique_ptr<ConversionsResource> resource_;
   database::table::AdEvents ad_events_database_table_;
   database::table::ConversionQueue conversion_queue_database_table_;
 };
@@ -1463,10 +1471,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfUrlIsInRedirectChain) {
 
 TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
   // Arrange
-  ConversionsResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-  ASSERT_TRUE(resource.IsInitialized());
+  ASSERT_TRUE(LoadResource());
 
   ConversionList conversions;
 
@@ -1489,7 +1494,7 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
   conversions_->MaybeConvert(
       {GURL("https://foo.bar/"), GURL("https://brave.com/thankyou")},
       R"(<html><meta name="ad-conversion-id" content="abc123"></html>)",
-      resource.get().id_patterns);
+      resource_->get().id_patterns);
 
   // Assert
   conversion_queue_database_table_.GetAll(base::BindOnce(
@@ -1514,10 +1519,7 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
 TEST_F(BraveAdsConversionsTest,
        ExtractConversionIdWithResourcePatternFromHtml) {
   // Arrange
-  ConversionsResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-  ASSERT_TRUE(resource.IsInitialized());
+  ASSERT_TRUE(LoadResource());
 
   ConversionList conversions;
 
@@ -1542,7 +1544,7 @@ TEST_F(BraveAdsConversionsTest,
   conversions_->MaybeConvert(
       {GURL("https://foo.bar/"), GURL("https://brave.com/foobar")},
       "<html><div id=\"conversion-id\">abc123</div></html>",
-      resource.get().id_patterns);
+      resource_->get().id_patterns);
 
   // Assert
   conversion_queue_database_table_.GetAll(base::BindOnce(
@@ -1566,10 +1568,7 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // Arrange
-  ConversionsResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-  ASSERT_TRUE(resource.IsInitialized());
+  ASSERT_TRUE(LoadResource());
 
   ConversionList conversions;
 
@@ -1595,7 +1594,7 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
       {GURL("https://foo.bar/"),
        GURL("https://brave.com/foobar?conversion_id=abc123")},
       "<html><div id=\"conversion-id\">foobar</div></html>",
-      resource.get().id_patterns);
+      resource_->get().id_patterns);
 
   // Assert
   conversion_queue_database_table_.GetAll(base::BindOnce(

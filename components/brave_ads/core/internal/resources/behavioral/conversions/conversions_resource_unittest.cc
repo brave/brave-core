@@ -12,6 +12,8 @@
 #include "base/files/file.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource_constants.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -20,10 +22,6 @@ namespace brave_ads {
 
 using testing::_;
 using testing::Invoke;
-
-namespace {
-constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
-}  // namespace
 
 class BraveAdsConversionsResourceTest : public UnitTestBase {
  protected:
@@ -34,7 +32,7 @@ class BraveAdsConversionsResourceTest : public UnitTestBase {
   }
 
   bool LoadResource() {
-    resource_->Load();
+    NotifyDidUpdateResourceComponent(kCountryComponentId);
     task_environment_.RunUntilIdle();
     return resource_->IsInitialized();
   }
@@ -53,7 +51,7 @@ TEST_F(BraveAdsConversionsResourceTest, LoadResource) {
 
 TEST_F(BraveAdsConversionsResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
+  CopyFileFromTestPathToTempPath(kInvalidResourceId, kConversionsResourceId);
 
   // Act
 
@@ -63,7 +61,7 @@ TEST_F(BraveAdsConversionsResourceTest, DoNotLoadInvalidResource) {
 
 TEST_F(BraveAdsConversionsResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_, LoadFileResource(kResourceId, _, _))
+  EXPECT_CALL(ads_client_mock_, LoadFileResource(kConversionsResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =

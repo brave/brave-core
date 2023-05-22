@@ -12,6 +12,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
@@ -28,7 +29,8 @@ namespace brave_ads {
 struct AdEventInfo;
 struct VerifiableConversionInfo;
 
-class Conversions final : public TabManagerObserver {
+class Conversions final : public AdsClientNotifierObserver,
+                          public TabManagerObserver {
  public:
   Conversions();
 
@@ -47,9 +49,8 @@ class Conversions final : public TabManagerObserver {
                     const std::string& html,
                     const ConversionIdPatternMap& conversion_id_patterns);
 
-  void Process();
-
  private:
+  void Process();
   void ProcessCallback(bool success,
                        const ConversionQueueItemList& conversion_queue_items);
 
@@ -105,6 +106,9 @@ class Conversions final : public TabManagerObserver {
       const ConversionQueueItemInfo& conversion_queue_item) const;
   void NotifyConversionFailed(
       const ConversionQueueItemInfo& conversion_queue_item) const;
+
+  // AdsClientNotifierObserver:
+  void OnNotifyDidInitializeAds() override;
 
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,

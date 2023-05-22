@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -48,18 +49,17 @@ bool HasObservationWindowForAdEventExpired(
 
 bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
   if (ad_event.type == AdType::kInlineContentAd) {
-    // Only convert post clicks for inline content ads for opted-out and
-    // opted-in users.
+    // Only convert post clicks.
     return ad_event.confirmation_type != ConfirmationType::kViewed;
   }
 
   if (ad_event.type == AdType::kSearchResultAd) {
-    // Always convert search result ads for both opted-out and opted-in users.
+    // Always convert search result ads.
     return true;
   }
 
-  // Only convert for opted-in users for all other ad types.
-  return ShouldRewardUser();
+  // Only convert for Brave Private Ads users.
+  return UserHasOptedInToBravePrivateAds();
 }
 
 bool DoesConfirmationTypeMatchConversionType(
@@ -197,10 +197,12 @@ ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
 }  // namespace
 
 Conversions::Conversions() {
+  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 Conversions::~Conversions() {
+  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
@@ -230,13 +232,13 @@ void Conversions::MaybeConvert(
   CheckRedirectChain(redirect_chain, html, conversion_id_patterns);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void Conversions::Process() {
   const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(base::BindOnce(&Conversions::ProcessCallback,
                                                weak_factory_.GetWeakPtr()));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void Conversions::ProcessCallback(
     const bool success,
@@ -544,6 +546,10 @@ void Conversions::NotifyConversionFailed(
   for (ConversionsObserver& observer : observers_) {
     observer.OnConversionFailed(conversion_queue_item);
   }
+}
+
+void Conversions::OnNotifyDidInitializeAds() {
+  Process();
 }
 
 void Conversions::OnHtmlContentDidChange(

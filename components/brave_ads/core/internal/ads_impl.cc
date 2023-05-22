@@ -451,8 +451,6 @@ void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
 
   LogActiveStudies();
 
-  conversions_.Process();
-
   catalog_.MaybeFetch();
 }
 

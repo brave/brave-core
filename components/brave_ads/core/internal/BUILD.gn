@@ -1075,6 +1075,7 @@ source_set("internal") {
     "resources/behavioral/conversions/conversions_info.h",
     "resources/behavioral/conversions/conversions_resource.cc",
     "resources/behavioral/conversions/conversions_resource.h",
+    "resources/behavioral/conversions/conversions_resource_constants.h",
     "resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource.cc",
     "resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource.h",
     "resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource_util.cc",
