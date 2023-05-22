@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..67498f351d16a2b31d571778920d6e60a896f2f8 100644
+index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..86d143a4ef05239539e3c692b5626943942dee0d 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -896,7 +896,7 @@ config("compiler") {
@@ -29,7 +29,15 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..67498f351d16a2b31d571778920d6e60
  }
  
  # Defers LTO optimization to the linker, for use when:
-@@ -2578,11 +2589,13 @@ config("minimal_symbols") {
+@@ -2551,6 +2562,7 @@ config("symbols") {
+ # This config guarantees to hold symbol for stack trace which are shown to user
+ # when crash happens in unittests running on buildbot.
+ config("minimal_symbols") {
++  rustflags = [ "-Cdebuginfo=1" ]
+   if (is_win) {
+     # Functions, files, and line tables only.
+     cflags = []
+@@ -2578,11 +2590,13 @@ config("minimal_symbols") {
        # at least 10.11.
        # TODO(thakis): Remove this once mac_deployment_target is 10.11.
        cflags += [ "-gdwarf-4" ]
@@ -43,3 +51,11 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..67498f351d16a2b31d571778920d6e60
      }
  
      if (use_dwarf5 && !is_nacl) {
+@@ -2618,7 +2632,6 @@ config("minimal_symbols") {
+ 
+     asmflags = cflags
+   }
+-  rustflags = [ "-Cdebuginfo=1" ]
+ }
+ 
+ # This configuration contains function names only. That is, the compiler is
