@@ -191,10 +191,10 @@ const char dapp_lists_json[] = R"({
       "chain": "solana",
       "category": null,
       "range": "30d",
-      "top": 100,
+      "top": "100",
       "results": [
         {
-          "dappId": 20419,
+          "dappId": "20419",
           "name": "GameTrade Market",
           "description": "Discover, buy, sell and trade in-game NFTs",
           "logo": "https://dashboard-assets.dappradar.com/document/20419/gametrademarket-dapp-marketplaces-matic-logo_e3e698e60ebd9bfe8ed1421bb41b890d.png",
@@ -209,10 +209,10 @@ const char dapp_lists_json[] = R"({
             "marketplaces"
           ],
           "metrics": {
-            "transactions": 1513120,
-            "uaw": 917737,
-            "volume": 32352.38,
-            "balance": 3.81
+            "transactions": "1513120",
+            "uaw": "917737",
+            "volume": "32352.38",
+            "balance": "3.81"
           }
         }
       ]
@@ -222,10 +222,10 @@ const char dapp_lists_json[] = R"({
       "chain": "ethereum",
       "category": null,
       "range": "30d",
-      "top": 100,
+      "top": "100",
       "results": [
         {
-          "dappId": 7000,
+          "dappId": "7000",
           "name": "Uniswap V3",
           "description": "A protocol for trading and automated liquidity.",
           "logo": "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
@@ -243,10 +243,10 @@ const char dapp_lists_json[] = R"({
             "exchanges"
           ],
           "metrics": {
-            "transactions": 3596443,
-            "uaw": 507730,
-            "volume": 42672855706.52,
-            "balance": 1887202135.14
+            "transactions": "3596443",
+            "uaw": "507730",
+            "volume": "42672855706.52",
+            "balance": "1887202135.14"
           }
         }
       ]
@@ -256,201 +256,48 @@ const char dapp_lists_json[] = R"({
       "chain": "polygon",
       "category": null,
       "range": "30d",
-      "top": 100,
-      "results": [
-        {
-          "dappId": 18305,
-          "name": "Stargate",
-          "description": "A Composable Omnichain Native Asset Bridge",
-          "logo": "https://dashboard-assets.dappradar.com/document/18305/stargatefinance-dapp-defi-ethereum-logo_66dc9532020488c50870b5dae3e34654.png",
-          "link": "https://dappradar.com/polygon/defi/stargate-2",
-          "website": "https://stargate.finance/",
-          "chains": [
-            "ethereum",
-            "binance-smart-chain",
-            "avalanche",
-            "polygon",
-            "optimism",
-            "fantom",
-            "arbitrum"
-          ],
-          "categories": [
-            "defi"
-          ],
-          "metrics": {
-            "transactions": 779127,
-            "uaw": 269032,
-            "volume": 322904140.91,
-            "balance": 46138534.79
-          }
-        }
-      ]
+      "top": "100",
+      "results": []
     },
     "binance_smart_chain": {
       "success": true,
       "chain": "binance-smart-chain",
       "category": null,
       "range": "30d",
-      "top": 100,
-      "results": [
-        {
-          "dappId": 33108,
-          "name": "PancakeSwap V3",
-          "description": "Trade. Earn. Win. NFT.",
-          "logo": "https://dashboard-assets.dappradar.com/document/33108/pancakeswapv3-dapp-exchanges-bsc-logo_640c1cad8a042a080d14075f84a6e125.png",
-          "link": "https://dappradar.com/binance-smart-chain/exchanges/pancakeswap-v3",
-          "website": "https://pancakeswap.finance/",
-          "chains": [
-            "binance-smart-chain",
-            "ethereum"
-          ],
-          "categories": [
-            "exchanges"
-          ],
-          "metrics": {
-            "transactions": 5876707,
-            "uaw": 1008319,
-            "volume": 6269018501.27,
-            "balance": 263800744.28
-          }
-        }
-      ]
+      "top": "100",
+      "results": []
     },
     "optimism": {
       "success": true,
       "chain": "optimism",
       "category": null,
       "range": "30d",
-      "top": 100,
-      "results": [
-        {
-          "dappId": 18305,
-          "name": "Stargate",
-          "description": "A Composable Omnichain Native Asset Bridge",
-          "logo": "https://dashboard-assets.dappradar.com/document/18305/stargatefinance-dapp-defi-ethereum-logo_66dc9532020488c50870b5dae3e34654.png",
-          "link": "https://dappradar.com/optimism/defi/stargate-2",
-          "website": "https://stargate.finance/",
-          "chains": [
-            "ethereum",
-            "binance-smart-chain",
-            "avalanche",
-            "polygon",
-            "optimism",
-            "fantom",
-            "arbitrum"
-          ],
-          "categories": [
-            "defi"
-          ],
-          "metrics": {
-            "transactions": 512725,
-            "uaw": 248935,
-            "volume": 323467664.37,
-            "balance": 32592708.85
-          }
-        }
-      ]
+      "top": "100",
+      "results": []
     },
     "aurora": {
       "success": true,
       "chain": "aurora",
       "category": null,
       "range": "30d",
-      "top": 100,
-      "results": [
-        {
-          "dappId": 30927,
-          "name": "motoDEX",
-          "description": "MotoDEX is a Blockchain Game.",
-          "logo": "https://dashboard-assets.dappradar.com/document/30927/motodex-dapp-games-aurora-logo_9fc42a38e10cde705d67a9b7bf4982f1.png",
-          "link": "https://dappradar.com/aurora/games/motodex",
-          "website": "https://motodex.openbisea.com?chain=aurora",
-          "chains": [
-            "aurora",
-            "near",
-            "polygon"
-          ],
-          "categories": [
-            "games"
-          ],
-          "metrics": {
-            "transactions": 27530,
-            "uaw": 25013,
-            "volume": 147746.74,
-            "balance": 97.39
-          }
-        }
-      ]
+      "top": "100",
+      "results": []
     },
     "avalanche": {
       "success": true,
       "chain": "avalanche",
       "category": null,
       "range": "30d",
-      "top": 100,
-      "results": [
-        {
-          "dappId": 18305,
-          "name": "Stargate",
-          "description": "A Composable Omnichain Native Asset Bridge",
-          "logo": "https://dashboard-assets.dappradar.com/document/18305/stargatefinance-dapp-defi-ethereum-logo_66dc9532020488c50870b5dae3e34654.png",
-          "link": "https://dappradar.com/avalanche/defi/stargate-2",
-          "website": "https://stargate.finance/",
-          "chains": [
-            "ethereum",
-            "binance-smart-chain",
-            "avalanche",
-            "polygon",
-            "optimism",
-            "fantom",
-            "arbitrum"
-          ],
-          "categories": [
-            "defi"
-          ],
-          "metrics": {
-            "transactions": 523057,
-            "uaw": 211378,
-            "volume": 405883340.68,
-            "balance": 36945297
-          }
-        }
-      ]
+      "top": "100",
+      "results": []
     },
     "fantom": {
       "success": true,
       "chain": "fantom",
       "category": null,
       "range": "30d",
-      "top": 100,
-      "results": [
-        {
-          "dappId": 18305,
-          "name": "Stargate",
-          "description": "A Composable Omnichain Native Asset Bridge",
-          "logo": "https://dashboard-assets.dappradar.com/document/18305/stargatefinance-dapp-defi-ethereum-logo_66dc9532020488c50870b5dae3e34654.png",
-          "link": "https://dappradar.com/fantom/defi/stargate-2",
-          "website": "https://stargate.finance/",
-          "chains": [
-            "ethereum",
-            "binance-smart-chain",
-            "avalanche",
-            "polygon",
-            "optimism",
-            "fantom",
-            "arbitrum"
-          ],
-          "categories": [
-            "defi"
-          ],
-          "metrics": {
-            "transactions": 617118,
-            "uaw": 211320,
-            "volume": 174549632.55,
-            "balance": 13625850.84
-          }
-        }
-      ]
+      "top": "100",
+      "results": []
     }
   })";
 

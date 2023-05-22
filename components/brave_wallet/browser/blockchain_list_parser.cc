@@ -30,6 +30,40 @@ bool ParseResultFromDict(const base::Value::Dict* response_dict,
   return true;
 }
 
+absl::optional<double> ParseNullableStringAsDouble(const base::Value& value) {
+  if (value.is_none()) {
+    return absl::nullopt;
+  }
+
+  double result;
+  if (value.is_string()) {
+    if (!base::StringToDouble(value.GetString(), &result)) {
+      return absl::nullopt;
+    }
+
+    return result;
+  }
+
+  return absl::nullopt;
+}
+
+absl::optional<uint32_t> ParseNullableStringAsUint32(const base::Value& value) {
+  if (value.is_none()) {
+    return absl::nullopt;
+  }
+
+  uint32_t result;
+  if (value.is_string()) {
+    if (!base::StringToUint(value.GetString(), &result)) {
+      return absl::nullopt;
+    }
+
+    return result;
+  }
+
+  return absl::nullopt;
+}
+
 std::string EmptyIfNull(const std::string* str) {
   if (str) {
     return *str;
@@ -45,7 +79,13 @@ void AddDappListToMap(
   for (const auto& dapp_from_component : dapp_list_from_component.results) {
     auto dapp = brave_wallet::mojom::Dapp::New();
     dapp->range = dapp_list_from_component.range;
-    dapp->id = dapp_from_component.dapp_id;
+
+    uint32_t dapp_id;
+    if (!base::StringToUint(dapp_from_component.dapp_id, &dapp_id)) {
+      continue;
+    }
+    dapp->id = dapp_id;
+
     dapp->name = dapp_from_component.name;
     dapp->description = dapp_from_component.description;
     dapp->logo = dapp_from_component.logo;
@@ -55,10 +95,36 @@ void AddDappListToMap(
     dapp->categories =
         std::vector<std::string>(dapp_from_component.categories.begin(),
                                  dapp_from_component.categories.end());
-    dapp->transactions = dapp_from_component.metrics.transactions;
-    dapp->uaw = dapp_from_component.metrics.uaw;
-    dapp->volume = dapp_from_component.metrics.volume;
-    dapp->balance = dapp_from_component.metrics.balance;
+
+    // If any of the metrics fields are null, skip the dapp
+    absl::optional<uint32_t> transactions =
+        ParseNullableStringAsUint32(dapp_from_component.metrics.transactions);
+    if (!transactions) {
+      continue;
+    }
+    dapp->transactions = *transactions;
+
+    absl::optional<uint32_t> uaw =
+        ParseNullableStringAsUint32(dapp_from_component.metrics.uaw);
+    if (!uaw) {
+      continue;
+    }
+    dapp->uaw = *uaw;
+
+    absl::optional<double> volume =
+        ParseNullableStringAsDouble(dapp_from_component.metrics.volume);
+    if (!volume) {
+      continue;
+    }
+    dapp->volume = *volume;
+
+    absl::optional<double> balance =
+        ParseNullableStringAsDouble(dapp_from_component.metrics.balance);
+    if (!balance) {
+      continue;
+    }
+    dapp->balance = *balance;
+
     dapp_list.push_back(std::move(dapp));
   }
 
@@ -304,10 +370,10 @@ absl::optional<DappListMap> ParseDappLists(const std::string& json) {
   //     "chain": "solana",
   //     "category": null,
   //     "range": "30d",
-  //     "top": 100,
+  //     "top": "100",
   //     "results": [
   //       {
-  //         "dappId": 20419,
+  //         "dappId": "20419",
   //         "name": "GameTrade Market",
   //         "description": "Discover, buy, sell and trade in-game NFTs",
   //         "logo":
@@ -324,10 +390,10 @@ absl::optional<DappListMap> ParseDappLists(const std::string& json) {
   //           "marketplaces"
   //         ],
   //         "metrics": {
-  //           "transactions": 1513120,
-  //           "uaw": 917737,
-  //           "volume": 32352.38,
-  //           "balance": 3.81
+  //           "transactions": "1513120",
+  //           "uaw": "917737",
+  //           "volume": "32352.38",
+  //           "balance": "3.81"
   //         }
   //       }
   //     ]
@@ -337,13 +403,13 @@ absl::optional<DappListMap> ParseDappLists(const std::string& json) {
   //     "chain": "ethereum",
   //     "category": null,
   //     "range": "30d",
-  //     "top": 100,
+  //     "top": "100",
   //     "results": [
   //       {
-  //         "dappId": 7000,
+  //         "dappId": "7000",
   //         "name": "Uniswap V3",
-  //         "description": "A protocol for trading and automated liquidity
-  //         provision on Ethereum.", "logo":
+  //         "description": "A protocol for trading and automated liquidity.",
+  //         "logo":
   //         "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
   //         "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
   //         "website": "https://app.uniswap.org/#/swap",
@@ -359,20 +425,21 @@ absl::optional<DappListMap> ParseDappLists(const std::string& json) {
   //           "exchanges"
   //         ],
   //         "metrics": {
-  //           "transactions": 3596443,
-  //           "uaw": 507730,
-  //           "volume": 42672855706.52,
-  //           "balance": 1887202135.14
+  //           "transactions": "3596443",
+  //           "uaw": "507730",
+  //           "volume": "42672855706.52",
+  //           "balance": "1887202135.14"
   //         }
   //       }
   //     ]
-  //   }
+  //   },
   //   ...
   // }
 
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
+
   if (!records_v || !records_v->is_dict()) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return absl::nullopt;
