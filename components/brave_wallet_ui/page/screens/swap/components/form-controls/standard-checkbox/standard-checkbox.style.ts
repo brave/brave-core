@@ -20,7 +20,7 @@ export const HiddenCheckBox = styled(StyledInput)`
 `
 
 export const StyledIcon = styled(Icon)`
-  background-color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
 `
 
 export const StyledCheckbox = styled(StyledDiv) <{ isChecked: boolean }>`

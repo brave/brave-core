@@ -5,10 +5,6 @@
 
 import * as React from 'react'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import SearchIcon from '../../../assets/lp-icons/0x.svg'
-
 // Styled Components
 import {
   Input,
@@ -34,7 +30,7 @@ export const SearchInput = (props: Props) => {
 
   return (
     <>
-      <SearchIconStyle icon={SearchIcon} size={18} />
+      <SearchIconStyle name='search' size={22} />
       <Input
         placeholder={placeholder}
         spellCheck={false}

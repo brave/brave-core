@@ -11,6 +11,7 @@ import {
 } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
 
+// Queries
 import {
   useGetSelectedChainQuery
 } from '../../../../../../common/slices/api.slice'
@@ -20,10 +21,6 @@ import {
   BraveWallet
 } from '../../../../../../constants/types'
 import { RefreshBlockchainStateParams } from '../../../constants/types'
-
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CloseIcon from '../../../assets/lp-icons/0x.svg'
 
 // Components
 import {
@@ -46,7 +43,8 @@ import {
   Text,
   VerticalDivider,
   IconButton,
-  HiddenResponsiveRow
+  HiddenResponsiveRow,
+  Icon
 } from '../../shared-swap.styles'
 
 interface Props {
@@ -139,7 +137,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           <Text textSize='18px' responsiveTextSize='20px' isBold={true}>
             {getLocale('braveSwapSelectAToken')}
           </Text>
-          <IconButton icon={CloseIcon} onClick={onClose} size={20} />
+          <IconButton onClick={onClose}>
+            <Icon name='close' size={24} />
+          </IconButton>
         </Row>
         <Row rowWidth='full' horizontalPadding={20} marginBottom={16}>
           <SearchWithNetworkSelector

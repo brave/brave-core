@@ -5,6 +5,11 @@
 
 import * as React from 'react'
 
+// Queries
+import {
+  useGetSelectedChainQuery
+} from '../../../../../../common/slices/api.slice'
+
 // Selectors
 import {
   WalletSelectors
@@ -66,6 +71,9 @@ export const FromSection = (props: Props) => {
     fiatValue
   } = props
 
+  // Queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+
   // Selectors
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
 
@@ -108,8 +116,10 @@ export const FromSection = (props: Props) => {
             <SelectTokenOrNetworkButton
               onClick={onClickSelectToken}
               asset={token}
+              network={selectedNetwork}
               text={token?.symbol}
               buttonType='primary'
+              iconType='asset'
             />
             {token && selectedAccount !== undefined && (
               <Row>

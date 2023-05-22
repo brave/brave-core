@@ -51,7 +51,7 @@ export const ModalButton = styled(StyledButton)`
 `
 
 export const ModalButtonIcon = styled(Icon)`
-  background-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   margin-right: 10px;
 `
 

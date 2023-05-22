@@ -61,12 +61,12 @@ export const Button = styled(StyledButton) <SelectTokenButtonStyleProps>`
 `
 
 export const ButtonIcon = styled(Icon) <{ networkNotSupported?: boolean }>`
-  background-color: ${(p) =>
+  color: ${(p) =>
     p.networkNotSupported ? p.theme.palette.white : p.theme.color.text01};
 `
 
 export const FuelTank = styled(Icon)`
-  background-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   margin-right: 6px;
 `
 

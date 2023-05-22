@@ -10,10 +10,6 @@ import { create } from 'ethereum-blockies'
 import { WalletSelectors } from '../../../../../../common/selectors'
 import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
-
 // Utils
 import { reduceAddress } from '../../../../../../utils/reduce-address'
 import { getLocale } from '../../../../../../../common/locale'
@@ -60,7 +56,7 @@ export const ConnectWalletButton = (props: Props) => {
             {reduceAddress(selectedAccount.address)}
           </Text>
           <HorizontalSpacer size={7} />
-          <ButtonIcon size={12} icon={CaratDownIcon} />
+          <ButtonIcon name='carat-down' size={16} />
         </>
       ) : (
         getLocale('braveSwapConnectWallet')

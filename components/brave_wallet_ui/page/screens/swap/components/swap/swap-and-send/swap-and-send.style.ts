@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { Icon } from '../../shared-swap.styles'
 
 export const Flash = styled(Icon)`
-  background-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   margin-left: 4px;
   margin-right: 16px;
 `

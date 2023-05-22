@@ -17,10 +17,6 @@ import {
   GasFeeOption
 } from '../../../../../../constants/types'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CloseIcon from '../../../assets/lp-icons/0x.svg'
-
 import {
   useGetSelectedChainQuery
 } from '../../../../../../common/slices/api.slice'
@@ -54,7 +50,8 @@ import {
   IconButton,
   VerticalSpacer,
   HiddenResponsiveRow,
-  ShownResponsiveRow
+  ShownResponsiveRow,
+  Icon
 } from '../../shared-swap.styles'
 
 const slippagePresets = ['0.1', '0.5', '1.0']
@@ -121,11 +118,15 @@ export const SwapSettingsModal = (props: Props) => {
           {modalTitle}
         </Text>
         {showExchanges && (
-          <IconButton icon={CloseIcon} onClick={() => setShowExchanges(false)} size={20} />
+          <IconButton onClick={() => setShowExchanges(false)}>
+            <Icon name='close' size={26} />
+          </IconButton>
         )}
         {!showExchanges &&
           <ShownResponsiveRow maxWidth={570}>
-            <IconButton icon={CloseIcon} onClick={onClose} size={20} />
+            <IconButton onClick={onClose}>
+              <Icon name='close' size={24} />
+            </IconButton>
           </ShownResponsiveRow>
         }
       </Row>
@@ -202,7 +203,7 @@ export const SwapSettingsModal = (props: Props) => {
                 secondaryValue={`${gasEstimates.gasFee} ${selectedNetwork?.symbol ?? ''}`}
               >
                 <Column columnWidth='full'>
-                  {gasFeeOptions.map(option => (
+                  {gasFeeOptions.map((option) => (
                     <GasPresetButton
                       option={option}
                       isSelected={selectedGasFeeOption === option}

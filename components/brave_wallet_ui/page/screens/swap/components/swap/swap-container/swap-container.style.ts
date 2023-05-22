@@ -11,7 +11,7 @@ export const Wrapper = styled(StyledDiv)`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 100px 0px;
+  padding: 68px 0px;
   top: 0;
   left: 0;
   right: 0;
@@ -21,8 +21,9 @@ export const Wrapper = styled(StyledDiv)`
   background-color: ${p => p.theme.color.background01};
   @media (prefers-color-scheme: dark) {
     background-color: ${p => p.theme.color.background02};
+  }
   @media screen and (max-width: 570px) {
-    padding: 80px 0px;
+    padding: 68px 0px;
   }
 }
 `

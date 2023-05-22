@@ -6,23 +6,20 @@
 // Types
 import { GasFeeOption } from '../constants/types'
 
-// Assets
-// import { SlowIcon, AverageIcon, FastIcon } from '~/assets/gas-presset-icons'
-
 export const gasFeeOptions: GasFeeOption[] = [
   {
     id: 'slow',
     name: 'braveSwapSlow',
-    icon: ''
+    icon: 'send'
   },
   {
     id: 'average',
     name: 'braveSwapAverage',
-    icon: ''
+    icon: 'network-speed-average'
   },
   {
     id: 'fast',
     name: 'braveSwapFast',
-    icon: ''
+    icon: 'rocket'
   }
 ]

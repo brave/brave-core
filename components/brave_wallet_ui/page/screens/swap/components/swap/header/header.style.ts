@@ -4,6 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+
+// Assets
+import BraveLogoLight from '../../../../send/assets/brave-logo-light.svg'
+import BraveLogoDark from '../../../../send/assets/brave-logo-dark.svg'
+
 import { StyledDiv } from '../../shared-swap.styles'
 
 export const Wrapper = styled(StyledDiv)`
@@ -27,9 +32,12 @@ export const Wrapper = styled(StyledDiv)`
 export const BraveLogo = styled(StyledDiv)`
   height: 30px;
   width: 100px;
-  /* background-image: var(--header-icon); */
+  background-image: url(${BraveLogoLight});
   background-size: cover;
   margin: 0px 12px 4px 0px;
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${BraveLogoDark});
+  }
   @media screen and (max-width: 570px) {
     margin: 0px 0px 4px 0px;
   }

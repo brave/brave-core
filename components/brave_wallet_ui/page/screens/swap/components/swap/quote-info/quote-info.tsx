@@ -20,12 +20,6 @@ import {
   getLocale
 } from '../../../../../../../common/locale'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import HorizontalArrowsIcon from '../../../assets/lp-icons/0x.svg'
-import FuelTankIcon from '../../../assets/lp-icons/aave.svg'
-import CaratDownIcon from '../../../assets/lp-icons/apeswap.svg'
-
 // Styled Components
 import {
   BraveFeeContainer,
@@ -42,7 +36,8 @@ import {
   Row,
   Text,
   VerticalSpacer,
-  HorizontalSpacer
+  HorizontalSpacer,
+  Icon
 } from '../../shared-swap.styles'
 
 interface Props {
@@ -169,7 +164,7 @@ export const QuoteInfo = (props: Props) => {
         <Text textSize='14px'>{getLocale('braveSwapRate')}</Text>
         <Row>
           <Text textSize='14px'>{swapRate}</Text>
-          <HorizontalArrows icon={HorizontalArrowsIcon} size={12} />
+          <HorizontalArrows name='swap-horizontal' size={16} />
         </Row>
       </Row>
       <Row rowWidth='full' marginBottom={10} horizontalPadding={16}>
@@ -206,11 +201,14 @@ export const QuoteInfo = (props: Props) => {
               </Text>
               <HorizontalSpacer size={8} />
               <ExpandButton
-                size={10}
-                icon={CaratDownIcon}
                 isExpanded={showProviders}
                 onClick={() => setShowProviders(prev => !prev)}
-              />
+              >
+                <Icon
+                  size={14}
+                  name='carat-down'
+                />
+              </ExpandButton>
             </Row>
           </Row>
           {showProviders &&
@@ -239,7 +237,7 @@ export const QuoteInfo = (props: Props) => {
         <Row rowWidth='full' marginBottom={8} horizontalPadding={16}>
           <Text textSize='14px'>{getLocale('braveSwapNetworkFee')}</Text>
           <Bubble>
-            <FuelTank icon={FuelTankIcon} size={12} />
+            <FuelTank name='search-fuel-tank' size={16} />
             <Text textSize='14px'>{selectedQuoteOption.networkFee}</Text>
           </Bubble>
         </Row>

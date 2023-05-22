@@ -37,5 +37,5 @@ export const Button = styled(StyledButton)`
 `
 
 export const ButtonIcon = styled(Icon)`
-  background-color: var(--icon-color);
+  color: var(--icon-color);
 `

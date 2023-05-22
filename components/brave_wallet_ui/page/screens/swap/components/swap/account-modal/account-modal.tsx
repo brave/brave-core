@@ -10,11 +10,6 @@ import {
   getLocale
 } from '../../../../../../../common/locale'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import HelpIcon from '../../../assets/lp-icons/0x.svg'
-import CloseIcon from '../../../assets/lp-icons/aave.svg'
-
 // Hiding Portfolio Section until we support it.
 // import PortfolioIcon from '../../../assets/portfolio-icon.svg'
 
@@ -47,6 +42,7 @@ import {
   Column,
   VerticalDivider,
   IconButton,
+  Icon,
   ShownResponsiveRow
 } from '../../shared-swap.styles'
 
@@ -128,7 +124,9 @@ export const AccountModal = (props: Props) => {
             </Title>
           </Row>
           <ShownResponsiveRow maxWidth={570}>
-            <IconButton icon={CloseIcon} onClick={onHideModal} size={20} />
+            <IconButton onClick={onHideModal}>
+              <Icon size={28} name='close' />
+            </IconButton>
           </ShownResponsiveRow>
         </Row>
         {networkAccounts.map((account) => (
@@ -156,7 +154,7 @@ export const AccountModal = (props: Props) => {
         /> */}
         <AccountModalButton
           text={getLocale('braveSwapHelpCenter')}
-          icon={HelpIcon}
+          iconName='info-outline'
           onClick={onClickHelpCenter}
         />
       </Column>

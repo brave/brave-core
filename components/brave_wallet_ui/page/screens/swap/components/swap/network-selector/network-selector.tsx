@@ -14,10 +14,6 @@ import {
   useGetSwapSupportedNetworksQuery
 } from '../../../../../../common/slices/api.slice'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CloseIcon from '../../../assets/lp-icons/0x.svg'
-
 // Hooks
 // import { useNetworkFees } from '~/hooks/useNetworkFees'
 
@@ -40,7 +36,8 @@ import {
   Text,
   // VerticalDivider,
   VerticalSpacer,
-  IconButton
+  IconButton,
+  Icon
 } from '../../shared-swap.styles'
 
 interface Props {
@@ -77,7 +74,9 @@ export const NetworkSelector = (props: Props) => {
         <Text textSize='20px' textColor='text01' isBold={true}>
           {getLocale('braveSwapChangeNetwork')}
         </Text>
-        <IconButton icon={CloseIcon} onClick={onClose} size={20} />
+        <IconButton onClick={onClose}>
+          <Icon size={24} name='close' />
+        </IconButton>
       </HeaderRow>
       <VerticalSpacer size={4} />
       {supportedNetworks.map(network => (

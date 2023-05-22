@@ -86,6 +86,7 @@ export const SearchWithNetworkSelector = (props: Props) => {
             text={selectedNetwork?.chainName}
             buttonSize='small'
             disabled={networkSelectorDisabled}
+            iconType='network'
           />
           {showNetworkSelector && <NetworkSelector onSelectNetwork={onSelectNetwork} />}
         </SelectorWrapper>

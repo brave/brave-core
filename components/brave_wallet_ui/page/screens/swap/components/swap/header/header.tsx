@@ -77,7 +77,7 @@ export const Header = (props: Props) => {
 
   // Methods
   const onSelectNetwork = React.useCallback(async (network: BraveWallet.NetworkInfo) => {
-    const { selectedAccount: account }  = await setNetwork({
+    const { selectedAccount: account } = await setNetwork({
       chainId: network.chainId,
       coin: network.coin
     }).unwrap()
@@ -132,6 +132,7 @@ export const Header = (props: Props) => {
             hasShadow={true}
             isHeader={true}
             networkNotSupported={!isNetworkSupported}
+            iconType='network'
           />
           {showNetworkSelector && (
             <NetworkSelector

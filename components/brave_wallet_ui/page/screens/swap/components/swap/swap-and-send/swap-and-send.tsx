@@ -20,10 +20,6 @@ import {
   getLocale
 } from '../../../../../../../common/locale'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import FlashIcon from '../../../assets/lp-icons/0x.svg'
-
 // Components
 import {
   StandardCheckbox
@@ -102,7 +98,7 @@ export const SwapAndSend = (props: Props) => {
       <Row rowWidth='full' marginBottom={16} horizontalPadding={16}>
         <Row>
           <Text textSize='14px'>{getLocale('braveSwapSwapAndSend')}</Text>
-          <Flash icon={FlashIcon} size={12} />
+          <Flash name='flash' size={16} />
           <Text isBold={false} textSize='14px' textColor='text03'>
             {getLocale('braveSwapNoExtraFees')}
           </Text>

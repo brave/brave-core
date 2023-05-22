@@ -7,8 +7,12 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { mapLimit } from 'async'
 
 // Options
-import { SwapAndSendOptions } from '../options/select-and-send-options'
-import { gasFeeOptions } from '../options/gas-fee-options'
+import {
+  SwapAndSendOptions
+} from '../../../../options/swap-and-send-options'
+import {
+  gasFeeOptions
+} from '../../../../options/gas-fee-options'
 
 // Hooks
 import { useJupiter } from './useJupiter'
@@ -444,7 +448,7 @@ export const useSwap = () => {
   )
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       // Do not trigger refresh functions if assetsList is still not available.
       if (assetsList.length === 0) {
         return

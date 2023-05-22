@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
+import LeoIcon from '@brave/leo/react/icon'
 import {
   AssetIconProps,
   AssetIconFactory
@@ -142,18 +143,11 @@ export const VerticalDivider = styled(StyledDiv) <{
   width: ${(p) => (p.width ? `${p.width}px` : '100%')};
 `
 
-export const Icon = styled.div <{
-  size: number
-  icon: string
+export const Icon = styled(LeoIcon) <{
+  size?: number
 }>`
-  height: ${(p) => p.size}px;
-  width: ${(p) => p.size}px;
-  mask-image: url(${(p) => p.icon});
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  -webkit-mask-image: url(${(p) => p.icon});
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
+  --leo-icon-size: ${(p) => p.size !== undefined ? p.size : 22}px;
+  color: ${leo.color.icon.default};
 `
 
 export const Loader = styled(StyledDiv)`
@@ -194,20 +188,8 @@ export const StyledButton = styled.button`
   }
 `
 
-export const IconButton = styled(StyledButton) <{
-  size?: number
-  icon: string
-}>`
+export const IconButton = styled(StyledButton)`
   padding: 0px;
-  background-color: ${(p) => p.theme.color.text02};
-  height: ${(p) => (p.size ? p.size : 16)}px;
-  width: ${(p) => (p.size ? p.size : 16)}px;
-  mask-image: url(${(p) => p.icon});
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  -webkit-mask-image: url(${(p) => p.icon});
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
 `
 
 export const HiddenResponsiveRow = styled(Row) <{ dontHide?: boolean, maxWidth?: number }>`

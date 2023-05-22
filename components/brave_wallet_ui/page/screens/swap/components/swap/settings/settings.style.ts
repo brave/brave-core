@@ -82,11 +82,10 @@ export const IconWrapper = styled(StyledDiv)`
 `
 
 export const ButtonIcon = styled(Icon)`
-  --icon-color: ${p => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    --icon-color: ${p => p.theme.color.interactive06};
+    color: ${(p) => p.theme.color.interactive06};
   }
-  background-color: var(--icon-color);
 `
 
 export const MoreButton = styled(IconButton) <{

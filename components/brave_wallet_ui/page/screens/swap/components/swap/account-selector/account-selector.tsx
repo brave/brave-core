@@ -32,10 +32,6 @@ import {
   WalletAccountType
 } from '../../../../../../constants/types'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
-
 // Components
 import { AccountListButton } from '../../buttons/account-list-button/account-list-button'
 
@@ -106,7 +102,7 @@ export const AccountSelector = (props: Props) => {
           {selectedAccount ? selectedAccount.name : getLocale('braveSwapSelectAccount')}
         </Text>
         <HorizontalSpacer size={8} />
-        <StyledCaratDownIcon size={16} icon={CaratDownIcon} />
+        <StyledCaratDownIcon size={20} name='carat-down' />
       </SelectButton>
       {showAccountSelector && (
         <SelectorBox>

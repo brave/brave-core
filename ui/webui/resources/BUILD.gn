@@ -200,6 +200,11 @@ leo_icons = [
   "verification-filled-color.svg",
   "nft.svg",
   "tune.svg",
+  "arrow-down.svg",
+  "search-fuel-tank.svg",
+  "swap-horizontal.svg",
+  "flash.svg",
+  "network-speed-average.svg",
 ]
 
 if (enable_brave_vpn_panel) {

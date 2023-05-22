@@ -5,10 +5,6 @@
 
 import * as React from 'react'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import ArrowIcon from '../../../assets/lp-icons/0x.svg'
-
 // Styled Components
 import {
   Button,
@@ -26,7 +22,7 @@ export const FlipTokensButton = (props: Props) => {
   return (
     <Wrapper>
       <Button onClick={onClick}>
-        <ButtonIcon icon={ArrowIcon} size={24} />
+        <ButtonIcon name='arrow-down' size={28} />
       </Button>
     </Wrapper>
   )

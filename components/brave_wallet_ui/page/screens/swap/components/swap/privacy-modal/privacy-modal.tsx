@@ -10,10 +10,6 @@ import {
   getLocale
 } from '../../../../../../../common/locale'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CloseIcon from '../../../assets/lp-icons/0x.svg'
-
 // Components
 import {
   StandardModal
@@ -29,7 +25,8 @@ import {
   Column,
   Text,
   IconButton,
-  VerticalSpacer
+  VerticalSpacer,
+  Icon
 } from '../../shared-swap.styles'
 
 interface Props {
@@ -50,7 +47,9 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
           <Text textSize='18px' isBold={true}>
             {getLocale('braveSwapPrivacyPolicy')}
           </Text>
-          <IconButton icon={CloseIcon} onClick={onClose} size={20} />
+          <IconButton onClick={onClose}>
+            <Icon size={24} name='close' />
+          </IconButton>
         </Row>
         <Column
           columnWidth='full'

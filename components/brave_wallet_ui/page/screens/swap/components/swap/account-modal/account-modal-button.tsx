@@ -12,17 +12,17 @@ import {
 } from './account-modal.style'
 
 interface Props {
-  icon: string
+  iconName: string
   text: string
   onClick: () => void
 }
 
 export const AccountModalButton = (props: Props) => {
-  const { onClick, icon, text } = props
+  const { onClick, iconName, text } = props
 
   return (
     <ModalButton onClick={onClick}>
-      <ModalButtonIcon size={16} icon={icon} />
+      <ModalButtonIcon size={20} name={iconName} />
       {text}
     </ModalButton>
   )

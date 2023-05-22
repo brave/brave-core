@@ -42,5 +42,5 @@ export const SelectorBox = styled(StyledDiv)`
 `
 
 export const StyledCaratDownIcon = styled(Icon)`
-  background-color: ${p => p.theme.color.text01};
+  color: ${p => p.theme.color.text01};
 `

@@ -15,17 +15,14 @@ import {
   SelectQuoteOptionButton
 } from '../../buttons/select-quote-option-button/select-quote-option-button'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
-
 // Styled Components
 import {
   MoreOptionsButton
 } from './quote-options.style'
 import {
   VerticalSpacer,
-  Column
+  Column,
+  Icon
 } from '../../shared-swap.styles'
 
 // Utils
@@ -99,9 +96,10 @@ export const QuoteOptions = (props: Props) => {
       </Column>
       <MoreOptionsButton
         isSelected={showAllOptions}
-        icon={CaratDownIcon}
         onClick={onToggleShowAllOptions}
-      />
+      >
+        <Icon name='carat-down' />
+      </MoreOptionsButton>
     </>
   )
 }

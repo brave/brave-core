@@ -7,6 +7,10 @@ import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from '@brave/react-virtualized-auto-sizer'
 
+import {
+  useGetSelectedChainQuery
+} from '../../../../../../common/slices/api.slice'
+
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
@@ -47,9 +51,13 @@ const ListItem = (props: ListItemProps) => {
   } = props
   const token = data[index]
 
+  // Queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+
   return (
     <div style={style}>
       <TokenListButton
+        network={selectedNetwork}
         onClick={onSelectToken}
         balance={getCachedAssetBalance(token)}
         token={token}

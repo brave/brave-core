@@ -15,6 +15,6 @@ export const Input = styled(StyledInput)`
 `
 
 export const SearchIconStyle = styled(Icon)`
-  background-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   margin-right: 10px;
 `

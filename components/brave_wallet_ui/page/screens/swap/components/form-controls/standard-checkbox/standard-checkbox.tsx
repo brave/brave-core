@@ -14,10 +14,6 @@ import {
 } from './standard-checkbox.style'
 import { Row } from '../../shared-swap.styles'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CheckIcon from '../../../assets/lp-icons/0x.svg'
-
 interface Props {
   label: string
   id: string
@@ -51,7 +47,7 @@ export const StandardCheckbox = (props: Props) => {
         isBold={isBold}
       >
         <StyledCheckbox isChecked={isChecked}>
-          {isChecked && <StyledIcon size={13} icon={CheckIcon} />}
+          {isChecked && <StyledIcon size={16} name='check-normal' />}
         </StyledCheckbox>
         {label}
       </Label>

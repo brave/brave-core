@@ -41,7 +41,7 @@ export const GasPresetButton = (props: Props) => {
     <Button onClick={onClick} isSelected={isSelected}>
       <Row>
         <IconWrapper>
-          <ButtonIcon size={16} icon={option.icon} />
+          <ButtonIcon size={20} name={option.icon} />
         </IconWrapper>
         <Column horizontalAlign='flex-start' columnHeight='full'>
           <Text textColor='text02' textSize='14px' isBold={true}>

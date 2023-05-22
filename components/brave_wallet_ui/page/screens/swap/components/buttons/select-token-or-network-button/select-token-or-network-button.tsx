@@ -15,13 +15,11 @@ import {
   getLocale
 } from '../../../../../../../common/locale'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
-import FuelTankIcon from '../../../assets/lp-icons/aave.svg'
-
 // Components
 import withPlaceholderIcon from '../../../../../../components/shared/create-placeholder-icon'
+import {
+  CreateNetworkIcon
+} from '../../../../../../components/shared'
 
 // Styled Components
 import {
@@ -56,6 +54,7 @@ interface Props extends SelectTokenButtonStyleProps {
   isHeader?: boolean
   asset?: BraveWallet.BlockchainToken
   network?: BraveWallet.NetworkInfo
+  iconType: 'network' | 'asset'
 }
 
 export const SelectTokenOrNetworkButton = (props: Props) => {
@@ -71,7 +70,8 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
     isHeader,
     networkNotSupported,
     asset,
-    network
+    network,
+    iconType
   } = props
 
   // Memos
@@ -109,11 +109,19 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
       {!networkNotSupported && (
         <>
           <Row>
-            {text && (
-              <AssetIconWithPlaceholder
-                asset={asset}
+            {iconType === 'network' ? (
+              <CreateNetworkIcon
                 network={network}
+                marginRight={8}
+                size={buttonSize === 'small' ? 'small' : 'big'}
               />
+            ) : (
+              text && (
+                <AssetIconWithPlaceholder
+                  asset={asset}
+                  network={network}
+                />
+              )
             )}
             <HiddenResponsiveRow dontHide={!isHeader}>
               <Text
@@ -134,7 +142,7 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
               <>
                 <HorizontalSpacer size={8} />
                 <GasBubble>
-                  <FuelTank icon={FuelTankIcon} size={12} />
+                  <FuelTank name='search-fuel-tank' size={16} />
                   <Text textSize='14px' textColor='text01'>
                     {networkFeeFiatValue}
                   </Text>
@@ -155,8 +163,8 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
       )}
       <ButtonIcon
         networkNotSupported={networkNotSupported}
-        size={12}
-        icon={CaratDownIcon}
+        size={24}
+        name='carat-down'
       />
     </Button>
   )

@@ -5,17 +5,14 @@
 
 import * as React from 'react'
 
-// Assets
-// FIXME(douglashdaniel): This is not the correct icon
-import CaratDownIcon from '../../../assets/lp-icons/0x.svg'
-
 // Styled Components
 import { MoreButton } from './settings.style'
 import {
   Row,
   Column,
   Text,
-  HorizontalSpacer
+  HorizontalSpacer,
+  Icon
 } from '../../shared-swap.styles'
 
 interface Props {
@@ -58,12 +55,12 @@ export const ExpandSection = (props: Props) => {
           )}
           <HorizontalSpacer size={16} />
           <MoreButton
-            size={16}
-            icon={CaratDownIcon}
             isSelected={expanded}
             expandOut={onExpandOut !== undefined}
             onClick={onExpandOut ?? toggleExpanded}
-          />
+          >
+            <Icon name='carat-down' size={20} />
+          </MoreButton>
         </Row>
       </Row>
       {expanded && children}

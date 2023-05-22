@@ -5,6 +5,11 @@
 
 import * as React from 'react'
 
+// Queries
+import {
+  useGetSelectedChainQuery
+} from '../../../../../../common/slices/api.slice'
+
 // Utils
 import {
   getLocale
@@ -54,6 +59,9 @@ export const ToSection = (props: Props) => {
     disabled
   } = props
 
+  // Queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+
   return (
     <Column columnWidth='full'>
       <LoadingRow rowWidth='full' horizontalAlign='flex-end'>
@@ -74,9 +82,11 @@ export const ToSection = (props: Props) => {
       <Row rowWidth='full'>
         <SelectTokenOrNetworkButton
           onClick={onClickSelectToken}
+          network={selectedNetwork}
           asset={token}
           text={token?.symbol}
           buttonType='secondary'
+          iconType='asset'
         />
         <SwapInput
           hasError={hasInputError}
