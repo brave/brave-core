@@ -41,8 +41,6 @@ struct SiteSettings {
   Theme theme;
   FontSize fontSize;
   FontFamily fontFamily;
-  string host;
-  bool is_enabled;
 };
 
 struct TtsSettings {

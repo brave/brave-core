@@ -548,7 +548,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
   tab_helper->SetSiteSettings(speedreader::mojom::SiteSettings(
       speedreader::mojom::Theme::kDark, speedreader::mojom::FontSize::k130,
-      speedreader::mojom::FontFamily::kDyslexic, kTestHost, true));
+      speedreader::mojom::FontFamily::kDyslexic));
 
   auto EvalAttr = [&](content::WebContents* contents, const std::string& attr) {
     return content::EvalJs(contents, GetDataAttribute(attr),

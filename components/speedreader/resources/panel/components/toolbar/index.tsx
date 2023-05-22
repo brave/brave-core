@@ -18,7 +18,6 @@ interface ToolbarProps {
   onThemeChange: (theme: Theme) => void
   onFontSizeChange: (fontSize: FontSize) => void
   onFontFamilyChange: (fontFamily: FontFamily) => void
-  onToggleChange: (isEnabled: boolean) => void
   onTtsVoiceChange: (voice: string) => void;
   onTtsSpeedChange: (speed: PlaybackSpeed) => void
 }

@@ -39,11 +39,6 @@ function Container() {
     dataHandler.setSiteSettings(settings)
   }
 
-  const handleToggleChange = (isEnabled: boolean) => {
-    const settings = { ...siteSettings, isEnabled }
-    dataHandler.setSiteSettings(settings)
-  }
-
   const handleTtsVoiceChange = (voice: string) => {
     const settings = { ...ttsSettings, voice }
     setTtsSettings(settings)
@@ -63,7 +58,6 @@ function Container() {
       onThemeChange={handleThemeChange}
       onFontSizeChange={handleFontSizeChange}
       onFontFamilyChange={handleFontFamilyChange}
-      onToggleChange={handleToggleChange}
       onTtsVoiceChange={handleTtsVoiceChange}
       onTtsSpeedChange={handleTtsSpeedChange}
     />

@@ -340,12 +340,7 @@ mojom::SiteSettingsPtr SpeedreaderTabHelper::GetSiteSettings() {
     return nullptr;
   }
 
-  auto settings = speedreader_service->GetSiteSettings();
-
-  settings.is_enabled = IsEnabledForSite();
-  settings.host = web_contents()->GetLastCommittedURL().host();
-
-  return settings.Clone();
+  return speedreader_service->GetSiteSettings().Clone();
 }
 
 void SpeedreaderTabHelper::SetSiteSettings(
@@ -355,9 +350,6 @@ void SpeedreaderTabHelper::SetSiteSettings(
   if (!speedreader_service) {
     return;
   }
-
-  MaybeToggleEnabledForSite(site_settings.is_enabled);
-
   speedreader_service->SetSiteSettings(site_settings);
 }
 
