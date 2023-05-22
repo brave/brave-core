@@ -583,6 +583,8 @@ source_set("internal") {
     "common/database/database_transaction_util.h",
     "common/instance_id_constants.cc",
     "common/instance_id_constants.h",
+    "common/locale/locale_util.cc",
+    "common/locale/locale_util.h",
     "common/locale/subdivision_code_util.cc",
     "common/locale/subdivision_code_util.h",
     "common/logging_util.cc",
