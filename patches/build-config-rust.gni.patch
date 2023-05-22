@@ -1,5 +1,5 @@
 diff --git a/build/config/rust.gni b/build/config/rust.gni
-index b05e37015287ac01f9d57b8d0276bd32e354ba96..0629d96f0d3654077ede515c91725bd8e2bb1c3b 100644
+index b05e37015287ac01f9d57b8d0276bd32e354ba96..3961a5f3c9fa35379411964aee60822ff2607060 100644
 --- a/build/config/rust.gni
 +++ b/build/config/rust.gni
 @@ -19,15 +19,9 @@ declare_args() {
@@ -216,7 +216,45 @@ index b05e37015287ac01f9d57b8d0276bd32e354ba96..0629d96f0d3654077ede515c91725bd8
  } else if (is_android) {
    import("//build/config/android/abi.gni")
    rust_abi_target = android_abi_target
-@@ -277,20 +264,6 @@ if (current_cpu == "x86") {
+@@ -219,7 +206,11 @@ if (is_linux || is_chromeos) {
+   }
+ } else if (is_ios) {
+   if (current_cpu == "arm64") {
+-    rust_abi_target = "aarch64-apple-ios"
++    if (target_environment == "simulator") {
++      rustc_target = "aarch64-apple-ios-sim"
++    } else {
++      rustc_target = "aarch64-apple-ios"
++    }
+   } else if (current_cpu == "arm") {
+     # There's also an armv7s-apple-ios, which targets a more recent ARMv7
+     # generation CPU found in later iPhones. We'll go with the older one for
+@@ -244,13 +235,23 @@ if (is_linux || is_chromeos) {
+ } else if (is_win) {
+   if (current_cpu == "arm64") {
+     rust_abi_target = "aarch64-pc-windows-msvc"
+-  } else if (current_cpu == "x86" || current_cpu == "x64") {
++  } else if (current_cpu == "x86") {
++    rust_abi_target = "i686-pc-windows-msvc"
++  } else if (current_cpu == "x64") {
+     rust_abi_target = "x86_64-pc-windows-msvc"
+   } else {
+     assert(false, "Architecture not supported")
+   }
+ }
+ 
++
++if (current_cpu == "x86") {
++    rustc_target = "i686-pc-windows-msvc"
++  } else if (current_cpu == "x64") {
++    rustc_target = "x86_64-pc-windows-msvc"
++  } else if (current_cpu == "arm64") {
++    rustc_target = "aarch64-pc-windows-msvc"
++  }
+ assert(!toolchain_has_rust || rust_abi_target != "")
+ 
+ # This variable is passed to the Rust libstd build.
+@@ -277,20 +278,6 @@ if (current_cpu == "x86") {
  
  assert(!toolchain_has_rust || rust_target_arch != "")
  
@@ -237,7 +275,7 @@ index b05e37015287ac01f9d57b8d0276bd32e354ba96..0629d96f0d3654077ede515c91725bd8
  # Arguments for Rust invocation.
  # This is common between gcc/clang, Mac and Windows toolchains so specify once,
  # here. This is not the complete command-line: toolchains should add -o
-@@ -298,13 +271,20 @@ prebuilt_libstd_supported = !use_chromium_rust_toolchain ||
+@@ -298,13 +285,20 @@ prebuilt_libstd_supported = !use_chromium_rust_toolchain ||
  rustc_common_args = "--crate-name {{crate_name}} {{source}} --crate-type {{crate_type}} {{rustflags}}"
  
  # Rust procedural macros are shared objects loaded into a prebuilt host rustc
