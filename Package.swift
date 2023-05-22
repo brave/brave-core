@@ -318,6 +318,8 @@ var package = Package(
         .copy("Resources/filter-rules/rs-ABPFilterParserData.dat"),
         .copy("Resources/filter-rules/rs-67E792D4-AE03-4D1A-9EDE-80E01C81F9B8.dat"),
         .copy("Resources/filter-rules/rs-AC023D22-AE88-4060-A978-4FEEEC4221693.dat"),
+        .copy("Resources/html/index.html"),
+        .copy("Resources/scripts/farbling-tests.js"),
         .copy("blocking-summary-test.json"),
       ]
     ),

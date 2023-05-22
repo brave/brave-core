@@ -10,7 +10,7 @@ import BraveShields
 import os.log
 
 class SiteStateListenerScriptHandler: TabContentScript {
-  private struct MessageDTO: Decodable {
+  struct MessageDTO: Decodable {
     struct MessageDTOData: Decodable, Hashable {
       let windowURL: String
     }

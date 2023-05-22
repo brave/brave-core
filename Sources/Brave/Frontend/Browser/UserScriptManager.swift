@@ -132,12 +132,7 @@ class UserScriptManager {
     }
   }
   
-  private func loadScripts(into tab: Tab, scripts: Set<ScriptType>) {
-    guard let webView = tab.webView else {
-      assertionFailure("Injecting Scripts into a Tab that has no WebView")
-      return
-    }
-    
+  public func loadScripts(into webView: WKWebView, scripts: Set<ScriptType>) {
     var scripts = scripts
     
     webView.configuration.userContentController.do { scriptController in
@@ -202,7 +197,7 @@ class UserScriptManager {
     }
     #endif
     
-    loadScripts(into: tab, scripts: userScripts)
+    loadScripts(into: webView, scripts: userScripts)
     
     webView.configuration.userContentController.do { scriptController in
       // TODO: Somehow refactor wallet and get rid of this
