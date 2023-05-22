@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..e61b26775e78943eae89f15cb79807aafd128ba2 100644
+index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..67498f351d16a2b31d571778920d6e60a896f2f8 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -896,7 +896,7 @@ config("compiler") {
@@ -29,3 +29,17 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..e61b26775e78943eae89f15cb79807aa
  }
  
  # Defers LTO optimization to the linker, for use when:
+@@ -2578,11 +2589,13 @@ config("minimal_symbols") {
+       # at least 10.11.
+       # TODO(thakis): Remove this once mac_deployment_target is 10.11.
+       cflags += [ "-gdwarf-4" ]
++      rustflags += [ "-Zdwarf-version=4" ]
+     } else if (!use_dwarf5 && !is_nacl && current_os != "aix") {
+       # On aix -gdwarf causes linker failures due to thread_local variables.
+       # Recent clang versions default to DWARF5 on Linux, and Android is about
+       # to switch. TODO: Adopt that in controlled way.
+       cflags += [ "-gdwarf-4" ]
++      rustflags += [ "-Zdwarf-version=4" ]
+     }
+ 
+     if (use_dwarf5 && !is_nacl) {
