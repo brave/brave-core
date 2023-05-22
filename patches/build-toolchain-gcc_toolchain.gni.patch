@@ -1,5 +1,5 @@
 diff --git a/build/toolchain/gcc_toolchain.gni b/build/toolchain/gcc_toolchain.gni
-index ad994319cd6fea3ef8d9386353353d6a0b2247a8..516f4add970b1f627927c942cc131a773c68a958 100644
+index ad994319cd6fea3ef8d9386353353d6a0b2247a8..4eb0bbcb1c5b9768cc528e3f12e40ecd53c0be38 100644
 --- a/build/toolchain/gcc_toolchain.gni
 +++ b/build/toolchain/gcc_toolchain.gni
 @@ -108,9 +108,9 @@ if (enable_resource_allowlist_generation) {
@@ -38,7 +38,7 @@ index ad994319cd6fea3ef8d9386353353d6a0b2247a8..516f4add970b1f627927c942cc131a77
  template("gcc_toolchain") {
    single_gcc_toolchain(target_name) {
      assert(defined(invoker.toolchain_args),
-@@ -829,9 +826,10 @@ template("gcc_toolchain") {
+@@ -829,9 +826,16 @@ template("gcc_toolchain") {
      # toolchains, but presubmit checks require that we explicitly exclude them
    }
  
@@ -46,13 +46,19 @@ index ad994319cd6fea3ef8d9386353353d6a0b2247a8..516f4add970b1f627927c942cc131a77
 -    # Make an additional toolchain with no sanitizers.
 -    single_gcc_toolchain("${target_name}_no_sanitizers") {
 +  if (enable_rust && current_toolchain == default_toolchain) {
-+    # Make an additional toolchain which uses the prebuilt stdlib shipped with
-+    # rustc.
++    # Make an additional toolchain which is used for making tools that are run
++    # on the host machine as part of the build process (such as proc macros
++    # and Cargo build scripts). This toolchain uses the prebuilt stdlib that
++    # comes with the compiler, so it doesn't have to wait for the stdlib to be
++    # built before building other stuff. And this ensures its proc macro
++    # outputs have the right ABI to be loaded by the compiler, and it can be
++    # used to compile build scripts that are part of the stdlib that is built
++    # for the default toolchain.
 +    single_gcc_toolchain("${target_name}_for_rust_host_build_tools") {
        assert(defined(invoker.toolchain_args),
               "Toolchains must declare toolchain_args")
        forward_variables_from(invoker,
-@@ -844,7 +842,12 @@ template("gcc_toolchain") {
+@@ -844,7 +848,13 @@ template("gcc_toolchain") {
        toolchain_args = {
          # Populate toolchain args from the invoker.
          forward_variables_from(invoker.toolchain_args, "*")
@@ -63,6 +69,7 @@ index ad994319cd6fea3ef8d9386353353d6a0b2247a8..516f4add970b1f627927c942cc131a77
 +        # build faster.
 +        is_debug = false
 +        is_component_build = false
++        is_official_build = false
        }
      }
    }

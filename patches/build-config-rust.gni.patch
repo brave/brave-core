@@ -1,5 +1,5 @@
 diff --git a/build/config/rust.gni b/build/config/rust.gni
-index b05e37015287ac01f9d57b8d0276bd32e354ba96..a36e1fd8a6770a96f01f380a78b45763408add00 100644
+index b05e37015287ac01f9d57b8d0276bd32e354ba96..0629d96f0d3654077ede515c91725bd8e2bb1c3b 100644
 --- a/build/config/rust.gni
 +++ b/build/config/rust.gni
 @@ -19,15 +19,9 @@ declare_args() {
@@ -15,9 +15,9 @@ index b05e37015287ac01f9d57b8d0276bd32e354ba96..a36e1fd8a6770a96f01f380a78b45763
 -  enable_rust = (is_linux || is_android) && !is_official_build &&
 -                !using_sanitizer && target_cpu != "x86" &&
 -                !use_clang_coverage && is_clang && build_with_chromium
-+  # TODO(crbug.com/1229419): is_official_build
 +  enable_rust =
-+      !is_mac && !is_ios && !is_win && !is_official_build && build_with_chromium
++      !is_mac && !is_ios && !is_win &&
++      (!is_official_build || is_linux || is_android) && build_with_chromium
  
    # As we incrementally enable Rust on mainstream builders, we want to enable
    # the toolchain (by switching 'enable_rust' to true) while still disabling
