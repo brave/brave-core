@@ -200,10 +200,7 @@ void GeoClueLocationProvider::OnSetClientProperties(std::vector<bool> success) {
 }
 
 void GeoClueLocationProvider::ConnectSignal() {
-  // If the client has been shutdown don't try and connect the signal.
-  if (!client_) {
-    return;
-  }
+  CHECK(client_);
 
   client_->ConnectToLocationUpdatedSignal(
       base::BindRepeating(&GeoClueLocationProvider::OnReadGeoClueLocation,
