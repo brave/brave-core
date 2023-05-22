@@ -39,6 +39,8 @@ class BraveTab : public Tab {
   void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                    int visual_width) const override;
 
+  void ViewHierarchyChanged(
+      const views::ViewHierarchyChangedDetails& details) override;
   void OnLayerBoundsChanged(const gfx::Rect& old_bounds,
                             ui::PropertyChangeReason reason) override;
 
