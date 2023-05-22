@@ -15,8 +15,11 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
+#include "ui/views/controls/resize_area_delegate.h"
+
 namespace views {
 class ScrollView;
+class ResizeArea;
 }
 
 class BraveNewTabButton;
@@ -26,7 +29,8 @@ class VerticalTabStripScrollContentsView;
 
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View,
-                                   public TabStripModelObserver {
+                                   public TabStripModelObserver,
+                                   public views::ResizeAreaDelegate {
  public:
   METADATA_HEADER(VerticalTabStripRegionView);
 
@@ -78,6 +82,8 @@ class VerticalTabStripRegionView : public views::View,
     layout_dirty_ = true;
   }
 
+  void ResetExpandedWidth();
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
@@ -93,6 +99,9 @@ class VerticalTabStripRegionView : public views::View,
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+
+  // views::ResizeAreaDelegate
+  void OnResize(int resize_amount, bool done_resizing) override;
 
  private:
   class ScrollHeaderView;
@@ -139,6 +148,10 @@ class VerticalTabStripRegionView : public views::View,
   // New tab button created for vertical tabs
   raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
 
+  raw_ptr<views::View> resize_area_ = nullptr;
+  bool resizing_ = false;
+  absl::optional<int> resize_offset_;
+
   // A pointer storing the global tab style to be used.
   const raw_ptr<const TabStyle> tab_style_;
 
@@ -147,6 +160,8 @@ class VerticalTabStripRegionView : public views::View,
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember collapsed_pref_;
   BooleanPrefMember floating_mode_pref_;
+
+  IntegerPrefMember expanded_width_;
 
   base::OneShotTimer mouse_enter_timer_;
 
