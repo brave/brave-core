@@ -1183,6 +1183,7 @@ source_set("internal") {
     "//base",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/core:headers",
+    "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/constants",

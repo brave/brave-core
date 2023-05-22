@@ -100,8 +100,8 @@ void NewTabPageAdEventHandler::FireEvent(
   }
 
   // We need to apply permission rules for new tab page ad served events if
-  // Brave Ads is disabled.
-  if (!ShouldRewardUser() &&
+  // Brave Private Ads is disabled.
+  if (!UserHasOptedInToBravePrivateAds() &&
       event_type == mojom::NewTabPageAdEventType::kServed &&
       !NewTabPageAdPermissionRules::HasPermission()) {
     BLOG(1, "New tab page ad: Not allowed due to permission rules");

@@ -496,6 +496,7 @@ source_set("brave_ads_unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/core/internal",
+    "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
