@@ -1066,6 +1066,7 @@ source_set("internal") {
     "resources/behavioral/anti_targeting/anti_targeting_info.h",
     "resources/behavioral/anti_targeting/anti_targeting_resource.cc",
     "resources/behavioral/anti_targeting/anti_targeting_resource.h",
+    "resources/behavioral/anti_targeting/anti_targeting_resource_constants.h",
     "resources/behavioral/conversions/conversion_id_pattern_info.cc",
     "resources/behavioral/conversions/conversion_id_pattern_info.h",
     "resources/behavioral/conversions/conversions_info.cc",

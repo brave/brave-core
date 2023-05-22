@@ -8,16 +8,24 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_feature.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
+#include "brave/components/brave_news/common/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
-constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
+
+bool DoesRequireResource() {
+  return UserHasOptedIn();
+}
+
 }  // namespace
 
 AntiTargetingResource::AntiTargetingResource() {
@@ -28,51 +36,78 @@ AntiTargetingResource::~AntiTargetingResource() {
   AdsClientHelper::RemoveObserver(this);
 }
 
-void AntiTargetingResource::Load() {
-  LoadAndParseResource(
-      kResourceId, kAntiTargetingResourceVersion.Get(),
-      base::BindOnce(&AntiTargetingResource::LoadAndParseResourceCallback,
-                     weak_factory_.GetWeakPtr()));
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
-void AntiTargetingResource::LoadAndParseResourceCallback(
+void AntiTargetingResource::MaybeLoad() {
+  if (DoesRequireResource()) {
+    Load();
+  }
+}
+
+void AntiTargetingResource::MaybeLoadOrReset() {
+  DidLoad() ? MaybeReset() : MaybeLoad();
+}
+
+void AntiTargetingResource::Load() {
+  did_load_ = true;
+
+  LoadAndParseResource(kAntiTargetingResourceId,
+                       kAntiTargetingResourceVersion.Get(),
+                       base::BindOnce(&AntiTargetingResource::LoadCallback,
+                                      weak_factory_.GetWeakPtr()));
+}
+
+void AntiTargetingResource::LoadCallback(
     ResourceParsingErrorOr<AntiTargetingInfo> result) {
   if (!result.has_value()) {
-    BLOG(0, "Failed to initialize "
-                << kResourceId << " anti-targeting resource (" << result.error()
-                << ")");
-    is_initialized_ = false;
-    return;
+    return BLOG(0, "Failed to initialize " << kAntiTargetingResourceId
+                                           << " anti-targeting resource ("
+                                           << result.error() << ")");
   }
 
   if (result.value().version == 0) {
-    BLOG(7, kResourceId << " anti-targeting resource does not exist");
-    is_initialized_ = false;
-    return;
+    return BLOG(7, kAntiTargetingResourceId
+                       << " anti-targeting resource is not available");
   }
 
-  BLOG(1, "Successfully loaded " << kResourceId << " anti-targeting resource");
+  BLOG(1, "Successfully loaded " << kAntiTargetingResourceId
+                                 << " anti-targeting resource");
 
   anti_targeting_ = std::move(result).value();
 
-  is_initialized_ = true;
-
-  BLOG(1, "Successfully initialized " << kResourceId
+  BLOG(1, "Successfully initialized " << kAntiTargetingResourceId
                                       << " anti-targeting resource version "
                                       << kAntiTargetingResourceVersion.Get());
 }
 
+void AntiTargetingResource::MaybeReset() {
+  if (DidLoad() && !DoesRequireResource()) {
+    Reset();
+  }
+}
+
+void AntiTargetingResource::Reset() {
+  BLOG(1, "Reset anti-targeting resource");
+  anti_targeting_.reset();
+  did_load_ = false;
+}
+
 void AntiTargetingResource::OnNotifyLocaleDidChange(
     const std::string& /*locale*/) {
-  Load();
+  MaybeLoad();
+}
+
+void AntiTargetingResource::OnNotifyPrefDidChange(const std::string& path) {
+  if (path == prefs::kEnabled || path == brave_news::prefs::kBraveNewsOptedIn ||
+      path == brave_news::prefs::kNewTabPageShowToday) {
+    MaybeLoadOrReset();
+  }
 }
 
 void AntiTargetingResource::OnNotifyDidUpdateResourceComponent(
     const std::string& id) {
   if (IsValidCountryComponentId(id)) {
-    Load();
+    MaybeLoad();
   }
 }
 

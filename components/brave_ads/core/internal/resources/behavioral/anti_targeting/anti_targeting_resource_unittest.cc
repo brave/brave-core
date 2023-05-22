@@ -10,8 +10,12 @@
 #include <utility>
 
 #include "base/files/file.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource_constants.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,10 +25,6 @@ namespace brave_ads {
 using testing::_;
 using testing::Invoke;
 
-namespace {
-constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
-}  // namespace
-
 class BraveAdsAntiTargetingResourceTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -33,37 +33,38 @@ class BraveAdsAntiTargetingResourceTest : public UnitTestBase {
     resource_ = std::make_unique<AntiTargetingResource>();
   }
 
-  bool LoadResource() {
-    resource_->Load();
+  void LoadResource(const std::string& id) {
+    NotifyDidUpdateResourceComponent(id);
     task_environment_.RunUntilIdle();
-    return resource_->IsInitialized();
   }
 
   std::unique_ptr<AntiTargetingResource> resource_;
 };
 
-TEST_F(BraveAdsAntiTargetingResourceTest, LoadResource) {
+TEST_F(BraveAdsAntiTargetingResourceTest, IsNotInitialized) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(LoadResource());
+  EXPECT_FALSE(resource_->IsInitialized());
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
+  CopyFileFromTestPathToTempPath(kInvalidResourceId, kAntiTargetingResourceId);
 
   // Act
+  LoadResource(kCountryComponentId);
 
   // Assert
-  EXPECT_FALSE(LoadResource());
+  EXPECT_FALSE(resource_->IsInitialized());
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_, LoadFileResource(kResourceId, _, _))
+  EXPECT_CALL(ads_client_mock_,
+              LoadFileResource(kAntiTargetingResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
@@ -75,18 +76,144 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
       }));
 
   // Act
-
-  // Assert
-  EXPECT_FALSE(LoadResource());
-}
-
-TEST_F(BraveAdsAntiTargetingResourceTest, IsNotInitialized) {
-  // Arrange
-
-  // Act
+  LoadResource(kCountryComponentId);
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
+}
+
+TEST_F(BraveAdsAntiTargetingResourceTest, LoadResourceWhenLocaleDidChange) {
+  // Arrange
+  LoadResource(kCountryComponentId);
+
+  // Act
+  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  task_environment_.RunUntilIdle();
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
+}
+
+TEST_F(
+    BraveAdsAntiTargetingResourceTest,
+    DoNotLoadResourceWhenLocaleDidChangeIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+  DisableBraveNewsAds();
+
+  LoadResource(kCountryComponentId);
+
+  // Act
+  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  task_environment_.RunUntilIdle();
+
+  // Assert
+  EXPECT_FALSE(resource_->IsInitialized());
+}
+
+TEST_F(BraveAdsAntiTargetingResourceTest,
+       DoNotResetResourceWhenLocaleDidChange) {
+  // Arrange
+  LoadResource(kCountryComponentId);
+
+  // Act
+  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  task_environment_.RunUntilIdle();
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
+}
+
+TEST_F(BraveAdsAntiTargetingResourceTest,
+       LoadResourceWhenEnabledPrefDidChange) {
+  // Arrange
+  LoadResource(kCountryComponentId);
+
+  // Act
+  NotifyPrefDidChange(prefs::kEnabled);
+  task_environment_.RunUntilIdle();
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
+}
+
+TEST_F(
+    BraveAdsAntiTargetingResourceTest,
+    DoNotLoadResourceWhenEnabledPrefDidChangeIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+  DisableBraveNewsAds();
+
+  LoadResource(kCountryComponentId);
+
+  // Act
+  NotifyPrefDidChange(prefs::kEnabled);
+  task_environment_.RunUntilIdle();
+
+  // Assert
+  EXPECT_FALSE(resource_->IsInitialized());
+}
+
+TEST_F(BraveAdsAntiTargetingResourceTest,
+       DoNotResetResourceWhenEnabledPrefDidChange) {
+  // Arrange
+  LoadResource(kCountryComponentId);
+
+  // Act
+  NotifyPrefDidChange(prefs::kEnabled);
+  task_environment_.RunUntilIdle();
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
+}
+
+TEST_F(BraveAdsAntiTargetingResourceTest,
+       LoadResourceWhenDidUpdateResourceComponent) {
+  // Arrange
+
+  // Act
+  LoadResource(kCountryComponentId);
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
+}
+
+TEST_F(
+    BraveAdsAntiTargetingResourceTest,
+    DoNotLoadResourceWhenDidUpdateResourceComponentIfInvalidCountryComponentId) {
+  // Arrange
+
+  // Act
+  LoadResource(kInvalidCountryComponentId);
+
+  // Assert
+  EXPECT_FALSE(resource_->IsInitialized());
+}
+
+TEST_F(
+    BraveAdsAntiTargetingResourceTest,
+    DoNotLoadResourceWhenDidUpdateResourceComponentIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+  DisableBraveNewsAds();
+
+  // Act
+  LoadResource(kCountryComponentId);
+
+  // Assert
+  EXPECT_FALSE(resource_->IsInitialized());
+}
+
+TEST_F(BraveAdsAntiTargetingResourceTest,
+       DoNotResetResourceWhenDidUpdateResourceComponent) {
+  // Arrange
+  LoadResource(kCountryComponentId);
+
+  // Act
+  LoadResource(kCountryComponentId);
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
 }
 
 }  // namespace brave_ads
