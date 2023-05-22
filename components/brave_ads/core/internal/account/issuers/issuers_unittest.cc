@@ -78,8 +78,7 @@ TEST_F(BraveAdsIssuersTest, FetchIssuersInvalidJsonResponseBody) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, GetIssuers());
+  EXPECT_FALSE(GetIssuers());
 }
 
 TEST_F(BraveAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
@@ -101,8 +100,7 @@ TEST_F(BraveAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  const IssuersInfo expected_issuers;
-  EXPECT_EQ(expected_issuers, GetIssuers());
+  EXPECT_FALSE(GetIssuers());
 }
 
 }  // namespace brave_ads
