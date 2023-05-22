@@ -51,12 +51,12 @@ class NotificationAdHandler final : public AccountObserver,
 
   ~NotificationAdHandler() override;
 
-  void MaybeServeAtRegularIntervals();
-
   void TriggerEvent(const std::string& placement_id,
                     mojom::NotificationAdEventType event_type);
 
  private:
+  void MaybeServeAtRegularIntervals();
+
   // AccountObserver:
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
 

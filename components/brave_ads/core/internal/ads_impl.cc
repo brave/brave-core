@@ -455,7 +455,6 @@ void AdsImpl::Start() {
 
   catalog_.MaybeFetch();
 
-  notification_ad_handler_.MaybeServeAtRegularIntervals();
 }
 
 void AdsImpl::OnStatementOfAccountsDidChange() {
