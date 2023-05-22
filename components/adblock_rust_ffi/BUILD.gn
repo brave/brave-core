@@ -23,8 +23,11 @@ rust_static_library("rust_lib") {
     "src/lib.rs",
   ]
 
-  deps = [
+  public_deps = [
     ":ffi",
+  ]
+
+  deps = [
     "//brave/third_party/rust/adblock/v0_7:lib",
     "//third_party/rust/libc/v0_2:lib",
     "//third_party/rust/serde_json/v1:lib",

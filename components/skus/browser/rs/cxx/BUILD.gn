@@ -13,8 +13,11 @@ rust_static_library("rust_lib") {
   ]
   cxx_bindings = [ "src/lib.rs" ]
 
+  public_deps = [
+    ":shim"
+  ]
+
   deps = [
-    ":shim",
     "//brave/third_party/rust/async_trait/v0_1:lib",
     "//brave/third_party/rust/futures/v0_3:lib",
     "//brave/third_party/rust/tracing/v0_1:lib",
@@ -26,6 +29,7 @@ rust_static_library("rust_lib") {
 }
 
 source_set("shim") {
+  visibility = [ ":*" ]
   sources = [ "src/shim.h" ]
 
   public_deps = [
