@@ -32,6 +32,12 @@ public class BraveBookmarkActivity extends BookmarkActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mWindowAndroid.destroy();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
