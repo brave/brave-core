@@ -37,3 +37,26 @@ source_set("browser_tests") {
     ]
   }
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "ephemeral_storage_service_unittest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/ephemeral_storage",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//components/content_settings/core/browser",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+}

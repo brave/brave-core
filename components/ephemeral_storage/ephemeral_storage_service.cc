@@ -53,7 +53,8 @@ EphemeralStorageService::EphemeralStorageService(
       net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds.Get());
 
   if (base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage)) {
+          net::features::kBraveForgetFirstPartyStorage) &&
+      !context_->IsOffTheRecord()) {
     ScheduleFirstPartyStorageAreasCleanupOnStartup();
   }
 }
@@ -187,12 +188,15 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
     return;
   }
 
-  base::Value url_spec(GetFirstPartyStorageURL(ephemeral_domain).spec());
-  ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
-  pref_update->EraseValue(url_spec);
+  if (!context_->IsOffTheRecord()) {
+    base::Value url_spec(GetFirstPartyStorageURL(ephemeral_domain).spec());
+    ScopedListPrefUpdate pref_update(prefs_,
+                                     kFirstPartyStorageOriginsToCleanup);
+    pref_update->EraseValue(url_spec);
 
-  // Make sure to cancel the scheduled cleanup for this area.
-  first_party_storage_areas_to_cleanup_on_startup_.EraseValue(url_spec);
+    // Make sure to cancel the scheduled cleanup for this area.
+    first_party_storage_areas_to_cleanup_on_startup_.EraseValue(url_spec);
+  }
 }
 
 bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
@@ -217,8 +221,11 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
     return false;
   }
 
-  ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
-  pref_update->Append(base::Value(url.spec()));
+  if (!context_->IsOffTheRecord()) {
+    ScopedListPrefUpdate pref_update(prefs_,
+                                     kFirstPartyStorageOriginsToCleanup);
+    pref_update->Append(base::Value(url.spec()));
+  }
   return true;
 }
 
@@ -236,23 +243,30 @@ void EphemeralStorageService::CleanupTLDEphemeralArea(
     const TLDEphemeralAreaKey& key,
     bool cleanup_first_party_storage_area,
     TLDEphemeralAreaOnDestroyCallbacks on_destroy_callbacks) {
+  DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   delegate_->CleanupTLDEphemeralArea(key);
   if (cleanup_first_party_storage_area) {
-    CleanupFirstPartyStorageAreaByTimer(key.first);
+    CleanupFirstPartyStorageArea(key.first);
   }
   for (auto& callback : on_destroy_callbacks) {
     std::move(callback).Run(key.first);
   }
 }
 
-void EphemeralStorageService::CleanupFirstPartyStorageAreaByTimer(
+void EphemeralStorageService::CleanupFirstPartyStorageArea(
     const std::string& ephemeral_domain) {
+  DVLOG(1) << __func__ << " " << ephemeral_domain;
   delegate_->CleanupFirstPartyStorageArea(ephemeral_domain);
-  ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
-  pref_update->EraseValue(base::Value(ephemeral_domain));
+  if (!context_->IsOffTheRecord()) {
+    ScopedListPrefUpdate pref_update(prefs_,
+                                     kFirstPartyStorageOriginsToCleanup);
+    pref_update->EraseValue(base::Value(ephemeral_domain));
+  }
 }
 
 void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
+  DVLOG(1) << __func__;
+  DCHECK(!context_->IsOffTheRecord());
   first_party_storage_areas_to_cleanup_on_startup_ =
       prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
 
@@ -267,6 +281,7 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
 }
 
 void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
+  DCHECK(!context_->IsOffTheRecord());
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
   for (const auto& url_to_cleanup :
        first_party_storage_areas_to_cleanup_on_startup_) {

@@ -105,7 +105,7 @@ class EphemeralStorageService : public KeyedService {
   // is asynchronous and cannot block the browser shutdown.
   void ScheduleFirstPartyStorageAreasCleanupOnStartup();
   void CleanupFirstPartyStorageAreasOnStartup();
-  void CleanupFirstPartyStorageAreaByTimer(const std::string& ephemeral_domain);
+  void CleanupFirstPartyStorageArea(const std::string& ephemeral_domain);
 
   size_t FireTLDEphemeralAreaCleanupTimersForTesting();
   size_t FireCleanupTimersForTesting();
