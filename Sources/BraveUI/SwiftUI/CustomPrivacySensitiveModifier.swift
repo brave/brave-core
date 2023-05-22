@@ -17,7 +17,11 @@ private struct CustomPrivacySensitiveModifier: ViewModifier {
     Group {
       if isBackgrounded || isCaptured {
         content
-          .redacted(reason: .placeholder)
+          .opacity(0)
+          .overlay(alignment: .center) {
+            RoundedRectangle(cornerRadius: 2)
+              .fill(Color.black.opacity(0.1)).frame(width: 64).padding(.vertical, 2.5)
+            }
       } else {
         content
       }
