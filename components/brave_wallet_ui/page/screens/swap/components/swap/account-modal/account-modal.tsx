@@ -87,7 +87,9 @@ export const AccountModal = (props: Props) => {
 
   const onClickHelpCenter = React.useCallback(() => {
     window.open(
-      'https://support.brave.com/hc/en-us/articles/8155407080845-Brave-Swaps-FAQ'
+      'https://support.brave.com/hc/en-us/articles/8155407080845-Brave-Swaps-FAQ',
+      '_blank',
+      'noopener'
     )
   }, [])
 
