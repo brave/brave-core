@@ -37,8 +37,10 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
     SetEpsilonGreedyBanditArms(arms);
   }
 
-  // Act
   const EpsilonGreedyBanditProcessor processor;
+
+  // Act
+  NotifyDidInitializeAds();
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
@@ -52,8 +54,10 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   // Arrange
   const std::string segment = "travel";  // rewards: [] => value: 1.0
 
-  // Act
   const EpsilonGreedyBanditProcessor processor;
+
+  // Act
+  NotifyDidInitializeAds();
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
@@ -74,16 +78,15 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   // Arrange
   const std::string segment = "travel";  // rewards: [0, 0, 0, 0] => value: 0.0
 
-  // Act
   const EpsilonGreedyBanditProcessor processor;
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kDismissed});
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kDismissed});
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kTimedOut});
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kDismissed});
+
+  // Act
+  NotifyDidInitializeAds();
+
+  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
@@ -104,16 +107,15 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   // Arrange
   const std::string segment = "travel";  // rewards: [1, 0, 1, 0] => value: 0.5
 
-  // Act
   const EpsilonGreedyBanditProcessor processor;
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kClicked});
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kDismissed});
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kClicked});
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kTimedOut});
+
+  // Act
+  NotifyDidInitializeAds();
+
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
@@ -134,16 +136,15 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   // Arrange
   const std::string segment = "travel";  // rewards: [1, 1, 1, 1] => value: 1.0
 
-  // Act
   const EpsilonGreedyBanditProcessor processor;
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kClicked});
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kClicked});
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kClicked});
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kClicked});
+
+  // Act
+  NotifyDidInitializeAds();
+
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
@@ -163,10 +164,12 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   // Arrange
   const std::string segment = "foobar";
 
-  // Act
   const EpsilonGreedyBanditProcessor processor;
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kTimedOut});
+
+  // Act
+  NotifyDidInitializeAds();
+
+  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
@@ -179,10 +182,12 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   const std::string segment = "travel-child";
   const std::string parent_segment = "travel";
 
-  // Act
   const EpsilonGreedyBanditProcessor processor;
-  EpsilonGreedyBanditProcessor::Process(
-      {segment, mojom::NotificationAdEventType::kTimedOut});
+
+  // Act
+  NotifyDidInitializeAds();
+
+  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();

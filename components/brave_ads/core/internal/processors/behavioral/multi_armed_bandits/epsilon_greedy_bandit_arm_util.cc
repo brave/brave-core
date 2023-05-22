@@ -18,6 +18,10 @@ void SetEpsilonGreedyBanditArms(const EpsilonGreedyBanditArmMap& arms) {
       prefs::kEpsilonGreedyBanditArms, EpsilonGreedyBanditArmsToValue(arms));
 }
 
+void ResetEpsilonGreedyBanditArms() {
+  AdsClientHelper::GetInstance()->ClearPref(prefs::kEpsilonGreedyBanditArms);
+}
+
 EpsilonGreedyBanditArmMap GetEpsilonGreedyBanditArms() {
   const absl::optional<base::Value::Dict> dict =
       AdsClientHelper::GetInstance()->GetDictPref(

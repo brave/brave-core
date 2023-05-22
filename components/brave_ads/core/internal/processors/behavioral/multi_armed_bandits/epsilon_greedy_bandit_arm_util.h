@@ -11,6 +11,7 @@
 namespace brave_ads {
 
 void SetEpsilonGreedyBanditArms(const EpsilonGreedyBanditArmMap& arms);
+void ResetEpsilonGreedyBanditArms();
 EpsilonGreedyBanditArmMap GetEpsilonGreedyBanditArms();
 
 }  // namespace brave_ads

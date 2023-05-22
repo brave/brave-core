@@ -12,6 +12,9 @@
 #include "base/containers/contains.h"
 #include "base/notreached.h"
 #include "base/strings/string_piece.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
@@ -19,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
+#include "brave/components/brave_news/common/pref_names.h"
 
 namespace brave_ads {
 
@@ -26,6 +30,10 @@ namespace {
 
 constexpr double kDefaultArmValue = 1.0;
 constexpr int kDefaultArmPulls = 0;
+
+bool DoesRequireResource() {
+  return UserHasOptedIn();
+}
 
 void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
   for (const base::StringPiece value : GetSegments()) {
@@ -64,18 +72,6 @@ void MaybeDeleteArms(EpsilonGreedyBanditArmMap& arms) {
   }
 }
 
-void InitializeArms() {
-  EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
-
-  MaybeAddOrResetArms(arms);
-
-  MaybeDeleteArms(arms);
-
-  SetEpsilonGreedyBanditArms(arms);
-
-  BLOG(1, "Successfully initialized epsilon greedy bandit arms");
-}
-
 void UpdateArm(const double reward, const std::string& segment) {
   EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   if (arms.empty()) {
@@ -103,12 +99,19 @@ void UpdateArm(const double reward, const std::string& segment) {
 }  // namespace
 
 EpsilonGreedyBanditProcessor::EpsilonGreedyBanditProcessor() {
-  InitializeArms();
+  AdsClientHelper::AddObserver(this);
 }
 
-// static
+EpsilonGreedyBanditProcessor::~EpsilonGreedyBanditProcessor() {
+  AdsClientHelper::RemoveObserver(this);
+}
+
 void EpsilonGreedyBanditProcessor::Process(
-    const EpsilonGreedyBanditFeedbackInfo& feedback) {
+    const EpsilonGreedyBanditFeedbackInfo& feedback) const {
+  if (!is_initialized_) {
+    return;
+  }
+
   CHECK(!feedback.segment.empty());
 
   const std::string segment = GetParentSegment(feedback.segment);
@@ -135,6 +138,60 @@ void EpsilonGreedyBanditProcessor::Process(
   }
 
   BLOG(1, "Epsilon greedy bandit processed " << feedback.ad_event_type);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void EpsilonGreedyBanditProcessor::MaybeInitializeArms() {
+  if (DoesRequireResource()) {
+    InitializeArms();
+  }
+}
+
+void EpsilonGreedyBanditProcessor::MaybeInitializeOrResetArms() {
+  if (!IsInitialized() && DoesRequireResource()) {
+    InitializeArms();
+  } else if (IsInitialized() && !DoesRequireResource()) {
+    ResetArms();
+  }
+}
+
+void EpsilonGreedyBanditProcessor::InitializeArms() {
+  if (is_initialized_) {
+    return;
+  }
+
+  EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
+
+  MaybeAddOrResetArms(arms);
+
+  MaybeDeleteArms(arms);
+
+  SetEpsilonGreedyBanditArms(arms);
+
+  is_initialized_ = true;
+
+  BLOG(1, "Successfully initialized epsilon greedy bandit arms");
+}
+
+void EpsilonGreedyBanditProcessor::ResetArms() {
+  BLOG(1, "Reset epsilon greedy bandit arms");
+
+  is_initialized_ = false;
+
+  ResetEpsilonGreedyBanditArms();
+}
+
+void EpsilonGreedyBanditProcessor::OnNotifyDidInitializeAds() {
+  MaybeInitializeArms();
+}
+
+void EpsilonGreedyBanditProcessor::OnNotifyPrefDidChange(
+    const std::string& path) {
+  if (path == prefs::kEnabled || path == brave_news::prefs::kBraveNewsOptedIn ||
+      path == brave_news::prefs::kNewTabPageShowToday) {
+    MaybeInitializeOrResetArms();
+  }
 }
 
 }  // namespace brave_ads
