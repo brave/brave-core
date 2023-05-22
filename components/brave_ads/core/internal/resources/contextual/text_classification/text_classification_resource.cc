@@ -8,17 +8,24 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
+#include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
 namespace brave_ads {
 
 namespace {
-constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
+
+bool DoesRequireResource() {
+  return UserHasOptedInToBravePrivateAds();
+}
+
 }  // namespace
 
 TextClassificationResource::TextClassificationResource() {
@@ -29,51 +36,80 @@ TextClassificationResource::~TextClassificationResource() {
   AdsClientHelper::RemoveObserver(this);
 }
 
-bool TextClassificationResource::IsInitialized() const {
-  return text_processing_pipeline_.IsInitialized();
+///////////////////////////////////////////////////////////////////////////////
+
+void TextClassificationResource::MaybeLoad() {
+  if (DoesRequireResource()) {
+    Load();
+  }
+}
+
+void TextClassificationResource::MaybeLoadOrReset() {
+  DidLoad() ? MaybeReset() : MaybeLoad();
 }
 
 void TextClassificationResource::Load() {
-  LoadAndParseResource(
-      kResourceId, kTextClassificationResourceVersion.Get(),
-      base::BindOnce(&TextClassificationResource::LoadAndParseResourceCallback,
-                     weak_factory_.GetWeakPtr()));
+  did_load_ = true;
+
+  LoadAndParseResource(kTextClassificationResourceId,
+                       kTextClassificationResourceVersion.Get(),
+                       base::BindOnce(&TextClassificationResource::LoadCallback,
+                                      weak_factory_.GetWeakPtr()));
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
-void TextClassificationResource::LoadAndParseResourceCallback(
+void TextClassificationResource::LoadCallback(
     ResourceParsingErrorOr<ml::pipeline::TextProcessing> result) {
   if (!result.has_value()) {
-    return BLOG(0, "Failed to initialize " << kResourceId
+    return BLOG(0, "Failed to initialize " << kTextClassificationResourceId
                                            << " text classification resource ("
                                            << result.error() << ")");
   }
 
   if (!result.value().IsInitialized()) {
-    return BLOG(7,
-                kResourceId << " text classification resource does not exist");
+    return BLOG(7, kTextClassificationResourceId
+                       << " text classification resource is not available");
   }
 
-  BLOG(1, "Successfully loaded " << kResourceId
+  BLOG(1, "Successfully loaded " << kTextClassificationResourceId
                                  << " text classification resource");
 
   text_processing_pipeline_ = std::move(result).value();
 
   BLOG(1, "Successfully initialized "
-              << kResourceId << " text classification resource version "
+              << kTextClassificationResourceId
+              << " text classification resource version "
               << kTextClassificationResourceVersion.Get());
+}
+
+void TextClassificationResource::MaybeReset() {
+  if (DidLoad() && !DoesRequireResource()) {
+    Reset();
+  }
+}
+
+void TextClassificationResource::Reset() {
+  BLOG(1, "Reset " << kTextClassificationResourceId
+                   << " text classification resource");
+  text_processing_pipeline_.reset();
+  did_load_ = false;
 }
 
 void TextClassificationResource::OnNotifyLocaleDidChange(
     const std::string& /*locale*/) {
-  Load();
+  MaybeLoad();
+}
+
+void TextClassificationResource::OnNotifyPrefDidChange(
+    const std::string& path) {
+  if (path == prefs::kEnabled) {
+    MaybeLoadOrReset();
+  }
 }
 
 void TextClassificationResource::OnNotifyDidUpdateResourceComponent(
     const std::string& id) {
   if (IsValidLanguageComponentId(id)) {
-    Load();
+    MaybeLoad();
   }
 }
 

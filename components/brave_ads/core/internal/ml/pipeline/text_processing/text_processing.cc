@@ -61,6 +61,7 @@ bool TextProcessing::SetPipeline(base::Value::Dict dict) {
     SetPipeline(std::move(pipeline).value());
     is_initialized_ = true;
   } else {
+    SetPipeline(PipelineInfo{});
     is_initialized_ = false;
   }
 

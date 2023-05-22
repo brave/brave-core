@@ -1091,6 +1091,7 @@ source_set("internal") {
     "resources/behavioral/purchase_intent/purchase_intent_site_info.h",
     "resources/contextual/text_classification/text_classification_resource.cc",
     "resources/contextual/text_classification/text_classification_resource.h",
+    "resources/contextual/text_classification/text_classification_resource_constants.h",
     "resources/contextual/text_embedding/text_embedding_resource.cc",
     "resources/contextual/text_embedding/text_embedding_resource.h",
     "resources/contextual/text_embedding/text_embedding_resource_constants.h",

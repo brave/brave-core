@@ -32,6 +32,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/resources/language_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "url/gurl.h"
 
@@ -104,11 +105,12 @@ class BraveAdsTopSegmentsTest
 
     text_classification_resource_ =
         std::make_unique<TextClassificationResource>();
-    text_classification_resource_->Load();
-    task_environment_.RunUntilIdle();
+    NotifyDidUpdateResourceComponent(kLanguageComponentId);
     text_classification_processor_ =
         std::make_unique<TextClassificationProcessor>(
             *text_classification_resource_);
+
+    task_environment_.RunUntilIdle();
   }
 
   void ProcessEpsilonGreedyBandit() {
