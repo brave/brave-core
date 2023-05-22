@@ -6,11 +6,15 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
+import { setIconBasePath } from '@brave/leo/react/icon'
+
 import { App } from './components/app'
 import { createHost } from './lib/extension_host'
 import { LocaleContext } from '../shared/lib/locale_context'
 import { TabOpenerContext } from '../shared/components/new_tab_link'
 import { createLocaleContextForWebUI } from '../shared/lib/webui_locale_context'
+
+setIconBasePath('chrome://resources/brave-icons')
 
 function onReady () {
   const tabOpener = {

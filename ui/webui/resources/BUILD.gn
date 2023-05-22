@@ -196,6 +196,8 @@ leo_icons = [
   "arrow-small-up.svg",
   "arrow-small-down.svg",
   "info-outline.svg",
+  "verification-filled.svg",
+  "verification-filled-color.svg",
   "nft.svg",
   "tune.svg",
 ]

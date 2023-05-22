@@ -10,7 +10,7 @@ import * as leo from '@brave/leo/tokens/css'
 export const title = styled.div`
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
@@ -18,9 +18,7 @@ export const title = styled.div`
 `
 
 export const checkmark = styled.div`
-  width: 15px;
-  height: 18px;
-  color: ${leo.color.icon.interactive};
+  --leo-icon-size: 17px;
 `
 
 export const text = styled.div`

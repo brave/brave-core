@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { ThemeProvider } from 'styled-components'
 import Theme from 'brave-ui/theme/brave-default'
+import { setIconBasePath } from '@brave/leo/react/icon'
 import { createStore, bindActionCreators } from 'redux'
 
 import { loadTimeData } from '../../../common/loadTimeData'
@@ -25,6 +26,8 @@ import * as mojom from '../shared/lib/mojom'
 
 const store = createStore(createReducer())
 const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
+
+setIconBasePath('chrome://resources/brave-icons')
 
 function initialize () {
   initLocale(loadTimeData.data_)

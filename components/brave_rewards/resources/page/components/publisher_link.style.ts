@@ -34,13 +34,7 @@ export const verified = styled.div`
   top: -6px;
   right: -8px;
 
-  .icon {
-    width: 16px;
-    height: auto;
-    color: #4C54D2;
-    background-color: #FFFFFF;
-    border-radius: 50%;
-  }
+  --leo-icon-size: 16px;
 `
 
 export const name = styled.span`
