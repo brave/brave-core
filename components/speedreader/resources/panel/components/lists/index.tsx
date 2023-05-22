@@ -28,24 +28,28 @@ export enum MainButtonType {
   None,
   Options,
   TextToSpeech,
-  ShowOriginal,
+  ViewOriginal,
   AI
 }
 
 const mainButtonsOptions = [
   {
+    id: 'options',
     type: MainButtonType.Options,
     svgIcon: SettingsSVG
   },
   {
+    id: 'tts',
     type: MainButtonType.TextToSpeech,
     svgIcon: HeadphonesSVG
   },
   {
-    type: MainButtonType.ShowOriginal,
+    id: 'view-original',
+    type: MainButtonType.ViewOriginal,
     svgIcon: OriginalSVG
   },
   {
+    id: 'ai',
     type: MainButtonType.AI,
     svgIcon: AiSVG
   }
@@ -53,28 +57,29 @@ const mainButtonsOptions = [
 
 const fontStyleOptions = [
   {
-    title: 'Sans',
+    id: 'font-sans',
     family: FontFamily.kSans,
     svgIcon: fontSansSvg
   },
   {
-    title: 'Serif',
+    id: 'font-serif',
     family: FontFamily.kSerif,
     svgIcon: fontSerifSvg
   },
   {
-    title: 'Mono',
+    id: 'font-mono',
     family: FontFamily.kMono,
     svgIcon: fontMonoSvg
   },
   {
-    title: 'Dyslexic',
+    id: 'font-dyslexic',
     family: FontFamily.kDyslexic,
     svgIcon: fontDyslexicSvg
   }
 ]
 
 type OptionType = {
+  id?: string
   isSelected: boolean
   children: JSX.Element
   onClick?: Function
@@ -102,6 +107,7 @@ function Option(props: OptionType) {
 
   return (
     <S.Button
+      id={props?.id}
       role="option"
       className={optionClass}
       aria-selected={props.isSelected}
@@ -128,6 +134,7 @@ export function MainButtonsList(props: MainButtonsListProps) {
       {mainButtonsOptions.map(entry => {
         return (
           <Option
+            id={entry.id}
             key={entry.type}
             isSelected={props.activeButton === entry.type}
             onClick={handleClick.bind(this, entry.type)}
@@ -155,7 +162,8 @@ export function FontStyleList(props: FontStyleListProps) {
       {fontStyleOptions.map(entry => {
         return (
           <Option
-            key={entry.title}
+            id={entry?.id}
+            key={entry.family}
             isSelected={props.activeFontFamily === entry.family}
             inGroup={true}
             onClick={handleClick.bind(this, entry.family)}
@@ -193,6 +201,7 @@ export function FontSizeList(props: FontSizeListProps) {
   return (
     <ListBox>
       <Option
+        id='font-size-decrease'
         inGroup={true}
         isSelected={false}
         onClick={() => updateSize(ActionType.Dec)}
@@ -204,6 +213,7 @@ export function FontSizeList(props: FontSizeListProps) {
         <span>{props.currentSize}% </span>
       </S.CurrentState>
       <Option
+        id='font-size-increase'
         inGroup={true}
         isSelected={false}
         onClick={() => updateSize(ActionType.Inc)}

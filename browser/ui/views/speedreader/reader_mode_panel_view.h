@@ -16,6 +16,8 @@ class ReaderModePanelView : public views::View {
   explicit ReaderModePanelView(content::BrowserContext* browser_context);
   ~ReaderModePanelView() override;
 
+  content::WebContents* GetWebContentsForTesting();
+
  private:
   gfx::Size CalculatePreferredSize() const override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;

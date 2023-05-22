@@ -26,7 +26,7 @@ function Toolbar(props: ToolbarProps) {
   const [activeButton, setActiveButton] = React.useState(MainButtonType.None)
 
   const handleMainButtonClick = (button: MainButtonType) => {
-    if (button === MainButtonType.ShowOriginal) {
+    if (button === MainButtonType.ViewOriginal) {
       dataHandler.viewOriginal()
     } else {
       setActiveButton(button)

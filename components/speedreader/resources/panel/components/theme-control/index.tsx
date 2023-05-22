@@ -12,22 +12,22 @@ import { Theme } from '../../api/browser'
 
 const themeOptions = [
   {
-    ariaLabel: 'Theme Light',
+    id: 'theme-light',
     type: Theme.kLight,
     svgIcon: null
   },
   {
-    ariaLabel: 'Theme Sepia',
+    id: 'theme-sepia',
     type: Theme.kSepia,
     svgIcon: null
   },
   {
-    ariaLabel: 'Theme Dark',
+    id: 'theme-dark',
     type: Theme.kDark,
     svgIcon: null
   },
   {
-    ariaLable: 'Theme System',
+    id: 'theme-system',
     type: Theme.kNone,
     svgIcon: ThemeSystemSvg
   }
@@ -54,18 +54,18 @@ function ThemeControl(props: ThemeControlProps) {
         })
         return (
           <button
+            id={entry.id}
             key={entry.type}
             role="option"
             className={chipClass}
             aria-selected={props.activeTheme === entry.type}
-            aria-label={entry.ariaLabel}
             onClick={handleClick.bind(this, entry.type)}
           >
             {entry.svgIcon && (
               <entry.svgIcon className='icon-box' />
             )}
             {props.activeTheme === entry.type && (
-              <CheckMarkSvg className='mark' />
+              <CheckMarkSvg className='mark' id='check-mark' />
             )}
           </button>
         )

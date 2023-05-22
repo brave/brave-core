@@ -55,6 +55,10 @@ ReaderModePanelView::ReaderModePanelView(
 
 ReaderModePanelView::~ReaderModePanelView() = default;
 
+content::WebContents* ReaderModePanelView::GetWebContentsForTesting() {
+  return toolbar_->web_contents();
+}
+
 gfx::Size ReaderModePanelView::CalculatePreferredSize() const {
   return toolbar_->GetPreferredSize();
 }

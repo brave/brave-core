@@ -18,6 +18,7 @@
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -578,6 +579,96 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   EXPECT_EQ("dark", EvalAttr(ActiveWebContents(), "data-theme"));
   EXPECT_EQ("dyslexic", EvalAttr(ActiveWebContents(), "data-font-family"));
   EXPECT_EQ("130", EvalAttr(ActiveWebContents(), "data-font-size"));
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
+  auto GetDataAttribute = [](const std::string& attr) {
+    constexpr const char kGetDataAttribute[] =
+        R"js(
+          document.documentElement.getAttribute('$1')
+        )js";
+    return base::ReplaceStringPlaceholders(kGetDataAttribute, {attr}, nullptr);
+  };
+
+  auto WaitAttr = [&](content::WebContents* contents, const std::string& attr,
+                      const std::string& value) {
+    for (;;) {
+      NonBlockingDelay(base::Milliseconds(10));
+      auto eval = content::EvalJs(contents, GetDataAttribute(attr),
+                                  content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                  ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+      if (!eval.value.is_string() && value.empty()) {
+        return true;
+      }
+      if (eval.ExtractString() == value) {
+        return true;
+      }
+    }
+  };
+
+  auto Click = [&](content::WebContents* contents, const std::string& id) {
+    constexpr const char kClick[] =
+        R"js(
+          document.getElementById('$1').click()
+        )js";
+    ASSERT_TRUE(content::ExecJs(
+        contents, base::ReplaceStringPlaceholders(kClick, {id}, nullptr)));
+  };
+
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+
+  auto* page = ActiveWebContents();
+  auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
+                           ->reader_mode_panel_view_.get();
+  auto* toolbar = toolbar_view->GetWebContentsForTesting();
+  content::WaitForLoadStop(toolbar);
+
+  Click(toolbar, "options");
+  {  // change theme
+    Click(toolbar, "theme-light");
+    WaitAttr(page, "data-theme", "light");
+    Click(toolbar, "theme-sepia");
+    WaitAttr(page, "data-theme", "sepia");
+    Click(toolbar, "theme-dark");
+    WaitAttr(page, "data-theme", "dark");
+    Click(toolbar, "theme-system");
+    WaitAttr(page, "data-theme", "");
+  }
+  {  // change font
+    Click(toolbar, "font-sans");
+    WaitAttr(page, "data-font-family", "sans");
+    Click(toolbar, "font-serif");
+    WaitAttr(page, "data-font-family", "serif");
+    Click(toolbar, "font-mono");
+    WaitAttr(page, "data-font-family", "mono");
+    Click(toolbar, "font-dyslexic");
+    WaitAttr(page, "data-font-family", "dyslexic");
+  }
+  {  // change font size
+    WaitAttr(page, "data-font-size", "100");
+    Click(toolbar, "font-size-decrease");
+    WaitAttr(page, "data-font-size", "90");
+    Click(toolbar, "font-size-increase");
+    WaitAttr(page, "data-font-size", "100");
+    Click(toolbar, "font-size-increase");
+    WaitAttr(page, "data-font-size", "110");
+  }
+
+  Click(toolbar, "view-original");
+  {
+    auto* tab_helper = speedreader::SpeedreaderTabHelper::FromWebContents(page);
+    while (speedreader::DistillState::kSpeedreaderOnDisabledPage !=
+           tab_helper->PageDistillState()) {
+      NonBlockingDelay(base::Milliseconds(10));
+    }
+    content::WaitForLoadStop(page);
+    EXPECT_FALSE(toolbar_view->GetVisible());
+
+    ClickReaderButton();
+    content::WaitForLoadStop(page);
+    EXPECT_TRUE(toolbar_view->GetVisible());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
