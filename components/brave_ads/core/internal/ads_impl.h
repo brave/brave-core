@@ -17,29 +17,10 @@
 #include "brave/components/brave_ads/core/history_sort_types.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_classification/text_classification_processor.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
-#include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/transfer/transfer_observer.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -49,14 +30,9 @@ class Time;
 
 namespace brave_ads {
 
-struct AdInfo;
-struct ConversionQueueItemInfo;
 struct NotificationAdInfo;
 
-class AdsImpl final : public Ads,
-                      public AccountObserver,
-                      public ConversionsObserver,
-                      public TransferObserver {
+class AdsImpl final : public Ads, public AccountObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
 
@@ -148,59 +124,23 @@ class AdsImpl final : public Ads,
   void LoadConfirmationStateCallback(InitializeCallback callback, bool success);
   void MigrateNotificationStateCallback(InitializeCallback callback,
                                         bool success);
-
   void SuccessfullyInitialized(InitializeCallback callback);
-
-  bool IsInitialized() const { return is_initialized_; }
 
   // AccountObserver:
   void OnStatementOfAccountsDidChange() override;
-
-  // ConversionsObserver:
-  void OnConversion(
-      const ConversionQueueItemInfo& conversion_queue_item) override;
-
-  // TransferObserver:
-  void OnDidTransferAd(const AdInfo& ad) override;
 
   bool is_initialized_ = false;
 
   GlobalState global_state_;
 
-  Catalog catalog_;
-
   privacy::TokenGenerator token_generator_;
   Account account_;
 
-  Transfer transfer_;
-
-  Conversions conversions_;
-
-  SubdivisionTargeting subdivision_targeting_;
-
-  AntiTargetingResource anti_targeting_resource_;
-
-  EpsilonGreedyBanditResource epsilon_greedy_bandit_resource_;
-  EpsilonGreedyBanditProcessor epsilon_greedy_bandit_processor_;
-
-  PurchaseIntentResource purchase_intent_resource_;
-  PurchaseIntentProcessor purchase_intent_processor_;
-
-  TextClassificationResource text_classification_resource_;
-  TextClassificationProcessor text_classification_processor_;
-
-  TextEmbeddingResource text_embedding_resource_;
-  TextEmbeddingProcessor text_embedding_processor_;
-
-  InlineContentAdHandler inline_content_ad_handler_;
-  NewTabPageAdHandler new_tab_page_ad_handler_;
-  NotificationAdHandler notification_ad_handler_;
-  PromotedContentAd promoted_content_ad_handler_;
-  SearchResultAd search_result_ad_handler_;
-
-  Reminder reminder_;
+  AdHandler ad_handler_;
 
   UserReactions user_reactions_;
+
+  Reminder reminder_;
 
   base::WeakPtrFactory<AdsImpl> weak_factory_{this};
 };

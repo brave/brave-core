@@ -259,6 +259,8 @@ source_set("internal") {
     "ads/ad_events/search_result_ads/search_result_ad_event_served.h",
     "ads/ad_events/search_result_ads/search_result_ad_event_viewed.cc",
     "ads/ad_events/search_result_ads/search_result_ad_event_viewed.h",
+    "ads/ad_handler.cc",
+    "ads/ad_handler.h",
     "ads/ad_info.cc",
     "ads/inline_content_ad_feature.cc",
     "ads/inline_content_ad_feature.h",

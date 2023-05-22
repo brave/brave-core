@@ -11,7 +11,6 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
@@ -27,21 +26,22 @@ namespace brave_ads {
 
 class Account;
 class AntiTargetingResource;
+class EpsilonGreedyBanditProcessor;
 class SubdivisionTargeting;
 class Transfer;
 struct NotificationAdInfo;
-struct WalletInfo;
 
-class NotificationAdHandler final : public AccountObserver,
-                                    public AdsClientNotifierObserver,
+class NotificationAdHandler final : public AdsClientNotifierObserver,
                                     public BrowserManagerObserver,
                                     public NotificationAdEventHandlerDelegate,
                                     public NotificationAdServingDelegate {
  public:
-  NotificationAdHandler(Account& account,
-                        Transfer& transfer,
-                        const SubdivisionTargeting& subdivision_targeting,
-                        const AntiTargetingResource& anti_targeting_resource);
+  NotificationAdHandler(
+      Account& account,
+      Transfer& transfer,
+      EpsilonGreedyBanditProcessor& epsilon_greedy_bandit_processor,
+      const SubdivisionTargeting& subdivision_targeting,
+      const AntiTargetingResource& anti_targeting_resource);
 
   NotificationAdHandler(const NotificationAdHandler&) = delete;
   NotificationAdHandler& operator=(const NotificationAdHandler&) = delete;
@@ -57,10 +57,8 @@ class NotificationAdHandler final : public AccountObserver,
  private:
   void MaybeServeAtRegularIntervals();
 
-  // AccountObserver:
-  void OnWalletDidUpdate(const WalletInfo& wallet) override;
-
   // AdsClientNotifierObserver:
+  void OnNotifyDidInitializeAds() override;
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyUserDidBecomeActive(base::TimeDelta idle_time,
                                    bool screen_was_locked) override;
@@ -88,6 +86,7 @@ class NotificationAdHandler final : public AccountObserver,
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
+  const raw_ref<EpsilonGreedyBanditProcessor> epsilon_greedy_bandit_processor_;
 
   NotificationAdEventHandler event_handler_;
 

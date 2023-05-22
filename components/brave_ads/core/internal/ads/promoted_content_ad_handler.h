@@ -19,17 +19,19 @@ class Account;
 class Transfer;
 struct PromotedContentAdInfo;
 
-class PromotedContentAd final : public PromotedContentAdEventHandlerDelegate {
+class PromotedContentAdHandler final
+    : public PromotedContentAdEventHandlerDelegate {
  public:
-  PromotedContentAd(Account& account, Transfer& transfer);
+  PromotedContentAdHandler(Account& account, Transfer& transfer);
 
-  PromotedContentAd(const PromotedContentAd&) = delete;
-  PromotedContentAd& operator=(const PromotedContentAd&) = delete;
+  PromotedContentAdHandler(const PromotedContentAdHandler&) = delete;
+  PromotedContentAdHandler& operator=(const PromotedContentAdHandler&) = delete;
 
-  PromotedContentAd(PromotedContentAd&&) noexcept = delete;
-  PromotedContentAd& operator=(PromotedContentAd&&) noexcept = delete;
+  PromotedContentAdHandler(PromotedContentAdHandler&&) noexcept = delete;
+  PromotedContentAdHandler& operator=(PromotedContentAdHandler&&) noexcept =
+      delete;
 
-  ~PromotedContentAd() override;
+  ~PromotedContentAdHandler() override;
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,

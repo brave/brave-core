@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
@@ -37,25 +36,22 @@ namespace brave_ads {
 NotificationAdHandler::NotificationAdHandler(
     Account& account,
     Transfer& transfer,
+    EpsilonGreedyBanditProcessor& epsilon_greedy_bandit_processor,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource)
     : account_(account),
       transfer_(transfer),
+      epsilon_greedy_bandit_processor_(epsilon_greedy_bandit_processor),
       serving_(subdivision_targeting, anti_targeting_resource) {
-  account_->AddObserver(this);
-
-  event_handler_.SetDelegate(this);
-
-  serving_.SetDelegate(this);
-
-  BrowserManager::GetInstance().AddObserver(this);
   AdsClientHelper::AddObserver(this);
+  BrowserManager::GetInstance().AddObserver(this);
+  event_handler_.SetDelegate(this);
+  serving_.SetDelegate(this);
 }
 
 NotificationAdHandler::~NotificationAdHandler() {
-  account_->RemoveObserver(this);
-  BrowserManager::GetInstance().RemoveObserver(this);
   AdsClientHelper::RemoveObserver(this);
+  BrowserManager::GetInstance().RemoveObserver(this);
 }
 
 void NotificationAdHandler::MaybeServeAtRegularIntervals() {
@@ -80,7 +76,7 @@ void NotificationAdHandler::TriggerEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NotificationAdHandler::OnWalletDidUpdate(const WalletInfo& /*wallet*/) {
+void NotificationAdHandler::OnNotifyDidInitializeAds() {
   MaybeServeAtRegularIntervals();
 }
 
@@ -161,7 +157,7 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kClicked);
 
-  EpsilonGreedyBanditProcessor::Process(
+  epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kClicked});
 
   SetNotificationAdEventPredictorVariable(
@@ -178,7 +174,7 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kDismissed);
 
-  EpsilonGreedyBanditProcessor::Process(
+  epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kDismissed});
 
   SetNotificationAdEventPredictorVariable(
@@ -189,7 +185,7 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
 void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(
     const NotificationAdInfo& ad) {
   NotificationAdTimedOut(ad.placement_id);
-  EpsilonGreedyBanditProcessor::Process(
+  epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
   SetNotificationAdEventPredictorVariable(

@@ -15,14 +15,15 @@
 
 namespace brave_ads {
 
-PromotedContentAd::PromotedContentAd(Account& account, Transfer& transfer)
+PromotedContentAdHandler::PromotedContentAdHandler(Account& account,
+                                                   Transfer& transfer)
     : account_(account), transfer_(transfer) {
   event_handler_.SetDelegate(this);
 }
 
-PromotedContentAd::~PromotedContentAd() = default;
+PromotedContentAdHandler::~PromotedContentAdHandler() = default;
 
-void PromotedContentAd::TriggerEvent(
+void PromotedContentAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
@@ -33,7 +34,7 @@ void PromotedContentAd::TriggerEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void PromotedContentAd::OnDidFirePromotedContentAdViewedEvent(
+void PromotedContentAdHandler::OnDidFirePromotedContentAdViewedEvent(
     const PromotedContentAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
@@ -41,7 +42,7 @@ void PromotedContentAd::OnDidFirePromotedContentAdViewedEvent(
                     ConfirmationType::kViewed);
 }
 
-void PromotedContentAd::OnDidFirePromotedContentAdClickedEvent(
+void PromotedContentAdHandler::OnDidFirePromotedContentAdClickedEvent(
     const PromotedContentAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 

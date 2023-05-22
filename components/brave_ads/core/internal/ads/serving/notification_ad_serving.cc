@@ -45,7 +45,6 @@ NotificationAdServing::NotificationAdServing(
 
 NotificationAdServing::~NotificationAdServing() {
   AdsClientHelper::RemoveObserver(this);
-
   delegate_ = nullptr;
 }
 

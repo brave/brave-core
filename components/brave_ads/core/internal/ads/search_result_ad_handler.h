@@ -21,7 +21,6 @@ namespace brave_ads {
 class Account;
 class Transfer;
 struct SearchResultAdInfo;
-
 class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
  public:
   SearchResultAd(Account& account, Transfer& transfer);
