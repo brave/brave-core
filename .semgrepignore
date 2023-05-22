@@ -1,0 +1,2 @@
+# Ignore third_party rust libraries
+third_party/rust/
