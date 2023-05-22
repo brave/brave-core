@@ -1092,6 +1092,7 @@ source_set("internal") {
     "resources/contextual/text_classification/text_classification_resource.h",
     "resources/contextual/text_embedding/text_embedding_resource.cc",
     "resources/contextual/text_embedding/text_embedding_resource.h",
+    "resources/contextual/text_embedding/text_embedding_resource_constants.h",
     "resources/country_components.cc",
     "resources/country_components.h",
     "resources/language_components.cc",

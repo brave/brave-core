@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -31,8 +32,7 @@ TextEmbeddingProcessor::~TextEmbeddingProcessor() {
 
 void TextEmbeddingProcessor::Process(const std::string& html) {
   if (!resource_->IsInitialized()) {
-    return BLOG(
-        1, "Failed to process text embeddings as resource not initialized");
+    return;
   }
 
   const std::string text = SanitizeHtml(html);
@@ -40,10 +40,14 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
     return BLOG(1, "No text available for embedding");
   }
 
+  const absl::optional<ml::pipeline::EmbeddingProcessing>&
+      embedding_processing = resource_->get();
+  CHECK(embedding_processing);
+
   const ml::pipeline::TextEmbeddingInfo text_embedding =
-      resource_->get().EmbedText(text);
+      embedding_processing->EmbedText(text);
   if (text_embedding.embedding.empty()) {
-    return BLOG(1, "Embedding is empty");
+    return BLOG(1, "Text embedding is empty");
   }
 
   if (*base::ranges::min_element(text_embedding.embedding) == 0.0 &&

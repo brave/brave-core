@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -27,23 +28,34 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
 
   ~TextEmbeddingResource() override;
 
-  bool IsInitialized() const;
+  bool IsInitialized() const {
+    return static_cast<bool>(embedding_processing_);
+  }
 
-  void Load();
-
-  const ml::pipeline::EmbeddingProcessing& get() const {
+  const absl::optional<ml::pipeline::EmbeddingProcessing>& get() const {
     return embedding_processing_;
   }
 
  private:
-  void LoadAndParseResourceCallback(
+  void MaybeLoad();
+  void MaybeLoadOrReset();
+
+  bool DidLoad() const { return did_load_; }
+  void Load();
+  void LoadCallback(
       ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result);
+
+  void MaybeReset();
+  void Reset();
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
-  ml::pipeline::EmbeddingProcessing embedding_processing_;
+  absl::optional<ml::pipeline::EmbeddingProcessing> embedding_processing_;
+
+  bool did_load_ = false;
 
   base::WeakPtrFactory<TextEmbeddingResource> weak_factory_{this};
 };

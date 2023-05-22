@@ -11,6 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/language_components_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -25,7 +26,7 @@ class BraveAdsEmbeddingProcessingTest : public UnitTestBase {
   }
 
   bool LoadResource() {
-    resource_->Load();
+    NotifyDidUpdateResourceComponent(kLanguageComponentId);
     task_environment_.RunUntilIdle();
     return resource_->IsInitialized();
   }
@@ -45,10 +46,14 @@ TEST_F(BraveAdsEmbeddingProcessingTest, EmbedText) {
       {"this 54 is simple", {0.85F, 0.2F, 1.0F}},
       {{}, {}}};
 
+  const absl::optional<ml::pipeline::EmbeddingProcessing>&
+      embedding_processing = resource_->get();
+  ASSERT_TRUE(embedding_processing);
+
   for (const auto& [text, expected_embedding] : k_samples) {
     // Act
     const ml::pipeline::TextEmbeddingInfo text_embedding =
-        resource_->get().EmbedText(text);
+        embedding_processing->EmbedText(text);
 
     // Assert
     EXPECT_EQ(expected_embedding, text_embedding.embedding);
