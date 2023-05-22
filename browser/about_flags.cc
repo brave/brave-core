@@ -809,7 +809,7 @@
       },                                                                       \
       {"geoclue-location-backend", "Use the GeoClue2 Location Provider",       \
        "Attempt to get the location from the GeoClue2 service", kOsLinux,      \
-       FEATURE_VALUE_TYPE(features::kLinuxGeoClueLocationBackend)})            \
+       FEATURE_VALUE_TYPE(features::kLinuxGeoClueLocationBackend),})           \
   BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
