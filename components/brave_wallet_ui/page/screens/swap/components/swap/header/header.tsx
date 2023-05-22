@@ -20,6 +20,9 @@ import { RefreshBlockchainStateParams } from '../../../constants/types'
 import {
   getLocale
 } from '../../../../../../../common/locale'
+import {
+  reduceNetworkDisplayName
+} from '../../../../../../utils/network-utils'
 
 // Components
 import {
@@ -145,7 +148,9 @@ export const Header = (props: Props) => {
         <SelectorWrapper ref={networkSelectorRef}>
           <SelectTokenOrNetworkButton
             onClick={() => setShowNetworkSelector(prev => !prev)}
-            text={selectedNetwork?.chainName}
+            text={
+              reduceNetworkDisplayName(selectedNetwork?.chainName)
+            }
             network={selectedNetwork}
             buttonSize='medium'
             hasBackground={true}

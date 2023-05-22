@@ -15,6 +15,9 @@ import {
 import {
   getLocale
 } from '../../../../../../../common/locale'
+import {
+  reduceNetworkDisplayName
+} from '../../../../../../utils/network-utils'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
@@ -86,7 +89,9 @@ export const SearchWithNetworkSelector = (props: Props) => {
           <SelectTokenOrNetworkButton
             network={selectedNetwork}
             onClick={() => setShowNetworkSelector(prev => !prev)}
-            text={selectedNetwork?.chainName}
+            text={
+              reduceNetworkDisplayName(selectedNetwork?.chainName)
+            }
             buttonSize='small'
             disabled={networkSelectorDisabled}
             iconType='network'
