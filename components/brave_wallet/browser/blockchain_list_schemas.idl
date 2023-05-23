@@ -7,21 +7,25 @@
 namespace blockchain_lists {
 
   dictionary DappMetrics {
-    // e.g. 2348167
+    // Nullable
+    // e.g. "2348167", null
     any transactions;
 
-    // e.g. 387445
+    // Nullable
+    // e.g. "387445", null
     any uaw;
 
-    // e.g. 65982226285.39
+    // Nullable
+    // e.g. "65982226285.39", null
     any volume;
 
-    // e.g. 1904817795.53
+    // Nullable
+    // e.g. "1904817795.53", null
     any balance;
   };
 
   dictionary Dapp {
-    // e.g. 7000
+    // e.g. "7000"
     DOMString dappId;
 
     // e.g. "Uniswap V3"
@@ -59,7 +63,7 @@ namespace blockchain_lists {
     // e.g. "30d"
     DOMString range;
 
-    // e.g. 10
+    // e.g. "10"
     DOMString top;
 
     // A results list.

@@ -479,8 +479,8 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
   EXPECT_DOUBLE_EQ(sol_dapp->volume, 32352.38);
   EXPECT_DOUBLE_EQ(sol_dapp->balance, 3.81);
 
-  // There should ne no dapps in the Polygon list because the only
-  // dapp had null values for metrics
+  // There should be no dapps in the Polygon list because the only
+  // dapp in that list had null values for metrics.
   auto it_p = dapp_list_map->find(
       GetTokenListKey(mojom::CoinType::ETH, mojom::kPolygonMainnetChainId));
   EXPECT_TRUE(it_p != dapp_list_map->end());
