@@ -17,6 +17,10 @@ struct AddSuggestedTokenView: View {
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.openURL) private var openWalletURL
   
+  private var tokenNetwork: BraveWallet.NetworkInfo? {
+    cryptoStore.networkStore.allChains.first(where: { $0.chainId == token.chainId })
+  }
+  
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 22) {
@@ -31,14 +35,18 @@ struct AddSuggestedTokenView: View {
         .padding(.top)
         VStack {
           VStack {
-            AssetIconView(token: token, network: cryptoStore.networkStore.selectedChain, length: 64)
+            AssetIconView(
+              token: token,
+              network: tokenNetwork ?? cryptoStore.networkStore.defaultSelectedChain,
+              length: 64
+            )
             Text(token.symbol)
               .font(.headline)
               .foregroundColor(Color(.bravePrimary))
           }
           .accessibilityElement(children: .combine)
           Button(action: {
-            if let tokenNetwork = cryptoStore.networkStore.allChains.first(where: { $0.chainId == token.chainId }),
+            if let tokenNetwork = tokenNetwork,
                let baseURL = tokenNetwork.blockExplorerUrls.first.map(URL.init(string:)),
                let url = baseURL?.appendingPathComponent("token/\(token.contractAddress)") {
               openWalletURL(url)

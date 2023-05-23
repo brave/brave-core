@@ -33,11 +33,11 @@ struct BuyTokenView: View {
           Section(
             header: WalletListHeaderView(title: Text(Strings.Wallet.buy))
           ) {
-            NavigationLink(destination: BuyTokenSearchView(buyTokenStore: buyTokenStore, network: networkStore.selectedChain)
+            NavigationLink(destination: BuyTokenSearchView(buyTokenStore: buyTokenStore, network: networkStore.defaultSelectedChain)
             ) {
               HStack {
                 if let token = buyTokenStore.selectedBuyToken {
-                  AssetIconView(token: token, network: networkStore.selectedChain, length: 26)
+                  AssetIconView(token: token, network: networkStore.defaultSelectedChain, length: 26)
                 }
                 Text(buyTokenStore.selectedBuyToken?.symbol ?? "BAT")
                   .font(.title3.weight(.semibold))

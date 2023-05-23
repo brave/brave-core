@@ -93,8 +93,10 @@ extension BrowserViewController {
     return walletStore
   }
   
+  /// Presents the Wallet panel for a given origin
   func presentWalletPanel(from origin: URLOrigin, with tabDappStore: TabDappStore) {
     guard let walletStore = self.walletStore ?? newWalletStore() else { return }
+    walletStore.origin = origin
     let controller = WalletPanelHostingController(
       walletStore: walletStore,
       tabDappStore: tabDappStore,
@@ -168,6 +170,14 @@ extension Tab: BraveWalletProviderDelegate {
 
   func getOrigin() -> URLOrigin {
     guard let origin = url?.origin else {
+      // A nil url is possible if multiple tabs are restored but one or more
+      // of the tabs is not opened yet (loaded the url). When a new chain is
+      // assigned for a specific origin, the provider(s) will check origin
+      // of all open Tab's to see if that provider needs(s) updated too.
+      // We can get the url from the SessionTab, and return it's origin.
+      if let sessionTabOrigin = SessionTab.from(tabId: id)?.url.origin {
+        return sessionTabOrigin
+      }
       assert(false, "We should have a valid origin to get to this point")
       return .init()
     }
@@ -299,7 +309,7 @@ extension Tab: BraveWalletProviderDelegate {
     )
   }
   
-  func isAccountAllowed(_ type: BraveWallet.CoinType, account: String) async -> Bool {
+  @MainActor func isAccountAllowed(_ type: BraveWallet.CoinType, account: String) async -> Bool {
     return await allowedAccounts(type, accounts: [account]).1.contains(account)
   }
   
@@ -321,7 +331,7 @@ extension Tab: BraveWalletProviderDelegate {
       return !Preferences.Wallet.allowEthProviderAccess.value
     case .sol:
       return !Preferences.Wallet.allowSolProviderAccess.value
-    case .fil:
+    case .fil, .btc:
       return true
     @unknown default:
       return true
@@ -406,6 +416,13 @@ extension Tab: BraveWalletEventsListener {
     guard !isPrivate else { return }
     
     Task { @MainActor in
+      // chain change might not apply to this origin when assigning
+      // new default network / nil origin: brave-browser #30344
+      guard let provider = walletEthProvider,
+            case let providerChainId = await provider.chainId(),
+            providerChainId == chainId
+      else { return }
+      
       // Temporary fix for #5404
       // Ethereum properties have been updated correctly, however, dapp is not updated unless there is a reload
       // We keep the same as Metamask, that, we will reload tab on chain changes.
@@ -434,7 +451,6 @@ extension Tab: BraveWalletEventsListener {
   func updateEthereumProperties() async {
     guard !isPrivate,
           let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
-          let walletService = BraveWallet.ServiceFactory.get(privateMode: false),
           Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue else {
       return
     }

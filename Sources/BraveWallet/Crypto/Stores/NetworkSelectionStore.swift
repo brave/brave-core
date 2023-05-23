@@ -10,7 +10,7 @@ import SwiftUI
 class NetworkSelectionStore: ObservableObject {
   
   enum Mode: Equatable {
-    case select
+    case select(isForOrigin: Bool)
     case formSelection
   }
   
@@ -30,7 +30,7 @@ class NetworkSelectionStore: ObservableObject {
   @Published var networkSelectionInForm: BraveWallet.NetworkInfo?
   
   init(
-    mode: Mode = .select,
+    mode: Mode = .select(isForOrigin: false),
     networkStore: NetworkStore
   ) {
     self.mode = mode
@@ -60,10 +60,10 @@ class NetworkSelectionStore: ObservableObject {
   
   @MainActor func selectNetwork(_ network: NetworkPresentation.Network) async -> Bool {
     switch mode {
-    case .select:
+    case let .select(isForOrigin):
       guard case let .network(network) = network else { return false }
 
-      let error = await networkStore.setSelectedChain(network)
+      let error = await networkStore.setSelectedChain(network, isForOrigin: isForOrigin)
       switch error {
       case .selectedChainHasNoAccounts:
         isPresentingNextNetworkAlert = true
@@ -99,7 +99,7 @@ class NetworkSelectionStore: ObservableObject {
   @MainActor func handleDismissAddAccount() async -> Bool {
     guard let nextNetwork = nextNetwork else { return false }
     // if it errors it's due to no accounts and we don't want to switch to nextNetwork
-    let result = await networkStore.setSelectedChain(nextNetwork)
+    let result = await networkStore.setSelectedChain(nextNetwork, isForOrigin: false)
     self.nextNetwork = nil
     return result != .selectedChainHasNoAccounts
   }

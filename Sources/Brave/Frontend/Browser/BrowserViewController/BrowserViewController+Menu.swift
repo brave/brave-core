@@ -188,8 +188,10 @@ extension BrowserViewController {
     }
   }
 
+  /// Presents Wallet without an origin (ex. from menu)
   func presentWallet() {
     guard let walletStore = self.walletStore ?? newWalletStore() else { return }
+    walletStore.origin = nil
     let vc = WalletHostingViewController(walletStore: walletStore)
     vc.delegate = self
     self.dismiss(animated: true) {

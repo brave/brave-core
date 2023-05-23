@@ -12,6 +12,13 @@ public class WalletStore {
 
   public let keyringStore: KeyringStore
   public var cryptoStore: CryptoStore?
+  /// The origin of the active tab (if applicable). Used for fetching/selecting network for the DApp origin.
+  public var origin: URLOrigin? {
+    didSet {
+      cryptoStore?.origin = origin
+      keyringStore.origin = origin
+    }
+  }
   
   public let onPendingRequestUpdated = PassthroughSubject<Void, Never>()
 
@@ -77,13 +84,20 @@ public class WalletStore {
             txService: txService,
             ethTxManagerProxy: ethTxManagerProxy,
             solTxManagerProxy: solTxManagerProxy,
-            ipfsApi: ipfsApi
+            ipfsApi: ipfsApi,
+            origin: self.origin
           )
-          self.onPendingRequestCancellable = self.cryptoStore?.$pendingRequest
-            .removeDuplicates()
-            .sink { [weak self] _ in
-              self?.onPendingRequestUpdated.send()
+          if let cryptoStore = self.cryptoStore {
+            Task {
+              // if called in `CryptoStore.init` we may crash
+              await cryptoStore.networkStore.setup()
             }
+            self.onPendingRequestCancellable = cryptoStore.$pendingRequest
+              .removeDuplicates()
+              .sink { [weak self] _ in
+                self?.onPendingRequestUpdated.send()
+              }
+          }
         }
       }
   }

@@ -103,6 +103,9 @@ public class KeyringStore: ObservableObject {
   
   /// A list of default account with all support coin types
   @Published var defaultAccounts: [BraveWallet.AccountInfo] = []
+  
+  /// The origin of the active tab (if applicable). Used for fetching/selecting network for the DApp origin.
+  public var origin: URLOrigin?
 
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
@@ -381,8 +384,8 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
       walletService.setSelectedCoin(coinType)
       if previouslySelectedCoin != coinType || selectedAccount.coin != coinType {
         // update network here in case NetworkStore is closed.
-        let network = await rpcService.network(coinType, origin: nil)
-        await rpcService.setNetwork(network.chainId, coin: coinType, origin: nil)
+        let network = await rpcService.network(coinType, origin: origin)
+        await rpcService.setNetwork(network.chainId, coin: coinType, origin: origin)
       }
       updateKeyringInfo()
     }

@@ -128,7 +128,7 @@ struct AssetDetailHeaderView: View {
   }
   
   @ViewBuilder private var tokenImageNameAndNetwork: some View {
-    AssetIconView(token: assetDetailStore.assetDetailToken, network: assetDetailStore.network ?? networkStore.selectedChain)
+    AssetIconView(token: assetDetailStore.assetDetailToken, network: assetDetailStore.network ?? networkStore.defaultSelectedChain)
     VStack(alignment: .leading) {
       Text(assetDetailStore.assetDetailToken.name)
         .fixedSize(horizontal: false, vertical: true)
@@ -225,7 +225,7 @@ struct AssetDetailHeaderView: View {
         .padding(16)
       } else {
         HStack {
-          AssetIconView(token: assetDetailStore.assetDetailToken, network: networkStore.selectedChain)
+          AssetIconView(token: assetDetailStore.assetDetailToken, network: networkStore.defaultSelectedChain)
           Text(assetDetailStore.assetDetailToken.nftTokenTitle)
             .fixedSize(horizontal: false, vertical: true)
             .font(.title3.weight(.semibold))

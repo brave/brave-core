@@ -83,6 +83,12 @@ public class CryptoStore: ObservableObject {
       }
     }
   }
+  /// The origin of the active tab (if applicable). Used for fetching/selecting network for the DApp origin.
+  public var origin: URLOrigin? {
+    didSet {
+      networkStore.origin = origin
+    }
+  }
   
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -105,7 +111,8 @@ public class CryptoStore: ObservableObject {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI
+    ipfsApi: IpfsAPI,
+    origin: URLOrigin? = nil
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -117,12 +124,14 @@ public class CryptoStore: ObservableObject {
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
+    self.origin = origin
     
     self.networkStore = .init(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService
+      swapService: swapService,
+      origin: origin
     )
     self.portfolioStore = .init(
       keyringService: keyringService,
