@@ -33,6 +33,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
@@ -356,6 +357,10 @@ void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
 
 void UnitTestBase::MockDefaultPrefs() {
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, true);
+
+  ads_client_mock_.SetBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
+  ads_client_mock_.SetBooleanPref(brave_news::prefs::kNewTabPageShowToday,
+                                  true);
 
   ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "");
 

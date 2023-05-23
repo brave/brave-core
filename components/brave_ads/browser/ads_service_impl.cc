@@ -671,6 +671,8 @@ void AdsServiceImpl::OnBraveNewsOptedInPrefChanged() {
   }
 
   MaybeStartBatAdsService();
+
+  NotifyPrefChanged(brave_news::prefs::kBraveNewsOptedIn);
 }
 
 void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
@@ -679,6 +681,8 @@ void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
   }
 
   MaybeStartBatAdsService();
+
+  NotifyPrefChanged(brave_news::prefs::kNewTabPageShowToday);
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
