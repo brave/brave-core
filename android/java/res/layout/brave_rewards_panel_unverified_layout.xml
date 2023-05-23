@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@color/rewards_panel_text_color"
                 android:text="@string/menu_brave_rewards"
                 android:textSize="20sp" />
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:fontFamily="@font/poppins_400"
+                android:fontFamily="sans-serif"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:text="@string/rewards_panel_unverified_switch_off_sub_text"
                 android:textSize="12sp" />
@@ -84,7 +84,7 @@
                 android:text="@string/connect_account"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:background="@drawable/wallet_verify_button"
                 app:drawableEndCompat="@drawable/ic_arrow_circle_right" />
 
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                android:fontFamily="@font/poppins_400" />
+                android:fontFamily="sans-serif" />
 
             <TextView
                 android:id="@+id/rewards_panel_unverified_on_section_learn_more_text"
@@ -105,7 +105,7 @@
                 android:layout_marginTop="16dp"
                 android:visibility="gone"
                 android:textSize="14sp"
-                android:fontFamily="@font/poppins_600" />
+                android:fontFamily="sans-serif-medium" />
 
         </LinearLayout>
 
@@ -125,7 +125,7 @@
             android:id="@+id/rewards_panel_unverified_creator_count_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_400"
+            android:fontFamily="sans-serif"
             android:layout_gravity="center_vertical"
             android:textColor="@color/wallet_secondary_layout_text_color"
             android:layout_marginEnd="16dp"
@@ -136,7 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/poppins_400"
+            android:fontFamily="sans-serif"
             android:textColor="@color/wallet_secondary_layout_text_color"
             android:textSize="14sp" />
 
@@ -163,7 +163,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_400"
+            android:fontFamily="sans-serif"
             android:textColor="@color/wallet_secondary_layout_text_color"
             android:text="@string/rewards_panel_unverified_off_section_text"
             android:textSize="14sp" />
@@ -192,7 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/poppins_600"
+            android:fontFamily="sans-serif-medium"
             android:textColor="@color/rewards_panel_text_color"
             android:text="@string/rewards_settings"
             android:textSize="14sp" />
@@ -203,7 +203,7 @@
         android:id="@+id/learn_more_unverified_text"
         style="@style/BraveWalletTextView"
         android:textSize="14sp"
-        android:fontFamily="@font/poppins_600"
+        android:fontFamily="sans-serif-medium"
         android:layout_gravity="center_horizontal"
         android:text="@string/learn_more_about_bat"
         android:textColor="@color/brave_link" />

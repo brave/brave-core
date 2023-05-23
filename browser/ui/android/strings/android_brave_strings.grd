@@ -144,8 +144,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
 
+      <message name="IDS_ESTIMATED_TOOLTIP_TEXT"  desc="Text for This reflects your estimated earnings range for Brave Ads this month.">
+        This reflects your estimated earnings range for Brave Ads this month.
+      </message>
       <message name="IDS_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Notifications are disabled">
         Notifications are disabled
+      </message>
+      <message name="IDS_LOADING"  desc="Text for loading text for progressbar">
+        Loading...
       </message>
       <message name="IDS_STILL_RECEIVE_CONTRIBUTIONS_FROM_WEB3" desc="Text for still send crypto contributions">
         \n\nYou can still send crypto contributions to this creator by using your Web3 wallet.
@@ -934,7 +940,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Brave News
       </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
-        <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
+        ≈ <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
       </message>
       <message name="IDS_BRAVE_UI_SETTINGS" desc="Settings button text">
         Settings
@@ -951,8 +957,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_CLAIM" desc="A claim grant button text">
         Claim Rewards
       </message>
-      <message name="IDS_YOUR_BALANCE" desc="Title text for `Your Balance` section in Brave rewards panel">
-      Your Balance
+      <message name="IDS_BALANCE" desc="Title text for `Your Balance` section in Brave rewards panel">
+        Balance
       </message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_DESCRIPTION" desc="A notication message description about auto-contribute">
         You've contributed <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT.
@@ -2794,9 +2800,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BAT_TEXT" desc="Brave rewards panel text" translateable="false">
       BAT
     </message>
-    <message name="IDS_BRAVE_ADS_STATEMENT_USD" desc="USD value of tokens">
-      ≈ <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
-    </message>
     <message name="IDS_BRAVE_REWARDS_BAT_VALUE_TEXT" desc="BAT value text">
       <ph name="VALUE">%1$s<ex>0</ex></ph> BAT
     </message>
@@ -3524,7 +3527,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       This month, You've visited <ph name="CREATOR_COUNT">%1$s<ex>2</ex></ph> creators supported by Brave Rewards
     </message>
     <message name="IDS_EMPTY_UNVERIFIED_STATE_TEXT" desc="Rewards panel unverified state text" translateable="false">
-      --
+      - -
     </message>
     <message name="IDS_CONNECT_ACCOUNT_MODAL_TEXT" desc="Rewards panel onboarding connect account text">
       Connect a custodial account so you can earn BAT and withdraw your rewards

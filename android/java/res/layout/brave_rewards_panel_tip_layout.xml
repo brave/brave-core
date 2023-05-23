@@ -34,7 +34,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/attention"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="16sp" />
 
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="16sp" />
 
@@ -55,13 +55,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/rewards_panel_information_for_unverified_background"
-            android:fontFamily="@font/poppins_400"
+            android:fontFamily="sans-serif"
             android:text="@string/info_creator_not_verified"
             android:textColor="@color/terms_of_service_text_color"
             android:textSize="12sp"
+            android:layout_marginBottom="16dp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:drawableLeftCompat="@drawable/rewards_info_icon"
             android:drawablePadding="16dp"/>
 
@@ -86,7 +85,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/include_auto_contribute"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="16sp" />
 
@@ -113,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:text="@string/monthly_tip"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="16sp" />
@@ -125,13 +124,14 @@
                 android:padding="8dp"
                 android:text="@string/set"
                 android:drawablePadding="4dp"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@color/rewards_panel_action_color"
                 android:textSize="16sp" />
 
         </LinearLayout>
 
         <View
+            android:id="@+id/divider_line2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="16dp"
@@ -148,14 +148,10 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:layout_gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:fontFamily="@font/poppins_600"
+            android:padding="12dp"
+            android:fontFamily="sans-serif-medium"
             android:text="@string/send_contribution"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
