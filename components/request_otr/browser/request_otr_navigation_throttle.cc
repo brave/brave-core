@@ -163,7 +163,7 @@ RequestOTRNavigationThrottle::WillProcessResponse() {
 
   // Check if this site sent an HTTP header indicating it wants to offer to go
   // off-the-record.
-  if (!headers->HasHeaderValue("X-Request-OTR", "1")) {
+  if (!headers->HasHeaderValue("Request-OTR", "1")) {
     return content::NavigationThrottle::PROCEED;
   }
 
