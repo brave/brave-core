@@ -81,7 +81,7 @@ absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
   return resource.path;
 }
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 void ResourceComponent::RegisterComponentForCountryCode(
     const std::string& country_code) {

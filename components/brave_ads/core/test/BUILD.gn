@@ -476,6 +476,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource_unittest.cc",
     "//brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource_unittest.cc",
     "//brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource_unittest.cc",
+    "//brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h",
+    "//brave/components/brave_ads/core/internal/resources/language_components_unittest_constants.h",
     "//brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h",
     "//brave/components/brave_ads/core/internal/segments/segment_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/segments/segment_value_util_unittest.cc",
