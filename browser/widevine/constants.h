@@ -7,5 +7,6 @@
 #define BRAVE_BROWSER_WIDEVINE_CONSTANTS_H_
 
 constexpr char kWidevineComponentId[] = "oimompecagnajdejgnnjijobebaeigek";
+constexpr char kFakeArchitectureAttribute[] = "brave_fake_architecture";
 
 #endif  // BRAVE_BROWSER_WIDEVINE_CONSTANTS_H_

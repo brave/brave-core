@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_
 #define BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_
 
+#include "brave/browser/widevine/buildflags.h"
+
 class BraveBrowsingDataRemoverDelegate;
 namespace ipfs {
 class IpfsService;
@@ -13,13 +15,30 @@ class IpfsService;
 namespace brave {
 class ProcessLauncher;
 }
+namespace component_updater {
+class WidevineCdmComponentInstallerPolicy;
+}
 
-#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H  \
-  friend class ::BraveBrowsingDataRemoverDelegate; \
-  friend class ipfs::IpfsService;                  \
+#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_BASE \
+  friend class ::BraveBrowsingDataRemoverDelegate;     \
+  friend class ipfs::IpfsService;                      \
   friend class brave::ProcessLauncher;
+
+#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+// WidevineCdmComponentInstallerPolicy needs to use TimedWait:
+#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_EXTRA \
+  friend class component_updater::WidevineCdmComponentInstallerPolicy;
+#else
+#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_EXTRA
+#endif
+
+#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H \
+  BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_BASE  \
+  BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_EXTRA
 
 #include "src/base/threading/thread_restrictions.h"  // IWYU pragma: export
 #undef BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H
+#undef BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_BASE
+#undef BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_EXTRA
 
 #endif  // BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_

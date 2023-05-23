@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/component_updater/registration.cc b/chrome/browser/component_updater/registration.cc
+index 9ba5383b6297de8f4d89f7c93ae94bf00e1adcb6..3d46d7a21f7ad9dce4dff874a23571b98f370475 100644
+--- a/chrome/browser/component_updater/registration.cc
++++ b/chrome/browser/component_updater/registration.cc
+@@ -15,6 +15,7 @@
+ #include "build/branding_buildflags.h"
+ #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
++#include "brave/browser/widevine/buildflags.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/buildflags.h"
+ #include "chrome/browser/component_updater/app_provisioning_component_installer.h"
+@@ -117,7 +118,11 @@ void RegisterComponentsForUpdate() {
+ #endif
+ 
+ #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
++#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
++  RegisterWidevineCdmComponent(cus, g_browser_process->shared_url_loader_factory());
++#else
+   RegisterWidevineCdmComponent(cus);
++#endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+ #endif  // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+ 
+ #if BUILDFLAG(ENABLE_NACL) && !BUILDFLAG(IS_ANDROID)
