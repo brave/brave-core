@@ -659,6 +659,8 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
   }
 
   MaybeStartBatAdsService();
+
+  NotifyPrefChanged(prefs::kEnabled);
 }
 
 void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
