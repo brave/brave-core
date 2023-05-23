@@ -38,7 +38,7 @@ constexpr char kWireguardConfigTemplate[] = R"(
 
 }  // namespace
 
-namespace internal {
+namespace wireguard {
 
 absl::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,
@@ -97,7 +97,7 @@ bool EnableBraveVpnWireguardServiceImpl(const std::string& config) {
 }
 
 void EnableBraveVpnWireguardService(const std::string& config,
-                                    BooleanCallback callback) {
+                                    wireguard::BooleanCallback callback) {
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
        base::TaskPriority::BEST_EFFORT,
@@ -138,7 +138,7 @@ bool DisableBraveVpnWireguardServiceImpl() {
   return error_code == 0;
 }
 
-void DisableBraveVpnWireguardService(BooleanCallback callback) {
+void DisableBraveVpnWireguardService(wireguard::BooleanCallback callback) {
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
        base::TaskPriority::BEST_EFFORT,
@@ -149,7 +149,7 @@ void DisableBraveVpnWireguardService(BooleanCallback callback) {
           std::move(callback));
 }
 
-WireguardKeyPair WireguardGenerateKeypairImpl() {
+wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
   base::win::AssertComInitialized();
   HRESULT hr = S_OK;
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
@@ -194,7 +194,8 @@ WireguardKeyPair WireguardGenerateKeypairImpl() {
   return std::make_tuple(public_key, private_key);
 }
 
-void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback) {
+void WireguardGenerateKeypair(
+    wireguard::WireguardGenerateKeypairCallback callback) {
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
        base::TaskPriority::BEST_EFFORT,
@@ -205,6 +206,6 @@ void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback) {
           std::move(callback));
 }
 
-}  // namespace internal
+}  // namespace wireguard
 
 }  // namespace brave_vpn

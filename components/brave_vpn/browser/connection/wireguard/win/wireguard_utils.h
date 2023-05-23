@@ -7,19 +7,14 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_WIREGUARD_UTILS_H_
 
 #include <string>
-#include <tuple>
 
 #include "base/functional/callback.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/common/constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
-namespace internal {
-
-using BooleanCallback = base::OnceCallback<void(bool)>;
-using WireguardKeyPair = absl::optional<std::tuple<std::string, std::string>>;
-using WireguardGenerateKeypairCallback =
-    base::OnceCallback<void(WireguardKeyPair)>;
+namespace wireguard {
 
 void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback);
 absl::optional<std::string> CreateWireguardConfig(
@@ -32,7 +27,7 @@ void EnableBraveVpnWireguardService(const std::string& config,
                                     BooleanCallback callback);
 void DisableBraveVpnWireguardService(BooleanCallback callback);
 
-}  // namespace internal
+}  // namespace wireguard
 
 }  // namespace brave_vpn
 
