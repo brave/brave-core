@@ -503,6 +503,10 @@
 -SyncConfirmationUIDialogPixelTest.InvokeUi_default/*
 -SyncConfirmationUIWindowPixelTest.InvokeUi_default/*
 
+# This test fails because of the following CHECK in identity_test_utils.cc:
+# !primary_account_info.IsEmpty()
+-SupervisedUserExtensionTest.RemovingSupervisionCustodianApprovalRequired
+
 # These tests time out because IdentityManager never loads refresh tokens
 -DisallowManagedProfileSignoutFeature/UserPolicySigninServiceTest.*
 
