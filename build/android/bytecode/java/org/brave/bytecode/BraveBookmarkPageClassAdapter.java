@@ -16,7 +16,7 @@ public class BraveBookmarkPageClassAdapter extends BraveClassVisitor {
         super(visitor);
 
         redirectConstructor(sBookmarkPageClassName, sBraveBookmarkPageClassName);
-        deleteField(sBraveBookmarkPageClassName, "mManager");
-        makeProtectedField(sBookmarkPageClassName, "mManager");
+        deleteField(sBraveBookmarkPageClassName, "mBookmarkManagerCoordinator");
+        makeProtectedField(sBookmarkPageClassName, "mBookmarkManagerCoordinator");
     }
 }

@@ -238,6 +238,17 @@ public class TabUtils {
         }
     }
 
+    public static void reloadIgnoringCache() {
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+            if (braveActivity.getActivityTab() != null) {
+                braveActivity.getActivityTab().reloadIgnoringCache();
+            }
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "reloadIgnoringCache " + e);
+        }
+    }
+
     public static void enableRewardsButton() {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
