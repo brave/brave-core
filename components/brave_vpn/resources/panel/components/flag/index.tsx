@@ -22,7 +22,8 @@ export const IconBox = styled.span`
   }
 `
 
-const COUNTRIES = ['AU', 'BR', 'CA', 'CH', 'DE', 'ES', 'FR', 'GB', 'IT', 'JP', 'MX', 'NL', 'SG', 'US']
+const COUNTRIES = ['AU', 'BR', 'CA', 'CH', 'DE', 'ES', 'FR', 'GB', 'IT', 'JP',
+                   'MX', 'NL', 'SG', 'US']
 
 function Flag (props: Props) {
   const [url, setUrl] = React.useState<undefined | string>(undefined)

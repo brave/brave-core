@@ -14,7 +14,10 @@ static_library("common") {
 }
 
 mojom("mojom") {
-  sources = [ "skus_sdk.mojom" ]
+  sources = [
+    "skus_internals.mojom",
+    "skus_sdk.mojom",
+  ]
 
   deps = [ "//mojo/public/mojom/base" ]
 }

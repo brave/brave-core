@@ -1,0 +1,26 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("skus_internals_ui") {
+  entry_points = [ [
+        "skus_internals",
+        rebase_path("skus_internals.tsx"),
+      ] ]
+
+  public_deps = [
+    "//brave/components/skus/common:mojom_js",
+    "//mojo/public/mojom/base",
+  ]
+
+  resource_name = "skus_internals"
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "skus_internals"
+  output_dir = "$root_gen_dir/brave/components/skus/browser/resources"
+  deps = [ ":skus_internals_ui" ]
+}

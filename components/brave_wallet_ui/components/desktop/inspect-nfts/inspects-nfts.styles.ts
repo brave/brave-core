@@ -101,7 +101,6 @@ export const NftCountHeading = styled.h1`
 
 export const PinNftsButton = styled(ActionButton)`
   margin: 32px;
-  
   &:disabled {
     color: ${leo.color.white};
     opacity: 0.5;

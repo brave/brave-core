@@ -34,6 +34,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
@@ -69,6 +70,8 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/skus/common/features.h"
+#include "brave/components/skus/common/skus_internals.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -534,6 +537,10 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<commands::mojom::CommandsService>();
   }
 #endif
+
+  if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
+    registry.ForWebUI<SkusInternalsUI>().Add<skus::mojom::SkusInternals>();
+  }
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
