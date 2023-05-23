@@ -80,6 +80,7 @@ export const QuoteInfo = (props: Props) => {
   }, [selectedQuoteOption])
 
   const coinGeckoDelta: Amount = React.useMemo(() => {
+    console.log(fromToken, toToken, spotPrices, selectedQuoteOption)
     if (
       fromToken !== undefined &&
       toToken !== undefined &&

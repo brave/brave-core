@@ -24,8 +24,8 @@ import {
 } from '../../../../../../common/slices/entities/account-info.entity'
 
 import {
-  getAllAccountsFromRegistry
-} from '../../../../../../utils/account-utils'
+  getEntitiesListFromEntityState
+} from '../../../../../../utils/entities.utils'
 
 // Types
 import { BraveKeyrings } from '../../../../../../constants/types'
@@ -62,7 +62,7 @@ export const AccountModal = (props: Props) => {
   const [setSelectedAccount] = useSetSelectedAccountMutation()
   const { data: accountInfosRegistry = accountInfoEntityAdaptorInitialState } =
     useGetAccountInfosRegistryQuery(undefined)
-  const accounts = getAllAccountsFromRegistry(accountInfosRegistry)
+  const accounts = getEntitiesListFromEntityState(accountInfosRegistry)
 
   // Memos
   const networkAccounts = React.useMemo(() => {

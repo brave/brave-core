@@ -17,7 +17,6 @@ import registry from '../common/constants/registry'
 import { reduceAddress } from './reduce-address'
 import { EntityState } from '@reduxjs/toolkit'
 import { AccountInfoEntity } from '../common/slices/entities/account-info.entity'
-import { getEntitiesListFromEntityState } from './entities.utils'
 
 export const sortAccountsByName = (accounts: WalletAccountType[]) => {
   return [...accounts].sort(function (a: WalletAccountType, b: WalletAccountType) {
@@ -140,10 +139,4 @@ export const findAccountInList = (
         acc.address.toLowerCase() === account.address.toLowerCase()
     ) ?? account
   )
-}
-
-export const getAllAccountsFromRegistry = (
-  entityState: EntityState<AccountInfoEntity>
-): AccountInfoEntity[] => {
-  return getEntitiesListFromEntityState(entityState)
 }
