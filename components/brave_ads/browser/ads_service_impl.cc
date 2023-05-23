@@ -309,10 +309,14 @@ AdsServiceImpl::AdsServiceImpl(
 
   MigrateConfirmationState();
 
+  BackgroundHelper::GetInstance()->AddObserver(this);
+
   rewards_service_->AddObserver(this);
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
+  BackgroundHelper::GetInstance()->RemoveObserver(this);
+
   rewards_service_->RemoveObserver(this);
 }
 
@@ -459,8 +463,6 @@ void AdsServiceImpl::Initialize(const size_t current_start_number) {
   }
 
   InitializeDatabase();
-
-  BackgroundHelper::GetInstance()->AddObserver(this);
 
   g_brave_browser_process->resource_component()->AddObserver(this);
 
@@ -1243,8 +1245,6 @@ void AdsServiceImpl::Shutdown() {
   bat_ads_.reset();
   bat_ads_client_.reset();
   bat_ads_service_.reset();
-
-  BackgroundHelper::GetInstance()->RemoveObserver(this);
 
   g_brave_browser_process->resource_component()->RemoveObserver(this);
 
