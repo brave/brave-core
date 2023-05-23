@@ -51,8 +51,7 @@ def CheckPatchFormatted(input_api, output_api):
     git_cl_format_cmd.append(input_api.PresubmitLocalPath())
 
     # Run git cl format and get return code.
-    git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd,
-                                                  suppress_stderr=True)
+    git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd)
 
     is_format_required = git_cl_format_code == 2
 
@@ -64,9 +63,7 @@ def CheckPatchFormatted(input_api, output_api):
             # r'.+\.ts$',
             # r'.+\.tsx$',
         )
-        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
-          r'third_party/rust/'
-        )
+        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 
         file_filter = lambda f: input_api.FilterSourceFile(
             f, files_to_check=files_to_check, files_to_skip=files_to_skip)
@@ -110,7 +107,7 @@ def CheckESLint(input_api, output_api):
         r'.+\.ts$',
         r'.+\.tsx$',
     )
-    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + ( r'third_party/rust/' )
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 
     file_filter = lambda f: input_api.FilterSourceFile(
         f, files_to_check=files_to_check, files_to_skip=files_to_skip)
