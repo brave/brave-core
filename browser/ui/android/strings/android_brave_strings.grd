@@ -1873,12 +1873,6 @@ Are you sure you want to do this?
     <message name="IDS_SWAP_TEXT" desc="Brave Wallet swap bottomsheet text">
       Swap tokens and assets
     </message>
-    <message name="IDS_DIALOG_POSITIVE_BUTTON" desc="Brave Wallet swap bottomsheet text">
-      OK
-    </message>
-    <message name="IDS_BRAVE_WALLET_SWAP_DISCLAIMER_DESCRIPTION" desc="Swap 0x Security and Privacy Disclaimer Description">
-      <ph name="DEX_PROVIDER">%1$s</ph> will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). <ph name="DEX_PROVIDER">%1$s</ph> will ONLY use this data for the purposes of processing transactions.
-    </message>
     <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
       Secure your crypto with a password
     </message>
@@ -2005,9 +1999,6 @@ Are you sure you want to do this?
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Ethereum Mainnet
     </message>
-    <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
-      Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>
-    </message>
     <message name="IDS_FROM" desc="Brave Wallet buy-send-swap section text">
       From
     </message>
@@ -2038,18 +2029,6 @@ Are you sure you want to do this?
     <message name="IDS_ADDRESS_NOT_VALID_CHECKSUM_ERROR" desc="Brave Wallet send address invalid checksum error text">
       Invalid checksum information
     </message>
-    <!-- <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
-      Limit
-    </message>
-    <message name="IDS_MARKET" desc="Brave Wallet buy-send-swap section text">
-      Market
-    </message> -->
-    <message name="IDS_SLIPPING_TOLERANCE" desc="Brave Wallet buy-send-swap section text">
-      Slippage tolerance
-    </message>
-    <!-- <message name="IDS_EXPIRES_IN" desc="Brave Wallet buy-send-swap section text">
-      Expires in
-    </message> -->
     <message name="IDS_ACCOUNTS" desc="Brave Wallet section text">
       Accounts
     </message>
@@ -2557,35 +2536,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_PRIVATE_TITLE" desc="Text used to explain the block third-party cookies in Private option in settings">
       Block third-party cookies in Private
     </message>
-    <message name="IDS_CRYPTO_WALLET_TOLERANCE_05" desc="Slippage tolerance %" translateable="false">
-      0.5%
-    </message>
-    <message name="IDS_CRYPTO_WALLET_TOLERANCE_1" desc="Slippage tolerance %" translateable="false">
-      1%
-    </message>
-    <message name="IDS_CRYPTO_WALLET_TOLERANCE_2" desc="Slippage tolerance %" translateable="false">
-      2%
-    </message>
-    <message name="IDS_CRYPTO_WALLET_TOLERANCE_PERCENTAGE_HINT" desc="Slippage tolerance %" translateable="false">
-      %
-    </message>
-    <message name="IDS_CRYPTO_WALLET_TOLERANCE_PERCENTAGE" desc="Slippage tolerance %" translateable="false">
-      <ph name="PERCENT">%1$s<ex>1</ex></ph>%%
-    </message>
     <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_BALANCE" desc="Error on crypto wallets">
       Insufficient balance
     </message>
-    <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_GAS" desc="Error on crypto wallets">
-      Insufficient funds for gas
-    </message>
-    <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_LIQUIDITY" desc="Error on crypto wallets">
-      Insufficient liquidity
-    </message>
     <message name="IDS_CRYPTO_WALLET_ERROR_WRONG_NUMBER_FORMAT" desc="Error on crypto wallets">
       Unrecognized number format
-    </message>
-    <message name="IDS_CRYPTO_WALLET_ERROR_UNKNOWN_ERROR" desc="Error on crypto wallets">
-      Unknown error
     </message>
     <message name="IDS_PRIVATE_KEY" desc="Wallet account private key text">
       Private Key
@@ -2748,9 +2703,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_DEX_AGGREGATOR" desc="Brave wallet msg about using 0x for swap">
       Brave uses <ph name="DEX_PROVIDER">%1$s<ex>0x</ex></ph> as a DEX aggregator.
-    </message>
-    <message name="IDS_SWAP_DEX_AGGREGATOR_NAME" desc="Brave wallet swap dex aggregator source name" translateable="false">
-      0x
     </message>
     <message name="IDS_WALLET_POWERED_BY_COIN_GECKO" desc="Disclaimer on assets details page for GoinGecko contract agreement">
       Price data powered by CoinGecko

@@ -50,9 +50,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         ACCOUNTS_LIST,
         SELECT_ACCOUNTS_LIST,
         BUY_ASSETS_LIST,
-        SEND_ASSETS_LIST,
-        SWAP_TO_ASSETS_LIST,
-        SWAP_FROM_ASSETS_LIST;
+        SEND_ASSETS_LIST;
     }
 
     private Context context;
@@ -106,9 +104,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             if (walletListItemType == Utils.TRANSACTION_ITEM) {
                 onWalletListItemClick.onTransactionClick(walletListItemModel.getTransactionInfo());
             } else if (walletListItemType == Utils.ASSET_ITEM) {
-                if (mType == AdapterType.BUY_ASSETS_LIST || mType == AdapterType.SEND_ASSETS_LIST
-                        || mType == AdapterType.SWAP_TO_ASSETS_LIST
-                        || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
+                if (mType == AdapterType.BUY_ASSETS_LIST || mType == AdapterType.SEND_ASSETS_LIST) {
                     for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
                         WalletListItemModel item = walletListItemModelListCopy.get(i);
                         if (item.getTitle().equals(holder.titleText.getText())
@@ -248,8 +244,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
     private boolean isAssetSelectionType() {
         return mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
-                || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
-                || mType == AdapterType.SWAP_FROM_ASSETS_LIST;
+                || mType == AdapterType.SEND_ASSETS_LIST;
     }
 
     @Override

@@ -253,17 +253,6 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    public List<AccountInfo> stripNoSwapSupportedAccounts(List<AccountInfo> accountInfos) {
-        List<AccountInfo> accountInfosFiltered = new ArrayList<>();
-        for (AccountInfo accountInfo : accountInfos) {
-            if (accountInfo.coin != CoinType.SOL) {
-                accountInfosFiltered.add(accountInfo);
-            }
-        }
-
-        return accountInfosFiltered;
-    }
-
     public void getKeyringPerId(String keyringId, Callbacks.Callback1<KeyringInfo> callback) {
         if (TextUtils.isEmpty(keyringId)) return;
         KeyringInfo selectedCoinKeyring = _mSelectedCoinKeyringInfoLiveData.getValue();
