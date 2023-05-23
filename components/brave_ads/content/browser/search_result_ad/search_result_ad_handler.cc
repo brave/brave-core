@@ -39,10 +39,8 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     AdsService* ads_service,
     const GURL& url,
     const bool should_trigger_viewed_event) {
-  if (!ads_service || !ads_service->IsEnabled() ||
-      !base::FeatureList::IsEnabled(
-          kShouldTriggerSearchResultAdEventsFeature) ||
-      !brave_search::IsAllowedHost(url)) {
+  if (!IsSearchResultAdFeatureEnabled() || !ads_service ||
+      !ads_service->IsEnabled() || !brave_search::IsAllowedHost(url)) {
     return {};
   }
 

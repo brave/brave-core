@@ -52,9 +52,7 @@ SearchResultAdTabHelper::~SearchResultAdTabHelper() = default;
 void SearchResultAdTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
   CHECK(web_contents);
-  if (!base::FeatureList::IsEnabled(
-          kShouldTriggerSearchResultAdEventsFeature) ||
-      !web_contents->GetBrowserContext() ||
+  if (!IsSearchResultAdFeatureEnabled() || !web_contents->GetBrowserContext() ||
       web_contents->GetBrowserContext()->IsOffTheRecord()) {
     return;
   }

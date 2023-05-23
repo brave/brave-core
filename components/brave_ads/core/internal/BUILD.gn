@@ -288,8 +288,6 @@ source_set("internal") {
     "ads/promoted_content_ad_handler.h",
     "ads/promoted_content_ad_info.cc",
     "ads/promoted_content_ad_value_util.cc",
-    "ads/search_result_ad_feature.cc",
-    "ads/search_result_ad_feature.h",
     "ads/search_result_ad_handler.cc",
     "ads/search_result_ad_handler.h",
     "ads/serving/choose/ad_predictor_info.h",

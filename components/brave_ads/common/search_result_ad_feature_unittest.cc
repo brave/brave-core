@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad_feature.h"
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 
 #include <vector>
 
@@ -16,6 +16,15 @@ namespace brave_ads {
 
 TEST(BraveAdsSearchResultAdFeatureTest, IsEnabled) {
   // Arrange
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  enabled_features.emplace_back(kSearchResultAdFeature, params);
+
+  const std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
 
   // Act
 
@@ -25,14 +34,6 @@ TEST(BraveAdsSearchResultAdFeatureTest, IsEnabled) {
 
 TEST(BraveAdsSearchResultAdFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kSearchResultAdFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
 

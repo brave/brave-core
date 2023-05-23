@@ -72,8 +72,7 @@ class ScopedTestingAdsServiceSetter {
 class SearchResultAdTest : public InProcessBrowserTest {
  public:
   SearchResultAdTest() {
-    feature_list_.InitAndEnableFeature(
-        kShouldTriggerSearchResultAdEventsFeature);
+    feature_list_.InitAndEnableFeature(kSearchResultAdFeature);
   }
 
   void SetUpOnMainThread() override {

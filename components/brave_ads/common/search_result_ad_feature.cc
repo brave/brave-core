@@ -7,8 +7,12 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kShouldTriggerSearchResultAdEventsFeature,
-             "ShouldTriggerSearchResultAdEvents",
+BASE_FEATURE(kSearchResultAdFeature,
+             "SearchResultAds",
              base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsSearchResultAdFeatureEnabled() {
+  return base::FeatureList::IsEnabled(kSearchResultAdFeature);
+}
 
 }  // namespace brave_ads

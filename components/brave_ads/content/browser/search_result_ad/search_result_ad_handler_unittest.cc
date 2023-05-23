@@ -53,8 +53,7 @@ GURL GetSearchResultAdClickedUrl() {
 class SearchResultAdHandlerTest : public ::testing::Test {
  public:
   SearchResultAdHandlerTest() {
-    feature_list_.InitAndEnableFeature(
-        kShouldTriggerSearchResultAdEventsFeature);
+    feature_list_.InitAndEnableFeature(kSearchResultAdFeature);
   }
 
   static void SimulateOnRetrieveSearchResultAdEntities(

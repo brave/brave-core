@@ -7,10 +7,19 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_COMMON_SEARCH_RESULT_AD_FEATURE_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace brave_ads {
 
-BASE_DECLARE_FEATURE(kShouldTriggerSearchResultAdEventsFeature);
+BASE_DECLARE_FEATURE(kSearchResultAdFeature);
+
+bool IsSearchResultAdFeatureEnabled();
+
+constexpr base::FeatureParam<int> kMaximumSearchResultAdsPerHour{
+    &kSearchResultAdFeature, "maximum_ads_per_hour", 10};
+
+constexpr base::FeatureParam<int> kMaximumSearchResultAdsPerDay{
+    &kSearchResultAdFeature, "maximum_ads_per_day", 40};
 
 }  // namespace brave_ads
 

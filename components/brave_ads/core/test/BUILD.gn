@@ -133,7 +133,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ads/promoted_content_ad_info_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads/promoted_content_ad_test.cc",
     "//brave/components/brave_ads/core/internal/ads/promoted_content_ad_value_util_unittest.cc",
-    "//brave/components/brave_ads/core/internal/ads/search_result_ad_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads/search_result_ad_test.cc",
     "//brave/components/brave_ads/core/internal/ads/serving/choose/eligible_ads_predictor_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads/serving/choose/sample_ads_unittest.cc",
