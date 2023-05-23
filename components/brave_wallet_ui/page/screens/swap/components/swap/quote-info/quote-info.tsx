@@ -32,7 +32,8 @@ import {
   FuelTank,
   HorizontalArrows,
   LPIcon,
-  LPSeparator
+  LPSeparator,
+  LPRow
 } from './quote-info.style'
 import {
   Column,
@@ -229,7 +230,7 @@ export const QuoteInfo = (props: Props) => {
             </Row>
           </Row>
           {showProviders &&
-            <Row
+            <LPRow
               rowWidth='full'
               horizontalAlign='flex-start'
               verticalPadding={6}
@@ -254,7 +255,7 @@ export const QuoteInfo = (props: Props) => {
                   )}
                 </Row>
               ))}
-            </Row>
+            </LPRow>
           }
         </Column>
       )}

@@ -10,6 +10,7 @@ import ApeSwapIcon from '../assets/lp-icons/apeswap.svg'
 import BalancerIcon from '../assets/lp-icons/balancer.svg'
 import BalansolIcon from '../assets/lp-icons/balansol.svg'
 import BancorIcon from '../assets/lp-icons/bancor.svg'
+import BiSwapIcon from '../assets/lp-icons/biswap.svg'
 import ComponentIcon from '../assets/lp-icons/component.jpg'
 import CremaIcon from '../assets/lp-icons/crema.svg'
 import CropperIcon from '../assets/lp-icons/cropper.svg'
@@ -28,11 +29,13 @@ import LidoIcon from '../assets/lp-icons/lido.svg'
 import LifinityIcon from '../assets/lp-icons/lifinity.jpg'
 import MakerPsmIcon from '../assets/lp-icons/makerpsm.svg'
 import MarinadeIcon from '../assets/lp-icons/marinade.svg'
+import MDexIcon from '../assets/lp-icons/mdex.svg'
 import MercurialIcon from '../assets/lp-icons/mercurial.svg'
 import MeshSwapIcon from '../assets/lp-icons/meshswap.svg'
 import MStableIcon from '../assets/lp-icons/mstable.png'
 import OrcaIcon from '../assets/lp-icons/orca.svg'
 import QuickSwapIcon from '../assets/lp-icons/quickswap.svg'
+import PancakeSwapIcon from '../assets/lp-icons/pancakeswap.svg'
 import PenguinIcon from '../assets/lp-icons/penguin.svg'
 import SaberIcon from '../assets/lp-icons/saber.svg'
 import SaddleIcon from '../assets/lp-icons/saddle.png'
@@ -63,6 +66,7 @@ const LPMetadata: LPMetadataType = {
   'Balansol': BalansolIcon,
   'Bancor': BancorIcon,
   'BancorV3': BancorIcon,
+  'BiSwap': BiSwapIcon,
   'Component': ComponentIcon,
   'Crema': CremaIcon,
   'Cropper': CropperIcon,
@@ -85,6 +89,7 @@ const LPMetadata: LPMetadataType = {
   'LiquidityProvider': '',
   'MakerPsm': MakerPsmIcon,
   'Marinade': MarinadeIcon,
+  'MDex': MDexIcon,
   'Mercurial': MercurialIcon,
   'MeshSwap': MeshSwapIcon,
   'mStable': MStableIcon,
@@ -92,6 +97,8 @@ const LPMetadata: LPMetadataType = {
   'MultiHop': '',
   'Orca': OrcaIcon,
   'QuickSwap': QuickSwapIcon,
+  'PancakeSwap': PancakeSwapIcon,
+  'PancakeSwap_V2': PancakeSwapIcon,
   'Penguin': PenguinIcon,
   'Saber': SaberIcon,
   'Saddle': SaddleIcon,

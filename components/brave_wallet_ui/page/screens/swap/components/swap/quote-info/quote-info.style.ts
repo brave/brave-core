@@ -56,3 +56,7 @@ export const ExpandButton = styled(IconButton) <{
   transform: ${(p) => p.isExpanded ? 'rotate(180deg)' : 'unset'};
   transition: transform 300ms ease;
 `
+
+export const LPRow = styled(Row)`
+  flex-wrap: wrap;
+`
