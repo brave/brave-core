@@ -346,23 +346,17 @@
   </message>
 
   <!-- Rewards onboarding tour -->
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_BRAVE_REWARDS" desc="">
-    Brave Rewards
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_CLOSE" desc="">
     Close
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_CONTINUE" desc="">
     Continue
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_DETAIL_LINKS" desc="">
-    <ph name="TOUR_LINK_BEGIN">$1</ph>Take a quick tour<ph name="TOUR_LINK_END">$2</ph> or <ph name="LEARN_LINK_BEGIN">$3</ph>learn more<ph name="LEARN_LINK_END">$4</ph> for details.
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER" desc="">
-    Earn Tokens &amp; Give Back
+    Earn tokens for private ads you see in Brave
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">
-    Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.
+    Use tokens to buy gift cards, exchange for other currencies, support content creators, and more.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER" desc="">
     Something went wrong
@@ -428,7 +422,7 @@
     You can change this later in settings.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">
-    Start using Brave Rewards
+    Start using Rewards
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR" desc="">
     Take a quick tour

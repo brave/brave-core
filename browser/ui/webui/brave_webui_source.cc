@@ -505,8 +505,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "off", IDS_BRAVE_UI_OFF },
         { "ok", IDS_BRAVE_UI_OK },
         { "on", IDS_BRAVE_UI_ON },
-        { "onboardingBraveRewards", IDS_BRAVE_REWARDS_ONBOARDING_BRAVE_REWARDS },  // NOLINT
-        { "onboardingDetailLinks", IDS_BRAVE_REWARDS_ONBOARDING_DETAIL_LINKS },
         { "onboardingEarnHeader", IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER },
         { "onboardingEarnText", IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT },
         { "onboardingPromoHeader", IDS_BRAVE_REWARDS_ONBOARDING_PROMO_HEADER },

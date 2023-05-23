@@ -3,12 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 export const localeStrings = {
-  onboardingBraveRewards: 'Brave Rewards',
   onboardingClose: 'Close',
   onboardingContinue: 'Continue',
-  onboardingDetailLinks: '$1Take a quick tour$2 or $3learn more$4 for details.',
-  onboardingEarnHeader: 'Earn Tokens & Give Back',
-  onboardingEarnText: 'Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.',
+  onboardingEarnHeader: 'Earn tokens for private ads you see in Brave',
+  onboardingEarnText: 'Use tokens to buy gift cards, exchange for other currencies, support content creators, and more.',
   onboardingErrorHeader: 'Something went wrong',
   onboardingErrorHeaderDisabled: 'Brave Rewards not available',
   onboardingErrorText: 'Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.',

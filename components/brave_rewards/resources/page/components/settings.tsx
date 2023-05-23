@@ -241,7 +241,7 @@ export function Settings () {
 
     return (
       <style.onboarding>
-        <SettingsOptInForm onTakeTour={onTakeTour} onEnable={onEnable} />
+        <SettingsOptInForm onEnable={onEnable} />
       </style.onboarding>
     )
   }

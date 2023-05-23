@@ -106,7 +106,6 @@ export function SettingsOptIn () {
     <StoryWrapper style={{ width: '619px' }}>
       <SettingsOptInForm
         onEnable={actionLogger('onEnable')}
-        onTakeTour={actionLogger('onTakeTour')}
       />
     </StoryWrapper>
   )
