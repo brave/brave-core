@@ -149,7 +149,6 @@ class VerticalTabStripRegionView : public views::View,
   raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
 
   raw_ptr<views::View> resize_area_ = nullptr;
-  bool resizing_ = false;
   absl::optional<int> resize_offset_;
 
   // A pointer storing the global tab style to be used.

@@ -902,13 +902,6 @@ void VerticalTabStripRegionView::OnTabStripModelChanged(
 
 void VerticalTabStripRegionView::OnResize(int resize_amount,
                                           bool done_resizing) {
-  // Guard reentrancy.
-  if (resizing_) {
-    return;
-  }
-
-  base::AutoReset resizing(&resizing_, true);
-
   CHECK_NE(state_, State::kCollapsed);
 
   gfx::Rect bounds_in_screen = GetLocalBounds();
@@ -918,7 +911,6 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
       display::Screen::GetScreen()->GetCursorScreenPoint().x();
   if (!resize_offset_.has_value()) {
     resize_offset_ = cursor_position - bounds_in_screen.right();
-    LOG(ERROR) << *resize_offset_;
   }
   // Note that we're not using |resize_amount|. The variable is offset from
   // the initial point, it grows bigger and bigger.
