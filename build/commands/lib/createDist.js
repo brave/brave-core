@@ -13,6 +13,7 @@ const createDist = (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.update(options)
   util.touchOverriddenFiles()
   util.updateBranding()
+  util.buildNativeRedirectCC()
   config.buildTarget = 'create_dist'
   util.generateNinjaFiles()
   util.buildTarget()
