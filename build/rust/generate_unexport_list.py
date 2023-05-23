@@ -14,7 +14,6 @@ import sys
 sys.path.append(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir,
                  os.pardir, 'build'))
-import action_helpers  # pylint: disable=wrong-import-position
 
 
 def run(exe, input_file, output_file):
@@ -22,8 +21,6 @@ def run(exe, input_file, output_file):
     with open(input_file, "r", encoding="utf8") as f:
         for line in f:
             rlibs.append(line)
-
-    output = ""
 
     with open(output_file, "w", encoding="utf8") as f:
         for rlib in rlibs:
