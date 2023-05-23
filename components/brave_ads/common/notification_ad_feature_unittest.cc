@@ -130,4 +130,33 @@ TEST(BraveAdsNotificationAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
   EXPECT_EQ(100, kMaximumNotificationAdsPerDay.Get());
 }
 
+TEST(BraveAdsNotificationAdFeatureTest,
+     CanFallbackToCustomNotificationAdsDefault) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(false, kCanFallbackToCustomNotificationAds.Get());
+}
+
+TEST(BraveAdsNotificationAdFeatureTest, CanFallbackToCustomNotificationAds) {
+  // Arrange
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["can_fallback_to_custom_notifications"] = "true";
+  enabled_features.emplace_back(kNotificationAdFeature, params);
+
+  const std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(true, kCanFallbackToCustomNotificationAds.Get());
+}
+
 }  // namespace brave_ads

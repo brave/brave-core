@@ -781,16 +781,11 @@ bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
   const bool can_show_native_notifications =
       NotificationHelper::GetInstance()->CanShowNotifications();
 
-  bool can_fallback_to_custom_notification_ads =
+  const bool can_fallback_to_custom_notification_ads =
+      IsAllowedToFallbackToCustomNotificationAdFeatureEnabled() &&
       kCanFallbackToCustomNotificationAds.Get();
   if (!can_fallback_to_custom_notification_ads) {
     ClearPref(prefs::kNotificationAdDidFallbackToCustom);
-  } else {
-    const bool allowed_to_fallback_to_custom_notification_ads =
-        IsAllowedToFallbackToCustomNotificationAdFeatureEnabled();
-    if (!allowed_to_fallback_to_custom_notification_ads) {
-      can_fallback_to_custom_notification_ads = false;
-    }
   }
 
   const bool should_show = IsCustomNotificationAdFeatureEnabled();
