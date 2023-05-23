@@ -1,9 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-<<<<<<< HEAD
-index 4a4695c3d01198def864ea151ef2d02a24fd29ab..b2d4a4ee1fc79f1a786ea3a9ee2c581df374ef6d 100644
-=======
-index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..a994b6f9237ef66be894d105c9d275c32c270b44 100644
->>>>>>> 20dcddfd48 (WIP: remove AndroidWebview from build, attempt #2, now no crash and 2MB LESS!)
+index 4a4695c3d01198def864ea151ef2d02a24fd29ab..5a4aad7ed61b1052a5f7ddcae0ac26f9a05c8b91 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -103,6 +103,7 @@ if (current_toolchain == default_toolchain) {
@@ -54,15 +50,39 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..a994b6f9237ef66be894d105c9d275c3
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -2151,6 +2157,7 @@ if (current_toolchain == default_toolchain) {
-         ":${_variant}_locale_pak_assets",
-         ":${_variant}_paks",
-       ]
-+      deps += [ "//brave:brave_pak_assets" ]
-       if (_is_monochrome) {
-         deps += [ "//android_webview:locale_pak_assets" ]
-         if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2429,6 +2436,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2106,6 +2112,7 @@ if (current_toolchain == default_toolchain) {
+           additional_extra_paks +=
+               [ "$root_gen_dir/weblayer/weblayer_resources.pak" ]
+           deps += [ "//weblayer:resources" ]
++          additional_extra_paks -= [ "$root_gen_dir/weblayer/weblayer_resources.pak" ] deps -= [ "//weblayer:resources" ]
+         }
+       }
+       if (!dfmify_dev_ui || !_is_bundle_module) {
+@@ -2157,6 +2164,7 @@ if (current_toolchain == default_toolchain) {
+           deps += [ "//weblayer:locale_pak_assets" ]
+         }
+       }
++      deps += [ "//brave:brave_pak_assets" ] if (_is_monochrome) { deps -= [ "//android_webview:locale_pak_assets" ] if (webview_includes_weblayer && !_is_bundle_module) { deps -= [ "//weblayer:locale_pak_assets" ] } }
+     }
+   }
+ 
+@@ -2313,6 +2321,7 @@ if (current_toolchain == default_toolchain) {
+       "//components/version_info/android:version_constants_java",
+       "//content/public/android:content_java",
+     ]
++    deps -= [ "//android_webview:android_webview_java" ] deps += [ "//brave/android/java/org/chromium/android_webview/nonembedded:java" ]
+     sources = [
+       "java/src/org/chromium/chrome/browser/MonochromeApplicationImpl.java",
+     ]
+@@ -2333,6 +2342,7 @@ if (current_toolchain == default_toolchain) {
+     if (webview_includes_weblayer) {
+       deps += [ "//weblayer/browser/java:base_module_java" ]
+     }
++    deps -= [ "//android_webview:android_webview_no_weblayer_java" ] deps += [ "//brave/android/java/org/chromium/android_webview/nonembedded:java" ]     if (webview_includes_weblayer) { deps -= [ "//weblayer/browser/java:base_module_java" ] }
+   }
+ 
+   # Target for classes which should be in the base module, even when //chrome code
+@@ -2429,6 +2439,7 @@ if (current_toolchain == default_toolchain) {
        "//components/payments/content/android:service_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -70,19 +90,19 @@ index fa35cf794a73357c7ebbdc3c858eb015ab0353fe..a994b6f9237ef66be894d105c9d275c3
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
-@@ -2651,6 +2663,7 @@ if (current_toolchain == default_toolchain) {
-           deps += [ "//weblayer/browser/java:upstream_java" ]
-         }
-       }
-+      deps += brave_monochrome_public_apk_or_module_tmpl_deps loadable_modules = brave_monochrome_public_apk_or_module_tmpl_loadable_modules secondary_abi_loadable_modules = brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules if (!_is_trichrome) { deps -= [ "//android_webview:platform_service_bridge_upstream_implementation_java", "//android_webview/nonembedded:icon_resources", "//android_webview/nonembedded:monochrome_devui_launcher_icon_resources" ] if (webview_includes_weblayer) { deps -= [ "//weblayer/browser/java:upstream_java" ] } } 
+@@ -3561,6 +3572,7 @@ template("libmonochrome_apk_or_bundle_tmpl") {
+       "//android_webview/nonembedded",
+       "//components/crash/android:crashpad_main",
+     ]
++    deps -= [ "//android_webview/lib", "//android_webview/nonembedded" ]
+     if (defined(invoker.deps)) {
+       deps += invoker.deps
      }
-   }
- 
-@@ -3815,6 +3828,7 @@ template("libmonochrome_apk_or_bundle_tmpl") {
+@@ -3569,6 +3581,7 @@ template("libmonochrome_apk_or_bundle_tmpl") {
+     if (webview_includes_weblayer) {
        defines += [ "WEBVIEW_INCLUDES_WEBLAYER" ]
        deps += [ "//weblayer:weblayer_lib" ]
++      defines -= [ "WEBVIEW_INCLUDES_WEBLAYER" ] deps -= [ "//weblayer:weblayer_lib" ]
      }
-+    deps -= [ "//android_webview/lib", "//android_webview/nonembedded" ] if (webview_includes_weblayer) { defines -= [ "WEBVIEW_INCLUDES_WEBLAYER" ] deps -= [ "//weblayer:weblayer_lib" ] }
  
      if (allow_jni_multiplexing) {
-       defines += [ "JNI_REGISTRATION_REQUIRED" ]

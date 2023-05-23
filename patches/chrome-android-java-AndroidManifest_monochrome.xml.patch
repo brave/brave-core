@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest_monochrome.xml b/chrome/android/java/AndroidManifest_monochrome.xml
-index 3cd9602a74a33ac58bddbd1ac21d9293e305fdb6..76ee436de540354d597eea3059dba05bc36012d7 100644
+index f168f66b901ca39e63cbc617da766c52557510f9..49f24f78ba5774d7ee88528f692aad4ab70d17c0 100644
 --- a/chrome/android/java/AndroidManifest_monochrome.xml
 +++ b/chrome/android/java/AndroidManifest_monochrome.xml
 @@ -1,5 +1,4 @@
@@ -8,7 +8,7 @@ index 3cd9602a74a33ac58bddbd1ac21d9293e305fdb6..76ee436de540354d597eea3059dba05b
  
  ## Copyright 2016 The Chromium Authors
  ## Use of this source code is governed by a BSD-style license that can be
-@@ -34,5 +33,4 @@ android:use32bitAbi="true"
+@@ -30,5 +29,4 @@ android:use32bitAbi="true"
  
  {% block base_application_definitions %}
  {{ super() }}

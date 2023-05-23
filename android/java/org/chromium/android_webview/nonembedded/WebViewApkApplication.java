@@ -12,7 +12,7 @@ public class WebViewApkApplication {
     private static final String TAG = "BraveWebViewApkApplication";
 
     public static void postDeveloperUiLauncherIconTask() {
-        wtf();
+        // No-op
     }
 
     // Copied from upstreams's android_webview/nonembedded/WebViewApkApplication.java
@@ -29,7 +29,7 @@ public class WebViewApkApplication {
     }
 
     public static void maybeInitProcessGlobals() {
-        wtf();
+        // No-op
     }
 
     public static void checkForAppRecovery() {
