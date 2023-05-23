@@ -23,9 +23,6 @@ class FilAddress {
   static FilAddress FromPayload(const std::vector<uint8_t>& payload,
                                 mojom::FilecoinAddressProtocol protocol,
                                 const std::string& network);
-  static FilAddress FromPayloadDelegated(const std::vector<uint8_t>& payload,
-                                         const std::string& network,
-                                         int agent_id);
   static FilAddress FromAddress(const std::string& address);
   static bool IsValidAddress(const std::string& input);
   FilAddress();
@@ -43,15 +40,12 @@ class FilAddress {
   bool IsEqual(const FilAddress& other) const;
   explicit FilAddress(const std::vector<uint8_t>& bytes,
                       mojom::FilecoinAddressProtocol protocol,
-                      const std::string& network,
-                      const absl::optional<int>& agent_id);
+                      const std::string& network);
 
   mojom::FilecoinAddressProtocol protocol_ =
       mojom::FilecoinAddressProtocol::SECP256K1;
   std::string network_ = mojom::kFilecoinTestnet;
   std::vector<uint8_t> bytes_;
-  // Only presented for delegated addresses
-  absl::optional<int> agent_id_;
 };
 
 }  // namespace brave_wallet

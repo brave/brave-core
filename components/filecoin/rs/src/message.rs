@@ -55,8 +55,8 @@ pub mod tokenamount {
         D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
-        let atto = BigInt::from_str(&s);
-        Ok(TokenAmount::from_atto(atto.unwrap()))
+        let atto = BigInt::from_str(&s).map_err(de::Error::custom)?;
+        Ok(TokenAmount::from_atto(atto))
     }
 }
 

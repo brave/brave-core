@@ -83,6 +83,19 @@ TEST(FilAddressUnitTest, From) {
   address = "";
   EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
   EXPECT_TRUE(FilAddress::FromAddress(address).IsEmpty());
+
+  address = "f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y";
+  fil_address = FilAddress::FromAddress(address);
+  EXPECT_EQ(fil_address.EncodeAsString(), address);
+  EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::DELEGATED);
+
+  address = "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y";
+  fil_address = FilAddress::FromAddress(address);
+  EXPECT_EQ(fil_address.EncodeAsString(), address);
+  EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::DELEGATED);
+
+  address = "f420frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y";
+  EXPECT_NE(FilAddress::FromAddress(address).EncodeAsString(), address);
 }
 
 TEST(FilAddressUnitTest, IsValidAddress) {
@@ -104,6 +117,12 @@ TEST(FilAddressUnitTest, IsValidAddress) {
   EXPECT_FALSE(
       FilAddress::IsValidAddress("t1h3n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q"));
   EXPECT_FALSE(FilAddress::IsValidAddress(""));
+  EXPECT_TRUE(FilAddress::IsValidAddress(
+      "f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
+  EXPECT_TRUE(FilAddress::IsValidAddress(
+      "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
+  EXPECT_FALSE(FilAddress::IsValidAddress(
+      "f420frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
 }
 
 TEST(FilAddressUnitTest, FromPayload) {
@@ -130,6 +149,11 @@ TEST(FilAddressUnitTest, FromPayload) {
       mojom::FilecoinAddressProtocol::BLS, mojom::kFilecoinMainnet,
       "f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4t"
       "pa4mvigcrayh4a"));
+
+  EXPECT_TRUE(ValidatePayload("8C60A3A9530DDD22F44C0B9C219E55E693335B51",
+                              mojom::FilecoinAddressProtocol::DELEGATED,
+                              mojom::kFilecoinMainnet,
+                              "f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
 
   auto empty_address = FilAddress::FromPayload(
       {}, mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinTestnet);
@@ -246,6 +270,9 @@ TEST(FilAddressUnitTest, Comparison) {
       FilAddress::FromAddress(
           "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2"
           "oz4o4tpa4mvigcrayh4a"));
+  EXPECT_EQ(
+      FilAddress::FromAddress("f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"),
+      FilAddress::FromAddress("f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
 }
 
 }  // namespace brave_wallet

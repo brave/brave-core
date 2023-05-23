@@ -9,12 +9,10 @@ use bls_signatures::Serialize;
 use cid::multihash::MultihashDigest;
 use core::{array::TryFromSliceError, num::ParseIntError};
 use fvm_ipld_encoding::to_vec;
-use fvm_ipld_encoding::Cbor;
 use fvm_ipld_encoding::DAG_CBOR;
 use fvm_shared::address::set_current_network;
 use fvm_shared::address::Network;
-use fvm_shared::address::Protocol;
-use fvm_shared::crypto::signature::{Signature, SignatureType};
+use fvm_shared::crypto::signature::Signature;
 use fvm_shared::message::Message as UnsignedMessage;
 use libsecp256k1::util::{SECRET_KEY_SIZE, SIGNATURE_SIZE};
 use libsecp256k1::{sign, Message};
@@ -78,9 +76,9 @@ fn transaction_sign_secp56k1_raw(
 
     let (signature_rs, recovery_id) = libsecp256k1::sign(&message_digest, &secret_key);
 
-    let mut sig = [0; 65];
-    sig[..64].copy_from_slice(&signature_rs.serialize().to_vec());
-    sig[64] = recovery_id.serialize();
+    let mut sig = [0; SIGNATURE_SIZE + 1];
+    sig[..SIGNATURE_SIZE].copy_from_slice(&signature_rs.serialize().to_vec());
+    sig[SIGNATURE_SIZE] = recovery_id.serialize();
 
     let signature = Signature::new_secp256k1(sig.to_vec());
 
@@ -129,7 +127,7 @@ pub fn transaction_sign_raw(
 }
 
 pub fn transaction_sign(is_mainnet: bool, transaction: &str, private_key: &[u8]) -> String {
-    if (is_mainnet) {
+    if is_mainnet {
         set_current_network(Network::Mainnet);
     } else {
         set_current_network(Network::Testnet);
@@ -144,5 +142,6 @@ pub fn transaction_sign(is_mainnet: bool, transaction: &str, private_key: &[u8])
             return base64::encode(raw_signature.bytes());
         }
     }
+    // Empty string is returned as an error cause this code is executed from cxx
     String::new()
 }

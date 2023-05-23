@@ -15,8 +15,6 @@ namespace brave_wallet {
 
 bool IsAllowed(PrefService* prefs);
 
-std::vector<uint8_t> Leb128Encode(size_t value);
-
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_COMMON_UTIL_H_

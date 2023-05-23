@@ -837,9 +837,7 @@ dependencies = [
 name = "filecoin-cxx"
 version = "0.0.1"
 dependencies = [
- "anyhow",
  "base64 0.13.0",
- "bitflags",
  "blake2b_simd",
  "bls-signatures",
  "cid",
