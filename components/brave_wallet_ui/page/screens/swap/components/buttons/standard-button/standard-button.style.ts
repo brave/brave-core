@@ -24,6 +24,16 @@ export const Button = styled(StyledButton) <StandardButtonStyleProps>`
   --border-secondary-selected: ${(p) => p.theme.color.interactive05};
   --button-color-disabled: #ffffff;
   @media (prefers-color-scheme: dark) {
+    --button-background: ${(p) =>
+      p.buttonStyle === 'square'
+        ? p.theme.color.divider01
+        : p.buttonType === 'secondary'
+          ? p.theme.color.background01
+          : p.theme.palette.blurple500};
+    --button-background-hover: ${(p) =>
+      p.buttonStyle === 'square'
+        ? p.theme.palette.blurple500
+        : p.theme.color.interactive04};
     --border-secondary-selected: ${(p) => p.theme.color.focusBorder};
     /* #677078 does not exist in design system */
     --button-color-disabled: #677078;
