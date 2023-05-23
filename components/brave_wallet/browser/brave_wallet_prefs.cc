@@ -28,6 +28,8 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr int kDefaultWalletAutoLockMinutes = 10;
+
 base::Value::Dict GetDefaultUserAssets() {
   base::Value::Dict user_assets_pref;
   user_assets_pref.Set(kEthereumPrefKey,
@@ -120,7 +122,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                    GetDefaultSelectedNetworksPerOrigin());
   registry->RegisterDictionaryPref(kBraveWalletUserAssets,
                                    GetDefaultUserAssets());
-  registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
+  registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes,
+                                kDefaultWalletAutoLockMinutes);
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);

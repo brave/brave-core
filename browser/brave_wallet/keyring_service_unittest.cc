@@ -2372,11 +2372,11 @@ TEST_F(KeyringServiceUnitTest, AutoLock) {
   ASSERT_TRUE(mnemonic.has_value());
   ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
-  // Should not be locked yet after 4 minutes
-  task_environment_.FastForwardBy(base::Minutes(4));
+  // Should not be locked yet after 9 minutes
+  task_environment_.FastForwardBy(base::Minutes(9));
   ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
-  // After the 5th minute, it should be locked
+  // After the 10th minute, it should be locked
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
   // Locking after it is auto locked won't cause a crash
@@ -2386,7 +2386,7 @@ TEST_F(KeyringServiceUnitTest, AutoLock) {
   // Unlocking will reset the timer
   EXPECT_TRUE(Unlock(&service, "brave"));
   ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
-  task_environment_.FastForwardBy(base::Minutes(5));
+  task_environment_.FastForwardBy(base::Minutes(10));
   ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Locking before the timer fires won't cause any problems after the
@@ -2403,7 +2403,7 @@ TEST_F(KeyringServiceUnitTest, AutoLock) {
   service.Reset();
   ASSERT_TRUE(RestoreWallet(&service, *mnemonic, "brave", false));
   ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
-  task_environment_.FastForwardBy(base::Minutes(6));
+  task_environment_.FastForwardBy(base::Minutes(11));
   ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Changing the auto lock pref should reset the timer
@@ -2435,11 +2435,11 @@ TEST_F(KeyringServiceUnitTest, NotifyUserInteraction) {
   ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Notifying of user interaction should keep the wallet unlocked
-  task_environment_.FastForwardBy(base::Minutes(4));
+  task_environment_.FastForwardBy(base::Minutes(9));
   service.NotifyUserInteraction();
   task_environment_.FastForwardBy(base::Minutes(1));
   service.NotifyUserInteraction();
-  task_environment_.FastForwardBy(base::Minutes(4));
+  task_environment_.FastForwardBy(base::Minutes(9));
   ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
@@ -2866,7 +2866,7 @@ TEST_F(KeyringServiceUnitTest, GetSetAutoLockMinutes) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   NiceMock<TestKeyringServiceObserver> observer(service);
 
-  EXPECT_EQ(5, GetAutoLockMinutes(&service));
+  EXPECT_EQ(10, GetAutoLockMinutes(&service));
 
   EXPECT_CALL(observer, AutoLockMinutesChanged());
   EXPECT_TRUE(SetAutoLockMinutes(&service, 7));
