@@ -630,8 +630,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
   }
 
   @objc func topToolbarDidPressQrCodeButton() {
-    leaveOverlayMode(didCancel: true)
     delegate?.topToolbarDidPressQrCodeButton(self)
+    leaveOverlayMode(didCancel: true)
   }
   
   @objc private func swipedLocationView() {
