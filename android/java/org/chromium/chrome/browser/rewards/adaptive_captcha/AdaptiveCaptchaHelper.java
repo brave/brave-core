@@ -16,9 +16,12 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
@@ -31,17 +34,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class AdaptiveCaptchaHelper {
     public static final String TAG = "adaptive_captcha";
+    private static final String POST_METHOD = "POST";
+    private static final String PUT_METHOD = "PUT";
+
     public static void startAttestation(String captchaId, String paymentId) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
             HttpURLConnection urlConnection = null;
             String startAttestationUrl = BraveRewardsNativeWorker.getInstance().getAttestationURL();
-            Log.e(TAG, startAttestationUrl);
+            if (BraveQAPreferences.shouldVlogRewards()) {
+                Log.e(TAG, startAttestationUrl);
+            }
             NetworkTrafficAnnotationTag annotation =
                     NetworkTrafficAnnotationTag.createComplete("Brave attestation api android",
                             "semantics {"
@@ -60,34 +65,13 @@ public class AdaptiveCaptchaHelper {
             String logMessage = "";
             try {
                 URL url = new URL(startAttestationUrl);
-                urlConnection =
-                        (HttpURLConnection) ChromiumNetworkAdapter.openConnection(url, annotation);
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setUseCaches(false);
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.connect();
+                urlConnection = getUrlConnection(POST_METHOD, url, annotation);
 
-                JSONObject jsonParam = new JSONObject();
-                jsonParam.put("paymentId", paymentId);
-
-                OutputStream outputStream = urlConnection.getOutputStream();
-                byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.name());
-                outputStream.write(input, 0, input.length);
-                outputStream.flush();
-                outputStream.close();
+                writeRequestOutput(getStartAttestationBody(paymentId), urlConnection);
 
                 int responseCode = urlConnection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_CREATED) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(
-                            urlConnection.getInputStream(), StandardCharsets.UTF_8.name()));
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    br.close();
-                    JSONObject jsonResponse = new JSONObject(sb.toString());
+                    JSONObject jsonResponse = new JSONObject(readResponse(urlConnection));
                     if (jsonResponse.has("uniqueValue")) {
                         getPlayIntegrityToken(
                                 jsonResponse.optString("uniqueValue"), captchaId, paymentId);
@@ -102,7 +86,9 @@ public class AdaptiveCaptchaHelper {
                 Log.e(TAG, e.getMessage());
             } finally {
                 if (urlConnection != null) urlConnection.disconnect();
-                Log.e(TAG, logMessage);
+                if (BraveQAPreferences.shouldVlogRewards()) {
+                    Log.e(TAG, logMessage);
+                }
             }
         });
     }
@@ -123,13 +109,14 @@ public class AdaptiveCaptchaHelper {
 
     private static void attestPaymentId(
             String captchaId, String paymentId, String integrityToken, String uniqueValue) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
             HttpURLConnection urlConnection = null;
             String attestPaymentIdUrl =
                     BraveRewardsNativeWorker.getInstance().getAttestationURLWithPaymentId(
                             paymentId);
-            Log.e(TAG, attestPaymentIdUrl);
+            if (BraveQAPreferences.shouldVlogRewards()) {
+                Log.e(TAG, attestPaymentIdUrl);
+            }
             NetworkTrafficAnnotationTag annotation = NetworkTrafficAnnotationTag.createComplete(
                     "Brave attestation api android",
                     "semantics {"
@@ -148,24 +135,10 @@ public class AdaptiveCaptchaHelper {
             String logMessage = "";
             try {
                 URL url = new URL(attestPaymentIdUrl);
-                urlConnection =
-                        (HttpURLConnection) ChromiumNetworkAdapter.openConnection(url, annotation);
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("PUT");
-                urlConnection.setUseCaches(false);
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.connect();
+                urlConnection = getUrlConnection(PUT_METHOD, url, annotation);
 
-                JSONObject jsonParam = new JSONObject();
-                jsonParam.put("integrityToken", integrityToken);
-                jsonParam.put("uniqueValue", uniqueValue);
-                jsonParam.put("packageName", ContextUtils.getApplicationContext().getPackageName());
-
-                OutputStream outputStream = urlConnection.getOutputStream();
-                byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.name());
-                outputStream.write(input, 0, input.length);
-                outputStream.flush();
-                outputStream.close();
+                writeRequestOutput(
+                        getAttestPaymentIdBody(integrityToken, uniqueValue), urlConnection);
 
                 int responseCode = urlConnection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -180,18 +153,21 @@ public class AdaptiveCaptchaHelper {
                 Log.e(TAG, e.getMessage());
             } finally {
                 if (urlConnection != null) urlConnection.disconnect();
-                Log.e(TAG, logMessage);
+                if (BraveQAPreferences.shouldVlogRewards()) {
+                    Log.e(TAG, logMessage);
+                }
             }
         });
     }
 
     private static void solveCaptcha(String captchaId, String paymentId) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
             HttpURLConnection urlConnection = null;
             String solveCaptchaUrl = BraveRewardsNativeWorker.getInstance().getCaptchaSolutionURL(
                     paymentId, captchaId);
-            Log.e(TAG, solveCaptchaUrl);
+            if (BraveQAPreferences.shouldVlogRewards()) {
+                Log.e(TAG, solveCaptchaUrl);
+            }
             NetworkTrafficAnnotationTag annotation = NetworkTrafficAnnotationTag.createComplete(
                     "Brave attestation api android",
                     "semantics {"
@@ -211,35 +187,15 @@ public class AdaptiveCaptchaHelper {
             String logMessage = "";
             try {
                 URL url = new URL(String.format(solveCaptchaUrl, paymentId, captchaId));
-                urlConnection =
-                        (HttpURLConnection) ChromiumNetworkAdapter.openConnection(url, annotation);
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setUseCaches(false);
-                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection = getUrlConnection(POST_METHOD, url, annotation);
                 urlConnection.connect();
 
-                JSONObject jsonParam = new JSONObject();
-                jsonParam.put("solution", paymentId);
-
-                OutputStream outputStream = urlConnection.getOutputStream();
-                byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.name());
-                outputStream.write(input, 0, input.length);
-                outputStream.flush();
-                outputStream.close();
+                writeRequestOutput(getSolveCaptchaBody(paymentId), urlConnection);
 
                 int responseCode = urlConnection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(
-                            urlConnection.getInputStream(), StandardCharsets.UTF_8.name()));
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
                     clearCaptchaPrefs();
                     logMessage = "Captcha has been solved.";
-                    br.close();
                 } else {
                     recordFailureAttempt();
                     logMessage = "Captcha solution failed with " + responseCode + " : "
@@ -249,7 +205,9 @@ public class AdaptiveCaptchaHelper {
                 Log.e(TAG, e.getMessage());
             } finally {
                 if (urlConnection != null) urlConnection.disconnect();
-                Log.e(TAG, logMessage);
+                if (BraveQAPreferences.shouldVlogRewards()) {
+                    Log.e(TAG, logMessage);
+                }
             }
         });
     }
@@ -271,5 +229,76 @@ public class AdaptiveCaptchaHelper {
                         UserPrefs.get(Profile.getLastUsedRegularProfile())
                                         .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
                                 + 1);
+    }
+
+    private static HttpURLConnection getUrlConnection(String requestMethod, URL url,
+            NetworkTrafficAnnotationTag annotation) throws IOException {
+        HttpURLConnection urlConnection =
+                (HttpURLConnection) ChromiumNetworkAdapter.openConnection(url, annotation);
+        urlConnection.setDoOutput(true);
+        urlConnection.setRequestMethod(requestMethod);
+        urlConnection.setUseCaches(false);
+        urlConnection.setRequestProperty("Content-Type", "application/json");
+        return urlConnection;
+    }
+
+    private static void writeRequestOutput(String body, HttpURLConnection urlConnection)
+            throws IOException {
+        OutputStream outputStream = null;
+        try {
+            outputStream = urlConnection.getOutputStream();
+            byte[] input = body.getBytes(StandardCharsets.UTF_8.name());
+            outputStream.write(input, 0, input.length);
+            outputStream.flush();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
+    }
+
+    private static String readResponse(HttpURLConnection urlConnection) throws IOException {
+        String responseString = "";
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(
+                    urlConnection.getInputStream(), StandardCharsets.UTF_8.name()));
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            responseString = sb.toString();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            if (br != null) {
+                br.close();
+            }
+            return responseString;
+        }
+    }
+
+    private static String getStartAttestationBody(String paymentId) throws JSONException {
+        JSONObject jsonParam = new JSONObject();
+        jsonParam.put("paymentId", paymentId);
+        return jsonParam.toString();
+    }
+
+    private static String getAttestPaymentIdBody(String integrityToken, String uniqueValue)
+            throws JSONException {
+        JSONObject jsonParam = new JSONObject();
+        jsonParam.put("integrityToken", integrityToken);
+        jsonParam.put("uniqueValue", uniqueValue);
+        jsonParam.put("packageName", ContextUtils.getApplicationContext().getPackageName());
+        return jsonParam.toString();
+    }
+
+    private static String getSolveCaptchaBody(String paymentId) throws JSONException {
+        JSONObject jsonParam = new JSONObject();
+        jsonParam.put("solution", paymentId);
+        return jsonParam.toString();
     }
 }

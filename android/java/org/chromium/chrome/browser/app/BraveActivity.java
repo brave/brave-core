@@ -165,6 +165,7 @@ import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
@@ -862,7 +863,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                    .getString(BravePref.SCHEDULED_CAPTCHA_ID);
         String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                    .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
-        Log.e(AdaptiveCaptchaHelper.TAG, "captchaID : " + captchaID + " Payment ID : " + paymentID);
+        if (BraveQAPreferences.shouldVlogRewards()) {
+            Log.e(AdaptiveCaptchaHelper.TAG,
+                    "captchaID : " + captchaID + " Payment ID : " + paymentID);
+        }
         maybeSolveAdaptiveCaptcha();
     }
 
@@ -909,10 +913,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, true);
         }
 
-        Log.e(AdaptiveCaptchaHelper.TAG,
-                "Failed attempts : "
-                        + UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                  .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
+        if (BraveQAPreferences.shouldVlogRewards()) {
+            Log.e(AdaptiveCaptchaHelper.TAG,
+                    "Failed attempts : "
+                            + UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                      .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
+        }
         if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
                         .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
             maybeSolveAdaptiveCaptcha();
