@@ -35,6 +35,7 @@ def CheckPatchFormatted(input_api, output_api):
         'format',
         '--presubmit',
         '--python',
+        '--no-rust-fmt',
     ]
 
     # Make sure the passed --upstream branch is applied to git cl format.
@@ -63,7 +64,9 @@ def CheckPatchFormatted(input_api, output_api):
             # r'.+\.ts$',
             # r'.+\.tsx$',
         )
-        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
+        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
+          r'third_party/rust/'
+        )
 
         file_filter = lambda f: input_api.FilterSourceFile(
             f, files_to_check=files_to_check, files_to_skip=files_to_skip)
@@ -107,7 +110,7 @@ def CheckESLint(input_api, output_api):
         r'.+\.ts$',
         r'.+\.tsx$',
     )
-    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + ( r'third_party/rust/' )
 
     file_filter = lambda f: input_api.FilterSourceFile(
         f, files_to_check=files_to_check, files_to_skip=files_to_skip)
