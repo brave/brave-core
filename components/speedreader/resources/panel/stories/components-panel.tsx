@@ -33,15 +33,13 @@ export default {
 
 export const _Main = () => {
   const siteSettings: SiteSettings = {
-    isEnabled: true,
     fontFamily: FontFamily.kSans,
     fontSize: FontSize.k100,
-    theme: Theme.kDark,
-    host: 'www.nytimes.com'
+    theme: Theme.kDark
   }
 
   const ttsSettings: TtsSettings = {
-    voice: "",
+    voice: '',
     speed: PlaybackSpeed.k100
   }
 
@@ -53,7 +51,6 @@ export const _Main = () => {
         onThemeChange={() => {}}
         onFontSizeChange={() => {}}
         onFontFamilyChange={() => {}}
-        onToggleChange={() => {}}
         onTtsSpeedChange={()=> {}}
         onTtsVoiceChange={()=> {}}
       />
