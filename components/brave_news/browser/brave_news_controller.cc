@@ -504,9 +504,8 @@ void BraveNewsController::OnInteractionSessionStarted() {
 }
 
 void BraveNewsController::OnSessionCardVisitsCountChanged(
-    uint16_t cards_visited_session_total_count) {
-  p3a::RecordWeeklyMaxCardVisitsCount(prefs_,
-                                      cards_visited_session_total_count);
+    uint16_t total_count) {
+  // TODO(djandries): Add new News card visit metrics
 }
 
 void BraveNewsController::OnPromotedItemView(
@@ -533,10 +532,10 @@ void BraveNewsController::OnPromotedItemVisit(
   }
 }
 
-void BraveNewsController::OnSessionCardViewsCountChanged(
-    uint16_t cards_viewed_session_total_count) {
-  p3a::RecordWeeklyMaxCardViewsCount(prefs_, cards_viewed_session_total_count);
-  p3a::RecordTotalCardViews(prefs_, cards_viewed_session_total_count);
+void BraveNewsController::OnSessionCardViewsCountChanged(uint16_t total_count,
+                                                         uint16_t count_delta) {
+  // TODO(djandries): Add new News card view metrics that use the total count
+  p3a::RecordTotalCardViews(prefs_, count_delta);
 }
 
 void BraveNewsController::OnDisplayAdVisit(

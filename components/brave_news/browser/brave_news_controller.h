@@ -118,10 +118,9 @@ class BraveNewsController : public KeyedService,
   void AddFeedListener(mojo::PendingRemote<mojom::FeedListener>) override;
   void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
-  void OnSessionCardVisitsCountChanged(
-      uint16_t cards_visited_session_total_count) override;
-  void OnSessionCardViewsCountChanged(
-      uint16_t cards_viewed_session_total_count) override;
+  void OnSessionCardVisitsCountChanged(uint16_t total_count) override;
+  void OnSessionCardViewsCountChanged(uint16_t total_count,
+                                      uint16_t count_delta) override;
   void OnPromotedItemView(const std::string& item_id,
                           const std::string& creative_instance_id) override;
   void OnPromotedItemVisit(const std::string& item_id,
