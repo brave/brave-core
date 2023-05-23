@@ -37,6 +37,8 @@ const char kBraveWalletSelectedNetworksPerOrigin[] =
     "brave.wallet.selected_networks_origin";
 const char kBraveWalletKeyrings[] = "brave.wallet.keyrings";
 const char kBraveWalletUserAssets[] = "brave.wallet.wallet_user_assets";
+const char kBraveWalletEthAllowancesCache[] =
+    "brave.wallet.eth_allowances_cache";
 const char kBraveWalletUserAssetEthContractAddressMigrated[] =
     "brave.wallet.user.asset.eth_contract_address_migrated";
 const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[] =

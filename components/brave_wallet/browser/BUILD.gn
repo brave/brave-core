@@ -71,6 +71,8 @@ static_library("browser") {
     "ens_resolver_task.h",
     "eth_abi_decoder.cc",
     "eth_abi_decoder.h",
+    "eth_allowance_manager.cc",
+    "eth_allowance_manager.h",
     "eth_block_tracker.cc",
     "eth_block_tracker.h",
     "eth_data_builder.cc",

@@ -126,6 +126,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                    GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes,
                                 kDefaultWalletAutoLockMinutes);
+  registry->RegisterDictionaryPref(kBraveWalletEthAllowancesCache);
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
@@ -235,6 +236,7 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssets);
   prefs->ClearPref(kDefaultBaseCurrency);
   prefs->ClearPref(kDefaultBaseCryptocurrency);
+  prefs->ClearPref(kBraveWalletEthAllowancesCache);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {

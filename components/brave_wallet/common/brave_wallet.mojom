@@ -678,6 +678,14 @@ struct BlockchainToken {
   CoinType coin;
 };
 
+struct AllowanceInfo {
+  string chain_id;
+  string contract_address;
+  string approver_address;
+  string spender_address;
+  string amount;
+};
+
 // WebUI-side handler for requests from the browser.
 interface Page {
 };
@@ -1741,6 +1749,9 @@ interface BraveWalletService {
 
   // Resets the keyring and the related preferences
   Reset();
+
+  // Used for UI to trigger the allowance discovery
+  DiscoverEthAllowances() => (array<AllowanceInfo> allowances);
 };
 
 // For reporting wallet related P3A metrics.
