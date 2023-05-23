@@ -320,7 +320,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const data = action.payload.data
       state.adsData.adsNextPaymentDate = data.adsNextPaymentDate
       state.adsData.adsReceivedThisMonth = data.adsReceivedThisMonth
-      state.adsData.adsEarningsThisMonth = data.adsEarningsThisMonth
+      state.adsData.adsMinEarningsThisMonth = data.adsMinEarningsThisMonth
+      state.adsData.adsMaxEarningsThisMonth = data.adsMaxEarningsThisMonth
       state.adsData.adsEarningsLastMonth = data.adsEarningsLastMonth
       break
     }

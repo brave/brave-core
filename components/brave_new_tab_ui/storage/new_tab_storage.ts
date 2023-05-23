@@ -58,7 +58,8 @@ export const defaultState: NewTab.State = {
     adsAccountStatement: {
       nextPaymentDate: 0,
       adsReceivedThisMonth: 0,
-      earningsThisMonth: 0,
+      minEarningsThisMonth: 0,
+      maxEarningsThisMonth: 0,
       earningsLastMonth: 0
     },
     balance: undefined,
@@ -143,12 +144,18 @@ const cleanData = (state: NewTab.State) => {
     rewardsState.totalContribution = 0
   }
 
-  // nextPaymentDate updated from seconds-since-epoch-string to ms-since-epoch
   const { adsAccountStatement } = rewardsState
-  if (adsAccountStatement &&
-      typeof (adsAccountStatement.nextPaymentDate as any) === 'string') {
-    adsAccountStatement.nextPaymentDate =
-      Number(adsAccountStatement.nextPaymentDate) * 1000 || 0
+  if (adsAccountStatement) {
+    // nextPaymentDate updated from seconds-since-epoch-string to ms-since-epoch
+    if (typeof (adsAccountStatement.nextPaymentDate as any) === 'string') {
+      adsAccountStatement.nextPaymentDate =
+        Number(adsAccountStatement.nextPaymentDate) * 1000 || 0
+    }
+    // earningsThisMonth replaced with range
+    if (typeof (adsAccountStatement.minEarningsThisMonth as any) !== 'number') {
+      adsAccountStatement.minEarningsThisMonth = 0
+      adsAccountStatement.maxEarningsThisMonth = 0
+    }
   }
 
   if (!rewardsState.parameters) {

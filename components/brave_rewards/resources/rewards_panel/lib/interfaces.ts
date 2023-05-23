@@ -25,7 +25,8 @@ export interface ExchangeInfo {
 
 export interface EarningsInfo {
   nextPaymentDate: number
-  earningsThisMonth: number
+  minEarningsThisMonth: number
+  maxEarningsThisMonth: number
   earningsLastMonth: number
 }
 

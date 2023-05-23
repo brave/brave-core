@@ -15,7 +15,7 @@ export const root = styled.div`
   width: 329px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.28);
   border: solid 1px rgba(0, 0, 0, .15);
-  border-radius: 6px;
+  border-radius: 8px;
 `
 
 export const content = styled.div`

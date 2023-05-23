@@ -33,7 +33,8 @@ export function getInitialState (): HostState {
     },
     earningsInfo: {
       nextPaymentDate: 0,
-      earningsThisMonth: 0,
+      minEarningsThisMonth: 0,
+      maxEarningsThisMonth: 0,
       earningsLastMonth: 0
     },
     payoutStatus: {},

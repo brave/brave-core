@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
+
 export const root = styled.div`
   background: linear-gradient(125.83deg, #392DD1 0%, #A91B78 99.09%);
   border-radius: 14px;
@@ -12,42 +14,116 @@ export const root = styled.div`
   color: var(--brave-palette-white);
 `
 
-export const grid = styled.div`
-  padding: 13px 13px 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-  grid-template-areas:
-    "status-indicator earnings"
-    "balance          earnings"
-    "empty            view-statement";
+export const statusPanel = styled.div`
+  padding: 16px 24px 9px 14px;
+  display: flex;
 `
 
 export const statusIndicator = styled.div`
-  grid-area: status-indicator;
-  justify-self: start;
-  align-self: start;
+  flex: 1 0 auto;
+`
+
+export const earnings = styled.div`
+  font-size: 11px;
+  line-height: 16px;
+`
+
+export const earningsHeader = styled.div`
+  display: flex;
+  gap: 4px;
+`
+
+export const earningsHeaderTitle = styled.div`
+  opacity: 0.65;
+`
+
+export const earningsInfo = styled.div`
+  position: relative;
+
+  leo-icon {
+    opacity: 0.65;
+    --leo-icon-size: 14px;
+  }
+
+  .tooltip {
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    right: -13px;
+    width: 207px;
+    padding-top: 8px;
+    visibility: hidden;
+    transition: visibility 0s linear 300ms;
+  }
+
+  &:hover .tooltip {
+    visibility: initial;
+  }
+`
+
+export const earningsTooltip = styled.div`
+  position: relative;
+  padding: 16px;
+  background: ${leo.color.white};
+  box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
+  border-radius: 8px;
+  color: ${leo.color.light.text.primary};
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    right: 13px;
+    background: inherit;
+    height: 15px;
+    width: 15px;
+    transform: rotate(45deg);
+  }
+`
+
+export const earningsDisplay = styled.div`
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`
+
+export const earningsMonth = styled.div`
+  padding: 2px 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  opacity: 0.65;
+`
+
+export const earningsAmount = styled.div`
+  font-size: 12px;
+  line-height: 18px;
+
+  .amount {
+    opacity: 1;
+  }
+
+  .currency {
+    opacity: 0.66;
+  }
 `
 
 export const rewardsBalance = styled.div`
-  grid-area: balance;
-  justify-self: start;
-  align-self: end;
-  margin: 6px 5px 0 20px;
+  margin: 0 32px;
 `
 
 export const disconnectedBalance = styled.div`
-  grid-area: balance;
-  justify-self: start;
-  align-self: start;
-  margin: 6px 15px 0 4px;
+  margin: 6px 15px 0;
+  width: 50%;
   padding: 12px;
   border-radius: 8px;
   background: linear-gradient(137.04deg, #346FE1 33.4%, #5844C3 82.8%);
   font-size: 12px;
   line-height: 18px;
   cursor: pointer;
-  position: relative;
 
   strong {
     font-weight: 600;
@@ -62,36 +138,24 @@ export const disconnectedBalance = styled.div`
     bottom: 1em;
     right: 1em;
   }
-
-  &.cover-actions {
-    grid-area: balance-start / balance-start / empty-end / balance-end;
-    align-self: stretch;
-    font-size: 14px;
-    line-height: 20px;
-    padding-bottom: 32px;
-
-    .icon {
-      display: block;
-    }
-  }
 `
 
 export const balanceHeader = styled.div`
   font-weight: 500;
   font-size: 14px;
-  line-height: 22px;
+  line-height: 24px;
   opacity: 0.65;
 `
 
 export const batAmount = styled.div`
-  margin-top: 2px;
-  font-size: 24px;
-  line-height: 32px;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 48px;
 
   .currency {
+    font-weight: 400;
     font-size: 14px;
-    line-height: 14px;
-    opacity: 0.66;
+    line-height: 24px;
   }
 `
 
@@ -113,44 +177,14 @@ export const exchangeAmount = styled.div`
   font-size: 12px;
   line-height: 14px;
   opacity: 0.66;
-
-  &.hidden {
-    visibility: hidden;
-  }
-`
-
-export const earningsPanel = styled.div`
-  grid-area: earnings;
-  justify-content: start;
-  align-self: end;
-  margin-top: 20px;
-`
-
-export const dateRange = styled.div`
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-`
-
-export const earningsHeader = styled.div`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 22px;
-  opacity: 0.65;
 `
 
 export const hiddenEarnings = styled.div`
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 30px;
-  color: rgba(255, 255, 255, 0.66);
-  min-height: 47px;
+  padding-left: 5px;
+  display: flex;
+  gap: 6px;
 
   a {
-    display: inline-block;
-    margin-left: 8px;
-    margin-top: -4px;
-    vertical-align: middle;
     color: #fff;
     text-decoration: none;
     font-weight: 600;
@@ -159,27 +193,23 @@ export const hiddenEarnings = styled.div`
   }
 `
 
-const summaryActionButton = `
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
-  padding: 6px 18px;
-  border-radius: 48px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
+export const hiddenEarningsValue = styled.span`
+  opacity: 0.65;
 `
 
 export const viewStatement = styled.div`
-  grid-area: view-statement;
-  align-self: center;
-  justify-self: end;
-  margin-top: 9px;
-  margin-right: 9px;
+  margin-top: 12px;
+  text-align: center;
 
   button {
-    ${summaryActionButton}
-    padding: 6px 13px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    padding: 0;
+    border-radius: 48px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
   }
 
   .icon {

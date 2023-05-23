@@ -193,7 +193,9 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"verifiedCreator", IDS_REWARDS_PANEL_VERIFIED_CREATOR},
     {"walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK},
     {"walletAutoContribute", IDS_REWARDS_WALLET_AUTO_CONTRIBUTE},
+    {"walletBalanceTitle", IDS_REWARDS_WALLET_BALANCE_TITLE},
     {"walletDisconnected", IDS_REWARDS_WALLET_DISCONNECTED},
+    {"walletEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT},
     {"walletEstimatedEarnings", IDS_REWARDS_WALLET_ESTIMATED_EARNINGS},
     {"walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT},
     {"walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS},
@@ -201,8 +203,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"walletRewardsFromAds", IDS_REWARDS_WALLET_REWARDS_FROM_ADS},
     {"walletRewardsSummary", IDS_REWARDS_WALLET_REWARDS_SUMMARY},
     {"walletUnverified", IDS_REWARDS_WALLET_UNVERIFIED},
-    {"walletVerified", IDS_REWARDS_WALLET_VERIFIED},
-    {"walletYourBalance", IDS_REWARDS_WALLET_YOUR_BALANCE}};
+    {"walletVerified", IDS_REWARDS_WALLET_VERIFIED}};
 
 }  // namespace
 

@@ -29,6 +29,8 @@ export const buttonIcons = styled.div`
 `
 
 export const verifyWallet = styled.div`
+  margin-left: 5px;
+
   button {
     ${buttonMixin}
     background: rgba(255, 255, 255, 0.24);

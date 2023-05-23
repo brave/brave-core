@@ -16,6 +16,7 @@ import { SettingsIcon } from '../icons/settings_icon'
 import { InfoIcon } from './icons/info_icon'
 import { ArrowNextIcon } from '../icons/arrow_next_icon'
 import { TermsOfService } from '../terms_of_service'
+import { EarningsRange } from '../earnings_range'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
@@ -33,30 +34,9 @@ import * as style from './rewards_card.style'
 
 import * as mojom from '../../../shared/lib/mojom'
 
-const nextPaymentDateFormatter = new Intl.DateTimeFormat(undefined, {
-  day: 'numeric',
+const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short'
 })
-
-const monthDayFormatter = new Intl.DateTimeFormat(undefined, {
-  day: 'numeric',
-  month: 'short'
-})
-
-function renderDateRange () {
-  const now = new Date()
-  const start = new Date(now.getFullYear(), now.getMonth(), 1)
-
-  // To get the last day of the month, we can create a date for the next month,
-  // (months greater than 11 wrap around) with the day part set to 0 (one before
-  // the first day of the month). The Date constructor will perform the offset
-  // for us.
-  const end = new Date(start.getFullYear(), start.getMonth() + 1, 0)
-
-  return (
-    <>{monthDayFormatter.format(start)} - {monthDayFormatter.format(end)}</>
-  )
-}
 
 export function RewardsCardHeader () {
   const { getString } = React.useContext(LocaleContext)
@@ -84,7 +64,8 @@ interface Props {
   exchangeCurrency: string
   providerPayoutStatus: ProviderPayoutStatus
   nextPaymentDate: number
-  earningsThisMonth: number
+  minEarningsThisMonth: number
+  maxEarningsThisMonth: number
   earningsLastMonth: number
   contributionsThisMonth: number
   grantInfo: GrantInfo | null
@@ -172,34 +153,28 @@ export function RewardsCard (props: Props) {
       <style.balance
         className={!props.rewardsBalance.hasValue() ? 'flat' : ''}>
         <style.balanceTitle>
-          {getString('rewardsTokenBalance')}
+          {getString('rewardsBalanceTitle')}
         </style.balanceTitle>
         {
           !props.rewardsBalance.hasValue()
             ? <style.balanceSpinner>
-              <LoadingIcon />
-              <style.loading>{getString('loading')}</style.loading>
-            </style.balanceSpinner>
+                <LoadingIcon />
+                <style.loading>{getString('loading')}</style.loading>
+              </style.balanceSpinner>
             : <>
-              <style.balanceAmount>
-                <TokenAmount amount={props.rewardsBalance.value()} />
-              </style.balanceAmount>
-              <style.balanceExchange>
-                <style.balanceExchangeAmount>
-                  ≈&nbsp;
-                  <ExchangeAmount
-                    amount={props.rewardsBalance.value()}
-                    rate={props.exchangeRate}
-                    currency={props.exchangeCurrency} />
-                </style.balanceExchangeAmount>
-                {
-                  props.rewardsBalance.value() > 0 &&
-                  <style.balanceExchangeNote>
-                    {getString('rewardsExchangeValueNote')}
-                  </style.balanceExchangeNote>
-                }
-              </style.balanceExchange>
-            </>
+                <style.balanceAmount>
+                  <TokenAmount amount={props.rewardsBalance.value()} />
+                </style.balanceAmount>
+                <style.balanceExchange>
+                  <style.balanceExchangeAmount>
+                    ≈&nbsp;
+                    <ExchangeAmount
+                      amount={props.rewardsBalance.value()}
+                      rate={props.exchangeRate}
+                      currency={props.exchangeCurrency} />
+                  </style.balanceExchangeAmount>
+                </style.balanceExchange>
+              </>
         }
         <style.pendingRewards>
           <PaymentStatusView
@@ -253,6 +228,52 @@ export function RewardsCard (props: Props) {
           <SelectCountryCard onContinue={props.onSelectCountry} />
         </style.selectCountry>
       </style.root>
+    )
+  }
+
+  function renderEarnings () {
+    if (!props.adsEnabled) {
+      return null
+    }
+
+    return (
+      <>
+        <style.earningsHeader>
+          <style.earningsHeaderText>
+            Estimated earnings
+            <style.earningsInfo>
+              <InfoIcon />
+              <div className='tooltip'>
+                <style.earningsTooltip>
+                  {getString('rewardsEarningInfoText')}
+                </style.earningsTooltip>
+              </div>
+            </style.earningsInfo>
+          </style.earningsHeaderText>
+          <style.earningsHeaderBorder />
+        </style.earningsHeader>
+        <style.earningsDisplay>
+          <style.earningsMonth>
+            {monthFormatter.format(new Date())}
+          </style.earningsMonth>
+          <div>
+            {
+              props.userType === 'connected'
+                ? <EarningsRange
+                    minimum={props.minEarningsThisMonth}
+                    maximum={props.maxEarningsThisMonth}
+                    minimumFractionDigits={3}
+                  />
+                : <style.hiddenEarnings>
+                    --&nbsp;
+                    <NewTabLink href={urls.rewardsChangesURL}>
+                      {getString('rewardsLearnMore')}
+                    </NewTabLink>
+                  </style.hiddenEarnings>
+            }
+          </div>
+        </style.earningsDisplay>
+      </>
     )
   }
 
@@ -392,62 +413,8 @@ export function RewardsCard (props: Props) {
     <style.root>
       <RewardsCardHeader />
       {renderBalance()}
-      <style.progressHeader>
-        <style.progressHeaderText>
-          <span className='date-range'>{renderDateRange()}</span>&nbsp;
-          {getString('rewardsProgress')}
-        </style.progressHeaderText>
-        <style.progressHeaderBorder />
-      </style.progressHeader>
+      {renderEarnings()}
       {renderAdsOptIn()}
-      <style.progress>
-        {
-          props.adsEnabled &&
-            <style.earning>
-              <style.progressItemLabel>
-                {getString('rewardsEarning')}
-                <style.earningInfo>
-                  <InfoIcon />
-                  <div className='tooltip'>
-                    <style.earningTooltip>
-                      {
-                        formatMessage(getString('rewardsEarningInfoText'), [
-                          nextPaymentDateFormatter.format(props.nextPaymentDate)
-                        ])
-                      }
-                    </style.earningTooltip>
-                  </div>
-                </style.earningInfo>
-              </style.progressItemLabel>
-              <style.progressItemAmount>
-                {
-                  props.externalWallet
-                    ? <TokenAmount
-                        amount={props.earningsThisMonth}
-                        minimumFractionDigits={1}
-                      />
-                    : <style.hiddenEarnings>
-                        -&nbsp;-&nbsp;
-                        <NewTabLink href={urls.rewardsChangesURL}>
-                          {getString('rewardsLearnMore')}
-                        </NewTabLink>
-                      </style.hiddenEarnings>
-                }
-              </style.progressItemAmount>
-            </style.earning>
-        }
-        <style.giving>
-          <style.progressItemLabel>
-            {getString('rewardsGiving')}
-          </style.progressItemLabel>
-          <style.progressItemAmount>
-            <TokenAmount
-              amount={props.contributionsThisMonth}
-              minimumFractionDigits={1}
-            />
-          </style.progressItemAmount>
-        </style.giving>
-      </style.progress>
       {renderSettingsLink()}
     </style.root>
   )

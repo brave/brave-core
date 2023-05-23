@@ -7,6 +7,7 @@ import * as React from 'react'
 interface Props {
   amount: number
   minimumFractionDigits?: number
+  hideCurrency?: boolean
 }
 
 const defaultMinimumFractionDigits = 3
@@ -25,8 +26,7 @@ export function TokenAmount (props: Props) {
   return (
     <>
       <span className='amount'>{formatter.format(props.amount || 0)}</span>
-      &nbsp;
-      <span className='currency'>BAT</span>
+      {!props.hideCurrency && <>&nbsp;<span className='currency'>BAT</span></>}
     </>
   )
 }

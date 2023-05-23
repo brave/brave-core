@@ -1347,7 +1347,8 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     dict.Set("nextPaymentDate",
              statement->next_payment_date.ToDoubleT() * 1000);
     dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
-    dict.Set("earningsThisMonth", statement->max_earnings_this_month);
+    dict.Set("minEarningsThisMonth", statement->min_earnings_this_month);
+    dict.Set("maxEarningsThisMonth", statement->max_earnings_this_month);
     dict.Set("earningsLastMonth", statement->earnings_last_month);
 
     Respond(WithArguments(true, std::move(dict)));
