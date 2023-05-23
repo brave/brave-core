@@ -703,6 +703,10 @@
 -CommerceHintFeatureDefaultWithGeoTest.EnableWithGeo
 -NewTabPageUtilBrowserTest.EnableCartByToT
 
+# These tests fail in CI, but they are also going away in CR115 so this filter
+# can be removed at that time
+-ExtensionActionRunnerWithUserHostControlsBrowserTest.HandleUserSiteSettingModified_ExtensionHasNoAccess
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
