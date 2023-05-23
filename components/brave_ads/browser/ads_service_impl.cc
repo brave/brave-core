@@ -1231,13 +1231,13 @@ void AdsServiceImpl::MigratePrefsVersion11To12() {
 }
 
 void AdsServiceImpl::Shutdown() {
-  SuspendP2AHistograms();
-
   CancelRestartBatAdsService();
 
-  VLOG(2) << "Shutting down bat-ads service";
+  if (is_bat_ads_initialized_) {
+    SuspendP2AHistograms();
 
-  is_bat_ads_initialized_ = false;
+    VLOG(2) << "Shutting down bat-ads service";
+  }
 
   bat_ads_client_notifier_.reset();
   bat_ads_.reset();
@@ -1267,7 +1267,11 @@ void AdsServiceImpl::Shutdown() {
     CHECK(success) << "Failed to release database";
   }
 
-  VLOG(2) << "Shutdown bat-ads service";
+  if (is_bat_ads_initialized_) {
+    VLOG(2) << "Shutdown bat-ads service";
+  }
+
+  is_bat_ads_initialized_ = false;
 }
 
 bool AdsServiceImpl::IsEnabled() const {
