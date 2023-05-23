@@ -21,6 +21,8 @@
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/browser/raw_feed_controller.h"
+#include "brave/components/brave_news/browser/signals_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -88,6 +90,7 @@ class BraveNewsController : public KeyedService,
   // mojom::BraveNewsController
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
+  void GetRawFeed(GetRawFeedCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
   void AddPublishersListener(
       mojo::PendingRemote<mojom::PublishersListener> listener) override;
@@ -106,6 +109,7 @@ class BraveNewsController : public KeyedService,
       const GURL& feed_url,
       SubscribeToNewDirectFeedCallback callback) override;
   void RemoveDirectFeed(const std::string& publisher_id) override;
+  void GetSignals(GetSignalsCallback callback) override;
   void GetImageData(const GURL& padded_image_url,
                     GetImageDataCallback callback) override;
   void GetFavIconData(const std::string& publisher_id,
@@ -153,8 +157,10 @@ class BraveNewsController : public KeyedService,
   UnsupportedPublisherMigrator unsupported_publisher_migrator_;
   PublishersController publishers_controller_;
   ChannelsController channels_controller_;
+  RawFeedController raw_feed_controller_;
   FeedController feed_controller_;
   SuggestionsController suggestions_controller_;
+  SignalsController signals_controller_;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::OneShotTimer timer_prefetch_;

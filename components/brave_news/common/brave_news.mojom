@@ -178,12 +178,35 @@ interface FeedListener {
   OnUpdateAvailable(string feed_hash);
 };
 
+struct Signal {
+  // If false, source should never be considered
+  bool blocked;
+
+  // Indicates if this source belongs to a channel which is subscribed to.
+  bool channel_subscribed;
+
+  // Normalized channel visit weighting
+  double channel_visits;
+
+  // Indicates if this source is subscribed
+  bool source_subscribed;
+
+  // Normalized source visit weighting
+  double source_visits;
+
+  // A combined measure of popularity & recency.
+  double pop_recency;
+};
+
 // Browser-side handler
 interface BraveNewsController {
   // Gets the current locale.
   GetLocale() => (string locale);
 
   GetFeed() => (Feed feed);
+  GetRawFeed() => (array<FeedItem> items);
+
+  GetSignals() => (map<string, Signal> signals);
 
   // Deprecated by https://github.com/brave/brave-core/pull/16038. Use
   // |AddPublishersListener| instead.

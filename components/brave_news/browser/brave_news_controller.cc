@@ -30,6 +30,8 @@
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
+#include "brave/components/brave_news/browser/raw_feed_controller.h"
+#include "brave/components/brave_news/browser/signals_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -99,9 +101,13 @@ BraveNewsController::BraveNewsController(
                              &unsupported_publisher_migrator_,
                              &api_request_helper_),
       channels_controller_(prefs_, &publishers_controller_),
+      raw_feed_controller_(&publishers_controller_,
+                           &channels_controller_,
+                           &api_request_helper_),
       feed_controller_(&publishers_controller_,
                        &direct_feed_controller_,
                        &channels_controller_,
+                       &raw_feed_controller_,
                        history_service,
                        &api_request_helper_,
                        prefs_),
@@ -109,6 +115,11 @@ BraveNewsController::BraveNewsController(
                               &publishers_controller_,
                               &api_request_helper_,
                               history_service),
+      signals_controller_(&publishers_controller_,
+                          &channels_controller_,
+                          &feed_controller_,
+                          prefs_,
+                          history_service),
       publishers_observation_(this),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
@@ -168,6 +179,15 @@ void BraveNewsController::GetFeed(GetFeedCallback callback) {
     return;
   }
   feed_controller_.GetOrFetchFeed(std::move(callback));
+}
+
+void BraveNewsController::GetRawFeed(GetRawFeedCallback callback) {
+  if (!GetIsEnabled(prefs_)) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // raw_feed_controller_.GetOrFetchFeed(std::move(callback));
 }
 
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
@@ -310,6 +330,10 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
     event->removed.push_back(publisher_id);
     receiver->Changed(std::move(event));
   }
+}
+
+void BraveNewsController::GetSignals(GetSignalsCallback callback) {
+  signals_controller_.GetSignals(std::move(callback));
 }
 
 void BraveNewsController::GetImageData(const GURL& padded_image_url,
@@ -618,7 +642,7 @@ void BraveNewsController::CheckForFeedsUpdate() {
   if (!GetIsEnabled(prefs_)) {
     return;
   }
-  feed_controller_.UpdateIfRemoteChanged();
+  raw_feed_controller_.UpdateRemoteIfChanged();
 }
 
 void BraveNewsController::Prefetch() {
@@ -670,6 +694,7 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     timer_prefetch_.Stop();
     VLOG(1) << "REMOVING DATA FROM MEMORY";
     feed_controller_.ClearCache();
+    raw_feed_controller_.ClearCache();
     publishers_controller_.ClearCache();
   }
 }

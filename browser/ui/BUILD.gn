@@ -945,6 +945,8 @@ source_set("ui") {
       "webui/brave_wallet/wallet_page_ui.h",
       "webui/brave_wallet/wallet_panel_ui.cc",
       "webui/brave_wallet/wallet_panel_ui.h",
+      "webui/brave_news_inspect/brave_news_inspect_ui.cc",
+      "webui/brave_news_inspect/brave_news_inspect_ui.h",
     ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
@@ -965,6 +967,8 @@ source_set("ui") {
       "//brave/components/resources:strings_grit",
       "//components/permissions",
       "//components/pref_registry",
+      "//brave/components/brave_news/browser",
+      "//brave/components/brave_news/browser/resources:generated_resources",
     ]
   }
   if (is_android) {
