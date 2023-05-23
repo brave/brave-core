@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_out_confirmation_url_request_builder.h"
@@ -53,7 +52,6 @@ void RedeemOptedOutConfirmation::Redeem(
     RedeemOptedOutConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
-  CHECK(!ShouldRewardUser());
   CHECK(!confirmation.opted_in);
 
   BLOG(1, "Redeem opted-out confirmation");
