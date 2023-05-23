@@ -87,7 +87,7 @@ void SpeedreaderToolbarDataHandlerImpl::SetTtsSettings(
 
 void SpeedreaderToolbarDataHandlerImpl::HideToolbar() {
   if (active_tab_helper_) {
-    active_tab_helper_->HideReaderModeToolbar();
+    active_tab_helper_->OnShowOriginalPage();
   }
 }
 
