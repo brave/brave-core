@@ -12,7 +12,7 @@ BASE_FEATURE(kNotificationAdFeature,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAllowedToFallbackToCustomNotificationAdFeature,
-             "AllowedToFallbackToCustomAdNotifications",
+             "AllowedToFallbackToCustomNotificationAd",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsNotificationAdFeatureEnabled() {
