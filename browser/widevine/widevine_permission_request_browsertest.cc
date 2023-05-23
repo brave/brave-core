@@ -258,7 +258,8 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   net::EmbeddedTestServer https_server_;
 };
 
-#if defined(OFFICIAL_BUILD) && BUILDFLAG(IS_WIN)
+// Flaky in CI - https://github.com/brave/brave-browser/issues/30482
+#if defined(OFFICIAL_BUILD)
 #define MAYBE_SuggestPermissionIfWidevineDetected \
   DISABLED_SuggestPermissionIfWidevineDetected
 #else
