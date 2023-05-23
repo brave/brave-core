@@ -21,7 +21,7 @@ module.exports = {
     'es6': true,
     'jest/globals': true
   },
-  'plugins': ['jest', 'licenses'],
+  'plugins': ['jest', 'licenses', 'react-hooks'],
   'globals': {
     'chrome': 'readonly'
   },
@@ -119,6 +119,8 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-invalid-void-type': 0,
     'prefer-const': 0,
-    '@typescript-eslint/return-await': 0
+    '@typescript-eslint/return-await': 0,
+    'react-hooks/rules-of-hooks': 'warn',
+    'react-hooks/exhaustive-deps': 'warn'
   }
 }
