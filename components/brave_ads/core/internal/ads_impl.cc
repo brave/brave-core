@@ -25,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/notifications/legacy_notification_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
-#include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 namespace brave_ads {
@@ -394,8 +393,6 @@ void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
   is_initialized_ = true;
 
   AdsClientHelper::GetInstance()->BindPendingObservers();
-
-  LogActiveStudies();
 
   std::move(callback).Run(/*success*/ true);
 }

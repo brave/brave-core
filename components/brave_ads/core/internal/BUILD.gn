@@ -1115,6 +1115,8 @@ source_set("internal") {
     "segments/segment_value_util.h",
     "settings/settings.cc",
     "settings/settings.h",
+    "studies/studies.cc",
+    "studies/studies.h",
     "studies/studies_util.cc",
     "studies/studies_util.h",
     "tabs/tab_info.cc",
