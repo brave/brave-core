@@ -9,9 +9,7 @@ rust_static_library("rust_lib") {
   crate_name = "brave_news_cxx"
   crate_root = "lib.rs"
   allow_unsafe = true
-  sources = [
-    "lib.rs",
-  ]
+  sources = [ "lib.rs" ]
   cxx_bindings = [ "lib.rs" ]
 
   deps = [

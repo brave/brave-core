@@ -48,6 +48,7 @@ cargo_crate("lib") {
     "serde-codec",
   ]
 
-  cargo_manifest_dir = rebase_path("//brave/third_party/rust/multihash/v0_16/crate")
+  cargo_manifest_dir =
+      rebase_path("//brave/third_party/rust/multihash/v0_16/crate")
   rustenv = [ "CARGO_MANIFEST_DIR=$cargo_manifest_dir" ]
 }

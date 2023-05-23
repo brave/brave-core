@@ -47,8 +47,8 @@ source_set("ffi") {
 
   deps = [
     ":lib",
-    "//build/rust:cxx_cppdeps",
     ":speedreader_ffi_header",
     "//base",
+    "//build/rust:cxx_cppdeps",
   ]
 }

@@ -47,5 +47,8 @@ cargo_crate("lib") {
   ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
-  build_script_outputs = [ "const.rs", "const_gen.rs" ]
+  build_script_outputs = [
+    "const.rs",
+    "const_gen.rs",
+  ]
 }

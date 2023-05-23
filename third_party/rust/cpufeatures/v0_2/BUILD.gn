@@ -33,8 +33,6 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
 
   if (target_cpu == "arm64" && (is_mac || is_android || is_linux)) {
-    deps = [
-      "//third_party/rust/libc/v0_2:lib",
-    ]
+    deps = [ "//third_party/rust/libc/v0_2:lib" ]
   }
 }

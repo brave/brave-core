@@ -24,8 +24,9 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   build_deps = [
     "//third_party/rust/proc_macro2/v1:lib",
+    "//third_party/rust/quote/v1:lib",
     "//third_party/rust/syn/v1:lib",
-    "//third_party/rust/quote/v1:lib" ]
+  ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
   build_script_outputs = [ "rules.rs" ]
@@ -34,6 +35,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/mac/v0_1:lib",
     "//brave/third_party/rust/markup5ever/v0_10:lib",
   ]
-  cargo_manifest_dir = rebase_path("//brave/third_party/rust/html5ever/v0_25/crate")
+  cargo_manifest_dir =
+      rebase_path("//brave/third_party/rust/html5ever/v0_25/crate")
   rustenv = [ "CARGO_MANIFEST_DIR=$cargo_manifest_dir" ]
 }

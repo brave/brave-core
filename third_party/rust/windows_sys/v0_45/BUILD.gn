@@ -26,9 +26,7 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  deps = [
-    "//brave/third_party/rust/windows_targets/v0_42:lib",
-  ]
+  deps = [ "//brave/third_party/rust/windows_targets/v0_42:lib" ]
 
   features = [
     "Win32",

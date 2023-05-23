@@ -4,13 +4,11 @@ rust_static_library("rust_lib") {
   crate_name = "brave_wallet_cxx"
   crate_root = "lib.rs"
   allow_unsafe = true
-  sources = [
-    "lib.rs",
-  ]
+  sources = [ "lib.rs" ]
   cxx_bindings = [ "lib.rs" ]
 
   deps = [
-    "//brave/third_party/rust/ed25519_dalek_bip32/v0_2:lib",
     "//brave/third_party/rust/curve25519_dalek/v3:lib",
+    "//brave/third_party/rust/ed25519_dalek_bip32/v0_2:lib",
   ]
 }

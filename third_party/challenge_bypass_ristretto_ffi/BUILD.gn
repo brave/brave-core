@@ -7,9 +7,9 @@ import("//build/rust/rust_static_library.gni")
 source_set("wrapper") {
   visibility = [ ":*" ]
   sources = [
+    "src/lib.h",
     "src/wrapper.cc",
     "src/wrapper.h",
-    "src/lib.h",
   ]
 
   public_deps = [
@@ -23,19 +23,15 @@ rust_static_library("rust_lib") {
   crate_name = "challenge_bypass_ristretto_ffi"
   crate_root = "src/lib.rs"
   allow_unsafe = true
-  sources = [
-    "src/lib.rs",
-  ]
+  sources = [ "src/lib.rs" ]
 
   deps = [
-    "//brave/third_party/rust/challenge_bypass_ristretto/v1:lib",
     "//brave/third_party/rust/base64/v0_9:lib",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1:lib",
     "//brave/third_party/rust/hmac/v0_10:lib",
     "//brave/third_party/rust/rand/v0_7:lib",
     "//brave/third_party/rust/sha2/v0_9:lib",
   ]
 
-  public_deps = [
-    ":wrapper"
-  ]
+  public_deps = [ ":wrapper" ]
 }

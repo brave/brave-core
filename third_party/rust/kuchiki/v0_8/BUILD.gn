@@ -24,8 +24,8 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/cssparser/v0_27:lib",
-    "//brave/third_party/rust/matches/v0_1:lib",
     "//brave/third_party/rust/html5ever/v0_25:lib",
+    "//brave/third_party/rust/matches/v0_1:lib",
     "//brave/third_party/rust/selectors/v0_22:lib",
   ]
 }

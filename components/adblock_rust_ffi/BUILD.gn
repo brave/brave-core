@@ -19,13 +19,9 @@ rust_static_library("rust_lib") {
   crate_name = "adblock_ffi"
   crate_root = "src/lib.rs"
   allow_unsafe = true
-  sources = [
-    "src/lib.rs",
-  ]
+  sources = [ "src/lib.rs" ]
 
-  public_deps = [
-    ":ffi",
-  ]
+  public_deps = [ ":ffi" ]
 
   deps = [
     "//brave/third_party/rust/adblock/v0_7:lib",

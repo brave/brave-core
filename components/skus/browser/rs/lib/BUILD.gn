@@ -26,6 +26,7 @@ rust_static_library("rust_lib") {
   deps = [
     "//brave/third_party/rust/async_trait/v0_1:lib",
     "//brave/third_party/rust/base64/v0_9:lib",
+    "//brave/third_party/rust/bigdecimal/v0_1:lib",
     "//brave/third_party/rust/challenge_bypass_ristretto/v1:lib",
     "//brave/third_party/rust/chrono/v0_4:lib",
     "//brave/third_party/rust/data_encoding/v2:lib",
@@ -38,7 +39,6 @@ rust_static_library("rust_lib") {
     "//brave/third_party/rust/tracing/v0_1:lib",
     "//brave/third_party/rust/urlencoding/v1:lib",
     "//brave/third_party/rust/uuid/v0_8:lib",
-    "//brave/third_party/rust/bigdecimal/v0_1:lib",
     "//third_party/rust/serde/v1:lib",
     "//third_party/rust/serde_json/v1:lib",
   ]

@@ -4,9 +4,7 @@ rust_static_library("rust_lib") {
   crate_name = "constellation"
   crate_root = "crate/src/lib.rs"
   allow_unsafe = true
-  sources = [
-    "crate/src/lib.rs",
-  ]
+  sources = [ "crate/src/lib.rs" ]
 
   deps = [
     "//brave/third_party/rust/bincode/v1:lib",

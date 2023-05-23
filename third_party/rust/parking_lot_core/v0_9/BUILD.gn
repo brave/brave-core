@@ -21,7 +21,8 @@ cargo_crate("lib") {
   cargo_pkg_version = "0.9.7"
   cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"
   cargo_pkg_name = "parking_lot_core"
-  cargo_pkg_description = "An advanced API for creating custom synchronization primitives."
+  cargo_pkg_description =
+      "An advanced API for creating custom synchronization primitives."
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

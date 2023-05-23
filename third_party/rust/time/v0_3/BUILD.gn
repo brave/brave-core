@@ -33,5 +33,11 @@ cargo_crate("lib") {
   if (is_win) {
     deps += [ "//third_party/rust/winapi/v0_3:lib" ]
   }
-  features = [ "alloc", "formatting", "macros", "parsing", "std" ]
+  features = [
+    "alloc",
+    "formatting",
+    "macros",
+    "parsing",
+    "std",
+  ]
 }

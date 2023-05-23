@@ -13,17 +13,15 @@ rust_static_library("rust_lib") {
   ]
   cxx_bindings = [ "src/lib.rs" ]
 
-  public_deps = [
-    ":shim"
-  ]
+  public_deps = [ ":shim" ]
 
   deps = [
+    "//brave/components/skus/browser/rs/lib:rust_lib",
     "//brave/third_party/rust/async_trait/v0_1:lib",
     "//brave/third_party/rust/futures/v0_3:lib",
     "//brave/third_party/rust/tracing/v0_1:lib",
     "//brave/third_party/rust/tracing_subscriber/v0_2:lib",
     "//third_party/rust/libc/v0_2:lib",
-    "//brave/components/skus/browser/rs/lib:rust_lib",
     "//third_party/rust/serde_json/v1:lib",
   ]
 }
@@ -34,6 +32,6 @@ source_set("shim") {
 
   public_deps = [
     "//base",
-    "//build/rust:cxx_cppdeps"
+    "//build/rust:cxx_cppdeps",
   ]
 }

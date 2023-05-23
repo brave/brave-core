@@ -19,7 +19,8 @@ cargo_crate("lib") {
   sources = [ "crate/src/lib.rs" ]
   edition = "2021"
   cargo_pkg_version = "0.13.0"
-  cargo_pkg_authors = "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
+  cargo_pkg_authors =
+      "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "ff_derive"
   cargo_pkg_description = "Procedural macro library used to build custom prime field implementations"
   library_configs -= [ "//build/config/compiler:chromium_code" ]

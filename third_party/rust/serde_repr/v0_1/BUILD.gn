@@ -27,8 +27,8 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//third_party/rust/syn/v1:lib",
     "//third_party/rust/proc_macro2/v1:lib",
     "//third_party/rust/quote/v1:lib",
+    "//third_party/rust/syn/v1:lib",
   ]
 }

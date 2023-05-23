@@ -15,8 +15,7 @@ cargo_crate("lib") {
   sources = [ "crate/src/lib.rs" ]
   edition = "2018"
   cargo_pkg_version = "0.2.25"
-  cargo_pkg_authors =
-      "Eliza Weisman <eliza@buoyant.io> David Barsky <me@davidbarsky.com> Tokio Contributors <team@tokio.rs>"
+  cargo_pkg_authors = "Eliza Weisman <eliza@buoyant.io> David Barsky <me@davidbarsky.com> Tokio Contributors <team@tokio.rs>"
   cargo_pkg_name = "tracing-subsciber"
   cargo_pkg_description = "Application-level tracing for Rust."
   library_configs -= [ "//build/config/compiler:chromium_code" ]
@@ -33,8 +32,8 @@ cargo_crate("lib") {
     "//brave/third_party/rust/tracing/v0_1:lib",
     "//brave/third_party/rust/tracing_core/v0_1:lib",
     "//brave/third_party/rust/tracing_serde/v0_1:lib",
-    "//third_party/rust/serde/v1:lib",
     "//third_party/rust/lazy_static/v1:lib",
+    "//third_party/rust/serde/v1:lib",
     "//third_party/rust/serde_json/v1:lib",
   ]
 

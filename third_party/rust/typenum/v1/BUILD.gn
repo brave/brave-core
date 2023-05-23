@@ -38,8 +38,19 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   build_root = "crate/build/main.rs"
-  build_sources = [ "crate/build/main.rs", "crate/build/op.rs", "crate/build/tests.rs" ]
-  build_script_outputs = [ "consts.rs", "op.rs", "tests.rs" ]
+  build_sources = [
+    "crate/build/main.rs",
+    "crate/build/op.rs",
+    "crate/build/tests.rs",
+  ]
+  build_script_outputs = [
+    "consts.rs",
+    "op.rs",
+    "tests.rs",
+  ]
 
-  features = [ "force_unix_path_separator", "i128" ]
+  features = [
+    "force_unix_path_separator",
+    "i128",
+  ]
 }
