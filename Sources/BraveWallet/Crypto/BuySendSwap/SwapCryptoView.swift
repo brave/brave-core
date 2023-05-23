@@ -211,7 +211,7 @@ struct SwapCryptoView: View {
   
   /// The DEX Aggregator for the current network.
   var dexAggregator: DEXAggregator {
-    networkStore.selectedChain.coin == .sol ? .jupiter : .zeroX
+    networkStore.defaultSelectedChain.coin == .sol ? .jupiter : .zeroX
   }
 
   @ViewBuilder var unsupportedSwapChainSection: some View {
@@ -219,7 +219,7 @@ struct SwapCryptoView: View {
       VStack(alignment: .leading, spacing: 4.0) {
         Text(Strings.Wallet.swapCryptoUnsupportNetworkTitle)
           .font(.headline)
-        Text(String.localizedStringWithFormat(Strings.Wallet.swapCryptoUnsupportNetworkDescription, networkStore.selectedChain.chainName))
+        Text(String.localizedStringWithFormat(Strings.Wallet.swapCryptoUnsupportNetworkDescription, networkStore.defaultSelectedChain.chainName))
           .font(.subheadline)
           .foregroundColor(Color(.secondaryBraveLabel))
       }
@@ -265,12 +265,12 @@ struct SwapCryptoView: View {
   @ViewBuilder var swapFormSections: some View {
     Section(
     ) {
-      NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .fromToken, network: networkStore.selectedChain)) {
+      NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .fromToken, network: networkStore.defaultSelectedChain)) {
         HStack {
           if let token = swapTokensStore.selectedFromToken {
             AssetIconView(
               token: token,
-              network: networkStore.selectedChain,
+              network: networkStore.defaultSelectedChain,
               length: 26
             )
           }
@@ -328,13 +328,13 @@ struct SwapCryptoView: View {
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoToTitle))
     ) {
       NavigationLink(
-        destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .toToken, network: networkStore.selectedChain)
+        destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .toToken, network: networkStore.defaultSelectedChain)
       ) {
         HStack {
           if let token = swapTokensStore.selectedToToken {
             AssetIconView(
               token: token,
-              network: networkStore.selectedChain,
+              network: networkStore.defaultSelectedChain,
               length: 26
             )
           }
@@ -365,7 +365,7 @@ struct SwapCryptoView: View {
         text: $swapTokensStore.buyAmount
       )
       .keyboardType(.decimalPad)
-      .disabled(networkStore.selectedChain.coin == .sol)
+      .disabled(networkStore.defaultSelectedChain.coin == .sol)
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(

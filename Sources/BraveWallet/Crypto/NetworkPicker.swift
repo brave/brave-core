@@ -21,6 +21,7 @@ struct NetworkPicker: View {
   }
   
   let style: Style
+  let isForOrigin: Bool
   var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @State private var isPresentingAddNetwork: Bool = false
@@ -30,10 +31,12 @@ struct NetworkPicker: View {
   
   init(
     style: Style = .`default`,
+    isForOrigin: Bool = false,
     keyringStore: KeyringStore,
     networkStore: NetworkStore
   ) {
     self.style = style
+    self.isForOrigin = isForOrigin
     self.keyringStore = keyringStore
     self.networkStore = networkStore
   }
@@ -43,7 +46,7 @@ struct NetworkPicker: View {
       if !Preferences.Wallet.showTestNetworks.value {
         var testNetworkChainIdsToRemove = WalletConstants.supportedTestNetworkChainIds
         // Don't remove selected network (possible if selected then disabled showing test networks)
-        testNetworkChainIdsToRemove.removeAll(where: { $0 == networkStore.selectedChain.chainId })
+        testNetworkChainIdsToRemove.removeAll(where: { $0 == networkStore.defaultSelectedChain.chainId })
         if testNetworkChainIdsToRemove.contains(chain.chainId) {
           return false
         }
@@ -57,12 +60,22 @@ struct NetworkPicker: View {
     }
   }
   
+  private var chainName: String {
+    if isForOrigin {
+      return networkStore.selectedChainForOrigin.chainName
+    }
+    return networkStore.defaultSelectedChain.chainName
+  }
+  
   var body: some View {
     Button(action: {
-      networkSelectionStore = .init(networkStore: networkStore)
+      networkSelectionStore = .init(
+        mode: .select(isForOrigin: isForOrigin),
+        networkStore: networkStore
+      )
     }) {
       HStack {
-        Text(networkStore.selectedChain.chainName)
+        Text(chainName)
           .fontWeight(.bold)
         Image(systemName: "chevron.down.circle")
       }
@@ -76,7 +89,8 @@ struct NetworkPicker: View {
       .clipShape(Capsule())
       .contentShape(Capsule())
     }
-    .animation(nil, value: networkStore.selectedChain)
+    .animation(nil, value: networkStore.defaultSelectedChain)
+    .animation(nil, value: networkStore.selectedChainForOrigin)
     .background(
       Color.clear
         .sheet(isPresented: $isPresentingAddNetwork) {
@@ -116,9 +130,9 @@ struct NetworkPicker_Previews: PreviewProvider {
       keyringStore: .previewStoreWithWalletCreated,
       networkStore: .previewStore
     )
-      .padding()
-      .previewLayout(.sizeThatFits)
-      .previewColorSchemes()
+    .padding()
+    .previewLayout(.sizeThatFits)
+    .previewColorSchemes()
   }
 }
 #endif

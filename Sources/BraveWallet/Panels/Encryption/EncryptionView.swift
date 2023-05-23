@@ -69,7 +69,7 @@ struct EncryptionView: View {
   var body: some View {
     ScrollView(.vertical) {
       HStack(alignment: .top) {
-        Text(networkStore.selectedChain.chainName)
+        Text(networkStore.defaultSelectedChain.chainName)
         Spacer()
       }
       .font(.callout)

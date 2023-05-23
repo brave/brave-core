@@ -298,6 +298,7 @@ struct WalletPanelView: View {
   private var networkPickerButton: some View {
     NetworkPicker(
       style: .init(textColor: .white, borderColor: .white),
+      isForOrigin: true,
       keyringStore: keyringStore,
       networkStore: networkStore
     )
@@ -452,10 +453,10 @@ struct WalletPanelView: View {
           }
           VStack(spacing: 4) {
             let nativeAsset = accountActivityStore.userVisibleAssets.first(where: {
-              $0.token.symbol == networkStore.selectedChain.symbol
-              && $0.token.chainId == networkStore.selectedChainId
+              $0.token.symbol == networkStore.selectedChainForOrigin.symbol
+              && $0.token.chainId == networkStore.selectedChainIdForOrigin
             })
-            Text(String(format: "%.04f %@", nativeAsset?.decimalBalance ?? 0.0, networkStore.selectedChain.symbol))
+            Text(String(format: "%.04f %@", nativeAsset?.decimalBalance ?? 0.0, networkStore.selectedChainForOrigin.symbol))
               .font(.title2.weight(.bold))
             Text(currencyFormatter.string(from: NSNumber(value: (Double(nativeAsset?.price ?? "") ?? 0) * (nativeAsset?.decimalBalance ?? 0.0))) ?? "")
               .font(.callout)

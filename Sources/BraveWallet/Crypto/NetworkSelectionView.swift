@@ -27,8 +27,11 @@ struct NetworkSelectionView: View {
   
   private var selectedNetwork: NetworkPresentation.Network {
     switch store.mode {
-    case .select:
-      return .network(networkStore.selectedChain)
+    case let .select(isForOrigin):
+      if isForOrigin {
+        return .network(networkStore.selectedChainForOrigin)
+      }
+      return .network(networkStore.defaultSelectedChain)
     case .formSelection:
       return .network(store.networkSelectionInForm ?? .init())
     }

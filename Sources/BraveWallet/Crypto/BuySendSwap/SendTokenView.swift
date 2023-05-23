@@ -81,7 +81,7 @@ struct SendTokenView: View {
             destination:
               SendTokenSearchView(
                 sendTokenStore: sendTokenStore,
-                network: networkStore.selectedChain
+                network: networkStore.defaultSelectedChain
               )
           ) {
             HStack {
@@ -89,14 +89,14 @@ struct SendTokenView: View {
                 if token.isErc721 || token.isNft {
                   NFTIconView(
                     token: token,
-                    network: networkStore.selectedChain,
+                    network: networkStore.defaultSelectedChain,
                     url: sendTokenStore.selectedSendNFTMetadata?.imageURL,
                     length: 26
                   )
                 } else {
                   AssetIconView(
                     token: token,
-                    network: networkStore.selectedChain,
+                    network: networkStore.defaultSelectedChain,
                     length: 26
                   )
                 }

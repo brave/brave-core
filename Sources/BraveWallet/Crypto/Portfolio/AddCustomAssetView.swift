@@ -319,7 +319,7 @@ struct AddCustomAssetView: View {
   }
 
   private func addCustomToken() {
-    let network = networkSelectionStore.networkSelectionInForm ?? networkStore.selectedChain
+    let network = networkSelectionStore.networkSelectionInForm ?? networkStore.defaultSelectedChain
     let token: BraveWallet.BlockchainToken
     switch selectedTokenType {
     case .token:
