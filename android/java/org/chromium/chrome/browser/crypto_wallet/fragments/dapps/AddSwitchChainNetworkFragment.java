@@ -83,7 +83,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTabTitles.add(new NavigationItem(getString(R.string.brave_wallet_allow_add_network_title),
+        mTabTitles.add(new NavigationItem(getString(R.string.network_text),
                 new TwoLineItemFragment(networks)));
         mTabTitles.add(
                 new NavigationItem(getString(R.string.details), new TwoLineItemFragment(details)));
