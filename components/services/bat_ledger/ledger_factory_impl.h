@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_
 
-#include <set>
+#include <map>
 
 #include "base/files/file_path.h"
-#include "base/memory/scoped_refptr.h"
-#include "base/task/single_thread_task_runner.h"
+#include "base/functional/callback_forward.h"
+#include "base/threading/thread.h"
 #include "brave/components/services/bat_ledger/public/interfaces/ledger_factory.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -24,31 +24,24 @@ class LedgerFactoryImpl : public mojom::LedgerFactory {
   explicit LedgerFactoryImpl(
       mojo::PendingReceiver<mojom::LedgerFactory> receiver);
 
-  ~LedgerFactoryImpl() override;
-
   LedgerFactoryImpl(const LedgerFactoryImpl&) = delete;
   LedgerFactoryImpl& operator=(const LedgerFactoryImpl&) = delete;
 
-  void CreateLedger(
-      const base::FilePath& profile,
-      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
-      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
-      CreateLedgerCallback callback) override;
+  ~LedgerFactoryImpl() override;
+
+  void CreateLedger(const base::FilePath& profile,
+                    mojo::PendingAssociatedReceiver<mojom::Ledger> receiver,
+                    mojo::PendingAssociatedRemote<mojom::LedgerClient> remote,
+                    CreateLedgerCallback callback) override;
 
  private:
-  void CreateLedgerOnTaskRunner(
-      base::FilePath&& profile,
-      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
-      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
-      scoped_refptr<base::SingleThreadTaskRunner> main_task_runner,
-      scoped_refptr<base::SingleThreadTaskRunner> ledger_task_runner);
+  void LedgerAddedCallback(const base::FilePath& profile,
+                           CreateLedgerCallback callback);
 
-  void AddProfile(base::FilePath&& profile, CreateLedgerCallback callback);
-
-  void RemoveProfile(const base::FilePath& profile);
+  void LedgerRemovedCallback(const base::FilePath& profile);
 
   mojo::Receiver<mojom::LedgerFactory> receiver_;
-  std::set<base::FilePath> profiles_with_ledger_;
+  std::map<base::FilePath, base::Thread> ledger_threads_;
 };
 
 }  // namespace brave_rewards::internal

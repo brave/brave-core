@@ -440,6 +440,8 @@ static_library("ledger") {
     "recovery/recovery_empty_balance.h",
     "report/report.cc",
     "report/report.h",
+    "self_owned_ledger_receiver.cc",
+    "self_owned_ledger_receiver.h",
     "sku/sku.cc",
     "sku/sku.h",
     "sku/sku_common.cc",

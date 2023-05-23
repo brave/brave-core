@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/endpoints/post_connect/uphold/post_connect_uphold.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
@@ -28,10 +29,14 @@ using endpoints::RequestFor;
 namespace uphold {
 
 ConnectUpholdWallet::ConnectUpholdWallet() {
+  // Call StartEligibilityChecker() in a separate task to avoid cyclic
+  // initialization (LedgerImpl => Uphold => ConnectUpholdWallet => LedgerImpl).
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&ConnectUpholdWallet::StartEligibilityChecker,
-                                base::Unretained(this)));
+                                weak_factory_.GetWeakPtr()));
 }
+
+ConnectUpholdWallet::~ConnectUpholdWallet() = default;
 
 void ConnectUpholdWallet::StartEligibilityChecker() {
   eligibility_checker_.Start(FROM_HERE,

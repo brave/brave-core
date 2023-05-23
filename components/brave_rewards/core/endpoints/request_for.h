@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/functional/callback.h"
-#include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
@@ -50,12 +49,8 @@ class RequestFor {
                     "Please make sure the error type of your endpoint has the "
                     "kFailedToCreateRequest enumerator!");
 
-      base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE,
-          base::BindOnce(
-              std::move(callback),
-              base::unexpected(Endpoint::Error::kFailedToCreateRequest)));
-      return;
+      return std::move(callback).Run(
+          base::unexpected(Endpoint::Error::kFailedToCreateRequest));
     }
 
     ledger().LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,

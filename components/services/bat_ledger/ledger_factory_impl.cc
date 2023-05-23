@@ -5,127 +5,71 @@
 
 #include "brave/components/services/bat_ledger/ledger_factory_impl.h"
 
-#include <memory>
 #include <utility>
 
+#include "base/functional/callback.h"
+#include "base/logging.h"
 #include "base/task/bind_post_task.h"
-#include "base/task/single_thread_task_runner_thread_mode.h"
-#include "base/task/task_traits.h"
-#include "base/task/thread_pool.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "brave/components/brave_rewards/core/self_owned_ledger_receiver.h"
 
 namespace brave_rewards::internal {
 
 LedgerFactoryImpl::LedgerFactoryImpl(
     mojo::PendingReceiver<mojom::LedgerFactory> receiver)
     : receiver_(this, std::move(receiver)) {
-  VLOG(0) << "Constructor";
+  VLOG(0) << "LedgerFactoryImpl()";
 }
 
 LedgerFactoryImpl::~LedgerFactoryImpl() {
-  VLOG(0) << "Destructor";
+  VLOG(0) << "~LedgerFactoryImpl()";
 }
 
 void LedgerFactoryImpl::CreateLedger(
     const base::FilePath& profile,
-    mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
-    mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
+    mojo::PendingAssociatedReceiver<mojom::Ledger> receiver,
+    mojo::PendingAssociatedRemote<mojom::LedgerClient> remote,
     CreateLedgerCallback callback) {
-  auto ledger_task_runner = base::ThreadPool::CreateSingleThreadTaskRunner(
-      {base::MayBlock(), base::WithBaseSyncPrimitives(),
-       base::TaskPriority::USER_BLOCKING,
-       base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
-      base::SingleThreadTaskRunnerThreadMode::DEDICATED);
+  const auto [entry, inserted] = ledger_threads_.emplace(profile, "szilard");
+  DCHECK(inserted);
+  if (!inserted) {
+    return std::move(callback).Run();
+  }
 
-  ledger_task_runner->PostTaskAndReply(
+  base::Thread& thread = entry->second;
+  thread.Start();
+  thread.task_runner()->PostTaskAndReply(
       FROM_HERE,
       base::BindOnce(
-          &LedgerFactoryImpl::CreateLedgerOnTaskRunner, base::Unretained(this),
-          profile, std::move(ledger_receiver), std::move(ledger_client_remote),
-          base::SingleThreadTaskRunner::GetCurrentDefault(),
-          ledger_task_runner),
-      base::BindOnce(&LedgerFactoryImpl::AddProfile, base::Unretained(this),
-                     profile, std::move(callback)));
+          // SelfOwnedLedgerReceiver::Create runs on the ledger's task runner
+          &SelfOwnedLedgerReceiver::Create, std::move(remote),
+          std::move(receiver),
+          base::BindPostTask(
+              base::SingleThreadTaskRunner::GetCurrentDefault(),
+              base::BindOnce(
+                  // LedgerRemovedCallback runs on the main task runner
+                  &LedgerFactoryImpl::LedgerRemovedCallback,
+                  base::Unretained(this), profile))),
+      base::BindOnce(
+          // LedgerAddedCallback runs on the main task runner
+          &LedgerFactoryImpl::LedgerAddedCallback, base::Unretained(this),
+          profile, std::move(callback)));
 }
 
-class SelfOwnedLedger {
- public:
-  static void Create(
-      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
-      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
-      scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-      base::OnceClosure disconnect_handler) {
-    new SelfOwnedLedger(std::move(ledger_client_remote),
-                        std::move(ledger_receiver), std::move(task_runner),
-                        std::move(disconnect_handler));
-  }
-
-  SelfOwnedLedger(const SelfOwnedLedger&) = delete;
-  SelfOwnedLedger& operator=(const SelfOwnedLedger&) = delete;
-
- private:
-  void Delete() { delete this; }
-
-  SelfOwnedLedger(
-      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
-      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
-      scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-      base::OnceClosure disconnect_handler)
-      : ledger_client_remote_(std::move(ledger_client_remote), task_runner),
-        ledger_(ledger_client_remote_.get()),
-        ledger_receiver_(&ledger(&ledger_),
-                         std::move(ledger_receiver),
-                         task_runner) {
-    ledger_receiver_.set_disconnect_handler(
-        base::BindOnce(&SelfOwnedLedger::Delete, base::Unretained(this))
-            .Then(std::move(disconnect_handler)));
-  }
-
-  ~SelfOwnedLedger() = default;
-
-  mojo::AssociatedRemote<mojom::LedgerClient> ledger_client_remote_;
-  LedgerImpl ledger_;
-  mojo::AssociatedReceiver<mojom::Ledger> ledger_receiver_;
-};
-
-void LedgerFactoryImpl::CreateLedgerOnTaskRunner(
-    base::FilePath&& profile,
-    mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
-    mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
-    scoped_refptr<base::SingleThreadTaskRunner> main_task_runner,
-    scoped_refptr<base::SingleThreadTaskRunner> ledger_task_runner) {
-  VLOG(0) << "Creating ledger for " << profile << "...";
-
-  SelfOwnedLedger::Create(
-      std::move(ledger_client_remote), std::move(ledger_receiver),
-      std::move(ledger_task_runner),
-      base::BindPostTask(
-          main_task_runner,
-          base::BindOnce(&LedgerFactoryImpl::RemoveProfile,
-                         base::Unretained(this), std::move(profile))));
-}
-
-void LedgerFactoryImpl::AddProfile(base::FilePath&& profile,
-                                   CreateLedgerCallback callback) {
-  const auto [profile_it, added] =
-      profiles_with_ledger_.insert(std::move(profile));
-  DCHECK(added);
-
-  VLOG(0) << "Added ledger for " << *profile_it;
-  VLOG(0) << "Number of ledgers: " << profiles_with_ledger_.size();
+void LedgerFactoryImpl::LedgerAddedCallback(const base::FilePath& profile,
+                                            CreateLedgerCallback callback) {
+  VLOG(0) << "Added ledger for " << profile;
+  VLOG(0) << "Number of ledgers: " << ledger_threads_.size();
 
   std::move(callback).Run();
 }
 
-void LedgerFactoryImpl::RemoveProfile(const base::FilePath& profile) {
-  const auto removed = profiles_with_ledger_.erase(profile);
-  DCHECK(removed);
+void LedgerFactoryImpl::LedgerRemovedCallback(const base::FilePath& profile) {
+  ledger_threads_.erase(profile);
 
   VLOG(0) << "Removed ledger for " << profile;
-  VLOG(0) << "Number of ledgers: " << profiles_with_ledger_.size();
+  VLOG(0) << "Number of ledgers: " << ledger_threads_.size();
 
-  if (profiles_with_ledger_.empty()) {
+  if (ledger_threads_.empty()) {
     receiver_.reset();
   }
 }

@@ -41,10 +41,12 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
     3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 #endif
 
+class LedgerImpl;
+LedgerImpl& ledger(
+    absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>> remote);
+
 class LedgerImpl : public mojom::Ledger {
  public:
-  explicit LedgerImpl(mojom::LedgerClient* ledger_client);
-
   ~LedgerImpl() override;
 
   LedgerImpl(const LedgerImpl&) = delete;
@@ -418,6 +420,9 @@ class LedgerImpl : public mojom::Ledger {
   int GetRetryInterval() { return retry_interval_; }
 
  private:
+  explicit LedgerImpl(
+      mojo::PendingAssociatedRemote<mojom::LedgerClient> remote);
+
   enum class ReadyState {
     kUninitialized,
     kInitializing,
@@ -445,7 +450,7 @@ class LedgerImpl : public mojom::Ledger {
   template <typename T>
   void WhenReady(T callback);
 
-  mojom::LedgerClient* ledger_client_;
+  mojo::AssociatedRemote<mojom::LedgerClient> ledger_client_;
 
   promotion::Promotion promotion_;
   publisher::Publisher publisher_;
@@ -473,15 +478,21 @@ class LedgerImpl : public mojom::Ledger {
   uint32_t last_shown_tab_id_ = -1;
   std::queue<std::function<void()>> ready_callbacks_;
   ReadyState ready_state_ = ReadyState::kUninitialized;
+
+  friend LedgerImpl& ledger(
+      absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>>
+          remote);
 };
 
-inline LedgerImpl& ledger(LedgerImpl* init = nullptr) {
-  thread_local LedgerImpl& ledger([&]() -> LedgerImpl& {
-    CHECK(init);
-    return *std::exchange(init, nullptr);
+inline LedgerImpl& ledger(
+    absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>> remote =
+        absl::nullopt) {
+  thread_local LedgerImpl ledger([&] {
+    CHECK(remote);
+    return *std::exchange(remote, absl::nullopt);
   }());
 
-  CHECK(!init);
+  CHECK(!remote);
 
   return ledger;
 }

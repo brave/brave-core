@@ -21,12 +21,9 @@ using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 
-LedgerImpl::LedgerImpl(mojom::LedgerClient* ledger_client)
-    : ledger_client_(ledger_client) {
-  DCHECK(ledger_client_);
+LedgerImpl::~LedgerImpl() {
+  VLOG(0) << "~LedgerImpl()";
 }
-
-LedgerImpl::~LedgerImpl() = default;
 
 // mojom::Ledger implementation begin (in the order of appearance in Mojom)
 void LedgerImpl::Initialize(InitializeCallback callback) {
@@ -770,7 +767,7 @@ absl::optional<std::string> LedgerImpl::DecryptString(
 // mojom::LedgerClient helpers end
 
 mojom::LedgerClient* LedgerImpl::client() {
-  return ledger_client_;
+  return ledger_client_.get();
 }
 
 database::Database* LedgerImpl::database() {
@@ -783,6 +780,12 @@ bool LedgerImpl::IsShuttingDown() const {
 
 bool LedgerImpl::IsUninitialized() const {
   return ready_state_ == ReadyState::kUninitialized;
+}
+
+LedgerImpl::LedgerImpl(
+    mojo::PendingAssociatedRemote<mojom::LedgerClient> remote)
+    : ledger_client_(std::move(remote)) {
+  VLOG(0) << "LedgerImpl()";
 }
 
 bool LedgerImpl::IsReady() const {
