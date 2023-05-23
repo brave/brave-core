@@ -73,7 +73,7 @@ class AdHandler final : public ConversionsObserver, TransferObserver {
 
  private:
   // ConversionsObserver:
-  void OnConversion(
+  void OnDidConvertAd(
       const ConversionQueueItemInfo& conversion_queue_item) override;
 
   // TransferObserver:

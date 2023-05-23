@@ -436,7 +436,7 @@ void Conversions::FailedToConvertQueueItem(
            << " and advertiser id " << conversion_queue_item.advertiser_id
            << " " << LongFriendlyDateAndTime(conversion_queue_item.process_at));
 
-  NotifyConversionFailed(conversion_queue_item);
+  NotifyFailedToConvertAd(conversion_queue_item);
 
   Process();
 }
@@ -452,7 +452,7 @@ void Conversions::ConvertedQueueItem(
            << " and advertiser id " << conversion_queue_item.advertiser_id
            << " " << LongFriendlyDateAndTime(conversion_queue_item.process_at));
 
-  NotifyConversion(conversion_queue_item);
+  NotifyDidConvertAd(conversion_queue_item);
 
   Process();
 }
@@ -553,17 +553,17 @@ void Conversions::StartTimer(
                      << FriendlyDateAndTime(process_queue_at));
 }
 
-void Conversions::NotifyConversion(
+void Conversions::NotifyDidConvertAd(
     const ConversionQueueItemInfo& conversion_queue_item) const {
   for (ConversionsObserver& observer : observers_) {
-    observer.OnConversion(conversion_queue_item);
+    observer.OnDidConvertAd(conversion_queue_item);
   }
 }
 
-void Conversions::NotifyConversionFailed(
+void Conversions::NotifyFailedToConvertAd(
     const ConversionQueueItemInfo& conversion_queue_item) const {
   for (ConversionsObserver& observer : observers_) {
-    observer.OnConversionFailed(conversion_queue_item);
+    observer.OnFailedToConvertAd(conversion_queue_item);
   }
 }
 

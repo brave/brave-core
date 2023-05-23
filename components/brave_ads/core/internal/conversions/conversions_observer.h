@@ -15,11 +15,11 @@ struct ConversionQueueItemInfo;
 class ConversionsObserver : public base::CheckedObserver {
  public:
   // Invoked when a user converts an ad.
-  virtual void OnConversion(
+  virtual void OnDidConvertAd(
       const ConversionQueueItemInfo& conversion_queue_item) {}
 
   // Invoked when an ad conversion fails.
-  virtual void OnConversionFailed(
+  virtual void OnFailedToConvertAd(
       const ConversionQueueItemInfo& conversion_queue_item) {}
 };
 

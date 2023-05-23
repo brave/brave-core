@@ -102,9 +102,9 @@ class Conversions final : public AdsClientNotifierObserver,
 
   void StartTimer(const ConversionQueueItemInfo& queue_item);
 
-  void NotifyConversion(
+  void NotifyDidConvertAd(
       const ConversionQueueItemInfo& conversion_queue_item) const;
-  void NotifyConversionFailed(
+  void NotifyFailedToConvertAd(
       const ConversionQueueItemInfo& conversion_queue_item) const;
 
   // AdsClientNotifierObserver:

@@ -116,7 +116,7 @@ void AdHandler::TriggerSearchResultAdEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdHandler::OnConversion(
+void AdHandler::OnDidConvertAd(
     const ConversionQueueItemInfo& conversion_queue_item) {
   CHECK(conversion_queue_item.IsValid());
 
