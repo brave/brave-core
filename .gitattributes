@@ -26,6 +26,7 @@
 *.pdf -diff
 *.proto text eol=lf
 *.py    text eol=lf
+*.rs    text eol=lf
 *.sh    text eol=lf
 *.sql   text eol=lf
 *.ts    text eol=lf
