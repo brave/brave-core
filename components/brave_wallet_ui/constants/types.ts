@@ -7,7 +7,6 @@ import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 import { NftsPinningStatusType } from '../page/constants/action_types'
-import Amount from '../utils/amount'
 import { AccountInfoEntity } from '../common/slices/entities/account-info.entity'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
@@ -1086,48 +1085,10 @@ const BitcoinNetworkTypes = [
 export type BitcoinNetwork = typeof BitcoinNetworkTypes[number]
 
 
-export type SwapFee = {
-  fee: string
-  discount: string
-}
-
-type LiquiditySource = {
-  name: string
-  proportion: Amount
-}
-
-export type QuoteOption = {
-  label: string
-  fromAmount: Amount
-  toAmount: Amount
-  minimumToAmount: Amount | undefined
-  fromToken: BraveWallet.BlockchainToken
-  toToken: BraveWallet.BlockchainToken
-  rate: Amount
-  impact: Amount
-  sources: LiquiditySource[]
-
-  // Indicates the kind of routing followed by the order.
-  // split -> indicates that the order was fulfilled from two separate LPs
-  //
-  // flow  -> indicates that the order was fulfilled through an intermediate
-  //          asset between two separate LPs.
-  routing: 'split' | 'flow'
-
-  networkFee: string
-
-  braveFee: SwapFee | undefined
-}
-
 export type GasFeeOption = {
   id: string
   name: string
   icon: string
-}
-
-export type Exchange = {
-  id: string
-  name: string
 }
 
 export type GasEstimate = {
@@ -1140,26 +1101,4 @@ export type GasEstimate = {
 export type SwapAndSend = {
   label: string
   name: string
-}
-
-export type SwapParams = {
-  fromToken?: BraveWallet.BlockchainToken
-  toToken?: BraveWallet.BlockchainToken
-  fromAmount: string
-  toAmount: string
-  // This is the value as seen on the UI - should be converted to appropriate
-  // format for Jupiter and 0x swap providers.
-  slippageTolerance: string
-  fromAddress?: string
-}
-
-export type RefreshBlockchainStateParams = {
-  network: BraveWallet.NetworkInfo
-  account: WalletAccountType
-}
-
-export type RefreshPricesParams = {
-  nativeAsset: BraveWallet.BlockchainToken
-  fromAsset: BraveWallet.BlockchainToken | undefined
-  toAsset: BraveWallet.BlockchainToken | undefined
 }

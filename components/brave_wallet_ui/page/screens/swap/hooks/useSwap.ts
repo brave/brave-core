@@ -116,6 +116,8 @@ export const useSwap = () => {
         tokenId: token.tokenId
       }).unwrap()
 
+      console.log(token, result)
+
       return result.price
     },
     [getTokenSpotPriceLazy]
@@ -142,8 +144,8 @@ export const useSwap = () => {
   const [selectedGasFeeOption, setSelectedGasFeeOption] = useState<GasFeeOption>(gasFeeOptions[1])
   const [initialized, setInitialized] = useState<boolean>(false)
   const [spotPrices, setSpotPrices] = useState<SpotPrices>({
-    makerAsset: '',
-    takerAsset: '',
+    fromAsset: '',
+    toAsset: '',
     nativeAsset: ''
   })
   // FIXME(onyb): use global store
@@ -228,8 +230,8 @@ export const useSwap = () => {
 
       setSpotPrices({
         nativeAsset: Amount.normalize(nativeAssetPrice || ''),
-        makerAsset: Amount.normalize(fromAssetPrice || ''),
-        takerAsset: Amount.normalize(toAssetPrice || '')
+        fromAsset: Amount.normalize(fromAssetPrice || ''),
+        toAsset: Amount.normalize(toAssetPrice || '')
       })
     },
     [nativeAsset, fromToken, toToken, getTokenPrice]
@@ -721,10 +723,10 @@ export const useSwap = () => {
 
   // Memos
   const fiatValue = useMemo(() => {
-    return fromAmount && spotPrices.makerAsset
-      ? new Amount(fromAmount).times(spotPrices.makerAsset).formatAsFiat(defaultFiatCurrency)
+    return fromAmount && spotPrices.fromAsset
+      ? new Amount(fromAmount).times(spotPrices.fromAsset).formatAsFiat(defaultFiatCurrency)
       : undefined
-  }, [spotPrices.makerAsset, fromAmount, defaultFiatCurrency])
+  }, [spotPrices.fromAsset, fromAmount, defaultFiatCurrency])
 
   const gasEstimates: GasEstimate = useMemo(() => {
     // ToDo: Setup getGasEstimate Methods
@@ -991,7 +993,8 @@ export const useSwap = () => {
     isSubmitButtonDisabled,
     swapValidationError,
     refreshBlockchainState,
-    getNetworkAssetsList
+    getNetworkAssetsList,
+    spotPrices
   }
 }
 export default useSwap

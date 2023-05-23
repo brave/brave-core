@@ -20,8 +20,9 @@ import {
 
 // Types
 import {
-  QuoteOption
-} from '../../../../../../constants/types'
+  QuoteOption,
+  SpotPrices
+} from '../../../constants/types'
 
 // Styled Components
 import {
@@ -35,11 +36,11 @@ interface Props {
   option: QuoteOption
   isSelected: boolean
   isBest: boolean
-  spotPrice: number | undefined
+  spotPrices: SpotPrices
 }
 
 export const SelectQuoteOptionButton = (props: Props) => {
-  const { onClick, option, isSelected, isBest, spotPrice } = props
+  const { onClick, option, isSelected, isBest, spotPrices } = props
 
   // Selectors
   const defaultFiatCurrency =
@@ -53,9 +54,9 @@ export const SelectQuoteOptionButton = (props: Props) => {
   const quoteFiatValue = React.useMemo(() => {
     return option
       .toAmount
-      .times(spotPrice || 0)
+      .times(spotPrices.toAsset || '0')
       .formatAsFiat(defaultFiatCurrency)
-  }, [spotPrice, option, defaultFiatCurrency])
+  }, [spotPrices.toAsset, option, defaultFiatCurrency])
 
   return (
     <Button onClick={onSelectToken} isSelected={isSelected}>

@@ -40,8 +40,8 @@ export type Registry = Record<string, string>
 
 export type SpotPrices = {
   nativeAsset: string
-  makerAsset: string
-  takerAsset: string
+  fromAsset: string
+  toAsset: string
 }
 
 export type SwapAndSend = {

@@ -102,7 +102,8 @@ export const Swap = () => {
     isSubmitButtonDisabled,
     swapValidationError,
     refreshBlockchainState,
-    getNetworkAssetsList
+    getNetworkAssetsList,
+    spotPrices
   } = swap
 
   // State
@@ -216,6 +217,7 @@ export const Swap = () => {
                 options={quoteOptions}
                 selectedQuoteOptionIndex={selectedQuoteOptionIndex}
                 onSelectQuoteOption={onSelectQuoteOption}
+                spotPrices={spotPrices}
               />
             )}
         </SwapSectionBox>
@@ -226,6 +228,7 @@ export const Swap = () => {
               fromToken={fromToken}
               toToken={toToken}
               toAmount={toAmount}
+              spotPrices={spotPrices}
             />
 
             {/* TODO: Swap and Send  is currently unavailable

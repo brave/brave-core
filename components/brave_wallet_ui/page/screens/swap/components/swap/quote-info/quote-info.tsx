@@ -7,9 +7,12 @@ import * as React from 'react'
 
 // Types
 import {
-  BraveWallet,
-  QuoteOption
+  BraveWallet
 } from '../../../../../../constants/types'
+import {
+  QuoteOption,
+  SpotPrices
+} from '../../../constants/types'
 
 // Constants
 import LPMetadata from '../../../constants/LpMetadata'
@@ -45,22 +48,14 @@ interface Props {
   fromToken: BraveWallet.BlockchainToken | undefined
   toToken: BraveWallet.BlockchainToken | undefined
   toAmount: string
+  spotPrices: SpotPrices
 }
 
 export const QuoteInfo = (props: Props) => {
-  const { selectedQuoteOption, fromToken, toToken } = props
+  const { selectedQuoteOption, fromToken, toToken, spotPrices } = props
 
   // State
   const [showProviders, setShowProviders] = React.useState<boolean>(false)
-
-  // Wallet State
-  // const { state } = useWalletState()
-  // const { spotPrices } = state
-
-  const spotPrices = {
-    makerAsset: undefined,
-    takerAsset: undefined,
-  }
 
   // Memos
   const swapRate: string = React.useMemo(() => {
@@ -80,12 +75,11 @@ export const QuoteInfo = (props: Props) => {
   }, [selectedQuoteOption])
 
   const coinGeckoDelta: Amount = React.useMemo(() => {
-    console.log(fromToken, toToken, spotPrices, selectedQuoteOption)
     if (
       fromToken !== undefined &&
       toToken !== undefined &&
-      spotPrices.makerAsset &&
-      spotPrices.takerAsset &&
+      spotPrices.fromAsset &&
+      spotPrices.toAsset &&
       selectedQuoteOption !== undefined
     ) {
       // Exchange rate is the value <R> in the following equation:
@@ -96,7 +90,7 @@ export const QuoteInfo = (props: Props) => {
       //   1 FROM/USD = <R> TO/USD
       //   => <R> = (FROM/USD) / (TO/USD)
       const coinGeckoRate =
-        new Amount(spotPrices.makerAsset).div(spotPrices.takerAsset)
+        new Amount(spotPrices.fromAsset).div(spotPrices.toAsset)
 
       // Quote rate computation:
       //   <X> FROM = <Y> TO

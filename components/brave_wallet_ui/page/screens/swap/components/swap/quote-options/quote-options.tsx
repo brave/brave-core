@@ -7,8 +7,9 @@ import * as React from 'react'
 
 // Types
 import {
-  QuoteOption
-} from '../../../../../../constants/types'
+  QuoteOption,
+  SpotPrices
+} from '../../../constants/types'
 
 // Components
 import {
@@ -25,46 +26,23 @@ import {
   Icon
 } from '../../shared-swap.styles'
 
-// Utils
-// import Amount from '../../../../../../utils/amount'
-
 interface Props {
   options: QuoteOption[]
   selectedQuoteOptionIndex: number
   onSelectQuoteOption: (index: number) => void
+  spotPrices: SpotPrices
 }
 
 export const QuoteOptions = (props: Props) => {
-  const { options, selectedQuoteOptionIndex, onSelectQuoteOption } = props
-
-  // Context
-  // const { getTokenPrice } = useSwapContext()
+  const {
+    options,
+    selectedQuoteOptionIndex,
+    onSelectQuoteOption,
+    spotPrices
+  } = props
 
   // State
   const [showAllOptions, setShowAllOptions] = React.useState<boolean>(false)
-  const [
-    spotPrice,
-    // setSpotPrice
-  ] = React.useState<number | undefined>(
-    undefined
-  )
-
-  // Effects
-  // React.useEffect(() => {
-  //   let ignore = false
-  //   if (options[selectedQuoteOptionIndex] !== undefined) {
-  //     getTokenPrice(options[selectedQuoteOptionIndex].toToken)
-  //       .then((result) => {
-  //         if (!ignore) {
-  //           setSpotPrice(Number(Amount.normalize(result)))
-  //         }
-  //       })
-  //       .catch((error) => console.log(error))
-  //     return () => {
-  //       ignore = true
-  //     }
-  //   }
-  // }, [options, selectedQuoteOptionIndex, getTokenPrice])
 
   // Methods
   const onToggleShowAllOptions = React.useCallback(() => {
@@ -89,7 +67,7 @@ export const QuoteOptions = (props: Props) => {
             isSelected={selectedQuoteOptionIndex === index}
             onClick={() => onSelectQuoteOption(index)}
             option={option}
-            spotPrice={spotPrice}
+            spotPrices={spotPrices}
             key={index}
           />
         ))}
