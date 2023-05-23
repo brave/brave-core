@@ -39,6 +39,7 @@
 #include "brave/components/brave_ads/browser/device_id.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/reminder_util.h"
+#include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
@@ -301,6 +302,11 @@ AdsServiceImpl::AdsServiceImpl(
   CHECK(rewards_service_);
   CHECK(brave::IsRegularProfile(profile_));
 
+  if (CanStartBatAdsService()) {
+    bat_ads_client_notifier_receiver_ =
+        bat_ads_client_notifier_.BindNewPipeAndPassReceiver();
+  }
+
   InitializeNotificationsForCurrentProfile();
 
   MigratePrefs();
@@ -365,19 +371,20 @@ bool AdsServiceImpl::UserHasOptedIn() const {
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
-  return IsEnabled() || UserHasOptedIn();
+  return IsSupportedRegion() &&
+         (kShouldAlwaysRunService.Get() || IsEnabled() || UserHasOptedIn());
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
   CancelRestartBatAdsService();
 
   if (bat_ads_service_.is_bound() || !CanStartBatAdsService()) {
-    return;
-  }
+    if (!IsSupportedRegion()) {
+      return VLOG(6) << brave_l10n::GetDefaultISOCountryCodeString()
+                     << " region does not support ads";
+    }
 
-  if (!IsSupportedRegion()) {
-    return VLOG(6) << brave_l10n::GetDefaultISOCountryCodeString()
-                   << " region does not support ads";
+    return;
   }
 
   StartBatAdsService();
@@ -393,10 +400,15 @@ void AdsServiceImpl::StartBatAdsService() {
 
   CHECK(bat_ads_service_.is_bound());
 
+  if (!bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_receiver_ =
+        bat_ads_client_notifier_.BindNewPipeAndPassReceiver();
+  }
+
   bat_ads_service_->Create(
       bat_ads_client_.BindNewEndpointAndPassRemote(),
       bat_ads_.BindNewEndpointAndPassReceiver(),
-      bat_ads_client_notifier_.BindNewPipeAndPassReceiver(),
+      std::move(bat_ads_client_notifier_receiver_),
       base::BindOnce(&AdsServiceImpl::OnBatAdsServiceCreated, AsWeakPtr(),
                      ++service_starts_count_));
 
@@ -1248,6 +1260,7 @@ void AdsServiceImpl::Shutdown() {
   }
 
   bat_ads_client_notifier_.reset();
+  bat_ads_client_notifier_receiver_.reset();
   bat_ads_.reset();
   bat_ads_client_.reset();
   bat_ads_service_.reset();

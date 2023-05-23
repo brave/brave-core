@@ -11,6 +11,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_converting_util.h"
@@ -39,8 +40,15 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     AdsService* ads_service,
     const GURL& url,
     const bool should_trigger_viewed_event) {
-  if (!IsSearchResultAdFeatureEnabled() || !ads_service ||
-      !ads_service->IsEnabled() || !brave_search::IsAllowedHost(url)) {
+  if (!ads_service) {
+    return {};
+  }
+
+  const bool is_enabled =
+      ads_service->IsEnabled() || kShouldAlwaysRunService.Get();
+
+  if (!IsSearchResultAdFeatureEnabled() || !is_enabled ||
+      !brave_search::IsAllowedHost(url)) {
     return {};
   }
 
@@ -54,7 +62,7 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
   CHECK(render_frame_host);
   CHECK(ads_service_);
 
-  if (!ads_service_->IsEnabled()) {
+  if (!IsEnabled()) {
     return;
   }
 
@@ -75,7 +83,7 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
 void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     const GURL& navigation_url) {
   CHECK(ads_service_);
-  if (!ads_service_->IsEnabled() || !search_result_ads_) {
+  if (!IsEnabled() || !search_result_ads_) {
     return;
   }
 
@@ -99,13 +107,21 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
       search_result_ad->Clone(), mojom::SearchResultAdEventType::kClicked);
 }
 
+bool SearchResultAdHandler::IsEnabled() {
+  if (!ads_service_) {
+    return false;
+  }
+
+  return ads_service_->IsEnabled() || kShouldAlwaysRunService.Get();
+}
+
 void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
     mojo::Remote<blink::mojom::DocumentMetadata> /*document_metadata*/,
     base::OnceCallback<void(std::vector<std::string> placement_ids)> callback,
     blink::mojom::WebPagePtr web_page) {
   CHECK(ads_service_);
 
-  if (!ads_service_->IsEnabled() || !web_page) {
+  if (!IsEnabled() || !web_page) {
     return std::move(callback).Run({});
   }
 

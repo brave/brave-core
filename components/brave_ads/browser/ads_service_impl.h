@@ -30,6 +30,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/idle/idle.h"
@@ -492,6 +493,8 @@ class AdsServiceImpl : public AdsService,
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
   mojo::Remote<bat_ads::mojom::BatAdsClientNotifier> bat_ads_client_notifier_;
+  mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_receiver_;
 };
 
 }  // namespace brave_ads
