@@ -649,10 +649,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Brave Notification Ad
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE" desc="The notification title to show when an external wallet is connected">
-        &#x1F389; You're now earning for Brave Ads!
+        &#x1F389; You're now earning!
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY" desc="The notification body to show when an external wallet is connected">
-        For example, you earn whenever a notification like this appears on your screen. You don't need to click to earn.
+        You earn whenever a notification like this appears on your screen. You don't need to click to earn.
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_TITLE" desc="The notification title to show when a user clicks an ad multiple times">
         You earn when a Brave Ads notification appears
