@@ -23,6 +23,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -77,6 +78,10 @@
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_tab_helper.h"
 #include "brave/components/request_otr/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_tab_helper.h"
 #endif
 
 namespace brave {
@@ -157,6 +162,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     }
 #endif
   }
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  playlist::PlaylistTabHelper::MaybeCreateForWebContents(web_contents);
+#endif
 }
 
 }  // namespace brave

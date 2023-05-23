@@ -384,6 +384,23 @@ base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
+void PlaylistService::FindMediaFilesFromContents(
+    content::WebContents* contents,
+    FindMediaFilesFromContentsCallback callback) {
+  DCHECK(contents);
+
+  PlaylistDownloadRequestManager::Request request;
+  auto current_url = contents->GetVisibleURL();
+  if (ShouldGetMediaFromBackgroundWebContents(contents)) {
+    request.url_or_contents = current_url.spec();
+  } else {
+    request.url_or_contents = contents->GetWeakPtr();
+  }
+
+  request.callback = base::BindOnce(std::move(callback), current_url);
+  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+}
+
 void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
   std::vector<mojom::PlaylistPtr> playlists;
   const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
@@ -483,16 +500,7 @@ void PlaylistService::FindMediaFilesFromActiveTab(
     return;
   }
 
-  PlaylistDownloadRequestManager::Request request;
-  auto current_url = contents->GetVisibleURL();
-  if (ShouldGetMediaFromBackgroundWebContents(contents)) {
-    request.url_or_contents = current_url.spec();
-  } else {
-    request.url_or_contents = contents->GetWeakPtr();
-  }
-
-  request.callback = base::BindOnce(std::move(callback), current_url);
-  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+  FindMediaFilesFromContents(contents, std::move(callback));
 }
 
 void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,

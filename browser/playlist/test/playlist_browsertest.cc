@@ -13,6 +13,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
@@ -230,4 +231,22 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
         )-js")
         .ExtractBool();
   }));
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
+  auto* playlist_tab_helper =
+      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  EXPECT_TRUE(playlist_tab_helper);
+  EXPECT_TRUE(playlist_tab_helper->found_items().empty());
+
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GetURL("/playlist/site_with_video.html")));
+
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return playlist_tab_helper->found_items().size() > 0; }));
+
+  ASSERT_TRUE(content::NavigateToURL(
+      GetActiveWebContents(), GetURL("/playlist/site_without_video.html")));
+  // items should be cleared right away.
+  EXPECT_TRUE(playlist_tab_helper->found_items().empty());
 }
