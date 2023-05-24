@@ -23,6 +23,8 @@ aggregate_vector_icons("brave_vector_icons") {
     "download_unlock.icon",
     "open_in_ipfs.icon",
     "open_in_tor.icon",
+    "playlist_action.icon",
+    "playlist_action_added.icon",
     "sidebar_toolbar_button.icon",
     "sidebar_toolbar_button_right.icon",
     "vpn_indicator.icon",

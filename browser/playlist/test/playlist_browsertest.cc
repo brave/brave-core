@@ -21,11 +21,15 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
 #include "brave/components/playlist/browser/playlist_service_observer.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -283,4 +287,28 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
       GetActiveWebContents(), GetURL("/playlist/site_without_video.html")));
   // items should be cleared right away.
   EXPECT_TRUE(playlist_tab_helper->found_items().empty());
+
+  // 'Back' should be observed
+  browser()->command_controller()->ExecuteCommand(IDC_BACK);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return playlist_tab_helper->found_items().size() > 0; }));
+
+  // Newly added items should be observed
+  std::vector<playlist::mojom::PlaylistItemPtr> items_to_add;
+  items_to_add.push_back(playlist_tab_helper->found_items().front()->Clone());
+  GetService()->AddMediaFiles(std::move(items_to_add),
+                              playlist::kDefaultPlaylistID,
+                              /* can_cache= */ false);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return playlist_tab_helper->saved_items().size() > 0; }));
+
+  // Removed items should be observed
+  GetService()->ResetAll();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return playlist_tab_helper->saved_items().size() == 0; }));
+
+  // 'Forward' should be observed
+  browser()->command_controller()->ExecuteCommand(IDC_FORWARD);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return playlist_tab_helper->found_items().size() == 0; }));
 }

@@ -62,6 +62,9 @@ class MockObserver : public mojom::PlaylistServiceObserver {
               (const GURL& page_url, std::vector<mojom::PlaylistItemPtr> items),
               (override));
 
+  MOCK_METHOD(void, OnItemCreated, (mojom::PlaylistItemPtr item), (override));
+  MOCK_METHOD(void, OnItemDeleted, (const std::string& id), (override));
+
  private:
   mojo::Receiver<mojom::PlaylistServiceObserver> observer_receiver_{this};
 };

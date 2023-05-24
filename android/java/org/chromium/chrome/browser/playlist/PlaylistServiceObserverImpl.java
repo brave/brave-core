@@ -48,6 +48,12 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     }
 
     @Override
+    public void onItemCreated(PlaylistItem item) {}
+
+    @Override
+    public void onItemDeleted(String id) {}
+
+    @Override
     public void close() {
         mDelegate = null;
     }

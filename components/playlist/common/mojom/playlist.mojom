@@ -37,6 +37,7 @@ struct PlaylistItem {
 
   // original sources
   url.mojom.Url page_source;
+  url.mojom.Url page_redirected;
   url.mojom.Url media_source;
   url.mojom.Url thumbnail_source;
 
@@ -125,6 +126,9 @@ interface PlaylistServiceObserver {
   // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
   // and parameters for client side.
   OnEvent(PlaylistEvent event, string playlist_id);
+
+  OnItemCreated(PlaylistItem item);
+  OnItemDeleted(string id);
 
   OnMediaFileDownloadProgressed(
       string id,
