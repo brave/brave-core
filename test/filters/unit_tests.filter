@@ -310,6 +310,9 @@
 # Flaky upstream test.
 -EncryptedReportingUploadProviderTest.SuccessfullyUploadsRecord
 
+# This test fails because we disable page_info::kPageInfoCookiesSubpage
+-PageInfoBubbleViewCookiesSubpageTest.TextsOnButtonsAreCorrect
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
