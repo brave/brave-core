@@ -128,6 +128,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/ApproveTxBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/CreateAccountBottomSheetFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/EditVisibleAssetsBottomSheetDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/MarketFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/NftGridFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/PortfolioFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/SolanaTxDetailsFragment.java",

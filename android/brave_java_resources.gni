@@ -877,6 +877,7 @@ brave_java_resources = [
   "java/res/layout/fragment_dormant_users_engagement_dialog.xml",
   "java/res/layout/fragment_encryption_key.xml",
   "java/res/layout/fragment_link_subscription_dialog.xml",
+  "java/res/layout/fragment_market.xml",
   "java/res/layout/fragment_nft_grid.xml",
   "java/res/layout/fragment_onboarding_v2.xml",
   "java/res/layout/fragment_playlist_warning_dialog.xml",
