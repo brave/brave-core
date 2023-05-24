@@ -7,14 +7,13 @@
 
 import argparse
 import os
-import shutil
 import subprocess
 import sys
 
 import deps
 from deps_config import DEPS_PACKAGES_URL
 
-from lib.config import BRAVE_CORE_ROOT, CHROMIUM_ROOT
+from lib.config import BRAVE_CORE_ROOT
 from lib.util import get_host_os, get_host_arch, str2bool
 
 RUSTUP_PATH = os.path.join(BRAVE_CORE_ROOT, 'build', 'rustup')
