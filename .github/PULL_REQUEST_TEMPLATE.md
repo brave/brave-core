@@ -8,6 +8,7 @@ Resolves
 * CI/skip - do not run CI builds (except noplatform)
 * CI/skip-linux-arm64, CI/skip-linux-x64, CI/skip-android, CI/skip-macos, CI/skip-ios, CI/skip-windows-arm64, CI/skip-windows-x64, CI/skip-windows-x86 - skip CI builds for specific platforms
 * CI/skip-upstream-tests - do not run Chromium unit, or browser tests (otherwise only on Linux)
+* CI/skip-all-linters - do not run presubmit and lint checks
 * CI/storybook-url (1) - deploy storybook and provide a unique URL for each build
 
 (1) applied automatically when some files are changed (see: https://github.com/brave/brave-core/blob/master/.github/labeler.yml)
