@@ -406,7 +406,7 @@ export const useSwap = () => {
             .reduce(
               (obj, item) => (
                 // eslint-disable-next-line no-sequences
-                ((obj as any)[item.key] = item.value), obj
+                (obj[item.key] = item.value), obj
               ),
               {}
             )
