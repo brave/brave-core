@@ -4,11 +4,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_schemas.h"
 
+#include <tuple>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -27,11 +30,105 @@ bool ParseResultFromDict(const base::Value::Dict* response_dict,
   return true;
 }
 
+absl::optional<double> ParseNullableStringAsDouble(const base::Value& value) {
+  if (value.is_none()) {
+    return absl::nullopt;
+  }
+
+  double result;
+  if (value.is_string()) {
+    if (!base::StringToDouble(value.GetString(), &result)) {
+      return absl::nullopt;
+    }
+
+    return result;
+  }
+
+  return absl::nullopt;
+}
+
+absl::optional<uint32_t> ParseNullableStringAsUint32(const base::Value& value) {
+  if (value.is_none()) {
+    return absl::nullopt;
+  }
+
+  uint32_t result;
+  if (value.is_string()) {
+    if (!base::StringToUint(value.GetString(), &result)) {
+      return absl::nullopt;
+    }
+
+    return result;
+  }
+
+  return absl::nullopt;
+}
+
 std::string EmptyIfNull(const std::string* str) {
   if (str) {
     return *str;
   }
   return "";
+}
+
+void AddDappListToMap(
+    const std::string& key,
+    const brave_wallet::blockchain_lists::DappList& dapp_list_from_component,
+    brave_wallet::DappListMap* dapp_lists) {
+  std::vector<brave_wallet::mojom::DappPtr> dapp_list;
+  for (const auto& dapp_from_component : dapp_list_from_component.results) {
+    auto dapp = brave_wallet::mojom::Dapp::New();
+    dapp->range = dapp_list_from_component.range;
+
+    uint32_t dapp_id;
+    if (!base::StringToUint(dapp_from_component.dapp_id, &dapp_id)) {
+      continue;
+    }
+    dapp->id = dapp_id;
+
+    dapp->name = dapp_from_component.name;
+    dapp->description = dapp_from_component.description;
+    dapp->logo = dapp_from_component.logo;
+    dapp->website = dapp_from_component.website;
+    dapp->chains = std::vector<std::string>(dapp_from_component.chains.begin(),
+                                            dapp_from_component.chains.end());
+    dapp->categories =
+        std::vector<std::string>(dapp_from_component.categories.begin(),
+                                 dapp_from_component.categories.end());
+
+    // If any of the metrics fields are null, skip the dapp
+    absl::optional<uint32_t> transactions =
+        ParseNullableStringAsUint32(dapp_from_component.metrics.transactions);
+    if (!transactions) {
+      continue;
+    }
+    dapp->transactions = *transactions;
+
+    absl::optional<uint32_t> uaw =
+        ParseNullableStringAsUint32(dapp_from_component.metrics.uaw);
+    if (!uaw) {
+      continue;
+    }
+    dapp->uaw = *uaw;
+
+    absl::optional<double> volume =
+        ParseNullableStringAsDouble(dapp_from_component.metrics.volume);
+    if (!volume) {
+      continue;
+    }
+    dapp->volume = *volume;
+
+    absl::optional<double> balance =
+        ParseNullableStringAsDouble(dapp_from_component.metrics.balance);
+    if (!balance) {
+      continue;
+    }
+    dapp->balance = *balance;
+
+    dapp_list.push_back(std::move(dapp));
+  }
+
+  (*dapp_lists)[key] = std::move(dapp_list);
 }
 
 }  // namespace
@@ -264,6 +361,122 @@ bool ParseChainList(const std::string& json, ChainList* result) {
   }
 
   return true;
+}
+
+absl::optional<DappListMap> ParseDappLists(const std::string& json) {
+  // {
+  //   "solana": {
+  //     "success": true,
+  //     "chain": "solana",
+  //     "category": null,
+  //     "range": "30d",
+  //     "top": "100",
+  //     "results": [
+  //       {
+  //         "dappId": "20419",
+  //         "name": "GameTrade Market",
+  //         "description": "Discover, buy, sell and trade in-game NFTs",
+  //         "logo":
+  //         "https://dashboard-assets.dappradar.com/document/20419/gametrademarket-dapp-marketplaces-matic-logo_e3e698e60ebd9bfe8ed1421bb41b890d.png",
+  //         "link":
+  //         "https://dappradar.com/solana/marketplaces/gametrade-market-2",
+  //         "website": "https://gametrade.market/",
+  //         "chains": [
+  //           "polygon",
+  //           "solana",
+  //           "binance-smart-chain"
+  //         ],
+  //         "categories": [
+  //           "marketplaces"
+  //         ],
+  //         "metrics": {
+  //           "transactions": "1513120",
+  //           "uaw": "917737",
+  //           "volume": "32352.38",
+  //           "balance": "3.81"
+  //         }
+  //       }
+  //     ]
+  //   },
+  //   "ethereum": {
+  //     "success": true,
+  //     "chain": "ethereum",
+  //     "category": null,
+  //     "range": "30d",
+  //     "top": "100",
+  //     "results": [
+  //       {
+  //         "dappId": "7000",
+  //         "name": "Uniswap V3",
+  //         "description": "A protocol for trading and automated liquidity.",
+  //         "logo":
+  //         "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
+  //         "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
+  //         "website": "https://app.uniswap.org/#/swap",
+  //         "chains": [
+  //           "ethereum",
+  //           "polygon",
+  //           "optimism",
+  //           "celo",
+  //           "arbitrum",
+  //           "binance-smart-chain"
+  //         ],
+  //         "categories": [
+  //           "exchanges"
+  //         ],
+  //         "metrics": {
+  //           "transactions": "3596443",
+  //           "uaw": "507730",
+  //           "volume": "42672855706.52",
+  //           "balance": "1887202135.14"
+  //         }
+  //       }
+  //     ]
+  //   },
+  //   ...
+  // }
+
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+
+  if (!records_v || !records_v->is_dict()) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return absl::nullopt;
+  }
+
+  auto dapp_lists_from_component =
+      blockchain_lists::DappLists::FromValue(records_v->GetDict());
+  if (!dapp_lists_from_component) {
+    return absl::nullopt;
+  }
+
+  DappListMap dapp_lists;
+  AddDappListToMap(
+      GetTokenListKey(mojom::CoinType::ETH, mojom::kMainnetChainId),
+      dapp_lists_from_component->ethereum, &dapp_lists);
+  AddDappListToMap(GetTokenListKey(mojom::CoinType::SOL, mojom::kSolanaMainnet),
+                   dapp_lists_from_component->solana, &dapp_lists);
+  AddDappListToMap(
+      GetTokenListKey(mojom::CoinType::ETH, mojom::kPolygonMainnetChainId),
+      dapp_lists_from_component->polygon, &dapp_lists);
+  AddDappListToMap(GetTokenListKey(mojom::CoinType::ETH,
+                                   mojom::kBinanceSmartChainMainnetChainId),
+                   dapp_lists_from_component->binance_smart_chain, &dapp_lists);
+  AddDappListToMap(
+      GetTokenListKey(mojom::CoinType::ETH, mojom::kOptimismMainnetChainId),
+      dapp_lists_from_component->optimism, &dapp_lists);
+  AddDappListToMap(
+      GetTokenListKey(mojom::CoinType::ETH, mojom::kAuroraMainnetChainId),
+      dapp_lists_from_component->aurora, &dapp_lists);
+  AddDappListToMap(
+      GetTokenListKey(mojom::CoinType::ETH, mojom::kAvalancheMainnetChainId),
+      dapp_lists_from_component->avalanche, &dapp_lists);
+  AddDappListToMap(
+      GetTokenListKey(mojom::CoinType::ETH, mojom::kFantomMainnetChainId),
+      dapp_lists_from_component->fantom, &dapp_lists);
+
+  return dapp_lists;
 }
 
 }  // namespace brave_wallet

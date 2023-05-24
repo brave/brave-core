@@ -269,4 +269,223 @@ TEST(ParseChainListUnitTest, ParseChainList) {
   EXPECT_FALSE(chain2->is_eip1559);
 }
 
+TEST(ParseDappListsUnitTest, ParseDappLists) {
+  const std::string dapp_list = R"({
+    "solana": {
+      "success": true,
+      "chain": "solana",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": [
+        {
+          "dappId": "20419",
+          "name": "GameTrade Market",
+          "description": "Discover, buy, sell and trade in-game NFTs",
+          "logo": "https://dashboard-assets.dappradar.com/document/20419/gametrademarket-dapp-marketplaces-matic-logo_e3e698e60ebd9bfe8ed1421bb41b890d.png",
+          "link": "https://dappradar.com/solana/marketplaces/gametrade-market-2",
+          "website": "https://gametrade.market/",
+          "chains": [
+            "polygon",
+            "solana",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "marketplaces"
+          ],
+          "metrics": {
+            "transactions": "1513120",
+            "uaw": "917737",
+            "volume": "32352.38",
+            "balance": "3.81"
+          }
+        }
+      ]
+    },
+    "ethereum": {
+      "success": true,
+      "chain": "ethereum",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": [
+        {
+          "dappId": "7000",
+          "name": "Uniswap V3",
+          "description": "A protocol for trading and automated liquidity.",
+          "logo": "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
+          "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
+          "website": "https://app.uniswap.org/#/swap",
+          "chains": [
+            "ethereum",
+            "polygon",
+            "optimism",
+            "celo",
+            "arbitrum",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "exchanges"
+          ],
+          "metrics": {
+            "transactions": "3596443",
+            "uaw": "507730",
+            "volume": "42672855706.52",
+            "balance": "1887202135.14"
+          }
+        }
+      ]
+    },
+    "polygon": {
+      "success": true,
+      "chain": "polygon",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": [
+        {
+          "dappId": "18305",
+          "name": "Stargate",
+          "description": "A Composable Omnichain Native Asset Bridge",
+          "logo": "https://dashboard-assets.dappradar.com/document/18305/stargatefinance-dapp-defi-ethereum-logo_66dc9532020488c50870b5dae3e34654.png",
+          "link": "https://dappradar.com/polygon/defi/stargate-2",
+          "website": "https://stargate.finance/",
+          "chains": [
+            "ethereum",
+            "binance-smart-chain",
+            "avalanche",
+            "polygon",
+            "optimism",
+            "fantom",
+            "arbitrum"
+          ],
+          "categories": [
+            "defi"
+          ],
+          "metrics": {
+            "transactions": null,
+            "uaw": null,
+            "volume": null,
+            "balance": null
+          }
+        }
+      ]
+    },
+    "binance_smart_chain": {
+      "success": true,
+      "chain": "binance-smart-chain",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "optimism": {
+      "success": true,
+      "chain": "optimism",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "aurora": {
+      "success": true,
+      "chain": "aurora",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "avalanche": {
+      "success": true,
+      "chain": "avalanche",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "fantom": {
+      "success": true,
+      "chain": "fantom",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    }
+  })";
+
+  // Parse the dapp list
+  absl::optional<DappListMap> dapp_list_map = ParseDappLists(dapp_list);
+  ASSERT_TRUE(dapp_list_map);
+
+  // There should be eight lists, for Ethereum, Solana, Polygon, Binance Smart
+  // Chain, Optimism, Aurora, Avalanche, and Fantom
+  ASSERT_EQ(8u, dapp_list_map->size());
+
+  // There should be one dapp in the Ethereum list
+  auto it = dapp_list_map->find(
+      GetTokenListKey(mojom::CoinType::ETH, mojom::kMainnetChainId));
+  EXPECT_TRUE(it != dapp_list_map->end());
+  const auto& eth_dapp_list = it->second;
+  EXPECT_EQ(eth_dapp_list.size(), 1u);
+  const auto& eth_dapp = eth_dapp_list[0];
+  EXPECT_EQ(eth_dapp->range, "30d");
+  EXPECT_EQ(eth_dapp->name, "Uniswap V3");
+  EXPECT_EQ(eth_dapp->description,
+            "A protocol for trading and automated liquidity.");
+  EXPECT_EQ(
+      eth_dapp->logo,
+      "https://dashboard-assets.dappradar.com/document/7000/"
+      "uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png");
+  EXPECT_EQ(eth_dapp->website, "https://app.uniswap.org/#/swap");
+  EXPECT_EQ(eth_dapp->categories.size(), 1u);
+  EXPECT_EQ(eth_dapp->categories[0], "exchanges");
+  EXPECT_EQ(eth_dapp->chains.size(), 6u);
+  EXPECT_EQ(eth_dapp->chains[0], "ethereum");
+  EXPECT_EQ(eth_dapp->chains[1], "polygon");
+  EXPECT_EQ(eth_dapp->chains[2], "optimism");
+  EXPECT_EQ(eth_dapp->chains[3], "celo");
+  EXPECT_EQ(eth_dapp->chains[4], "arbitrum");
+  EXPECT_EQ(eth_dapp->chains[5], "binance-smart-chain");
+  EXPECT_EQ(eth_dapp->transactions, 3596443u);
+  EXPECT_EQ(eth_dapp->uaw, 507730u);
+  EXPECT_DOUBLE_EQ(eth_dapp->volume, 42672855706.52);
+  EXPECT_DOUBLE_EQ(eth_dapp->balance, 1887202135.14);
+
+  // There should be one dapp in the Solana list
+  auto it_s = dapp_list_map->find(
+      GetTokenListKey(mojom::CoinType::SOL, mojom::kSolanaMainnet));
+  EXPECT_TRUE(it_s != dapp_list_map->end());
+  const auto& sol_dapp_list = it_s->second;
+  EXPECT_EQ(sol_dapp_list.size(), 1u);
+  const auto& sol_dapp = sol_dapp_list[0];
+  EXPECT_EQ(sol_dapp->range, "30d");
+  EXPECT_EQ(sol_dapp->name, "GameTrade Market");
+  EXPECT_EQ(sol_dapp->description,
+            "Discover, buy, sell and trade in-game NFTs");
+  EXPECT_EQ(sol_dapp->logo,
+            "https://dashboard-assets.dappradar.com/document/20419/"
+            "gametrademarket-dapp-marketplaces-matic-logo_"
+            "e3e698e60ebd9bfe8ed1421bb41b890d.png");
+
+  EXPECT_EQ(sol_dapp->website, "https://gametrade.market/");
+  EXPECT_EQ(sol_dapp->categories.size(), 1u);
+  EXPECT_EQ(sol_dapp->categories[0], "marketplaces");
+  EXPECT_EQ(sol_dapp->chains.size(), 3u);
+  EXPECT_EQ(sol_dapp->chains[0], "polygon");
+  EXPECT_EQ(sol_dapp->chains[1], "solana");
+  EXPECT_EQ(sol_dapp->chains[2], "binance-smart-chain");
+  EXPECT_EQ(sol_dapp->transactions, 1513120u);
+  EXPECT_EQ(sol_dapp->uaw, 917737u);
+  EXPECT_DOUBLE_EQ(sol_dapp->volume, 32352.38);
+  EXPECT_DOUBLE_EQ(sol_dapp->balance, 3.81);
+
+  // There should be no dapps in the Polygon list because the only
+  // dapp in that list had null values for metrics.
+  auto it_p = dapp_list_map->find(
+      GetTokenListKey(mojom::CoinType::ETH, mojom::kPolygonMainnetChainId));
+  EXPECT_TRUE(it_p != dapp_list_map->end());
+  const auto& poly_dapp_list = it_p->second;
+  EXPECT_EQ(poly_dapp_list.size(), 0u);
+}
+
 }  // namespace brave_wallet

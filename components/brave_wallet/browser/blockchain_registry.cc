@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/containers/flat_set.h"
@@ -48,6 +49,10 @@ void BlockchainRegistry::UpdateTokenList(
 
 void BlockchainRegistry::UpdateChainList(ChainList chains) {
   chain_list_ = std::move(chains);
+}
+
+void BlockchainRegistry::UpdateDappList(DappListMap dapp_lists) {
+  dapp_lists_ = std::move(dapp_lists);
 }
 
 void BlockchainRegistry::GetTokenByAddress(const std::string& chain_id,
@@ -236,6 +241,24 @@ BlockchainRegistry::GetPrepopulatedNetworks() {
 void BlockchainRegistry::GetPrepopulatedNetworks(
     GetPrepopulatedNetworksCallback callback) {
   std::move(callback).Run(GetPrepopulatedNetworks());
+}
+
+void BlockchainRegistry::GetTopDapps(const std::string& chain_id,
+                                     mojom::CoinType coin,
+                                     GetTopDappsCallback callback) {
+  const auto key = GetTokenListKey(coin, chain_id);
+  if (!dapp_lists_.contains(key)) {
+    std::move(callback).Run(std::vector<mojom::DappPtr>());
+    return;
+  }
+  const auto& dapps = dapp_lists_[key];
+
+  std::vector<mojom::DappPtr> dapps_copy(dapps.size());
+  std::transform(dapps.begin(), dapps.end(), dapps_copy.begin(),
+                 [](const mojom::DappPtr& current_token) -> mojom::DappPtr {
+                   return current_token.Clone();
+                 });
+  std::move(callback).Run(std::move(dapps_copy));
 }
 
 }  // namespace brave_wallet

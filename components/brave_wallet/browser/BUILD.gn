@@ -201,6 +201,7 @@ static_library("browser") {
   }
   deps = [
     ":constants",
+    ":generated_blockchain_list_schemas",
     ":generated_json_rpc_responses",
     ":generated_simulation_responses",
     ":generated_swap_responses",
@@ -366,6 +367,16 @@ source_set("transaction") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/filecoin/rs:cxx",
     "//brave/components/json/rs:cxx",
+  ]
+}
+
+generated_types("generated_blockchain_list_schemas") {
+  sources = [ "blockchain_list_schemas.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
   ]
 }
 

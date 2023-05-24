@@ -185,6 +185,122 @@ const char chain_list_json[] = R"(
     }
   ])";
 
+const char dapp_lists_json[] = R"({
+    "solana": {
+      "success": true,
+      "chain": "solana",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": [
+        {
+          "dappId": "20419",
+          "name": "GameTrade Market",
+          "description": "Discover, buy, sell and trade in-game NFTs",
+          "logo": "https://dashboard-assets.dappradar.com/document/20419/gametrademarket-dapp-marketplaces-matic-logo_e3e698e60ebd9bfe8ed1421bb41b890d.png",
+          "link": "https://dappradar.com/solana/marketplaces/gametrade-market-2",
+          "website": "https://gametrade.market/",
+          "chains": [
+            "polygon",
+            "solana",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "marketplaces"
+          ],
+          "metrics": {
+            "transactions": "1513120",
+            "uaw": "917737",
+            "volume": "32352.38",
+            "balance": "3.81"
+          }
+        }
+      ]
+    },
+    "ethereum": {
+      "success": true,
+      "chain": "ethereum",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": [
+        {
+          "dappId": "7000",
+          "name": "Uniswap V3",
+          "description": "A protocol for trading and automated liquidity.",
+          "logo": "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
+          "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
+          "website": "https://app.uniswap.org/#/swap",
+          "chains": [
+            "ethereum",
+            "polygon",
+            "optimism",
+            "celo",
+            "arbitrum",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "exchanges"
+          ],
+          "metrics": {
+            "transactions": "3596443",
+            "uaw": "507730",
+            "volume": "42672855706.52",
+            "balance": "1887202135.14"
+          }
+        }
+      ]
+    },
+    "polygon": {
+      "success": true,
+      "chain": "polygon",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "binance_smart_chain": {
+      "success": true,
+      "chain": "binance-smart-chain",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "optimism": {
+      "success": true,
+      "chain": "optimism",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "aurora": {
+      "success": true,
+      "chain": "aurora",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "avalanche": {
+      "success": true,
+      "chain": "avalanche",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    },
+    "fantom": {
+      "success": true,
+      "chain": "fantom",
+      "category": null,
+      "range": "30d",
+      "top": "100",
+      "results": []
+    }
+  })";
+
 std::vector<std::string> GetChainIds(
     const std::vector<mojom::NetworkInfoPtr>& networks) {
   std::vector<std::string> result;
@@ -540,6 +656,67 @@ TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
   auto found_networks = registry->GetPrepopulatedNetworks();
   EXPECT_EQ(2u, found_networks.size());
   EXPECT_EQ(found_networks[0]->chain_name, "Ethereum Mainnet");
+}
+
+TEST(BlockchainRegistryUnitTest, GetTopDapps) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+  absl::optional<DappListMap> dapp_lists_map = ParseDappLists(dapp_lists_json);
+  ASSERT_TRUE(dapp_lists_map);
+  registry->UpdateDappList(std::move(*dapp_lists_map));
+
+  // Top Ethereum dapps
+  // Loop twice to make sure getting the same list twice works
+  // For example, make sure nothing is std::move'd
+  for (size_t i = 0; i < 2; ++i) {
+    base::RunLoop run_loop;
+    registry->GetTopDapps(
+        mojom::kMainnetChainId, mojom::CoinType::ETH,
+        base::BindLambdaForTesting([&](std::vector<mojom::DappPtr> dapp_list) {
+          ASSERT_EQ(dapp_list.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->name, "Uniswap V3");
+          EXPECT_EQ(dapp_list[0]->description,
+                    "A protocol for trading and automated liquidity.");
+          EXPECT_EQ(dapp_list[0]->chains.size(), 6UL);
+          EXPECT_EQ(dapp_list[0]->chains[0], "ethereum");
+          EXPECT_EQ(dapp_list[0]->chains[1], "polygon");
+          EXPECT_EQ(dapp_list[0]->chains[2], "optimism");
+          EXPECT_EQ(dapp_list[0]->chains[3], "celo");
+          EXPECT_EQ(dapp_list[0]->chains[4], "arbitrum");
+          EXPECT_EQ(dapp_list[0]->chains[5], "binance-smart-chain");
+          EXPECT_EQ(dapp_list[0]->transactions, 3596443U);
+          EXPECT_EQ(dapp_list[0]->uaw, 507730U);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->volume, 42672855706.52);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->balance, 1887202135.14);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  // Top Solana dapps
+  // Loop twice to make sure getting the same list twice works
+  // For example, make sure nothing is std::move'd
+  for (size_t i = 0; i < 2; ++i) {
+    base::RunLoop run_loop;
+    registry->GetTopDapps(
+        mojom::kSolanaMainnet, mojom::CoinType::SOL,
+        base::BindLambdaForTesting([&](std::vector<mojom::DappPtr> dapp_list) {
+          ASSERT_EQ(dapp_list.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->name, "GameTrade Market");
+          EXPECT_EQ(dapp_list[0]->description,
+                    "Discover, buy, sell and trade in-game NFTs");
+          EXPECT_EQ(dapp_list[0]->chains.size(), 3UL);
+          EXPECT_EQ(dapp_list[0]->chains[0], "polygon");
+          EXPECT_EQ(dapp_list[0]->chains[1], "solana");
+          EXPECT_EQ(dapp_list[0]->chains[2], "binance-smart-chain");
+          EXPECT_EQ(dapp_list[0]->transactions, 1513120U);
+          EXPECT_EQ(dapp_list[0]->uaw, 917737U);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->volume, 32352.38);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->balance, 3.81);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
 }
 
 TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
