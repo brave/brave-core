@@ -25,6 +25,8 @@ source_set("ai_chat") {
     "ai_chat_api.h",
     "ai_chat_tab_helper.cc",
     "ai_chat_tab_helper.h",
+    "ai_chat_url_handler.cc",
+    "ai_chat_url_handler.h",
     "constants.cc",
     "constants.h",
     "features.cc",
@@ -42,6 +44,7 @@ source_set("ai_chat") {
     "//brave/components/resources:strings_grit",
     "//components/prefs",
     "//content/public/browser",
+    "//content/public/common",
     "//net/traffic_annotation",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
@@ -53,4 +56,19 @@ source_set("ai_chat") {
 mojom("mojom") {
   sources = [ "ai_chat.mojom" ]
   public_deps = [ "//mojo/public/mojom/base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "ai_chat_url_handler_unittest.cc" ]
+
+  deps = [
+    ":ai_chat",
+    "//base",
+    "//base/test:test_support",
+    "//content/public/browser",
+    "//testing/gtest",
+    "//url",
+  ]
 }

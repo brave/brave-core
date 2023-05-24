@@ -35,6 +35,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
+#include "brave/components/ai_chat/ai_chat_url_handler.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -469,6 +470,10 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
                           &webtorrent::HandleTorrentURLReverseRewrite);
 #endif
+  if (ai_chat::features::IsAIChatEnabled()) {
+    handler->AddHandlerPair(&ai_chat::HandleURLRewrite,
+                            &ai_chat::HandleURLReverseRewrite);
+  }
 #if BUILDFLAG(ENABLE_IPFS)
   handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
                           &ipfs::HandleIPFSURLReverseRewrite);
