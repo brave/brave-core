@@ -441,14 +441,21 @@ export const PortfolioAsset = (props: Props) => {
   }, [selectedAsset?.symbol])
 
   const onSend = React.useCallback(() => {
-    if (!selectedAsset) return
+    if (!selectedAsset || !selectedAssetsNetwork) return
+
+    const account = accounts
+      .filter((account) => account.coin === selectedAsset.coin)
+      .find(acc => new Amount(getBalance(acc, selectedAsset)).gte('1'))
+
+    if(!account) return
+
     history.push(
-      WalletRoutes.SendPage.replace(
-        ':contractAddress?',
-        selectedAsset.contractAddress
-      ).replace(':tokenId?', selectedAsset.tokenId)
+      WalletRoutes.SendPage.replace(':chainId?', selectedAssetsNetwork.chainId)
+        .replace(':accountAddress?', account.address)
+        .replace(':contractAddress?', selectedAsset.contractAddress)
+        .replace(':tokenId?', selectedAsset.tokenId)
     )
-  }, [selectedAsset])
+  }, [selectedAsset, accounts, selectedAssetsNetwork])
 
   // effects
   React.useEffect(() => {

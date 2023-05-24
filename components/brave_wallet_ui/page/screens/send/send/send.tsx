@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useParams } from 'react-router'
+import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Messages
@@ -12,6 +13,9 @@ import { ENSOffchainLookupMessage, FailedChecksumMessage } from '../send-ui-mess
 
 // Types
 import { BraveWallet, SendOptionTypes, AddressMessageInfo } from '../../../../constants/types'
+
+// Actions
+import { WalletActions } from '../../../../common/actions'
 
 // Selectors
 import { WalletSelectors } from '../../../../common/selectors'
@@ -30,7 +34,7 @@ import { endsWithAny } from '../../../../utils/string-utils'
 // Hooks
 import { usePreset, useBalanceUpdater, useSend } from '../../../../common/hooks'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
-import { useGetNetworkQuery } from '../../../../common/slices/api.slice'
+import { useGetNetworkQuery, useSetNetworkMutation } from '../../../../common/slices/api.slice'
 
 // Styled Components
 import {
@@ -79,11 +83,18 @@ export const Send = (props: Props) => {
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
   const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // routing
-  const { contractAddress, tokenId } = useParams<{ contractAddress?: string, tokenId?: string }>()
+  const { chainId, accountAddress, contractAddress, tokenId } = useParams<{
+    chainId?: string
+    accountAddress?: string
+    contractAddress?: string
+    tokenId?: string
+  }>()
 
   // Hooks
+  const dispatch = useDispatch()
   useBalanceUpdater()
 
   const {
@@ -106,10 +117,11 @@ export const Send = (props: Props) => {
     sendAssetOptions
   } = useSend(true)
 
-  // Queries
+  // Queries & Mutations
   const { data: selectedTokensNetwork } = useGetNetworkQuery(
     selectedSendAsset ?? skipToken
   )
+  const [setNetwork] = useSetNetworkMutation()
 
   // Refs
   const ref = React.createRef<HTMLDivElement>()
@@ -351,17 +363,40 @@ export const Send = (props: Props) => {
 
   React.useEffect(() => {
     // check if the user has selected an asset
-    if (!contractAddress || selectedSendAsset) return
+    if (!contractAddress || !accountAddress || !chainId || selectedSendAsset) return
+
     const asset = sendAssetOptions.find((option) =>
       tokenId
         ? option.contractAddress.toLowerCase() ===
             contractAddress.toLowerCase() && option.tokenId === tokenId
         : option.contractAddress.toLowerCase() === contractAddress.toLowerCase()
     )
-    if (!asset) return
+    const account = accounts.find(
+      (account) => account.address === accountAddress
+    )
+
+    if (!asset || !account) return
+    
+    dispatch(WalletActions.selectAccount(account))
+    const _setNetwork = async () =>
+      await setNetwork({
+        chainId: chainId,
+        coin: asset.coin
+      })
+    _setNetwork()
     setSelectedSendOption(tokenId ? 'nft' : 'token')
     selectSendAsset(asset)
-  }, [setSelectedSendOption, selectSendAsset, selectedSendAsset, sendAssetOptions, contractAddress, tokenId])
+  }, [
+    setSelectedSendOption,
+    selectSendAsset,
+    selectedSendAsset,
+    sendAssetOptions,
+    chainId,
+    accountAddress,
+    contractAddress,
+    tokenId,
+    accounts
+  ])
 
   // render
   return (

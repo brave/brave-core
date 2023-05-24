@@ -812,6 +812,8 @@ export enum WalletRoutes {
   // send
   SendPageStart = '/send',
   SendPage = '/send/' +
+  ':chainId?/' +
+  ':accountAddress?/' +
   ':contractAddress?/' +
   ':tokenId?',
 
