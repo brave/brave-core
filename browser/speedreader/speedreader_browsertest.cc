@@ -606,6 +606,25 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
     }
   };
 
+  auto WaitElement = [&](content::WebContents* contents,
+                         const std::string& elem) {
+    constexpr const char kWaitElement[] =
+        R"js(
+          (!!document.getElementById('$1'))
+        )js";
+    for (;;) {
+      NonBlockingDelay(base::Milliseconds(10));
+      if (content::EvalJs(
+              contents,
+              base::ReplaceStringPlaceholders(kWaitElement, {elem}, nullptr),
+              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+              .ExtractBool()) {
+        break;
+      }
+    }
+  };
+
   auto Click = [&](content::WebContents* contents, const std::string& id) {
     constexpr const char kClick[] =
         R"js(
@@ -622,7 +641,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
                            ->reader_mode_panel_view_.get();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
-  content::WaitForLoadStop(toolbar);
+  WaitElement(toolbar, "options");
 
   Click(toolbar, "options");
   {  // change theme
