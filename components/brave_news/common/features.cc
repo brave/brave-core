@@ -9,10 +9,6 @@
 
 namespace brave_news::features {
 
-BASE_FEATURE(kBraveNewsV2Feature,
-             "BraveNewsV2",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 BASE_FEATURE(kBraveNewsCardPeekFeature,
              "BraveNewsCardPeek",
              base::FEATURE_ENABLED_BY_DEFAULT);

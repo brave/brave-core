@@ -23,8 +23,8 @@
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/browser/urls.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -158,19 +158,18 @@ class PublishersControllerTest : public testing::Test {
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
                                     true);
-
-    scoped_features_.InitAndEnableFeature(
-        brave_news::features::kBraveNewsV2Feature);
   }
 
   std::string GetV1SourcesUrl() {
-    return "https://" + brave_news::GetHostname() + "/sources." +
-           brave_news::GetV1RegionUrlPart() + "json";
+    std::string locale =
+        brave_l10n::GetDefaultISOLanguageCodeString() == "ja" ? "ja" : "";
+    return "https://" + brave_news::GetHostname() + "/sources." + locale +
+           "json";
   }
 
   std::string GetSourcesUrl() {
     return "https://" + brave_news::GetHostname() + "/sources." +
-           brave_news::GetRegionUrlPart() + "json";
+           brave_news::kRegionUrlPart + "json";
   }
 
   void SetSubscribedSources(const std::vector<std::string>& publisher_ids) {

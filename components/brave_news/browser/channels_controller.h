@@ -54,7 +54,7 @@ class ChannelsController : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* controller) override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest, BuildFeedV2);
+  FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest, BuildFeed);
   FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest,
                            DuplicateItemsAreNotIncluded);
   static void SetChannelSubscribedPref(PrefService* prefs,

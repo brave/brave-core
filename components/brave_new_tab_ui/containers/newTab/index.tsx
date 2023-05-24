@@ -582,10 +582,6 @@ class NewTabPage extends React.Component<Props, State> {
       cryptoContent = null
     }
 
-    const BraveNewsContext = newTabData.featureFlagBraveNewsV2Enabled
-      ? BraveNewsContextProvider
-      : React.Fragment
-
     return (
       <Page.App
         dataIsReady={newTabData.initialDataLoaded}
@@ -595,7 +591,7 @@ class NewTabPage extends React.Component<Props, State> {
         colorForBackground={colorForBackground}
         data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
-        <BraveNewsContext>
+        <BraveNewsContextProvider>
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}
@@ -754,7 +750,7 @@ class NewTabPage extends React.Component<Props, State> {
               onSave={this.saveNewTopSite}
             /> : null
         }
-        </BraveNewsContext>
+        </BraveNewsContextProvider>
       </Page.App>
     )
   }

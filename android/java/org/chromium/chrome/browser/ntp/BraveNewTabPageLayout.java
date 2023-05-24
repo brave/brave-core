@@ -44,7 +44,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -96,7 +95,6 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.query_tiles.BraveQueryTileSection;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
-import org.chromium.chrome.browser.settings.BraveNewsPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesGridLayout;
@@ -360,11 +358,7 @@ public class BraveNewTabPageLayout
         ImageView ivNewsSettings = findViewById(R.id.news_settings_button);
         ivNewsSettings.setOnClickListener(view -> {
             SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
-            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)) {
-                settingsLauncher.launchSettingsActivity(getContext(), BraveNewsPreferencesV2.class);
-            } else {
-                settingsLauncher.launchSettingsActivity(getContext(), BraveNewsPreferences.class);
-            }
+            settingsLauncher.launchSettingsActivity(getContext(), BraveNewsPreferencesV2.class);
         });
 
         mRecyclerView = findViewById(R.id.recyclerview);
@@ -772,7 +766,7 @@ public class BraveNewTabPageLayout
     public void updateNewsOptin(boolean isOptin) {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
+        sharedPreferencesEditor.putBoolean(BraveNewsPreferencesV2.PREF_SHOW_OPTIN, false);
         sharedPreferencesEditor.apply();
         BravePrefServiceBridge.getInstance().setNewsOptIn(true);
         BravePrefServiceBridge.getInstance().setShowNews(isOptin);
@@ -783,16 +777,14 @@ public class BraveNewTabPageLayout
         mNtpAdapter.setImageCreditAlpha(1f);
         mNtpAdapter.setDisplayNews(mIsDisplayNews);
 
-        if (isOptin && mBraveNewsController != null
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)
-                && BraveNewsUtils.getLocale() == null) {
+        if (isOptin && mBraveNewsController != null && BraveNewsUtils.getLocale() == null) {
             BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, null);
         }
     }
 
     private boolean shouldDisplayNewsOptin() {
         return ContextUtils.getAppSharedPreferences().getBoolean(
-                BraveNewsPreferences.PREF_SHOW_OPTIN, true);
+                BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true);
     }
 
     private void initPreferenceObserver() {
@@ -1177,7 +1169,7 @@ public class BraveNewTabPageLayout
                         || BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                                 Profile.getLastUsedRegularProfile()))
                 && (!ContextUtils.getAppSharedPreferences().getBoolean(
-                            BraveNewsPreferences.PREF_SHOW_OPTIN, true)
+                            BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true)
                         && !BravePrefServiceBridge.getInstance().getShowNews())) {
             NTPUtil.showNonDisruptiveBanner(
                     (BraveActivity) mActivity, this, brOption, mSponsoredTab, newTabPageListener);

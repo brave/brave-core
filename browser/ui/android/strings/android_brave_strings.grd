@@ -588,21 +588,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_NEWS_MORE_OFFERS_TITLE" desc="Text for more offers for the Brave News Deals card ">
         More Brave Offers
       </message>
-      <message name="IDS_NEWS_TURN_ON_BUTTON" desc="Text for turn on button">
-        Enable Brave News
-      </message>
-      <message name="IDS_NEWS_YOUR_SOURCES_SECTION" desc="Text for custom sources section">
-        Your sources
-      </message>
-      <message name="IDS_NEWS_FEED_SITE_URL" desc="Text for news feed input">
-        Feed or Site URL
-      </message>
-      <message name="IDS_NEWS_DEFAULT_SOURCES_SECTION" desc="Text for the default sources section">
-        Default sources
-      </message>
-      <message name="IDS_NEWS_ADD_SOURCE" desc="Text for add source button">
-        Add source
-      </message>
       <message name="IDS_NEWS_SHOW" desc="Text for news source">
         Show Brave News
       </message>
@@ -1842,9 +1827,6 @@ Are you sure you want to do this?
       </message>
     <message name="IDS_SEND" desc="Brave Wallet send button text">
       Send
-    </message>
-    <message name="IDS_SEARCH_TITLE" desc="Brave Wallet search toolbar button hint text">
-      Search
     </message>
     <message name="IDS_SWAP" desc="Brave Wallet swap button text">
       Swap
