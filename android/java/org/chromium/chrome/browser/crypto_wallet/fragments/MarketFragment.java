@@ -28,18 +28,19 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinMarket;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.brave_wallet.mojom.CoinMarket;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.domain.MarketModel;
 import org.chromium.chrome.browser.app.domain.MarketModel.CoinMarketsCallback;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.adapters.MarketCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -47,10 +48,9 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
-import org.chromium.chrome.browser.crypto_wallet.adapters.MarketCoinAdapter;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MarketFragment extends Fragment implements CoinMarketsCallback {
@@ -81,13 +81,13 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
         } catch (BraveActivity.BraveActivityNotFoundException exception) {
             Log.e(TAG, "onCreate", exception);
         }
-        mMarketCoinAdapter = new MarketCoinAdapter(getContext());
+        mMarketCoinAdapter = new MarketCoinAdapter(getContext(), mMarketModel);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_market, container, false);
         mCoinMarkets = rootView.findViewById(R.id.coin_markets_recycler_view);
         mCoinMarkets.addItemDecoration(

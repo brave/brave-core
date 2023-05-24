@@ -40,8 +40,7 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
         Resources resources = context.getResources();
         mTitles = new ArrayList<>(Arrays.asList(resources.getString(R.string.portfolio),
                 resources.getString(R.string.brave_wallet_nfts),
-                resources.getString(R.string.accounts),
-                resources.getString(R.string.market)));
+                resources.getString(R.string.accounts), resources.getString(R.string.market)));
     }
 
     @NonNull
