@@ -4,16 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useLocation } from 'react-router-dom'
 
 // Selectors
 import { WalletSelectors } from '../../../common/selectors'
 
 // Hooks
 import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-
-// Options
-import { AllNavOptions } from '../../../options/nav-options'
 
 // Components
 import { WalletNav } from '../wallet-nav/wallet-nav'
@@ -69,9 +65,6 @@ export const WalletPageWrapper = (props: Props) => {
     hideDivider
   } = props
 
-  // Routing
-  const { pathname: walletLocation } = useLocation()
-
   // Wallet Selectors (safe)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
@@ -86,11 +79,6 @@ export const WalletPageWrapper = (props: Props) => {
   // Refs
   let scrollRef = React.useRef<HTMLDivElement | null>(null)
   const headerRef = React.createRef<HTMLDivElement>()
-
-  // Computed
-
-  const headerTitle = AllNavOptions.find((option) =>
-    walletLocation.includes(option.route))?.name ?? ''
 
   React.useEffect(() => {
     // Keeps track of the Header height to update
@@ -156,7 +144,7 @@ export const WalletPageWrapper = (props: Props) => {
           isWalletCreated &&
           !isWalletLocked &&
           !hideHeader &&
-          <TabHeader title={headerTitle} />
+          <TabHeader />
         }
         {
           isWalletCreated &&
@@ -179,7 +167,9 @@ export const WalletPageWrapper = (props: Props) => {
             headerHeight={headerHeight}
           >
             {cardHeader &&
-              <CardHeaderWrapper>
+              <CardHeaderWrapper
+                maxWidth={cardWidth}
+              >
                 <CardHeaderShadow
                   headerHeight={headerHeight}
                 />
@@ -197,6 +187,7 @@ export const WalletPageWrapper = (props: Props) => {
             {cardHeader &&
               <CardHeaderWrapper
                 ref={headerRef}
+                maxWidth={cardWidth}
               >
                 <CardHeader
                   shadowOpacity={headerShadowOpacity}

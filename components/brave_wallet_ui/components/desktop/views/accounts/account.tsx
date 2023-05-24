@@ -37,7 +37,6 @@ import {
 import {
   StyledWrapper,
   SubDivider,
-  TopRow,
   WalletInfoRow,
   WalletAddress,
   WalletName,
@@ -51,7 +50,6 @@ import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
 import { ScrollableColumn, Column } from '../../../shared/style'
 
 // Components
-import { BackButton } from '../../../shared'
 import { PortfolioTransactionItem } from '../../portfolio-transaction-item/index'
 import { PortfolioAssetItemLoadingSkeleton } from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
@@ -74,13 +72,7 @@ import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chai
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
 
-export interface Props {
-  goBack: () => void
-}
-
-export const Account = ({
-  goBack
-}: Props) => {
+export const Account = () => {
   // routing
   const { id: accountId } = useParams<{ id: string }>()
   const { hash: transactionID } = useLocation()
@@ -272,19 +264,13 @@ export const Account = ({
   // render
   return (
     <StyledWrapper>
-      <TopRow>
-        <BackButton onSubmit={goBack} />
-      </TopRow>
-
-      <WalletInfoRow>
-        <WalletInfoLeftSide>
-          <AccountCircle orb={orb} />
-          <WalletName>{selectedAccount.name}</WalletName>
-          <CopyTooltip text={selectedAccount.address}>
-            <WalletAddress>{reduceAddress(selectedAccount.address)}</WalletAddress>
-          </CopyTooltip>
-        </WalletInfoLeftSide>
-      </WalletInfoRow>
+      <WalletInfoLeftSide>
+        <AccountCircle orb={orb} />
+        <WalletName>{selectedAccount.name}</WalletName>
+        <CopyTooltip text={selectedAccount.address}>
+          <WalletAddress>{reduceAddress(selectedAccount.address)}</WalletAddress>
+        </CopyTooltip>
+      </WalletInfoLeftSide>
 
       <WalletInfoRow>
         <AccountButtonsRow>
