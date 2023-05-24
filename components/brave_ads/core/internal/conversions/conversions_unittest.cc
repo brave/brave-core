@@ -9,10 +9,10 @@
 #include <utility>
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
@@ -52,7 +52,7 @@ class BraveAdsConversionsTest : public UnitTestBase {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedNotificationAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -135,7 +135,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedNotificationAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -224,7 +224,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        ConvertViewedNewTabPageAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -313,7 +313,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        ConvertClickedNewTabPageAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -408,7 +408,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedPromotedContentAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -488,7 +488,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertClickedPromotedContentAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -588,7 +588,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedInlineContentAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -666,7 +666,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertClickedInlineContentAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -762,7 +762,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertViewedSearchResultAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -851,7 +851,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        ConvertClickedSearchResultAdIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);

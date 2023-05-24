@@ -135,11 +135,9 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   void MockSetStringPref(AdsClientMock& mock);
   void MockSetInt64Pref(AdsClientMock& mock);
   void MockSetUint64Pref(AdsClientMock& mock);
-  void MockSetTimePref(AdsClientMock& mock);
   void MockSetDictPref(AdsClientMock& mock);
   void MockSetListPref(AdsClientMock& mock);
-
-  void MockDefaultPrefs();
+  void MockSetTimePref(AdsClientMock& mock);
 
   void SetUpIntegrationTest();
 

@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_unittest_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -221,8 +222,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest, ShouldAutoDetectForUnsupportedLocale) {
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowIfDisabledAndCountryIsSupported) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kSubdivisionTargetingCode, "DISABLED");
+  SetDefaultStringPref(prefs::kSubdivisionTargetingCode, "DISABLED");
 
   // Act
   MaybeFetch();
@@ -236,8 +236,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowAndAutoDetectIfCountryIsSupported) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kAutoDetectedSubdivisionTargetingCode, "US-CA");
+  SetDefaultStringPref(prefs::kAutoDetectedSubdivisionTargetingCode, "US-CA");
 
   // Act
   MaybeFetch();
@@ -266,7 +265,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest, ShouldNotAllowIfCountryIsUnsupported) {
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldNotAllowIfLocaleAndSubdivisionCountriesMismatch) {
   // Arrange
-  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode, "CA-QC");
+  SetDefaultStringPref(prefs::kSubdivisionTargetingCode, "CA-QC");
 
   // Act
   MaybeFetch();

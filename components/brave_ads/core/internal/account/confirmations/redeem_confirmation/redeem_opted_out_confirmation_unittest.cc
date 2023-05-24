@@ -6,11 +6,11 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_opted_out_confirmation.h"
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_confirmation_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_out_confirmation_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -30,7 +30,7 @@ class BraveAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+    DisableBravePrivateAds();
   }
 
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;

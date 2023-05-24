@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -30,8 +31,7 @@ TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
 
   const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /*is_local*/ false);
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt,
-                               next_token_redemption_at);
+  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, next_token_redemption_at);
 
   const TransactionList transactions;
 

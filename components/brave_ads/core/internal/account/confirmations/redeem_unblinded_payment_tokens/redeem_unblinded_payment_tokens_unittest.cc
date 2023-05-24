@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
@@ -53,7 +54,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
        {{net::HTTP_OK, BuildRedeemUnblindedPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
@@ -95,7 +96,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest,
         {net::HTTP_OK, BuildRedeemUnblindedPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::SetUnblindedPaymentTokens(/*count*/ 1);
@@ -142,7 +143,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
        {{net::HTTP_OK, BuildRedeemUnblindedPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
@@ -176,7 +177,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
 
 TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   // Arrange
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
@@ -212,7 +213,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
 
 TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   // Arrange
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   // Act
   EXPECT_CALL(ads_client_mock_, UrlRequest(_, _)).Times(0);
@@ -255,7 +256,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, Retry) {
         {net::HTTP_OK, BuildRedeemUnblindedPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
+  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 

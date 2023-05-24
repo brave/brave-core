@@ -6,12 +6,24 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 
 #include "base/guid.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
+
+void DisableBravePrivateAds() {
+  SetDefaultBooleanPref(prefs::kEnabled, false);
+}
+
+void DisableBraveNewsAds() {
+  SetDefaultBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
+  SetDefaultBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
+}
 
 AdInfo BuildAd(const AdType& ad_type, const bool should_use_random_guids) {
   AdInfo ad;

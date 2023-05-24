@@ -16,7 +16,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/flags_util.h"
@@ -33,7 +32,6 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
@@ -353,57 +351,6 @@ void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
                 value.ToDeltaSinceWindowsEpoch().InMicroseconds());
             NotifyPrefDidChange(path);
           }));
-}
-
-void UnitTestBase::MockDefaultPrefs() {
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, true);
-
-  ads_client_mock_.SetBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  ads_client_mock_.SetBooleanPref(brave_news::prefs::kNewTabPageShowToday,
-                                  true);
-
-  ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "");
-
-  ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
-
-  ads_client_mock_.SetIntegerPref(prefs::kIdleTimeThreshold, 15);
-
-  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                  false);
-  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode, "AUTO");
-  ads_client_mock_.SetStringPref(prefs::kAutoDetectedSubdivisionTargetingCode,
-                                 "");
-
-  ads_client_mock_.SetStringPref(prefs::kCatalogId, "");
-  ads_client_mock_.SetIntegerPref(prefs::kCatalogVersion, 1);
-  ads_client_mock_.SetInt64Pref(prefs::kCatalogPing, 7'200'000);
-  ads_client_mock_.SetTimePref(prefs::kCatalogLastUpdated, DistantPast());
-
-  ads_client_mock_.SetInt64Pref(prefs::kIssuerPing, 0);
-  ads_client_mock_.SetListPref(prefs::kIssuers, base::Value::List());
-
-  ads_client_mock_.SetDictPref(prefs::kEpsilonGreedyBanditArms,
-                               base::Value::Dict());
-  ads_client_mock_.SetListPref(prefs::kEpsilonGreedyBanditEligibleSegments,
-                               base::Value::List());
-
-  ads_client_mock_.SetListPref(prefs::kNotificationAds, base::Value::List());
-  ads_client_mock_.SetTimePref(prefs::kServeAdAt, Now());
-
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
-
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConversionState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedNotificationState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedRewardsState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
-                                  false);
-
-  ads_client_mock_.SetUint64Pref(prefs::kConfirmationsHash, 0);
-  ads_client_mock_.SetUint64Pref(prefs::kClientHash, 0);
-
-  ads_client_mock_.SetStringPref(prefs::kBrowserVersionNumber, "");
 }
 
 void UnitTestBase::SetUpIntegrationTest() {

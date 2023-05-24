@@ -8,6 +8,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -17,7 +18,7 @@ class BraveAdsMutatedUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsMutatedUserDataTest, BuildMutatedConfirmationsUserData) {
   // Arrange
-  ads_client_mock_.SetUint64Pref(
+  SetDefaultUint64Pref(
       prefs::kConfirmationsHash,
       /*core/test/data/test/confirmations.json has a hash of 3780921521*/
       1251290873);
@@ -31,7 +32,7 @@ TEST_F(BraveAdsMutatedUserDataTest, BuildMutatedConfirmationsUserData) {
 
 TEST_F(BraveAdsMutatedUserDataTest, BuildMutatedClientUserData) {
   // Arrange
-  ads_client_mock_.SetUint64Pref(
+  SetDefaultUint64Pref(
       prefs::kClientHash,
       /*core/test/data/test/client.json has a hash of 2810715844*/ 4485170182);
 

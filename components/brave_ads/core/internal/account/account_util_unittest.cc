@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
@@ -38,9 +38,10 @@ TEST_F(BraveAdsAccountUtilTest, ShouldRewardUser) {
   EXPECT_TRUE(ShouldRewardUser());
 }
 
-TEST_F(BraveAdsAccountUtilTest, ShouldNotRewardUser) {
+TEST_F(BraveAdsAccountUtilTest,
+       ShouldNotRewardUserIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   // Act
 

@@ -21,10 +21,14 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -198,6 +202,52 @@ void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
 
         std::move(callback).Run(std::move(command_response));
       }));
+}
+
+void MockDefaultPrefs() {
+  SetDefaultBooleanPref(prefs::kEnabled, true);
+
+  SetDefaultBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
+  SetDefaultBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
+
+  SetDefaultStringPref(prefs::kDiagnosticId, "");
+
+  SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
+
+  SetDefaultIntegerPref(prefs::kIdleTimeThreshold, 15);
+
+  SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
+  SetDefaultStringPref(prefs::kSubdivisionTargetingCode, "AUTO");
+  SetDefaultStringPref(prefs::kAutoDetectedSubdivisionTargetingCode, "");
+
+  SetDefaultStringPref(prefs::kCatalogId, "");
+  SetDefaultIntegerPref(prefs::kCatalogVersion, 1);
+  SetDefaultInt64Pref(prefs::kCatalogPing, 7'200'000);
+  SetDefaultTimePref(prefs::kCatalogLastUpdated, DistantPast());
+
+  SetDefaultInt64Pref(prefs::kIssuerPing, 0);
+  SetDefaultListPref(prefs::kIssuers, base::Value::List());
+
+  SetDefaultDictPref(prefs::kEpsilonGreedyBanditArms, base::Value::Dict());
+  SetDefaultListPref(prefs::kEpsilonGreedyBanditEligibleSegments,
+                     base::Value::List());
+
+  SetDefaultListPref(prefs::kNotificationAds, base::Value::List());
+  SetDefaultTimePref(prefs::kServeAdAt, Now());
+
+  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
+
+  SetDefaultBooleanPref(prefs::kHasMigratedClientState, true);
+  SetDefaultBooleanPref(prefs::kHasMigratedConfirmationState, true);
+  SetDefaultBooleanPref(prefs::kHasMigratedConversionState, true);
+  SetDefaultBooleanPref(prefs::kHasMigratedNotificationState, true);
+  SetDefaultBooleanPref(prefs::kHasMigratedRewardsState, true);
+  SetDefaultBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, false);
+
+  SetDefaultUint64Pref(prefs::kConfirmationsHash, 0);
+  SetDefaultUint64Pref(prefs::kClientHash, 0);
+
+  SetDefaultStringPref(prefs::kBrowserVersionNumber, "");
 }
 
 void MockGetBooleanPref(const AdsClientMock& mock) {

@@ -277,6 +277,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.cc",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h",
+    "//brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.cc",
+    "//brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_string_util.cc",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_string_util.h",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.cc",

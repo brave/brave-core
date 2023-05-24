@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
@@ -27,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -229,7 +229,7 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_EQ(BuildIssuers(), GetIssuers());
 }
 
-TEST_F(BraveAdsAccountTest, GetIssuersIfAdsAreEnabled) {
+TEST_F(BraveAdsAccountTest, GetIssuersIfBravePrivateAdsAreEnabled) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
@@ -243,9 +243,9 @@ TEST_F(BraveAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   EXPECT_EQ(BuildIssuers(), GetIssuers());
 }
 
-TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
+TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   EXPECT_CALL(ads_client_mock_, UrlRequest(_, _)).Times(0);
 
@@ -551,9 +551,9 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
   // Assert
 }
 
-TEST_F(BraveAdsAccountTest, DoNotGetStatementIfAdsAreDisabled) {
+TEST_F(BraveAdsAccountTest, DoNotGetStatementIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   // Act
   Account::GetStatement(base::BindOnce(

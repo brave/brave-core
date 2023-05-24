@@ -237,7 +237,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
        {PurchaseIntentSignalHistoryInfo(now_1, weight),
         PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
 
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_EQ(expected_history, history);
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
@@ -261,7 +261,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
            PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 3),
        }}};
 
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_EQ(expected_history, history);
 }
 
 }  // namespace brave_ads

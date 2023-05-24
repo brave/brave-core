@@ -8,6 +8,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -31,7 +32,7 @@ class BraveAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
 
 TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedRewardsState, false);
+  SetDefaultBooleanPref(prefs::kHasMigratedRewardsState, false);
 
   EXPECT_CALL(ads_client_mock_, Load(kConfirmationStateFilename, _));
 

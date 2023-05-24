@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/enabled_diagnostic_entry.h"
 
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
@@ -29,7 +29,7 @@ TEST_F(BraveAdsEnabledDiagnosticEntryTest, IsEnabled) {
 
 TEST_F(BraveAdsEnabledDiagnosticEntryTest, IsDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   // Act
   const EnabledDiagnosticEntry diagnostic_entry;

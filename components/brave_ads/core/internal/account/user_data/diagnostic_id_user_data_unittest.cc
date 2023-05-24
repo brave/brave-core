@@ -8,6 +8,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -17,8 +18,8 @@ class BraveAdsDiagnosticIdUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest, BuildDiagnosticIdUserData) {
   // Arrange
-  ads_client_mock_.SetStringPref(prefs::kDiagnosticId,
-                                 "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  SetDefaultStringPref(prefs::kDiagnosticId,
+                       "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
   // Act
 
@@ -31,7 +32,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest, BuildDiagnosticIdUserData) {
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
        DoNotBuildDiagnosticUserDataIfInvalid) {
   // Arrange
-  ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "INVALID");
+  SetDefaultStringPref(prefs::kDiagnosticId, "INVALID");
 
   // Act
   const base::Value::Dict user_data = BuildDiagnosticIdUserData();
@@ -43,7 +44,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
        DoNotBuildDiagnosticIdUserDataIfEmpty) {
   // Arrange
-  ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "");
+  SetDefaultStringPref(prefs::kDiagnosticId, "");
 
   // Act
   const base::Value::Dict user_data = BuildDiagnosticIdUserData();

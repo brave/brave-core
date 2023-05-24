@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -82,15 +83,15 @@ class BraveAdsNotificationAdUtilShouldServeAtRegularIntervalsTest
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    ads_client_mock_.SetBooleanPref(prefs::kEnabled, param.is_enabled);
+    SetDefaultBooleanPref(prefs::kEnabled, param.is_enabled);
 
     MockIsBrowserActive(ads_client_mock_, param.is_browser_active);
 
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
-    ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
-                                  param.ads_per_hour);
+    SetDefaultInt64Pref(prefs::kMaximumNotificationAdsPerHour,
+                        param.ads_per_hour);
   }
 };
 

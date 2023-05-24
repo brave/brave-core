@@ -10,6 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -167,7 +168,7 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  ads_client_mock_.SetIntegerPref(prefs::kIdleTimeThreshold, 10);
+  SetDefaultIntegerPref(prefs::kIdleTimeThreshold, 10);
 
   ASSERT_TRUE(MaybeUpdateIdleTimeThreshold());
 
@@ -190,7 +191,7 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  ads_client_mock_.SetIntegerPref(prefs::kIdleTimeThreshold, 10);
+  SetDefaultIntegerPref(prefs::kIdleTimeThreshold, 10);
 
   ASSERT_FALSE(MaybeUpdateIdleTimeThreshold());
 
