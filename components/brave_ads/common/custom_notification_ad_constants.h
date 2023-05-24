@@ -10,9 +10,6 @@
 
 namespace brave_ads {
 
-// Do not fallback to custom notification ad by default
-constexpr bool kDefaultCanFallbackToCustomNotificationAds = false;
-
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 // Default ad notification fade animation duration in milliseconds

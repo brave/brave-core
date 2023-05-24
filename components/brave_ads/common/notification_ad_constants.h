@@ -22,6 +22,9 @@ constexpr int kDefaultNotificationAdTimeout = 120;
 constexpr int kDefaultNotificationAdTimeout = 30;
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
+// Do not fallback to custom notification ad by default
+constexpr bool kDefaultCanFallbackToCustomNotificationAds = false;
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_COMMON_NOTIFICATION_AD_CONSTANTS_H_

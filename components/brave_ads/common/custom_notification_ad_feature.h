@@ -16,17 +16,8 @@
 namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kCustomNotificationAdFeature);
-BASE_DECLARE_FEATURE(kAllowedToFallbackToCustomNotificationAdFeature);
 
 bool IsCustomNotificationAdFeatureEnabled();
-
-bool IsAllowedToFallbackToCustomNotificationAdFeatureEnabled();
-
-// Set to true to fallback to custom notification ads if native notifications
-// are disabled or false to never fallback
-constexpr base::FeatureParam<bool> kCanFallbackToCustomNotificationAds{
-    &kCustomNotificationAdFeature, "can_fallback_to_custom_notifications",
-    kDefaultCanFallbackToCustomNotificationAds};
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 

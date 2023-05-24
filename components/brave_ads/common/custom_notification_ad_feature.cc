@@ -13,17 +13,8 @@ BASE_FEATURE(kCustomNotificationAdFeature,
              "CustomNotificationAds",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kAllowedToFallbackToCustomNotificationAdFeature,
-             "AllowedToFallbackToCustomAdNotifications",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 bool IsCustomNotificationAdFeatureEnabled() {
   return base::FeatureList::IsEnabled(kCustomNotificationAdFeature);
-}
-
-bool IsAllowedToFallbackToCustomNotificationAdFeatureEnabled() {
-  return base::FeatureList::IsEnabled(
-      kAllowedToFallbackToCustomNotificationAdFeature);
 }
 
 }  // namespace brave_ads
