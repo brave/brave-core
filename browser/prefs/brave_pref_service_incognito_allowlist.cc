@@ -6,10 +6,13 @@
 #include "brave/browser/prefs/brave_pref_service_incognito_allowlist.h"
 
 #include "base/no_destructor.h"
-#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#endif
 
 namespace brave {
 
