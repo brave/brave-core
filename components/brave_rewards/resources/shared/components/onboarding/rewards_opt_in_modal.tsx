@@ -25,7 +25,7 @@ export type OnboardingResult =
   'country-already-declared' |
   'unexpected-error'
 
-type InitialView = 'default' | 'declare-country'
+type InitialView = 'default' | 'skip-to-declare-country' | 'declare-country'
 
 interface Props {
   initialView: InitialView
@@ -43,20 +43,25 @@ export function RewardsOptInModal (props: Props) {
   const [processing, setProcessing] = React.useState(false)
   const [initialView] = React.useState(props.initialView)
   const [showCountrySelect, setShowCountrySelect] =
-    React.useState(props.initialView === 'declare-country')
+    React.useState(props.initialView === 'declare-country' ||
+      props.initialView === 'skip-to-declare-country')
+
+  const initialViewIsDeclareCountry: boolean = (
+    props.initialView === 'declare-country' ||
+    props.initialView === 'skip-to-declare-country')
 
   React.useEffect(() => {
     setProcessing(false)
 
     // Only the "declare-country" view displays a success message to the user.
-    if (props.result === 'success' && initialView !== 'declare-country') {
+    if (props.result === 'success' && !initialViewIsDeclareCountry) {
       props.onHideResult()
     }
   }, [initialView, props.result])
 
   function getResultMessages (result: OnboardingResult) {
     if (result === 'success') {
-      if (initialView === 'declare-country') {
+      if (initialViewIsDeclareCountry) {
         return {
           header: getString('onboardingGeoSuccessHeader'),
           text: formatMessage(getString('onboardingGeoSuccessText'), [
@@ -84,7 +89,7 @@ export function RewardsOptInModal (props: Props) {
       }
     }
 
-    if (initialView === 'declare-country') {
+    if (initialViewIsDeclareCountry) {
       return {
         header: getString('onboardingErrorHeader'),
         text: getString('onboardingErrorTextDeclareCountry')

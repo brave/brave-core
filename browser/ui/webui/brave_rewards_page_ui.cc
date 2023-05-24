@@ -1901,7 +1901,7 @@ void RewardsDOMHandler::EnableRewards(const base::Value::List& args) {
 #if !BUILDFLAG(IS_ANDROID)
   AllowJavascript();
   if (auto* coordinator = GetPanelCoordinator(web_ui()->GetWebContents())) {
-    coordinator->OpenRewardsPanel();
+    coordinator->OpenRewardsPanelToDeclareCountry();
   }
 #else
   // On Android, a native onboarding modal is displayed when the user navigates

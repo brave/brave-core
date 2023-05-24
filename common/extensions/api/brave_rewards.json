@@ -370,6 +370,12 @@
         "parameters": []
       },
       {
+        "name": "openRewardsPanelToDeclareCountry",
+        "type": "function",
+        "description": "Opens the Rewards panel in the active window and shows country declaration.",
+        "parameters": []
+      },
+      {
         "name": "showGrantCaptcha",
         "type": "function",
         "description": "Displays a grant captcha in the Rewards panel.",

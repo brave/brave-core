@@ -34,6 +34,9 @@ class RewardsPanelCoordinator
   // Opens the Rewards panel with the default view.
   bool OpenRewardsPanel();
 
+  // Opens the Rewards panel with country declaration view.
+  bool OpenRewardsPanelToDeclareCountry();
+
   // Displays the Rewards onboarding tour in the Rewards panel.
   bool ShowRewardsTour();
 

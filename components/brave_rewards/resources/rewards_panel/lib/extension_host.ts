@@ -185,6 +185,9 @@ export function createHost (): Host {
 
   function handleRewardsPanelArgs (args: mojom.RewardsPanelArgs) {
     switch (args.view) {
+      case mojom.RewardsPanelView.kDeclareCountry:
+        stateManager.update({ requestedView: 'declare-country' })
+        break
       case mojom.RewardsPanelView.kRewardsTour:
         stateManager.update({ requestedView: 'rewards-tour' })
         break

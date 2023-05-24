@@ -70,6 +70,18 @@ class BraveRewardsOpenRewardsPanelFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsOpenRewardsPanelToDeclareCountryFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.openRewardsPanelToDeclareCountry",
+                             UNKNOWN)
+
+ protected:
+  ~BraveRewardsOpenRewardsPanelToDeclareCountryFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsShowGrantCaptchaFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.showGrantCaptcha", UNKNOWN)

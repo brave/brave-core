@@ -114,7 +114,9 @@ export function PanelOverlays () {
       <RewardsOptInModal
         availableCountries={availableCountries}
         defaultCountry={defaultCountry}
-        initialView={needsCountry ? 'declare-country' : 'default'}
+        initialView={needsCountry ?
+          'declare-country' : requestedView === 'declare-country' ?
+            'skip-to-declare-country' : 'default'}
         result={onboardingResult}
         onEnable={onEnable}
         onTakeTour={toggleTour}

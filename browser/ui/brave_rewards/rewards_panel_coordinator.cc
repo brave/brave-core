@@ -28,6 +28,11 @@ bool RewardsPanelCoordinator::OpenRewardsPanel() {
       mojom::RewardsPanelArgs(mojom::RewardsPanelView::kDefault, ""));
 }
 
+bool RewardsPanelCoordinator::OpenRewardsPanelToDeclareCountry() {
+  return OpenWithArgs(
+      mojom::RewardsPanelArgs(mojom::RewardsPanelView::kDeclareCountry, ""));
+}
+
 bool RewardsPanelCoordinator::ShowRewardsTour() {
   return OpenWithArgs(
       mojom::RewardsPanelArgs(mojom::RewardsPanelView::kRewardsTour, ""));
