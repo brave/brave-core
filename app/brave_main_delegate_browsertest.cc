@@ -29,6 +29,7 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/page_image_service/features.h"
+#include "components/page_info/core/features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/performance_manager/public/features.h"
 #include "components/permissions/features.h"
@@ -210,6 +211,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
     &page_image_service::kImageServiceSuggestPoweredImages,
 #if !BUILDFLAG(IS_ANDROID)
+    &page_info::kPageInfoCookiesSubpage,
     &permissions::features::kPermissionsPromptSurvey,
     &permissions::features::kPermissionStorageAccessAPI,
     &permissions::features::kRecordPermissionExpirationTimestamps,

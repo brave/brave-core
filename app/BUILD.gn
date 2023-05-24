@@ -107,6 +107,7 @@ source_set("browser_tests") {
       "//components/omnibox/browser",
       "//components/optimization_guide/core",
       "//components/page_image_service",
+      "//components/page_info/core",
       "//components/performance_manager",
       "//components/permissions",
       "//components/privacy_sandbox",
