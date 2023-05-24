@@ -29,7 +29,11 @@ function Toolbar(props: ToolbarProps) {
     if (button === MainButtonType.ViewOriginal) {
       dataHandler.viewOriginal()
     } else {
-      setActiveButton(button)
+      if (activeButton !== button) {
+        setActiveButton(button)
+      } else {
+        setActiveButton(MainButtonType.None)
+      }
     }
   }
 

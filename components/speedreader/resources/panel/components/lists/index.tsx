@@ -41,7 +41,8 @@ const mainButtonsOptions = [
   {
     id: 'tts',
     type: MainButtonType.TextToSpeech,
-    svgIcon: HeadphonesSVG
+    svgIcon: HeadphonesSVG,
+    hidden: true  // TODO(boocmp): Enable in future PR.
   },
   {
     id: 'view-original',
@@ -51,7 +52,8 @@ const mainButtonsOptions = [
   {
     id: 'ai',
     type: MainButtonType.AI,
-    svgIcon: AiSVG
+    svgIcon: AiSVG,
+    hidden: true  // TODO(boocmp): Enable in future PR.
   }
 ]
 
@@ -131,7 +133,7 @@ export function MainButtonsList(props: MainButtonsListProps) {
 
   return (
     <ListBox>
-      {mainButtonsOptions.map(entry => {
+      {mainButtonsOptions.filter(entry => { return !entry?.hidden }).map(entry => {
         return (
           <Option
             id={entry.id}
