@@ -46,7 +46,7 @@ void ConversionsResource::LoadCallback(
   }
 
   if (result.value().version == 0) {
-    BLOG(7, kConversionsResourceId << " conversions resource does not exist");
+    BLOG(7, kConversionsResourceId << " conversions resource is not available");
     is_initialized_ = false;
     return;
   }

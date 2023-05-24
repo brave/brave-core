@@ -48,18 +48,34 @@ bool HasObservationWindowForAdEventExpired(
 }
 
 bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
-  if (ad_event.type == AdType::kInlineContentAd) {
-    // Only convert post clicks.
-    return ad_event.confirmation_type != ConfirmationType::kViewed;
+  switch (ad_event.type.value()) {
+    case AdType::kInlineContentAd:
+    case AdType::kPromotedContentAd: {
+      // Only convert post clicks.
+      return ad_event.confirmation_type != ConfirmationType::kViewed;
+    }
+
+    case AdType::kNewTabPageAd: {
+      // Always convert.
+      return true;
+    }
+
+    case AdType::kNotificationAd: {
+      return UserHasOptedInToBravePrivateAds();
+    }
+
+    case AdType::kSearchResultAd: {
+      // Always convert.
+      return true;
+    }
+
+    case AdType::kUndefined: {
+      NOTREACHED_NORETURN();
+    }
   }
 
-  if (ad_event.type == AdType::kSearchResultAd) {
-    // Always convert search result ads.
-    return true;
-  }
-
-  // Only convert for Brave Private Ads users.
-  return UserHasOptedInToBravePrivateAds();
+  NOTREACHED_NORETURN() << "Unexpected value for AdType: "
+                        << static_cast<int>(ad_event.type.value());
 }
 
 bool DoesConfirmationTypeMatchConversionType(
@@ -74,7 +90,6 @@ bool DoesConfirmationTypeMatchConversionType(
       return conversion_type == "postclick";
     }
 
-    case ConfirmationType::kUndefined:
     case ConfirmationType::kServed:
     case ConfirmationType::kDismissed:
     case ConfirmationType::kTransferred:
@@ -84,6 +99,10 @@ bool DoesConfirmationTypeMatchConversionType(
     case ConfirmationType::kDownvoted:
     case ConfirmationType::kConversion: {
       return false;
+    }
+
+    case ConfirmationType::kUndefined: {
+      NOTREACHED_NORETURN();
     }
   }
 

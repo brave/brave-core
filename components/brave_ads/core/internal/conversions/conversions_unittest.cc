@@ -50,7 +50,7 @@ class BraveAdsConversionsTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertViewedNotificationAdWhenAdsAreDisabled) {
+       DoNotConvertViewedNotificationAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -133,7 +133,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertClickedNotificationAdWhenAdsAreDisabled) {
+       DoNotConvertClickedNotificationAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -222,7 +222,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertViewedNewTabPageAdWhenAdsAreDisabled) {
+       ConvertViewedNewTabPageAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -253,12 +253,18 @@ TEST_F(BraveAdsConversionsTest,
       {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
-      condition,
-      base::BindOnce([](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_TRUE(ad_events.empty());
-      }));
+                       EXPECT_EQ(1U, ad_events.size());
+
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
@@ -305,7 +311,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertClickedNewTabPageAdWhenAdsAreDisabled) {
+       ConvertClickedNewTabPageAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -339,12 +345,18 @@ TEST_F(BraveAdsConversionsTest,
       {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
-      condition,
-      base::BindOnce([](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_TRUE(ad_events.empty());
-      }));
+                       EXPECT_EQ(1U, ad_events.size());
+
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
@@ -394,7 +406,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertViewedPromotedContentAdWhenAdsAreDisabled) {
+       DoNotConvertViewedPromotedContentAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -435,7 +447,7 @@ TEST_F(BraveAdsConversionsTest,
 }
 
 TEST_F(BraveAdsConversionsTest,
-       ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
+       DoNotConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -465,22 +477,16 @@ TEST_F(BraveAdsConversionsTest,
       {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
-      condition, base::BindOnce(
-                     [](const ConversionInfo& conversion, const bool success,
-                        const AdEventList& ad_events) {
-                       ASSERT_TRUE(success);
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1U, ad_events.size());
-
-                       const AdEventInfo& ad_event = ad_events.front();
-                       EXPECT_EQ(conversion.creative_set_id,
-                                 ad_event.creative_set_id);
-                     },
-                     std::move(conversion)));
+        EXPECT_TRUE(ad_events.empty());
+      }));
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertClickedPromotedContentAdWhenAdsAreDisabled) {
+       ConvertClickedPromotedContentAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -516,12 +522,18 @@ TEST_F(BraveAdsConversionsTest,
       {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
-      condition,
-      base::BindOnce([](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_TRUE(ad_events.empty());
-      }));
+                       EXPECT_EQ(1U, ad_events.size());
+
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -574,7 +586,7 @@ TEST_F(BraveAdsConversionsTest,
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertViewedInlineContentAdWhenAdsAreDisabled) {
+       DoNotConvertViewedInlineContentAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -652,7 +664,7 @@ TEST_F(BraveAdsConversionsTest,
 }
 
 TEST_F(BraveAdsConversionsTest,
-       ConvertClickedInlineContentAdWhenAdsAreDisabled) {
+       ConvertClickedInlineContentAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -747,7 +759,8 @@ TEST_F(BraveAdsConversionsTest,
                      std::move(conversion)));
 }
 
-TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreDisabled) {
+TEST_F(BraveAdsConversionsTest,
+       ConvertViewedSearchResultAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -836,7 +849,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
 }
 
 TEST_F(BraveAdsConversionsTest,
-       ConvertClickedSearchResultAdWhenAdsAreDisabled) {
+       ConvertClickedSearchResultAdIfBravePrivateAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
