@@ -9,17 +9,43 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/frag_trs_rv_transactions"
+            android:id="@+id/frag_tx_rv_transactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="12dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/frag_tx_empty_label"
+            style="@style/BraveWalletTextViewTitle"
+            android:layout_marginTop="54dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="@string/brave_wallet_no_transactions_yet"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/frag_tx_empty_desc"
+            style="@style/BraveWalletTextView"
+            android:layout_marginTop="54dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="@string/brave_wallet_no_transactions_yet_description"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frag_tx_empty_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
