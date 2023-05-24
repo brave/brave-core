@@ -28,7 +28,6 @@ import {
 } from '../../../../../../utils/entities.utils'
 
 // Types
-import { BraveKeyrings } from '../../../../../../constants/types'
 import { RefreshBlockchainStateParams } from '../../../constants/types'
 
 // Components
@@ -72,10 +71,8 @@ export const AccountModal = (props: Props) => {
   // Methods
   const onSelectAccount = React.useCallback(
     async (account: AccountInfoEntity) => {
-      await setSelectedAccount({
-        ...account,
-        keyringId: account.keyringId as BraveKeyrings,
-      })
+      // @ts-expect-error
+      await setSelectedAccount(account)
       onHideModal()
       await refreshBlockchainState({ account })
     },
