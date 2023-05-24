@@ -13,6 +13,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
+import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class WalletListItemModel {
@@ -24,7 +25,6 @@ public class WalletListItemModel {
     private Bitmap mTxStatusBitmap;
     private String mText1;
     private String mText2;
-    private String mId;
     private BlockchainToken mBlockchainToken;
     private AccountInfo mAccountInfo;
     private boolean mIsUserSelected;
@@ -37,6 +37,9 @@ public class WalletListItemModel {
     private PortfolioModel.NftDataModel mNftDataModel;
     private NetworkInfo mAssetNetwork;
     private String mBrowserResPath;
+
+    public String mId;
+    private ParsedTransaction mParsedTx;
 
     public WalletListItemModel(
             int icon, String title, String subTitle, String id, String text1, String text2) {
@@ -173,12 +176,12 @@ public class WalletListItemModel {
     // ERC721 has format [Title #ID]
     public String getTitle() {
         return isErc721() ? Utils.formatErc721TokenTitle(mTitle, Utils.hexToIntString(mId))
-                          : mTitle;
+                : mTitle;
     }
 
     public String getSubTitle() {
         return isErc721() ? Utils.formatErc721TokenTitle(mSubTitle, Utils.hexToIntString(mId))
-                          : mSubTitle;
+                : mSubTitle;
     }
 
     public String getText1() {
@@ -237,5 +240,13 @@ public class WalletListItemModel {
     public String getNetworkIcon() {
         if (mAssetNetwork == null || TextUtils.isEmpty(getBrowserResourcePath())) return "";
         return "file://" + getBrowserResourcePath() + "/" + Utils.getNetworkIconName(mAssetNetwork);
+    }
+
+    public ParsedTransaction getParsedTx() {
+        return mParsedTx;
+    }
+
+    public void setParsedTx(ParsedTransaction mParsedTx) {
+        this.mParsedTx = mParsedTx;
     }
 }

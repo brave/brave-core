@@ -3892,6 +3892,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ACTIVITY" desc="Wallet activity and transactions">
       Activity
     </message>
+    <message name="IDS_DATE_TEXT" desc="Date text as heading">
+      Date
+    </message>
+    <message name="IDS_MARKET_PRICE_TEXT" desc="Market price text title as heading of an asset">
+      Market Price
+    </message>
+    <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET" desc="Text for when zero transactions are currently availble for viewing">
+      No transactions yet
+    </message>
+    <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION" desc="Explaination of why the transaction list is empty, and what to expect after the first transaction is available">
+      After your first transaction you will be able to view it here.
+    </message>
   </messages>
   </release>
 </grit>

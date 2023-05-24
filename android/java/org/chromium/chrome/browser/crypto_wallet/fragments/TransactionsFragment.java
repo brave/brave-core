@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
@@ -74,7 +75,7 @@ public class TransactionsFragment extends Fragment implements OnWalletListItemCl
             mTransactionsModel.update(
                     new WeakReference<>((BraveWalletBaseActivity) requireActivity()));
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate ", e);
+            Log.e(TAG, "onCreate " + e);
         }
         mWalletListItemModelList = Collections.emptyList();
     }
@@ -113,8 +114,7 @@ public class TransactionsFragment extends Fragment implements OnWalletListItemCl
                 accountInfo -> accountInfo.address.equals(txInfo.fromAddress));
         if (JavaUtils.anyNull(mTransactionsModel, txAccount)) return;
         if (txInfo.txStatus == TransactionStatus.UNAPPROVED) {
-            ApproveTxBottomSheetDialogFragment approveTx =
-                    ApproveTxBottomSheetDialogFragment.newInstance(txInfo, txAccount.name);
+            ApproveTxBottomSheetDialogFragment approveTx = ApproveTxBottomSheetDialogFragment.newInstance(txInfo, txAccount.name);
             approveTx.show(getChildFragmentManager(), TAG);
         } else {
             WalletListItemModel txModel = JavaUtils.find(

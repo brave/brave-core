@@ -1189,6 +1189,7 @@ public class Utils {
         itemModel.setTotalGasFiat(parsedTx.getGasFeeFiat());
         itemModel.setAddressesForBitmap(txInfo.fromAddress, parsedTx.getRecipient());
         itemModel.setTransactionInfo(txInfo);
+        itemModel.setParsedTx(parsedTx);
 
         return itemModel;
     }

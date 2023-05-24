@@ -19,9 +19,15 @@ import java.util.List;
 
 public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<TwoLineItem> mValues;
+    private ORIENTATION mOrientation;
+
+    public TwoLineItemRecyclerViewAdapter(List<TwoLineItem> items, ORIENTATION orientation) {
+        mValues = items;
+        mOrientation = orientation;
+    }
 
     public TwoLineItemRecyclerViewAdapter(List<TwoLineItem> items) {
-        mValues = items;
+        this(items, ORIENTATION.VERTICAL);
     }
 
     @NonNull
@@ -32,9 +38,13 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                     LayoutInflater.from(parent.getContext())
                             .inflate(R.layout.item_fragment_two_line_divider_item, parent, false));
         }
+        int layout = R.layout.item_fragment_two_line_item;
+        if (ORIENTATION.HORIZONTAL == mOrientation) {
+            layout = R.layout.item_two_line_horizontal;
+        }
         return new ViewHolder(
                 LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_fragment_two_line_item, parent, false));
+                        .inflate(layout, parent, false));
     }
 
     @Override
@@ -151,5 +161,9 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         public int getType() {
             return TYPE_HEADER;
         }
+    }
+
+    public enum ORIENTATION {
+        HORIZONTAL, VERTICAL
     }
 }
