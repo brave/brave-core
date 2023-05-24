@@ -33,6 +33,10 @@ class PlaylistSidePanelCoordinator
 
   void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
 
+  BubbleContentsWrapperT<playlist::PlaylistUI>* contents_wrapper() {
+    return contents_wrapper_.get();
+  }
+
   // views::ViewObserver:
   void OnViewIsDeleting(views::View* view) override;
 

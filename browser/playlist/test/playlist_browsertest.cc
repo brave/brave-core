@@ -14,6 +14,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/playlist/playlist_tab_helper.h"
+#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
@@ -71,6 +75,40 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
         browser()->profile());
   }
 
+  void ActivatePlaylistSidePanel() {
+    auto* sidebar_controller =
+        static_cast<BraveBrowser*>(browser())->sidebar_controller();
+    auto* sidebar_model = sidebar_controller->model();
+    const auto& sidebar_items = sidebar_model->GetAllSidebarItems();
+    auto iter = base::ranges::find_if(sidebar_items, [](const auto& item) {
+      return item.built_in_item_type ==
+             sidebar::SidebarItem::BuiltInItemType::kPlaylist;
+    });
+
+    // Wrap routine with lambda as ASSERT_FOO has return type internally.
+    ([&]() { ASSERT_NE(iter, sidebar_items.end()); })();
+    sidebar_controller->ActivateItemAt(
+        std::distance(sidebar_items.begin(), iter));
+  }
+
+  content::WebContents* GetPlaylistWebContents() {
+    content::WebContents* contents = nullptr;
+
+    // Wrap routine with lambda as ASSERT_FOO has return type internally.
+    ([&]() {
+      auto* coordinator = PlaylistSidePanelCoordinator::FromBrowser(browser());
+      ASSERT_TRUE(coordinator);
+
+      auto* contents_wrapper = coordinator->contents_wrapper();
+      ASSERT_TRUE(coordinator);
+
+      contents = contents_wrapper->web_contents();
+      ASSERT_TRUE(contents);
+    })();
+
+    return contents;
+  }
+
   // PlatformBrowserTest:
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
@@ -121,12 +159,10 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GetURL("/playlist/site_with_video.html")));
 
-  chrome::AddTabAt(browser(), {}, -1, true /*foreground*/);
-  ASSERT_TRUE(
-      content::NavigateToURL(GetActiveWebContents(), GURL(kPlaylistURL)));
-  auto* playlist_web_contents = GetActiveWebContents();
-
-  browser()->tab_strip_model()->ActivateTabAt(0);
+  ActivatePlaylistSidePanel();
+  auto* playlist_web_contents = GetPlaylistWebContents();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !playlist_web_contents->IsLoading(); }));
 
   ASSERT_TRUE(content::ExecJs(
       playlist_web_contents,
@@ -176,18 +212,17 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
       https_server()->GetURL("test.googlevideo.com",
                              "/playlist/site_with_video.html")));
 
-  chrome::AddTabAt(browser(), {}, -1, true /*foreground*/);
-  auto* playlist_contents = GetActiveWebContents();
-  ASSERT_TRUE(content::NavigateToURL(playlist_contents, GURL(kPlaylistURL)));
-
-  browser()->tab_strip_model()->ActivateTabAt(0);
+  ActivatePlaylistSidePanel();
+  auto* playlist_web_contents = GetPlaylistWebContents();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !playlist_web_contents->IsLoading(); }));
 
   ASSERT_TRUE(content::ExecJs(
-      playlist_contents,
+      playlist_web_contents,
       "document.querySelector('#download-from-active-tab-btn').click();"));
 
   WaitUntil(base::BindLambdaForTesting([&]() {
-    auto result = content::EvalJs(playlist_contents,
+    auto result = content::EvalJs(playlist_web_contents,
                                   R"-js(
           const item = document.querySelector('.playlist-item');
           item && item.parentElement.parentElement
@@ -199,14 +234,14 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
   }));
 
   // Remove cache
-  ASSERT_TRUE(content::ExecJs(playlist_contents,
+  ASSERT_TRUE(content::ExecJs(playlist_web_contents,
                               R"-js(
           const item = document.querySelector('.playlist-item');
           item.parentElement.parentElement
               .querySelector('.playlist-item-cache-btn').click();
         )-js"));
   WaitUntil(base::BindLambdaForTesting([&]() {
-    auto result = content::EvalJs(playlist_contents,
+    auto result = content::EvalJs(playlist_web_contents,
                                   R"-js(
           const item = document.querySelector('.playlist-item');
           item && item.parentElement.parentElement
@@ -218,13 +253,12 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
   }));
 
   // Try playing the item
-  browser()->tab_strip_model()->ActivateTabAt(1);
-  ASSERT_TRUE(content::ExecJs(playlist_contents,
+  ASSERT_TRUE(content::ExecJs(playlist_web_contents,
                               R"-js(
           document.querySelector('.playlist-item-thumbnail').click();
         )-js"));
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return content::EvalJs(playlist_contents,
+    return content::EvalJs(playlist_web_contents,
                            R"-js(
           document.querySelector('#player')
           .getAttribute('data-playing') === 'true';
