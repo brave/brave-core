@@ -944,6 +944,7 @@ brave_java_resources = [
   "java/res/layout/wallet_backup_banner.xml",
   "java/res/layout/wallet_balance_layout.xml",
   "java/res/layout/wallet_coin_list_item.xml",
+  "java/res/layout/market_coin_list_item.xml",
   "java/res/layout/wallet_nft_item.xml",
   "java/res/layout/web_notification_icon_frame_brave.xml",
   "java/res/layout/web_notification_small_icon.xml",

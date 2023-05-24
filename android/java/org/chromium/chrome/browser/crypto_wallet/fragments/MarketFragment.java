@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.chrome.browser.crypto_wallet.adapters.MarketCoinAdapter;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
 
     private View rootView;
     private RecyclerView mCoinMarkets;
+    private MarketCoinAdapter mMarketCoinAdapter;
     private WalletModel mWalletModel;
     private MarketModel mMarketModel;
 
@@ -79,6 +81,7 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
         } catch (BraveActivity.BraveActivityNotFoundException exception) {
             Log.e(TAG, "onCreate", exception);
         }
+        mMarketCoinAdapter = new MarketCoinAdapter(getContext());
     }
 
     @Nullable
@@ -89,6 +92,7 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
         mCoinMarkets = rootView.findViewById(R.id.coin_markets_recycler_view);
         mCoinMarkets.addItemDecoration(
                 new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        mCoinMarkets.setAdapter(mMarketCoinAdapter);
         mCoinMarkets.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMarketModel.getCoinMarkets(this);
         return rootView;
@@ -96,6 +100,7 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
 
     @Override
     public void onCoinMarketsSuccess(final CoinMarket[] coinMarkets) {
+        mMarketCoinAdapter.setCoinMarkets(Arrays.asList(coinMarkets));
     }
 
     @Override
