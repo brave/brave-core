@@ -90,6 +90,10 @@ class BraveRewardsNativeWorker
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& paymentId,
       const base::android::JavaParamRef<jstring>& captchaId);
+  base::android::ScopedJavaLocalRef<jstring> GetAttestationURL(JNIEnv* env);
+  base::android::ScopedJavaLocalRef<jstring> GetAttestationURLWithPaymentId(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& paymentId);
 
   base::android::ScopedJavaLocalRef<jstring> GetPublisherId(JNIEnv* env,
                                                             uint64_t tabId);
