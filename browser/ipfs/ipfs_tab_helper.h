@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"

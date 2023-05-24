@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/containers/queue.h"
+#include "base/gtest_prod_util.h"
 #include "brave/components/playlist/browser/playlist_media_file_downloader.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 

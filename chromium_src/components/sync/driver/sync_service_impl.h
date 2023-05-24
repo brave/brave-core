@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_H_
 
+#include "base/gtest_prod_util.h"
+
 #define BRAVE_SYNC_SERVICE_IMPL_H_                                             \
  private:                                                                      \
   friend class BraveSyncServiceImpl;                                           \

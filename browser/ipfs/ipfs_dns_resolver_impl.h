@@ -10,6 +10,7 @@
 
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
