@@ -15,7 +15,7 @@
 #include "chrome/common/chrome_version.h"
 
 #if BUILDFLAG(IS_MAC)
-#include "base/mac/bundle_locations.h"
+#include "base/apple/bundle_locations.h"
 #include "chrome/common/chrome_constants.h"
 #endif
 
