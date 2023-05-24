@@ -277,6 +277,20 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public String getAttestationURL() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().getAttestationURL(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    public String getAttestationURLWithPaymentId(String paymentId) {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().getAttestationURLWithPaymentId(
+                    mNativeBraveRewardsNativeWorker, paymentId);
+        }
+    }
+
     public String GetPublisherFavIconURL(int tabId) {
         synchronized(lock) {
             return BraveRewardsNativeWorkerJni.get().getPublisherFavIconURL(
@@ -789,6 +803,9 @@ public class BraveRewardsNativeWorker {
         String getPublisherURL(long nativeBraveRewardsNativeWorker, int tabId);
         String getCaptchaSolutionURL(
                 long nativeBraveRewardsNativeWorker, String paymentId, String captchaId);
+        String getAttestationURL(long nativeBraveRewardsNativeWorker);
+        String getAttestationURLWithPaymentId(
+                long nativeBraveRewardsNativeWorker, String paymentId);
         String getPublisherFavIconURL(long nativeBraveRewardsNativeWorker, int tabId);
         String getPublisherName(long nativeBraveRewardsNativeWorker, int tabId);
         String getPublisherId(long nativeBraveRewardsNativeWorker, int tabId);

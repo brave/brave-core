@@ -52,6 +52,7 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_ui_java",
   "//brave/third_party/android_deps:com_google_android_exoplayer_extension_cast_java",
   "//brave/third_party/android_deps:com_google_android_exoplayer_extension_mediasession_java",
+  "//brave/third_party/android_deps:com_google_android_play_integrity_java",
   "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar",
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
