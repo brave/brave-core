@@ -350,7 +350,8 @@ export const Send = (props: Props) => {
   }, [selectedTokensNetwork])
 
   React.useEffect(() => {
-    if (!contractAddress) return
+    // check if the user has selected an asset
+    if (!contractAddress || selectedSendAsset) return
     const asset = sendAssetOptions.find((option) =>
       tokenId
         ? option.contractAddress.toLowerCase() ===
@@ -360,7 +361,7 @@ export const Send = (props: Props) => {
     if (!asset) return
     setSelectedSendOption(tokenId ? 'nft' : 'token')
     selectSendAsset(asset)
-  }, [setSelectedSendOption, selectSendAsset, sendAssetOptions, contractAddress, tokenId])
+  }, [setSelectedSendOption, selectSendAsset, selectedSendAsset, sendAssetOptions, contractAddress, tokenId])
 
   // render
   return (
