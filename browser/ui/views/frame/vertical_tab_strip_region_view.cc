@@ -593,9 +593,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
 
-  // TODO(sko) Remove use of GetOriginalProfile(). Use
-  // GetIncognitoPersistentPrefsAllowlist instead.
-  auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
+  auto* prefs = browser_->profile()->GetPrefs();
 
   expanded_width_.Init(
       brave_tabs::kVerticalTabsExpandedWidth, prefs,
@@ -990,9 +988,7 @@ int VerticalTabStripRegionView::GetTabStripViewportHeight() const {
 }
 
 void VerticalTabStripRegionView::ResetExpandedWidth() {
-  // TODO(sko) Remove use of GetOriginalProfile(). Use
-  // GetIncognitoPersistentPrefsAllowlist instead.
-  auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
+  auto* prefs = browser_->profile()->GetPrefs();
   prefs->ClearPref(brave_tabs::kVerticalTabsExpandedWidth);
 
   PreferredSizeChanged();
