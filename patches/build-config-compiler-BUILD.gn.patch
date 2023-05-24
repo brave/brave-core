@@ -1,8 +1,24 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..498cba04a98a5c23a6095585fa13c568450982a5 100644
+index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..9ac8257ff7214f131d3d181c82a0bfe7794fbd66 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -740,6 +740,11 @@ config("compiler") {
+@@ -260,6 +260,7 @@ config("compiler") {
+   cflags_cc = []
+   cflags_objc = []
+   cflags_objcc = []
++  rustflags = []
+   ldflags = []
+   defines = []
+   configs = []
+@@ -450,6 +451,7 @@ config("compiler") {
+     asmflags += [ "-fPIC" ]
+     cflags += [ "-fPIC" ]
+     ldflags += [ "-fPIC" ]
++    rustflags += [ "-Crelocation-model=pic" ]
+ 
+     if (!is_clang) {
+       # Use pipes for communicating between sub-processes. Faster.
+@@ -740,6 +742,11 @@ config("compiler") {
      # arm32.
      if (!is_android || current_cpu == "arm64") {
        cflags += [ "-fwhole-program-vtables" ]
@@ -14,7 +30,16 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..498cba04a98a5c23a6095585fa13c568
        if (!is_win) {
          ldflags += [ "-fwhole-program-vtables" ]
        }
-@@ -906,6 +911,17 @@ config("compiler") {
+@@ -861,7 +868,7 @@ config("compiler") {
+ 
+   # Rust compiler flags setup.
+   # ---------------------------
+-  rustflags = [
++  rustflags += [
+     # Overflow checks are optional in Rust, but even if switched
+     # off they do not cause undefined behavior (the overflowing
+     # behavior is defined). Because containers are bounds-checked
+@@ -906,6 +913,17 @@ config("compiler") {
    if (is_official_build) {
      rustflags += [ "-Ccodegen-units=1" ]
    }
@@ -32,7 +57,7 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..498cba04a98a5c23a6095585fa13c568
  }
  
  # Defers LTO optimization to the linker, for use when:
-@@ -2551,6 +2567,7 @@ config("symbols") {
+@@ -2551,6 +2569,7 @@ config("symbols") {
  # This config guarantees to hold symbol for stack trace which are shown to user
  # when crash happens in unittests running on buildbot.
  config("minimal_symbols") {
@@ -40,7 +65,7 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..498cba04a98a5c23a6095585fa13c568
    if (is_win) {
      # Functions, files, and line tables only.
      cflags = []
-@@ -2578,11 +2595,13 @@ config("minimal_symbols") {
+@@ -2578,11 +2597,13 @@ config("minimal_symbols") {
        # at least 10.11.
        # TODO(thakis): Remove this once mac_deployment_target is 10.11.
        cflags += [ "-gdwarf-4" ]
@@ -54,7 +79,7 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..498cba04a98a5c23a6095585fa13c568
      }
  
      if (use_dwarf5 && !is_nacl) {
-@@ -2618,7 +2637,6 @@ config("minimal_symbols") {
+@@ -2618,7 +2639,6 @@ config("minimal_symbols") {
  
      asmflags = cflags
    }
