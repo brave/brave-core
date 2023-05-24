@@ -1059,16 +1059,11 @@ bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
 void AdsServiceImpl::MigratePrefs() {
   is_upgrading_from_pre_brave_ads_build_ = IsUpgradingFromPreBraveAdsBuild();
   if (is_upgrading_from_pre_brave_ads_build_) {
-    VLOG(2) << "Migrating ads preferences from pre Brave Ads build";
-
     // Force migration of preferences from version 1 if
     // |is_upgrading_from_pre_brave_ads_build_| is set to true to fix
     // "https://github.com/brave/brave-browser/issues/5434"
     SetIntegerPref(prefs::kVersion, 1);
-  } else {
-    VLOG(2) << "Migrating ads preferences";
   }
-
   const int source_version = GetPrefService()->GetInteger(prefs::kVersion);
   const int dest_version = kCurrentPrefVersion;
 
@@ -1091,13 +1086,10 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
 
   if (source_version == dest_version) {
     SetIntegerPref(prefs::kVersion, dest_version);
-
-    if (!is_dry_run) {
-      VLOG(2) << "Ads preferences are up to date on version " << dest_version;
-    }
-
     return true;
   }
+
+  VLOG(2) << "Migrating ads preferences";
 
   // Migration paths should be added to the below map, i.e.
   //
@@ -1875,9 +1867,6 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
   if (!file_path) {
     return std::move(callback).Run({});
   }
-
-  VLOG(2) << "Loading file resource from " << *file_path << " for component id "
-          << id;
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
