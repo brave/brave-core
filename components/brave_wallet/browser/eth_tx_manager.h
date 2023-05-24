@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_block_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"

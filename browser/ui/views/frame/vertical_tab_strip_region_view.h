@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/functional/callback_helpers.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"

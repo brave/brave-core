@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"

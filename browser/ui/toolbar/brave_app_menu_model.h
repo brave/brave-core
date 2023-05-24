@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"

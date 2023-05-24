@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 class Tab;
