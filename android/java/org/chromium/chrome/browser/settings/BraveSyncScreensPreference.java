@@ -472,7 +472,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getActivity().setTitle(R.string.sync_category_title);
 
-        boolean firstSetupComplete = getBraveSyncWorker().IsFirstSetupComplete();
+        boolean firstSetupComplete = getBraveSyncWorker().IsInitialSyncFeatureSetupComplete();
 
         Log.v(TAG, "setAppropriateView first setup complete " + firstSetupComplete);
         if (!firstSetupComplete) {
@@ -1227,7 +1227,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (isSyncStateChangedObserverPaused()) {
             return;
         }
-        if (SyncService.get().isFirstSetupComplete() == false) {
+        if (SyncService.get().isInitialSyncFeatureSetupComplete() == false) {
             if (mLeaveSyncChainInProgress) {
                 leaveSyncChainComplete();
             } else {

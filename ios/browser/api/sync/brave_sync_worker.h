@@ -96,7 +96,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::vector<std::unique_ptr<syncer::BraveDeviceInfo>> GetDeviceList();
   bool CanSyncFeatureStart();
   bool IsSyncFeatureActive();
-  bool IsFirstSetupComplete();
+  bool IsInitialSyncFeatureSetupComplete();
   bool SetSetupComplete();
   void ResetSync();
   void DeleteDevice(const std::string& device_guid);

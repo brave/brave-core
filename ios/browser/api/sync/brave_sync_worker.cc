@@ -281,10 +281,10 @@ std::string BraveSyncWorker::GetHexSeedFromQrCodeJson(const std::string& json) {
   return json;
 }
 
-bool BraveSyncWorker::IsFirstSetupComplete() {
+bool BraveSyncWorker::IsInitialSyncFeatureSetupComplete() {
   syncer::SyncService* sync_service = GetSyncService();
   return sync_service &&
-         sync_service->GetUserSettings()->IsFirstSetupComplete();
+         sync_service->GetUserSettings()->IsInitialSyncFeatureSetupComplete();
 }
 
 bool BraveSyncWorker::SetSetupComplete() {
@@ -297,7 +297,7 @@ bool BraveSyncWorker::SetSetupComplete() {
 
   sync_service->SetSyncFeatureRequested();
 
-  if (!sync_service->GetUserSettings()->IsFirstSetupComplete()) {
+  if (!sync_service->GetUserSettings()->IsInitialSyncFeatureSetupComplete()) {
     sync_service->GetUserSettings()->SetFirstSetupComplete(
         syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
   }

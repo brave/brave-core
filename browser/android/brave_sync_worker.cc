@@ -42,7 +42,7 @@
 //    requestStart
 //    requestStop
 //    setFirstSetupComplete
-//    isFirstSetupComplete
+//    isInitialSyncFeatureSetupComplete
 
 using base::android::ConvertUTF8ToJavaString;
 using content::BrowserThread;
@@ -160,8 +160,9 @@ void BraveSyncWorker::MarkFirstSetupComplete() {
   service->SetSyncFeatureRequested();
 
   // If the first-time setup is already complete, there's nothing else to do.
-  if (service->GetUserSettings()->IsFirstSetupComplete())
+  if (service->GetUserSettings()->IsInitialSyncFeatureSetupComplete()) {
     return;
+  }
 
   unified_consent::metrics::RecordSyncSetupDataTypesHistrogam(
       service->GetUserSettings(), profile_->GetPrefs());
@@ -176,10 +177,10 @@ void BraveSyncWorker::FinalizeSyncSetup(JNIEnv* env) {
   MarkFirstSetupComplete();
 }
 
-bool BraveSyncWorker::IsFirstSetupComplete(JNIEnv* env) {
+bool BraveSyncWorker::IsInitialSyncFeatureSetupComplete(JNIEnv* env) {
   syncer::SyncService* sync_service = GetSyncService();
   return sync_service &&
-         sync_service->GetUserSettings()->IsFirstSetupComplete();
+         sync_service->GetUserSettings()->IsInitialSyncFeatureSetupComplete();
 }
 
 void BraveSyncWorker::ResetSync(JNIEnv* env) {

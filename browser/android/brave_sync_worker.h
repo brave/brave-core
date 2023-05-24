@@ -43,7 +43,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   void FinalizeSyncSetup(JNIEnv* env);
 
-  bool IsFirstSetupComplete(JNIEnv* env);
+  bool IsInitialSyncFeatureSetupComplete(JNIEnv* env);
 
   void ResetSync(JNIEnv* env);
 

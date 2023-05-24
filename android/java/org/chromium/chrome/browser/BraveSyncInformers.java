@@ -38,7 +38,8 @@ public class BraveSyncInformers {
             return;
         }
 
-        boolean isV2User = SyncService.get() != null && SyncService.get().isFirstSetupComplete();
+        boolean isV2User =
+                SyncService.get() != null && SyncService.get().isInitialSyncFeatureSetupComplete();
         if (isV2User) {
             braveSyncWorker.setSyncV2MigrateNoticeDismissed(true);
             return;
