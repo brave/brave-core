@@ -28,7 +28,7 @@ import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { endsWithAny } from '../../../../utils/string-utils'
 
 // Hooks
-import { usePreset, useBalanceUpdater, useSend, useAssets } from '../../../../common/hooks'
+import { usePreset, useBalanceUpdater, useSend } from '../../../../common/hooks'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import { useGetNetworkQuery } from '../../../../common/slices/api.slice'
 
@@ -102,9 +102,9 @@ export const Send = (props: Props) => {
     submitSend,
     selectSendAsset,
     searchingForDomain,
-    processAddressOrUrl
+    processAddressOrUrl,
+    sendAssetOptions
   } = useSend(true)
-  const { sendAssetOptions } = useAssets()
 
   // Queries
   const { data: selectedTokensNetwork } = useGetNetworkQuery(
