@@ -307,6 +307,10 @@ AdsServiceImpl::AdsServiceImpl(
         bat_ads_client_notifier_.BindNewPipeAndPassReceiver();
   }
 
+  g_brave_browser_process->resource_component()->AddObserver(this);
+
+  RegisterResourceComponentsForDefaultLocale();
+
   InitializeNotificationsForCurrentProfile();
 
   MigratePrefs();
@@ -321,6 +325,8 @@ AdsServiceImpl::AdsServiceImpl(
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
+  g_brave_browser_process->resource_component()->RemoveObserver(this);
+
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
   rewards_service_->RemoveObserver(this);
@@ -475,10 +481,6 @@ void AdsServiceImpl::Initialize(const size_t current_start_number) {
   }
 
   InitializeDatabase();
-
-  g_brave_browser_process->resource_component()->AddObserver(this);
-
-  RegisterResourceComponentsForDefaultLocale();
 
   InitializeRewardsWallet(current_start_number);
 }
@@ -1264,8 +1266,6 @@ void AdsServiceImpl::Shutdown() {
   bat_ads_.reset();
   bat_ads_client_.reset();
   bat_ads_service_.reset();
-
-  g_brave_browser_process->resource_component()->RemoveObserver(this);
 
   url_loaders_.clear();
 
