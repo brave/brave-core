@@ -275,7 +275,7 @@ export const useSwap = () => {
             value: Amount.normalize(result.balance)
           }
         } catch (e) {
-          console.log(`Error querying balance: error=${e} asset=`, JSON.stringify(asset))
+          console.log('Error querying balance: error=%s asset=%s', e, JSON.stringify(asset))
           return {
             key: balanceRegistryKey,
             value: ''
@@ -374,7 +374,7 @@ export const useSwap = () => {
         })
         return
       } catch (e) {
-        console.log(`Error calling getTokenBalances(): error=${e}`)
+        console.log('Error calling getTokenBalances(): error=%s', e)
       }
 
       // Fallback to fetching individual balances
