@@ -810,7 +810,10 @@ export enum WalletRoutes {
   Swap = '/swap',
 
   // send
-  Send = '/send',
+  SendPageStart = '/send',
+  SendPage = '/send/' +
+  ':contractAddress?/' +
+  ':tokenId?',
 
   // dev bitcoin screen
   DevBitcoin = '/dev-bitcoin',

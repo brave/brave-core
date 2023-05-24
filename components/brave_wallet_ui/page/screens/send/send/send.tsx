@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Messages
@@ -27,7 +28,7 @@ import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { endsWithAny } from '../../../../utils/string-utils'
 
 // Hooks
-import { usePreset, useBalanceUpdater, useSend } from '../../../../common/hooks'
+import { usePreset, useBalanceUpdater, useSend, useAssets } from '../../../../common/hooks'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import { useGetNetworkQuery } from '../../../../common/slices/api.slice'
 
@@ -79,6 +80,9 @@ export const Send = (props: Props) => {
   const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
+  // routing
+  const { contractAddress, tokenId } = useParams<{ contractAddress?: string, tokenId?: string }>()
+
   // Hooks
   useBalanceUpdater()
 
@@ -100,6 +104,7 @@ export const Send = (props: Props) => {
     searchingForDomain,
     processAddressOrUrl
   } = useSend(true)
+  const { sendAssetOptions } = useAssets()
 
   // Queries
   const { data: selectedTokensNetwork } = useGetNetworkQuery(
@@ -343,6 +348,19 @@ export const Send = (props: Props) => {
       subscribed = false
     }
   }, [selectedTokensNetwork])
+
+  React.useEffect(() => {
+    if (!contractAddress) return
+    const asset = sendAssetOptions.find((option) =>
+      tokenId
+        ? option.contractAddress.toLowerCase() ===
+            contractAddress.toLowerCase() && option.tokenId === tokenId
+        : option.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+    )
+    if (!asset) return
+    setSelectedSendOption(tokenId ? 'nft' : 'token')
+    selectSendAsset(asset)
+  }, [setSelectedSendOption, selectSendAsset, sendAssetOptions, contractAddress, tokenId])
 
   // render
   return (

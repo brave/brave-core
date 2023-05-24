@@ -440,7 +440,15 @@ export const PortfolioAsset = (props: Props) => {
     history.push(`${WalletRoutes.DepositFundsPageStart}/${selectedAsset?.symbol}`)
   }, [selectedAsset?.symbol])
 
-  const onSend = React.useCallback(() => history.push(WalletRoutes.Send), [])
+  const onSend = React.useCallback(() => {
+    if (!selectedAsset) return
+    history.push(
+      WalletRoutes.SendPage.replace(
+        ':contractAddress?',
+        selectedAsset.contractAddress
+      ).replace(':tokenId?', selectedAsset.tokenId)
+    )
+  }, [selectedAsset])
 
   // effects
   React.useEffect(() => {
@@ -496,6 +504,7 @@ export const PortfolioAsset = (props: Props) => {
             onBack={goBack}  
             assetName={selectedAsset?.name}
             tokenId={selectedAsset?.tokenId}
+            showSendButton={!new Amount(fullAssetBalances?.assetBalance || '').isZero()}
             onSend={onSend}
           />
       }
