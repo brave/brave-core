@@ -54,14 +54,14 @@ void BraveSyncServiceImpl::Initialize() {
   }
 
   // P3A ping for those who have sync disabled
-  if (!user_settings_->IsFirstSetupComplete()) {
+  if (!user_settings_->IsInitialSyncFeatureSetupComplete()) {
     base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
   }
 }
 
 bool BraveSyncServiceImpl::IsSetupInProgress() const {
   return SyncServiceImpl::IsSetupInProgress() &&
-         !user_settings_->IsFirstSetupComplete();
+         !user_settings_->IsInitialSyncFeatureSetupComplete();
 }
 
 void BraveSyncServiceImpl::StopAndClear() {
@@ -177,7 +177,7 @@ void BraveSyncServiceImpl::OnEngineInitialized(
   }
 
   syncer::SyncUserSettings* sync_user_settings = GetUserSettings();
-  if (!sync_user_settings->IsFirstSetupComplete()) {
+  if (!sync_user_settings->IsInitialSyncFeatureSetupComplete()) {
     // If first setup has not been complete, we don't need to force
     return;
   }

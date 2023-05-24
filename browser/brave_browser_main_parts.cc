@@ -144,8 +144,8 @@ void BraveBrowserMainParts::PostBrowserStart() {
                                  ? SyncServiceFactory::GetForProfile(profile)
                                  : nullptr;
         const bool is_v2_user =
-            sync_service &&
-            sync_service->GetUserSettings()->IsFirstSetupComplete();
+            sync_service && sync_service->GetUserSettings()
+                                ->IsInitialSyncFeatureSetupComplete();
         SyncV2MigrateInfoBarDelegate::Create(infobar_manager, is_v2_user,
                                              profile, browser);
 
