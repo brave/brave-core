@@ -27,9 +27,6 @@
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Ask Brave AI
   </message>
-  <message name="IDS_CHAT_UI_LOADING_LABEL" desc="A label shown when the UI is loading or generating a response">
-    Generating…
-  </message>
   <message name="IDS_CHAT_UI_API_ERROR" desc="Describes an error occured submitting the API request">
     There was an error processing your message, please try again.
   </message>

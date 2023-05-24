@@ -303,6 +303,7 @@ void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
   article_summary_.clear();
   article_text_.clear();
+  is_request_in_progress_ = false;
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
