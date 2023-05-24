@@ -407,4 +407,9 @@ void APIRequestHelper::LoaderWrapperHandler::RegisterURLLoader(
   url_loader_ = std::move(loader);
 }
 
+void APIRequestHelper::LoaderWrapperHandler::
+    set_data_received_callback_for_testing(DataReceivedCallback callback) {
+  data_received_callback_ = std::move(callback);
+}
+
 }  // namespace api_request_helper

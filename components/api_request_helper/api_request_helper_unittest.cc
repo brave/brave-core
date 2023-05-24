@@ -50,6 +50,9 @@ class ApiRequestHelperUnitTest : public testing::Test {
     api_request_helper_ = std::make_unique<APIRequestHelper>(
         net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
         shared_url_loader_factory_);
+    loader_wrapper_handler_ =
+        std::make_unique<APIRequestHelper::LoaderWrapperHandler>(
+            api_request_helper_.get());
   }
   ~ApiRequestHelperUnitTest() override = default;
 
@@ -112,6 +115,14 @@ class ApiRequestHelperUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
   }
 
+  void SendMessage(APIRequestHelper::DataReceivedCallback callback,
+                   base::StringPiece string_piece) {
+    loader_wrapper_handler_->set_data_received_callback_for_testing(
+        std::move(callback));
+    loader_wrapper_handler_->OnDataReceived(string_piece,
+                                            base::BindOnce([]() {}));
+  }
+
  protected:
   std::unique_ptr<APIRequestHelper> api_request_helper_;
 
@@ -120,6 +131,8 @@ class ApiRequestHelperUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
+  std::unique_ptr<APIRequestHelper::LoaderWrapperHandler>
+      loader_wrapper_handler_;
 };
 
 TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
@@ -196,6 +209,49 @@ TEST_F(ApiRequestHelperUnitTest, EnableCache) {
               base::NullCallback(), false);
   SendRequest("{}", "{}", base::Value(base::Value::Type::DICT), 200, net::OK,
               base::NullCallback(), true);
+}
+
+TEST_F(ApiRequestHelperUnitTest, JsonParsing) {
+  base::RunLoop run_loop;
+  SendMessage(base::BindRepeating(
+                  [](base::RunLoop* run_loop, const std::string& response) {
+                    EXPECT_EQ(" Hello there!", response);
+                    run_loop->Quit();
+                  },
+                  &run_loop),
+              "data: {\"completion\": \" Hello there!\", \"stop\": null}");
+  run_loop.Run();
+
+  base::RunLoop run_loop2;
+  SendMessage(
+      base::BindRepeating(
+          [](base::RunLoop* run_loop, const std::string& response) {
+            EXPECT_EQ(" Hello there! How are you?", response);
+            run_loop->Quit();
+          },
+          &run_loop2),
+      "data: {\"completion\": \" Hello there! How are you?\", \"stop\": null}");
+  run_loop2.Run();
+
+  // This test verifies that the callback is not called when the response is
+  // "[DONE]". We use a run loop to wait for the callback to be called, and we
+  // expect it to never be called.
+  base::RunLoop run_loop3;
+  SendMessage(
+      base::BindRepeating([](base::RunLoop* run_loop,
+                             const std::string& response) { run_loop->Quit(); },
+                          &run_loop3),
+      "data: [DONE]");
+  run_loop3.RunUntilIdle();
+
+  // Testing with no JSON and an empty string
+  base::RunLoop run_loop4;
+  SendMessage(
+      base::BindRepeating([](base::RunLoop* run_loop,
+                             const std::string& response) { run_loop->Quit(); },
+                          &run_loop4),
+      "");
+  run_loop4.RunUntilIdle();
 }
 
 }  // namespace api_request_helper

@@ -106,6 +106,7 @@ class APIRequestHelper {
 
     void OnParseJsonFromStream(data_decoder::DataDecoder::ValueOrError result);
     void RegisterURLLoader(std::unique_ptr<network::SimpleURLLoader> loader);
+    void set_data_received_callback_for_testing(DataReceivedCallback callback);
 
    private:
     friend class APIRequestHelper;
