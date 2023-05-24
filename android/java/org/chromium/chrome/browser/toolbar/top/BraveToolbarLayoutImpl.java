@@ -1391,8 +1391,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             int appOpenCountForWidgetPromo = SharedPreferencesManager.getInstance().readInt(
                     BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO);
             if (hasFocus
-                    && appOpenCountForWidgetPromo >= BraveActivity.APP_OPEN_COUNT_FOR_WIDGET_PROMO)
-                mSearchWidgetPromoPanel.showIfNeeded(this);
+                    && appOpenCountForWidgetPromo
+                            >= BraveActivity.APP_OPEN_COUNT_FOR_WIDGET_PROMO) {
+                mSearchWidgetPromoPanel.showIfNeeded(BraveToolbarLayoutImpl.this);
+            } else {
+                mSearchWidgetPromoPanel.dismissIfShowing();
+            }
         });
 
         if (OnboardingPrefManager.getInstance().getUrlFocusCount() == 0) {

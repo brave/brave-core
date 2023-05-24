@@ -29,6 +29,8 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
         int width = LinearLayout.LayoutParams.MATCH_PARENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         mPopupWindow = new PopupWindow(view, width, height, true);
+        mPopupWindow.setTouchable(true);
+        mPopupWindow.setFocusable(false);
     }
 
     @Override
@@ -43,5 +45,11 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
     public void showIfNeeded(@NonNull View anchorView) {
         if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(mContext))
             mPopupWindow.showAsDropDown(anchorView);
+    }
+
+    public void dismissIfShowing() {
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
     }
 }
