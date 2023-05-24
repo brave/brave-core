@@ -32,6 +32,9 @@ class AdsClientNotifier {
   void AddObserver(AdsClientNotifierObserver* observer);
   void RemoveObserver(AdsClientNotifierObserver* observer);
 
+  // Invoked when ads did initialize.
+  void NotifyDidInitializeAds() const;
+
   // Called when the user changes the locale of their operating system. This
   // call is not required if the operating system restarts the browser when
   // changing the locale. |locale| should be specified in either
@@ -52,6 +55,10 @@ class AdsClientNotifier {
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
                                      const std::string& text) const;
+
+  // Invoked when the Brave Rewards wallet did update.
+  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
+                                    const std::string& recovery_seed) const;
 
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that

@@ -32,6 +32,10 @@ void BatAdsClientNotifierImpl::BindReceiver() {
   receiver_.Bind(std::move(pending_receiver_));
 }
 
+void BatAdsClientNotifierImpl::NotifyDidInitializeAds() {
+  notifier_.NotifyDidInitializeAds();
+}
+
 void BatAdsClientNotifierImpl::NotifyLocaleDidChange(
     const std::string& locale) {
   notifier_.NotifyLocaleDidChange(locale);
@@ -44,6 +48,12 @@ void BatAdsClientNotifierImpl::NotifyPrefDidChange(const std::string& path) {
 void BatAdsClientNotifierImpl::NotifyDidUpdateResourceComponent(
     const std::string& id) {
   notifier_.NotifyDidUpdateResourceComponent(id);
+}
+
+void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(
+    const std::string& payment_id,
+    const std::string& recovery_seed) {
+  notifier_.NotifyRewardsWalletDidUpdate(payment_id, recovery_seed);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabTextContentDidChange(

@@ -129,6 +129,9 @@ class Account final : public AdsClientNotifierObserver,
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
   void OnNotifyPrefDidChange(const std::string& path) override;
+  void OnNotifyRewardsWalletDidUpdate(
+      const std::string& payment_id,
+      const std::string& recovery_seed) override;
   void OnNotifyDidSolveAdaptiveCaptcha() override;
 
   // ConfirmationsDelegate:

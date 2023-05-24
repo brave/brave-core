@@ -23,6 +23,20 @@ void AdsClientNotifier::RemoveObserver(AdsClientNotifierObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
+void AdsClientNotifier::NotifyDidInitializeAds() const {
+  for (auto& observer : observers_) {
+    observer.OnNotifyDidInitializeAds();
+  }
+}
+
+void AdsClientNotifier::NotifyRewardsWalletDidUpdate(
+    const std::string& payment_id,
+    const std::string& recovery_seed) const {
+  for (auto& observer : observers_) {
+    observer.OnNotifyRewardsWalletDidUpdate(payment_id, recovery_seed);
+  }
+}
+
 void AdsClientNotifier::NotifyLocaleDidChange(const std::string& locale) const {
   for (auto& observer : observers_) {
     observer.OnNotifyLocaleDidChange(locale);

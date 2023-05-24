@@ -34,7 +34,8 @@ class ConfirmationStateManager final {
 
   static ConfirmationStateManager& GetInstance();
 
-  void Load(const WalletInfo& wallet, InitializeCallback callback);
+  void Load(const absl::optional<WalletInfo>& wallet,
+            InitializeCallback callback);
 
   bool IsInitialized() const { return is_initialized_; }
 
@@ -88,7 +89,7 @@ class ConfirmationStateManager final {
 
   bool is_initialized_ = false;
 
-  WalletInfo wallet_;
+  absl::optional<WalletInfo> wallet_;
 
   ConfirmationList failed_confirmations_;
 

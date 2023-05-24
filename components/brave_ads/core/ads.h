@@ -45,10 +45,11 @@ class ADS_EXPORT Ads {
 
   virtual void SetFlags(mojom::FlagsPtr flags) = 0;
 
-  // Called to initialize ads. The callback takes one argument - |bool| is set
-  // to |true| if successful otherwise |false|. |OnRewardsWalletDidChange| must
-  // be called before calling |Initialize|.
-  virtual void Initialize(InitializeCallback callback) = 0;
+  // Called to initialize ads for the specified |mojom::WalletInfoPtr|. |wallet|
+  // can be nullptr if there is no wallet. The callback takes one argument -
+  // |bool| is set to |true| if successful otherwise |false|.
+  virtual void Initialize(mojom::WalletInfoPtr wallet,
+                          InitializeCallback callback) = 0;
 
   // Called to shutdown ads. The callback takes one argument - |bool| is set to
   // |true| if successful otherwise |false|.
@@ -57,10 +58,6 @@ class ADS_EXPORT Ads {
   // Called to get diagnostics to help identify issues. The callback takes one
   // argument - |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
-
-  // Called when the user's Brave Rewards wallet has changed.
-  virtual void OnRewardsWalletDidChange(const std::string& payment_id,
-                                        const std::string& recovery_seed) = 0;
 
   // Called to get the statement of accounts. The callback takes one argument -
   // |mojom::StatementInfo| containing info of the obtained statement of

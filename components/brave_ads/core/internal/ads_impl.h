@@ -50,13 +50,11 @@ class AdsImpl final : public Ads, public AccountObserver {
   void SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) override;
   void SetFlags(mojom::FlagsPtr flags) override;
 
-  void Initialize(InitializeCallback callback) override;
+  void Initialize(mojom::WalletInfoPtr wallet,
+                  InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
-  void OnRewardsWalletDidChange(const std::string& payment_id,
-                                const std::string& recovery_seed) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
@@ -112,21 +110,40 @@ class AdsImpl final : public Ads, public AccountObserver {
   bool ToggleMarkAdAsInappropriate(const base::Value::Dict& value) override;
 
  private:
-  void CreateOrOpenDatabase(InitializeCallback callback);
-  void CreateOrOpenDatabaseCallback(InitializeCallback callback, bool success);
-  void PurgeExpiredAdEventsCallback(InitializeCallback callback, bool success);
-  void PurgeOrphanedAdEventsCallback(InitializeCallback callback, bool success);
-  void MigrateConversionStateCallback(InitializeCallback callback,
+  void CreateOrOpenDatabase(mojom::WalletInfoPtr wallet,
+                            InitializeCallback callback);
+  void CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
+                                    InitializeCallback callback,
+                                    bool success);
+  void PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
+                                    InitializeCallback callback,
+                                    bool success);
+  void PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
+                                     InitializeCallback callback,
+                                     bool success);
+  void MigrateConversionStateCallback(mojom::WalletInfoPtr wallet,
+                                      InitializeCallback callback,
                                       bool success);
-  void MigrateRewardsStateCallback(InitializeCallback callback, bool success);
-  void MigrateClientStateCallback(InitializeCallback callback, bool success);
-  void LoadClientStateCallback(InitializeCallback callback, bool success);
-  void MigrateConfirmationStateCallback(InitializeCallback callback,
+  void MigrateRewardsStateCallback(mojom::WalletInfoPtr wallet,
+                                   InitializeCallback callback,
+                                   bool success);
+  void MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
+                                  InitializeCallback callback,
+                                  bool success);
+  void LoadClientStateCallback(mojom::WalletInfoPtr wallet,
+                               InitializeCallback callback,
+                               bool success);
+  void MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
+                                        InitializeCallback callback,
                                         bool success);
-  void LoadConfirmationStateCallback(InitializeCallback callback, bool success);
-  void MigrateNotificationStateCallback(InitializeCallback callback,
+  void LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
+                                     InitializeCallback callback,
+                                     bool success);
+  void MigrateNotificationStateCallback(mojom::WalletInfoPtr wallet,
+                                        InitializeCallback callback,
                                         bool success);
-  void SuccessfullyInitialized(InitializeCallback callback);
+  void SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
+                               InitializeCallback callback);
 
   // AccountObserver:
   void OnStatementOfAccountsDidChange() override;

@@ -46,13 +46,11 @@ class BatAdsImpl : public mojom::BatAds {
       brave_ads::mojom::BuildChannelInfoPtr build_channel) override;
   void SetFlags(brave_ads::mojom::FlagsPtr flags) override;
 
-  void Initialize(InitializeCallback callback) override;
+  void Initialize(brave_ads::mojom::WalletInfoPtr wallet,
+                  InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
-  void OnRewardsWalletDidChange(const std::string& payment_id,
-                                const std::string& recovery_seed) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 

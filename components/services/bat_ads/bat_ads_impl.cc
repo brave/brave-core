@@ -76,8 +76,9 @@ void BatAdsImpl::SetFlags(brave_ads::mojom::FlagsPtr flags) {
   GetAds()->SetFlags(std::move(flags));
 }
 
-void BatAdsImpl::Initialize(InitializeCallback callback) {
-  GetAds()->Initialize(std::move(callback));
+void BatAdsImpl::Initialize(brave_ads::mojom::WalletInfoPtr wallet,
+                            InitializeCallback callback) {
+  GetAds()->Initialize(std::move(wallet), std::move(callback));
 }
 
 void BatAdsImpl::Shutdown(ShutdownCallback callback) {
@@ -197,11 +198,6 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
   DCHECK(brave_ads::mojom::IsKnownEnumValue(ad_type));
 
   GetAds()->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
-}
-
-void BatAdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
-                                          const std::string& recovery_seed) {
-  GetAds()->OnRewardsWalletDidChange(payment_id, recovery_seed);
 }
 
 void BatAdsImpl::GetHistory(const base::Time from_time,

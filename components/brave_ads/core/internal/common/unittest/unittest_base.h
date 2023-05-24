@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/weak_ptr.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
@@ -140,6 +141,7 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   void MockSetTimePref(AdsClientMock& mock);
 
   void SetUpIntegrationTest();
+  void InitializeCallback(bool success);
 
   base::ScopedTempDir temp_dir_;
 
@@ -155,6 +157,8 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   std::unique_ptr<Database> database_;
 
   std::unique_ptr<GlobalState> global_state_;
+
+  base::WeakPtrFactory<UnitTestBase> weak_factory_{this};
 };
 
 }  // namespace brave_ads

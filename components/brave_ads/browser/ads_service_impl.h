@@ -102,7 +102,7 @@ class AdsServiceImpl : public AdsService,
   void MigrateConfirmationStateCallback(bool success);
 
   void GetDeviceId();
-  void OnGetDeviceId(std::string device_id);
+  void GetDeviceIdCallback(std::string device_id);
 
   bool UserHasOptedIn() const;
 
@@ -113,19 +113,22 @@ class AdsServiceImpl : public AdsService,
   void CancelRestartBatAdsService();
   bool ShouldProceedInitialization(size_t current_start_number) const;
 
-  void OnBatAdsServiceCreated(size_t current_start_number);
-  void OnInitializeBasePathDirectory(size_t current_start_number, bool success);
+  void BatAdsServiceCreatedCallback(size_t current_start_number);
+  void InitializeBasePathDirectoryCallback(size_t current_start_number,
+                                           bool success);
   void Initialize(size_t current_start_number);
   void InitializeDatabase();
 
   bool ShouldRewardUser() const;
   void InitializeRewardsWallet(size_t current_start_number);
-  void OnInitializeRewardsWallet(size_t current_start_number,
-                                 brave_rewards::mojom::RewardsWalletPtr wallet);
-  void InitializeBatAds();
-  void OnInitializeBatAds(bool success);
+  void InitializeRewardsWalletCallback(
+      size_t current_start_number,
+      brave_rewards::mojom::RewardsWalletPtr wallet);
+  void InitializeBatAds(brave_rewards::mojom::RewardsWalletPtr rewards_wallet);
+  void InitializeBatAdsCallback(bool success);
 
   void ShutdownAndResetState();
+  void ShutdownAndResetStateCallback(bool /*success*/);
 
   void SetSysInfo();
   void SetBuildChannel();
@@ -147,7 +150,7 @@ class AdsServiceImpl : public AdsService,
   void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();
-  void OnGetRewardsWallet(brave_rewards::mojom::RewardsWalletPtr wallet);
+  void GetRewardsWalletCallback(brave_rewards::mojom::RewardsWalletPtr wallet);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.
@@ -166,22 +169,22 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/26192) Decouple new
   // tab page ad business logic.
-  void OnPrefetchNewTabPageAd(absl::optional<base::Value::Dict> dict);
+  void PrefetchNewTabPageAdCallback(absl::optional<base::Value::Dict> dict);
 
   // TODO(https://github.com/brave/brave-browser/issues/26193) Decouple open
   // new tab with ad business logic.
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OnOpenNewTabWithAd(absl::optional<base::Value::Dict> dict);
+  void OpenNewTabWithAdCallback(absl::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
   void OpenNewTabWithUrl(const GURL& url);
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
-  void OnURLRequest(SimpleURLLoaderList::iterator url_loader_iter,
-                    UrlRequestCallback callback,
-                    std::unique_ptr<std::string> response_body);
+  void URLRequestCallback(SimpleURLLoaderList::iterator url_loader_iter,
+                          UrlRequestCallback callback,
+                          std::unique_ptr<std::string> response_body);
 
   PrefService* GetPrefService();
   const PrefService* GetPrefService() const;

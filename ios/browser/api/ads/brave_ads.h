@@ -59,6 +59,7 @@ OBJC_EXPORT
 /// Initializes the ads service
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
+                   walletInfo:(BraveAdsWalletInfo*)walletInfo
                    completion:(void (^)(bool))completion;
 
 /// Shuts down the ads service if its running

@@ -22,11 +22,15 @@ interface BatAdsService {
 interface BatAdsClientNotifier {
   // See AdsClientNotifier for documentation.
 
+  NotifyDidInitializeAds();
+
   NotifyLocaleDidChange(string locale);
 
   NotifyPrefDidChange(string path);
 
   NotifyDidUpdateResourceComponent(string id);
+
+  NotifyRewardsWalletDidUpdate(string payment_id, string recovery_seed);
 
   NotifyTabHtmlContentDidChange(int32 tab_id,
                                 array<url.mojom.Url> redirect_chain,
@@ -152,12 +156,10 @@ interface BatAds {
 
   SetFlags(brave_ads.mojom.Flags flags);
 
-  Initialize() => (bool success);
+  Initialize(brave_ads.mojom.WalletInfo? wallet) => (bool success);
   Shutdown() => (bool success);
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
-
-  OnRewardsWalletDidChange(string payment_id, string recovery_seed);
 
   GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? statement);
 

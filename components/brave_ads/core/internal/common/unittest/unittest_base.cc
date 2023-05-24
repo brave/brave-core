@@ -38,6 +38,17 @@ namespace brave_ads {
 
 using ::testing::Invoke;
 
+namespace {
+
+mojom::WalletInfoPtr GetWallet() {
+  mojom::WalletInfoPtr wallet = mojom::WalletInfo::New();
+  wallet->payment_id = kWalletPaymentId;
+  wallet->recovery_seed = kWalletRecoverySeed;
+  return wallet;
+}
+
+}  // namespace
+
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
       scoped_default_locale_(brave_l10n::test::ScopedDefaultLocale(  // IN-TEST
@@ -363,11 +374,15 @@ void UnitTestBase::SetUpIntegrationTest() {
 
   ads_->SetFlags(BuildFlags());
 
-  ads_->OnRewardsWalletDidChange(kWalletPaymentId, kWalletRecoverySeed);
+  ads_->Initialize(GetWallet(),
+                   base::BindOnce(&UnitTestBase::InitializeCallback,
+                                  weak_factory_.GetWeakPtr()));
+}
 
-  ads_->Initialize(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+void UnitTestBase::InitializeCallback(const bool success) {
+  ASSERT_TRUE(success);
 
+  NotifyDidInitializeAds();
   task_environment_.RunUntilIdle();
 }
 

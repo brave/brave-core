@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -70,7 +71,8 @@ void AdsImpl::SetFlags(mojom::FlagsPtr flags) {
   flags_state.environment_type = flags->environment_type;
 }
 
-void AdsImpl::Initialize(InitializeCallback callback) {
+void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
+                         InitializeCallback callback) {
   BLOG(1, "Initializing ads");
 
   if (is_initialized_) {
@@ -78,7 +80,7 @@ void AdsImpl::Initialize(InitializeCallback callback) {
     return FailedToInitialize(std::move(callback));
   }
 
-  CreateOrOpenDatabase(std::move(callback));
+  CreateOrOpenDatabase(std::move(wallet), std::move(callback));
 }
 
 void AdsImpl::Shutdown(ShutdownCallback callback) {
@@ -92,11 +94,6 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   NotificationAdManager::GetInstance().RemoveAll();
 
   std::move(callback).Run(/*success*/ true);
-}
-
-void AdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
-                                       const std::string& recovery_seed) {
-  account_.SetWallet(payment_id, recovery_seed);
 }
 
 absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
@@ -283,13 +280,15 @@ bool AdsImpl::ToggleMarkAdAsInappropriate(const base::Value::Dict& value) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdsImpl::CreateOrOpenDatabase(InitializeCallback callback) {
-  DatabaseManager::GetInstance().CreateOrOpen(
-      base::BindOnce(&AdsImpl::CreateOrOpenDatabaseCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+void AdsImpl::CreateOrOpenDatabase(mojom::WalletInfoPtr wallet,
+                                   InitializeCallback callback) {
+  DatabaseManager::GetInstance().CreateOrOpen(base::BindOnce(
+      &AdsImpl::CreateOrOpenDatabaseCallback, weak_factory_.GetWeakPtr(),
+      std::move(wallet), std::move(callback)));
 }
 
-void AdsImpl::CreateOrOpenDatabaseCallback(InitializeCallback callback,
+void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
+                                           InitializeCallback callback,
                                            const bool success) {
   if (!success) {
     BLOG(0, "Failed to create or open database");
@@ -298,23 +297,25 @@ void AdsImpl::CreateOrOpenDatabaseCallback(InitializeCallback callback,
 
   PurgeExpiredAdEvents(base::BindOnce(&AdsImpl::PurgeExpiredAdEventsCallback,
                                       weak_factory_.GetWeakPtr(),
-                                      std::move(callback)));
+                                      std::move(wallet), std::move(callback)));
 }
 
-void AdsImpl::PurgeExpiredAdEventsCallback(InitializeCallback callback,
+void AdsImpl::PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
+                                           InitializeCallback callback,
                                            const bool success) {
   if (!success) {
     BLOG(0, "Failed to purge expired ad events");
     return FailedToInitialize(std::move(callback));
   }
 
-  PurgeOrphanedAdEvents(
-      mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&AdsImpl::PurgeOrphanedAdEventsCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  PurgeOrphanedAdEvents(mojom::AdType::kNewTabPageAd,
+                        base::BindOnce(&AdsImpl::PurgeOrphanedAdEventsCallback,
+                                       weak_factory_.GetWeakPtr(),
+                                       std::move(wallet), std::move(callback)));
 }
 
-void AdsImpl::PurgeOrphanedAdEventsCallback(InitializeCallback callback,
+void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
+                                            InitializeCallback callback,
                                             const bool success) {
   if (!success) {
     BLOG(0, "Failed to purge orphaned ad events");
@@ -325,89 +326,110 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(InitializeCallback callback,
 
   conversions::Migrate(base::BindOnce(&AdsImpl::MigrateConversionStateCallback,
                                       weak_factory_.GetWeakPtr(),
-                                      std::move(callback)));
+                                      std::move(wallet), std::move(callback)));
 }
 
-void AdsImpl::MigrateConversionStateCallback(InitializeCallback callback,
+void AdsImpl::MigrateConversionStateCallback(mojom::WalletInfoPtr wallet,
+                                             InitializeCallback callback,
                                              const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
   rewards::Migrate(base::BindOnce(&AdsImpl::MigrateRewardsStateCallback,
-                                  weak_factory_.GetWeakPtr(),
+                                  weak_factory_.GetWeakPtr(), std::move(wallet),
                                   std::move(callback)));
 }
 
-void AdsImpl::MigrateRewardsStateCallback(InitializeCallback callback,
+void AdsImpl::MigrateRewardsStateCallback(mojom::WalletInfoPtr wallet,
+                                          InitializeCallback callback,
                                           const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
   client::Migrate(base::BindOnce(&AdsImpl::MigrateClientStateCallback,
-                                 weak_factory_.GetWeakPtr(),
+                                 weak_factory_.GetWeakPtr(), std::move(wallet),
                                  std::move(callback)));
 }
 
-void AdsImpl::MigrateClientStateCallback(InitializeCallback callback,
+void AdsImpl::MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
+                                         InitializeCallback callback,
                                          const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
-  ClientStateManager::GetInstance().Load(
-      base::BindOnce(&AdsImpl::LoadClientStateCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  ClientStateManager::GetInstance().Load(base::BindOnce(
+      &AdsImpl::LoadClientStateCallback, weak_factory_.GetWeakPtr(),
+      std::move(wallet), std::move(callback)));
 }
 
-void AdsImpl::LoadClientStateCallback(InitializeCallback callback,
+void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr wallet,
+                                      InitializeCallback callback,
                                       const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
-  confirmations::Migrate(
-      base::BindOnce(&AdsImpl::MigrateConfirmationStateCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  confirmations::Migrate(base::BindOnce(
+      &AdsImpl::MigrateConfirmationStateCallback, weak_factory_.GetWeakPtr(),
+      std::move(wallet), std::move(callback)));
 }
 
-void AdsImpl::MigrateConfirmationStateCallback(InitializeCallback callback,
+void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
+                                               InitializeCallback callback,
                                                const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
+  absl::optional<WalletInfo> new_wallet;
+  if (wallet) {
+    new_wallet = ToWallet(wallet->payment_id, wallet->recovery_seed);
+    if (!new_wallet) {
+      BLOG(0, "Invalid wallet");
+      return FailedToInitialize(std::move(callback));
+    }
+  }
+
   ConfirmationStateManager::GetInstance().Load(
-      account_.GetWallet(),
-      base::BindOnce(&AdsImpl::LoadConfirmationStateCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      new_wallet, base::BindOnce(&AdsImpl::LoadConfirmationStateCallback,
+                                 weak_factory_.GetWeakPtr(), std::move(wallet),
+                                 std::move(callback)));
 }
 
-void AdsImpl::LoadConfirmationStateCallback(InitializeCallback callback,
+void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
+                                            InitializeCallback callback,
                                             const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
-  notifications::Migrate(
-      base::BindOnce(&AdsImpl::MigrateNotificationStateCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  notifications::Migrate(base::BindOnce(
+      &AdsImpl::MigrateNotificationStateCallback, weak_factory_.GetWeakPtr(),
+      std::move(wallet), std::move(callback)));
 }
 
-void AdsImpl::MigrateNotificationStateCallback(InitializeCallback callback,
+void AdsImpl::MigrateNotificationStateCallback(mojom::WalletInfoPtr wallet,
+                                               InitializeCallback callback,
                                                const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
-  SuccessfullyInitialized(std::move(callback));
+  SuccessfullyInitialized(std::move(wallet), std::move(callback));
 }
 
-void AdsImpl::SuccessfullyInitialized(InitializeCallback callback) {
+void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
+                                      InitializeCallback callback) {
   BLOG(1, "Successfully initialized ads");
 
   is_initialized_ = true;
+
+  if (wallet) {
+    account_.SetWallet(wallet->payment_id, wallet->recovery_seed);
+  }
 
   AdsClientHelper::GetInstance()->BindPendingObservers();
 

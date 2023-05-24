@@ -239,6 +239,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
+                   walletInfo:(BraveAdsWalletInfo*)walletInfo
                    completion:(void (^)(bool))completion {
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();
@@ -248,19 +249,22 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                                  : brave_ads::mojom::BuildChannelInfo::New();
   ads->SetBuildChannel(std::move(cppBuildChannelInfo));
   ads->SetFlags(brave_ads::BuildFlags());
-  ads->Initialize(base::BindOnce(^(const bool success) {
-    [self periodicallyCheckForAdsResourceUpdates];
-    [self registerAdsResources];
-    completion(success);
-  }));
+  ads->Initialize(walletInfo.cppObjPtr, base::BindOnce(^(const bool success) {
+                    [self periodicallyCheckForAdsResourceUpdates];
+                    [self registerAdsResources];
+                    if (success) {
+                      self->adsClientNotifier->NotifyDidInitializeAds();
+                    }
+                    completion(success);
+                  }));
 }
 
 - (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnRewardsWalletDidChange(base::SysNSStringToUTF8(paymentId),
-                                base::SysNSStringToUTF8(base64Seed));
+  adsClientNotifier->NotifyRewardsWalletDidUpdate(
+      base::SysNSStringToUTF8(paymentId), base::SysNSStringToUTF8(base64Seed));
 }
 
 - (NSString*)adsDatabasePath {
