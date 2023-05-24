@@ -8,13 +8,15 @@
 
 namespace brave_rewards::internal {
 
-BATLedgerTest::BATLedgerTest()
-    : ledger_(client_receiver_.BindNewEndpointAndPassDedicatedRemote()) {}
+BATLedgerTest::BATLedgerTest() {
+  ledger(client_receiver_.BindNewEndpointAndPassDedicatedRemote())
+      .SetTesting(true);
+}
 
 BATLedgerTest::~BATLedgerTest() = default;
 
 void BATLedgerTest::InitializeLedger() {
-  const auto result = mojom::LedgerAsyncWaiter(&ledger_).Initialize();
+  const auto result = mojom::LedgerAsyncWaiter(&ledger()).Initialize();
   DCHECK(result == mojom::Result::LEDGER_OK);
 }
 

@@ -14,16 +14,16 @@
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using ::testing::_;
 
 // npm run test -- brave_unit_tests --filter=PublisherTest.*
 
-namespace brave_rewards::internal {
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
-class PublisherTest : public testing::Test {
+class PublisherTest : public MockLedgerTest {
  protected:
   void CreatePublisherInfoList(std::vector<mojom::PublisherInfoPtr>* list) {
     double prev_score;
@@ -44,17 +44,17 @@ class PublisherTest : public testing::Test {
   }
 
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_.mock_client(), GetDoubleState(state::kScoreA, _))
+    ON_CALL(mock_ledger().mock_client(), GetDoubleState(state::kScoreA, _))
         .WillByDefault([this](const std::string&, auto callback) {
           std::move(callback).Run(a_);
         });
 
-    ON_CALL(*mock_ledger_impl_.mock_client(), GetDoubleState(state::kScoreB, _))
+    ON_CALL(mock_ledger().mock_client(), GetDoubleState(state::kScoreB, _))
         .WillByDefault([this](const std::string&, auto callback) {
           std::move(callback).Run(b_);
         });
 
-    ON_CALL(*mock_ledger_impl_.mock_client(), SetDoubleState(_, _, _))
+    ON_CALL(mock_ledger().mock_client(), SetDoubleState(_, _, _))
         .WillByDefault(
             [this](const std::string& key, double value, auto callback) {
               if (key == state::kScoreA) {
@@ -68,15 +68,13 @@ class PublisherTest : public testing::Test {
               }
             });
 
-    ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+    ON_CALL(mock_ledger().mock_client(), RunDBTransaction(_, _))
         .WillByDefault([](mojom::DBTransactionPtr, auto callback) {
           std::move(callback).Run(db_error_response->Clone());
         });
   }
 
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  Publisher publisher_{mock_ledger_impl_};
+  Publisher publisher_;
 
   double a_ = 0;
   double b_ = 0;
@@ -192,5 +190,4 @@ TEST_F(PublisherTest, GetShareURL) {
             "&url=https://twitter.com/brave/status/794221010484502528");
 }
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher

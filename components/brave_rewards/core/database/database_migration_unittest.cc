@@ -28,11 +28,10 @@ using database::DatabaseMigration;
 
 class LedgerDatabaseMigrationTest : public BATLedgerTest {
  public:
-  LedgerDatabaseMigrationTest() { is_testing = true; }
+  LedgerDatabaseMigrationTest() = default;
 
   ~LedgerDatabaseMigrationTest() override {
     DatabaseMigration::SetTargetVersionForTesting(0);
-    is_testing = false;
   }
 
  protected:

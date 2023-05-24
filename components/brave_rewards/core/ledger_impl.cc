@@ -56,8 +56,8 @@ void LedgerImpl::SetRetryInterval(int32_t interval) {
   retry_interval_ = interval;
 }
 
-void LedgerImpl::SetTesting() {
-  is_testing_ = true;
+void LedgerImpl::SetTesting(bool is_testing) {
+  is_testing_ = is_testing;
 }
 
 void LedgerImpl::SetStateMigrationTargetVersionForTesting(int32_t version) {

@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
@@ -25,13 +26,14 @@
 
 using ::testing::_;
 using ::testing::Combine;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
 namespace brave_rewards::internal::uphold {
 
 class UpholdUtilTest
-    : public TestWithParam<
+    : public MockLedgerTest,
+      public WithParamInterface<
           std::tuple<mojom::Environment, mojom::WalletStatus>> {};
 
 TEST_F(UpholdUtilTest, GetClientId) {
@@ -82,20 +84,15 @@ TEST_F(UpholdUtilTest, GetServerUrl) {
 }
 
 TEST_F(UpholdUtilTest, GetWallet) {
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-
   // no wallet
-  ON_CALL(*mock_ledger_impl_.mock_client(),
-          GetStringState(state::kWalletUphold, _))
+  ON_CALL(mock_ledger().mock_client(), GetStringState(state::kWalletUphold, _))
       .WillByDefault([](const std::string&, auto callback) {
         std::move(callback).Run("");
       });
-  auto result = mock_ledger_impl_.uphold()->GetWallet();
+  auto result = ledger().uphold()->GetWallet();
   EXPECT_FALSE(result);
 
-  ON_CALL(*mock_ledger_impl_.mock_client(),
-          GetStringState(state::kWalletUphold, _))
+  ON_CALL(mock_ledger().mock_client(), GetStringState(state::kWalletUphold, _))
       .WillByDefault([](const std::string&, auto callback) {
         std::string wallet = FakeEncryption::Base64EncryptString(R"({
           "account_url":"https://wallet-sandbox.uphold.com/dashboard",
@@ -111,7 +108,7 @@ TEST_F(UpholdUtilTest, GetWallet) {
       });
 
   // uphold wallet
-  result = mock_ledger_impl_.uphold()->GetWallet();
+  result = ledger().uphold()->GetWallet();
   EXPECT_TRUE(result);
   EXPECT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   EXPECT_EQ(result->user_name, "test");
@@ -122,13 +119,13 @@ TEST_F(UpholdUtilTest, GetWallet) {
 }
 
 TEST_F(UpholdUtilTest, GenerateRandomHexString) {
-  is_testing = true;
+  ledger().SetTesting(false);
   auto result = util::GenerateRandomHexString();
-  EXPECT_EQ(result, "123456789");
-
-  is_testing = false;
-  result = util::GenerateRandomHexString();
   EXPECT_EQ(result.length(), 64u);
+
+  ledger().SetTesting(true);
+  result = util::GenerateRandomHexString();
+  EXPECT_EQ(result, "123456789");
 }
 
 INSTANTIATE_TEST_SUITE_P(GenerateLinks,
@@ -149,7 +146,7 @@ INSTANTIATE_TEST_SUITE_P(GenerateLinks,
 TEST_P(UpholdUtilTest, Paths) {
   const auto [environment, wallet_status] = GetParam();
 
-  _environment = environment;
+  ledger().SetEnvironment(environment);
   auto wallet = mojom::ExternalWallet::New();
   wallet->status = wallet_status;
   wallet->address = "address";

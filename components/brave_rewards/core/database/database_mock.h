@@ -17,6 +17,10 @@ namespace brave_rewards::internal::database {
 
 class MockDatabase : public Database {
  public:
+  MockDatabase();
+
+  ~MockDatabase() override;
+
   MOCK_METHOD2(GetContributionInfo,
                void(const std::string& contribution_id,
                     GetContributionInfoCallback callback));
@@ -30,6 +34,10 @@ class MockDatabase : public Database {
 
   MOCK_METHOD1(GetAllPromotions, void(GetAllPromotionsCallback callback));
 };
+
+inline MockDatabase::MockDatabase() = default;
+
+inline MockDatabase::~MockDatabase() = default;
 
 }  // namespace brave_rewards::internal::database
 

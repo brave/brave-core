@@ -18,6 +18,7 @@
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -25,13 +26,14 @@
 
 using ::testing::_;
 using ::testing::Combine;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
 namespace brave_rewards::internal::bitflyer {
 
 class BitflyerUtilTest
-    : public TestWithParam<
+    : public MockLedgerTest,
+      public WithParamInterface<
           std::tuple<mojom::Environment, mojom::WalletStatus>> {};
 
 TEST_F(BitflyerUtilTest, GetClientId) {
@@ -82,20 +84,17 @@ TEST_F(BitflyerUtilTest, GetServerUrl) {
 }
 
 TEST_F(BitflyerUtilTest, GetWallet) {
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-
   // no wallet
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+  EXPECT_CALL(mock_ledger().mock_client(),
               GetStringState(state::kWalletBitflyer, _))
       .Times(1)
       .WillOnce([](const std::string&, auto callback) {
         std::move(callback).Run("");
       });
-  auto result = mock_ledger_impl_.bitflyer()->GetWallet();
+  auto result = ledger().bitflyer()->GetWallet();
   EXPECT_FALSE(result);
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+  EXPECT_CALL(mock_ledger().mock_client(),
               GetStringState(state::kWalletBitflyer, _))
       .Times(1)
       .WillOnce([](const std::string&, auto callback) {
@@ -114,7 +113,7 @@ TEST_F(BitflyerUtilTest, GetWallet) {
       });
 
   // Bitflyer wallet
-  result = mock_ledger_impl_.bitflyer()->GetWallet();
+  result = ledger().bitflyer()->GetWallet();
   EXPECT_TRUE(result);
   EXPECT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   EXPECT_EQ(result->user_name, "test");
@@ -125,13 +124,13 @@ TEST_F(BitflyerUtilTest, GetWallet) {
 }
 
 TEST_F(BitflyerUtilTest, GenerateRandomHexString) {
-  is_testing = true;
+  ledger().SetTesting(false);
   auto result = util::GenerateRandomHexString();
-  EXPECT_EQ(result, "123456789");
-
-  is_testing = false;
-  result = util::GenerateRandomHexString();
   EXPECT_EQ(result.length(), 64u);
+
+  ledger().SetTesting(true);
+  result = util::GenerateRandomHexString();
+  EXPECT_EQ(result, "123456789");
 }
 
 INSTANTIATE_TEST_SUITE_P(GenerateLinks,

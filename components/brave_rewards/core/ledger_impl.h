@@ -7,11 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_H_
 
 #include <map>
+#include <memory>
 #include <queue>
 #include <string>
 #include <utility>
 
 #include "base/containers/flat_map.h"
+#include "base/functional/overloaded.h"
 #include "base/types/always_false.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/core/api/api.h"
@@ -30,6 +32,8 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 
 namespace brave_rewards::internal {
 
@@ -43,7 +47,9 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
 
 class LedgerImpl;
 LedgerImpl& ledger(
-    absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>> remote);
+    absl::optional<
+        absl::variant<mojo::PendingAssociatedRemote<mojom::LedgerClient>,
+                      std::unique_ptr<LedgerImpl>>> param = absl::nullopt);
 
 class LedgerImpl : public mojom::Ledger {
  public:
@@ -64,7 +70,7 @@ class LedgerImpl : public mojom::Ledger {
 
   void SetRetryInterval(int32_t interval) override;
 
-  void SetTesting() override;
+  void SetTesting(bool is_testing) override;
 
   void SetStateMigrationTargetVersionForTesting(int32_t version) override;
 
@@ -480,21 +486,37 @@ class LedgerImpl : public mojom::Ledger {
   ReadyState ready_state_ = ReadyState::kUninitialized;
 
   friend LedgerImpl& ledger(
-      absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>>
-          remote);
+      absl::optional<
+          absl::variant<mojo::PendingAssociatedRemote<mojom::LedgerClient>,
+                        std::unique_ptr<LedgerImpl>>> param);
+  friend class MockLedgerImpl;
 };
 
 inline LedgerImpl& ledger(
-    absl::optional<mojo::PendingAssociatedRemote<mojom::LedgerClient>> remote =
-        absl::nullopt) {
-  thread_local LedgerImpl ledger([&] {
-    CHECK(remote);
-    return *std::exchange(remote, absl::nullopt);
+    absl::optional<
+        absl::variant<mojo::PendingAssociatedRemote<mojom::LedgerClient>,
+                      std::unique_ptr<LedgerImpl>>> param) {
+  static const auto visitor = base::Overloaded(
+      [](mojo::PendingAssociatedRemote<mojom::LedgerClient> remote) {
+        return std::unique_ptr<LedgerImpl>(new LedgerImpl(std::move(remote)));
+      },
+      [](std::unique_ptr<LedgerImpl> ledger) {
+        CHECK(ledger);
+        return ledger;
+      });
+
+  thread_local std::unique_ptr<LedgerImpl> ledger([&] {
+    CHECK(param);
+    return absl::visit(visitor, *std::exchange(param, absl::nullopt));
   }());
 
-  CHECK(!remote);
+  if (ledger->is_testing_ && param) {
+    ledger = absl::visit(visitor, std::move(*param));
+  } else {
+    CHECK(!param);
+  }
 
-  return ledger;
+  return *ledger;
 }
 
 }  // namespace brave_rewards::internal

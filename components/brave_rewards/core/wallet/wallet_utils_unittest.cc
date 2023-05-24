@@ -10,6 +10,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -66,17 +67,13 @@ using TransitionWalletCreateParamType =
                >;
 
 class TransitionWalletCreate
-    : public Test,
-      public WithParamInterface<TransitionWalletCreateParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+    : public MockLedgerTest,
+      public WithParamInterface<TransitionWalletCreateParamType> {};
 
 TEST_P(TransitionWalletCreate, Paths) {
   const auto& [ignore, to, wallet_already_exists, expected] = GetParam();
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+  EXPECT_CALL(mock_ledger().mock_client(),
               GetStringState(state::kWalletUphold, _))
       .Times(1)
       .WillOnce([&](const std::string&, auto callback) {
@@ -85,13 +82,12 @@ TEST_P(TransitionWalletCreate, Paths) {
                                     : "");
       });
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  ON_CALL(mock_ledger().mock_client(), RunDBTransaction(_, _))
       .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  const auto wallet =
-      TransitionWallet(mock_ledger_impl_, constant::kWalletUphold, to);
+  const auto wallet = TransitionWallet(constant::kWalletUphold, to);
   EXPECT_EQ(static_cast<bool>(wallet), expected);
 
   if (wallet) {
@@ -154,23 +150,18 @@ using TransitionWalletTransitionParamType =
                >;
 
 class TransitionWalletTransition
-    : public Test,
-      public WithParamInterface<TransitionWalletTransitionParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+    : public MockLedgerTest,
+      public WithParamInterface<TransitionWalletTransitionParamType> {};
 
 TEST_P(TransitionWalletTransition, Paths) {
   const auto& [ignore, from_wallet, to, expected] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  ON_CALL(mock_ledger().mock_client(), RunDBTransaction(_, _))
       .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  const auto to_wallet =
-      TransitionWallet(mock_ledger_impl_, std::move(*from_wallet), to);
+  const auto to_wallet = TransitionWallet(std::move(*from_wallet), to);
   EXPECT_EQ(static_cast<bool>(to_wallet), expected);
 
   if (to_wallet) {

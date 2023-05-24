@@ -31,16 +31,16 @@ class MockLedgerImpl : private AddMockLedgerClient, public LedgerImpl {
 
   ~MockLedgerImpl() override;
 
-  MockLedgerClient* mock_client();
+  MockLedgerClient& mock_client();
 
-  database::MockDatabase* mock_database();
+  database::MockDatabase& mock_database();
 
   MOCK_METHOD1(InitializeDatabase, void(LegacyResultCallback));
 
   MOCK_METHOD0(database, database::Database*());
 
  private:
-  database::MockDatabase mock_database_{*this};
+  database::MockDatabase mock_database_;
 };
 
 }  // namespace brave_rewards::internal

@@ -34,7 +34,7 @@ class BATLedgerTest : public testing::Test {
   TestLedgerClient* GetTestLedgerClient() { return &client_; }
 
   // Returns the |LedgerImpl| instance for this test.
-  LedgerImpl* GetLedgerImpl() { return &ledger_; }
+  LedgerImpl* GetLedgerImpl() { return &ledger(); }
 
   // Adds a mock network response for the specified URL and HTTP method.
   void AddNetworkResultForTesting(const std::string& url,
@@ -48,7 +48,6 @@ class BATLedgerTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   TestLedgerClient client_;
   mojo::AssociatedReceiver<mojom::LedgerClient> client_receiver_{&client_};
-  LedgerImpl ledger_;
 };
 
 }  // namespace brave_rewards::internal

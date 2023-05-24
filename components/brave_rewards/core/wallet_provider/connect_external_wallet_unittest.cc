@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -21,8 +22,8 @@
 
 using ::testing::_;
 using ::testing::TestParamInfo;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
 namespace brave_rewards::internal::flows::test {
 using Result = endpoints::PostConnect::Result;
@@ -55,11 +56,8 @@ using ConnectExternalWalletTestParamType = std::tuple<
 // clang-format on
 
 class ConnectExternalWalletTest
-    : public TestWithParam<ConnectExternalWalletTestParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+    : public MockLedgerTest,
+      public WithParamInterface<ConnectExternalWalletTestParamType> {};
 
 TEST_P(ConnectExternalWalletTest, Paths) {
   const auto& [ignore, wallet_status, one_time_string, query_parameters,
@@ -70,12 +68,12 @@ TEST_P(ConnectExternalWalletTest, Paths) {
           "status": )" +
       std::to_string(static_cast<int>(wallet_status)) + "}");
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), GetStringState("wallets.test", _))
+  ON_CALL(mock_ledger().mock_client(), GetStringState("wallets.test", _))
       .WillByDefault([&](const std::string&, auto callback) {
         std::move(callback).Run(test_wallet);
       });
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  ON_CALL(mock_ledger().mock_client(), RunDBTransaction(_, _))
       .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
         std::move(callback).Run(db_error_response->Clone());
       });
