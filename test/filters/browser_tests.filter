@@ -693,6 +693,10 @@
 -CommerceHintFeatureDefaultWithGeoTest.EnableWithGeo
 -NewTabPageUtilBrowserTest.EnableCartByToT
 
+# These tests fail because we disable page_info::kPageInfoCookiesSubpage
+-PageInfoBubbleViewBrowserTestCookiesSubpage.ClickingFpsButton
+-PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookies
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
