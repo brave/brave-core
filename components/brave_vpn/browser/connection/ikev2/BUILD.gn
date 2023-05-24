@@ -21,8 +21,9 @@ source_set("ikev2") {
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
     "//components/prefs",
-    "//services/network/public/cpp",
   ]
+
+  public_deps = [ "//services/network/public/cpp" ]
 }
 
 source_set("sim") {
