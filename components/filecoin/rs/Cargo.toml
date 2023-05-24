@@ -9,15 +9,16 @@ publish = false
 base64 = "0.13.0"
 bls-signatures = { version = "0.12", default-features = false, features = ["pairing"] }
 cxx = "1.0"
-fvm_shared = { version = "3.3.0 " }
+#fvm_shared = { version = "3.3.0 " }
+fvm_shared = { git = "https://github.com/cypt4/ref-fvm", branch = "3.2.0_multihash_downgrade_0.16.2" }
 libsecp256k1 = "0.7"
 num_bigint_chainsafe = { package = "forest_bigint", version = "0.1.2"}
 serde = { version = "^1.0.117", features = ["derive"] }
 serde_json = "^1.0.59"
 thiserror = "^1.0.30"
-blake2b_simd = "^1.0.0"
+blake2b_simd = "1.0"
 cid = "^0.8.5"
-fvm_ipld_encoding = "^0.3"
+fvm_ipld_encoding = { git = "https://github.com/cypt4/ref-fvm", branch = "3.2.0_multihash_downgrade_0.16.2" }
 
 [lib]
 name = "filecoin_cxx"

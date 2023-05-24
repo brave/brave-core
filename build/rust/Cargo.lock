@@ -704,9 +704,9 @@ dependencies = [
 
 [[package]]
 name = "digest"
-version = "0.10.6"
+version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8168378f4e5023e7218c89c891c0fd8ecdb5e5e4f18cb78f38cf245dd021e76f"
+checksum = "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292"
 dependencies = [
  "block-buffer 0.10.2",
  "crypto-common",
@@ -1017,19 +1017,18 @@ dependencies = [
 
 [[package]]
 name = "fvm_ipld_blockstore"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1985eae58ec2fbf54535ce115c72a2141459fb7fb4ff7379e17bffae0e302578"
+version = "0.1.1"
+source = "git+https://github.com/cypt4/ref-fvm?branch=3.2.0_multihash_downgrade_0.16.2#14898ecb162af6a4f217028f859c0a665f84ed28"
 dependencies = [
  "anyhow",
  "cid",
+ "multihash",
 ]
 
 [[package]]
 name = "fvm_ipld_encoding"
 version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0816a2a6df4853de08a723d261110d56a121aa313bc570fe9d248f0a4bc5288"
+source = "git+https://github.com/cypt4/ref-fvm?branch=3.2.0_multihash_downgrade_0.16.2#14898ecb162af6a4f217028f859c0a665f84ed28"
 dependencies = [
  "anyhow",
  "cid",
@@ -1044,9 +1043,8 @@ dependencies = [
 
 [[package]]
 name = "fvm_shared"
-version = "3.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ad76f06f7d59215844900d018ffc5c863a370afab9c329bae290305722f8d60"
+version = "3.2.0"
+source = "git+https://github.com/cypt4/ref-fvm?branch=3.2.0_multihash_downgrade_0.16.2#14898ecb162af6a4f217028f859c0a665f84ed28"
 dependencies = [
  "anyhow",
  "bitflags",
@@ -1189,7 +1187,7 @@ version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ddca131f3e7f2ce2df364b57949a9d47915cfbd35e46cfee355ccebbf794d6a2"
 dependencies = [
- "digest 0.10.6",
+ "digest 0.10.7",
 ]
 
 [[package]]
@@ -1523,17 +1521,16 @@ dependencies = [
 
 [[package]]
 name = "multihash"
-version = "0.16.3"
+version = "0.16.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c346cf9999c631f002d8f977c4eaeaa0e6386f16007202308d0b3757522c2cc"
+checksum = "e3db354f401db558759dfc1e568d010a5d4146f4d3f637be1275ec4a3cf09689"
 dependencies = [
  "blake2b_simd",
  "blake2s_simd",
  "blake3",
  "core2",
- "digest 0.10.6",
+ "digest 0.10.7",
  "multihash-derive",
- "ripemd",
  "serde",
  "serde-big-array",
  "sha2 0.10.1",
@@ -2180,15 +2177,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "456c603be3e8d448b072f410900c09faf164fbce2d480456f50eea6e25f9c848"
 
 [[package]]
-name = "ripemd"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd124222d17ad93a644ed9d011a40f4fb64aa54275c08cc216524a9ea82fb09f"
-dependencies = [
- "digest 0.10.6",
-]
-
-[[package]]
 name = "rmp"
 version = "0.8.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2434,7 +2422,7 @@ checksum = "99c3bd8169c58782adad9290a9af5939994036b76187f7b4f0e6de91dbbfc0ec"
 dependencies = [
  "cfg-if 1.0.0",
  "cpufeatures",
- "digest 0.10.6",
+ "digest 0.10.7",
 ]
 
 [[package]]
@@ -2443,7 +2431,7 @@ version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "54c2bb1a323307527314a36bfb73f24febb08ce2b8a554bf4ffd6f51ad15198c"
 dependencies = [
- "digest 0.10.6",
+ "digest 0.10.7",
  "keccak",
 ]
 
