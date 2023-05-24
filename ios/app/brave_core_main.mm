@@ -8,11 +8,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#include "base/apple/bundle_locations.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/i18n/icu_util.h"
 #include "base/logging.h"
-#include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
@@ -151,7 +151,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
           ios::DIR_USER_DATA, ios::DIR_USER_DATA, ios::DIR_USER_DATA);
     }
 
-    NSBundle* baseBundle = base::mac::OuterBundle();
+    NSBundle* baseBundle = base::apple::OuterBundle();
     base::mac::SetBaseBundleID(
         base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
 
@@ -492,8 +492,8 @@ static bool CustomLogHandler(int severity,
 + (bool)initializeICUForTesting {
   base::FilePath path;
   base::PathService::Get(base::DIR_MODULE, &path);
-  base::mac::SetOverrideFrameworkBundlePath(path);
-  base::mac::SetOverrideOuterBundlePath(path);
+  base::apple::SetOverrideFrameworkBundlePath(path);
+  base::apple::SetOverrideOuterBundlePath(path);
   return base::i18n::InitializeICU();
 }
 
