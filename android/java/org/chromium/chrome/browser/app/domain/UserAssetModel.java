@@ -83,15 +83,6 @@ public class UserAssetModel {
                                         _mAssetsResult.postValue(new AssetsResult(
                                                 Arrays.asList(tokens), Collections.emptyList()));
                                     });
-                        } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST
-                                || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
-                            assert mSelectedNetwork != null;
-                            TokenUtils.getAllTokensFiltered(mBraveWalletService,
-                                    mBlockchainRegistry, mSelectedNetwork, mSelectedNetwork.coin,
-                                    TokenUtils.TokenType.ERC20, tokens -> {
-                                        _mAssetsResult.postValue(new AssetsResult(
-                                                Arrays.asList(tokens), Collections.emptyList()));
-                                    });
                         } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
                             TokenUtils.getBuyTokensFiltered(mBlockchainRegistry, mSelectedNetwork,
                                     TokenUtils.TokenType.ALL, BuyModel.SUPPORTED_RAMP_PROVIDERS,

@@ -252,14 +252,13 @@ public class Utils {
 
     public static void openBuySendSwapActivity(
             Activity activity, BuySendSwapActivity.ActivityType activityType) {
-        openBuySendSwapActivity(activity, activityType, null, null);
+        openBuySendSwapActivity(activity, activityType, null);
     }
 
-    public static void openBuySendSwapActivity(Activity activity,
-            BuySendSwapActivity.ActivityType activityType, String swapFromAssetSymbol,
-            String chainId) {
+    public static void openBuySendSwapActivity(
+            Activity activity, BuySendSwapActivity.ActivityType activityType, String chainId) {
         assert activity != null;
-        if (activityType == BuySendSwapActivity.ActivityType.SWAP) {
+        if (activityType == BuySendSwapActivity.ActivityType.SWAP_V2) {
             try {
                 BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
                         BraveActivity.BRAVE_SWAP_URL);
@@ -271,8 +270,6 @@ public class Utils {
             Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
             buySendSwapActivityIntent.putExtra(
                     BuySendSwapActivity.ACTIVITY_TYPE, activityType.getValue());
-            buySendSwapActivityIntent.putExtra(
-                    BuySendSwapActivity.ASSET_SYMBOL, swapFromAssetSymbol);
             buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_CHAIN_ID, chainId);
             activity.startActivity(buySendSwapActivityIntent);
         }
@@ -447,18 +444,6 @@ public class Utils {
         return parsed.multiply(multiplier).toBigInteger();
     }
 
-    public static String toWei(String number, int decimals, boolean calculateOtherAsset) {
-        if (number.isEmpty() || calculateOtherAsset) {
-            return "";
-        }
-
-        try {
-            return toWeiInternal(number, decimals).toString();
-        } catch (ParseException ex) {
-            return "";
-        }
-    }
-
     public static double fromWei(String number, int decimals) {
         if (number == null || number.isEmpty()) {
             return 0;
@@ -555,21 +540,6 @@ public class Utils {
         BigInteger bigNumber2 = new BigInteger(number2, 16);
 
         BigInteger res = bigNumber1.multiply(bigNumber2);
-
-        return "0x" + res.toString(16);
-    }
-
-    public static String concatHexBN(String number1, String number2) {
-        if (number1.startsWith("0x")) {
-            number1 = number1.substring(2);
-        }
-        if (number2.startsWith("0x")) {
-            number2 = number2.substring(2);
-        }
-        BigInteger bigNumber1 = new BigInteger(number1, 16);
-        BigInteger bigNumber2 = new BigInteger(number2, 16);
-
-        BigInteger res = bigNumber1.add(bigNumber2);
 
         return "0x" + res.toString(16);
     }
@@ -1347,18 +1317,6 @@ public class Utils {
         if (error != ProviderError.SUCCESS) {
             Log.d(tag, apiName + ": " + error + " - " + errorMessage);
         }
-    }
-
-    public static Pair<Integer, String> getBuySendSwapContractAddress(BlockchainToken token) {
-        int decimals = ETH_DEFAULT_DECIMALS;
-        String address = ETHEREUM_CONTRACT_FOR_SWAP;
-        if (token != null) {
-            decimals = token.decimals;
-            address = token.contractAddress;
-            if (address.isEmpty()) address = ETHEREUM_CONTRACT_FOR_SWAP;
-        }
-
-        return new Pair<Integer, String>(decimals, address);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)

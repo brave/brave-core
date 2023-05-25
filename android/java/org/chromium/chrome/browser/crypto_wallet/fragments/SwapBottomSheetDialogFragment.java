@@ -101,7 +101,7 @@ public class SwapBottomSheetDialogFragment
         if (view == mSendLayout) {
             activityType = BuySendSwapActivity.ActivityType.SEND;
         } else if (view == mSwapLayout) {
-            activityType = BuySendSwapActivity.ActivityType.SWAP;
+            activityType = BuySendSwapActivity.ActivityType.SWAP_V2;
         }
 
         if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {

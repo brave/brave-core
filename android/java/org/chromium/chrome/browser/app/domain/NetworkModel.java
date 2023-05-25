@@ -329,13 +329,12 @@ public class NetworkModel implements JsonRpcServiceObserver {
         _mNeedToCreateAccountForNetwork.postValue(null);
     }
 
-    public List<NetworkInfo> stripNoBuySwapNetworks(
+    public List<NetworkInfo> stripNoBuyNetworks(
             List<NetworkInfo> networkInfos, BuySendSwapActivity.ActivityType type) {
         List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
         for (NetworkInfo networkInfo : networkInfos) {
-            if (type == BuySendSwapActivity.ActivityType.BUY && Utils.allowBuy(networkInfo.chainId)
-                    || (type == BuySendSwapActivity.ActivityType.SWAP
-                            && Utils.allowSwap(networkInfo.chainId))) {
+            if (type == BuySendSwapActivity.ActivityType.BUY
+                    && Utils.allowBuy(networkInfo.chainId)) {
                 networkInfosFiltered.add(networkInfo);
             }
         }

@@ -77,12 +77,6 @@ public class BraveWalletUtilsTest {
 
     @Test
     @SmallTest
-    public void concatHexBNTest() {
-        assertEquals(Utils.concatHexBN("0x123afff", "0xabcdf"), "0x12e6cde");
-    }
-
-    @Test
-    @SmallTest
     public void fromWeiTest() {
         assertEquals(Utils.fromWei("50000000000000000000", 18), 50, 0.001);
         assertEquals(Utils.fromWei("5000000000000000000", 18), 5, 0.001);
@@ -117,36 +111,6 @@ public class BraveWalletUtilsTest {
         assertEquals(Utils.toHexWei("0,05", 18), "0xb1a2bc2ec50000");
         assertEquals(Utils.toHexWei("0,01234567890123456789012", 18), "0x2bdc545d6b4b87");
         assertEquals(Utils.toHexWei("", 18), "0x0");
-        Locale.setDefault(defaultLocal);
-    }
-
-    @Test
-    @SmallTest
-    public void toWeiEnTest() {
-        Locale defaultLocal = Locale.getDefault();
-        Locale.setDefault(Locale.US);
-        assertEquals(Utils.toWei("50", 18, false), "50000000000000000000");
-        assertEquals(Utils.toWei("5", 18, false), "5000000000000000000");
-        assertEquals(Utils.toWei("0.5", 18, false), "500000000000000000");
-        assertEquals(Utils.toWei("0.05", 18, false), "50000000000000000");
-        assertEquals(Utils.toWei("0.123456789012345678901", 18, false), "123456789012345678");
-        assertEquals(Utils.toWei("", 18, false), "");
-        assertEquals(Utils.toWei("5", 18, true), "");
-        Locale.setDefault(defaultLocal);
-    }
-
-    @Test
-    @SmallTest
-    public void toWeiFrTest() {
-        Locale defaultLocal = Locale.getDefault();
-        Locale.setDefault(Locale.FRANCE);
-        assertEquals(Utils.toWei("50", 18, false), "50000000000000000000");
-        assertEquals(Utils.toWei("5", 18, false), "5000000000000000000");
-        assertEquals(Utils.toWei("0,5", 18, false), "500000000000000000");
-        assertEquals(Utils.toWei("0,05", 18, false), "50000000000000000");
-        assertEquals(Utils.toWei("0,123456789012345678901", 18, false), "123456789012345678");
-        assertEquals(Utils.toWei("", 18, false), "");
-        assertEquals(Utils.toWei("5", 18, true), "");
         Locale.setDefault(defaultLocal);
     }
 

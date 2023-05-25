@@ -154,14 +154,14 @@ public class AssetDetailActivity
         mBtnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openBuySendSwapActivity(AssetDetailActivity.this,
-                        BuySendSwapActivity.ActivityType.BUY, mAssetSymbol, mChainId);
+                Utils.openBuySendSwapActivity(
+                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.BUY, mChainId);
             }
         });
         Button btnSend = findViewById(R.id.btn_send);
         btnSend.setOnClickListener(v
-                -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
-                        BuySendSwapActivity.ActivityType.SEND, mAssetSymbol, mChainId));
+                -> Utils.openBuySendSwapActivity(
+                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.SEND, mChainId));
 
         mBtnSwap = findViewById(R.id.btn_swap);
 
@@ -238,8 +238,7 @@ public class AssetDetailActivity
         }
         mBtnSwap.setOnClickListener(v
                 -> Utils.openBuySendSwapActivity(
-                        this, BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol, mChainId));
-
+                        this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
         adjustButtonsVisibilities();
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
