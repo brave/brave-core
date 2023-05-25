@@ -997,6 +997,10 @@ String PageGraph::ToGraphML() const {
                   BAD_CAST(IsRootFrame() ? "true" : "false"));
   xmlNewTextChild(desc_container_node, nullptr, BAD_CAST "frame_id",
                   XmlUtf8String(frame_id_).get());
+  if (IsRootFrame()) {
+    xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
+                    BAD_CAST XmlUtf8String(source_url_).get());
+  }
 
   xmlNodePtr time_container_node =
       xmlNewChild(desc_container_node, nullptr, BAD_CAST "time", nullptr);
@@ -1104,7 +1108,11 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
 
   const String local_tag_name(static_cast<blink::Node*>(document)->nodeName());
   auto* dom_root = AddNode<NodeDOMRoot>(node_id, local_tag_name);
-  dom_root->SetURL(NormalizeUrl(document->Url()).GetString());
+  auto url = NormalizeUrl(document->Url());
+  dom_root->SetURL(url.GetString());
+  if (!source_url_ && url.IsValid() && url.ProtocolIsInHTTPFamily()) {
+    source_url_ = url.GetString();
+  }
 
   auto execution_context_nodes_it =
       execution_context_nodes_.find(execution_context);
