@@ -97,6 +97,7 @@ impl NativeClient {
             client: self.clone(),
         });
 
+        #[allow(warnings)]
         let fetcher = ffi::shim_executeRequest(
             &self
                 .ctx
