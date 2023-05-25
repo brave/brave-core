@@ -49,6 +49,11 @@ lazy_static! {
     static ref JSONLD_SCHEMA: Regex = Regex::new(r#"^https?://schema\.org[/?\w/?]*$"#).unwrap();
 }
 
+static SHOW_ORIGINAL_DIV_ID: &str = "c93e2206-2f31-4ddc-9828-2bb8e8ed940e";
+static READ_TIME_DIV_ID: &str = "da24e4ef-db57-4b9f-9fa5-548924fc9c32";
+static META_DATA_AREA_DIV_ID: &str = "3bafd2b4-a87d-4471-8134-7a9cca092000";
+static MAIN_CONTENT_DIV_ID: &str = "7c08a417-bf02-4241-a55e-ad5b8dc88f69";
+
 #[derive(Debug)]
 pub struct Product {
     pub meta: Meta,
@@ -319,7 +324,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
     if let Some(first_child) = root.first_child() {
         let meta_area = dom::create_element_simple(dom, "div", "", None);
-        dom::set_attr("id", "3bafd2b4-a87d-4471-8134-7a9cca092000", meta_area.clone(), true);
+        dom::set_attr("id", META_DATA_AREA_DIV_ID, meta_area.clone(), true);
 
         // Add in the title
         if !meta.title.is_empty() {
@@ -373,19 +378,14 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         // Add 'read time'
         {
             let read_time = dom::create_element_simple(dom, "div", "readtime", None);
-            dom::set_attr("id", "da24e4ef-db57-4b9f-9fa5-548924fc9c32", read_time.clone(), true);
+            dom::set_attr("id", READ_TIME_DIV_ID, read_time.clone(), true);
             dom.append(&metadata_parent, NodeOrText::AppendNode(read_time));
         }
 
         // Add 'show original'
         {
             let show_original_link = dom::create_element_simple(dom, "div", "show_original", None);
-            dom::set_attr(
-                "id",
-                "c93e2206-2f31-4ddc-9828-2bb8e8ed940e",
-                show_original_link.clone(),
-                true,
-            );
+            dom::set_attr("id", SHOW_ORIGINAL_DIV_ID, show_original_link.clone(), true);
             dom.append(&metadata_parent, NodeOrText::AppendNode(show_original_link));
         }
 
@@ -400,7 +400,7 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         }
 
         let content = dom::create_element_simple(dom, "div", "", None);
-        dom::set_attr("id", "7c08a417-bf02-4241-a55e-ad5b8dc88f69", content.clone(), true);
+        dom::set_attr("id", MAIN_CONTENT_DIV_ID, content.clone(), true);
         dom.reparent_children(&root, &content);
 
         dom.append(&root, NodeOrText::AppendNode(meta_area));
@@ -1061,7 +1061,7 @@ mod tests {
         // A follow up to the last test with common unicode dashes. For example &#8211;
         // converts to an en dash.
         let dashes = [
-            "-", // hyphen
+            "-",   // hyphen
             "–", // en dash
             "—", // em dash
         ];
