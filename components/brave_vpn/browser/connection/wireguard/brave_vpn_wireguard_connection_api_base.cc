@@ -17,10 +17,13 @@ using ConnectionState = mojom::ConnectionState;
 BraveVPNWireguardConnectionAPIBase::BraveVPNWireguardConnectionAPIBase(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs)
-    : BraveVPNOSConnectionAPI(url_loader_factory, local_prefs) {}
+    : BraveVPNOSConnectionAPI(url_loader_factory, local_prefs) {
+  AddObserver(this);
+}
 
-BraveVPNWireguardConnectionAPIBase::~BraveVPNWireguardConnectionAPIBase() =
-    default;
+BraveVPNWireguardConnectionAPIBase::~BraveVPNWireguardConnectionAPIBase() {
+  RemoveObserver(this);
+}
 
 void BraveVPNWireguardConnectionAPIBase::SetSelectedRegion(
     const std::string& name) {
@@ -119,6 +122,13 @@ void BraveVPNWireguardConnectionAPIBase::FetchProfileCredentials() {
       existing_credentials->api_auth_token);
 }
 
+void BraveVPNWireguardConnectionAPIBase::ResetConnectionInfo() {
+  VLOG(2) << __func__;
+  ResetHostname();
+  local_prefs()->SetString(prefs::kBraveVPNWireguardProfileCredentials,
+                           std::string());
+}
+
 void BraveVPNWireguardConnectionAPIBase::OnVerifyCredentials(
     const std::string& result,
     bool success) {
@@ -133,6 +143,13 @@ void BraveVPNWireguardConnectionAPIBase::OnVerifyCredentials(
     return;
   }
   PlatformConnectImpl(existing_credentials.value());
+}
+
+void BraveVPNWireguardConnectionAPIBase::OnConnectionStateChanged(
+    mojom::ConnectionState state) {
+  if (state == ConnectionState::CONNECT_FAILED) {
+    ResetConnectionInfo();
+  }
 }
 
 void BraveVPNWireguardConnectionAPIBase::OnDisconnected(bool success) {

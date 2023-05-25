@@ -1,3 +1,4 @@
+
 /* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -16,7 +17,9 @@ class PrefService;
 
 namespace brave_vpn {
 
-class BraveVPNWireguardConnectionAPIBase : public BraveVPNOSConnectionAPI {
+class BraveVPNWireguardConnectionAPIBase
+    : public BraveVPNOSConnectionAPI,
+      public BraveVPNOSConnectionAPI::Observer {
  public:
   BraveVPNWireguardConnectionAPIBase(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -40,6 +43,9 @@ class BraveVPNWireguardConnectionAPIBase : public BraveVPNOSConnectionAPI {
 
   void OnWireguardServiceLaunched(bool success);
 
+  // BraveVPNOSConnectionAPI::Observer
+  void OnConnectionStateChanged(mojom::ConnectionState state) override;
+
  protected:
   void OnDisconnected(bool success);
   void OnWireguardKeypairGenerated(
@@ -50,6 +56,8 @@ class BraveVPNWireguardConnectionAPIBase : public BraveVPNOSConnectionAPI {
   void OnVerifyCredentials(const std::string& result, bool success);
 
  private:
+  void ResetConnectionInfo();
+
   base::WeakPtrFactory<BraveVPNWireguardConnectionAPIBase> weak_factory_{this};
 };
 

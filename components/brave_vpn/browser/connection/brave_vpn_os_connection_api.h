@@ -42,8 +42,8 @@ class BraveVPNOSConnectionAPI
    public:
     virtual void OnConnectionStateChanged(mojom::ConnectionState state) = 0;
     // false when fetching region data is failed.
-    virtual void OnRegionDataReady(bool success) = 0;
-    virtual void OnSelectedRegionChanged(const std::string& region_name) = 0;
+    virtual void OnRegionDataReady(bool success) {}
+    virtual void OnSelectedRegionChanged(const std::string& region_name) {}
 
    protected:
     ~Observer() override = default;
@@ -54,6 +54,7 @@ class BraveVPNOSConnectionAPI
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
   BraveVPNRegionDataManager& GetRegionDataManager();
+  void ResetHostname();
   std::string GetHostname() const;
   void ResetConnectionState();
   // Returns user friendly error string if existed.
