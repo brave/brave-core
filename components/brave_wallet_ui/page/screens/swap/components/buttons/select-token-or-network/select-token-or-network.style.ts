@@ -5,7 +5,6 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import { SelectTokenButtonStyleProps } from './select-token-or-network'
 import { StyledButton, Icon, Row, Text } from '../../shared-swap.styles'
 
 export const Button = styled(StyledButton) <SelectTokenButtonStyleProps>`
@@ -83,3 +82,12 @@ export const GasBubble = styled(Row)`
 export const NotSupportedText = styled(Text)`
   color: ${(p) => p.theme.palette.white};
 `
+
+export interface SelectTokenButtonStyleProps {
+  buttonType?: 'primary' | 'secondary'
+  buttonSize?: 'big' | 'medium' | 'small'
+  moreRightPadding?: boolean
+  hasBackground?: boolean
+  hasShadow?: boolean
+  networkNotSupported?: boolean
+}

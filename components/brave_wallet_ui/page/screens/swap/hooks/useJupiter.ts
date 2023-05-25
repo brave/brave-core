@@ -305,7 +305,7 @@ export function useJupiter (params: SwapParams) {
             // into "Cykura (95%)" and "Lifinity (5%)"
             marketInfo.label.split('+').map(label => {
               // Extract name and proportion from Cykura (95%)
-              const match = label.match(/([A-Za-z\d\s]*)\s+\((\d+)%\)/)
+              const match = label.match(/([\W\s]+)\s+\((\d+)%\)/)
               if (match && match.length === 3) {
                 return {
                   name: match[1].trim(),

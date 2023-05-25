@@ -92,7 +92,13 @@ export const AccountModal = (props: Props) => {
 
   return (
     <ModalBox>
-      {/* Hiding Porfolio Section until we support it */}
+      {/*
+        * TODO(onyb): this should be removed since the account dropdown is
+        * eventually going to be replaced with Send-like UX.
+        * 
+        * Hiding Porfolio Section until we support/remove it
+        */
+      }
       {/* <Column
         columnWidth='full'
         verticalPadding={16}

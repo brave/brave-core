@@ -28,7 +28,8 @@ import {
   ButtonIcon,
   FuelTank,
   NotSupportedText,
-  GasBubble
+  GasBubble,
+  SelectTokenButtonStyleProps
 } from './select-token-or-network.style'
 import {
   Text,
@@ -37,15 +38,6 @@ import {
   HiddenResponsiveRow,
   AssetIcon
 } from '../../shared-swap.styles'
-
-export interface SelectTokenButtonStyleProps {
-  buttonType?: 'primary' | 'secondary'
-  buttonSize?: 'big' | 'medium' | 'small'
-  moreRightPadding?: boolean
-  hasBackground?: boolean
-  hasShadow?: boolean
-  networkNotSupported?: boolean
-}
 
 interface Props extends SelectTokenButtonStyleProps {
   onClick: () => void

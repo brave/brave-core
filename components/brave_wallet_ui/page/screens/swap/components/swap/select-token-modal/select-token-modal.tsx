@@ -195,13 +195,14 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         </ScrollContainer>
         {showZeroBalanceButton && (
           <Button
-            buttonText={buttonText}
             onClick={toggleHideTokensWithZeroBalances}
             buttonStyle='square'
             buttonWidth='full'
             horizontalMargin={0}
             verticalMargin={0}
-          />
+          >
+            {buttonText}
+          </Button>
         )}
       </StandardModal>
     )

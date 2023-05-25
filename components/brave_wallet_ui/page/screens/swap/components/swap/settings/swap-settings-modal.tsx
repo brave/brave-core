@@ -169,7 +169,6 @@ export const SwapSettingsModal = (props: Props) => {
               <Row horizontalAlign='flex-start'>
                 {slippagePresets.map(preset => (
                   <StandardButton
-                    buttonText={`${preset}%`}
                     onClick={() => setSlippageTolerance(preset)}
                     buttonType='secondary'
                     buttonSize='small'
@@ -177,7 +176,9 @@ export const SwapSettingsModal = (props: Props) => {
                     isSelected={slippageTolerance === preset}
                     marginRight={8}
                     key={preset}
-                  />
+                  >
+                    {preset}%
+                  </StandardButton>
                 ))}
               </Row>
               <SlippageInput

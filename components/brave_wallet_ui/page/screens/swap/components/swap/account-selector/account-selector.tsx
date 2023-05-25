@@ -9,13 +9,6 @@ import * as React from 'react'
 import {
   WalletSelectors
 } from '../../../../../../common/selectors'
-import {
-  useUnsafeWalletSelector
-} from '../../../../../../common/hooks/use-safe-selector'
-
-import {
-  useGetSelectedChainQuery
-} from '../../../../../../common/slices/api.slice'
 
 // Utils
 import {
@@ -26,6 +19,12 @@ import {
 import {
   useOnClickOutside
 } from '../../../../../../common/hooks/useOnClickOutside'
+import {
+  useUnsafeWalletSelector
+} from '../../../../../../common/hooks/use-safe-selector'
+import {
+  useGetSelectedChainQuery
+} from '../../../../../../common/slices/api.slice'
 
 // Types
 import {

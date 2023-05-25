@@ -25,9 +25,8 @@ export const Wrapper = styled(StyledDiv)`
   @media screen and (max-width: 570px) {
     padding: 68px 0px;
   }
-}
 `
-
+  
 export const Background = styled(StyledDiv) <{
   height: number
   network: string

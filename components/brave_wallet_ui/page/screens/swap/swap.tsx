@@ -248,12 +248,13 @@ export const Swap = () => {
         )}
         <StandardButton
           onClick={onSubmit}
-          buttonText={submitButtonText}
           buttonType='primary'
           buttonWidth='full'
           verticalMargin={16}
           disabled={isSubmitButtonDisabled}
-        />
+        >
+          {submitButtonText}
+        </StandardButton>
       </SwapContainer>
       {selectingFromOrTo && (
         <SelectTokenModal

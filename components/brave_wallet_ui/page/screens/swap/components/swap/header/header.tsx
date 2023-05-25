@@ -39,7 +39,6 @@ import {
 } from '../account-modal/account-modal'
 
 // Hooks
-// import { useNetworkFees } from '~/hooks/useNetworkFees'
 import {
   useOnClickOutside
 } from '../../../../../../common/hooks/useOnClickOutside'
@@ -96,8 +95,6 @@ export const Header = (props: Props) => {
     }, [setNetwork, refreshBlockchainState])
 
   // Hooks
-  // const { getNetworkFeeFiatEstimate } = useNetworkFees()
-
   // Click away for network selector
   useOnClickOutside(
     networkSelectorRef,
