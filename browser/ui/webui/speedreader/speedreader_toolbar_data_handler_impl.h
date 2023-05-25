@@ -12,6 +12,8 @@
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/tts_player.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_observer.h"
 #include "chrome/browser/ui/browser_tab_strip_tracker.h"
 #include "chrome/browser/ui/browser_tab_strip_tracker_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -19,6 +21,8 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "ui/native_theme/native_theme.h"
+#include "ui/native_theme/native_theme_observer.h"
 
 class Browser;
 
@@ -31,7 +35,9 @@ class SpeedreaderToolbarDataHandlerImpl
       public speedreader::SpeedreaderService::Observer,
       public speedreader::TtsPlayer::Observer,
       public TabStripModelObserver,
-      public BrowserTabStripTrackerDelegate {
+      public BrowserTabStripTrackerDelegate,
+      public ThemeServiceObserver,
+      public ui::NativeThemeObserver {
  public:
   SpeedreaderToolbarDataHandlerImpl(
       Browser* browser,
@@ -50,6 +56,8 @@ class SpeedreaderToolbarDataHandlerImpl
 
   void GetTtsSettings(GetTtsSettingsCallback callback) override;
   void SetTtsSettings(speedreader::mojom::TtsSettingsPtr settings) override;
+
+  void ObserveThemeChange() override;
 
   void HideToolbar() override;
 
@@ -91,6 +99,12 @@ class SpeedreaderToolbarDataHandlerImpl
   // BrowserTabStripTrackerDelegate:
   bool ShouldTrackBrowser(Browser* browser) override;
 
+  // ThemeServiceObserver:.
+  void OnThemeChanged() override;
+
+  // ui::NativeThemeObserver:
+  void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
+
   raw_ptr<Browser> browser_ = nullptr;
   mojo::Receiver<speedreader::mojom::ToolbarDataHandler> receiver_;
   mojo::Remote<speedreader::mojom::ToolbarEventsHandler> events_;
@@ -104,6 +118,11 @@ class SpeedreaderToolbarDataHandlerImpl
 
   raw_ptr<speedreader::SpeedreaderTabHelper> active_tab_helper_ = nullptr;
   BrowserTabStripTracker browser_tab_strip_tracker_;
+
+  base::ScopedObservation<ThemeService, ThemeServiceObserver>
+      theme_observation_{this};
+  base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver>
+      native_theme_observation_{this};
 
   base::WeakPtrFactory<SpeedreaderToolbarDataHandlerImpl> weak_factory_{this};
 };

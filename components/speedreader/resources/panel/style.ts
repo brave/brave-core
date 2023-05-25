@@ -8,12 +8,8 @@ export const ToolbarWrapper = styled.div`
   width: 100%;
   height: 2.5rem;
   display: flex;
-  background: var(--color-panel-background);
-  color: var(--color-button-text);
+  background: var(--color-background);
+  color: var(--color-foreground);
   font-family: ${(p) => p.theme.fontFamily.heading};
   border-bottom: 1px solid var(--color-border);
-
-  --color-panel-background: var(--color-toolbar);
-  --color-button-text: var(--color-tab-foreground);
-  --color-border: var(--color-frame-active);
 `

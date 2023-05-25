@@ -13,7 +13,6 @@
 #include "brave/components/speedreader/resources/panel/grit/brave_speedreader_toolbar_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/webui/theme_handler.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
 
@@ -27,16 +26,11 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
       web_ui, name, kBraveSpeedreaderToolbarGenerated,
       kBraveSpeedreaderToolbarGeneratedSize, IDR_SPEEDREADER_UI_HTML);
 
-  // Set up the chrome://theme/ source.
-  web_ui->AddMessageHandler(std::make_unique<ThemeHandler>());
-
   for (const auto& str : speedreader::kLocalizedStrings) {
     std::u16string l10n_str =
         brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
-
-  AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
 
 SpeedreaderToolbarUI::~SpeedreaderToolbarUI() = default;

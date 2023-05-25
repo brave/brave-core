@@ -17,6 +17,8 @@ interface ToolbarDataHandler {
   GetTtsSettings() => (TtsSettings tts_settings);
   SetTtsSettings(TtsSettings tts_settings);
 
+  ObserveThemeChange();
+
   ViewOriginal();
 
   HideToolbar();
@@ -33,8 +35,9 @@ interface ToolbarDataHandler {
 interface ToolbarEventsHandler {
   OnSiteSettingsChanged(SiteSettings site_settings);
   OnTtsSettingsChanged(TtsSettings tts_settings);
+  OnBrowserThemeChanged(ToolbarColors colors);
 
-  SetPlaybackState(PlaybackState playback_state);
+  SetPlaybackState(PlaybackState playback_state);  
 };
 
 struct SiteSettings {
@@ -46,6 +49,12 @@ struct SiteSettings {
 struct TtsSettings {
   string voice;
   PlaybackSpeed speed = PlaybackSpeed.k100;
+};
+
+struct ToolbarColors {
+  uint32 background;
+  uint32 foreground;
+  uint32 border;
 };
 
 // Enum is used in prefs. Be careful when changing or extending.

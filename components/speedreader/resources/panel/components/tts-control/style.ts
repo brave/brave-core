@@ -31,8 +31,8 @@ export const Voice = styled.div`
     padding: 4px;
     height: 28px;
 
-    background: var(--color-panel-background);
-    color: var(--color-button-text);
+    background: var(--color-background);
+    color: var(--color-foreground);
 
     border: 1px solid var(--color-border);
     border-radius: 4px;

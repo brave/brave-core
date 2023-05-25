@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { dataHandler, SiteSettings, TtsSettings, Theme, FontSize, FontFamily, PlaybackSpeed, eventsHandler } from './api/browser'
+import { dataHandler, SiteSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed, eventsHandler } from './api/browser'
 import Toolbar from './components/toolbar'
 
 function Container() {
@@ -15,8 +15,21 @@ function Container() {
   React.useEffect(() => {
     dataHandler.getSiteSettings().then(res => setSiteSettings(res.siteSettings))
     dataHandler.getTtsSettings().then(res => setTtsSettings(res.ttsSettings))
+    dataHandler.observeThemeChange()
     eventsHandler.onSiteSettingsChanged.addListener((settings: SiteSettings) => {
       setSiteSettings(settings)
+    })
+    eventsHandler.onBrowserThemeChanged.addListener((colors: ToolbarColors) => {
+      const toColor = (color: number) => {
+        return '#' +
+          (color & 0xffffff).toString(16).padStart(6, '0') +
+          (color >>> 24).toString(16).padStart(2, '0')
+      }
+
+      const style = document.documentElement.style
+      style.setProperty('--color-background', toColor(colors.background))
+      style.setProperty('--color-foreground', toColor(colors.foreground))
+      style.setProperty('--color-border', toColor(colors.border))
     })
   }, [])
 

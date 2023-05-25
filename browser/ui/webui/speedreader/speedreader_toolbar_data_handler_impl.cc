@@ -10,9 +10,14 @@
 
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/speedreader/tts_player.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "ui/color/color_provider.h"
 
 namespace {
 class TtsPlayerDelegate : public speedreader::TtsPlayer::Delegate {
@@ -83,6 +88,13 @@ void SpeedreaderToolbarDataHandlerImpl::SetTtsSettings(
   speedreader::TtsPlayer::GetInstance()->SetVoice(settings->voice);
   speedreader::TtsPlayer::GetInstance()->SetSpeed(
       static_cast<double>(settings->speed) / 100.0);
+}
+
+void SpeedreaderToolbarDataHandlerImpl::ObserveThemeChange() {
+  theme_observation_.Observe(
+      ThemeServiceFactory::GetForProfile(browser_->profile()));
+  native_theme_observation_.Observe(browser_->window()->GetNativeTheme());
+  OnThemeChanged();
 }
 
 void SpeedreaderToolbarDataHandlerImpl::HideToolbar() {
@@ -205,4 +217,30 @@ void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
 
 bool SpeedreaderToolbarDataHandlerImpl::ShouldTrackBrowser(Browser* browser) {
   return browser_ == browser;
+}
+
+void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
+  const auto* color_provider = browser_->window()->GetColorProvider();
+  if (!color_provider) {
+    return;
+  }
+
+  auto colors = speedreader::mojom::ToolbarColors::New();
+  colors->background = color_provider->GetColor(kColorToolbar);
+  colors->foreground = color_provider->GetColor(kColorSidebarButtonBase);
+  colors->border = color_provider->GetColor(ui::kColorFrameActive);
+  events_->OnBrowserThemeChanged(std::move(colors));
+}
+
+void SpeedreaderToolbarDataHandlerImpl::OnNativeThemeUpdated(
+    ui::NativeTheme* observed_theme) {
+  // There are two types of theme update. a) The observed theme change. e.g.
+  // switch between light/dark mode. b) A different theme is enabled. e.g.
+  // switch between GTK and classic theme on Linux. Reset observer in case b).
+  ui::NativeTheme* current_theme = browser_->window()->GetNativeTheme();
+  if (observed_theme != current_theme) {
+    native_theme_observation_.Reset();
+    native_theme_observation_.Observe(current_theme);
+  }
+  OnThemeChanged();
 }

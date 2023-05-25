@@ -11,8 +11,6 @@ import { ToolbarWrapper } from './style'
 import { loadTimeData } from '../../../common/loadTimeData'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import Container from './container'
-import { addWebUiListener } from 'chrome://resources/js/cr.js';
-import { $ } from 'chrome://resources/js/util_ts.js';
 
 function App () {
   return (
@@ -25,11 +23,6 @@ function App () {
 }
 
 function initialize () {
-  addWebUiListener('theme-changed', () => {
-    ($('colors') as HTMLLinkElement).href = 'chrome://theme/colors.css?sets=ui,chrome&version=' + Date.now();
-  });
-  chrome.send('observeThemeChanges');
-
   initLocale(loadTimeData.data_)
   render(<App />, document.getElementById('mountPoint'))
 }
