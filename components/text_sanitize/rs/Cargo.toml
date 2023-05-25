@@ -1,0 +1,11 @@
+[package]
+name = "text-sanitize"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cxx = "1.0"
+
+[lib]
+name = "text_sanitize"
+crate-type = ["rlib"]

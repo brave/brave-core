@@ -5,33 +5,47 @@
 
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 
+#include "brave/components/brave_ads/core/internal/sanitize/sanitize_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
+class BraveAdsStringStripUtilTest : public ::testing::TestWithParam<bool> {
+ protected:
+  bool ShouldSanitizeHtmlContent() const { return GetParam(); }
+
+  std::string MaybeSanitizeHtmlContent(const std::string& content) const {
+    return ShouldSanitizeHtmlContent() ? SanitizeHtmlContent(content) : content;
+  }
+};
+
+TEST_P(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   // Arrange
+  const std::string text = "";
+  const std::string sanitized_text = MaybeSanitizeHtmlContent(text);
 
   // Act
+  const std::string stripped_text = StripNonAlphaCharacters(sanitized_text);
 
   // Assert
-  const std::string stripped_text = StripNonAlphaCharacters("");
   EXPECT_TRUE(stripped_text.empty());
 }
 
-TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
+TEST_P(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
   // Arrange
+  const std::string text = "   ";
+  const std::string sanitized_text = MaybeSanitizeHtmlContent(text);
 
   // Act
+  const std::string stripped_text = StripNonAlphaCharacters(sanitized_text);
 
   // Assert
-  const std::string stripped_text = StripNonAlphaCharacters("   ");
   EXPECT_TRUE(stripped_text.empty());
 }
 
-TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
+TEST_P(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "
@@ -42,9 +56,11 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
       "την ψυχοφθόρα \\t\\n\\v\\f\\r βδελυγμία. いろはにほへど　ちりぬるを "
       "わがよたれぞ　つねならむ うゐのおくやま　けふこえて あさきゆめみじ　"
       "ゑひもせず  ";  // The Quick Brown Fox... Pangrams
+  const std::string sanitized_content = MaybeSanitizeHtmlContent(content);
 
   // Act
-  const std::string stripped_content = StripNonAlphaCharacters(content);
+  const std::string stripped_content =
+      StripNonAlphaCharacters(sanitized_content);
 
   // Assert
   const std::string expected_stripped_content =
@@ -58,29 +74,35 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BraveAdsStringStripUtilTest,
-     StripNonAlphaNumericCharactersFromEmptyContent) {
+TEST_P(BraveAdsStringStripUtilTest,
+       StripNonAlphaNumericCharactersFromEmptyContent) {
   // Arrange
+  const std::string text = "";
+  const std::string sanitized_text = MaybeSanitizeHtmlContent(text);
 
   // Act
+  const std::string stripped_text =
+      StripNonAlphaNumericCharacters(sanitized_text);
 
   // Assert
-  const std::string stripped_text = StripNonAlphaNumericCharacters("");
   EXPECT_TRUE(stripped_text.empty());
 }
 
-TEST(BraveAdsStringStripUtilTest,
-     StripNonAlphaNumericCharactersFromWhitespace) {
+TEST_P(BraveAdsStringStripUtilTest,
+       StripNonAlphaNumericCharactersFromWhitespace) {
   // Arrange
+  const std::string text = "   ";
+  const std::string sanitized_text = MaybeSanitizeHtmlContent(text);
 
   // Act
+  const std::string stripped_text =
+      StripNonAlphaNumericCharacters(sanitized_text);
 
   // Assert
-  const std::string stripped_text = StripNonAlphaNumericCharacters("   ");
   EXPECT_TRUE(stripped_text.empty());
 }
 
-TEST(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
+TEST_P(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "
@@ -91,9 +113,11 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
       "την ψυχοφθόρα \\t\\n\\v\\f\\r βδελυγμία. いろはにほへど　ちりぬるを "
       "わがよたれぞ　つねならむ うゐのおくやま　けふこえて あさきゆめみじ　"
       "ゑひもせず  ";  // The Quick Brown Fox... Pangrams
+  const std::string sanitized_content = MaybeSanitizeHtmlContent(content);
 
   // Act
-  const std::string stripped_content = StripNonAlphaNumericCharacters(content);
+  const std::string stripped_content =
+      StripNonAlphaNumericCharacters(sanitized_content);
 
   // Assert
   const std::string expected_stripped_content =
@@ -106,5 +130,13 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
 
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
+
+INSTANTIATE_TEST_SUITE_P(,
+                         BraveAdsStringStripUtilTest,
+                         ::testing::Bool(),
+                         [](::testing::TestParamInfo<bool> test_param) {
+                           return test_param.param ? "HtmlSanitized"
+                                                   : "HtmlNotSanitized";
+                         });
 
 }  // namespace brave_ads

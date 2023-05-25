@@ -253,6 +253,7 @@ test("brave_unit_tests") {
     "//brave/components/skus/renderer:unit_tests",
     "//brave/components/sync/driver:unit_tests",
     "//brave/components/sync/engine:unit_tests",
+    "//brave/components/text_sanitize:text_sanitize_unit_tests",
     "//brave/components/time_period_storage",
     "//brave/components/tor/buildflags",
     "//brave/components/url_sanitizer/browser:unittests",

@@ -1,0 +1,18 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//testing/test.gni")
+
+source_set("text_sanitize_unit_tests") {
+  testonly = true
+
+  sources = [ "strip_non_alphanumeric_or_ascii_characters_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/text_sanitize/rs:cxx",
+    "//testing/gtest",
+  ]
+}

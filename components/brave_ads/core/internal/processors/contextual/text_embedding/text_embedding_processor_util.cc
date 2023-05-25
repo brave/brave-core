@@ -18,7 +18,7 @@ constexpr char kAttributeName[] = "content";
 
 }  // namespace
 
-std::string SanitizeHtml(const std::string& html) {
+std::string ParseAndSanitizeHtmlTagAttribute(const std::string& html) {
   return SanitizeText(ParseHtmlTagAttribute(html, kTagName, kAttributeName));
 }
 

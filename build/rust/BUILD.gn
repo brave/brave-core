@@ -47,6 +47,7 @@ cargo_build("rust_lib") {
     "//brave/components/p3a/constellation/rs:rust_lib",
     "//brave/components/skus/browser/rs:rust_lib",
     "//brave/components/speedreader/rust/lib",
+    "//brave/components/text_sanitize/rs:rust_lib",
     "//brave/third_party/challenge_bypass_ristretto_ffi:rust_lib",
   ]
 }

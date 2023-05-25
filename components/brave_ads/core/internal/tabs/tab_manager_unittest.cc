@@ -11,6 +11,30 @@
 
 namespace brave_ads {
 
+namespace {
+
+constexpr char kWebPageText[] =
+    "The quick brown fox jumps over the lazy dog. "
+    "$123,000.0 !\"#$%&'()*+,-./:<=>?@\\[]^_`{|}~ 0123456789 \t\n\v\f\r "
+    "0x7F x123x a1b2c3 Les naïfs ægithales hâtifs pondant à Noël où il "
+    "gèle sont sûrs d'être déçus en voyant leurs drôles d'œufs abîmés. "
+    "Falsches Üben von Xylophonmusik quält jeden größeren Zwerg. ξεσκεπάζω "
+    "την ψυχοφθόρα \\t\\n\\v\\f\\r βδελυγμία. いろはにほへど　ちりぬるを "
+    "わがよたれぞ　つねならむ うゐのおくやま　けふこえて あさきゆめみじ　"
+    "ゑひもせず";
+
+constexpr char kSanitizedWebPageText[] =
+    "The quick brown fox jumps over the lazy dog. "
+    "$123,000.0 !\"#$%&'()*+,-./:<=>?@\\[]^_`{|}~ 0123456789 \t\n \f\r "
+    "0x7F x123x a1b2c3 Les naïfs ægithales hâtifs pondant à Noël où il "
+    "gèle sont sûrs d'être déçus en voyant leurs drôles d'œufs abîmés. "
+    "Falsches Üben von Xylophonmusik quält jeden größeren Zwerg. ξεσκεπάζω "
+    "την ψυχοφθόρα \\t\\n\\v\\f\\r βδελυγμία. いろはにほへど ちりぬるを "
+    "わがよたれぞ つねならむ うゐのおくやま けふこえて あさきゆめみじ "
+    "ゑひもせず";
+
+}  // namespace
+
 class BraveAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
  protected:
   void SetUp() override {
@@ -49,6 +73,18 @@ class BraveAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
     tab_did_stop_playing_media_ = true;
   }
 
+  void OnTextContentDidChange(const int32_t /*tab_id*/,
+                              const std::vector<GURL>& /*redirect_chain*/,
+                              const std::string& content) override {
+    tab_text_content_ = content;
+  }
+
+  void OnHtmlContentDidChange(const int32_t /*tab_id*/,
+                              const std::vector<GURL>& /*redirect_chain*/,
+                              const std::string& content) override {
+    tab_html_content_ = content;
+  }
+
   void ResetObserver() {
     tab_did_change_focus_ = false;
     tab_did_change_ = false;
@@ -64,6 +100,8 @@ class BraveAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
   bool did_close_tab_ = false;
   bool tab_did_start_playing_media_ = false;
   bool tab_did_stop_playing_media_ = false;
+  std::string tab_text_content_;
+  std::string tab_html_content_;
 };
 
 TEST_F(BraveAdsTabManagerTest, IsVisible) {
@@ -71,7 +109,8 @@ TEST_F(BraveAdsTabManagerTest, IsVisible) {
 
   // Act
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*id*/ 1,
+      /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_active*/ true);
 
   // Assert
@@ -422,6 +461,30 @@ TEST_F(BraveAdsTabManagerTest, DoNotGetTabForMissingId) {
 
   // Assert
   EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(2));
+}
+
+TEST_F(BraveAdsTabManagerTest, TabTextContentDidChange) {
+  // Arrange
+
+  // Act
+  NotifyTabTextContentDidChange(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*text*/ kWebPageText);
+
+  // Assert
+  EXPECT_EQ(tab_text_content_, kSanitizedWebPageText);
+}
+
+TEST_F(BraveAdsTabManagerTest, TabHtmlContentDidChange) {
+  // Arrange
+
+  // Act
+  NotifyTabHtmlContentDidChange(
+      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*html*/ kWebPageText);
+
+  // Assert
+  EXPECT_EQ(tab_html_content_, kSanitizedWebPageText);
 }
 
 }  // namespace brave_ads
