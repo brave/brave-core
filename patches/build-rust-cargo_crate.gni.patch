@@ -1,5 +1,5 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c026baa26798ed200d9e501a09f2929268990348 100644
+index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..dc5e4e9bd1ddc007afbb90d04be152dda253992f 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
 @@ -2,8 +2,9 @@
@@ -65,8 +65,8 @@ index 0456a25cc289f9a2687b7fef24a6620f45f45bb4..c026baa26798ed200d9e501a09f29292
    if (defined(invoker.rustenv)) {
      _rustenv = invoker.rustenv
    }
-+  _rustenv += [ "CARGO_CFG_TARGET_OS=$target_os" ]
-+  _rustenv += [ "CARGO_CFG_TARGET_ARCH=$target_cpu" ]
++  _rustenv += [ "CARGO_CFG_TARGET_OS=$current_os" ]
++  _rustenv += [ "CARGO_CFG_TARGET_ARCH=$rust_target_arch" ]
    if (defined(invoker.cargo_pkg_authors)) {
      _rustenv += [ "CARGO_PKG_AUTHORS=${invoker.cargo_pkg_authors}" ]
    }
