@@ -28,7 +28,12 @@ import {
 } from '../../../common/slices/api.slice'
 
 // Types
-import { BraveWallet, WalletAccountType } from '../../../constants/types'
+import {
+  BraveWallet,
+  CoinType,
+  CoinTypes,
+  WalletAccountType
+} from '../../../constants/types'
 
 // Adapters
 import {
@@ -93,7 +98,11 @@ export const Swap = () => {
 
   const [getTokenBalancesForChainId] = useLazyGetTokenBalancesForChainIdQuery()
   const getTokenBalancesForChainIdWrapped = React.useCallback(
-    async (contracts: string[], address: string, coin: BraveWallet.CoinType, chainId: string) => {
+    async (contracts: string[], address: string, coin: CoinType, chainId: string) => {
+      if (coin !== CoinTypes.ETH) {
+        throw new Error(`invalid coin type for balance check: ${coin}`)
+      }
+
       return await getTokenBalancesForChainId({
         contracts,
         address,

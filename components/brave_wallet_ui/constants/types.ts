@@ -923,6 +923,21 @@ export const SupportedTestNetworks = [
   BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID
 ]
 
+/**
+ * Should match BraveWallet.CoinType
+ * defined with "as const" to allow for use as a type-guard
+ */
+export const CoinTypes = {
+  BTC: 0,
+  ETH: 60,
+  FIL: 461,
+  SOL: 501,
+  MIN_VALUE: 0,
+  MAX_VALUE: 501,
+} as const;
+
+export type CoinType = typeof CoinTypes[keyof typeof CoinTypes]
+
 export enum CoinTypesMap {
   ETH = BraveWallet.CoinType.ETH,
   FIL = BraveWallet.CoinType.FIL,
