@@ -406,8 +406,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, SidebarAlignment) {
   EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }
 
-#if BUILDFLAG(IS_MAC)
-// Mac test bots are not able to enter fullscreen.
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+// * Mac test bots are not able to enter fullscreen.
+// * On Linux this test is flaky.
 #define MAYBE_Fullscreen DISABLED_Fullscreen
 #else
 #define MAYBE_Fullscreen Fullscreen
