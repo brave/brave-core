@@ -28,9 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
-import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
@@ -61,15 +59,6 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private BraveWalletP3a getBraveWalletP3A() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletP3A();
         }
 
         return null;
@@ -191,9 +180,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                     getResources().getString(R.string.retype_password_error));
         } else {
             KeyringService keyringService = getKeyringService();
-            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
             assert keyringService != null;
-            assert braveWalletP3A != null;
             keyringService.restoreWallet(recoveryPhraseText.getText().toString().trim(),
                     passwordInput, isLegacyWalletRestoreEnable, result -> {
                         if (result) {
@@ -211,11 +198,6 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                             Utils.clearClipboard(recoveryPhraseText.getText().toString().trim(), 0);
                             Utils.clearClipboard(passwordInput, 0);
                             Utils.clearClipboard(retypePasswordInput, 0);
-
-                            if (isOnboarding) {
-                                braveWalletP3A.reportOnboardingAction(
-                                        OnboardingAction.RESTORED_WALLET);
-                            }
 
                             cleanUp();
                         } else {

@@ -312,7 +312,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 navigationItems.add(
                         new NavigationItem(getResources().getString(R.string.secure_your_crypto),
                                 securePasswordFragment));
-                addBackupWalletSequence(navigationItems);
+                addBackupWalletSequence(navigationItems, true);
                 cryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
                         navigationItems, cryptoWalletOnboardingViewPager.getCurrentItem() + 1);
             }
@@ -352,17 +352,19 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             });
     }
 
-    private void addBackupWalletSequence(List<NavigationItem> navigationItems) {
-        BackupWalletFragment backupWalletFragment = new BackupWalletFragment();
+    private void addBackupWalletSequence(
+            List<NavigationItem> navigationItems, boolean isOnboarding) {
+        BackupWalletFragment backupWalletFragment = BackupWalletFragment.newInstance(isOnboarding);
         backupWalletFragment.setOnNextPageListener(this);
         navigationItems.add(new NavigationItem(
                 getResources().getString(R.string.backup_your_wallet), backupWalletFragment));
-        RecoveryPhraseFragment recoveryPhraseFragment = new RecoveryPhraseFragment();
+        RecoveryPhraseFragment recoveryPhraseFragment =
+                RecoveryPhraseFragment.newInstance(isOnboarding);
         recoveryPhraseFragment.setOnNextPageListener(this);
         navigationItems.add(new NavigationItem(
                 getResources().getString(R.string.your_recovery_phrase), recoveryPhraseFragment));
         VerifyRecoveryPhraseFragment verifyRecoveryPhraseFragment =
-                new VerifyRecoveryPhraseFragment();
+                VerifyRecoveryPhraseFragment.newInstance(isOnboarding);
         verifyRecoveryPhraseFragment.setOnNextPageListener(this);
         navigationItems.add(
                 new NavigationItem(getResources().getString(R.string.verify_recovery_phrase),
@@ -377,7 +379,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mBuySendSwapButton.setVisibility(View.GONE);
 
         List<NavigationItem> navigationItems = new ArrayList<>();
-        addBackupWalletSequence(navigationItems);
+        addBackupWalletSequence(navigationItems, false);
 
         if (cryptoWalletOnboardingPagerAdapter != null && cryptoWalletOnboardingViewPager != null) {
             cryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
@@ -447,11 +449,15 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     @Override
     public void gotoOnboardingPage() {
         replaceNavigationFragments(ONBOARDING_ACTION, true, true);
+        mBraveWalletP3A.reportOnboardingAction(OnboardingAction.LEGAL_AND_PASSWORD);
     }
 
     @Override
     public void gotoRestorePage(boolean isOnboarding) {
         replaceNavigationFragments(RESTORE_WALLET_ACTION, true, isOnboarding);
+        if (isOnboarding) {
+            mBraveWalletP3A.reportOnboardingAction(OnboardingAction.START_RESTORE);
+        }
     }
 
     @Override

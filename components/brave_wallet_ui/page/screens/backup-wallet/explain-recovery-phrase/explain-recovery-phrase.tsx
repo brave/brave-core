@@ -8,9 +8,10 @@ import { useHistory, useLocation } from 'react-router'
 
 // utils
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // images
@@ -50,6 +51,9 @@ const ImportantTextSegments = () => {
 }
 
 export const RecoveryPhraseExplainer = () => {
+  // custom hooks
+  const { braveWalletP3A } = useApiProxy()
+
   // routing
   const history = useHistory()
   const { pathname } = useLocation()
@@ -57,6 +61,7 @@ export const RecoveryPhraseExplainer = () => {
 
   // methods
   const skipToOnboardingSuccess = () => {
+    braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.CompleteRecoverySkipped);
     history.push(WalletRoutes.OnboardingComplete)
   }
 
