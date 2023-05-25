@@ -10,12 +10,10 @@ import {
   getLocale
 } from '../../../../../../../common/locale'
 
+// Hooks
 import {
   useGetSwapSupportedNetworksQuery
 } from '../../../../../../common/slices/api.slice'
-
-// Hooks
-// import { useNetworkFees } from '~/hooks/useNetworkFees'
 
 // Types
 import {
@@ -49,16 +47,17 @@ interface Props {
 export const NetworkSelector = (props: Props) => {
   const { onSelectNetwork, onClose, isHeader } = props
 
-  // Hooks
-  // const { getNetworkFeeFiatEstimate } = useNetworkFees()
-
   const { data: supportedNetworks } = useGetSwapSupportedNetworksQuery()
 
   return (
     <SelectorBox isHeader={isHeader}>
 
-      {/* Disabling this until we support fee estimates */}
-
+      {/*
+        * TODO(onyb): enable or remove this.
+        *
+        * Disabling this until we support fee estimates
+        **/
+      }
       {/* <VerticalSpacer size={12} />
       <Row horizontalPadding={12} rowWidth='full'>
         <Text textSize='12px' textColor='text03' isBold={false}>

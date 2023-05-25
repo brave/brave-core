@@ -35,7 +35,7 @@ import Amount from '../../../../utils/amount'
 // FIXME(onyb): move makeNetworkAsset to utils/assets-utils
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { getEntitiesListFromEntityState } from '../../../../utils/entities.utils'
-import { getBalanceRegistryKeyRaw, getBalanceRegistryKey } from '../utils/assets'
+import { getBalanceRegistryKey } from '../utils/assets'
 
 // Queries
 import {
@@ -266,7 +266,11 @@ export const useSwap = () => {
   const getAssetBalanceFactory = useCallback(
     (account: AccountInfoEntity, network: BraveWallet.NetworkInfo) =>
       async (asset: BraveWallet.BlockchainToken) => {
-        const balanceRegistryKey = getBalanceRegistryKey(account, asset)
+        const balanceRegistryKey = getBalanceRegistryKey(
+          account,
+          asset.chainId,
+          asset.contractAddress
+        )
 
         try {
           const result = await getBalance(account, asset)
@@ -351,7 +355,7 @@ export const useSwap = () => {
         )
         const tokenBalancesWithRegistryKeys = Object.entries(tokenBalancesResult)
           .map(([key, value]) => [
-            getBalanceRegistryKeyRaw(networkAccount, network.coin, network.chainId, key),
+            getBalanceRegistryKey(networkAccount, network.chainId, key),
             value
           ])
           .filter(([_, value]) => new Amount(value).isPositive())
@@ -589,7 +593,11 @@ export const useSwap = () => {
         return Amount.zero()
       }
 
-      const balanceRegistryKey = getBalanceRegistryKey(selectedAccount, token)
+      const balanceRegistryKey = getBalanceRegistryKey(
+        selectedAccount,
+        token.chainId,
+        token.contractAddress
+      )
       return new Amount(tokenBalances[balanceRegistryKey] ?? '0')
     },
     [tokenBalances, selectedAccount]
@@ -729,7 +737,7 @@ export const useSwap = () => {
   }, [spotPrices.fromAsset, fromAmount, defaultFiatCurrency])
 
   const gasEstimates: GasEstimate = useMemo(() => {
-    // ToDo: Setup getGasEstimate Methods
+    // TODO(onyb): Setup getGasEstimate Methods
     return {
       gasFee: '0.0034',
       gasFeeGwei: '36',

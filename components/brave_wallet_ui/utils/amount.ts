@@ -236,8 +236,7 @@ export default class Amount {
     if (this.value === undefined || this.value.isNaN()) {
       return ''
     } else if (
-      // @ts-expect-error
-      this.value.decimalPlaces() < 2 ||
+      (this.value.decimalPlaces() ?? 0) < 2 ||
       this.value.isGreaterThanOrEqualTo(10)
     ) {
       decimals = 2

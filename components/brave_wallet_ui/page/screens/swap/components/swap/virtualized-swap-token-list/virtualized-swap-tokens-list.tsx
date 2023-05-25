@@ -24,7 +24,7 @@ interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
   onSelectToken: (token: BraveWallet.BlockchainToken) => void
   getCachedAssetBalance: (token: BraveWallet.BlockchainToken) => Amount
-  disabledToken: BraveWallet.BlockchainToken | undefined
+  disabledToken: Pick<BraveWallet.BlockchainToken, 'contractAddress'> | undefined
 }
 
 interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {

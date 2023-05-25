@@ -161,7 +161,6 @@ export const FromSection = (props: Props) => {
           />
         </Row>
         <Row rowWidth='full' horizontalAlign='flex-end'>
-          {/* Todo: Setup locale for currency symbol */}
           {token && (
             <Text
               textSize='14px'
