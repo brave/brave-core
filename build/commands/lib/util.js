@@ -254,6 +254,7 @@ const util = {
     fileMap.add([path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'), path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg'), path.join(chromeBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'settings', 'images'), path.join(chromeBrowserResourcesDir, 'settings', 'images')])
+    fileMap.add([path.join(braveBrowserResourcesDir, 'signin', 'images'), path.join(chromeBrowserResourcesDir, 'signin', 'images')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'signin', 'profile_picker', 'images'), path.join(chromeBrowserResourcesDir, 'signin', 'profile_picker', 'images')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'side_panel', 'reading_list', 'images'), path.join(chromeBrowserResourcesDir, 'side_panel', 'reading_list', 'images')])
 
