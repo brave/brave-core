@@ -258,6 +258,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
     public void setWalletListItemModelList(List<WalletListItemModel> walletListItemModelList) {
         this.walletListItemModelList = walletListItemModelList;
+        walletListItemModelListCopy.clear();
         if (isAssetSelectionType()) {
             walletListItemModelListCopy.addAll(this.walletListItemModelList);
             mCheckedPositions.clear();

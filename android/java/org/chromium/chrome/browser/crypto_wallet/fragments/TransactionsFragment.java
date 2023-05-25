@@ -113,7 +113,8 @@ public class TransactionsFragment extends Fragment implements OnWalletListItemCl
                 accountInfo -> accountInfo.address.equals(txInfo.fromAddress));
         if (JavaUtils.anyNull(mTransactionsModel, txAccount)) return;
         if (txInfo.txStatus == TransactionStatus.UNAPPROVED) {
-            ApproveTxBottomSheetDialogFragment approveTx = ApproveTxBottomSheetDialogFragment.newInstance(txInfo, txAccount.name);
+            ApproveTxBottomSheetDialogFragment approveTx =
+                    ApproveTxBottomSheetDialogFragment.newInstance(txInfo, txAccount.name);
             approveTx.show(getChildFragmentManager(), TAG);
         } else {
             WalletListItemModel txModel = JavaUtils.find(

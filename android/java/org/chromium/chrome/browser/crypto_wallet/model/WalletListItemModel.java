@@ -176,12 +176,12 @@ public class WalletListItemModel {
     // ERC721 has format [Title #ID]
     public String getTitle() {
         return isErc721() ? Utils.formatErc721TokenTitle(mTitle, Utils.hexToIntString(mId))
-                : mTitle;
+                          : mTitle;
     }
 
     public String getSubTitle() {
         return isErc721() ? Utils.formatErc721TokenTitle(mSubTitle, Utils.hexToIntString(mId))
-                : mSubTitle;
+                          : mSubTitle;
     }
 
     public String getText1() {

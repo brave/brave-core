@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
+    android:paddingBottom="12dp"
     android:background="@color/wallet_bg"
     android:orientation="vertical"
     tools:ignore="RtlSymmetry,NestedWeights">
@@ -14,8 +15,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
-        android:contentDescription="@null"
         android:layout_marginTop="36dp"
+        android:contentDescription="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,6 +30,7 @@
         android:layout_marginBottom="16dp"
         android:gravity="center"
         android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/account_picture" />
@@ -86,14 +88,15 @@
         app:cardCornerRadius="6dp"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintTop_toBottomOf="@id/amount_fiat"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amount_fiat">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_tx_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/brave_wallet_dn_highlight_bg_color"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_two_line_horizontal"/>
+            tools:listitem="@layout/item_two_line_horizontal" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

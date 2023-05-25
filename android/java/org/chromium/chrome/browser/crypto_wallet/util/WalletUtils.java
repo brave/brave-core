@@ -45,8 +45,7 @@ public class WalletUtils {
     }
 
     public static String timeDeltaToDateString(TimeDelta timeDelta) {
-        DateFormat dateFormat =
-                new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
         return dateFormat.format(new Date(timeDelta.microseconds / 1000));
     }
 

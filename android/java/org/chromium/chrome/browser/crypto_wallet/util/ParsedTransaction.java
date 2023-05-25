@@ -104,7 +104,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
         for (BlockchainToken token : fullTokenList) {
             if (token.contractAddress.toLowerCase(Locale.getDefault())
-                    .equals(contractAddress.toLowerCase(Locale.getDefault())))
+                            .equals(contractAddress.toLowerCase(Locale.getDefault())))
                 return token;
         }
         return null;
@@ -154,8 +154,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
         final boolean isFilTransaction = filTxData != null;
         final boolean isSPLTransaction = txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
                 || txInfo.txType
-                == TransactionType
-                .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION;
+                        == TransactionType
+                                   .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
 
         final String value = isSPLTransaction
@@ -163,11 +163,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 : isSolTransaction ? solTxData != null ? String.valueOf(solTxData.lamports) : ""
                 : isFilTransaction ? filTxData.value != null ? filTxData.value : ""
                 : txData != null   ? txData.baseData.value
-                : "";
+                                   : "";
 
         String to = isSolTransaction ? solTxData != null ? solTxData.toWalletAddress : ""
                 : isFilTransaction   ? filTxData.to
-                : txData.baseData.to;
+                                     : txData.baseData.to;
 
         final String nonce = txData != null ? txData.baseData.nonce : "";
         AccountInfo account = Utils.findAccount(accounts, txInfo.fromAddress);
@@ -183,7 +183,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 Utils.getOrDefault(nativeAssetsBalances, accountAddressLower, 0.0d);
         final double accountTokenBalance =
                 Utils.getOrDefault(Utils.getOrDefault(blockchainTokensBalances, accountAddressLower,
-                                new HashMap<String, Double>()),
+                                           new HashMap<String, Double>()),
                         Utils.tokenToString(token), 0.0d);
 
         ParsedTransaction parsedTransaction = new ParsedTransaction(feeDetails);
@@ -223,9 +223,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 boolean isInsExists = instructionType != null;
                 if (isInsExists
                         && (instructionType == SolanaSystemInstruction.TRANSFER
-                        || instructionType == SolanaSystemInstruction.TRANSFER_WITH_SEED
-                        || (presenter.isTokenInstruction()
-                        && instructionType == SolanaTokenInstruction.TRANSFER))) {
+                                || instructionType == SolanaSystemInstruction.TRANSFER_WITH_SEED
+                                || (presenter.isTokenInstruction()
+                                        && instructionType == SolanaTokenInstruction.TRANSFER))) {
                     String fromPubKey = presenter.fromPubKey();
                     String toPubKey = presenter.toPubKey();
                     // only show lamports as transferred if the amount is going to a different
@@ -249,8 +249,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     }
                 } else if (isInsExists
                         && (instructionType == SolanaSystemInstruction.CREATE_ACCOUNT
-                        || instructionType
-                        == SolanaSystemInstruction.CREATE_ACCOUNT_WITH_SEED)) {
+                                || instructionType
+                                        == SolanaSystemInstruction.CREATE_ACCOUNT_WITH_SEED)) {
                     String fromPubKey = presenter.fromPubKey();
                     String newAccountPubKey =
                             presenter.getAccountPerParamKey(WalletConstants.SOL_DAPP_NEW_ACCOUNT);
@@ -326,7 +326,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.sameAddressError =
                     checkForSameAddressError(address, txInfo.fromAddress);
         } else if ((txInfo.txType == TransactionType.ERC721_TRANSFER_FROM
-                || txInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM)
+                           || txInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM)
                 && txInfo.txArgs.length > 2) {
             final String owner = txInfo.txArgs[0];
             final String toAddress = txInfo.txArgs[1];
@@ -380,8 +380,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     checkForSameAddressError(address, txInfo.fromAddress);
         } else if (txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
                 || txInfo.txType
-                == TransactionType
-                .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION) {
+                        == TransactionType
+                                   .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION) {
             final int decimals = token != null ? token.decimals : Utils.SOL_DEFAULT_DECIMALS;
             final double price = Utils.getOrDefault(assetPrices, tokenSymbolLower, 0.0d);
             final double sendAmount = Utils.fromWei(value, decimals);
@@ -419,8 +419,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 String address = "0x" + matcher.group();
                 BlockchainToken thisToken = findToken(fullTokenList, address);
                 fillTokensList.add(address.equals(Utils.ETHEREUM_CONTRACT_FOR_SWAP) ? nativeAsset
-                        : thisToken != null                                 ? thisToken
-                        : nativeAsset);
+                                : thisToken != null                                 ? thisToken
+                                                                                    : nativeAsset);
             }
             BlockchainToken[] fillTokens = fillTokensList.toArray(new BlockchainToken[0]);
 
@@ -442,7 +442,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
             final double sellTokenBalance =
                     Utils.getOrDefault(Utils.getOrDefault(blockchainTokensBalances,
-                                    accountAddressLower, new HashMap<String, Double>()),
+                                               accountAddressLower, new HashMap<String, Double>()),
                             Utils.tokenToString(sellToken), 0.0d);
 
             final double sellAmount = Utils.fromHexWei(sellAmountWei, sellToken.decimals);

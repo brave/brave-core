@@ -1163,7 +1163,7 @@ public class Utils {
                         accounts, assetPrices, solanaEstimatedTxFee, fullTokenList,
                         nativeAssetsBalances, blockchainTokensBalances);
                 WalletListItemModel itemModel =
-                        makeWalletItem((Context) activity, txInfo, txNetwork, parsedTx);
+                        makeWalletItem((Context) activity, txInfo, txNetwork, parsedTx, accounts);
                 // Filter by token. Account is already filtered in the accounts array.
                 if (!walletListItemModel.isAccount()
                         && !walletListItemModel.getBlockchainToken().symbol.equals(
@@ -1176,13 +1176,14 @@ public class Utils {
     }
 
     public static WalletListItemModel makeWalletItem(Context context, TransactionInfo txInfo,
-            NetworkInfo selectedNetwork, ParsedTransaction parsedTx) {
+            NetworkInfo selectedNetwork, ParsedTransaction parsedTx, AccountInfo[] accountInfos) {
         Pair<String, String> itemTitles = parsedTx.makeTxListItemTitles(context);
         WalletListItemModel itemModel =
                 new WalletListItemModel(Utils.getCoinIcon(selectedNetwork.coin), itemTitles.first,
                         itemTitles.second, "", null, null);
         updateWalletCoinTransactionStatus(itemModel, context, txInfo);
 
+        itemModel.setAccountInfo(findAccount(accountInfos, txInfo.fromAddress));
         itemModel.setChainSymbol(selectedNetwork.symbol);
         itemModel.setChainDecimals(selectedNetwork.decimals);
         itemModel.setTotalGas(parsedTx.getGasFee());
@@ -1190,6 +1191,7 @@ public class Utils {
         itemModel.setAddressesForBitmap(txInfo.fromAddress, parsedTx.getRecipient());
         itemModel.setTransactionInfo(txInfo);
         itemModel.setParsedTx(parsedTx);
+        itemModel.setAssetNetwork(selectedNetwork);
 
         return itemModel;
     }
@@ -1209,7 +1211,7 @@ public class Utils {
                 ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
-    private static void updateWalletCoinTransactionStatus(
+    public static void updateWalletCoinTransactionStatus(
             WalletListItemModel itemModel, Context context, TransactionInfo txInfo) {
         String txStatus = context.getResources().getString(R.string.wallet_tx_status_unapproved);
         Bitmap txStatusBitmap = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);

@@ -4,96 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
-    android:background="@color/wallet_bg"
-    android:orientation="vertical"
-    tools:ignore="RtlSymmetry,NestedWeights">
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="4dp">
 
-    <ImageView
-        android:id="@+id/account_picture"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@null"
-        android:layout_marginTop="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:id="@+id/item_fragment_two_line_title"
+        style="@style/BraveWalletTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_eth_24" />
+        tools:text="Demo" />
 
     <TextView
-        android:id="@+id/domain"
+        android:id="@+id/item_fragment_two_line_sub_title"
         style="@style/BraveWalletTextView"
-        android:layout_width="match_parent"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_picture" />
-
-    <TextView
-        android:id="@+id/from_to"
-        style="@style/BraveWalletTextView"
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/domain" />
-
-    <TextView
-        android:id="@+id/tx_type"
-        style="@style/BraveWalletTextView"
-        android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/from_to" />
-
-    <TextView
-        android:id="@+id/amount_asset"
-        style="@style/BraveWalletTextView"
-        android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="2dp"
-        android:gravity="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tx_type" />
-
-    <TextView
-        android:id="@+id/amount_fiat"
-        style="@style/BraveWalletTextView"
-        android:layout_width="match_parent"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amount_asset" />
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/brave_wallet_dn_highlight_bg_color"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="2dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintTop_toBottomOf="@id/amount_fiat"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_tx_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_two_line_horizontal"/>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent"
+        android:drawablePadding="6dp"
+        tools:text="text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

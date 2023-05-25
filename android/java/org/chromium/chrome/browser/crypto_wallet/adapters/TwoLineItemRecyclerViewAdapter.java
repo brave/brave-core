@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
+import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.List;
 
@@ -43,8 +44,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             layout = R.layout.item_two_line_horizontal;
         }
         return new ViewHolder(
-                LayoutInflater.from(parent.getContext())
-                        .inflate(layout, parent, false));
+                LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
     }
 
     @Override
@@ -64,6 +64,10 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                 viewHolder.mTvSubtitle.setVisibility(View.GONE);
             } else {
                 viewHolder.mTvSubtitle.setText(itemDataSourceText.getSubTitle());
+            }
+
+            if (itemDataSourceText.updateViewCb != null) {
+                itemDataSourceText.updateViewCb.call(viewHolder.mTvTitle, viewHolder.mTvSubtitle);
             }
         } else if (twoLineItem.getType() == TwoLineItem.TYPE_HEADER) {
             ViewHolder viewHolder = (ViewHolder) holder;
@@ -111,6 +115,15 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     public static class TwoLineItemText implements TwoLineItem {
         private String title;
         private String subTitle;
+
+        private Callbacks.Callback2<TextView, TextView> updateViewCb;
+
+        public TwoLineItemText(String title, String subTitle,
+                Callbacks.Callback2<TextView, TextView> customUiChanges) {
+            this.title = title;
+            this.subTitle = subTitle;
+            this.updateViewCb = customUiChanges;
+        }
 
         public TwoLineItemText(String title, String subTitle) {
             this.title = title;
@@ -163,7 +176,5 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         }
     }
 
-    public enum ORIENTATION {
-        HORIZONTAL, VERTICAL
-    }
+    public enum ORIENTATION { HORIZONTAL, VERTICAL }
 }

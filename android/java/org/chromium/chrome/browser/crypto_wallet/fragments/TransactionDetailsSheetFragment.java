@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -48,7 +49,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
-
     public static final String TAG = TransactionDetailsSheetFragment.class.getName();
 
     private ExecutorService mExecutor;
@@ -58,7 +58,8 @@ public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
     private TransactionInfo mTxInfo;
     private ParsedTransaction mParsedTx;
 
-    public static TransactionDetailsSheetFragment newInstance(WalletListItemModel walletListItemModel) {
+    public static TransactionDetailsSheetFragment newInstance(
+            WalletListItemModel walletListItemModel) {
         return new TransactionDetailsSheetFragment(walletListItemModel);
     }
 
@@ -102,17 +103,19 @@ public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        return LayoutInflater.from(getContext()).inflate(R.layout.tx_details_bottom_sheet, container, false);
+        return LayoutInflater.from(getContext())
+                .inflate(R.layout.tx_details_bottom_sheet, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        ViewParent parent = view.getParent();
-//        ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        //        ViewParent parent = view.getParent();
+        //        ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         if (JavaUtils.anyNull(mWalletModel)) return;
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
-        Utils.setBlockiesBitmapResource(mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo().address, true);
+        Utils.setBlockiesBitmapResource(
+                mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo().address, true);
         updateTxHeaderDetails(view);
         updateTxDetails(view);
     }
@@ -125,14 +128,8 @@ public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
         TextView amountFiat = view.findViewById(R.id.amount_fiat);
         TextView amountAsset = view.findViewById(R.id.amount_asset);
 
-        if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
-            TextView domain = view.findViewById(R.id.domain);
-            domain.setVisibility(View.VISIBLE);
-            domain.setText(Utils.geteTLD(
-                    new GURL(mTxInfo.originInfo.originSpec), mTxInfo.originInfo.eTldPlusOne));
-        }
-
-        Utils.setBlockiesBitmapResource(mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo().address, true);
+        Utils.setBlockiesBitmapResource(
+                mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo().address, true);
 
         if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
             TextView domain = view.findViewById(R.id.domain);
@@ -171,7 +168,8 @@ public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
         }
 
         String accountName = mWalletListItemModel.getAccountInfo().name;
-        if (mParsedTx.getSender() != null && !mParsedTx.getSender().equals(mParsedTx.getRecipient())) {
+        if (mParsedTx.getSender() != null
+                && !mParsedTx.getSender().equals(mParsedTx.getRecipient())) {
             String recipient =
                     TextUtils.isEmpty(mParsedTx.getRecipient()) ? "..." : mParsedTx.getRecipient();
             fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
@@ -188,18 +186,40 @@ public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
 
         double totalGas = mParsedTx.getGasFee();
         if (totalGas > 0) {
-            String gasFiatAndCrypto = String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
-                    String.format(Locale.getDefault(), "%.8f", totalGas), mParsedTx.getSymbol()) + WalletConstants.LINE_SEPARATOR + String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
-                    new Amount(mParsedTx.getFiatTotal()).toStringFormat());
-            items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.brave_wallet_allow_spend_transaction_fee), gasFiatAndCrypto));
+            String gasFiatAndCrypto =
+                    String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
+                            String.format(Locale.getDefault(), "%.8f", totalGas),
+                            mParsedTx.getSymbol())
+                    + System.getProperty(WalletConstants.LINE_SEPARATOR)
+                    + String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
+                            new Amount(mParsedTx.getFiatTotal()).toStringFormat());
+            items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
+                    getString(R.string.brave_wallet_allow_spend_transaction_fee),
+                    gasFiatAndCrypto));
+            items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
         }
         if (mParsedTx.marketPrice > 0) {
-            items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.market_price_text), String.format(Locale.ENGLISH, "$%,.6f", mParsedTx.marketPrice)));
+            items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
+                    getString(R.string.market_price_text),
+                    String.format(Locale.ENGLISH, "$%,.6f", mParsedTx.marketPrice)));
+            items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
         }
-        items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.date_text), WalletUtils.timeDeltaToDateString(mParsedTx.getCreatedTime())));
-        items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.network_text), mWalletListItemModel.getAssetNetwork().chainName));
-        items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.status), mWalletListItemModel.getTxStatus()));
+        items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.date_text),
+                WalletUtils.timeDeltaToDateString(mParsedTx.getCreatedTime())));
+        items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
+        items.add(
+                new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.network_text),
+                        mWalletListItemModel.getAssetNetwork().chainName));
+        items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
+        items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.status),
+                mWalletListItemModel.getTxStatus(), (title, subtitle) -> {
+                    subtitle.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            new BitmapDrawable(
+                                    getResources(), mWalletListItemModel.getTxStatusBitmap()),
+                            null, null, null);
+                }));
 
-        txDetails.setAdapter(new TwoLineItemRecyclerViewAdapter(items, TwoLineItemRecyclerViewAdapter.ORIENTATION.HORIZONTAL));
+        txDetails.setAdapter(new TwoLineItemRecyclerViewAdapter(
+                items, TwoLineItemRecyclerViewAdapter.ORIENTATION.HORIZONTAL));
     }
 }
