@@ -508,12 +508,10 @@ enum TransactionParser {
       let title = Strings.Wallet.solanaUnknownInstructionName
       let programId = SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
         key: Strings.Wallet.solanaInstructionProgramId, value: instruction.programId)
-      let accountPubkeys = instruction.accountMetas.map(\.pubkey)
-      let accounts = SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
-        key: Strings.Wallet.solanaInstructionAccounts, value: accountPubkeys.isEmpty ? "[]" : accountPubkeys.joined(separator: "\n"))
+      let accounts = instruction.accountKeyValues
       let data = SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
         key: Strings.Wallet.solanaInstructionData, value: "\(instruction.data)")
-      return .init(name: title, details: [programId, accounts, data], instruction: instruction)
+      return .init(name: title, details: [programId] + accounts + [data], instruction: instruction)
     }
     let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle ?? .decimals(precision: 9))
     var details: [SolanaTxDetails.ParsedSolanaInstruction.KeyValue] = []
