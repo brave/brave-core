@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
   if (command_line->HasSwitch(
           brave_vpn::kBraveVpnWireguardServiceConnectSwitchName)) {
     return brave_vpn::wireguard::RunWireguardTunnelService(
-        command_line->GetSwitchValueNative(
+        command_line->GetSwitchValuePath(
             brave_vpn::kBraveVpnWireguardServiceConnectSwitchName));
   }
 

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/wireguard_tunnel_service.h"
 
-#include <windows.h>
-#include <winsvc.h>
 #include <string>
 #include <vector>
 
@@ -16,7 +14,13 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/logging.h"
 #include "base/path_service.h"
+#include "base/scoped_native_library.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/win/access_control_list.h"
+#include "base/win/scoped_handle.h"
+#include "base/win/security_descriptor.h"
+#include "base/win/sid.h"
+#include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service_constants.h"
@@ -26,6 +30,75 @@ namespace brave_vpn {
 namespace {
 
 constexpr wchar_t kBraveWireguardConfig[] = L"wireguard.brave.conf";
+
+bool AddACEToPath(const base::FilePath& path,
+                  const std::vector<base::win::Sid>& sids,
+                  DWORD access_mask,
+                  DWORD inheritance,
+                  bool recursive,
+                  base::win::SecurityAccessMode access_mode) {
+  DCHECK(!path.empty());
+  if (sids.empty()) {
+    return true;
+  }
+
+  // Intentially take empty descriptor to avoid inherited permissions.
+  base::win::SecurityDescriptor sd;
+
+  std::vector<base::win::ExplicitAccessEntry> entries;
+  for (const base::win::Sid& sid : sids) {
+    entries.emplace_back(sid, access_mode, access_mask, inheritance);
+  }
+  if (!sd.SetDaclEntries(entries)) {
+    return false;
+  }
+
+  if (recursive) {
+    return sd.WriteToFile(path, DACL_SECURITY_INFORMATION);
+  }
+
+  base::win::ScopedHandle handle(
+      ::CreateFile(path.value().c_str(), WRITE_DAC, 0, nullptr, OPEN_EXISTING,
+                   FILE_FLAG_BACKUP_SEMANTICS, nullptr));
+  if (!handle.is_valid()) {
+    VLOG(1) << "Failed opening path \"" << path.value() << "\" to write DACL";
+    return false;
+  }
+  return sd.WriteToHandle(handle.get(), base::win::SecurityObjectType::kKernel,
+                          DACL_SECURITY_INFORMATION);
+}
+
+absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
+  base::FilePath temp_dir_path;
+  // Intentionally using base::GetTempDir to reuse same directory between
+  // launches.
+  if (!base::GetTempDir(&temp_dir_path) || temp_dir_path.empty()) {
+    VLOG(1) << "Unable to get temporary directory";
+    return absl::nullopt;
+  }
+  base::ScopedTempDir scoped_temp_dir;
+  if (!scoped_temp_dir.Set(temp_dir_path.Append(base::FilePath(L"BraveVpn")))) {
+    return absl::nullopt;
+  }
+  base::FilePath temp_file_path(
+      scoped_temp_dir.GetPath().Append(kBraveWireguardConfig));
+
+  if (!base::WriteFile(temp_file_path, config)) {
+    VLOG(1) << "Failed to write config to file:" << temp_file_path;
+    return absl::nullopt;
+  }
+  if (!AddACEToPath(temp_file_path,
+                    base::win::Sid::FromKnownSidVector(
+                        {base::win::WellKnownSid::kService}),
+                    GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE, 0,
+                    /*recursive=*/false,
+                    base::win::SecurityAccessMode::kGrant)) {
+    VLOG(1) << "Failed to set config file permissions:" << temp_file_path;
+  }
+  // Release temp directory to send path to the WireguardTunnelService.
+  scoped_temp_dir.Take();
+  return temp_file_path;
+}
 
 bool IsServiceRunning(SC_HANDLE service) {
   SERVICE_STATUS service_status = {0};
@@ -68,9 +141,11 @@ bool RemoveExistingWireguardService() {
         VLOG(1) << "ControlService failed to send stop signal";
         return false;
       }
+      // TODO(spylogsster): Wait until service stopped.
     }
     if (!DeleteService(service.Get())) {
-      VLOG(1) << "DeleteService failed";
+      VLOG(1) << "DeleteService failed, error: " << std::hex
+              << HRESULTFromLastError();
       return false;
     }
   }
@@ -78,7 +153,19 @@ bool RemoveExistingWireguardService() {
 }
 
 // Creates and launches a new Wireguard service with specific config.
-bool CreateAndRunBraveWireguardService(const std::wstring& config) {
+bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
+  std::string config;
+  if (!base::Base64Decode(base::WideToUTF8(encoded_config), &config) ||
+      config.empty()) {
+    VLOG(1) << "Unable to decode wireguard config";
+    return S_FALSE;
+  }
+  auto config_file_path = WriteConfigToFile(config);
+  if (!config_file_path.has_value()) {
+    VLOG(1) << "Unable to save config file";
+    return false;
+  }
+
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS));
   if (!scm.IsValid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: "
@@ -86,14 +173,16 @@ bool CreateAndRunBraveWireguardService(const std::wstring& config) {
             << ", error: " << std::hex << HRESULTFromLastError();
     return false;
   }
+
   base::FilePath directory;
   if (!base::PathService::Get(base::DIR_EXE, &directory)) {
     return false;
   }
   base::CommandLine service_cmd(
       directory.Append(brave_vpn::kBraveVpnWireguardServiceExecutable));
-  service_cmd.AppendSwitchNative(
-      brave_vpn::kBraveVpnWireguardServiceConnectSwitchName, config);
+  service_cmd.AppendSwitchPath(
+      brave_vpn::kBraveVpnWireguardServiceConnectSwitchName,
+      config_file_path.value());
 
   ScopedScHandle service(::CreateService(
       scm.Get(), GetBraveVpnWireguardTunnelServiceName().c_str(),
@@ -126,94 +215,62 @@ bool CreateAndRunBraveWireguardService(const std::wstring& config) {
   return DeleteService(service.Get()) != 0;
 }
 
-int RunWireguardTunnelService(const std::wstring& encoded_config) {
-  std::string config;
-  if (!base::Base64Decode(base::WideToUTF8(encoded_config), &config) ||
-      config.empty()) {
-    VLOG(1) << "Unable to decode wireguard config";
-    return S_FALSE;
-  }
-  base::ScopedTempDir temp_dir;
-  if (!temp_dir.CreateUniqueTempDir()) {
+int RunWireguardTunnelService(const base::FilePath& config_file_path) {
+  base::ScopedTempDir config_dir;
+  if (config_file_path.empty() || !config_dir.Set(config_file_path.DirName())) {
+    VLOG(1) << "Wrong path to config file:" << config_file_path;
     return S_FALSE;
   }
 
-  base::FilePath temp_file_path(
-      temp_dir.GetPath().Append(kBraveWireguardConfig));
-  if (!base::WriteFile(temp_file_path, config)) {
-    return S_FALSE;
-  }
+  {
+    base::FilePath directory;
+    if (!base::PathService::Get(base::DIR_EXE, &directory)) {
+      return S_FALSE;
+    }
+    typedef bool WireGuardTunnelService(const LPCWSTR settings);
+    base::ScopedNativeLibrary tunnel_lib(directory.Append(L"tunnel.dll"));
 
-  typedef bool WireGuardTunnelService(const LPCWSTR settings);
-  base::FilePath directory;
-  if (!base::PathService::Get(base::DIR_EXE, &directory)) {
-    return S_FALSE;
-  }
+    WireGuardTunnelService* tunnel_proc =
+        reinterpret_cast<WireGuardTunnelService*>(
+            tunnel_lib.GetFunctionPointer("WireGuardTunnelService"));
+    if (!tunnel_proc) {
+      VLOG(1) << __func__ << ": WireGuardTunnelService not found error: "
+              << tunnel_lib.GetError()->ToString();
+      return S_FALSE;
+    }
 
-  auto tunnel_dll_path = directory.Append(L"tunnel.dll").value();
-  HMODULE tunnel_lib = LoadLibrary(tunnel_dll_path.c_str());
-  if (!tunnel_lib) {
-    VLOG(1) << __func__ << ": tunnel.dll not found, error: "
-            << logging::SystemErrorCodeToString(
-                   logging::GetLastSystemErrorCode());
-    return S_FALSE;
-  }
-
-  WireGuardTunnelService* tunnel_proc =
-      reinterpret_cast<WireGuardTunnelService*>(
-          GetProcAddress(tunnel_lib, "WireGuardTunnelService"));
-  if (!tunnel_proc) {
-    VLOG(1) << __func__ << ": WireGuardTunnelService not found error: "
-            << logging::SystemErrorCodeToString(
-                   logging::GetLastSystemErrorCode());
-    return S_FALSE;
-  }
-
-  auto result = tunnel_proc(temp_file_path.value().c_str());
-
-  if (!result) {
+    if (tunnel_proc(config_file_path.value().c_str())) {
+      return S_OK;
+    }
     VLOG(1) << "Failed to activate tunnel service:"
-            << logging::SystemErrorCodeToString(
-                   logging::GetLastSystemErrorCode())
-            << " -> " << std::hex << HRESULTFromLastError();
+            << tunnel_lib.GetError()->ToString();
   }
-  return result;
+  return S_FALSE;
 }
 
 bool WireguardGenerateKeypair(std::string* public_key,
                               std::string* private_key) {
   base::FilePath directory;
   if (!base::PathService::Get(base::DIR_EXE, &directory)) {
-    VLOG(1) << __func__ << ": executable path not found, error: "
-            << logging::SystemErrorCodeToString(
-                   logging::GetLastSystemErrorCode());
+    VLOG(1) << __func__ << ": executable path not found";
     return false;
   }
-  auto tunnel_dll_path = directory.Append(L"tunnel.dll").value();
-  HMODULE tunnel_lib = LoadLibrary(tunnel_dll_path.c_str());
-  if (!tunnel_lib) {
-    VLOG(1) << __func__ << ": tunnel.dll not found, error: "
-            << logging::SystemErrorCodeToString(
-                   logging::GetLastSystemErrorCode());
-    return false;
-  }
-
+  base::ScopedNativeLibrary tunnel_lib(directory.Append(L"tunnel.dll"));
   typedef bool WireGuardGenerateKeypair(uint8_t[32], uint8_t[32]);
   std::vector<uint8_t> public_key_bytes(32);
   std::vector<uint8_t> private_key_bytes(32);
+
   WireGuardGenerateKeypair* generate_proc =
       reinterpret_cast<WireGuardGenerateKeypair*>(
-          GetProcAddress(tunnel_lib, "WireGuardGenerateKeypair"));
+          tunnel_lib.GetFunctionPointer("WireGuardGenerateKeypair"));
   if (!generate_proc) {
     VLOG(1) << __func__ << ": WireGuardGenerateKeypair not found error: "
-            << logging::SystemErrorCodeToString(
-                   logging::GetLastSystemErrorCode());
+            << tunnel_lib.GetError()->ToString();
     return false;
   }
-  auto result =
-      generate_proc(public_key_bytes.data(), private_key_bytes.data());
-
-  if (result) {
+  if (generate_proc(public_key_bytes.data(), private_key_bytes.data())) {
+    VLOG(1) << __func__ << "Unable to generate keys, error:"
+            << tunnel_lib.GetError()->ToString();
     return false;
   }
 

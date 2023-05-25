@@ -7,7 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_WIREGUARD_TUNNEL_SERVICE_H_
 
 #include <string>
-#include "base/files/file_path.h"
+
+namespace base {
+class FilePath;
+}  // namespace base
 
 namespace brave_vpn {
 
@@ -19,7 +22,7 @@ bool RemoveExistingWireguardService();
 bool CreateAndRunBraveWireguardService(const std::wstring& config);
 
 // Functions used inside Wireguard service to setup connection.
-int RunWireguardTunnelService(const std::wstring& config);
+int RunWireguardTunnelService(const base::FilePath& config);
 bool WireguardGenerateKeypair(std::string* public_key,
                               std::string* private_key);
 }  // namespace wireguard
