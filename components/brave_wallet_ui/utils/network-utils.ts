@@ -110,3 +110,10 @@ export const hasEIP1559Support = (
     network.isEip1559
   )
 }
+
+export const reduceNetworkDisplayName = (name?: string) => {
+  if (!name) {
+    return ''
+  }
+  return name.split(' ')[0]
+}

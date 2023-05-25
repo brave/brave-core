@@ -7,6 +7,7 @@ import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 import { NftsPinningStatusType } from '../page/constants/action_types'
+import { AccountInfoEntity } from '../common/slices/entities/account-info.entity'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
@@ -421,7 +422,8 @@ export interface PortfolioTokenHistoryAndInfo {
 
 interface BaseTransactionParams {
   network: BraveWallet.NetworkInfo
-  fromAccount: WalletAccountType
+  // FIXME(josheleonard): Should be just AccountInfoEntity
+  fromAccount: WalletAccountType | AccountInfoEntity
   to: string
   value: string
   coin: BraveWallet.CoinType
@@ -847,7 +849,7 @@ export interface NFTAtrribute {
   traitType: string
   value: string,
   traitRarity?: string
-} 
+}
 
 export interface NFTMetadataReturnType {
   metadataUrl?: string
@@ -1078,6 +1080,25 @@ const BitcoinKeyringTypes = [
 export type BitcoinKeyring = typeof BitcoinKeyringTypes[number]
 
 const BitcoinNetworkTypes = [
-    BraveWallet.BITCOIN_MAINNET, BraveWallet.BITCOIN_TESTNET
+  BraveWallet.BITCOIN_MAINNET, BraveWallet.BITCOIN_TESTNET
 ] as const
 export type BitcoinNetwork = typeof BitcoinNetworkTypes[number]
+
+
+export type GasFeeOption = {
+  id: string
+  name: string
+  icon: string
+}
+
+export type GasEstimate = {
+  gasFee: string
+  gasFeeGwei?: string
+  gasFeeFiat?: string
+  time?: string
+}
+
+export type SwapAndSend = {
+  label: string
+  name: string
+}

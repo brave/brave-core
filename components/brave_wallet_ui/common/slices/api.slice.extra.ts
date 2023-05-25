@@ -16,10 +16,16 @@ import type {
 import {
   useGetAccountInfosRegistryQuery,
   useGetNetworkQuery,
+  useGetSelectedAccountAddressQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
 } from './api.slice'
+
+// entities
+import {
+  accountInfoEntityAdaptorInitialState
+} from './entities/account-info.entity'
 
 // utils
 import {
@@ -48,6 +54,25 @@ export const useAccountQuery = (
       })
     }
   )
+}
+
+export const useSelectedAccountQuery = () => {
+  const {
+    data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
+    isLoading: isLoadingAccounts
+  } = useGetAccountInfosRegistryQuery(undefined)
+
+  const { data: selectedAccountAddress, isLoading: isLoadingSelectedAddress } =
+    useGetSelectedAccountAddressQuery(isLoadingAccounts ? skipToken : undefined)
+
+  const selectedAccount = selectedAccountAddress
+    ? findAccountFromRegistry(selectedAccountAddress, accountInfosRegistry)
+    : undefined
+
+  return {
+    isLoading: isLoadingAccounts || isLoadingSelectedAddress,
+    data: selectedAccount
+  }
 }
 
 export const useGetCombinedTokensListQuery = (
@@ -80,7 +105,7 @@ export const useGetCombinedTokensListQuery = (
     if (isLoadingUserTokens || isLoadingKnownTokens) {
       return {
         isLoading: true,
-        data: []
+        data: [] as BraveWallet.BlockchainToken[]
       }
     }
     const combinedList = selectCombinedTokensList(knownTokens, userTokens)

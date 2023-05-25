@@ -723,7 +723,9 @@ export function createWalletApi (
         ]
       }),
       setNetwork: mutation<
-        Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>,
+        Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'> & {
+          selectedAccount?: AccountInfoEntity
+        },
         Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
       >({
         queryFn: async (
@@ -733,7 +735,7 @@ export function createWalletApi (
           baseQuery
         ) => {
           try {
-            const { braveWalletService } = baseQuery(undefined).data
+            const { data: { braveWalletService }, cache } = baseQuery(undefined)
 
             await dispatch(
               walletApi.endpoints.setSelectedCoin.initiate(coin)
@@ -746,8 +748,25 @@ export function createWalletApi (
                 'braveWalletService.SetChainIdForActiveOrigin failed'
               )
             }
+
+            // FIXME(josheleonard): could be written in a more efficient way.
+            // Clients setting networks must be aware of the selected account
+            // corresponding to the new network.
+            const accountsRegistry = await cache.getAccountsRegistry()
+            cache.clearSelectedAccount()
+            const selectedAccountAddress =
+              await cache.getSelectedAccountAddress()
+
+            const selectedAccount = selectedAccountAddress
+              ? accountsRegistry.entities[
+                  accountInfoEntityAdaptor.selectId({
+                    address: selectedAccountAddress
+                  })
+                ]
+              : undefined
+
             return {
-              data: { chainId, coin }
+              data: { chainId, coin, selectedAccount }
             }
           } catch (error) {
             console.error(error)

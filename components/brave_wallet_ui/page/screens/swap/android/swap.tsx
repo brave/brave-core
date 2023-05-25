@@ -8,7 +8,6 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
 import { initLocale } from 'brave-ui'
-import '@brave/swap-interface/dist/style.css'
 
 // style
 import walletDarkTheme from '../../../../theme/wallet-dark'

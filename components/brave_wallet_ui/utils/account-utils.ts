@@ -124,6 +124,8 @@ export function isHardwareAccount(
   return !!account.hardware?.deviceId
 }
 
+
+// FIXME(onyb): replace with findAccountFromRegistry
 export const findAccountInList = (
   account: WalletAccountType | undefined,
   accounts: WalletAccountType[]
