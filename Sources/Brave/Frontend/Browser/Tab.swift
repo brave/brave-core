@@ -86,9 +86,7 @@ class Tab: NSObject {
   var sslPinningError: Error?
 
   var walletEthProvider: BraveWalletEthereumProvider?
-  var walletEthProviderScript: WKUserScript?
   var walletSolProvider: BraveWalletSolanaProvider?
-  var walletSolProviderScripts: [BraveWalletProviderScriptKey: String] = [:]
   var tabDappStore: TabDappStore = .init()
   var isWalletIconVisible: Bool = false {
     didSet {
@@ -1070,8 +1068,6 @@ extension Tab {
   private func updateInjectedScripts() {
     UserScriptManager.shared.loadCustomScripts(into: self,
                                                userScripts: userScripts,
-                                               customScripts: customUserScripts,
-                                               walletEthProviderScript: walletEthProviderScript,
-                                               walletSolProviderScripts: walletSolProviderScripts)
+                                               customScripts: customUserScripts)
   }
 }

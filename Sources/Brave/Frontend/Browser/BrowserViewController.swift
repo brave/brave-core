@@ -419,22 +419,7 @@ public class BrowserViewController: UIViewController {
     updateApplicationShortcuts()
     tabManager.addDelegate(self)
     tabManager.addNavigationDelegate(self)
-    tabManager.makeWalletEthProvider = { [weak self] tab in
-      guard let self = self,
-            let provider = self.braveCore.braveWalletAPI.ethereumProvider(with: tab, isPrivateBrowsing: tab.isPrivate),
-            let js = self.braveCore.braveWalletAPI.providerScripts(for: .eth)[.ethereum] else {
-        return nil
-      }
-      return (provider, js: js)
-    }
-    tabManager.makeWalletSolProvider = { [weak self] tab in
-      guard let self = self,
-            let provider = self.braveCore.braveWalletAPI.solanaProvider(with: tab, isPrivateBrowsing: tab.isPrivate) else {
-        return nil
-      }
-      let scripts = self.braveCore.braveWalletAPI.providerScripts(for: .sol)
-      return (provider, jsScripts: scripts)
-    }
+    UserScriptManager.shared.fetchWalletScripts(from: braveCore.braveWalletAPI)
     downloadQueue.delegate = self
 
     // Observe some user preferences
