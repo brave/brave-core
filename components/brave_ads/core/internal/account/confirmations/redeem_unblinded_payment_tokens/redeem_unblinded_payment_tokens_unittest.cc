@@ -175,42 +175,6 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
-TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
-  // Arrange
-  SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
-
-  privacy::SetUnblindedPaymentTokens(/*count*/ 1);
-
-  // Act
-  const InSequence seq;
-
-  EXPECT_CALL(ads_client_mock_, UrlRequest(_, _)).Times(0);
-
-  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnFailedToRedeemUnblindedPaymentTokens());
-
-  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens(_))
-      .Times(0);
-
-  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRetryRedeemingUnblindedPaymentTokens())
-      .Times(0);
-
-  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_))
-      .Times(0);
-
-  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidScheduleNextUnblindedPaymentTokenRedemption(_))
-      .Times(0);
-
-  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(/*wallet*/ {});
-
-  // Assert
-  EXPECT_EQ(1U, privacy::GetUnblindedPaymentTokens().Count());
-}
-
 TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   // Arrange
   SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());

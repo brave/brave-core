@@ -61,19 +61,17 @@ class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
     UnitTestBase::TearDown();
   }
 
-  void OnWalletWasCreated(const WalletInfo& /*wallet*/) override {
-    wallet_was_created_ = true;
+  void OnDidInitializeWallet(const WalletInfo& /*wallet*/) override {
+    wallet_did_initialize_ = true;
   }
 
-  void OnWalletDidUpdate(const WalletInfo& /*wallet*/) override {
-    wallet_did_update_ = true;
+  void OnFailedToInitializeWallet() override {
+    failed_to_initialize_wallet_ = true;
   }
 
   void OnWalletDidChange(const WalletInfo& /*wallet*/) override {
     wallet_did_change_ = true;
   }
-
-  void OnInvalidWallet() override { invalid_wallet_ = true; }
 
   void OnDidProcessDeposit(const TransactionInfo& transaction) override {
     did_process_deposit_ = true;
@@ -95,10 +93,9 @@ class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
 
   std::unique_ptr<Account> account_;
 
-  bool wallet_was_created_ = false;
-  bool wallet_did_update_ = false;
+  bool wallet_did_initialize_ = false;
+  bool failed_to_initialize_wallet_ = false;
   bool wallet_did_change_ = false;
-  bool invalid_wallet_ = false;
 
   TransactionInfo transaction_;
   bool did_process_deposit_ = false;
@@ -114,10 +111,9 @@ TEST_F(BraveAdsAccountTest, SetWallet) {
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Assert
-  EXPECT_TRUE(wallet_was_created_);
-  EXPECT_TRUE(wallet_did_update_);
+  EXPECT_TRUE(wallet_did_initialize_);
+  EXPECT_FALSE(failed_to_initialize_wallet_);
   EXPECT_FALSE(wallet_did_change_);
-  EXPECT_FALSE(invalid_wallet_);
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
@@ -127,10 +123,9 @@ TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
   account_->SetWallet(/*payment_id*/ {}, kWalletRecoverySeed);
 
   // Assert
-  EXPECT_FALSE(wallet_was_created_);
-  EXPECT_FALSE(wallet_did_update_);
+  EXPECT_FALSE(wallet_did_initialize_);
+  EXPECT_TRUE(failed_to_initialize_wallet_);
   EXPECT_FALSE(wallet_did_change_);
-  EXPECT_TRUE(invalid_wallet_);
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
@@ -140,10 +135,9 @@ TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
   account_->SetWallet(kWalletPaymentId, kInvalidWalletRecoverySeed);
 
   // Assert
-  EXPECT_FALSE(wallet_was_created_);
-  EXPECT_FALSE(wallet_did_update_);
+  EXPECT_FALSE(wallet_did_initialize_);
+  EXPECT_TRUE(failed_to_initialize_wallet_);
   EXPECT_FALSE(wallet_did_change_);
-  EXPECT_TRUE(invalid_wallet_);
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
@@ -153,10 +147,9 @@ TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
   account_->SetWallet(kWalletPaymentId, /*recovery_seed*/ "");
 
   // Assert
-  EXPECT_FALSE(wallet_was_created_);
-  EXPECT_FALSE(wallet_did_update_);
+  EXPECT_FALSE(wallet_did_initialize_);
+  EXPECT_TRUE(failed_to_initialize_wallet_);
   EXPECT_FALSE(wallet_did_change_);
-  EXPECT_TRUE(invalid_wallet_);
 }
 
 TEST_F(BraveAdsAccountTest, ChangeWallet) {
@@ -168,10 +161,9 @@ TEST_F(BraveAdsAccountTest, ChangeWallet) {
                       kWalletRecoverySeed);
 
   // Assert
-  EXPECT_TRUE(wallet_was_created_);
-  EXPECT_TRUE(wallet_did_update_);
+  EXPECT_TRUE(wallet_did_initialize_);
+  EXPECT_FALSE(failed_to_initialize_wallet_);
   EXPECT_TRUE(wallet_did_change_);
-  EXPECT_FALSE(invalid_wallet_);
 }
 
 TEST_F(BraveAdsAccountTest, GetWallet) {
@@ -179,7 +171,6 @@ TEST_F(BraveAdsAccountTest, GetWallet) {
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Act
-  const WalletInfo& wallet = account_->GetWallet();
 
   // Assert
   WalletInfo expected_wallet;
@@ -187,10 +178,10 @@ TEST_F(BraveAdsAccountTest, GetWallet) {
   expected_wallet.public_key = kWalletPublicKey;
   expected_wallet.secret_key = kWalletSecretKey;
 
-  EXPECT_EQ(expected_wallet, wallet);
+  EXPECT_EQ(expected_wallet, account_->GetWallet());
 }
 
-TEST_F(BraveAdsAccountTest, GetIssuersWhenWalletIsCreated) {
+TEST_F(BraveAdsAccountTest, GetIssuersWhenDidInitializeWallet) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
@@ -202,16 +193,15 @@ TEST_F(BraveAdsAccountTest, GetIssuersWhenWalletIsCreated) {
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Assert
-  EXPECT_TRUE(wallet_was_created_);
-  EXPECT_TRUE(wallet_did_update_);
+  EXPECT_TRUE(wallet_did_initialize_);
+  EXPECT_FALSE(failed_to_initialize_wallet_);
   EXPECT_FALSE(wallet_did_change_);
-  EXPECT_FALSE(invalid_wallet_);
 
   EXPECT_EQ(BuildIssuers(), GetIssuers());
 }
 
 TEST_F(BraveAdsAccountTest,
-       DoNotGetIssuersWhenWalletIsCreatedIfIssuersAlreadyExist) {
+       DoNotGetIssuersWhenDidInitializeWalletIfIssuersAlreadyExist) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -221,10 +211,9 @@ TEST_F(BraveAdsAccountTest,
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Assert
-  EXPECT_TRUE(wallet_was_created_);
-  EXPECT_TRUE(wallet_did_update_);
+  EXPECT_TRUE(wallet_did_initialize_);
+  EXPECT_FALSE(failed_to_initialize_wallet_);
   EXPECT_FALSE(wallet_did_change_);
-  EXPECT_FALSE(invalid_wallet_);
 
   EXPECT_EQ(BuildIssuers(), GetIssuers());
 }

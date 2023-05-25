@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/base64.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
@@ -28,11 +27,10 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -70,43 +68,30 @@ void Account::RemoveObserver(AccountObserver* observer) {
 
 void Account::SetWallet(const std::string& payment_id,
                         const std::string& recovery_seed) {
-  const absl::optional<std::vector<uint8_t>> raw_recovery_seed =
-      base::Base64Decode(recovery_seed);
-  if (!raw_recovery_seed) {
-    BLOG(0, "Failed to set wallet");
-    return NotifyInvalidWallet();
+  const absl::optional<WalletInfo> last_wallet_copy = wallet_;
+
+  const absl::optional<WalletInfo>& wallet =
+      ToWallet(payment_id, recovery_seed);
+  if (!wallet) {
+    BLOG(0, "Failed to initialize wallet");
+    return NotifyFailedToInitializeWallet();
   }
 
-  const WalletInfo last_wallet_copy = GetWallet();
-
-  if (!wallet_.Set(payment_id, *raw_recovery_seed)) {
-    BLOG(0, "Failed to set wallet");
-    return NotifyInvalidWallet();
+  if (wallet_ == wallet) {
+    return;
   }
 
-  const WalletInfo& wallet = GetWallet();
+  wallet_ = wallet;
 
-  if (wallet.WasUpdated(last_wallet_copy)) {
-    WalletDidUpdate(wallet);
+  if (last_wallet_copy && wallet != last_wallet_copy) {
+    BLOG(1, "Wallet was changed");
+    NotifyWalletDidChange(*wallet);
+    return Reset();
   }
 
-  if (wallet.HasChanged(last_wallet_copy)) {
-    return WalletDidChange(wallet);
-  }
-
-  if (wallet.WasCreated(last_wallet_copy)) {
-    WalletWasCreated(wallet);
-
-    if (!HasIssuers()) {
-      return MaybeFetchIssuers();
-    }
-  }
-
-  TopUpUnblindedTokens();
-}
-
-const WalletInfo& Account::GetWallet() const {
-  return wallet_.Get();
+  BLOG(1, "Successfully initialized wallet");
+  NotifyDidInitializeWallet(*wallet);
+  MaybeFetchIssuers();
 }
 
 void Account::Deposit(const std::string& creative_instance_id,
@@ -148,13 +133,7 @@ void Account::Initialize() {
   issuers_ = std::make_unique<Issuers>();
   issuers_->SetDelegate(this);
 
-  redeem_unblinded_payment_tokens_ =
-      std::make_unique<RedeemUnblindedPaymentTokens>();
-  redeem_unblinded_payment_tokens_->SetDelegate(this);
-
-  refill_unblinded_tokens_ =
-      std::make_unique<RefillUnblindedTokens>(token_generator_);
-  refill_unblinded_tokens_->SetDelegate(this);
+  MaybeRewardUsers();
 }
 
 void Account::Process() {
@@ -165,6 +144,30 @@ void Account::Process() {
   MaybeFetchIssuers();
 
   ProcessClearingCycle();
+}
+
+void Account::MaybeRewardUsers() {
+  if (!ShouldRewardUser()) {
+    if (redeem_unblinded_payment_tokens_) {
+      redeem_unblinded_payment_tokens_.reset();
+      BLOG(1, "Stop redeeming unblinded payment tokens");
+    }
+
+    if (refill_unblinded_tokens_) {
+      refill_unblinded_tokens_.reset();
+      BLOG(1, "Stop refilling unblinded tokens");
+    }
+
+    return;
+  }
+
+  redeem_unblinded_payment_tokens_ =
+      std::make_unique<RedeemUnblindedPaymentTokens>();
+  redeem_unblinded_payment_tokens_->SetDelegate(this);
+
+  refill_unblinded_tokens_ =
+      std::make_unique<RefillUnblindedTokens>(token_generator_);
+  refill_unblinded_tokens_->SetDelegate(this);
 }
 
 void Account::MaybeFetchIssuers() const {
@@ -250,33 +253,17 @@ void Account::ProcessClearingCycle() const {
 }
 
 void Account::ProcessUnclearedTransactions() const {
-  if (ShouldRewardUser()) {
-    redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(GetWallet());
+  if (wallet_ && redeem_unblinded_payment_tokens_) {
+    redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(*wallet_);
   }
 }
 
-void Account::WalletWasCreated(const WalletInfo& wallet) const {
-  BLOG(1, "Successfully created wallet");
-
-  NotifyWalletWasCreated(wallet);
+void Account::Reset() const {
+  ResetRewards(
+      base::BindOnce(&Account::ResetCallback, weak_factory_.GetWeakPtr()));
 }
 
-void Account::WalletDidUpdate(const WalletInfo& wallet) const {
-  BLOG(1, "Successfully set wallet");
-
-  NotifyWalletDidUpdate(wallet);
-}
-
-void Account::WalletDidChange(const WalletInfo& wallet) const {
-  BLOG(1, "Wallet changed");
-
-  NotifyWalletDidChange(wallet);
-
-  ResetRewards(base::BindOnce(&Account::ResetRewardsCallback,
-                              weak_factory_.GetWeakPtr()));
-}
-
-void Account::ResetRewardsCallback(const bool success) const {
+void Account::ResetCallback(const bool success) const {
   if (!success) {
     return BLOG(0, "Failed to reset rewards state");
   }
@@ -295,45 +282,35 @@ void Account::MaybeResetIssuersAndConfirmations() {
 
   Initialize();
 
-  ResetConfirmations();
-
   ResetIssuers();
+
+  ResetConfirmations();
 
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kShouldMigrateVerifiedRewardsUser, false);
-
-  MaybeFetchIssuers();
-
-  ProcessClearingCycle();
 }
 
 void Account::TopUpUnblindedTokens() const {
-  if (ShouldRewardUser()) {
-    refill_unblinded_tokens_->MaybeRefill(GetWallet());
+  if (wallet_ && refill_unblinded_tokens_) {
+    refill_unblinded_tokens_->MaybeRefill(*wallet_);
   }
 }
 
-void Account::NotifyWalletWasCreated(const WalletInfo& wallet) const {
+void Account::NotifyDidInitializeWallet(const WalletInfo& wallet) const {
   for (AccountObserver& observer : observers_) {
-    observer.OnWalletWasCreated(wallet);
+    observer.OnDidInitializeWallet(wallet);
   }
 }
 
-void Account::NotifyWalletDidUpdate(const WalletInfo& wallet) const {
+void Account::NotifyFailedToInitializeWallet() const {
   for (AccountObserver& observer : observers_) {
-    observer.OnWalletDidUpdate(wallet);
+    observer.OnFailedToInitializeWallet();
   }
 }
 
 void Account::NotifyWalletDidChange(const WalletInfo& wallet) const {
   for (AccountObserver& observer : observers_) {
     observer.OnWalletDidChange(wallet);
-  }
-}
-
-void Account::NotifyInvalidWallet() const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnInvalidWallet();
   }
 }
 
@@ -366,8 +343,8 @@ void Account::OnNotifyDidInitializeAds() {
 
 void Account::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
-    MaybeResetIssuersAndConfirmations();
-    MaybeFetchIssuers();
+    MaybeRewardUsers();
+    Process();
   } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
     MaybeResetIssuersAndConfirmations();
   }
@@ -419,9 +396,10 @@ void Account::OnDidRedeemUnblindedPaymentTokens(
 
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
-  const WalletInfo& wallet = GetWallet();
-  AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
-      wallet.payment_id, captcha_id);
+  if (wallet_) {
+    AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
+        wallet_->payment_id, captcha_id);
+  }
 }
 
 }  // namespace brave_ads
