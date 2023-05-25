@@ -1,4 +1,3 @@
-
 /* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -59,6 +58,11 @@ void BraveVPNWireguardConnectionAPIBase::Connect() {
   SetLastConnectionError(std::string());
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
 
+  // There's some fetched
+  if (!GetHostname().empty()) {
+    FetchProfileCredentials();
+    return;
+  }
   // If user doesn't select region explicitely, use default device region.
   std::string target_region_name = GetRegionDataManager().GetSelectedRegion();
   if (target_region_name.empty()) {
@@ -134,6 +138,7 @@ void BraveVPNWireguardConnectionAPIBase::OnVerifyCredentials(
 void BraveVPNWireguardConnectionAPIBase::OnDisconnected(bool success) {
   if (!success) {
     VLOG(1) << "Failed to stop wireguard tunnel service";
+    SetLastConnectionError("Failed to stop wireguard tunnel service");
     return;
   }
 

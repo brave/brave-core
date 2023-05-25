@@ -66,22 +66,19 @@ absl::optional<std::string> CreateWireguardConfig(
 
 bool EnableBraveVpnWireguardServiceImpl(const std::string& config) {
   base::win::AssertComInitialized();
-  HRESULT hr = S_OK;
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
-  CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(), nullptr,
-                   CLSCTX_LOCAL_SERVER,
-                   brave_vpn::GetBraveVpnWireguardServiceIid(),
-                   IID_PPV_ARGS_Helper(&service));
-  if (FAILED(hr)) {
+  if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
+                              nullptr, CLSCTX_LOCAL_SERVER,
+                              brave_vpn::GetBraveVpnWireguardServiceIid(),
+                              IID_PPV_ARGS_Helper(&service)))) {
     VLOG(1) << "Unable to create IBraveVpnWireguardManager instance";
     return false;
   }
 
-  hr = CoSetProxyBlanket(
-      service.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
-      COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-      RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING);
-  if (FAILED(hr)) {
+  if (FAILED(CoSetProxyBlanket(
+          service.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
+          COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
+          RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING))) {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
@@ -111,22 +108,20 @@ void EnableBraveVpnWireguardService(const std::string& config,
 
 bool DisableBraveVpnWireguardServiceImpl() {
   base::win::AssertComInitialized();
-  HRESULT hr = S_OK;
+
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
-  CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(), nullptr,
-                   CLSCTX_LOCAL_SERVER,
-                   brave_vpn::GetBraveVpnWireguardServiceIid(),
-                   IID_PPV_ARGS_Helper(&service));
-  if (FAILED(hr)) {
+  if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
+                              nullptr, CLSCTX_LOCAL_SERVER,
+                              brave_vpn::GetBraveVpnWireguardServiceIid(),
+                              IID_PPV_ARGS_Helper(&service)))) {
     VLOG(1) << "Unable to create IBraveVpnService instance";
     return false;
   }
 
-  hr = CoSetProxyBlanket(
-      service.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
-      COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-      RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING);
-  if (FAILED(hr)) {
+  if (FAILED(CoSetProxyBlanket(
+          service.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
+          COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
+          RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING))) {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
@@ -151,22 +146,19 @@ void DisableBraveVpnWireguardService(wireguard::BooleanCallback callback) {
 
 wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
   base::win::AssertComInitialized();
-  HRESULT hr = S_OK;
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
-  CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(), nullptr,
-                   CLSCTX_LOCAL_SERVER,
-                   brave_vpn::GetBraveVpnWireguardServiceIid(),
-                   IID_PPV_ARGS_Helper(&service));
-  if (FAILED(hr)) {
+  if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
+                              nullptr, CLSCTX_LOCAL_SERVER,
+                              brave_vpn::GetBraveVpnWireguardServiceIid(),
+                              IID_PPV_ARGS_Helper(&service)))) {
     VLOG(1) << "Unable to create IBraveVpnWireguardManager instance";
     return absl::nullopt;
   }
 
-  hr = CoSetProxyBlanket(
-      service.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
-      COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-      RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING);
-  if (FAILED(hr)) {
+  if (FAILED(CoSetProxyBlanket(
+          service.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
+          COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
+          RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING))) {
     VLOG(1) << "Unable to call EnableVpn interface";
     return absl::nullopt;
   }
