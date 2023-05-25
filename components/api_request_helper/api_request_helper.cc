@@ -9,7 +9,9 @@
 #include <vector>
 
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -119,6 +121,13 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const base::flat_map<std::string, std::string>& headers,
     const APIRequestOptions& request_options,
     ResponseConversionCallback conversion_callback) {
+  DVLOG(1) << __func__ << " url: " << url.spec();
+  DVLOG(2) << "Headers:";
+  for (auto & header : headers) {
+    DVLOG(2) << "> " << header.first << ": " << header.second;
+  }
+  DVLOG(2) << "Payload content-type: " << payload_content_type;
+  DVLOG(2) << "Payload: " << payload;
   std::unique_ptr<URLLoaderHandler> handler = CreateURLLoaderHandler(
       method, url, payload, payload_content_type,
       request_options.auto_retry_on_network_change,
@@ -291,6 +300,8 @@ APIRequestResult APIRequestHelper::ToAPIRequestResult(
       while (headers_list->EnumerateHeaderLines(&header_iter, &key, &value)) {
         key = base::ToLowerASCII(key);
         headers[key] = value;
+        DVLOG(2) << "< " << key << ": " << value;
+        DVLOG(1) << "Response code: " << response_code;
       }
     }
   }
@@ -396,6 +407,8 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
     }
     raw_body = converted_body.value();
   }
+
+  DVLOG(3) << "Reponse body: " << raw_body;
 
   api_request_helper_->data_decoder_->ParseJson(
       raw_body,
