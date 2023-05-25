@@ -93,7 +93,7 @@ extension BraveWallet.OriginInfo {
 }
 
 extension BraveWallet.CoinType {
-  var keyringId: String {
+  public var keyringId: String {
     switch self {
     case .eth:
       return BraveWallet.DefaultKeyringId

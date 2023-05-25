@@ -619,6 +619,21 @@ extension BrowserViewController: WKNavigationDelegate {
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
     tab.clearSolanaConnectedAccounts()
+    
+    // Providers need re-initialized when changing origin to align with desktop in
+    // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
+    // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
+    if let provider = braveCore.braveWalletAPI.ethereumProvider(with: tab, isPrivateBrowsing: tab.isPrivate) {
+      // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
+      // on initialization. Fetching allowed accounts requires the origin; so we need to
+      // initialize after `commitedURL` / `url` are updated above
+      tab.walletEthProvider = provider
+      tab.walletEthProvider?.`init`(tab)
+    }
+    if let provider = braveCore.braveWalletAPI.solanaProvider(with: tab, isPrivateBrowsing: tab.isPrivate) {
+      tab.walletSolProvider = provider
+      tab.walletSolProvider?.`init`(tab)
+    }
 
     rewards.reportTabNavigation(tabId: tab.rewardsId)
 

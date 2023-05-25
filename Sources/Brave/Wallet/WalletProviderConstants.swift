@@ -27,6 +27,6 @@ extension Web3ProviderEvent {
     .init("chainChanged", arguments: chainId)
   }
   static func ethereumAccountsChanged(accounts: [String]) -> Self {
-    .init("accountsChanged", arguments: accounts.first ?? "")
+    .init("accountsChanged", arguments: [accounts.first].compactMap { $0 })
   }
 }

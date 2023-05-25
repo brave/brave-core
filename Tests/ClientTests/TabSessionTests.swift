@@ -618,7 +618,7 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
     let group = DispatchGroup()
     for tab in self.tabManager.allTabs {
       // include all scripts
-      UserScriptManager.shared.loadCustomScripts(into: tab, userScripts: scripts, customScripts: customScripts, walletEthProviderScript: nil, walletSolProviderScripts: [:])
+      UserScriptManager.shared.loadCustomScripts(into: tab, userScripts: scripts, customScripts: customScripts)
 
       group.enter()
     }
