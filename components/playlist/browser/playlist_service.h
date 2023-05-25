@@ -121,6 +121,12 @@ class PlaylistService : public KeyedService,
 
   base::WeakPtr<PlaylistService> GetWeakPtr();
 
+  using FindMediaFilesFromContentsCallback =
+      base::OnceCallback<void(const GURL& target_url,
+                              std::vector<mojom::PlaylistItemPtr> items)>;
+  void FindMediaFilesFromContents(content::WebContents* contents,
+                                  FindMediaFilesFromContentsCallback callback);
+
   // mojom::PlaylistService:
   // TODO(sko) Make getters without callbacks and simplify codes in
   // PlaylistService and tests.
