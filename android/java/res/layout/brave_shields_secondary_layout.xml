@@ -40,6 +40,10 @@
 		layout="@layout/brave_shields_switcher"/>
 
 	<include
+		android:id="@+id/brave_shields_forget_first_party_storage_id"
+		layout="@layout/brave_shields_switcher"/>
+
+	<include
 		android:id="@+id/brave_shields_cross_site_trackers_layout_id"
 		layout="@layout/brave_shields_toggle_layout"/>
 	<include

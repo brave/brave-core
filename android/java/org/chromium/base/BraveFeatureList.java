@@ -28,4 +28,5 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_PLAYLIST = "Playlist";
     public static final String BRAVE_SPEEDREADER = "Speedreader";
     public static final String HTTPS_BY_DEFAULT = "HttpsByDefault";
+    public static final String BRAVE_FORGET_FIRST_PARTY_STORAGE = "BraveForgetFirstPartyStorage";
 }

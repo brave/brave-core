@@ -135,6 +135,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private OnCheckedChangeListener mBraveShieldsHTTPSEverywhereChangeListener;
     private SwitchCompat mBraveShieldsBlockingScriptsSwitch;
     private OnCheckedChangeListener mBraveShieldsBlockingScriptsChangeListener;
+    private SwitchCompat mBraveShieldsForgetFirstPartyStorageSwitch;
+    private OnCheckedChangeListener mBraveShieldsForgetFirstPartyStorageChangeListener;
 
     private View mPopupView;
     private LinearLayout mMainLayout;
@@ -793,6 +795,19 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mBraveShieldsBlockingScriptsSwitch = mBlockScriptsLayout.findViewById(R.id.brave_shields_switch);
         mBlockScriptsText.setText(R.string.brave_shields_blocks_scripts_switch);
         setupBlockingScriptsSwitchClick(mBraveShieldsBlockingScriptsSwitch);
+
+        LinearLayout forgetFirstPartyStorageLayout =
+                mSecondaryLayout.findViewById(R.id.brave_shields_forget_first_party_storage_id);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_FORGET_FIRST_PARTY_STORAGE)) {
+            TextView forgetFirstPartyStorageText =
+                    forgetFirstPartyStorageLayout.findViewById(R.id.brave_shields_switch_text);
+            forgetFirstPartyStorageText.setText(R.string.brave_forget_first_party_storage_switch);
+            mBraveShieldsForgetFirstPartyStorageSwitch =
+                    forgetFirstPartyStorageLayout.findViewById(R.id.brave_shields_switch);
+            setupForgetFirstPartyStorageSwitchClick(mBraveShieldsForgetFirstPartyStorageSwitch);
+        } else {
+            forgetFirstPartyStorageLayout.setVisibility(View.GONE);
+        }
     }
 
     private void setUpAboutLayout() {
@@ -999,6 +1014,60 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
+    private void setupForgetFirstPartyStorageSwitchClick(
+            SwitchCompat braveShieldsForgetFirstPartyStorageSwitch) {
+        if (null == braveShieldsForgetFirstPartyStorageSwitch) {
+            return;
+        }
+        setupForgetFirstPartyStorageSwitch(braveShieldsForgetFirstPartyStorageSwitch, false);
+
+        mBraveShieldsForgetFirstPartyStorageChangeListener = new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (0 != mHost.length()) {
+                    BraveShieldsContentSettings.setShields(mProfile, mHost,
+                            BraveShieldsContentSettings
+                                    .RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE,
+                            isChecked, false);
+                }
+            }
+        };
+
+        braveShieldsForgetFirstPartyStorageSwitch.setOnCheckedChangeListener(
+                mBraveShieldsForgetFirstPartyStorageChangeListener);
+    }
+
+    private void setupForgetFirstPartyStorageSwitch(
+            SwitchCompat braveShieldsForgetFirstPartyStorageSwitch, boolean fromTopSwitch) {
+        if (null == braveShieldsForgetFirstPartyStorageSwitch) {
+            return;
+        }
+        if (fromTopSwitch) {
+            // Prevents to fire an event when top shields changed
+            braveShieldsForgetFirstPartyStorageSwitch.setOnCheckedChangeListener(null);
+        }
+        if (0 != mHost.length()) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mHost,
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+                if (BraveShieldsContentSettings.getShields(mProfile, mHost,
+                            BraveShieldsContentSettings
+                                    .RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE)) {
+                    braveShieldsForgetFirstPartyStorageSwitch.setChecked(true);
+                } else {
+                    braveShieldsForgetFirstPartyStorageSwitch.setChecked(false);
+                }
+                braveShieldsForgetFirstPartyStorageSwitch.setEnabled(true);
+            } else {
+                braveShieldsForgetFirstPartyStorageSwitch.setChecked(false);
+                braveShieldsForgetFirstPartyStorageSwitch.setEnabled(false);
+            }
+        }
+        if (fromTopSwitch) {
+            braveShieldsForgetFirstPartyStorageSwitch.setOnCheckedChangeListener(
+                    mBraveShieldsForgetFirstPartyStorageChangeListener);
+        }
+    }
+
     private void setupMainSwitchClick(SwitchCompat braveShieldsSwitch) {
         if (null == braveShieldsSwitch) {
             return;
@@ -1020,6 +1089,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, isChecked, false);
                     setupHTTPSEverywhereSwitch(mBraveShieldsHTTPSEverywhereSwitch, true);
                     setupBlockingScriptsSwitch(mBraveShieldsBlockingScriptsSwitch, true);
+                    setupForgetFirstPartyStorageSwitch(
+                            mBraveShieldsForgetFirstPartyStorageSwitch, true);
                     if (null != mMenuObserver) {
                         mMenuObserver.onMenuTopShieldsChanged(isChecked, true);
                     }
