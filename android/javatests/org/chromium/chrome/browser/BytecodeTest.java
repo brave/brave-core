@@ -913,9 +913,6 @@ public class BytecodeTest {
                         "mNewTabImageButton"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mToggleTabStackButton"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "mShouldShowNewTabVariation"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
