@@ -11,6 +11,7 @@ import {
   ApproveERC20Params,
   BraveKeyrings,
   BraveWallet,
+  CoinTypes,
   ER20TransferParams,
   ERC721Metadata,
   ERC721TransferFromParams,
@@ -131,12 +132,20 @@ type GetCombinedTokenBalanceForAllAccountsArg =
   GetAccountTokenCurrentBalanceArg['token'] &
     Pick<BraveWallet.BlockchainToken, 'coin'>
 
-type GetTokenBalancesForChainIdArg = {
-  address: string
-  contracts?: string[]
+type GetSPLTokenBalancesArg = {
+  pubkey: string
   chainId: string
-  coin: BraveWallet.CoinType
+  coin: typeof CoinTypes.SOL
 }
+type GetERC20TokenBalancesArg = {
+  address: string
+  contracts: string[]
+  chainId: string
+  coin: typeof CoinTypes.ETH
+}
+type GetTokenBalancesForChainIdArg =
+  | GetSPLTokenBalancesArg
+  | GetERC20TokenBalancesArg
 
 export interface IsEip1559ChangedMutationArg {
   id: string
@@ -1433,9 +1442,9 @@ export function createWalletApi (
           try {
             const { jsonRpcService } = baseQuery(undefined).data
 
-            if (arg.coin === BraveWallet.CoinType.ETH) {
+            if (arg.coin === CoinTypes.ETH) {
               const result = await jsonRpcService.getERC20TokenBalances(
-                arg.contracts ?? [],
+                arg.contracts,
                 arg.address,
                 arg.chainId
               )
@@ -1461,9 +1470,9 @@ export function createWalletApi (
               }
             }
 
-            if (arg.coin === BraveWallet.CoinType.SOL) {
+            if (arg.coin === CoinTypes.SOL) {
               const result = await jsonRpcService.getSPLTokenBalances(
-                arg.address,
+                arg.pubkey,
                 arg.chainId
               )
 
@@ -1488,10 +1497,12 @@ export function createWalletApi (
                 }
               }
             }
-
-            return {
-              error: `Unsupported CoinType: ${arg.coin}`
-            }
+            
+            throw new Error(
+              `Unsupported CoinType found in args - args: ${
+                arg //
+              }`
+            )
           } catch (error) {
             console.error(error)
             return {
@@ -1502,15 +1513,17 @@ export function createWalletApi (
             }
           }
         },
-        providesTags: (res, err, arg) =>
+        providesTags: (balancesResult, err, arg) =>
           err
-            ? ['UNKNOWN_ERROR']
-            : [
-                {
+            ? ['TokenBalancesForChainId', 'UNKNOWN_ERROR']
+            : (balancesResult &&
+                Object.keys(balancesResult).map((tokenAddress) => ({
                   type: 'TokenBalancesForChainId',
-                  id: `${arg.address}-${arg.coin}-${arg.chainId}`
-                }
-              ]
+                  id:
+                    arg.coin === CoinTypes.ETH
+                      ? `${arg.address}-${arg.coin}-${arg.chainId}-${tokenAddress}`
+                      : `${arg.pubkey}-${arg.coin}-${arg.chainId}-${tokenAddress}`
+                }))) || ['TokenBalancesForChainId']
       }),
       //
       // Transactions
