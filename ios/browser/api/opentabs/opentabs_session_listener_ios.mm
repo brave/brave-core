@@ -6,8 +6,8 @@
 #include "brave/ios/browser/api/opentabs/opentabs_session_listener_ios.h"
 
 #include "base/check.h"
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_service_observer.h"
 
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"

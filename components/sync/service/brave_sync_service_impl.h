@@ -1,10 +1,10 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_SERVICE_IMPL_H_
-#define BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_SERVICE_IMPL_H_
+#ifndef BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_SERVICE_IMPL_H_
 
 #include <memory>
 #include <string>
@@ -14,10 +14,8 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/protocol/sync_protocol_error.h"
-
-class Profile;
+#include "components/sync/service/sync_service_impl.h"
 
 namespace syncer {
 
@@ -131,4 +129,4 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
 }  // namespace syncer
 
-#endif  // BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_SERVICE_IMPL_H_
+#endif  // BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_SERVICE_IMPL_H_

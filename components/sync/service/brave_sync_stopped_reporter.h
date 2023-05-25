@@ -1,14 +1,14 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_STOPPED_REPORTER_H_
-#define BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_STOPPED_REPORTER_H_
+#ifndef BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_STOPPED_REPORTER_H_
+#define BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_STOPPED_REPORTER_H_
 
 #include <string>
 
-#include "components/sync/driver/sync_stopped_reporter.h"
+#include "components/sync/service/sync_stopped_reporter.h"
 
 namespace syncer {
 
@@ -27,4 +27,4 @@ class BraveSyncStoppedReporter : public SyncStoppedReporter {
 
 }  // namespace syncer
 
-#endif  // BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_STOPPED_REPORTER_H_
+#endif  // BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_STOPPED_REPORTER_H_

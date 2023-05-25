@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_GLUE_SYNC_ENGINE_IMPL_H_
-#define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_GLUE_SYNC_ENGINE_IMPL_H_
+#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_GLUE_SYNC_ENGINE_IMPL_H_
+#define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_GLUE_SYNC_ENGINE_IMPL_H_
 
 #include "base/functional/callback_forward.h"
 // chromium_src/components/sync/engine/sync_engine.h also redefines
@@ -18,8 +18,8 @@
       base::OnceCallback<void(const SyncProtocolError&)> callback) override; \
   void DisableProtocolEventForwarding
 
-#include "src/components/sync/driver/glue/sync_engine_impl.h"  // IWYU pragma: export
+#include "src/components/sync/service/glue/sync_engine_impl.h"  // IWYU pragma: export
 
 #undef DisableProtocolEventForwarding
 
-#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_GLUE_SYNC_ENGINE_IMPL_H_
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_GLUE_SYNC_ENGINE_IMPL_H_

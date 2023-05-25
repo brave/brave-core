@@ -1,10 +1,10 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_DELEGATE_H_
-#define BRAVE_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_DELEGATE_H_
+#ifndef BRAVE_COMPONENTS_SYNC_SERVICE_SYNC_SERVICE_IMPL_DELEGATE_H_
+#define BRAVE_COMPONENTS_SYNC_SERVICE_SYNC_SERVICE_IMPL_DELEGATE_H_
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
@@ -32,4 +32,4 @@ class SyncServiceImplDelegate {
 
 }  // namespace syncer
 
-#endif  // BRAVE_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_DELEGATE_H_
+#endif  // BRAVE_COMPONENTS_SYNC_SERVICE_SYNC_SERVICE_IMPL_DELEGATE_H_

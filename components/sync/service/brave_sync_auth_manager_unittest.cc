@@ -1,9 +1,9 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/sync/driver/brave_sync_auth_manager.h"
+#include "brave/components/sync/service/brave_sync_auth_manager.h"
 
 #include <memory>
 
@@ -39,8 +39,8 @@ const char kAccountId[] =
     "502042270C8145247ED70A18F87022A39886900AB36F2FFF655635DBE516765E";
 
 const char kAccountEmail[] =
-  "502042270C8145247ED70A18F87022A3 "
-  "9886900AB36F2FFF655635DBE516765E @brave.com";
+    "502042270C8145247ED70A18F87022A3 "
+    "9886900AB36F2FFF655635DBE516765E @brave.com";
 
 class BraveSyncAuthManagerTest : public testing::Test {
  protected:

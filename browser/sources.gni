@@ -220,7 +220,7 @@ brave_chrome_browser_deps = [
   "//components/services/heap_profiling/public/mojom",
   "//components/signin/public/base",
   "//components/sync/base",
-  "//components/sync/driver",
+  "//components/sync/service",
   "//components/translate/core/browser:translate_pref_names",
   "//components/version_info",
   "//components/version_info:channel",

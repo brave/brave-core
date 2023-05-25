@@ -1,9 +1,9 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/sync/driver/brave_sync_auth_manager.h"
+#include "brave/components/sync/service/brave_sync_auth_manager.h"
 
 #include "base/base64.h"
 #include "base/strings/strcat.h"
@@ -34,8 +34,9 @@ BraveSyncAuthManager::~BraveSyncAuthManager() = default;
 
 void BraveSyncAuthManager::DeriveSigningKeys(const std::string& seed) {
   VLOG(1) << __func__;
-  if (seed.empty())
+  if (seed.empty()) {
     return;
+  }
   const std::vector<uint8_t> HKDF_SALT = {
       72,  203, 156, 43,  64,  229, 225, 127, 214, 158, 50,  29,  130,
       186, 182, 207, 6,   108, 47,  254, 245, 71,  198, 109, 44,  108,
@@ -43,22 +44,25 @@ void BraveSyncAuthManager::DeriveSigningKeys(const std::string& seed) {
       234, 28,  135, 54,  42,  9,   243, 39,  30,  179, 147, 194, 211,
       212, 239, 225, 52,  192, 219, 145, 40,  95,  19,  142, 98};
   std::vector<uint8_t> seed_bytes;
-  if (!brave_sync::crypto::PassphraseToBytes32(seed, &seed_bytes))
+  if (!brave_sync::crypto::PassphraseToBytes32(seed, &seed_bytes)) {
     return;
+  }
   const std::string info_str = "sync-auth-key";
   std::vector<uint8_t> info(info_str.begin(), info_str.end());
   brave_sync::crypto::DeriveSigningKeysFromSeed(seed_bytes, &HKDF_SALT, &info,
                                                 &public_key_, &private_key_);
-  if (registered_for_auth_notifications_)
+  if (registered_for_auth_notifications_) {
     UpdateSyncAccountIfNecessary();
+  }
 }
 
 void BraveSyncAuthManager::ResetKeys() {
   VLOG(1) << __func__;
   public_key_.clear();
   private_key_.clear();
-  if (registered_for_auth_notifications_)
+  if (registered_for_auth_notifications_) {
     UpdateSyncAccountIfNecessary();
+  }
 }
 
 void BraveSyncAuthManager::RequestAccessToken() {
@@ -119,11 +123,13 @@ std::string BraveSyncAuthManager::GenerateAccessToken(
 
 void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {
   std::string timestamp = std::to_string(int64_t(time.ToJsTime()));
-  if (public_key_.empty() || private_key_.empty())
+  if (public_key_.empty() || private_key_.empty()) {
     return;
+  }
   access_token_ = GenerateAccessToken(timestamp);
-  if (registered_for_auth_notifications_)
+  if (registered_for_auth_notifications_) {
     credentials_changed_callback_.Run();
+  }
 }
 
 }  // namespace syncer

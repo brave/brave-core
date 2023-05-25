@@ -1,9 +1,9 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/sync/driver/brave_sync_service_impl.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
 
 #include <utility>
 #include <vector>
@@ -13,8 +13,8 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#include "brave/components/sync/driver/brave_sync_auth_manager.h"
-#include "brave/components/sync/driver/sync_service_impl_delegate.h"
+#include "brave/components/sync/service/brave_sync_auth_manager.h"
+#include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/model/type_entities_count.h"
 #include "components/sync/protocol/sync_protocol_error.h"
@@ -96,10 +96,12 @@ std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
 bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
   std::string sync_code_trimmed;
   base::TrimString(sync_code, " \n\t", &sync_code_trimmed);
-  if (!brave_sync::crypto::IsPassphraseValid(sync_code_trimmed))
+  if (!brave_sync::crypto::IsPassphraseValid(sync_code_trimmed)) {
     return false;
-  if (!brave_sync_prefs_.SetSeed(sync_code_trimmed))
+  }
+  if (!brave_sync_prefs_.SetSeed(sync_code_trimmed)) {
     return false;
+  }
 
   initiated_delete_account_ = false;
   initiated_self_device_info_deleted_ = false;
