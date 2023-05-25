@@ -5,157 +5,33 @@
 
 #include "brave/components/ai_chat/ai_chat_tab_helper.h"
 
-#include <queue>
 #include <memory>
 #include <string>
 #include <utility>
 
-#include "base/containers/contains.h"
+#include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/constants.h"
+#include "brave/components/ai_chat/page_content_fetcher.h"
 #include "brave/components/ai_chat/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
-#include "ui/accessibility/ax_node.h"
-#include "ui/accessibility/ax_tree.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "net/base/load_flags.h"
-#include "net/http/http_request_headers.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 
 using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
 
-namespace {
-
-const char16_t kYoutubeTranscriptExtractionScript[] =
-    uR"JS(
-        console.log('Starting youtube transcript extraction')
-        const url = ytplayer.config?.args.raw_player_response.captions.playerCaptionsTracklistRenderer.captionTracks[0].baseUrl
-        console.log('got url', url)
-        url
-    )JS";
-
-net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
-      semantics {
-        sender: "AI Chat"
-        description:
-          "This is used to fetch video transcript"
-          "on behalf of the user interacting with the ChatUI."
-        trigger:
-          "Triggered by user asking for a summary."
-        data:
-          "Will generate a text that attempts to match the user gave it"
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        policy_exception_justification:
-          "Not implemented."
-      }
-    )");
-}
-
-
-static const ax::mojom::Role kContentRoles[] = {
-    ax::mojom::Role::kHeading,
-    ax::mojom::Role::kParagraph,
-};
-
-static const ax::mojom::Role kRolesToSkip[] = {
-    ax::mojom::Role::kAudio,
-    ax::mojom::Role::kBanner,
-    ax::mojom::Role::kButton,
-    ax::mojom::Role::kComplementary,
-    ax::mojom::Role::kContentInfo,
-    ax::mojom::Role::kFooter,
-    ax::mojom::Role::kFooterAsNonLandmark,
-    ax::mojom::Role::kImage,
-    ax::mojom::Role::kLabelText,
-    ax::mojom::Role::kNavigation,
-    /* input elements */
-    ax::mojom::Role::kTextField,
-    ax::mojom::Role::kTextFieldWithComboBox,
-    ax::mojom::Role::kComboBoxSelect,
-    ax::mojom::Role::kListBox,
-    ax::mojom::Role::kListBoxOption,
-    ax::mojom::Role::kCheckBox,
-    ax::mojom::Role::kRadioButton,
-    ax::mojom::Role::kSlider,
-    ax::mojom::Role::kSpinButton,
-    ax::mojom::Role::kSearchBox,
-};
-
-void GetContentRootNodes(const ui::AXNode* root,
-                         std::vector<const ui::AXNode*>* content_root_nodes) {
-  std::queue<const ui::AXNode*> queue;
-  queue.push(root);
-  while (!queue.empty()) {
-    const ui::AXNode* node = queue.front();
-    queue.pop();
-    // If a main or article node is found, add it to the list of content root
-    // nodes and continue. Do not explore children for nested article nodes.
-    if (node->GetRole() == ax::mojom::Role::kMain ||
-        node->GetRole() == ax::mojom::Role::kArticle) {
-      content_root_nodes->push_back(node);
-      continue;
-    }
-    for (auto iter = node->UnignoredChildrenBegin();
-         iter != node->UnignoredChildrenEnd(); ++iter) {
-      queue.push(iter.get());
-    }
-  }
-}
-
-void AddContentNodesToVector(const ui::AXNode* node,
-                             std::vector<const ui::AXNode*>* content_nodes) {
-  if (base::Contains(kContentRoles, node->GetRole())) {
-    content_nodes->emplace_back(node);
-    return;
-  }
-  if (base::Contains(kRolesToSkip, node->GetRole())) {
-    return;
-  }
-  for (auto iter = node->UnignoredChildrenBegin();
-       iter != node->UnignoredChildrenEnd(); ++iter) {
-    AddContentNodesToVector(iter.get(), content_nodes);
-  }
-}
-
-void AddTextNodesToVector(const ui::AXNode* node,
-                          std::vector<std::u16string>* strings) {
-  const ui::AXNodeData& node_data = node->data();
-
-  if (base::Contains(kRolesToSkip, node_data.role)) {
-    return;
-  }
-
-  if (node_data.role == ax::mojom::Role::kStaticText) {
-    if (node_data.HasStringAttribute(ax::mojom::StringAttribute::kName)) {
-      strings->push_back(
-          node_data.GetString16Attribute(ax::mojom::StringAttribute::kName));
-    }
-    return;
-  }
-
-  for (const auto* child : node->children()) {
-    AddTextNodesToVector(child, strings);
-  }
-}
-}  // namespace
+namespace ai_chat {
 
 AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
@@ -179,7 +55,7 @@ bool AIChatTabHelper::HasUserOptedIn() {
   return pref_service_->GetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer);
 }
 
-const std::string& AIChatTabHelper::GetConversationHistoryString() {
+std::string AIChatTabHelper::GetConversationHistoryString() {
   std::vector<std::string> turn_strings;
   for (const ConversationTurn& turn : chat_history_) {
     turn_strings.push_back((turn.character_type == CharacterType::HUMAN
@@ -188,9 +64,7 @@ const std::string& AIChatTabHelper::GetConversationHistoryString() {
                            turn.text);
   }
 
-  history_text_ = base::JoinString(turn_strings, "");
-
-  return history_text_;
+  return base::JoinString(turn_strings, "");
 }
 
 void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
@@ -234,155 +108,21 @@ void AIChatTabHelper::GeneratePageText() {
                "primary main frame";
     return;
   }
-
-  ui::AXTreeID tree_id = web_contents()->GetPrimaryMainFrame()->GetAXTreeID();
-  content::RenderFrameHost* rfh =
-      content::RenderFrameHost::FromAXTreeID(tree_id);
-
-  // Special case for YouTube videos transcripts
-  // TODO(petemill): better hostname compare
-  if (base::CompareCaseInsensitiveASCII(web_contents()->GetLastCommittedURL().host(), "www.youtube.com") == 0) {
-    // TODO(petemill): Refactor to VideoTranscriptFetcher
-    DVLOG(2) << __func__ << " Is YouTube, attempting to extract transcript...";
-    rfh->ExecuteJavaScriptForTests(kYoutubeTranscriptExtractionScript, base::BindOnce([](AIChatTabHelper* instance, base::Value result){
-      DVLOG(2) << "result is: " << base::Value::GetTypeName(result.type());
-      auto* transcript_url_ref = result.GetIfString();
-      if (!transcript_url_ref || transcript_url_ref->empty()) {
-        // TODO(petemill): centralise handle no summary available
-        DVLOG(2) << "result was empty";
-        for (auto& obs : instance->observers_) {
-          obs.OnRequestSummaryFailed();
-        }
-        return;
-      }
-      GURL transcript_url = GURL(*transcript_url_ref);
-      DVLOG(2) << "result was url: " << transcript_url.spec();
-      if (!transcript_url.is_valid()) {
-        // TODO(petemill): centralise handle no summary available
-        DVLOG(2) << "result was invalid.";
-        for (auto& obs : instance->observers_) {
-          obs.OnRequestSummaryFailed();
-        }
-        return;
-      }
-      auto request = std::make_unique<network::ResourceRequest>();
-      request->url = GURL(transcript_url);
-      request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
-      request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-      request->method = net::HttpRequestHeaders::kGetMethod;
-      auto url_loader = network::SimpleURLLoader::Create(
-          std::move(request), GetNetworkTrafficAnnotationTag());
-      url_loader->SetRetryOptions(
-          1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
-                network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
-      url_loader->SetAllowHttpErrorResults(true);
-      auto iter = instance->url_loaders_.insert(instance->url_loaders_.begin(), std::move(url_loader));
-      iter->get()->DownloadToString(
-          instance->web_contents()->GetBrowserContext()
-                                      ->GetDefaultStoragePartition()
-                                      ->GetURLLoaderFactoryForBrowserProcess().get(),
-          // Handle response
-          base::BindOnce([](AIChatTabHelper* instance, SimpleURLLoaderList::iterator iter,
-              std::unique_ptr<std::string> response_body) {
-            auto* loader = iter->get();
-            auto response_code = -1;
-            base::flat_map<std::string, std::string> headers;
-            if (loader->ResponseInfo()) {
-              auto headers_list = loader->ResponseInfo()->headers;
-              if (headers_list) {
-                response_code = headers_list->response_code();
-              }
-            }
-            instance->url_loaders_.erase(iter);
-            // Validate if we get a feed
-            std::string transcript_xml = response_body ? *response_body : "";
-            if (response_code < 200 || response_code >= 300 || transcript_xml.empty()) {
-              DVLOG(1) << __func__ << " invalid video transcript response from url: " << iter->get()->GetFinalURL().spec() << " status: " << response_code;
-              return;
-            }
-            DVLOG(2) << "Got video text: " << transcript_xml;
-            // Prevent indirect prompt injections being sent to the AI model.
-            // TODO(petemill): Abstract prompt injection cleanups to a central place
-            base::ReplaceSubstringsAfterOffset(&transcript_xml, 0, ai_chat::kHumanPrompt,
-                                              "");
-            base::ReplaceSubstringsAfterOffset(&transcript_xml, 0, ai_chat::kAIPrompt, "");
-
-            VLOG(1) << __func__
-                    << " Number of chars in video transcript xml = " << transcript_xml.length()
-                    << "\n";
-
-            std::string summarize_prompt = base::ReplaceStringPlaceholders(
-                l10n_util::GetStringUTF8(IDS_AI_CHAT_SUMMARIZE_VIDEO_PROMPT), {transcript_xml},
-                nullptr);
-
-            // Get summary from API
-            instance->MakeAPIRequestWithConversationHistoryUpdate(
-                {CharacterType::HUMAN, ConversationTurnVisibility::HIDDEN,
-                summarize_prompt});
-          }, base::Unretained(instance),
-          iter),
-          2 * 1024 * 1024);
-    }, this));
-    return;
-  }
-
-  DVLOG(3) << __func__ << " URL host to get summary for is: " << web_contents()->GetLastCommittedURL().host();
-
-  if (!rfh) {
-    VLOG(1) << "Summary request submitted for a WebContents without a"
-               "primary AXTree-associated RenderFrameHost yet";
-    return;
-  }
-
-  // TODO(@nullhook): Add a timeout and test this on real pages
-  web_contents()->RequestAXTreeSnapshot(
-      base::BindOnce(&AIChatTabHelper::OnSnapshotFinished,
-                     base::Unretained(this)),
-      ui::AXMode::kWebContents,
-      /* max_nodes= */ 5000,
-      /* timeout= */ {});
+  FetchPageContent(web_contents(),
+                   base::BindOnce(&AIChatTabHelper::OnTabContentRetrieved,
+                                  weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AIChatTabHelper::OnSnapshotFinished(const ui::AXTreeUpdate& snapshot) {
-  // TODO(petemill): Check that the page hasn't navigated away, either
-  // by checking navigation ID or refactoring this to a per-navigation
-  // class instance.
-  ui::AXTree tree;
-  if (!tree.Unserialize(snapshot)) {
-    return;
-  }
-
-  // Start AX distillation process
-  // Don't copy the tree, as it can be expensive.
-  DistillViaAlgorithm(tree);
-}
-
-void AIChatTabHelper::DistillViaAlgorithm(const ui::AXTree& tree) {
-  std::vector<const ui::AXNode*> content_root_nodes;
-  std::vector<const ui::AXNode*> content_nodes;
-  GetContentRootNodes(tree.root(), &content_root_nodes);
-
-  for (const ui::AXNode* content_root_node : content_root_nodes) {
-    AddContentNodesToVector(content_root_node, &content_nodes);
-  }
-
-  std::vector<std::u16string> text_node_contents;
-  for (const ui::AXNode* content_node : content_nodes) {
-    AddTextNodesToVector(content_node, &text_node_contents);
-  }
-
-  // TODO(nullhook): The assumption here is that 9300 chars equate to
-  // approximately 2k tokens, which is a rough estimate. A proper tokenizer is
-  // needed for accurate measurement.
-  std::string contents_text = base::UTF16ToUTF8(
-      base::JoinString(text_node_contents, u" ").substr(0, 9300));
+void AIChatTabHelper::OnTabContentRetrieved(std::string contents_text,
+                                            bool is_video) {
   if (contents_text.empty()) {
-    VLOG(1) << __func__ << " Contents is empty\n";
+    VLOG(1) << __func__ << ": No data";
     return;
   }
+  is_video_ = is_video;
+  article_text_ = contents_text;
 
   // Prevent indirect prompt injections being sent to the AI model.
-  // TODO(nullhook): Abstract prompt injection cleanups to a central place
   base::ReplaceSubstringsAfterOffset(&contents_text, 0, ai_chat::kHumanPrompt,
                                      "");
   base::ReplaceSubstringsAfterOffset(&contents_text, 0, ai_chat::kAIPrompt, "");
@@ -393,21 +133,23 @@ void AIChatTabHelper::DistillViaAlgorithm(const ui::AXTree& tree) {
   base::ReplaceSubstringsAfterOffset(&contents_text, 0, "<question>", "");
   base::ReplaceSubstringsAfterOffset(&contents_text, 0, "</question>", "");
 
-  VLOG(1) << __func__
-          << " Number of chars in content text = " << contents_text.length()
-          << "\n";
-
-  article_text_ = contents_text;
-
   // Now that we have article text, we can suggest to summarize it
   DCHECK(suggested_questions_.empty())
       << "Expected suggested questions to be clear when there has been no"
       << " previous text content but there were " << suggested_questions_.size()
       << " suggested questions: "
       << base::JoinString(suggested_questions_, ", ");
-  suggested_questions_.emplace_back("Summarize this page");
+
+  // Now that we have content, we can provide a summary on-demand. Add that to
+  // suggested questions.
+  // TODO(petemill): translation for this question
+  suggested_questions_.emplace_back(is_video_ ? "Summarize this video"
+                                              : "Summarize this page");
   OnSuggestedQuestionsChanged();
   // Automatically fetch questions related to page content, if allowed
+  // TODO(petemill): only if a panel is open for this tab. The event should be
+  // sent to the panel, and the panel should make the request, to verify the
+  // panel is open.
   bool can_auto_fetch_questions =
       HasUserOptedIn() &&
       pref_service_->GetBoolean(
@@ -464,7 +206,9 @@ void AIChatTabHelper::GenerateQuestions() {
   DCHECK(!is_request_in_progress_);
   std::string prompt = base::StrCat(
       {base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
+           l10n_util::GetStringUTF8(is_video_
+                                        ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
+                                        : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
            {article_text_}, nullptr),
        "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
        ai_chat::kAIPrompt, " <response>"});
@@ -474,7 +218,7 @@ void AIChatTabHelper::GenerateQuestions() {
   auto navigation_id_for_query = current_navigation_id_;
   ai_chat_api_->QueryPrompt(prompt,
       base::BindOnce(
-          [](AIChatTabHelper* tab_helper, int64_t navigation_id_for_query,
+          [](base::WeakPtr<AIChatTabHelper> tab_helper,
              int64_t navigation_id_for_query,
              api_request_helper::APIRequestResult result,
              bool success) {
@@ -534,27 +278,42 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   // This function should not be presented in the UI if the user has not
   // opted-in yet.
   DCHECK(HasUserOptedIn());
+  DCHECK(turn.character_type == CharacterType::HUMAN);
+
+  bool is_suggested_question = false;
+
   // If it's a suggested question, remove it
-  if (turn.character_type == CharacterType::HUMAN) {
-    auto found_question_iter =
-        base::ranges::find(suggested_questions_, turn.text);
-    if (found_question_iter != suggested_questions_.end()) {
-      suggested_questions_.erase(found_question_iter);
-      OnSuggestedQuestionsChanged();
-    }
+  auto found_question_iter =
+      base::ranges::find(suggested_questions_, turn.text);
+  if (found_question_iter != suggested_questions_.end()) {
+    is_suggested_question = true;
+    suggested_questions_.erase(found_question_iter);
+    OnSuggestedQuestionsChanged();
+  }
+
+  std::string question_part;
+  // TODO(petemill): Tokenize the summary question so that we
+  // don't have to do this weird substitution.
+  if (turn.text == "Summarize this video") {
+    question_part =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
+  } else {
+    question_part = turn.text;
   }
 
   auto prompt_segment_article =
       article_text_.empty()
           ? ""
-          : base::StrCat({base::ReplaceStringPlaceholders(
-                              l10n_util::GetStringUTF8(
-                                  IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
-                              {article_text_}, nullptr),
-                          "\n\n"});
+          : base::StrCat(
+                {base::ReplaceStringPlaceholders(
+                     l10n_util::GetStringUTF8(
+                         is_video_ ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
+                                   : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
+                     {article_text_}, nullptr),
+                 "\n\n"});
 
   auto prompt_segment_history =
-      chat_history_.empty()
+      (chat_history_.empty() || is_suggested_question)
           ? ""
           : base::ReplaceStringPlaceholders(
                 l10n_util::GetStringUTF8(
@@ -565,21 +324,21 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
       {prompt_segment_article,
        base::ReplaceStringPlaceholders(
            l10n_util::GetStringUTF8(IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT),
-           {prompt_segment_history, turn.text}, nullptr),
+           {prompt_segment_history, question_part}, nullptr),
        ai_chat::kAIPrompt, " <response>\n"});
 
-  if (turn.visibility != ConversationTurnVisibility::INTERNAL) {
+  if (turn.visibility != ConversationTurnVisibility::HIDDEN) {
     AddToConversationHistory(turn);
   }
 
   DCHECK(ai_chat_api_);
 
   auto data_received_callback = base::BindRepeating(
-      &AIChatTabHelper::OnAPIStreamDataReceived, base::Unretained(this));
+      &AIChatTabHelper::OnAPIStreamDataReceived, weak_ptr_factory_.GetWeakPtr());
 
   auto data_completed_callback =
       base::BindOnce(&AIChatTabHelper::OnAPIStreamDataComplete,
-                     base::Unretained(this));
+                     weak_ptr_factory_.GetWeakPtr());
 
   is_request_in_progress_ = true;
   ai_chat_api_->QueryPrompt(std::move(prompt),
@@ -678,3 +437,5 @@ void AIChatTabHelper::WebContentsDestroyed() {
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);
+
+}  // namespace ai_chat

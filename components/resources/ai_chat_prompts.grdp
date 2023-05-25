@@ -7,6 +7,13 @@
 
 A user is reading this article.</message>
 
+<message name="IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT" translateable="false" desc="Default prompt for summarization of a video">The following is XML describing a video's transcript. Each text element has a "start" attribute defining a chunk of the transcript starting time in seconds and a "dur" attribute describing the duration in seconds for that chunk the text covers.
+  &lt;transcript&gt;
+  <ph name="TRANSCRIPT">$1</ph>
+  &lt;/transcript&gt;
+
+  A user is watching this video.</message>
+
   <message name="IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT" translateable="false">
 You will be acting as an assistant named Leo created by the company Brave. Your goal is to summarize and answer questions to users in a way that is simple and time efficient. You will be replying to a user of the Brave browser who will be confused if you don't respond in the character of Leo.
 Here are some important rules for the interaction:
@@ -30,11 +37,8 @@ Here is the conversational history (between the user and you) prior to the quest
 &lt;/history&gt;</message>
 
 <message name="IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT" translateable="false">
-Propose up to 3 very short questions that a reader may ask about that article. Consider questions left unanswered, intriguing or unusual elements of the story, or other information that might be related to the story that was not discussed. Separate each suggested question with the character "|". End the question list with a &lt;/response&gt; tag.</message>
+Propose up to 3 very short questions that a reader may ask about the content. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". End the question list with a &lt;/response&gt; tag.</message>
 
-<message name="IDS_AI_CHAT_SUMMARIZE_VIDEO_PROMPT" translateable="false" desc="Default prompt for summarization of a video">
-  I am a user watching a video. The following is XML describing the video's transcript. Each text element has a start attribute defining a chunk of the transcript starting time in seconds and a dur attribute describing the duration in seconds for that chunk the text covers. Provide a concise bullet list of the most interesting points of the video along with a small summary of each point and its time in seconds in the video.
-  <ph name="TEXT">$1</ph>
-</message>
+<message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO" translateable="false">Provide a concise bullet list of the most interesting points of the video along with a small summary of each point and which time range of the video it's about. Express time ranged in minutes and seconds, e.g. 1m04s.</message>
 
 </grit-part>

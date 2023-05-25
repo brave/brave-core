@@ -13,7 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
-#include "brave/components/ai_chat/buildflags.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/constants.h"
 #include "brave/components/ai_chat/features.h"
 #include "brave/components/constants/brave_services_key.h"

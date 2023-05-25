@@ -3,20 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
-declare_args() {
-  brave_ai_chat_endpoint = ""
-}
+assert(enable_ai_chat)
 
 if (is_official_build) {
   assert(brave_ai_chat_endpoint != "")
-}
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "BRAVE_AI_CHAT_ENDPOINT=\"$brave_ai_chat_endpoint\"" ]
 }
 
 source_set("ai_chat") {
@@ -29,13 +23,15 @@ source_set("ai_chat") {
     "constants.h",
     "features.cc",
     "features.h",
+    "page_content_fetcher.cc",
+    "page_content_fetcher.h",
     "pref_names.cc",
     "pref_names.h",
   ]
 
   deps = [
-    ":buildflags",
     ":mojom",
+    "common/buildflags",
     "//base",
     "//brave/components/api_request_helper",
     "//brave/components/constants",
@@ -46,6 +42,7 @@ source_set("ai_chat") {
     "//net/traffic_annotation",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//url",
@@ -53,6 +50,13 @@ source_set("ai_chat") {
 }
 
 mojom("mojom") {
-  sources = [ "ai_chat.mojom" ]
-  public_deps = [ "//mojo/public/mojom/base" ]
+  sources = [
+    "ai_chat.mojom",
+    "page_content_extractor.mojom",
+  ]
+
+  deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
 }

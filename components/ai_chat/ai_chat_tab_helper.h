@@ -27,6 +27,9 @@ namespace ui {
 class AXTree;
 }  // namespace ui
 
+namespace ai_chat {
+
+// Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper> {
  public:
@@ -48,11 +51,11 @@ class AIChatTabHelper : public content::WebContentsObserver,
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
-  const std::vector<ai_chat::mojom::ConversationTurn>& GetConversationHistory();
-  void AddToConversationHistory(const ai_chat::mojom::ConversationTurn& turn);
+  const std::vector<mojom::ConversationTurn>& GetConversationHistory();
+  void AddToConversationHistory(const mojom::ConversationTurn& turn);
   void UpdateOrCreateLastAssistantEntry(const std::string& text);
   void MakeAPIRequestWithConversationHistoryUpdate(
-      const ai_chat::mojom::ConversationTurn& turn);
+      const mojom::ConversationTurn& turn);
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -64,21 +67,15 @@ class AIChatTabHelper : public content::WebContentsObserver,
                                                  bool& auto_generate);
 
  private:
-  using OnArticleSummaryCallback =
-      base::OnceCallback<void(const std::u16string& summary,
-                              bool is_from_cache)>;
-  using SimpleURLLoaderList = std::list<std::unique_ptr<network::SimpleURLLoader>>;
-
   friend class content::WebContentsUserData<AIChatTabHelper>;
 
   explicit AIChatTabHelper(content::WebContents* web_contents);
 
   bool HasUserOptedIn();
-  const std::string& GetConversationHistoryString();
+  std::string GetConversationHistoryString();
   void GeneratePageText();
-  void OnSnapshotFinished(const ui::AXTreeUpdate& result);
-  void DistillViaAlgorithm(const ui::AXTree& tree);
   void CleanUp();
+  void OnTabContentRetrieved(std::string contents_text, bool is_video = false);
   void OnAPIStreamDataReceived(data_decoder::DataDecoder::ValueOrError result);
   void OnAPIStreamDataComplete(api_request_helper::APIRequestResult result);
   void OnSuggestedQuestionsChanged();
@@ -92,23 +89,24 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   raw_ref<PrefService> pref_service_;
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
-  SimpleURLLoaderList url_loaders_;
 
   base::ObserverList<Observer> observers_;
 
   // TODO(nullhook): Abstract the data model
-  std::vector<ai_chat::mojom::ConversationTurn> chat_history_;
+  std::vector<mojom::ConversationTurn> chat_history_;
   std::string article_text_;
-  std::string history_text_;
   bool is_request_in_progress_ = false;
   std::vector<std::string> suggested_questions_;
   bool has_generated_questions_ = false;
+  bool is_video_ = false;
   // Store the unique ID for each navigation so that
   // we can ignore API responses for previous navigations.
   int64_t current_navigation_id_;
 
-
+  base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
+
+}  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_TAB_HELPER_H_
