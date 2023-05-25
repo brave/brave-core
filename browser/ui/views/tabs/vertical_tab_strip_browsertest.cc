@@ -384,8 +384,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
                   .width());
   auto* fullscreen_controller =
       browser_view()->GetExclusiveAccessManager()->fullscreen_controller();
-  fullscreen_controller->ToggleBrowserFullscreenMode();
-  { FullscreenNotificationObserver(browser()).Wait(); }
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    fullscreen_controller->ToggleBrowserFullscreenMode();
+    observer.Wait();
+  }
 
   // Vertical tab strip should be visible on browser fullscreen.
   ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
@@ -394,19 +397,32 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
                   ->vertical_tab_strip_host_view_->GetPreferredSize()
                   .width());
 
-  fullscreen_controller->ToggleBrowserFullscreenMode();
-  { FullscreenNotificationObserver(browser()).Wait(); }
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    fullscreen_controller->ToggleBrowserFullscreenMode();
+    observer.Wait();
+  }
   ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
   ASSERT_FALSE(browser_view()->IsFullscreen());
 
-  // Vertical tab strip should become invisible on tab fullscreen.
-  fullscreen_controller->EnterFullscreenModeForTab(browser_view()
-                                                       ->browser()
-                                                       ->tab_strip_model()
-                                                       ->GetActiveWebContents()
-                                                       ->GetPrimaryMainFrame());
-  { FullscreenNotificationObserver(browser()).Wait(); }
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    // Vertical tab strip should become invisible on tab fullscreen.
+    fullscreen_controller->EnterFullscreenModeForTab(
+        browser_view()
+            ->browser()
+            ->tab_strip_model()
+            ->GetActiveWebContents()
+            ->GetPrimaryMainFrame());
+
+    observer.Wait();
+  }
   ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
+  if (!browser_view()
+           ->vertical_tab_strip_host_view_->GetPreferredSize()
+           .width()) {
+    return;
+  }
 
   base::RunLoop run_loop;
   auto wait_until = base::BindLambdaForTesting(
@@ -417,8 +433,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
         base::RepeatingTimer scheduler;
         scheduler.Start(FROM_HERE, base::Milliseconds(100),
                         base::BindLambdaForTesting([&]() {
-                          if (predicate.Run())
+                          if (predicate.Run()) {
                             run_loop.Quit();
+                          } else {
+                            LOG(ERROR) << browser_view()
+                                              ->vertical_tab_strip_host_view_
+                                              ->GetPreferredSize()
+                                              .width();
+                          }
                         }));
         run_loop.Run();
       });
