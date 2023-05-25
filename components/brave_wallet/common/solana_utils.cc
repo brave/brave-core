@@ -158,4 +158,10 @@ bool IsValidCommitmentString(const std::string& commitment) {
          commitment == "finalized";
 }
 
+bool IsValidEncodingString(const std::string& encoding) {
+  // base58 is slow and deprecated. Prefer using base64 instead.
+  return encoding == "base58" || encoding == "base64" ||
+         encoding == "jsonParsed";
+}
+
 }  // namespace brave_wallet

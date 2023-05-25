@@ -26,7 +26,8 @@ std::string getSignatureStatuses(const std::vector<std::string>& tx_signatures);
 std::string getAccountInfo(const std::string& pubkey);
 std::string getFeeForMessage(const std::string& message);
 std::string getBlockHeight();
-std::string getTokenAccountsByOwner(const std::string& pubkey);
+std::string getTokenAccountsByOwner(const std::string& pubkey,
+                                    const std::string& encoding);
 std::string isBlockhashValid(const std::string& blockhash,
                              const absl::optional<std::string>& commitment);
 

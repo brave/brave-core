@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
 
 #include <limits>
+#include <tuple>
 #include <utility>
 
 #include "base/base64.h"
@@ -46,6 +47,32 @@ bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
   return base::StringToUint64(*string_value, ret);
 }
 
+absl::optional<std::tuple<std::string,  // amount
+                          std::string,  // ui amount
+                          uint8_t>>     // decimals
+ParseAmountDict(const base::Value::Dict& value) {
+  auto* amount_ptr = value.FindString("amount");
+  if (!amount_ptr) {
+    return absl::nullopt;
+  }
+
+  // uint8
+  auto decimals_opt = value.FindInt("decimals");
+  if (!decimals_opt ||
+      decimals_opt.value() > std::numeric_limits<uint8_t>::max() ||
+      decimals_opt.value() < 0) {
+    return absl::nullopt;
+  }
+
+  auto* ui_amount_string_ptr = value.FindString("uiAmountString");
+  if (!ui_amount_string_ptr) {
+    return absl::nullopt;
+  }
+
+  return std::make_tuple(*amount_ptr, *ui_amount_string_ptr,
+                         decimals_opt.value());
+}
+
 }  // namespace
 
 namespace solana {
@@ -77,28 +104,86 @@ bool ParseGetTokenAccountBalance(const base::Value& json_value,
     return false;
   }
 
-  auto* amount_ptr = value->FindString("amount");
-  if (!amount_ptr) {
+  auto parsed_amount = ParseAmountDict(*value);
+  if (!parsed_amount) {
     return false;
   }
-  *amount = *amount_ptr;
 
-  // uint8
-  auto decimals_opt = value->FindInt("decimals");
-  if (!decimals_opt ||
-      decimals_opt.value() > std::numeric_limits<uint8_t>::max() ||
-      decimals_opt.value() < 0) {
-    return false;
-  }
-  *decimals = decimals_opt.value();
-
-  auto* ui_amount_string_ptr = value->FindString("uiAmountString");
-  if (!ui_amount_string_ptr) {
-    return false;
-  }
-  *ui_amount_string = *ui_amount_string_ptr;
-
+  *amount = std::get<0>(*parsed_amount);
+  *ui_amount_string = std::get<1>(*parsed_amount);
+  *decimals = std::get<2>(*parsed_amount);
   return true;
+}
+
+absl::optional<std::vector<std::tuple<std::string,  // mint
+                                      std::string,  // amount
+                                      std::string,  // ui amount
+                                      uint8_t>>>    // decimals
+ParseGetSPLTokenBalances(const base::Value& json_value) {
+  auto result = ParseResultDict(json_value);
+  if (!result) {
+    return absl::nullopt;
+  }
+
+  auto* value = result->FindList("value");
+  if (!value) {
+    return absl::nullopt;
+  }
+
+  std::vector<std::tuple<std::string, std::string, std::string, uint8_t>>
+      balances;
+
+  for (const auto& account_value : *value) {
+    if (!account_value.is_dict()) {
+      return absl::nullopt;
+    }
+
+    const auto& account_dict = account_value.GetDict();
+    auto* account = account_dict.FindDict("account");
+    if (!account) {
+      return absl::nullopt;
+    }
+
+    auto* data = account->FindDict("data");
+    if (!data) {
+      return absl::nullopt;
+    }
+
+    auto* parsed = data->FindDict("parsed");
+    if (!parsed) {
+      return absl::nullopt;
+    }
+
+    auto* info = parsed->FindDict("info");
+    if (!info) {
+      return absl::nullopt;
+    }
+
+    auto* mint = info->FindString("mint");
+    if (!mint) {
+      return absl::nullopt;
+    }
+
+    auto* tokenAmount = info->FindDict("tokenAmount");
+    if (!tokenAmount) {
+      return absl::nullopt;
+    }
+
+    auto parsed_amount = ParseAmountDict(*tokenAmount);
+    if (!parsed_amount) {
+      return absl::nullopt;
+    }
+
+    // Skip zero-value tokenAmount objects.
+    if (auto amount = std::get<0>(*parsed_amount);
+        amount.empty() || amount == "0") {
+      continue;
+    }
+
+    balances.push_back(std::tuple_cat(std::make_tuple(*mint), *parsed_amount));
+  }
+
+  return balances;
 }
 
 bool ParseSendTransaction(const base::Value& json_value, std::string* tx_id) {

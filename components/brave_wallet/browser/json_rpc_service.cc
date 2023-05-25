@@ -3227,8 +3227,8 @@ void JsonRpcService::GetSolanaTokenAccountsByOwner(
       base::BindOnce(&JsonRpcService::OnGetSolanaTokenAccountsByOwner,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(
-      solana::getTokenAccountsByOwner(pubkey.ToBase58()), true, network_url,
-      std::move(internal_callback),
+      solana::getTokenAccountsByOwner(pubkey.ToBase58(), "base64"), true,
+      network_url, std::move(internal_callback),
       base::BindOnce(&ConvertMultiUint64InObjectArrayToString, "/result/value",
                      "/account",
                      std::vector<std::string>({"lamports", "rentEpoch"})));
@@ -3258,6 +3258,65 @@ void JsonRpcService::OnGetSolanaTokenAccountsByOwner(
 
   std::move(callback).Run(token_accounts, mojom::SolanaProviderError::kSuccess,
                           "");
+}
+
+void JsonRpcService::GetSPLTokenBalances(const std::string& pubkey,
+                                         const std::string& chain_id,
+                                         GetSPLTokenBalancesCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        {}, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSPLTokenBalances,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(solana::getTokenAccountsByOwner(pubkey, "jsonParsed"), true,
+                  network_url, std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetSPLTokenBalances(
+    GetSPLTokenBalancesCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        {}, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto balances =
+      solana::ParseGetSPLTokenBalances(api_request_result.value_body());
+  if (!balances) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
+    std::move(callback).Run({}, error, error_message);
+    return;
+  }
+
+  std::vector<mojom::SPLBalancesResultPtr> result;
+  for (size_t i = 0; i < balances->size(); i++) {
+    std::string mint;
+    std::string amount;
+    std::string formatted_balance;
+    uint8_t decimals;
+    std::tie(mint, amount, formatted_balance, decimals) = balances->at(i);
+
+    auto spl_balance_result = mojom::SPLBalancesResult::New();
+    spl_balance_result->mint = mint;
+    spl_balance_result->balance = amount;
+    spl_balance_result->formatted_balance = formatted_balance;
+    spl_balance_result->decimals = decimals;
+    result.push_back(std::move(spl_balance_result));
+  }
+
+  std::move(callback).Run(std::move(result),
+                          mojom::SolanaProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet
