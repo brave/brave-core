@@ -151,7 +151,9 @@ void AdsImpl::TriggerNotificationAdEvent(
     const mojom::NotificationAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  notification_ad_handler_.TriggerEvent(placement_id, event_type);
+  if (IsInitialized()) {
+    notification_ad_handler_.TriggerEvent(placement_id, event_type);
+  }
 }
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
