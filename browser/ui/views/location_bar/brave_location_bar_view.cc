@@ -19,7 +19,6 @@
 #include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -100,8 +99,7 @@ void BraveLocationBarView::Init() {
     }
   }
 
-  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature) &&
-      !browser_->profile()->IsOffTheRecord()) {
+  if (!browser_->profile()->IsOffTheRecord()) {
     brave_news_location_view_ =
         AddChildView(std::make_unique<BraveNewsLocationView>(
             browser_->profile(), this, this));

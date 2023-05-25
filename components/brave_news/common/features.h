@@ -8,14 +8,11 @@
 
 #include "base/feature_list.h"
 
-namespace brave_news {
-namespace features {
+namespace brave_news::features {
 
-BASE_DECLARE_FEATURE(kBraveNewsFeature);
 BASE_DECLARE_FEATURE(kBraveNewsV2Feature);
 BASE_DECLARE_FEATURE(kBraveNewsCardPeekFeature);
 
-}  // namespace features
-}  // namespace brave_news
+}  // namespace brave_news::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_FEATURES_H_

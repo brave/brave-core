@@ -211,21 +211,19 @@ public class BraveNewTabPageLayout
         mComesFromNewTab = false;
 
         NTPUtil.showBREBottomBanner(this);
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            mFeedHash = "";
-            initBraveNewsController();
-            try {
-                if (BraveNewsUtils.shouldDisplayNews()
-                        && BraveActivity.getBraveActivity().isLoadedFeed()) {
-                    CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
-                            BraveActivity.getBraveActivity().getNewsItemsFeedCards();
-                    if (existingNewsFeedObject != null) {
-                        mNewsItemsFeedCard = existingNewsFeedObject;
-                    }
+        mFeedHash = "";
+        initBraveNewsController();
+        try {
+            if (BraveNewsUtils.shouldDisplayNews()
+                    && BraveActivity.getBraveActivity().isLoadedFeed()) {
+                CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
+                        BraveActivity.getBraveActivity().getNewsItemsFeedCards();
+                if (existingNewsFeedObject != null) {
+                    mNewsItemsFeedCard = existingNewsFeedObject;
                 }
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "onFinishInflate " + e);
             }
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "onFinishInflate " + e);
         }
     }
 
@@ -299,28 +297,26 @@ public class BraveNewTabPageLayout
                 && !OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            initBraveNewsController();
-            if (BravePrefServiceBridge.getInstance().getNewsOptIn()) {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    try {
-                        Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-                        if (tab != null && tab.getUrl().getSpec() != null
-                                && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
-                            // purges display ads on tab change
-                            if (BraveActivity.getBraveActivity().getLastTabId() != tab.getId()) {
-                                if (mBraveNewsController != null) {
-                                    mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
-                                }
+        initBraveNewsController();
+        if (BravePrefServiceBridge.getInstance().getNewsOptIn()) {
+            new Handler(Looper.getMainLooper()).post(() -> {
+                try {
+                    Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                    if (tab != null && tab.getUrl().getSpec() != null
+                            && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
+                        // purges display ads on tab change
+                        if (BraveActivity.getBraveActivity().getLastTabId() != tab.getId()) {
+                            if (mBraveNewsController != null) {
+                                mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
                             }
-
-                            BraveActivity.getBraveActivity().setLastTabId(tab.getId());
                         }
-                    } catch (BraveActivity.BraveActivityNotFoundException e) {
-                        Log.e(TAG, "onAttachedToWindow " + e);
+
+                        BraveActivity.getBraveActivity().setLastTabId(tab.getId());
                     }
-                });
-            }
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
+                    Log.e(TAG, "onAttachedToWindow " + e);
+                }
+            });
 
             mIsDisplayNewsOptin = shouldDisplayNewsOptin();
             mIsDisplayNews = BraveNewsUtils.shouldDisplayNews();
@@ -838,24 +834,22 @@ public class BraveNewTabPageLayout
         }
         mNTPBackgroundImagesBridge.removeObserver(mNTPBackgroundImageServiceObserver);
 
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
-                try {
-                    BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "onDetachedFromWindow " + e);
-                }
+        if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
+            try {
+                BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "onDetachedFromWindow " + e);
             }
-
-            if (mBraveNewsController != null) {
-                mBraveNewsController.close();
-                mBraveNewsController = null;
-            }
-
-            // removes preference observer
-            SharedPreferencesManager.getInstance().removeObserver(mPreferenceObserver);
-            mPreferenceObserver = null;
         }
+
+        if (mBraveNewsController != null) {
+            mBraveNewsController.close();
+            mBraveNewsController = null;
+        }
+
+        // removes preference observer
+        SharedPreferencesManager.getInstance().removeObserver(mPreferenceObserver);
+        mPreferenceObserver = null;
 
         mRecyclerView.clearOnScrollListeners();
         super.onDetachedFromWindow();
@@ -864,10 +858,6 @@ public class BraveNewTabPageLayout
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         if (mSponsoredTab != null && NTPUtil.shouldEnableNTPFeature()) {
-            if (mBgImageView != null && !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-                // We need to redraw image to fit parent properly
-                mBgImageView.setImageResource(android.R.color.transparent);
-            }
             NTPImage ntpImage = mSponsoredTab.getTabNTPImage(false);
             if (ntpImage == null) {
                 mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());

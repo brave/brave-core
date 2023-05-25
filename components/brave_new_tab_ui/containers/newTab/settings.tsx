@@ -48,7 +48,6 @@ export interface Props {
   actions: NewTabActions
   textDirection: string
   showSettingsMenu: boolean
-  featureFlagBraveNewsEnabled: boolean
   featureCustomBackgroundEnabled: boolean
   onClose: () => void
   onDisplayTodaySection: () => any
@@ -105,11 +104,6 @@ export default class Settings extends React.PureComponent<Props, State> {
     // Feature flags won't change during page lifecycle, so we don't need to
     // change this when props change.
     this.allTabTypes = [...Object.values(TabType)]
-    if (!props.featureFlagBraveNewsEnabled) {
-      this.allTabTypes.splice(
-        this.allTabTypes.indexOf(TabType.BraveNews), 1
-      )
-    }
     this.allTabTypesWithoutBackground = [...this.allTabTypes]
     this.allTabTypesWithoutBackground.splice(
       this.allTabTypesWithoutBackground.indexOf(TabType.BackgroundImage), 1

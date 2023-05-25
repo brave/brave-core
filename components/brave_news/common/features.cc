@@ -7,10 +7,7 @@
 
 #include "base/feature_list.h"
 
-namespace brave_news {
-namespace features {
-
-BASE_FEATURE(kBraveNewsFeature, "BraveNews", base::FEATURE_ENABLED_BY_DEFAULT);
+namespace brave_news::features {
 
 BASE_FEATURE(kBraveNewsV2Feature,
              "BraveNewsV2",
@@ -20,5 +17,4 @@ BASE_FEATURE(kBraveNewsCardPeekFeature,
              "BraveNewsCardPeek",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace brave_news
+}  // namespace brave_news::features

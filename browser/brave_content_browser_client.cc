@@ -210,7 +210,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/ai_chat/features.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
@@ -712,10 +711,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
 // Brave News
 #if !BUILDFLAG(IS_ANDROID)
-  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
-  }
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)

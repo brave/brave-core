@@ -254,14 +254,6 @@
 #define BRAVE_NEWS_FEATURE_ENTRIES                                             \
   EXPAND_FEATURE_ENTRIES(                                                      \
       {                                                                        \
-          "brave-news",                                                        \
-          "Enable Brave News",                                                 \
-          "Brave News is completely private and includes anonymized ads "      \
-          "matched on your device.",                                           \
-          kOsDesktop | kOsAndroid,                                             \
-          FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeature),         \
-      },                                                                       \
-      {                                                                        \
           "brave-news-v2",                                                     \
           "Enable Brave News V2",                                              \
           "Use the new Brave News UI and sources lists",                       \
