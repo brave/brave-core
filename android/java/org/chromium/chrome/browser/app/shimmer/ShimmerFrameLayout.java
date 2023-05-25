@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -33,175 +34,177 @@ import org.chromium.chrome.R;
  * <p>Find more examples and usage instructions over at: facebook.github.io/shimmer-android
  */
 public class ShimmerFrameLayout extends FrameLayout {
-  private final Paint mContentPaint = new Paint();
-  private final ShimmerDrawable mShimmerDrawable = new ShimmerDrawable();
+    private final Paint mContentPaint = new Paint();
+    private final ShimmerDrawable mShimmerDrawable = new ShimmerDrawable();
 
-  private boolean mShowShimmer = true;
-  private boolean mStoppedShimmerBecauseVisibility;
+    private boolean mShowShimmer = true;
+    private boolean mStoppedShimmerBecauseVisibility;
 
-  public ShimmerFrameLayout(Context context) {
-    super(context);
-    init(context, null);
-  }
-
-  public ShimmerFrameLayout(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    init(context, attrs);
-  }
-
-  public ShimmerFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    init(context, attrs);
-  }
-
-  public ShimmerFrameLayout(
-      Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(context, attrs, defStyleAttr, defStyleRes);
-    init(context, attrs);
-  }
-
-  private void init(Context context, @Nullable AttributeSet attrs) {
-    setWillNotDraw(false);
-    mShimmerDrawable.setCallback(this);
-
-    if (attrs == null) {
-      setShimmer(new Shimmer.AlphaHighlightBuilder().build());
-      return;
+    public ShimmerFrameLayout(Context context) {
+        super(context);
+        init(context, null);
     }
 
-    TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShimmerFrameLayout, 0, 0);
-    try {
-      Shimmer.Builder<?> shimmerBuilder =
-          typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_colored)
-                  && typedArray.getBoolean(R.styleable.ShimmerFrameLayout_shimmer_colored, false)
-              ? new Shimmer.ColorHighlightBuilder()
-              : new Shimmer.AlphaHighlightBuilder();
-      setShimmer(shimmerBuilder.consumeAttributes(typedArray).build());
-    } finally {
-      typedArray.recycle();
-    }
-  }
-
-  public ShimmerFrameLayout setShimmer(@Nullable Shimmer shimmer) {
-    mShimmerDrawable.setShimmer(shimmer);
-    if (shimmer != null && shimmer.clipToChildren) {
-      setLayerType(LAYER_TYPE_HARDWARE, mContentPaint);
-    } else {
-      setLayerType(LAYER_TYPE_NONE, null);
+    public ShimmerFrameLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context, attrs);
     }
 
-    return this;
-  }
-
-  public @Nullable Shimmer getShimmer() {
-    return mShimmerDrawable.getShimmer();
-  }
-
-  /** Starts the shimmer animation. */
-  public void startShimmer() {
-    if (isAttachedToWindow()) {
-      mShimmerDrawable.startShimmer();
+    public ShimmerFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context, attrs);
     }
-  }
 
-  /** Stops the shimmer animation. */
-  public void stopShimmer() {
-    mStoppedShimmerBecauseVisibility = false;
-    mShimmerDrawable.stopShimmer();
-  }
-
-  /** Return whether the shimmer animation has been started. */
-  public boolean isShimmerStarted() {
-    return mShimmerDrawable.isShimmerStarted();
-  }
-
-  /**
-   * Sets the ShimmerDrawable to be visible.
-   *
-   * @param startShimmer Whether to start the shimmer again.
-   */
-  public void showShimmer(boolean startShimmer) {
-    mShowShimmer = true;
-    if (startShimmer) {
-      startShimmer();
+    public ShimmerFrameLayout(
+            Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init(context, attrs);
     }
-    invalidate();
-  }
 
-  /** Sets the ShimmerDrawable to be invisible, stopping it in the process. */
-  public void hideShimmer() {
-    stopShimmer();
-    mShowShimmer = false;
-    invalidate();
-  }
+    private void init(Context context, @Nullable AttributeSet attrs) {
+        setWillNotDraw(false);
+        mShimmerDrawable.setCallback(this);
 
-  /** Return whether the shimmer drawable is visible. */
-  public boolean isShimmerVisible() {
-    return mShowShimmer;
-  }
+        if (attrs == null) {
+            setShimmer(new Shimmer.AlphaHighlightBuilder().build());
+            return;
+        }
 
-  public boolean isShimmerRunning() {
-    return mShimmerDrawable.isShimmerRunning();
-  }
-
-  @Override
-  public void onLayout(boolean changed, int left, int top, int right, int bottom) {
-    super.onLayout(changed, left, top, right, bottom);
-    final int width = getWidth();
-    final int height = getHeight();
-    mShimmerDrawable.setBounds(0, 0, width, height);
-  }
-
-  @Override
-  protected void onVisibilityChanged(View changedView, int visibility) {
-    super.onVisibilityChanged(changedView, visibility);
-    // View's constructor directly invokes this method, in which case no fields on
-    // this class have been fully initialized yet.
-    if (mShimmerDrawable == null) {
-      return;
+        TypedArray typedArray =
+                context.obtainStyledAttributes(attrs, R.styleable.ShimmerFrameLayout, 0, 0);
+        try {
+            Shimmer.Builder<?> shimmerBuilder =
+                    typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_colored)
+                            && typedArray.getBoolean(
+                                    R.styleable.ShimmerFrameLayout_shimmer_colored, false)
+                    ? new Shimmer.ColorHighlightBuilder()
+                    : new Shimmer.AlphaHighlightBuilder();
+            setShimmer(shimmerBuilder.consumeAttributes(typedArray).build());
+        } finally {
+            typedArray.recycle();
+        }
     }
-    if (visibility != View.VISIBLE) {
-      // GONE or INVISIBLE
-      if (isShimmerStarted()) {
+
+    public ShimmerFrameLayout setShimmer(@Nullable Shimmer shimmer) {
+        mShimmerDrawable.setShimmer(shimmer);
+        if (shimmer != null && shimmer.clipToChildren) {
+            setLayerType(LAYER_TYPE_HARDWARE, mContentPaint);
+        } else {
+            setLayerType(LAYER_TYPE_NONE, null);
+        }
+
+        return this;
+    }
+
+    public @Nullable Shimmer getShimmer() {
+        return mShimmerDrawable.getShimmer();
+    }
+
+    /** Starts the shimmer animation. */
+    public void startShimmer() {
+        if (isAttachedToWindow()) {
+            mShimmerDrawable.startShimmer();
+        }
+    }
+
+    /** Stops the shimmer animation. */
+    public void stopShimmer() {
+        mStoppedShimmerBecauseVisibility = false;
+        mShimmerDrawable.stopShimmer();
+    }
+
+    /** Return whether the shimmer animation has been started. */
+    public boolean isShimmerStarted() {
+        return mShimmerDrawable.isShimmerStarted();
+    }
+
+    /**
+     * Sets the ShimmerDrawable to be visible.
+     *
+     * @param startShimmer Whether to start the shimmer again.
+     */
+    public void showShimmer(boolean startShimmer) {
+        mShowShimmer = true;
+        if (startShimmer) {
+            startShimmer();
+        }
+        invalidate();
+    }
+
+    /** Sets the ShimmerDrawable to be invisible, stopping it in the process. */
+    public void hideShimmer() {
         stopShimmer();
-        mStoppedShimmerBecauseVisibility = true;
-      }
-    } else if (mStoppedShimmerBecauseVisibility) {
-      mShimmerDrawable.maybeStartShimmer();
-      mStoppedShimmerBecauseVisibility = false;
+        mShowShimmer = false;
+        invalidate();
     }
-  }
 
-  @Override
-  public void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    mShimmerDrawable.maybeStartShimmer();
-  }
-
-  @Override
-  public void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-    stopShimmer();
-  }
-
-  @Override
-  public void dispatchDraw(Canvas canvas) {
-    super.dispatchDraw(canvas);
-    if (mShowShimmer) {
-      mShimmerDrawable.draw(canvas);
+    /** Return whether the shimmer drawable is visible. */
+    public boolean isShimmerVisible() {
+        return mShowShimmer;
     }
-  }
 
-  @Override
-  protected boolean verifyDrawable(@NonNull Drawable who) {
-    return super.verifyDrawable(who) || who == mShimmerDrawable;
-  }
+    public boolean isShimmerRunning() {
+        return mShimmerDrawable.isShimmerRunning();
+    }
 
-  public void setStaticAnimationProgress(float value) {
-    mShimmerDrawable.setStaticAnimationProgress(value);
-  }
+    @Override
+    public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        final int width = getWidth();
+        final int height = getHeight();
+        mShimmerDrawable.setBounds(0, 0, width, height);
+    }
 
-  public void clearStaticAnimationProgress() {
-    mShimmerDrawable.clearStaticAnimationProgress();
-  }
+    @Override
+    protected void onVisibilityChanged(View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        // View's constructor directly invokes this method, in which case no fields on
+        // this class have been fully initialized yet.
+        if (mShimmerDrawable == null) {
+            return;
+        }
+        if (visibility != View.VISIBLE) {
+            // GONE or INVISIBLE
+            if (isShimmerStarted()) {
+                stopShimmer();
+                mStoppedShimmerBecauseVisibility = true;
+            }
+        } else if (mStoppedShimmerBecauseVisibility) {
+            mShimmerDrawable.maybeStartShimmer();
+            mStoppedShimmerBecauseVisibility = false;
+        }
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mShimmerDrawable.maybeStartShimmer();
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopShimmer();
+    }
+
+    @Override
+    public void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        if (mShowShimmer) {
+            mShimmerDrawable.draw(canvas);
+        }
+    }
+
+    @Override
+    protected boolean verifyDrawable(@NonNull Drawable who) {
+        return super.verifyDrawable(who) || who == mShimmerDrawable;
+    }
+
+    public void setStaticAnimationProgress(float value) {
+        mShimmerDrawable.setStaticAnimationProgress(value);
+    }
+
+    public void clearStaticAnimationProgress() {
+        mShimmerDrawable.clearStaticAnimationProgress();
+    }
 }
