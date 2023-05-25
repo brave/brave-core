@@ -1,0 +1,29 @@
+diff --git a/build/rust/std/fake_root/Cargo.toml b/build/rust/std/fake_root/Cargo.toml
+index 55f3a079a337e681b51fa9140648da2f75e4553d..d18398e0be13d7ac02ba9d9a1958be3c7dd3618f 100644
+--- a/build/rust/std/fake_root/Cargo.toml
++++ b/build/rust/std/fake_root/Cargo.toml
+@@ -2,14 +2,17 @@
+ name = "fake_root"
+ version = "0.1.0"
+ edition = "2021"
+-
+ [dependencies]
+-test = { path = "../../../../third_party/rust-toolchain/lib/rustlib/src/rust/library/test" }
+-
+-[dependencies.std]
+-path = "../../../../third_party/rust-toolchain/lib/rustlib/src/rust/library/std"
+-features = ["backtrace", "profiler"]
+-
++[dependencies.sysroot]
++path = "../../../../third_party/rust-toolchain/lib/rustlib/src/rust/library/sysroot"
++default-features = false
++features = [
++    "backtrace",
++    "panic-unwind",
++    "profiler",
++    "std_detect_dlsym_getauxval",
++    "std_detect_file_io"
++]
+ [patch.crates-io]
+ rustc-std-workspace-core = { path = '../../../../third_party/rust-toolchain/lib/rustlib/src/rust/library/rustc-std-workspace-core' }
+ rustc-std-workspace-alloc = { path = '../../../../third_party/rust-toolchain/lib/rustlib/src/rust/library/rustc-std-workspace-alloc' }
