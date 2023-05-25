@@ -1,15 +1,21 @@
 diff --git a/build/rust/std/rules/BUILD.gn b/build/rust/std/rules/BUILD.gn
-index ee52a6c56a1433ea5aefe255c4de4eb43de0ad56..323abdc898df8fa9bf8a1f076f8e84f6033869e0 100644
+index ee52a6c56a1433ea5aefe255c4de4eb43de0ad56..25f27179a54d148bdcc3277bde349f819afe696d 100644
 --- a/build/rust/std/rules/BUILD.gn
 +++ b/build/rust/std/rules/BUILD.gn
-@@ -6,14 +6,14 @@ import("//build/rust/cargo_crate.gni")
- 
+@@ -1,19 +1,17 @@
++
+ # Copyright 2023 The Chromium Authors
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+-
+ import("//build/rust/cargo_crate.gni")
+-
  cargo_crate("addr2line") {
    crate_type = "rlib"
 -  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/addr2line-0.17.0/src/lib.rs"
 +  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/addr2line-0.19.0/src/lib.rs"
    no_std = true
- 
+-
    # Unit tests skipped. Generate with --with-tests to include them.
    build_native_rust_unit_tests = false
 -  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/addr2line-0.17.0/src/lib.rs" ]
@@ -20,26 +26,115 @@ index ee52a6c56a1433ea5aefe255c4de4eb43de0ad56..323abdc898df8fa9bf8a1f076f8e84f6
    cargo_pkg_name = "addr2line"
    cargo_pkg_description =
        "A cross-platform symbolication library written in Rust, using `gimli`"
-@@ -138,12 +138,12 @@ cargo_crate("cfg_if") {
+@@ -26,6 +24,7 @@ cargo_crate("addr2line") {
+     ":gimli",
+     ":rustc_std_workspace_alloc",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -46,7 +45,6 @@ cargo_crate("adler") {
+   crate_type = "rlib"
+   crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/adler-1.0.2/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/adler-1.0.2/src/lib.rs" ]
+@@ -63,6 +61,7 @@ cargo_crate("adler") {
+   deps = [
+     ":compiler_builtins",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -81,7 +80,6 @@ cargo_crate("alloc") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/alloc/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/alloc/src/lib.rs" ]
+@@ -96,6 +94,7 @@ cargo_crate("alloc") {
+   deps = [
+     ":compiler_builtins",
+     ":core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   rustflags = [ "-Zforce-unstable-if-unmarked" ]
+@@ -106,7 +105,6 @@ cargo_crate("cfg_if") {
+   crate_type = "rlib"
+   crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/cfg-if-1.0.0/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/cfg-if-1.0.0/src/lib.rs" ]
+@@ -122,6 +120,7 @@ cargo_crate("cfg_if") {
+   deps = [
+     ":compiler_builtins",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -138,18 +137,20 @@ cargo_crate("cfg_if") {
  }
  cargo_crate("compiler_builtins") {
    crate_type = "rlib"
 -  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/compiler_builtins-0.1.89/src/lib.rs"
 +  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/compiler_builtins-0.1.91/src/lib.rs"
    no_std = true
- 
+-
    # Unit tests skipped. Generate with --with-tests to include them.
    build_native_rust_unit_tests = false
 -  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/compiler_builtins-0.1.89/src/lib.rs" ]
 +  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/compiler_builtins-0.1.91/src/lib.rs" ]
    edition = "2015"
-   cargo_pkg_version = "0.1.89"
+-  cargo_pkg_version = "0.1.89"
++  cargo_pkg_version = "0.1.91"
    cargo_pkg_authors = "Jorge Aparicio <japaricious@gmail.com>"
-@@ -184,7 +184,10 @@ cargo_crate("core") {
+   cargo_pkg_name = "compiler_builtins"
+   cargo_pkg_description = "Compiler intrinsics used by the Rust compiler. Also available for other targets if necessary!"
+-  library_configs -= [ "//build/config/compiler:chromium_code" ]
++  library_configs -= [
++    "//build/config/compiler:chromium_code",
++    "//build/config/coverage:default_coverage",
++  ]
+   library_configs += [ "//build/config/compiler:no_chromium_code" ]
+   executable_configs -= [ "//build/config/compiler:chromium_code" ]
+   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+@@ -165,6 +166,8 @@ cargo_crate("compiler_builtins") {
+     "core",
+     "rustc-dep-of-std",
+   ]
++  build_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/compiler_builtins-0.1.91/build.rs"
++  build_sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/compiler_builtins-0.1.91/build.rs" ]
+   rustflags = [ "-Zforce-unstable-if-unmarked" ]
+   output_dir =
+       "$root_out_dir/local_rustc_sysroot/lib/rustlib/$rust_abi_target/lib/"
+@@ -173,7 +176,6 @@ cargo_crate("core") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/core/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [
+@@ -183,8 +185,14 @@ cargo_crate("core") {
+   cargo_pkg_version = "0.0.0"
    cargo_pkg_name = "core"
    cargo_pkg_description = "The Rust Core Library"
-   library_configs -= [ "//build/config/compiler:chromium_code" ]
+-  library_configs -= [ "//build/config/compiler:chromium_code" ]
 -  library_configs += [ "//build/config/compiler:no_chromium_code" ]
++  library_configs -= [
++    "//build/config/compiler:chromium_code",
++    "//build/config/coverage:default_coverage",
++  ]
 +  library_configs += [
 +    "//build/config/compiler:no_chromium_code",
 +    "//build/rust:panic_immediate_abort",
@@ -47,14 +142,30 @@ index ee52a6c56a1433ea5aefe255c4de4eb43de0ad56..323abdc898df8fa9bf8a1f076f8e84f6
    executable_configs -= [ "//build/config/compiler:chromium_code" ]
    executable_configs += [ "//build/config/compiler:no_chromium_code" ]
    deps = [ "//build/rust/std:std_build_deps" ]
-@@ -230,14 +233,14 @@ cargo_crate("getopts") {
+@@ -196,7 +204,6 @@ cargo_crate("getopts") {
+   crate_type = "rlib"
+   crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/getopts-0.2.21/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/getopts-0.2.21/src/lib.rs" ]
+@@ -213,6 +220,7 @@ cargo_crate("getopts") {
+     ":rustc_std_workspace_core",
+     ":rustc_std_workspace_std",
+     ":unicode_width",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -230,14 +238,13 @@ cargo_crate("getopts") {
  }
  cargo_crate("gimli") {
    crate_type = "rlib"
 -  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/gimli-0.26.2/src/lib.rs"
 +  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/gimli-0.27.2/src/lib.rs"
    no_std = true
- 
+-
    # Unit tests skipped. Generate with --with-tests to include them.
    build_native_rust_unit_tests = false
 -  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/gimli-0.26.2/src/lib.rs" ]
@@ -65,14 +176,22 @@ index ee52a6c56a1433ea5aefe255c4de4eb43de0ad56..323abdc898df8fa9bf8a1f076f8e84f6
    cargo_pkg_name = "gimli"
    cargo_pkg_description =
        "A library for reading and writing the DWARF debugging format."
-@@ -269,14 +272,14 @@ cargo_crate("gimli") {
+@@ -249,6 +256,7 @@ cargo_crate("gimli") {
+     ":compiler_builtins",
+     ":rustc_std_workspace_alloc",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -269,14 +277,13 @@ cargo_crate("gimli") {
  }
  cargo_crate("hashbrown") {
    crate_type = "rlib"
 -  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/hashbrown-0.12.3/src/lib.rs"
 +  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/hashbrown-0.13.2/src/lib.rs"
    no_std = true
- 
+-
    # Unit tests skipped. Generate with --with-tests to include them.
    build_native_rust_unit_tests = false
 -  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/hashbrown-0.12.3/src/lib.rs" ]
@@ -83,32 +202,96 @@ index ee52a6c56a1433ea5aefe255c4de4eb43de0ad56..323abdc898df8fa9bf8a1f076f8e84f6
    cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"
    cargo_pkg_name = "hashbrown"
    cargo_pkg_description = "A Rust port of Google's SwissTable hash map"
-@@ -308,14 +311,14 @@ cargo_crate("hashbrown") {
+@@ -288,6 +295,7 @@ cargo_crate("hashbrown") {
+     ":compiler_builtins",
+     ":rustc_std_workspace_alloc",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -308,18 +316,20 @@ cargo_crate("hashbrown") {
  }
  cargo_crate("libc") {
    crate_type = "rlib"
 -  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/libc-0.2.140/src/lib.rs"
-+  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/libc-0.2.143/src/lib.rs"
++  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/libc-0.2.144/src/lib.rs"
    no_std = true
- 
+-
    # Unit tests skipped. Generate with --with-tests to include them.
    build_native_rust_unit_tests = false
 -  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/libc-0.2.140/src/lib.rs" ]
-+  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/libc-0.2.143/src/lib.rs" ]
++  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/libc-0.2.144/src/lib.rs" ]
    edition = "2015"
 -  cargo_pkg_version = "0.2.140"
-+  cargo_pkg_version = "0.2.143"
++  cargo_pkg_version = "0.2.144"
    cargo_pkg_authors = "The Rust Project Developers"
    cargo_pkg_name = "libc"
    cargo_pkg_description = "Raw FFI bindings to platform libraries like libc."
-@@ -387,14 +390,14 @@ cargo_crate("memchr") {
+-  library_configs -= [ "//build/config/compiler:chromium_code" ]
++  library_configs -= [
++    "//build/config/compiler:chromium_code",
++    "//build/config/coverage:default_coverage",
++  ]
+   library_configs += [ "//build/config/compiler:no_chromium_code" ]
+   executable_configs -= [ "//build/config/compiler:chromium_code" ]
+   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+@@ -332,20 +342,10 @@ cargo_crate("libc") {
+     "rustc-dep-of-std",
+     "rustc-std-workspace-core",
+   ]
++  build_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/libc-0.2.144/build.rs"
++  build_sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/libc-0.2.144/build.rs" ]
+   rustflags = [
+-    "--cfg=libc_priv_mod_use",
+-    "--cfg=libc_union",
+-    "--cfg=libc_const_size_of",
+-    "--cfg=libc_align",
+-    "--cfg=libc_int128",
+-    "--cfg=libc_core_cvoid",
+-    "--cfg=libc_packedN",
+-    "--cfg=libc_cfg_target_vendor",
+-    "--cfg=libc_non_exhaustive",
+-    "--cfg=libc_long_array",
+-    "--cfg=libc_ptr_addr_of",
+-    "--cfg=libc_underscore_const_names",
+-    "--cfg=libc_const_extern_fn",
++    "-Zlink-directives=false",
+     "-Zforce-unstable-if-unmarked",
+   ]
+   output_dir =
+@@ -355,7 +355,6 @@ cargo_crate("memchr") {
+   crate_type = "rlib"
+   crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/memchr-2.5.0/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/memchr-2.5.0/src/lib.rs" ]
+@@ -371,6 +370,7 @@ cargo_crate("memchr") {
+   deps = [
+     ":compiler_builtins",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -381,20 +381,21 @@ cargo_crate("memchr") {
+     "core",
+     "rustc-dep-of-std",
+   ]
++  build_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/memchr-2.5.0/build.rs"
++  build_sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/memchr-2.5.0/build.rs" ]
+   rustflags = [ "-Zforce-unstable-if-unmarked" ]
+   output_dir =
+       "$root_out_dir/local_rustc_sysroot/lib/rustlib/$rust_abi_target/lib/"
  }
  cargo_crate("miniz_oxide") {
    crate_type = "rlib"
 -  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/miniz_oxide-0.5.3/src/lib.rs"
 +  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/miniz_oxide-0.6.2/src/lib.rs"
    no_std = true
- 
+-
    # Unit tests skipped. Generate with --with-tests to include them.
    build_native_rust_unit_tests = false
 -  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/miniz_oxide-0.5.3/src/lib.rs" ]
@@ -119,14 +302,22 @@ index ee52a6c56a1433ea5aefe255c4de4eb43de0ad56..323abdc898df8fa9bf8a1f076f8e84f6
    cargo_pkg_authors = "Frommi <daniil.liferenko@gmail.com>, oyvindln <oyvindln@users.noreply.github.com>"
    cargo_pkg_name = "miniz_oxide"
    cargo_pkg_description = "DEFLATE compression and decompression library rewritten in Rust based on miniz"
-@@ -425,14 +428,14 @@ cargo_crate("miniz_oxide") {
+@@ -407,6 +408,7 @@ cargo_crate("miniz_oxide") {
+     ":compiler_builtins",
+     ":rustc_std_workspace_alloc",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -425,14 +427,13 @@ cargo_crate("miniz_oxide") {
  }
  cargo_crate("object") {
    crate_type = "rlib"
 -  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/object-0.29.0/src/lib.rs"
 +  crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/object-0.30.3/src/lib.rs"
    no_std = true
- 
+-
    # Unit tests skipped. Generate with --with-tests to include them.
    build_native_rust_unit_tests = false
 -  sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/object-0.29.0/src/lib.rs" ]
@@ -137,7 +328,162 @@ index ee52a6c56a1433ea5aefe255c4de4eb43de0ad56..323abdc898df8fa9bf8a1f076f8e84f6
    cargo_pkg_name = "object"
    cargo_pkg_description =
        "A unified interface for reading and writing object file formats."
-@@ -695,7 +698,10 @@ cargo_crate("std") {
+@@ -445,6 +446,7 @@ cargo_crate("object") {
+     ":memchr",
+     ":rustc_std_workspace_alloc",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -472,7 +474,6 @@ cargo_crate("panic_abort") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/panic_abort/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/panic_abort/src/lib.rs" ]
+@@ -490,6 +491,7 @@ cargo_crate("panic_abort") {
+     ":compiler_builtins",
+     ":core",
+     ":libc",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   rustflags = [ "-Zforce-unstable-if-unmarked" ]
+@@ -500,7 +502,6 @@ cargo_crate("panic_unwind") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/panic_unwind/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/panic_unwind/src/lib.rs" ]
+@@ -519,6 +520,7 @@ cargo_crate("panic_unwind") {
+     ":core",
+     ":libc",
+     ":unwind",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   rustflags = [ "-Zforce-unstable-if-unmarked" ]
+@@ -529,7 +531,6 @@ cargo_crate("proc_macro") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/proc_macro/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/proc_macro/src/lib.rs" ]
+@@ -543,6 +544,7 @@ cargo_crate("proc_macro") {
+   deps = [
+     ":core",
+     ":std",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   rustflags = [ "-Zforce-unstable-if-unmarked" ]
+@@ -553,14 +555,16 @@ cargo_crate("profiler_builtins") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/profiler_builtins/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/profiler_builtins/src/lib.rs" ]
+   edition = "2021"
+   cargo_pkg_version = "0.0.0"
+   cargo_pkg_name = "profiler_builtins"
+-  library_configs -= [ "//build/config/compiler:chromium_code" ]
++  library_configs -= [
++    "//build/config/compiler:chromium_code",
++    "//build/config/coverage:default_coverage",
++  ]
+   library_configs += [ "//build/config/compiler:no_chromium_code" ]
+   executable_configs -= [ "//build/config/compiler:chromium_code" ]
+   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+@@ -577,7 +581,6 @@ cargo_crate("rustc_demangle") {
+   crate_type = "rlib"
+   crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/rustc-demangle-0.1.21/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/rustc-demangle-0.1.21/src/lib.rs" ]
+@@ -593,6 +596,7 @@ cargo_crate("rustc_demangle") {
+   deps = [
+     ":compiler_builtins",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -611,7 +615,6 @@ cargo_crate("rustc_std_workspace_alloc") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/rustc-std-workspace-alloc/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/rustc-std-workspace-alloc/lib.rs" ]
+@@ -619,7 +622,10 @@ cargo_crate("rustc_std_workspace_alloc") {
+   cargo_pkg_version = "1.99.0"
+   cargo_pkg_name = "rustc-std-workspace-alloc"
+   cargo_pkg_description = "Hack for the compiler's own build system"
+-  library_configs -= [ "//build/config/compiler:chromium_code" ]
++  library_configs -= [
++    "//build/config/compiler:chromium_code",
++    "//build/config/coverage:default_coverage",
++  ]
+   library_configs += [ "//build/config/compiler:no_chromium_code" ]
+   executable_configs -= [ "//build/config/compiler:chromium_code" ]
+   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+@@ -635,7 +641,6 @@ cargo_crate("rustc_std_workspace_core") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/rustc-std-workspace-core/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/rustc-std-workspace-core/lib.rs" ]
+@@ -643,7 +648,10 @@ cargo_crate("rustc_std_workspace_core") {
+   cargo_pkg_version = "1.99.0"
+   cargo_pkg_name = "rustc-std-workspace-core"
+   cargo_pkg_description = "Hack for the compiler's own build system"
+-  library_configs -= [ "//build/config/compiler:chromium_code" ]
++  library_configs -= [
++    "//build/config/compiler:chromium_code",
++    "//build/config/coverage:default_coverage",
++  ]
+   library_configs += [ "//build/config/compiler:no_chromium_code" ]
+   executable_configs -= [ "//build/config/compiler:chromium_code" ]
+   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+@@ -659,7 +667,6 @@ cargo_crate("rustc_std_workspace_std") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/rustc-std-workspace-std/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/rustc-std-workspace-std/lib.rs" ]
+@@ -673,6 +680,7 @@ cargo_crate("rustc_std_workspace_std") {
+   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+   deps = [
+     ":std",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   rustflags = [ "-Zforce-unstable-if-unmarked" ]
+@@ -684,7 +692,6 @@ cargo_crate("std") {
+   crate_root =
+       "//third_party/rust-toolchain/lib/rustlib/src/rust/library/std/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [
+@@ -695,7 +702,10 @@ cargo_crate("std") {
    cargo_pkg_name = "std"
    cargo_pkg_description = "The Rust Standard Library"
    library_configs -= [ "//build/config/compiler:chromium_code" ]
@@ -149,3 +495,91 @@ index ee52a6c56a1433ea5aefe255c4de4eb43de0ad56..323abdc898df8fa9bf8a1f076f8e84f6
    executable_configs -= [ "//build/config/compiler:chromium_code" ]
    executable_configs += [ "//build/config/compiler:no_chromium_code" ]
    deps = [
+@@ -710,10 +720,10 @@ cargo_crate("std") {
+     ":object",
+     ":panic_abort",
+     ":panic_unwind",
+-    ":profiler_builtins",
+     ":rustc_demangle",
+     ":std_detect",
+     ":unwind",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   features = [
+@@ -728,6 +738,11 @@ cargo_crate("std") {
+     "std_detect_dlsym_getauxval",
+     "std_detect_file_io",
+   ]
++  build_root =
++      "//third_party/rust-toolchain/lib/rustlib/src/rust/library/std/build.rs"
++  build_sources = [
++    "//third_party/rust-toolchain/lib/rustlib/src/rust/library/std/build.rs",
++  ]
+   rustenv = [ "STD_ENV_ARCH=$rust_target_arch" ]
+   rustflags = [
+     "--cfg=backtrace_in_libstd",
+@@ -740,7 +755,6 @@ cargo_crate("std_detect") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/stdarch/crates/std_detect/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/stdarch/crates/std_detect/src/lib.rs" ]
+@@ -760,6 +774,7 @@ cargo_crate("std_detect") {
+     ":libc",
+     ":rustc_std_workspace_alloc",
+     ":rustc_std_workspace_core",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -783,7 +798,6 @@ cargo_crate("test") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/test/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [
+@@ -802,6 +816,7 @@ cargo_crate("test") {
+     ":panic_abort",
+     ":panic_unwind",
+     ":std",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   rustenv = [ "CFG_DISABLE_UNSTABLE_FEATURES=0" ]
+@@ -813,7 +828,6 @@ cargo_crate("unicode_width") {
+   crate_type = "rlib"
+   crate_root = "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/unicode-width-0.1.10/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//build/rust/std/fake_root/../../../../third_party/rust-toolchain/lib/rustlib/src/rust/vendor/unicode-width-0.1.10/src/lib.rs" ]
+@@ -831,6 +845,7 @@ cargo_crate("unicode_width") {
+     ":compiler_builtins",
+     ":rustc_std_workspace_core",
+     ":rustc_std_workspace_std",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   aliased_deps = {
+@@ -851,7 +866,6 @@ cargo_crate("unwind") {
+   crate_type = "rlib"
+   crate_root = "//third_party/rust-toolchain/lib/rustlib/src/rust/library/unwind/src/lib.rs"
+   no_std = true
+-
+   # Unit tests skipped. Generate with --with-tests to include them.
+   build_native_rust_unit_tests = false
+   sources = [ "//third_party/rust-toolchain/lib/rustlib/src/rust/library/unwind/src/lib.rs" ]
+@@ -867,6 +881,7 @@ cargo_crate("unwind") {
+     ":compiler_builtins",
+     ":core",
+     ":libc",
++    "//build/rust/std:profiler_builtins_group",
+     "//build/rust/std:std_build_deps",
+   ]
+   rustflags = [
