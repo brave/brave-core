@@ -20,13 +20,13 @@ import {
   PanelHeader,
   PanelItem,
   MonthDay,
-  TokenAmountWithExchange,
   ConfigHeader
 } from './settings_panel'
 
 import { ModalShowAdsHistory } from '../../ui/components'
 import { PaymentStatusView } from '../../shared/components/payment_status_view'
 import { NewTabLink } from '../../shared/components/new_tab_link'
+import { EarningsRange } from '../../shared/components/earnings_range'
 import { ArrowNextIcon } from '../../shared/components/icons/arrow_next_icon'
 import { AlertIcon } from './icons/alert_icon'
 
@@ -340,11 +340,13 @@ export function AdsPanel () {
     }
 
     return (
-      <TokenAmountWithExchange
-        amount={adsData.adsEarningsThisMonth}
-        exchangeRate={data.parameters.rate}
-        exchangeCurrency='USD'
-      />
+      <style.earnings>
+        <EarningsRange
+          minimum={adsData.adsMinEarningsThisMonth}
+          maximum={adsData.adsMaxEarningsThisMonth}
+          minimumFractionDigits={3}
+        />
+      </style.earnings>
     )
   }
 

@@ -5,19 +5,20 @@
 
 import styled from 'styled-components'
 
-import { tooltipMixin } from './tooltip_mixin'
+import * as leo from '@brave/leo/tokens/css'
+
 import { buttonReset } from '../../lib/css_mixins'
 
 export const root = styled.div`
   background: rgba(15, 28, 45, 0.7);
   backdrop-filter: blur(27.1828px);
   border-radius: 6px;
-  color: var(--brave-palette-white);
-  font-family: var(--brave-font-heading);
+  color: ${leo.color.dark.text.primary};
+  font-family: Poppins;
   padding: 8px 20px 14px;
 
   button {
-    font-family: var(--brave-font-heading);
+    font-family: Poppins;
   }
 `
 
@@ -26,8 +27,8 @@ export const cardHeader = styled.div`
   font-weight: 600;
   font-size: 18px;
   line-height: 22px;
-  color: var(--brave-palette-white);
-  font-family: var(--brave-font-heading);
+  color: ${leo.color.white};
+  font-family: Poppins;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -120,8 +121,7 @@ export const balance = styled.div`
 `
 
 export const balanceTitle = styled.div`
-  color: rgba(255, 255, 255, 0.8);
-  letter-spacing: 0.01em;
+  color: ${leo.color.dark.text.disabled};
 `
 
 export const balanceSpinner = styled.div`
@@ -141,7 +141,7 @@ export const loading = styled.span`
 export const balanceAmount = styled.div`
   .amount {
     font-size: 36px;
-    line-height: 40px;
+    line-height: 54px;
   }
 
   .currency {
@@ -151,19 +151,14 @@ export const balanceAmount = styled.div`
 `
 
 export const balanceExchange = styled.div`
-  color: rgba(255, 255, 255, 0.8);
-  letter-spacing: 0.01em;
+  margin-top: 4px;
+  color: ${leo.color.dark.text.disabled};
   display: flex;
   gap: 6px;
-  min-height: 24px;
 `
 
 export const balanceExchangeAmount = styled.div`
   flex: 0 0 auto;
-`
-
-export const balanceExchangeNote = styled.div`
-  flex: 1 1 auto;
 `
 
 export const pendingRewards = styled.div`
@@ -231,30 +226,109 @@ export const needsBrowserUpdateContentBody = styled.div`
   color: var(--brave-palette-neutral800);
 `
 
-export const progressHeader = styled.div`
-  margin-top: 16px;
+export const earningsHeader = styled.div`
+  margin: 24px 0 8px;
   display: flex;
   align-items: center;
-  gap: 11px;
-  color: rgba(255, 255, 255, 0.8);
+  gap: 5px;
 `
 
-export const progressHeaderText = styled.div`
-  .date-range {
-    font-weight: 600;
-    color: var(--brave-palette-white);
+export const earningsHeaderText = styled.div`
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+`
+
+export const earningsInfo = styled.span`
+  position: relative;
+
+  .icon {
+    height: 12px;
+    width: auto;
+    vertical-align: middle;
+    margin-bottom: 2px;
+    margin-left: 5px;
+  }
+
+  .tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: -119px;
+    width: 207px;
+    padding-bottom: 12px;
+    visibility: hidden;
+    transition: visibility 0s linear 300ms;
+  }
+
+  &:hover .tooltip {
+    visibility: initial;
   }
 `
 
-export const progressHeaderBorder = styled.div`
+export const earningsTooltip = styled.div`
+  position: relative;
+  padding: 16px;
+  background: ${leo.color.white};
+  box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
+  border-radius: 8px;
+  color: ${leo.color.light.text.primary};
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 123px;
+    background: inherit;
+    height: 15px;
+    width: 15px;
+    transform: rotate(45deg);
+  }
+`
+
+export const earningsHeaderBorder = styled.div`
   flex: 1 1 auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid ${leo.color.dark.text.disabled};
   height: 0px;
 `
 
-export const dateRange = styled.span`
-  font-weight: 600;
-  color: var(--brave-palette-white);
+export const earningsDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  line-height: 24px;
+  color: #F8F9FA;
+`
+
+export const earningsMonth = styled.div`
+  padding: 2px 4px;
+  font-size: 11px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+`
+
+export const hiddenEarnings = styled.div`
+  display: flex;
+  align-items: center;
+
+  padding-left: 3px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  color: ${leo.color.dark.text.disabled};
+
+  a {
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 18px;
+    color: ${leo.color.dark.text.primary};
+    text-decoration: none;
+  }
 `
 
 export const adsOptIn = styled.div`
@@ -287,86 +361,6 @@ export const primaryAction = styled.div`
         linear-gradient(rgba(15, 28, 45, .05), rgba(15, 28, 45, .1)),
         var(--brave-palette-blurple500);
     }
-  }
-`
-
-export const progress = styled.div`
-  margin-top: 12px;
-  display: flex;
-`
-
-export const earning = styled.div`
-  flex: 1 1 50%;
-`
-
-export const earningInfo = styled.span`
-  position: relative;
-  margin-left: 4px;
-
-  > .icon {
-    height: 14px;
-    width: auto;
-    vertical-align: middle;
-    margin-bottom: 2px;
-  }
-
-  .tooltip {
-    position: absolute;
-    bottom: 100%;
-    left: -24px;
-    width: 175px;
-    padding-bottom: 12px;
-    display: none;
-  }
-
-  &:hover .tooltip {
-    display: initial;
-  }
-`
-
-export const earningTooltip = styled.div`
-  ${tooltipMixin}
-  padding: 12px 16px;
-  color: #F6F6FA;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 20px;
-`
-
-export const hiddenEarnings = styled.div`
-  padding-left: 3px;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 30px;
-  color: rgba(255, 255, 255, 0.66);
-
-  a {
-    display: block;
-    margin-top: -7px;
-    font-weight: 600;
-    font-size: 11px;
-    line-height: 18px;
-    color: #fff;
-    text-decoration: none;
-  }
-`
-
-export const giving = styled.div`
-  flex: 1 1 50%;
-`
-
-export const progressItemLabel = styled.div`
-  color: rgba(255, 255, 255, 0.8);
-  letter-spacing: 0.01em;
-`
-
-export const progressItemAmount = styled.div`
-  font-size: 24px;
-  line-height: 36px;
-
-  .currency {
-    font-size: 14px;
-    line-height: 21px;
   }
 `
 

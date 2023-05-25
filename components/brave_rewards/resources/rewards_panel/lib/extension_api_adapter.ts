@@ -58,7 +58,8 @@ export function getEarningsInfo () {
       if (success) {
         resolve({
           earningsLastMonth: statement.earningsLastMonth,
-          earningsThisMonth: statement.earningsThisMonth,
+          minEarningsThisMonth: statement.minEarningsThisMonth,
+          maxEarningsThisMonth: statement.maxEarningsThisMonth,
           nextPaymentDate: statement.nextPaymentDate
         })
       } else {

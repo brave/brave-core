@@ -8,7 +8,6 @@ import * as knobs from '@storybook/addon-knobs'
 import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
 import { RewardsCard } from '../rewards_card'
-import { SponsoredImageTooltip } from '../sponsored_image_tooltip'
 
 import { localeStrings } from './locale_strings'
 import * as mojom from '../../../../shared/lib/mojom'
@@ -46,7 +45,7 @@ export function Card () {
             rewardsBalance={optional(91.5812)}
             exchangeCurrency='USD'
             exchangeRate={0.82}
-            providerPayoutStatus={'complete'}
+            providerPayoutStatus={'off'}
             grantInfo={showGrant ? {
               id: '',
               amount: 0.15,
@@ -64,7 +63,8 @@ export function Card () {
               }
             } : null}
             nextPaymentDate={nextPaymentDate}
-            earningsThisMonth={0.142}
+            minEarningsThisMonth={0.142}
+            maxEarningsThisMonth={1.142}
             earningsLastMonth={1.25}
             contributionsThisMonth={10}
             publishersVisited={4}
@@ -73,22 +73,6 @@ export function Card () {
             onEnableAds={actionLogger('onEnableAds')}
             onSelectCountry={actionLogger('onSelectCountry')}
             onClaimGrant={actionLogger('onClaimGrant')}
-          />
-        </div>
-      </WithThemeVariables>
-    </LocaleContext.Provider>
-  )
-}
-
-export function SponsoredImage () {
-  return (
-    <LocaleContext.Provider value={localeContext}>
-      <WithThemeVariables>
-        <div style={{ width: '284px' }}>
-          <SponsoredImageTooltip
-            adsEnabled={false}
-            onEnableAds={actionLogger('onEnableAds')}
-            onClose={actionLogger('onClose')}
           />
         </div>
       </WithThemeVariables>

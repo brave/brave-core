@@ -61,7 +61,8 @@ export function Panel () {
           balance={balance}
           externalWallet={externalWallet}
           providerPayoutStatus={providerPayoutStatus}
-          earningsThisMonth={earningsInfo.earningsThisMonth}
+          minEarningsThisMonth={earningsInfo.minEarningsThisMonth}
+          maxEarningsThisMonth={earningsInfo.maxEarningsThisMonth}
           earningsLastMonth={earningsInfo.earningsLastMonth}
           nextPaymentDate={earningsInfo.nextPaymentDate}
           exchangeRate={exchangeInfo.rate}

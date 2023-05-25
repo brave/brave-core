@@ -118,7 +118,8 @@ export const reduxState: Rewards.ApplicationState = {
       needsBrowserUpgradeToServeAds: false,
       adsNextPaymentDate: 0,
       adsReceivedThisMonth: 0,
-      adsEarningsThisMonth: 0,
+      adsMinEarningsThisMonth: 0,
+      adsMaxEarningsThisMonth: 0,
       adsEarningsLastMonth: 0
     },
     adsHistory: [],

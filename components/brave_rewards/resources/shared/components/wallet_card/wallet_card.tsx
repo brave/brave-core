@@ -5,12 +5,15 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
+import { EarningsRange } from '../earnings_range'
 import { NewTabLink } from '../new_tab_link'
 import { ExternalWalletView } from './external_wallet_view'
 import { ExternalWalletAction } from './external_wallet_action'
@@ -27,16 +30,16 @@ import * as style from './wallet_card.style'
 
 import * as mojom from '../../../shared/lib/mojom'
 
-const rangeFormatter = new Intl.DateTimeFormat(undefined, {
-  month: 'short',
-  day: 'numeric'
+const monthFormatter = new Intl.DateTimeFormat(undefined, {
+  month: 'short'
 })
 
 interface Props {
   balance: Optional<number>
   externalWallet: ExternalWallet | null
   providerPayoutStatus: ProviderPayoutStatus
-  earningsThisMonth: number
+  minEarningsThisMonth: number
+  maxEarningsThisMonth: number
   earningsLastMonth: number
   nextPaymentDate: number
   exchangeRate: number
@@ -47,13 +50,6 @@ interface Props {
   onExternalWalletAction: (action: ExternalWalletAction) => void
   onViewPendingTips?: () => void
   onViewStatement?: () => void
-}
-
-export function getCurrentMonthRange () {
-  const now = new Date(Date.now())
-  const start = new Date(now.getFullYear(), now.getMonth(), 1)
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0)
-  return rangeFormatter.format(start) + ' – ' + rangeFormatter.format(end)
 }
 
 export function WalletCard (props: Props) {
@@ -69,13 +65,8 @@ export function WalletCard (props: Props) {
         props.onExternalWalletAction('reconnect')
       }
 
-      const coverActions = props.showSummary && props.onViewStatement
-
       return (
-        <style.disconnectedBalance
-          className={coverActions ? 'cover-actions' : ''}
-          onClick={onReconnectClick}
-        >
+        <style.disconnectedBalance onClick={onReconnectClick}>
           {
             formatMessage(getString('rewardsLogInToSeeBalance'), {
               placeholders: {
@@ -94,88 +85,83 @@ export function WalletCard (props: Props) {
     return (
       <style.rewardsBalance>
         <style.balanceHeader>
-          {getString('walletYourBalance')}
+          {getString('walletBalanceTitle')}
         </style.balanceHeader>
         <style.batAmount data-test-id='rewards-balance-text'>
           {
             !props.balance.hasValue()
               ? <style.balanceSpinner>
-                <LoadingIcon />
-                <style.loading>{getString('loading')}</style.loading>
-              </style.balanceSpinner>
+                  <LoadingIcon />
+                  <style.loading>{getString('loading')}</style.loading>
+                </style.balanceSpinner>
               : <TokenAmount amount={props.balance.value()} />
           }
         </style.batAmount>
-        <style.exchangeAmount
-          className={!props.balance.hasValue() ? 'hidden' : ''}>
-          <ExchangeAmount
-            amount={props.balance.valueOr(0)}
-            rate={props.exchangeRate} />
+        <style.exchangeAmount>
+        {
+          props.balance.hasValue() &&
+            <>
+              ≈&nbsp;
+              <ExchangeAmount
+                amount={props.balance.value()}
+                rate={props.exchangeRate}
+              />
+            </>
+        }
         </style.exchangeAmount>
       </style.rewardsBalance>
     )
   }
 
-  function renderEstimatedEarnings () {
-    if (!props.externalWallet) {
-      return (
-        <style.hiddenEarnings>
-          -&nbsp;-
-          <NewTabLink href={urls.rewardsChangesURL}>
-            {getString('rewardsLearnMore')}
-          </NewTabLink>
-        </style.hiddenEarnings>
-      )
-    }
-
-    return (
-      <>
-        <style.batAmount>
-          <TokenAmount amount={props.earningsThisMonth} />
-        </style.batAmount>
-        <style.exchangeAmount>
-          ≈ &nbsp;
-          <ExchangeAmount
-            amount={props.earningsThisMonth}
-            rate={props.exchangeRate}
-            currency={props.exchangeCurrency}
-          />
-        </style.exchangeAmount>
-      </>
-    )
-  }
-
   return (
     <style.root className={props.showSummary ? 'show-summary' : ''}>
-      <style.grid>
+      <style.statusPanel>
         <style.statusIndicator>
           <ExternalWalletView
             externalWallet={props.externalWallet}
             onExternalWalletAction={props.onExternalWalletAction}
           />
         </style.statusIndicator>
-        {renderBalance()}
-        <style.earningsPanel>
-          <style.dateRange>
-            {getCurrentMonthRange()}
-          </style.dateRange>
+        <style.earnings>
           <style.earningsHeader>
-            {getString('walletEstimatedEarnings')}
+            <style.earningsHeaderTitle>
+              {getString('walletEstimatedEarnings')}
+            </style.earningsHeaderTitle>
+            <style.earningsInfo>
+              <Icon name='info-outline' />
+              <div className='tooltip'>
+                <style.earningsTooltip>
+                  {getString('walletEarningInfoText')}
+                </style.earningsTooltip>
+              </div>
+            </style.earningsInfo>
           </style.earningsHeader>
-          {renderEstimatedEarnings()}
-        </style.earningsPanel>
-        {
-          props.showSummary && props.onViewStatement &&
-            <style.viewStatement>
-              <button
-                onClick={props.onViewStatement}
-                data-test-id='view-statement-button'
-              >
-                <WalletInfoIcon />{getString('walletViewStatement')}
-              </button>
-            </style.viewStatement>
-        }
-      </style.grid>
+          <style.earningsDisplay>
+            <style.earningsMonth>
+              {monthFormatter.format(new Date())}
+            </style.earningsMonth>
+            <style.earningsAmount>
+              {
+                props.externalWallet
+                  ? <EarningsRange
+                      minimum={props.minEarningsThisMonth}
+                      maximum={props.maxEarningsThisMonth}
+                      minimumFractionDigits={3}
+                    />
+                  : <style.hiddenEarnings>
+                      <style.hiddenEarningsValue>
+                        - -
+                      </style.hiddenEarningsValue>
+                      <NewTabLink href={urls.rewardsChangesURL}>
+                        {getString('rewardsLearnMore')}
+                      </NewTabLink>
+                    </style.hiddenEarnings>
+              }
+            </style.earningsAmount>
+          </style.earningsDisplay>
+        </style.earnings>
+      </style.statusPanel>
+      {renderBalance()}
       {
         props.showSummary
           ? <style.summaryBox>
@@ -190,6 +176,17 @@ export function WalletCard (props: Props) {
                 exchangeCurrency={props.exchangeCurrency}
                 onViewPendingTips={props.onViewPendingTips}
               />
+              {
+                props.onViewStatement &&
+                  <style.viewStatement>
+                    <button
+                      onClick={props.onViewStatement}
+                      data-test-id='view-statement-button'
+                    >
+                      <WalletInfoIcon />{getString('walletViewStatement')}
+                    </button>
+                  </style.viewStatement>
+              }
             </style.summaryBox>
           : <style.pendingBox>
               <PendingRewardsView

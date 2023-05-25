@@ -61,7 +61,7 @@ module.exports = {
     "lib/test.js"
   ],
   transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!(brave-ui)/)"
+    "<rootDir>/node_modules/(?!(brave-ui|@brave/leo)/)"
   ],
   setupFilesAfterEnv: [
     "<rootDir>/components/test/testSetup.ts"

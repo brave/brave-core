@@ -80,7 +80,8 @@ function createHost (): Host {
       currency: 'USD'
     },
     earningsInfo: {
-      earningsThisMonth: 1.2,
+      minEarningsThisMonth: 1.2,
+      maxEarningsThisMonth: 2.1,
       earningsLastMonth: 2.4,
       nextPaymentDate: Date.now() + 1000 * 60 * 60 * 24 * 3
     },

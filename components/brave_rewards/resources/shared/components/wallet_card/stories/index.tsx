@@ -58,9 +58,10 @@ export function Wallet () {
         <div style={{ width: '375px' }}>
           <WalletCard
             balance={optional(0)}
-            externalWallet={externalWallet}
+            externalWallet={externalWallet && null}
             providerPayoutStatus={'complete'}
-            earningsThisMonth={0}
+            minEarningsThisMonth={0.25}
+            maxEarningsThisMonth={0.75}
             earningsLastMonth={1}
             nextPaymentDate={nextPaymentDate.getTime()}
             exchangeRate={0.75}

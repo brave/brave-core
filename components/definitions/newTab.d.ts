@@ -223,7 +223,8 @@ declare namespace NewTab {
   export interface AdsAccountStatement {
     nextPaymentDate: number
     adsReceivedThisMonth: number
-    earningsThisMonth: number
+    minEarningsThisMonth: number
+    maxEarningsThisMonth: number
     earningsLastMonth: number
   }
 

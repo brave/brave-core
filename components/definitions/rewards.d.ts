@@ -242,7 +242,8 @@ declare namespace Rewards {
     needsBrowserUpgradeToServeAds: boolean
     adsNextPaymentDate: number
     adsReceivedThisMonth: number
-    adsEarningsThisMonth: number
+    adsMinEarningsThisMonth: number
+    adsMaxEarningsThisMonth: number
     adsEarningsLastMonth: number
   }
 

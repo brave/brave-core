@@ -555,7 +555,8 @@ class PageWallet extends React.Component<Props, State> {
               balance={balance}
               externalWallet={externalWalletInfo}
               providerPayoutStatus={'off'}
-              earningsThisMonth={adsData.adsEarningsThisMonth || 0}
+              minEarningsThisMonth={adsData.adsMinEarningsThisMonth || 0}
+              maxEarningsThisMonth={adsData.adsMaxEarningsThisMonth || 0}
               earningsLastMonth={adsData.adsEarningsLastMonth || 0}
               nextPaymentDate={0}
               exchangeRate={parameters.rate}

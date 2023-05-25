@@ -1483,7 +1483,10 @@
                   "adsReceivedThisMonth": {
                     "type": "integer"
                   },
-                  "earningsThisMonth": {
+                  "minEarningsThisMonth": {
+                    "type": "number"
+                  },
+                  "maxEarningsThisMonth": {
                     "type": "number"
                   },
                   "earningsLastMonth": {

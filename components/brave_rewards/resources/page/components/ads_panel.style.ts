@@ -80,6 +80,10 @@ export const paymentStatus = styled.div`
   }
 `
 
+export const earnings = styled.span`
+  color: #495057;
+`
+
 export const hiddenEarnings = styled.div`
   white-space: nowrap;
 
