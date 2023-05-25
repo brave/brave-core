@@ -378,12 +378,12 @@ export const Send = (props: Props) => {
     if (!asset || !account) return
     
     dispatch(WalletActions.selectAccount(account))
-    const _setNetwork = async () =>
-      await setNetwork({
-        chainId: chainId,
-        coin: asset.coin
-      })
-    _setNetwork()
+    setNetwork({
+      chainId: chainId,
+      coin: asset.coin
+    })
+      .catch((e) => console.error(e))
+
     setSelectedSendOption(tokenId ? 'nft' : 'token')
     selectSendAsset(asset)
   }, [
