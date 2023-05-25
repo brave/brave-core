@@ -337,6 +337,23 @@ export const Send = (props: Props) => {
       showEnsOffchainWarning
   }, [toAddressOrUrl, searchingForDomain, showEnsOffchainWarning])
 
+  const selectedAssetFromParams = React.useMemo(() => {
+    if (!contractAddress) return
+
+    return sendAssetOptions.find((option) =>
+      tokenId
+        ? option.contractAddress.toLowerCase() ===
+            contractAddress.toLowerCase() && option.tokenId === tokenId
+        : option.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+    )
+  }, [sendAssetOptions, contractAddress, tokenId])
+
+  const accountFromParams = React.useMemo(() => {
+    return accounts.find(
+      (account) => account.address === accountAddress
+    )
+  }, [accountAddress, accounts])
+
   // Effects
   React.useEffect(() => {
     // Keeps track of the Swap Containers Height to update
@@ -363,39 +380,24 @@ export const Send = (props: Props) => {
 
   React.useEffect(() => {
     // check if the user has selected an asset
-    if (!contractAddress || !accountAddress || !chainId || selectedSendAsset) return
-
-    const asset = sendAssetOptions.find((option) =>
-      tokenId
-        ? option.contractAddress.toLowerCase() ===
-            contractAddress.toLowerCase() && option.tokenId === tokenId
-        : option.contractAddress.toLowerCase() === contractAddress.toLowerCase()
-    )
-    const account = accounts.find(
-      (account) => account.address === accountAddress
-    )
-
-    if (!asset || !account) return
+    if (!chainId || !selectedAssetFromParams || !accountFromParams || selectedSendAsset) return
     
-    dispatch(WalletActions.selectAccount(account))
+    dispatch(WalletActions.selectAccount(accountFromParams))
     setNetwork({
       chainId: chainId,
-      coin: asset.coin
+      coin: selectedAssetFromParams.coin
     })
       .catch((e) => console.error(e))
 
     setSelectedSendOption(tokenId ? 'nft' : 'token')
-    selectSendAsset(asset)
+    selectSendAsset(selectedAssetFromParams)
   }, [
     setSelectedSendOption,
     selectSendAsset,
     selectedSendAsset,
-    sendAssetOptions,
     chainId,
-    accountAddress,
-    contractAddress,
-    tokenId,
-    accounts
+    selectedAssetFromParams,
+    accountFromParams
   ])
 
   // render
