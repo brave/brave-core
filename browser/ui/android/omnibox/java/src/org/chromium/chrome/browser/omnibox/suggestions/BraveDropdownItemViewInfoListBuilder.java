@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteResult;
+import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.Arrays;
@@ -43,9 +44,9 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private Context mContext;
 
     BraveDropdownItemViewInfoListBuilder(@NonNull Supplier<Tab> tabSupplier,
-            BookmarkState bookmarkState, @NonNull ActionChipsDelegate actionChipsDelegate,
+            BookmarkState bookmarkState, @NonNull OmniboxActionDelegate omniboxActionDelegate,
             OpenHistoryClustersDelegate openHistoryClustersDelegate) {
-        super(tabSupplier, bookmarkState, actionChipsDelegate, openHistoryClustersDelegate);
+        super(tabSupplier, bookmarkState, omniboxActionDelegate, openHistoryClustersDelegate);
 
         mActivityTabSupplier = tabSupplier;
     }
