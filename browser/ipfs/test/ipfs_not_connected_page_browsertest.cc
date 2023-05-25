@@ -59,7 +59,7 @@ void ExecuteInterstitialScript(Browser* browser, const std::string& script) {
             GetInterstitialType(web_contents));
 
   content::TestNavigationObserver navigation_observer(web_contents, 1);
-  EXPECT_TRUE(ExecuteScript(web_contents, script));
+  EXPECT_TRUE(content::ExecJs(web_contents, script));
 
   navigation_observer.Wait();
 
