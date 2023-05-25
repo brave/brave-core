@@ -57,8 +57,9 @@ export const createMockStore = (
   apiOverrides?: WalletApiDataOverrides
 ) => {
   // api
-  getMockedAPIProxy().applyOverrides(apiOverrides)
-  const api = createWalletApi(getMockedAPIProxy)
+  const mockedApiProxy = getMockedAPIProxy()
+  mockedApiProxy.applyOverrides(apiOverrides)
+  const api = createWalletApi(() => mockedApiProxy)
   // redux
   const store = configureStore({
     reducer: {
