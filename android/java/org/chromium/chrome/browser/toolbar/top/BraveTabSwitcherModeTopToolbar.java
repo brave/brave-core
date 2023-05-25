@@ -20,7 +20,6 @@ public class BraveTabSwitcherModeTopToolbar extends TabSwitcherModeTopToolbar {
     // To delete in bytecode, members from parent class will be used instead.
     private View mNewTabViewButton;
     private NewTabButton mNewTabImageButton;
-    private ToggleTabStackButton mToggleTabStackButton;
     private boolean mShouldShowNewTabVariation;
     private boolean mIsIncognito;
 
@@ -52,10 +51,6 @@ public class BraveTabSwitcherModeTopToolbar extends TabSwitcherModeTopToolbar {
                 || (BottomToolbarConfiguration.isBottomToolbarEnabled()
                         && !BottomToolbarVariationManager.isNewTabButtonOnBottom());
         updateNewTabButtonVisibility();
-        // Show tab switcher button on the top in landscape mode.
-        if (BottomToolbarVariationManager.isTabSwitcherOnBottom() && !shouldShowIncognitoToggle()) {
-            mToggleTabStackButton.setVisibility(isVisible ? GONE : VISIBLE);
-        }
     }
 
     public int getToolbarColorForCurrentState() {

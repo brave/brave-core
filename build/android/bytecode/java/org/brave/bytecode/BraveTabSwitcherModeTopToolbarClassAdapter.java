@@ -22,9 +22,6 @@ public class BraveTabSwitcherModeTopToolbarClassAdapter extends BraveClassVisito
         deleteField(sBraveTabSwitcherModeTopToolbarClassName, "mNewTabImageButton");
         makeProtectedField(sTabSwitcherModeTopToolbarClassName, "mNewTabImageButton");
 
-        deleteField(sBraveTabSwitcherModeTopToolbarClassName, "mToggleTabStackButton");
-        makeProtectedField(sTabSwitcherModeTopToolbarClassName, "mToggleTabStackButton");
-
         deleteField(sBraveTabSwitcherModeTopToolbarClassName, "mShouldShowNewTabVariation");
         makeProtectedField(sTabSwitcherModeTopToolbarClassName, "mShouldShowNewTabVariation");
 
