@@ -18,9 +18,11 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 
-using ai_chat::mojom::CharacterType;
-using ai_chat::mojom::ConversationTurn;
-using ai_chat::mojom::ConversationTurnVisibility;
+namespace ai_chat {
+
+using mojom::CharacterType;
+using mojom::ConversationTurn;
+using mojom::ConversationTurnVisibility;
 
 AIChatUIPageHandler::AIChatUIPageHandler(
     content::WebContents* owner_web_contents,
@@ -39,7 +41,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     if (!web_contents) {
       return;
     }
-    active_chat_tab_helper_ = AIChatTabHelper::FromWebContents(web_contents);
+    active_chat_tab_helper_ =
+        ai_chat::AIChatTabHelper::FromWebContents(web_contents);
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
   } else {
     // TODO(petemill): Enable conversation without the TabHelper. Conversation
@@ -166,3 +169,5 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
     page_->OnTargetTabChanged();
   }
 }
+
+}  // namespace ai_chat

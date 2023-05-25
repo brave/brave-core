@@ -123,7 +123,7 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     ResponseConversionCallback conversion_callback) {
   DVLOG(1) << __func__ << " url: " << url.spec();
   DVLOG(2) << "Headers:";
-  for (auto & header : headers) {
+  for (auto& header : headers) {
     DVLOG(2) << "> " << header.first << ": " << header.second;
   }
   DVLOG(2) << "Payload content-type: " << payload_content_type;

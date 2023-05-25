@@ -27,6 +27,7 @@ namespace content {
 class WebContents;
 }
 
+namespace ai_chat {
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                             public TabStripModelObserver,
                             public AIChatTabHelper::Observer {
@@ -76,5 +77,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   raw_ptr<Profile> profile_ = nullptr;
   mojo::Receiver<ai_chat::mojom::PageHandler> receiver_;
 };
+
+}  // namespace ai_chat
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
