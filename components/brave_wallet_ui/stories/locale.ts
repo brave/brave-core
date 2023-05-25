@@ -527,6 +527,7 @@ provideStrings({
   braveWalletTransactionGasLimit: 'Gas Limit',
   braveWalletTransactionGasPremium: 'Gas Premium',
   braveWalletTransactionGasFeeCap: 'Gas Fee Cap',
+  braveWalletNetworkFees: 'Network fees',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',

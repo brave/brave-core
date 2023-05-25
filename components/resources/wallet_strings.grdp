@@ -914,4 +914,5 @@
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_SUB_HEADING" desc="NFTs tab empty state sub heading when auto discovery is enabled">Once an NFT is detected, it’ll be displayed here.</message>
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_FOOTER" desc="NFTs tab empty state footer when auto discovery is enabled">Can’t see your NFTs?</message>
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_ACTIONS" desc="NFTs tab empty state action button text when auto discovery is enabled"><ph name="REFRESH">$1</ph>Refresh<ph name="REFRESH_END">$2</ph> or <ph name="IMPORT">$3</ph>Import Manually<ph name="IMPORT_END">$4</ph></message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_FEES" desc="Label for blockchain network fees">Network fees</message>
 </grit-part>
