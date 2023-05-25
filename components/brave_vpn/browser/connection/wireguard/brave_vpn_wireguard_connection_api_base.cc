@@ -41,6 +41,7 @@ void BraveVPNWireguardConnectionAPIBase::OnWireguardKeypairGenerated(
   if (!key_pair.has_value()) {
     VLOG(1) << __func__ << " : failed to get keypair";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    SetLastConnectionError("Failed to create keypair");
     return;
   }
   const auto [public_key, private_key] = key_pair.value();
@@ -84,6 +85,7 @@ void BraveVPNWireguardConnectionAPIBase::OnGetProfileCredentials(
   if (!success) {
     VLOG(1) << __func__ << " : failed to get profile credential";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    SetLastConnectionError("Failed to get profile credential");
     return;
   }
   auto parsed_credentials =
@@ -92,6 +94,7 @@ void BraveVPNWireguardConnectionAPIBase::OnGetProfileCredentials(
   if (!parsed_credentials.has_value()) {
     VLOG(1) << __func__ << " : failed to get correct credentials";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    SetLastConnectionError("Failed to get correct credentials");
     return;
   }
   auto serialized = parsed_credentials->ToString();
