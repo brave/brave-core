@@ -1092,6 +1092,13 @@ struct ERC20BalanceResult {
   string? balance;
 };
 
+struct SPLBalancesResult {
+  string mint;
+  string balance;
+  int32 decimals;
+  string formatted_balance;
+};
+
 enum ResolveMethod {
    kAsk = 0,
    kDisabled = 1,
@@ -1248,6 +1255,12 @@ interface JsonRpcService {
   // Returns whether a blockhash is still valid or not for a given chain.
   IsSolanaBlockhashValid(string chain_id, string blockhash, string? commitment)
     => (bool is_valid, SolanaProviderError error, string error_message);
+
+  // Fetches balances of all SPL tokens held by an address.
+  GetSPLTokenBalances(string pubkey,
+                      string chain_id) => (array<SPLBalancesResult> balances,
+                                           SolanaProviderError error,
+                                           string error_message);
 };
 
 struct BitcoinKeyId {

@@ -132,10 +132,10 @@ type GetCombinedTokenBalanceForAllAccountsArg =
     Pick<BraveWallet.BlockchainToken, 'coin'>
 
 type GetTokenBalancesForChainIdArg = {
-  contracts: string[]
   address: string
-  coin: BraveWallet.CoinType
+  contracts?: string[]
   chainId: string
+  coin: BraveWallet.CoinType
 }
 
 export interface IsEip1559ChangedMutationArg {
@@ -1416,7 +1416,7 @@ export function createWalletApi (
 
             if (arg.coin === BraveWallet.CoinType.ETH) {
               const result = await jsonRpcService.getERC20TokenBalances(
-                arg.contracts,
+                arg.contracts ?? [],
                 arg.address,
                 arg.chainId
               )
@@ -1427,6 +1427,34 @@ export function createWalletApi (
                       return {
                         ...acc,
                         [balanceResult.contractAddress]: Amount.normalize(
+                          balanceResult.balance
+                        )
+                      }
+                    }
+
+                    return acc
+                  }, {})
+                }
+              } else {
+                return {
+                  error: result.errorMessage
+                }
+              }
+            }
+
+            if (arg.coin === BraveWallet.CoinType.SOL) {
+              const result = await jsonRpcService.getSPLTokenBalances(
+                arg.address,
+                arg.chainId
+              )
+
+              if (result.error === BraveWallet.ProviderError.kSuccess) {
+                return {
+                  data: result.balances.reduce((acc, balanceResult) => {
+                    if (balanceResult.balance) {
+                      return {
+                        ...acc,
+                        [balanceResult.mint]: Amount.normalize(
                           balanceResult.balance
                         )
                       }

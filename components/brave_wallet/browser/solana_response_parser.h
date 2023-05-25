@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_RESPONSE_PARSER_H_
 
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -46,6 +47,12 @@ bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
                                   std::vector<SolanaAccountInfo>* accounts);
 
 absl::optional<bool> ParseIsBlockhashValid(const base::Value& json_value);
+
+absl::optional<std::vector<std::tuple<std::string,  // mint
+                                      std::string,  // amount
+                                      std::string,  // ui amount
+                                      uint8_t>>>    // decimals
+ParseGetSPLTokenBalances(const base::Value& json_value);
 
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo();
