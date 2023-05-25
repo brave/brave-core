@@ -26,7 +26,7 @@ export const Wrapper = styled(StyledDiv)`
     padding: 68px 0px;
   }
 `
-  
+
 export const Background = styled(StyledDiv) <{
   height: number
   network: string

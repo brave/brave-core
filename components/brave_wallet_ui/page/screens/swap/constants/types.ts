@@ -26,9 +26,9 @@ export type QuoteOption = {
 
   /**
    * Indicates the kind of routing followed by the order:
-   * 
+   *
    * split -> indicates that the order was fulfilled from two separate LPs
-   * 
+   *
    * flow  -> indicates that the order was fulfilled through an intermediate
    *          asset between two separate LPs.
    */
@@ -103,9 +103,9 @@ export type SwapParams = {
   fromAmount: string
   toAmount: string
   /**
-   * This is the value as seen on the UI - should be converted to appropriate 
+   * This is the value as seen on the UI - should be converted to appropriate
    * format for Jupiter and 0x swap providers.
-   **/
+   */
   slippageTolerance: string
   fromAddress?: string
   spotPrices: SpotPrices

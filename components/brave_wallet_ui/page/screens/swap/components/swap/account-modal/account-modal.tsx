@@ -95,7 +95,7 @@ export const AccountModal = (props: Props) => {
       {/*
         * TODO(onyb): this should be removed since the account dropdown is
         * eventually going to be replaced with Send-like UX.
-        * 
+        *
         * Hiding Porfolio Section until we support/remove it
         */
       }
