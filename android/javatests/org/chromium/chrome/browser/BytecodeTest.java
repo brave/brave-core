@@ -65,7 +65,6 @@ import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
-import org.chromium.chrome.browser.omnibox.suggestions.ActionChipsDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
@@ -122,6 +121,8 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectableListT
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.favicon.LargeIconBridge;
+import org.chromium.components.image_fetcher.ImageFetcher;
+import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.ui.ViewProvider;
@@ -597,7 +598,7 @@ public class BytecodeTest {
                 AppMenuDelegate.class, ActivityLifecycleDispatcher.class, Supplier.class,
                 BottomSheetController.class, Supplier.class, TabContentManager.class,
                 TabCreatorManager.class, SnackbarManager.class, Supplier.class,
-                OneshotSupplier.class, ActionChipsDelegate.class, Supplier.class, boolean.class,
+                OneshotSupplier.class, OmniboxActionDelegate.class, Supplier.class, boolean.class,
                 BackPressManager.class, OpenHistoryClustersDelegate.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -686,7 +687,7 @@ public class BytecodeTest {
                 Context.class, AutocompleteControllerProvider.class, AutocompleteDelegate.class,
                 UrlBarEditingTextStateProvider.class, PropertyModel.class, Handler.class,
                 Supplier.class, Supplier.class, Supplier.class, LocationBarDataProvider.class,
-                Callback.class, Supplier.class, BookmarkState.class, ActionChipsDelegate.class,
+                Callback.class, Supplier.class, BookmarkState.class, OmniboxActionDelegate.class,
                 OpenHistoryClustersDelegate.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
                 "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
@@ -716,7 +717,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
-                Supplier.class, BookmarkState.class, ActionChipsDelegate.class,
+                Supplier.class, BookmarkState.class, OmniboxActionDelegate.class,
                 OpenHistoryClustersDelegate.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
@@ -734,7 +735,7 @@ public class BytecodeTest {
                 SearchEngineLogoUtils.class, PageInfoAction.class, Callback.class,
                 BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                 BraveLocationBarMediator.getOmniboxUmaClass(), Supplier.class, BookmarkState.class,
-                BooleanSupplier.class, Supplier.class, ActionChipsDelegate.class,
+                BooleanSupplier.class, Supplier.class, OmniboxActionDelegate.class,
                 BrowserStateBrowserControlsVisibilityDelegate.class, Callback.class,
                 BackPressManager.class, OmniboxSuggestionsDropdownScrollListener.class,
                 OpenHistoryClustersDelegate.class));
@@ -808,7 +809,7 @@ public class BytecodeTest {
                         DragReorderableRecyclerViewAdapter.class, LargeIconBridge.class,
                         boolean.class, boolean.class, ObservableSupplierImpl.class, Profile.class,
                         BookmarkUndoController.class, ModelList.class, BookmarkUiPrefs.class,
-                        Runnable.class));
+                        Runnable.class, ImageFetcher.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkModel",

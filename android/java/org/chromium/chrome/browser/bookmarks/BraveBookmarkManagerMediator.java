@@ -30,6 +30,7 @@ import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecy
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.favicon.LargeIconBridge;
+import org.chromium.components.image_fetcher.ImageFetcher;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
@@ -57,11 +58,12 @@ class BraveBookmarkManagerMediator
             LargeIconBridge largeIconBridge, boolean isDialogUi, boolean isIncognito,
             ObservableSupplierImpl<Boolean> backPressStateSupplier, Profile profile,
             BookmarkUndoController bookmarkUndoController, ModelList modelList,
-            BookmarkUiPrefs bookmarkUiPrefs, Runnable hideKeyboardRunnable) {
+            BookmarkUiPrefs bookmarkUiPrefs, Runnable hideKeyboardRunnable,
+            ImageFetcher imageFetcher) {
         super(context, bookmarkModel, bookmarkOpener, selectableListLayout, selectionDelegate,
                 recyclerView, dragReorderableRecyclerViewAdapter, largeIconBridge, isDialogUi,
                 isIncognito, backPressStateSupplier, profile, bookmarkUndoController, modelList,
-                bookmarkUiPrefs, hideKeyboardRunnable);
+                bookmarkUiPrefs, hideKeyboardRunnable, imageFetcher);
     }
 
     public void setWindow(ActivityWindowAndroid window) {
