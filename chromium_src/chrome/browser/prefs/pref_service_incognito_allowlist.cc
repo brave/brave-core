@@ -3,27 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <vector>
+#include "brave/browser/prefs/brave_pref_service_incognito_allowlist.h"
 
-#include "base/no_destructor.h"
 #include "brave/components/constants/pref_names.h"
-#include "build/build_config.h"
-#include "chrome/common/pref_names.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
-
-namespace {
-
-const std::vector<const char*>& GetBravePersistentPrefNames() {
-  static base::NoDestructor<std::vector<const char*>> brave_allowlist({
-#if !BUILDFLAG(IS_ANDROID)
-    prefs::kSidePanelHorizontalAlignment, kTabMuteIndicatorNotClickable,
-#endif
-  });
-
-  return *brave_allowlist;
-}
-
-}  // namespace
 
 #define GetIncognitoPersistentPrefsAllowlist \
   GetIncognitoPersistentPrefsAllowlist_ChromiumImpl
@@ -37,8 +20,9 @@ namespace prefs {
 std::vector<const char*> GetIncognitoPersistentPrefsAllowlist() {
   std::vector<const char*> allowlist =
       GetIncognitoPersistentPrefsAllowlist_ChromiumImpl();
-  allowlist.insert(allowlist.end(), GetBravePersistentPrefNames().begin(),
-                   GetBravePersistentPrefNames().end());
+  allowlist.insert(allowlist.end(),
+                   brave::GetBravePersistentPrefNames().begin(),
+                   brave::GetBravePersistentPrefNames().end());
   return allowlist;
 }
 
