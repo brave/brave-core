@@ -63,7 +63,7 @@ source_set("app") {
     "//components/password_manager/core/browser",
     "//components/send_tab_to_self",
     "//components/sync/base",
-    "//components/sync/driver",
+    "//components/sync/service",
     "//ios/chrome/app:app_internal",
     "//ios/chrome/app:tests_fake_hook",
     "//ios/chrome/app/startup:startup",

@@ -1,7 +1,7 @@
 # Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("unit_tests") {
   testonly = true
@@ -12,8 +12,8 @@ source_set("unit_tests") {
   ]
 
   sources = [
-    "//brave/components/sync/driver/brave_sync_auth_manager_unittest.cc",
-    "//brave/components/sync/driver/brave_sync_service_impl_unittest.cc",
+    "//brave/components/sync/service/brave_sync_auth_manager_unittest.cc",
+    "//brave/components/sync/service/brave_sync_service_impl_unittest.cc",
   ]
 
   deps = [
@@ -28,8 +28,8 @@ source_set("unit_tests") {
     "//components/prefs:prefs",
     "//components/signin/public/identity_manager:test_support",
     "//components/sync:test_support",
-    "//components/sync/driver:driver",
     "//components/sync/engine",
+    "//components/sync/service",
     "//content/test:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp:cpp",

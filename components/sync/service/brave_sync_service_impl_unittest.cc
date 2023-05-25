@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <utility>
 
@@ -9,15 +9,15 @@
 #include "base/logging.h"
 #include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
-#include "brave/components/sync/driver/brave_sync_service_impl.h"
-#include "brave/components/sync/driver/sync_service_impl_delegate.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
+#include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "brave/components/sync/test/brave_mock_sync_engine.h"
 #include "build/build_config.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
-#include "components/sync/driver/data_type_manager_impl.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
+#include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/test/data_type_manager_mock.h"
 #include "components/sync/test/fake_data_type_controller.h"
 #include "components/sync/test/fake_sync_api_component_factory.h"

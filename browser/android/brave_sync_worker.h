@@ -12,8 +12,8 @@
 #include "base/android/jni_weak_ref.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_service_observer.h"
 
 class Profile;
 

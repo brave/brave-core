@@ -1,15 +1,15 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/sync/driver/sync_internals_util.h"
+#include "components/sync/service/sync_internals_util.h"
 
-#include "brave/components/sync/driver/brave_sync_service_impl.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "components/os_crypt/sync/os_crypt.h"
 
 #define ConstructAboutInformation ConstructAboutInformation_ChromiumImpl
-#include "src/components/sync/driver/sync_internals_util.cc"
+#include "src/components/sync/service/sync_internals_util.cc"
 #undef ConstructAboutInformation
 
 namespace syncer {

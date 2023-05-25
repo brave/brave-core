@@ -1,14 +1,14 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_INTERNALS_UTIL_H_
-#define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_INTERNALS_UTIL_H_
+#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_INTERNALS_UTIL_H_
+#define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_INTERNALS_UTIL_H_
 
 #define ConstructAboutInformation ConstructAboutInformation_ChromiumImpl
 
-#include "src/components/sync/driver/sync_internals_util.h"  // IWYU pragma: export
+#include "src/components/sync/service/sync_internals_util.h"  // IWYU pragma: export
 
 #undef ConstructAboutInformation
 
@@ -25,4 +25,4 @@ base::Value::Dict ConstructAboutInformation(
 
 }  // namespace syncer
 
-#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_INTERNALS_UTIL_H_
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_INTERNALS_UTIL_H_

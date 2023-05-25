@@ -1,16 +1,16 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_AUTH_MANAGER_H_
-#define BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_AUTH_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_AUTH_MANAGER_H_
+#define BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_AUTH_MANAGER_H_
 
 #include <string>
 #include <vector>
 
 #include "base/time/time.h"
-#include "components/sync/driver/sync_auth_manager.h"
+#include "components/sync/service/sync_auth_manager.h"
 
 namespace syncer {
 
@@ -48,4 +48,4 @@ class BraveSyncAuthManager : public SyncAuthManager {
 
 }  // namespace syncer
 
-#endif  // BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_AUTH_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_AUTH_MANAGER_H_
