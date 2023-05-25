@@ -55,10 +55,16 @@ const style = {
 }
 
 interface ModalProps {
-  children: React.ReactNode
+  children: React.ReactNode,
+  hideSpacers?: boolean
 }
 
-export function Modal (props: ModalProps) {
+const defaultProps: ModalProps = {
+  children: null,
+  hideSpacers: false
+}
+
+export function Modal(props: ModalProps) {
   // Attach a ResizeObserver for the modal content container. When the content
   // size changes, set a CSS variable "--modal-content-size" on the document
   // body. This is primarily used by browser "bubbles" in order to automatically
@@ -86,14 +92,16 @@ export function Modal (props: ModalProps) {
 
   return (
     <style.root>
-      <style.topSpacer />
+      {!props.hideSpacers && <style.topSpacer />}
       <style.content ref={onMountUnmount}>
         {props.children}
       </style.content>
-      <style.bottomSpacer />
+      {!props.hideSpacers && <style.bottomSpacer />}
     </style.root>
   )
 }
+
+Modal.defaultProps = defaultProps
 
 interface ModalCloseButtonProps {
   onClick: () => void

@@ -107,6 +107,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"notificationTokenGrantTitle", IDS_REWARDS_NOTIFICATION_TOKEN_GRANT_TITLE},
     {"ok", IDS_REWARDS_PANEL_OK},
     {"onboardingClose", IDS_BRAVE_REWARDS_ONBOARDING_CLOSE},
+    {"onboardingDone", IDS_BRAVE_REWARDS_ONBOARDING_DONE},
     {"onboardingContinue", IDS_BRAVE_REWARDS_ONBOARDING_CONTINUE},
     {"onboardingEarnHeader", IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER},
     {"onboardingEarnText", IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT},

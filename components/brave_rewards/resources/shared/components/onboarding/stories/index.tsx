@@ -85,7 +85,57 @@ export function TourModalWide () {
 
 TourModalWide.storyName = 'Tour Modal (Wide)'
 
-export function OptInModal () {
+export function OptInModal() {
+  return (
+    <StoryWrapper>
+      <RewardsOptInModal
+        initialView='default'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={null}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+export function OptInModalDeclareCountry() {
+  return (
+    <StoryWrapper>
+      <RewardsOptInModal
+        initialView='skip-to-declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={null}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+OptInModalDeclareCountry.storyName = 'Opt In Modal (declare country)'
+
+export function OptInModalDeclareCountryLegacy() {
+  return (
+    <StoryWrapper>
+      <RewardsOptInModal
+        initialView='declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={null}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+OptInModalDeclareCountryLegacy.storyName =
+  'Opt In Modal (legacy declare country)'
+
+export function OptInModalSuccess () {
   return (
     <StoryWrapper>
       <RewardsOptInModal
@@ -94,12 +144,64 @@ export function OptInModal () {
         defaultCountry={'US'}
         result={'success'}
         onEnable={actionLogger('onEnable')}
-        onTakeTour={actionLogger('onTakeTour')}
         onHideResult={actionLogger('onHideResult')}
       />
     </StoryWrapper>
   )
 }
+
+OptInModalSuccess.storyName = 'Opt In Modal (success)'
+
+export function OptInModalError1() {
+  return (
+    <StoryWrapper>
+      <RewardsOptInModal
+        initialView='declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={'wallet-generation-disabled'}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+OptInModalError1.storyName = 'Opt In Modal (Error: wallet generation disabled)'
+
+export function OptInModalError2() {
+  return (
+    <StoryWrapper>
+      <RewardsOptInModal
+        initialView='declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={'country-already-declared'}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+OptInModalError2.storyName = 'Opt In Modal (Error: country already declared)'
+
+export function OptInModalError3() {
+  return (
+    <StoryWrapper>
+      <RewardsOptInModal
+        initialView='declare-country'
+        availableCountries={['US']}
+        defaultCountry={'US'}
+        result={'unexpected-error'}
+        onEnable={actionLogger('onEnable')}
+        onHideResult={actionLogger('onHideResult')}
+      />
+    </StoryWrapper>
+  )
+}
+
+OptInModalError3.storyName = 'Opt In Modal (Error: unexpected error)'
 
 export function SettingsOptIn () {
   return (

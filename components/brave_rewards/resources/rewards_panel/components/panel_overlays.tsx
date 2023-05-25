@@ -12,11 +12,15 @@ import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
 import { VBATNoticeModal } from './vbat_notice_modal'
 import { shouldShowVBATNotice } from '../../shared/components/vbat_notice'
+import { TabOpenerContext } from '../../shared/components/new_tab_link'
 
 import * as derivedState from '../lib/derived_state'
 
-export function PanelOverlays () {
+import * as urls from '../../shared/lib/rewards_urls'
+
+export function PanelOverlays() {
   const host = React.useContext(HostContext)
+  const tabOpener = React.useContext(TabOpenerContext)
 
   const [requestedView, setRequestedView] =
     React.useState(host.state.requestedView)
@@ -97,16 +101,17 @@ export function PanelOverlays () {
 
   if (onboardingResult || !rewardsEnabled || needsCountry) {
     const onHideResult = () => {
+      if (onboardingResult === 'success') {
+        setTimeout(() => {
+          tabOpener.openTab(urls.rewardsTourURL)
+        }, 2000)
+      }
       setOnboardingResult(null)
     }
 
     const onEnable = (country: string) => {
       host.enableRewards(country).then((result) => {
         setOnboardingResult(result)
-        if (!rewardsEnabled && result === 'success') {
-          setOnboardingResult(null)
-          setShowTour(true)
-        }
       })
     }
 
@@ -119,7 +124,6 @@ export function PanelOverlays () {
             'skip-to-declare-country' : 'default'}
         result={onboardingResult}
         onEnable={onEnable}
-        onTakeTour={toggleTour}
         onHideResult={onHideResult}
       />
     )

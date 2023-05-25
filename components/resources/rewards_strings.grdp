@@ -77,9 +77,6 @@
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_NO_PROVIDERS" desc="">
     To send on-demand contributions, users must connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so sending isn’t available. In the meantime, you’re still automatically supporting creators.
   </message>
-  <message name="IDS_REWARDS_LEARN_MORE" desc="">
-    Learn more
-  </message>
   <message name="IDS_REWARDS_PUBLISHER_COUNT_TEXT" desc="">
     {PUBLISHER_COUNT, plural,
       =1 {This month, you've visited # creator supported by Brave Rewards}
@@ -349,6 +346,9 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_CLOSE" desc="">
     Close
   </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_DONE" desc="">
+    Done
+  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_CONTINUE" desc="">
     Continue
   </message>
@@ -377,16 +377,16 @@
     Select your country
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_HEADER" desc="">
-    Thank you!
+    Woohoo! You’re all set!
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_TEXT" desc="">
-    Your Brave Rewards region has been set to <ph name="COUNTRY">$1<ex>United States</ex></ph>.
+    Now you can get rewarded for viewing ads. You're helping make the web a better place for everyone. And that's awesome!
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT" desc="">
-    Select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
+    Select your country so we can show you the right options and ads for your region.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT_DECLARE_COUNTRY" desc="">
-    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
+    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">
     Maybe Later
@@ -401,7 +401,7 @@
     Save
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY" desc="">
-    Select Country
+    Select
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">
     How often do you want to see ads?
@@ -513,6 +513,9 @@
   <!-- Rewards common strings -->
   <message name="IDS_BRAVE_REWARDS_LOADING_LABEL" desc="">
     Loading...
+  </message>
+  <message name="IDS_REWARDS_LEARN_MORE" desc="">
+    Learn more
   </message>
 
   <!-- Tip panel -->

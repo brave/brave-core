@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 export const localeStrings = {
   onboardingClose: 'Close',
+  onboardingDone: 'Done',
   onboardingContinue: 'Continue',
   onboardingEarnHeader: 'Earn tokens for private ads you see in Brave',
   onboardingEarnText: 'Use tokens to buy gift cards, exchange for other currencies, support content creators, and more.',
@@ -13,15 +14,15 @@ export const localeStrings = {
   onboardingErrorTextDeclareCountry: 'Unfortunately, there was an error while trying to set your country. Please try again.',
   onboardingErrorTextDisabled: 'New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. $1Learn more$2',
   onboardingGeoHeader: 'Select your country',
-  onboardingGeoSuccessHeader: 'Thank you!',
-  onboardingGeoSuccessText: 'Your Brave Rewards region has been set to $1.',
-  onboardingGeoText: 'Select your country so we can show you the right options and ads for your region. $1Privacy Policy$2',
-  onboardingGeoTextDeclareCountry: 'To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. $1Privacy Policy$2',
+  onboardingGeoSuccessHeader: 'Woohoo! You\'re all set!',
+  onboardingGeoSuccessText: 'Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!',
+  onboardingGeoText: 'Select your country so we can show you the right options and ads for your region.',
+  onboardingGeoTextDeclareCountry: 'To continue using Brave Rewards, select your country so we can show you the right options and ads for your region.',
   onboardingMaybeLater: 'Maybe later',
   onboardingPromoHeader: 'Need a refresher on Rewards?',
   onboardingPromoText: 'Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!',
   onboardingSave: 'Save',
-  onboardingSelectCountry: 'Select your country',
+  onboardingSelectCountry: 'Select',
   onboardingSetupAdsHeader: 'How often do you want to see ads?',
   onboardingSetupAdsPerHour: '$1 Ads per hour',
   onboardingSetupAdsText1: 'More private ads, more rewards',
@@ -36,6 +37,7 @@ export const localeStrings = {
   onboardingTourDone: 'Done',
   onboardingTourSkip: 'Skip',
   onboardingTourSkipForNow: 'Skip for now',
+  rewardsLearnMore: 'Learn more',
 
   // Onboarding tour panel messages:
   onboardingPanelWelcomeHeader: 'Welcome to Brave Rewards!',
