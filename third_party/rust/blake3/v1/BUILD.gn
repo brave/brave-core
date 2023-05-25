@@ -32,7 +32,14 @@ cargo_crate("lib") {
     "//brave/third_party/rust/constant_time_eq/v0_2:lib",
     "//third_party/rust/cfg_if/v1:lib",
   ]
-  build_deps = [ "//brave/third_party/rust/cc/v1:buildrs_support" ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
+
+  features = [
+    "pure",
+  ]
+
+  rustenv = [
+    "CARGO_FEATURE_PURE=1"
+  ]
 }
