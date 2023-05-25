@@ -1,5 +1,5 @@
 diff --git a/build/rust/run_build_script.py b/build/rust/run_build_script.py
-index 0db5cb56fa2c5e8af275cfd31418068fa550a3b0..ca672b81a509df38870594631596ee396462a03d 100755
+index 0db5cb56fa2c5e8af275cfd31418068fa550a3b0..9955d4ca8f4d450dc1def4f9bf7073c2455affab 100755
 --- a/build/rust/run_build_script.py
 +++ b/build/rust/run_build_script.py
 @@ -1,9 +1,8 @@
@@ -70,17 +70,20 @@ index 0db5cb56fa2c5e8af275cfd31418068fa550a3b0..ca672b81a509df38870594631596ee39
    # We give the build script an OUT_DIR of a temporary directory,
    # and copy out only any files which gn directives say that it
    # should generate. Mostly this is to ensure we can atomically
-@@ -101,12 +85,26 @@ def main():
+@@ -101,12 +85,30 @@ def main():
      env["OUT_DIR"] = tempdir
      env["CARGO_MANIFEST_DIR"] = os.path.abspath(args.src_dir)
      env["HOST"] = host_triple(rustc_path)
--    if args.target is None:
--      env["TARGET"] = env["HOST"]
--    else:
--      env["TARGET"] = args.target
 +    env["TARGET"] = env["HOST"]
-     target_components = env["TARGET"].split("-")
+     if args.target is None:
+-      env["TARGET"] = env["HOST"]
++      target = env["TARGET"]
+     else:
+-      env["TARGET"] = args.target
+-    target_components = env["TARGET"].split("-")
 -    env["CARGO_CFG_TARGET_ARCH"] = target_components[0]
++      target = args.target
++    target_components = target.split("-")
 +    if len(target_components) == 2:
 +      env["CARGO_CFG_TARGET_ARCH"] = target_components[0]
 +      env["CARGO_CFG_TARGET_VENDOR"] = ''
@@ -97,12 +100,12 @@ index 0db5cb56fa2c5e8af275cfd31418068fa550a3b0..ca672b81a509df38870594631596ee39
 +      env["CARGO_CFG_TARGET_OS"] = target_components[2]
 +      env["CARGO_CFG_TARGET_ENV"] = target_components[3]
 +    else:
-+      print(f'Invalid TARGET {env["TARGET"]}')
++      print(f'Invalid TARGET {target}')
 +      sys.exit(1)
      if args.features:
        for f in args.features:
          feature_name = f.upper().replace("-", "_")
-@@ -120,31 +118,25 @@ def main():
+@@ -120,31 +122,25 @@ def main():
        env["RUST_BACKTRACE"] = os.environ.get("RUST_BACKTRACE")
      if os.environ.get("RUST_LOG"):
        env["RUST_LOG"] = os.environ.get("RUST_LOG")
@@ -134,7 +137,7 @@ index 0db5cb56fa2c5e8af275cfd31418068fa550a3b0..ca672b81a509df38870594631596ee39
      # Copy any generated code out of the temporary directory,
      # atomically.
      if args.generated_files:
-@@ -158,7 +150,5 @@ def main():
+@@ -158,7 +154,5 @@ def main():
            with action_helpers.atomic_output(out_path) as output:
              content = input.read()
              output.write(content)
