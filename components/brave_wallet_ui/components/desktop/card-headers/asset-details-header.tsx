@@ -244,7 +244,7 @@ export const AssetDetailsHeader = (props: Props) => {
                 }
               >
                 <ButtonIcon
-                  name='tune' />
+                  name='more-vertical' />
               </CircleButton>
               {showAssetDetailsMenu &&
                 <AssetDetailsMenu
