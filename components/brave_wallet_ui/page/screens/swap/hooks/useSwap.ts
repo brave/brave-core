@@ -351,7 +351,7 @@ export const useSwap = () => {
           }).unwrap()
         } else {
           setAbortController(undefined)
-          throw new Error()
+          throw new Error(`Unsupported CoinType: ${network.coin}`)
         }
 
         const tokenBalancesWithRegistryKeys = Object.entries(tokenBalancesResult)
