@@ -47,29 +47,24 @@ bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
 }
 
 mojom::SPLTokenAmountPtr ParseAmountDict(const base::Value::Dict& value) {
-  auto* amount_ptr = value.FindString("amount");
-  if (!amount_ptr) {
+  auto* amount = value.FindString("amount");
+  if (!amount) {
     return nullptr;
   }
 
   // uint8
-  auto decimals_opt = value.FindInt("decimals");
-  if (!decimals_opt ||
-      decimals_opt.value() > std::numeric_limits<uint8_t>::max() ||
-      decimals_opt.value() < 0) {
+  auto decimals = value.FindInt("decimals");
+  if (!decimals || decimals.value() > std::numeric_limits<uint8_t>::max() ||
+      decimals.value() < 0) {
     return nullptr;
   }
 
-  auto* ui_amount_string_ptr = value.FindString("uiAmountString");
-  if (!ui_amount_string_ptr) {
+  auto* ui_amount_string = value.FindString("uiAmountString");
+  if (!ui_amount_string) {
     return nullptr;
   }
 
-  mojom::SPLTokenAmountPtr result = mojom::SPLTokenAmount::New();
-  result->amount = *amount_ptr;
-  result->ui_amount = *ui_amount_string_ptr;
-  result->decimals = decimals_opt.value();
-  return result;
+  return mojom::SPLTokenAmount::New("", *amount, *decimals, *ui_amount_string);
 }
 
 }  // namespace
@@ -151,20 +146,13 @@ absl::optional<std::vector<mojom::SPLTokenAmountPtr>> ParseGetSPLTokenBalances(
       return absl::nullopt;
     }
 
-    auto amount = parsed_amount->amount;
-
     // Skip zero-value amounts.
-    if (amount.empty() || amount == "0") {
+    if (parsed_amount->amount.empty() || parsed_amount->amount == "0") {
       continue;
     }
 
-    mojom::SPLTokenAmountPtr token_amount = mojom::SPLTokenAmount::New();
-    token_amount->mint = *mint;
-    token_amount->amount = amount;
-    token_amount->ui_amount = parsed_amount->ui_amount;
-    token_amount->decimals = parsed_amount->decimals;
-
-    balances.push_back(std::move(token_amount));
+    parsed_amount->mint = *mint;
+    balances.push_back(std::move(parsed_amount));
   }
 
   return balances;
