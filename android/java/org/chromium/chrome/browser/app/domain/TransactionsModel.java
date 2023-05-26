@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -88,7 +88,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
         addServiceObservers();
     }
 
-    // Fetch all transaction from all networks except rejected, and calculate balances, gas etc.
+    // Fetch all transaction of all accounts except rejected, and calculate balances, gas etc.
     public void update(WeakReference<BraveWalletBaseActivity> activityRef) {
         synchronized (mLock) {
             _mIsLoading.postValue(true);

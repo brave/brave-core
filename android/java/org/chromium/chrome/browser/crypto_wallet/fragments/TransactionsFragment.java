@@ -43,7 +43,6 @@ import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 
-// TODO(pav): Show no transaction message
 public class TransactionsFragment extends Fragment implements OnWalletListItemClick {
     private static final String TAG = "TransactionsFragment";
     private WalletModel mWalletModel;
@@ -75,7 +74,7 @@ public class TransactionsFragment extends Fragment implements OnWalletListItemCl
             mTransactionsModel.update(
                     new WeakReference<>((BraveWalletBaseActivity) requireActivity()));
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate " + e);
+            Log.e(TAG, "onCreate ", e);
         }
         mWalletListItemModelList = Collections.emptyList();
     }

@@ -110,10 +110,8 @@ public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //        ViewParent parent = view.getParent();
-        //        ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         if (JavaUtils.anyNull(mWalletModel)) return;
-        ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
+        ImageView icon = view.findViewById(R.id.account_picture);
         Utils.setBlockiesBitmapResource(
                 mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo().address, true);
         updateTxHeaderDetails(view);
