@@ -6,10 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_CONNECTION_API_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_CONNECTION_API_H_
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 
+#include "brave/components/brave_vpn/browser/connection/common/win/brave_windows_service_watcher.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/common/brave_vpn_wireguard_profile_credentials.h"
 
@@ -34,6 +37,9 @@ class BraveVPNWireguardConnectionAPI
   void Disconnect() override;
   void CheckConnection() override;
 
+  // BraveVPNOSConnectionAPI::Observer
+  void OnConnectionStateChanged(mojom::ConnectionState state) override;
+
  protected:
   // BraveVPNWireguardConnectionAPIBase
   void RequestNewProfileCredentials() override;
@@ -41,6 +47,12 @@ class BraveVPNWireguardConnectionAPI
       const wireguard::WireguardProfileCredentials& credentials) override;
 
  private:
+  void RunServiceWatcher();
+  void OnWireguardServiceLaunched(bool success);
+  void OnServiceStopped();
+  void ResetServiceWatcher();
+
+  std::unique_ptr<brave::ServiceWatcher> service_watcher_;
   base::WeakPtrFactory<BraveVPNWireguardConnectionAPI> weak_factory_{this};
 };
 

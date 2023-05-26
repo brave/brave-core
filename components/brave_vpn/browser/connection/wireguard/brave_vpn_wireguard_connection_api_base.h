@@ -41,8 +41,6 @@ class BraveVPNWireguardConnectionAPIBase
   virtual void PlatformConnectImpl(
       const wireguard::WireguardProfileCredentials& credentials) = 0;
 
-  void OnWireguardServiceLaunched(bool success);
-
   // BraveVPNOSConnectionAPI::Observer
   void OnConnectionStateChanged(mojom::ConnectionState state) override;
 

@@ -30,12 +30,6 @@ void BraveVPNWireguardConnectionAPIBase::SetSelectedRegion(
   GetRegionDataManager().SetSelectedRegion(name);
 }
 
-void BraveVPNWireguardConnectionAPIBase::OnWireguardServiceLaunched(
-    bool success) {
-  UpdateAndNotifyConnectionStateChange(
-      success ? ConnectionState::CONNECTED : ConnectionState::CONNECT_FAILED);
-}
-
 void BraveVPNWireguardConnectionAPIBase::OnWireguardKeypairGenerated(
     brave_vpn::wireguard::WireguardKeyPair key_pair) {
   if (!key_pair.has_value()) {

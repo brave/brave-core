@@ -24,12 +24,14 @@ class ServiceWatcher {
   bool Subscribe(const std::wstring& service_name,
                  int state,
                  base::OnceClosure callback);
+  bool IsWatching() const;
 
  protected:
   void OnServiceSignaled(base::OnceClosure callback,
                          base::WaitableEvent* service_event);
 
  private:
+  bool is_watching_ = false;
   ScopedScHandle scm_;
   ScopedScHandle service_;
   SERVICE_NOTIFY service_notify_{0};

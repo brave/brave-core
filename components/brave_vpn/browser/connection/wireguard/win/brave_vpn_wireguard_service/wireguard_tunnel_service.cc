@@ -83,7 +83,7 @@ absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
   base::FilePath temp_file_path(
       scoped_temp_dir.GetPath().Append(kBraveWireguardConfig));
 
-  if (!base::WriteFile(temp_file_path, config)) {
+  if (!base::WriteFile(temp_file_path, "config")) {
     VLOG(1) << "Failed to write config to file:" << temp_file_path;
     return absl::nullopt;
   }

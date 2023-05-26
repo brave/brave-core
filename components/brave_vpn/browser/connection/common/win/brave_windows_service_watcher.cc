@@ -54,8 +54,13 @@ ServiceWatcher::~ServiceWatcher() = default;
 void ServiceWatcher::OnServiceSignaled(base::OnceClosure callback,
                                        base::WaitableEvent* service_event) {
   if (callback) {
+    is_watching_ = false;
     std::move(callback).Run();
   }
+}
+
+bool ServiceWatcher::IsWatching() const {
+  return is_watching_;
 }
 
 bool ServiceWatcher::Subscribe(const std::wstring& service_name,
@@ -87,7 +92,7 @@ bool ServiceWatcher::Subscribe(const std::wstring& service_name,
       base::BindOnce(&ServiceWatcher::OnServiceSignaled,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
       task_runner_);
-
+  is_watching_ = true;
   return true;
 }
 
