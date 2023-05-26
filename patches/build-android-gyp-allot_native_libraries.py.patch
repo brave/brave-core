@@ -1,0 +1,23 @@
+diff --git a/build/android/gyp/allot_native_libraries.py b/build/android/gyp/allot_native_libraries.py
+index 61daac224407183a1efa486252ddb59f1320797d..c0905443ab6fb6314d7a569e9bdf5144f8ce6f2a 100755
+--- a/build/android/gyp/allot_native_libraries.py
++++ b/build/android/gyp/allot_native_libraries.py
+@@ -146,8 +146,10 @@ def main(args):
+       help='A pair of parent module name and child module name '
+       '(format: "<parent>:<child>"). Can be specified multiple times.')
+   options = parser.parse_args(build_utils.ExpandFileArgs(args))
++  print("allot_native_libraries.py:149 options=", options)
+   options.libraries = [(m, action_helpers.parse_gn_list(l))
+                        for m, l in options.libraries]
++  print("allot_native_libraries.py:151 options.libraries=", options.libraries)
+ 
+   # Parse input creating libraries and dependency tree.
+   libraries_map = collections.defaultdict(set)  # Maps each library to its
+@@ -173,6 +175,7 @@ def main(args):
+     # Creates missing sets because of defaultdict.
+     allotment_map[module] = allotment_map[module]
+ 
++  print("allot_native_libraries.py:176 options.output=", options.output)
+   with open(options.output, 'w') as f:
+     # Write native libraries config and ensure the output is deterministic.
+     json.dump({m: sorted(l)

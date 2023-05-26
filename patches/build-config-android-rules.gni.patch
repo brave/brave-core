@@ -1,5 +1,5 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index a3eccbff751c0319a92483f731c5ec2dfa0931f3..32f3aca022c7f86a2d13477a7875bd9b14ee1650 100644
+index a3eccbff751c0319a92483f731c5ec2dfa0931f3..4c7d192fa9dfc26c4b72eba5abf5e4ea7621bacb 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
 @@ -574,6 +574,7 @@ if (enable_java_templates && is_android) {
@@ -18,3 +18,98 @@ index a3eccbff751c0319a92483f731c5ec2dfa0931f3..32f3aca022c7f86a2d13477a7875bd9b
      action_with_pydeps(target_name) {
        forward_variables_from(invoker, TESTONLY_AND_VISIBILITY + [ "deps" ])
        inputs = [ invoker.input ]
+@@ -1562,6 +1564,16 @@ if (enable_java_templates && is_android) {
+         targets = [ ":$_outer_target_name" ]
+       }
+ 
++      #print("at L1568 target_name=", target_name)
++      if (target_name == "monochrome_public_apk") {
++        print("at L1568 target_name=", target_name)
++        if (defined(invoker.shared_libraries)) {
++          print("at L1568 invoker.shared_libraries=", invoker.shared_libraries)
++        } else {
++          print("at L1568 invoker.shared_libraries=UNDEFINED")
++        }
++      }
++
+       if (defined(invoker.shared_libraries)) {
+         foreach(_dep, invoker.shared_libraries) {
+           assert(
+@@ -1579,6 +1591,8 @@ if (enable_java_templates && is_android) {
+           data_keys = [ "shared_libraries" ]
+           walk_keys = [ "shared_libraries_barrier" ]
+           rebase = root_build_dir
++
++          print("at __shared_library_list target_name=", target_name)
+         }
+       }
+       _native_libraries_target_name = "${target_name}__native_libraries"
+@@ -3136,11 +3150,57 @@ if (enable_java_templates && is_android) {
+       if (_native_libs_deps != []) {
+         shared_libraries_runtime_deps_file = _shared_library_list_file
+       }
++
++      if (target_name == "monochrome_public_apk__java") {
++        print("at rules.gni:3150 target_name=", target_name)
++        print("at rules.gni:3150 _shared_libraries_is_valid=", _shared_libraries_is_valid)
++        print("at rules.gni:3150 defined(invoker.shared_libraries)=", defined(invoker.shared_libraries))
++        if (defined(invoker.shared_libraries)) {print("at rules.gni:3150 invoker.shared_libraries=", invoker.shared_libraries)}
++        print("at rules.gni:3150 invoker.target_name=", invoker.target_name)
++
++      # if (defined(_secondary_abi_shared_library_list_file)) {
++      #   print("at rules.gni:3180 _secondary_abi_shared_library_list_file=", _secondary_abi_shared_library_list_file)
++      # }
++      # #
++
++        print_stack_trace()
++      }
++
++
++      if (defined(_shared_library_list_file)) {
++        if (_shared_library_list_file == "//out/android_Release_arm64/gen/chrome/android/monochrome_public_apk.native_libs") {
++          print("at rules.gni:3154 _shared_library_list_file=", _shared_library_list_file)
++          print("at rules.gni:3154 target_name=", target_name)
++# at rules.gni:3154 _shared_library_list_file= //out/android_Release_arm64/gen/chrome/android/monochrome_public_apk.native_libs
++# at rules.gni:3154 target_name= monochrome_public_apk__java
++        }
++      } 
++
+       if (defined(_secondary_abi_shared_library_list_file)) {
+         secondary_abi_shared_libraries_runtime_deps_file =
+             _secondary_abi_shared_library_list_file
+       }
+ 
++#
++#at rules.gni:3180 target_name= monochrome_64_32_public_bundle__base_bundle_module__java
++      if (target_name == "monochrome_64_32_public_bundle__base_bundle_module__java") {
++        print("at rules.gni:3180 ---------------------------")
++        print("at rules.gni:3180 target_name=", target_name)
++        if (defined(_secondary_abi_shared_library_list_file)) {
++          print("at rules.gni:3180 _secondary_abi_shared_library_list_file=", _secondary_abi_shared_library_list_file)
++        } else {
++          print("at rules.gni:3180 _secondary_abi_shared_library_list_file=UNDEFINED")
++        }
++
++        if (defined(invoker.secondary_abi_shared_libraries)) {
++          print("at rules.gni:3180 invoker.secondary_abi_shared_libraries=", invoker.secondary_abi_shared_libraries)
++        }else {
++          print("at rules.gni:3180 invoker.secondary_abi_shared_libraries=UNDEFINED")
++        }
++
++        print_stack_trace()
++      }      
++
+       loadable_modules = _loadable_modules
+ 
+       if (defined(_allowlist_r_txt_path) && _is_bundle_module) {
+@@ -4993,6 +5053,10 @@ if (enable_java_templates && is_android) {
+       }
+     }
+     if (defined(android_app_secondary_abi)) {
++print("at android_app_bundle:5031 -------------------------------------")
++print("at android_app_bundle:5031 target_name=", target_name)
++print("at android_app_bundle:5031 android_app_secondary_abi=", android_app_secondary_abi)
++
+       _secondary_abi_native_libraries_config =
+           "$target_gen_dir/$_target_name.secondary_abi_native_libraries_config"
+       _secondary_abi_native_libraries_config_target =

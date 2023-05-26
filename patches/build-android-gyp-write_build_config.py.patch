@@ -1,0 +1,33 @@
+diff --git a/build/android/gyp/write_build_config.py b/build/android/gyp/write_build_config.py
+index 7976dd89cc7530384f879fcf3b8dbcb38fdda02b..dcd1a7d1af3e16e8f3686c10b6529340b938b545 100755
+--- a/build/android/gyp/write_build_config.py
++++ b/build/android/gyp/write_build_config.py
+@@ -2050,18 +2050,28 @@ def main(argv):
+       manifest.CheckInstrumentationElements(manifest.GetPackageName())
+ 
+     library_paths = []
++    print("000 library_paths=",library_paths)
++    print("000-1 options.shared_libraries_runtime_deps=",options.shared_libraries_runtime_deps)
++    print("005 options.build_config=", options.build_config)
++    
+     java_libraries_list = None
+     if options.shared_libraries_runtime_deps:
+       library_paths = _ExtractSharedLibsFromRuntimeDeps(
+           options.shared_libraries_runtime_deps)
++      print("001 library_paths=",library_paths)
+       java_libraries_list = _CreateJavaLibrariesList(library_paths)
+       all_inputs.append(options.shared_libraries_runtime_deps)
+ 
++    print("002 library_paths=",library_paths)
++
++    print("003 options.secondary_abi_shared_libraries_runtime_deps=",options.secondary_abi_shared_libraries_runtime_deps)
+     secondary_abi_library_paths = []
+     if options.secondary_abi_shared_libraries_runtime_deps:
+       secondary_abi_library_paths = _ExtractSharedLibsFromRuntimeDeps(
+           options.secondary_abi_shared_libraries_runtime_deps)
+       secondary_abi_library_paths.sort()
++      print("004 secondary_abi_library_paths=",secondary_abi_library_paths)
++      
+       paths_without_parent_dirs = [
+           p for p in secondary_abi_library_paths if os.path.sep not in p
+       ]

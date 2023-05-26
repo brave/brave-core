@@ -1,8 +1,37 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 41abf539fe964feb98234ec636ef1fc35ab9440e..1342ca3077dce41f58dd2b264d8dabd074984c3c 100644
+index 41abf539fe964feb98234ec636ef1fc35ab9440e..5ea003453648e6329bbe00bfc2702b2b9b573673 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -4015,6 +4015,7 @@ if (enable_java_templates) {
+@@ -434,7 +434,28 @@ template("write_build_config") {
+       ]
+     }
+ 
++    if (invoker.build_config == "//out/android_Release_arm64/gen/chrome/android/monochrome_public_apk.build_config.json") {
++      print("at //build/config/android/internal_rules.gni - invoker.build_config=",invoker.build_config)
++      print("at //build/config/android/internal_rules.gni target_name= $target_name")
++      if (defined(invoker.shared_libraries_runtime_deps_file)) {
++        print("at //build/config/android/internal_rules.gni invoker.shared_libraries_runtime_deps_file=", invoker.shared_libraries_runtime_deps_file)
++      } else {
++        print("at //build/config/android/internal_rules.gni invoker.shared_libraries_runtime_deps_file=UNDEFINED")
++      }
++    }
++
++
+     if (defined(invoker.loadable_modules)) {
++      #if (target_name == "monochrome_public_apk__build_config_crbug_908819"){
++      if (invoker.build_config == "//out/android_Release_arm64/gen/chrome/android/monochrome_public_apk.build_config.json") {
++        #if (invoker.loadable_modules != []) {
++          print("at //build/config/android/internal_rules.gni target_name= $target_name")
++          print("at //build/config/android/internal_rules.gni - invoker.loadable_modules=",invoker.loadable_modules)
++          print("at //build/config/android/internal_rules.gni - invoker.build_config=",invoker.build_config)
++        #}
++        print_stack_trace()
++      }
++
+       _rebased_loadable_modules =
+           rebase_path(invoker.loadable_modules, root_build_dir)
+       args += [ "--loadable-modules=$_rebased_loadable_modules" ]
+@@ -4015,6 +4036,7 @@ if (enable_java_templates) {
        } else {
          not_needed(invoker, [ "missing_classes_allowlist" ])
        }
@@ -10,3 +39,52 @@ index 41abf539fe964feb98234ec636ef1fc35ab9440e..1342ca3077dce41f58dd2b264d8dabd0
  
        if (_build_host_jar) {
          _process_host_jar_target_name = "${target_name}__host"
+@@ -4320,6 +4342,11 @@ template("create_android_app_bundle_module") {
+     "--library-always-compress=@FileArg($_rebased_build_config:native:library_always_compress)",
+   ]
+   if (defined(android_app_secondary_abi)) {
++    if (target_name=="monochrome_64_32_public_bundle__base__create"){
++      print("at create_android_app_bundle_module:4345 target_name=", target_name)
++      print("at create_android_app_bundle_module:4345 android_app_secondary_abi=", android_app_secondary_abi)
++      print("at create_android_app_bundle_module:4345 invoker.secondary_abi_native_libraries_config=", invoker.secondary_abi_native_libraries_config)
++    }
+     _rebased_secondary_abi_native_libraries_config =
+         rebase_path(invoker.secondary_abi_native_libraries_config,
+                     root_build_dir)
+@@ -4436,6 +4463,14 @@ template("allot_native_libraries") {
+       "--output",
+       rebase_path(invoker.output, root_build_dir),
+     ]
++if (target_name=="monochrome_64_32_public_bundle__allot_secondary_abi_native_libraries"){
++  print("at allot_native_libraries:4466 -----------------------------") 
++  print("at allot_native_libraries:4466 target_name=", target_name)
++  print("at allot_native_libraries:4466 invoker.output=", invoker.output)
++#  print("at allot_native_libraries:4466 invoker.modules=", invoker.modules)
++  print("at allot_native_libraries:4466 -----------------------------") 
++}
++
+     outputs = [ invoker.output ]
+     deps = []
+     if (defined(invoker.deps)) {
+@@ -4451,6 +4486,11 @@ template("allot_native_libraries") {
+           "--libraries",
+           "${_module.name},@FileArg($_rebased_build_config:$_key)",
+         ]
++if (target_name=="monochrome_64_32_public_bundle__allot_secondary_abi_native_libraries"){
++#wrong way  
++print("at allot_native_libraries:4466 --libraries=", "${_module.name},@FileArg($_rebased_build_config:$_key)")
++#error print("at allot_native_libraries:4466 --libraries=", read_file(_rebased_build_config, "list lines"))
++}
+       }
+       if (defined(_module.parent)) {
+         args += [
+@@ -4459,5 +4499,9 @@ template("allot_native_libraries") {
+         ]
+       }
+     }
++
++    if (target_name=="monochrome_64_32_public_bundle__allot_secondary_abi_native_libraries"){
++      #print("at allot_native_libraries:4466 deps=", deps)
++    }
+   }
+ }
