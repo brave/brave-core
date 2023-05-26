@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_RESPONSE_PARSER_H_
 
 #include <string>
-#include <tuple>
 #include <vector>
 
 #include "base/functional/callback.h"

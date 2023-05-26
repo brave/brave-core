@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
 
 #include <limits>
-#include <tuple>
 #include <utility>
 
 #include "base/base64.h"
