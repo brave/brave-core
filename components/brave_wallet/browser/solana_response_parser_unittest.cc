@@ -50,7 +50,7 @@ TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
   EXPECT_FALSE(ParseGetBalance(ParseJson(json), &balance));
 }
 
-TEST(JsonRpcResponseParserUnitTest, ParseGetTokenAccountBalance) {
+TEST(SolanaResponseParserUnitTest, ParseGetTokenAccountBalance) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "{\"context\":{\"slot\":1069},\"value\":{\"amount\":\"9864\", "
@@ -80,7 +80,7 @@ TEST(JsonRpcResponseParserUnitTest, ParseGetTokenAccountBalance) {
                                            &ui_amount_string));
 }
 
-TEST(JsonRpcResponseParserUnitTest, ParseGetSPLTokenBalances) {
+TEST(SolanaResponseParserUnitTest, ParseGetSPLTokenBalances) {
   std::string json_fmt(R"(
     {
       "jsonrpc": "2.0",
@@ -186,26 +186,17 @@ TEST(JsonRpcResponseParserUnitTest, ParseGetSPLTokenBalances) {
   ASSERT_TRUE(result.has_value());
   ASSERT_EQ(result->size(), 2UL);
 
-  std::string mint;
-  std::string amount;
-  std::string ui_amount;
-  uint8_t decimals;
+  EXPECT_EQ(result->at(0)->mint,
+            "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj");
+  EXPECT_EQ(result->at(0)->amount, "898865");
+  EXPECT_EQ(result->at(0)->ui_amount, "0.000898865");
+  EXPECT_EQ(result->at(0)->decimals, 9);
 
-  auto first = result->at(0);
-  std::tie(mint, amount, ui_amount, decimals) = first;
-
-  EXPECT_EQ(mint, "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj");
-  EXPECT_EQ(amount, "898865");
-  EXPECT_EQ(ui_amount, "0.000898865");
-  EXPECT_EQ(decimals, 9);
-
-  auto second = result->at(1);
-  std::tie(mint, amount, ui_amount, decimals) = second;
-
-  EXPECT_EQ(mint, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
-  EXPECT_EQ(amount, "20508");
-  EXPECT_EQ(ui_amount, "0.020508");
-  EXPECT_EQ(decimals, 6);
+  EXPECT_EQ(result->at(1)->mint,
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  EXPECT_EQ(result->at(1)->amount, "20508");
+  EXPECT_EQ(result->at(1)->ui_amount, "0.020508");
+  EXPECT_EQ(result->at(1)->decimals, 6);
 
   // KO: decimals uint8_t overflow
   json = base::StringPrintf(json_fmt.c_str(), "256");

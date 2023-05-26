@@ -1479,11 +1479,11 @@ export function createWalletApi (
               if (result.error === BraveWallet.ProviderError.kSuccess) {
                 return {
                   data: result.balances.reduce((acc, balanceResult) => {
-                    if (balanceResult.balance) {
+                    if (balanceResult.amount) {
                       return {
                         ...acc,
                         [balanceResult.mint]: Amount.normalize(
-                          balanceResult.balance
+                          balanceResult.amount
                         )
                       }
                     }

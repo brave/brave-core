@@ -1092,11 +1092,11 @@ struct ERC20BalanceResult {
   string? balance;
 };
 
-struct SPLBalancesResult {
+struct SPLTokenAmount {
   string mint;
-  string balance;
+  string amount;
   int32 decimals;
-  string formatted_balance;
+  string ui_amount;
 };
 
 enum ResolveMethod {
@@ -1258,7 +1258,7 @@ interface JsonRpcService {
 
   // Fetches balances of all SPL tokens held by an address.
   GetSPLTokenBalances(string pubkey,
-                      string chain_id) => (array<SPLBalancesResult> balances,
+                      string chain_id) => (array<SPLTokenAmount> balances,
                                            SolanaProviderError error,
                                            string error_message);
 };

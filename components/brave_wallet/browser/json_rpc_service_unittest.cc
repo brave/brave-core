@@ -1580,23 +1580,23 @@ class JsonRpcServiceUnitTest : public testing::Test {
   void TestGetSPLTokenBalances(
       const std::string& pubkey,
       const std::string& chain_id,
-      std::vector<mojom::SPLBalancesResultPtr> expected_results,
+      std::vector<mojom::SPLTokenAmountPtr> expected_results,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
     base::RunLoop run_loop;
     json_rpc_service_->GetSPLTokenBalances(
         pubkey, chain_id,
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::SPLBalancesResultPtr> results,
+            [&](std::vector<mojom::SPLTokenAmountPtr> results,
                 mojom::SolanaProviderError error,
                 const std::string& error_message) {
               EXPECT_EQ(results.size(), expected_results.size());
               for (size_t i = 0; i < results.size(); i++) {
                 EXPECT_EQ(results[i]->mint, expected_results[i]->mint);
-                EXPECT_EQ(results[i]->balance, expected_results[i]->balance);
+                EXPECT_EQ(results[i]->amount, expected_results[i]->amount);
                 EXPECT_EQ(results[i]->decimals, expected_results[i]->decimals);
-                EXPECT_EQ(results[i]->formatted_balance,
-                          expected_results[i]->formatted_balance);
+                EXPECT_EQ(results[i]->ui_amount,
+                          expected_results[i]->ui_amount);
               }
               EXPECT_EQ(error, expected_error);
               EXPECT_EQ(error_message, expected_error_message);
@@ -4976,11 +4976,11 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenBalances) {
     }
   )");
 
-  std::vector<mojom::SPLBalancesResultPtr> expected_results;
-  mojom::SPLBalancesResultPtr result = mojom::SPLBalancesResult::New();
+  std::vector<mojom::SPLTokenAmountPtr> expected_results;
+  mojom::SPLTokenAmountPtr result = mojom::SPLTokenAmount::New();
   result->mint = "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj";
-  result->balance = "898865";
-  result->formatted_balance = "0.000898865";
+  result->amount = "898865";
+  result->ui_amount = "0.000898865";
   result->decimals = 9;
   expected_results.push_back(std::move(result));
 

@@ -47,13 +47,10 @@ bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
   return base::StringToUint64(*string_value, ret);
 }
 
-absl::optional<std::tuple<std::string,  // amount
-                          std::string,  // ui amount
-                          uint8_t>>     // decimals
-ParseAmountDict(const base::Value::Dict& value) {
+mojom::SPLTokenAmountPtr ParseAmountDict(const base::Value::Dict& value) {
   auto* amount_ptr = value.FindString("amount");
   if (!amount_ptr) {
-    return absl::nullopt;
+    return nullptr;
   }
 
   // uint8
@@ -61,16 +58,19 @@ ParseAmountDict(const base::Value::Dict& value) {
   if (!decimals_opt ||
       decimals_opt.value() > std::numeric_limits<uint8_t>::max() ||
       decimals_opt.value() < 0) {
-    return absl::nullopt;
+    return nullptr;
   }
 
   auto* ui_amount_string_ptr = value.FindString("uiAmountString");
   if (!ui_amount_string_ptr) {
-    return absl::nullopt;
+    return nullptr;
   }
 
-  return std::make_tuple(*amount_ptr, *ui_amount_string_ptr,
-                         decimals_opt.value());
+  mojom::SPLTokenAmountPtr result = mojom::SPLTokenAmount::New();
+  result->amount = *amount_ptr;
+  result->ui_amount = *ui_amount_string_ptr;
+  result->decimals = decimals_opt.value();
+  return result;
 }
 
 }  // namespace
@@ -109,17 +109,14 @@ bool ParseGetTokenAccountBalance(const base::Value& json_value,
     return false;
   }
 
-  *amount = std::get<0>(*parsed_amount);
-  *ui_amount_string = std::get<1>(*parsed_amount);
-  *decimals = std::get<2>(*parsed_amount);
+  *amount = parsed_amount->amount;
+  *ui_amount_string = parsed_amount->ui_amount;
+  *decimals = parsed_amount->decimals;
   return true;
 }
 
-absl::optional<std::vector<std::tuple<std::string,  // mint
-                                      std::string,  // amount
-                                      std::string,  // ui amount
-                                      uint8_t>>>    // decimals
-ParseGetSPLTokenBalances(const base::Value& json_value) {
+absl::optional<std::vector<mojom::SPLTokenAmountPtr>> ParseGetSPLTokenBalances(
+    const base::Value& json_value) {
   auto result = ParseResultDict(json_value);
   if (!result) {
     return absl::nullopt;
@@ -130,8 +127,7 @@ ParseGetSPLTokenBalances(const base::Value& json_value) {
     return absl::nullopt;
   }
 
-  std::vector<std::tuple<std::string, std::string, std::string, uint8_t>>
-      balances;
+  std::vector<mojom::SPLTokenAmountPtr> balances;
 
   for (const auto& account_value : *value) {
     if (!account_value.is_dict()) {
@@ -174,13 +170,20 @@ ParseGetSPLTokenBalances(const base::Value& json_value) {
       return absl::nullopt;
     }
 
-    // Skip zero-value tokenAmount objects.
-    if (auto amount = std::get<0>(*parsed_amount);
-        amount.empty() || amount == "0") {
+    auto amount = parsed_amount->amount;
+
+    // Skip zero-value amounts.
+    if (amount.empty() || amount == "0") {
       continue;
     }
 
-    balances.push_back(std::tuple_cat(std::make_tuple(*mint), *parsed_amount));
+    mojom::SPLTokenAmountPtr token_amount = mojom::SPLTokenAmount::New();
+    token_amount->mint = *mint;
+    token_amount->amount = amount;
+    token_amount->ui_amount = parsed_amount->ui_amount;
+    token_amount->decimals = parsed_amount->decimals;
+
+    balances.push_back(std::move(token_amount));
   }
 
   return balances;

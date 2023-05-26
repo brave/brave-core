@@ -3288,9 +3288,9 @@ void JsonRpcService::OnGetSPLTokenBalances(
     return;
   }
 
-  auto balances =
+  auto result =
       solana::ParseGetSPLTokenBalances(api_request_result.value_body());
-  if (!balances) {
+  if (!result) {
     mojom::SolanaProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::SolanaProviderError>(
@@ -3299,23 +3299,7 @@ void JsonRpcService::OnGetSPLTokenBalances(
     return;
   }
 
-  std::vector<mojom::SPLBalancesResultPtr> result;
-  for (size_t i = 0; i < balances->size(); i++) {
-    std::string mint;
-    std::string amount;
-    std::string formatted_balance;
-    uint8_t decimals;
-    std::tie(mint, amount, formatted_balance, decimals) = balances->at(i);
-
-    auto spl_balance_result = mojom::SPLBalancesResult::New();
-    spl_balance_result->mint = mint;
-    spl_balance_result->balance = amount;
-    spl_balance_result->formatted_balance = formatted_balance;
-    spl_balance_result->decimals = decimals;
-    result.push_back(std::move(spl_balance_result));
-  }
-
-  std::move(callback).Run(std::move(result),
+  std::move(callback).Run(std::move(*result),
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
