@@ -132,7 +132,7 @@ bool BraveVpnDnsObserverService::IsDNSHelperLive() {
 }
 
 void BraveVpnDnsObserverService::RunServiceWatcher() {
-  service_watcher_.reset(new ServiceWatcher());
+  service_watcher_.reset(new brave::ServiceWatcher());
   if (!service_watcher_->Subscribe(
           brave_vpn::GetBraveVpnHelperServiceName(), SERVICE_NOTIFY_STOPPED,
           base::BindOnce(&BraveVpnDnsObserverService::OnServiceStopped,

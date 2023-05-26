@@ -8,7 +8,6 @@
 #include <string>
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service_main.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/wireguard_tunnel_service.h"
 
 namespace brave_vpn {
@@ -31,18 +30,21 @@ HRESULT BraveWireguardManager::DisableVpn(DWORD* last_error) {
 HRESULT BraveWireguardManager::GenerateKeypair(BSTR* public_key,
                                                BSTR* private_key,
                                                DWORD* last_error) {
+  if (!public_key || !private_key || !last_error) {
+    VLOG(1) << __func__ << ": unable to generate keys";
+    return E_FAIL;
+  }
   std::string public_key_raw;
   std::string private_key_raw;
-  if (!brave_vpn::wireguard::WireguardGenerateKeypair(&public_key_raw,
-                                                      &private_key_raw)) {
+  *last_error = !brave_vpn::wireguard::WireguardGenerateKeypair(
+      &public_key_raw, &private_key_raw);
+  if (*last_error) {
     VLOG(1) << __func__ << ": unable to generate keys";
-    *last_error = 1;
     return S_OK;
   }
 
   *public_key = ::SysAllocString(base::UTF8ToWide(public_key_raw).c_str());
   *private_key = ::SysAllocString(base::UTF8ToWide(private_key_raw).c_str());
-  *last_error = 0;
   return S_OK;
 }
 

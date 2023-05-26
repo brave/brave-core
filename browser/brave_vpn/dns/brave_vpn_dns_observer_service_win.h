@@ -11,8 +11,8 @@
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_vpn/dns/brave_vpn_helper_watcher_win.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/brave_windows_service_watcher.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -62,7 +62,7 @@ class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
   void OnCheckIfServiceStarted();
 
   absl::optional<brave_vpn::mojom::ConnectionState> connection_state_;
-  std::unique_ptr<ServiceWatcher> service_watcher_;
+  std::unique_ptr<brave::ServiceWatcher> service_watcher_;
   absl::optional<bool> dns_helper_live_for_testing_;
   base::OnceClosure policy_callback_;
   base::RepeatingClosure dialog_callback_;
