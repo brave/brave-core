@@ -11,10 +11,6 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
     'https://www.youtube.com', 'https://m.youtube.com',
     'https://vimeo.com',
   ]
-
-  if (mediaPublisherOrigins.includes(document.location.origin) && webkit.messageHandlers.$<message_handler>) {
-    install();
-  }
   
   const install = () => {
     const sendMessage = $(function(method, url, data, referrerUrl) {
@@ -99,5 +95,9 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
       enumerable: true,
       configurable: true
     });
+  }
+  
+  if (mediaPublisherOrigins.includes(document.location.origin) && webkit.messageHandlers.$<message_handler>) {
+    install();
   }
 });
