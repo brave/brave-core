@@ -207,7 +207,8 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
     base::FilePath test_data_dir;
     base::PathService::Get(chrome::DIR_TEST_DATA, &test_data_dir);
     https_server_.ServeFilesFromDirectory(test_data_dir);
-    SetUpMockCertVerifierForHttpsServer(0, net::OK);
+    mock_cert_verifier()->set_default_result(net::OK);
+
     ASSERT_TRUE(https_server_.Start());
 
     GetPermissionRequestManager()->AddObserver(&observer);
@@ -216,13 +217,6 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   void TearDownOnMainThread() override {
     CertVerifierBrowserTest::TearDownOnMainThread();
     GetPermissionRequestManager()->RemoveObserver(&observer);
-  }
-
-  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
-    CertVerifierBrowserTest::SetUpDefaultCommandLine(command_line);
-    command_line->AppendSwitchASCII(
-        "enable-blink-features",
-        "EncryptedMediaEncryptionSchemeQuery");
   }
 
   content::WebContents* active_contents() {
@@ -244,16 +238,6 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   }
 
  protected:
-  void SetUpMockCertVerifierForHttpsServer(net::CertStatus cert_status,
-                                           int net_result) {
-    scoped_refptr<net::X509Certificate> cert(https_server_.GetCertificate());
-    net::CertVerifyResult verify_result;
-    verify_result.is_issued_by_known_root = true;
-    verify_result.verified_cert = cert;
-    verify_result.cert_status = cert_status;
-    mock_cert_verifier()->AddResultForCert(cert, verify_result, net_result);
-  }
-
   TestObserver observer;
   net::EmbeddedTestServer https_server_;
 };
