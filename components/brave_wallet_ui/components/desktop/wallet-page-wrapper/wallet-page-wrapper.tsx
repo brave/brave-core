@@ -6,9 +6,6 @@
 import * as React from 'react'
 import { useLocation } from 'react-router-dom'
 
-// Types
-import { WalletRoutes } from '../../../constants/types'
-
 // Selectors
 import { WalletSelectors } from '../../../common/selectors'
 
@@ -165,7 +162,7 @@ export const WalletPageWrapper = (props: Props) => {
           isWalletCreated &&
           !isWalletLocked &&
           !hideNav &&
-          <WalletNav isSwap={walletLocation === WalletRoutes.Swap} />
+          <WalletNav />
         }
         {!isWalletLocked &&
           <FeatureRequestButtonWrapper>
