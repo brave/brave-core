@@ -1,5 +1,5 @@
 diff --git a/build/config/win/BUILD.gn b/build/config/win/BUILD.gn
-index 8a3bfbbb526e5d04f0a0f7dab4934d817c16eaa1..3c4cc8dc6a5387fe9be586c64e5f48efc3cc205e 100644
+index 8a3bfbbb526e5d04f0a0f7dab4934d817c16eaa1..c51ad032acd3f6efe98527db0b3d104ca9b4740d 100644
 --- a/build/config/win/BUILD.gn
 +++ b/build/config/win/BUILD.gn
 @@ -6,6 +6,7 @@ import("//build/config/c++/c++.gni")
@@ -10,17 +10,16 @@ index 8a3bfbbb526e5d04f0a0f7dab4934d817c16eaa1..3c4cc8dc6a5387fe9be586c64e5f48ef
  import("//build/config/sanitizers/sanitizers.gni")
  import("//build/config/win/control_flow_guard.gni")
  import("//build/config/win/visual_studio_version.gni")
-@@ -94,7 +95,8 @@ config("compiler") {
+@@ -94,7 +95,7 @@ config("compiler") {
      cflags += [ "/D__WRL_ENABLE_FUNCTION_STATICS__" ]
  
      # Tell clang which version of MSVC to emulate.
 -    cflags += [ "-fmsc-version=1916" ]
 +    cflags += [ "-fmsc-version=1934" ]
-+    rustflags = [ "-Cllvm-args=-fmsc-version=1934" ]
  
      if (is_component_build) {
        cflags += [
-@@ -329,11 +331,6 @@ config("common_linker_setup") {
+@@ -329,11 +330,6 @@ config("common_linker_setup") {
    }
  }
  
@@ -32,7 +31,7 @@ index 8a3bfbbb526e5d04f0a0f7dab4934d817c16eaa1..3c4cc8dc6a5387fe9be586c64e5f48ef
  config("default_cfg_compiler") {
    # Emit table of address-taken functions for Control-Flow Guard (CFG).
    # This is needed to allow functions to be called by code that is built
-@@ -489,6 +486,16 @@ config("release_crt") {
+@@ -489,6 +485,16 @@ config("release_crt") {
    if (is_component_build) {
      cflags = [ "/MD" ]
  
@@ -49,7 +48,7 @@ index 8a3bfbbb526e5d04f0a0f7dab4934d817c16eaa1..3c4cc8dc6a5387fe9be586c64e5f48ef
      if (use_custom_libcxx) {
        # On Windows, including libcpmt[d]/msvcprt[d] explicitly links the C++
        # standard library, which libc++ needs for exception_ptr internals.
-@@ -496,6 +503,17 @@ config("release_crt") {
+@@ -496,6 +502,17 @@ config("release_crt") {
      }
    } else {
      cflags = [ "/MT" ]
@@ -67,7 +66,7 @@ index 8a3bfbbb526e5d04f0a0f7dab4934d817c16eaa1..3c4cc8dc6a5387fe9be586c64e5f48ef
      if (use_custom_libcxx) {
        ldflags = [ "/DEFAULTLIB:libcpmt.lib" ]
      }
-@@ -506,11 +524,31 @@ config("dynamic_crt") {
+@@ -506,11 +523,31 @@ config("dynamic_crt") {
    if (is_debug) {
      # This pulls in the DLL debug CRT and defines _DEBUG
      cflags = [ "/MDd" ]
@@ -99,7 +98,7 @@ index 8a3bfbbb526e5d04f0a0f7dab4934d817c16eaa1..3c4cc8dc6a5387fe9be586c64e5f48ef
      if (use_custom_libcxx) {
        ldflags = [ "/DEFAULTLIB:msvcprt.lib" ]
      }
-@@ -521,11 +559,31 @@ config("static_crt") {
+@@ -521,11 +558,31 @@ config("static_crt") {
    if (is_debug) {
      # This pulls in the static debug CRT and defines _DEBUG
      cflags = [ "/MTd" ]
