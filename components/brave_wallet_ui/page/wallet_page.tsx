@@ -8,6 +8,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { BrowserRouter } from 'react-router-dom'
+import { PersistGate } from 'redux-persist/integration/react'
 
 // assets
 import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
@@ -27,7 +28,8 @@ import { ApiProxyContext } from '../common/context/api-proxy.context'
 // components
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import Container from './container'
-import { store, walletPageApiProxy } from './store'
+import { persistor, store, walletPageApiProxy } from './store'
+import LoadingSkeleton from '../components/shared/loading-skeleton'
 
 // style
 import walletDarkTheme from '../theme/wallet-dark'
@@ -36,6 +38,26 @@ import 'emptykit.css'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
+
+const onPageRefreshInitiated = function (
+  event: KeyboardEvent
+): void {
+  // listen for "Cmd/Ctrl + Shift + R"
+  if (
+    (event.ctrlKey || event.metaKey) &&
+    event.shiftKey &&
+    event.code === 'KeyR'
+  ) {
+    // IIFE wrapped because return type of `void` is expected
+    ;(async () => {
+      try {
+        await persistor.purge()
+      } catch (error) {
+        console.error(`failed to purge persisted storage: ${error}`)
+      }
+    })()
+  }
+}
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
@@ -56,12 +78,19 @@ function App () {
 
   React.useEffect(() => {
     removeDeprecatedLocalStorageKeys()
+    // clear the cache on force-refresh of page
+    document.addEventListener('keydown', onPageRefreshInitiated)
+
+    // cleanup
+    return () => {
+      document.removeEventListener('keydown', onPageRefreshInitiated)
+    }
   }, [])
 
   return (
     <Provider store={store}>
       <BrowserRouter>
-        {initialThemeType &&
+        {initialThemeType && (
           <BraveCoreThemeProvider
             initialThemeType={initialThemeType}
             dark={walletDarkTheme}
@@ -69,11 +98,16 @@ function App () {
           >
             <ApiProxyContext.Provider value={walletPageApiProxy}>
               <LibContext.Provider value={Lib}>
-                <Container />
+                <PersistGate
+                  persistor={persistor}
+                  loading={<LoadingSkeleton width={'80%'} height={'80%'} />}
+                >
+                  <Container />
+                </PersistGate>
               </LibContext.Provider>
             </ApiProxyContext.Provider>
           </BraveCoreThemeProvider>
-        }
+        )}
       </BrowserRouter>
     </Provider>
   )

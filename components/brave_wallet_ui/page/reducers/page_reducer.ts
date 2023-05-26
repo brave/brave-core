@@ -14,6 +14,10 @@ import {
 } from '../../constants/types'
 import { getAssetIdKey } from '../../utils/asset-utils'
 import {
+  persistVersionedReducer,
+  PERSISTED_STATE_VERSION
+} from '../../utils/state-migration-utils'
+import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
   SelectAssetPayloadType,
@@ -29,6 +33,7 @@ import {
   UpdateSelectedAssetType,
   UpdateNftPinningStatusType
 } from '../constants/action_types'
+import { pageStatePersistorWhitelist } from '../../common/constants/persisted-state-keys-whitelists'
 
 const defaultState: PageState = {
   hasInitialized: false,
@@ -238,5 +243,14 @@ export const createPageReducer = (initialState: PageState) => {
 
 export const pageSlice = createPageSlice()
 export const pageReducer = pageSlice.reducer
+export const persistedPageReducer = persistVersionedReducer(
+  pageReducer,
+  {
+    key: 'page',
+    version: PERSISTED_STATE_VERSION,
+    whitelist: pageStatePersistorWhitelist
+  }
+)
+
 export const PageActions = { ...WalletPageAsyncActions, ...pageSlice.actions }
 export default pageReducer

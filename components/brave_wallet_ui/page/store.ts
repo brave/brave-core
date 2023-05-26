@@ -3,7 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { setupListeners } from '@reduxjs/toolkit/query/react'
+import { persistStore } from 'redux-persist'
+
+// constants
 
 // async handlers
 import walletPageAsyncHandler from './async/wallet_page_async_handler'
@@ -11,25 +15,27 @@ import walletAsyncHandler from '../common/async/handlers'
 
 // api
 import getWalletPageApiProxy from './wallet_page_api_proxy'
-import { walletApi } from '../common/slices/api.slice'
+import { walletApi, walletApiReducer } from '../common/slices/api.slice'
 
 // reducers
-import walletReducer from '../common/slices/wallet.slice'
+import { persistedWalletReducer } from '../common/slices/wallet.slice'
 import accountsTabReducer from './reducers/accounts-tab-reducer'
-import pageReducer from './reducers/page_reducer'
-import uiReducer from '../common/slices/ui.slice'
+import { persistedUiReducer } from '../common/slices/ui.slice'
+import { persistedPageReducer } from './reducers/page_reducer'
+
+const combinedReducer = combineReducers({
+  accountsTab: accountsTabReducer,
+  page: persistedPageReducer,
+  wallet: persistedWalletReducer,
+  ui: persistedUiReducer,
+  [walletApi.reducerPath]: walletApiReducer
+})
 
 // utils
 import { setApiProxyFetcher } from '../common/async/base-query-cache'
 
 export const store = configureStore({
-  reducer: {
-    page: pageReducer,
-    wallet: walletReducer,
-    accountsTab: accountsTabReducer,
-    ui: uiReducer,
-    [walletApi.reducerPath]: walletApi.reducer
-  },
+  reducer: combinedReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
   }).concat(
@@ -50,8 +56,15 @@ proxy.addBraveWalletServiceObserver(store)
 proxy.addBraveWalletPinServiceObserver(store)
 proxy.addBraveWalletAutoPinServiceObserver(store)
 
+// use this proxy in the api slice of the store
 setApiProxyFetcher(getWalletPageApiProxy)
 
+// enables refetchOnMount and refetchOnReconnect behaviors
+// without this, cached data will not refresh when reloading the app
+setupListeners(store.dispatch)
+
 export const walletPageApiProxy = proxy
+
+export const persistor = persistStore(store)
 
 export default store

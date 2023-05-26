@@ -156,8 +156,8 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.Market) ||
       walletLocation.includes(WalletRoutes.Swap) ||
       walletLocation.includes(WalletRoutes.SendPageStart) ||
-      walletLocation.includes(WalletRoutes.LocalIpfsNode ||
-        walletLocation.includes(WalletRoutes.InspectNfts))
+      walletLocation.includes(WalletRoutes.LocalIpfsNode) ||
+      walletLocation.includes(WalletRoutes.InspectNfts)
     ) {
       setSessionRoute(walletLocation)
     }

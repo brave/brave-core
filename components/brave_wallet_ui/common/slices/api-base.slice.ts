@@ -3,12 +3,56 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { createApi } from '@reduxjs/toolkit/query/react'
+/* eslint-disable @typescript-eslint/key-spacing */
+
+import {
+  createApi
+} from '@reduxjs/toolkit/query/react'
+import { REHYDRATE } from 'redux-persist'
+
+// types
+import { StringWithAutocomplete } from '../../constants/types'
 
 // utils
 import { cacher } from '../../utils/query-cache-utils'
 
 import { baseQueryFunction } from '../async/base-query-cache'
+import { CombinedState } from '@reduxjs/toolkit'
+import { AnyAction } from 'redux'
+
+
+type ApiRehydrationAction = Partial<{
+  type: typeof REHYDRATE
+  key: StringWithAutocomplete<'walletApi'>
+  payload:
+    | CombinedState<{}>
+    | undefined
+}>
+
+const API_TAG_TYPES = [
+  ...cacher.defaultTags,
+  'AccountInfos',
+  'AccountTokenCurrentBalance',
+  'BraveRewards-Enabled',
+  'BraveRewards-ExternalWallet',
+  'BraveRewards-RewardsBalance',
+  'CombinedTokenBalanceForAllAccounts',
+  'DefaultFiatCurrency',
+  'ERC721Metadata',
+  'GasEstimation1559',
+  'KnownBlockchainTokens',
+  'Network',
+  'NftDiscoveryEnabledStatus',
+  'SolanaEstimatedFees',
+  'TokenBalancesForChainId',
+  'TokenSpotPrices',
+  'Transactions',
+  'TransactionSimulationsEnabled',
+  'UserBlockchainTokens',
+  'WalletInfo',
+] as const
+
+export type ApiTagTypeName = typeof API_TAG_TYPES[number]
 
 /**
  * Creates an api to use as a base for adding endpoints
@@ -18,29 +62,28 @@ export function createWalletApiBase() {
   return createApi({
     reducerPath: 'walletApi',
     baseQuery: baseQueryFunction,
-    tagTypes: [
-      ...cacher.defaultTags,
-      'AccountInfos',
-      'AccountTokenCurrentBalance',
-      'CombinedTokenBalanceForAllAccounts',
-      'TokenBalancesForChainId',
-      'DefaultFiatCurrency',
-      'ERC721Metadata',
-      'SolanaEstimatedFees',
-      'GasEstimation1559',
-      'KnownBlockchainTokens',
-      'Network',
-      'TokenSpotPrices',
-      'Transactions',
-      'TransactionSimulationsEnabled',
-      'UserBlockchainTokens',
-      'WalletInfo',
-      'NftDiscoveryEnabledStatus',
-      'BraveRewards-Enabled',
-      'BraveRewards-RewardsBalance',
-      'BraveRewards-ExternalWallet',
-    ],
-    endpoints: ({ mutation, query }) => ({})
+    tagTypes: API_TAG_TYPES,
+    endpoints: ({ mutation, query }) => ({}),
+    extractRehydrationInfo(
+      action: AnyAction | ApiRehydrationAction,
+      { reducerPath }
+    ) {
+      try {
+        // attempt to rehydrate from persisted query cache
+        // whenever the REHYDRATE action is dispatched
+        if (
+          action.type === REHYDRATE &&
+          !!action?.payload &&
+          action?.key === reducerPath
+        ) {
+          return action.payload
+        }
+        return undefined
+      } catch (error) {
+        console.error(`error during rehydration: ${error}`)
+        return undefined
+      }
+    },
   })
 }
 

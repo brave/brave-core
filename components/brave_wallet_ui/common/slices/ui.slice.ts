@@ -8,6 +8,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { BraveWallet, UIState } from '../../constants/types'
 import { walletApi } from './api.slice'
 import { SetTransactionProviderErrorType } from '../constants/action_types'
+import {
+  PERSISTED_STATE_VERSION,
+  persistVersionedReducer
+} from '../../utils/state-migration-utils'
+import {
+  uiStatePersistorWhitelist
+} from '../constants/persisted-state-keys-whitelists'
 
 export const defaultUIState: UIState = {
   selectedPendingTransactionId: undefined,
@@ -89,6 +96,14 @@ export const createUIReducer = (initialState: UIState) => {
 }
 
 export const uiSlice = createUISlice()
+
 export const uiReducer = uiSlice.reducer
+export const persistedUiReducer = persistVersionedReducer(uiReducer, {
+  key: 'ui',
+  version: PERSISTED_STATE_VERSION,
+  whitelist: uiStatePersistorWhitelist
+})
+
 export const UIActions = uiSlice.actions
+
 export default uiReducer

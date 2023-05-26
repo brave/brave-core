@@ -382,6 +382,7 @@
     "react-window": "^1.8.5",
     "redux-act": "^1.8.0",
     "redux-logger": "^3.0.6",
+    "redux-persist": "6.0.0",
     "redux-thunk": "^2.3.0",
     "throttleit": "^1.0.0",
     "webext-redux": "^2.1.4",

@@ -51,6 +51,10 @@ import {
   parseJSONFromLocalStorage,
   makeInitialFilteredOutNetworkKeys
 } from '../../utils/local-storage-utils'
+import {
+  PERSISTED_STATE_VERSION,
+  persistVersionedReducer
+} from '../../utils/state-migration-utils'
 
 // Options
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
@@ -60,6 +64,7 @@ import {
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { walletStatePersistorWhitelist } from '../constants/persisted-state-keys-whitelists'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -624,5 +629,11 @@ export const createWalletReducer = (initialState: WalletState) => {
 
 export const walletSlice = createWalletSlice()
 export const walletReducer = walletSlice.reducer
+export const persistedWalletReducer = persistVersionedReducer(walletReducer, {
+  key: 'wallet',
+  version: PERSISTED_STATE_VERSION,
+  whitelist: walletStatePersistorWhitelist
+})
+
 export const WalletActions = { ...walletSlice.actions, ...WalletAsyncActions }
 export default walletReducer
