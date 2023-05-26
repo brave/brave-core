@@ -999,7 +999,7 @@ String PageGraph::ToGraphML() const {
                   XmlUtf8String(frame_id_).get());
   if (IsRootFrame()) {
     xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
-                    BAD_CAST XmlUtf8String(source_url_).get());
+                    XmlUtf8String(source_url_).get());
   }
 
   xmlNodePtr time_container_node =
