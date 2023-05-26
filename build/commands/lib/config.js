@@ -550,6 +550,7 @@ Config.prototype.buildArgs = function () {
     // TODO - recheck
     delete args.enable_nacl
     delete args.enable_hangout_services_extension
+    delete args.brave_ai_chat_endpoint
   }
 
   if (this.targetOS === 'ios') {
