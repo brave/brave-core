@@ -237,6 +237,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/local_database/DisplayAdsTable.java",
   "../../brave/android/java/org/chromium/chrome/browser/local_database/SavedBandwidthTable.java",
   "../../brave/android/java/org/chromium/chrome/browser/local_database/TopSiteTable.java",
+  "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/PrivacyHubMetricsFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/night_mode/settings/BraveRadioButtonGroupThemePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/night_mode/settings/BraveThemePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",

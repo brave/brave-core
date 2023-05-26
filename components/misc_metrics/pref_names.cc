@@ -14,4 +14,6 @@ const char kMiscMetricsMenuGroupActionCounts[] =
 const char kMiscMetricsMenuShownStorage[] =
     "brave.misc_metrics.menu_shown_storage";
 const char kMiscMetricsPagesLoadedCount[] = "brave.core_metrics.pages_loaded";
+const char kMiscMetricsPrivacyHubViews[] =
+    "brave.misc_metrics.privacy_hub_views";
 }  // namespace misc_metrics

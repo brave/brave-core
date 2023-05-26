@@ -184,6 +184,8 @@ constexpr inline auto kCollectedSlowHistograms =
     "Brave.General.BottomBarLocation",
     "Brave.P3A.TestSlowMetric",
     "Brave.Playlist.LastUsageTime",
+    "Brave.PrivacyHub.IsEnabled",
+    "Brave.PrivacyHub.Views",
     "Brave.ReaderMode.NumberReaderModeActivated",
     "Brave.Rewards.TipsSent",
     "Brave.Sync.EnabledTypes",
@@ -207,6 +209,7 @@ constexpr inline auto kEphemeralHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Playlist.UsageDaysInWeek",
     "Brave.Playlist.FirstTimeOffset",
+    "Brave.PrivacyHub.Views",
     "Brave.Rewards.EnabledInstallationTime",
     "Brave.Rewards.EnabledSource",
     "Brave.Rewards.InlineTipTrigger",

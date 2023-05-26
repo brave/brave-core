@@ -20,3 +20,6 @@ brave_browser_misc_metrics_deps = [
   "//components/keyed_service/core",
   "//content/public/browser",
 ]
+
+brave_browser_misc_metrics_android_sources =
+    [ "//brave/browser/misc_metrics/privacy_hub_metrics_factory_android.cc" ]

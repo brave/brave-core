@@ -39,6 +39,7 @@
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
+#include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
@@ -532,4 +533,13 @@ misc_metrics::MenuMetrics* BraveBrowserProcessImpl::menu_metrics() {
   }
 #endif
   return menu_metrics_.get();
+}
+
+misc_metrics::PrivacyHubMetrics*
+BraveBrowserProcessImpl::privacy_hub_metrics() {
+  if (!privacy_hub_metrics_) {
+    privacy_hub_metrics_ =
+        std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state());
+  }
+  return privacy_hub_metrics_.get();
 }
