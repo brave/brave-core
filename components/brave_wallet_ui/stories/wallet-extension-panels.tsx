@@ -5,15 +5,13 @@
 
 import * as React from 'react'
 import { Provider } from 'react-redux'
-import { configureStore } from '@reduxjs/toolkit'
 
 import './locale'
 import {
-  AccountTransactions,
   AppsListType,
   BraveWallet,
   PanelTypes,
-  SerializableTransactionInfo,
+  UIState,
   WalletAccountType,
   WalletState
 } from '../constants/types'
@@ -55,25 +53,22 @@ import { PanelTitles } from '../options/panel-titles'
 import { LibContext } from '../common/context/lib.context'
 import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
 
-// reducers & slices
-import { walletApi } from '../common/slices/api.slice'
-import { createWalletReducer } from '../common/slices/wallet.slice'
-import { createPageReducer } from '../page/reducers/page_reducer'
-import { createPanelReducer } from '../panel/reducers/panel_reducer'
-
 // mocks
 import * as MockedLib from '../common/async/__mocks__/lib'
-import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-data/mock-transaction-info'
+import {
+  mockTransactionInfo,
+  mockedErc20ApprovalTransaction,
+} from './mock-data/mock-transaction-info'
 import { mockDefaultCurrencies } from './mock-data/mock-default-currencies'
 import { mockTransactionSpotPrices } from './mock-data/current-price-data'
 import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet-accounts'
 import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { mockAccountAssetOptions, mockNewAssetOptions } from './mock-data/mock-asset-options'
-import { mockPanelState } from './mock-data/mock-panel-state'
-import { mockPageState } from './mock-data/mock-page-state'
-import { mockWalletState } from './mock-data/mock-wallet-state'
 import { mockUserAccounts } from './mock-data/user-accounts'
+import { createMockStore } from '../utils/test-utils'
+import { deserializeTransaction } from '../utils/model-serialization-utils'
+import { WalletApiDataOverrides } from '../common/async/__mocks__/bridge'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -85,7 +80,7 @@ export default {
   }
 }
 
-const transactionDummyData: AccountTransactions = {
+const transactionDummyData = {
   [mockUserAccounts[0].id]: [
     {
       chainId: '',
@@ -346,58 +341,62 @@ const transactionDummyData: AccountTransactions = {
 
 const originInfo = mockOriginInfo
 
-function createStoreWithCustomState (customWalletState: Partial<WalletState> = {}) {
-  return configureStore({
-    reducer: {
-      wallet: createWalletReducer({
-        ...mockWalletState,
-        ...customWalletState
-      }),
-      page: createPageReducer(mockPageState),
-      panel: createPanelReducer(mockPanelState),
-      [walletApi.reducerPath]: walletApi.reducer
-
-    },
-    devTools: true,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(walletApi.middleware)
-  })
-}
-
-const store = createStoreWithCustomState()
-
-const transactionList = {
-  [mockedTransactionAccounts[0].address]: [
-    ...transactionDummyData[1],
-    ...transactionDummyData[2]
+const store = createMockStore({
+  walletStateOverride: {},
+  uiStateOverride: {
+    selectedPendingTransactionId: mockTransactionInfo.id
+  }
+}, {
+  transactionInfos: [
+    ...transactionDummyData[1].map(tx => deserializeTransaction(tx)),
+    ...transactionDummyData[2].map(tx => deserializeTransaction(tx)),
   ]
-}
+})
+
+const transactionList = [
+  mockTransactionInfo,
+  ...transactionDummyData[1],
+  ...transactionDummyData[2]
+]
 
 const mockCustomStoreState: Partial<WalletState> = {
   accounts: mockAccounts,
-  selectedPendingTransaction: mockTransactionInfo,
   transactionSpotPrices: mockTransactionSpotPrices,
   defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
   fullTokenList: mockNewAssetOptions,
   activeOrigin: originInfo,
-  transactions: transactionList
+}
+
+const mockCustomUiState: Partial<UIState> = {
+  selectedPendingTransactionId: mockTransactionInfo.id,
+  transactionProviderErrorRegistry: {}
+}
+
+const mockApiData: WalletApiDataOverrides = {
+  transactionInfos: transactionList.map(deserializeTransaction)
 }
 
 export const _ConfirmTransaction = () => {
-  const onConfirmTransaction = () => alert('Confirmed Transaction')
-  const onRejectTransaction = () => alert('Rejected Transaction')
   const getERC20Allowance = () => Promise.resolve('0x15ddf09c97b0000')
 
   return (
-    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+    <Provider
+      store={createMockStore(
+        {
+          walletStateOverride: mockCustomStoreState,
+          uiStateOverride: mockCustomUiState
+        },
+        mockApiData
+      )}
+    >
       <StyledExtensionWrapperLonger>
-        <LibContext.Provider value={{
-          ...MockedLib as any,
-          getERC20Allowance
-        }}>
-          <ConfirmTransactionPanel
-            onConfirm={onConfirmTransaction}
-            onReject={onRejectTransaction}
-          />
+        <LibContext.Provider
+          value={{
+            ...(MockedLib as any),
+            getERC20Allowance
+          }}
+        >
+          <ConfirmTransactionPanel />
         </LibContext.Provider>
       </StyledExtensionWrapperLonger>
     </Provider>
@@ -409,27 +408,39 @@ _ConfirmTransaction.story = {
 }
 
 export const _ConfirmErcApproveTransaction = () => {
-  const onConfirmTransaction = () => alert('Confirmed Transaction')
-  const onRejectTransaction = () => alert('Rejected Transaction')
   const getERC20Allowance = () => Promise.resolve('0x15ddf09c97b0000')
 
   return (
     <StyledExtensionWrapperLonger>
-      <Provider store={createStoreWithCustomState({
-        accounts: mockAccounts,
-        selectedPendingTransaction: mockedErc20ApprovalTransaction,
-        transactionSpotPrices: mockTransactionSpotPrices,
-        defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
-        fullTokenList: mockNewAssetOptions
-      })}>
-        <LibContext.Provider value={{
-          ...MockedLib as any,
-          getERC20Allowance
-        }}>
-          <ConfirmTransactionPanel
-            onConfirm={onConfirmTransaction}
-            onReject={onRejectTransaction}
-          />
+      <Provider
+        store={createMockStore(
+          {
+            walletStateOverride: {
+              accounts: mockAccounts,
+              transactionSpotPrices: mockTransactionSpotPrices,
+              defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
+              fullTokenList: mockNewAssetOptions
+            },
+            uiStateOverride: {
+              selectedPendingTransactionId: mockedErc20ApprovalTransaction.id
+            }
+          },
+          {
+            ...mockApiData,
+            transactionInfos: [
+              deserializeTransaction(mockedErc20ApprovalTransaction),
+              ...(mockApiData?.transactionInfos ?? [])
+            ]
+          }
+        )}
+      >
+        <LibContext.Provider
+          value={{
+            ...(MockedLib as any),
+            getERC20Allowance
+          }}
+        >
+          <ConfirmTransactionPanel />
         </LibContext.Provider>
       </Provider>
     </StyledExtensionWrapperLonger>
@@ -468,10 +479,6 @@ _AllowAddChangeNetwork.story = {
 }
 
 export const _SignData = () => {
-  const onSign = () => {
-    alert('Signed Data')
-  }
-
   const onCancel = () => {
     alert('Canceled Signing Data')
   }
@@ -496,7 +503,6 @@ export const _SignData = () => {
         signMessageData={signMessageDataPayload}
         accounts={mockAccounts}
         onCancel={onCancel}
-        onSign={onSign}
         showWarning={true}
       />
     </StyledExtensionWrapperLonger>
@@ -596,9 +602,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [filteredAppsList, setFilteredAppsList] = React.useState<
     AppsListType[]
   >(AppsList())
-  const [selectedTransaction, setSelectedTransaction] = React.useState<
-    SerializableTransactionInfo | undefined
-  >(transactionList[1][0])
+
+  const selectedTransaction = transactionList[1][0]
 
   const onBack = () => {
     setSelectedPanel('main')
@@ -666,27 +671,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will redirect to brave://wallet/crypto/portfolio/add-asset')
   }
 
-  const onClickRetryTransaction = () => {
-    // Does nothing in storybook
-    alert('Will retry transaction')
-  }
-
-  const onClickCancelTransaction = () => {
-    // Does nothing in storybook
-    alert('Will cancel transaction')
-  }
-
-  const onClickSpeedupTransaction = () => {
-    // Does nothing in storybook
-    alert('Will speedup transaction')
-  }
-
-  const onSelectTransaction = (transaction: SerializableTransactionInfo) => {
-    navigateTo('transactionDetails')
-    setSelectedTransaction(transaction)
-    console.log(selectedTransaction)
-  }
-
   return (
     <WalletPanelStory>
       <StyledExtensionWrapper>
@@ -723,12 +707,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                   selectedTransaction && (
                     <SelectContainer>
                       <TransactionDetailPanel
-                        transaction={selectedTransaction}
+                        transactionId={selectedTransaction.id}
                         onBack={onBackToTransactions}
-                        onCancelTransaction={onClickCancelTransaction}
-                        onRetryTransaction={onClickRetryTransaction}
-                        onSpeedupTransaction={onClickSpeedupTransaction}
-                        accounts={mockAccounts}
                         defaultCurrencies={mockDefaultCurrencies}
                         visibleTokens={mockNewAssetOptions}
                         transactionSpotPrices={[]}
@@ -764,7 +744,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         {/* Transactions */}
                         {selectedPanel === 'activity' && (
                           <TransactionsPanel
-                            onSelectTransaction={onSelectTransaction}
                             selectedNetwork={mockNetworks[0]}
                             selectedAccountAddress={
                               mockedTransactionAccounts[0].address
@@ -819,10 +798,6 @@ export const _ConnectHardwareWallet = () => {
     // Doesn't do anything in storybook
   }
 
-  const onConfirmTransaction = () => {
-    // Doesn't do anything in storybook
-  }
-
   const onClickInstructions = () => {
     // Open support link in new tab
     window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank', 'noreferrer')
@@ -835,7 +810,6 @@ export const _ConnectHardwareWallet = () => {
         accountAddress='0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'
         coinType={BraveWallet.CoinType.ETH}
         onCancel={onCancel}
-        retryCallable={onConfirmTransaction}
         onClickInstructions={onClickInstructions}
         hardwareWalletCode={undefined}
       />
@@ -880,7 +854,9 @@ export const _TransactionDetail = () => {
 
   const tx = transactionList[mockedTransactionAccounts[0].address][0]
   return (
-    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+    <Provider
+      store={createMockStore({ walletStateOverride: mockCustomStoreState })}
+    >
       <StyledExtensionWrapper>
         <Panel
           navAction={mockedFunction}
@@ -891,14 +867,10 @@ export const _TransactionDetail = () => {
           <ScrollContainer>
             <TransactionDetailPanel
               onBack={mockedFunction}
-              onCancelTransaction={mockedFunction}
-              onRetryTransaction={mockedFunction}
-              onSpeedupTransaction={mockedFunction}
-              accounts={mockedTransactionAccounts}
               defaultCurrencies={mockDefaultCurrencies}
               visibleTokens={mockNewAssetOptions}
               transactionSpotPrices={[]}
-              transaction={tx}
+              transactionId={tx.id}
             />
           </ScrollContainer>
         </Panel>
@@ -912,16 +884,15 @@ _TransactionDetail.story = {
 }
 
 export const _RecentTransaction = () => {
-  const onSelectTransaction = () => {
-    // Doesn't do anything in storybook
-  }
 
   const navigateTo = () => {
     // Doesn't do anything in storybook
   }
 
   return (
-    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+    <Provider
+      store={createMockStore({ walletStateOverride: mockCustomStoreState })}
+    >
       <StyledExtensionWrapper>
         <Panel
           navAction={navigateTo}
@@ -931,7 +902,6 @@ export const _RecentTransaction = () => {
         >
           <ScrollContainer>
             <TransactionsPanel
-              onSelectTransaction={onSelectTransaction}
               selectedNetwork={mockNetworks[0]}
               selectedAccountAddress={mockedTransactionAccounts[0].address}
             />
@@ -948,11 +918,11 @@ _RecentTransaction.story = {
 
 export const _CreateAccount = () => {
   return (
-    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+    <Provider
+      store={createMockStore({ walletStateOverride: mockCustomStoreState })}
+    >
       <StyledCreateAccountPanel>
-        <CreateAccountTab
-          prevNetwork={mockNetworks[0]}
-        />
+        <CreateAccountTab prevNetwork={mockNetworks[0]} />
       </StyledCreateAccountPanel>
     </Provider>
   )

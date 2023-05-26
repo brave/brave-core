@@ -6,7 +6,13 @@
 import { createReducer } from 'redux-act'
 import {
   BraveWallet,
-  PanelState, PanelTypes, SerializableAddSuggestTokenRequest, SerializableDecryptRequest, SerializableGetEncryptionPublicKeyRequest, SerializableOriginInfo, SerializableSignMessageRequest, SerializableTransactionInfo
+  PanelState,
+  PanelTypes,
+  SerializableAddSuggestTokenRequest,
+  SerializableDecryptRequest,
+  SerializableGetEncryptionPublicKeyRequest,
+  SerializableOriginInfo,
+  SerializableSignMessageRequest
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -78,7 +84,7 @@ const defaultState: PanelState = {
   },
   hardwareWalletCode: undefined,
   suggestedTokenRequest: undefined,
-  selectedTransaction: undefined
+  selectedTransactionId: undefined
 }
 
 export const createPanelReducer = (initialState: PanelState) => {
@@ -180,12 +186,16 @@ export const createPanelReducer = (initialState: PanelState) => {
       suggestedTokenRequest: payload
     }
   })
-  reducer.on(PanelActions.setSelectedTransaction.type, (state: PanelState, payload: SerializableTransactionInfo): PanelState => {
-    return {
-      ...state,
-      selectedTransaction: payload
+
+  reducer.on(
+    PanelActions.setSelectedTransactionId.type,
+    (state: PanelState, payload: string | undefined): PanelState => {
+      return {
+        ...state,
+        selectedTransactionId: payload
+      }
     }
-  })
+  )
   return reducer
 }
 

@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux'
 
 import { WalletPageState, WalletPanelState } from '../../constants/types'
 
-type WalletStoreState = Omit<WalletPageState, 'page'>
-type PageStoreState = Omit<WalletPageState, 'wallet'>
-type PanelStoreState = Omit<WalletPanelState, 'wallet'>
+type WalletStoreState = Omit<WalletPageState, 'page' | 'ui'>
+type PageStoreState = Omit<WalletPageState, 'wallet' | 'ui'>
+type PanelStoreState = Omit<WalletPanelState, 'wallet' | 'ui'>
 type UIStoreState = Omit<WalletPanelState, 'wallet' | 'page'>
 
 type PrimitiveType = string | boolean | number | null

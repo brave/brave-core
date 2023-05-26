@@ -12,9 +12,8 @@ import { NavButton, Panel } from '..'
 
 // Utils
 import Amount from '../../../utils/amount'
+import { parseTransactionFeesWithoutPrices } from '../../../utils/tx-utils'
 
-// Hooks
-import { useTransactionFeesParser } from '../../../common/hooks'
 // Styled Components
 import { ErrorText, Row } from '../../shared/style'
 import {
@@ -69,8 +68,10 @@ export const EditGas = ({
   setSuggestedSliderStep,
   setMaxPriorityPanel
 }: Props) => {
-  const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice)
-  const transactionFees = parseTransactionFees(transactionInfo)
+  const transactionFees = React.useMemo(
+    () => parseTransactionFeesWithoutPrices(transactionInfo),
+    [transactionInfo]
+  )
   const { isEIP1559Transaction } = transactionFees
 
   // state

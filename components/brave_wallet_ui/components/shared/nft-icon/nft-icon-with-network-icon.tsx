@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
 import { BraveWallet } from '../../../constants/types'
@@ -30,8 +31,7 @@ export const NftIconWithNetworkIcon = (props: Props) => {
   const { data: network } = useGetNetworkQuery(
     coinType !== undefined && chainId !== undefined
       ? { chainId: chainId, coin: coinType }
-      : undefined,
-    { skip: coinType === undefined || chainId === undefined }
+      : skipToken
   )
 
   return (

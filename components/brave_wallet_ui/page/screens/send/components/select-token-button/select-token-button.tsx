@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Assets
 import CaratDownIcon from '../../assets/carat-down-icon.svg'
@@ -47,7 +48,7 @@ export const SelectTokenButton = (props: Props) => {
   const { onClick, token, selectedSendOption } = props
 
   // Queries
-  const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
+  const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   // Memos
   const AssetIconWithPlaceholder = React.useMemo(() => {

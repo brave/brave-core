@@ -7,7 +7,6 @@ import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import {
-  AccountTransactions,
   BraveWallet,
   BalancePayload,
   WalletAccountType,
@@ -31,7 +30,6 @@ import {
 } from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
-import { sortTransactionByDate } from '../../utils/tx-utils'
 import { getAssetIdKey, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
 import { getVisibleNetworksList } from '../slices/api.slice'
@@ -46,7 +44,9 @@ import { AllNetworksOption, AllNetworksOptionDefault } from '../../options/netwo
 import { AllAccountsOption } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
-import { deserializeOrigin, makeSerializableTransaction } from '../../utils/model-serialization-utils'
+import {
+  deserializeOrigin,
+} from '../../utils/model-serialization-utils'
 import { WalletPageActions } from '../../page/actions'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 import { IPFS_PROTOCOL, isIpfs, stripERC20TokenImageURL } from '../../utils/string-utils'
@@ -810,33 +810,6 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
   }
 }
 
-export function refreshTransactionHistory (address?: string) {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
-    const { txService } = apiProxy
-    const { wallet: { accounts, transactions } } = getState()
-
-    const accountsToUpdate = address !== undefined
-      ? accounts.filter(account => account.address === address)
-      : accounts
-
-    const freshTransactions: AccountTransactions = await accountsToUpdate.reduce<Promise<AccountTransactions>>(
-      async (acc, account) => acc.then(async (obj) => {
-        const { transactionInfos } =
-          await txService.getAllTransactionInfo(
-            account.coin, null, account.address)
-        const serializedTransactionInfos = transactionInfos.map(makeSerializableTransaction)
-        obj[account.address] = sortTransactionByDate(serializedTransactionInfos, 'descending')
-        return obj
-      }), Promise.resolve({}))
-
-    dispatch(WalletActions.setAccountTransactions({
-      ...transactions,
-      ...freshTransactions
-    }))
-  }
-}
-
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
@@ -943,7 +916,7 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
 
     // Check if network and keyring support EIP-1559.
     default:
-      isEIP1559 = hasEIP1559Support(payload.fromAccount.accountType, payload.network)
+      isEIP1559 = hasEIP1559Support(payload.accountType, payload.network)
   }
 
   const { chainId } =
@@ -976,11 +949,21 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
     }
     // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
     const txDataUnion: BraveWallet.TxDataUnion = { ethTxData1559: txData1559 }
-    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.fromAccount.address, null, null)
+    addResult = await apiProxy.txService.addUnapprovedTransaction(
+      txDataUnion,
+      payload.fromAccount.address,
+      null,
+      null
+    )
   } else {
     // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
     const txDataUnion: BraveWallet.TxDataUnion = { ethTxData: txData }
-    addResult = await apiProxy.txService.addUnapprovedTransaction(txDataUnion, payload.fromAccount.address, null, null)
+    addResult = await apiProxy.txService.addUnapprovedTransaction(
+      txDataUnion,
+      payload.fromAccount.address,
+      null,
+      null
+    )
   }
   return addResult
 }
@@ -1003,7 +986,11 @@ export async function sendFilTransaction (payload: SendFilTransactionParams) {
 
 export async function sendSolTransaction (payload: SendSolTransactionParams) {
   const { solanaTxManagerProxy, txService } = getAPIProxy()
-  const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(payload.fromAccount.address, payload.to, BigInt(payload.value))
+  const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(
+    payload.fromAccount.address,
+    payload.to,
+    BigInt(payload.value)
+  )
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
   return await txService.addUnapprovedTransaction({ solanaTxData: value.txData }, payload.from, null, null)
 }

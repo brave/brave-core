@@ -5,25 +5,35 @@
 
 import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { toProperCase } from '../../../utils/string-utils'
-import { getTransactionStatusString } from '../../../utils/tx-utils'
+import {
+  getTransactionGasFee,
+  getTransactionStatusString,
+  isSolanaTransaction,
+  parseTransactionWithPrices
+} from '../../../utils/tx-utils'
 import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { WalletSelectors } from '../../../common/selectors'
 import Amount from '../../../utils/amount'
-import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 
 // Types
 import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { SwapExchangeProxy } from '../../../common/constants/registry'
 
 // Hooks
-import { useTransactionParser } from '../../../common/hooks'
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+import {
+  useGetNetworkQuery,
+  useGetSolanaEstimatedFeeQuery
+} from '../../../common/slices/api.slice'
 
 // Components
 import { TransactionIntentDescription } from './transaction-intent-description'
@@ -43,9 +53,9 @@ import {
   ToCircle,
   TransactionDetailRow
 } from './style'
+import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 
 export interface Props {
-  selectedNetwork?: BraveWallet.NetworkInfo
   transaction: SerializableTransactionInfo
   onSelectTransaction: (transaction: SerializableTransactionInfo) => void
 }
@@ -54,17 +64,38 @@ const { ERC20Approve, ERC721TransferFrom, ERC721SafeTransferFrom } = BraveWallet
 
 export const TransactionsListItem = ({
   transaction,
-  selectedNetwork,
   onSelectTransaction
 }: Props) => {
+  const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
+  const isSolTx = isSolanaTransaction(transaction)
+
   // redux
-  const defaultFiatCurrency = useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
+  const defaultFiatCurrency = useSafeWalletSelector(
+    WalletSelectors.defaultFiatCurrency
+  )
+  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
+  const userVisibleTokens = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
+  const spotPrices = useUnsafeWalletSelector(
+    WalletSelectors.transactionSpotPrices
+  )
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // queries
   const { data: transactionsNetwork } = useGetNetworkQuery({
     chainId: transaction.chainId,
-    coin: getCoinFromTxDataUnion(transaction.txDataUnion)
+    coin: txCoinType
   })
+
+  const { data: solEstimatedFee = '' } = useGetSolanaEstimatedFeeQuery(
+    isSolTx && transaction.id && transaction.chainId
+      ? {
+          chainId: transaction.chainId,
+          txId: transaction.id
+        }
+      : skipToken
+  )
 
   // methods
   const onClickTransaction = () => {
@@ -72,16 +103,35 @@ export const TransactionsListItem = ({
   }
 
   // memos & custom hooks
-  const parseTransaction = useTransactionParser(transactionsNetwork)
+  const gasFee = isSolTx ? solEstimatedFee : getTransactionGasFee(transaction)
 
-  const transactionDetails = React.useMemo(
-    () => parseTransaction(transaction),
-    [transaction]
-  )
+  const transactionDetails = React.useMemo(() => {
+    return parseTransactionWithPrices({
+      tx: transaction,
+      accounts,
+      fullTokenList,
+      gasFee,
+      spotPrices,
+      userVisibleTokensList: userVisibleTokens,
+      transactionNetwork: transactionsNetwork
+    })
+  }, [
+    accounts,
+    fullTokenList,
+    gasFee,
+    spotPrices,
+    transaction,
+    transactionsNetwork,
+    userVisibleTokens,
+  ])
 
   const fromOrb = React.useMemo(() => {
-    return EthereumBlockies.create({ seed: transactionDetails.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transactionDetails.sender])
+    return EthereumBlockies.create({
+      seed: transaction.fromAddress.toLowerCase(),
+      size: 8,
+      scale: 16
+    }).toDataURL()
+  }, [transaction.fromAddress])
 
   const toOrb = React.useMemo(() => {
     return EthereumBlockies.create({ seed: transactionDetails.recipient.toLowerCase(), size: 8, scale: 16 }).toDataURL()
@@ -122,7 +172,7 @@ export const TransactionsListItem = ({
 
   const transactionIntentDescription = React.useMemo(() => {
     // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
-    let from = `${reduceAddress(transactionDetails.sender)} `
+    let from = `${reduceAddress(transaction.fromAddress)} `
     let to = reduceAddress(transactionDetails.recipient)
     const wrapFromText =
       transaction.txType === ERC20Approve ||
@@ -161,21 +211,21 @@ export const TransactionsListItem = ({
             </span>
             <StatusAndTimeRow>
               <DetailTextDarkBold>
-                {formatDateAsRelative(serializedTimeDeltaToJSDate(transactionDetails.createdTime))}
+                {formatDateAsRelative(
+                  serializedTimeDeltaToJSDate(transaction.createdTime)
+                )}
               </DetailTextDarkBold>
 
               <StatusRow>
-                <StatusBubble status={transactionDetails.status} />
+                <StatusBubble status={transaction.txStatus} />
                 <DetailTextDarkBold>
-                  {getTransactionStatusString(transactionDetails.status)}
+                  {getTransactionStatusString(transaction.txStatus)}
                 </DetailTextDarkBold>
               </StatusRow>
             </StatusAndTimeRow>
           </DetailColumn>
-
         </TransactionDetailRow>
       </DetailColumn>
-
     </StyledWrapper>
   )
 }

@@ -6,14 +6,11 @@
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { TransactionStatusChanged } from '../../common/constants/action_types'
 import {
   BraveWallet,
   WalletPanelState,
   PanelState,
-  WalletState,
   WalletRoutes,
-  SerializableTransactionInfo,
   SerializableSignMessageRequest,
   SerializableSwitchChainRequest
 } from '../../constants/types'
@@ -31,18 +28,13 @@ import {
 } from '../constants/action_types'
 import {
   findHardwareAccountInfo,
-  refreshTransactionHistory
 } from '../../common/async/lib'
 import {
-  signTrezorTransaction,
-  signLedgerEthereumTransaction,
   signMessageWithHardwareKeyring,
   signRawTransactionWithHardwareKeyring,
   cancelHardwareOperation,
   dialogErrorFromLedgerErrorCode,
   dialogErrorFromTrezorErrorCode,
-  signLedgerFilecoinTransaction,
-  signLedgerSolanaTransaction
 } from '../../common/async/hardware'
 
 import { Store } from '../../common/async/types'
@@ -62,10 +54,6 @@ const handler = new AsyncActionHandler()
 
 function getPanelState (store: Store): PanelState {
   return (store.getState() as WalletPanelState).panel
-}
-
-function getWalletState (store: Store): WalletState {
-  return store.getState().wallet
 }
 
 async function refreshWalletInfo (store: Store) {
@@ -209,94 +197,6 @@ handler.on(PanelActions.cancelConnectHardwareWallet.type, async (store: Store, p
   await store.dispatch(PanelActions.navigateToMain())
 })
 
-handler.on(PanelActions.approveHardwareTransaction.type, async (store: Store, txInfo: SerializableTransactionInfo) => {
-  const found = await findHardwareAccountInfo(txInfo.fromAddress)
-  if (!found || !found.hardware) {
-    return
-  }
-  const hardwareAccount: BraveWallet.HardwareInfo = found.hardware
-  await navigateToConnectHardwareWallet(store)
-  const apiProxy = getWalletPanelApiProxy()
-  if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
-    let success, error, code
-    switch (found.coin) {
-      case BraveWallet.CoinType.ETH:
-        ({ success, error, code } = await signLedgerEthereumTransaction(apiProxy, hardwareAccount.path, txInfo, found.coin))
-        break
-      case BraveWallet.CoinType.FIL:
-        ({ success, error, code } = await signLedgerFilecoinTransaction(apiProxy, txInfo, found.coin))
-        break
-      case BraveWallet.CoinType.SOL:
-        ({ success, error, code } = await signLedgerSolanaTransaction(
-          apiProxy, hardwareAccount.path, txInfo, found.coin))
-        break
-      default:
-        await store.dispatch(PanelActions.navigateToMain())
-        return
-    }
-    if (success) {
-      refreshTransactionHistory(txInfo.fromAddress)
-      await store.dispatch(PanelActions.setSelectedTransaction(txInfo))
-      await store.dispatch(PanelActions.navigateTo('transactionDetails'))
-      apiProxy.panelHandler.setCloseOnDeactivate(true)
-      return
-    }
-
-    if (code !== undefined) {
-      if (code === 'unauthorized') {
-        await store.dispatch(PanelActions.setHardwareWalletInteractionError(code))
-        return
-      }
-
-      const deviceError = dialogErrorFromLedgerErrorCode(code)
-      if (deviceError === 'transactionRejected') {
-        await store.dispatch(WalletActions.rejectTransaction(txInfo))
-        await store.dispatch(PanelActions.navigateToMain())
-        return
-      }
-
-      await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
-      return
-    }
-
-    if (error) {
-      // TODO: handle non-device errors
-      console.log(error)
-      await store.dispatch(PanelActions.navigateToMain())
-    }
-  } else if (hardwareAccount.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR) {
-    const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.path, txInfo)
-    if (success) {
-      refreshTransactionHistory(txInfo.fromAddress)
-      await store.dispatch(PanelActions.setSelectedTransaction(txInfo))
-      await store.dispatch(PanelActions.navigateTo('transactionDetails'))
-      apiProxy.panelHandler.setCloseOnDeactivate(true)
-      // By default the focus is moved to the browser window automatically when
-      // Trezor popup closed which triggers an OnDeactivate event that would
-      // close the wallet panel because of the above API call. However, there
-      // could be times that the above call happens after OnDeactivate event, so
-      // the wallet panel would stay open after Trezor popup closed.
-      // As a workaround, we manually set the focus back to wallet panel here so
-      // it would trigger another OnDeactivate event when user clicks outside
-      // of the wallet panel.
-      apiProxy.panelHandler.focus()
-      return
-    }
-
-    if (deviceError === 'deviceBusy') {
-      // do nothing as the operation is already in progress
-      return
-    }
-
-    console.log(error)
-    await store.dispatch(WalletActions.rejectTransaction(txInfo))
-    await store.dispatch(PanelActions.navigateToMain())
-    return
-  }
-
-  await store.dispatch(PanelActions.navigateToMain())
-})
-
 handler.on(PanelActions.connectToSite.type, async (store: Store, payload: ConnectWithSitePayloadType) => {
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.connectToSite([payload.addressToConnect], payload.duration)
@@ -314,12 +214,6 @@ handler.on(PanelActions.visibilityChanged.type, async (store: Store, isVisible) 
 
 handler.on(PanelActions.showConnectToSite.type, async (store: Store, payload: ShowConnectToSitePayload) => {
   store.dispatch(PanelActions.navigateTo('connectWithSite'))
-  const apiProxy = getWalletPanelApiProxy()
-  apiProxy.panelHandler.showUI()
-})
-
-handler.on(PanelActions.showApproveTransaction.type, async (store: Store, payload: ShowConnectToSitePayload) => {
-  store.dispatch(PanelActions.navigateTo('approveTransaction'))
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.showUI()
 })
@@ -638,10 +532,6 @@ handler.on(PanelActions.addSuggestTokenProcessed.type, async (store: Store, payl
   apiProxy.panelHandler.closeUI()
 })
 
-handler.on(PanelActions.showApproveTransaction.type, async (store) => {
-  store.dispatch(PanelActions.navigateTo('approveTransaction'))
-})
-
 handler.on(PanelActions.setupWallet.type, async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet' }, () => {
     if (chrome.runtime.lastError) {
@@ -793,33 +683,13 @@ handler.on(WalletActions.initialize.type, async (store) => {
   if (url.hash === '#approveTransaction') {
     // When this panel is explicitly selected we close the panel
     // UI after all transactions are approved or rejected.
-    store.dispatch(PanelActions.showApproveTransaction())
+    store.dispatch(PanelActions.navigateTo('approveTransaction'))
+    getWalletPanelApiProxy().panelHandler.showUI()
     return
   }
 
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.showUI()
-})
-
-handler.on(WalletActions.transactionStatusChanged.type, async (store: Store, payload: TransactionStatusChanged) => {
-  const state = getPanelState(store)
-  const walletState = getWalletState(store)
-  if (
-    [BraveWallet.TransactionStatus.Submitted,
-      BraveWallet.TransactionStatus.Signed,
-      BraveWallet.TransactionStatus.Rejected,
-      BraveWallet.TransactionStatus.Approved]
-      .includes(payload.txInfo.txStatus)
-  ) {
-    if ((
-      state.selectedPanel === 'approveTransaction' ||
-      payload.txInfo.txStatus === BraveWallet.TransactionStatus.Rejected
-    ) && walletState.pendingTransactions.length === 0
-    ) {
-      const apiProxy = getWalletPanelApiProxy()
-      apiProxy.panelHandler.closeUI()
-    }
-  }
 })
 
 handler.on(WalletActions.unlocked.type, async (store: Store) => {

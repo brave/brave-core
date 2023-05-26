@@ -9,6 +9,7 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -97,9 +98,9 @@ export const DepositFundsScreen = () => {
 
   // queries
   const { data: mainnetsList = [] } = useGetMainnetsQuery()
-  const { data: selectedAssetNetwork } = useGetNetworkQuery(selectedAsset, {
-    skip: !selectedAsset
-  })
+  const { data: selectedAssetNetwork } = useGetNetworkQuery(
+    selectedAsset ?? skipToken
+  )
 
   // memos
   const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])

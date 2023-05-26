@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Options
 import { BraveWallet, WalletState } from '../../../constants/types'
@@ -67,7 +68,7 @@ export const PortfolioAssetItem = ({
   const spotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
 
   // queries
-  const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
+  const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   // state
   const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)

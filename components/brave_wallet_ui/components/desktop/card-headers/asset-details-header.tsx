@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
 import {
@@ -89,9 +90,9 @@ export const AssetDetailsHeader = (props: Props) => {
     useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
   // queries
-  const { data: assetsNetwork } = useGetNetworkQuery(selectedAsset, {
-    skip: !selectedAsset
-  })
+  const { data: assetsNetwork } = useGetNetworkQuery(
+    selectedAsset ?? skipToken
+  )
 
   const { data: selectedNetwork } = useGetSelectedChainQuery(undefined, {
     skip: !!assetsNetwork

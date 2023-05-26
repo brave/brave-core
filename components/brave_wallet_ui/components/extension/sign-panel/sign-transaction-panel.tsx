@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { create } from 'ethereum-blockies'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Actions
 import { PanelActions } from '../../../panel/actions'
@@ -90,10 +91,9 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
       : signAllTransactionsRequests
 
   // queries
-  const { data: network } = useGetNetworkQuery({
-    chainId: signTransactionData[0].chainId,
-    coin: signTransactionData[0].coin
-  })
+  const { data: network } = useGetNetworkQuery(
+    signTransactionData[0] ?? skipToken
+  )
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignRisk)

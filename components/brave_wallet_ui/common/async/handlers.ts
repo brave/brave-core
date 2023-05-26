@@ -11,32 +11,16 @@ import {
   RemoveSitePermissionPayloadType,
   SetUserAssetVisiblePayloadType,
   UnlockWalletPayloadType,
-  UpdateUnapprovedTransactionGasFieldsType,
-  UpdateUnapprovedTransactionSpendAllowanceType,
-  TransactionStatusChanged,
-  UpdateUnapprovedTransactionNonceType,
   SelectedAccountChangedPayloadType,
   GetCoinMarketPayload,
-  RetryTransactionPayload,
-  SpeedupTransactionPayload,
-  CancelTransactionPayload,
   UpdateUsetAssetType
 } from '../constants/action_types'
 import {
   BraveWallet,
-  ApproveERC20Params,
-  ER20TransferParams,
-  ERC721TransferFromParams,
-  SendEthTransactionParams,
   WalletAccountType,
   WalletState,
   WalletInfo,
-  TransactionProviderError,
-  SendFilTransactionParams,
-  SendSolTransactionParams,
-  SPLTransferFromParams,
-  NetworkFilterType,
-  RefreshGasEstimatesParams
+  NetworkFilterType
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
@@ -51,24 +35,14 @@ import {
   refreshKeyringInfo,
   refreshTokenPriceHistory,
   refreshSitePermissions,
-  refreshTransactionHistory,
   refreshBalances,
   refreshVisibleTokenInfo,
   refreshPrices,
   refreshPortfolioFilterOptions,
-  sendEthTransaction,
-  sendFilTransaction,
-  sendSolTransaction,
-  sendSPLTransaction,
   getNFTMetadata
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
-import {
-  getCoinFromTxDataUnion,
-  hasEIP1559Support
-} from '../../utils/network-utils'
-import { isSolanaTransaction, shouldReportTransactionP3A } from '../../utils/tx-utils'
 import {
   getVisibleNetworksList,
   walletApi
@@ -115,7 +89,6 @@ async function refreshWalletInfo (store: Store) {
       BraveWallet.ExternalWalletType.MetaMask)
   store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
 
-  await store.dispatch(refreshTransactionHistory())
   await store.dispatch(refreshSitePermissions())
   store.dispatch(WalletActions.getOnRampCurrencies())
 }
@@ -158,7 +131,6 @@ async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.Coi
       (account) => account.address === selectedAccountAddress
     ) || accounts[0]
   await store.dispatch(WalletActions.setSelectedAccount(defaultAccount))
-  await store.dispatch(refreshTransactionHistory(defaultAccount.address))
 }
 
 handler.on(WalletActions.refreshBalancesAndPrices.type, async (store: Store) => {
@@ -303,11 +275,6 @@ handler.on(WalletActions.initialized.type, async (store: Store, payload: WalletI
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
     await braveWalletService.discoverAssetsOnAllSupportedChains()
   }
-
-  // This can be 0 when the wallet is locked
-  if (payload.selectedAccount) {
-    await store.dispatch(refreshTransactionHistory(payload.selectedAccount))
-  }
 })
 
 handler.on(WalletActions.getAllTokensList.type, async (store) => {
@@ -393,281 +360,6 @@ handler.on(WalletActions.selectPortfolioTimeline.type, async (store: Store, payl
   await store.dispatch(refreshTokenPriceHistory(payload))
 })
 
-handler.on(WalletActions.sendTransaction.type, async (
-  store: Store,
-  payload:
-    | SendEthTransactionParams
-    | SendFilTransactionParams
-    | SendSolTransactionParams
-) => {
-  let addResult
-  if (payload.coin === BraveWallet.CoinType.ETH) {
-    addResult = await sendEthTransaction(payload as SendEthTransactionParams)
-  } else if (payload.coin === BraveWallet.CoinType.FIL) {
-    addResult = await sendFilTransaction(payload as SendFilTransactionParams)
-  } else if (payload.coin === BraveWallet.CoinType.SOL) {
-    addResult = await sendSolTransaction(payload as SendSolTransactionParams)
-  }
-  if (addResult && !addResult.success) {
-    console.log(
-      'Sending unapproved transaction failed: ' +
-      `from=${payload.fromAccount.address} err=${addResult.errorMessage}`
-    )
-    return
-  }
-  // Refresh the transaction history of the origin account.
-  await store.dispatch(refreshTransactionHistory(payload.fromAccount.address))
-})
-
-handler.on(WalletActions.sendSPLTransfer.type, async (store: Store, payload: SPLTransferFromParams) => {
-  const { braveWalletService,
-          jsonRpcService,
-          solanaTxManagerProxy
-  } = getAPIProxy()
-  const { originInfo } = await braveWalletService.getActiveOrigin()
-  const { network } = await jsonRpcService.getNetwork(
-    BraveWallet.CoinType.SOL, originInfo.origin)
-  const value = await solanaTxManagerProxy.makeTokenProgramTransferTxData(
-    network.chainId,
-    payload.splTokenMintAddress,
-    payload.fromAccount.address, payload.to,
-    BigInt(payload.value))
-  if (!value.txData) {
-    console.log('Failed making SPL transfer data, to: ', payload.to, ', value: ', payload.value)
-    return
-  }
-  await sendSPLTransaction(value.txData)
-  await store.dispatch(refreshTransactionHistory(payload.fromAccount.address))
-})
-
-handler.on(WalletActions.sendERC20Transfer.type, async (store: Store, payload: ER20TransferParams) => {
-  const apiProxy = getAPIProxy()
-  const { data, success } = await apiProxy.ethTxManagerProxy.makeERC20TransferData(payload.to, payload.value)
-  if (!success) {
-    console.log('Failed making ERC20 transfer data, to: ', payload.to, ', value: ', payload.value)
-    return
-  }
-
-  await store.dispatch(WalletActions.sendTransaction({
-    network: payload.network,
-    fromAccount: payload.fromAccount,
-    to: payload.contractAddress,
-    value: '0x0',
-    gas: payload.gas,
-    gasPrice: payload.gasPrice,
-    maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
-    maxFeePerGas: payload.maxFeePerGas,
-    data,
-    coin: BraveWallet.CoinType.ETH
-  }))
-})
-
-handler.on(WalletActions.sendERC721TransferFrom.type, async (store: Store, payload: ERC721TransferFromParams) => {
-  const apiProxy = getAPIProxy()
-  const { data, success } = await apiProxy.ethTxManagerProxy.makeERC721TransferFromData(payload.fromAccount.address, payload.to, payload.tokenId, payload.contractAddress)
-  if (!success) {
-    console.log('Failed making ERC721 transferFrom data, from: ', payload.fromAccount.address, ', to: ', payload.to, ', tokenId: ', payload.tokenId)
-    return
-  }
-
-  await store.dispatch(WalletActions.sendTransaction({
-    network: payload.network,
-    fromAccount: payload.fromAccount,
-    to: payload.contractAddress,
-    value: '0x0',
-    gas: payload.gas,
-    gasPrice: payload.gasPrice,
-    maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
-    maxFeePerGas: payload.maxFeePerGas,
-    data,
-    coin: BraveWallet.CoinType.ETH
-  }))
-})
-
-handler.on(WalletActions.approveERC20Allowance.type, async (store: Store, payload: ApproveERC20Params) => {
-  const apiProxy = getAPIProxy()
-  const { data, success } = await apiProxy.ethTxManagerProxy.makeERC20ApproveData(payload.spenderAddress, payload.allowance)
-  if (!success) {
-    console.log(
-      'Failed making ERC20 approve data, contract: ',
-      payload.contractAddress,
-      ', spender: ', payload.spenderAddress,
-      ', allowance: ', payload.allowance
-    )
-    return
-  }
-
-  await store.dispatch(WalletActions.sendTransaction({
-    network: payload.network,
-    fromAccount: payload.fromAccount,
-    to: payload.contractAddress,
-    value: '0x0',
-    data,
-    coin: BraveWallet.CoinType.ETH
-  }))
-})
-
-handler.on(WalletActions.approveTransaction.type, async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
-  const api = getAPIProxy()
-  const { txService, braveWalletP3A } = api
-  const coin = getCoinFromTxDataUnion(txInfo.txDataUnion)
-  const result = await txService.approveTransaction(coin,
-                                                    txInfo.chainId, txInfo.id)
-  const error = result.errorUnion.providerError ?? result.errorUnion.solanaProviderError ?? result.errorUnion.filecoinProviderError
-  if (error !== BraveWallet.ProviderError.kSuccess) {
-    await store.dispatch(WalletActions.setTransactionProviderError({
-      transaction: txInfo,
-      providerError: {
-        code: error,
-        message: result.errorMessage
-      } as TransactionProviderError
-    }))
-  } else {
-    if (shouldReportTransactionP3A({ txInfo })) {
-      braveWalletP3A.reportTransactionSent(coin, true)
-    }
-  }
-
-  await store.dispatch(refreshTransactionHistory(txInfo.fromAddress))
-})
-
-handler.on(WalletActions.rejectTransaction.type, async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
-  const apiProxy = getAPIProxy()
-  const coin = getCoinFromTxDataUnion(txInfo.txDataUnion)
-  await apiProxy.txService.rejectTransaction(coin, txInfo.chainId, txInfo.id)
-  await store.dispatch(refreshTransactionHistory(txInfo.fromAddress))
-})
-
-handler.on(WalletActions.rejectAllTransactions.type, async (store) => {
-  const state = getWalletState(store)
-  const apiProxy = getAPIProxy()
-  state.pendingTransactions.forEach(async (transaction) => {
-    const coin = getCoinFromTxDataUnion(transaction.txDataUnion)
-    await apiProxy.txService.rejectTransaction(coin, transaction.chainId,
-                                               transaction.id)
-  })
-  await refreshWalletInfo(store)
-})
-
-handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, payload: RefreshGasEstimatesParams) => {
-  const { selectedAccount} = getWalletState(store)
-  const api = getAPIProxy()
-  const { ethTxManagerProxy, solanaTxManagerProxy } = api
-
-  if (isSolanaTransaction(payload.txInfo)) {
-    const { fee, errorMessage } = await solanaTxManagerProxy.getEstimatedTxFee(
-      payload.txInfo.chainId,
-      payload.txInfo.id
-    )
-    if (!fee) {
-      console.error('Failed to fetch SOL Fee estimates: ' + errorMessage)
-      store.dispatch(WalletActions.setHasFeeEstimatesError(true))
-      return
-    }
-    store.dispatch(WalletActions.setSolFeeEstimates({ fee }))
-    return
-  }
-
-  if (
-    payload.network &&
-    selectedAccount &&
-    !hasEIP1559Support(selectedAccount.accountType, payload.network)
-  ) {
-    store.dispatch(WalletActions.setHasFeeEstimatesError(false))
-    return
-  }
-
-  const { estimation } =
-    await ethTxManagerProxy.getGasEstimation1559(payload.txInfo.chainId)
-  if (!estimation) {
-    console.error('Failed to fetch gas estimates')
-    store.dispatch(WalletActions.setHasFeeEstimatesError(true))
-    return
-  }
-
-  store.dispatch(WalletActions.setGasEstimates(estimation))
-})
-
-handler.on(WalletActions.updateUnapprovedTransactionGasFields.type, async (store: Store, payload: UpdateUnapprovedTransactionGasFieldsType) => {
-  const apiProxy = getAPIProxy()
-
-  const isEIP1559 = payload.maxPriorityFeePerGas !== undefined && payload.maxFeePerGas !== undefined
-
-  if (isEIP1559) {
-    const result = await apiProxy.ethTxManagerProxy.setGasFeeAndLimitForUnapprovedTransaction(
-      payload.chainId,
-      payload.txMetaId,
-      payload.maxPriorityFeePerGas || '0x0',
-      payload.maxFeePerGas || '0x0',
-      payload.gasLimit
-    )
-
-    if (!result.success) {
-      console.error(
-        'Failed to update unapproved transaction: ' +
-        `id=${payload.txMetaId} ` +
-        `maxPriorityFeePerGas=${payload.maxPriorityFeePerGas}` +
-        `maxFeePerGas=${payload.maxFeePerGas}` +
-        `gasLimit=${payload.gasLimit}`
-      )
-    }
-  }
-
-  if (!isEIP1559 && payload.gasPrice) {
-    const result = await apiProxy.ethTxManagerProxy.setGasPriceAndLimitForUnapprovedTransaction(
-      payload.chainId, payload.txMetaId, payload.gasPrice, payload.gasLimit
-    )
-
-    if (!result.success) {
-      console.error(
-        'Failed to update unapproved transaction: ' +
-        `id=${payload.txMetaId} ` +
-        `gasPrice=${payload.gasPrice}` +
-        `gasLimit=${payload.gasLimit}`
-      )
-    }
-  }
-})
-
-handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.type, async (store: Store, payload: UpdateUnapprovedTransactionSpendAllowanceType) => {
-  const apiProxy = getAPIProxy()
-
-  const { data, success } = await apiProxy.ethTxManagerProxy.makeERC20ApproveData(payload.spenderAddress, payload.allowance)
-  if (!success) {
-    console.error(
-      `Failed making ERC20 approve data, spender: ${payload.spenderAddress}` +
-      `, allowance: ${payload.allowance}`
-    )
-    return
-  }
-
-  const result =
-    await apiProxy.ethTxManagerProxy.setDataForUnapprovedTransaction(
-      payload.chainId, payload.txMetaId, data)
-  if (!result.success) {
-    console.error(
-      'Failed to update unapproved transaction: ' +
-      `id=${payload.txMetaId} ` +
-      `allowance=${payload.allowance}`
-    )
-  }
-})
-
-handler.on(WalletActions.updateUnapprovedTransactionNonce.type, async (store: Store, payload: UpdateUnapprovedTransactionNonceType) => {
-  const { ethTxManagerProxy } = getAPIProxy()
-
-  const result =
-    await ethTxManagerProxy.setNonceForUnapprovedTransaction(
-      payload.chainId, payload.txMetaId, payload.nonce)
-  if (!result.success) {
-    console.error(
-      'Failed to update unapproved transaction: ' +
-      `id=${payload.txMetaId} ` +
-      `nonce=${payload.nonce}`
-    )
-  }
-})
-
 handler.on(WalletActions.removeSitePermission.type, async (store: Store, payload: RemoveSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
   await braveWalletService.resetPermission(payload.coin, deserializeOrigin(payload.origin), payload.account)
@@ -679,90 +371,6 @@ handler.on(WalletActions.addSitePermission.type, async (store: Store, payload: A
   await braveWalletService.addPermission(payload.coin, deserializeOrigin(payload.origin), payload.account)
   await refreshWalletInfo(store)
 })
-
-handler.on(WalletActions.transactionStatusChanged.type, async (store: Store, payload: TransactionStatusChanged) => {
-  await store.dispatch(
-    walletApi.endpoints.transactionStatusChanged.initiate({
-      coinType: getCoinFromTxDataUnion(payload.txInfo.txDataUnion),
-      fromAddress: payload.txInfo.fromAddress,
-      txStatus: payload.txInfo.txStatus,
-      id: payload.txInfo.id,
-      chainId: payload.txInfo.chainId,
-    })
-  )
-  const status = payload.txInfo.txStatus
-  if (status === BraveWallet.TransactionStatus.Confirmed || status === BraveWallet.TransactionStatus.Error) {
-    await refreshBalancesPricesAndHistory(store)
-  }
-})
-
-handler.on(
-  WalletActions.retryTransaction.type,
-  async (store: Store, payload: RetryTransactionPayload) => {
-    const { txService } = getAPIProxy()
-    const result = await txService.retryTransaction(
-      payload.coinType,
-      payload.chainId,
-      payload.transactionId
-    )
-    if (!result.success) {
-      console.error(
-        'Retry transaction failed: ' +
-          `id=${payload.transactionId} ` +
-          `err=${result.errorMessage}`
-      )
-    } else {
-      // Refresh the transaction history of the origin account.
-      await store.dispatch(refreshTransactionHistory(payload.fromAddress))
-    }
-  }
-)
-
-handler.on(
-  WalletActions.speedupTransaction.type,
-  async (store: Store, payload: SpeedupTransactionPayload) => {
-    const { txService } = getAPIProxy()
-    const result = await txService.speedupOrCancelTransaction(
-      payload.coinType,
-      payload.chainId,
-      payload.transactionId,
-      false
-    )
-    if (!result.success) {
-      console.error(
-        'Speedup transaction failed: ' +
-          `id=${payload.transactionId} ` +
-          `err=${result.errorMessage}`
-      )
-    } else {
-      // Refresh the transaction history of the origin account.
-      await store.dispatch(refreshTransactionHistory(payload.fromAddress))
-    }
-  }
-)
-
-handler.on(
-  WalletActions.cancelTransaction.type,
-  async (store: Store, payload: CancelTransactionPayload) => {
-    const { txService } = getAPIProxy()
-    const result = await txService.speedupOrCancelTransaction(
-      payload.coinType,
-      payload.chainId,
-      payload.transactionId,
-      true
-    )
-    if (!result.success) {
-      console.error(
-        'Cancel transaction failed: ' +
-          `id=${payload.transactionId} ` +
-          `err=${result.errorMessage}`
-      )
-    } else {
-      // Refresh the transaction history of the origin account.
-      await store.dispatch(refreshTransactionHistory(payload.fromAddress))
-    }
-  }
-)
 
 handler.on(WalletActions.expandWalletNetworks.type, async (store) => {
   chrome.tabs.create({ url: 'chrome://settings/wallet/networks' }, () => {

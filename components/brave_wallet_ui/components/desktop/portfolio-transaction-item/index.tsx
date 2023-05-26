@@ -7,6 +7,7 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import * as EthereumBlockies from 'ethereum-blockies'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
 import {
@@ -20,7 +21,6 @@ import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../util
 import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { getLocale } from '../../../../common/locale'
-import { WalletActions } from '../../../common/actions'
 import {
   getGasFeeFiatValue,
   getTransactionFormattedSendCurrencyTotal,
@@ -43,10 +43,8 @@ import {
   accountInfoEntityAdaptor,
   accountInfoEntityAdaptorInitialState
 } from '../../../common/slices/entities/account-info.entity'
-import { selectAllUserAssetsFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
-import { WalletSelectors } from '../../../common/selectors'
 import { getAddressLabelFromRegistry } from '../../../utils/account-utils'
 import { openBlockExplorerURL } from '../../../utils/block-explorer-utils'
 
@@ -56,12 +54,13 @@ import {
   useGetAccountInfosRegistryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
+  useGetSolanaEstimatedFeeQuery,
   useGetTokenSpotPriceQuery,
-  useGetUserTokensRegistryQuery
+  walletApi
 } from '../../../common/slices/api.slice'
 import {
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
+  useGetCombinedTokensListQuery
+} from '../../../common/slices/api.slice.extra'
 
 // Styled Components
 import {
@@ -118,22 +117,44 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   // redux
   const dispatch = useDispatch()
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
-  const solFeeEstimates = useUnsafeWalletSelector(
-    WalletSelectors.solFeeEstimates
-  )
 
   // partial tx parsing
-  const gasFee = getTransactionGasFee(transaction, solFeeEstimates)
-  const isFilecoinTx = isFilecoinTransaction(transaction)
-  const isSolanaTx = isSolanaTransaction(transaction)
-  const recipient = getTransactionToAddress(transaction)
-  const approvalTarget = getTransactionApprovalTargetAddress(transaction)
-  const erc721TokenId = getTransactionErc721TokenId(transaction)
-  const isSwap = isSwapTransaction(transaction)
-  const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
+  const {
+    isFilecoinTx,
+    isSolanaTx,
+    recipient,
+    approvalTarget,
+    erc721TokenId,
+    isSwap,
+    txCoinType,
+  } = React.useMemo(() => {
+    return {
+      isFilecoinTx: isFilecoinTransaction(transaction),
+      isSolanaTx: isSolanaTransaction(transaction),
+      recipient: getTransactionToAddress(transaction),
+      approvalTarget: getTransactionApprovalTargetAddress(transaction),
+      erc721TokenId: getTransactionErc721TokenId(transaction),
+      isSwap: isSwapTransaction(transaction),
+      txCoinType: getCoinFromTxDataUnion(transaction.txDataUnion),
+    }
+  }, [transaction])
 
   // queries
+  const { data: solFeeEstimates } = useGetSolanaEstimatedFeeQuery(
+    txCoinType === BraveWallet.CoinType.SOL &&
+      transaction.chainId &&
+      transaction.id
+      ? {
+          chainId: transaction.chainId,
+          txId: transaction.id
+        }
+      : skipToken
+  )
+
+  const gasFee = isSolanaTx
+    ? solFeeEstimates ?? ''
+    : getTransactionGasFee(transaction)
+
   const {
     data: defaultFiatCurrency = '',
     isLoading: isLoadingDefaultFiatCurrency
@@ -152,14 +173,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   }, [txNetwork])
 
   const {
-    userVisibleTokensInfo,
-    isLoading: isLoadingUserVisibleTokens
-  } = useGetUserTokensRegistryQuery(undefined, {
-    selectFromResult: result => ({
-      ...result,
-      userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
-    })
-  })
+    data: combinedTokensList,
+    isLoading: isLoadingTokens
+  } = useGetCombinedTokensListQuery()
 
   const {
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
@@ -172,11 +188,6 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     ]
 
   // memos & computed from queries
-  const combinedTokensList = React.useMemo(
-    () => fullTokenList.concat(userVisibleTokensInfo),
-    [fullTokenList, userVisibleTokensInfo]
-  )
-
   const txToken = findTransactionToken(
     transaction,
     combinedTokensList
@@ -312,12 +323,14 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onClickRetryTransaction = React.useCallback(
     () => {
-      dispatch(WalletActions.retryTransaction({
-        coinType: txCoinType,
-        fromAddress: transaction.fromAddress,
-        chainId: transaction.chainId,
-        transactionId: transaction.id
-      }))
+      dispatch(
+        walletApi.endpoints.retryTransaction.initiate({
+          coinType: txCoinType,
+          fromAddress: transaction.fromAddress,
+          chainId: transaction.chainId,
+          transactionId: transaction.id
+        })
+      )
     },
     [
       txCoinType,
@@ -329,12 +342,14 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onClickSpeedupTransaction = React.useCallback(
     () => {
-      dispatch(WalletActions.speedupTransaction({
-        coinType: txCoinType,
-        fromAddress: transaction.fromAddress,
-        chainId: transaction.chainId,
-        transactionId: transaction.id
-      }))
+      dispatch(
+        walletApi.endpoints.speedupTransaction.initiate({
+          coinType: txCoinType,
+          fromAddress: transaction.fromAddress,
+          chainId: transaction.chainId,
+          transactionId: transaction.id
+        })
+      )
     },
     [
       txCoinType,
@@ -346,12 +361,14 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onClickCancelTransaction = React.useCallback(
     () => {
-      dispatch(WalletActions.cancelTransaction({
-        coinType: txCoinType,
-        fromAddress: transaction.fromAddress,
-        chainId: transaction.chainId,
-        transactionId: transaction.id
-      }))
+      dispatch(
+        walletApi.endpoints.cancelTransaction.initiate({
+          coinType: txCoinType,
+          fromAddress: transaction.fromAddress,
+          chainId: transaction.chainId,
+          transactionId: transaction.id
+        })
+      )
     },
     [
       txCoinType,
@@ -409,14 +426,14 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onAssetClick = React.useCallback(
     (symbol?: string, contractAddress?: string) =>
-      isLoadingUserVisibleTokens
+      isLoadingTokens
         ? undefined
         : () => {
             if (!symbol) {
               return
             }
 
-            const asset = findTokenBySymbol(symbol, userVisibleTokensInfo)
+            const asset = findTokenBySymbol(symbol, combinedTokensList)
             if (asset) {
               onSelectAsset(asset)
             }
@@ -431,12 +448,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               value: contractAddress
             })()
           },
-    [
-      onSelectAsset,
-      userVisibleTokensInfo,
-      isLoadingUserVisibleTokens,
-      txNetwork
-    ]
+    [onSelectAsset, combinedTokensList, isLoadingTokens, txNetwork]
   )
 
   // memos
@@ -450,7 +462,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const toOrb = React.useMemo(() => {
     return EthereumBlockies.create({
-      seed: recipient.toLowerCase(),
+      seed: recipient?.toLowerCase() || '',
       size: 8,
       scale: 16
     }).toDataURL()

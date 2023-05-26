@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Utils
 import { WalletSelectors } from '../../../common/selectors'
@@ -58,19 +59,9 @@ import {
   useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
 
-interface Props {
-  onConfirm: () => void
-  onReject: () => void
-}
-
-export function ConfirmSwapTransaction (props: Props) {
-  const { onConfirm, onReject } = props
-
+export function ConfirmSwapTransaction () {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-  const transactionInfo = useUnsafeWalletSelector(
-    WalletSelectors.selectedPendingTransaction
-  )
 
   // state
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
@@ -82,26 +73,23 @@ export function ConfirmSwapTransaction (props: Props) {
     transactionDetails,
     fromOrb,
     toOrb,
-    updateUnapprovedTransactionNonce
+    updateUnapprovedTransactionNonce,
+    selectedPendingTransaction,
+    onConfirm,
+    onReject
   } = usePendingTransactions()
 
   // queries
   const { data: makerAssetNetwork } = useGetNetworkQuery(
-    transactionDetails?.sellToken,
-    {
-      skip: !transactionDetails?.sellToken
-    }
+    transactionDetails?.sellToken ?? skipToken
   )
 
   const { data: takerAssetNetwork } = useGetNetworkQuery(
-    transactionDetails?.buyToken,
-    {
-      skip: !transactionDetails?.buyToken
-    }
+    transactionDetails?.buyToken ?? skipToken
   )
 
   // computed
-  const originInfo = transactionInfo?.originInfo ?? activeOrigin
+  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // Methods
   const onToggleAdvancedTransactionSettings = () => {
@@ -110,13 +98,17 @@ export function ConfirmSwapTransaction (props: Props) {
   const onToggleEditGas = () => setIsEditingGas(!isEditingGas)
 
   // render
-  if (showAdvancedTransactionSettings && transactionDetails && transactionInfo) {
+  if (
+    showAdvancedTransactionSettings &&
+    transactionDetails &&
+    selectedPendingTransaction
+  ) {
     return (
       <AdvancedTransactionSettings
         onCancel={onToggleAdvancedTransactionSettings}
         nonce={transactionDetails.nonce}
-        chainId={transactionInfo.chainId}
-        txMetaId={transactionInfo.id}
+        chainId={selectedPendingTransaction.chainId}
+        txMetaId={selectedPendingTransaction.id}
         updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
       />
     )

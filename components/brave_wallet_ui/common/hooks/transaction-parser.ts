@@ -8,18 +8,12 @@ import * as React from 'react'
 // Constants
 import {
   BraveWallet,
-  SerializableTransactionInfo,
-  SolFeeEstimates,
-  TransactionInfo
+  SerializableTransactionInfo
 } from '../../constants/types'
 
 // Utils
-import { getLocale } from '../../../common/locale'
 import {
-  getGasFeeFiatValue,
   ParsedTransaction,
-  ParsedTransactionFees,
-  parseTransactionFeesWithoutPrices,
   parseTransactionWithPrices
 } from '../../utils/tx-utils'
 import { WalletSelectors } from '../selectors'
@@ -28,29 +22,9 @@ import { WalletSelectors } from '../selectors'
 import { useUnsafeWalletSelector } from './use-safe-selector'
 import { useGetSelectedChainQuery } from '../slices/api.slice'
 
-export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkInfo, networkSpotPrice?: string, solFeeEstimates?: SolFeeEstimates) {
-  return React.useCallback((transactionInfo: TransactionInfo): ParsedTransactionFees => {
-    const txFeesBase = parseTransactionFeesWithoutPrices(
-      transactionInfo,
-      solFeeEstimates
-    )
-
-    return {
-      ...txFeesBase,
-      gasFeeFiat: getGasFeeFiatValue({
-        gasFee: txFeesBase.gasFee,
-        networkSpotPrice,
-        txNetwork: selectedNetwork
-      }),
-      missingGasLimitError: txFeesBase.isMissingGasLimit
-        ? getLocale('braveWalletMissingGasLimitError')
-        : undefined
-    }
-  }, [selectedNetwork, networkSpotPrice])
-}
-
 export function useTransactionParser (
-  transactionNetwork?: BraveWallet.NetworkInfo
+  transactionNetwork?: BraveWallet.NetworkInfo,
+  gasFee?: string
 ) {
   // queries
   const { data: reduxSelectedNetwork } = useGetSelectedChainQuery()
@@ -63,9 +37,6 @@ export function useTransactionParser (
   const spotPrices = useUnsafeWalletSelector(
     WalletSelectors.transactionSpotPrices
   )
-  const solFeeEstimates = useUnsafeWalletSelector(
-    WalletSelectors.solFeeEstimates
-  )
 
   const selectedNetwork = transactionNetwork || reduxSelectedNetwork
 
@@ -76,15 +47,15 @@ export function useTransactionParser (
       transactionNetwork: selectedNetwork,
       tx,
       userVisibleTokensList: visibleTokens,
-      solFeeEstimates,
-      spotPrices
+      spotPrices,
+      gasFee: gasFee ?? ''
     })
   }, [
     fullTokenList,
     visibleTokens,
-    solFeeEstimates,
     selectedNetwork,
     accounts,
-    spotPrices
+    spotPrices,
+    gasFee
   ])
 }

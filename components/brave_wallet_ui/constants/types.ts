@@ -250,13 +250,9 @@ export interface WalletState {
   hasIncorrectPassword: boolean
   selectedAccount?: WalletAccountType
   accounts: WalletAccountType[]
-  transactions: AccountTransactions
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
   portfolioPriceHistory: PriceDataObjectType[]
-  pendingTransactions: SerializableTransactionInfo[]
-  knownTransactions: SerializableTransactionInfo[]
-  selectedPendingTransaction: SerializableTransactionInfo | undefined
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   transactionSpotPrices: AssetPriceWithContractAndChainId[]
@@ -270,7 +266,6 @@ export interface WalletState {
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
   defaultCurrencies: DefaultCurrencies
-  transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isLoadingCoinMarketData: boolean
   coinMarketData: BraveWallet.CoinMarket[]
   selectedNetworkFilter: NetworkFilterType
@@ -306,7 +301,7 @@ export interface PanelState {
   switchChainRequest: SerializableSwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   suggestedTokenRequest?: SerializableAddSuggestTokenRequest
-  selectedTransaction: SerializableTransactionInfo | undefined
+  selectedTransactionId?: string
 }
 
 export interface PageState {
@@ -420,16 +415,21 @@ export interface PortfolioTokenHistoryAndInfo {
   balance: string
 }
 
-interface BaseTransactionParams {
+export interface BaseTransactionParams {
   network: BraveWallet.NetworkInfo
-  // FIXME(josheleonard): Should be just AccountInfoEntity
-  fromAccount: WalletAccountType | AccountInfoEntity
+  fromAccount: Pick<
+    WalletAccountType | AccountInfoEntity,
+    'accountType' | 'address' | 'coin' | 'hardware' | 'keyringId' | 'deviceId'
+  >
   to: string
   value: string
   coin: BraveWallet.CoinType
 }
 
 interface BaseEthTransactionParams extends BaseTransactionParams {
+  // needed to check if EIP-1559 gas pricing is supported
+  accountType: WalletAccountTypeName
+
   gas?: string
 
   // Legacy gas pricing
@@ -482,15 +482,10 @@ export interface ERC721TransferFromParams extends BaseEthTransactionParams {
 
 export interface ApproveERC20Params {
   network: BraveWallet.NetworkInfo
-  fromAccount: WalletAccountType
+  fromAccount: BaseEthTransactionParams['fromAccount']
   contractAddress: string
   spenderAddress: string
   allowance: string
-}
-
-export interface RefreshGasEstimatesParams {
-  network?: BraveWallet.NetworkInfo
-  txInfo: SerializableTransactionInfo
 }
 
 /**
@@ -597,10 +592,6 @@ export type SerializableGetEncryptionPublicKeyRequest = WithSerializableOriginIn
 export type SerializableDecryptRequest = WithSerializableOriginInfo<BraveWallet.DecryptRequest>
 
 export type SerializableSwitchChainRequest = WithSerializableOriginInfo<BraveWallet.SwitchChainRequest>
-
-export type AccountTransactions = {
-  [accountId: string]: SerializableTransactionInfo[]
-}
 
 export type GetEthAddrReturnInfo = BraveWallet.JsonRpcService_EnsGetEthAddr_ResponseParams
 export type GetSolAddrReturnInfo = BraveWallet.JsonRpcService_SnsGetSolAddr_ResponseParams

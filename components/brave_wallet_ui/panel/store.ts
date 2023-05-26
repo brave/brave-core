@@ -34,6 +34,8 @@ const store = configureStore({
   )
 })
 
+export type RootStoreState = ReturnType<typeof store.getState>
+
 const proxy = getWalletPanelApiProxy()
 proxy.addJsonRpcServiceObserver(store)
 proxy.addKeyringServiceObserver(store)

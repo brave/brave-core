@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect, useHistory, useParams } from 'react-router'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
 import {
@@ -62,7 +63,8 @@ import {
 } from '../../../../common/hooks/use-safe-selector'
 import {
   useGetNetworkQuery,
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery,
+  useGetTransactionsQuery
 } from '../../../../common/slices/api.slice'
 
 // Styled Components
@@ -111,7 +113,6 @@ export const PortfolioAsset = (props: Props) => {
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
   const portfolioPriceHistory = useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
   const isFetchingPortfolioPriceHistory = useSafeWalletSelector(WalletSelectors.isFetchingPortfolioPriceHistory)
   const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const selectedNetworkFilter = useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
@@ -125,13 +126,23 @@ export const PortfolioAsset = (props: Props) => {
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
 
   // queries
-  const { data: assetsNetwork } = useGetNetworkQuery(selectedAsset, {
-    skip: !selectedAsset
-  })
+  const { data: assetsNetwork } = useGetNetworkQuery(
+    selectedAsset ?? skipToken //
+  )
   const { data: selectedNetwork } = useGetSelectedChainQuery(undefined, {
     skip: !!assetsNetwork
   })
   const selectedAssetsNetwork = assetsNetwork || selectedNetwork
+
+  const { data: transactionsByNetwork = [] } = useGetTransactionsQuery(
+    selectedAsset
+      ? {
+          address: null,
+          chainId: selectedAsset.chainId,
+          coinType: selectedAsset.coin
+        }
+      : skipToken
+  )
 
   // custom hooks
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
@@ -279,22 +290,6 @@ export const PortfolioAsset = (props: Props) => {
       return portfolioPriceHistory
     }
   }, [portfolioPriceHistory, fullPortfolioFiatBalance])
-
-  const accountsByNetwork = React.useMemo(() => {
-    if (selectedAssetsNetwork?.coin !== undefined) {
-      return []
-    }
-    return accounts.filter((account) => account.coin === selectedAssetsNetwork?.coin)
-  }, [selectedAssetsNetwork?.coin, accounts])
-
-  const transactionsByNetwork = React.useMemo(() => {
-    return accountsByNetwork.map((account) => {
-      return transactions[account.address]
-    }).flat(1)
-  }, [
-    accountsByNetwork,
-    transactions
-  ])
 
   const selectedAssetTransactions = React.useMemo(() => {
     if (selectedAsset) {

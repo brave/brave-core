@@ -4,17 +4,20 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // types
-import { BraveWallet, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
+import {
+  useUnsafeWalletSelector //
+} from '../../../common/hooks/use-safe-selector'
 
 // Components
 import Tooltip from '../../shared/tooltip/index'
@@ -59,10 +62,6 @@ import { TransactionQueueStep } from './common/queue'
 import { Footer } from './common/footer'
 
 type confirmPanelTabs = 'transaction' | 'details'
-interface Props {
-  onConfirm: () => void
-  onReject: () => void
-}
 
 const onClickLearnMore = () => {
   chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/5546517853325' }, () => {
@@ -72,21 +71,14 @@ const onClickLearnMore = () => {
   })
 }
 
-export const ConfirmSolanaTransactionPanel = ({
-  onConfirm,
-  onReject
-}: Props) => {
+export const ConfirmSolanaTransactionPanel = () => {
   // redux
-  const {
-    activeOrigin,
-    defaultCurrencies,
-    selectedPendingTransaction: transactionInfo
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
-
-  const originInfo = transactionInfo?.originInfo ?? activeOrigin
+  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
+  const defaultCurrencies = useUnsafeWalletSelector(
+    WalletSelectors.defaultCurrencies
+  )
 
   // custom hooks
-  const pendingTxInfo = usePendingTransactions()
   const {
     fromAddress,
     fromOrb,
@@ -98,8 +90,12 @@ export const ConfirmSolanaTransactionPanel = ({
     isSolanaDappTransaction,
     fromAccountName,
     groupTransactions,
-    selectedPendingTransactionGroupIndex
-  } = pendingTxInfo
+    selectedPendingTransactionGroupIndex,
+    selectedPendingTransaction,
+    onConfirm,
+    onReject
+  } = usePendingTransactions()
+  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // state
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
@@ -110,10 +106,16 @@ export const ConfirmSolanaTransactionPanel = ({
   [])
 
   // render
-  if (!transactionDetails || !transactionInfo || !transactionsNetwork) {
-    return <StyledWrapper>
-      <Skeleton width={'100%'} height={'100%'} enableAnimation />
-    </StyledWrapper>
+  if (
+    !transactionDetails ||
+    !selectedPendingTransaction ||
+    !transactionsNetwork
+  ) {
+    return (
+      <StyledWrapper>
+        <Skeleton width={'100%'} height={'100%'} enableAnimation />
+      </StyledWrapper>
+    )
   }
 
   return (
@@ -190,7 +192,9 @@ export const ConfirmSolanaTransactionPanel = ({
         </WarningBox>
       }
 
-      {groupTransactions.length > 0 && selectedPendingTransactionGroupIndex >= 0 && transactionInfo &&
+      {(groupTransactions.length > 0 &&
+        selectedPendingTransactionGroupIndex >= 0 &&
+        selectedPendingTransaction) &&
         <GroupBox>
           <GroupBoxColumn>
             <GroupBoxTitle>
@@ -243,9 +247,9 @@ export const ConfirmSolanaTransactionPanel = ({
         {selectedTab === 'transaction'
           ? <TransactionInfo />
           : <SolanaTransactionDetailBox
-              data={transactionInfo?.txDataUnion?.solanaTxData}
+              data={selectedPendingTransaction?.txDataUnion?.solanaTxData}
               instructions={transactionDetails.instructions}
-              txType={transactionInfo.txType}
+              txType={selectedPendingTransaction.txType}
             />
         }
       </MessageBox>

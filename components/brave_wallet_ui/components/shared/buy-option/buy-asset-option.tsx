@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
 import { BraveWallet } from '../../../constants/types'
@@ -55,7 +56,7 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
   const [isFetchingPrice, setIsFetchingPrice] = React.useState(!!selectedCurrency)
 
   // queries
-  const { data: tokenNetwork } = useGetNetworkQuery(token, { skip: !token })
+  const { data: tokenNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   // custom hooks
   const { assetRatioService } = useApiProxy()

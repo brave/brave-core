@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
 import { WalletSelectors } from '../../../../../common/selectors'
@@ -53,7 +54,7 @@ export const TokenListItem = (props: Props) => {
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
   // Queries
-  const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
+  const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   // Memos
   const AssetIconWithPlaceholder = React.useMemo(() => {
