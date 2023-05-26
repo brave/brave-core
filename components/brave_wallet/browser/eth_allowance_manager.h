@@ -15,7 +15,6 @@
 #include "base/barrier_callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
@@ -25,6 +24,8 @@ namespace brave_wallet {
 
 class JsonRpcService;
 class KeyringService;
+class BraveWalletService;
+
 class EthAllowanceManager {
  public:
   EthAllowanceManager(BraveWalletService* wallet_service,
@@ -38,8 +39,10 @@ class EthAllowanceManager {
 
   ~EthAllowanceManager();
 
-  void DiscoverEthAllowancesOnAllSupportedChains(
-      BraveWalletService::DiscoverEthAllowancesCallback callback);
+  using ResultCallback =
+      mojom::BraveWalletService::DiscoverEthAllowancesCallback;
+
+  void DiscoverEthAllowancesOnAllSupportedChains(ResultCallback callback);
   void Reset();
 
  private:
@@ -69,7 +72,7 @@ class EthAllowanceManager {
   void OnGetAllowances(const int& task_id,
                        const std::string& chain_id,
                        const std::string& hex_account_address,
-                       [[maybe_unused]] const std::vector<Log>& logs,
+                       const std::vector<Log>& logs,
                        base::Value rawlogs,
                        mojom::ProviderError error,
                        const std::string& error_message);
@@ -93,20 +96,19 @@ class EthAllowanceManager {
 
     void SetResults(const std::string& chain_id,
                     const uint256_t& max_block_number,
-                    std::vector<mojom::AllowanceInfoPtr>&& alwns);
+                    std::vector<mojom::AllowanceInfoPtr> alwns);
     void MarkComplete();
     int task_id;
     EthAllowanceCollection allowances;
-    bool is_completed;
+    bool is_completed{false};
   };
-  bool IsAllTasksCompleted();
+  bool IsAllTasksCompleted() const;
   void MergeAllResultsAnCallBack();
   void OnDiscoverEthAllowancesCompleted(
       std::vector<mojom::AllowanceInfoPtr> result);
 
-  std::map<int, std::unique_ptr<EthAllowanceTask>> tasks;
-  std::vector<BraveWalletService::DiscoverEthAllowancesCallback>
-      discover_eth_allowance_callback_;
+  std::map<int, std::unique_ptr<EthAllowanceTask>> tasks_;
+  std::vector<ResultCallback> discover_eth_allowance_callback_;
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<KeyringService> keyring_service_;
