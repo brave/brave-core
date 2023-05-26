@@ -331,6 +331,15 @@ class TabManager: NSObject {
     UIImpactFeedbackGenerator(style: .light).bzzt()
     selectedTab?.createWebview()
     selectedTab?.lastExecutedTime = Date.now()
+    
+    if let selectedTab = selectedTab,
+       let webView = selectedTab.webView,
+       webView.url == nil {
+      
+      selectedTab.url = selectedTab.url ?? TabManager.ntpInteralURL
+      restoreTab(selectedTab)
+      Logger.module.error("Force Restored a Zombie Tab?!")
+    }
 
     delegates.forEach { $0.get()?.tabManager(self, didSelectedTabChange: tab, previous: previous) }
     if let tab = previous {
@@ -439,7 +448,7 @@ class TabManager: NSObject {
                       PrivilegedRequest(url: url) as URLRequest :
                       URLRequest(url: url)
       $0.createWebview()
-      $0.loadRequest(URLRequest(url: url))
+      $0.loadRequest(request)
     }
     
     // Select the most recent.
