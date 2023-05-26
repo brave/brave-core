@@ -80,11 +80,13 @@ class ADS_EXPORT Ads {
   // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
-  // same ad placement.
+  // same ad placement. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
   virtual void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::InlineContentAdEventType event_type) = 0;
+      mojom::InlineContentAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
   // Should be called to serve a new tab page ad. The callback takes one
   // argument - |NewTabPageAdInfo| containing the info for the ad.
@@ -96,11 +98,12 @@ class ADS_EXPORT Ads {
   // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
-  // same ad placement.
-  virtual void TriggerNewTabPageAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::NewTabPageAdEventType event_type) = 0;
+  // same ad placement. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
+  virtual void TriggerNewTabPageAdEvent(const std::string& placement_id,
+                                        const std::string& creative_instance_id,
+                                        mojom::NewTabPageAdEventType event_type,
+                                        TriggerAdEventCallback callback) = 0;
 
   // Called to get the notification ad specified by |placement_id|. Returns
   // |NotificationAdInfo| containing the info of the ad.
@@ -112,27 +115,32 @@ class ADS_EXPORT Ads {
   // |placement_id|. |placement_id| should be a 128-bit random GUID in the form
   // of version 4. See RFC 4122, section 4.4. The same |placement_id| generated
   // for the viewed event should be used for all other events for the same ad
-  // placement.
+  // placement. The callback takes one argument - |bool| is set to |true| if
+  // successful otherwise |false|.
   virtual void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      mojom::NotificationAdEventType event_type) = 0;
+      mojom::NotificationAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
   // Called when a user views or interacts with a promoted content ad to trigger
   // an |event_type| event for the specified |placement_id| and
   // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
-  // same ad placement.
+  // same ad placement. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type) = 0;
+      mojom::PromotedContentAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
   // |event_type| event for the ad specified in |ad_mojom|.
   virtual void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
-      mojom::SearchResultAdEventType event_type) = 0;
+      mojom::SearchResultAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
   // Called to purge orphaned served ad events. NOTE: You should call before
   // triggering new ad events for the specified |ad_type|.

@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_served.h"
 
-#include "base/functional/bind.h"
+#include <utility>
+
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
@@ -13,19 +14,13 @@
 
 namespace brave_ads {
 
-void InlineContentAdEventServed::FireEvent(const InlineContentAdInfo& ad) {
+void InlineContentAdEventServed::FireEvent(const InlineContentAdInfo& ad,
+                                           ResultCallback callback) {
   BLOG(3, "Served inline content ad with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kServed,
-             base::BindOnce([](const bool success) {
-               if (!success) {
-                 return BLOG(1, "Failed to log inline content ad served event");
-               }
-
-               BLOG(1, "Successfully logged inline content ad served event");
-             }));
+  LogAdEvent(ad, ConfirmationType::kServed, std::move(callback));
 }
 
 }  // namespace brave_ads

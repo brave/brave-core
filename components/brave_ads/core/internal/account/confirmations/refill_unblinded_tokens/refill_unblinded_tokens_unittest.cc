@@ -74,7 +74,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -116,7 +116,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -164,7 +164,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -190,7 +190,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -228,7 +228,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_));
+              OnWillRetryRefillingUnblindedTokens);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens());
@@ -265,7 +265,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -304,7 +304,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_));
+              OnWillRetryRefillingUnblindedTokens);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens());
@@ -343,7 +343,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -435,7 +435,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -527,7 +527,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -568,7 +568,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -662,7 +662,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
               OnFailedToRefillUnblindedTokens());
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -693,7 +693,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
@@ -769,7 +769,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens(_))
+              OnWillRetryRefillingUnblindedTokens)
       .Times(0);
 
   EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,

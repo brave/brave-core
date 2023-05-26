@@ -27,7 +27,6 @@
 
 namespace brave_ads {
 
-using ::testing::_;
 using ::testing::InSequence;
 using ::testing::NiceMock;
 
@@ -60,17 +59,17 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
 
   // Act
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_));
+              OnDidRedeemUnblindedPaymentTokens);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens())
       .Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidScheduleNextUnblindedPaymentTokenRedemption(_));
+              OnDidScheduleNextUnblindedPaymentTokenRedemption);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens(_))
+              OnWillRetryRedeemingUnblindedPaymentTokens)
       .Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
@@ -103,7 +102,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest,
 
   // Act
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_))
+              OnDidRedeemUnblindedPaymentTokens)
       .Times(2);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
@@ -111,11 +110,11 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest,
       .Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidScheduleNextUnblindedPaymentTokenRedemption(_))
+              OnDidScheduleNextUnblindedPaymentTokenRedemption)
       .Times(2);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens(_))
+              OnWillRetryRedeemingUnblindedPaymentTokens)
       .Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
@@ -149,17 +148,17 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
 
   // Act
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_));
+              OnDidRedeemUnblindedPaymentTokens);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens())
       .Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidScheduleNextUnblindedPaymentTokenRedemption(_));
+              OnDidScheduleNextUnblindedPaymentTokenRedemption);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens(_))
+              OnWillRetryRedeemingUnblindedPaymentTokens)
       .Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
@@ -180,10 +179,10 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   SetDefaultTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   // Act
-  EXPECT_CALL(ads_client_mock_, UrlRequest(_, _)).Times(0);
+  EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_))
+              OnDidRedeemUnblindedPaymentTokens)
       .Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
@@ -191,10 +190,10 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
       .Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidScheduleNextUnblindedPaymentTokenRedemption(_));
+              OnDidScheduleNextUnblindedPaymentTokenRedemption);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens(_))
+              OnWillRetryRedeemingUnblindedPaymentTokens)
       .Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
@@ -231,16 +230,16 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, Retry) {
               OnFailedToRedeemUnblindedPaymentTokens());
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens(_));
+              OnWillRetryRedeemingUnblindedPaymentTokens);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRetryRedeemingUnblindedPaymentTokens());
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidRedeemUnblindedPaymentTokens(_));
+              OnDidRedeemUnblindedPaymentTokens);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
-              OnDidScheduleNextUnblindedPaymentTokenRedemption(_));
+              OnDidScheduleNextUnblindedPaymentTokenRedemption);
 
   const WalletInfo wallet = GetWalletForTesting();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);

@@ -8,9 +8,13 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
@@ -20,6 +24,30 @@
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
 namespace brave_ads {
+
+namespace {
+
+void FireServedEventCallback(
+    const NewTabPageAdInfo& ad,
+    MaybeServeNewTabPageAdCallback callback,
+    const bool success,
+    const std::string& /*placement_id*/,
+    const mojom::NewTabPageAdEventType /*event_type*/) {
+  if (!success) {
+    return std::move(callback).Run(/*ad*/ absl::nullopt);
+  }
+
+  std::move(callback).Run(ad);
+}
+
+void FireEventCallback(TriggerAdEventCallback callback,
+                       const bool success,
+                       const std::string& /*placement_id*/,
+                       const mojom::NewTabPageAdEventType /*event_type*/) {
+  std::move(callback).Run(success);
+}
+
+}  // namespace
 
 NewTabPageAdHandler::NewTabPageAdHandler(
     Account& account,
@@ -37,19 +65,72 @@ NewTabPageAdHandler::NewTabPageAdHandler(
 NewTabPageAdHandler::~NewTabPageAdHandler() = default;
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
-  serving_.MaybeServeAd(std::move(callback));
+  CHECK(ShouldRewardUser())
+      << " should only be called if opted-in to Brave Private Ads";
+
+  serving_.MaybeServeAd(base::BindOnce(&NewTabPageAdHandler::MaybeServeCallback,
+                                       weak_factory_.GetWeakPtr(),
+                                       std::move(callback)));
 }
 
 void NewTabPageAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType event_type) {
+    const mojom::NewTabPageAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK_NE(mojom::NewTabPageAdEventType::kServed, event_type)
+      << " should not be called with kServed as this event is handled when "
+         "calling MaybeServe or when triggering kViewed if Brave Private Ads "
+         "are disabled";
 
-  event_handler_.FireEvent(placement_id, creative_instance_id, event_type);
+  if (!ShouldRewardUser() &&
+      event_type == mojom::NewTabPageAdEventType::kViewed) {
+    // |MaybeServe| will trigger a |kServed| event if Brave Private Ads are
+    // enabled; otherwise, we need to trigger a |kServed| event when triggering
+    // a |kViewed| event.
+    return event_handler_.FireEvent(
+        placement_id, creative_instance_id,
+        mojom::NewTabPageAdEventType::kServed,
+        base::BindOnce(&NewTabPageAdHandler::TriggerServedEventCallback,
+                       weak_factory_.GetWeakPtr(), creative_instance_id,
+                       std::move(callback)));
+  }
+
+  event_handler_.FireEvent(
+      placement_id, creative_instance_id, event_type,
+      base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void NewTabPageAdHandler::MaybeServeCallback(
+    MaybeServeNewTabPageAdCallback callback,
+    const absl::optional<NewTabPageAdInfo>& ad) {
+  if (!ad) {
+    return std::move(callback).Run(ad);
+  }
+
+  event_handler_.FireEvent(
+      ad->placement_id, ad->creative_instance_id,
+      mojom::NewTabPageAdEventType::kServed,
+      base::BindOnce(&FireServedEventCallback, *ad, std::move(callback)));
+}
+
+void NewTabPageAdHandler::TriggerServedEventCallback(
+    const std::string& creative_instance_id,
+    TriggerAdEventCallback callback,
+    const bool success,
+    const std::string& placement_id,
+    const mojom::NewTabPageAdEventType /*event_type*/) {
+  if (!success) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  event_handler_.FireEvent(
+      placement_id, creative_instance_id, mojom::NewTabPageAdEventType::kViewed,
+      base::BindOnce(&FireEventCallback, std::move(callback)));
+}
 
 void NewTabPageAdHandler::OnOpportunityAroseToServeNewTabPageAd(
     const SegmentList& /*segments*/) {
@@ -57,8 +138,22 @@ void NewTabPageAdHandler::OnOpportunityAroseToServeNewTabPageAd(
 }
 
 void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
-  TriggerEvent(ad.placement_id, ad.creative_instance_id,
-               mojom::NewTabPageAdEventType::kServed);
+  BLOG(1, "Served new tab page ad:\n"
+              << "  placementId: " << ad.placement_id << "\n"
+              << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
+              << "  creativeSetId: " << ad.creative_set_id << "\n"
+              << "  campaignId: " << ad.campaign_id << "\n"
+              << "  advertiserId: " << ad.advertiser_id << "\n"
+              << "  segment: " << ad.segment << "\n"
+              << "  companyName: " << ad.company_name << "\n"
+              << "  imageUrl: " << ad.image_url << "\n"
+              << "  alt: " << ad.alt << "\n"
+              << "  targetUrl: " << ad.target_url << "\n"
+              << "  wallpaper:\n"
+              << "    imageUrl: " << ad.wallpapers[0].image_url << "\n"
+              << "    focalPoint:\n"
+              << "      x: " << ad.wallpapers[0].focal_point.x << "\n"
+              << "      y: " << ad.wallpapers[0].focal_point.y);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdServedEvent(

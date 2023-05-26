@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_clicked.h"
 
-#include "base/functional/bind.h"
+#include <utility>
+
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -13,18 +14,13 @@
 
 namespace brave_ads {
 
-void NotificationAdEventClicked::FireEvent(const NotificationAdInfo& ad) {
+void NotificationAdEventClicked::FireEvent(const NotificationAdInfo& ad,
+                                           ResultCallback callback) {
   BLOG(3, "Clicked notification ad with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
-  LogAdEvent(ad, ConfirmationType::kClicked,
-             base::BindOnce([](const bool success) {
-               if (!success) {
-                 return BLOG(1, "Failed to log notification ad clicked event");
-               }
 
-               BLOG(1, "Successfully logged notification ad clicked event");
-             }));
+  LogAdEvent(ad, ConfirmationType::kClicked, std::move(callback));
 }
 
 }  // namespace brave_ads

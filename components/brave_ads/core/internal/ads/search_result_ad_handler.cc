@@ -10,7 +10,9 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
@@ -25,6 +27,13 @@ namespace {
 SearchResultAd* g_deferred_search_result_ad_for_testing = nullptr;
 bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
+void FireEventCallback(TriggerAdEventCallback callback,
+                       const bool success,
+                       const std::string& /*placement_id*/,
+                       const mojom::SearchResultAdEventType /*event_type*/) {
+  std::move(callback).Run(success);
+}
+
 }  // namespace
 
 SearchResultAd::SearchResultAd(Account& account, Transfer& transfer)
@@ -36,20 +45,24 @@ SearchResultAd::~SearchResultAd() = default;
 
 void SearchResultAd::TriggerEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
-    const mojom::SearchResultAdEventType event_type) {
+    const mojom::SearchResultAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK_NE(mojom::SearchResultAdEventType::kServed, event_type)
+      << " should not be called with kServed as this event is handled when "
+         "calling TriggerEvent with kViewed";
 
   if (event_type == mojom::SearchResultAdEventType::kViewed) {
-    ad_viewed_event_queue_.push_front(std::move(ad_mojom));
-    return MaybeTriggerAdViewedEventFromQueue();
+    return event_handler_.FireEvent(
+        ad_mojom.Clone(), mojom::SearchResultAdEventType::kServed,
+        base::BindOnce(&SearchResultAd::FireServedEventCallback,
+                       weak_factory_.GetWeakPtr(), std::move(ad_mojom),
+                       std::move(callback)));
   }
 
   event_handler_.FireEvent(
       std::move(ad_mojom), event_type,
-      base::BindOnce([](const bool success, const std::string& placement_id,
-                        const mojom::SearchResultAdEventType event_type) {
-        // Intentionally do nothing.
-      }));
+      base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
 // static
@@ -65,18 +78,34 @@ void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
   g_defer_triggering_of_ad_viewed_event_for_testing = false;
   g_deferred_search_result_ad_for_testing
       ->trigger_ad_viewed_event_in_progress_ = false;
-  g_deferred_search_result_ad_for_testing->MaybeTriggerAdViewedEventFromQueue();
+  g_deferred_search_result_ad_for_testing->MaybeTriggerAdViewedEventFromQueue(
+      /*intentional*/ base::DoNothing());
   g_deferred_search_result_ad_for_testing = nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
+void SearchResultAd::FireServedEventCallback(
+    mojom::SearchResultAdInfoPtr ad_mojom,
+    TriggerAdEventCallback callback,
+    const bool success,
+    const std::string& /*placement_id*/,
+    const mojom::SearchResultAdEventType /*event_type*/) {
+  if (!success) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  ad_viewed_event_queue_.push_front(std::move(ad_mojom));
+  MaybeTriggerAdViewedEventFromQueue(std::move(callback));
+}
+
+void SearchResultAd::MaybeTriggerAdViewedEventFromQueue(
+    TriggerAdEventCallback callback) {
   CHECK((!ad_viewed_event_queue_.empty() ||
          !trigger_ad_viewed_event_in_progress_));
 
   if (ad_viewed_event_queue_.empty() || trigger_ad_viewed_event_in_progress_) {
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
   trigger_ad_viewed_event_in_progress_ = true;
 
@@ -87,11 +116,12 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
   event_handler_.FireEvent(
       std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed,
       base::BindOnce(&SearchResultAd::FireAdViewedEventCallback,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void SearchResultAd::FireAdViewedEventCallback(
-    const bool /*success*/,
+    TriggerAdEventCallback callback,
+    const bool success,
     const std::string& /*placement_id*/,
     const mojom::SearchResultAdEventType event_type) {
   CHECK(mojom::IsKnownEnumValue(event_type));
@@ -99,10 +129,11 @@ void SearchResultAd::FireAdViewedEventCallback(
 
   if (g_defer_triggering_of_ad_viewed_event_for_testing) {
     g_deferred_search_result_ad_for_testing = this;
-    return;
+    return std::move(callback).Run(success);
   }
+
   trigger_ad_viewed_event_in_progress_ = false;
-  MaybeTriggerAdViewedEventFromQueue();
+  MaybeTriggerAdViewedEventFromQueue(std::move(callback));
 }
 
 void SearchResultAd::OnDidFireSearchResultAdViewedEvent(

@@ -47,7 +47,6 @@ class SearchResultAdHandler final {
       base::OnceCallback<void(std::vector<std::string>)> callback);
 
   void MaybeTriggerSearchResultAdViewedEvent(const std::string& placement_id);
-
   void MaybeTriggerSearchResultAdClickedEvent(const GURL& navigation_url);
 
  private:

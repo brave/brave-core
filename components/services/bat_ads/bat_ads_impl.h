@@ -62,28 +62,33 @@ class BatAdsImpl : public mojom::BatAds {
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::InlineContentAdEventType event_type) override;
+      brave_ads::mojom::InlineContentAdEventType event_type,
+      TriggerInlineContentAdEventCallback callback) override;
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::NewTabPageAdEventType event_type) override;
+      brave_ads::mojom::NewTabPageAdEventType event_type,
+      TriggerNewTabPageAdEventCallback callback) override;
 
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      brave_ads::mojom::NotificationAdEventType event_type) override;
+      brave_ads::mojom::NotificationAdEventType event_type,
+      TriggerNotificationAdEventCallback callback) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::PromotedContentAdEventType event_type) override;
+      brave_ads::mojom::PromotedContentAdEventType event_type,
+      TriggerPromotedContentAdEventCallback callback) override;
 
   void TriggerSearchResultAdEvent(
       brave_ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      brave_ads::mojom::SearchResultAdEventType event_type) override;
+      brave_ads::mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(
       brave_ads::mojom::AdType ad_type,

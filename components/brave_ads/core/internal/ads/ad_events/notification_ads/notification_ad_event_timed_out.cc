@@ -5,15 +5,20 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_timed_out.h"
 
+#include <utility>
+
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 namespace brave_ads {
 
-void NotificationAdEventTimedOut::FireEvent(const NotificationAdInfo& ad) {
+void NotificationAdEventTimedOut::FireEvent(const NotificationAdInfo& ad,
+                                            ResultCallback callback) {
   BLOG(3, "Timed out notification ad with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
+
+  std::move(callback).Run(/*success*/ true);
 }
 
 }  // namespace brave_ads

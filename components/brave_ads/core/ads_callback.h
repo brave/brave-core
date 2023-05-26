@@ -27,6 +27,8 @@ using MaybeServeInlineContentAdCallback =
     base::OnceCallback<void(const std::string& dimensions,
                             const absl::optional<InlineContentAdInfo>& ad)>;
 
+using TriggerAdEventCallback = base::OnceCallback<void(bool success)>;
+
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
 

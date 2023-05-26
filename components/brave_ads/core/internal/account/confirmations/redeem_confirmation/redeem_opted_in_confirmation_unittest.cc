@@ -67,11 +67,10 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest, Redeem) {
               OnDidRedeemOptedInConfirmation(expected_confirmation, _));
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnFailedToRedeemConfirmation(_, _, _))
+  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnFailedToRedeemConfirmation)
       .Times(0);
 
   RedeemOptedInConfirmation::CreateAndRedeem(
@@ -92,11 +91,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest, RetryRedeemingIfNoIssuers) {
 
   // Act
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -137,11 +136,10 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
               OnDidRedeemOptedInConfirmation(expected_confirmation, _));
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnFailedToRedeemConfirmation(_, _, _))
+  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnFailedToRedeemConfirmation)
       .Times(0);
 
   RedeemOptedInConfirmation::CreateAndRedeem(
@@ -173,11 +171,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
 
   // Act
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -218,11 +216,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -262,11 +260,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -307,11 +305,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -348,11 +346,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
 
   // Act
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -406,11 +404,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -465,11 +463,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -517,11 +515,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -575,11 +573,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -634,11 +632,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -692,11 +690,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -750,11 +748,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -809,11 +807,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -865,11 +863,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -921,11 +919,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
@@ -980,11 +978,11 @@ TEST_F(BraveAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,

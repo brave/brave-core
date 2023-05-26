@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
 
-#include "base/functional/bind.h"
+#include <utility>
+
+#include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -13,19 +15,13 @@
 
 namespace brave_ads {
 
-void NewTabPageAdEventViewed::FireEvent(const NewTabPageAdInfo& ad) {
+void NewTabPageAdEventViewed::FireEvent(const NewTabPageAdInfo& ad,
+                                        ResultCallback callback) {
   BLOG(3, "Viewed new tab page ad with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kViewed,
-             base::BindOnce([](const bool success) {
-               if (!success) {
-                 return BLOG(1, "Failed to log new tab page ad viewed event");
-               }
-
-               BLOG(6, "Successfully logged new tab page ad viewed event");
-             }));
+  LogAdEvent(ad, ConfirmationType::kViewed, std::move(callback));
 }
 
 }  // namespace brave_ads

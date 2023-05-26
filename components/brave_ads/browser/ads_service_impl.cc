@@ -862,7 +862,8 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
   if (!ShouldShowCustomNotificationAds() &&
       NotificationHelper::GetInstance()->DoesSupportSystemNotifications()) {
     bat_ads_->TriggerNotificationAdEvent(
-        placement_id, mojom::NotificationAdEventType::kTimedOut);
+        placement_id, mojom::NotificationAdEventType::kTimedOut,
+        /*intentional*/ base::DoNothing());
   }
 }
 
@@ -1348,7 +1349,8 @@ void AdsServiceImpl::SnoozeScheduledCaptcha() {
 void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
   if (bat_ads_.is_bound()) {
     bat_ads_->TriggerNotificationAdEvent(
-        placement_id, mojom::NotificationAdEventType::kViewed);
+        placement_id, mojom::NotificationAdEventType::kViewed,
+        /*intentional*/ base::DoNothing());
   }
 }
 
@@ -1359,15 +1361,13 @@ void AdsServiceImpl::OnNotificationAdClosed(const std::string& placement_id,
             << placement_id;
   }
 
-  if (!bat_ads_.is_bound()) {
-    return;
+  if (bat_ads_.is_bound()) {
+    bat_ads_->TriggerNotificationAdEvent(
+        placement_id,
+        by_user ? mojom::NotificationAdEventType::kDismissed
+                : mojom::NotificationAdEventType::kTimedOut,
+        /*intentional*/ base::DoNothing());
   }
-
-  const mojom::NotificationAdEventType event_type =
-      by_user ? mojom::NotificationAdEventType::kDismissed
-              : mojom::NotificationAdEventType::kTimedOut;
-
-  bat_ads_->TriggerNotificationAdEvent(placement_id, event_type);
 }
 
 void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
@@ -1377,8 +1377,9 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
   OpenNewTabWithAd(placement_id);
 
-  bat_ads_->TriggerNotificationAdEvent(
-      placement_id, mojom::NotificationAdEventType::kClicked);
+  bat_ads_->TriggerNotificationAdEvent(placement_id,
+                                       mojom::NotificationAdEventType::kClicked,
+                                       /*intentional*/ base::DoNothing());
 }
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
@@ -1412,13 +1413,16 @@ void AdsServiceImpl::MaybeServeInlineContentAd(
 void AdsServiceImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType event_type) {
+    const mojom::InlineContentAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                          event_type);
+  if (!bat_ads_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
+                                        event_type, std::move(callback));
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAd() {
@@ -1454,40 +1458,49 @@ void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
     const std::string& /*creative_instance_id*/) {
   prefetched_new_tab_page_ad_.reset();
 
-  PurgeOrphanedAdEventsForType(mojom::AdType::kNewTabPageAd, base::DoNothing());
+  PurgeOrphanedAdEventsForType(mojom::AdType::kNewTabPageAd,
+                               /*intentional*/ base::DoNothing());
 }
 
 void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType event_type) {
+    const mojom::NewTabPageAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                       event_type);
+  if (!bat_ads_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                     event_type, std::move(callback));
 }
 
 void AdsServiceImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type) {
+    const mojom::PromotedContentAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                            event_type);
+  if (!bat_ads_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
+                                          event_type, std::move(callback));
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
-    const mojom::SearchResultAdEventType event_type) {
+    const mojom::SearchResultAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
+    bat_ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
+                                         std::move(callback));
   }
 }
 

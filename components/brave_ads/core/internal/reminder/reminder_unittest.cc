@@ -65,7 +65,7 @@ TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
 TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_, ShowReminder(_)).Times(0);
+  EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1);
@@ -87,7 +87,7 @@ TEST_F(BraveAdsReminderTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  EXPECT_CALL(ads_client_mock_, ShowReminder(_)).Times(0);
+  EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());

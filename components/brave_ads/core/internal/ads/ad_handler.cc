@@ -49,11 +49,13 @@ AdHandler::~AdHandler() {
 
 void AdHandler::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType event_type) {
+    const mojom::NotificationAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(!placement_id.empty());
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  notification_ad_handler_.TriggerEvent(placement_id, event_type);
+  notification_ad_handler_.TriggerEvent(placement_id, event_type,
+                                        std::move(callback));
 }
 
 void AdHandler::MaybeServeNewTabPageAd(
@@ -64,25 +66,27 @@ void AdHandler::MaybeServeNewTabPageAd(
 void AdHandler::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType event_type) {
+    const mojom::NewTabPageAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(!placement_id.empty());
   CHECK(!creative_instance_id.empty());
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   new_tab_page_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                        event_type);
+                                        event_type, std::move(callback));
 }
 
 void AdHandler::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type) {
+    const mojom::PromotedContentAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(!placement_id.empty());
   CHECK(!creative_instance_id.empty());
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   promoted_content_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                            event_type);
+                                            event_type, std::move(callback));
 }
 
 void AdHandler::MaybeServeInlineContentAd(
@@ -96,22 +100,25 @@ void AdHandler::MaybeServeInlineContentAd(
 void AdHandler::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType event_type) {
+    const mojom::InlineContentAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(!placement_id.empty());
   CHECK(!creative_instance_id.empty());
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   inline_content_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                          event_type);
+                                          event_type, std::move(callback));
 }
 
 void AdHandler::TriggerSearchResultAdEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
-    const mojom::SearchResultAdEventType event_type) {
+    const mojom::SearchResultAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(ad_mojom);
   CHECK(mojom::IsKnownEnumValue(event_type));
 
-  search_result_ad_handler_.TriggerEvent(std::move(ad_mojom), event_type);
+  search_result_ad_handler_.TriggerEvent(std::move(ad_mojom), event_type,
+                                         std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

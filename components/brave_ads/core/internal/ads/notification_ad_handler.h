@@ -9,7 +9,9 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_delegate.h"
@@ -52,10 +54,16 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
   ~NotificationAdHandler() override;
 
   void TriggerEvent(const std::string& placement_id,
-                    mojom::NotificationAdEventType event_type);
+                    mojom::NotificationAdEventType event_type,
+                    TriggerAdEventCallback callback);
 
  private:
   void MaybeServeAtRegularIntervals();
+
+  void FireServedEventCallback(TriggerAdEventCallback callback,
+                               bool success,
+                               const std::string& placement_id,
+                               mojom::NotificationAdEventType event_type);
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
@@ -91,6 +99,8 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
   NotificationAdEventHandler event_handler_;
 
   NotificationAdServing serving_;
+
+  base::WeakPtrFactory<NotificationAdHandler> weak_factory_{this};
 };
 
 }  // namespace brave_ads

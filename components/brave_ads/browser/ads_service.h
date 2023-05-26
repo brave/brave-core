@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -132,11 +133,13 @@ class AdsService : public KeyedService {
   // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
-  // same ad placement.
+  // same ad placement. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
   virtual void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::InlineContentAdEventType event_type) = 0;
+      mojom::InlineContentAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
   // Called to prefetch the next new tab page ad.
   virtual void PrefetchNewTabPageAd() = 0;
@@ -156,28 +159,33 @@ class AdsService : public KeyedService {
   // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
-  // same ad placement.
-  virtual void TriggerNewTabPageAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::NewTabPageAdEventType event_type) = 0;
+  // same ad placement. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
+  virtual void TriggerNewTabPageAdEvent(const std::string& placement_id,
+                                        const std::string& creative_instance_id,
+                                        mojom::NewTabPageAdEventType event_type,
+                                        TriggerAdEventCallback callback) = 0;
 
   // Called when a user views or interacts with a promoted content ad to trigger
   // an |event_type| event for the specified |placement_id| and
   // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
-  // same ad placement.
+  // same ad placement. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type) = 0;
+      mojom::PromotedContentAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
-  // |event_type| event for the ad specified in |ad_mojom|.
+  // |event_type| event for the ad specified in |ad_mojom|. The callback takes
+  // one argument - |bool| is set to |true| if successful otherwise |false|.
   virtual void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
-      mojom::SearchResultAdEventType event_type) = 0;
+      mojom::SearchResultAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
   // Called to purge orphaned served ad events. NOTE: You should call before
   // triggering new ad events for the specified |ad_type|. The callback takes

@@ -15,6 +15,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
+
 using GetDiagnosticsCallback =
     base::OnceCallback<void(absl::optional<base::Value::List> diagnostics)>;
 

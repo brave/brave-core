@@ -5,15 +5,27 @@
 
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_handler.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 
 namespace brave_ads {
+
+namespace {
+
+void FireEventCallback(TriggerAdEventCallback callback,
+                       const bool success,
+                       const std::string& /*placement_id*/,
+                       const mojom::PromotedContentAdEventType /*event_type*/) {
+  std::move(callback).Run(success);
+}
+
+}  // namespace
 
 PromotedContentAdHandler::PromotedContentAdHandler(Account& account,
                                                    Transfer& transfer)
@@ -26,13 +38,44 @@ PromotedContentAdHandler::~PromotedContentAdHandler() = default;
 void PromotedContentAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type) {
+    const mojom::PromotedContentAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK_NE(mojom::PromotedContentAdEventType::kServed, event_type)
+      << " should not be called with kServed as this event is handled when "
+         "calling TriggerEvent with kViewed";
 
-  event_handler_.FireEvent(placement_id, creative_instance_id, event_type);
+  if (event_type == mojom::PromotedContentAdEventType::kViewed) {
+    return event_handler_.FireEvent(
+        placement_id, creative_instance_id,
+        mojom::PromotedContentAdEventType::kServed,
+        base::BindOnce(&PromotedContentAdHandler::TriggerServedEventCallback,
+                       weak_factory_.GetWeakPtr(), creative_instance_id,
+                       std::move(callback)));
+  }
+
+  event_handler_.FireEvent(
+      placement_id, creative_instance_id, event_type,
+      base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void PromotedContentAdHandler::TriggerServedEventCallback(
+    const std::string& creative_instance_id,
+    TriggerAdEventCallback callback,
+    const bool success,
+    const std::string& placement_id,
+    const mojom::PromotedContentAdEventType /*event_type*/) {
+  if (!success) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  event_handler_.FireEvent(
+      placement_id, creative_instance_id,
+      mojom::PromotedContentAdEventType::kViewed,
+      base::BindOnce(&FireEventCallback, std::move(callback)));
+}
 
 void PromotedContentAdHandler::OnDidFirePromotedContentAdViewedEvent(
     const PromotedContentAdInfo& ad) {

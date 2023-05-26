@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -26,8 +28,6 @@ class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
-
-    ForcePermissionRulesForTesting();
   }
 
   void SetUpMocks() override {
@@ -36,45 +36,98 @@ class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
          {{net::HTTP_OK,
            /*response_body*/ "/catalog_with_new_tab_page_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
+
+    EXPECT_CALL(ads_client_mock_, RecordP2AEvent).Times(0);
+  }
+
+  void TriggerNewTabPageAdEvent(const std::string& placement_id,
+                                const std::string& creative_instance_id,
+                                const mojom::NewTabPageAdEventType& event_type,
+                                const bool should_fire_event) {
+    base::MockCallback<TriggerAdEventCallback> callback;
+    EXPECT_CALL(callback, Run(/*success*/ should_fire_event));
+
+    GetAds().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                      event_type, callback.Get());
+  }
+
+  void TriggerNewTabPageAdEvents(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const std::vector<mojom::NewTabPageAdEventType>& event_types,
+      const bool should_fire_event) {
+    for (const auto& event_type : event_types) {
+      TriggerNewTabPageAdEvent(placement_id, creative_instance_id, event_type,
+                               should_fire_event);
+    }
   }
 };
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
   // Arrange
+  ForcePermissionRulesForTesting();
 
-  // Act
-  GetAds().MaybeServeNewTabPageAd(
-      base::BindOnce([](const absl::optional<NewTabPageAdInfo>& ad) {
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  EXPECT_CALL(callback, Run)
+      .WillOnce([](const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_TRUE(ad);
         EXPECT_TRUE(ad->IsValid());
         EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
                                       ConfirmationType::kServed));
-      }));
-}
-
-TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
-  // Arrange
+      });
 
   // Act
-  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                    mojom::NewTabPageAdEventType::kServed);
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
+}
 
-  // Assert
-  EXPECT_EQ(1U,
-            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(0U, GetHistoryItemCount());
-  EXPECT_EQ(0U, GetTransactionCount());
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, DoNotServe) {
+  // Arrange
+  absl::optional<NewTabPageAdInfo> ad;
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  EXPECT_CALL(callback, Run(ad));
+
+  // Act
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                    mojom::NewTabPageAdEventType::kServed);
+  ForcePermissionRulesForTesting();
+
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  EXPECT_CALL(callback, Run)
+      .WillOnce([=](const absl::optional<NewTabPageAdInfo>& ad) {
+        // Assert
+        ASSERT_TRUE(ad);
+        ASSERT_TRUE(ad->IsValid());
+        ASSERT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
+                                      ConfirmationType::kServed));
+
+        // Act
+        TriggerNewTabPageAdEvent(ad->placement_id, ad->creative_instance_id,
+                                 mojom::NewTabPageAdEventType::kViewed,
+                                 /*should_fire_event*/ true);
+
+        // Assert
+        EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
+                                      ConfirmationType::kViewed));
+        EXPECT_EQ(1U, GetHistoryItemCount());
+        EXPECT_EQ(1U, GetTransactionCount());
+      });
+
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
+}
+
+TEST_F(BraveAdsNewTabPageAdIntegrationTest,
+       TriggerViewedEventIfBravePrivateAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
 
   // Act
-  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                    mojom::NewTabPageAdEventType::kViewed);
+  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                           mojom::NewTabPageAdEventType::kViewed,
+                           /*should_fire_event*/ true);
 
   // Assert
   EXPECT_EQ(1U,
@@ -82,19 +135,56 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
   EXPECT_EQ(1U, GetHistoryItemCount());
-  EXPECT_EQ(1U, GetTransactionCount());
+  EXPECT_EQ(0U, GetTransactionCount());
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                    mojom::NewTabPageAdEventType::kServed);
-  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                    mojom::NewTabPageAdEventType::kViewed);
+  ForcePermissionRulesForTesting();
+
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  EXPECT_CALL(callback, Run)
+      .WillOnce([=](const absl::optional<NewTabPageAdInfo>& ad) {
+        // Assert
+        ASSERT_TRUE(ad);
+        ASSERT_TRUE(ad->IsValid());
+        ASSERT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
+                                      ConfirmationType::kServed));
+
+        TriggerNewTabPageAdEvent(ad->placement_id, ad->creative_instance_id,
+                                 mojom::NewTabPageAdEventType::kViewed,
+                                 /*should_fire_event*/ true);
+
+        // Act
+        TriggerNewTabPageAdEvent(ad->placement_id, ad->creative_instance_id,
+                                 mojom::NewTabPageAdEventType::kClicked,
+                                 /*should_fire_event*/ true);
+
+        // Assert
+        EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
+                                      ConfirmationType::kViewed));
+        EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
+                                      ConfirmationType::kClicked));
+        EXPECT_EQ(2U, GetHistoryItemCount());
+        EXPECT_EQ(2U, GetTransactionCount());
+      });
+
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
+}
+
+TEST_F(BraveAdsNewTabPageAdIntegrationTest,
+       TriggerClickedEventIfBravePrivateAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                           mojom::NewTabPageAdEventType::kViewed,
+                           /*should_fire_event*/ true);
 
   // Act
-  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                    mojom::NewTabPageAdEventType::kClicked);
+  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                           mojom::NewTabPageAdEventType::kClicked,
+                           /*should_fire_event*/ true);
 
   // Assert
   EXPECT_EQ(1U,
@@ -104,7 +194,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
   EXPECT_EQ(2U, GetHistoryItemCount());
-  EXPECT_EQ(2U, GetTransactionCount());
+  EXPECT_EQ(0U, GetTransactionCount());
 }
 
 }  // namespace brave_ads

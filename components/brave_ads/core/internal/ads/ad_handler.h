@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
@@ -53,23 +54,28 @@ class AdHandler final : public ConversionsObserver, TransferObserver {
                                  MaybeServeInlineContentAdCallback callback);
   void TriggerInlineContentAdEvent(const std::string& placement_id,
                                    const std::string& creative_instance_id,
-                                   mojom::InlineContentAdEventType event_type);
+                                   mojom::InlineContentAdEventType event_type,
+                                   TriggerAdEventCallback callback);
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback);
   void TriggerNewTabPageAdEvent(const std::string& placement_id,
                                 const std::string& creative_instance_id,
-                                mojom::NewTabPageAdEventType event_type);
+                                mojom::NewTabPageAdEventType event_type,
+                                TriggerAdEventCallback callback);
 
   void TriggerNotificationAdEvent(const std::string& placement_id,
-                                  mojom::NotificationAdEventType event_type);
+                                  mojom::NotificationAdEventType event_type,
+                                  TriggerAdEventCallback callback);
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type);
+      mojom::PromotedContentAdEventType event_type,
+      TriggerAdEventCallback callback);
 
   void TriggerSearchResultAdEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                                  mojom::SearchResultAdEventType event_type);
+                                  mojom::SearchResultAdEventType event_type,
+                                  TriggerAdEventCallback callback);
 
  private:
   // ConversionsObserver:

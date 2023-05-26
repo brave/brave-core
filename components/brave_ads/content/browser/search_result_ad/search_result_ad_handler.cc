@@ -8,6 +8,7 @@
 #include <iterator>
 #include <utility>
 
+#include "base/functional/callback_helpers.h"
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -104,15 +105,13 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), mojom::SearchResultAdEventType::kClicked);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kClicked,
+      /*intentional*/ base::DoNothing());
 }
 
 bool SearchResultAdHandler::IsEnabled() {
-  if (!ads_service_) {
-    return false;
-  }
-
-  return ads_service_->IsEnabled() || kShouldAlwaysRunService.Get();
+  return ads_service_ &&
+         (ads_service_->IsEnabled() || kShouldAlwaysRunService.Get());
 }
 
 void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
@@ -155,10 +154,8 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdViewedEvent(
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), mojom::SearchResultAdEventType::kServed);
-
-  ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), mojom::SearchResultAdEventType::kViewed);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kViewed,
+      /*intentional*/ base::DoNothing());
 }
 
 }  // namespace brave_ads

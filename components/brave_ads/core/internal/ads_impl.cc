@@ -107,10 +107,14 @@ absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
 
 void AdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType event_type) {
-  if (is_initialized_) {
-    ad_handler_.TriggerNotificationAdEvent(placement_id, event_type);
+    const mojom::NotificationAdEventType event_type,
+    TriggerAdEventCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  ad_handler_.TriggerNotificationAdEvent(placement_id, event_type,
+                                         std::move(callback));
 }
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
@@ -124,21 +128,27 @@ void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
 void AdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType event_type) {
-  if (is_initialized_) {
-    ad_handler_.TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                         event_type);
+    const mojom::NewTabPageAdEventType event_type,
+    TriggerAdEventCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  ad_handler_.TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                       event_type, std::move(callback));
 }
 
 void AdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type) {
-  if (is_initialized_) {
-    ad_handler_.TriggerPromotedContentAdEvent(placement_id,
-                                              creative_instance_id, event_type);
+    const mojom::PromotedContentAdEventType event_type,
+    TriggerAdEventCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  ad_handler_.TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
+                                            event_type, std::move(callback));
 }
 
 void AdsImpl::MaybeServeInlineContentAd(
@@ -154,19 +164,26 @@ void AdsImpl::MaybeServeInlineContentAd(
 void AdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType event_type) {
-  if (is_initialized_) {
-    ad_handler_.TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                            event_type);
+    const mojom::InlineContentAdEventType event_type,
+    TriggerAdEventCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  ad_handler_.TriggerInlineContentAdEvent(placement_id, creative_instance_id,
+                                          event_type, std::move(callback));
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
-    const mojom::SearchResultAdEventType event_type) {
-  if (is_initialized_) {
-    ad_handler_.TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
+    const mojom::SearchResultAdEventType event_type,
+    TriggerAdEventCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  ad_handler_.TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
+                                         std::move(callback));
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(

@@ -582,25 +582,33 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)reportNotificationAdEvent:(NSString*)placementId
-                        eventType:(BraveAdsNotificationAdEventType)eventType {
+                        eventType:(BraveAdsNotificationAdEventType)eventType
+                       completion:(void (^)(BOOL success))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->TriggerNotificationAdEvent(
       base::SysNSStringToUTF8(placementId),
-      static_cast<brave_ads::mojom::NotificationAdEventType>(eventType));
+      static_cast<brave_ads::mojom::NotificationAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
 }
 
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BraveAdsNewTabPageAdEventType)eventType {
+                      eventType:(BraveAdsNewTabPageAdEventType)eventType
+                     completion:(void (^)(BOOL success))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
       base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType));
+      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
 }
 
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensionsArg
@@ -628,27 +636,35 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)reportInlineContentAdEvent:(NSString*)placementId
                 creativeInstanceId:(NSString*)creativeInstanceId
-                         eventType:(BraveAdsInlineContentAdEventType)eventType {
+                         eventType:(BraveAdsInlineContentAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->TriggerInlineContentAdEvent(
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType));
+      static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
 }
 
 - (void)reportPromotedContentAdEvent:(NSString*)placementId
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:
-                               (BraveAdsPromotedContentAdEventType)eventType {
+                               (BraveAdsPromotedContentAdEventType)eventType
+                          completion:(void (^)(BOOL success))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->TriggerPromotedContentAdEvent(
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType));
+      static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
 }
 
 - (void)purgeOrphanedAdEvents:(BraveAdsAdType)adType

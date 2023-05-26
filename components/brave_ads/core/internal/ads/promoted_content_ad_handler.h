@@ -9,7 +9,9 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_delegate.h"
 
@@ -35,9 +37,16 @@ class PromotedContentAdHandler final
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    mojom::PromotedContentAdEventType event_type);
+                    mojom::PromotedContentAdEventType event_type,
+                    TriggerAdEventCallback callback);
 
  private:
+  void TriggerServedEventCallback(const std::string& creative_instance_id,
+                                  TriggerAdEventCallback callback,
+                                  bool success,
+                                  const std::string& placement_id,
+                                  mojom::PromotedContentAdEventType event_type);
+
   // PromotedContentAdEventHandlerDelegate:
   void OnDidFirePromotedContentAdViewedEvent(
       const PromotedContentAdInfo& ad) override;
@@ -48,6 +57,8 @@ class PromotedContentAdHandler final
   const raw_ref<Transfer> transfer_;
 
   PromotedContentAdEventHandler event_handler_;
+
+  base::WeakPtrFactory<PromotedContentAdHandler> weak_factory_{this};
 };
 
 }  // namespace brave_ads

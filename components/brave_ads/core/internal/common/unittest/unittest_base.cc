@@ -209,7 +209,7 @@ void UnitTestBase::Initialize() {
 }
 
 void UnitTestBase::MockAdsClientAddObserver() {
-  ON_CALL(ads_client_mock_, AddObserver(_))
+  ON_CALL(ads_client_mock_, AddObserver)
       .WillByDefault(Invoke(
           [=](AdsClientNotifierObserver* observer) { AddObserver(observer); }));
 }
@@ -268,7 +268,7 @@ void UnitTestBase::MockDefaultAdsClient() {
 }
 
 void UnitTestBase::MockSetBooleanPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetBooleanPref(_, _))
+  ON_CALL(mock, SetBooleanPref)
       .WillByDefault(Invoke([=](const std::string& path, const bool value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(static_cast<int>(value));
@@ -277,7 +277,7 @@ void UnitTestBase::MockSetBooleanPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetIntegerPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetIntegerPref(_, _))
+  ON_CALL(mock, SetIntegerPref)
       .WillByDefault(Invoke([=](const std::string& path, const int value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(value);
@@ -286,7 +286,7 @@ void UnitTestBase::MockSetIntegerPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetDoublePref(AdsClientMock& mock) {
-  ON_CALL(mock, SetDoublePref(_, _))
+  ON_CALL(mock, SetDoublePref)
       .WillByDefault(Invoke([=](const std::string& path, const double value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(value);
@@ -295,7 +295,7 @@ void UnitTestBase::MockSetDoublePref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetStringPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetStringPref(_, _))
+  ON_CALL(mock, SetStringPref)
       .WillByDefault(
           Invoke([=](const std::string& path, const std::string& value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);
@@ -305,7 +305,7 @@ void UnitTestBase::MockSetStringPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetInt64Pref(AdsClientMock& mock) {
-  ON_CALL(mock, SetInt64Pref(_, _))
+  ON_CALL(mock, SetInt64Pref)
       .WillByDefault(Invoke([=](const std::string& path, const int64_t value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(value);
@@ -314,7 +314,7 @@ void UnitTestBase::MockSetInt64Pref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetUint64Pref(AdsClientMock& mock) {
-  ON_CALL(mock, SetUint64Pref(_, _))
+  ON_CALL(mock, SetUint64Pref)
       .WillByDefault(Invoke([=](const std::string& path, const uint64_t value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(value);
@@ -323,7 +323,7 @@ void UnitTestBase::MockSetUint64Pref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetDictPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetDictPref(_, _))
+  ON_CALL(mock, SetDictPref)
       .WillByDefault(
           Invoke([=](const std::string& path, base::Value::Dict value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);
@@ -333,7 +333,7 @@ void UnitTestBase::MockSetDictPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetListPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetListPref(_, _))
+  ON_CALL(mock, SetListPref)
       .WillByDefault(
           Invoke([=](const std::string& path, base::Value::List value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);
@@ -343,7 +343,7 @@ void UnitTestBase::MockSetListPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
-  ON_CALL(mock, SetTimePref(_, _))
+  ON_CALL(mock, SetTimePref)
       .WillByDefault(
           Invoke([=](const std::string& path, const base::Time value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);

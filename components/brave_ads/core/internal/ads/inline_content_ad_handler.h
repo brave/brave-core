@@ -9,13 +9,14 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
-
+#include "third_party/abseil-cpp/absl/types/optional.h"
 namespace brave_ads {
 
 class Account;
@@ -45,9 +46,14 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    mojom::InlineContentAdEventType event_type);
+                    mojom::InlineContentAdEventType event_type,
+                    TriggerAdEventCallback callback);
 
  private:
+  void MaybeServeCallback(MaybeServeInlineContentAdCallback callback,
+                          const std::string& dimensions,
+                          const absl::optional<InlineContentAdInfo>& ad);
+
   // InlineContentAdServingDelegate:
   void OnOpportunityAroseToServeInlineContentAd(
       const SegmentList& segments) override;
@@ -67,6 +73,8 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
   const raw_ref<Transfer> transfer_;
 
   InlineContentAdServing serving_;
+
+  base::WeakPtrFactory<InlineContentAdHandler> weak_factory_{this};
 };
 
 }  // namespace brave_ads

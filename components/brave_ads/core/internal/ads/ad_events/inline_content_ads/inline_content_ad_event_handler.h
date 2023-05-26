@@ -17,6 +17,11 @@
 
 namespace brave_ads {
 
+using FireInlineContentAdEventHandlerCallback =
+    base::OnceCallback<void(bool success,
+                            const std::string& placement_id,
+                            const mojom::InlineContentAdEventType event_type)>;
+
 struct CreativeInlineContentAdInfo;
 struct InlineContentAdInfo;
 
@@ -42,25 +47,36 @@ class InlineContentAdEventHandler final
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 mojom::InlineContentAdEventType event_type);
+                 mojom::InlineContentAdEventType event_type,
+                 FireInlineContentAdEventHandlerCallback callback);
 
  private:
   void GetForCreativeInstanceIdCallback(
       const std::string& placement_id,
       mojom::InlineContentAdEventType event_type,
+      FireInlineContentAdEventHandlerCallback callback,
       bool success,
       const std::string& creative_instance_id,
       const CreativeInlineContentAdInfo& creative_ad);
   void GetForTypeCallback(const InlineContentAdInfo& ad,
                           mojom::InlineContentAdEventType event_type,
+                          FireInlineContentAdEventHandlerCallback callback,
                           bool success,
                           const AdEventList& ad_events);
+  void FireEventCallback(const InlineContentAdInfo& ad,
+                         mojom::InlineContentAdEventType event_type,
+                         FireInlineContentAdEventHandlerCallback callback,
+                         bool success) const;
 
-  void SuccessfullyFiredEvent(const InlineContentAdInfo& ad,
-                              mojom::InlineContentAdEventType event_type) const;
-  void FailedToFireEvent(const std::string& placement_id,
-                         const std::string& creative_instance_id,
-                         mojom::InlineContentAdEventType event_type) const;
+  void SuccessfullyFiredEvent(
+      const InlineContentAdInfo& ad,
+      mojom::InlineContentAdEventType event_type,
+      FireInlineContentAdEventHandlerCallback callback) const;
+  void FailedToFireEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::InlineContentAdEventType event_type,
+      FireInlineContentAdEventHandlerCallback callback) const;
 
   raw_ptr<InlineContentAdEventHandlerDelegate> delegate_ = nullptr;
 

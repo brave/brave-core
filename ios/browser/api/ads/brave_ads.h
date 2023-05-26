@@ -134,7 +134,8 @@ OBJC_EXPORT
 
 /// Report that a notification ad event type was triggered for a given id
 - (void)reportNotificationAdEvent:(NSString*)placementId
-                        eventType:(BraveAdsNotificationAdEventType)eventType;
+                        eventType:(BraveAdsNotificationAdEventType)eventType
+                       completion:(void (^)(BOOL success))completion;
 
 /// Get inline content ad for the given dimensions
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
@@ -146,18 +147,21 @@ OBJC_EXPORT
 /// Report that an inline content ad event type was triggered for a given id
 - (void)reportInlineContentAdEvent:(NSString*)placementId
                 creativeInstanceId:(NSString*)creativeInstanceId
-                         eventType:(BraveAdsInlineContentAdEventType)eventType;
+                         eventType:(BraveAdsInlineContentAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion;
 
 /// Report that a new tab page ad event type was triggered for a given id
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BraveAdsNewTabPageAdEventType)eventType;
+                      eventType:(BraveAdsNewTabPageAdEventType)eventType
+                     completion:(void (^)(BOOL success))completion;
 
 /// Report that a promoted content ad event type was triggered for a given id
 - (void)reportPromotedContentAdEvent:(NSString*)placementId
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:
-                               (BraveAdsPromotedContentAdEventType)eventType;
+                               (BraveAdsPromotedContentAdEventType)eventType
+                          completion:(void (^)(BOOL success))completion;
 
 /// Purge orphaned ad events for a given ad type
 - (void)purgeOrphanedAdEvents:(BraveAdsAdType)adType

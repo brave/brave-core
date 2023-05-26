@@ -59,29 +59,33 @@ class MockAdsService : public AdsService {
   MOCK_METHOD2(MaybeServeInlineContentAd,
                void(const std::string&,
                     MaybeServeInlineContentAdAsDictCallback));
-  MOCK_METHOD3(TriggerInlineContentAdEvent,
+  MOCK_METHOD4(TriggerInlineContentAdEvent,
                void(const std::string&,
                     const std::string&,
-                    mojom::InlineContentAdEventType));
+                    mojom::InlineContentAdEventType,
+                    TriggerAdEventCallback));
 
   MOCK_METHOD0(GetPrefetchedNewTabPageAdForDisplay,
                absl::optional<NewTabPageAdInfo>());
   MOCK_METHOD0(PrefetchNewTabPageAd, void());
-  MOCK_METHOD3(TriggerNewTabPageAdEvent,
+  MOCK_METHOD4(TriggerNewTabPageAdEvent,
                void(const std::string&,
                     const std::string&,
-                    mojom::NewTabPageAdEventType));
+                    mojom::NewTabPageAdEventType,
+                    TriggerAdEventCallback));
   MOCK_METHOD2(OnFailedToPrefetchNewTabPageAd,
                void(const std::string&, const std::string&));
 
-  MOCK_METHOD3(TriggerPromotedContentAdEvent,
+  MOCK_METHOD4(TriggerPromotedContentAdEvent,
                void(const std::string&,
                     const std::string&,
-                    mojom::PromotedContentAdEventType));
+                    mojom::PromotedContentAdEventType,
+                    TriggerAdEventCallback));
 
-  MOCK_METHOD2(TriggerSearchResultAdEvent,
+  MOCK_METHOD3(TriggerSearchResultAdEvent,
                void(mojom::SearchResultAdInfoPtr,
-                    const mojom::SearchResultAdEventType));
+                    const mojom::SearchResultAdEventType,
+                    TriggerAdEventCallback));
 
   MOCK_METHOD2(PurgeOrphanedAdEventsForType,
                void(mojom::AdType, PurgeOrphanedAdEventsForTypeCallback));

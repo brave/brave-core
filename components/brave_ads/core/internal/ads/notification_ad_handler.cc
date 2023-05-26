@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -32,6 +34,17 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 namespace brave_ads {
+
+namespace {
+
+void FireEventCallback(TriggerAdEventCallback callback,
+                       const bool success,
+                       const std::string& /*placement_id*/,
+                       const mojom::NotificationAdEventType /*event_type*/) {
+  std::move(callback).Run(success);
+}
+
+}  // namespace
 
 NotificationAdHandler::NotificationAdHandler(
     Account& account,
@@ -68,13 +81,42 @@ void NotificationAdHandler::MaybeServeAtRegularIntervals() {
 
 void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType event_type) {
+    const mojom::NotificationAdEventType event_type,
+    TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK_NE(mojom::NotificationAdEventType::kServed, event_type)
+      << " should not be called with kServed as this event is handled when "
+         "calling TriggerEvent with kViewed";
+  CHECK(UserHasOptedInToBravePrivateAds())
+      << " should only be called if opted-in to Brave Private Ads";
 
-  event_handler_.FireEvent(placement_id, event_type);
+  if (event_type == mojom::NotificationAdEventType::kViewed) {
+    return event_handler_.FireEvent(
+        placement_id, mojom::NotificationAdEventType::kServed,
+        base::BindOnce(&NotificationAdHandler::FireServedEventCallback,
+                       weak_factory_.GetWeakPtr(), std::move(callback)));
+  }
+
+  event_handler_.FireEvent(
+      placement_id, event_type,
+      base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void NotificationAdHandler::FireServedEventCallback(
+    TriggerAdEventCallback callback,
+    const bool success,
+    const std::string& placement_id,
+    const mojom::NotificationAdEventType /*event_type*/) {
+  if (!success) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  event_handler_.FireEvent(
+      placement_id, mojom::NotificationAdEventType::kViewed,
+      base::BindOnce(&FireEventCallback, std::move(callback)));
+}
 
 void NotificationAdHandler::OnNotifyDidInitializeAds() {
   MaybeServeAtRegularIntervals();
@@ -122,9 +164,18 @@ void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(
 
 void NotificationAdHandler::OnDidServeNotificationAd(
     const NotificationAdInfo& ad) {
-  ShowNotificationAd(ad);
+  BLOG(1, "Served notification ad:\n"
+              << "  placementId: " << ad.placement_id << "\n"
+              << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
+              << "  creativeSetId: " << ad.creative_set_id << "\n"
+              << "  campaignId: " << ad.campaign_id << "\n"
+              << "  advertiserId: " << ad.advertiser_id << "\n"
+              << "  segment: " << ad.segment << "\n"
+              << "  title: " << ad.title << "\n"
+              << "  body: " << ad.body << "\n"
+              << "  targetUrl: " << ad.target_url);
 
-  TriggerEvent(ad.placement_id, mojom::NotificationAdEventType::kServed);
+  ShowNotificationAd(ad);
 
   serving_.MaybeServeAdAtNextRegularInterval();
 }

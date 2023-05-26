@@ -52,7 +52,7 @@ TEST_F(BraveAdsIssuersTest, FetchIssuers) {
 
   EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(expected_issuers));
   EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(0);
-  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers).Times(0);
   EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers()).Times(0);
 
   // Act
@@ -67,9 +67,9 @@ TEST_F(BraveAdsIssuersTest, FetchIssuersInvalidJsonResponseBody) {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body*/ "{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers).Times(0);
   EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
-  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(2);
+  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers).Times(2);
   EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers());
 
   // Act
@@ -89,9 +89,9 @@ TEST_F(BraveAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
          /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers).Times(0);
   EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
-  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(2);
+  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers).Times(2);
   EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers());
 
   // Act

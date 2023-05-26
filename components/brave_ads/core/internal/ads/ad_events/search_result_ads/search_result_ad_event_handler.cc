@@ -91,7 +91,7 @@ SearchResultAdEventHandler::~SearchResultAdEventHandler() {
 void SearchResultAdEventHandler::FireEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback) const {
+    FireSearchResultAdEventHandlerCallback callback) const {
   CHECK(ad_mojom);
   CHECK(mojom::IsKnownEnumValue(event_type));
 
@@ -131,22 +131,34 @@ void SearchResultAdEventHandler::FireEvent(
 void SearchResultAdEventHandler::FireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback) const {
+    FireSearchResultAdEventHandlerCallback callback) const {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   const auto ad_event = SearchResultAdEventFactory::Build(event_type);
-  ad_event->FireEvent(ad);
+  ad_event->FireEvent(
+      ad, base::BindOnce(&SearchResultAdEventHandler::FireEventCallback,
+                         weak_factory_.GetWeakPtr(), ad, event_type,
+                         std::move(callback)));
+}
+
+void SearchResultAdEventHandler::FireEventCallback(
+    const SearchResultAdInfo& ad,
+    const mojom::SearchResultAdEventType event_type,
+    FireSearchResultAdEventHandlerCallback callback,
+    const bool success) const {
+  if (!success) {
+    return FailedToFireEvent(ad, event_type, std::move(callback));
+  }
 
   SuccessfullyFiredEvent(ad, event_type, std::move(callback));
 }
 
 void SearchResultAdEventHandler::FireViewedEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
-    FireAdEventHandlerCallback callback) const {
+    FireSearchResultAdEventHandlerCallback callback) const {
   CHECK(ad_mojom);
 
   const DepositInfo deposit = BuildDeposit(ad_mojom);
-
   database::table::Deposits deposits_database_table;
   deposits_database_table.Save(
       deposit, base::BindOnce(&SearchResultAdEventHandler::SaveDepositsCallback,
@@ -156,7 +168,7 @@ void SearchResultAdEventHandler::FireViewedEvent(
 
 void SearchResultAdEventHandler::SaveDepositsCallback(
     mojom::SearchResultAdInfoPtr ad_mojom,
-    FireAdEventHandlerCallback callback,
+    FireSearchResultAdEventHandlerCallback callback,
     const bool success) const {
   CHECK(ad_mojom);
 
@@ -185,7 +197,7 @@ void SearchResultAdEventHandler::SaveDepositsCallback(
 
 void SearchResultAdEventHandler::SaveConversionsCallback(
     const SearchResultAdInfo& ad,
-    FireAdEventHandlerCallback callback,
+    FireSearchResultAdEventHandlerCallback callback,
     const bool success) const {
   if (!success) {
     BLOG(0, "Failed to save conversions state");
@@ -206,7 +218,7 @@ void SearchResultAdEventHandler::SaveConversionsCallback(
 
 void SearchResultAdEventHandler::FireClickedEvent(
     const SearchResultAdInfo& ad,
-    FireAdEventHandlerCallback callback) const {
+    FireSearchResultAdEventHandlerCallback callback) const {
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
@@ -219,7 +231,7 @@ void SearchResultAdEventHandler::FireClickedEvent(
 void SearchResultAdEventHandler::GetForTypeCallback(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback,
+    FireSearchResultAdEventHandlerCallback callback,
     const bool success,
     const AdEventList& ad_events) const {
   CHECK(mojom::IsKnownEnumValue(event_type));
@@ -249,7 +261,7 @@ void SearchResultAdEventHandler::GetForTypeCallback(
 void SearchResultAdEventHandler::SuccessfullyFiredEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback) const {
+    FireSearchResultAdEventHandlerCallback callback) const {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (delegate_) {
@@ -277,7 +289,7 @@ void SearchResultAdEventHandler::SuccessfullyFiredEvent(
 void SearchResultAdEventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback) const {
+    FireSearchResultAdEventHandlerCallback callback) const {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   BLOG(1, "Failed to fire search result ad "

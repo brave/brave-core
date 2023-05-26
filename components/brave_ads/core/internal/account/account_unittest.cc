@@ -43,7 +43,6 @@
 
 namespace brave_ads {
 
-using ::testing::_;
 using ::testing::NiceMock;
 
 class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
@@ -236,7 +235,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfBravePrivateAdsAreDisabled) {
   // Arrange
   DisableBravePrivateAds();
 
-  EXPECT_CALL(ads_client_mock_, UrlRequest(_, _)).Times(0);
+  EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
 
   NotifyDidInitializeAds();
 

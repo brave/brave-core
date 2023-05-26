@@ -14,6 +14,7 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -121,15 +122,10 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     const std::string& wallpaper_id,
     const std::string& creative_instance_id) {
   if (ads_service_) {
-    if (!ads_service_->IsEnabled()) {
-      ads_service_->TriggerNewTabPageAdEvent(
-          wallpaper_id, creative_instance_id,
-          brave_ads::mojom::NewTabPageAdEventType::kServed);
-    }
-
     ads_service_->TriggerNewTabPageAdEvent(
         wallpaper_id, creative_instance_id,
-        brave_ads::mojom::NewTabPageAdEventType::kViewed);
+        brave_ads::mojom::NewTabPageAdEventType::kViewed,
+        /*intentional*/ base::DoNothing());
 
     if (ntp_p3a_helper_ && !ads_service_->IsEnabled()) {
       // Should only report to P3A if ads are disabled, as required by spec.
@@ -218,17 +214,17 @@ absl::optional<base::Value::Dict>
 ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
   DCHECK(ads_service_);
 
-  absl::optional<brave_ads::NewTabPageAdInfo> ad_info =
+  const absl::optional<brave_ads::NewTabPageAdInfo> ad =
       ads_service_->GetPrefetchedNewTabPageAdForDisplay();
-  if (!ad_info) {
+  if (!ad) {
     return absl::nullopt;
   }
 
   absl::optional<base::Value::Dict> branded_wallpaper_data =
-      GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad_info);
+      GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad);
   if (!branded_wallpaper_data) {
-    ads_service_->OnFailedToPrefetchNewTabPageAd(ad_info->placement_id,
-                                                 ad_info->creative_instance_id);
+    ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
+                                                 ad->creative_instance_id);
   }
 
   return branded_wallpaper_data;
@@ -343,12 +339,14 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& creative_instance_id,
     const std::string& destination_url,
     const std::string& wallpaper_id) {
-  if (!ads_service_)
+  if (!ads_service_) {
     return;
+  }
 
   ads_service_->TriggerNewTabPageAdEvent(
       wallpaper_id, creative_instance_id,
-      brave_ads::mojom::NewTabPageAdEventType::kClicked);
+      brave_ads::mojom::NewTabPageAdEventType::kClicked,
+      /*intentional*/ base::DoNothing());
 
   if (ntp_p3a_helper_ && !ads_service_->IsEnabled()) {
     // Should only report to P3A if ads are disabled, as required by spec.
