@@ -351,18 +351,26 @@ bool AIChatTabHelper::IsRequestInProgress() {
   return is_request_in_progress_;
 }
 
-void AIChatTabHelper::OnAPIStreamDataReceived(const std::string& text) {
-  UpdateOrCreateLastAssistantEntry(text);
+void AIChatTabHelper::OnAPIStreamDataReceived(
+    data_decoder::DataDecoder::ValueOrError result) {
+  if (!result.has_value()) {
+    return;
+  }
 
-  // Trigger an observer update to refresh the UI.
-  for (auto& obs : observers_) {
-    obs.OnAPIRequestInProgress(IsRequestInProgress());
+  if (const std::string* completion = result->FindStringKey("completion")) {
+    UpdateOrCreateLastAssistantEntry(*completion);
+
+    // Trigger an observer update to refresh the UI.
+    for (auto& obs : observers_) {
+      obs.OnAPIRequestInProgress(IsRequestInProgress());
+    }
   }
 }
 
-void AIChatTabHelper::OnAPIStreamDataComplete(bool is_summarize_prompt,
-                                              bool success,
-                                              int response_code) {
+void AIChatTabHelper::OnAPIStreamDataComplete(
+    bool is_summarize_prompt,
+    api_request_helper::APIRequestResult result,
+    bool success) {
   if (is_summarize_prompt && success && !chat_history_.empty()) {
     const ConversationTurn& last_turn = chat_history_.back();
     if (last_turn.character_type == CharacterType::ASSISTANT) {
@@ -370,7 +378,7 @@ void AIChatTabHelper::OnAPIStreamDataComplete(bool is_summarize_prompt,
     }
   }
 
-  if (!success || response_code != 200) {
+  if (!success || !result.Is2XXResponseCode()) {
     // TODO(petemill): show error state separate from assistant message
     AddToConversationHistory(ConversationTurn{
         CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,

@@ -51,7 +51,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
         net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
         shared_url_loader_factory_);
     loader_wrapper_handler_ =
-        std::make_unique<APIRequestHelper::LoaderWrapperHandler>(
+        std::make_unique<APIRequestHelper::URLLoaderHandler>(
             api_request_helper_.get());
   }
   ~ApiRequestHelperUnitTest() override = default;
@@ -115,12 +115,16 @@ class ApiRequestHelperUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
   }
 
-  void SendMessage(APIRequestHelper::DataReceivedCallback callback,
-                   base::StringPiece string_piece) {
-    loader_wrapper_handler_->set_data_received_callback_for_testing(
-        std::move(callback));
-    loader_wrapper_handler_->OnDataReceived(string_piece,
-                                            base::BindOnce([]() {}));
+  void SendMessageSSEJSON(base::StringPiece string_piece,
+                          APIRequestHelper::DataReceivedCallback callback) {
+    loader_wrapper_handler_->send_sse_data_for_testing(string_piece, true,
+                                                       std::move(callback));
+  }
+
+  void SendMessageSSE(base::StringPiece string_piece,
+                      APIRequestHelper::DataReceivedCallback callback) {
+    loader_wrapper_handler_->send_sse_data_for_testing(string_piece, false,
+                                                       std::move(callback));
   }
 
  protected:
@@ -131,8 +135,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
-  std::unique_ptr<APIRequestHelper::LoaderWrapperHandler>
-      loader_wrapper_handler_;
+  std::unique_ptr<APIRequestHelper::URLLoaderHandler> loader_wrapper_handler_;
 };
 
 TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
@@ -211,46 +214,68 @@ TEST_F(ApiRequestHelperUnitTest, EnableCache) {
               base::NullCallback(), true);
 }
 
-TEST_F(ApiRequestHelperUnitTest, JsonParsing) {
+TEST_F(ApiRequestHelperUnitTest, URLLoaderHandlerParsing) {
   base::RunLoop run_loop;
-  SendMessage(base::BindRepeating(
-                  [](base::RunLoop* run_loop, const std::string& response) {
-                    EXPECT_EQ(" Hello there!", response);
-                    run_loop->Quit();
-                  },
-                  &run_loop),
-              "data: {\"completion\": \" Hello there!\", \"stop\": null}");
+  SendMessageSSE("data: [DONE]",
+                 base::BindRepeating(
+                     [](base::RunLoop* run_loop,
+                        data_decoder::DataDecoder::ValueOrError result) {
+                       EXPECT_EQ("data: [DONE]", result->GetString());
+                       run_loop->Quit();
+                     },
+                     &run_loop));
+  run_loop.RunUntilIdle();
+}
+
+TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
+  base::RunLoop run_loop;
+  SendMessageSSEJSON(
+      "data: {\"completion\": \" Hello there!\", \"stop\": null}",
+      base::BindRepeating(
+          [](base::RunLoop* run_loop,
+             data_decoder::DataDecoder::ValueOrError result) {
+            const std::string* completion = result->FindStringKey("completion");
+            EXPECT_EQ(" Hello there!", *completion);
+            run_loop->Quit();
+          },
+          &run_loop));
   run_loop.Run();
 
   base::RunLoop run_loop2;
-  SendMessage(
+  SendMessageSSEJSON(
+      "data: {\"completion\": \" Hello there! How are you?\", \"stop\": null}",
       base::BindRepeating(
-          [](base::RunLoop* run_loop, const std::string& response) {
-            EXPECT_EQ(" Hello there! How are you?", response);
+          [](base::RunLoop* run_loop,
+             data_decoder::DataDecoder::ValueOrError result) {
+            const std::string* completion = result->FindStringKey("completion");
+            EXPECT_EQ(" Hello there! How are you?", *completion);
             run_loop->Quit();
           },
-          &run_loop2),
-      "data: {\"completion\": \" Hello there! How are you?\", \"stop\": null}");
+          &run_loop2));
   run_loop2.Run();
 
   // This test verifies that the callback is not called when the response is
-  // "[DONE]". We use a run loop to wait for the callback to be called, and we
-  // expect it to never be called.
+  // "[DONE]". We use a run loop to wait for the callback to be called, and
+  // we expect it to never be called.
   base::RunLoop run_loop3;
-  SendMessage(
-      base::BindRepeating([](base::RunLoop* run_loop,
-                             const std::string& response) { run_loop->Quit(); },
-                          &run_loop3),
-      "data: [DONE]");
+  SendMessageSSEJSON("data: [DONE]",
+                     base::BindRepeating(
+                         [](base::RunLoop* run_loop,
+                            data_decoder::DataDecoder::ValueOrError result) {
+                           run_loop->Quit();
+                         },
+                         &run_loop3));
   run_loop3.RunUntilIdle();
 
   // Testing with no JSON and an empty string
   base::RunLoop run_loop4;
-  SendMessage(
-      base::BindRepeating([](base::RunLoop* run_loop,
-                             const std::string& response) { run_loop->Quit(); },
-                          &run_loop4),
-      "");
+  SendMessageSSEJSON("",
+                     base::BindRepeating(
+                         [](base::RunLoop* run_loop,
+                            data_decoder::DataDecoder::ValueOrError result) {
+                           run_loop->Quit();
+                         },
+                         &run_loop4));
   run_loop4.RunUntilIdle();
 }
 

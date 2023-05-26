@@ -86,17 +86,33 @@ struct APIRequestOptions {
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
 class APIRequestHelper {
  public:
-  using DataReceivedCallback =
-      base::RepeatingCallback<void(const std::string&)>;
+  using DataReceivedCallback = base::RepeatingCallback<void(
+      data_decoder::DataDecoder::ValueOrError result)>;
   using DataCompletedCallback =
-      base::OnceCallback<void(bool success, int response_code)>;
+      base::OnceCallback<void(APIRequestResult result, bool success)>;
+  using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
+  using ResponseConversionCallback =
+      base::OnceCallback<absl::optional<std::string>(
+          const std::string& raw_response)>;
 
-  class LoaderWrapperHandler : public network::SimpleURLLoaderStreamConsumer {
+  class URLLoaderHandler : public network::SimpleURLLoaderStreamConsumer {
    public:
-    explicit LoaderWrapperHandler(APIRequestHelper* api_request_helper);
-    ~LoaderWrapperHandler() override;
-    LoaderWrapperHandler(const LoaderWrapperHandler&) = delete;
-    LoaderWrapperHandler& operator=(const LoaderWrapperHandler&) = delete;
+    explicit URLLoaderHandler(APIRequestHelper* api_request_helper);
+    ~URLLoaderHandler() override;
+    URLLoaderHandler(const URLLoaderHandler&) = delete;
+    URLLoaderHandler& operator=(const URLLoaderHandler&) = delete;
+
+    void RegisterURLLoader(std::unique_ptr<network::SimpleURLLoader> loader);
+    base::WeakPtr<URLLoaderHandler> GetWeakPtr();
+
+    void send_sse_data_for_testing(base::StringPiece string_piece,
+                                   bool is_sse,
+                                   DataReceivedCallback callback);
+
+   private:
+    friend class APIRequestHelper;
+
+    void ParseSSE(base::StringPiece string_piece);
 
     // network::SimpleURLLoaderStreamConsumer implementation:
     void OnDataReceived(base::StringPiece string_piece,
@@ -104,28 +120,23 @@ class APIRequestHelper {
     void OnComplete(bool success) override;
     void OnRetry(base::OnceClosure start_retry) override;
 
-    void OnParseJsonFromStream(data_decoder::DataDecoder::ValueOrError result);
-    void RegisterURLLoader(std::unique_ptr<network::SimpleURLLoader> loader);
-    void set_data_received_callback_for_testing(DataReceivedCallback callback);
+    // This is used for one shot responses
+    void OnResponse(ResultCallback callback,
+                    ResponseConversionCallback conversion_callback,
+                    const std::unique_ptr<std::string> response_body);
 
-   private:
-    friend class APIRequestHelper;
     std::unique_ptr<network::SimpleURLLoader> url_loader_;
     raw_ptr<APIRequestHelper> api_request_helper_;
 
     // Streaming callbacks
     DataReceivedCallback data_received_callback_;
     DataCompletedCallback data_completed_callback_;
-
-    base::WeakPtrFactory<LoaderWrapperHandler> weak_ptr_factory_{this};
+    bool is_sse_ = false;
+    base::WeakPtrFactory<URLLoaderHandler> weak_ptr_factory_{this};
   };
 
-  using Ticket = std::list<std::unique_ptr<LoaderWrapperHandler>>::iterator;
-
-  using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
-  using ResponseConversionCallback =
-      base::OnceCallback<absl::optional<std::string>(
-          const std::string& raw_response)>;
+  using URLLoaderHandlerList = std::list<std::unique_ptr<URLLoaderHandler>>;
+  using Ticket = std::list<std::unique_ptr<URLLoaderHandler>>::iterator;
 
   APIRequestHelper(
       net::NetworkTrafficAnnotationTag annotation_tag,
@@ -170,13 +181,13 @@ class APIRequestHelper {
                   const APIRequestOptions& request_options = {});
 
   void Cancel(const Ticket& ticket);
-  void Cancel(LoaderWrapperHandler* request_handler);
+  void Cancel(URLLoaderHandler* request_handler);
 
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;
   APIRequestHelper& operator=(const APIRequestHelper&) = delete;
 
-  std::unique_ptr<LoaderWrapperHandler> CreateLoaderWrapperHandler(
+  std::unique_ptr<URLLoaderHandler> CreateURLLoaderHandler(
       const std::string& method,
       const GURL& url,
       const std::string& payload,
@@ -186,13 +197,10 @@ class APIRequestHelper {
       bool allow_http_error_result,
       const base::flat_map<std::string, std::string>& headers);
 
-  using LoaderWrapperHandlerList =
-      std::list<std::unique_ptr<LoaderWrapperHandler>>;
-  void OnResponse(Ticket iter,
-                  ResultCallback callback,
-                  ResponseConversionCallback conversion_callback,
-                  const std::unique_ptr<std::string> response_body);
   void OnDownload(Ticket iter, DownloadCallback callback, base::FilePath path);
+
+  APIRequestResult ToAPIRequestResult(
+      std::unique_ptr<network::SimpleURLLoader> loader);
 
   // To ensure ordered processing of stream chunks, we create our own instances
   // of DataDecoder and remote for JsonParser. This avoids the issue of
@@ -203,7 +211,7 @@ class APIRequestHelper {
   mojo::Remote<data_decoder::mojom::JsonParser> json_parser_;
 
   net::NetworkTrafficAnnotationTag annotation_tag_;
-  LoaderWrapperHandlerList url_loaders_;
+  URLLoaderHandlerList url_loaders_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WeakPtrFactory<APIRequestHelper> weak_ptr_factory_{this};
 };

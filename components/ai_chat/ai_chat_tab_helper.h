@@ -63,10 +63,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void DistillViaAlgorithm(const ui::AXTree& tree);
   void SetArticleSummaryString(const std::string& text);
   void CleanUp();
-  void OnAPIStreamDataReceived(const std::string& text);
+  void OnAPIStreamDataReceived(data_decoder::DataDecoder::ValueOrError result);
   void OnAPIStreamDataComplete(bool is_summarize_prompt,
-                               bool success,
-                               int response_code);
+                               api_request_helper::APIRequestResult result,
+                               bool success);
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
