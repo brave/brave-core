@@ -104,6 +104,9 @@ std::string getBlockHeight() {
   return GetJsonRpcString("getBlockHeight");
 }
 
+// Returns all SPL Token accounts by token owner.
+//
+// "base58" as encoding is slow and deprecated. Prefer using "base64" instead.
 std::string getTokenAccountsByOwner(const std::string& pubkey,
                                     const std::string& encoding) {
   CHECK(IsValidEncodingString(encoding));

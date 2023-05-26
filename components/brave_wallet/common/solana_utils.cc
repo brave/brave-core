@@ -159,7 +159,6 @@ bool IsValidCommitmentString(const std::string& commitment) {
 }
 
 bool IsValidEncodingString(const std::string& encoding) {
-  // base58 is slow and deprecated. Prefer using base64 instead.
   return encoding == "base58" || encoding == "base64" ||
          encoding == "jsonParsed";
 }
