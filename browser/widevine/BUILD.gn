@@ -100,19 +100,20 @@ if (is_win && !skip_signing) {
                                "deps",
                              ])
 
-      # It would be nice to just invoke the original signature_generator.py
-      # script here. But it uses Python 2 and expects the `cryptography`
-      # library to be installed. So we invoke this Python 3 helper here.
-      script = "signature_generator_python3.py"
-      inputs = [
-        "//brave/script/lib/widevine.py",
-        "//brave/script/lib/util.py",
-        "//brave/script/lib/config.py",
-        "//brave/script/lib/env_util.py",
-      ]
+      script = "//brave/script/run.py"
+      inputs =
+          [ "//third_party/widevine/scripts/signature_generator_python3.py" ]
       args = [
+        # We use vpython3 to have access to the `cryptography` library.
+        "vpython3",
+        rebase_path(
+            "//third_party/widevine/scripts/signature_generator_python3.py",
+            root_build_dir),
+        "--input_file",
         rebase_path(sources[0], root_build_dir),
+        "--output_file",
         rebase_path(outputs[0], root_build_dir),
+        "--flags",
         invoker.flags,
       ]
     }
