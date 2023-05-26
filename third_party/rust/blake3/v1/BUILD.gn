@@ -35,11 +35,7 @@ cargo_crate("lib") {
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
 
-  features = [
-    "pure",
-  ]
+  features = [ "pure" ]
 
-  rustenv = [
-    "CARGO_FEATURE_PURE=1"
-  ]
+  rustenv = [ "CARGO_FEATURE_PURE=1" ]
 }
