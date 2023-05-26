@@ -162,7 +162,6 @@
 -keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTopToolbar {
     *** mNewTabViewButton;
     *** mNewTabImageButton;
-    *** mToggleTabStackButton;
     *** mMenuButton;
     *** mShouldShowNewTabVariation;
     *** mIsIncognito;
