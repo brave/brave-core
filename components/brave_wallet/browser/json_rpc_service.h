@@ -503,6 +503,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& chain_id,
       GetSolanaTokenAccountsByOwnerCallback callback);
 
+  void GetSPLTokenBalances(const std::string& pubkey,
+                           const std::string& chain_id,
+                           GetSPLTokenBalancesCallback callback) override;
+
  private:
   void FireNetworkChanged(mojom::CoinType coin,
                           const std::string& chain_id,
@@ -667,6 +671,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       APIRequestResult api_request_result);
   void OnIsSolanaBlockhashValid(IsSolanaBlockhashValidCallback callback,
                                 APIRequestResult api_request_result);
+
+  void OnGetSPLTokenBalances(GetSPLTokenBalancesCallback callback,
+                             APIRequestResult api_request_result);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;

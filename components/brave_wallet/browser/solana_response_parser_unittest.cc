@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/strings/stringprintf.h"
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -49,7 +50,7 @@ TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
   EXPECT_FALSE(ParseGetBalance(ParseJson(json), &balance));
 }
 
-TEST(JsonRpcResponseParserUnitTest, ParseGetTokenAccountBalance) {
+TEST(SolanaResponseParserUnitTest, ParseGetTokenAccountBalance) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "{\"context\":{\"slot\":1069},\"value\":{\"amount\":\"9864\", "
@@ -77,6 +78,137 @@ TEST(JsonRpcResponseParserUnitTest, ParseGetTokenAccountBalance) {
       "\"decimals\":-1, \"uiAmount\":98.64, \"uiAmountString\":\"98.64\"}}}";
   EXPECT_FALSE(ParseGetTokenAccountBalance(ParseJson(json), &amount, &decimals,
                                            &ui_amount_string));
+}
+
+TEST(SolanaResponseParserUnitTest, ParseGetSPLTokenBalances) {
+  std::string json_fmt(R"(
+    {
+      "jsonrpc": "2.0",
+      "result": {
+        "context": {
+          "apiVersion": "1.14.17",
+          "slot": 195856971
+        },
+        "value": [
+          {
+            "account": {
+              "data": {
+                "parsed": {
+                  "info": {
+                    "isNative": false,
+                    "mint": "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj",
+                    "owner": "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X",
+                    "state": "initialized",
+                    "tokenAmount": {
+                      "amount": "898865",
+                      "decimals": %s,
+                      "uiAmount": 0.000898865,
+                      "uiAmountString": "0.000898865"
+                    }
+                  },
+                  "type": "account"
+                },
+                "program": "spl-token",
+                "space": 165
+              },
+              "executable": false,
+              "lamports": 2039280,
+              "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+              "rentEpoch": 0
+            },
+            "pubkey": "5rUXc3r8bfHVadpvCUPLgcTphcwPMLihCJrxmBeaJEpR"
+          },
+          {
+            "account": {
+              "data": {
+                "parsed": {
+                  "info": {
+                    "isNative": false,
+                    "mint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+                    "owner": "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X",
+                    "state": "initialized",
+                    "tokenAmount": {
+                      "amount": "0",
+                      "decimals": 6,
+                      "uiAmount": 0,
+                      "uiAmountString": "0"
+                    }
+                  },
+                  "type": "account"
+                },
+                "program": "spl-token",
+                "space": 165
+              },
+              "executable": false,
+              "lamports": 2039280,
+              "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+              "rentEpoch": 0
+            },
+            "pubkey": "JAzZ9e3rtXWqHfRfGuHCLQ4zQ1HgTpXpavWTkh3YJeQ2"
+          },
+          {
+            "account": {
+              "data": {
+                "parsed": {
+                  "info": {
+                    "isNative": false,
+                    "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                    "owner": "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X",
+                    "state": "initialized",
+                    "tokenAmount": {
+                      "amount": "20508",
+                      "decimals": 6,
+                      "uiAmount": 0.020508,
+                      "uiAmountString": "0.020508"
+                    }
+                  },
+                  "type": "account"
+                },
+                "program": "spl-token",
+                "space": 165
+              },
+              "executable": false,
+              "lamports": 2039280,
+              "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+              "rentEpoch": 0
+            },
+            "pubkey": "Hk4JYgZiuPLFc9EqqywZbtBUZyUZ8AkrSig5Nnsvvf9s"
+          }
+        ]
+      },
+      "id": 1
+    }
+  )");
+
+  // OK: well-formed json
+  auto json = base::StringPrintf(json_fmt.c_str(), "9");
+  auto result = ParseGetSPLTokenBalances(ParseJson(json));
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result->size(), 2UL);
+
+  EXPECT_EQ(result->at(0)->mint,
+            "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj");
+  EXPECT_EQ(result->at(0)->amount, "898865");
+  EXPECT_EQ(result->at(0)->ui_amount, "0.000898865");
+  EXPECT_EQ(result->at(0)->decimals, 9);
+
+  EXPECT_EQ(result->at(1)->mint,
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  EXPECT_EQ(result->at(1)->amount, "20508");
+  EXPECT_EQ(result->at(1)->ui_amount, "0.020508");
+  EXPECT_EQ(result->at(1)->decimals, 6);
+
+  // KO: decimals uint8_t overflow
+  json = base::StringPrintf(json_fmt.c_str(), "256");
+  EXPECT_FALSE(ParseGetSPLTokenBalances(ParseJson(json)));
+
+  // KO: decimals uint8_t underflow
+  json = base::StringPrintf(json_fmt.c_str(), "-1");
+  EXPECT_FALSE(ParseGetSPLTokenBalances(ParseJson(json)));
+
+  // KO: decimals type mismatch
+  json = base::StringPrintf(json_fmt.c_str(), "\"not a decimal\"");
+  EXPECT_FALSE(ParseGetSPLTokenBalances(ParseJson(json)));
 }
 
 TEST(SolanaResponseParserUnitTest, ParseSendTransaction) {

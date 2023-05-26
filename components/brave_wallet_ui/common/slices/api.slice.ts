@@ -15,6 +15,7 @@ import {
   ApproveERC20Params,
   BraveKeyrings,
   BraveWallet,
+  CoinTypes,
   ER20TransferParams,
   ERC721Metadata,
   ERC721TransferFromParams,
@@ -132,12 +133,20 @@ type GetCombinedTokenBalanceForAllAccountsArg =
   GetAccountTokenCurrentBalanceArg['token'] &
     Pick<BraveWallet.BlockchainToken, 'coin'>
 
-type GetTokenBalancesForChainIdArg = {
-  contracts: string[]
-  address: string
-  coin: BraveWallet.CoinType
+type GetSPLTokenBalancesArg = {
+  pubkey: string
   chainId: string
+  coin: typeof CoinTypes.SOL
 }
+type GetERC20TokenBalancesArg = {
+  address: string
+  contracts: string[]
+  chainId: string
+  coin: typeof CoinTypes.ETH
+}
+type GetTokenBalancesForChainIdArg =
+  | GetSPLTokenBalancesArg
+  | GetERC20TokenBalancesArg
 
 export interface IsEip1559ChangedMutationArg {
   id: string
@@ -1436,7 +1445,7 @@ export function createWalletApi (
           try {
             const { jsonRpcService } = baseQuery(undefined).data
 
-            if (arg.coin === BraveWallet.CoinType.ETH) {
+            if (arg.coin === CoinTypes.ETH) {
               const result = await jsonRpcService.getERC20TokenBalances(
                 arg.contracts,
                 arg.address,
@@ -1464,9 +1473,39 @@ export function createWalletApi (
               }
             }
 
-            return {
-              error: `Unsupported CoinType: ${arg.coin}`
+            if (arg.coin === CoinTypes.SOL) {
+              const result = await jsonRpcService.getSPLTokenBalances(
+                arg.pubkey,
+                arg.chainId
+              )
+
+              if (result.error === BraveWallet.ProviderError.kSuccess) {
+                return {
+                  data: result.balances.reduce((acc, balanceResult) => {
+                    if (balanceResult.amount) {
+                      return {
+                        ...acc,
+                        [balanceResult.mint]: Amount.normalize(
+                          balanceResult.amount
+                        )
+                      }
+                    }
+
+                    return acc
+                  }, {})
+                }
+              } else {
+                return {
+                  error: result.errorMessage
+                }
+              }
             }
+            
+            throw new Error(
+              `Unsupported CoinType found in args - args: ${
+                arg //
+              }`
+            )
           } catch (error) {
             console.error(error)
             return {
@@ -1477,15 +1516,17 @@ export function createWalletApi (
             }
           }
         },
-        providesTags: (res, err, arg) =>
+        providesTags: (balancesResult, err, arg) =>
           err
-            ? ['UNKNOWN_ERROR']
-            : [
-                {
+            ? ['TokenBalancesForChainId', 'UNKNOWN_ERROR']
+            : (balancesResult &&
+                Object.keys(balancesResult).map((tokenAddress) => ({
                   type: 'TokenBalancesForChainId',
-                  id: `${arg.address}-${arg.coin}-${arg.chainId}`
-                }
-              ]
+                  id:
+                    arg.coin === CoinTypes.ETH
+                      ? `${arg.address}-${arg.coin}-${arg.chainId}-${tokenAddress}`
+                      : `${arg.pubkey}-${arg.coin}-${arg.chainId}-${tokenAddress}`
+                }))) || ['TokenBalancesForChainId']
       }),
       //
       // Transactions
