@@ -1,0 +1,12 @@
+diff --git a/build/config/BUILD.gn b/build/config/BUILD.gn
+index 749b0855ff2aaa7521545feabf1b1a5abf984cc4..980b88965c6bbc65f47f3062079f32d7778594a1 100644
+--- a/build/config/BUILD.gn
++++ b/build/config/BUILD.gn
+@@ -328,7 +328,6 @@ config("executable_config") {
+ 
+   if (is_win) {
+     configs += _windows_linker_configs
+-    configs += [ "//build/config/win:exe_flags" ]
+   } else if (is_mac) {
+     configs += [ "//build/config/mac:mac_dynamic_flags" ]
+   } else if (is_ios) {
