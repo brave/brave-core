@@ -9,7 +9,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 
 public class WebViewApkApplication {
-    private static final String TAG = "BraveWebViewApkApplication";
+    private static final String TAG = "BraveWebViewApkApp";
 
     public static void postDeveloperUiLauncherIconTask() {
         // No-op
