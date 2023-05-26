@@ -926,8 +926,8 @@ export const SupportedTestNetworks = [
 ]
 
 /**
- * Should match BraveWallet.CoinType
- * defined with "as const" to allow for use as a type-guard
+ * Should match BraveWallet.CoinType defined with "as const" to allow for use
+ * as a type-guard.
  */
 export const CoinTypes = {
   BTC: 0,

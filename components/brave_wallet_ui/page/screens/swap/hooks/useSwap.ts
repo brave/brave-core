@@ -27,7 +27,7 @@ import {
   Registry,
   SpotPrices
 } from '../constants/types'
-import { BraveWallet } from '../../../../constants/types'
+import { BraveWallet, CoinTypes } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -84,19 +84,7 @@ export const useSwap = () => {
   const { data: assetsList } = useGetCombinedTokensListQuery()
   // FIXME(onyb): what happens when defaultFiatCurrency is empty
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  const [getTokenBalancesForChainId] = useLazyGetTokenBalancesForChainIdQuery()
-  const getTokenBalances = useCallback(
-    async (contracts: string[], address: string, coin: BraveWallet.CoinType, chainId: string) => {
-      return await getTokenBalancesForChainId({
-        contracts,
-        address,
-        coin,
-        chainId
-      }).unwrap()
-    },
-    [getTokenBalancesForChainId]
-  )
-
+  const [getTokenBalances] = useLazyGetTokenBalancesForChainIdQuery()
   const nativeAsset = useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
   const [getAccountTokenCurrentBalanceLazy] = useLazyGetAccountTokenCurrentBalanceQuery()
   const getBalance = useCallback(
@@ -347,12 +335,25 @@ export const useSwap = () => {
 
       // Try using optimised balance scanner
       try {
-        const tokenBalancesResult = await getTokenBalances(
-          networkTokens.map(asset => asset.contractAddress),
-          networkAccount.address,
-          network.coin,
-          network.chainId
-        )
+        let tokenBalancesResult
+        if (network.coin === BraveWallet.CoinType.ETH) {
+          tokenBalancesResult = await getTokenBalances({
+            address: networkAccount.address,
+            contracts: networkTokens.map(asset => asset.contractAddress),
+            chainId: network.chainId,
+            coin: CoinTypes.ETH
+          }).unwrap()
+        } else if (network.coin === BraveWallet.CoinType.SOL) {
+          tokenBalancesResult = await getTokenBalances({
+            pubkey: networkAccount.address,
+            chainId: network.chainId,
+            coin: CoinTypes.SOL
+          }).unwrap()
+        } else {
+          setAbortController(undefined)
+          throw new Error()
+        }
+
         const tokenBalancesWithRegistryKeys = Object.entries(tokenBalancesResult)
           .map(([key, value]) => [
             getBalanceRegistryKey(networkAccount, network.chainId, key),
@@ -376,6 +377,7 @@ export const useSwap = () => {
         dispatchBalancesUpdate({
           payload: Object.fromEntries(tokenBalancesWithRegistryKeys)
         })
+        setAbortController(undefined)
         return
       } catch (e) {
         console.log('Error calling getTokenBalances(): error=%s', e)
@@ -432,6 +434,8 @@ export const useSwap = () => {
           payload: chunkBalances
         })
       }
+
+      setAbortController(undefined)
     },
     [
       selectedNetwork,
