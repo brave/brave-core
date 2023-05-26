@@ -3,12 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { createEntityAdapter, EntityAdapter, EntityId } from '@reduxjs/toolkit'
+import {
+  createEntityAdapter,
+  createSelector,
+  EntityAdapter,
+  EntityId
+} from '@reduxjs/toolkit'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import {
   ParsedTransactionWithoutFiatValues,
   transactionSortByDateComparer
 } from '../../../utils/tx-utils'
+import {
+  BraveWallet,
+  SerializableTransactionInfo
+} from '../../../constants/types'
 
 export type TransactionEntity = ParsedTransactionWithoutFiatValues
 export type TransactionEntityAdaptor = EntityAdapter<TransactionEntity>
@@ -71,3 +80,17 @@ export const combineTransactionRegistries = (
     pendingIdsByChainId
   }
 }
+
+const selectTransactions = (transactions: SerializableTransactionInfo[]) =>
+  transactions
+
+export const selectPendingTransactions = createSelector(
+  // input
+  [selectTransactions],
+  // output
+  (transactions) => {
+    return transactions.filter(
+      (tx) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved
+    )
+  }
+)

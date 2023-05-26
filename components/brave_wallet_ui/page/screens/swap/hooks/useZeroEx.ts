@@ -285,6 +285,7 @@ export function useZeroEx (params: SwapParams) {
 
       try {
         await sendEthTransaction({
+          accountType: selectedAccount.accountType,
           fromAccount: selectedAccount,
           to,
           value: new Amount(value).toHex(),
@@ -329,6 +330,7 @@ export function useZeroEx (params: SwapParams) {
       }
 
       await sendEthTransaction({
+        accountType: selectedAccount.accountType,
         fromAccount: selectedAccount,
         to: sellTokenAddress,
         value: '0x0',

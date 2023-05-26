@@ -40,6 +40,7 @@ import {
   useGetNetworkQuery,
   useGetVisibleNetworksQuery
 } from '../../../common/slices/api.slice'
+import { skipToken } from '@reduxjs/toolkit/dist/query'
 
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
@@ -68,13 +69,11 @@ export const NetworkFilterSelector = ({
     skip: !!networkListSubset
   })
   const { data: selectedNetworkFromFilter } = useGetNetworkQuery(
-    selectedNetworkFilter,
-    {
-      skip:
-        !!networkProp ||
-        !selectedNetworkFilter ||
-        selectedNetworkFilter.chainId === AllNetworksOption.chainId
-    }
+    !!networkProp ||
+      !selectedNetworkFilter ||
+      selectedNetworkFilter.chainId === AllNetworksOption.chainId
+      ? skipToken
+      : selectedNetworkFilter
   )
 
   const selectedNetwork =

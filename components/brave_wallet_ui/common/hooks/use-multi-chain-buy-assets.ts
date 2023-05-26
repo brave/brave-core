@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import {
@@ -37,7 +38,6 @@ import {
   useGetSelectedChainQuery
 } from '../slices/api.slice'
 
-
 export const useMultiChainBuyAssets = () => {
   // redux
   const selectedCurrency = useUnsafeWalletSelector(WalletSelectors.selectedCurrency)
@@ -68,10 +68,7 @@ export const useMultiChainBuyAssets = () => {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: buyAssetNetworks = [] } = useGetOnRampNetworksQuery()
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
-    selectedAsset
-      ? { chainId: selectedAsset.chainId, coin: selectedAsset.coin }
-      : undefined,
-    { skip: !selectedAsset }
+    selectedAsset ?? skipToken
   )
 
   // memos

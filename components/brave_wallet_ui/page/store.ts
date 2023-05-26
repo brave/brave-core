@@ -36,7 +36,7 @@ export const store = configureStore({
   )
 })
 
-export type WalletPageRootStore = ReturnType<typeof store.getState>
+export type WalletPageRootStore = typeof store
 export type RootStoreState = ReturnType<typeof store.getState>
 
 const proxy = getWalletPageApiProxy()

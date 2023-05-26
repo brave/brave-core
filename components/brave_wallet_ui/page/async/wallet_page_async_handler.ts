@@ -32,7 +32,6 @@ import {
   getNFTMetadata,
   translateToNftGateway
 } from '../../common/async/lib'
-import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { Store } from '../../common/async/types'
 import { getTokenParam } from '../../utils/api-utils'
 import { getLocale } from '../../../common/locale'
@@ -280,11 +279,6 @@ handler.on(WalletPageActions.importFromMetaMask.type, async (store: Store, paylo
     payload
   )
   store.dispatch(WalletPageActions.setImportWalletError(results))
-})
-
-handler.on(WalletActions.newUnapprovedTxAdded.type, async (store: Store, payload: NewUnapprovedTxAdded) => {
-  const pageHandler = getWalletPageApiProxy().pageHandler
-  pageHandler.showApprovePanelUI()
 })
 
 handler.on(WalletPageActions.openWalletSettings.type, async (store) => {

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Messages
 import { ENSOffchainLookupMessage, FailedChecksumMessage } from '../send-ui-messages'
@@ -102,8 +103,7 @@ export const Send = (props: Props) => {
 
   // Queries
   const { data: selectedTokensNetwork } = useGetNetworkQuery(
-    selectedSendAsset,
-    { skip: !selectedSendAsset }
+    selectedSendAsset ?? skipToken
   )
 
   // Refs

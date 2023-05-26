@@ -13,7 +13,6 @@ import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 
 // mocks
-import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
 import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
 
@@ -188,15 +187,9 @@ export const mockWalletState: WalletState = {
   isWalletBackedUp: true,
   isWalletCreated: false,
   isWalletLocked: false,
-  knownTransactions: [],
-  pendingTransactions: [],
   portfolioPriceHistory: [],
   selectedAccount: mockAccount,
-  selectedPendingTransaction: mockedErc20ApprovalTransaction,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
-  transactions: {
-    [mockAccount.address]: [mockTransactionInfo]
-  },
   transactionSpotPrices: [
     {
       assetTimeframeChange: '',
@@ -290,7 +283,6 @@ export const mockWalletState: WalletState = {
     },
     mockMoonCatNFT
   ],
-  transactionProviderErrorRegistry: {},
   selectedNetworkFilter: AllNetworksOptionDefault,
   selectedAssetFilter: HighToLowAssetsFilterOption.id,
   selectedAccountFilter: AllAccountsOption.id,

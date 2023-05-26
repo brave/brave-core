@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -54,7 +55,7 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
     } = props
 
     // queries
-    const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
+    const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
     // callbacks
     const onCheck = React.useCallback((key: string, selected: boolean) => {

@@ -32,10 +32,6 @@ export type IsEip1559Changed = {
   isEip1559: boolean
 }
 
-export type NewUnapprovedTxAdded = {
-  txInfo: SerializableTransactionInfo
-}
-
 export type UnapprovedTxUpdated = {
   txInfo: SerializableTransactionInfo
 }
@@ -125,7 +121,7 @@ export type GetCoinMarketsResponse = {
 }
 
 export type SetTransactionProviderErrorType = {
-  transaction: BraveWallet.TransactionInfo
+  transactionId: string
   providerError: TransactionProviderError
 }
 

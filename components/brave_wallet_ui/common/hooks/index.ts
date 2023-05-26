@@ -5,7 +5,6 @@
 
 import useAssets from './assets'
 import useSend from './send'
-import { useTransactionParser, useTransactionFeesParser } from './transaction-parser'
 import usePricing from './pricing'
 import usePreset from './select-preset'
 import useTokenInfo from './token'
@@ -31,8 +30,6 @@ export {
   usePricing,
   useSend,
   useTokenInfo,
-  useTransactionFeesParser,
-  useTransactionParser,
   useTokenRegistry,
   useMultiChainBuyAssets,
   useBalanceUpdater

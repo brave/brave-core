@@ -31,5 +31,5 @@ export const mockPanelState: PanelState = {
   switchChainRequest: mockSwitchChainRequest,
   hardwareWalletCode: undefined,
   suggestedTokenRequest: undefined,
-  selectedTransaction: undefined
+  selectedTransactionId: undefined
 }

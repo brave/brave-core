@@ -9,7 +9,6 @@ import { EntityState } from '@reduxjs/toolkit'
 import {
   BraveWallet,
   P3ASendTransactionTypes,
-  SolFeeEstimates,
   SupportedTestNetworks,
   WalletAccountType,
   SerializableTransactionInfo,
@@ -40,7 +39,6 @@ import {
 import { findTokenByContractAddress } from './asset-utils'
 import Amount from './amount'
 import { getCoinFromTxDataUnion, TxDataPresence } from './network-utils'
-import { getBalance } from './balance-utils'
 import { toProperCase } from './string-utils'
 import { computeFiatAmount, findAssetPrice } from './pricing-utils'
 import { makeNetworkAsset } from '../options/asset-options'
@@ -83,7 +81,6 @@ export interface ParsedTransactionFees {
   gasPrice: string
   maxPriorityFeePerGas: string
   maxFeePerGas: string
-  gasFee: string
   gasFeeFiat: string
   isEIP1559Transaction: boolean
   missingGasLimitError?: string
@@ -115,15 +112,10 @@ export interface ParsedTransaction
   chainId: string
   originInfo?: SerializableOriginInfo | undefined
 
-  // Unconfirmed Tx flags
-  insufficientFundsForGasError?: boolean
-  insufficientFundsError?: boolean
-
   // Value
   value: string
   valueExact: string
   weiTransferredValue: string
-  formattedNativeCurrencyTotal: string
   formattedSendCurrencyTotal: string
 
   // Tx type flags
@@ -224,15 +216,17 @@ export function isSolanaTransaction (tx?: TransactionInfo): tx is SolanaTransact
     (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)
 }
 
-export function shouldReportTransactionP3A(
-{ txInfo }: {
+export function shouldReportTransactionP3A({
+  txInfo
+}: {
   txInfo: Pick<
-    BraveWallet.TransactionInfo | SerializableTransactionInfo, 'txType' | 'chainId' | 'txDataUnion'
-  >
+    BraveWallet.TransactionInfo | SerializableTransactionInfo,
+    'txType' | 'chainId'
+  > & { coinType: BraveWallet.CoinType }
 }) {
   if (
     P3ASendTransactionTypes.includes(txInfo.txType) ||
-    (getCoinFromTxDataUnion(txInfo.txDataUnion) === BraveWallet.CoinType.FIL &&
+    (txInfo.coinType === BraveWallet.CoinType.FIL &&
       txInfo.txType === BraveWallet.TransactionType.Other)
   ) {
     const countTestNetworks = loadTimeData.getBoolean(
@@ -756,15 +750,9 @@ export const isEIP1559Transaction = (transaction: TransactionInfo): transaction 
  */
 export const getTransactionGasFee = (
   transaction: TransactionInfo,
-  solFeeEstimates: { fee: string | bigint } | undefined
 ): string => {
   const { maxFeePerGas, gasPrice } = getTransactionGas(transaction)
   const gasLimit = getTransactionGasLimit(transaction)
-
-  if (isSolanaTransaction(transaction)) {
-    return new Amount(solFeeEstimates?.fee.toString() ?? '')
-      .format()
-  }
 
   if (isEIP1559Transaction(transaction)) {
     return new Amount(maxFeePerGas)
@@ -793,20 +781,16 @@ export const isTransactionGasLimitMissing = (tx: TransactionInfo): boolean => {
 }
 
 export const parseTransactionFeesWithoutPrices = (
-  tx: TransactionInfo,
-  solFeeEstimates?: { fee: string | bigint }
+  tx: TransactionInfo
 ) => {
   const gasLimit = getTransactionGasLimit(tx)
   const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = getTransactionGas(tx)
-
-  const gasFee = getTransactionGasFee(tx, solFeeEstimates)
 
   return {
     gasLimit: Amount.normalize(gasLimit),
     gasPrice: Amount.normalize(gasPrice),
     maxFeePerGas: Amount.normalize(maxFeePerGas),
     maxPriorityFeePerGas: Amount.normalize(maxPriorityFeePerGas),
-    gasFee,
     isEIP1559Transaction: isEIP1559Transaction(tx),
     isMissingGasLimit: isTransactionGasLimitMissing(tx),
     gasPremium: isFilecoinTransaction(tx)
@@ -1533,11 +1517,9 @@ export const parseTransactionWithoutPrices = ({
   tx,
   transactionNetwork,
   userVisibleTokensList,
-  solFeeEstimates
 }: {
   accounts: WalletAccountType[]
   fullTokenList: BraveWallet.BlockchainToken[]
-  solFeeEstimates?: SolFeeEstimates
   tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
   userVisibleTokensList: BraveWallet.BlockchainToken[]
@@ -1547,8 +1529,6 @@ export const parseTransactionWithoutPrices = ({
   const token = findTransactionToken(tx, combinedTokensList)
   const nativeAsset = makeNetworkAsset(transactionNetwork)
   const account = findTransactionAccount(accounts, tx)
-  const accountNativeBalance = getBalance(account, nativeAsset)
-  const accountTokenBalance = getBalance(account, token)
 
   const {
     buyToken,
@@ -1582,7 +1562,6 @@ export const parseTransactionWithoutPrices = ({
   const approvalTarget = getTransactionApprovalTargetAddress(tx)
 
   const {
-    gasFee,
     gasFeeCap,
     gasLimit,
     gasPremium,
@@ -1591,16 +1570,7 @@ export const parseTransactionWithoutPrices = ({
     maxFeePerGas,
     maxPriorityFeePerGas,
     isEIP1559Transaction
-  } = parseTransactionFeesWithoutPrices(tx, solFeeEstimates)
-
-  const insufficientFundsError = accountHasInsufficientFundsForTransaction({
-    accountNativeBalance,
-    accountTokenBalance,
-    gasFee,
-    sellAmountWei,
-    sellTokenBalance: getBalance(account, sellToken),
-    tx
-  })
+  } = parseTransactionFeesWithoutPrices(tx)
 
   const erc721TokenId = getTransactionErc721TokenId(tx)
 
@@ -1652,26 +1622,9 @@ export const parseTransactionWithoutPrices = ({
     transactionNetwork
   })
 
-  const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
-    accountNativeBalance,
-    gasFee
-  })
-
   const isSendingToZeroXExchangeProxy =
     tx.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() ===
     SwapExchangeProxy
-
-  const formattedNativeCurrencyTotal =
-    getTransactionFormattedNativeCurrencyTotal({
-      gasFee,
-      normalizedTransferredValue,
-      tx,
-      sellAmountWei: sellAmountWei.value?.toString(),
-      sellToken,
-      token,
-      transferredValueWei: weiTransferredValue,
-      txNetwork: transactionNetwork
-    })
 
   const formattedSendCurrencyTotal = getTransactionFormattedSendCurrencyTotal({
     normalizedTransferredValue,
@@ -1693,7 +1646,6 @@ export const parseTransactionWithoutPrices = ({
     decimals,
     erc721BlockchainToken,
     erc721TokenId,
-    gasFee,
     gasFeeCap,
     gasLimit,
     gasPremium,
@@ -1701,8 +1653,6 @@ export const parseTransactionWithoutPrices = ({
     hash: tx.txHash,
     id: tx.id,
     instructions,
-    insufficientFundsError,
-    insufficientFundsForGasError,
     intent,
     isApprovalUnlimited: getIsTxApprovalUnlimited(tx),
     isEIP1559Transaction,
@@ -1734,7 +1684,6 @@ export const parseTransactionWithoutPrices = ({
     value: normalizedTransferredValue,
     valueExact: normalizedTransferredValueExact,
     weiTransferredValue,
-    formattedNativeCurrencyTotal,
     formattedSendCurrencyTotal
   }
 }
@@ -1745,16 +1694,16 @@ export const parseTransactionWithPrices = ({
   tx,
   transactionNetwork,
   userVisibleTokensList,
-  solFeeEstimates,
-  spotPrices
+  spotPrices,
+  gasFee
 }: {
   accounts: WalletAccountType[]
   fullTokenList: BraveWallet.BlockchainToken[]
-  solFeeEstimates?: SolFeeEstimates
   tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
   userVisibleTokensList: BraveWallet.BlockchainToken[]
   spotPrices: AssetPriceWithContractAndChainId[]
+  gasFee: string
 }): ParsedTransaction => {
   const networkSpotPrice = transactionNetwork
     ? findAssetPrice(
@@ -1767,10 +1716,10 @@ export const parseTransactionWithPrices = ({
 
   const {
     token,
-    gasFee,
     sellToken,
     weiTransferredValue,
     value: normalizedTransferredValue,
+    sellAmountWei,
     ...txBase
   } = parseTransactionWithoutPrices({
     accounts,
@@ -1778,18 +1727,17 @@ export const parseTransactionWithPrices = ({
     transactionNetwork,
     tx,
     userVisibleTokensList,
-    solFeeEstimates
   })
 
   return {
     token,
-    gasFee,
     sellToken,
     weiTransferredValue,
     value: normalizedTransferredValue,
     ...txBase,
     ...getTransactionFiatValues({
       gasFee,
+      sellAmountWei: sellAmountWei?.value?.toString(),
       networkSpotPrice,
       normalizedTransferredValue,
       spotPrices,

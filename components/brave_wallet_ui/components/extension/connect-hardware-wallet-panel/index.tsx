@@ -4,9 +4,15 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { ThunkDispatch } from '@reduxjs/toolkit'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { getLocale } from '../../../../common/locale'
+import { isHardwareAccount } from '../../../utils/account-utils'
+import { PanelSelectors } from '../../../panel/selectors'
+import { UISelectors } from '../../../common/selectors'
+import { PanelActions } from '../../../panel/actions'
 
 // types
 import { BraveWallet } from '../../../constants/types'
@@ -14,6 +20,17 @@ import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
 
 // hooks
 import useInterval from '../../../common/hooks/interval'
+import { useDispatch } from 'react-redux'
+import {
+  useGetAccountInfosRegistryQuery //
+} from '../../../common/slices/api.slice'
+import {
+  useSafeUISelector,
+  useUnsafePanelSelector
+} from '../../../common/hooks/use-safe-selector'
+import {
+  usePendingTransactions //
+} from '../../../common/hooks/use-pending-transaction'
 
 // components
 import { NavButton } from '../buttons/nav-button/index'
@@ -30,13 +47,13 @@ import {
   Indicator,
   ConnectionRow
 } from './style'
+
 export interface Props {
   onCancel: (accountAddress: string, coinType: BraveWallet.CoinType) => void
   walletName: string
   accountAddress: string
   coinType: BraveWallet.CoinType
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
-  retryCallable: () => void
   onClickInstructions: () => void
 }
 
@@ -57,12 +74,46 @@ export const ConnectHardwareWalletPanel = ({
   accountAddress,
   coinType,
   hardwareWalletCode,
-  retryCallable,
   onClickInstructions
 }: Props) => {
+  // redux
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
+
+  /**
+   * signMessageData by default initialized as:
+   *
+   * ```[{ id: -1, address: '', message: '' }]```
+   */
+  const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
+  const selectedPendingTransactionId = useSafeUISelector(
+    UISelectors.selectedPendingTransactionId
+  )
+  const isSigning = signMessageData?.length && signMessageData[0].id !== -1
+
+  const isConfirming = !!selectedPendingTransactionId
+
+  // queries
+  const { messageAccount } = useGetAccountInfosRegistryQuery(
+    signMessageData[0].address
+      ? undefined
+      : skipToken,
+    {
+      selectFromResult: (res) => ({
+        messageAccount: res.data?.entities[signMessageData[0].address],
+      })
+    }
+  )
+
+  // pending transactions
+  const { onConfirm: onConfirmTransaction, selectedPendingTransaction } =
+    usePendingTransactions()
+
   // memos
   const isConnected = React.useMemo((): boolean => {
-    return hardwareWalletCode !== 'deviceNotConnected' && hardwareWalletCode !== 'unauthorized'
+    return (
+      hardwareWalletCode !== 'deviceNotConnected' &&
+      hardwareWalletCode !== 'unauthorized'
+    )
   }, [hardwareWalletCode])
 
   const title = React.useMemo(() => {
@@ -71,8 +122,14 @@ export const ConnectHardwareWalletPanel = ({
     }
 
     // Not connected
-    if (hardwareWalletCode === 'deviceNotConnected' || hardwareWalletCode === 'unauthorized') {
-      return getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)
+    if (
+      hardwareWalletCode === 'deviceNotConnected' ||
+      hardwareWalletCode === 'unauthorized'
+    ) {
+      return getLocale('braveWalletConnectHardwarePanelConnect').replace(
+        '$1',
+        walletName
+      )
     }
 
     const network = getAppName(coinType)
@@ -81,13 +138,45 @@ export const ConnectHardwareWalletPanel = ({
       .replace('$2', walletName)
   }, [hardwareWalletCode])
 
-  // custom hooks
-  useInterval(retryCallable, 3000, !isConnected ? 5000 : null)
-
   // methods
   const onCancelConnect = React.useCallback(() => {
     onCancel(accountAddress, coinType)
   }, [onCancel, accountAddress, coinType])
+
+  const onSignData = React.useCallback(() => {
+    if (!messageAccount) {
+      return
+    }
+
+    if (isHardwareAccount(messageAccount)) {
+      dispatch(PanelActions.signMessageHardware(signMessageData[0]))
+    } else {
+      dispatch(
+        PanelActions.signMessageProcessed({
+          approved: true,
+          id: signMessageData[0].id
+        })
+      )
+    }
+  }, [messageAccount, signMessageData[0]])
+
+  const retryHardwareOperation = React.useCallback(() => {
+    if (isSigning) {
+      onSignData()
+    }
+    if (isConfirming && selectedPendingTransaction) {
+      onConfirmTransaction()
+    }
+  }, [
+    isSigning,
+    isConfirming,
+    selectedPendingTransaction,
+    onSignData,
+    onConfirmTransaction
+  ])
+
+  // custom hooks
+  useInterval(retryHardwareOperation, 3000, !isConnected ? 5000 : null)
 
   // render
   return (

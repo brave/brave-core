@@ -46,19 +46,14 @@ export const defaultCurrencies = ({ wallet }: State) => wallet.defaultCurrencies
 export const favoriteApps = ({ wallet }: State) => wallet.favoriteApps
 export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
 export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates
-export const knownTransactions = ({ wallet }: State) => wallet.knownTransactions
 export const onRampCurrencies = ({ wallet }: State) => wallet.onRampCurrencies
-export const pendingTransactions = ({ wallet }: State) => wallet.pendingTransactions
 export const portfolioPriceHistory = ({ wallet }: State) => wallet.portfolioPriceHistory
 export const selectedAccount = ({ wallet }: State) => wallet.selectedAccount
 export const selectedAssetFilter = ({ wallet }: State) => wallet.selectedAssetFilter
 export const selectedCurrency = ({ wallet }: State) => wallet.selectedCurrency
 export const selectedNetworkFilter = ({ wallet }: State) => wallet.selectedNetworkFilter
-export const selectedPendingTransaction = ({ wallet }: State) => wallet.selectedPendingTransaction
 export const solFeeEstimates = ({ wallet }: State) => wallet.solFeeEstimates
-export const transactionProviderErrorRegistry = ({ wallet }: State) => wallet.transactionProviderErrorRegistry
 export const transactionSpotPrices = ({ wallet }: State) => wallet.transactionSpotPrices
-export const transactions = ({ wallet }: State) => wallet.transactions
 export const userVisibleTokensInfo = ({ wallet }: State) => wallet.userVisibleTokensInfo
 export const selectedAccountFilter = ({ wallet }: State) => wallet.selectedAccountFilter
 export const removedFungibleTokenIds = ({ wallet }: State) =>

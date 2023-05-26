@@ -5,9 +5,8 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import {
-  useSelector
-} from 'react-redux'
+import { useSelector } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -69,11 +68,12 @@ export const FundWalletScreen = () => {
 
   // queries
   const { data: selectedNetworkFromFilter = AllNetworksOption } =
-    useGetNetworkQuery(selectedNetworkFilter, {
-      skip:
-        !selectedNetworkFilter ||
+    useGetNetworkQuery(
+      !selectedNetworkFilter ||
         selectedNetworkFilter.chainId === AllNetworksOption.chainId
-    })
+        ? skipToken
+        : selectedNetworkFilter
+    )
 
   // custom hooks
   const { prevNetwork } = usePrevNetwork()

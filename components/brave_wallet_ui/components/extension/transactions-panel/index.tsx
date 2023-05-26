@@ -4,17 +4,18 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
 import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { sortTransactionByDate } from '../../../utils/tx-utils'
-import { WalletSelectors } from '../../../common/selectors'
+import { PanelActions } from '../../../panel/actions'
 
 // Hooks
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { useGetTransactionsQuery } from '../../../common/slices/api.slice'
 
 // Components
 import { TransactionsListItem } from '../'
@@ -34,26 +35,36 @@ import {
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
   selectedAccountAddress?: string
-  onSelectTransaction: (transaction: SerializableTransactionInfo) => void
+  selectedAccountCoinType?: BraveWallet.CoinType
 }
 
 export const TransactionsPanel = ({
   selectedNetwork,
   selectedAccountAddress,
-  onSelectTransaction
+  selectedAccountCoinType,
 }: Props) => {
   // redux
-  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
+  const dispatch = useDispatch()
 
-  // memos / computed
-  const transactionList = selectedAccountAddress && transactions?.[selectedAccountAddress] || []
-
-  const sortedNonRejectedTransactionList = React.useMemo(() => {
-    return sortTransactionByDate(
-      transactionList.filter(t => t.txStatus !== BraveWallet.TransactionStatus.Rejected),
-      'descending'
+  // queries
+  const { data: sortedNonRejectedTransactionList = [] } =
+    useGetTransactionsQuery(
+      selectedAccountAddress && selectedAccountCoinType
+        ? {
+            address: selectedAccountAddress ?? null,
+            chainId: null,
+            coinType: selectedAccountCoinType ?? null
+          }
+        : skipToken
     )
-  }, [transactionList])
+
+  const viewTransactionDetail = React.useCallback(
+    (transaction: SerializableTransactionInfo) => {
+      dispatch(PanelActions.setSelectedTransactionId(transaction.id))
+      dispatch(PanelActions.navigateTo('transactionDetails'))
+    },
+    []
+  )
 
   // render
   if (sortedNonRejectedTransactionList.length === 0) {
@@ -97,15 +108,13 @@ export const TransactionsPanel = ({
     )
   }
 
-  // render
   return (
     <ScrollContainer>
       <StyledWrapper>
         {sortedNonRejectedTransactionList.map((transaction) =>
           <TransactionsListItem
             key={transaction.id}
-            onSelectTransaction={onSelectTransaction}
-            selectedNetwork={selectedNetwork}
+            onSelectTransaction={viewTransactionDetail}
             transaction={transaction}
           />
         )}

@@ -14,12 +14,12 @@ import {
   AmountValidationErrorType,
   WalletState,
   GetSolAddrReturnInfo,
-  CoinTypesMap
+  CoinTypesMap,
+  BaseTransactionParams
 } from '../../constants/types'
-import { getLocale } from '../../../common/locale'
-import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
+import { getLocale } from '../../../common/locale'
 import { isValidAddress, isValidFilAddress } from '../../utils/address-utils'
 import { endsWithAny } from '../../utils/string-utils'
 import Amount from '../../utils/amount'
@@ -27,7 +27,7 @@ import Amount from '../../utils/amount'
 // hooks
 import { useLib } from './useLib'
 import { useAssets } from './assets'
-import { useGetSelectedChainQuery } from '../slices/api.slice'
+import { useGetSelectedChainQuery, walletApi } from '../slices/api.slice'
 
 // constants
 import {
@@ -352,55 +352,82 @@ export default function useSend (isSendTab?: boolean) {
       return
     }
 
-    selectedSendAsset.isErc20 && dispatch(WalletActions.sendERC20Transfer({
-      network: selectedNetwork,
-      fromAccount: selectedAccount,
-      to: toAddress,
-      value: new Amount(sendAmount)
-        .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
-        .toHex(),
-      contractAddress: selectedSendAsset.contractAddress,
-      coin: selectedAccount.coin
-    }))
+    const fromAccount: BaseTransactionParams['fromAccount'] = {
+      accountType: selectedAccount.accountType,
+      address: selectedAccount.address,
+      coin: selectedAccount.coin,
+      hardware: selectedAccount.hardware,
+      keyringId: selectedAccount.keyringId,
+      deviceId: selectedAccount.deviceId
+    }
 
-    selectedSendAsset.isErc721 && dispatch(WalletActions.sendERC721TransferFrom({
-      network: selectedNetwork,
-      fromAccount: selectedAccount,
-      to: toAddress,
-      value: '',
-      contractAddress: selectedSendAsset.contractAddress,
-      tokenId: selectedSendAsset.tokenId ?? '',
-      coin: selectedAccount.coin
-    }))
+    selectedSendAsset.isErc20 &&
+      dispatch(
+        walletApi.endpoints.sendERC20Transfer.initiate({
+          network: selectedNetwork,
+          fromAccount,
+          accountType: selectedAccount.accountType,
+          to: toAddress,
+          value: new Amount(sendAmount)
+            // ETH → Wei conversion
+            .multiplyByDecimals(selectedSendAsset.decimals)
+            .toHex(),
+          contractAddress: selectedSendAsset.contractAddress,
+          coin: selectedAccount.coin
+        })
+      )
+
+    selectedSendAsset.isErc721 &&
+      dispatch(
+        walletApi.endpoints.sendERC721TransferFrom.initiate({
+          network: selectedNetwork,
+          accountType: selectedAccount.accountType,
+          fromAccount,
+          to: toAddress,
+          value: '',
+          contractAddress: selectedSendAsset.contractAddress,
+          tokenId: selectedSendAsset.tokenId ?? '',
+          coin: selectedAccount.coin
+        })
+      )
 
     if (
       selectedAccount.coin === BraveWallet.CoinType.SOL &&
       selectedSendAsset.contractAddress !== '' &&
-      !selectedSendAsset.isErc20 && !selectedSendAsset.isErc721
+      !selectedSendAsset.isErc20 &&
+      !selectedSendAsset.isErc721
     ) {
-      dispatch(WalletActions.sendSPLTransfer({
-        network: selectedNetwork,
-        fromAccount: selectedAccount,
-        to: toAddress,
-        value: !selectedSendAsset.isNft ? new Amount(sendAmount)
-          .multiplyByDecimals(selectedSendAsset.decimals)
-          .toHex() : new Amount(sendAmount).toHex(),
-        coin: selectedAccount.coin,
-        splTokenMintAddress: selectedSendAsset.contractAddress
-      }))
+      dispatch(
+        walletApi.endpoints.sendSPLTransfer.initiate({
+          network: selectedNetwork,
+          fromAccount,
+          to: toAddress,
+          value: !selectedSendAsset.isNft
+            ? new Amount(sendAmount)
+                .multiplyByDecimals(selectedSendAsset.decimals)
+                .toHex()
+            : new Amount(sendAmount).toHex(),
+          coin: selectedAccount.coin,
+          splTokenMintAddress: selectedSendAsset.contractAddress
+        })
+      )
       resetSendFields(true)
       return
     }
 
     if (selectedAccount.coin === BraveWallet.CoinType.FIL) {
-      dispatch(WalletActions.sendTransaction({
-        network: selectedNetwork,
-        fromAccount: selectedAccount,
-        to: toAddress,
-        value: new Amount(sendAmount)
-          .multiplyByDecimals(selectedSendAsset.decimals).toNumber().toString(),
-        coin: selectedAccount.coin
-      }))
+      dispatch(
+        walletApi.endpoints.sendTransaction.initiate({
+          network: selectedNetwork,
+          fromAccount,
+          to: toAddress,
+          value: new Amount(sendAmount)
+            .multiplyByDecimals(selectedSendAsset.decimals)
+            .toNumber()
+            .toString(),
+          coin: selectedAccount.coin
+        })
+      )
       resetSendFields()
       return
     }
@@ -412,15 +439,23 @@ export default function useSend (isSendTab?: boolean) {
       return
     }
 
-    dispatch(WalletActions.sendTransaction({
-      network: selectedNetwork,
-      fromAccount: selectedAccount,
-      to: toAddress,
-      coin: selectedAccount.coin,
-      value: selectedAccount.coin === BraveWallet.CoinType.FIL
-        ? new Amount(sendAmount).multiplyByDecimals(selectedSendAsset.decimals).toString()
-        : new Amount(sendAmount).multiplyByDecimals(selectedSendAsset.decimals).toHex()
-    }))
+    dispatch(
+      walletApi.endpoints.sendTransaction.initiate({
+        network: selectedNetwork,
+        accountType: selectedAccount.accountType,
+        fromAccount,
+        to: toAddress,
+        coin: selectedAccount.coin,
+        value:
+          selectedAccount.coin === BraveWallet.CoinType.FIL
+            ? new Amount(sendAmount)
+                .multiplyByDecimals(selectedSendAsset.decimals)
+                .toString()
+            : new Amount(sendAmount)
+                .multiplyByDecimals(selectedSendAsset.decimals)
+                .toHex()
+      })
+    )
 
     resetSendFields()
   }, [

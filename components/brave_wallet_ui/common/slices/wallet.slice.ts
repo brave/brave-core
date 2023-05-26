@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
-  AccountTransactions,
   BraveWallet,
   GetBlockchainTokenBalanceReturnInfo,
   GetPriceHistoryReturnInfo,
@@ -16,20 +15,12 @@ import {
   GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
   SolFeeEstimates,
-  ApproveERC20Params,
-  ER20TransferParams,
-  ERC721TransferFromParams,
-  SendTransactionParams,
-  SPLTransferFromParams,
-  SerializableTransactionInfo,
   SerializableOriginInfo,
   NetworkFilterType,
-  RefreshGasEstimatesParams,
   BraveKeyrings,
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
-  CancelTransactionPayload,
   ChainChangedEventPayloadType,
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged,
@@ -37,20 +28,11 @@ import {
   DefaultSolanaWalletChanged,
   GetCoinMarketPayload,
   GetCoinMarketsResponse,
-  NewUnapprovedTxAdded,
   RemoveSitePermissionPayloadType,
-  RetryTransactionPayload,
   SelectedAccountChangedPayloadType,
-  SetTransactionProviderErrorType,
   SetUserAssetVisiblePayloadType,
   SitePermissionsPayloadType,
-  SpeedupTransactionPayload,
-  TransactionStatusChanged,
-  UnapprovedTxUpdated,
   UnlockWalletPayloadType,
-  UpdateUnapprovedTransactionGasFieldsType,
-  UpdateUnapprovedTransactionNonceType,
-  UpdateUnapprovedTransactionSpendAllowanceType,
   UpdateUsetAssetType
 } from '../constants/action_types'
 import {
@@ -62,7 +44,6 @@ import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 // Utils
 import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
-import { sortTransactionByDate } from '../../utils/tx-utils'
 import Amount from '../../utils/amount'
 import {
   createTokenBalanceRegistryKey,
@@ -90,12 +71,8 @@ const defaultState: WalletState = {
   selectedAccount: {} as WalletAccountType,
   accounts: [],
   userVisibleTokensInfo: [],
-  transactions: {},
-  pendingTransactions: [],
-  knownTransactions: [],
   fullTokenList: [],
   portfolioPriceHistory: [],
-  selectedPendingTransaction: undefined,
   isFetchingPortfolioPriceHistory: true,
   selectedPortfolioTimeline: window
     .localStorage
@@ -133,7 +110,6 @@ const defaultState: WalletState = {
     fiat: '',
     crypto: ''
   },
-  transactionProviderErrorRegistry: {},
   isLoadingCoinMarketData: true,
   coinMarketData: [],
   selectedNetworkFilter: parseJSONFromLocalStorage('PORTFOLIO_NETWORK_FILTER_OPTION', AllNetworksOptionDefault),
@@ -212,38 +188,6 @@ export const WalletAsyncActions = {
   selectPortfolioTimeline: createAction<BraveWallet.AssetPriceTimeframe>(
     'selectPortfolioTimeline'
   ),
-  sendTransaction: createAction<SendTransactionParams>('sendTransaction'),
-  sendERC20Transfer: createAction<ER20TransferParams>('sendERC20Transfer'),
-  sendSPLTransfer: createAction<SPLTransferFromParams>('sendSPLTransfer'),
-  sendERC721TransferFrom: createAction<ERC721TransferFromParams>(
-    'sendERC721TransferFrom'
-  ),
-  approveERC20Allowance: createAction<ApproveERC20Params>(
-    'approveERC20Allowance'
-  ),
-  transactionStatusChanged: createAction<TransactionStatusChanged>(
-    'transactionStatusChanged'
-  ),
-  approveTransaction:
-    createAction<SerializableTransactionInfo>('approveTransaction'),
-  rejectTransaction:
-    createAction<SerializableTransactionInfo>('rejectTransaction'),
-  rejectAllTransactions: createAction('rejectAllTransactions'),
-  refreshGasEstimates: createAction<RefreshGasEstimatesParams>(
-    'refreshGasEstimates'
-  ),
-  updateUnapprovedTransactionGasFields:
-    createAction<UpdateUnapprovedTransactionGasFieldsType>(
-      'updateUnapprovedTransactionGasFields'
-    ),
-  updateUnapprovedTransactionSpendAllowance:
-    createAction<UpdateUnapprovedTransactionSpendAllowanceType>(
-      'updateUnapprovedTransactionSpendAllowance'
-    ),
-  updateUnapprovedTransactionNonce:
-    createAction<UpdateUnapprovedTransactionNonceType>(
-      'updateUnapprovedTransactionNonce'
-    ),
   defaultEthereumWalletChanged: createAction<DefaultEthereumWalletChanged>(
     'defaultEthereumWalletChanged'
   ), // refreshWalletInfo
@@ -264,11 +208,6 @@ export const WalletAsyncActions = {
     createAction<AddSitePermissionPayloadType>('addSitePermission'),
   refreshBalancesAndPrices: createAction('refreshBalancesAndPrices'),
   refreshNetworksAndTokens: createAction('refreshNetworksAndTokens'),
-  retryTransaction: createAction<RetryTransactionPayload>('retryTransaction'),
-  cancelTransaction:
-    createAction<CancelTransactionPayload>('cancelTransaction'),
-  speedupTransaction:
-    createAction<SpeedupTransactionPayload>('speedupTransaction'),
   expandWalletNetworks: createAction('expandWalletNetworks'), // replace with chrome.tabs.create helper
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory'
@@ -337,7 +276,11 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         )
 
         const selectedAccount = payload.selectedAccount
-          ? accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
+          ? accounts.find(
+              (account) =>
+                account.address.toLowerCase() ===
+                payload.selectedAccount.toLowerCase()
+            ) ?? accounts[0]
           : accounts[0]
         state.hasInitialized = true
         state.isWalletCreated = payload.isWalletCreated
@@ -348,16 +291,19 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.accounts = accounts
         state.isWalletBackedUp = payload.isWalletBackedUp
         state.selectedAccount = selectedAccount
-        state.isNftPinningFeatureEnabled =
-          payload.isNftPinningFeatureEnabled
+        state.isNftPinningFeatureEnabled = payload.isNftPinningFeatureEnabled
         state.isPanelV2FeatureEnabled = payload.isPanelV2FeatureEnabled
       },
 
-      nativeAssetBalancesUpdated (state: WalletState, { payload }: PayloadAction<GetNativeAssetBalancesPayload>) {
+      nativeAssetBalancesUpdated: (
+        state: WalletState,
+        { payload }: PayloadAction<GetNativeAssetBalancesPayload>
+      ) => {
         state.accounts.forEach((account, accountIndex) => {
           payload.balances[accountIndex].forEach((info, tokenIndex) => {
             if (info.error === BraveWallet.ProviderError.kSuccess) {
-              state.accounts[accountIndex].nativeBalanceRegistry[info.chainId] = Amount.normalize(info.balance)
+              state.accounts[accountIndex].nativeBalanceRegistry[info.chainId] =
+                Amount.normalize(info.balance)
             }
           })
         })
@@ -365,14 +311,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = findAccountInList(state.selectedAccount, state.accounts)
       },
 
-      newUnapprovedTxAdded (state: WalletState, { payload }: PayloadAction<NewUnapprovedTxAdded>) {
-        state.pendingTransactions.push(payload.txInfo)
-        if (state.pendingTransactions.length === 0) {
-          state.selectedPendingTransaction = payload.txInfo
-        }
-      },
-
-      portfolioPriceHistoryUpdated (state: WalletState, { payload }: PayloadAction<PortfolioTokenHistoryAndInfo[][]>) {
+      portfolioPriceHistoryUpdated: (
+        state: WalletState,
+        { payload }: PayloadAction<PortfolioTokenHistoryAndInfo[][]>
+      ) => {
         const history = payload.map((infoArray) => {
           return infoArray.map((info) => {
             if (new Amount(info.balance).isPositive() && info.token.visible) {
@@ -390,18 +332,28 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
             }
           })
         })
-        const jointHistory = [].concat.apply([], [...history]).filter((h: []) => h.length > 1) as GetPriceHistoryReturnInfo[][]
+        const jointHistory = [].concat
+          .apply([], [...history])
+          .filter((h: []) => h.length > 1) as GetPriceHistoryReturnInfo[][]
 
         // Since the Price History API sometimes will return a shorter
         // array of history, this checks for the shortest array first to
         // then map and reduce to it length
-        const shortestHistory = jointHistory.length > 0 ? jointHistory.reduce((a, b) => a.length <= b.length ? a : b) : []
-        const sumOfHistory = jointHistory.length > 0 ? shortestHistory.map((token, tokenIndex) => {
-          return {
-            date: mojoTimeDeltaToJSDate(token.date),
-            close: jointHistory.map(price => Number(price[tokenIndex].price) || 0).reduce((sum, x) => sum + x, 0)
-          }
-        }) : []
+        const shortestHistory =
+          jointHistory.length > 0
+            ? jointHistory.reduce((a, b) => (a.length <= b.length ? a : b))
+            : []
+        const sumOfHistory =
+          jointHistory.length > 0
+            ? shortestHistory.map((token, tokenIndex) => {
+                return {
+                  date: mojoTimeDeltaToJSDate(token.date),
+                  close: jointHistory
+                    .map((price) => Number(price[tokenIndex].price) || 0)
+                    .reduce((sum, x) => sum + x, 0)
+                }
+              })
+            : []
 
         state.portfolioPriceHistory = sumOfHistory
         state.isFetchingPortfolioPriceHistory = sumOfHistory.length === 0
@@ -418,20 +370,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         }
       },
 
-      setAccountTransactions (state: WalletState, { payload }: PayloadAction<AccountTransactions>) {
-        const newPendingTransactions = state.accounts.map((account) => {
-          return payload[account.address]
-        }).flat(1)
-
-        const filteredTransactions = newPendingTransactions?.filter((tx) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
-        const sortedTransactionList = sortTransactionByDate(filteredTransactions, 'descending')
-
-        state.transactions = payload
-        state.pendingTransactions = sortedTransactionList
-        state.selectedPendingTransaction = sortedTransactionList[0]
-      },
-
-      setAllTokensList (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
+      setAllTokensList: (
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
+      ) => {
         state.fullTokenList = payload
       },
 
@@ -439,7 +381,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.assetAutoDiscoveryCompleted = true
       },
 
-      setCoinMarkets (state: WalletState, { payload }: PayloadAction<GetCoinMarketsResponse>) {
+      setCoinMarkets: (
+        state: WalletState,
+        { payload }: PayloadAction<GetCoinMarketsResponse>
+      ) => {
         state.coinMarketData = payload.success
           ? payload.values.map(coin => {
             coin.image = coin.image.replace('https://assets.coingecko.com', ' https://assets.cgproxy.brave.com')
@@ -539,24 +484,28 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.hasFeeEstimatesError = payload
       },
 
-      setTransactionProviderError (state: WalletState, { payload }: PayloadAction<SetTransactionProviderErrorType>) {
-        state.transactionProviderErrorRegistry[payload.transaction.id] = payload.providerError
-      },
-
-      setVisibleTokensInfo (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
+      setVisibleTokensInfo: (
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
+      ) => {
         state.userVisibleTokensInfo = payload
       },
 
-      tokenBalancesUpdated (state: WalletState, { payload }: PayloadAction<GetBlockchainTokenBalanceReturnInfo>) {
-        const visibleTokens = state.userVisibleTokensInfo
-          .filter(asset => asset.contractAddress !== '')
+      tokenBalancesUpdated: (
+        state: WalletState,
+        { payload }: PayloadAction<GetBlockchainTokenBalanceReturnInfo>
+      ) => {
+        const visibleTokens = state.userVisibleTokensInfo.filter(
+          (asset) => asset.contractAddress !== ''
+        )
 
         state.accounts.forEach((account, accountIndex) => {
           payload.balances[accountIndex]?.forEach((info, tokenIndex) => {
             if (info.error === BraveWallet.ProviderError.kSuccess) {
               const token = visibleTokens[tokenIndex]
               const registryKey = createTokenBalanceRegistryKey(token)
-              state.accounts[accountIndex].tokenBalanceRegistry[registryKey] = Amount.normalize(info.balance)
+              state.accounts[accountIndex].tokenBalanceRegistry[registryKey] =
+                Amount.normalize(info.balance)
             }
           })
         })
@@ -564,44 +513,26 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = findAccountInList(state.selectedAccount, state.accounts)
       },
 
-      unapprovedTxUpdated (state: WalletState, { payload }: PayloadAction<UnapprovedTxUpdated>) {
-        const index = state.pendingTransactions.findIndex(
-          (tx) => tx.id === payload.txInfo.id
-        )
-
-        if (index !== -1) {
-          state.pendingTransactions[index] = payload.txInfo
-        }
-
-        if (state.selectedPendingTransaction?.id === payload.txInfo.id) {
-          state.selectedPendingTransaction = payload.txInfo
-        }
-      },
-
-      queueNextTransaction (state: WalletState) {
-        const pendingTransactions = state.pendingTransactions
-
-        const index = pendingTransactions.findIndex(
-          (tx) => tx.id === state.selectedPendingTransaction?.id
-        ) + 1
-
-        state.selectedPendingTransaction = pendingTransactions.length === index
-          ? pendingTransactions[0]
-          : pendingTransactions[index]
-      },
-
-      refreshAccountInfo (state: WalletState, { payload }: PayloadAction<BraveWallet.AllAccountsInfo>) {
-        state.accounts.forEach(account => {
-          const info = payload.accounts.find(info => account.address === info.address)
+      refreshAccountInfo: (
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.AllAccountsInfo>
+      ) => {
+        state.accounts.forEach((account) => {
+          const info = payload.accounts.find((info) => {
+            return account.address === info.address
+          })
           if (info) {
             account.name = info.name
           }
         })
 
-        state.selectedAccount = findAccountInList(state.selectedAccount, state.accounts)
-      }
+        state.selectedAccount = findAccountInList(
+          state.selectedAccount,
+          state.accounts
+        )
+      },
     },
-    extraReducers (builder) {
+    extraReducers: (builder) => {
       builder.addCase(WalletAsyncActions.locked.type, (state) => {
         state.isWalletLocked = true
       })
@@ -611,36 +542,15 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccountFilter = payload
       })
 
-      builder.addCase(WalletAsyncActions.setSelectedNetworkFilter, (state, { payload }) => {
-        state.isFetchingPortfolioPriceHistory = true
-        state.selectedNetworkFilter = payload
-      })
+      builder.addCase(
+        WalletAsyncActions.setSelectedNetworkFilter,
+        (state, { payload }) => {
+          state.isFetchingPortfolioPriceHistory = true
+          state.selectedNetworkFilter = payload
+        }
+      )
 
-      builder.addCase(WalletAsyncActions.transactionStatusChanged, (state, { payload }) => {
-        const newPendingTransactions = state.pendingTransactions
-          .filter((tx) => tx.id !== payload.txInfo.id)
-          .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
 
-        const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
-
-        const newTransactionEntries = Object.entries(state.transactions).map(([address, transactions]) => {
-          const hasTransaction = transactions.some(tx => tx.id === payload.txInfo.id)
-
-          return [
-            address,
-            hasTransaction
-              ? sortTransactionByDate([
-                ...transactions.filter(tx => tx.id !== payload.txInfo.id),
-                payload.txInfo
-              ])
-              : transactions
-          ]
-        })
-
-        state.pendingTransactions = sortedTransactionList
-        state.selectedPendingTransaction = sortedTransactionList[0]
-        state.transactions = Object.fromEntries(newTransactionEntries)
-      })
     }
   })
 }

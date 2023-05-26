@@ -15,22 +15,35 @@ import {
 // components
 import { WalletPanelStory } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { SignTransactionPanel } from './sign-transaction-panel'
+import {
+  deserializeTransaction //
+} from '../../../utils/model-serialization-utils'
+import { BraveWallet } from '../../../constants/types'
 
 export const _SignAllSolanaTxPanel = () => {
-  return <WalletPanelStory
-    walletStateOverride={{
-      selectedPendingTransaction: mockSolDappSignAndSendTransactionRequest
-    }}
-    panelStateOverride={{
-      selectedPanel: 'signTransaction',
-      signTransactionRequests: [mockSolDappSignTransactionRequest],
-      signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest]
-    }}
-  >
-    <SignTransactionPanel
-      signMode='signAllTxs'
-    />
-  </WalletPanelStory>
+  return (
+    <WalletPanelStory
+      panelStateOverride={{
+        selectedPanel: 'signTransaction',
+        signTransactionRequests: [mockSolDappSignTransactionRequest],
+        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest]
+      }}
+      uiStateOverride={{
+        selectedPendingTransactionId:
+          mockSolDappSignAndSendTransactionRequest.id
+      }}
+      walletApiDataOverrides={{
+        transactionInfos: [
+          deserializeTransaction({
+            ...mockSolDappSignAndSendTransactionRequest,
+            txStatus: BraveWallet.TransactionStatus.Unapproved
+          })
+        ]
+      }}
+    >
+      <SignTransactionPanel signMode={'signAllTxs'} />
+    </WalletPanelStory>
+  )
 }
 
 _SignAllSolanaTxPanel.story = {
@@ -38,20 +51,22 @@ _SignAllSolanaTxPanel.story = {
 }
 
 export const _SignSolanaTxPanel = () => {
-  return <WalletPanelStory
-    walletStateOverride={{
-      selectedPendingTransaction: mockSolDappSignAndSendTransactionRequest
-    }}
-    panelStateOverride={{
-      selectedPanel: 'signTransaction',
-      signTransactionRequests: [mockSolDappSignTransactionRequest],
-      signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest]
-    }}
-  >
-    <SignTransactionPanel
-      signMode='signTx'
-    />
-  </WalletPanelStory>
+  return (
+    <WalletPanelStory
+      panelStateOverride={{
+        selectedPanel: 'signTransaction',
+        signTransactionRequests: [mockSolDappSignTransactionRequest],
+        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest]
+      }}
+      walletApiDataOverrides={{
+        transactionInfos: [
+          deserializeTransaction(mockSolDappSignAndSendTransactionRequest)
+        ]
+      }}
+    >
+      <SignTransactionPanel signMode="signTx" />
+    </WalletPanelStory>
+  )
 }
 
 _SignSolanaTxPanel.story = {

@@ -24,7 +24,7 @@ import { NavButton } from '../../buttons'
 import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
 
 interface Props {
-  onConfirm: () => void
+  onConfirm: () => Promise<void>
   onReject: () => void
   rejectButtonType?: 'reject' | 'cancel'
 }
@@ -50,7 +50,7 @@ export function Footer (props: Props) {
     }
   }, [queueLength, transactionsQueueLength])
 
-  const onClickConfirmTransaction = React.useCallback(() => {
+  const onClickConfirmTransaction = React.useCallback(async () => {
     // Checks to see if there are multiple transactions in the queue,
     // if there is we keep track of the length of the last confirmed transaction.
     if (transactionsQueueLength > 1) {
@@ -59,7 +59,7 @@ export function Footer (props: Props) {
     // Sets transactionConfirmed state to disable the send button to prevent
     // being clicked again and submitting the same transaction.
     setTranactionConfirmed(true)
-    onConfirm()
+    await onConfirm()
   }, [transactionsQueueLength, onConfirm])
 
   return (

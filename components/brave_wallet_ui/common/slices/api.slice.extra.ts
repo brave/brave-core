@@ -35,6 +35,7 @@ import {
 } from '../slices/entities/blockchain-token.entity'
 import { findAccountFromRegistry } from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
+import { selectPendingTransactions } from './entities/transaction.entity'
 
 export const useAccountQuery = (
   address: string | typeof skipToken,
@@ -162,4 +163,20 @@ export const useTransactionsNetworkQuery = <
         }
       : skipToken
   )
+}
+
+const emptyPendingTxs: SerializableTransactionInfo[] = []
+
+export const usePendingTransactionsQuery = (
+  arg: Parameters<typeof useGetTransactionsQuery>[0]
+) => {
+  return useGetTransactionsQuery(arg, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      transactions: res.data || emptyPendingTxs,
+      pendingTransactions: res.data
+        ? selectPendingTransactions(res.data)
+        : emptyPendingTxs
+    })
+  })
 }

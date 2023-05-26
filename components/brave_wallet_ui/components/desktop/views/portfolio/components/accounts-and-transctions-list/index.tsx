@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
 import {
@@ -77,9 +78,9 @@ export const AccountsAndTransactionsList = ({
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: selectedAssetNetwork } = useGetNetworkQuery(selectedAsset, {
-    skip: !selectedAsset
-  })
+  const { data: selectedAssetNetwork } = useGetNetworkQuery(
+    selectedAsset ?? skipToken
+  )
 
 
   // hooks
