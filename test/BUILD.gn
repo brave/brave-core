@@ -1241,6 +1241,7 @@ if (is_android) {
       "//components/embedder_support/android:browser_context_java",
       "//components/external_intents/android:java",
       "//components/favicon/android:java",
+      "//components/image_fetcher:java",
       "//components/omnibox/browser:browser_java",
       "//components/password_manager/core/browser:password_manager_java_enums",
       "//components/permissions/android:java",
