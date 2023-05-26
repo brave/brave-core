@@ -135,32 +135,14 @@ absl::optional<std::vector<mojom::SPLTokenAmountPtr>> ParseGetSPLTokenBalances(
     }
 
     const auto& account_dict = account_value.GetDict();
-    auto* account = account_dict.FindDict("account");
-    if (!account) {
-      return absl::nullopt;
-    }
-
-    auto* data = account->FindDict("data");
-    if (!data) {
-      return absl::nullopt;
-    }
-
-    auto* parsed = data->FindDict("parsed");
-    if (!parsed) {
-      return absl::nullopt;
-    }
-
-    auto* info = parsed->FindDict("info");
-    if (!info) {
-      return absl::nullopt;
-    }
-
-    auto* mint = info->FindString("mint");
+    auto* mint =
+        account_dict.FindStringByDottedPath("account.data.parsed.info.mint");
     if (!mint) {
       return absl::nullopt;
     }
 
-    auto* tokenAmount = info->FindDict("tokenAmount");
+    auto* tokenAmount = account_dict.FindDictByDottedPath(
+        "account.data.parsed.info.tokenAmount");
     if (!tokenAmount) {
       return absl::nullopt;
     }
