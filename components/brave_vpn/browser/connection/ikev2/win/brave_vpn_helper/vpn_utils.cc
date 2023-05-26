@@ -62,21 +62,6 @@ bool SetServiceTriggerForVPNConnection(SC_HANDLE hService,
                               &serviceTriggerInfo);
 }
 
-bool SetServiceFailActions(SC_HANDLE service) {
-  SC_ACTION failActions[] = {
-      {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}};
-  // The time after which to reset the failure count to zero if there are no
-  // failures, in seconds.
-  SERVICE_FAILURE_ACTIONS servFailActions = {
-      .dwResetPeriod = 0,
-      .lpRebootMsg = NULL,
-      .lpCommand = NULL,
-      .cActions = sizeof(failActions) / sizeof(SC_ACTION),
-      .lpsaActions = failActions};
-  return ChangeServiceConfig2(service, SERVICE_CONFIG_FAILURE_ACTIONS,
-                              &servFailActions);
-}
-
 DWORD AddSublayer(GUID uuid) {
   FWPM_SESSION0 session = {};
   HANDLE engine = nullptr;
@@ -337,8 +322,8 @@ bool ConfigureServiceAutoRestart(const std::wstring& service_name,
     return false;
   }
 
-  if (!SetServiceFailActions(service.Get())) {
-    LOG(ERROR) << "SetServiceFailActions failed:" << std::hex
+  if (!brave_vpn::SetServiceFailureActions(service.Get())) {
+    LOG(ERROR) << "SetServiceFailureActions failed:" << std::hex
                << HRESULTFromLastError();
     return false;
   }

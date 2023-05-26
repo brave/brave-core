@@ -65,27 +65,7 @@ bool ConfigureBraveWireguardService(const std::wstring& service_name) {
             << HRESULTFromLastError();
     return false;
   }
-  if (!SetBraveWireguardServiceFailActions(service.Get())) {
-    VLOG(1) << "SetServiceFailActions failed:" << std::hex
-            << HRESULTFromLastError();
-    return false;
-  }
   return true;
-}
-
-bool SetBraveWireguardServiceFailActions(SC_HANDLE service) {
-  SC_ACTION failActions[] = {
-      {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}, {SC_ACTION_NONE, 1}};
-  // The time after which to reset the failure count to zero if there are no
-  // failures, in seconds.
-  SERVICE_FAILURE_ACTIONS servFailActions = {
-      .dwResetPeriod = 0,
-      .lpRebootMsg = NULL,
-      .lpCommand = NULL,
-      .cActions = sizeof(failActions) / sizeof(SC_ACTION),
-      .lpsaActions = failActions};
-  return ChangeServiceConfig2(service, SERVICE_CONFIG_FAILURE_ACTIONS,
-                              &servFailActions);
 }
 
 }  // namespace brave_vpn

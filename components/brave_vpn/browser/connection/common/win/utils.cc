@@ -40,4 +40,20 @@ bool IsWindowsServiceRunning(const std::wstring& service_name) {
   }
   return service_status.dwCurrentState == SERVICE_RUNNING;
 }
+
+bool SetServiceFailureActions(SC_HANDLE service) {
+  SC_ACTION failureActions[] = {
+      {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}, {SC_ACTION_NONE, 1}};
+  // The time after which to reset the failure count to zero if there are no
+  // failures, in seconds.
+  SERVICE_FAILURE_ACTIONS serviceFailureActions = {
+      .dwResetPeriod = 0,
+      .lpRebootMsg = NULL,
+      .lpCommand = NULL,
+      .cActions = sizeof(failureActions) / sizeof(SC_ACTION),
+      .lpsaActions = failureActions};
+  return ChangeServiceConfig2(service, SERVICE_CONFIG_FAILURE_ACTIONS,
+                              &serviceFailureActions);
+}
+
 }  // namespace brave_vpn

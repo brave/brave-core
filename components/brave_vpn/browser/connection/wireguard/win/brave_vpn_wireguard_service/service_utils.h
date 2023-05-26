@@ -15,7 +15,6 @@ namespace brave_vpn {
 
 bool InstallBraveWireguardService();
 bool ConfigureBraveWireguardService(const std::wstring& service_name);
-bool SetBraveWireguardServiceFailActions(SC_HANDLE service);
 
 }  // namespace brave_vpn
 

@@ -42,7 +42,7 @@ bool AddACEToPath(const base::FilePath& path,
     return true;
   }
 
-  // Intentially take empty descriptor to avoid inherited permissions.
+  // Intentionally take empty descriptor to avoid inherited permissions.
   base::win::SecurityDescriptor sd;
 
   std::vector<base::win::ExplicitAccessEntry> entries;
@@ -112,7 +112,7 @@ bool IsServiceRunning(SC_HANDLE service) {
 
 namespace wireguard {
 
-// Created and launches a new Wireguard Windows service using passed config.
+// Creates and launches a new Wireguard Windows service using passed config.
 // Before to start a new service it checks and removes existing if exists.
 bool LaunchWireguardService(const std::wstring& config) {
   if (!RemoveExistingWireguardService()) {
@@ -202,6 +202,12 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
   if (!ChangeServiceConfig2(service.Get(), SERVICE_CONFIG_SERVICE_SID_INFO,
                             &info)) {
     VLOG(1) << "Failed to configure service 0x" << std::hex
+            << HRESULTFromLastError();
+    return false;
+  }
+
+  if (!brave_vpn::SetServiceFailureActions(service.Get())) {
+    VLOG(1) << "SetServiceFailActions failed:" << std::hex
             << HRESULTFromLastError();
     return false;
   }
