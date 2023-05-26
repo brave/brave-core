@@ -37,7 +37,7 @@ NPM_EXCLUDE_PATHS = [
 
 # Use only these (sub)paths for cargo audit.
 CARGO_INCLUDE_PATHS = [
-    os.path.join('build', 'rust'),
+    os.path.join('third_party', 'rust'),
 ]
 
 
