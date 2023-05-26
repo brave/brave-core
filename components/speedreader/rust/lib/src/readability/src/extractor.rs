@@ -1061,7 +1061,7 @@ mod tests {
         // A follow up to the last test with common unicode dashes. For example &#8211;
         // converts to an en dash.
         let dashes = [
-            "-",   // hyphen
+            "-", // hyphen
             "–", // en dash
             "—", // em dash
         ];

@@ -37,7 +37,7 @@ interface ToolbarEventsHandler {
   OnTtsSettingsChanged(TtsSettings tts_settings);
   OnBrowserThemeChanged(ToolbarColors colors);
 
-  SetPlaybackState(PlaybackState playback_state);  
+  SetPlaybackState(PlaybackState playback_state);
 };
 
 struct SiteSettings {
