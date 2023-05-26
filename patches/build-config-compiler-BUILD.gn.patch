@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..9ac8257ff7214f131d3d181c82a0bfe7794fbd66 100644
+index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..69b9b371ae7d8642fc297bded28efa7eeb59ca4a 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -260,6 +260,7 @@ config("compiler") {
@@ -57,6 +57,15 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..9ac8257ff7214f131d3d181c82a0bfe7
  }
  
  # Defers LTO optimization to the linker, for use when:
+@@ -2448,7 +2466,7 @@ config("symbols") {
+       if (use_dwarf5) {
+         cflags += [ "-gdwarf-5" ]
+         rustflags += [ "-Zdwarf-version=5" ]
+-      } else if (!is_apple) {
++      } else {
+         # Recent clang versions default to DWARF5 on Linux, and Android is about
+         # to switch. TODO: Adopt that in controlled way.
+         # Apple platforms still default to 4, so the flag is not needed there.
 @@ -2551,6 +2569,7 @@ config("symbols") {
  # This config guarantees to hold symbol for stack trace which are shown to user
  # when crash happens in unittests running on buildbot.
