@@ -4,29 +4,34 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton, Text } from '../../../shared/style'
 import { layoutSmallWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
+  --button-background-hover: ${leo.color.container.highlight};
+  @media (prefers-color-scheme: dark) {
+    --button-background-hover: ${leo.color.dark.gray[20]};
+  }
   --icon-color: ${(p) =>
     p.isSelected
-      ? 'var(--nav-page-icon-color-hover)'
-      : 'var(--nav-page-icon-color)'
+      ? leo.color.icon.interactive
+      : leo.color.gray[30]
   };
   --text-color: ${(p) =>
     p.isSelected
-      ? 'var(--nav-page-text-color-hover)'
-      : 'var(--nav-page-text-color)'
+      ? leo.color.text.interactive
+      : leo.color.text.secondary
   };
   --indicator-color: ${(p) =>
     p.isSelected
-      ? 'var(--nav-page-indicator-color)'
+      ? leo.color.interaction.buttonPrimaryBackground
       : 'none'
   };
   &:hover {
-    --icon-color: var(--nav-page-icon-color-hover);
-    --text-color: var(--nav-page-text-color-hover);
+    --icon-color: ${leo.color.icon.interactive};
+    --text-color: ${leo.color.text.interactive};
     }
   display: flex;
   align-items: center;
@@ -49,10 +54,10 @@ export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
     margin-bottom: 0px;
     margin-right: 8px;
     background-color: ${(p) => p.isSelected
-    ? 'var(--nav-button-background-hover)'
+    ? 'var(--button-background-hover)'
     : 'none'};
     &:hover {
-      background-color: var(--nav-button-background-hover);
+      background-color: var(--button-background-hover);
     }
     &:last-child {
       margin-right: 0px;
@@ -65,7 +70,7 @@ export const ButtonIcon = styled(Icon)`
   color: var(--icon-color);
   margin-right: 16px;
   @media screen and (max-width: ${layoutSmallWidth}px) {
-    color: var(--nav-button-color);
+    color: ${leo.color.icon.default};
     --leo-icon-size: 24px;
     margin-right: 0px;
   }
@@ -79,7 +84,7 @@ export const ButtonText = styled(Text)`
   font-size: 15px;
   line-height: 20px;
   @media screen and (max-width: ${layoutSmallWidth}px) {
-    color: var(--nav-button-color);
+    color: ${leo.color.icon.default};
     font-size: 12px;
     font-weight: 400;
     line-height: 18px;

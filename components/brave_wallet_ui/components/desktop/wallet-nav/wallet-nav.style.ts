@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 import { layoutSmallWidth, layoutTopPosition } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Wrapper = styled.div`
@@ -11,7 +12,7 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: var(--nav-background);
+  background-color: ${leo.color.container.background};
   border-radius: 16px;
   position: absolute;
   top: ${layoutTopPosition}px;
@@ -43,14 +44,14 @@ export const Section = styled.div<{ showBorder?: boolean }>`
   width: 100%;
   padding: 12px 0px;
   border-bottom: ${(p) => p.showBorder
-    ? `1px solid var(--nav-border)`
+    ? `1px solid ${leo.color.container.highlight}`
     : 'none'};
   @media screen and (max-width: ${layoutSmallWidth}px) {
     flex-direction: row;
     padding: 0px 8px;
     border-bottom: none;
     border-right: ${(p) => p.showBorder
-    ? `1px solid var(--nav-border)`
+    ? `1px solid ${leo.color.container.highlight}`
     : 'none'};
   }
 `

@@ -12,9 +12,6 @@ import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
 // Types
 import { BraveWallet } from '../../../constants/types'
 
-// Constants
-import { BRAVE_SWAP_DATA_THEME_KEY } from './constants/magics'
-
 // Hooks
 import { useSwap } from './hooks/useSwap'
 import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
@@ -138,14 +135,6 @@ export const Swap = () => {
     () => setShowPrivacyModal(false),
     showPrivacyModal
   )
-
-  React.useEffect(() => {
-    const userTheme = window.localStorage.getItem(BRAVE_SWAP_DATA_THEME_KEY)
-    if (userTheme === null) {
-      return
-    }
-    document.documentElement.setAttribute('data-theme', userTheme)
-  }, [])
 
   // FIXME(douglashdaniel): this should be computed
   // if (!isReady) {
