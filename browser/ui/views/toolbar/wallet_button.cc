@@ -186,7 +186,7 @@ std::string WalletButton::GetBadgeText() {
 void WalletButton::UpdateImageAndText() {
   const ui::ColorProvider* color_provider = GetColorProvider();
   SkColor icon_color = color_provider->GetColor(kColorToolbarButtonIcon);
-  auto icon = gfx::CreateVectorIcon(kWalletToolbarButtonIcon, icon_color);
+  auto icon = gfx::CreateVectorIcon(kLeoProductBraveWalletIcon, 16, icon_color);
 
   size_t icon_size = std::max(icon.width(), icon.height());
   auto badge_size = brave::BraveIconWithBadgeImageSource::GetMaxBadgeSize();

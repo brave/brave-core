@@ -26,7 +26,6 @@ aggregate_vector_icons("brave_vector_icons") {
     "sidebar_toolbar_button.icon",
     "sidebar_toolbar_button_right.icon",
     "vpn_indicator.icon",
-    "wallet_toolbar_button.icon",
     "web_discovery_infobar_close_button.icon",
   ]
 
@@ -36,6 +35,9 @@ aggregate_vector_icons("brave_vector_icons") {
     "leo_arrow_right.icon",
     "leo_heart_filled.icon",
     "leo_heart_outline.icon",
+    "leo_product_brave_wallet.icon",
+    "leo_product_readermode.icon",
+    "leo_product_speedreader.icon",
     "leo_rss.icon",
     "leo_verification_filled.icon",
   ]
@@ -70,12 +72,10 @@ aggregate_vector_icons("brave_vector_icons") {
 
   if (enable_speedreader) {
     sources += [
-      "brave_reader_mode.icon",
       "brave_speedreader_graphic_book1.icon",
       "brave_speedreader_graphic_book2.icon",
       "brave_speedreader_graphic_book3.icon",
       "brave_speedreader_graphic_lines.icon",
-      "brave_speedreader_mode.icon",
     ]
   }
 }
