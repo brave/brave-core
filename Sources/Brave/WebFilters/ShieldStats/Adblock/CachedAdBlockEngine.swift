@@ -164,9 +164,6 @@ public class CachedAdBlockEngine {
       // This engine source type is enabled only if shields are enabled
       // for the given domain
       return domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)
-    case .cosmeticFilters:
-      // The cosmetic filters are always applied
-      return true
     }
   }
   

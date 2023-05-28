@@ -14,8 +14,11 @@ public actor AdblockResourceDownloader: Sendable {
   
   /// All the different resources this downloader handles
   static let handledResources: [BraveS3Resource] = [
-    .genericContentBlockingBehaviors, .generalCosmeticFilters, .debounceRules
+    .genericContentBlockingBehaviors, .debounceRules
   ]
+  
+  /// A list of old resources that need to be deleted so as not to take up the user's disk space
+  private static let deprecatedResources: [BraveS3Resource] = [.deprecatedGeneralCosmeticFilters]
   
   /// A formatter that is used to format a version number
   private let fileVersionDateFormatter: DateFormatter = {
@@ -89,6 +92,18 @@ public actor AdblockResourceDownloader: Sendable {
     for resource in Self.handledResources {
       startFetching(resource: resource, every: fetchInterval)
     }
+    
+    // Remove any old files
+    // We can remove this code in some not-so-distant future
+    for resource in Self.deprecatedResources {
+      do {
+        try resource.removeCacheFolder()
+      } catch {
+        ContentBlockerManager.log.error(
+          "Failed to removed deprecated file \(resource.cacheFileName): \(error)"
+        )
+      }
+    }
   }
   
   /// Start fetching the given resource at regular intervals
@@ -124,13 +139,6 @@ public actor AdblockResourceDownloader: Sendable {
     let version = fileVersionDateFormatter.string(from: downloadResult.date)
     
     switch resource {
-    case .generalCosmeticFilters:
-      await AdBlockEngineManager.shared.add(
-        resource: AdBlockEngineManager.Resource(type: .dat, source: .cosmeticFilters),
-        fileURL: downloadResult.fileURL,
-        version: version
-      )
-      
     case .genericContentBlockingBehaviors:
       let blocklistType = ContentBlockerManager.BlocklistType.generic(.blockAds)
       

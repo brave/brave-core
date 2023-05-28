@@ -11,11 +11,13 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   case debounceRules
   /// Generic iOS only content blocking behaviours used for the iOS content blocker
   case genericContentBlockingBehaviors
-  /// Cosmetic filter rules
-  case generalCosmeticFilters
   /// Adblock rules for a filter list
   /// iOS only content blocking behaviours used for the iOS content blocker for a given filter list
   case filterListContentBlockingBehaviors(uuid: String, componentId: String)
+  
+  /// Cosmetic filter rules
+  /// - Warning: Do not use this. This is here solely so we can delete the files
+  case deprecatedGeneralCosmeticFilters
   
   /// The name of the info plist key that contains the service key
   private static let servicesKeyName = "SERVICES_KEY"
@@ -40,7 +42,7 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
       return ["filter-lists", componentId].joined(separator: "/")
     case .genericContentBlockingBehaviors:
       return "abp-data"
-    case .generalCosmeticFilters:
+    case .deprecatedGeneralCosmeticFilters:
       return "cmf-data"
     }
   }
@@ -54,7 +56,7 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
       return "\(uuid)-latest.json"
     case .genericContentBlockingBehaviors:
       return "latest.json"
-    case .generalCosmeticFilters:
+    case .deprecatedGeneralCosmeticFilters:
       return "ios-cosmetic-filters.dat"
     }
   }
@@ -68,7 +70,7 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
       return Self.baseResourceURL.appendingPathComponent("/ios/\(uuid)-latest.json")
     case .genericContentBlockingBehaviors:
       return Self.baseResourceURL.appendingPathComponent("/ios/latest.json")
-    case .generalCosmeticFilters:
+    case .deprecatedGeneralCosmeticFilters:
       return Self.baseResourceURL.appendingPathComponent("/ios/ios-cosmetic-filters.dat")
     }
   }

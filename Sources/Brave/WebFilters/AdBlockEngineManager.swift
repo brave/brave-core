@@ -16,7 +16,6 @@ public actor AdBlockEngineManager: Sendable {
   /// The source of a resource. In some cases we need to remove all resources for a given source.
   enum Source: Hashable {
     case adBlock
-    case cosmeticFilters
     case filterList(uuid: String)
     case filterListURL(uuid: String)
     
@@ -26,7 +25,6 @@ public actor AdBlockEngineManager: Sendable {
     fileprivate var relativeOrder: Int {
       switch self {
       case .adBlock: return 0
-      case .cosmeticFilters: return 3
       case .filterList: return 100
       case .filterListURL: return 200
       }
@@ -42,7 +40,7 @@ public actor AdBlockEngineManager: Sendable {
     /// All other filter lists are agressive (i.e. are always hidden regardless of 1p status)
     @MainActor func isAlwaysAgressive(given filterLists: [FilterList]) -> Bool {
       switch self {
-      case .adBlock, .cosmeticFilters:
+      case .adBlock:
         // Our default filter lists are not agressive
         return false
       case .filterListURL:
@@ -255,7 +253,6 @@ extension AdBlockEngineManager.Source: CustomDebugStringConvertible {
     case .filterList(let uuid): return "filterList(\(uuid))"
     case .filterListURL(let uuid): return "filterListURL(\(uuid))"
     case .adBlock: return "adBlock"
-    case .cosmeticFilters: return "cosmeticFilters"
     }
   }
 }
