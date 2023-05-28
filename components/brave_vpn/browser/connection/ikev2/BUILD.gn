@@ -58,6 +58,7 @@ source_set("unit_tests") {
     "//brave/components/brave_vpn/common/mojom",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",
+    "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",

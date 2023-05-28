@@ -17,6 +17,7 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/test/browser_task_environment.h"
+#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -49,6 +50,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_;
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<BraveWalletP3A> wallet_p3a_;
+  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(BraveWalletP3AUnitTest, KeyringCreated) {
