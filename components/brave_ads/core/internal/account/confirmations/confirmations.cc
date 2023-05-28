@@ -99,7 +99,7 @@ void Confirmations::Retry() {
   const ConfirmationList failed_confirmations =
       ConfirmationStateManager::GetInstance().GetFailedConfirmations();
   if (failed_confirmations.empty()) {
-    return BLOG(1, "No failed confirmations to retry");
+    return;
   }
 
   CHECK(!retry_timer_.IsRunning());

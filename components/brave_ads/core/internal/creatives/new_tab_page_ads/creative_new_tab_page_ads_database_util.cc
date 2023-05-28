@@ -18,8 +18,6 @@ void DeleteCreativeNewTabPageAds() {
     if (!success) {
       return BLOG(0, "Failed to delete creative new tab page ads");
     }
-
-    BLOG(3, "Successfully deleted creative new tab page ads");
   }));
 }
 
@@ -29,8 +27,6 @@ void DeleteCreativeNewTabPageAdWallpapers() {
     if (!success) {
       return BLOG(0, "Failed to delete creative new tab page ad wallpapers");
     }
-
-    BLOG(3, "Successfully deleted creative new tab page ad wallpapers");
   }));
 }
 

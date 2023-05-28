@@ -17,8 +17,6 @@ void DeleteEmbeddings() {
     if (!success) {
       return BLOG(0, "Failed to delete embeddings");
     }
-
-    BLOG(3, "Successfully deleted embeddings");
   }));
 }
 

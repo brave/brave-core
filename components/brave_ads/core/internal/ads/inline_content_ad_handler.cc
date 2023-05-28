@@ -128,11 +128,19 @@ void InlineContentAdHandler::OnDidServeInlineContentAd(
 
 void InlineContentAdHandler::OnDidFireInlineContentAdServedEvent(
     const InlineContentAdInfo& ad) {
+  BLOG(3, "Served inline content ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
 void InlineContentAdHandler::OnDidFireInlineContentAdViewedEvent(
     const InlineContentAdInfo& ad) {
+  BLOG(3, "Viewed inline content ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
@@ -143,6 +151,10 @@ void InlineContentAdHandler::OnDidFireInlineContentAdViewedEvent(
 
 void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
     const InlineContentAdInfo& ad) {
+  BLOG(3, "Clicked inline content ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   transfer_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);

@@ -17,8 +17,6 @@ void DeleteDayparts() {
     if (!success) {
       return BLOG(0, "Failed to delete dayparts");
     }
-
-    BLOG(3, "Successfully deleted dayparts");
   }));
 }
 

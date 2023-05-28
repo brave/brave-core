@@ -55,6 +55,8 @@ class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
                                  mojom::SearchResultAdEventType event_type);
 
   // SearchResultAdEventHandlerDelegate:
+  void OnDidFireSearchResultAdServedEvent(
+      const SearchResultAdInfo& ad) override;
   void OnDidFireSearchResultAdViewedEvent(
       const SearchResultAdInfo& ad) override;
   void OnDidFireSearchResultAdClickedEvent(

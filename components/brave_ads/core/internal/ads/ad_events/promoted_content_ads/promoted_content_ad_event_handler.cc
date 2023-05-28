@@ -134,8 +134,8 @@ void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
 
   if (!success) {
     BLOG(1,
-         "Failed to fire promoted content ad event due to missing "
-         "creative instance id "
+         "Failed to fire promoted content ad event due to missing creative "
+         "instance id "
              << creative_instance_id);
     return FailedToFireEvent(placement_id, creative_instance_id, event_type,
                              std::move(callback));
@@ -166,8 +166,8 @@ void PromotedContentAdEventHandler::GetForTypeCallback(
 
   if (!WasAdServed(ad, ad_events, event_type)) {
     BLOG(1,
-         "Promoted content ad: Not allowed because an ad was not served "
-         "for placement id "
+         "Promoted content ad: Not allowed because an ad was not served for "
+         "placement id "
              << ad.placement_id);
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              event_type, std::move(callback));

@@ -160,8 +160,8 @@ void InlineContentAdEventHandler::GetForTypeCallback(
 
   if (!WasAdServed(ad, ad_events, event_type)) {
     BLOG(1,
-         "Inline content ad: Not allowed because an ad was not served "
-         "for placement id "
+         "Inline content ad: Not allowed because an ad was not served for "
+         "placement id "
              << ad.placement_id);
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              event_type, std::move(callback));

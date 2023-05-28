@@ -158,11 +158,19 @@ void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdServedEvent(
     const NewTabPageAdInfo& ad) {
+  BLOG(3, "Served new tab page ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdViewedEvent(
     const NewTabPageAdInfo& ad) {
+  BLOG(3, "Viewed new tab page ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
@@ -171,6 +179,10 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdViewedEvent(
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
     const NewTabPageAdInfo& ad) {
+  BLOG(3, "Clicked new tab page ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   transfer_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);

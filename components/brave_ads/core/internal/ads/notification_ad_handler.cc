@@ -182,11 +182,19 @@ void NotificationAdHandler::OnDidServeNotificationAd(
 
 void NotificationAdHandler::OnDidFireNotificationAdServedEvent(
     const NotificationAdInfo& ad) {
+  BLOG(3, "Served notification ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
     const NotificationAdInfo& ad) {
+  BLOG(3, "Viewed notification ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
@@ -199,6 +207,10 @@ void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
 
 void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
     const NotificationAdInfo& ad) {
+  BLOG(3, "Clicked notification ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   CloseNotificationAd(ad.placement_id);
 
   transfer_->SetLastClickedAd(ad);
@@ -218,6 +230,10 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
 
 void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
     const NotificationAdInfo& ad) {
+  BLOG(3, "Dismissed notification ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   DismissNotificationAd(ad.placement_id);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kDismissed);
@@ -235,6 +251,10 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
 
 void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(
     const NotificationAdInfo& ad) {
+  BLOG(3, "Timed out notification ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   NotificationAdTimedOut(ad.placement_id);
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});

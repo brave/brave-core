@@ -17,8 +17,6 @@ void DeleteCampaigns() {
     if (!success) {
       return BLOG(0, "Failed to delete campaigns");
     }
-
-    BLOG(3, "Successfully deleted campaigns");
   }));
 }
 

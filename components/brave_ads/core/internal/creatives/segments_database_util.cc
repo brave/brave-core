@@ -17,8 +17,6 @@ void DeleteSegments() {
     if (!success) {
       return BLOG(0, "Failed to delete segments");
     }
-
-    BLOG(3, "Successfully deleted segments");
   }));
 }
 

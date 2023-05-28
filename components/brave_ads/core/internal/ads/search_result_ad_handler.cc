@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
@@ -136,8 +137,19 @@ void SearchResultAd::FireAdViewedEventCallback(
   MaybeTriggerAdViewedEventFromQueue(std::move(callback));
 }
 
+void SearchResultAd::OnDidFireSearchResultAdServedEvent(
+    const SearchResultAdInfo& ad) {
+  BLOG(3, "Served search result ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+}
+
 void SearchResultAd::OnDidFireSearchResultAdViewedEvent(
     const SearchResultAdInfo& ad) {
+  BLOG(3, "Viewed search result ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
@@ -146,6 +158,10 @@ void SearchResultAd::OnDidFireSearchResultAdViewedEvent(
 
 void SearchResultAd::OnDidFireSearchResultAdClickedEvent(
     const SearchResultAdInfo& ad) {
+  BLOG(3, "Clicked search result ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
   transfer_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);

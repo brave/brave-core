@@ -48,6 +48,8 @@ class PromotedContentAdHandler final
                                   mojom::PromotedContentAdEventType event_type);
 
   // PromotedContentAdEventHandlerDelegate:
+  void OnDidFirePromotedContentAdServedEvent(
+      const PromotedContentAdInfo& ad) override;
   void OnDidFirePromotedContentAdViewedEvent(
       const PromotedContentAdInfo& ad) override;
   void OnDidFirePromotedContentAdClickedEvent(

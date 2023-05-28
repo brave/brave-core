@@ -17,8 +17,6 @@ void DeleteGeoTargets() {
     if (!success) {
       return BLOG(0, "Failed to delete geo targets");
     }
-
-    BLOG(3, "Successfully deleted geo targets");
   }));
 }
 
