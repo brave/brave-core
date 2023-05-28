@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
@@ -14,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -21,7 +23,7 @@
 
 namespace brave_ads {
 
-using ::testing::_;
+using ::testing::Invoke;
 using ::testing::NiceMock;
 
 class BraveAdsIssuersTest : public UnitTestBase {
@@ -37,23 +39,56 @@ class BraveAdsIssuersTest : public UnitTestBase {
   NiceMock<IssuersDelegateMock> issuers_delegate_mock_;
 };
 
+TEST_F(BraveAdsIssuersTest,
+       FetchIssuersWhenEnabledPrefDidChangeIfBravePrivateAdsAreEnabled) {
+  // Arrange
+  SetDefaultBooleanPref(prefs::kEnabled, false);
+
+  ASSERT_FALSE(GetIssuers());
+
+  const URLResponseMap url_responses = {
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(BuildIssuers()));
+
+  // Act
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, true);
+
+  // Assert
+}
+
+TEST_F(BraveAdsIssuersTest,
+       ResetIssuersWhenEnabledPrefDidChangeIfBravePrivateAdsAreDisabled) {
+  // Arrange
+  const URLResponseMap url_responses = {
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  ON_CALL(issuers_delegate_mock_, OnDidFetchIssuers)
+      .WillByDefault(
+          Invoke([](const IssuersInfo& issuers) { SetIssuers(issuers); }));
+
+  issuers_->MaybeFetch();
+  ASSERT_TRUE(GetIssuers());
+
+  // Act
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+
+  // Assert
+  EXPECT_FALSE(GetIssuers());
+}
+
 TEST_F(BraveAdsIssuersTest, FetchIssuers) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const IssuersInfo expected_issuers =
-      BuildIssuers(7'200'000,
-                   {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-                    {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-                   {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                    {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
-
-  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(expected_issuers));
-  EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(BuildIssuers()));
+  EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers).Times(0);
   EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers).Times(0);
-  EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers()).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers).Times(0);
 
   // Act
   issuers_->MaybeFetch();
@@ -61,38 +96,42 @@ TEST_F(BraveAdsIssuersTest, FetchIssuers) {
   // Assert
 }
 
-TEST_F(BraveAdsIssuersTest, FetchIssuersInvalidJsonResponseBody) {
+TEST_F(BraveAdsIssuersTest, DoNotFetchIssuersIfInvalidJsonResponseBody) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body*/ "{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers).Times(0);
-  EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
-  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers).Times(2);
-  EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers());
+  EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers);
+  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers).Times(0);
 
   // Act
   issuers_->MaybeFetch();
-
-  FastForwardClockToNextPendingTask();
 
   // Assert
   EXPECT_FALSE(GetIssuers());
 }
 
-TEST_F(BraveAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
+TEST_F(BraveAdsIssuersTest, RetryFetchingIssuersIfNonHttpOkResponse) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
-       {{net::HTTP_NOT_FOUND,
-         /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)}}}};
+       {{net::HTTP_INTERNAL_SERVER_ERROR,
+         /*response_body*/ net::GetHttpReasonPhrase(
+             net::HTTP_INTERNAL_SERVER_ERROR)},
+        {net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers).Times(0);
-  EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
-  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers).Times(2);
-  EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers());
+  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers);
+  EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers);
+  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers);
+
+  ON_CALL(issuers_delegate_mock_, OnDidFetchIssuers)
+      .WillByDefault(
+          Invoke([](const IssuersInfo& issuers) { SetIssuers(issuers); }));
 
   // Act
   issuers_->MaybeFetch();
@@ -100,7 +139,7 @@ TEST_F(BraveAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_FALSE(GetIssuers());
+  EXPECT_TRUE(GetIssuers());
 }
 
 }  // namespace brave_ads
