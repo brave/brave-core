@@ -740,6 +740,7 @@ void SolanaProviderImpl::OnConnect(
     std::move(callback).Run(
         mojom::SolanaProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+    delegate_->ShowPanel();
   } else if (error == RequestPermissionsError::kNone) {
     CHECK(allowed_accounts);
     if (allowed_accounts->size()) {
