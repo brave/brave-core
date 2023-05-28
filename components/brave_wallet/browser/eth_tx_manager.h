@@ -228,6 +228,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& error_message);
   void OnGetGasEstimation1559(
       GetGasEstimation1559Callback callback,
+      const std::string& chain_id,
       const std::vector<std::string>& base_fee_per_gas,
       const std::vector<double>& gas_used_ratio,
       const std::string& oldest_block,
@@ -285,6 +286,12 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       bool status,
       mojom::ProviderErrorUnionPtr error_union,
       const std::string& error_message);
+
+  void OnGetBaseFeePerGas(GetGasEstimation1559Callback callback,
+                          const std::string& chain_id,
+                          const std::string& base_fee_per_gas,
+                          mojom::ProviderError error,
+                          const std::string& error_message);
 
   // EthBlockTracker::Observer:
   void OnLatestBlock(const std::string& chain_id,
