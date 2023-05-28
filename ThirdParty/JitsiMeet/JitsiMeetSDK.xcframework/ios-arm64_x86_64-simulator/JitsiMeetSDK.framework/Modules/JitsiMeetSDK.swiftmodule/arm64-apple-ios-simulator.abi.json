@@ -435,11 +435,9 @@
             "moduleName": "JitsiMeetSDK",
             "declAttributes": [
               "HasInitialValue",
-              "Final",
               "HasStorage",
               "AccessControl"
             ],
-            "isLet": true,
             "hasStorage": true,
             "accessors": [
               {
@@ -459,10 +457,49 @@
                 "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0Ovg",
                 "moduleName": "JitsiMeetSDK",
                 "implicit": true,
-                "declAttributes": [
-                  "Final"
-                ],
                 "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Position",
+                    "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                    "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0Ovs",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0Ovs",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0OvM",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0OvM",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "_modify"
               }
             ]
           },
