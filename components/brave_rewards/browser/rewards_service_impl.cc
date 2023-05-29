@@ -455,7 +455,7 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
   }
 
   ledger_factory_->CreateLedger(
-      ledger_.BindNewEndpointAndPassReceiver(),
+      profile_->GetPath(), ledger_.BindNewEndpointAndPassReceiver(),
       receiver_.BindNewEndpointAndPassRemote(),
       base::BindOnce(&RewardsServiceImpl::OnLedgerCreated, AsWeakPtr()));
 }
@@ -2125,7 +2125,7 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
     return;
   }
 
-  ledger_->SetTesting();
+  ledger_->SetTesting(true);
   ledger_->SetStateMigrationTargetVersionForTesting(  // IN-TEST
       ledger_state_target_version_for_testing_);
   SetRetryInterval(1);

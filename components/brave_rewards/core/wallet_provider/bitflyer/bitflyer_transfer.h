@@ -12,9 +12,6 @@
 namespace brave_rewards::internal::bitflyer {
 
 class BitFlyerTransfer final : public wallet_provider::Transfer {
- public:
-  using Transfer::Transfer;
-
  private:
   void CommitTransaction(ResultCallback,
                          mojom::ExternalTransactionPtr) const override;

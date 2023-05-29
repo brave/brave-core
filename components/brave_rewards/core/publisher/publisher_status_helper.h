@@ -10,23 +10,17 @@
 
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 // Refreshes the publisher status for each entry in the specified list
-void RefreshPublisherStatus(LedgerImpl& ledger,
-                            std::vector<mojom::PublisherInfoPtr>&& info_list,
+void RefreshPublisherStatus(std::vector<mojom::PublisherInfoPtr>&& info_list,
                             GetRecurringTipsCallback callback);
 
 // Refreshes the publisher status for each entry in the specified list
 void RefreshPublisherStatus(
-    LedgerImpl& ledger,
     std::vector<mojom::PendingContributionInfoPtr>&& list,
     GetPendingContributionsCallback callback);
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_STATUS_HELPER_H_

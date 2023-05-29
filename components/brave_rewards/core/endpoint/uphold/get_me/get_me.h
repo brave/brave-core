@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
 
@@ -110,11 +109,7 @@
 //   "tier": "other"
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
 using GetMeCallback =
     base::OnceCallback<void(mojom::Result result,
@@ -122,9 +117,6 @@ using GetMeCallback =
 
 class GetMe {
  public:
-  explicit GetMe(LedgerImpl& ledger);
-  ~GetMe();
-
   void Request(const std::string& token, GetMeCallback callback);
 
  private:
@@ -136,12 +128,8 @@ class GetMe {
                           internal::uphold::User* user);
 
   void OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::uphold
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_GET_ME_GET_ME_H_

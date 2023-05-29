@@ -7,11 +7,15 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_H_
 
 #include <map>
+#include <memory>
 #include <queue>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 #include "base/containers/flat_map.h"
+#include "base/functional/overloaded.h"
+#include "base/threading/thread_local.h"
 #include "base/types/always_false.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/core/api/api.h"
@@ -21,7 +25,6 @@
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
-#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
@@ -31,15 +34,10 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 
 namespace brave_rewards::internal {
-
-inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
-inline bool is_debug = false;
-inline bool is_testing = false;
-inline int state_migration_target_version_for_testing = -1;
-inline int reconcile_interval = 0;  // minutes
-inline int retry_interval = 0;      // seconds
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
 inline constexpr uint64_t kPublisherListRefreshInterval =
@@ -49,11 +47,14 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
     3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 #endif
 
+class LedgerImpl;
+LedgerImpl& ledger(
+    absl::optional<
+        absl::variant<mojo::PendingAssociatedRemote<mojom::LedgerClient>,
+                      std::unique_ptr<LedgerImpl>>> param = absl::nullopt);
+
 class LedgerImpl : public mojom::Ledger {
  public:
-  explicit LedgerImpl(
-      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote);
-
   ~LedgerImpl() override;
 
   LedgerImpl(const LedgerImpl&) = delete;
@@ -65,13 +66,13 @@ class LedgerImpl : public mojom::Ledger {
 
   void SetEnvironment(mojom::Environment environment) override;
 
-  void SetDebug(bool debug) override;
+  void SetDebug(bool is_debug) override;
 
   void SetReconcileInterval(int32_t interval) override;
 
   void SetRetryInterval(int32_t interval) override;
 
-  void SetTesting() override;
+  void SetTesting(bool is_testing) override;
 
   void SetStateMigrationTargetVersionForTesting(int32_t version) override;
 
@@ -278,14 +279,17 @@ class LedgerImpl : public mojom::Ledger {
   void LoadURL(mojom::UrlRequestPtr request, Callback callback) {
     DCHECK(request);
     if (IsShuttingDown()) {
-      BLOG(1, request->url + " will not be executed as we are shutting down");
+      client()->Log(
+          __FILE__, __LINE__, 1,
+          request->url + " will not be executed as we are shutting down");
       return;
     }
 
     if (!request->skip_log) {
-      BLOG(5,
-           UrlRequestToString(request->url, request->headers, request->content,
-                              request->content_type, request->method));
+      client()->Log(
+          __FILE__, __LINE__, 5,
+          UrlRequestToString(request->url, request->headers, request->content,
+                             request->content_type, request->method));
     }
 
     if constexpr (std::is_same_v<Callback, LoadURLCallback>) {
@@ -408,10 +412,29 @@ class LedgerImpl : public mojom::Ledger {
 
   bool IsShuttingDown() const;
 
-  // This method is virtualised for test-only purposes.
+  // This method is virtual for test-only purposes.
   virtual database::Database* database();
 
+  void SetDatabaseMigrationTargetVersionForTesting(uint32_t version);
+
+  mojom::Environment GetEnvironment();
+
+  bool GetDebug();
+
+  int32_t GetReconcileInterval();
+
+  int32_t GetRetryInterval();
+
+  bool GetTesting();
+
+  int32_t GetStateMigrationTargetVersionForTesting();
+
+  uint32_t GetDatabaseMigrationTargetVersionForTesting();
+
  private:
+  explicit LedgerImpl(
+      mojo::PendingAssociatedRemote<mojom::LedgerClient> remote);
+
   enum class ReadyState {
     kUninitialized,
     kInitializing,
@@ -455,12 +478,60 @@ class LedgerImpl : public mojom::Ledger {
   gemini::Gemini gemini_;
   uphold::Uphold uphold_;
 
+  mojom::Environment environment_ = mojom::Environment::PRODUCTION;
+  bool is_debug_ = false;
+  int32_t reconcile_interval_ = 0;  // minutes
+  int32_t retry_interval_ = 0;      // seconds
+  bool is_testing_ = false;
+  int32_t state_migration_target_version_for_testing_ = -1;
+  uint32_t database_migration_target_version_for_testing_ = 0;
+
   std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;
   std::queue<std::function<void()>> ready_callbacks_;
   ReadyState ready_state_ = ReadyState::kUninitialized;
+
+  friend LedgerImpl& ledger(
+      absl::optional<
+          absl::variant<mojo::PendingAssociatedRemote<mojom::LedgerClient>,
+                        std::unique_ptr<LedgerImpl>>> param);
+  friend class MockLedgerImpl;
 };
+
+inline LedgerImpl& ledger(
+    absl::optional<
+        absl::variant<mojo::PendingAssociatedRemote<mojom::LedgerClient>,
+                      std::unique_ptr<LedgerImpl>>> param) {
+  static_assert(!std::is_trivially_destructible_v<LedgerImpl>,
+                "base::ThreadLocalOwnedPointer<> is no longer needed "
+                "- we can now use a plain thread_local.");
+  static base::ThreadLocalOwnedPointer<LedgerImpl> ledger;
+
+  static const auto visitor = base::Overloaded(
+      [](mojo::PendingAssociatedRemote<mojom::LedgerClient> remote) {
+        return std::unique_ptr<LedgerImpl>(new LedgerImpl(std::move(remote)));
+      },
+      [](std::unique_ptr<LedgerImpl> ledger) {
+        CHECK(ledger);
+        return ledger;
+      });
+
+  if (!ledger.Get()) {
+    CHECK(param);
+    ledger.Set(absl::visit(visitor, *std::exchange(param, absl::nullopt)));
+  }
+
+  // Tests can swap the instance however they like,
+  // but not production code (which would indicate incorrect usage).
+  if ((*ledger).is_testing_ && param) {
+    ledger.Set(absl::visit(visitor, std::move(*param)));
+  } else {
+    CHECK(!param);
+  }
+
+  return *ledger;
+}
 
 }  // namespace brave_rewards::internal
 

@@ -8,30 +8,19 @@
 
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class ContributionAC {
  public:
-  explicit ContributionAC(LedgerImpl& ledger);
-
-  ~ContributionAC();
-
   void Process(const uint64_t reconcile_stamp);
 
  private:
   void PreparePublisherList(std::vector<mojom::PublisherInfoPtr> list);
 
   void QueueSaved(const mojom::Result result);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_AC_H_

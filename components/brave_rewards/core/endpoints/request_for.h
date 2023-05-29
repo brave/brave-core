@@ -10,8 +10,6 @@
 #include <utility>
 
 #include "base/functional/callback.h"
-#include "base/memory/raw_ref.h"
-#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
@@ -31,9 +29,8 @@ template <typename Endpoint>
 class RequestFor {
  public:
   template <typename... Ts>
-  RequestFor(LedgerImpl& ledger, Ts&&... ts)
-      : ledger_(ledger),
-        request_(Endpoint(ledger, std::forward<Ts>(ts)...).Request()) {
+  explicit RequestFor(Ts&&... ts)
+      : request_(Endpoint(std::forward<Ts>(ts)...).Request()) {
     static_assert(std::is_base_of_v<RequestBuilder, Endpoint>,
                   "Endpoint should be derived from RequestBuilder!");
   }
@@ -52,20 +49,15 @@ class RequestFor {
                     "Please make sure the error type of your endpoint has the "
                     "kFailedToCreateRequest enumerator!");
 
-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE,
-          base::BindOnce(
-              std::move(callback),
-              base::unexpected(Endpoint::Error::kFailedToCreateRequest)));
-      return;
+      return std::move(callback).Run(
+          base::unexpected(Endpoint::Error::kFailedToCreateRequest));
     }
 
-    ledger_->LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,
+    ledger().LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,
                                                           std::move(callback)));
   }
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
   absl::optional<mojom::UrlRequestPtr> request_;
 };
 

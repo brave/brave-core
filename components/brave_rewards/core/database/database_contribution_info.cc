@@ -12,11 +12,11 @@
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -43,11 +43,6 @@ mojom::ReportType ConvertRewardsTypeToReportType(
 }
 
 }  // namespace
-
-DatabaseContributionInfo::DatabaseContributionInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger), publishers_(ledger) {}
-
-DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
 void DatabaseContributionInfo::InsertOrUpdate(mojom::ContributionInfoPtr info,
                                               LegacyResultCallback callback) {
@@ -89,7 +84,7 @@ void DatabaseContributionInfo::InsertOrUpdate(mojom::ContributionInfoPtr info,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::GetRecord(const std::string& contribution_id,
@@ -122,7 +117,7 @@ void DatabaseContributionInfo::GetRecord(const std::string& contribution_id,
   auto transaction_callback =
       std::bind(&DatabaseContributionInfo::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetRecord(
@@ -204,7 +199,7 @@ void DatabaseContributionInfo::GetAllRecords(
   auto transaction_callback =
       std::bind(&DatabaseContributionInfo::OnGetList, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
@@ -259,7 +254,7 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
   auto transaction_callback = std::bind(
       &DatabaseContributionInfo::OnGetOneTimeTips, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetOneTimeTips(
@@ -335,7 +330,7 @@ void DatabaseContributionInfo::GetContributionReport(
   auto transaction_callback = std::bind(
       &DatabaseContributionInfo::OnGetContributionReport, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetContributionReport(
@@ -456,7 +451,7 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
   auto transaction_callback =
       std::bind(&DatabaseContributionInfo::OnGetList, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::OnGetList(
@@ -548,7 +543,7 @@ void DatabaseContributionInfo::UpdateStep(const std::string& contribution_id,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::UpdateStepAndCount(
@@ -580,7 +575,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::UpdateContributedAmount(
@@ -607,8 +602,7 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

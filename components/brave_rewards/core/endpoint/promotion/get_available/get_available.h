@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /v1/promotions?migrate=true&paymentId={payment_id}&platform={platform}
@@ -44,11 +43,7 @@
 //   ]
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using GetAvailableCallback = base::OnceCallback<void(
     mojom::Result result,
@@ -57,9 +52,6 @@ using GetAvailableCallback = base::OnceCallback<void(
 
 class GetAvailable {
  public:
-  explicit GetAvailable(LedgerImpl& ledger);
-  ~GetAvailable();
-
   void Request(const std::string& platform, GetAvailableCallback callback);
 
  private:
@@ -72,12 +64,8 @@ class GetAvailable {
                           std::vector<std::string>* corrupted_promotions);
 
   void OnRequest(GetAvailableCallback callback, mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_AVAILABLE_GET_AVAILABLE_H_

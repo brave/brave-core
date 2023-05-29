@@ -13,14 +13,10 @@
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseRecurringTip : public DatabaseTable {
+class DatabaseRecurringTip {
  public:
-  explicit DatabaseRecurringTip(LedgerImpl& ledger);
-  ~DatabaseRecurringTip() override;
-
   // DEPRECATED
   void InsertOrUpdate(mojom::RecurringTipPtr info,
                       LegacyResultCallback callback);
@@ -46,7 +42,6 @@ class DatabaseRecurringTip : public DatabaseTable {
                        GetRecurringTipsCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_RECURRING_TIP_H_

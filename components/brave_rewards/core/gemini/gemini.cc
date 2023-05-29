@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/connect_gemini_wallet.h"
@@ -24,12 +25,7 @@
 
 namespace brave_rewards::internal::gemini {
 
-Gemini::Gemini(LedgerImpl& ledger)
-    : ledger_(ledger),
-      connect_wallet_(ledger),
-      get_wallet_(ledger),
-      transfer_(ledger),
-      gemini_server_(ledger) {}
+Gemini::Gemini() = default;
 
 Gemini::~Gemini() = default;
 
@@ -70,7 +66,7 @@ void Gemini::ContributionCompleted(LegacyResultCallback callback,
     SaveTransferFee(contribution_id, fee);
 
     if (!publisher_key.empty()) {
-      ledger_->database()->UpdateContributionInfoContributedAmount(
+      ledger().database()->UpdateContributionInfoContributedAmount(
           contribution_id, publisher_key, callback);
       return;
     }
@@ -210,20 +206,20 @@ void Gemini::OnTransferFeeTimerElapsed(const std::string& id,
 }
 
 mojom::ExternalWalletPtr Gemini::GetWallet() {
-  return wallet::GetWallet(*ledger_, constant::kWalletGemini);
+  return wallet::GetWallet(constant::kWalletGemini);
 }
 
 mojom::ExternalWalletPtr Gemini::GetWalletIf(
     const std::set<mojom::WalletStatus>& statuses) {
-  return wallet::GetWalletIf(*ledger_, constant::kWalletGemini, statuses);
+  return wallet::GetWalletIf(constant::kWalletGemini, statuses);
 }
 
 bool Gemini::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return wallet::SetWallet(*ledger_, std::move(wallet));
+  return wallet::SetWallet(std::move(wallet));
 }
 
 bool Gemini::LogOutWallet() {
-  return wallet::LogOutWallet(*ledger_, constant::kWalletGemini);
+  return wallet::LogOutWallet(constant::kWalletGemini);
 }
 
 void Gemini::RemoveTransferFee(const std::string& contribution_id) {

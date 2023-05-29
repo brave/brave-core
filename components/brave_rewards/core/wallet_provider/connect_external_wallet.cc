@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/logging/event_log_util.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal {
@@ -22,17 +23,13 @@ using wallet::GetWalletIf;
 
 namespace wallet_provider {
 
-ConnectExternalWallet::ConnectExternalWallet(LedgerImpl& ledger)
-    : ledger_(ledger) {}
-
 ConnectExternalWallet::~ConnectExternalWallet() = default;
 
 void ConnectExternalWallet::Run(
     const base::flat_map<std::string, std::string>& query_parameters,
     ConnectExternalWalletCallback callback) {
-  auto wallet = GetWalletIf(
-      *ledger_, WalletType(),
-      {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
+  auto wallet = GetWalletIf(WalletType(), {mojom::WalletStatus::kNotConnected,
+                                           mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -76,7 +73,7 @@ ConnectExternalWallet::ExchangeOAuthInfo(
     return absl::nullopt;
   }
 
-  if (!wallet::SetWallet(*ledger_, std::move(wallet))) {
+  if (!wallet::SetWallet(std::move(wallet))) {
     BLOG(0, "Failed to save " << WalletType() << " wallet!");
     return absl::nullopt;
   }
@@ -92,10 +89,10 @@ ConnectExternalWallet::GetCode(
     const std::string message = query_parameters.at("error_description");
     BLOG(1, message);
     if (base::Contains(message, "User does not meet minimum requirements")) {
-      ledger_->database()->SaveEventLog(log::kKYCRequired, WalletType());
+      ledger().database()->SaveEventLog(log::kKYCRequired, WalletType());
       return base::unexpected(mojom::ConnectExternalWalletError::kKYCRequired);
     } else if (base::Contains(message, "not available for user geolocation")) {
-      ledger_->database()->SaveEventLog(log::kRegionNotSupported, WalletType());
+      ledger().database()->SaveEventLog(log::kRegionNotSupported, WalletType());
       return base::unexpected(
           mojom::ConnectExternalWalletError::kRegionNotSupported);
     }
@@ -122,9 +119,8 @@ void ConnectExternalWallet::OnConnect(
     std::string&& token,
     std::string&& address,
     endpoints::PostConnect::Result&& result) const {
-  auto wallet = GetWalletIf(
-      *ledger_, WalletType(),
-      {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
+  auto wallet = GetWalletIf(WalletType(), {mojom::WalletStatus::kNotConnected,
+                                           mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -142,7 +138,7 @@ void ConnectExternalWallet::OnConnect(
     if (const auto key = log::GetEventLogKeyForLinkingResult(
             connect_external_wallet_result.error());
         !key.empty()) {
-      ledger_->database()->SaveEventLog(
+      ledger().database()->SaveEventLog(
           key, WalletType() + std::string("/") + abbreviated_address);
     }
 
@@ -153,7 +149,7 @@ void ConnectExternalWallet::OnConnect(
   wallet->token = std::move(token);
   wallet->address = std::move(address);
   // {kNotConnected, kLoggedOut} ==> kConnected
-  if (!wallet::TransitionWallet(*ledger_, std::move(wallet),
+  if (!wallet::TransitionWallet(std::move(wallet),
                                 mojom::WalletStatus::kConnected)) {
     BLOG(0, "Failed to transition " << WalletType() << " wallet state!");
     return std::move(callback).Run(
@@ -161,9 +157,9 @@ void ConnectExternalWallet::OnConnect(
   }
 
   from_status == mojom::WalletStatus::kNotConnected
-      ? ledger_->client()->ExternalWalletConnected()
-      : ledger_->client()->ExternalWalletReconnected();
-  ledger_->database()->SaveEventLog(
+      ? ledger().client()->ExternalWalletConnected()
+      : ledger().client()->ExternalWalletReconnected();
+  ledger().database()->SaveEventLog(
       log::kWalletVerified,
       WalletType() + std::string("/") + abbreviated_address);
   std::move(callback).Run({});

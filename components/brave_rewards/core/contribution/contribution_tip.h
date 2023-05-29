@@ -9,22 +9,13 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class ContributionTip {
  public:
-  explicit ContributionTip(LedgerImpl& ledger);
-
-  ~ContributionTip();
-
   using ProcessCallback = base::OnceCallback<void(absl::optional<std::string>)>;
 
   void Process(const std::string& publisher_id,
@@ -42,11 +33,8 @@ class ContributionTip {
                     mojom::Result result);
 
   void OnPendingTipSaved(mojom::Result result);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_TIP_H_

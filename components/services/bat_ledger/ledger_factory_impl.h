@@ -6,12 +6,17 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_
 
+#include <map>
+#include <memory>
+
+#include "base/files/file_path.h"
+#include "base/functional/callback_forward.h"
+#include "base/threading/thread.h"
 #include "brave/components/services/bat_ledger/public/interfaces/ledger_factory.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/self_owned_associated_receiver.h"
 
 namespace brave_rewards::internal {
 
@@ -20,19 +25,24 @@ class LedgerFactoryImpl : public mojom::LedgerFactory {
   explicit LedgerFactoryImpl(
       mojo::PendingReceiver<mojom::LedgerFactory> receiver);
 
-  ~LedgerFactoryImpl() override;
-
   LedgerFactoryImpl(const LedgerFactoryImpl&) = delete;
   LedgerFactoryImpl& operator=(const LedgerFactoryImpl&) = delete;
 
-  void CreateLedger(
-      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
-      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
-      CreateLedgerCallback callback) override;
+  ~LedgerFactoryImpl() override;
+
+  void CreateLedger(const base::FilePath& profile,
+                    mojo::PendingAssociatedReceiver<mojom::Ledger> receiver,
+                    mojo::PendingAssociatedRemote<mojom::LedgerClient> remote,
+                    CreateLedgerCallback callback) override;
 
  private:
+  void LedgerAddedCallback(const base::FilePath& profile,
+                           CreateLedgerCallback callback);
+
+  void LedgerRemovedCallback(const base::FilePath& profile);
+
   mojo::Receiver<mojom::LedgerFactory> receiver_;
-  mojo::SelfOwnedAssociatedReceiverRef<mojom::Ledger> ledger_;
+  std::map<base::FilePath, std::unique_ptr<base::Thread>> ledger_threads_;
 };
 
 }  // namespace brave_rewards::internal

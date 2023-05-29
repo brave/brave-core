@@ -14,7 +14,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
-#include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_me/get_me.h"
@@ -26,10 +25,7 @@
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/get_uphold_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/uphold_transfer.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace uphold {
+namespace brave_rewards::internal::uphold {
 
 using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
 using endpoint::uphold::GetCapabilitiesCallback;
@@ -37,7 +33,7 @@ using endpoint::uphold::GetMeCallback;
 
 class Uphold {
  public:
-  explicit Uphold(LedgerImpl& ledger);
+  Uphold();
 
   ~Uphold();
 
@@ -104,7 +100,6 @@ class Uphold {
 
   void RemoveTransferFee(const std::string& contribution_id);
 
-  const raw_ref<LedgerImpl> ledger_;
   UpholdCard card_;
   ConnectUpholdWallet connect_wallet_;
   GetUpholdWallet get_wallet_;
@@ -113,6 +108,5 @@ class Uphold {
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 
-}  // namespace uphold
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::uphold
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_H_

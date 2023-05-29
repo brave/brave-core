@@ -36,15 +36,15 @@ std::string GetBraveDestination(const std::string& wallet_type) {
 }
 
 std::string GetUpholdDestination() {
-  if (_environment == mojom::Environment::PRODUCTION) {
+  if (ledger().GetEnvironment() == mojom::Environment::PRODUCTION) {
     return kUpholdDestinationProduction;
   }
 
-  if (_environment == mojom::Environment::STAGING) {
+  if (ledger().GetEnvironment() == mojom::Environment::STAGING) {
     return kUpholdDestinationStaging;
   }
 
-  if (_environment == mojom::Environment::DEVELOPMENT) {
+  if (ledger().GetEnvironment() == mojom::Environment::DEVELOPMENT) {
     return kUpholdDestinationDev;
   }
 
@@ -53,15 +53,15 @@ std::string GetUpholdDestination() {
 }
 
 std::string GetGeminiDestination() {
-  if (_environment == mojom::Environment::PRODUCTION) {
+  if (ledger().GetEnvironment() == mojom::Environment::PRODUCTION) {
     return kGeminiDestinationProduction;
   }
 
-  if (_environment == mojom::Environment::STAGING) {
+  if (ledger().GetEnvironment() == mojom::Environment::STAGING) {
     return kGeminiDestinationStaging;
   }
 
-  if (_environment == mojom::Environment::DEVELOPMENT) {
+  if (ledger().GetEnvironment() == mojom::Environment::DEVELOPMENT) {
     return kGeminiDestinationDev;
   }
 

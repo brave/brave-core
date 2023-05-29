@@ -5,22 +5,16 @@
 
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
-namespace brave_rewards::internal {
-namespace recovery {
-
-Recovery::Recovery(LedgerImpl& ledger)
-    : ledger_(ledger), empty_balance_(ledger) {}
-
-Recovery::~Recovery() = default;
+namespace brave_rewards::internal::recovery {
 
 void Recovery::Check() {
-  if (!ledger_->state()->GetEmptyBalanceChecked()) {
-    BLOG(1, "Running empty balance check...")
+  if (!ledger().state()->GetEmptyBalanceChecked()) {
+    BLOG(1, "Running empty balance check...");
     empty_balance_.Check();
   }
 }
 
-}  // namespace recovery
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::recovery

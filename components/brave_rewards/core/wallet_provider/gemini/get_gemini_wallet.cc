@@ -9,11 +9,6 @@
 
 namespace brave_rewards::internal::gemini {
 
-GetGeminiWallet::GetGeminiWallet(LedgerImpl& ledger)
-    : wallet_provider::GetExternalWallet(ledger) {}
-
-GetGeminiWallet::~GetGeminiWallet() = default;
-
 const char* GetGeminiWallet::WalletType() const {
   return constant::kWalletGemini;
 }

@@ -9,23 +9,16 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
 #include "brave/components/brave_rewards/core/sku/sku_transaction.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 class SKUCommon {
  public:
-  explicit SKUCommon(LedgerImpl& ledger);
-  ~SKUCommon();
-
   void CreateOrder(const std::vector<mojom::SKUOrderItem>& items,
                    SKUOrderCallback callback);
 
@@ -47,12 +40,10 @@ class SKUCommon {
           result,
       SKUOrderCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   SKUOrder order_;
   SKUTransaction transaction_;
 };
 
-}  // namespace sku
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::sku
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_COMMON_H_

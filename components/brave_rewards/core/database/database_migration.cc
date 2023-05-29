@@ -52,6 +52,7 @@
 #include "brave/components/brave_rewards/core/database/migration/migration_v9.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // NOTICE!!
@@ -60,14 +61,7 @@
 // you should keep old table with name unblinded_tokens_29
 // Reference: https://github.com/brave/brave-browser/issues/10784
 
-namespace brave_rewards::internal {
-namespace database {
-
-uint32_t DatabaseMigration::test_target_version_ = 0;
-
-DatabaseMigration::DatabaseMigration(LedgerImpl& ledger) : ledger_(ledger) {}
-
-DatabaseMigration::~DatabaseMigration() = default;
+namespace brave_rewards::internal::database {
 
 void DatabaseMigration::Start(uint32_t table_version,
                               LegacyResultCallback callback) {
@@ -76,8 +70,10 @@ void DatabaseMigration::Start(uint32_t table_version,
 
   auto transaction = mojom::DBTransaction::New();
   int migrated_version = table_version;
-  const uint32_t target_version = is_testing && test_target_version_
-                                      ? test_target_version_
+  const uint32_t test_target_version =
+      ledger().GetDatabaseMigrationTargetVersionForTesting();
+  const uint32_t target_version = ledger().GetTesting() && test_target_version
+                                      ? test_target_version
                                       : database::GetCurrentVersion();
 
   if (target_version == table_version) {
@@ -93,7 +89,7 @@ void DatabaseMigration::Start(uint32_t table_version,
   // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
   std::string migration_v32 = "";
-  if (ledger_->IsBitFlyerRegion()) {
+  if (ledger().IsBitFlyerRegion()) {
     migration_v30 = migration::v30;
     migration_v32 = migration::v32;
   }
@@ -164,14 +160,14 @@ void DatabaseMigration::Start(uint32_t table_version,
   const std::string message =
       base::StringPrintf("%d->%d", start_version, migrated_version);
 
-  ledger_->RunDBTransaction(
-      std::move(transaction), [this, callback, message, migrated_version](
+  ledger().RunDBTransaction(
+      std::move(transaction), [callback, message, migrated_version](
                                   mojom::DBCommandResponsePtr response) {
         if (response &&
             response->status == mojom::DBCommandResponse::Status::RESPONSE_OK) {
           // The event_log table was introduced in v29.
           if (migrated_version >= 29) {
-            ledger_->database()->SaveEventLog(log::kDatabaseMigrated, message);
+            ledger().database()->SaveEventLog(log::kDatabaseMigrated, message);
           }
           callback(mojom::Result::LEDGER_OK);
           return;
@@ -179,10 +175,6 @@ void DatabaseMigration::Start(uint32_t table_version,
 
         callback(mojom::Result::LEDGER_ERROR);
       });
-}
-
-void DatabaseMigration::SetTargetVersionForTesting(uint32_t version) {
-  test_target_version_ = version;
 }
 
 void DatabaseMigration::GenerateCommand(mojom::DBTransaction* transaction,
@@ -199,5 +191,4 @@ void DatabaseMigration::GenerateCommand(mojom::DBTransaction* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

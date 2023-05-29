@@ -12,14 +12,11 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
-
-PostAccount::PostAccount(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PostAccount::~PostAccount() = default;
 
 std::string PostAccount::GetUrl() {
   return GetApiServerUrl("/v1/account");
@@ -80,7 +77,7 @@ void PostAccount::Request(const std::string& token,
   request->headers = RequestAuthorization(token);
   request->method = mojom::UrlMethod::POST;
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PostAccount::OnRequest,
                                   base::Unretained(this), std::move(callback)));
 }

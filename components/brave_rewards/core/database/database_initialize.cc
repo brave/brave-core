@@ -8,18 +8,13 @@
 #include "brave/components/brave_rewards/core/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace database {
-
-DatabaseInitialize::DatabaseInitialize(LedgerImpl& ledger)
-    : ledger_(ledger), migration_(ledger) {}
-
-DatabaseInitialize::~DatabaseInitialize() = default;
+namespace brave_rewards::internal::database {
 
 void DatabaseInitialize::Start(LegacyResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
@@ -29,7 +24,7 @@ void DatabaseInitialize::Start(LegacyResultCallback callback) {
   command->type = mojom::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  ledger().RunDBTransaction(
       std::move(transaction),
       std::bind(&DatabaseInitialize::OnInitialize, this, _1, callback));
 }
@@ -54,5 +49,4 @@ void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
   migration_.Start(current_table_version, callback);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

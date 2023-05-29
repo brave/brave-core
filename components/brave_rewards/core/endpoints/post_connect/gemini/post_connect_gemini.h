@@ -22,17 +22,11 @@
 //
 // Response body: -
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostConnectGemini final : public PostConnect {
  public:
-  PostConnectGemini(LedgerImpl& ledger,
-                    std::string&& linking_info,
-                    std::string&& recipient_id);
-  ~PostConnectGemini() override;
+  PostConnectGemini(std::string&& linking_info, std::string&& recipient_id);
 
  private:
   absl::optional<std::string> Content() const override;
@@ -43,7 +37,6 @@ class PostConnectGemini final : public PostConnect {
   std::string recipient_id_;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_CONNECT_GEMINI_POST_CONNECT_GEMINI_H_

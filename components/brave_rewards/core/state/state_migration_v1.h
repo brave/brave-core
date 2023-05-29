@@ -10,18 +10,14 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_state.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace state {
+namespace brave_rewards::internal::state {
 
 class StateMigrationV1 {
  public:
-  explicit StateMigrationV1(LedgerImpl& ledger);
+  StateMigrationV1();
   ~StateMigrationV1();
 
   void Migrate(LegacyResultCallback callback);
@@ -34,11 +30,9 @@ class StateMigrationV1 {
   void BalanceReportsSaved(mojom::Result result, LegacyResultCallback callback);
 
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;
-  const raw_ref<LedgerImpl> ledger_;
   bool legacy_data_migrated_ = false;
 };
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V1_H_

@@ -14,18 +14,13 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_monthly.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
-namespace brave_rewards::internal {
-namespace contribution {
-
-ContributionMonthly::ContributionMonthly(LedgerImpl& ledger)
-    : ledger_(ledger) {}
-
-ContributionMonthly::~ContributionMonthly() = default;
+namespace brave_rewards::internal::contribution {
 
 void ContributionMonthly::Process(absl::optional<base::Time> cutoff_time,
                                   LegacyResultCallback callback) {
-  ledger_->contribution()->GetRecurringTips(
+  ledger().contribution()->GetRecurringTips(
       [this, cutoff_time,
        callback](std::vector<mojom::PublisherInfoPtr> publishers) {
         AdvanceContributionDates(cutoff_time, callback, std::move(publishers));
@@ -53,7 +48,7 @@ void ContributionMonthly::AdvanceContributionDates(
   }
 
   // Advance the next contribution dates before attempting to add contributions.
-  ledger_->database()->AdvanceMonthlyContributionDates(
+  ledger().database()->AdvanceMonthlyContributionDates(
       publisher_ids,
       base::BindOnce(&ContributionMonthly::OnNextContributionDateAdvanced,
                      base::Unretained(this), std::move(publishers), callback));
@@ -92,13 +87,12 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
     queue->partial = false;
     queue->publishers.push_back(std::move(publisher));
 
-    ledger_->database()->SaveContributionQueue(std::move(queue),
+    ledger().database()->SaveContributionQueue(std::move(queue),
                                                [](mojom::Result) {});
   }
 
-  ledger_->contribution()->CheckContributionQueue();
+  ledger().contribution()->CheckContributionQueue();
   callback(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution

@@ -5,12 +5,7 @@
 
 #include "brave/components/brave_rewards/core/state/state_migration_v9.h"
 
-namespace brave_rewards::internal {
-namespace state {
-
-StateMigrationV9::StateMigrationV9() = default;
-
-StateMigrationV9::~StateMigrationV9() = default;
+namespace brave_rewards::internal::state {
 
 void StateMigrationV9::Migrate(LegacyResultCallback callback) {
   // In version 9, we attempted to set the "ac enabled" pref to false for users
@@ -20,5 +15,4 @@ void StateMigrationV9::Migrate(LegacyResultCallback callback) {
   callback(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

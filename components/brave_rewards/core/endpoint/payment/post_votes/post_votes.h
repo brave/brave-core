@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -36,19 +35,12 @@
 // Response body:
 // {Empty}
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 using PostVotesCallback = std::function<void(const mojom::Result result)>;
 
 class PostVotes {
  public:
-  explicit PostVotes(LedgerImpl& ledger);
-  ~PostVotes();
-
   void Request(const credential::CredentialsRedeem& redeem,
                PostVotesCallback callback);
 
@@ -60,12 +52,8 @@ class PostVotes {
   mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(mojom::UrlResponsePtr response, PostVotesCallback callback);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace payment
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::payment
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_VOTES_POST_VOTES_H_

@@ -10,6 +10,7 @@
 
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
@@ -17,12 +18,10 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
-StateMigrationV10::StateMigrationV10(LedgerImpl& ledger)
-    : ledger_(ledger),
-      get_wallet_{std::make_unique<endpoint::promotion::GetWallet>(ledger)} {}
+StateMigrationV10::StateMigrationV10()
+    : get_wallet_{std::make_unique<endpoint::promotion::GetWallet>()} {}
 
 StateMigrationV10::~StateMigrationV10() = default;
 
@@ -38,7 +37,7 @@ StateMigrationV10::~StateMigrationV10() = default;
 // mojom::WalletStatus::kLoggedOut (4).
 
 void StateMigrationV10::Migrate(LegacyResultCallback callback) {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
+  auto uphold_wallet = ledger().uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(1, "Uphold wallet is null.");
     return callback(mojom::Result::LEDGER_OK);
@@ -70,7 +69,7 @@ void StateMigrationV10::Migrate(LegacyResultCallback callback) {
       auto wallet_info_endpoint_callback = std::bind(
           &StateMigrationV10::OnGetWallet, this, _1, _2, _3, callback);
 
-      if (is_testing) {
+      if (ledger().GetTesting()) {
         return wallet_info_endpoint_callback(mojom::Result::LEDGER_ERROR,
                                              std::string{}, false);
       } else {
@@ -99,7 +98,7 @@ void StateMigrationV10::Migrate(LegacyResultCallback callback) {
   }
 
   uphold_wallet = uphold::GenerateLinks(std::move(uphold_wallet));
-  callback(ledger_->uphold()->SetWallet(std::move(uphold_wallet))
+  callback(ledger().uphold()->SetWallet(std::move(uphold_wallet))
                ? mojom::Result::LEDGER_OK
                : mojom::Result::LEDGER_ERROR);
 }
@@ -108,7 +107,7 @@ void StateMigrationV10::OnGetWallet(mojom::Result result,
                                     const std::string& custodian,
                                     bool linked,
                                     LegacyResultCallback callback) {
-  auto uphold_wallet = ledger_->uphold()->GetWallet();
+  auto uphold_wallet = ledger().uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
     return callback(mojom::Result::LEDGER_ERROR);
@@ -128,10 +127,9 @@ void StateMigrationV10::OnGetWallet(mojom::Result result,
   }
 
   uphold_wallet = uphold::GenerateLinks(std::move(uphold_wallet));
-  callback(ledger_->uphold()->SetWallet(std::move(uphold_wallet))
+  callback(ledger().uphold()->SetWallet(std::move(uphold_wallet))
                ? mojom::Result::LEDGER_OK
                : mojom::Result::LEDGER_ERROR);
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

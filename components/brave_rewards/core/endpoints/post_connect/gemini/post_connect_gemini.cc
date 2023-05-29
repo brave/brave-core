@@ -12,14 +12,10 @@
 
 namespace brave_rewards::internal::endpoints {
 
-PostConnectGemini::PostConnectGemini(LedgerImpl& ledger,
-                                     std::string&& linking_info,
+PostConnectGemini::PostConnectGemini(std::string&& linking_info,
                                      std::string&& recipient_id)
-    : PostConnect(ledger),
-      linking_info_(std::move(linking_info)),
+    : linking_info_(std::move(linking_info)),
       recipient_id_(std::move(recipient_id)) {}
-
-PostConnectGemini::~PostConnectGemini() = default;
 
 absl::optional<std::string> PostConnectGemini::Content() const {
   if (linking_info_.empty()) {

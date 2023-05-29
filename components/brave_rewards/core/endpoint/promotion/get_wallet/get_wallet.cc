@@ -10,28 +10,23 @@
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-GetWallet::GetWallet(LedgerImpl& ledger) : ledger_{ledger} {}
-
-GetWallet::~GetWallet() = default;
+namespace brave_rewards::internal::endpoint::promotion {
 
 void GetWallet::Request(GetWalletCallback callback) const {
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    std::bind(&GetWallet::OnRequest, this, _1, callback));
 }
 
 std::string GetWallet::GetUrl() const {
-  const auto rewards_wallet = ledger_->wallet()->GetWallet();
+  const auto rewards_wallet = ledger().wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(0, "Rewards wallet is null!");
     return "";
@@ -108,6 +103,4 @@ mojom::Result GetWallet::ParseBody(const std::string& body,
   return mojom::Result::LEDGER_OK;
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

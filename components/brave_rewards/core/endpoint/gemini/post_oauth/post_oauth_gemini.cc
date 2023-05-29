@@ -13,13 +13,10 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
-
-PostOauth::PostOauth(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PostOauth::~PostOauth() = default;
 
 std::string PostOauth::GetUrl() {
   return GetOauthServerUrl("/auth/token");
@@ -73,7 +70,7 @@ void PostOauth::Request(const std::string& external_account_id,
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }

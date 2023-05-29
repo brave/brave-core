@@ -11,18 +11,15 @@
 #include "brave/components/brave_rewards/core/legacy/bat_helper.h"
 #include "brave/components/brave_rewards/core/legacy/bat_state.h"
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 
 namespace brave_rewards::internal {
 
-LegacyBatState::LegacyBatState(LedgerImpl& ledger) : ledger_(ledger) {}
-
-LegacyBatState::~LegacyBatState() = default;
-
 void LegacyBatState::Load(LegacyResultCallback callback) {
-  ledger_->client()->LoadLedgerState(base::BindOnce(
+  ledger().client()->LoadLedgerState(base::BindOnce(
       &LegacyBatState::OnLoad, base::Unretained(this), std::move(callback)));
 }
 

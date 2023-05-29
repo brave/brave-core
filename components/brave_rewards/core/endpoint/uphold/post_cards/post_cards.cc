@@ -10,15 +10,12 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::uphold {
-
-PostCards::PostCards(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PostCards::~PostCards() = default;
 
 std::string PostCards::GetUrl() {
   return GetServerUrl("/v0/me/cards");
@@ -77,7 +74,7 @@ void PostCards::Request(const std::string& token, PostCardsCallback callback) {
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PostCards::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }
