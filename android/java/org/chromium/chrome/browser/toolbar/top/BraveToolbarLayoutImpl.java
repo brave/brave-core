@@ -803,13 +803,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void checkForTooltip(Tab tab) {
-        if (!BraveShieldsUtils.isTooltipShown) {
-            if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
-                    && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
-                                    + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
-                            > 0) {
-                showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
+        try {
+            if (!BraveShieldsUtils.isTooltipShown
+                    && !BraveActivity.getBraveActivity().mIsDeepLink) {
+                if (!BraveShieldsUtils.hasShieldsTooltipShown(
+                            BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
+                        && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
+                                        + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
+                                > 0) {
+                    showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
+                }
             }
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "checkForTooltip " + e);
         }
     }
 

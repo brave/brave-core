@@ -13,6 +13,7 @@ import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -24,6 +25,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.installreferrer.api.InstallReferrerClient;
+import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
+import com.android.installreferrer.api.InstallReferrerStateListener;
+import com.android.installreferrer.api.ReferrerDetails;
+
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
@@ -49,6 +56,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     // from the same thread, so no need to use extra locks
     private static final String P3A_URL =
             "https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave";
+
+    private static final String TAG = "WelcomeOnboarding";
+
     private boolean mInitializeViewsDone;
     private boolean mInvokePostWorkAtInitializeViews;
     private boolean mIsP3aEnabled;
@@ -85,6 +95,48 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mInvokePostWorkAtInitializeViews) {
             finishNativeInitializationPostWork();
         }
+
+        checkReferral();
+    }
+
+    private void checkReferral() {
+        InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(this).build();
+        referrerClient.startConnection(new InstallReferrerStateListener() {
+            @Override
+            public void onInstallReferrerSetupFinished(int responseCode) {
+                switch (responseCode) {
+                    case InstallReferrerResponse.OK:
+                        try {
+                            ReferrerDetails response = referrerClient.getInstallReferrer();
+                            String referrerUrl = response.getInstallReferrer();
+                            if (referrerUrl == null) return;
+
+                            if (referrerUrl.equals(BraveConstants.DEEPLINK_ANDROID_PLAYLIST)) {
+                                SharedPreferencesManager.getInstance().writeBoolean(
+                                        BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, true);
+                            } else if (referrerUrl.equals(BraveConstants.DEEPLINK_ANDROID_VPN)) {
+                                SharedPreferencesManager.getInstance().writeBoolean(
+                                        BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, true);
+                            }
+                        } catch (RemoteException e) {
+                            Log.e(TAG, "Could not get referral: " + e.getMessage());
+                        }
+                        // Connection established.
+                        break;
+                    case InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
+                        // API not available on the current Play Store app.
+                        Log.e(TAG, "InstallReferrerResponse.FEATURE_NOT_SUPPORTED");
+                        break;
+                    case InstallReferrerResponse.SERVICE_UNAVAILABLE:
+                        // Connection couldn't be established.
+                        Log.e(TAG, "InstallReferrerResponse.SERVICE_UNAVAILABLE");
+                        break;
+                }
+            }
+
+            @Override
+            public void onInstallReferrerServiceDisconnected() {}
+        });
     }
 
     private void initViews() {
@@ -260,7 +312,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                                                .isUsageAndCrashReportingPermittedByUser();
 
                 } catch (Exception e) {
-                    Log.e("isCrashReportingOnboarding", e.getMessage());
+                    Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
                 }
                 if (mCheckboxCrash != null) {
                     mCheckboxCrash.setChecked(isCrashReporting);
@@ -277,7 +329,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                                     UmaSessionStats.changeMetricsReportingConsent(isChecked,
                                             ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
                                 } catch (Exception e) {
-                                    Log.e("CrashReportingOnboarding", e.getMessage());
+                                    Log.e(TAG, "CrashReportingOnboarding: " + e.getMessage());
                                 }
                             }
                         });
@@ -288,7 +340,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             try {
                 isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
             } catch (Exception e) {
-                Log.e("P3aOnboarding", e.getMessage());
+                Log.e(TAG, "P3aOnboarding: " + e.getMessage());
             }
 
             if (mCheckboxP3a != null) {
@@ -305,7 +357,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                                             BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
                                     BraveLocalState.commitPendingWrite();
                                 } catch (Exception e) {
-                                    Log.e("P3aOnboarding", e.getMessage());
+                                    Log.e(TAG, "P3aOnboarding: " + e.getMessage());
                                 }
                             }
                         });

@@ -243,8 +243,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private String mPurchaseToken = "";
     private String mProductId = "";
     private boolean mIsVerification;
-    private boolean isDefaultCheckOnResume;
-    private boolean isSetDefaultBrowserNotification;
+    private boolean mIsDefaultCheckOnResume;
+    private boolean mIsSetDefaultBrowserNotification;
+    public boolean mIsDeepLink;
     private BraveWalletService mBraveWalletService;
     private KeyringService mKeyringService;
     private JsonRpcService mJsonRpcService;
@@ -360,14 +361,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet(false, false, false);
         } else if (id == R.id.brave_playlist_id) {
-            if (SharedPreferencesManager.getInstance().readBoolean(
-                        PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
-                PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
-                SharedPreferencesManager.getInstance().writeBoolean(
-                        PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
-            } else {
-                openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
-            }
+            openPlaylist(true);
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
@@ -798,15 +792,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void OnCheckDefaultResume() {
-        isDefaultCheckOnResume = true;
+        mIsDefaultCheckOnResume = true;
     }
 
     @Override
     public void onResume() {
         super.onResume();
         isProcessingPendingDappsTxRequest = false;
-        if (isDefaultCheckOnResume) {
-            isDefaultCheckOnResume = false;
+        if (mIsDefaultCheckOnResume) {
+            mIsDefaultCheckOnResume = false;
 
             if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
                 BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
@@ -1027,7 +1021,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
         }
 
-        if (!isSetDefaultBrowserNotification) {
+        if (!mIsSetDefaultBrowserNotification) {
             BraveSetDefaultBrowserUtils.checkSetDefaultBrowserModal(this);
         }
 
@@ -1050,9 +1044,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
         initNativeServices();
 
-        if (OnboardingPrefManager.getInstance().isOnboardingSearchBoxTooltip()) {
-            showSearchBoxTooltip();
-        }
         mNativeInitialized = true;
 
         String countryCode = Locale.getDefault().getCountry();
@@ -1070,6 +1061,27 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         initBraveNewsController();
+        if (SharedPreferencesManager.getInstance().readBoolean(
+                    BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, false)) {
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, false);
+            openPlaylist(false);
+        } else if (SharedPreferencesManager.getInstance().readBoolean(
+                           BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, false)) {
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, false);
+            handleDeepLinkVpn();
+        } else if (!mIsDeepLink
+                && OnboardingPrefManager.getInstance().isOnboardingSearchBoxTooltip()
+                && getActivityTab() != null && getActivityTab().getUrl().getSpec() != null
+                && UrlUtilities.isNTPUrl(getActivityTab().getUrl().getSpec())) {
+            showSearchBoxTooltip();
+        }
+    }
+
+    private void handleDeepLinkVpn() {
+        mIsDeepLink = true;
+        BraveVpnUtils.openBraveVpnPlansActivity(this);
     }
 
     private void checkForVpnCallout() {
@@ -1137,7 +1149,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private void showSearchBoxTooltip() {
         OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(false);
-
         HighlightView highlightView = new HighlightView(this, null);
         highlightView.setColor(
                 ContextCompat.getColor(this, R.color.onboarding_search_highlight_color));
@@ -1194,6 +1205,19 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void setDormantUsersPrefs() {
         OnboardingPrefManager.getInstance().setDormantUsersPrefs();
         RetentionNotificationUtil.scheduleDormantUsersNotifications(this);
+    }
+
+    private void openPlaylist(boolean shouldHandlePlaylistActivity) {
+        if (!shouldHandlePlaylistActivity) mIsDeepLink = true;
+
+        if (SharedPreferencesManager.getInstance().readBoolean(
+                    PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
+            PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
+        } else if (shouldHandlePlaylistActivity) {
+            openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
+        }
     }
 
     public void openPlaylistActivity(Context context, String playlistId) {
@@ -1399,7 +1423,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 case RetentionNotificationUtil.DEFAULT_BROWSER_3:
                     if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)
                             && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
-                        isSetDefaultBrowserNotification = true;
+                        mIsSetDefaultBrowserNotification = true;
                         BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
                                 BraveActivity.this, false);
                     }
