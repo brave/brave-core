@@ -1176,14 +1176,15 @@ public class Utils {
     }
 
     public static WalletListItemModel makeWalletItem(Context context, TransactionInfo txInfo,
-            NetworkInfo selectedNetwork, ParsedTransaction parsedTx, AccountInfo[] accountInfos) {
+            NetworkInfo selectedNetwork, ParsedTransaction parsedTx,
+            AccountInfo[] accountInfoArray) {
         Pair<String, String> itemTitles = parsedTx.makeTxListItemTitles(context);
         WalletListItemModel itemModel =
                 new WalletListItemModel(Utils.getCoinIcon(selectedNetwork.coin), itemTitles.first,
                         itemTitles.second, "", null, null);
         updateWalletCoinTransactionStatus(itemModel, context, txInfo);
 
-        itemModel.setAccountInfo(findAccount(accountInfos, txInfo.fromAddress));
+        itemModel.setAccountInfo(findAccount(accountInfoArray, txInfo.fromAddress));
         itemModel.setChainSymbol(selectedNetwork.symbol);
         itemModel.setChainDecimals(selectedNetwork.decimals);
         itemModel.setTotalGas(parsedTx.getGasFee());

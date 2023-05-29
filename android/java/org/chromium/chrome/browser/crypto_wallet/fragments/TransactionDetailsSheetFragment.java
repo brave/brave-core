@@ -152,7 +152,7 @@ public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
         } else {
             amountFiat.setText(
                     String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
-                            String.format(Locale.getDefault(), "%.2f", mParsedTx.getFiatTotal())));
+                            String.format(Locale.ENGLISH, "%.2f", mParsedTx.getFiatTotal())));
             String amountText =
                     String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
                             mParsedTx.formatValueToDisplay(), mParsedTx.getSymbol());
@@ -186,8 +186,7 @@ public class TransactionDetailsSheetFragment extends BottomSheetDialogFragment {
         if (totalGas > 0) {
             String gasFiatAndCrypto =
                     String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
-                            String.format(Locale.getDefault(), "%.8f", totalGas),
-                            mParsedTx.getSymbol())
+                            String.format(Locale.ENGLISH, "%.8f", totalGas), mParsedTx.getSymbol())
                     + System.getProperty(WalletConstants.LINE_SEPARATOR)
                     + String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
                             new Amount(mParsedTx.getFiatTotal()).toStringFormat());

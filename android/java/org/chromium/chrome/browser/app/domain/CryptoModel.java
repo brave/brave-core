@@ -292,10 +292,11 @@ public class CryptoModel {
     }
 
     public TransactionsModel createTransactionModel() {
-        if (mTransactionsModel != null) return mTransactionsModel;
-        mTransactionsModel = new TransactionsModel(mContext, mTxService, mKeyringService,
-                mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
-                mBraveWalletService, mAssetRatioService, mSharedData);
+        if (mTransactionsModel == null) {
+            mTransactionsModel = new TransactionsModel(mContext, mTxService, mKeyringService,
+                    mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
+                    mBraveWalletService, mAssetRatioService, mSharedData);
+        }
         return mTransactionsModel;
     }
 

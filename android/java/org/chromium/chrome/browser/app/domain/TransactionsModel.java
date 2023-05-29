@@ -58,10 +58,10 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
     private Context mContext;
     private final MutableLiveData<List<WalletListItemModel>> _mParsedTransactions;
     private final MutableLiveData<Boolean> _mIsLoading;
-    private List<NetworkInfo> mAllNetworkInfos;
+    private List<NetworkInfo> mAllNetworkInfoList;
     private WeakReference<BraveWalletBaseActivity> mActivityRef;
     public final LiveData<List<WalletListItemModel>> mParsedTransactions;
-    public List<AccountInfo> mAllAccountInfos;
+    public List<AccountInfo> mAllAccountInfoList;
     public LiveData<Boolean> mIsLoading;
 
     public TransactionsModel(Context context, TxService txService, KeyringService keyringService,
@@ -79,28 +79,28 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
         mBraveWalletService = braveWalletService;
         mAssetRatioService = assetRatioService;
         mSharedData = sharedData;
-        mAllNetworkInfos = Collections.emptyList();
+        mAllNetworkInfoList = Collections.emptyList();
         _mParsedTransactions = new MutableLiveData<>();
         _mIsLoading = new MutableLiveData<>(false);
         mIsLoading = _mIsLoading;
         mParsedTransactions = _mParsedTransactions;
-        mAllAccountInfos = Collections.emptyList();
+        mAllAccountInfoList = Collections.emptyList();
         addServiceObservers();
     }
 
-    // Fetch all transaction of all accounts except rejected, and calculate balances, gas etc.
+    // Fetch all transactions of all accounts except rejected, and calculate balances, gas etc.
     public void update(WeakReference<BraveWalletBaseActivity> activityRef) {
         synchronized (mLock) {
             _mIsLoading.postValue(true);
             mActivityRef = activityRef;
             if (JavaUtils.anyNull(
-                        mJsonRpcService, mKeyringService, activityRef, mActivityRef.get()))
+                        mJsonRpcService, mKeyringService, mActivityRef, mActivityRef.get()))
                 return;
             NetworkModel.getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                mAllNetworkInfos = new ArrayList<>(allNetworks);
+                mAllNetworkInfoList = new ArrayList<>(allNetworks);
                 KeyringModel.getKeyringInfos(mKeyringService, mSharedData.getEnabledKeyrings(), keyringInfos -> {
-                    mAllAccountInfos = WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-                    var allAccountsArray = mAllAccountInfos.toArray(new AccountInfo[0]);
+                    mAllAccountInfoList = WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
+                    var allAccountsArray = mAllAccountInfoList.toArray(new AccountInfo[0]);
                     // Fetch transactions
                     PendingTxHelper pendingTxHelper =
                             new PendingTxHelper(mTxService, allAccountsArray, true, null);
@@ -120,7 +120,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                                 new ArrayList<>();
                         AtomicInteger balanceResultCounter = new AtomicInteger();
                         List<NetworkInfo> txNetworks =
-                                mAllNetworkInfos.stream()
+                                mAllNetworkInfoList.stream()
                                         .filter(networkInfo
                                                 -> Arrays.stream(filteredTransactions)
                                                            .anyMatch(transactionInfo
@@ -128,26 +128,26 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                                                                            networkInfo.chainId)))
                                         .collect(Collectors.toList());
                         for (NetworkInfo networkInfo : txNetworks) {
-                            var accountInfosPerCoin =
-                                    mAllAccountInfos.stream()
+                            var accountInfoListPerCoin =
+                                    mAllAccountInfoList.stream()
                                             .filter(accountInfo
                                                     -> accountInfo.coin == networkInfo.coin)
                                             .collect(Collectors.toList());
 
-                            Utils.getTxExtraInfo(activityRef, TokenUtils.TokenType.ALL,
-                                    mAllNetworkInfos, networkInfo,
-                                    accountInfosPerCoin.toArray(new AccountInfo[0]), null, false,
+                            Utils.getTxExtraInfo(mActivityRef, TokenUtils.TokenType.ALL,
+                                    mAllNetworkInfoList, networkInfo,
+                                    accountInfoListPerCoin.toArray(new AccountInfo[0]), null, false,
                                     (assetPrices, userAssetsList, nativeAssetsBalances,
                                             blockchainTokensBalances) -> {
                                         AssetAccountsNetworkBalance asset =
                                                 new AssetAccountsNetworkBalance(assetPrices,
                                                         userAssetsList, nativeAssetsBalances,
                                                         blockchainTokensBalances, networkInfo,
-                                                        accountInfosPerCoin);
+                                                        accountInfoListPerCoin);
                                         assetAccountsNetworkBalances.add(asset);
                                         if (balanceResultCounter.incrementAndGet()
                                                 == txNetworks.size()) {
-                                            parseTransactions(activityRef,
+                                            parseTransactions(mActivityRef,
                                                     assetAccountsNetworkBalances,
                                                     filteredTransactions);
                                         }
@@ -161,20 +161,20 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
 
     private void parseTransactions(WeakReference<BraveWalletBaseActivity> activityRef,
             List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances,
-            TransactionInfo[] transactionInfos) {
+            TransactionInfo[] transactionInfoArr) {
         // Received balances of all network, can now fetch transaction
-        var allAccountsArray = mAllAccountInfos.toArray(new AccountInfo[0]);
+        var allAccountsArray = mAllAccountInfoList.toArray(new AccountInfo[0]);
         SolanaTransactionsGasHelper solanaTransactionsGasHelper =
-                new SolanaTransactionsGasHelper(activityRef.get(), transactionInfos);
+                new SolanaTransactionsGasHelper(activityRef.get(), transactionInfoArr);
         solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
             List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
             var perTxSolanaFee = solanaTransactionsGasHelper.getPerTxFee();
-            for (TransactionInfo txInfo : transactionInfos) {
+            for (TransactionInfo txInfo : transactionInfoArr) {
                 long solanaEstimatedTxFee = 0;
                 if (perTxSolanaFee.get(txInfo.id) != null) {
                     solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
                 }
-                var txNetwork = NetworkUtils.findNetwork(mAllNetworkInfos, txInfo.chainId);
+                var txNetwork = NetworkUtils.findNetwork(mAllNetworkInfoList, txInfo.chainId);
                 var txExtraData =
                         assetAccountsNetworkBalances.stream()
                                 .filter(data -> data.networkInfo.chainId.equals(txInfo.chainId))
@@ -270,18 +270,18 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
         HashMap<String, Double> nativeAssetsBalances;
         HashMap<String, HashMap<String, Double>> blockchainTokensBalances;
         NetworkInfo networkInfo;
-        List<AccountInfo> accountInfos;
+        List<AccountInfo> accountInfoList;
 
         public AssetAccountsNetworkBalance(HashMap<String, Double> assetPrices,
                 BlockchainToken[] userAssetsList, HashMap<String, Double> nativeAssetsBalances,
                 HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
-                NetworkInfo networkInfo, List<AccountInfo> accountInfos) {
+                NetworkInfo networkInfo, List<AccountInfo> accountInfoList) {
             this.assetPrices = assetPrices;
             this.userAssetsList = userAssetsList;
             this.nativeAssetsBalances = nativeAssetsBalances;
             this.blockchainTokensBalances = blockchainTokensBalances;
             this.networkInfo = networkInfo;
-            this.accountInfos = accountInfos;
+            this.accountInfoList = accountInfoList;
         }
     }
 }

@@ -48,8 +48,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
 
     public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
             String chainIdForTxs) {
-        // ChainId to fetch network specific transactions, null will fetch all transactions across
-        // all networks.
+        // ChainId to fetch network specific transactions, pass null as value for `chainIdForTxs` to
+        // fetch all transactions across all networks.
         mChainIdForTxs = chainIdForTxs;
         assert txService != null;
         mTxService = txService;
