@@ -14,10 +14,12 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
@@ -42,6 +44,12 @@ void FireEventCallback(TriggerAdEventCallback callback,
                        const std::string& /*placement_id*/,
                        const mojom::NotificationAdEventType /*event_type*/) {
   std::move(callback).Run(success);
+}
+
+void MaybeCloseAllNotifications() {
+  if (!UserHasOptedInToBravePrivateAds()) {
+    NotificationAdManager::GetInstance().CloseAll();
+  }
 }
 
 }  // namespace
@@ -124,6 +132,8 @@ void NotificationAdHandler::OnNotifyDidInitializeAds() {
 
 void NotificationAdHandler::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
+    MaybeCloseAllNotifications();
+
     MaybeServeAtRegularIntervals();
   }
 }
