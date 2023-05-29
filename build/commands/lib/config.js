@@ -123,7 +123,8 @@ const getBraveVersion = (ignorePatchVersionNumber) => {
 }
 
 const Config = function () {
-  this.isCI = process.env.BUILD_ID !== undefined || process.env.TEAMCITY_VERSION !== undefined
+  this.isTeamcity = process.env.TEAMCITY_VERSION !== undefined
+  this.isCI = process.env.BUILD_ID !== undefined || this.isTeamcity
   this.internalDepsUrl = 'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
@@ -1253,7 +1254,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     }
 
     if (this.getCachePath()) {
-      console.log("using git cache path " + this.getCachePath())
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
@@ -1312,9 +1312,14 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.VSCMD_SKIP_SENDTELEMETRY = '1'
     }
 
+    // TeamCity displays only stderr on the "Build Problems" page when an error
+    // occurs. By redirecting stdout to stderr, we ensure that all outputs from
+    // external processes are visible in case of a failure.
+    const stdio = this.isTeamcity ? ['inherit', process.stderr, 'inherit'] : 'inherit'
+
     return {
       env,
-      stdio: 'inherit',
+      stdio: stdio,
       cwd: this.srcDir,
       shell: true,
       git_cwd: '.',

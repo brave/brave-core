@@ -663,7 +663,7 @@ const util = {
 
   buildTarget: (target = config.buildTarget, options = config.defaultOptions) => {
     const buildId = crypto.randomUUID()
-    const progressMessage = 'build ' + target + ' (id=' + buildId + ')'
+    const progressMessage = `build ${target} (${config.buildConfig}, id=${buildId})`
     Log.progressStart(progressMessage)
 
     let num_compile_failure = 1
@@ -679,9 +679,7 @@ const util = {
     // Setting `AUTONINJA_BUILD_ID` allows tracing remote execution which helps
     // with debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
-    Log.progressScope(`ninja ${target} ${config.buildConfig}`, () => {
-      util.run('autoninja', ninjaOpts, options)
-    })
+    util.run('autoninja', ninjaOpts, options)
 
     Log.progressFinish(progressMessage)
   },
