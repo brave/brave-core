@@ -110,6 +110,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) WebImageDownloader* webImageDownloader;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
+@property(nonatomic) BraveP3AUtils* p3aUtils;
 @end
 
 @implementation BraveCoreMain
@@ -471,9 +472,13 @@ static bool CustomLogHandler(int severity,
 }
 
 - (BraveP3AUtils*)p3aUtils {
-  return [[BraveP3AUtils alloc]
-      initWithBrowserState:_mainBrowserState
-                localState:GetApplicationContext()->GetLocalState()];
+  if (!_p3aUtils) {
+    _p3aUtils = [[BraveP3AUtils alloc]
+        initWithBrowserState:_mainBrowserState
+                  localState:GetApplicationContext()->GetLocalState()
+                  p3aService:_p3a_service];
+  }
+  return _p3aUtils;
 }
 
 + (bool)initializeICUForTesting {
