@@ -43,7 +43,6 @@
 <translation id="7180611975245234373">రీఫ్రెష్ చేయి</translation>
 <translation id="4309915981827077375">సాధారణ సమాచారం</translation>
 <translation id="8874184842967597500">కనెక్ట్ చేయబడలేదు</translation>
-<translation id="2359808026110333948">కొనసాగించు</translation>
 <translation id="3587482841069643663">మొత్తం</translation>
 <translation id="2631006050119455616">సేవ్ చేయబడింది</translation>
 <translation id="3866249974567520381">వివరణ</translation>
@@ -68,15 +67,17 @@
 <translation id="572392919096807438">నా నిర్ణయాన్ని గుర్తుంచుకో</translation>
 <translation id="5308380583665731573">కనెక్ట్ చేయండి</translation>
 <translation id="3368922792935385530">కనెక్ట్ అయింది</translation>
+<translation id="2359808026110333948">కొనసాగించు</translation>
 <translation id="6965382102122355670">సరే</translation>
 <translation id="5234764350956374838">తొలగించు</translation>
 <translation id="8281886186245836920">దాటవేయి</translation>
+<translation id="1483493594462132177">పంపు</translation>
+<translation id="1177863135347784049">అనుకూలీకరించిన</translation>
 <translation id="8168435359814927499">కంటెంట్</translation>
 <translation id="1383876407941801731">శోధించు</translation>
 <translation id="2805756323405976993">యాప్స్</translation>
 <translation id="1987317783729300807">ఖాతాలు</translation>
 <translation id="629730747756840877">ఖాతా</translation>
-<translation id="1483493594462132177">పంపు</translation>
 <translation id="1201402288615127009">తరువాత</translation>
 <translation id="8712637175834984815">అర్థమైంది</translation>
 <translation id="6896758677409633944">కాపీ చేయి</translation>
@@ -103,6 +104,7 @@
 <translation id="5677928146339483299">బ్లాక్ చేయబడింది</translation>
 <translation id="1165039591588034296">ఎర్రర్</translation>
 <translation id="3380365263193509176">తెలియని లోపం</translation>
+<translation id="9218430445555521422">డిఫాల్ట్ లా సెట్ చెయ్యండి</translation>
 <translation id="4430019312045809116">వాల్యూమ్</translation>
 <translation id="6129953537138746214">ఖాళీ</translation>
 <translation id="4412698727486357573">సహాయ కేంద్రం</translation>

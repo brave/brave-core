@@ -8,6 +8,7 @@
 <translation id="5918095577778020936">Brave からパスワードをエクスポートするための許可を求められています。許可するには Windows のパスワードを入力してください。</translation>
 <translation id="5468853758063275923">既定のブラウザは Brave です</translation>
 <translation id="8522292744959221145">パスワードにデータ侵害などセキュリティに関する問題がないかどうかを確認するには、<ph name="BEGIN_LINK"/>Brave にログイン<ph name="END_LINK"/>してください。</translation>
+<translation id="8468770846533807490">{NUM_DEVICES,plural, =0{Brave 拡張機能が HID デバイスにアクセスしていました}=1{Brave 拡張機能が HID デバイスにアクセスしています}other{Brave 拡張機能が # 個の HID デバイスにアクセスしています}}</translation>
 <translation id="8541922081612557424">Brave について</translation>
 <translation id="3528799424770515097">{COUNT,plural, =1{1 分間使用しなかった場合、管理者は Brave を自動的に終了します。閲覧データは削除されます。これには、履歴、自動入力、ダウンロードが含まれます。}other{# 分間使用しなかった場合、管理者は Brave を自動的に終了します。閲覧データは削除されます。これには、履歴、自動入力、ダウンロードが含まれます。}}</translation>
 <translation id="1203500561924088507">インストールいただきありがとうございます。<ph name="BUNDLE_NAME"/> を使用するにはブラウザを再起動してください。</translation>
@@ -51,6 +52,7 @@
 <translation id="6381750314821942592">Brave はまもなく終了します</translation>
 <translation id="6078442581074612226">Brave 内</translation>
 <translation id="2485422356828889247">アンインストール</translation>
+<translation id="70183448213529602">Brave が既存のパスワードを置き換えようとしています。続行するには、Windows のパスワードを入力してください。</translation>
 <translation id="7798069806040634998">ファイルをダウンロードするには、Brave でストレージへのアクセスを許可する必要があります</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7291143854620707672">このプロファイルの使用中に生成された Brave データ（ブックマーク、履歴、パスワード、他の設定など）は、仕事用プロファイルの管理者によって削除される場合があります。<ph name="LEARN_MORE"/></translation>
@@ -72,7 +74,6 @@
 <translation id="2928420929544864228">インストールが完了しました。</translation>
 <translation id="8208853227947884571">Brave は最新版です</translation>
 <translation id="5122472867956731189">サイトがパスワードを不正に取得しようとしている場合や、ユーザーが安全でないファイルをダウンロードしようとした場合は、URL とページ コンテンツの一部をセーフ ブラウジングに送信することがあります</translation>
-<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave は HID デバイスに接続されています}other{Brave は HID デバイスに接続されています}}</translation>
 <translation id="8755404239607088219">Brave でパスワードを確認できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="8880183781256147665">Brave に追加...</translation>
 <translation id="3038232873781883849">インストールの待機中...</translation>
@@ -86,7 +87,6 @@
 <translation id="2585240446624043880">Brave はこのデータ ディレクトリへの読み書きを実行できません:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
-<translation id="6823651909636163674">このガイドでは、Brave をカスタマイズして使用するのに役立つさまざまな設定について説明します</translation>
 <translation id="2423637317249323944">Brave のバージョン <ph name="PRODUCT_VERSION"/> がインストールされています</translation>
 <translation id="3286538390144397061">今すぐ再起動</translation>
 <translation id="2339258256897053758">Brave API キーが欠落しています。Brave の一部の機能は無効になります。</translation>
@@ -234,8 +234,10 @@
 <translation id="2139300032719313227">Chrome OS を再起動してください</translation>
 <translation id="1684121725014454063">Brave プロフィールへようこそ</translation>
 <translation id="2675662665675552980">この拡張機能では、Brave の起動時に表示されるページも制御されます。</translation>
+<translation id="648319183876919572">セーフ ブラウジング保護強化機能では、危険なウェブサイトやダウンロードから高いセキュリティ強度で保護されます</translation>
 <translation id="5590013613412457132">Brave をアンインストール</translation>
 <translation id="8646609321956191980">Brave の情報（ブックマーク、履歴、パスワードなど）はプロフィールごとに分けて保持されます</translation>
+<translation id="2535436634051789953">別の Brave プロフィールに切り替えて、そのプロフィールのパスワードを表示できます</translation>
 <translation id="2312399718665761438">スペルミスを修正するために、テキスト欄に入力したテキストが Brave から Brave に送信されます</translation>
 <translation id="3507835409099344374">Brave の通知設定に移動</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
@@ -338,6 +340,7 @@
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>このデータの利用方法:<ph name="END_BOLD"/> サイトでは、ユーザーの興味 / 関心に関する情報を Brave に保存できます。たとえば、マラソン用のシューズを購入するためにあるサイトにアクセスすると、そのサイトでは「ランニング」をユーザーの興味 / 関心として定義する可能性があります。その後、別のサイトにアクセスして競技に登録しようとすると、そのサイトでは、ユーザーの興味 / 関心に基づいてランニング用シューズの広告が表示される場合があります。</translation>
 <translation id="3052349005266761501">Brave を起動しています...</translation>
 <translation id="6283840329609797763">原因不明のエラーによりインストールに失敗しました。Brave をもう一度ダウンロードしてください。</translation>
+<translation id="4668189655335212354">{NUM_DEVICES,plural, =0{Brave 拡張機能が HID デバイスにアクセスしていました}=1{Brave 拡張機能が 1 個の HID デバイスにアクセスしています}other{Brave 拡張機能が # 個の HID デバイスにアクセスしています}}</translation>
 <translation id="2433912322225810055">この拡張機能では、Brave の起動時、またはアドレスバーからの検索時に表示されるページも制御されます。</translation>
 <translation id="4100716194836114130">自分好みに設定</translation>
 <translation id="4831743161813926460">このサイトを利用するには、Brave でカメラとマイクの使用を許可する必要があります</translation>
@@ -365,7 +368,6 @@
 <translation id="296137235951584143">Brave を独自にカスタマイズ</translation>
 <translation id="7977787072794666032">Windows XP と Windows Vista はサポートされなくなったため、Brave は正常に機能しない可能性があります</translation>
 <translation id="8180288330711585962">Brave で管理されている証明書</translation>
-<translation id="3050465115159165320">Brave を最大限に活用しましょう</translation>
 <translation id="4484434718272972655">Brave はどなたが使用しますか？</translation>
 <translation id="7173394303099002355">Brave の最高のセキュリティ強度で保護</translation>
 <translation id="5775101967851558962">Brave を閉じるとき、常にデバイスからサイトデータを削除する</translation>

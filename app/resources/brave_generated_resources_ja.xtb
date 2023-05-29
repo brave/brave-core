@@ -31,7 +31,7 @@
 <translation id="3218385319396786393">このページで自動再生がブロックされました</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> で自動再生を常に許可する。</translation>
 <translation id="4150684676757176434">自動再生のブロックを継続する</translation>
-<translation id="8988939298652262600">Braveではセキュリティーおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、この拡張機能をインストールしてください。</translation>
+<translation id="3477357195688115718">Braveではセキュリティおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、この拡張機能をインストールしてください。</translation>
 <translation id="9005883459983913482">Torウィンドウ</translation>
 <translation id="7965178729203412357">新しいTorのID</translation>
 <translation id="6924909138923993900">このサイトに新しくTor接続する</translation>
@@ -125,10 +125,15 @@
 <translation id="8184318863960255706">詳細</translation>
 <translation id="780301667611848630">いいえ</translation>
 <translation id="1162706247109707219">OKをクリックすることで、お客様はWindows 10以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
+<translation id="2770465223704140727">リストから削除</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
-<translation id="6040143037577758943">近い</translation>
+<translation id="6040143037577758943">閉じる</translation>
 <translation id="6665472986740899785">Brave通知広告</translation>
+<translation id="5582087890067572966">🎉 ウォレットの接続が完了しました！</translation>
+<translation id="4364336119478610380">このような通知が画面に表示されるたびに、クリックしなくても報酬を獲得できます。</translation>
+<translation id="5893017172751072752">Brave広告を見るだけで報酬を獲得できます</translation>
+<translation id="3447730462826640312">報酬獲得のためにクリックする必要はありません。もちろん、興味のある広告はクリックしてください！</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Brave Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
 <translation id="1516554614404600536">Braveのツールヒント</translation>
@@ -257,6 +262,9 @@
 <translation id="8721331068159819483">Mac OS と同様</translation>
 <translation id="1692470335103807198">より多くのテーマを取得する</translation>
 <translation id="2906510232093002459">Braveデフォルト画像</translation>
+<translation id="8076492880354921740">タブ</translation>
+<translation id="5860254591544742609">タイトルバーを表示</translation>
+<translation id="5371926069408837914">折りたたまれている状態でマウスオーバーすると、垂直タブパネルを展開</translation>
 <translation id="3367129510799209147">タブホバーモード</translation>
 <translation id="2113977810652731515">カード</translation>
 <translation id="4096343215397759358">プレビュー付きカード</translation>
@@ -379,6 +387,10 @@
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
 <translation id="2988792685798128092">サイトを閉じたときに消去</translation>
+<translation id="4663317021223369617">クッキーとサイトのデータ</translation>
+<translation id="7050661313034564003">このサイトのすべてのCookieとローカルに保存されたデータを表示</translation>
+<translation id="8339059274628563283"><ph name="SITE"/> によりデータがローカルに保存されました</translation>
+<translation id="1963227389609234879">すべて削除</translation>
 <translation id="814018970995616154">Braveに保存された安全でないサイトのリストを使ってURLをチェックします。</translation>
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="5570470519803062774">サイトとシールドの設定</translation>
@@ -396,6 +408,11 @@
 <translation id="2903783737778379345">サードパーティCookieを使用したレガシーのGoogleサインインを許可しない</translation>
 <translation id="2570833232754279153">レガシーのGoogleサインインにサードパーティCookieを使用することを許可しない</translation>
 <translation id="6880817299303842099">レガシーのGoogleサインインにサードパーティCookieの使用を許可する</translation>
+<translation id="5169650598465327872">Localhostのアクセス</translation>
+<translation id="4172219483893066798">サイトがLocalhostのリソースへのアクセスを要求可能</translation>
+<translation id="7181706637590665047">Localhostのリソースへのアクセスを許可しない</translation>
+<translation id="1336116824874668514">Localhostのリソースへのアクセス: 不可</translation>
+<translation id="1485435696620658073">Localhostのリソースへのアクセス: 可</translation>
 <translation id="6414370348346025511">標準保護がオンになっています。</translation>
 <translation id="5565355416171743213">同期機能を利用開始</translation>
 <translation id="4332558599726753990">同期設定</translation>
@@ -462,7 +479,7 @@
 <translation id="2516405584294312544">これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。</translation>
 <translation id="4860996720371753023">アカウントの削除を処理中です...</translation>
 <translation id="4094590686212463338">この同期チェーンに参加できません。同期チェーンが削除されています。</translation>
-<translation id="5633907266617216186">住所、支払い情報など</translation>
+<translation id="4908081302669157000">電話番号、メールアドレス、住所</translation>
 <translation id="294985549514492876">ウェブアプリ（PWA）</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
@@ -575,7 +592,7 @@
 <translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
 <translation id="2234108191702901162">ネットワークを追加できません</translation>
 <translation id="8996633027318264334"><ph name="KEY_NAME"/>を削除しますか？</translation>
-<translation id="3316326558572563182">アクティブなネットワークをウォレットネットワークリストで非表示にはできません</translation>
+<translation id="8633484167132172058">ウォレットのネットワークリストにデフォルトのネットワークが常に表示されます</translation>
 <translation id="232693303726691609">ウォレットネットワークリストでネットワークを表示または非表示にします</translation>
 <translation id="7893578599666249602"><ph name="KEY_NAME"/>をリセットしますか？</translation>
 <translation id="2618193846561624884">既存のネットワークを更新しますか？</translation>
