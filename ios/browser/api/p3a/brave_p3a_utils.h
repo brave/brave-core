@@ -12,10 +12,31 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NSInteger P3AMetricLogType NS_TYPED_ENUM;
+OBJC_EXPORT P3AMetricLogType const P3AMetricLogTypeSlow;
+OBJC_EXPORT P3AMetricLogType const P3AMetricLogTypeTypical;
+OBJC_EXPORT P3AMetricLogType const P3AMetricLogTypeExpress;
+
+OBJC_EXPORT NSString* const P3ACreativeMetricPrefix;
+
+OBJC_EXPORT
+@interface P3ACallbackRegistration : NSObject
+@end
+
 OBJC_EXPORT
 @interface BraveP3AUtils : NSObject
 @property(nonatomic) bool isP3AEnabled;
 @property(nonatomic) bool isNoticeAcknowledged;
+- (nullable P3ACallbackRegistration*)registerRotationCallback:
+    (void (^)(P3AMetricLogType logType, BOOL isConstellation))callback;
+- (nullable P3ACallbackRegistration*)registerMetricCycledCallback:
+    (void (^)(NSString* histogramName, BOOL isConstellation))callback;
+- (void)registerDynamicMetric:(NSString*)histogramName
+                      logType:(P3AMetricLogType)logType;
+- (void)registerDynamicMetric:(NSString*)histogramName
+                      logType:(P3AMetricLogType)logType
+              mainThreadBound:(BOOL)mainThreadBound;
+- (void)removeDynamicMetric:(NSString*)histogramName;
 - (BraveHistogramsController*)histogramsController;
 - (instancetype)init NS_UNAVAILABLE;
 @end

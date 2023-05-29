@@ -11,11 +11,16 @@
 class ChromeBrowserState;
 class PrefService;
 
+namespace p3a {
+class P3AService;
+}  // namespace p3a
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BraveP3AUtils (Private)
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState
-                          localState:(PrefService*)localState;
+                          localState:(PrefService*)localState
+                          p3aService:(scoped_refptr<p3a::P3AService>)p3aService;
 @end
 
 NS_ASSUME_NONNULL_END
