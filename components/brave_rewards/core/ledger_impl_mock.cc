@@ -30,12 +30,12 @@ MockLedgerImpl::MockLedgerImpl()
 
 MockLedgerImpl::~MockLedgerImpl() = default;
 
-MockLedgerClient* MockLedgerImpl::mock_client() {
-  return &mock_ledger_client_;
+MockLedgerClient& MockLedgerImpl::mock_client() {
+  return mock_ledger_client_;
 }
 
-database::MockDatabase* MockLedgerImpl::mock_database() {
-  return &mock_database_;
+database::MockDatabase& MockLedgerImpl::mock_database() {
+  return mock_database_;
 }
 
 }  // namespace brave_rewards::internal

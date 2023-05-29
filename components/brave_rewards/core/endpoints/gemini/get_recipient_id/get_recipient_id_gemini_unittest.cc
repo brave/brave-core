@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -20,8 +21,8 @@
 
 using ::testing::_;
 using ::testing::TestParamInfo;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
 namespace brave_rewards::internal::endpoints::test {
 using Error = GetRecipientIDGemini::Error;
@@ -37,16 +38,13 @@ using GetRecipientIDGeminiParamType = std::tuple<
 // clang-format on
 
 class GetRecipientIDGemini
-    : public TestWithParam<GetRecipientIDGeminiParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+    : public MockLedgerTest,
+      public WithParamInterface<GetRecipientIDGeminiParamType> {};
 
 TEST_P(GetRecipientIDGemini, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -58,8 +56,7 @@ TEST_P(GetRecipientIDGemini, Paths) {
   base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
-  RequestFor<endpoints::GetRecipientIDGemini>(mock_ledger_impl_, "token")
-      .Send(callback.Get());
+  RequestFor<endpoints::GetRecipientIDGemini>("token").Send(callback.Get());
 
   task_environment_.RunUntilIdle();
 }

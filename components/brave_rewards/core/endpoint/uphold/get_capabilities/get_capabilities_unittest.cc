@@ -13,29 +13,25 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=GetCapabilitiesTest.*
 
-namespace brave_rewards::internal {
-
+using brave_rewards::internal::uphold::Capabilities;
 using ::testing::_;
-using uphold::Capabilities;
 
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
-class GetCapabilitiesTest : public testing::Test {
+class GetCapabilitiesTest : public MockLedgerTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetCapabilities get_capabilities_{mock_ledger_impl_};
+  GetCapabilities get_capabilities_;
 };
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -78,7 +74,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -123,7 +119,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -166,7 +162,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -211,7 +207,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -254,7 +250,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -301,7 +297,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -344,7 +340,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -367,7 +363,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -389,6 +385,4 @@ TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::uphold
