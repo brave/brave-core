@@ -12,6 +12,8 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/theme_copying_widget.h"
 #include "chrome/common/pref_names.h"
@@ -137,6 +139,10 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
   host_view_observation_.Observe(host_);
   widget_observation_.AddObservation(host_->GetWidget());
 
+  // At this point, Browser hasn't finished its initialization. In order to
+  // access some of its member, we should observe BrowserList.
+  BrowserList::AddObserver(this);
+
   ChildPreferredSizeChanged(region_view_);
 }
 
@@ -183,6 +189,23 @@ void VerticalTabStripWidgetDelegateView::OnViewIsDeleting(
     views::View* observed_view) {
   host_view_observation_.Reset();
   host_ = nullptr;
+}
+
+void VerticalTabStripWidgetDelegateView::OnBrowserAdded(Browser* browser) {
+  if (browser != browser_view_->browser()) {
+    return;
+  }
+
+  auto* exclusive_access_manager =
+      browser_view_->browser()->exclusive_access_manager();
+  DCHECK(exclusive_access_manager);
+
+  auto* fullscreen_controller =
+      exclusive_access_manager->fullscreen_controller();
+  DCHECK(fullscreen_controller);
+  fullscreen_observation_.Observe(fullscreen_controller);
+
+  BrowserList::RemoveObserver(this);
 }
 
 void VerticalTabStripWidgetDelegateView::OnWidgetVisibilityChanged(
@@ -254,6 +277,10 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
 void VerticalTabStripWidgetDelegateView::OnWidgetDestroying(
     views::Widget* widget) {
   widget_observation_.RemoveObservation(widget);
+}
+
+void VerticalTabStripWidgetDelegateView::OnFullscreenStateChanged() {
+  ChildPreferredSizeChanged(region_view_);
 }
 
 #if BUILDFLAG(IS_MAC)
