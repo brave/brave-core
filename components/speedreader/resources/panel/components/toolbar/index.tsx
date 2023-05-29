@@ -28,6 +28,8 @@ function Toolbar(props: ToolbarProps) {
   const handleMainButtonClick = (button: MainButtonType) => {
     if (button === MainButtonType.ViewOriginal) {
       dataHandler.viewOriginal()
+    } else if (button === MainButtonType.AI) {
+      dataHandler.aiChat()
     } else {
       if (activeButton !== button) {
         setActiveButton(button)

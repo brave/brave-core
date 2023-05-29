@@ -63,6 +63,8 @@ class SpeedreaderToolbarDataHandlerImpl
 
   void ViewOriginal() override;
 
+  void AiChat() override;
+
   void GetPlaybackState(GetPlaybackStateCallback callback) override;
   void Rewind() override;
   void Play() override;
@@ -71,7 +73,6 @@ class SpeedreaderToolbarDataHandlerImpl
   void Forward() override;
 
  private:
-  speedreader::SpeedreaderTabHelper* GetSpeedreaderTabHelper();
   speedreader::SpeedreaderService* GetSpeedreaderService();
   speedreader::TtsPlayer::Controller* GetTtsController();
   speedreader::mojom::PlaybackState GetTabPlaybackState();

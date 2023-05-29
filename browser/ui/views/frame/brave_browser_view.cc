@@ -376,6 +376,29 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
   }
 }
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+
+speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
+    speedreader::SpeedreaderTabHelper* tab_helper,
+    bool is_enabled) {
+  speedreader::SpeedreaderBubbleView* bubble = nullptr;
+  if (is_enabled) {
+    auto* speedreader_mode_bubble = new speedreader::SpeedreaderModeBubble(
+        GetLocationBarView(), tab_helper);
+    views::BubbleDialogDelegateView::CreateBubble(speedreader_mode_bubble);
+    bubble = speedreader_mode_bubble;
+  } else {
+    auto* reader_mode_bubble =
+        new speedreader::ReaderModeBubble(GetLocationBarView(), tab_helper);
+    views::BubbleDialogDelegateView::CreateBubble(reader_mode_bubble);
+    bubble = reader_mode_bubble;
+  }
+
+  bubble->Show();
+
+  return bubble;
+}
+
 void BraveBrowserView::ShowReaderModeToolbar() {
   if (!reader_mode_panel_view_) {
     reader_mode_panel_view_ =
@@ -397,37 +420,18 @@ void BraveBrowserView::HideReaderModeToolbar() {
   }
 }
 
+void BraveBrowserView::OpenAiChatPanel() {
+  side_panel_coordinator()->Show(SidePanelEntryId::kChatUI);
+}
+
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+
 void BraveBrowserView::ShowUpdateChromeDialog() {
 #if BUILDFLAG(ENABLE_SPARKLE)
   // On mac, sparkle frameworks's relaunch api is used.
   UpdateRecommendedMessageBoxMac::Show(GetNativeWindow());
 #else
   BrowserView::ShowUpdateChromeDialog();
-#endif
-}
-
-speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
-    speedreader::SpeedreaderTabHelper* tab_helper,
-    bool is_enabled) {
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader::SpeedreaderBubbleView* bubble = nullptr;
-  if (is_enabled) {
-    auto* speedreader_mode_bubble = new speedreader::SpeedreaderModeBubble(
-        GetLocationBarView(), tab_helper);
-    views::BubbleDialogDelegateView::CreateBubble(speedreader_mode_bubble);
-    bubble = speedreader_mode_bubble;
-  } else {
-    auto* reader_mode_bubble =
-        new speedreader::ReaderModeBubble(GetLocationBarView(), tab_helper);
-    views::BubbleDialogDelegateView::CreateBubble(reader_mode_bubble);
-    bubble = reader_mode_bubble;
-  }
-
-  bubble->Show();
-
-  return bubble;
-#else
-  return nullptr;
 #endif
 }
 

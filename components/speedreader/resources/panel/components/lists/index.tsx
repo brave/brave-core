@@ -23,6 +23,7 @@ import SpeedSVG from '../../svg/speed'
 import FontSizeSVG from '../../svg/font_size'
 import { FontFamily, FontSize, PlaybackSpeed, PlaybackState } from '../../api/browser'
 import classnames from '$web-common/classnames'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 export enum MainButtonType {
   None,
@@ -53,7 +54,7 @@ const mainButtonsOptions = [
     id: 'ai',
     type: MainButtonType.AI,
     svgIcon: AiSVG,
-    hidden: true  // TODO(boocmp): Enable in future PR.
+    hidden: !loadTimeData.getBoolean('aiChatFeatureEnabled')
   }
 ]
 

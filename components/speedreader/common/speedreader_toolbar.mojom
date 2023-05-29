@@ -23,6 +23,8 @@ interface ToolbarDataHandler {
 
   HideToolbar();
 
+  AiChat();
+
   GetPlaybackState() => (PlaybackState playback_state);
 
   Rewind();

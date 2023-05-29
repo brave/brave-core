@@ -10,7 +10,9 @@
 
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/components/ai_chat/ai_chat_tab_helper.h"
 #include "brave/components/speedreader/tts_player.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -106,6 +108,18 @@ void SpeedreaderToolbarDataHandlerImpl::HideToolbar() {
 void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
   if (active_tab_helper_) {
     active_tab_helper_->OnShowOriginalPage();
+  }
+}
+
+void SpeedreaderToolbarDataHandlerImpl::AiChat() {
+  if (!browser_ || !browser_->window()) {
+    return;
+  }
+  static_cast<BraveBrowserWindow*>(browser_->window())->OpenAiChatPanel();
+
+  if (auto* ai_chat_tab_helper = AIChatTabHelper::FromWebContents(
+          active_tab_helper_->web_contents())) {
+    ai_chat_tab_helper->RequestSummary();
   }
 }
 

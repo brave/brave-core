@@ -60,9 +60,6 @@ class BraveBrowserView : public BrowserView,
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
-  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
-      speedreader::SpeedreaderTabHelper* tab_helper,
-      bool is_enabled) override;
   void CreateWalletBubble();
   void CreateApproveWalletBubble();
   void CloseWalletBubble();
@@ -73,8 +70,14 @@ class BraveBrowserView : public BrowserView,
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
+      speedreader::SpeedreaderTabHelper* tab_helper,
+      bool is_enabled) override;
   void ShowReaderModeToolbar() override;
   void HideReaderModeToolbar() override;
+  void OpenAiChatPanel() override;
+#endif
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)
   bool GetSupportsTitle() const override;

@@ -44,6 +44,7 @@ class BraveBrowserWindow : public BrowserWindow {
       bool is_enabled);
   virtual void ShowReaderModeToolbar() {}
   virtual void HideReaderModeToolbar() {}
+  virtual void OpenAiChatPanel() {}
 #endif
 
 #if defined(TOOLKIT_VIEWS)
