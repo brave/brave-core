@@ -17,8 +17,8 @@ BASE_FEATURE(kBraveNTPBrandedWallpaperDemo,
              base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveNTPSuperReferralWallpaper,
              "BraveNTPSuperReferralWallpaperName",
-#if BUILDFLAG(IS_LINUX)
-             // Linux doesn't support referral install yet.
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_IOS)
+             // Linux and iOS don't support referral install yet.
              base::FEATURE_DISABLED_BY_DEFAULT
 #else
              base::FEATURE_ENABLED_BY_DEFAULT

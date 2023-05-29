@@ -11,6 +11,7 @@ import("//brave/ios/browser/api/certificate/headers.gni")
 import("//brave/ios/browser/api/favicon/headers.gni")
 import("//brave/ios/browser/api/ipfs/headers.gni")
 import("//brave/ios/browser/api/ledger/headers.gni")
+import("//brave/ios/browser/api/ntp_background_images/headers.gni")
 import("//brave/ios/browser/api/opentabs/headers.gni")
 import("//brave/ios/browser/api/p3a/headers.gni")
 import("//brave/ios/browser/api/qr_code/headers.gni")
@@ -79,6 +80,7 @@ brave_core_public_headers += browser_api_url_public_headers
 brave_core_public_headers += brave_p3a_public_headers
 brave_core_public_headers += browser_api_web_webstate_public_headers
 brave_core_public_headers += ipfs_public_headers
+brave_core_public_headers += ntp_background_images_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"

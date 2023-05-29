@@ -27,6 +27,7 @@ source_set("browser") {
     "api/history",
     "api/ipfs",
     "api/net",
+    "api/ntp_background_images",
     "api/opentabs",
     "api/p3a",
     "api/password",
