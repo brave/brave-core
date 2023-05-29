@@ -8,13 +8,15 @@
 
 #include <vector>
 
-#include "base/callback_list.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/playlist/playlist_tab_helper.h"
+#include "brave/browser/playlist/playlist_tab_helper_observer.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 
 class Browser;
 
-class PlaylistActionIconView : public PageActionIconView {
+class PlaylistActionIconView : public PageActionIconView,
+                               public playlist::PlaylistTabHelperObserver {
  public:
   METADATA_HEADER(PlaylistActionIconView);
 
@@ -37,23 +39,25 @@ class PlaylistActionIconView : public PageActionIconView {
 
   playlist::PlaylistTabHelper* playlist_tab_helper() {
     return playlist::PlaylistTabHelper::FromWebContents(
-        base::to_address(current_web_contents_));
+        last_web_contents_.get());
   }
 
-  void OnSavedItemChanged(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& saved_items);
-  void OnFoundItemChanged(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& found_items);
+  // PlaylistTabHelperObserver:
+  void OnSavedItemsChanged(const std::vector<playlist::mojom::PlaylistItemPtr>&
+                               saved_items) override;
+  void OnFoundItemsChanged(const std::vector<playlist::mojom::PlaylistItemPtr>&
+                               found_items) override;
 
-  void UpdateState(int saved_items_count, int found_items_count);
+  void UpdateState(bool has_saved, bool found_items);
   void UpdateVisibilityPerState();
 
   State state_ = kNone;
 
-  raw_ptr<content::WebContents> current_web_contents_ = nullptr;
+  raw_ptr<content::WebContents> last_web_contents_ = nullptr;
 
-  base::CallbackListSubscription saved_items_changed_subscription_;
-  base::CallbackListSubscription found_items_changed_subscription_;
+  base::ScopedObservation<playlist::PlaylistTabHelper,
+                          playlist::PlaylistTabHelperObserver>
+      playlist_tab_helper_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_ICON_VIEW_H_

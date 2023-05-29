@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "base/callback_list.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -19,15 +19,13 @@
 namespace playlist {
 
 class PlaylistService;
+class PlaylistTabHelperObserver;
 
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
       public content::WebContentsObserver,
       public mojom::PlaylistServiceObserver {
  public:
-  using ItemsChangedCallbackList = base::RepeatingCallbackList<void(
-      const std::vector<mojom::PlaylistItemPtr>&)>;
-
   static void MaybeCreateForWebContents(content::WebContents* contents);
 
   ~PlaylistTabHelper() override;
@@ -40,10 +38,8 @@ class PlaylistTabHelper
     return found_items_;
   }
 
-  base::CallbackListSubscription RegisterSavedItemsChangedCallback(
-      ItemsChangedCallbackList::CallbackType cb);
-  base::CallbackListSubscription RegisterFoundItemsChangedCallback(
-      ItemsChangedCallbackList::CallbackType cb);
+  void AddObserver(PlaylistTabHelperObserver* observer);
+  void RemoveObserver(PlaylistTabHelperObserver* observer);
 
   // content::WebContentsObserver:
   void DidFinishNavigation(
@@ -88,8 +84,7 @@ class PlaylistTabHelper
   std::vector<mojom::PlaylistItemPtr> saved_items_;
   std::vector<mojom::PlaylistItemPtr> found_items_;
 
-  ItemsChangedCallbackList saved_items_changed_callbacks_;
-  ItemsChangedCallbackList found_items_changed_callbacks_;
+  base::ObserverList<PlaylistTabHelperObserver> observers_;
 
   mojo::Receiver<mojom::PlaylistServiceObserver> playlist_observer_receiver_{
       this};

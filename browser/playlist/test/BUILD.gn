@@ -23,6 +23,7 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//brave/components/playlist/browser",
+    "//chrome/app:command_ids",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",

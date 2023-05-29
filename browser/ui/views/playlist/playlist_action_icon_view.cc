@@ -34,46 +34,39 @@ void PlaylistActionIconView::OnExecuting(ExecuteSource execute_source) {
     return;
   }
 
-  DCHECK_EQ(current_web_contents_, GetWebContents());
-  PlaylistActionBubbleView::ShowBubble(this,
-                                       base::to_address(current_web_contents_));
+  DCHECK_EQ(last_web_contents_, GetWebContents());
+  PlaylistActionBubbleView::ShowBubble(this, GetWebContents());
 }
 
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
-  return state_ == kAdded ? kPlaylistActionAddedIcon : kPlaylistActionIcon;
+  return state_ == kAdded ? kLeoProductPlaylistAddedIcon
+                          : kLeoProductPlaylistAddIcon;
 }
 
 void PlaylistActionIconView::UpdateImpl() {
-  if (auto old_contents =
-          std::exchange(current_web_contents_, GetWebContents());
-      old_contents == current_web_contents_) {
+  if (auto old_contents = std::exchange(last_web_contents_, GetWebContents());
+      old_contents == last_web_contents_) {
     return;
   }
 
   if (PlaylistActionBubbleView::IsShowingBubble()) {
     PlaylistActionBubbleView::CloseBubble();
   }
+  playlist_tab_helper_observation_.Reset();
 
   auto* playlist_tab_helper = this->playlist_tab_helper();
   if (!playlist_tab_helper) {
-    UpdateState(0, 0);
+    UpdateState(/* has_saved= */ false, /* found_items= */ false);
     return;
   }
 
-  saved_items_changed_subscription_ =
-      playlist_tab_helper->RegisterSavedItemsChangedCallback(
-          base::BindRepeating(&PlaylistActionIconView::OnSavedItemChanged,
-                              base::Unretained(this)));
-  found_items_changed_subscription_ =
-      playlist_tab_helper->RegisterFoundItemsChangedCallback(
-          base::BindRepeating(&PlaylistActionIconView::OnFoundItemChanged,
-                              base::Unretained(this)));
+  playlist_tab_helper_observation_.Observe(playlist_tab_helper);
 
   UpdateState(playlist_tab_helper->saved_items().size(),
               playlist_tab_helper->found_items().size());
 }
 
-void PlaylistActionIconView::OnSavedItemChanged(
+void PlaylistActionIconView::OnSavedItemsChanged(
     const std::vector<playlist::mojom::PlaylistItemPtr>& saved_items) {
   auto* playlist_tab_helper = this->playlist_tab_helper();
   CHECK(playlist_tab_helper);
@@ -81,7 +74,7 @@ void PlaylistActionIconView::OnSavedItemChanged(
   UpdateState(saved_items.size(), playlist_tab_helper->found_items().size());
 }
 
-void PlaylistActionIconView::OnFoundItemChanged(
+void PlaylistActionIconView::OnFoundItemsChanged(
     const std::vector<playlist::mojom::PlaylistItemPtr>& found_items) {
   auto* playlist_tab_helper = this->playlist_tab_helper();
   CHECK(playlist_tab_helper);
@@ -89,11 +82,8 @@ void PlaylistActionIconView::OnFoundItemChanged(
   UpdateState(playlist_tab_helper->saved_items().size(), found_items.size());
 }
 
-void PlaylistActionIconView::UpdateState(int saved_items_count,
-                                         int found_items_count) {
-  State target_state = saved_items_count   ? kAdded
-                       : found_items_count ? kFound
-                                           : kNone;
+void PlaylistActionIconView::UpdateState(bool has_saved, bool found_items) {
+  State target_state = has_saved ? kAdded : found_items ? kFound : kNone;
   if (auto old_state = std::exchange(state_, target_state);
       old_state == target_state) {
     return;

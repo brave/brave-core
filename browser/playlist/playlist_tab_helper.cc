@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/browser/playlist/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
 #include "content/public/browser/navigation_handle.h"
@@ -40,16 +41,12 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
 
 PlaylistTabHelper::~PlaylistTabHelper() = default;
 
-base::CallbackListSubscription
-PlaylistTabHelper::RegisterSavedItemsChangedCallback(
-    ItemsChangedCallbackList::CallbackType cb) {
-  return saved_items_changed_callbacks_.Add(std::move(cb));
+void PlaylistTabHelper::AddObserver(PlaylistTabHelperObserver* observer) {
+  observers_.AddObserver(observer);
 }
 
-base::CallbackListSubscription
-PlaylistTabHelper::RegisterFoundItemsChangedCallback(
-    ItemsChangedCallbackList::CallbackType cb) {
-  return found_items_changed_callbacks_.Add(std::move(cb));
+void PlaylistTabHelper::RemoveObserver(PlaylistTabHelperObserver* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 void PlaylistTabHelper::DidFinishNavigation(
@@ -87,7 +84,9 @@ void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
   }
 
   saved_items_.push_back(std::move(item));
-  saved_items_changed_callbacks_.Notify(saved_items_);
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+  }
 }
 
 void PlaylistTabHelper::OnItemDeleted(const std::string& id) {
@@ -98,7 +97,9 @@ void PlaylistTabHelper::OnItemDeleted(const std::string& id) {
   }
 
   saved_items_.erase(iter);
-  saved_items_changed_callbacks_.Notify(saved_items_);
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+  }
 }
 
 void PlaylistTabHelper::OnMediaFilesUpdated(
@@ -112,8 +113,10 @@ void PlaylistTabHelper::ResetData() {
   found_items_.clear();
   sent_find_media_request_ = false;
 
-  saved_items_changed_callbacks_.Notify(saved_items_);
-  found_items_changed_callbacks_.Notify(found_items_);
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+    observer.OnFoundItemsChanged(found_items_);
+  }
 }
 
 void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
@@ -122,23 +125,26 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
   // Should we keep a map(url, [item_id, ... , item_id]]) in PlaylistService for
   // perf improvement? We'll see this really matters.
 
-  // This is a synchronous call, so it's safe to bind this without weak
-  // reference.
-  auto on_get_all_items = base::BindOnce(
-      [](PlaylistTabHelper* helper, std::vector<mojom::PlaylistItemPtr> items) {
-        const auto& current_url = helper->web_contents()->GetVisibleURL();
-        for (const auto& item : items) {
-          if (item->page_source != current_url) {
-            continue;
-          }
+  bool should_notify = false;
+  base::ranges::for_each(service_->GetAllPlaylistItems(),
+                         [this, &should_notify](const auto& item) {
+                           const auto& current_url =
+                               web_contents()->GetVisibleURL();
+                           if (item->page_source != current_url) {
+                             return;
+                           }
 
-          helper->saved_items_.push_back(item->Clone());
-        }
+                           saved_items_.push_back(item->Clone());
+                           should_notify = true;
+                         });
 
-        helper->saved_items_changed_callbacks_.Notify(helper->saved_items_);
-      },
-      this);
-  service_->GetAllPlaylistItems(std::move(on_get_all_items));
+  if (!should_notify) {
+    return;
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+  }
 }
 
 void PlaylistTabHelper::FindMediaFromCurrentContents() {
@@ -169,7 +175,9 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
                       std::make_move_iterator(items.begin()),
                       std::make_move_iterator(items.end()));
 
-  found_items_changed_callbacks_.Notify(found_items_);
+  for (auto& observer : observers_) {
+    observer.OnFoundItemsChanged(found_items_);
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);
