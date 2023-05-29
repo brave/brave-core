@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -21,12 +22,10 @@
 using ::testing::_;
 using ::testing::MockFunction;
 using ::testing::TestParamInfo;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 template <typename ParamType>
 std::string NameSuffixGenerator(const TestParamInfo<ParamType>& info) {
@@ -42,11 +41,10 @@ using GetWalletParamType = std::tuple<
     bool                // expected linked
 >;
 
-struct GetWalletTest : TestWithParam<GetWalletParamType> {
+class GetWalletTest : public MockLedgerTest,
+                      public WithParamInterface<GetWalletParamType> {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetWallet get_wallet_{mock_ledger_impl_};
+  GetWallet get_wallet_;
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -169,7 +167,7 @@ TEST_P(GetWalletTest, Paths) {
   const auto& expected_custodian = std::get<3>(params);
   const auto expected_linked = std::get<4>(params);
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         std::move(callback).Run(
@@ -185,6 +183,4 @@ TEST_P(GetWalletTest, Paths) {
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

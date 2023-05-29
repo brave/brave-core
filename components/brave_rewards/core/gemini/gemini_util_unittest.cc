@@ -18,6 +18,7 @@
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -26,91 +27,87 @@
 
 using ::testing::_;
 using ::testing::Combine;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
 namespace brave_rewards::internal::gemini {
 
 class GeminiUtilTest
-    : public TestWithParam<
+    : public MockLedgerTest,
+      public WithParamInterface<
           std::tuple<mojom::Environment, mojom::WalletStatus>> {};
 
 TEST_F(GeminiUtilTest, GetClientId) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetClientId(), BUILDFLAG(GEMINI_PRODUCTION_CLIENT_ID));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetClientId(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_ID));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetClientId(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_ID));
 }
 
 TEST_F(GeminiUtilTest, GetClientSecret) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(GEMINI_PRODUCTION_CLIENT_SECRET));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_SECRET));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_SECRET));
 }
 
 TEST_F(GeminiUtilTest, GetFeeAddress) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(GEMINI_PRODUCTION_FEE_ADDRESS));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS));
 }
 
 TEST_F(GeminiUtilTest, GetApiServerUrl) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(endpoint::gemini::GetApiServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_PRODUCTION_API_URL), "/test"}));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(endpoint::gemini::GetApiServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_SANDBOX_API_URL), "/test"}));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(endpoint::gemini::GetApiServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_SANDBOX_API_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilTest, GetOauthServerUrl) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(endpoint::gemini::GetOauthServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL), "/test"}));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(endpoint::gemini::GetOauthServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL), "/test"}));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(endpoint::gemini::GetOauthServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilTest, GetWallet) {
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-
   // no wallet
-  ON_CALL(*mock_ledger_impl_.mock_client(),
-          GetStringState(state::kWalletGemini, _))
+  ON_CALL(mock_ledger().mock_client(), GetStringState(state::kWalletGemini, _))
       .WillByDefault([](const std::string&, auto callback) {
         std::move(callback).Run("");
       });
-  auto result = mock_ledger_impl_.gemini()->GetWallet();
+  auto result = ledger().gemini()->GetWallet();
   EXPECT_FALSE(result);
 
-  ON_CALL(*mock_ledger_impl_.mock_client(),
-          GetStringState(state::kWalletGemini, _))
+  ON_CALL(mock_ledger().mock_client(), GetStringState(state::kWalletGemini, _))
       .WillByDefault([](const std::string&, auto callback) {
         std::string wallet = FakeEncryption::Base64EncryptString(R"({
           "account_url": "https://exchange.sandbox.gemini.com",
@@ -126,7 +123,7 @@ TEST_F(GeminiUtilTest, GetWallet) {
       });
 
   // Gemini wallet
-  result = mock_ledger_impl_.gemini()->GetWallet();
+  result = ledger().gemini()->GetWallet();
   EXPECT_TRUE(result);
   EXPECT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   EXPECT_EQ(result->user_name, "test");
@@ -137,13 +134,13 @@ TEST_F(GeminiUtilTest, GetWallet) {
 }
 
 TEST_F(GeminiUtilTest, GenerateRandomHexString) {
-  is_testing = true;
+  ledger().SetTesting(false);
   auto result = util::GenerateRandomHexString();
-  EXPECT_EQ(result, "123456789");
-
-  is_testing = false;
-  result = util::GenerateRandomHexString();
   EXPECT_EQ(result.length(), 64u);
+
+  ledger().SetTesting(true);
+  result = util::GenerateRandomHexString();
+  EXPECT_EQ(result, "123456789");
 }
 
 INSTANTIATE_TEST_SUITE_P(GenerateLinks,
@@ -164,7 +161,7 @@ INSTANTIATE_TEST_SUITE_P(GenerateLinks,
 TEST_P(GeminiUtilTest, Paths) {
   const auto [environment, wallet_status] = GetParam();
 
-  _environment = environment;
+  ledger().SetEnvironment(environment);
   auto wallet = mojom::ExternalWallet::New();
   wallet->status = wallet_status;
   wallet->one_time_string = "one_time_string";

@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -23,8 +24,8 @@
 
 using ::testing::_;
 using ::testing::TestParamInfo;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
 namespace brave_rewards::internal::endpoints::test {
 using Error = GetParameters::Error;
@@ -39,16 +40,13 @@ using GetParametersParamType = std::tuple<
 >;
 // clang-format on
 
-class GetParameters : public TestWithParam<GetParametersParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+class GetParameters : public MockLedgerTest,
+                      public WithParamInterface<GetParametersParamType> {};
 
 TEST_P(GetParameters, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -68,7 +66,7 @@ TEST_P(GetParameters, Paths) {
     }
   });
 
-  RequestFor<endpoints::GetParameters>(mock_ledger_impl_).Send(callback.Get());
+  RequestFor<endpoints::GetParameters>().Send(callback.Get());
 
   task_environment_.RunUntilIdle();
 }

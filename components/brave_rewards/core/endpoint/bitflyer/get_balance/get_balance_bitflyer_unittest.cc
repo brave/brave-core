@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -20,19 +21,15 @@
 
 using ::testing::_;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace bitflyer {
+namespace brave_rewards::internal::endpoint::bitflyer {
 
-class GetBalanceTest : public testing::Test {
+class GetBalanceTest : public MockLedgerTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetBalance balance_{mock_ledger_impl_};
+  GetBalance balance_;
 };
 
 TEST_F(GetBalanceTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -119,7 +116,7 @@ TEST_F(GetBalanceTest, ServerOK) {
 }
 
 TEST_F(GetBalanceTest, ServerError401) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -137,7 +134,7 @@ TEST_F(GetBalanceTest, ServerError401) {
 }
 
 TEST_F(GetBalanceTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -154,6 +151,4 @@ TEST_F(GetBalanceTest, ServerErrorRandom) {
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace bitflyer
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::bitflyer

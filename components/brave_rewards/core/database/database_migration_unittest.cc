@@ -27,17 +27,9 @@ namespace brave_rewards::internal {
 using database::DatabaseMigration;
 
 class LedgerDatabaseMigrationTest : public BATLedgerTest {
- public:
-  LedgerDatabaseMigrationTest() { is_testing = true; }
-
-  ~LedgerDatabaseMigrationTest() override {
-    DatabaseMigration::SetTargetVersionForTesting(0);
-    is_testing = false;
-  }
-
  protected:
   sql::Database* GetDB() {
-    return GetTestLedgerClient()->database()->GetInternalDatabaseForTesting();
+    return client_.database()->GetInternalDatabaseForTesting();
   }
 
   std::string GetExpectedSchema() {
@@ -96,7 +88,8 @@ class LedgerDatabaseMigrationTest : public BATLedgerTest {
 };
 
 TEST_F(LedgerDatabaseMigrationTest, SchemaCheck) {
-  DatabaseMigration::SetTargetVersionForTesting(database::GetCurrentVersion());
+  ledger().SetDatabaseMigrationTargetVersionForTesting(
+      database::GetCurrentVersion());
   InitializeLedger();
   std::string expected_schema = GetExpectedSchema();
   EXPECT_FALSE(expected_schema.empty());
@@ -104,7 +97,7 @@ TEST_F(LedgerDatabaseMigrationTest, SchemaCheck) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_4_ActivityInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(4);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(4);
   InitializeDatabaseAtVersion(3);
   InitializeLedger();
 
@@ -127,7 +120,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_4_ActivityInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_5_ActivityInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(5);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(5);
   InitializeDatabaseAtVersion(4);
   InitializeLedger();
 
@@ -153,7 +146,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_5_ActivityInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_6_ActivityInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(6);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(6);
   InitializeDatabaseAtVersion(5);
   InitializeLedger();
 
@@ -203,7 +196,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_6_ActivityInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_8_PendingContribution) {
-  DatabaseMigration::SetTargetVersionForTesting(8);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(8);
   InitializeDatabaseAtVersion(7);
   InitializeLedger();
 
@@ -235,7 +228,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_8_PendingContribution) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_11_ContributionInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(11);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(11);
   InitializeDatabaseAtVersion(10);
   InitializeLedger();
 
@@ -279,7 +272,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_11_ContributionInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_12_ContributionInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(12);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(12);
   InitializeDatabaseAtVersion(11);
   InitializeLedger();
 
@@ -311,14 +304,14 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_12_ContributionInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_13_Promotion) {
-  DatabaseMigration::SetTargetVersionForTesting(13);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(13);
   InitializeDatabaseAtVersion(12);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("promotion"), 1);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_14_UnblindedToken) {
-  DatabaseMigration::SetTargetVersionForTesting(14);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(14);
   InitializeDatabaseAtVersion(13);
   InitializeLedger();
 
@@ -353,7 +346,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_14_UnblindedToken) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_16_ContributionInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(16);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(16);
   InitializeDatabaseAtVersion(15);
   InitializeLedger();
 
@@ -376,7 +369,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_16_ContributionInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_18_Promotion) {
-  DatabaseMigration::SetTargetVersionForTesting(18);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
   InitializeLedger();
 
@@ -405,7 +398,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_18_Promotion) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_18_CredsBatch) {
-  DatabaseMigration::SetTargetVersionForTesting(18);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
   InitializeLedger();
 
@@ -457,7 +450,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_18_CredsBatch) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_18_UnblindedToken) {
-  DatabaseMigration::SetTargetVersionForTesting(18);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
   InitializeLedger();
 
@@ -483,7 +476,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_18_UnblindedToken) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
-  DatabaseMigration::SetTargetVersionForTesting(21);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(21);
   InitializeDatabaseAtVersion(20);
   InitializeLedger();
 
@@ -525,7 +518,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_23_ContributionQueue) {
-  DatabaseMigration::SetTargetVersionForTesting(23);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(23);
   InitializeDatabaseAtVersion(22);
   InitializeLedger();
 
@@ -570,7 +563,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_23_ContributionQueue) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_24_ContributionQueue) {
-  DatabaseMigration::SetTargetVersionForTesting(24);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(24);
   InitializeDatabaseAtVersion(23);
   InitializeLedger();
 
@@ -600,7 +593,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_24_ContributionQueue) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_26_UnblindedTokens) {
-  DatabaseMigration::SetTargetVersionForTesting(26);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(26);
   InitializeDatabaseAtVersion(25);
   InitializeLedger();
 
@@ -679,7 +672,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_26_UnblindedTokens) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_27_UnblindedTokens) {
-  DatabaseMigration::SetTargetVersionForTesting(27);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(27);
   InitializeDatabaseAtVersion(26);
   InitializeLedger();
 
@@ -713,7 +706,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_27_UnblindedTokens) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
-  DatabaseMigration::SetTargetVersionForTesting(28);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(28);
   InitializeDatabaseAtVersion(27);
   InitializeLedger();
 
@@ -736,66 +729,66 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_30_NotBitflyerRegion) {
-  DatabaseMigration::SetTargetVersionForTesting(30);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_30_BitflyerRegion) {
-  DatabaseMigration::SetTargetVersionForTesting(30);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  GetTestLedgerClient()->SetIsBitFlyerRegionForTesting(true);
+  client_.SetIsBitFlyerRegionForTesting(true);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_31) {
-  DatabaseMigration::SetTargetVersionForTesting(31);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(31);
   InitializeDatabaseAtVersion(30);
   InitializeLedger();
   EXPECT_TRUE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_32_NotBitflyerRegion) {
-  DatabaseMigration::SetTargetVersionForTesting(32);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("balance_report_info"), 1);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_32_BitflyerRegion) {
-  DatabaseMigration::SetTargetVersionForTesting(32);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  GetTestLedgerClient()->SetIsBitFlyerRegionForTesting(true);
+  client_.SetIsBitFlyerRegionForTesting(true);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_33) {
-  DatabaseMigration::SetTargetVersionForTesting(33);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(33);
   InitializeDatabaseAtVersion(32);
   InitializeLedger();
   EXPECT_FALSE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_34) {
-  DatabaseMigration::SetTargetVersionForTesting(34);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(34);
   InitializeDatabaseAtVersion(33);
   InitializeLedger();
   EXPECT_TRUE(GetDB()->DoesColumnExist("promotion", "claimable_until"));
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_35) {
-  DatabaseMigration::SetTargetVersionForTesting(35);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(35);
   InitializeDatabaseAtVersion(34);
   InitializeLedger();
   EXPECT_FALSE(GetDB()->DoesTableExist("server_publisher_amounts"));
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_36) {
-  DatabaseMigration::SetTargetVersionForTesting(36);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(36);
   InitializeDatabaseAtVersion(35);
   InitializeLedger();
   sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
@@ -806,14 +799,14 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_36) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_37) {
-  DatabaseMigration::SetTargetVersionForTesting(37);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(37);
   InitializeDatabaseAtVersion(36);
   InitializeLedger();
   EXPECT_TRUE(GetDB()->DoesTableExist("external_transactions"));
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_38) {
-  DatabaseMigration::SetTargetVersionForTesting(38);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(38);
   InitializeDatabaseAtVersion(37);
   InitializeLedger();
   EXPECT_TRUE(
@@ -821,7 +814,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_38) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_39) {
-  DatabaseMigration::SetTargetVersionForTesting(39);
+  ledger().SetDatabaseMigrationTargetVersionForTesting(39);
   InitializeDatabaseAtVersion(38);
   InitializeLedger();
   EXPECT_TRUE(GetDB()->DoesColumnExist("server_publisher_banner", "web3_url"));

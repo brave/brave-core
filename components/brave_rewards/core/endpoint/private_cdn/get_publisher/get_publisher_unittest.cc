@@ -28,15 +28,14 @@ class GetPublisherTest : public BATLedgerTest {
     base::RunLoop run_loop;
     mojom::Result result;
 
-    GetPublisher(*GetLedgerImpl())
-        .Request(id, prefix,
-                 [&run_loop, &result, info](
-                     mojom::Result request_result,
-                     mojom::ServerPublisherInfoPtr request_info) {
-                   result = request_result;
-                   *info = std::move(request_info);
-                   run_loop.Quit();
-                 });
+    GetPublisher().Request(
+        id, prefix,
+        [&run_loop, &result, info](mojom::Result request_result,
+                                   mojom::ServerPublisherInfoPtr request_info) {
+          result = request_result;
+          *info = std::move(request_info);
+          run_loop.Quit();
+        });
 
     run_loop.Run();
     return result;
