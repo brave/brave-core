@@ -143,6 +143,20 @@ public class DAU {
     let headers: [String: String]
     let lastLaunchInfoPreference: [Optional<Int>]
   }
+  
+  func migrateInvalidWeekOfInstallPref() {
+    guard let woi = Preferences.DAU.weekOfInstallation.value else { return }
+    // Check if the value for the day/month do not include 0
+    if woi.components(separatedBy: "-").contains(where: { $0.count == 1 }) {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "yyyy-M-d"
+      formatter.calendar = DAU.calendar
+      formatter.timeZone = TimeZone(abbreviation: "GMT")!
+      if let date = formatter.date(from: woi) {
+        Preferences.DAU.weekOfInstallation.value = DAU.dateFormatter.string(from: date)
+      }
+    }
+  }
 
   /// Return params query or nil if no ping should be send to server and also preference values to set
   /// after a succesful ing.
@@ -159,6 +173,8 @@ public class DAU {
     // This could lead to an upgraded device having no `woi`, and that's fine
     if firstLaunch {
       Preferences.DAU.weekOfInstallation.value = date.mondayOfCurrentWeekFormatted
+    } else {
+      migrateInvalidWeekOfInstallPref()
     }
 
     guard let dauStatParams = dauStatParams(for: date, firstPing: firstLaunch) else {

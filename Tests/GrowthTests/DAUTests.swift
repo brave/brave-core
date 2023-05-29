@@ -328,6 +328,23 @@ class DAUTests: XCTestCase {
     let dau = DAU()
     XCTAssertFalse(dau.sendPingToServer())
   }
+  
+  func testMigratingInvalidWeekOfInstallPref() throws {
+    // (stored, fixed)
+    let testValues = [
+      ("2023-5-26", "2023-05-26"),
+      ("2023-12-6", "2023-12-06"),
+      ("2023-5-5",  "2023-05-05")
+    ]
+    Preferences.DAU.firstPingParam.value = false
+    for (storedValue, fixedValue) in testValues {
+      Preferences.DAU.weekOfInstallation.value = storedValue
+      // Fetching params will trigger migration
+      let params = dau.paramsAndPrefsSetup(for: Date())
+      XCTAssertEqual(try XCTUnwrap(Preferences.DAU.weekOfInstallation.value), fixedValue)
+      Preferences.DAU.weekOfInstallation.reset()
+    }
+  }
 
   // No longer valid outside of a hosted app
   // TODO: Refactor DAU to not reach out to Info.plist
