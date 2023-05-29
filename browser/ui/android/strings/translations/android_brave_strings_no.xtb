@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">Aktiver støtte for omgåelse av videresending av sporings-URL-er på toppnivå.</translation>
 <translation id="94154759592465111">Blokker skript</translation>
 <translation id="7714773920987474116">Blokkerer JavaScript (kan gjøre at sider ikke fungerer)</translation>
+<translation id="1660979054779793659">YouTube</translation>
+<translation id="2233004324252915283">Blokker anbefalinger om YouTube-innhold</translation>
+<translation id="1005372663692637999">Blokkerer «neste video» og sluttkort-elementene på youtube.com.</translation>
+<translation id="5152595963250646670">Blokker distraherende elementer på YouTube</translation>
+<translation id="2998960761270772157">Blokkerer påloggingsdelen, menyen, kommentarer og videoinfo-elementer på youtube.com.</translation>
 <translation id="6052725679982758334">Blokkering av sosiale medier</translation>
 <translation id="7498695072878479744">Tillat Google-påloggingsknapper på tredjepartsnettsteder</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">Nettsider kan be om å bruke den eldre Google-påloggingsløsningen via tredjeparts informasjonskapsler.</translation>
 <translation id="2903783737778379345">Ikke tillat innlogging via den eldre Google-påloggingsløsningen via tredjeparts informasjonskapsler</translation>
 <translation id="6880817299303842099">Tillatt bruk av tredjepartscookies for gammel Google-pålogging</translation>
+<translation id="5169650598465327872">Localhost-tilgang</translation>
+<translation id="4172219483893066798">Nettsteder kan be om tilgang til localhost-ressurser</translation>
+<translation id="7181706637590665047">Ikke gi tilgang til localhost-ressurser</translation>
+<translation id="1485435696620658073">Har tillatelse til å få tilgang til localhost-ressurser</translation>
 <translation id="181905442828471321">Globale standarder for Brave-skjold</translation>
 <translation id="2675679258824361492">Andre innstillinger for personvern</translation>
 <translation id="8026334261755873520">Slett nettleserdata</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">Denne Brave Sync-kontoen ble slettet fra en annen enhet. Hvis du deaktiverte Sync ved en feil, kan du <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>opprette kontoen på nytt</translation>
 <translation id="4094590686212463338">Kunne ikke bli med på denne synkroniseringskjeden. Kjeden er slettet.</translation>
-<translation id="5633907266617216186">Adresser, betalingsinfo mv.</translation>
+<translation id="4908081302669157000">Telefonnumre, e-postadresser og adresser</translation>
 <translation id="1056898198331236512">Advarsel</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="7811264919113243207">Dette dine Brave-dataene dine, potensielt inkludert passordene dine, med enheten som genererte denne QR-koden.
@@ -750,6 +759,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="1118876217803190221">Utilstrekkelig saldo.</translation>
 <translation id="275990379543116961">Ikke nok midler til «gas»</translation>
 <translation id="3292453499915466604">Ikke tilstrekkelig likviditet</translation>
+<translation id="3025158262797849291">Ukjent tallformat</translation>
 <translation id="3380365263193509176">Ukjent feil</translation>
 <translation id="5932938770824268122">Privat nøkkel</translation>
 <translation id="2472882733835903303">Vis privat nøkkel</translation>
@@ -769,6 +779,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="6015436276085482001">Avvist</translation>
 <translation id="6666273175654835609">Sendt inn</translation>
 <translation id="2331676293859649642">Bekreftet</translation>
+<translation id="8214232307424031138">Signert</translation>
 <translation id="1165039591588034296">Feil</translation>
 <translation id="8364362220156372884">Avgift: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Bruker du den raskeste nettleseren?</translation>
@@ -799,7 +810,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="5061574358754621254">Prisdata levert av CoinGecko</translation>
 <translation id="4626407663177532837">Tilbudet omfatter en Brave-avgift på 0,875 %.</translation>
 <translation id="8574289650879708853">Legg til egendefinert ressurs</translation>
-<translation id="1974060860693918893">Avansert</translation>
+<translation id="1255896809210433555">Legg til NFT</translation>
 <translation id="7791543448312431591">Legg til</translation>
 <translation id="6600400596821238377">Token-navn</translation>
 <translation id="4432966365400169165">Token-kontaktadresse</translation>
@@ -1023,10 +1034,10 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="6605147707233193230">Slå på for å støtte innholdsskapere</translation>
 <translation id="1609556006143307897">Du bidrar til å støtte innholdsskapere</translation>
 <translation id="6067959437127691361">Ved å bruke Brave rewards kan du støtte innholdsskapere samtidig som du tjener opp BAT.</translation>
-<translation id="121894865378699201">Klar til å begynne å tjene opp BAT?</translation>
-<translation id="2648805457288107211">Bare tilknytt partnerkontoen din til Rewards-profilen din. Hvis du ikke har en konto, får du mulighet til å opprette en.</translation>
+<translation id="3264975266761862670">Klar til å begynne å tjene?</translation>
+<translation id="265337947574975838">Koble til en konto, eller opprett en konto hos en av partnerne våre.</translation>
 <translation id="1772961321862399863">For å tjene opp BAT må brukerne tilknytte en partnerkonto til Brave Rewards. Dessverre er det ingen partnere tilgjengelige i din region, så opptjening er ikke mulig. Per nå vil det å slå på Brave rewards automatisk støtte innholdsskapere.</translation>
-<translation id="5430495762768325224">Les mer om BAT</translation>
+<translation id="654447476965480878">Les mer om opptjening av BAT</translation>
 <translation id="6278643716658443228">Rewards-innstillinger</translation>
 <translation id="6516984207843289176">Tilknytt konto</translation>
 <translation id="4272136334824111854">Denne måneden har du besøkt <ph name="CREATOR_COUNT"/> innholdsskapere som støttes av Brave Rewards.</translation>
@@ -1057,6 +1068,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="171158953146804144"><ph name="DUE_DATE"/> avvikler vi støtten for eksisterende virtuelle BAT-saldoer. Dessverre er det ingen tilgjengelige partnere i din region (<ph name="REGION"/>) inntektene dine kan overføres til. Frem til da kan du fortsatt gi bidrag til innholdsskapere du liker.</translation>
 <translation id="8949422576126100041">Vil du vise siden med Speedreader?</translation>
 <translation id="591648995518106347">Laster automatisk inn kvalifiserte artikler i lesermodus</translation>
+<translation id="1295796122927221823">Vis i lesemodus</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> i <ph name="NETWORK"/></translation>
 <translation id="295620834661738195">Brave-spilleliste</translation>
 <translation id="4850886885716139402">Visning</translation>
@@ -1129,4 +1141,10 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="3631131732607750008">Innholdet har utløpt. Prøv på nytt om noen sekunder.</translation>
 <translation id="9085765419770918643">Ingen NFT-er her ennå.</translation>
 <translation id="8445532667841598737">Klar til å legge til noen? Bare klikk nedenfor for å importere.</translation>
+<translation id="5925465310724910998">Vil du at NFT-ene dine skal vises automatisk?</translation>
+<translation id="2827460859891872324">Brave Wallet kan bruke en tredjepartstjeneste til å vise NFT-ene dine automatisk. Brave deler da lomebok-adressene dine med<ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> for å levere denne tjenesten. <ph name="BEGIN_LINK_2"/>Les mer.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">Aktiver NFT-oppdagelse</translation>
+<translation id="622372328961630111">Legg automatisk til NFT-ene du eier, i lommeboken ved hjelp av tredjeparts-API-er. <ph name="BEGIN_LINK_1"/>Les mer.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">Address Lookup Table-konto:</translation>
+<translation id="7659483790930268440">Address Lookup Table-indeks:</translation>
 </translationbundle>

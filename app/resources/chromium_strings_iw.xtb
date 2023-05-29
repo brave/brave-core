@@ -51,6 +51,7 @@
 <translation id="6381750314821942592">‏Brave ייסגר בקרוב</translation>
 <translation id="6078442581074612226">‏ב-Brave</translation>
 <translation id="2485422356828889247">הסרת התקנה</translation>
+<translation id="70183448213529602">‏Brave מנסה להחליף את הסיסמאות הקיימות. כדי לאפשר זאת, יש להזין את הסיסמה שלך ל-Windows.</translation>
 <translation id="7798069806040634998">‏Brave זקוק לגישה לאחסון כדי להוריד קבצים</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7291143854620707672">‏המנהל של פרופיל העבודה יכול להסיר נתוני Brave שמופקים בזמן השימוש בפרופיל (כמו יצירת סימניות, היסטוריה, סיסמאות והגדרות נוספות). <ph name="LEARN_MORE"/></translation>
@@ -72,7 +73,6 @@
 <translation id="2928420929544864228">ההתקנה הושלמה.</translation>
 <translation id="8208853227947884571">‏Brave‏ מעודכן</translation>
 <translation id="5122472867956731189">‏אם באתר כלשהו מתבצע ניסיון לגנוב את הסיסמה שלך, או אם המערכת מזהה הורדה של קובץ מזיק, Brave עשוי גם לשלוח כתובות URL לבדיקה באמצעות 'גלישה בטוחה'. הנתונים שנשלחים לבדיקה כוללים ביטים מתוכן של דפים</translation>
-<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{‏Brave מחובר להתקן HID}one{‏Brave מחובר להתקני HID}two{‏Brave מחובר להתקני HID}other{‏Brave מחובר להתקני HID}}</translation>
 <translation id="8755404239607088219">‏Brave לא יכול לבדוק את הסיסמאות שלך. כדאי לנסות שוב מאוחר יותר.</translation>
 <translation id="8880183781256147665">‏מתבצעת הוספה ל-Brave...</translation>
 <translation id="3038232873781883849">בהמתנה להתקנה…</translation>
@@ -84,7 +84,6 @@
 <translation id="1742948938503172561">‏התאמה אישית של פרופיל Brave החדש</translation>
 <translation id="1477146545787277177">‏וואו! Brave קרס. להפעיל מחדש עכשיו?</translation>
 <translation id="2585240446624043880">‏Brave אינו יכול לקרוא ולכתוב בספריית הנתונים שלו: <ph name="USER_DATA_DIRECTORY"/></translation>
-<translation id="6823651909636163674">‏המדריך הזה יעזור לך להבין את הבחירות שלך, כדי ש-Brave יפעל באופן הרצוי לך</translation>
 <translation id="2423637317249323944">‏מותקנת גרסה <ph name="PRODUCT_VERSION"/> של Brave</translation>
 <translation id="3286538390144397061">הפעל מחדש כעת</translation>
 <translation id="2339258256897053758">‏המפתחות של Brave API חסרים. פונקציונליות מסוימת של Brave תהיה מושבתת.</translation>
@@ -232,8 +231,10 @@
 <translation id="2139300032719313227">‏הפעלה מחדש של ChromeOS</translation>
 <translation id="1684121725014454063">‏ברוך בואך לפרופילים של Brave</translation>
 <translation id="2675662665675552980">‏הגדרה זו גם קובעת איזה דף מוצג כשמפעילים את Brave.</translation>
+<translation id="648319183876919572">הגרסה המשופרת של הגלישה הבטוחה מגנה עליך טוב יותר מפני הורדות ואתרים מסוכנים</translation>
 <translation id="5590013613412457132">‏הסרה של התקנת Brave</translation>
 <translation id="8646609321956191980">‏בכל פרופיל מאוחסנים נתוני Brave משלו כמו סימניות, היסטוריה, סיסמאות ועוד</translation>
+<translation id="2535436634051789953">‏אפשר לעבור לפרופיל Brave אחר כדי לראות סיסמאות</translation>
 <translation id="2312399718665761438">‏Brave שולח את הטקסט שמוקלד בשדות טקסט ל-Brave כדי לתקן שגיאות כתיב</translation>
 <translation id="3507835409099344374">‏מעבר אל הגדרות ההודעות של Brave</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
@@ -364,7 +365,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="296137235951584143">‏אפשר להתאים אישית את Brave בדרך שנוחה לך</translation>
 <translation id="7977787072794666032">‏ייתכן ש-Brave לא יפעל כראוי כי הוא כבר לא נתמך ב-Windows XP וב-Windows Vista</translation>
 <translation id="8180288330711585962">‏אישורים שמנוהלים על ידי Brave</translation>
-<translation id="3050465115159165320">‏רוצה להפיק את המירב מ-Brave?</translation>
 <translation id="4484434718272972655">‏מי משתמש/ת ב-Brave?</translation>
 <translation id="7173394303099002355">‏רוצה להשיג את רמת האבטחה הגבוהה ביותר של Brave?</translation>
 <translation id="5775101967851558962">‏ניקוי נתונים מאתרים מהמכשיר בכל פעם שסוגרים את Brave</translation>
