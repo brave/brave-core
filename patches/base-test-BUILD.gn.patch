@@ -1,0 +1,12 @@
+diff --git a/base/test/BUILD.gn b/base/test/BUILD.gn
+index 4c0357370dffcc11fb87415332128cd1e3bfc91b..d35728621d11c05c7347d99379e233065ade4fc7 100644
+--- a/base/test/BUILD.gn
++++ b/base/test/BUILD.gn
+@@ -333,6 +333,7 @@ static_library("test_support") {
+       "trace_to_file.h",
+     ]
+   }
++  import("//brave/base/sources.gni") sources += brave_base_test_support_sources
+ }
+ 
+ component("proto_test_support") {

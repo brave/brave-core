@@ -131,6 +131,15 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       braveArgs.push(`--test-launcher-filter-file="${filterFilePaths.join(';')}"`)
   }
 
+  if (
+    suite === 'brave_unit_tests' &&
+    config.isTeamcity &&
+    config.targetOS !== 'android' &&
+    config.targetOS !== 'ios'
+  ) {
+    runChromiumTestLauncherTeamcityReporterIntegrationTest()
+  }
+
   if (config.targetOS === 'ios') {
     util.run(path.join(config.outputDir, "iossim"), [
       "-d", "\"iPhone 14 Pro\"",
@@ -170,6 +179,57 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       // this would overwrite the --output file (if given).
       return prog.status === 0
     })
+  }
+}
+
+const runChromiumTestLauncherTeamcityReporterIntegrationTest = () => {
+  const args = [
+    "--gtest_filter=DISABLED_TeamcityReporterIntegration*",
+    "--gtest_also_run_disabled_tests",
+  ]
+
+  const runOptions = config.defaultOptions
+  runOptions.stdio = 'pipe'
+  runOptions.continueOnFail = true
+  const prog = util.run(path.join(config.outputDir, 'brave_unit_tests'), args, runOptions)
+
+  const expectedOutput = [
+    "##teamcity[testSuiteStarted name='brave_unit_tests']",
+    "##teamcity[testRetrySupport enabled='false']",
+    "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Success' captureStandardOutput='true']",
+    "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Success' duration='",
+    "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Failure' captureStandardOutput='true']",
+    "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.Failure']",
+    "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Failure' duration='",
+    "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure' captureStandardOutput='true']",
+    "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure']",
+    "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure' duration='",
+    "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Skipped' captureStandardOutput='true']",
+    "##teamcity[testIgnored name='DISABLED_TeamcityReporterIntegrationTest.Skipped']",
+    "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Skipped' duration='",
+    "##teamcity[testSuiteFinished name='brave_unit_tests']",
+  ]
+
+  const stdoutLines = prog.stdout.toString().split('\n');
+  for (const line of stdoutLines) {
+    if (line.startsWith(expectedOutput[0])) {
+      expectedOutput.splice(0, 1)
+      if (expectedOutput.length == 0) {
+        break
+      }
+    }
+  }
+
+  const isMatched = expectedOutput.length == 0;
+  if (!isMatched) {
+    console.error(
+      prog.stdout.toString().replace(/##teamcity/gm, '%%teamcity') +
+      '\nChromiumTestLauncherTeamcityReporterIntegration test failed, the line was not found in the output (note: ##teamcity was replaced with %%teamcity):\n' +
+      expectedOutput[0].replace(/##teamcity/gm, '%%teamcity')
+    )
+    process.exit(1)
+  } else {
+    console.log('ChromiumTestLauncherTeamcityReporterIntegration test passed')
   }
 }
 
