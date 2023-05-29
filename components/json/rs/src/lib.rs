@@ -1,3 +1,8 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #[cxx::bridge(namespace = json)]
 mod ffi {
     extern "Rust" {
@@ -11,7 +16,7 @@ mod ffi {
             key: &str,
             json: &str,
         ) -> String;
-        fn convert_all_numbers_to_string(json: &str) -> String;
+        fn convert_all_numbers_to_string(json: &str, path: &str) -> String;
     }
 }
 
@@ -171,7 +176,7 @@ pub fn convert_string_value_to_int64(path: &str, json: &str, optional: bool) -> 
     String::new()
 }
 
-// Parses and re-serializes json with uint64 values for the given key of the 
+// Parses and re-serializes json with uint64 values for the given key of the
 // object located at path_to_object for all objects in the array located at path_to_array.
 // Original json string will be returned if object array at path is not found.
 // When the target uint64 value at key is not found in an object or is null,
@@ -230,7 +235,7 @@ pub fn convert_uint64_in_object_array_to_string(
 }
 
 /// Parses and re-serializes json with all numbers (`u64`/`i64`/`f64`)
-/// converted to strings.
+/// converted to strings, applied recursively at the specified path.
 ///
 /// Values other than `u64`/`i64`/`f64` are unchanged. The fields could be
 /// arbitrarily nested, as the conversion is applied to the entire JSON
@@ -247,14 +252,19 @@ pub fn convert_uint64_in_object_array_to_string(
 ///
 /// # Arguments
 /// * `json` - A arbitrary JSON string
+/// * `path` - A JSON pointer path to the field where the conversion is applied
+///            recursively. An empty string indicates the root of the JSON.
 ///
 /// # Examples
 ///
 /// ```js
 /// {"a":1,"b":-1,"c":3.14} -> {"a":"1","b":"-1","c":"3.14"}
-/// {"some":[{"deeply":{"nested":[{"path":123}]}}]} -> {"some":[{"deeply":{"nested":[{"path":"123"}]}}]}
+/// {"some":[{"deeply":{"nested":[{"key":123}]}}]} ->
+///     {"some":[{"deeply":{"nested":[{"key":"123"}]}}]}
+/// json={"a":1,"outer":{"inner":2}}, path="/outer" ->
+///     {"a":1,"outer":{"inner":"2"}}
 /// ```
-pub fn convert_all_numbers_to_string(json: &str) -> String {
+pub fn convert_all_numbers_to_string(json: &str, path: &str) -> String {
     use serde_json::Value;
 
     fn convert_recursively(json: &mut Value) {
@@ -268,9 +278,9 @@ pub fn convert_all_numbers_to_string(json: &str) -> String {
         }
     }
 
-    serde_json::from_str(json)
-        .map(|mut v: Value| {
-            convert_recursively(&mut v);
+    serde_json::from_str::<Value>(json)
+        .map(|mut v| {
+            v.pointer_mut(path).map(convert_recursively);
             v.to_string()
         })
         .unwrap_or_else(|_| "".into())
