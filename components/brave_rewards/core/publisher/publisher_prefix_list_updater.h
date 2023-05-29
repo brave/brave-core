@@ -10,16 +10,12 @@
 #include <map>
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 using PublisherPrefixListUpdatedCallback = std::function<void()>;
 
@@ -27,7 +23,7 @@ using PublisherPrefixListUpdatedCallback = std::function<void()>;
 // intervals.
 class PublisherPrefixListUpdater {
  public:
-  explicit PublisherPrefixListUpdater(LedgerImpl& ledger);
+  PublisherPrefixListUpdater();
 
   PublisherPrefixListUpdater(const PublisherPrefixListUpdater&) = delete;
   PublisherPrefixListUpdater& operator=(const PublisherPrefixListUpdater&) =
@@ -52,7 +48,6 @@ class PublisherPrefixListUpdater {
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
 
-  const raw_ref<LedgerImpl> ledger_;
   base::OneShotTimer timer_;
   bool auto_update_ = false;
   int retry_count_ = 0;
@@ -60,7 +55,6 @@ class PublisherPrefixListUpdater {
   endpoint::RewardsServer rewards_server_;
 };
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_

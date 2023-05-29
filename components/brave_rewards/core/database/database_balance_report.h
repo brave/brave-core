@@ -11,14 +11,10 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseBalanceReport : public DatabaseTable {
+class DatabaseBalanceReport {
  public:
-  explicit DatabaseBalanceReport(LedgerImpl& ledger);
-  ~DatabaseBalanceReport() override;
-
   void InsertOrUpdate(mojom::BalanceReportInfoPtr info,
                       LegacyResultCallback callback);
 
@@ -47,7 +43,6 @@ class DatabaseBalanceReport : public DatabaseTable {
                        GetBalanceReportListCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_BALANCE_REPORT_H_

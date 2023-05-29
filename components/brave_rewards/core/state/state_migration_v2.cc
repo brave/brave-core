@@ -7,20 +7,20 @@
 
 #include "base/base64.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v2.h"
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
-StateMigrationV2::StateMigrationV2(LedgerImpl& ledger) : ledger_(ledger) {}
+StateMigrationV2::StateMigrationV2() = default;
 
 StateMigrationV2::~StateMigrationV2() = default;
 
 void StateMigrationV2::Migrate(LegacyResultCallback callback) {
-  legacy_state_ = std::make_unique<LegacyBatState>(*ledger_);
+  legacy_state_ = std::make_unique<LegacyBatState>();
 
   auto load_callback =
       std::bind(&StateMigrationV2::OnLoadState, this, _1, callback);
@@ -42,36 +42,35 @@ void StateMigrationV2::OnLoadState(mojom::Result result,
     return;
   }
 
-  ledger_->SetState("enabled", legacy_state_->GetRewardsMainEnabled());
+  ledger().SetState("enabled", legacy_state_->GetRewardsMainEnabled());
 
-  ledger_->SetState(kAutoContributeEnabled,
+  ledger().SetState(kAutoContributeEnabled,
                     legacy_state_->GetAutoContributeEnabled());
 
   if (legacy_state_->GetUserChangedContribution()) {
-    ledger_->SetState(kAutoContributeAmount,
+    ledger().SetState(kAutoContributeAmount,
                       legacy_state_->GetAutoContributionAmount());
   }
 
-  ledger_->SetState(kNextReconcileStamp, legacy_state_->GetReconcileStamp());
+  ledger().SetState(kNextReconcileStamp, legacy_state_->GetReconcileStamp());
 
-  ledger_->SetState(kCreationStamp, legacy_state_->GetCreationStamp());
+  ledger().SetState(kCreationStamp, legacy_state_->GetCreationStamp());
 
   const auto seed = legacy_state_->GetRecoverySeed();
-  ledger_->SetState(kRecoverySeed, base::Base64Encode(seed));
+  ledger().SetState(kRecoverySeed, base::Base64Encode(seed));
 
-  ledger_->SetState(kPaymentId, legacy_state_->GetPaymentId());
+  ledger().SetState(kPaymentId, legacy_state_->GetPaymentId());
 
-  ledger_->SetState(kInlineTipRedditEnabled,
+  ledger().SetState(kInlineTipRedditEnabled,
                     legacy_state_->GetInlineTipSetting("reddit"));
 
-  ledger_->SetState(kInlineTipTwitterEnabled,
+  ledger().SetState(kInlineTipTwitterEnabled,
                     legacy_state_->GetInlineTipSetting("twitter"));
 
-  ledger_->SetState(kInlineTipGithubEnabled,
+  ledger().SetState(kInlineTipGithubEnabled,
                     legacy_state_->GetInlineTipSetting("github"));
 
   callback(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

@@ -12,17 +12,13 @@
 #include "brave/components/brave_rewards/core/database/database_server_publisher_banner.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 using GetServerPublisherInfoCallback =
     std::function<void(mojom::ServerPublisherInfoPtr)>;
 
-class DatabaseServerPublisherInfo : public DatabaseTable {
+class DatabaseServerPublisherInfo {
  public:
-  explicit DatabaseServerPublisherInfo(LedgerImpl& ledger);
-  ~DatabaseServerPublisherInfo() override;
-
   void InsertOrUpdate(const mojom::ServerPublisherInfo& server_info,
                       LegacyResultCallback callback);
 
@@ -48,7 +44,6 @@ class DatabaseServerPublisherInfo : public DatabaseTable {
   DatabaseServerPublisherBanner banner_;
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_

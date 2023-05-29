@@ -15,6 +15,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave_base/random.h"
@@ -40,8 +41,7 @@ int64_t GetCacheExpiryInSeconds() {
 
 namespace publisher {
 
-ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl& ledger)
-    : ledger_(ledger), private_cdn_server_(ledger) {}
+ServerPublisherFetcher::ServerPublisherFetcher() = default;
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
@@ -80,7 +80,7 @@ void ServerPublisherFetcher::OnFetchCompleted(
       std::make_shared<mojom::ServerPublisherInfoPtr>(std::move(info));
 
   // Store the result for subsequent lookups.
-  ledger_->database()->InsertServerPublisherInfo(
+  ledger().database()->InsertServerPublisherInfo(
       **shared_info, [this, publisher_key, shared_info](mojom::Result result) {
         if (result != mojom::Result::LEDGER_OK) {
           BLOG(0, "Error saving server publisher info record");
@@ -113,7 +113,7 @@ bool ServerPublisherFetcher::IsExpired(
 void ServerPublisherFetcher::PurgeExpiredRecords() {
   BLOG(1, "Purging expired server publisher info records");
   int64_t max_age = GetCacheExpiryInSeconds() * 2;
-  ledger_->database()->DeleteExpiredServerPublisherInfo(max_age,
+  ledger().database()->DeleteExpiredServerPublisherInfo(max_age,
                                                         [](auto result) {});
 }
 
@@ -136,7 +136,7 @@ void ServerPublisherFetcher::RunCallbacks(
   for (auto& callback : callbacks) {
     callback(server_info ? server_info.Clone() : nullptr);
   }
-  ledger_->client()->OnPublisherUpdated(publisher_key);
+  ledger().client()->OnPublisherUpdated(publisher_key);
 }
 
 }  // namespace publisher

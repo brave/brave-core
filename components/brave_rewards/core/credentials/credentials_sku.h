@@ -10,18 +10,13 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 
-namespace brave_rewards::internal {
-namespace credential {
+namespace brave_rewards::internal::credential {
 
 class CredentialsSKU : public Credentials {
  public:
-  explicit CredentialsSKU(LedgerImpl& ledger);
-  ~CredentialsSKU() override;
-
   void Start(const CredentialsTrigger& trigger,
              ResultCallback callback) override;
 
@@ -79,12 +74,10 @@ class CredentialsSKU : public Credentials {
                       const CredentialsRedeem& redeem,
                       LegacyResultCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   CredentialsCommon common_;
   endpoint::PaymentServer payment_server_;
 };
 
-}  // namespace credential
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::credential
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_SKU_H_

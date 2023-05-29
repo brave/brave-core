@@ -10,14 +10,9 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_iosx.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
-namespace brave_rewards::internal {
-namespace attestation {
-
-AttestationIOS::AttestationIOS(LedgerImpl& ledger)
-    : Attestation(ledger), promotion_server_(ledger) {}
-
-AttestationIOS::~AttestationIOS() = default;
+namespace brave_rewards::internal::attestation {
 
 std::string AttestationIOS::ParseStartPayload(const std::string& response) {
   absl::optional<base::Value> value = base::JSONReader::Read(response);
@@ -126,5 +121,4 @@ void AttestationIOS::OnConfirm(ConfirmCallback callback, mojom::Result result) {
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace attestation
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::attestation

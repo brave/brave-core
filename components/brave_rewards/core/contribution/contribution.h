@@ -15,7 +15,6 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_ac.h"
@@ -26,14 +25,11 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class Contribution {
  public:
-  explicit Contribution(LedgerImpl& ledger);
+  Contribution();
 
   ~Contribution();
 
@@ -178,7 +174,6 @@ class Contribution {
   void OnMarkUnblindedTokensAsSpendable(const mojom::Result result,
                                         const std::string& contribution_id);
 
-  const raw_ref<LedgerImpl> ledger_;
   Unblinded unblinded_;
   ContributionSKU sku_;
   ContributionMonthly monthly_;
@@ -194,6 +189,5 @@ class Contribution {
   bool monthly_contributions_processing_ = false;
 };
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_H_

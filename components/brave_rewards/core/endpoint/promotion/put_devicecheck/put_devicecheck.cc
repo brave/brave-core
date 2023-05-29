@@ -10,15 +10,10 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-PutDevicecheck::PutDevicecheck(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PutDevicecheck::~PutDevicecheck() = default;
+namespace brave_rewards::internal::endpoint::promotion {
 
 std::string PutDevicecheck::GetUrl(const std::string& nonce) {
   const std::string path =
@@ -74,7 +69,7 @@ void PutDevicecheck::Request(const std::string& blob,
   request->content = GeneratePayload(blob, signature);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PUT;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PutDevicecheck::OnRequest(PutDevicecheckCallback callback,
@@ -84,6 +79,4 @@ void PutDevicecheck::OnRequest(PutDevicecheckCallback callback,
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

@@ -10,12 +10,7 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace brave_rewards::internal {
-namespace state {
-
-StateMigrationV11::StateMigrationV11(LedgerImpl& ledger) : ledger_(ledger) {}
-
-StateMigrationV11::~StateMigrationV11() = default;
+namespace brave_rewards::internal::state {
 
 void StateMigrationV11::Migrate(LegacyResultCallback callback) {
   // In version 7 encryption was added for |kWalletBrave|. However due to wallet
@@ -23,13 +18,12 @@ void StateMigrationV11::Migrate(LegacyResultCallback callback) {
   // their operating system we are reverting this change
 
   const auto decrypted_wallet =
-      ledger_->state()->GetEncryptedString(kWalletBrave);
+      ledger().state()->GetEncryptedString(kWalletBrave);
   if (decrypted_wallet) {
-    ledger_->SetState(kWalletBrave, decrypted_wallet.value());
+    ledger().SetState(kWalletBrave, decrypted_wallet.value());
   }
 
   callback(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

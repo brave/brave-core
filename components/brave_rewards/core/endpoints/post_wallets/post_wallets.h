@@ -30,10 +30,7 @@
 // }
 // clang-format on
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostWallets;
 
@@ -48,7 +45,7 @@ class PostWallets final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  PostWallets(LedgerImpl& ledger, absl::optional<std::string>&& geo_country);
+  explicit PostWallets(absl::optional<std::string>&& geo_country);
   ~PostWallets() override;
 
  private:
@@ -63,7 +60,6 @@ class PostWallets final : public RequestBuilder,
   absl::optional<std::string> geo_country_;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_WALLETS_POST_WALLETS_H_

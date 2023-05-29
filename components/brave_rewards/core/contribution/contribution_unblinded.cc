@@ -14,6 +14,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave_base/random.h"
 
 using std::placeholders::_1;
@@ -92,13 +93,6 @@ void GetStatisticalVotingWinners(
 
 }  // namespace
 
-Unblinded::Unblinded(LedgerImpl& ledger)
-    : ledger_(ledger),
-      credentials_promotion_(ledger),
-      credentials_sku_(ledger) {}
-
-Unblinded::~Unblinded() = default;
-
 void Unblinded::Start(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
                       LegacyResultCallback callback) {
@@ -120,7 +114,7 @@ void Unblinded::GetContributionInfoAndUnblindedTokens(
     GetContributionInfoAndUnblindedTokensCallback callback) {
   auto get_callback = std::bind(&Unblinded::OnUnblindedTokens, this, _1,
                                 contribution_id, callback);
-  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(types,
+  ledger().database()->GetSpendableUnblindedTokensByBatchTypes(types,
                                                                get_callback);
 }
 
@@ -143,7 +137,7 @@ void Unblinded::OnUnblindedTokens(
     converted_list.push_back(new_item);
   }
 
-  ledger_->database()->GetContributionInfo(
+  ledger().database()->GetContributionInfo(
       contribution_id, std::bind(&Unblinded::OnGetContributionInfo, this, _1,
                                  std::move(converted_list), callback));
 }
@@ -153,7 +147,7 @@ void Unblinded::GetContributionInfoAndReservedUnblindedTokens(
     GetContributionInfoAndUnblindedTokensCallback callback) {
   auto get_callback = std::bind(&Unblinded::OnReservedUnblindedTokens, this, _1,
                                 contribution_id, callback);
-  ledger_->database()->GetReservedUnblindedTokens(contribution_id,
+  ledger().database()->GetReservedUnblindedTokens(contribution_id,
                                                   get_callback);
 }
 
@@ -176,7 +170,7 @@ void Unblinded::OnReservedUnblindedTokens(
     converted_list.push_back(new_item);
   }
 
-  ledger_->database()->GetContributionInfo(
+  ledger().database()->GetContributionInfo(
       contribution_id, std::bind(&Unblinded::OnGetContributionInfo, this, _1,
                                  converted_list, callback));
 }
@@ -235,7 +229,7 @@ void Unblinded::PrepareTokens(
       std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()),
       types, callback);
 
-  ledger_->database()->MarkUnblindedTokensAsReserved(
+  ledger().database()->MarkUnblindedTokensAsReserved(
       token_id_list, contribution_id, reserved_callback);
 }
 
@@ -288,7 +282,7 @@ void Unblinded::PreparePublishers(
         std::bind(&Unblinded::OnPrepareAutoContribution, this, _1, types,
                   contribution->contribution_id, callback);
 
-    ledger_->database()->SaveContributionInfo(contribution->Clone(),
+    ledger().database()->SaveContributionInfo(contribution->Clone(),
                                               save_callback);
     return;
   }
@@ -296,7 +290,7 @@ void Unblinded::PreparePublishers(
   auto save_callback = std::bind(&Unblinded::PrepareStepSaved, this, _1, types,
                                  contribution->contribution_id, callback);
 
-  ledger_->database()->UpdateContributionInfoStep(
+  ledger().database()->UpdateContributionInfoStep(
       contribution->contribution_id, mojom::ContributionStep::STEP_PREPARE,
       save_callback);
 }
@@ -353,7 +347,7 @@ void Unblinded::OnPrepareAutoContribution(
   auto save_callback = std::bind(&Unblinded::PrepareStepSaved, this, _1, types,
                                  contribution_id, callback);
 
-  ledger_->database()->UpdateContributionInfoStep(
+  ledger().database()->UpdateContributionInfoStep(
       contribution_id, mojom::ContributionStep::STEP_PREPARE, save_callback);
 }
 
@@ -450,7 +444,7 @@ void Unblinded::TokenProcessed(mojom::Result result,
   auto save_callback = std::bind(&Unblinded::ContributionAmountSaved, this, _1,
                                  contribution_id, final_publisher, callback);
 
-  ledger_->database()->UpdateContributionInfoContributedAmount(
+  ledger().database()->UpdateContributionInfoContributedAmount(
       contribution_id, publisher_key, save_callback);
 }
 
@@ -502,7 +496,7 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
           &Unblinded::OnReservedUnblindedTokensForRetryAttempt, this, _1, types,
           std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()),
           callback);
-      ledger_->database()->GetReservedUnblindedTokens(
+      ledger().database()->GetReservedUnblindedTokens(
           contribution->contribution_id, get_callback);
       return;
     }

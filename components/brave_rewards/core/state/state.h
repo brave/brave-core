@@ -10,20 +10,13 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace state {
+namespace brave_rewards::internal::state {
 
 class State {
  public:
-  explicit State(LedgerImpl& ledger);
-  ~State();
-
   void Initialize(ResultCallback callback);
 
   void SetVersion(const int version);
@@ -110,11 +103,9 @@ class State {
   bool SetEncryptedString(const std::string& key, const std::string& value);
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
   StateMigration migration_;
 };
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_

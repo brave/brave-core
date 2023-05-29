@@ -21,7 +21,7 @@ interface Ledger {
 
   SetRetryInterval(int32 interval);
 
-  SetTesting();
+  SetTesting(bool is_testing);
 
   SetStateMigrationTargetVersionForTesting(int32 version);
 

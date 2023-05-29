@@ -12,10 +12,6 @@
 
 namespace brave_rewards::internal::uphold {
 
-UpholdCard::UpholdCard(LedgerImpl& ledger) : uphold_server_(ledger) {}
-
-UpholdCard::~UpholdCard() = default;
-
 void UpholdCard::CreateBATCardIfNecessary(const std::string& access_token,
                                           CreateCardCallback callback) {
   uphold_server_.get_cards().Request(

@@ -23,6 +23,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
@@ -48,8 +49,7 @@ std::string WalletTypeToState(const std::string& wallet_type) {
   }
 }
 
-void OnWalletStatusChange(LedgerImpl& ledger,
-                          const std::string& wallet_type,
+void OnWalletStatusChange(const std::string& wallet_type,
                           absl::optional<mojom::WalletStatus> from,
                           mojom::WalletStatus to) {
   std::ostringstream oss{};
@@ -58,8 +58,8 @@ void OnWalletStatusChange(LedgerImpl& ledger,
   }
   oss << "==> " << to;
 
-  ledger.database()->SaveEventLog(log::kWalletStatusChange,
-                                  oss.str() + " (" + wallet_type + ')');
+  ledger().database()->SaveEventLog(log::kWalletStatusChange,
+                                    oss.str() + " (" + wallet_type + ')');
 }
 
 }  // namespace
@@ -139,14 +139,13 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
   return wallet;
 }
 
-mojom::ExternalWalletPtr GetWallet(LedgerImpl& ledger,
-                                   const std::string& wallet_type) {
+mojom::ExternalWalletPtr GetWallet(const std::string& wallet_type) {
   const auto state = WalletTypeToState(wallet_type);
   if (state.empty()) {
     return nullptr;
   }
 
-  auto json = ledger.state()->GetEncryptedString(state);
+  auto json = ledger().state()->GetEncryptedString(state);
   if (!json || json->empty()) {
     return nullptr;
   }
@@ -155,14 +154,13 @@ mojom::ExternalWalletPtr GetWallet(LedgerImpl& ledger,
 }
 
 mojom::ExternalWalletPtr GetWalletIf(
-    LedgerImpl& ledger,
     const std::string& wallet_type,
     const std::set<mojom::WalletStatus>& statuses) {
   if (statuses.empty()) {
     return nullptr;
   }
 
-  auto wallet = GetWallet(ledger, wallet_type);
+  auto wallet = GetWallet(wallet_type);
   if (!wallet) {
     BLOG(9, wallet_type << " wallet is null!");
     return nullptr;
@@ -184,7 +182,7 @@ mojom::ExternalWalletPtr GetWalletIf(
   return wallet;
 }
 
-bool SetWallet(LedgerImpl& ledger, mojom::ExternalWalletPtr wallet) {
+bool SetWallet(mojom::ExternalWalletPtr wallet) {
   if (!wallet || wallet->type.empty()) {
     return false;
   }
@@ -212,8 +210,8 @@ bool SetWallet(LedgerImpl& ledger, mojom::ExternalWalletPtr wallet) {
     return false;
   }
 
-  return ledger.state()->SetEncryptedString(WalletTypeToState(wallet->type),
-                                            json);
+  return ledger().state()->SetEncryptedString(WalletTypeToState(wallet->type),
+                                              json);
 }
 
 // Valid transition:
@@ -307,7 +305,6 @@ mojom::ExternalWalletPtr EnsureValidTransition(mojom::ExternalWalletPtr wallet,
 }
 
 mojom::ExternalWalletPtr TransitionWallet(
-    LedgerImpl& ledger,
     absl::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
     mojom::WalletStatus to) {
   absl::optional<mojom::WalletStatus> from;
@@ -315,7 +312,7 @@ mojom::ExternalWalletPtr TransitionWallet(
   auto wallet = absl::visit(
       base::Overloaded{
           [&](const std::string& wallet_type) -> mojom::ExternalWalletPtr {
-            auto wallet = GetWallet(ledger, wallet_type);
+            auto wallet = GetWallet(wallet_type);
             if (wallet) {
               BLOG(0, wallet_type << " wallet already exists!");
               return nullptr;
@@ -346,22 +343,20 @@ mojom::ExternalWalletPtr TransitionWallet(
     return nullptr;
   }
 
-  if (!SetWallet(ledger, wallet->Clone())) {
+  if (!SetWallet(wallet->Clone())) {
     BLOG(0, "Failed to set " << wallet->type << " wallet!");
     return nullptr;
   }
 
-  OnWalletStatusChange(ledger, wallet->type, from, to);
+  OnWalletStatusChange(wallet->type, from, to);
 
   return wallet;
 }
 
-mojom::ExternalWalletPtr MaybeCreateWallet(LedgerImpl& ledger,
-                                           const std::string& wallet_type) {
-  auto wallet = GetWallet(ledger, wallet_type);
+mojom::ExternalWalletPtr MaybeCreateWallet(const std::string& wallet_type) {
+  auto wallet = GetWallet(wallet_type);
   if (!wallet) {
-    wallet = TransitionWallet(ledger, wallet_type,
-                              mojom::WalletStatus::kNotConnected);
+    wallet = TransitionWallet(wallet_type, mojom::WalletStatus::kNotConnected);
     if (!wallet) {
       BLOG(0, "Failed to create " << wallet_type << " wallet!");
     }
@@ -370,35 +365,32 @@ mojom::ExternalWalletPtr MaybeCreateWallet(LedgerImpl& ledger,
   return wallet;
 }
 
-bool LogOutWallet(LedgerImpl& ledger,
-                  const std::string& wallet_type,
+bool LogOutWallet(const std::string& wallet_type,
                   const std::string& notification) {
   DCHECK(!wallet_type.empty());
 
   BLOG(1, "Logging out " << wallet_type << " wallet...");
 
-  auto wallet =
-      GetWalletIf(ledger, wallet_type, {mojom::WalletStatus::kConnected});
+  auto wallet = GetWalletIf(wallet_type, {mojom::WalletStatus::kConnected});
   if (!wallet) {
     return false;
   }
 
   const std::string abbreviated_address = wallet->address.substr(0, 5);
-  wallet = TransitionWallet(ledger, std::move(wallet),
-                            mojom::WalletStatus::kLoggedOut);
+  wallet = TransitionWallet(std::move(wallet), mojom::WalletStatus::kLoggedOut);
   if (!wallet) {
     return false;
   }
 
-  ledger.database()->SaveEventLog(log::kWalletDisconnected,
-                                  wallet_type + abbreviated_address);
+  ledger().database()->SaveEventLog(log::kWalletDisconnected,
+                                    wallet_type + abbreviated_address);
 
-  if (!ledger.IsShuttingDown()) {
-    ledger.client()->ExternalWalletLoggedOut();
-    ledger.client()->ShowNotification(notification.empty()
-                                          ? notifications::kWalletDisconnected
-                                          : notification,
-                                      {}, base::DoNothing());
+  if (!ledger().IsShuttingDown()) {
+    ledger().client()->ExternalWalletLoggedOut();
+    ledger().client()->ShowNotification(notification.empty()
+                                            ? notifications::kWalletDisconnected
+                                            : notification,
+                                        {}, base::DoNothing());
   }
 
   return true;
@@ -419,15 +411,14 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
   }
 }
 
-void FetchBalance(LedgerImpl& ledger,
-                  const std::string& wallet_type,
+void FetchBalance(const std::string& wallet_type,
                   base::OnceCallback<void(mojom::Result, double)> callback) {
   if (wallet_type == constant::kWalletBitflyer) {
-    ledger.bitflyer()->FetchBalance(std::move(callback));
+    ledger().bitflyer()->FetchBalance(std::move(callback));
   } else if (wallet_type == constant::kWalletGemini) {
-    ledger.gemini()->FetchBalance(std::move(callback));
+    ledger().gemini()->FetchBalance(std::move(callback));
   } else if (wallet_type == constant::kWalletUphold) {
-    ledger.uphold()->FetchBalance(std::move(callback));
+    ledger().uphold()->FetchBalance(std::move(callback));
   } else {
     NOTREACHED() << "Unexpected wallet type " << wallet_type << '!';
     std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
