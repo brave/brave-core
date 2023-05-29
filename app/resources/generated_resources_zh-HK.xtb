@@ -44,7 +44,9 @@
 <translation id="1036511912703768636">存取清單中所有 USB 裝置</translation>
 <translation id="1038168778161626396">只有 Encipher</translation>
 <translation id="1038462104119736705">Linux 需要至少 <ph name="INSTALL_SIZE"/> 的空間。如要增加可用空間，請刪除裝置內的檔案。</translation>
+<translation id="1038643060055067718">行數：</translation>
 <translation id="1039337018183941703">檔案無效或損毀</translation>
+<translation id="1040761927998636252"><ph name="URL"/> 嘅未命名書籤</translation>
 <translation id="1041175011127912238">此網頁沒有回應</translation>
 <translation id="1041263367839475438">可用的裝置</translation>
 <translation id="1042174272890264476">您的電腦也內置了 <ph name="SHORT_PRODUCT_NAME"/> 的 RLZ 資料庫。RLZ 可指定非重複、非個人的可識別標記，以評估特定宣傳廣告活動所提升的搜尋數量與 <ph name="SHORT_PRODUCT_NAME"/> 使用量。這些標籤有時也會顯示在 <ph name="PRODUCT_NAME"/> 的 Brave 搜尋查詢中。</translation>
@@ -53,6 +55,7 @@
 <translation id="104419033123549300">按鍵配置樣式</translation>
 <translation id="1046219820096501039"><ph name="BEGIN_PARAGRAPH1"/>允許 ChromeOS 裝置自動傳送報告，可協助我們為 ChromeOS 規劃要優先修正及改善的項目。這類報告可能包括 ChromeOS 當機時間、曾使用的功能，以及記憶體一般使用量。如果同時啟用「應用程式同步」功能，系統亦會收集其他應用程式診斷和使用資料 (包括 Android 和網絡應用程式)。<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>您隨時可在子女的 ChromeOS 裝置設定中啟用或停用這類報告。如果您是網域管理員，亦可在管理控制台中變更這項設定。<ph name="END_PARAGRAPH2"/></translation>
+<translation id="1046521327593783388">{NUM_PASSWORDS,plural, =1{已向此裝置上的「<ph name="BRAND"/>」匯入 1 個密碼}other{已向此裝置上的「<ph name="BRAND"/>」匯入 {NUM_PASSWORDS} 個密碼}}</translation>
 <translation id="104710386808485638">要重新啟動 Linux 嗎？</translation>
 <translation id="1047431265488717055">複製連結文字(&amp;X)</translation>
 <translation id="1048286738600630630">顯示</translation>
@@ -88,6 +91,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1070705170564860382">於 <ph name="COUNTDOWN_SECONDS"/> 秒後在替代瀏覽器中開啟</translation>
+<translation id="1071735803834535661">外置 Meta 鍵</translation>
 <translation id="1071917609930274619">數據編密</translation>
 <translation id="1072700771426194907">偵測到 USB 裝置</translation>
 <translation id="107278043869924952">使用 PIN 和密碼</translation>
@@ -116,7 +120,9 @@
 <translation id="1090541560108055381">在進行配對前，請先確認兩部裝置所顯示的代碼相同</translation>
 <translation id="1091767800771861448">按下 ESCAPE 鍵可略過 (只限非官方版本)。</translation>
 <translation id="1093457606523402488">可見的網絡：</translation>
+<translation id="1094219634413363886">如果系統在此受管裝置上開始錄製內容，您將會見到通知</translation>
 <translation id="1095761715416917775">請確保您可隨時存取同步處理的資料</translation>
+<translation id="1676423917671990874">網上 Brave 密碼管理工具</translation>
 <translation id="109647177154844434">解除安裝 Parallels Desktop 將會刪除您的 Windows 映像檔，包括其應用程式、設定和資料。您確定要繼續嗎？</translation>
 <translation id="1097016918605049747">翻譯唔到呢個頁面</translation>
 <translation id="1097658378307015415">請在登入前以訪客身分進入，啟用網絡 <ph name="NETWORK_ID"/></translation>
@@ -133,6 +139,7 @@
 <translation id="1110155001042129815">等一下</translation>
 <translation id="1110965959145884739">選取要在此裝置上安裝的語言。為節省磁碟空間，語言檔案會由裝置的所有使用者共用。<ph name="BEGIN_LINK_LEARN_MORE"/>瞭解詳情<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="1112420131909513020">背景分頁正在使用藍牙</translation>
+<translation id="1112998165730922436">已暫停投放</translation>
 <translation id="1114102982691049955"><ph name="PRINTER_MANUFACTURER"/> <ph name="PRINTER_MODEL"/> (USB)</translation>
 <translation id="1114202307280046356">菱形鍵</translation>
 <translation id="7387713795991998702">儲存在此裝置和 Brave 帳戶中的密碼</translation>
@@ -288,6 +295,7 @@
 <translation id="1240903469550363138">如要繼續，<ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> 將會與此網站分享您的姓名、電郵地址和個人檔案相片。查看此網站的《<ph name="BEGIN_LINK1"/>私隱權政策<ph name="END_LINK1"/>》和《<ph name="BEGIN_LINK2"/>服務條款<ph name="END_LINK2"/>》。</translation>
 <translation id="1241066500170667906">選取「<ph name="EXPERIMENT_NAME"/>」的實驗狀態</translation>
 <translation id="124116460088058876">更多語言</translation>
+<translation id="1241381048229838873">顯示所有書籤</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> 要求重設您的設定。</translation>
 <translation id="1243314992276662751">上載</translation>
 <translation id="1243436884219965846">檢查密碼</translation>
@@ -365,6 +373,7 @@
 <translation id="1307559529304613120">糟糕！系統無法為這部裝置儲存長期 API 存取憑證。</translation>
 <translation id="131112695174432497">系統將刪除會影響廣告個人化的資料</translation>
 <translation id="1312811472299082263">使用 Ansible Playbook 或 Crostini 備份檔案建立</translation>
+<translation id="13130607084115184">已儲存的密碼會在這裡顯示。如要在此裝置上將密碼匯入「<ph name="BRAND"/>」，請<ph name="BEGIN_LINK"/>選取 CSV 檔案<ph name="END_LINK"/>。</translation>
 <translation id="1313264149528821971">已移除 <ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>、<ph name="PERMISSION_3"/></translation>
 <translation id="1313405956111467313">自動 Proxy 設定</translation>
 <translation id="131364520783682672">Caps Lock 鍵</translation>
@@ -387,7 +396,6 @@
 <translation id="1333965224356556482">不允許網站查看您的位置</translation>
 <translation id="1335282218035876586">Chromebook 不會再收到安全和軟件更新。請改用新 Chromebook，以獲得最佳使用體驗。</translation>
 <translation id="133535873114485416">偏好的輸入模式</translation>
-<translation id="1335437153193710305">您可選擇要查看密碼的個人檔案</translation>
 <translation id="1335929031622236846">註冊您的裝置</translation>
 <translation id="1336902454946927954">無法辨識您的指紋，因此安全密鑰已被鎖定。如要解鎖，請輸入您的 PIN。</translation>
 <translation id="1338631221631423366">正在配對…</translation>
@@ -471,6 +479,7 @@
 <translation id="1410616244180625362">繼續允許 <ph name="HOST"/> 存取您的相機</translation>
 <translation id="1410797069449661718">碌去第一個分頁</translation>
 <translation id="1410806973194718079">無法檢查政策</translation>
+<translation id="1411400282355634827">要重設所有藍牙裝置權限嗎？</translation>
 <translation id="1411724932979011919">輸入的內容必須使用 LPA 格式：1$&lt;smdp address&gt;$&lt;activation code&gt;</translation>
 <translation id="1412681350727866021">其他擴充程式</translation>
 <translation id="1414315029670184034">不允許網站使用攝錄機</translation>
@@ -495,6 +504,7 @@
             <ph name="LINE_BREAKS"/>
            書籤、記錄和已儲存的密碼並不會受到影響。</translation>
 <translation id="1425040197660226913">無法上載。請使用小於 20 MB 的圖片。</translation>
+<translation id="1425282319410216613">下載完成後不再顯示</translation>
 <translation id="1426410128494586442">是</translation>
 <translation id="142655739075382478">已封鎖「<ph name="APP_NAME"/>」</translation>
 <translation id="1426870617281699524">按一下 [再試一次]，然後接受電腦上顯示的提示</translation>
@@ -624,6 +634,7 @@
 <translation id="1531734061664070992"><ph name="FIRST_SWITCH"/>、<ph name="SECOND_SWITCH"/>、<ph name="THIRD_SWITCH"/></translation>
 <translation id="1533948060140843887">我瞭解此下載項目會危害我的電腦</translation>
 <translation id="1535228823998016251">大聲</translation>
+<translation id="6823651909636163674">此指南助您瞭解各項選擇，讓 Brave 按照您想要的方式運作</translation>
 <translation id="1535753739390684432">由系統讀出特定文字。請先選取畫面底部的「揀選朗讀內容」圖示，然後突顯所需文字。</translation>
 <translation id="1536754031901697553">正在解除連結…</translation>
 <translation id="1537254971476575106">全螢幕放大鏡</translation>
@@ -696,6 +707,7 @@
 <translation id="1593594475886691512">正在格式化…</translation>
 <translation id="159359590073980872">圖片快取</translation>
 <translation id="1593926297800505364">儲存付款方法</translation>
+<translation id="1594703455918849716">去檢查頁面</translation>
 <translation id="1595492813686795610">正在升級 Linux</translation>
 <translation id="1596286373007273895">可用</translation>
 <translation id="1596709061955594992">藍牙已關閉。如要查看可用的裝置，請開啟藍牙。</translation>
@@ -793,10 +805,12 @@
 <translation id="16620462294541761">很抱歉，系統無法驗證您的密碼，請再試一次。</translation>
 <translation id="166278006618318542">主體公開金鑰演算法</translation>
 <translation id="1662801900924515589">已安裝「<ph name="APP"/>」</translation>
+<translation id="1663698992894057019">請改用新 Chromebook，以獲得最新的安全和軟件更新</translation>
 <translation id="1665328953287874063">使用密碼或 PIN 解鎖 <ph name="DEVICE_TYPE"/></translation>
 <translation id="1666232093776384142">停用周邊裝置的資料存取保護</translation>
 <translation id="1667842670298352129">由系統讀出特定文字。請先選取畫面底部的「揀選朗讀內容」圖示，然後突顯所需文字。您亦可使用鍵盤快速鍵：突顯文字，然後按下搜尋鍵 + S 鍵。</translation>
 <translation id="1668435968811469751">手動註冊</translation>
+<translation id="1668804837842452164">儲存至 <ph name="EMAIL"/> 的 <ph name="BRAND"/></translation>
 <translation id="1668979692599483141">瞭解建議功能</translation>
 <translation id="1670399744444387456">基本設定</translation>
 <translation id="1673137583248014546"><ph name="URL"/> 要求查看「安全密鑰」的品牌和型號</translation>
@@ -829,6 +843,7 @@
 <translation id="169675691788639886">裝置有已設定的 SSH 伺服器。請勿使用敏感帳戶登入。</translation>
 <translation id="1697150536837697295">藝術</translation>
 <translation id="1697686431566694143">編輯檔案</translation>
+<translation id="1698796500103229697">付款方法(&amp;P)</translation>
 <translation id="1700079447639026019">網站一律無法使用 Cookie</translation>
 <translation id="1700201317341192482">移除虛擬卡</translation>
 <translation id="1703331064825191675">不用再擔心密碼問題</translation>
@@ -940,6 +955,7 @@
 <translation id="1791662854739702043">已安裝</translation>
 <translation id="1792619191750875668">延伸顯示屏</translation>
 <translation id="1794051631868188691">永不顯示 <ph name="MERCHANT"/></translation>
+<translation id="1794212650797661990">隱藏 <ph name="DOMAIN"/> 嘅密碼</translation>
 <translation id="1794791083288629568">請提供寶貴意見，協助我們修正此問題。</translation>
 <translation id="1795214765651529549">使用經典主題</translation>
 <translation id="1796588414813960292">需要使用音訊的功能將無法運作</translation>
@@ -1030,6 +1046,7 @@
 <translation id="1854180393107901205">停止投放</translation>
 <translation id="1856715684130786728">新增位置…</translation>
 <translation id="1858585891038687145">信任這個用於識別軟件製造商的憑證</translation>
+<translation id="1859339856433307593">此帳戶的密碼已儲存在「<ph name="BRAND"/>」中 (<ph name="USER_EMAIL"/>)</translation>
 <translation id="1861262398884155592">此資料夾中沒有內容</translation>
 <translation id="1862311223300693744">您有安裝任何特殊的 VPN、Proxy、防火牆或 NAS 軟件
     嗎？</translation>
@@ -1097,6 +1114,7 @@
 <translation id="1915734383465415025">商店編號</translation>
 <translation id="1916260783734263714">目前的分頁</translation>
 <translation id="1916502483199172559">預設紅色圖示</translation>
+<translation id="1916770123977586577">如要將您已更新的設定套到此網站，請重新載入此網頁</translation>
 <translation id="1918141783557917887">縮小(&amp;S)</translation>
 <translation id="1919872106782726755">如要設定指紋，請讓子女輕觸鍵盤右上角 (即開關按鈕旁) 的指紋感應器，子女的指紋資料會安全儲存在此 <ph name="DEVICE_TYPE"/> 上，絕不會外洩。</translation>
 <translation id="1920390473494685033">聯絡人</translation>
@@ -1264,13 +1282,13 @@
 <translation id="2073148037220830746">{NUM_EXTENSIONS,plural, =1{按一下即可安裝擴充程式}other{按一下即可安裝這些擴充程式}}</translation>
 <translation id="2073496667646280609">裝置或所選的備份位置可能沒有足夠的免費儲存空間。請嘗試騰出空間，或選擇備份至另一個位置。</translation>
 <translation id="2073505299004274893">最多只可輸入 <ph name="CHARACTER_LIMIT"/> 個字元</translation>
-<translation id="2074060876831574159">已儲存的密碼會在這裡顯示。&lt;a target='_blank' href='chrome://password-manager/'&gt;匯入密碼&lt;/a&gt;</translation>
 <translation id="2075474481720804517">電量：<ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="2076269580855484719">隱藏此外掛程式</translation>
 <translation id="2076672359661571384">中 (建議)</translation>
 <translation id="2077129598763517140">在可用時使用硬件加速</translation>
 <translation id="2078019350989722914">結束前顯示警告訊息 (<ph name="KEY_EQUIVALENT"/>)</translation>
 <translation id="2079053412993822885">如果您刪除了擁有的憑證之一，您將無法透過該憑證識別身分。</translation>
+<translation id="2079495302726689071">在新 <ph name="APP"/>分頁中開啟連結</translation>
 <translation id="2079545284768500474">復原</translation>
 <translation id="2080070583977670716">顯示更多設定</translation>
 <translation id="2081816110395725788">使用電池時閒置電源</translation>
@@ -1333,7 +1351,6 @@
 <translation id="2114820389966440614">在此查看「近期精選相片」和其他回憶</translation>
 <translation id="2114896190328250491">相片提供：<ph name="NAME"/></translation>
 <translation id="2114995631896158695">沒有插入 SIM 卡</translation>
-<translation id="2116020356255810305">可以喺開機嘅時候啟動應用程式</translation>
 <translation id="2116619964159595185">網站通常會連接藍牙裝置，以提供設定或同步低功耗信標、健康與健身追蹤器或智能燈泡等功能</translation>
 <translation id="2117655453726830283">下一張投影片</translation>
 <translation id="2119349053129246860">在 <ph name="APP"/> 中開啟</translation>
@@ -1369,6 +1386,7 @@
 <translation id="2146263598007866206">網站可能會自動同時下載相關檔案，以便節省時間</translation>
 <translation id="2147151613919729065">如要清除訪客模式記錄，請關閉所有訪客視窗。</translation>
 <translation id="2147218225094845757">隱藏側面板</translation>
+<translation id="2147282432401652483">Command 鍵</translation>
 <translation id="2148219725039824548">連接共用裝置時發生錯誤。在網絡上找不到指定的共用裝置。</translation>
 <translation id="2148756636027685713">格式化完成</translation>
 <translation id="2148892889047469596">投放分頁</translation>
@@ -1392,6 +1410,7 @@
 <translation id="2162705204091149050">讀取瀏覽器、OS、裝置、已安裝的軟件和檔案的相關資料</translation>
 <translation id="2162926944953615670">沒有可用的 eSIM 卡設定檔</translation>
 <translation id="2163470535490402084">請連接互聯網，才能登入 <ph name="DEVICE_TYPE"/>。</translation>
+<translation id="3050465115159165320">充分運用 Brave 的所有功能</translation>
 <translation id="2164131635608782358"><ph name="FIRST_SWITCH"/>、<ph name="SECOND_SWITCH"/>、<ph name="THIRD_SWITCH"/> 和另外 1 個按鈕裝置</translation>
 <translation id="2165102982098084499">透過掃瞄 QR 碼的方式連結了這些裝置。</translation>
 <translation id="2165177462441582039">選擇突顯範圍在每個項目上的停留時間</translation>
@@ -1404,6 +1423,7 @@
 <translation id="2175384018164129879">管理搜尋引擎和站內搜尋</translation>
 <translation id="217576141146192373">無法新增打印機。請檢查打印機設定，然後再試一次。</translation>
 <translation id="2175927920773552910">二維條碼</translation>
+<translation id="2177306523871626993">正在下載文字識別檔案… <ph name="PERCENT"/>%</translation>
 <translation id="9048137919253433011">無痕式分頁：<ph name="TAB_NAME"/></translation>
 <translation id="2178585470774851578">您即將啟用 ChromeOS Flex 偵錯功能；啟用後，系統會設定 sshd 協助程式，並啟用 USB 記憶體開機功能。</translation>
 <translation id="2178614541317717477">CA 洩露</translation>
@@ -1491,6 +1511,7 @@
 <translation id="2252017960592955005">檢視保護 (Beta 版本)</translation>
 <translation id="225240747099314620">允許受保護內容的識別碼 (可能需要重新啟動電腦)</translation>
 <translation id="2253318212986772520">無法擷取「<ph name="PRINTER_NAME"/>」的 PPD。</translation>
+<translation id="2253927598983295051">選擇要與「<ph name="APP_NAME"/>」分享的內容</translation>
 <translation id="2255077166240162850">此裝置已鎖定使用其他網域或模式。</translation>
 <translation id="2255317897038918278">Microsoft 時間戳記</translation>
 <translation id="2256115617011615191">立即重新啟動</translation>
@@ -1569,6 +1590,7 @@
       <ph name="BR"/>
       <ph name="BEGIN_BOLD"/>注意：<ph name="END_BOLD"/>系統會在程序中途重新啟動。</translation>
 <translation id="23030561267973084">「<ph name="EXTENSION_NAME"/>」要求其他權限。</translation>
+<translation id="2306794767168143227">儲存至此裝置上的 <ph name="BRAND"/></translation>
 <translation id="2307462900900812319">設定網絡</translation>
 <translation id="2307553512430195144">如果您同意，「Brave 助理」會處於待機模式，以便偵測「Ok Brave」指令，並透過 Voice Match 功能識別<ph name="SUPERVISED_USER_NAME"/>是否正在說話。
     <ph name="BR"/>
@@ -1685,6 +1707,7 @@
 <translation id="2399699884460174994">已開啟通知</translation>
 <translation id="2399939490305346086">安全密鑰登入資料</translation>
 <translation id="2400664245143453337">必須立即更新</translation>
+<translation id="2402226831639195063">音調</translation>
 <translation id="2406153734066939945">要刪除此設定檔和相關資料嗎？</translation>
 <translation id="2408018932941436077">正在儲存信用卡</translation>
 <translation id="2408955596600435184">請輸入您的 PIN</translation>
@@ -1696,6 +1719,7 @@
 <translation id="241082044617551207">不明的外掛程式</translation>
 <translation id="2410940059315936967">您瀏覽的網站可以嵌入其他網站的內容，例如圖片、廣告和文字。其他網站設定的 Cookie 就稱為第三方 Cookie。</translation>
 <translation id="2411666601450687801">此裝置不允許「虛擬機器」</translation>
+<translation id="2412015533711271895">您需要家長或監護人同意才能使用此擴充程式</translation>
 <translation id="2412753904894530585">Kerberos</translation>
 <translation id="2414886740292270097">灰暗</translation>
 <translation id="2416435988630956212">鍵盤功能鍵</translation>
@@ -1778,6 +1802,7 @@
 <translation id="2480868415629598489">修改您複製並貼上的資料</translation>
 <translation id="2482878487686419369">通知</translation>
 <translation id="2482895651873876648">分頁移咗去包含「<ph name="GROUP_CONTENTS"/>」嘅「<ph name="GROUP_NAME"/>」群組</translation>
+<translation id="2484743711056182585">移除存取權</translation>
 <translation id="2484909293434545162">使用 Cookie 的網站會在此處顯示</translation>
 <translation id="6819373476761661568">如要從所有已同步的裝置和 Brave 帳戶中清除瀏覽資料，請<ph name="BEGIN_LINK"/>輸入密碼短語<ph name="END_LINK"/>。</translation>
 <translation id="2485394160472549611">推薦精選</translation>
@@ -1815,6 +1840,7 @@
 <translation id="2508428939232952663">Google Play 商店帳戶</translation>
 <translation id="2509495747794740764">縮放比例必須介乎 10 和 200 之間的數字。</translation>
 <translation id="2509566264613697683">8 倍</translation>
+<translation id="2443361774793126917">此 Brave 個人檔案正受標準安全保護功能保護</translation>
 <translation id="2512065992892294946"><ph name="LANGUAGE"/> (已選取)</translation>
 <translation id="2513396635448525189">登入圖片</translation>
 <translation id="2514326558286966059">指紋加快解鎖速度</translation>
@@ -1839,6 +1865,7 @@
 <translation id="2532589005999780174">高對比度模式</translation>
 <translation id="2533649878691950253">由於您通常不允許網站取得您的精確位置，因此系統已禁止此操作</translation>
 <translation id="253434972992662860">暫停(&amp;P)</translation>
+<translation id="253498598929009420">網站將可見到您螢幕上的內容</translation>
 <translation id="253557089021624350">Keepalive 數量</translation>
 <translation id="2535799430745250929">沒有流動網絡</translation>
 <translation id="2537395079978992874"><ph name="ORIGIN"/> 可查看及編輯以下檔案和資料夾</translation>
@@ -1902,6 +1929,7 @@
 <translation id="25899519884572181">離開閱讀器模式</translation>
 <translation id="2593499352046705383">開始操作前，請確認資料已備份。安裝 <ph name="DEVICE_OS"/> 會覆寫硬碟的資料。請前往 g.co/flex/InstallGuide 以瞭解詳情。</translation>
 <translation id="2129873093718581193">搜尋 Brave 或輸入網址</translation>
+<translation id="2024721991200132064">有新版本 Brave 可安裝</translation>
 <translation id="2599048253926156421">使用者名稱已複製到剪貼簿</translation>
 <translation id="2602501489742255173">向上滑動即可開始</translation>
 <translation id="2603115962224169880">清理電腦</translation>
@@ -1923,6 +1951,7 @@
 <translation id="2612676031748830579">信用卡號碼</translation>
 <translation id="2613210758071148851">不允許 <ph name="RESTRICTED_SITE"/> 的任何擴充程式</translation>
 <translation id="2613535083491958306"><ph name="ORIGIN"/> 將可以編輯「<ph name="FILENAME"/>」</translation>
+<translation id="2616008379779647117">字幕語言</translation>
 <translation id="2616366145935564096">讀取及變更您在 <ph name="WEBSITE_1"/> 網站上的資料</translation>
 <translation id="2618797463720777311">設定「咫尺共享」</translation>
 <translation id="2620215283731032047">無法安全下載「<ph name="FILE_NAME"/>」。</translation>
@@ -1950,6 +1979,7 @@
 <translation id="2640299212685523844">使用 GTK</translation>
 <translation id="264083724974021997">連接去你部手機 - 對話框</translation>
 <translation id="2642111877055905627">足球</translation>
+<translation id="2642206811783203764">一律在 <ph name="SITE_NAME"/> 上執行</translation>
 <translation id="2643064289437760082">只要刪除瀏覽資料，即可隨時刪除廣告評估資料</translation>
 <translation id="2643698698624765890">如要管理擴充功能，只需按一下 [視窗] 選單中的 [擴充功能] 即可。</translation>
 <translation id="2645047101481282803">您的裝置由 <ph name="PROFILE_NAME"/> 管理</translation>
@@ -2061,6 +2091,7 @@
 <translation id="27349076983469322">淺色背景</translation>
 <translation id="2735712963799620190">設定時段</translation>
 <translation id="2737363922397526254">收合…</translation>
+<translation id="2737719817922589807">書籤和清單(&amp;B)</translation>
 <translation id="2737916598897808047"><ph name="APP_NAME"/> 要求與 <ph name="TARGET_NAME"/> 分享螢幕內容。</translation>
 <translation id="2738030019664645674">不允許網站使用裝置上安裝的字型</translation>
 <translation id="2738771556149464852">此日期之前</translation>
@@ -2094,7 +2125,6 @@
 <translation id="2764786626780673772">VPN 詳細資料</translation>
 <translation id="2764920001292228569">請輸入設定檔名稱</translation>
 <translation id="2765100602267695013">請聯絡流動裝置供應商</translation>
-<translation id="2765192051416981617">管理 <ph name="PROFILE_NAME"/> 的 HID 裝置</translation>
 <translation id="2765217105034171413">小</translation>
 <translation id="2766006623206032690">貼上及前往(&amp;S)</translation>
 <translation id="2766161002040448006">詢問家長</translation>
@@ -2111,6 +2141,7 @@
 <translation id="2773288106548584039">舊版瀏覽器支援</translation>
 <translation id="2773802008104670137">此類檔案可能會損害您的電腦。</translation>
 <translation id="2775104091073479743">編輯指紋</translation>
+<translation id="2775420101802644975">{NUM_CONNECTION,plural, =0{擴充程式「<ph name="EXTENSION"/>」當時正在存取裝置}=1{擴充程式「<ph name="EXTENSION"/>」正在存取 {0} 部裝置}other{擴充程式「<ph name="EXTENSION"/>」正在存取 {0} 部裝置}}</translation>
 <translation id="2775858145769350417">{NUM_APPS,plural, =1{移除 1 個不支援的應用程式}other{移除 # 個不支援的應用程式}}</translation>
 <translation id="2776560192867872731">改 <ph name="DEVICE_NAME"/> 嘅裝置名</translation>
 <translation id="2777251078198759550">刪除此容器</translation>
@@ -2150,6 +2181,7 @@
 <translation id="2804043232879091219">無法開啟替代瀏覽器</translation>
 <translation id="2804667941345577550">您將會從此網站 (包括在開啟的分頁) 登出。</translation>
 <translation id="2804680522274557040">相機已關閉</translation>
+<translation id="2804742109948581745">並排</translation>
 <translation id="2805539617243680210">大功告成！</translation>
 <translation id="2805646850212350655">Microsoft 加密檔案系統</translation>
 <translation id="2805756323405976993">應用程式</translation>
@@ -2207,10 +2239,12 @@
 <translation id="2852385257476173980">在您瀏覽網絡同時，系統可能會於此處顯示您瀏覽的網站清單</translation>
 <translation id="285241945869362924">自動建立音訊和影片字幕。音訊和字幕絕不會外洩。</translation>
 <translation id="2856776373509145513">建立新容器</translation>
+<translation id="2859741939921354763">將密碼匯入「<ph name="BRAND"/>」</translation>
 <translation id="2861301611394761800">系統更新完成，請重新啟動系統。</translation>
 <translation id="2861941300086904918">Native Client 安全性管理員</translation>
 <translation id="2862815659905780618">移除 Linux 開發環境</translation>
 <translation id="2864601841139725659">設定您的個人檔案相片</translation>
+<translation id="2865057607286263192">按住鍵盤按鍵以查看重音標記和特殊字元。此設定會關閉字母按鍵的重複按鍵效果。只適用於英文 (美國)。</translation>
 <translation id="2865919525181940183">目前畫面上面嘅程式螢幕截圖</translation>
 <translation id="286674810810214575">正在檢查電源…</translation>
 <translation id="2867768963760577682">在固定分頁中開啟</translation>
@@ -2240,6 +2274,7 @@
 <translation id="2886119409731773154">此操作大概需時 30 分鐘</translation>
 <translation id="2886771036282400576">• <ph name="PERMISSION"/></translation>
 <translation id="288734198558082692">「<ph name="DEVICE"/>」和另外 <ph name="NUMBER_OF_DEVICES"/> 部裝置</translation>
+<translation id="2889043468805635730">未發現問題</translation>
 <translation id="2889064240420137087">使用其他程式開啟連結…</translation>
 <translation id="2891566119238851894">開側面板入面嘅搜尋工具列。側面板入面嘅搜尋工具列冇開。</translation>
 <translation id="2891922230654533301">要使用裝置登入 <ph name="APP_NAME"/> 嗎？</translation>
@@ -2334,7 +2369,6 @@
 <translation id="2972581237482394796">重做(&amp;R)</translation>
 <translation id="2973324205039581528">將單一網站靜音</translation>
 <translation id="2973537811036309675">側面板</translation>
-<translation id="2975628416524344939">管理 HID 裝置</translation>
 <translation id="2975761176769946178">必須輸入網址</translation>
 <translation id="2976557544729462544">部分裝置需要停用資料存取保護才能正常運作或發揮最佳效能。</translation>
 <translation id="2976756276046118477">「紅 - 綠」濾鏡 (綠色弱)</translation>
@@ -2382,6 +2416,7 @@
 <translation id="3010234549896186761">{COUNT,plural, =0{您的密碼看來安全度高}=1{{COUNT} 個安全度低的密碼}other{{COUNT} 個安全度低的密碼}}</translation>
 <translation id="3010279545267083280">已刪除密碼</translation>
 <translation id="3010389206479238935">強制開啟方式</translation>
+<translation id="3010961843303056486">顯示所有書籤</translation>
 <translation id="3011384993885886186">暖灰色</translation>
 <translation id="3011488081941333749">系統將在您離開時清除來自 <ph name="DOMAIN"/> 的 Cookie</translation>
 <translation id="3012631534724231212">(iFrame)</translation>
@@ -2473,6 +2508,7 @@
 <translation id="3088128611727407543">正在準備應用程式設定檔…</translation>
 <translation id="3088325635286126843">重新命名(&amp;R)…</translation>
 <translation id="3089137131053189723">已清除搜尋</translation>
+<translation id="3089941350495701096">閱讀清單(&amp;R)</translation>
 <translation id="3090227230165225418">朗讀下載通知</translation>
 <translation id="3090589793601454425">不要移動</translation>
 <translation id="3090819949319990166">無法將外部 crx 檔案複製到 <ph name="TEMP_CRX_FILE"/>。</translation>
@@ -2573,7 +2609,6 @@
 <translation id="3193695589337931419">系統訊號實用程式</translation>
 <translation id="3194786596445804250">顯示封鎖第三方 Cookie 嘅詳情</translation>
 <translation id="3197453258332670132">按一下右鍵或長按畫面，即可查看所選文字的相關資料</translation>
-<translation id="3198804549162832936">在「<ph name="APP"/>」的新視窗中開啟連結</translation>
 <translation id="3199127022143353223">伺服器</translation>
 <translation id="3200061262156232574">購物車內商品</translation>
 <translation id="3201237270673604992">Z 至 A</translation>
@@ -2608,6 +2643,7 @@
 <translation id="3234978181857588512">儲存至裝置</translation>
 <translation id="3238192140106069382">正在連線及驗證</translation>
 <translation id="3239373508713281971">已移除 <ph name="APP_NAME"/> 的時間限制</translation>
+<translation id="3241638166094654466">每行的儲存格數量：</translation>
 <translation id="3241680850019875542">請選取要封裝的擴充功能根目錄。如要更新擴充功能，請一併選取要重複使用的私密金鑰。</translation>
 <translation id="3242289508736283383">含有「kiosk_only」資訊清單屬性的應用程式必須在 Chrome OS Kiosk 模式中安裝</translation>
 <translation id="3242665648857227438">此設定檔使用 Chrome OS Proxy 設定。</translation>
@@ -2632,6 +2668,7 @@
 <translation id="3262986719682892278">太大</translation>
 <translation id="3264544094376351444">Sans-serif 字型</translation>
 <translation id="3264582393905923483">內容</translation>
+<translation id="3265032511221679826">要開啟精確位置的存取權嗎？</translation>
 <translation id="3265459715026181080">關閉視窗</translation>
 <translation id="3266022278425892773">Linux 開發環境</translation>
 <translation id="3266274118485960573">執行緊安全檢查。</translation>
@@ -2720,6 +2757,7 @@
 <translation id="3336855445806447827">不確定</translation>
 <translation id="3337568642696914359">不允許網站處理通訊協定</translation>
 <translation id="3340620525920140773">下載完成：<ph name="FILE_NAME"/>。</translation>
+<translation id="3340978935015468852">設定</translation>
 <translation id="3341699307020049241">PIN 不正確。您還可再試 <ph name="RETRIES"/> 次。</translation>
 <translation id="3341703758641437857">允許存取檔案網址</translation>
 <translation id="3342361181740736773">「<ph name="TRIGGERING_EXTENSION_NAME"/>」要求移除這個擴充程式。</translation>
@@ -2795,6 +2833,7 @@
 <translation id="1081508498128395141">預先載入更多網頁。當其他網站要求連結網頁時，系統可能會透過 Brave 伺服器預先載入這些網頁。</translation>
 <translation id="3407967630066378878">如要設定指紋，請讓子女輕觸 <ph name="DEVICE_TYPE"/> 左側的指紋感應器。子女的指紋資料會安全儲存在此 <ph name="DEVICE_TYPE"/> 上，絕不會外洩。</translation>
 <translation id="4753559074520648795">{NUM_PASSWORDS,plural, =1{已將 1 個密碼匯入 <ph name="USER_EMAIL"/> 的「Brave 密碼管理工具」}other{已將 {NUM_PASSWORDS} 個密碼匯入 <ph name="USER_EMAIL"/> 的「Brave 密碼管理工具」}}</translation>
+<translation id="3409513286451883969">將所選內容翻譯為<ph name="LANGUAGE"/> (&amp;T)</translation>
 <translation id="3409785640040772790">地圖</translation>
 <translation id="3412265149091626468">跳至所選範圍</translation>
 <translation id="3413122095806433232">CA 發行者：<ph name="LOCATION"/></translation>
@@ -2866,7 +2905,6 @@
 <translation id="3462958980772249646">{COUNT,plural, =1{此裝置已儲存 {COUNT} 個密碼}other{此裝置已儲存 {COUNT} 個密碼}}</translation>
 <translation id="346298925039590474">此裝置的所有使用者都可連接此流動網絡</translation>
 <translation id="3464145797867108663">新增工作設定檔</translation>
-<translation id="346431825526753">這是一個兒童帳戶 (由 <ph name="CUSTODIAN_EMAIL"/> 管理)。</translation>
 <translation id="346546413339447252">取得 <ph name="MERCHANT_NAME_1"/>、<ph name="MERCHANT_NAME_2"/> 等商店的折扣</translation>
 <translation id="3468298837301810372">標籤</translation>
 <translation id="3468999815377931311">Android 手機</translation>
@@ -2918,6 +2956,7 @@
 <translation id="3508920295779105875">選擇另一個資料夾…</translation>
 <translation id="3509379002674019679">建立、儲存及管理密碼，讓您輕鬆登入網站和應用程式。</translation>
 <translation id="3511200754045804813">重新掃描</translation>
+<translation id="3511269949096797228">{COUNT,plural, =0{沒有重新對應的鍵}=1{1 個重新對應的鍵}other{{COUNT} 個重新對應的鍵}}</translation>
 <translation id="3511307672085573050">複製連結網址(&amp;E)</translation>
 <translation id="351152300840026870">固定寬度字型</translation>
 <translation id="3511528412952710609">短</translation>
@@ -2939,6 +2978,7 @@
 <translation id="3526034519184079374">無法讀取或變更網站資料</translation>
 <translation id="3527085408025491307">資料夾</translation>
 <translation id="3528498924003805721">捷徑目標</translation>
+<translation id="3529851166527095708">地址和其他資料(&amp;A)</translation>
 <translation id="3532273508346491126">同步管理</translation>
 <translation id="3532521178906420528">正在建立網絡連線…</translation>
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> - 靜音</translation>
@@ -2976,6 +3016,7 @@
 <translation id="3564334271939054422">目前使用的 Wi-Fi 網絡 (<ph name="NETWORK_ID"/>) 可能會要求您前往其登入網頁。</translation>
 <translation id="3564848315152754834">USB 安全密鑰</translation>
 <translation id="3566325075220776093">此裝置中的密碼</translation>
+<translation id="3566697192119523694">自動填入和密碼(&amp;A)</translation>
 <translation id="3566721612727112615">沒有新增任何網站</translation>
 <translation id="3080637320062973622">如要與附近的使用者互相傳送檔案，請將裝置設為可供偵測狀態</translation>
 <translation id="3569382839528428029">您想讓 <ph name="APP_NAME"/> 共用您的螢幕嗎？</translation>
@@ -2992,6 +3033,7 @@
 <translation id="3584527007414070635">繼續瀏覽「<ph name="MODULE_TITLE"/>」</translation>
 <translation id="3586787825263265024">需要可存取 OneDrive 才能使用「<ph name="APPLICATION_NAME"/>」應用程式。</translation>
 <translation id="3586806079541226322">無法開啟此檔案</translation>
+<translation id="3586931643579894722">隱藏詳情</translation>
 <translation id="3587438013689771191">進一步了解：<ph name="SUBPAGE_TITLE"/></translation>
 <translation id="3587482841069643663">全部</translation>
 <translation id="3588790464166520201">已允許安裝付款處理常式</translation>
@@ -3018,6 +3060,7 @@
 <translation id="3609277884604412258">快速搜尋</translation>
 <translation id="3610241585790874201">無法將資料儲存至裝置</translation>
 <translation id="3610369246614755442">插座風扇需要維修</translation>
+<translation id="3610961622607302617">改 <ph name="WEBSITE"/> 嘅密碼</translation>
 <translation id="361106536627977100">Flash 數據</translation>
 <translation id="3611655097742243705">請前往「Play 商店」尋找更多應用程式</translation>
 <translation id="3611658447322220736">最近關閉的網站可完成傳送和接受資料</translation>
@@ -3045,7 +3088,6 @@
 <translation id="3627671146180677314">Netscape 憑證更新時間</translation>
 <translation id="3627879631695760395">安裝 <ph name="APP"/>…</translation>
 <translation id="3628275722731025472">關閉藍牙功能</translation>
-<translation id="3629631988386925734">輸入密碼即可啟用 Smart Lock。下次您便可使用手機來解鎖 <ph name="DEVICE_TYPE"/>。您可在「設定」中停用 Smart Lock。</translation>
 <translation id="3629664892718440872">記住這個選擇</translation>
 <translation id="3630132874740063857">您的手機</translation>
 <translation id="3630995161997703415">將此網站加到捷徑列，即可隨時使用</translation>
@@ -3075,6 +3117,7 @@
 <translation id="3651488188562686558">中斷 Wi-Fi 連線</translation>
 <translation id="3652817283076144888">正在初始化</translation>
 <translation id="3653160965917900914">網絡檔案共用</translation>
+<translation id="3653887973853407813">您無法使用此擴充程式，因為您的家長或監護人已關閉 Brave 的「網站、應用程式和擴充程式權限」。</translation>
 <translation id="3653999333232393305">繼續允許 <ph name="HOST"/> 存取您的麥克風</translation>
 <translation id="3654045516529121250">讀取您的協助工具設定</translation>
 <translation id="3655712721956801464">{NUM_FILES,plural, =1{應用程式可永久存取 1 個檔案。}other{應用程式可永久存取 # 個檔案。}}</translation>
@@ -3119,6 +3162,8 @@
 <translation id="3694590407685276748">突顯文字游標</translation>
 <translation id="369489984217678710">密碼和其他登入資料</translation>
 <translation id="369522892592566391">{NUM_FILES,plural, =0{已完成安全檢查。您的資料將會上載。}=1{已完成安全檢查。您的檔案將會上載。}other{已完成安全檢查。您的檔案將會上載。}}</translation>
+<translation id="3696817060563289264">已下載文字識別檔案</translation>
+<translation id="3697716475445175867">上次開啟日期</translation>
 <translation id="3698471669415859717">審核已完成</translation>
 <translation id="3698825735945432002">濾鏡類型</translation>
 <translation id="3699624789011381381">電郵地址</translation>
@@ -3136,7 +3181,9 @@
 <translation id="3706463572498736864">每張工作表頁數</translation>
 <translation id="370649949373421643">啟用 Wi-Fi</translation>
 <translation id="370665806235115550">載入中…</translation>
+<translation id="2697264242676904869">您瀏覽的網站可將少量資料儲存至 Brave，主要用來證明您不是機器人</translation>
 <translation id="3707163604290651814">目前登入的帳戶是<ph name="NAME"/></translation>
+<translation id="3707348585109246684">在新 <ph name="APP"/>分頁中開啟連結</translation>
 <translation id="3708295717182051206">字幕</translation>
 <translation id="3708684582558000260">不允許已關閉的網站完成資料收發</translation>
 <translation id="3709244229496787112">瀏覽器在下載尚未完成時被關閉。</translation>
@@ -3202,6 +3249,7 @@
 <translation id="3760460896538743390">檢查背景頁面(&amp;B)</translation>
 <translation id="1985165269306590797">在無痕式視窗中開啟(&amp;I)</translation>
 <translation id="3761556954875533505">要允許網站編輯檔案嗎？</translation>
+<translation id="1768338058980345433">您可封鎖不想要的網站。Brave 亦會從清單自動刪除超過 30 日的網站。</translation>
 <translation id="3763549179847864476">私隱權指南返回掣</translation>
 <translation id="3764314093345384080">詳細版本資料</translation>
 <translation id="3764583730281406327">{NUM_DEVICES,plural, =1{與 1 個 USB 裝置通訊}other{與 # 個 USB 裝置通訊}}</translation>
@@ -3228,6 +3276,7 @@
 <translation id="3778868487658107119">度身訂造的「Brave 助理」隨時為您提供協助，不但可根據您的問題提供解答，還可以按指令執行各種操作。</translation>
 <translation id="3780542776224651912">「<ph name="BRAND"/>」無法檢查您的密碼是否受資料外洩影響。請稍後再試。</translation>
 <translation id="3781742599892759500">Linux 的麥克風存取權</translation>
+<translation id="3783640748446814672">Alt</translation>
 <translation id="3783725005098956899">顯示記錄</translation>
 <translation id="3783889407390048282">請釋出空間，以免無法存取 Android。</translation>
 <translation id="3784472333786002075">Cookie 是網站所建立的檔案，並可分為兩種：第一方 Cookie 由您瀏覽的網站建立，網址列上會顯示該網站的網址。第三方 Cookie 則由其他網站建立。這些網站擁有您所瀏覽網站的部分內容，例如廣告和圖片。</translation>
@@ -3306,7 +3355,6 @@
 <translation id="383669374481694771">這個選項會提供此裝置的一般資料和使用情况 (例如電量、系統及應用程式活動和錯誤)。這些資料將會用來改善 Android。部分彙整資料還能協助 Brave 應用程式和合作夥伴 (例如 Android 開發人員) 改良應用程式和產品。</translation>
 <translation id="3838085852053358637">無法載入擴充程式</translation>
 <translation id="3838486795898716504">更多<ph name="PAGE_TITLE"/></translation>
-<translation id="9106683078444907752">將已儲存的密碼加入「Brave 密碼管理工具」</translation>
 <translation id="383891835335927981">沒有已放大或縮小的網站</translation>
 <translation id="3839509547554145593">啟用滑鼠捲動加速功能</translation>
 <translation id="3839516600093027468">一律禁止 <ph name="HOST"/> 查看剪貼簿</translation>
@@ -3336,6 +3384,7 @@
 <translation id="3861977424605124250">啟動時顯示</translation>
 <translation id="386239283124269513">還原群組</translation>
 <translation id="3865414814144988605">解像度</translation>
+<translation id="3866142613641074814">您有密碼面臨安全風險</translation>
 <translation id="3866249974567520381">描述</translation>
 <translation id="3867134342671430205">透過拖曳方式或方向鍵移動螢幕</translation>
 <translation id="3867944738977021751">憑證欄位</translation>
@@ -3422,7 +3471,6 @@
 <translation id="3937640725563832867">憑證發行者替代名稱</translation>
 <translation id="3937734102568271121">一律翻譯<ph name="LANGUAGE"/></translation>
 <translation id="3938128855950761626">來自供應商 <ph name="VENDOR_ID"/> 的裝置</translation>
-<translation id="3940233957883229251">啟用自動重複</translation>
 <translation id="3941565636838060942">如要隱藏這個程式的存取權，您必須使用控制台中的
   「<ph name="CONTROL_PANEL_APPLET_NAME"/>」解除安裝此程式。
 
@@ -3524,9 +3572,9 @@
 <translation id="4025039777635956441">將已選取的網站設定為靜音</translation>
 <translation id="402707738228916911">已接收「<ph name="AUTHORIZE_INSTRUCTION_NAME"/>」指示</translation>
 <translation id="4027569221211770437">「<ph name="FOLDER_TITLE"/>」資料夾</translation>
-<translation id="4027958407426528157">使用 <ph name="DEVICE_TYPE"/> 上安裝的應用程式開啟網站</translation>
 <translation id="4028467762035011525">新增輸入方法</translation>
 <translation id="4029556917477724407">從「<ph name="PAGE_TITLE"/>」頁面返回</translation>
+<translation id="403088439874411464">正在下載文字識別檔案</translation>
 <translation id="4031179711345676612">已允許使用麥克風</translation>
 <translation id="4031527940632463547">已封鎖感應器</translation>
 <translation id="4033471457476425443">新增資料夾</translation>
@@ -3657,6 +3705,7 @@
 <translation id="4144468798716165316">快速指令</translation>
 <translation id="4146026355784316281">一律使用系統檢視器開啟</translation>
 <translation id="4146785383423576110">重設並清理</translation>
+<translation id="4147099377280085053">選取點字表</translation>
 <translation id="4147911968024186208">請重試。如果出現同樣問題，請聯絡您的支援代表。</translation>
 <translation id="4150201353443180367">顯示屏</translation>
 <translation id="4150569944729499860">畫面內容</translation>
@@ -3666,7 +3715,7 @@
 <translation id="4157869833395312646">Microsoft Server Gated Cryptography</translation>
 <translation id="4158315983204257156">網站文字大小和字型</translation>
 <translation id="4158364720893025815">通過</translation>
-<translation id="4159681666905192102">這是一個兒童帳戶 (由 <ph name="CUSTODIAN_EMAIL"/> 和 <ph name="SECOND_CUSTODIAN_EMAIL"/> 管理)。</translation>
+<translation id="3184509819184664489">Brave 密碼管理工具(&amp;G)</translation>
 <translation id="4163560723127662357">未知的鍵盤</translation>
 <translation id="4165942112764990069"><ph name="USER_EMAIL"/> 不屬於有效的機構，請聯絡您的管理員。如果您是管理員，可前往 g.co/BraveEnterpriseAccount 設定機構</translation>
 <translation id="4165986682804962316">網站設定</translation>
@@ -3686,6 +3735,7 @@
 <translation id="4180788401304023883">刪除 CA 憑證「<ph name="CERTIFICATE_NAME"/>」？</translation>
 <translation id="4181602000363099176">20 倍</translation>
 <translation id="4181841719683918333">語言</translation>
+<translation id="4182339886482390129">「強化安全瀏覽」可進一步保護您免受危險網站、下載檔案和擴充程式威脅</translation>
 <translation id="4184803915913850597">HID 裝置 (<ph name="VENDOR_ID"/>：<ph name="PRODUCT_ID"/>)</translation>
 <translation id="4186749321808907788"><ph name="QUERY_NAME"/> - <ph name="DEFAULT_SEARCH_ENGINE_NAME"/> 搜尋</translation>
 <translation id="4187424053537113647">正在設定 <ph name="APP_NAME"/>…</translation>
@@ -3732,6 +3782,7 @@
 <translation id="4231141543165771749">關閉遊戲控制項</translation>
 <translation id="4514706758841043687">在試用期間，為減少垃圾內容和欺詐行為，系統需依賴 Private State Token，以協助網站對抗欺詐行為，並分辨機器人和真人。</translation>
 <translation id="4232375817808480934">設定 Kerberos</translation>
+<translation id="4233739489690259993">Chromebook 不會再收到安全和軟件更新。請改用新款裝置，以取得最新的安全性和新功能。須遵守優惠條款。</translation>
 <translation id="4235965441080806197">取消登入</translation>
 <translation id="4236163961381003811">探索更多擴充程式</translation>
 <translation id="4237282663517880406">顯示「Brave 雲端硬碟」建議</translation>
@@ -3739,6 +3790,7 @@
 <translation id="4242145785130247982">不支援多個用戶端憑證</translation>
 <translation id="4242533952199664413">開啟設定</translation>
 <translation id="4242577469625748426">無法在裝置上安裝政策設定：<ph name="VALIDATION_ERROR"/>。</translation>
+<translation id="4242928980248289922">已節省 <ph name="MEMORY_SAVINGS"/></translation>
 <translation id="4243504193894350135">打印機已暫停</translation>
 <translation id="4244238649050961491">尋找更多觸控筆應用程式</translation>
 <translation id="4246980464509998944">其他意見：</translation>
@@ -3831,10 +3883,12 @@
 <translation id="4317733381297736564">應用程式內購買</translation>
 <translation id="4317820549299924617">驗證失敗</translation>
 <translation id="4320177379694898372">沒有互聯網連線</translation>
+<translation id="4321179778687042513">ctrl</translation>
 <translation id="432160826079505197">喺 Finder 入面顯示 <ph name="FILE_NAME"/></translation>
 <translation id="4322394346347055525">關閉其他分頁</translation>
 <translation id="4324577459193912240">檔案未完成下載</translation>
 <translation id="4325237902968425115">正在解除安裝 <ph name="LINUX_APP_NAME"/>…</translation>
+<translation id="7463244538445813736">Brave 最強大的安全功能可進一步保護您免受危險網站、下載檔案和擴充程式威脅</translation>
 <translation id="4330191372652740264">冰水</translation>
 <translation id="4330387663455830245">永不翻譯<ph name="LANGUAGE"/>內容</translation>
 <translation id="4332976768901252016">設定家長監控設定</translation>
@@ -3844,6 +3898,7 @@
 <translation id="4340125850502689798">使用者名稱無效</translation>
 <translation id="4340515029017875942"><ph name="ORIGIN"/> 想與「<ph name="EXTENSION_NAME"/>」應用程式保持通訊</translation>
 <translation id="4340799661701629185">不允許網站傳送通知</translation>
+<translation id="4341280816303414009">系統可能會錄製您的畫面</translation>
 <translation id="4341577178275615435">如要開啟或關閉「鍵盤瀏覽」功能，請使用快速鍵 F7</translation>
 <translation id="4341905082470253054">正在檢查 TPM 狀態…</translation>
 <translation id="434198521554309404">快捷。安全。輕鬆便利。</translation>
@@ -3877,6 +3932,7 @@
 <translation id="4366138410738374926">列印已開始</translation>
 <translation id="4367513928820380646">審核移除咗嘅權限</translation>
 <translation id="4369215744064167350">已核准網站要求</translation>
+<translation id="436926121798828366">您可隨時在「<ph name="SETTINGS_LINK"/>」中變更此設定</translation>
 <translation id="4369735607080757018">網站之間會分享有限種類的資料 (例如系統向您顯示廣告的時段)，以評估廣告的效益</translation>
 <translation id="4370975561335139969">您所輸入的電郵與密碼不符</translation>
 <translation id="4374805630006466253">使用其他手機或平板電腦</translation>
@@ -3985,7 +4041,6 @@
 <translation id="4453430595102511050">請輕觸位於鍵盤右上角的指紋感應器。系統會妥善地將您的指紋資料儲存在 <ph name="DEVICE_TYPE"/> 上，絕不會外洩。</translation>
 <translation id="4453946976636652378">搜尋 <ph name="SEARCH_ENGINE_NAME"/> 或輸入網址</translation>
 <translation id="4457472090507035117">選取目前的語音：</translation>
-<translation id="4458535500699390320">當此分頁處於閒置狀態時，「節省記憶體」模式會釋出記憶體給其他工作。您可隨時在設定中變更此設定。</translation>
 <translation id="4459169140545916303">曾於 <ph name="DEVICE_LAST_ACTIVATED_TIME"/> 天前在線</translation>
 <translation id="4460014764210899310">未分組</translation>
 <translation id="4461483878391246134">加一律唔翻譯嘅語言</translation>
@@ -4038,6 +4093,7 @@
 <translation id="450552327874992444">已新增的字詞</translation>
 <translation id="4507128560633489176">清除咗資料。</translation>
 <translation id="4507373251891673233">您已封鎖所有來自 <ph name="HOST"/> 的擴充程式</translation>
+<translation id="4508032221004253235">此操作會允許獲得位置權限的應用程式和網站和 ChromeOS 使用 Wi-Fi 或流動網絡所判斷的位置。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="450867954911715010">無障礙功能設定</translation>
 <translation id="4508765956121923607">檢視原始碼(&amp;O)</translation>
 <translation id="4509421746503122514">重新啟動即可更新</translation>
@@ -4088,6 +4144,7 @@
 <translation id="4545759655004063573">權限不足，無法儲存，請儲存到其他位置。</translation>
 <translation id="8945142681652245463">使用 Brave 快速瀏覽內容</translation>
 <translation id="4546345569117159016">右鍵</translation>
+<translation id="4546509872654834602">「<ph name="SUPERVISED_USER_NAME"/>」要求使用此擴充程式：</translation>
 <translation id="8936733030396193625">「Brave 助理」語音輸入</translation>
 <translation id="4547659257713117923">沒有其他裝置的分頁</translation>
 <translation id="4547672827276975204">自動設定</translation>
@@ -4151,6 +4208,7 @@
 <translation id="4598776695426288251">可透過多部裝置使用 Wi-Fi</translation>
 <translation id="4600071396330666617">建議數量</translation>
 <translation id="4601426376352205922">標示為未讀取</translation>
+<translation id="460190672235687855">查看密碼</translation>
 <translation id="4602466770786743961">永遠允許 <ph name="HOST"/> 存取您的相機和麥克風</translation>
 <translation id="4606551464649945562">不允許網站建立您身處環境的 3D 地圖或追蹤攝錄機位置</translation>
 <translation id="4608500690299898628">尋找(&amp;F)…</translation>
@@ -4164,7 +4222,6 @@
 <translation id="4615586811063744755">未選取 Cookie</translation>
 <translation id="461661862154729886">電源</translation>
 <translation id="4617001782309103936">太短</translation>
-<translation id="4617019240346358451">重新載入頁面以使用「<ph name="EXTENSION_NAME"/>」</translation>
 <translation id="4617270414136722281">擴充程式選項</translation>
 <translation id="4617880081511131945">無法建立連線</translation>
 <translation id="4618195822946934889">網址只可包含 ASCII 字元</translation>
@@ -4279,6 +4336,7 @@
 <translation id="47158868804223727">按一下以展開或收合群組名稱</translation>
 <translation id="4716483597559580346">執行 Powerwash 操作以提高安全性</translation>
 <translation id="471759229191973607">變更主題</translation>
+<translation id="4718046540206070045">不只是瀏覽器</translation>
 <translation id="4718564115458102525">未偵測到鍵盤</translation>
 <translation id="4722735765955348426"><ph name="USERNAME"/>的密碼</translation>
 <translation id="4722920479021006856"><ph name="APP_NAME"/> 正在共用您的螢幕。</translation>
@@ -4359,6 +4417,7 @@
 <translation id="4797314204379834752">嘗試為網上購物等使用分頁群組來規劃工作</translation>
 <translation id="5526928694260255286">附加<ph name="BEGIN_LINK"/>藍牙記錄<ph name="END_LINK"/> (Brave 內部)</translation>
 <translation id="479863874072008121">管理裝置</translation>
+<translation id="479989351350248267">搜尋</translation>
 <translation id="4800839971935185386">查看名稱和圖示變動</translation>
 <translation id="4801448226354548035">隱藏帳戶</translation>
 <translation id="4801512016965057443">允許流動數據漫遊</translation>
@@ -4401,7 +4460,6 @@
 <translation id="4833683849865011483">在列印伺服器中找到 1 部打印機</translation>
 <translation id="4836504898754963407">管理指紋</translation>
 <translation id="7528143959514158804">要改回使用「Brave 搜尋」嗎？</translation>
-<translation id="4837165100461973682">重新載入頁面即可套用變更</translation>
 <translation id="4837926214103741331">您無權使用這部裝置。如需登入權限，請與裝置擁有者聯絡。</translation>
 <translation id="4837952862063191349">如果要解鎖並還原您的本機資料，請輸入您的舊 <ph name="DEVICE_TYPE"/> 密碼。</translation>
 <translation id="4838170306476614339">查看手機上的相片、媒體和通知</translation>
@@ -4497,6 +4555,7 @@
 <translation id="4907129260985716018">選擇這個擴充程式何時可讀取並變更網站資料</translation>
 <translation id="4907161631261076876">此檔案不常下載，代表此檔案可能不安全。</translation>
 <translation id="4907306957610201395">權限類別</translation>
+<translation id="4908070840805457717">重複按鍵效果</translation>
 <translation id="4908811072292128752">開啟新分頁，即可同時瀏覽兩個網站</translation>
 <translation id="5186604830258964546">由於此帳戶由 <ph name="DOMAIN"/> 管理，因此系統將會從此裝置中清除您的書籤、記錄、密碼和其他設定。不過，Brave 帳戶內仍會儲存您的資料，而您亦可透過「<ph name="BEGIN_LINK"/>Brave 資訊主頁<ph name="END_LINK"/>」管理這些資料。</translation>
 <translation id="4912643508233590958">閒置喚醒</translation>
@@ -4533,7 +4592,6 @@
 <translation id="4941963255146903244">查看手機上的相片、媒體和應用程式</translation>
 <translation id="494286511941020793">Proxy 設定說明</translation>
 <translation id="4943368462779413526">美式足球</translation>
-<translation id="4943691134276646401">「<ph name="CHROME_EXTENSION_NAME"/>」要求與序列連接埠連線</translation>
 <translation id="4944310289250773232">此驗證服務由 <ph name="SAML_DOMAIN"/> 代管</translation>
 <translation id="4945439665401275950">如要設定指紋，請讓子女輕觸開關按鈕。系統會妥善地將您子女的指紋資料儲存在此 <ph name="DEVICE_TYPE"/> 上，絕不會外洩。</translation>
 <translation id="4946459324029651239">您將取得標準保護功能</translation>
@@ -4626,6 +4684,7 @@
 <translation id="5040823038948176460">其他內容設定</translation>
 <translation id="1773373699515552474">Brave 應用程式</translation>
 <translation id="5043440033854483429">名稱可以使用字母、數字和連字號 (-)，且必須介乎 1 至 15 個 (含上下限) 字元之間。</translation>
+<translation id="5045367873597907704">關於 HID 裝置</translation>
 <translation id="5045550434625856497">密碼不正確</translation>
 <translation id="504561833207953641">正在現有的瀏覽器工作階段中開啟。</translation>
 <translation id="5049614114599109018">使用輸入記錄功能</translation>
@@ -4637,6 +4696,7 @@
 <translation id="5056950756634735043">正在連線至容器</translation>
 <translation id="5057110919553308744">當您點擊擴充程式時</translation>
 <translation id="5059241099014281248">限制登入</translation>
+<translation id="5059429103770496207">顯示樣式</translation>
 <translation id="5059526285558225588">選擇分享內容</translation>
 <translation id="5060332552815861872">有 1 部可以儲存嘅打印機。</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{此資料夾含有 1 個書籤。您確定要刪除這個書籤嗎？}other{此資料夾含有 # 個書籤。您確定要刪除這些書籤嗎？}}</translation>
@@ -4644,7 +4704,6 @@
 <translation id="5063480226653192405">使用狀況</translation>
 <translation id="5065775832226780415">Smart Lock</translation>
 <translation id="5066100345385738837">在 Chrome OS 設定中管理安全 DNS</translation>
-<translation id="5066160542186949327">移至其他資料夾</translation>
 <translation id="5067399438976153555">保持開啟</translation>
 <translation id="5067867186035333991">當 <ph name="HOST"/> 要求存取麥克風時詢問我。</translation>
 <translation id="5068553687099139861">顯示密碼</translation>
@@ -4700,7 +4759,6 @@
 <translation id="5111794652433847656">此裝置上沒有「<ph name="APP_NAME"/>」的任何密鑰</translation>
 <translation id="5112577000029535889">開發人員工具(&amp;D)</translation>
 <translation id="511313294362309725">開啟「快速配對」</translation>
-<translation id="5113739826273394829">按一下這個圖示後，您就會手動鎖定這部 <ph name="DEVICE_TYPE"/>。下次使用時，您必須輸入密碼才可進入。</translation>
 <translation id="51143538739122961">插入並輕觸安全密鑰</translation>
 <translation id="5115309401544567011">請將 <ph name="DEVICE_TYPE"/> 接駁電源。</translation>
 <translation id="5115338116365931134">SSO</translation>
@@ -4771,6 +4829,7 @@
 <translation id="5178667623289523808">尋找上一個項目</translation>
 <translation id="5181140330217080051">下載中</translation>
 <translation id="3656271699136235245">儲存至 <ph name="ACCOUNT"/> 的「Brave 密碼管理工具」</translation>
+<translation id="5183344263225877832">要重設所有 HID 裝置權限嗎？</translation>
 <translation id="5184063094292164363">JavaScript 控制器(&amp;J)</translation>
 <translation id="5184209580557088469">已有票證使用此使用者名稱</translation>
 <translation id="5184662919967270437">正在更新裝置</translation>
@@ -4818,8 +4877,8 @@
 <translation id="5225463052809312700">開啟攝錄機</translation>
 <translation id="5227679487546032910">預設藍綠色圖片</translation>
 <translation id="5228579091201413441">啟用同步功能</translation>
-<translation id="5229337741799419985">此設定運作時不需識別您的身份或允許網站查看您的瀏覽記錄</translation>
 <translation id="5230516054153933099">視窗</translation>
+<translation id="5231427103154766313">使用遙控器停止投放。</translation>
 <translation id="5233019165164992427">NaCl 偵錯連接埠</translation>
 <translation id="5233231016133573565">程序 ID</translation>
 <translation id="5233638681132016545">新分頁</translation>
@@ -4830,6 +4889,7 @@
 <translation id="5235750401727657667">取代新分頁開啟時顯示的網頁</translation>
 <translation id="6465706586789214771">如想在所有裝置上輕鬆使用密碼，可以將這些密碼移至您的 Brave 帳戶</translation>
 <translation id="523862956770478816">網站權限</translation>
+<translation id="5239752869099890912">如要將您已更新的擴充程式設定套到此網站，請重新載入此網頁</translation>
 <translation id="5242724311594467048">啟用「<ph name="EXTENSION_NAME"/>」？</translation>
 <translation id="5243522832766285132">請稍後再試</translation>
 <translation id="5244474230056479698">正在同步至 <ph name="EMAIL"/></translation>
@@ -4897,12 +4957,14 @@
 <translation id="5294097441441645251">開頭必須為小寫字元或底線</translation>
 <translation id="8273477935094091719"><ph name="DEVICE_TYPE"/> 會使用內置感應器偵測裝置前的人。系統會在裝置上立即處理所有資料，然後刪除。系統不會將感應器資料傳送至 Brave。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="5296350763804564124">使用朗讀功能，讓您無需查看螢幕亦可使用裝置。您可透過已連接裝置使用點字功能。</translation>
+<translation id="6092554978456048094">Brave 最強大的安全功能可協助防範有害網站</translation>
 <translation id="5297005732522718715">重新整理網絡共享設定</translation>
 <translation id="5297082477358294722">密碼已儲存。查看和管理儲存在「<ph name="SAVED_PASSWORDS_STORE"/>」的密碼。</translation>
 <translation id="5297946558563358707">當有人窺探您的螢幕時，螢幕右下方會顯示「私隱權」眼睛圖示</translation>
 <translation id="5298219193514155779">主題製作者</translation>
 <translation id="5299109548848736476">不要追蹤</translation>
 <translation id="5299558715747014286">查看及管理分頁群組</translation>
+<translation id="529986401483187205">已停用</translation>
 <translation id="5300287940468717207">要重設網站權限嗎？</translation>
 <translation id="5300426565656326054">基於瀏覽器的廣告個人化</translation>
 <translation id="5300589172476337783">顯示</translation>
@@ -4933,7 +4995,6 @@
 <translation id="532943162177641444">輕按 <ph name="PHONE_NAME"/> 上的通知，即可設定可供此裝置使用的流動熱點。</translation>
 <translation id="5329858601952122676">刪除(&amp;D)</translation>
 <translation id="5331069282670671859">您沒有此類別的憑證</translation>
-<translation id="5331425616433531170">「<ph name="CHROME_EXTENSION_NAME"/>」要求與下列藍牙裝置配對</translation>
 <translation id="5331568967879689647">Chrome OS 系統應用程式</translation>
 <translation id="5331975486040154427">USB-C 裝置 (左側後方連接埠)</translation>
 <translation id="5333896723098573627">如要移除應用程式，請前往 [設定] &gt; [應用程式] &gt; [Google Play 商店] &gt; [管理 Android 偏好設定] &gt; [應用程式] 或 [應用程式管理員]，然後輕按您想解除安裝的應用程式 (您可能需要向右或向左滑動，才能找到應用程式)，再輕按 [解除安裝] 或 [停用]。</translation>
@@ -4947,6 +5008,7 @@
 <translation id="5338503421962489998">本機儲存空間</translation>
 <translation id="5339031667684712858">您已移除的網站</translation>
 <translation id="5340638867532133571">允許網站安裝付款處理常式 (建議)</translation>
+<translation id="5340787663756381836">尋找並編輯(&amp;F)</translation>
 <translation id="5341793073192892252">已封鎖下列 Cookie (所有第三方 Cookie 都會被封鎖)</translation>
 <translation id="5342091991439452114">PIN 必須至少有 <ph name="MINIMUM"/> 位數字</translation>
 <translation id="5344036115151554031">正在還原 Linux</translation>
@@ -5096,7 +5158,6 @@
 <translation id="5481941284378890518">新增附近的打印機</translation>
 <translation id="5483785310822538350">撤銷檔案和裝置存取權</translation>
 <translation id="5484772771923374861">{NUM_DAYS,plural, =1{<ph name="MANAGER"/> 要求您備份資料，並在今天內歸還此 <ph name="DEVICE_TYPE"/>。<ph name="LINK_BEGIN"/>查看詳情<ph name="LINK_END"/>}other{<ph name="MANAGER"/> 要求您備份資料，並在 {NUM_DAYS} 天內歸還此 <ph name="DEVICE_TYPE"/>。<ph name="LINK_BEGIN"/>查看詳情<ph name="LINK_END"/>}}</translation>
-<translation id="5485080380723335835">基於安全理由，<ph name="DEVICE_TYPE"/> 已上鎖。如要繼續操作，請手動輸入密碼。</translation>
 <translation id="5485102783864353244">新增應用程式</translation>
 <translation id="5485754497697573575">還原所有分頁</translation>
 <translation id="5486261815000869482">確認密碼</translation>
@@ -5146,6 +5207,7 @@
 <translation id="5517304475148761050">此應用程式需要存取「Play 商店」才能執行</translation>
 <translation id="5517412723934627386"><ph name="NETWORK_TYPE"/> - <ph name="NETWORK_DISPLAY_NAME"/></translation>
 <translation id="5518219166343146486">在網站要求查看複製到剪貼簿的文字和圖片時詢問您</translation>
+<translation id="5518949581554491184">透過 Android 手機設定</translation>
 <translation id="5519195206574732858">LTE</translation>
 <translation id="5521078259930077036">這是您想要的首頁嗎？</translation>
 <translation id="5522156646677899028">這個擴充功能內含嚴重安全性漏洞。</translation>
@@ -5189,7 +5251,6 @@
 <translation id="5555639311269196631">關閉熱點</translation>
 <translation id="5556459405103347317">重新載入</translation>
 <translation id="5558129378926964177">放大(&amp;I)</translation>
-<translation id="5558247502209241936">可以喺視窗入面啟動應用程式</translation>
 <translation id="5559311991468302423">刪除地址</translation>
 <translation id="55601339223879446">調整顯示屏內的桌面邊界</translation>
 <translation id="5561162485081632007">偵測並在危險事件發生時發出警告</translation>
@@ -5215,6 +5276,7 @@
 <translation id="558170650521898289">Microsoft Windows 硬件驅動程式驗證</translation>
 <translation id="5581876958763461074">所有筆記</translation>
 <translation id="5581972110672966454">無法將裝置加入網域。請再試一次，或聯絡您的裝置擁有者或管理員。錯誤代碼：<ph name="ERROR_CODE"/>。</translation>
+<translation id="5582634344048669777">8 點</translation>
 <translation id="5582839680698949063">主選單</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="5584088138253955452">要儲存使用者名稱嗎？</translation>
@@ -5242,6 +5304,7 @@
 <translation id="5601503069213153581">PIN</translation>
 <translation id="5601823921345337195">不允許連接 MIDI 裝置</translation>
 <translation id="5601833336918638013">不允許網站尋找藍牙裝置</translation>
+<translation id="5602586420788540146">在新分頁中開啟</translation>
 <translation id="5602765853043467355">清除此裝置上的書籤、記錄和密碼等資料。</translation>
 <translation id="5605758115928394442">已將通知傳送至您的手機，以確認您的身分。</translation>
 <translation id="5606849116180480101">{NUM_EXTENSIONS,plural, =1{已封鎖這個擴充程式}other{已封鎖這些擴充程式}}</translation>
@@ -5277,6 +5340,7 @@
 <translation id="5633149627228920745">進一步了解系統要求</translation>
 <translation id="563371367637259496">流動網絡</translation>
 <translation id="5634446357546764049">查看近期旅行等活動的回憶</translation>
+<translation id="9083177859453714884">Brave 會自動刪除超過 30 日的網站。再次瀏覽的網站可能會再度出現在清單中。您亦可封鎖網站，讓該網站無法為您建議廣告。</translation>
 <translation id="5635312199252507107">允許在特定網站上執行</translation>
 <translation id="563535393368633106">存取前先詢問 (建議)</translation>
 <translation id="5636012309446422">要從 <ph name="PRIMARY_EMAIL"/> 移除 <ph name="DEVICE"/> 嗎？</translation>
@@ -5300,16 +5364,17 @@
 <translation id="4196805003686694274">傳送意見給 Brave</translation>
 <translation id="5657156137487675418">允許所有 Cookie</translation>
 <translation id="5657667036353380798">這個外部擴充功能需要安裝 <ph name="MINIMUM_CHROME_VERSION"/> 版本以上的 Brave 瀏覽器。</translation>
-<translation id="5658415415603568799">為提高安全性，Smart Lock 將會在 20 小時後要求您輸入密碼。</translation>
 <translation id="5659593005791499971">電郵</translation>
 <translation id="5662513737565158057">變更 Linux 應用程式的運作方式。</translation>
 <translation id="5663459693447872156">自動切換為半形</translation>
+<translation id="5663653125349867535">閱讀清單(&amp;R)</translation>
 <translation id="5667293444945855280">惡意軟件</translation>
 <translation id="5667546120811588575">正在設定 Google Play…</translation>
 <translation id="5668351004957198136">未通過</translation>
 <translation id="2099871685186351093">與附近的人分享檔案。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="5671641761787789573">已封鎖圖片</translation>
 <translation id="5671658447180261823">移除此建議：<ph name="SUGGESTION_NAME"/></translation>
+<translation id="567210741546439261">書籤和清單(&amp;B)</translation>
 <translation id="567587836466137939">此裝置會在 <ph name="MONTH_AND_YEAR"/>前自動進行軟件和安全性更新。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="567643736130151854">登入並開啟同步功能，即可在所有裝置上取得書籤和密碼等資料。</translation>
 <translation id="567740581294087470">您要提供哪一類意見？</translation>
@@ -5367,7 +5432,6 @@
 <translation id="6105125042109106861">已封鎖無痕模式中的第三方 Cookie</translation>
 <translation id="5724642200346111167">當您關閉所有視窗時，系統會清除裝置上的網站資料</translation>
 <translation id="5727728807527375859">擴充功能、應用程式及主題可能損害您的電腦，確定要繼續嗎？</translation>
-<translation id="5728235544432023605">「投放」功能沒有反應，請停止投放「<ph name="DEVICE_NAME"/>」的內容。</translation>
 <translation id="5728450728039149624">Smart Lock 螢幕鎖定選項</translation>
 <translation id="5729712731028706266">檢視(&amp;V)</translation>
 <translation id="5731247495086897348">貼上並前往(&amp;S)</translation>
@@ -5426,6 +5490,7 @@
 <translation id="5787146423283493983">金鑰協議</translation>
 <translation id="5787420647064736989">裝置名稱</translation>
 <translation id="5788367137662787332">很抱歉，<ph name="DEVICE_LABEL"/> 裝置上至少有一個分割區無法掛載。</translation>
+<translation id="5789581866075720267">如要在此裝置上將密碼匯入「<ph name="BRAND"/>」，請選取 CSV 檔案。</translation>
 <translation id="5789643057113097023">.</translation>
 <translation id="5790085346892983794">成功</translation>
 <translation id="5790651917470750848">連接埠轉送已存在</translation>
@@ -5450,6 +5515,7 @@
 <translation id="5800351251499368110">閂側面板入面嘅搜尋工具列。側面板入面嘅搜尋工具列開咗。</translation>
 <translation id="5801051031414037185">設定手機</translation>
 <translation id="5801568494490449797">偏好設定</translation>
+<translation id="5803689677801500549">已儲存的密碼會在這裡顯示。如要將 <ph name="USER_EMAIL"/> 的密碼匯入「<ph name="BRAND"/>」，請<ph name="BEGIN_LINK"/>選取 CSV 檔案<ph name="END_LINK"/>。</translation>
 <translation id="5804241973901381774">權限</translation>
 <translation id="5804259315582798390">無法啟用本機資料復原功能</translation>
 <translation id="5805268472388605531">按住鍵盤按鍵以查看重音標記和特殊字元</translation>
@@ -5484,6 +5550,7 @@
 <translation id="5833726373896279253">只有擁有者才能修改這些設定：</translation>
 <translation id="583431638776747">找不到網站</translation>
 <translation id="5834581999798853053">還有大約 <ph name="TIME"/> 分鐘</translation>
+<translation id="5835360478055379192">{NUM_EXTENSION,plural, =1{「<ph name="EXTENSION1"/>」正在存取 HID 裝置}=2{正在存取裝置的擴充程式：「<ph name="EXTENSION1"/>」、「<ph name="EXTENSION2"/>」}other{正在存取裝置的擴充程式：「<ph name="EXTENSION1"/>」、「<ph name="EXTENSION2"/>」和另外 {3} 個}}</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - 相機或麥克風錄製中</translation>
 <translation id="583673505367439042">網站可要求編輯裝置中的檔案和資料夾</translation>
 <translation id="5836999627049108525">要翻譯的語言</translation>
@@ -5494,7 +5561,6 @@
 <translation id="5841270259333717135">設定以太網絡</translation>
 <translation id="5842497610951477805">藍牙開關</translation>
 <translation id="5844574845205796324">建議可探索的新內容</translation>
-<translation id="5845424750482472447">{COUNT,plural, =1{1 個重新對應的鍵}other{{COUNT} 個重新對應的鍵}}</translation>
 <translation id="5846200638699387931">關聯語法錯誤：<ph name="ERROR_LINE"/></translation>
 <translation id="5846455742152785308">沒有陰影</translation>
 <translation id="5846504156837627898">管理網站權限</translation>
@@ -5556,6 +5622,7 @@
 <translation id="5895138241574237353">重新啟動</translation>
 <translation id="5895335062901455404">使用 Brave 帳戶登入後，就能將已儲存的偏好設定和活動同步至任何 ChromeOS Flex 裝置。您可在「設定」中選擇要同步處理的資料。</translation>
 <translation id="589541317545606110">使用 <ph name="VISUAL_SEARCH_PROVIDER"/> 搜尋網頁</translation>
+<translation id="5895758411979561724">「<ph name="APP_ORIGIN"/>」正在錄製您的畫面</translation>
 <translation id="5896436821193322561">不允許</translation>
 <translation id="5899860758576822363">在 ChromeVox 朗讀時以較低音量播放音訊</translation>
 <translation id="5900243355162006650">網絡共享設定：</translation>
@@ -5568,6 +5635,7 @@
 <translation id="5904614460720589786">設定發生問題，因此無法設定 <ph name="APP_NAME"/>。請聯絡您的管理員。錯誤代碼：<ph name="ERROR_CODE"/>。</translation>
 <translation id="5906655207909574370">即將更新至最新版本！重新啟動您的裝置即可完成更新程序。</translation>
 <translation id="5906732635754427568">系統會從裝置中移除與此應用程式相關的資料。</translation>
+<translation id="5906974869830879618">請輸入 PIN</translation>
 <translation id="5908474332780919512">當您登入時啟動應用程式</translation>
 <translation id="5908695239556627796">滑鼠捲動速度</translation>
 <translation id="5909379458939060601">要刪除此設定檔和瀏覽資料嗎？</translation>
@@ -5634,7 +5702,6 @@
 <translation id="5957918771633727933">沒有可用的 eSIM 卡設定檔。請下載新的<ph name="BEGIN_LINK"/>設定檔。<ph name="END_LINK"/></translation>
 <translation id="5957987129450536192">輕按個人檔案相片附近的「揀選朗讀內容」圖示，然後選取您想聽到的內容。</translation>
 <translation id="5959471481388474538">網絡無法使用</translation>
-<translation id="595959584676692139">重新載入網頁即可使用此擴充程式</translation>
 <translation id="5963413905009737549">區段</translation>
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> 個 (最多 <ph name="NUM_KILOBYTES_LIVE"/> 個)</translation>
 <translation id="5964113968897211042">{COUNT,plural, =0{在新視窗中開啟所有書籤(&amp;N)}=1{在新視窗中開啟書籤(&amp;N)}other{在新視窗中開啟全部 {COUNT} 個書籤(&amp;N)}}</translation>
@@ -5663,9 +5730,11 @@
 <translation id="5979421442488174909">翻譯成<ph name="LANGUAGE"/>(&amp;T)</translation>
 <translation id="5979469435153841984">如要將網頁加入書籤，請按一下網址列中的星號</translation>
 <translation id="5981362776161841923">如要允許擴充程式，請變更下方的預設設定。</translation>
+<translation id="5982578203375898585">下載完成後顯示下載檔案</translation>
 <translation id="5984222099446776634">最近瀏覽的網站</translation>
 <translation id="5985458664595100876">網址格式無效。支援的格式為 \\server\share 和 smb://server/share。</translation>
 <translation id="598810097218913399">移除指派</translation>
+<translation id="5989629029899728491">使用 Cookie 以外的方式</translation>
 <translation id="5990266201903445068">只限 Wi-Fi</translation>
 <translation id="5990386583461751448">已翻譯</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{為確保您可以繼續瀏覽網絡，請要求您的管理員移除此應用程式。}other{為確保您可以繼續瀏覽網絡，請要求您的管理員移除這些應用程式。}}</translation>
@@ -5701,6 +5770,7 @@
 <translation id="6019851026059441029">極佳 - 高清畫質</translation>
 <translation id="6020431688553761150">伺服器未授予您這個資源的存取權。</translation>
 <translation id="6021293122504240352">系統不再支援 <ph name="APPS"/> 個應用程式</translation>
+<translation id="6021969570711251331">交錯顯示</translation>
 <translation id="6022526133015258832">開啟全螢幕</translation>
 <translation id="296137235951584143">自訂屬於您的 Brave</translation>
 <translation id="6023643151125006053">這部裝置 (序號：<ph name="SERIAL_NUMBER"/>) 已被 <ph name="SAML_DOMAIN"/> 的管理員上鎖。</translation>
@@ -5768,7 +5838,6 @@
 <translation id="6078323886959318429">新增捷徑</translation>
 <translation id="6078742430369906859">「<ph name="NETWORK_ID"/>」的連接性可能受到限制</translation>
 <translation id="6078752646384677957">請檢查麥克風和音訊音量。</translation>
-<translation id="6078769373519310690">「<ph name="CHROME_EXTENSION_NAME"/>」要求連接 HID 裝置</translation>
 <translation id="6079162143107623965">您目前瀏覽的網站可嵌入其他網站的內容，例如圖片、廣告和文字。這些嵌入的網站可將資料儲存到您的裝置。</translation>
 <translation id="608029822688206592">找不到網絡。請插入 SIM 卡，然後再試一次。</translation>
 <translation id="6080689532560039067">請檢查您的系統時間</translation>
@@ -5832,11 +5901,14 @@
 <translation id="6130692320435119637">新增 Wi-Fi</translation>
 <translation id="6130887916931372608">鍵盤按鍵</translation>
 <translation id="6132714462430777655">要略過學校註冊程序嗎？</translation>
+<translation id="6133850653093419052">已允許要求存取權</translation>
 <translation id="6135823405800500595">請確認您的手機在附近且已解鎖，並已開啟藍牙和 Wi-Fi</translation>
 <translation id="6135826623269483856">不允許在您所有的顯示屏上管理視窗</translation>
 <translation id="6136114942382973861">閂下載內容列</translation>
+<translation id="6136285399872347291">退格</translation>
 <translation id="6136287496450963112">您的安全密鑰並未受 PIN 保護。請先建立 PIN 以管理指紋。</translation>
 <translation id="6138680304137685902">使用 SHA-384 的 X9.62 ECDSA 簽名</translation>
+<translation id="6140948187512243695">顯示詳細資料</translation>
 <translation id="6141988275892716286">確認下載</translation>
 <translation id="6143186082490678276">取得說明</translation>
 <translation id="6143366292569327983">揀要翻譯邊種語言嘅網頁</translation>
@@ -5866,6 +5938,7 @@
 <translation id="6164832038898943453">加要自動翻譯嘅語言</translation>
 <translation id="6165508094623778733">瞭解更多資料</translation>
 <translation id="3191314862567596053">將密碼匯入至 Brave</translation>
+<translation id="6166659775803431">在購物車中</translation>
 <translation id="6169040057125497443">請檢查麥克風。</translation>
 <translation id="6169967265765719844">您可以在 <ph name="LINK_BEGIN"/>Steam 應用程式設定<ph name="LINK_END"/>中，管理透過 Steam 安裝的遊戲和應用程式權限。</translation>
 <translation id="6170470584681422115">三文治</translation>
@@ -5886,6 +5959,7 @@
 <translation id="6190953336330058278">Phone Hub 應用程式</translation>
 <translation id="6192333916571137726">下載檔案</translation>
 <translation id="6192413564913825901">移至「所有書籤」</translation>
+<translation id="6194333736420234626">付款方法(&amp;P)</translation>
 <translation id="6195005504600220730">讀取您的瀏覽器、作業系統和裝置相關資料</translation>
 <translation id="6195155925303302899">置中對齊</translation>
 <translation id="6195693561221576702">無法在此裝置上設定離線示範模式。</translation>
@@ -6013,7 +6087,6 @@
 <translation id="6305607932814307878">通用政策：</translation>
 <translation id="6305702903308659374">即使在 ChromeVox 朗讀時仍以正常音量播放音訊</translation>
 <translation id="6305909198255586420">請使用主要設定檔安裝</translation>
-<translation id="630750887748244481">您的家長已停用 Brave 的「網站、應用程式和擴充程式權限」設定，系統不允許加入此擴充程式。</translation>
 <translation id="6307990684951724544">系統忙碌中</translation>
 <translation id="6308493641021088955">登入資料由<ph name="EXTENSION_NAME"/>提供</translation>
 <translation id="6308937455967653460">另存連結為(&amp;K)…</translation>
@@ -6021,7 +6094,6 @@
 <translation id="630948338437014525">回憶</translation>
 <translation id="6309510305002439352">已關閉麥克風</translation>
 <translation id="6310141306111263820">無法安裝 eSIM 卡設定檔。如需協助，請聯絡您的流動網絡供應商。</translation>
-<translation id="6311165245110979290">可使用虛擬片</translation>
 <translation id="6500340165622970282">由於開啟您的設定檔時發生錯誤，因此無法啟動 Brave。請嘗試重新啟動 Brave。</translation>
 <translation id="6312567056350025599">{NUM_DAYS,plural, =1{1 天前已執行安全檢查}other{{NUM_DAYS} 天前已執行安全檢查}}</translation>
 <translation id="6312638141433622592">允許以閱讀器模式顯示文章 (如支援)</translation>
@@ -6035,6 +6107,7 @@
 <translation id="6318125393809743217">包括具有政策設定的 policies.json 檔案。</translation>
 <translation id="6318407754858604988">已開始下載</translation>
 <translation id="6318944945640833942">偵測不到打印機，請再次輸入打印機位址。</translation>
+<translation id="6320808462673705899">沒有與搜尋相符的書籤。</translation>
 <translation id="6322370287306604163">指紋加快解鎖速度</translation>
 <translation id="6322559670748154781">此檔案不常下載，因此已被進階保護功能封鎖</translation>
 <translation id="6324916366299863871">編輯捷徑</translation>
@@ -6074,6 +6147,7 @@
 <translation id="6365411474437319296">新增家人好友</translation>
 <translation id="6367097275976877956">係咪要啟動 Chrome OS 內置嘅螢幕閱讀器 ChromeVox？要嘅話請㩒空格鍵。</translation>
 <translation id="6367985768157257101">要透過咫尺共享接收嗎？</translation>
+<translation id="6368157733310917710">地址和其他資料(&amp;A)</translation>
 <translation id="6368276408895187373">已啟用 - <ph name="VARIATION_NAME"/></translation>
 <translation id="636850387210749493">企業註冊</translation>
 <translation id="6370021412472292592">無法載入資訊清單。</translation>
@@ -6153,6 +6227,7 @@
 <translation id="6438234780621650381">重設設定</translation>
 <translation id="6438475350605608554">您已在其他分頁中匯入密碼</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/> - 正在播放音訊</translation>
+<translation id="6441377161852435370">將分頁新增至閱讀清單</translation>
 <translation id="6442187272350399447">太棒了</translation>
 <translation id="6442445294758185945">無法下載更新。請稍後再試。</translation>
 <translation id="6444070574980481588">設定日期和時間</translation>
@@ -6306,6 +6381,7 @@
 <translation id="657229725818377235">進一步防範危險網站和下載檔案</translation>
 <translation id="6573096386450695060">一律允許</translation>
 <translation id="6573497332121198392">無法移除捷徑</translation>
+<translation id="6573915150656780875">Chromebook 不會再收到安全和軟件更新。請改用新 Chromebook，以獲得最佳使用體驗。</translation>
 <translation id="657402800789773160">重新載入這個網頁(&amp;R)</translation>
 <translation id="6577284282025554716"><ph name="FILE_NAME"/> 已經取消下載</translation>
 <translation id="657866106756413002">網絡健康快覽</translation>
@@ -6339,8 +6415,10 @@
 <translation id="6596816719288285829">IP 地址</translation>
 <translation id="6597017209724497268">樣本數目</translation>
 <translation id="6597331566371766302">管理員已封鎖以下擴充程式：</translation>
+<translation id="659894938503552850">由新到舊</translation>
 <translation id="6601262427770154296">管理用戶字典</translation>
 <translation id="6601612474695404578">有些網站會使用第三方 Cookie 載入頁面。如果網站無法正常運作，您可嘗試允許 Cookie。</translation>
+<translation id="6602173570135186741">自動填入和密碼</translation>
 <translation id="6602937173026466876">存取打印機</translation>
 <translation id="6602956230557165253">使用向左鍵和向右鍵瀏覽。</translation>
 <translation id="6603185457265641428">選擇是否同步記錄</translation>
@@ -6391,9 +6469,11 @@
 <translation id="6647690760956378579">播放自然語音</translation>
 <translation id="6648911618876616409">已準備好安裝重要更新。登入即可開始更新。</translation>
 <translation id="6649018507441623493">請稍候...</translation>
+<translation id="6650206238642452078">訂閱 ChromeOS 系統事件</translation>
 <translation id="665061930738760572">在新視窗中開啟(&amp;N)</translation>
 <translation id="6651237644330755633">信任這個用來識別網站的憑證</translation>
 <translation id="6651495917527016072">將 Wi-Fi 網絡設定同步至您的手機。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
+<translation id="6651762277693024112">在您每次瀏覽此網站時自動執行</translation>
 <translation id="665355505818177700">只有 x86_64 平台支援 Brave <ph name="MS_AD_NAME"/> 整合，採用 ARM 或 x86 平台的 Chromebook 不支援此功能。</translation>
 <translation id="6654509035557065241">偏好網絡</translation>
 <translation id="6655190889273724601">開發人員模式</translation>
@@ -6438,6 +6518,7 @@
 <translation id="6691541770654083180">地球</translation>
 <translation id="6691936601825168937">下一頁(&amp;F)</translation>
 <translation id="6693745645188488741">{COUNT,plural, =1{1 頁}other{{COUNT} 頁}}</translation>
+<translation id="6693820805264897502">更換現有密碼</translation>
 <translation id="6697172646384837537">揀密碼匯入位置</translation>
 <translation id="6697492270171225480">找不到網頁時，顯示類似的網頁建議</translation>
 <translation id="6697690052557311665">如要共用項目，請在「檔案」應用程式中的資料夾上按一下右鍵，然後選取 [與 Linux 共用]。</translation>
@@ -6445,8 +6526,6 @@
 <translation id="6700093763382332031">流動網絡 SIM 卡鎖定</translation>
 <translation id="6700480081846086223">投放 <ph name="HOST_NAME"/></translation>
 <translation id="6701535245008341853">無法取得設定檔。</translation>
-<translation id="8054370448755526778">您瀏覽的網站可將資料儲存至 Brave，以驗證您不是機器人。您隨後瀏覽的網站可從 Brave 取得前一個網站提供的資料，確認您應該是真人</translation>
-<translation id="6701824422332982935">重新載入頁面以使用這些擴充程式</translation>
 <translation id="6702639462873609204">編輯(&amp;E)…</translation>
 <translation id="6703212423117969852">您稍後可在 Brave 再試一次。</translation>
 <translation id="6703254819490889819">還原備份</translation>
@@ -6477,6 +6556,7 @@
 <translation id="6725206449694821596">Internet Printing Protocol (IPPS)</translation>
 <translation id="6725970970008349185">每頁顯示的候選字個數</translation>
 <translation id="672609503628871915">查看最新內容</translation>
+<translation id="6726800386221816228">特殊字元</translation>
 <translation id="67269783048918309">傳送使用情況和診斷資料。此裝置目前會自動將診斷、裝置及應用程式的使用情況資料傳送至 Brave。這些資料不會用來識別您子女的身分，而是用於改善系統和應用程式的穩定性和其他效能。部分彙整資料也會用於協助 Brave 應用程式與合作夥伴 (例如 Android 開發人員)。擁有者可強制執行此<ph name="BEGIN_LINK1"/>設定<ph name="END_LINK1"/>。如果已為子女開啟其他「網絡及應用程式活動記錄」設定，系統可能會將此資料儲存至其 Brave 帳戶。<ph name="BEGIN_LINK2"/>瞭解詳情<ph name="END_LINK2"/></translation>
 <translation id="6728528977475057549">IBAN 最後嘅數字係 <ph name="LAST_FOUR_DIGITS"/></translation>
 <translation id="6729192290958770680">請輸入您的使用者名稱</translation>
@@ -6497,6 +6577,7 @@
 <translation id="6745592621698551453">立即更新</translation>
 <translation id="6746124502594467657">向下移</translation>
 <translation id="674632704103926902">啟用輕觸拖曳</translation>
+<translation id="67465227497040338">顯示 <ph name="DOMAIN"/> 嘅密碼</translation>
 <translation id="6748465660675848252">您可以繼續，但是只有您的同步資料和設定會被還原。所有本機資料將會遺失。</translation>
 <translation id="6748980958975836188">我已閱讀並同意《<ph name="BEGIN_LINK1"/>Brave 服務條款<ph name="END_LINK1"/>》、《<ph name="BEGIN_LINK2"/>Brave 和 Chrome OS 附加服務條款<ph name="END_LINK2"/>》。</translation>
 <translation id="6750757184909117990">停用流動網絡</translation>
@@ -6591,6 +6672,7 @@
 <translation id="6823174134746916417">觸控板輕按點撃功能</translation>
 <translation id="6824564591481349393">複製電郵地址(&amp;E)</translation>
 <translation id="6824584962142919697">檢查元素 (&amp;I)</translation>
+<translation id="6824725898506587159">管理語言</translation>
 <translation id="6825184156888454064">按名稱排序</translation>
 <translation id="6826872289184051766">透過 USB 驗證</translation>
 <translation id="6827121912381363404">允許所有擴充程式讀取和變更 <ph name="PERMITTED_SITE"/></translation>
@@ -6759,6 +6841,7 @@
 <translation id="6968288415730398122">如要設定螢幕鎖定功能，請輸入您的密碼</translation>
 <translation id="6969047215179982698">關閉「咫尺共享」功能</translation>
 <translation id="6969216690072714773">請輸入此裝置的相關資訊或更新現有資訊。</translation>
+<translation id="7372568976265027634">將密碼儲存至 Brave 帳戶後，您可在此裝置和任何已登入帳戶的裝置上使用密碼</translation>
 <translation id="6970480684834282392">啟動類型</translation>
 <translation id="6970543303783413625">無法匯入密碼，一次最多只能匯入 <ph name="COUNT"/> 個密碼。</translation>
 <translation id="6970856801391541997">列印特定網頁</translation>
@@ -6780,6 +6863,7 @@
 <translation id="6981982820502123353">協助工具</translation>
 <translation id="6983507711977005608">解除連接「即時網絡共享」網絡</translation>
 <translation id="6983783921975806247">已註冊的 OID</translation>
+<translation id="6983890893900549383">Esc 鍵</translation>
 <translation id="6985235333261347343">Microsoft 金鑰復原代理程式</translation>
 <translation id="698524779381350301">自動允許存取以下網站：</translation>
 <translation id="6985607387932385770">打印機</translation>
@@ -6801,7 +6885,6 @@
 <translation id="7000347579424117903">必須以 Ctrl、Alt 鍵或搜尋鍵開頭</translation>
 <translation id="7001036685275644873">正在備份 Linux 應用程式和檔案</translation>
 <translation id="7001066449188684145">必須驗證身分，才能透過「<ph name="PRINTER_NAME"/>」列印。請聯絡您的管理員。</translation>
-<translation id="7002055706763150362">如要設定 Smart Lock (Chromebook 版)，Brave 必須確認您的身分。輸入您的密碼即可開始。</translation>
 <translation id="7003339318920871147">網絡數據庫</translation>
 <translation id="7003454175711353260">{COUNT,plural, =1{{COUNT} 個檔案}other{{COUNT} 個檔案}}</translation>
 <translation id="7003705861991657723">Alpha 版本</translation>
@@ -6830,7 +6913,6 @@
 <translation id="7017004637493394352">再說一次「Ok Brave」</translation>
 <translation id="7017219178341817193">新增網頁</translation>
 <translation id="7017354871202642555">無法在視窗建立之後再設定模式。</translation>
-<translation id="7018275672629230621">讀取及變更您的瀏覽記錄</translation>
 <translation id="7019546817926942979">裝置需要接上電源。升級 Linux 相當耗電。請將裝置連接充電器，然後再試一次。</translation>
 <translation id="7019805045859631636">快</translation>
 <translation id="7022562585984256452">首頁已設定完成。</translation>
@@ -6879,8 +6961,10 @@
 <translation id="7063129466199351735">正在處理捷徑…</translation>
 <translation id="7063311912041006059">以 <ph name="SPECIAL_SYMBOL"/> 取代查詢的網址</translation>
 <translation id="706342288220489463">讓「Brave 助理」使用畫面上的資料提供協助</translation>
+<translation id="70641621694466590">去密碼頁面</translation>
 <translation id="7064734931812204395">正在設定 Linux 容器。過程可能需時 30 分鐘。</translation>
 <translation id="7065223852455347715">這部裝置已鎖定為防止企業註冊的模式。如果您要使用該裝置註冊，必須先完成裝置復原操作。</translation>
+<translation id="7065343991414968778">{NUM_PASSWORDS,plural, =1{已將 1 個密碼匯入至 <ph name="USER_EMAIL"/> 的「<ph name="BRAND"/>」}other{已將 {NUM_PASSWORDS} 個密碼匯入至 <ph name="USER_EMAIL"/> 的「<ph name="BRAND"/>」}}</translation>
 <translation id="7065534935986314333">關於系統</translation>
 <translation id="706626672220389329">連接共用裝置時發生錯誤。指定的共用裝置已連接。</translation>
 <translation id="7067396782363924830">氛圍顏色</translation>
@@ -6951,6 +7035,7 @@
 <translation id="7139627972753429585"><ph name="APP_NAME"/> 正在使用您的麥克風</translation>
 <translation id="7141105143012495934">系統無法擷取您帳戶的詳細資料，導致登入失敗。請與您的管理員聯絡或再試一次。</translation>
 <translation id="7141844554192012199">檢查</translation>
+<translation id="7143207342074048698">正在連接</translation>
 <translation id="7144878232160441200">重試</translation>
 <translation id="7148426638542880639">網站可能無法正常運作。如果您不希望在裝置留下網站瀏覽資訊，請選擇此選項。</translation>
 <translation id="7149839598364933473">在此裝置上安裝 <ph name="DEVICE_OS"/>。</translation>
@@ -6981,6 +7066,7 @@
 <translation id="7177079607604198383">請檢查互聯網連線並選擇「再試一次」。您亦能選擇「在離線編輯器中開啟」以使用有限的查看和編輯選項。</translation>
 <translation id="7180611975245234373">重新整理</translation>
 <translation id="7180865173735832675">自訂</translation>
+<translation id="3922078020116835067">隱藏書籤列(&amp;H)</translation>
 <translation id="7182791023900310535">遷移密碼</translation>
 <translation id="7186088072322679094">保留在工具列上</translation>
 <translation id="7186303001964993981">由於資料夾中包含系統檔案，<ph name="ORIGIN"/> 無法開啟此資料夾</translation>
@@ -7023,6 +7109,7 @@
 <translation id="5468853758063275923">Brave 是您的預設瀏覽器</translation>
 <translation id="7222232353993864120">電郵地址</translation>
 <translation id="7222235798733126207">限制網站共用</translation>
+<translation id="7222335051802562841">完成更新</translation>
 <translation id="722408235435815623">{MEMBERS,plural, =1{<ph name="FPS_OWNER"/> 的群組中有 1 個網站}other{<ph name="FPS_OWNER"/> 的群組中有 {MEMBERS} 個網站}}</translation>
 <translation id="7225082563376899794">在填寫密碼時使用 Windows Hello</translation>
 <translation id="7225179976675429563">找不到網絡類型</translation>
@@ -7089,6 +7176,7 @@
 <translation id="1484912962860902625">Brave 搜尋有害軟件時發生錯誤</translation>
 <translation id="7280649757394340890">文字轉語音聲音設定</translation>
 <translation id="7280877790564589615">已要求許可</translation>
+<translation id="7282056103720203738">讀取附加的裝置資訊和資料</translation>
 <translation id="7282547042039404307">流暢</translation>
 <translation id="7282992757463864530">資料列</translation>
 <translation id="7283555985781738399">訪客模式</translation>
@@ -7118,10 +7206,12 @@
 <translation id="7308643132139167865">網站語言</translation>
 <translation id="7310598146671372464">無法登入。伺服器不支援特定的 Kerberos 加密類型。請聯絡您的管理員。</translation>
 <translation id="7311089766378749632">正在要求讀取並變更 <ph name="SITE_NAME"/></translation>
+<translation id="7311244614769792472">找不到任何結果</translation>
 <translation id="7312210124139670355">管理員正在重設您的 eSIM 卡。這項操作可能需時數分鐘。</translation>
 <translation id="7317831949569936035">學校註冊程序</translation>
 <translation id="7320213904474460808">預設網絡</translation>
 <translation id="7321545336522791733">無法連接伺服器</translation>
+<translation id="7322515217754205362">網站權限</translation>
 <translation id="7323315405936922211">游標區域大小</translation>
 <translation id="7324297612904500502">Brave 測試版論壇</translation>
 <translation id="7325209047678309347">打印機卡紙</translation>
@@ -7137,6 +7227,7 @@
 <translation id="7339763383339757376">PKCS #7，單一憑證</translation>
 <translation id="7339785458027436441">輸入時檢查拼字</translation>
 <translation id="7339898014177206373">新視窗</translation>
+<translation id="7340179705876485790">如果要返回的頁數超過 1 頁，請點選並按住 [返回]。</translation>
 <translation id="7340431621085453413"><ph name="FULLSCREEN_ORIGIN"/> 已顯示為全螢幕。</translation>
 <translation id="7340650977506865820">網站正在分享您的螢幕畫面</translation>
 <translation id="2548471733011527203">自動將當機報告、診斷和使用情況資料自動傳送給 Brave</translation>
@@ -7183,6 +7274,7 @@
 <translation id="7374376573160927383">管理 USB 裝置</translation>
 <translation id="7376124766545122644">無法使用此連結。請確認連結的開頭是「http://」或「https://」，然後再試一次。</translation>
 <translation id="7376553024552204454">移動滑鼠時突顯滑鼠游標</translation>
+<translation id="7377250337652426186">如果要返回嘅頁數超過 1 頁，請㩒住「返回」掣。</translation>
 <translation id="737728204345822099">您的安全密鑰可能會保留您瀏覽此網站的記錄。</translation>
 <translation id="7377451353532943397">繼續封鎖感應器存取權</translation>
 <translation id="7377481913241237033">使用代碼進行連結</translation>
@@ -7202,6 +7294,7 @@
 <translation id="7387951778417998929">如要使用預設以外的搜尋引擎，請在網址列輸入搜尋引擎的快捷字詞，然後按下您偏好的鍵盤快速鍵。您亦可在此變更預設的搜尋引擎。</translation>
 <translation id="7388209873137778229">只顯示支援的裝置。</translation>
 <translation id="7388615499319468910">網站和廣告客戶可以瞭解廣告的效益。此設定已關閉。</translation>
+<translation id="738903649531469042">將分頁新增至閱讀清單</translation>
 <translation id="7392118418926456391">病毒掃描失敗</translation>
 <translation id="7392915005464253525">重新開啟已關閉視窗(&amp;E)</translation>
 <translation id="7393073300870882456">{COUNT,plural, =1{已複製 1 個項目}other{已複製 {COUNT} 個項目}}</translation>
@@ -7213,9 +7306,11 @@
 <translation id="7400447915166857470">要改回使用 <ph name="OLD_SEARCH_PROVIDER"/> 嗎？</translation>
 <translation id="7400839060291901923">在 <ph name="PHONE_NAME"/> 上設定連線</translation>
 <translation id="7401778920660465883">關閉此訊息</translation>
+<translation id="8030556531842722393">要將已儲存的密碼移至 Brave 帳戶嗎？</translation>
 <translation id="7403642243184989645">下載資源</translation>
 <translation id="7404065585741198296">連接 USB 連接線的手機</translation>
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{1 小時前已執行安全檢查}other{{NUM_HOURS} 小時前已執行安全檢查}}</translation>
+<translation id="7406113532070524618">此設定運作時不需識別您的身份或允許網站查看您的瀏覽記錄，不過網站可在驗證過程中分享少量資料</translation>
 <translation id="740624631517654988">已封鎖彈出式視窗</translation>
 <translation id="7406912950279255498">色彩反轉模式</translation>
 <translation id="7407430846095439694">匯入並繫結</translation>
@@ -7234,7 +7329,6 @@
 <translation id="7412226954991670867">GPU 記憶體</translation>
 <translation id="7414464185801331860">18 倍</translation>
 <translation id="7415454883318062233">設定完成</translation>
-<translation id="1048672061046713770">您可封鎖不想要的網站。Brave 亦會從清單自動刪除超過 4 星期的網站。</translation>
 <translation id="7416091793702109803">審核 <ph name="FILE_NAME"/></translation>
 <translation id="7416263748877373774">無法載入《服務條款》。請檢查您的網絡連線，然後再試一次。</translation>
 <translation id="7416362041876611053">不明的網絡錯誤</translation>
@@ -7252,6 +7346,7 @@
 <translation id="7427315069950454694">今天的回憶</translation>
 <translation id="7427348830195639090">背景頁面：<ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="7427798576651127129">透過 <ph name="DEVICE_NAME"/> 撥打電話</translation>
+<translation id="7429415133937917139">在 ChromeVox 面板的畫面頂部模擬展示可重新整理的點字顯示器輸出結果</translation>
 <translation id="7431719494109538750">找不到 HID 裝置</translation>
 <translation id="7431991332293347422">控制系統如何使用您的瀏覽記錄，為您提供個人化的搜尋內容和其他服務</translation>
 <translation id="7432200167665670017">管理員已封鎖「<ph name="EXTENSION_NAME"/>」(應用程式 ID：<ph name="EXTENSION_ID"/>)</translation>
@@ -7377,9 +7472,11 @@
 <translation id="7541773865713908457">使用「<ph name="APP_NAME"/>」應用程式<ph name="ACTION_NAME"/></translation>
 <translation id="754207240458482646">已與您帳戶上的其他裝置同步。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="7543104066686362383">在這部 <ph name="IDS_SHORT_PRODUCT_NAME"/> 裝置上啟用偵錯功能</translation>
+<translation id="7544977292347272434">徵求家長同意啟用擴充程式</translation>
 <translation id="7545466883021407599">無法連線至伺服器。請檢查您的網絡連線，然後再試一次。如果問題仍未解決，請嘗試重新啟動 Chromebook。錯誤代碼：<ph name="ERROR_CODE"/>。</translation>
 <translation id="7547317915858803630">警告：您的 <ph name="PRODUCT_NAME"/> 設定均儲存在網絡硬碟中。這樣可能導致速度變慢、當機，甚至數據遺失。</translation>
 <translation id="7548856833046333824">檸檬水</translation>
+<translation id="7549250950481368089">已儲存的密碼會在這裡顯示。<ph name="BEGIN_LINK"/>將密碼匯入<ph name="END_LINK"/>「<ph name="BRAND"/>」。</translation>
 <translation id="7549434883223124329">要切換裝置語言嗎？</translation>
 <translation id="7550830279652415241">bookmarks_<ph name="DATESTAMP"/>.html</translation>
 <translation id="7551059576287086432"><ph name="FILE_NAME"/> 下載失敗</translation>
@@ -7477,6 +7574,7 @@
 <translation id="7632948528260659758">下列 Kiosk 應用程式更新失敗：</translation>
 <translation id="7633724038415831385">只有這一次需要等待更新。Chromebook 上的軟件更新會在背景中執行。</translation>
 <translation id="7634280112532283638">減少垃圾內容和欺詐行為</translation>
+<translation id="7634337648687970851">目前不支援本機資料復原。</translation>
 <translation id="7634566076839829401">發生錯誤，請再試一次。</translation>
 <translation id="7635048370253485243">已由管理員固定</translation>
 <translation id="7635711411613274199">瀏覽時是否看到個人化廣告，取決於此設定、<ph name="BEGIN_LINK1"/>廣告主題<ph name="LINK_END1"/>、<ph name="BEGIN_LINK2"/>Cookie 設定<ph name="LINK_END2"/>、網站是否顯示個人化廣告</translation>
@@ -7516,6 +7614,7 @@
 <translation id="7660146600670077843">在分頁上按一下右鍵，並選取「將分頁加入新群組」</translation>
 <translation id="7661259717474717992">允許網站儲存及讀取 Cookie 資料</translation>
 <translation id="7661451191293163002">無法取得註冊憑證。</translation>
+<translation id="7662164944369232556">無法下載文字識別檔案，請稍後再試。</translation>
 <translation id="7662283695561029522">輕觸即可設定</translation>
 <translation id="7663719505383602579">接收端：<ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663774460282684730">可以使用鍵盤快速鍵</translation>
@@ -7539,6 +7638,7 @@
 <translation id="7674542105240814168">存取位置被拒</translation>
 <translation id="7676119992609591770">搵到 <ph name="NUM"/> 個同「<ph name="SEARCH_TEXT"/>」相關嘅分頁</translation>
 <translation id="1800308196794859773">傳送語音給 Brave，透過語音輸入填寫文字欄位。</translation>
+<translation id="7678588695732963732">要重設所有 USB 裝置權限嗎？</translation>
 <translation id="7679171213002716280">有 <ph name="PRINTER_COUNT"/> 部受管理嘅打印機。</translation>
 <translation id="7680416688940118410">觸控螢幕校正</translation>
 <translation id="7681095912841365527">網站可以使用藍牙</translation>
@@ -7604,6 +7704,7 @@
 <translation id="7728668285692163452">系統會在稍後套用版本變更</translation>
 <translation id="7730449930968088409">擷取您的螢幕內容</translation>
 <translation id="7730683939467795481">「<ph name="EXTENSION_NAME"/>」擴充程式已變更此頁面</translation>
+<translation id="773511996612364297">重音符號</translation>
 <translation id="7735165285389721951">正在執行另一項 Steam 設定，請等到該設定完成後再試</translation>
 <translation id="7737115349420013392">正在與「<ph name="DEVICE_NAME"/>」配對…</translation>
 <translation id="7737203573077018777">已接收「<ph name="PROOF_OF_POSSESSION_INSTRUCTION_NAME"/>」指示</translation>
@@ -7686,6 +7787,7 @@
 <translation id="7792388396321542707">停止共用</translation>
 <translation id="779308894558717334">淺綠色</translation>
 <translation id="7793098747275782155">深藍色</translation>
+<translation id="7796453472368605346">變音符號</translation>
 <translation id="7797571222998226653">關閉</translation>
 <translation id="7798504574384119986">查看網絡權限</translation>
 <translation id="7798844538707273832">已自動封鎖<ph name="PERMISSION"/></translation>
@@ -7722,6 +7824,7 @@
 <translation id="7836535163829106376">無法開啟「<ph name="FILE_NAMES"/>」的網址</translation>
 <translation id="7836577093182643605">您唔希望系統同網站分享呢啲主題，因此已經封鎖咗嘅主題清單</translation>
 <translation id="7836850009646241041">請嘗試再次輕觸安全密鑰</translation>
+<translation id="7837290304480415481">管理權限和設定</translation>
 <translation id="7837776265184002579">您的首頁已變更為 <ph name="URL"/>。</translation>
 <translation id="7838838951812478896">無法透過<ph name="DEVICE_NAME"/> 儲存「<ph name="NETWORK_NAME"/>」</translation>
 <translation id="7838971600045234625">{COUNT,plural, =1{已傳送 <ph name="ATTACHMENTS"/>給 <ph name="DEVICE_NAME"/>}other{已傳送 <ph name="ATTACHMENTS"/>給 <ph name="DEVICE_NAME"/>}}</translation>
@@ -7734,6 +7837,7 @@
 <translation id="7844992432319478437">正在更新差異部分</translation>
 <translation id="7846634333498149051">鍵盤</translation>
 <translation id="7847212883280406910">按下 Ctrl + Alt + S 鍵切換至 <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
+<translation id="7848244988854036372">在新分頁群組中開啟所有書籤 (<ph name="URL_COUNT"/> 個)</translation>
 <translation id="7849264908733290972">在新分頁中開啟圖片(&amp;I)</translation>
 <translation id="784934925303690534">時間範圍</translation>
 <translation id="7850717413915978159"><ph name="BEGIN_PARAGRAPH1"/>允許 Chrome OS 裝置自動傳送報告，可協助我們為 Chrome OS 規劃要優先修正及改善的項目。這類報告可能包括 Chrome OS 當機時間、您所使用的功能、記憶體一般使用量，以及 Android 應用程式診斷和使用資料。部分彙整資料亦會用於協助 Brave 應用程式與合作夥伴 (例如 Android 開發人員)。<ph name="END_PARAGRAPH1"/>
@@ -7755,6 +7859,7 @@
 <translation id="2614143654677404775">Brave 帳戶語言</translation>
 <translation id="7864539943188674973">停用藍牙</translation>
 <translation id="7865127013871431856">翻譯選項</translation>
+<translation id="7866941897628979955">已節省 <ph name="MEMORY_SAVINGS"/></translation>
 <translation id="786957569166715433"><ph name="DEVICE_NAME"/> - 已配對</translation>
 <translation id="7869655448736341731">不限</translation>
 <translation id="787069710204604994">例如，如果您瀏覽售賣長距離跑步鞋的網站，該網站可能會判斷您有興趣參加馬拉松。如果您日後瀏覽其他網站，該網站就可以向您顯示第一個網站所建議的跑步鞋廣告。</translation>
@@ -7762,12 +7867,14 @@
 <translation id="7870790288828963061">找不到較新版本的 Kiosk 應用程式，無需更新。請移除 USB 記憶體。</translation>
 <translation id="7871049986386271121">一律在此網站上使用</translation>
 <translation id="7871109039747854576">使用「<ph name="COMMA"/>」和「<ph name="PERIOD"/>」鍵顯示候選字詞名單</translation>
+<translation id="7871691770940645922">虛擬點字顯示屏</translation>
 <translation id="787268756490971083">關閉</translation>
 <translation id="7872758299142009420">巢狀群組過多：<ph name="ERROR_LINE"/></translation>
 <translation id="5801450813341024983">Brave 背景</translation>
 <translation id="7876027585589532670">無法編輯捷徑</translation>
 <translation id="7877451762676714207">不明的伺服器錯誤。請再試一次，或與伺服器管理員聯絡。</translation>
 <translation id="7878945852730162014">管理下載中的檔案，並在下載完成後開啟</translation>
+<translation id="7879172417209159252">無法使用擴充程式</translation>
 <translation id="7879478708475862060">按照輸入模式</translation>
 <translation id="7879631849810108578">快速鍵組合：<ph name="IDS_SHORT_SET_COMMAND"/></translation>
 <translation id="7880823633812189969">系統會在您重新啟動時刪除本機資料</translation>
@@ -7851,7 +7958,6 @@
 <translation id="7943368935008348579">下載 PDF</translation>
 <translation id="7943837619101191061">新增位置…</translation>
 <translation id="7944772052836377867">同步功能需要驗證您的身分</translation>
-<translation id="7945031593909029181">「<ph name="CHROME_EXTENSION_NAME"/>」要求與下列裝置連線</translation>
 <translation id="7945703887991230167">首選語音</translation>
 <translation id="7946586320617670168">來源必須安全</translation>
 <translation id="794676567536738329">確認權限</translation>
@@ -7930,6 +8036,7 @@
 <translation id="8009225694047762179">管理密碼</translation>
 <translation id="8011372169388649948">郁咗 <ph name="BOOKMARK_TITLE"/>。</translation>
 <translation id="8011875486979733097">無法安裝 Steam</translation>
+<translation id="8012188750847319132">大寫鎖定鍵</translation>
 <translation id="5499063270485366718">如果圖片並無有用的說明，Brave 會嘗試為您提供說明。因此，圖片將傳送至 Brave 以建立說明。</translation>
 <translation id="8014154204619229810">正在執行更新程式。請稍後重新整理並再次查看。</translation>
 <translation id="8014206674403687691"><ph name="IDS_SHORT_PRODUCT_NAME"/> 無法還原至上一個安裝版本，請嘗試在裝置執行 Powerwash。</translation>
@@ -8079,6 +8186,7 @@
 <translation id="8138997515734480534"><ph name="VM_NAME"/> 狀態</translation>
 <translation id="8139447493436036221">「Brave 雲端硬碟」檔案</translation>
 <translation id="8140070492745508800"><ph name="FIRST_DEVICE"/>、<ph name="SECOND_DEVICE"/></translation>
+<translation id="1759262237495933444">允許應用程式和網站和系統時區使用「Brave 定位服務」所判斷的位置。即使位置資料存取權已關閉，其他人仍有可能透過 IP 位址查看您的位置。</translation>
 <translation id="8141418916163800697">您可在 Phone Hub 設定中設定更多功能</translation>
 <translation id="8141584439523427891">正在替代瀏覽器中開啟</translation>
 <translation id="8141725884565838206">管理您的密碼</translation>
@@ -8109,6 +8217,7 @@
 <translation id="8161293209665121583">使用閱讀器模式查看網頁</translation>
 <translation id="8161604891089629425">輪廓字型</translation>
 <translation id="8162984717805647492">{NUM_TABS,plural, =1{將分頁移至新視窗}other{將分頁移至新視窗}}</translation>
+<translation id="8163708146810922598">由舊到新</translation>
 <translation id="8165997195302308593">Crostini 連接埠轉送</translation>
 <translation id="816704878106051517">{COUNT,plural, =1{1 個電話號碼}other{# 個電話號碼}}</translation>
 <translation id="8168071266284693455">您的書籤、密碼、記錄和其他設定會同步至所有裝置</translation>
@@ -8124,6 +8233,7 @@
 <translation id="8177318697334260664">{NUM_TABS,plural, =1{將分頁移至新視窗}other{將分頁移至新視窗}}</translation>
 <translation id="8179188928355984576">不使用此帳戶登入 Android 應用程式</translation>
 <translation id="8179976553408161302">Enter 鍵</translation>
+<translation id="8180013518791576291">自動填入和密碼(&amp;A)</translation>
 <translation id="8180785270975217276">「慳電模式」已開啟</translation>
 <translation id="8180786512391440389">「<ph name="EXTENSION"/>」可以讀取和刪除已勾選位置中的圖片、影片和音效檔案。</translation>
 <translation id="8181215761849004992">無法加入網域。請檢查您的帳戶並查看您是否有足夠權限新增裝置。</translation>
@@ -8147,8 +8257,10 @@
 <translation id="8195027750202970175">磁碟大小</translation>
 <translation id="8195191503358432289">新增密碼</translation>
 <translation id="8195265224453131880">強度</translation>
+<translation id="8195737548602430447">自動將字幕翻譯為指定語言。</translation>
 <translation id="8197673340773315084">新增名稱或標籤，例如「工作」或「個人」</translation>
 <translation id="8198456017687137612">正在投放分頁</translation>
+<translation id="8198511718495409170">如要將您已更新的「<ph name="EXTENSION_NAME"/>」設定套到此網站，請重新載入此網頁</translation>
 <translation id="8199300056570174101">網絡 (服務) 和裝置屬性元件</translation>
 <translation id="8200772114523450471">繼續</translation>
 <translation id="8200789660596905522">請確保在「<ph name="DEVICE_NAME"/>」上接受投放要求。</translation>
@@ -8198,6 +8310,7 @@
 <translation id="8242370300221559051">啟用「Play 商店」</translation>
 <translation id="8242426110754782860">繼續</translation>
 <translation id="8243948765190375130">媒體質素可能會降低</translation>
+<translation id="8244201515061746038">自動更正了解詳情按鈕。去自動更正設定頁面。㩒 Enter 掣就可以啟用，㩒 Esc 掣就可以閂。</translation>
 <translation id="8244514732452879619">快到睡覺時間了</translation>
 <translation id="8246776524656196770">使用 PIN (個人識別碼) 保護您的安全密鑰</translation>
 <translation id="8248050856337841185">貼上(&amp;P)</translation>
@@ -8210,7 +8323,6 @@
 <translation id="8251509999076836464">配對緊 <ph name="DEVICE_NAME"/></translation>
 <translation id="8251578425305135684">已移除縮圖。</translation>
 <translation id="825238165904109940">一律顯示完整網址</translation>
-<translation id="8252538334423261825">無法新增擴充程式</translation>
 <translation id="8252569384384439529">正在上載…</translation>
 <translation id="8253198102038551905">按一下 [+] 以取得網絡屬性</translation>
 <translation id="8255212965098517578">最近的相片、通知和應用程式</translation>
@@ -8264,6 +8376,8 @@
 <translation id="2265163333261443610">下載 Brave</translation>
 <translation id="8293206222192510085">新增書籤</translation>
 <translation id="8294431847097064396">來源</translation>
+<translation id="8295449579927246485">即時翻譯</translation>
+<translation id="8297292446125062288">HID 設定</translation>
 <translation id="8298429963694909221">您現在可在 <ph name="DEVICE_TYPE"/> 上接收手機的通知。在 <ph name="DEVICE_TYPE"/> 上關閉通知，您手機上的通知也會關閉。請確認您的手機在附近，且已開啟藍牙和 Wi-Fi。</translation>
 <translation id="8299319456683969623">您目前處於離線狀態。</translation>
 <translation id="8300011035382349091">編輯此分頁的書籤</translation>
@@ -8291,6 +8405,7 @@
 <translation id="8323167517179506834">輸入網址</translation>
 <translation id="8323317289166663449">讀取及變更您在電腦及所有網站上的資料</translation>
 <translation id="8324784016256120271">網站可使用 Cookie 查看您在各網站的瀏覽活動，例如放送個人化廣告</translation>
+<translation id="8324819620112450495">不允許要求存取權</translation>
 <translation id="8325413836429495820">不允許查看剪貼簿</translation>
 <translation id="8326478304147373412">PKCS #7，憑證鏈結</translation>
 <translation id="8327386430364625757">數學字型</translation>
@@ -8326,11 +8441,13 @@
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/> 個</translation>
 <translation id="8356409598322585307">您已註冊此裝置，因此無需再註冊。</translation>
 <translation id="8357388086258943206">安裝 Linux 時發生錯誤</translation>
+<translation id="3293878794303371084">此指南助您瞭解使用 Brave 時可執行哪些重要選擇，並協助您作出合適的選擇，讓 Brave 按照您期望的方式運作。</translation>
 <translation id="8358685469073206162">您要還原網頁嗎？</translation>
 <translation id="8358912028636606457">此裝置不支援投放分頁音訊。</translation>
 <translation id="2921493528667739769">儲存在 Brave 帳戶中</translation>
 <translation id="8360140320636871023">個人化您的螢幕主題</translation>
 <translation id="8360267485906769442">傳送意見按鈕</translation>
+<translation id="8362914115861174987">譯文語言</translation>
 <translation id="8363095875018065315">穩定</translation>
 <translation id="8363142353806532503">已禁止使用麥克風</translation>
 <translation id="8366396658833131068">您的網絡連線已恢復。請選取其他網絡，或按下方的 [繼續] 按鈕啟動 Kiosk 應用程式。</translation>
@@ -8378,6 +8495,7 @@
 <translation id="8398877366907290961">仍要繼續</translation>
 <translation id="8399282673057829204">查看密碼</translation>
 <translation id="8401432541486058167">請輸入與智能資訊卡相關聯的 PIN。</translation>
+<translation id="1189449765746484728">您在 Brave 中的資料</translation>
 <translation id="8403807918453631441">「<ph name="BRAND"/>」可檢查您儲存的密碼。</translation>
 <translation id="8405046151008197676">瞭解最新的更新內容摘要</translation>
 <translation id="8407199357649073301">記錄等級：</translation>
@@ -8411,6 +8529,7 @@
 <translation id="8428271547607112339">新增學校帳戶</translation>
 <translation id="8428628598981198790">無法在此網站上使用您的安全密鑰</translation>
 <translation id="84297032718407999">您將於 <ph name="LOGOUT_TIME_LEFT"/>後登出</translation>
+<translation id="8430963319679282846">如果您按住按鍵，系統便會重複輸入該按鍵的字元</translation>
 <translation id="8431190899827883166">顯示輕按選項</translation>
 <translation id="8434480141477525001">NaCl 偵錯連接埠</translation>
 <translation id="8437209419043462667">美式鍵盤</translation>
@@ -8428,6 +8547,7 @@
 <translation id="8449008133205184768">貼上並配對樣式</translation>
 <translation id="8449036207308062757">管理儲存空間</translation>
 <translation id="8449836157089738489">在新分頁群組中開啟所有網址</translation>
+<translation id="8451512073679317615">助理</translation>
 <translation id="845702320058262034">無法連線。請確保手機已開啟藍牙。</translation>
 <translation id="8457451314607652708">匯入書籤</translation>
 <translation id="8458341576712814616">快捷字詞</translation>
@@ -8437,6 +8557,7 @@
 <translation id="8460932807646981183">管理搜尋引擎和站內搜尋</translation>
 <translation id="84613761564611563">已要求網絡設定使用者介面，請稍候…</translation>
 <translation id="8461914792118322307">Proxy</translation>
+<translation id="8461973047386722744">找不到密碼</translation>
 <translation id="8463001014623882202">授權失敗</translation>
 <translation id="846374874681391779">下載內容列</translation>
 <translation id="8463955938112983119"><ph name="PLUGIN_NAME"/> 已停用。</translation>
@@ -8454,6 +8575,7 @@
 <translation id="8472623782143987204">硬件支援</translation>
 <translation id="8473540203671727883">說出滑鼠游標下的文字</translation>
 <translation id="8473863474539038330">地址及其他資料</translation>
+<translation id="8839697028272617306">顯示 Brave 帳戶中的密碼</translation>
 <translation id="2015014930243978107">電腦中其他程式所新增的擴充功能可能會變更 Brave 的運作方式。</translation>
 <translation id="8476408756881832830">在 ChromeVox 朗讀時暫停播放音訊</translation>
 <translation id="8476491056950015181"><ph name="BEGIN_PARAGRAPH1"/>允許 ChromeOS 裝置自動傳送報告，可協助我們為 ChromeOS 規劃要優先修正及改善的項目。這類報告可能包括 ChromeOS 當機時間、曾使用的功能、記憶體一般使用量，以及 Android 應用程式診斷和使用資料。部分彙整資料亦會用於協助 Brave 應用程式與合作夥伴 (例如 Android 開發人員)。<ph name="END_PARAGRAPH1"/>
@@ -8481,7 +8603,6 @@
 <translation id="8498214519255567734">讓您在光線昏暗的環境下輕易觀看螢幕內容或閱讀</translation>
 <translation id="8498395510292172881">在 Brave 中繼續閱讀</translation>
 <translation id="8499083585497694743">將麥克風取消靜音</translation>
-<translation id="8499526927826495298">傳送<ph name="BEGIN_LINK1"/>自動填入元數據<ph name="END_LINK1"/></translation>
 <translation id="8502536196501630039">如要使用從 Google Play 下載的應用程式，請先還原您的應用程式。此操作可能會導致部分資料遺失。</translation>
 <translation id="8503813439785031346">用戶名稱</translation>
 <translation id="850382998924680137">今天曾查看</translation>
@@ -8494,6 +8615,7 @@
 <translation id="8512476990829870887">結束處理程序</translation>
 <translation id="851263357009351303">永遠允許 <ph name="HOST"/> 顯示圖片</translation>
 <translation id="8513108775083588393">自動旋轉</translation>
+<translation id="8513357934662532537">如要將 <ph name="USER_EMAIL"/> 的密碼匯入「<ph name="BRAND"/>」，請選取 CSV 檔案。</translation>
 <translation id="8514746246728959655">請改用其他安全密鑰</translation>
 <translation id="8514955299594277296">不允許網站在裝置上儲存資料 (不建議)</translation>
 <translation id="8517759303731677493">編輯…</translation>
@@ -8620,6 +8742,7 @@
 <translation id="8637688295594795546">可安裝系統更新，正在準備下載…</translation>
 <translation id="8639047128869322042">正在檢查有害軟件…</translation>
 <translation id="8639635302972078117">傳送使用情況和診斷資料。此裝置目前會自動將診斷、裝置及應用程式的使用情況資料傳送至 Brave。這些資料不會用來識別您子女的身分，而是用於改善系統和應用程式的穩定性和其他效能。部分彙整資料也會用於協助 Brave 應用程式與合作夥伴 (例如 Android 開發人員)。如果您為子女開啟其他「網絡及應用程式活動記錄」設定，此資料可能會儲存在他們的 Brave 帳戶中。</translation>
+<translation id="8640575194957831802">上次開啟日期</translation>
 <translation id="8642900771896232685">2 秒</translation>
 <translation id="8642947597466641025">放大文字</translation>
 <translation id="8643403533759285912">刪除群組</translation>
@@ -8661,6 +8784,7 @@
 <translation id="866611985033792019">信任這個用於識別電郵使用者的憑證</translation>
 <translation id="8666321716757704924">已再次向 <ph name="WEBSITE"/> 授予權限</translation>
 <translation id="8666759526542103597">關於基於瀏覽器的廣告個人化</translation>
+<translation id="8667261224612332309">您有密碼可以改善安全性</translation>
 <translation id="8667328578593601900"><ph name="FULLSCREEN_ORIGIN"/> 已顯示為全螢幕，並且停用了滑鼠游標。</translation>
 <translation id="8667760277771450375">我們正在探索方法，讓網站阻止垃圾廣告和欺詐行為，同時限制跨網站追蹤功能。</translation>
 <translation id="8668378421690365723">裝置可能無法再正常運作，並可能會遇到安全性和效能問題。</translation>
@@ -8710,6 +8834,7 @@
 <translation id="870805141700401153">Microsoft 個別程式碼簽署</translation>
 <translation id="8708671767545720562">更多資料(&amp;M)</translation>
 <translation id="8711402221661888347">漢堡</translation>
+<translation id="8711538096655725662">在您瀏覽的所有網站上自動執行</translation>
 <translation id="8712637175834984815">我知道了</translation>
 <translation id="8713110120305151436">在「快速設定」中顯示無障礙功能選項</translation>
 <translation id="8713570323158206935">傳送<ph name="BEGIN_LINK1"/>系統資料<ph name="END_LINK1"/></translation>
@@ -8730,6 +8855,9 @@
 <translation id="8725178340343806893">我的最愛/書籤</translation>
 <translation id="87254326763805752">確認密鑰</translation>
 <translation id="8726206820263995930">從伺服器擷取政策設定時發生錯誤：<ph name="CLIENT_ERROR"/>。</translation>
+<translation id="8727751378406387165">傳送<ph name="BEGIN_LINK1"/>自動填入元數據<ph name="END_LINK1"/>
+          <ph name="LINE_BREAK"/>
+          (系統不會共用自動填入資料)</translation>
 <translation id="8728351286589123703">系統會重設您所選的權限。</translation>
 <translation id="8729133765463465108">使用相機掃瞄 QR 碼</translation>
 <translation id="8730621377337864115">完成</translation>
@@ -8759,7 +8887,6 @@
 <translation id="8749863574775030885">存取來自未知供應商的 USB 裝置</translation>
 <translation id="8750155211039279868"><ph name="ORIGIN"/> 要求與序列連接埠連線</translation>
 <translation id="8750346984209549530">流動網絡 APN</translation>
-<translation id="8751419011949619279">在裝置上安裝的應用程式中開啟網站</translation>
 <translation id="8752451679755290210">自動在項目之間移動</translation>
 <translation id="8753868764580670305">查看及管理此裝置上儲存的密碼</translation>
 <translation id="8753948258138515839">「檔案」應用程式可供快速存取您存放在 Brave 雲端硬碟」、外部儲存空間或 ChromeOS Flex 裝置中的檔案。</translation>
@@ -8844,7 +8971,6 @@
 <translation id="8823704566850948458">建議密碼…</translation>
 <translation id="8823963789776061136">您亦可選取打印機 PPD。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="8824701697284169214">新增網頁(&amp;G)…</translation>
-<translation id="8827083388261088094">按一下即可管理「<ph name="EXTENSION"/>」的權限</translation>
 <translation id="8827125715368568315">已封鎖<ph name="PERMISSION"/>和其他 <ph name="COUNT"/> 個項目</translation>
 <translation id="8827289157496676362">固定擴充功能</translation>
 <translation id="8827752199525959199">更多操作，<ph name="USERNAME"/> 喺 <ph name="DOMAIN"/> 上面嘅密碼</translation>
@@ -8877,7 +9003,6 @@
 <translation id="8850251000316748990">查看更多…</translation>
 <translation id="885246833287407341">API 函數引數</translation>
 <translation id="8853586775156634952">此卡只會儲存在此裝置上</translation>
-<translation id="4501044136594402900">「Brave 密碼管理工具」網頁版</translation>
 <translation id="8854745870658584490">候選快速鍵</translation>
 <translation id="8855977033756560989">此 Chromebook Enterprise 裝置附隨 Brave Enterprise Upgrade。如要善用企業功能，請使用 Brave 管理員帳戶註冊此裝置。</translation>
 <translation id="8856028055086294840">還原應用程式及網頁</translation>
@@ -8901,6 +9026,7 @@
 <translation id="8868838761037459823">流動網絡詳情</translation>
 <translation id="2708388045129805693">已將密碼移至 Brave 帳戶</translation>
 <translation id="8870413625673593573">最近關閉的分頁</translation>
+<translation id="8871043459130124414">只會在您點擊擴充程式後執行</translation>
 <translation id="8871551568777368300">由管理員固定</translation>
 <translation id="8871696467337989339">您正在使用不受支援的命令列標示：<ph name="BAD_FLAG"/>。這可能會危及穩定性與安全性。</translation>
 <translation id="8871974300055371298">內容設定</translation>
@@ -8923,6 +9049,7 @@
 <translation id="8884023684057697730"><ph name="BEGIN_BOLD"/>您可如何管理資料：<ph name="END_BOLD"/>為保障您的私隱，我們會自動刪除清單上超過 4 星期的網站。您再次瀏覽的網頁可能會再次在清單中顯示。如果您不想系統根據特定網站定義興趣，亦可移除網站。</translation>
 <translation id="8884570509232205463">您的裝置會於<ph name="UNLOCK_TIME"/>鎖上。</translation>
 <translation id="8888253246822647887">升級完成後，應用程式隨即啟動。升級過程可能需時幾分鐘。</translation>
+<translation id="8603229095987793389">您隨後瀏覽的網站可從 Brave 取得前一個網站提供的資料，確認您應該是真人</translation>
 <translation id="8889651696183044030"><ph name="ORIGIN"/> 可編輯以下檔案和資料夾</translation>
 <translation id="8890170499370378450">您可能需要支付流動數據費用</translation>
 <translation id="8890516388109605451">來源</translation>
@@ -8975,7 +9102,6 @@
 <translation id="8941688920560496412"><ph name="DEVICE_NAME"/>已關閉</translation>
 <translation id="894191600409472540">建立安全度高的密碼</translation>
 <translation id="894360074127026135">Netscape International Step-Up</translation>
-<translation id="8943937581166190941">擴充程式正在使用 HID 裝置</translation>
 <translation id="8944099748578356325">加快耗電量 (目前為 <ph name="BATTERY_PERCENTAGE"/>%)</translation>
 <translation id="8944725102565796255">如果您只想使用此帳戶一次，可以<ph name="GUEST_LINK_BEGIN"/>透過訪客身份使用裝置<ph name="GUEST_LINK_END"/>。如要新增其他人的帳戶，請<ph name="LINK_BEGIN"/>新增使用者<ph name="LINK_END"/>至您的 <ph name="DEVICE_TYPE"/>。
 
@@ -8991,6 +9117,7 @@
 <translation id="8953476467359856141">充電時</translation>
 <translation id="895347679606913382">即將開始下載…</translation>
 <translation id="8957757410289731985">自訂個人檔案</translation>
+<translation id="8959144235813727886">網站和應用程式</translation>
 <translation id="895944840846194039">JavaScript 記憶體使用量</translation>
 <translation id="8960208913905765425">「快速解答」的單位轉換</translation>
 <translation id="8960638196855923532">您現可查看手機的通知和應用程式</translation>
@@ -9101,6 +9228,7 @@
 <translation id="904224458472510106">此操作無法復原</translation>
 <translation id="9042827002460091668">請檢查您的互聯網連線，然後再試一次</translation>
 <translation id="9042893549633094279">私隱權和安全性</translation>
+<translation id="9043264199499366189">訂閱 ChromeOS Flex 系統事件</translation>
 <translation id="9044646465488564462">無法連線至網絡：<ph name="DETAILS"/></translation>
 <translation id="9045160989383249058">閱讀清單已移動至新的側面板。按這裡即可試用。</translation>
 <translation id="4534361985432360439">將您嘗試瀏覽的網頁網址傳送至 Brave</translation>
@@ -9255,6 +9383,7 @@
 <translation id="9170766151357647548">你嘅裝置 EID 係 <ph name="EID_NUMBER"/>。呢個數字可以用嚟啟用服務。</translation>
 <translation id="9170848237812810038">復原(&amp;U)</translation>
 <translation id="2060128809251156338">電腦中其他程式所新增的主題可能會變更 Brave 的工作方式。</translation>
+<translation id="2203566065151196658">隱藏書籤列(&amp;H)</translation>
 <translation id="917350715406657904">您已達到家長為 <ph name="APP_NAME"/> 設定的使用時間限制。明天可以使用 <ph name="TIME_LIMIT"/>。</translation>
 <translation id="9174401638287877180">傳送使用情況和診斷資料。自動將診斷、裝置及應用程式的使用情況資料傳送至 Brave，協助改善您子女的 Android 使用體驗。這些資料不會用來識別您子女的身分，而是用於改善系統和應用程式的穩定性和其他效能。部分彙整資料也會用於協助 Brave 應用程式與合作夥伴 (例如 Android 開發人員)。如果您為子女開啟其他「網絡及應用程式活動記錄」設定，此資料可能會儲存在他們的 Brave 帳戶中。</translation>
 <translation id="9176476835295860688">傳送使用情況和診斷資料。此裝置目前會自動將診斷、裝置及應用程式的使用情況資料傳送至 Brave。這些資料將有助改善系統和應用程式的穩定性和其他效能。部分彙整資料也會用於協助 Brave 應用程式與合作夥伴 (例如 Android 開發人員)。擁有者可強制執行此<ph name="BEGIN_LINK1"/>設定<ph name="END_LINK1"/>。如果已開啟其他「網絡及應用程式活動記錄」設定，系統可能會將此資料儲存至您的 Brave 帳戶。<ph name="BEGIN_LINK2"/>瞭解詳情<ph name="END_LINK2"/></translation>
@@ -9265,7 +9394,6 @@
 <translation id="9180380851667544951">網站可以分享您的螢幕畫面</translation>
 <translation id="9180847522826713506">如要查看密碼或新增密碼相關備註，請按一下鎖匙圖示</translation>
 <translation id="9182556968660520230">不允許網站播放受保護的內容</translation>
-<translation id="3898880815710426825">Brave 會自動刪除超過 4 星期的網站。您再次瀏覽的網頁可能會再次在清單中顯示。您亦可封鎖網站，讓該網站無法為您提供建議廣告。</translation>
 <translation id="918352324374649435">{COUNT,plural, =1{應用程式}other{# 個應用程式}}</translation>
 <translation id="9186963452600581158">使用子女的 Brave 帳戶登入</translation>
 <translation id="9187967020623675250">按鍵不符。按下任意鍵即可<ph name="RESPONSE"/>。</translation>
@@ -9273,6 +9401,7 @@
 <translation id="9192019773545828776">使用朗讀功能，讓您無需查看螢幕亦可使用裝置。您可透過已連接裝置使用點字功能。使用 Ctrl + Alt + Z 鍵即可開啟或關閉 ChromeVox。使用搜尋鍵 + 向左箭咀或向右箭咀即可瀏覽。使用搜尋鍵 + 空格鍵即可選取 (亦即啟用)。</translation>
 <translation id="919686179725692564">進一步瞭解如何備份應用程式</translation>
 <translation id="9199503643457729322">㩒一下就可以離開私隱權指南。</translation>
+<translation id="9199695835892108985">要重設所有序列連接埠權限嗎？</translation>
 <translation id="9200339982498053969"><ph name="ORIGIN"/> 將可以編輯「<ph name="FOLDERNAME"/>」中的檔案</translation>
 <translation id="920045321358709304">透過 <ph name="SEARCH_ENGINE"/> 搜尋</translation>
 <translation id="9201023452444595544">所有離線資料將會被清除</translation>
@@ -9301,6 +9430,7 @@
 <translation id="925270020047573546">此裝置不支援桌面電腦音訊投放功能。</translation>
 <translation id="929117907539171075">系統亦會清除已安裝應用程式的離線資料</translation>
 <translation id="930268624053534560">詳細的時間戳</translation>
+<translation id="930551443325541578">重複按鍵和重音標記</translation>
 <translation id="930893132043726269">目前正在使用漫遊</translation>
 <translation id="93140074055951850">Android 應用程式已停止</translation>
 <translation id="932327136139879170">首頁</translation>
@@ -9311,7 +9441,6 @@
 <translation id="934244546219308557">為此群組命名</translation>
 <translation id="6187156085111579405">視乎情況，在此未有列出的項目也會一併移除。有關&lt;a href="<ph name="URL"/>"&gt;垃圾軟件防護&lt;/a&gt;的詳情，請參閱 Brave 私隱權白皮書。</translation>
 <translation id="93480724622239549">問題或錯誤</translation>
-<translation id="935854577147268200">Smart Lock 手機已變更，請輸入密碼以更新 Smart Lock。下次您便可使用手機來解鎖 <ph name="DEVICE_TYPE"/>。您可在「設定」中停用 Smart Lock。</translation>
 <translation id="936646668635477464">攝錄機和麥克風</translation>
 <translation id="936801553271523408">系統診斷數據</translation>
 <translation id="93766956588638423">修復擴充程式</translation>
@@ -9320,6 +9449,7 @@
 <translation id="939401694733344652">這些帳戶目前並未使用 Android 應用程式。如果您選取帳戶以使用此 Android 應用程式，該帳戶亦可使用其他 Android 應用程式。如要變更 Android 應用程式存取權，請前往 <ph name="LINK_BEGIN"/>[設定] &gt; [帳戶]<ph name="LINK_END"/></translation>
 <translation id="939598580284253335">請輸入複雜密碼</translation>
 <translation id="939736085109172342">新增資料夾</translation>
+<translation id="940212040923880623">尋找並編輯(&amp;F)</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> 正在共用 Brave 分頁和音效。</translation>
 <translation id="944799160843436808">在 Chromebook 上設定 Steam 時發生問題</translation>
 <translation id="945522503751344254">提供意見反映</translation>
@@ -9332,6 +9462,7 @@
 <translation id="952471655966876828">當裝置開啟，而且正在使用時，裝置將會自動連線</translation>
 <translation id="953434574221655299">允許偵測您使用裝置的時間</translation>
 <translation id="956500788634395331">保護您免受可能有害的擴充程式影響</translation>
+<translation id="957179356621191750">6 點</translation>
 <translation id="957960681186851048">此網站曾嘗試自動下載多個檔案</translation>
 <translation id="960987915827980018">還有約 1 個小時</translation>
 <translation id="962802172452141067">樹狀分枝書籤</translation>
@@ -9341,6 +9472,7 @@
 <translation id="964790508619473209">螢幕安排</translation>
 <translation id="965211523698323809">在 <ph name="DEVICE_TYPE"/> 上收發短訊。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="8302628777674731869">報告 Brave Cast 的問題</translation>
+<translation id="966588271015727539">選取藍牙點字顯示器</translation>
 <translation id="967398046773905967">禁止任何網站存取 HID 裝置</translation>
 <translation id="967624055006145463">已儲存的資料</translation>
 <translation id="96774243435178359">受管理的打印機</translation>

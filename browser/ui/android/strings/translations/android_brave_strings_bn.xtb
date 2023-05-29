@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">সেরা-মানের রিডাইরেক্ট ট্র্যাকিং URLs বাইপাস করে সহায়তা চালু করুন।</translation>
 <translation id="94154759592465111">স্ক্রিপ্টগুলি অবরুদ্ধ করুন</translation>
 <translation id="7714773920987474116">JavaScript ব্লক করা (সাইটগুলিকে ব্রেক করা)</translation>
+<translation id="1660979054779793659">Youtube</translation>
+<translation id="2233004324252915283">YouTube-এর প্রস্তাবিত কনটেন্ট ব্লক করুন</translation>
+<translation id="1005372663692637999">youtube.com-এ পরবর্তী এবং শেষ কার্ড উপাদানগুলিকে ব্লক করে।</translation>
+<translation id="5152595963250646670">YouTube-এর বিভ্রান্তিকর উপাদান ব্লক করুন</translation>
+<translation id="2998960761270772157">youtube.com-এ সাইন ইন, মেনু, কমেন্ট এবং ভিডিও তথ্য উপাদানগুলিকে ব্লক করে।</translation>
 <translation id="6052725679982758334">সামাজিক মিডিয়া রোধক</translation>
 <translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে গুগল লগইন বোতামগুলিকে মঞ্জুর করুন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">সাইটগুলি তৃতীয়-পক্ষের কুকিজের মাধ্যমে লিগ্যাসি Google সাইন-ইন ব্যবহার করতে বলতে পারে</translation>
 <translation id="2903783737778379345">তৃতীয়-পক্ষের কুকিজের মাধ্যমে লিগ্যাসি Google সাইন-ইনকে অনুমতি দেবেন না</translation>
 <translation id="6880817299303842099">লিগ্যাসি Google সাইন-ইন-এর জন্য তৃতীয় পক্ষের কুকিজ ব্যবহারের অনুমতি আছে</translation>
+<translation id="5169650598465327872">Localhost অ্যাক্সেস</translation>
+<translation id="4172219483893066798">সাইটগুলি লোকালহোস্টের রিসোর্সের অ্যাক্সেসের অনুরোধ করতে পারে</translation>
+<translation id="7181706637590665047">লোকালহোস্টের রিসোর্সে অ্যাক্সেস দেবেন না</translation>
+<translation id="1485435696620658073">লোকালহোস্টের রিসোর্সে অ্যাক্সেস দেওয়া রয়েছে</translation>
 <translation id="181905442828471321">Brave শিল্ডস গ্লোবাল ডিফল্ট</translation>
 <translation id="2675679258824361492">অন্যান্য গোপনীয়তার সেটিংস</translation>
 <translation id="8026334261755873520">ব্রাউজ করা ডেটা সাফ করুন</translation>
@@ -334,7 +343,7 @@
 <translation id="496896260395129787">এই Brave সিঙ্ক অ্যাকাউন্টটি অন্য ডিভাইস থেকে মোছা হয়েছে। আপনি সিঙ্ক বন্ধ করতে না চাইলে, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>আবার অ্যাকাউন্ট তৈরি করুন</translation>
 <translation id="4094590686212463338">এই সিঙ্ক চেইনে যোগ দেওয়া যায়নি। সিঙ্ক চেইনটি মুছে ফেলা হয়েছিল।</translation>
-<translation id="5633907266617216186">অ্যাড্রেস, পেমেন্টের তথ্য ইত্যাদি।</translation>
+<translation id="4908081302669157000">ফোন নম্বর, ইমেইল এবং ঠিকানা</translation>
 <translation id="1056898198331236512">সতর্কতা</translation>
 <translation id="1426410128494586442">হ্যাঁ</translation>
 <translation id="7811264919113243207">যে ডিভাইসে এই QR কোড তৈরি হয় এটি সেই ডিভাইসের সাথে সম্ভাব্য আপনার পাসওয়ার্ড সহ আপনার Brave কোড শেয়ার করবে।
@@ -749,6 +758,7 @@
 <translation id="1118876217803190221">অপর্যান্ত ব্যালেন্স</translation>
 <translation id="275990379543116961">গ্যাসের পক্ষে ফান্ড অপর্যাপ্ত</translation>
 <translation id="3292453499915466604">অপর্যাপ্ত তারল্য</translation>
+<translation id="3025158262797849291">অচেনা নম্বর ফরম্যাট</translation>
 <translation id="3380365263193509176">অজানা ত্রুটি</translation>
 <translation id="5932938770824268122">ব্যক্তিগত কী</translation>
 <translation id="2472882733835903303">ব্যক্তিগত কী দেখান</translation>
@@ -768,6 +778,7 @@
 <translation id="6015436276085482001">খারিজ করা হয়েছে</translation>
 <translation id="6666273175654835609">জমা করা হয়েছে</translation>
 <translation id="2331676293859649642">নিশ্চিত করা হয়েছে</translation>
+<translation id="8214232307424031138">স্বাক্ষরিত</translation>
 <translation id="1165039591588034296">সমস্যা</translation>
 <translation id="8364362220156372884">ফী: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">আপনি কি দ্রুততম ওয়েব ব্রাউজার ব্যবহার করছেন?</translation>
@@ -798,7 +809,7 @@
 <translation id="5061574358754621254">CoinGecko-এর দ্বারা পরিচালনা প্রাইস ডেটা</translation>
 <translation id="4626407663177532837">কোটটিতে 0.875% Brave ফি অন্তর্ভুক্ত আছে।</translation>
 <translation id="8574289650879708853">কাস্টম টোকেন যোগ করুন</translation>
-<translation id="1974060860693918893">উন্নত</translation>
+<translation id="1255896809210433555">NFT যোগ করুন</translation>
 <translation id="7791543448312431591">জুড়ুন</translation>
 <translation id="6600400596821238377">টোকেনের নাম</translation>
 <translation id="4432966365400169165">টোকেন চুক্তির ঠিকানা</translation>
@@ -1022,10 +1033,10 @@
 <translation id="6605147707233193230">কনটেন্ট ক্রিয়েটরদের সহায়তা করার জন্য সাহায্য করা চালু করুন</translation>
 <translation id="1609556006143307897">আপনি কনটেন্ট ক্রিয়েটরদের সাপোর্ট করতে সহায়তা করছেন</translation>
 <translation id="6067959437127691361">Brave পুরস্কার ব্যবহার করে কনটেন্ট ক্রিয়েটরদের সাহায্য করতে পারবেন এবং BAT উপার্জন করতে পারবেন।</translation>
-<translation id="121894865378699201">BAT উপার্জন শুরু করতে আপনি প্রস্তুত?</translation>
-<translation id="2648805457288107211">আপনার পুরস্কারের প্রোফাইলে শুধুমাত্র আপনার কাস্টডিয়াল অ্যাকাউন্টে সংযোগ করুন। আপনার কোনো অ্যাকাউন্ট না থাকলে, আপনি একটি অ্যাকাউন্ট তৈরি করার সুযোগ পাবেন।</translation>
+<translation id="3264975266761862670">উপার্জন করা শুরু করতে প্রস্তুত?</translation>
+<translation id="265337947574975838">আমাদের অংশীদারদের একজনের সাথে সংযোগ করুন বা একটি অ্যাকাউন্ট তৈরি করুন।</translation>
 <translation id="1772961321862399863">BAT উপার্জন করতে, ইউজারকে কোনও কাস্টডিয়াল অ্যাকাউন্ট Brave পুরস্কারের সাথে সংযুক্ত করতে হবে। দূর্ভাগ্যবশত আপনার অঞ্চলে কোনো কাস্টোডিয়ান উপলভ্য নেই, তাই উপার্জন করা যাবে না। এখন Brave পুরস্কার চালু করলে তা স্বয়ংক্রিয়ভাবে ক্রিয়েটরদের সাহায্য করবে।</translation>
-<translation id="5430495762768325224">BAT সম্বন্ধে আরও জানুন</translation>
+<translation id="654447476965480878">BAT উপার্জন সম্বন্ধে আরও জানুন</translation>
 <translation id="6278643716658443228">পুরষ্কার সেটিংস</translation>
 <translation id="6516984207843289176">অ্যাকাউন্ট সংযুক্ত করুন</translation>
 <translation id="4272136334824111854">এই মাসে, আপনি Brave পুরস্কার সমর্থন করে এমন <ph name="CREATOR_COUNT"/> জন ক্রিয়েটরের সাথে ভিজিট করেছেন</translation>
@@ -1056,6 +1067,7 @@
 <translation id="171158953146804144"><ph name="DUE_DATE"/>, আমরা বর্তমান ভার্চুয়াল BAT ব্যালেন্সের জন্য সমর্থন বন্ধ করে দেব। দুর্ভাগ্যবশত, আপনার আয় উইথড্র করার জন্য আপনার অঞ্চলে (<ph name="REGION"/>) কোনো উপলভ্য কাস্টোডিয়ান নেই। ততক্ষণ পর্যন্ত, আপনি তা সত্ত্বেও আপনার প্রিয় ক্রিয়েটরদের কাছে অবদান রাখতে পারেন।</translation>
 <translation id="8949422576126100041">স্পিডরিডার দিয়ে পৃষ্ঠা দেখবেন?</translation>
 <translation id="591648995518106347">রিডার মোডে যোগ্য আর্টিকেলগুলো অটোমেটিক লোড হয়</translation>
+<translation id="1295796122927221823">রিডার মোডে দেখুন</translation>
 <translation id="5062934803872044756"><ph name="NETWORK"/>-এ <ph name="SYMBOL"/></translation>
 <translation id="295620834661738195">Brave প্লেলিস্ট</translation>
 <translation id="4850886885716139402">দেখুন</translation>
@@ -1128,4 +1140,10 @@
 <translation id="3631131732607750008">কনটেন্টের মেয়াদ শেষ হয়েছে। কয়েক সেকেন্ডে আবার চেষ্টা করুন।</translation>
 <translation id="9085765419770918643">এখানে এখনও কোনও NFT নেই।</translation>
 <translation id="8445532667841598737">কয়েকটি যোগ করার জন্য প্রস্তুত? আমদানি করতে শুধু নিচের বোতামটি ক্লিক করুন।</translation>
+<translation id="5925465310724910998">আপনার NFT স্বয়ংক্রিয়ভাবে দেখাতে চান?</translation>
+<translation id="2827460859891872324">আপনার NFT স্বয়ংক্রিয়ভাবে দেখানোর জন্য Brave ওয়ালেট কোনো তৃতীয় পক্ষের পরিষেবা ব্যবহার করতে পারে। Brave এই পরিষেবাটি প্রদান করতে আপনার ওয়ালেট ঠিকানাগুলি <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/>-এর সাথে শেয়ার করবে। <ph name="BEGIN_LINK_2"/>আরও জানুন।<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">NFT আবিষ্কার সক্রিয় করুন</translation>
+<translation id="622372328961630111">তৃতীয় পক্ষের API ব্যবহার করে ওয়ালেটে স্বয়ংক্রিয়ভাবে আপনার মালিকানাধীন NFT যোগ করুন। <ph name="BEGIN_LINK_1"/>আরও জানুন।<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">ঠিকানা সন্ধান তালিকার অ্যাকাউন্ট:</translation>
+<translation id="7659483790930268440">ঠিকানা সন্ধান তালিকার ইনডেক্স:</translation>
 </translationbundle>

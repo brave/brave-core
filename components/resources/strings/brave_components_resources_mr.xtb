@@ -44,7 +44,6 @@
 <translation id="7180611975245234373">रिफ्रेश करा</translation>
 <translation id="4309915981827077375">सामान्य माहिती</translation>
 <translation id="8874184842967597500">कनेक्ट केलेले नाही</translation>
-<translation id="2359808026110333948">सुरू ठेवा</translation>
 <translation id="3587482841069643663">सर्व</translation>
 <translation id="2631006050119455616">सेव्ह केले</translation>
 <translation id="3866249974567520381">वर्णन</translation>
@@ -69,15 +68,17 @@
 <translation id="572392919096807438">माझा निर्णय लक्षात ठेवा</translation>
 <translation id="5308380583665731573">कनेक्‍ट करा</translation>
 <translation id="3368922792935385530">कनेक्ट केले</translation>
+<translation id="2359808026110333948">सुरू ठेवा</translation>
 <translation id="6965382102122355670">ठीक आहे</translation>
 <translation id="5234764350956374838">डिसमिस करा</translation>
 <translation id="8281886186245836920">वगळा</translation>
+<translation id="1483493594462132177">पाठवा</translation>
+<translation id="1177863135347784049">सानुकूल</translation>
 <translation id="8168435359814927499">आशय</translation>
 <translation id="1383876407941801731">शोधा</translation>
 <translation id="2805756323405976993">अॅप्लिकेशन</translation>
 <translation id="1987317783729300807">खाती</translation>
 <translation id="629730747756840877">खाते</translation>
-<translation id="1483493594462132177">पाठवा</translation>
 <translation id="1201402288615127009">पुढील</translation>
 <translation id="8712637175834984815">समजले</translation>
 <translation id="6896758677409633944">कॉपी करा</translation>
@@ -104,6 +105,7 @@
 <translation id="5677928146339483299">अवरोधित</translation>
 <translation id="1165039591588034296">एरर</translation>
 <translation id="3380365263193509176">अज्ञात एरर</translation>
+<translation id="9218430445555521422">डीफॉल्ट म्हणून सेट करा</translation>
 <translation id="4430019312045809116">व्हॉल्यूम</translation>
 <translation id="6129953537138746214">जागा</translation>
 <translation id="4412698727486357573">मदत केंद्र</translation>

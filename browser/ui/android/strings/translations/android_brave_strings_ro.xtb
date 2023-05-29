@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">Activați suportul pentru eliminarea URL-urilor principale de urmărire prin redirecționare.</translation>
 <translation id="94154759592465111">Blocare script</translation>
 <translation id="7714773920987474116">Blochează JavaScript (poate bloca site-urile)</translation>
+<translation id="1660979054779793659">Youtube</translation>
+<translation id="2233004324252915283">Blocați conținutul recomandat de YouTube</translation>
+<translation id="1005372663692637999">Blochează elementele up next și end card de pe youtube.com.</translation>
+<translation id="5152595963250646670">Blocați elementele care distrag atenția de pe YouTube</translation>
+<translation id="2998960761270772157">Blocați elementele de conectare, meniu, comentarii și informații video de pe youtube.com.</translation>
 <translation id="6052725679982758334">Blocare social media</translation>
 <translation id="7498695072878479744">Permite butoane de conectare Google pe site-uri terțe</translation>
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">Site-urile pot solicita să utilizeze conectarea Google anterioară prin intermediul modulelor cookie terțe</translation>
 <translation id="2903783737778379345">Nu permiteți conectarea Google anterioară prin intermediul modulelor cookie terțe</translation>
 <translation id="6880817299303842099">Este permisă utilizarea modulelor cookie terțe pentru conectarea Google anterioară</translation>
+<translation id="5169650598465327872">Acces Localhost</translation>
+<translation id="4172219483893066798">Site-urile pot solicita acces la resursele localhost</translation>
+<translation id="7181706637590665047">Nu permiteți accesul la resursele localhost</translation>
+<translation id="1485435696620658073">Acces permis la resursele localhost</translation>
 <translation id="181905442828471321">Valori implicite globale pentru scuturile Brave</translation>
 <translation id="2675679258824361492">Alte setări de confidențialitate</translation>
 <translation id="8026334261755873520">Șterge datele de navigare</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">Acest cont Brave Sync a fost șters de pe un alt dispozitiv. Dacă nu ați vrut să dezactivați Sync, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> creați din nou contul</translation>
 <translation id="4094590686212463338">Nu a putut fi accesat lanțul de sincronizare. Lanțul de sincronizare a fost șters.</translation>
-<translation id="5633907266617216186">Adrese, informații de plată etc.</translation>
+<translation id="4908081302669157000">Numere de telefon, email-uri și adrese</translation>
 <translation id="1056898198331236512">Avertisment</translation>
 <translation id="1426410128494586442">Da</translation>
 <translation id="7811264919113243207">Astfel, veți distribui datele dvs. Brave (posibil, inclusiv parolele) dispozitivului care a generat aceste cuvinte-cod.
@@ -751,6 +760,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1118876217803190221">Sold insuficient</translation>
 <translation id="275990379543116961">Fonduri insuficiente pentru gas</translation>
 <translation id="3292453499915466604">Lichidități insuficiente</translation>
+<translation id="3025158262797849291">Formatul numărului nerecunoscut</translation>
 <translation id="3380365263193509176">Eroare necunoscută</translation>
 <translation id="5932938770824268122">Cheie privată</translation>
 <translation id="2472882733835903303">Afișați cheia privată</translation>
@@ -770,6 +780,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6015436276085482001">Respins</translation>
 <translation id="6666273175654835609">Trimis</translation>
 <translation id="2331676293859649642">Confirmat</translation>
+<translation id="8214232307424031138">Semnat</translation>
 <translation id="1165039591588034296">Eroare</translation>
 <translation id="8364362220156372884">Taxă: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> (<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Folosiți cel mai rapid browser?</translation>
@@ -800,7 +811,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5061574358754621254">Date privind prețurile, oferite de CoinGecko</translation>
 <translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
 <translation id="8574289650879708853">Adăugați activ personalizat</translation>
-<translation id="1974060860693918893">Avansate</translation>
+<translation id="1255896809210433555">Adăugați NFT</translation>
 <translation id="7791543448312431591">Adaugă</translation>
 <translation id="6600400596821238377">Numele token-ului</translation>
 <translation id="4432966365400169165">Adresă contract token</translation>
@@ -1025,10 +1036,10 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6605147707233193230">Activați pentru a susține creatorii de conținut</translation>
 <translation id="1609556006143307897">Contribuiți la susținerea creatorilor de conținut</translation>
 <translation id="6067959437127691361">Folosind Recompensele Brave, îi puteți susține pe creatorii de conținut și puteți câștiga BAT.</translation>
-<translation id="121894865378699201">Vreți să câștigați BAT?</translation>
-<translation id="2648805457288107211">Conectați-vă contul de custodie la profilul dvs. de Recompense. Dacă nu aveți un cont, veți avea posibilitatea să vă creați unul.</translation>
+<translation id="3264975266761862670">Sunteți gata să începeți să câștigați?</translation>
+<translation id="265337947574975838">Conectați-vă sau creați un cont la unul dintre partenerii noștri.</translation>
 <translation id="1772961321862399863">Pentru a câștiga BAT, utilizatorii trebuie să conecteze un cont de custodie la Recompensele Brave. Din păcate, nu există niciun custode disponibil în regiunea dvs., prin urmare, nu puteți acumula câștiguri. Pentru moment, activarea Recompenselor Brave va susține automat creatorii.</translation>
-<translation id="5430495762768325224">Aflați mai multe despre BAT</translation>
+<translation id="654447476965480878">Aflați mai multe despre câștigurile în BAT</translation>
 <translation id="6278643716658443228">Setări Rewards</translation>
 <translation id="6516984207843289176">Conectați contul</translation>
 <translation id="4272136334824111854">Luna aceasta, ați vizitat <ph name="CREATOR_COUNT"/> creatori susținuți de Recompensele Brave.</translation>
@@ -1059,6 +1070,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="171158953146804144">Pe <ph name="DUE_DATE"/>, vom întrerupe asistența pentru soldurile BAT virtuale existente. Din păcate, nu există custozi disponibili în regiunea dvs. (<ph name="REGION"/>) pentru a vă retrage câștigurile. Până atunci, puteți contribui în continuare la creatorii dvs. favoriți.</translation>
 <translation id="8949422576126100041">Vizualizați pagina cu ajutorul Speedreader?</translation>
 <translation id="591648995518106347">Încarcă automat articolele eligibile în modul cititor</translation>
+<translation id="1295796122927221823">Vizualizați în modul citire</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> pe <ph name="NETWORK"/></translation>
 <translation id="295620834661738195">Listă de redare Brave</translation>
 <translation id="4850886885716139402">Afișează</translation>
@@ -1131,4 +1143,10 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="3631131732607750008">Conținutul a expirat. Încercați din nou în câteva secunde.</translation>
 <translation id="9085765419770918643">Nu există încă NFT-uri aici.</translation>
 <translation id="8445532667841598737">Sunteți gata să adăugați ceva? Faceți clic pe butonul de mai jos pentru a importa.</translation>
+<translation id="5925465310724910998">Doriți ca NFT-urile dvs. să fie afișate automat?</translation>
+<translation id="2827460859891872324">Portofelul Brave poate utiliza un serviciu terț pentru a vă afișa automat NFT-urile. Brave va partaja adresele portofelului dvs. cu <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> pentru a furniza acest serviciu. <ph name="BEGIN_LINK_2"/>Aflați mai multe.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">Activați descoperirea NFT-urilor</translation>
+<translation id="622372328961630111">Adăugați automat NFT-uri pe care le dețineți în Portofel folosind API-uri de la terțe părți. <ph name="BEGIN_LINK_1"/>Aflați mai multe.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">Contul tabelului de căutare a adreselor:</translation>
+<translation id="7659483790930268440">Indexul tabelului de căutare a adreselor:</translation>
 </translationbundle>

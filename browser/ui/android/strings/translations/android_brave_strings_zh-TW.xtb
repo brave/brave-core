@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">啟用對繞過頂層重新導向追蹤 URL 的支援。</translation>
 <translation id="94154759592465111">阻擋指令稿</translation>
 <translation id="7714773920987474116">封鎖 JavaScript (可能會使網站無法正常運作)</translation>
+<translation id="1660979054779793659">YouTube</translation>
+<translation id="2233004324252915283">封鎖 YouTube 推薦內容</translation>
+<translation id="1005372663692637999">封鎖 youtube.com 的「下一部影片」和結尾畫面等元素。</translation>
+<translation id="5152595963250646670">封鎖 YouTube 上使人分心的元素</translation>
+<translation id="2998960761270772157">封鎖 youtube.com 的登入、選單、留言和影片資訊等元素。</translation>
 <translation id="6052725679982758334">阻擋社群媒體</translation>
 <translation id="7498695072878479744">在第三方網站上允許 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">網站可要求透過第三方 Cookie 使用舊版 Google 登入</translation>
 <translation id="2903783737778379345">不允許透過第三方 Cookie 使用舊版 Google 登入</translation>
 <translation id="6880817299303842099">允許使用第三方 Cookie 進行舊版 Google 登入</translation>
+<translation id="5169650598465327872">存取本地主機</translation>
+<translation id="4172219483893066798">網站可要求存取本地主機資源</translation>
+<translation id="7181706637590665047">禁止存取本地主機資源</translation>
+<translation id="1485435696620658073">已允許存取本地主機資源</translation>
 <translation id="181905442828471321">Brave shields 全域預設值</translation>
 <translation id="2675679258824361492">其他私隱設定</translation>
 <translation id="8026334261755873520">清除瀏覽資料</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">此 Brave Sync 帳戶已從其他裝置刪除。如果您不是要停用 Sync，請<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新建立帳戶</translation>
 <translation id="4094590686212463338">無法加入此同步鏈。同步鏈已被刪除。</translation>
-<translation id="5633907266617216186">地址、付款資訊等</translation>
+<translation id="4908081302669157000">電話號碼、電子郵件和地址</translation>
 <translation id="1056898198331236512">警告</translation>
 <translation id="1426410128494586442">是</translation>
 <translation id="7811264919113243207">這會與產生這個二維碼的裝置分享您的 Brave 資料，可能包括您的密碼。
@@ -750,6 +759,7 @@
 <translation id="1118876217803190221">餘額不足</translation>
 <translation id="275990379543116961">GAS 資金不足</translation>
 <translation id="3292453499915466604">流動性不足</translation>
+<translation id="3025158262797849291">數字格式無法識別</translation>
 <translation id="3380365263193509176">未知的錯誤</translation>
 <translation id="5932938770824268122">私鑰</translation>
 <translation id="2472882733835903303">顯示私鑰</translation>
@@ -769,6 +779,7 @@
 <translation id="6015436276085482001">拒絕</translation>
 <translation id="6666273175654835609">已送出</translation>
 <translation id="2331676293859649642">已確認</translation>
+<translation id="8214232307424031138">已簽署</translation>
 <translation id="1165039591588034296">錯誤</translation>
 <translation id="8364362220156372884">手續費：<ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">您使用的是最快的網頁瀏覽器嗎？</translation>
@@ -799,7 +810,7 @@
 <translation id="5061574358754621254">價格資料由 CoinGecko 提供</translation>
 <translation id="4626407663177532837">報價已含 0.875% Brave 手續費。</translation>
 <translation id="8574289650879708853">新增自訂資產</translation>
-<translation id="1974060860693918893">進階</translation>
+<translation id="1255896809210433555">新增 NFT</translation>
 <translation id="7791543448312431591">新增</translation>
 <translation id="6600400596821238377">代幣名稱</translation>
 <translation id="4432966365400169165">代幣合約位址</translation>
@@ -1023,10 +1034,10 @@
 <translation id="6605147707233193230">開啟以立即支持內容創作者</translation>
 <translation id="1609556006143307897">您正在支持內容創作者</translation>
 <translation id="6067959437127691361">使用 Brave Rewards 不僅能支持內容創作者，還可賺取 BAT。</translation>
-<translation id="121894865378699201">準備要開始賺取 BAT 了嗎？</translation>
-<translation id="2648805457288107211">只要將託管帳戶與 Rewards 個人資料連結即可。如果您沒有帳戶，可以立即建立。</translation>
+<translation id="3264975266761862670">準備好開始賺取收益了嗎？</translation>
+<translation id="265337947574975838">連結帳戶或向我們的任一合作夥伴建立帳戶。</translation>
 <translation id="1772961321862399863">若要賺取 BAT，使用者必須將託管帳戶與 Brave Rewards 連結。不過，您所在的地區沒有保管人可供您使用，因此您無法賺取收益。目前開啟 Brave Rewards 的話，可自動支持創作者。</translation>
-<translation id="5430495762768325224">深入瞭解 BAT</translation>
+<translation id="654447476965480878">深入瞭解如何賺取 BAT</translation>
 <translation id="6278643716658443228">Rewards 設定</translation>
 <translation id="6516984207843289176">連結帳號</translation>
 <translation id="4272136334824111854">本月您已造訪 <ph name="CREATOR_COUNT"/> 名 Brave Rewards 支援的創作者</translation>
@@ -1057,6 +1068,7 @@
 <translation id="171158953146804144">我們將於 <ph name="DUE_DATE"/> 止現有虛擬 BAT 餘額的支援。很抱歉，您所在的區域（<ph name="REGION"/>）沒有可用於提領餘額的託管帳戶。您仍可以在該日期前贊助您喜愛的創作者。</translation>
 <translation id="8949422576126100041">要使用 Speedreader 檢視頁面嗎？</translation>
 <translation id="591648995518106347">在閱讀器模式下自動載入符合資格的文章</translation>
+<translation id="1295796122927221823">以閱讀器模式查看</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> (位於 <ph name="NETWORK"/>)</translation>
 <translation id="295620834661738195">Brave 播放清單</translation>
 <translation id="4850886885716139402">檢視</translation>
@@ -1129,4 +1141,10 @@
 <translation id="3631131732607750008">內容已過期。請於幾秒後再試一次。</translation>
 <translation id="9085765419770918643">此處目前沒有任何 NFT。</translation>
 <translation id="8445532667841598737">準備好新增 NFT 了嗎？按下方按鈕即可匯入。</translation>
+<translation id="5925465310724910998">想讓您的 NFT 自動顯示嗎？</translation>
+<translation id="2827460859891872324">Brave Wallet 錢包可利用第三方服務來自動顯示您的 NFT。 Brave 會與 <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> 分享您的錢包位址，以提供此服務。 <ph name="BEGIN_LINK_2"/>深入瞭解。<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">啟用 NFT 探索</translation>
+<translation id="622372328961630111">使用第三方 API 將您擁有的 NFT 自動新增至錢包。<ph name="BEGIN_LINK_1"/>深入瞭解。<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">位址查詢表格帳戶：</translation>
+<translation id="7659483790930268440">位址查詢表格索引：</translation>
 </translationbundle>
