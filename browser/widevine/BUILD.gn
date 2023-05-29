@@ -104,6 +104,10 @@ if (is_win && !skip_signing) {
       inputs =
           [ "//third_party/widevine/scripts/signature_generator_python3.py" ]
       args = [
+        "PYTHONPATH=" +
+            rebase_path("//brave/third_party/macholib", root_build_dir),
+        "--",
+
         # We use vpython3 to have access to the `cryptography` library.
         "vpython3",
         rebase_path(
