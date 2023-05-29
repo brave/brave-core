@@ -23,6 +23,7 @@
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
@@ -43,6 +44,10 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/components/playlist/common/features.h"
 #endif
 
 namespace {
@@ -150,6 +155,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandForSidebar();
   UpdateCommandForBraveVPN();
+  UpdateCommandForPlaylist();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(browser_->profile())) {
     brave_vpn_pref_change_registrar_.Init(browser_->profile()->GetPrefs());
@@ -256,6 +262,14 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
     UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->is_purchased_user());
     UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN,
                          vpn_service->is_purchased_user());
+  }
+#endif
+}
+
+void BraveBrowserCommandController::UpdateCommandForPlaylist() {
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    UpdateCommandEnabled(IDC_SHOW_PLAYLIST_BUBBLE, browser_->is_type_normal());
   }
 #endif
 }
@@ -382,6 +396,13 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_JAVASCRIPT:
       brave::ToggleJavascriptEnabled(&*browser_);
+      break;
+    case IDC_SHOW_PLAYLIST_BUBBLE:
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+      brave::ShowPlaylistBubble(&*browser_);
+#else
+      NOTREACHED() << " This command shouldn't be enabled";
+#endif
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

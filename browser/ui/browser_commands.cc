@@ -336,4 +336,10 @@ void ToggleJavascriptEnabled(Browser* browser) {
   shields->SetIsNoScriptEnabled(!shields->GetNoScriptEnabled());
 }
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+void ShowPlaylistBubble(Browser* browser) {
+  BraveBrowserWindow::From(browser->window())->ShowPlaylistBubble();
+}
+#endif
+
 }  // namespace brave

@@ -7,6 +7,8 @@
 
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/components/playlist/common/features.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_params.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
@@ -19,7 +21,9 @@ const PageActionIconParams& ModifyIconParamsForBrave(
   auto& modifiable_params = const_cast<PageActionIconParams&>(params);
 
   // Add actions for Brave
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+      params.browser->is_type_normal() &&
+      !params.browser->profile()->IsOffTheRecord()) {
     // Insert Playlist action before sharing hub or at the end of the vector.
     modifiable_params.types_enabled.insert(
         base::ranges::find(modifiable_params.types_enabled,

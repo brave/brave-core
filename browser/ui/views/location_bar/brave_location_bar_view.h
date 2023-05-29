@@ -72,6 +72,8 @@ class BraveLocationBarView : public LocationBarView {
     return brave_actions_;
   }
 
+  void ShowPlaylistBubble();
+
  private:
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   friend class ::BraveActionsContainerTest;

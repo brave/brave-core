@@ -29,8 +29,11 @@ class PlaylistActionIconView : public PageActionIconView,
   PlaylistActionIconView& operator=(const PlaylistActionIconView&) = delete;
   ~PlaylistActionIconView() override;
 
+  void ShowPlaylistBubble();
+
+  // PageActionIconView:
+  void OnExecuting(ExecuteSource execute_source) override {}
   views::BubbleDialogDelegate* GetBubble() const override;
-  void OnExecuting(ExecuteSource execute_source) override;
   const gfx::VectorIcon& GetVectorIcon() const override;
   void UpdateImpl() override;
 

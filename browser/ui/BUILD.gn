@@ -303,8 +303,6 @@ source_set("ui") {
       "views/page_action/brave_page_action_icon_container_view.h",
       "views/playlist/playlist_action_bubble_view.cc",
       "views/playlist/playlist_action_bubble_view.h",
-      "views/playlist/playlist_action_icon_view.cc",
-      "views/playlist/playlist_action_icon_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
       "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.cc",
@@ -370,6 +368,13 @@ source_set("ui") {
       sources += [
         "views/update_recommended_message_box_mac.h",
         "views/update_recommended_message_box_mac.mm",
+      ]
+    }
+
+    if (enable_playlist_webui) {
+      sources += [
+        "views/playlist/playlist_action_icon_view.cc",
+        "views/playlist/playlist_action_icon_view.h",
       ]
     }
 

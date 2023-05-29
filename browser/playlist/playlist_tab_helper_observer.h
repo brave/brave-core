@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_PLAYLIST_PLAYLIST_TAB_HELPER_OBSERVER_H_
 #define BRAVE_BROWSER_PLAYLIST_PLAYLIST_TAB_HELPER_OBSERVER_H_
 
+#include <vector>
+
 #include "base/observer_list_types.h"
 
 namespace playlist {

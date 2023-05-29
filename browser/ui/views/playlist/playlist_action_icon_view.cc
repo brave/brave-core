@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 
+#include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -15,7 +16,7 @@ PlaylistActionIconView::PlaylistActionIconView(
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
     PageActionIconView::Delegate* page_action_icon_delegate)
     : PageActionIconView(command_updater,
-                         0,
+                         IDC_SHOW_PLAYLIST_BUBBLE,
                          icon_label_bubble_delegate,
                          page_action_icon_delegate,
                          "PlaylistActionIconView",
@@ -29,13 +30,14 @@ views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
   return PlaylistActionBubbleView::GetBubble();
 }
 
-void PlaylistActionIconView::OnExecuting(ExecuteSource execute_source) {
-  if (PlaylistActionBubbleView::IsShowingBubble()) {
+void PlaylistActionIconView::ShowPlaylistBubble() {
+  auto* current_contents = GetWebContents();
+  DCHECK_EQ(last_web_contents_, current_contents);
+
+  if (PlaylistActionBubbleView::IsShowingBubble() || !current_contents) {
     return;
   }
-
-  DCHECK_EQ(last_web_contents_, GetWebContents());
-  PlaylistActionBubbleView::ShowBubble(this, GetWebContents());
+  PlaylistActionBubbleView::ShowBubble(this, current_contents);
 }
 
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
