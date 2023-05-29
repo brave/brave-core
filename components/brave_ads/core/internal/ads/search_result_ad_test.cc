@@ -158,7 +158,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
       2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(2U, GetHistoryItemCount());
+  EXPECT_EQ(0U, GetHistoryItemCount());
   EXPECT_EQ(0U, GetTransactionCount());
 }
 
@@ -187,7 +187,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
       2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   ASSERT_EQ(
       1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  ASSERT_EQ(1U, GetHistoryItemCount());
+  ASSERT_EQ(0U, GetHistoryItemCount());
   ASSERT_EQ(0U, GetTransactionCount());
 
   SearchResultAd::TriggerDeferredAdViewedEventForTesting();
@@ -197,7 +197,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
       2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  EXPECT_EQ(2U, GetHistoryItemCount());
+  EXPECT_EQ(0U, GetHistoryItemCount());
   EXPECT_EQ(0U, GetTransactionCount());
 }
 
@@ -225,7 +225,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
       1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(
       1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
-  EXPECT_EQ(2U, GetHistoryItemCount());
+  EXPECT_EQ(0U, GetHistoryItemCount());
   EXPECT_EQ(0U, GetTransactionCount());
 }
 

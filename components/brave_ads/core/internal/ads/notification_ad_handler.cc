@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
@@ -96,7 +95,7 @@ void NotificationAdHandler::TriggerEvent(
       << " should not be called with kServed as this event is handled when "
          "calling TriggerEvent with kViewed";
   CHECK(UserHasOptedInToBravePrivateAds())
-      << " should only be called if opted-in to Brave Private Ads";
+      << " should only be called if user has opted-in to Brave Private Ads";
 
   if (event_type == mojom::NotificationAdEventType::kViewed) {
     return event_handler_.FireEvent(

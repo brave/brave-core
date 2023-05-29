@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
@@ -65,8 +64,8 @@ NewTabPageAdHandler::NewTabPageAdHandler(
 NewTabPageAdHandler::~NewTabPageAdHandler() = default;
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
-  CHECK(ShouldRewardUser())
-      << " should only be called if opted-in to Brave Private Ads";
+  CHECK(UserHasOptedInToBravePrivateAds())
+      << " should only be called if the user has opted-in to Brave Private Ads";
 
   serving_.MaybeServeAd(base::BindOnce(&NewTabPageAdHandler::MaybeServeCallback,
                                        weak_factory_.GetWeakPtr(),
@@ -84,7 +83,7 @@ void NewTabPageAdHandler::TriggerEvent(
          "calling MaybeServe or when triggering kViewed if Brave Private Ads "
          "are disabled";
 
-  if (!ShouldRewardUser() &&
+  if (!UserHasOptedInToBravePrivateAds() &&
       event_type == mojom::NewTabPageAdEventType::kViewed) {
     // |MaybeServe| will trigger a |kServed| event if Brave Private Ads are
     // enabled; otherwise, we need to trigger a |kServed| event when triggering

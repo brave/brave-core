@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/ad_content_info.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -73,49 +74,59 @@ HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
   return history_items;
 }
 
-HistoryItemInfo HistoryManager::Add(
-    const InlineContentAdInfo& ad,
-    const ConfirmationType& confirmation_type) const {
-  HistoryItemInfo history_item =
+void HistoryManager::Add(const InlineContentAdInfo& ad,
+                         const ConfirmationType& confirmation_type) const {
+  if (!UserHasOptedInToBravePrivateAds()) {
+    return;
+  }
+
+  const HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.description);
   NotifyDidAddHistory(history_item);
-  return history_item;
 }
 
-HistoryItemInfo HistoryManager::Add(
-    const NewTabPageAdInfo& ad,
-    const ConfirmationType& confirmation_type) const {
-  HistoryItemInfo history_item =
+void HistoryManager::Add(const NewTabPageAdInfo& ad,
+                         const ConfirmationType& confirmation_type) const {
+  if (!UserHasOptedInToBravePrivateAds()) {
+    return;
+  }
+
+  const HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.company_name, ad.alt);
   NotifyDidAddHistory(history_item);
-  return history_item;
 }
 
-HistoryItemInfo HistoryManager::Add(
-    const NotificationAdInfo& ad,
-    const ConfirmationType& confirmation_type) const {
-  HistoryItemInfo history_item =
+void HistoryManager::Add(const NotificationAdInfo& ad,
+                         const ConfirmationType& confirmation_type) const {
+  if (!UserHasOptedInToBravePrivateAds()) {
+    return;
+  }
+
+  const HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.body);
   NotifyDidAddHistory(history_item);
-  return history_item;
 }
 
-HistoryItemInfo HistoryManager::Add(
-    const PromotedContentAdInfo& ad,
-    const ConfirmationType& confirmation_type) const {
-  HistoryItemInfo history_item =
+void HistoryManager::Add(const PromotedContentAdInfo& ad,
+                         const ConfirmationType& confirmation_type) const {
+  if (!UserHasOptedInToBravePrivateAds()) {
+    return;
+  }
+
+  const HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.description);
   NotifyDidAddHistory(history_item);
-  return history_item;
 }
 
-HistoryItemInfo HistoryManager::Add(
-    const SearchResultAdInfo& ad,
-    const ConfirmationType& confirmation_type) const {
-  HistoryItemInfo history_item =
+void HistoryManager::Add(const SearchResultAdInfo& ad,
+                         const ConfirmationType& confirmation_type) const {
+  if (!UserHasOptedInToBravePrivateAds()) {
+    return;
+  }
+
+  const HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.headline_text, ad.description);
   NotifyDidAddHistory(history_item);
-  return history_item;
 }
 
 mojom::UserReactionType HistoryManager::LikeAd(

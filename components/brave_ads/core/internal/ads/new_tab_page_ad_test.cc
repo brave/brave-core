@@ -134,7 +134,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
   EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1U, GetHistoryItemCount());
+  EXPECT_EQ(0U, GetHistoryItemCount());
   EXPECT_EQ(0U, GetTransactionCount());
 }
 
@@ -193,7 +193,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
   EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
-  EXPECT_EQ(2U, GetHistoryItemCount());
+  EXPECT_EQ(0U, GetHistoryItemCount());
   EXPECT_EQ(0U, GetTransactionCount());
 }
 

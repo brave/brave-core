@@ -29,6 +29,64 @@ class BraveAdsAccountUtilTest : public UnitTestBase {
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
 };
 
+TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToBravePrivateAds) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(UserHasOptedInToBravePrivateAds());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToBravePrivateAds) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(UserHasOptedInToBravePrivateAds());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToBraveNews) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(UserHasOptedInToBraveNews());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToBraveNews) {
+  // Arrange
+  DisableBraveNewsAds();
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(UserHasOptedInToBraveNews());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasOptedIn) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(UserHasOptedIn());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedIn) {
+  // Arrange
+  DisableBravePrivateAds();
+  DisableBraveNewsAds();
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(UserHasOptedIn());
+}
+
 TEST_F(BraveAdsAccountUtilTest, ShouldRewardUser) {
   // Arrange
 
@@ -38,8 +96,7 @@ TEST_F(BraveAdsAccountUtilTest, ShouldRewardUser) {
   EXPECT_TRUE(ShouldRewardUser());
 }
 
-TEST_F(BraveAdsAccountUtilTest,
-       ShouldNotRewardUserIfBravePrivateAdsAreDisabled) {
+TEST_F(BraveAdsAccountUtilTest, ShouldNotRewardUser) {
   // Arrange
   DisableBravePrivateAds();
 
@@ -72,6 +129,7 @@ TEST_F(BraveAdsAccountUtilTest, ResetRewards) {
   ResetRewards(base::BindOnce([](const bool success) {
     ASSERT_TRUE(success);
 
+    // Assert
     const database::table::Transactions database_table;
     database_table.GetAll(base::BindOnce(
         [](const bool success, const TransactionList& transactions) {
@@ -85,17 +143,16 @@ TEST_F(BraveAdsAccountUtilTest, ResetRewards) {
 
     EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
   }));
-
-  // Assert
 }
 
-TEST_F(BraveAdsAccountUtilTest, ResetRewardsWithNoState) {
+TEST_F(BraveAdsAccountUtilTest, ResetRewardsIfNoState) {
   // Arrange
 
   // Act
   ResetRewards(base::BindOnce([](const bool success) {
     ASSERT_TRUE(success);
 
+    // Assert
     const database::table::Transactions database_table;
     database_table.GetAll(base::BindOnce(
         [](const bool success, const TransactionList& transactions) {
@@ -109,8 +166,6 @@ TEST_F(BraveAdsAccountUtilTest, ResetRewardsWithNoState) {
 
     EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
   }));
-
-  // Assert
 }
 
 }  // namespace brave_ads

@@ -9,9 +9,9 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
@@ -65,6 +65,9 @@ InlineContentAdHandler::~InlineContentAdHandler() = default;
 void InlineContentAdHandler::MaybeServe(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
+  CHECK(UserHasOptedInToBraveNews())
+      << " should only be called if the user has opted-in to Brave News Ads";
+
   serving_.MaybeServeAd(
       dimensions,
       base::BindOnce(&InlineContentAdHandler::MaybeServeCallback,
@@ -80,8 +83,8 @@ void InlineContentAdHandler::TriggerEvent(
   CHECK_NE(mojom::InlineContentAdEventType::kServed, event_type)
       << " should not be called with kServed as this event is handled when "
          "calling MaybeServe";
-  CHECK(UserHasOptedInToBraveNews()) << " should only be called if opted-in to "
-                                        "Brave News Ads";
+  CHECK(UserHasOptedInToBraveNews())
+      << " should only be called if the user has opted-in to Brave News Ads";
 
   event_handler_.FireEvent(
       placement_id, creative_instance_id, event_type,

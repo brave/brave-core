@@ -113,8 +113,9 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
           ? "ShouldServeAtRegularIntervals"
           : "ShouldNotServeAtRegularIntervals";
 
-  const std::string is_enabled =
-      test_param.param.is_enabled ? "IsEnabled" : "IsDisabled";
+  const std::string is_enabled = test_param.param.is_enabled
+                                     ? "BravePrivateAdsAreEnabled"
+                                     : "BravePrivateAdsAreDisabled";
 
   const std::string is_browser_active = test_param.param.is_browser_active
                                             ? "BrowserIsActive"

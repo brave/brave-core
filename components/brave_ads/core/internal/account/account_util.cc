@@ -18,7 +18,9 @@
 
 namespace brave_ads {
 
-namespace {
+bool UserHasOptedInToBravePrivateAds() {
+  return AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
+}
 
 bool UserHasOptedInToBraveNews() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(
@@ -27,14 +29,8 @@ bool UserHasOptedInToBraveNews() {
              brave_news::prefs::kNewTabPageShowToday);
 }
 
-}  // namespace
-
 bool UserHasOptedIn() {
   return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews();
-}
-
-bool UserHasOptedInToBravePrivateAds() {
-  return AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
 }
 
 bool ShouldRewardUser() {
