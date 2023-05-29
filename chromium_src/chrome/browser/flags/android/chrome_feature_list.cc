@@ -37,6 +37,7 @@
     &debounce::features::kBraveDebounce,                                \
     &net::features::kBraveHttpsByDefault,                               \
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
+    &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveLocalhostAccessPermission
 
 // clang-format on

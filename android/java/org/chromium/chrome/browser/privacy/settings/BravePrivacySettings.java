@@ -113,13 +113,14 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_SHIELDS_SUMMARY = "shields_summary";
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
+    private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
 
     private static final String[] NEW_PRIVACY_PREFERENCE_ORDER = {
             PREF_BRAVE_SHIELDS_GLOBALS_SECTION, //  shields globals  section
             PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_DE_AMP, PREF_DEBOUNCE,
             PREF_HTTPS_UPGRADE, PREF_HTTPSE, PREF_HTTPS_FIRST_MODE, PREF_BLOCK_SCRIPTS,
             PREF_BLOCK_CROSS_SITE_COOKIES, PREF_FINGERPRINTING_PROTECTION,
-            PREF_FINGERPRINT_LANGUAGE,
+            PREF_FINGERPRINT_LANGUAGE, PREF_FORGET_FIRST_PARTY_STORAGE,
             PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
             PREF_CLEAR_ON_EXIT, PREF_CLEAR_BROWSING_DATA,
             PREF_BRAVE_SOCIAL_BLOCKING_SECTION, // social blocking section
@@ -158,6 +159,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private BraveDialogPreference mHttpsUpgradePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mBlockScriptsPref;
+    private ChromeSwitchPreference mForgetFirstPartyStoragePref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
     private ChromeSwitchPreference mSendP3A;
     private ChromeSwitchPreference mSendCrashReports;
@@ -296,6 +298,13 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mFingerprntLanguagePref =
                 (ChromeSwitchPreference) findPreference(PREF_FINGERPRINT_LANGUAGE);
         mFingerprntLanguagePref.setOnPreferenceChangeListener(this);
+
+        mForgetFirstPartyStoragePref =
+                (ChromeSwitchPreference) findPreference(PREF_FORGET_FIRST_PARTY_STORAGE);
+        mForgetFirstPartyStoragePref.setOnPreferenceChangeListener(this);
+        boolean forgetFirstPartyStorageIsEnabled =
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_FORGET_FIRST_PARTY_STORAGE);
+        mForgetFirstPartyStoragePref.setVisible(forgetFirstPartyStorageIsEnabled);
 
         mCloseTabsOnExitPref = (ChromeSwitchPreference) findPreference(PREF_CLOSE_TABS_ON_EXIT);
         mCloseTabsOnExitPref.setOnPreferenceChangeListener(this);
@@ -540,6 +549,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             }
         } else if (PREF_BLOCK_SCRIPTS.equals(key)) {
             BraveShieldsContentSettings.setJavascriptPref((boolean) newValue);
+        } else if (PREF_FORGET_FIRST_PARTY_STORAGE.equals(key)) {
+            BraveShieldsContentSettings.setForgetFirstPartyStoragePref((boolean) newValue);
         } else if (PREF_CLOSE_TABS_ON_EXIT.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
         } else if (PREF_SEND_P3A.equals(key)) {
@@ -693,6 +704,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             mHttpsUpgradePref.setSummary(
                     getActivity().getResources().getString(R.string.https_upgrade_option_3));
         }
+
+        mForgetFirstPartyStoragePref.setChecked(
+                BraveShieldsContentSettings.getForgetFirstPartyStoragePref());
 
         mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
 
