@@ -346,7 +346,9 @@ class SwapStoreTests: XCTestCase {
       network: .mockSolana,
       coin: .sol
     )
-    swapService._jupiterQuote = { _, completion in
+    swapService._jupiterQuote = { jupiterQuoteParams, completion in
+      // verify 0.005 is converted to 50
+      XCTAssertEqual(jupiterQuoteParams.slippageBps, 50)
       let route: BraveWallet.JupiterRoute = .init(
         inAmount: 10000000, // 0.01 SOL (9 decimals)
         outAmount: 2500000, // 2.5 SPD (6 decimals)
@@ -354,6 +356,7 @@ class SwapStoreTests: XCTestCase {
         otherAmountThreshold: 2500000, // 2.5 SPD (6 decimals)
         swapMode: "",
         priceImpactPct: 0,
+        slippageBps: jupiterQuoteParams.slippageBps, // 0.5%
         marketInfos: [])
       completion(.init(routes: [route]), nil, "")
     }
@@ -565,14 +568,14 @@ class SwapStoreTests: XCTestCase {
       otherAmountThreshold: 2500000, // 2.5 SPD (6 decimals)
       swapMode: "",
       priceImpactPct: 0,
+      slippageBps: 50, // 0.5%
       marketInfos: [])
     let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
       network: .mockSolana,
       coin: .sol
     )
     swapService._jupiterSwapTransactions = { _, completion in
-      let swapTransactions: BraveWallet.JupiterSwapTransactions = .init(
-        setupTransaction: "", swapTransaction: "1", cleanupTransaction: "")
+      let swapTransactions: BraveWallet.JupiterSwapTransactions = .init(swapTransaction: "1")
       completion(swapTransactions, nil, "")
     }
     solTxManagerProxy._makeTxDataFromBase64EncodedTransaction = { _, _, _, completion in

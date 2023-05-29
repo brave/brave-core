@@ -520,11 +520,14 @@ public class SwapTokenStore: ObservableObject {
     guard base == .perSellAsset else {
       return // entering buy amount is disabled for Solana swap
     }
+    // 0.5% is 50bps. We store 0.5% as 0.005, so multiply by 10_000
+    let slippageBps = Int32(swapParams.slippagePercentage * 10_000)
     let jupiterQuoteParams: BraveWallet.JupiterQuoteParams = .init(
       inputMint: swapParams.sellToken,
       outputMint: swapParams.buyToken,
       amount: swapParams.sellAmount,
-      slippagePercentage: swapParams.slippagePercentage
+      slippageBps: slippageBps,
+      userPublicKey: swapParams.takerAddress
     )
     self.updatingPriceQuote = true
     let (jupiterQuote, swapErrorResponse, _) = await swapService.jupiterQuote(jupiterQuoteParams)
