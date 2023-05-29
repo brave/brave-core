@@ -27,15 +27,6 @@ class BATLedgerTest : public testing::Test {
   void InitializeLedger();
 
  protected:
-  // Returns the |TaskEnvironment| for this test.
-  base::test::TaskEnvironment* task_environment() { return &task_environment_; }
-
-  // Returns the |TestLedgerClient| instance for this test.
-  TestLedgerClient* GetTestLedgerClient() { return &client_; }
-
-  // Returns the |LedgerImpl| instance for this test.
-  LedgerImpl* GetLedgerImpl() { return &ledger_; }
-
   // Adds a mock network response for the specified URL and HTTP method.
   void AddNetworkResultForTesting(const std::string& url,
                                   mojom::UrlMethod method,
@@ -44,11 +35,11 @@ class BATLedgerTest : public testing::Test {
   // Sets a callback that is executed when a message is logged to the client.
   void SetLogCallbackForTesting(TestLedgerClient::LogCallback callback);
 
- private:
   base::test::TaskEnvironment task_environment_;
   TestLedgerClient client_;
+
+ private:
   mojo::AssociatedReceiver<mojom::LedgerClient> client_receiver_{&client_};
-  LedgerImpl ledger_;
 };
 
 }  // namespace brave_rewards::internal

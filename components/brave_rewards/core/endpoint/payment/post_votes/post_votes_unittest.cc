@@ -12,6 +12,7 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -20,19 +21,15 @@
 using ::testing::_;
 using ::testing::MockFunction;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
-class PostVotesTest : public testing::Test {
+class PostVotesTest : public MockLedgerTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostVotes votes_{mock_ledger_impl_};
+  PostVotes votes_;
 };
 
 TEST_F(PostVotesTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -65,7 +62,7 @@ TEST_F(PostVotesTest, ServerOK) {
 }
 
 TEST_F(PostVotesTest, ServerError400) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -98,7 +95,7 @@ TEST_F(PostVotesTest, ServerError400) {
 }
 
 TEST_F(PostVotesTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -131,7 +128,7 @@ TEST_F(PostVotesTest, ServerError500) {
 }
 
 TEST_F(PostVotesTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -163,6 +160,4 @@ TEST_F(PostVotesTest, ServerErrorRandom) {
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace payment
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::payment

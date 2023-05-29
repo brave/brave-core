@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth/post_oauth_uphold.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -20,8 +21,8 @@
 
 using ::testing::_;
 using ::testing::TestParamInfo;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
 namespace brave_rewards::internal::endpoints::test {
 using Error = PostOAuthUphold::Error;
@@ -36,16 +37,13 @@ using PostOAuthUpholdParamType = std::tuple<
 >;
 // clang-format on
 
-class PostOAuthUphold : public TestWithParam<PostOAuthUpholdParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+class PostOAuthUphold : public MockLedgerTest,
+                        public WithParamInterface<PostOAuthUpholdParamType> {};
 
 TEST_P(PostOAuthUphold, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -58,7 +56,7 @@ TEST_P(PostOAuthUphold, Paths) {
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
   RequestFor<endpoints::PostOAuthUphold>(
-      mock_ledger_impl_, "bb50f9d4782fb86a4302ef18179033abb17c257f")
+      "bb50f9d4782fb86a4302ef18179033abb17c257f")
       .Send(callback.Get());
 
   task_environment_.RunUntilIdle();

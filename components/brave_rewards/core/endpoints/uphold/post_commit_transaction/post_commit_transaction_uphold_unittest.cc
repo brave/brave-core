@@ -13,14 +13,15 @@
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_commit_transaction/post_commit_transaction_uphold.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=*PostCommitTransactionUphold*
 
 using ::testing::_;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
 namespace brave_rewards::internal::endpoints::test {
 using Error = PostCommitTransactionUphold::Error;
@@ -36,16 +37,13 @@ using PostCommitTransactionUpholdParamType = std::tuple<
 // clang-format on
 
 class PostCommitTransactionUphold
-    : public TestWithParam<PostCommitTransactionUpholdParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+    : public MockLedgerTest,
+      public WithParamInterface<PostCommitTransactionUpholdParamType> {};
 
 TEST_P(PostCommitTransactionUphold, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -58,7 +56,7 @@ TEST_P(PostCommitTransactionUphold, Paths) {
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
   RequestFor<endpoints::PostCommitTransactionUphold>(
-      mock_ledger_impl_, "token", "address",
+      "token", "address",
       mojom::ExternalTransaction::New("transaction_id", "contribution_id",
                                       "destination", "amount"))
       .Send(callback.Get());

@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -21,15 +22,12 @@
 using ::testing::_;
 using ::testing::MockFunction;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
-class PostBatLossTest : public testing::Test {
+class PostBatLossTest : public MockLedgerTest {
  protected:
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_.mock_client(),
-            GetStringState(state::kWalletBrave, _))
+    ON_CALL(mock_ledger().mock_client(), GetStringState(state::kWalletBrave, _))
         .WillByDefault([](const std::string&, auto callback) {
           std::string wallet = R"({
             "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
@@ -39,13 +37,11 @@ class PostBatLossTest : public testing::Test {
         });
   }
 
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  PostBatLoss loss_{mock_ledger_impl_};
+  PostBatLoss loss_;
 };
 
 TEST_F(PostBatLossTest, ServerOK) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -63,7 +59,7 @@ TEST_F(PostBatLossTest, ServerOK) {
 }
 
 TEST_F(PostBatLossTest, ServerError500) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -81,7 +77,7 @@ TEST_F(PostBatLossTest, ServerError500) {
 }
 
 TEST_F(PostBatLossTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -98,6 +94,4 @@ TEST_F(PostBatLossTest, ServerErrorRandom) {
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

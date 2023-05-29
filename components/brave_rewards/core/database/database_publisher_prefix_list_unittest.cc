@@ -14,16 +14,16 @@
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=DatabasePublisherPrefixListTest.*
 
 using ::testing::_;
 using ::testing::MockFunction;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabasePublisherPrefixListTest : public ::testing::Test {
+class DatabasePublisherPrefixListTest : public MockLedgerTest {
  protected:
   publisher::PrefixListReader CreateReader(uint32_t prefix_count) {
     publisher::PrefixListReader reader;
@@ -50,13 +50,11 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
     return reader;
   }
 
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  DatabasePublisherPrefixList database_prefix_list_{mock_ledger_impl_};
+  DatabasePublisherPrefixList database_prefix_list_;
 };
 
 TEST_F(DatabasePublisherPrefixListTest, Reset) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), RunDBTransaction(_, _))
       .Times(2)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         EXPECT_TRUE(transaction);
@@ -89,5 +87,4 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

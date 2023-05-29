@@ -10,6 +10,7 @@
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=UnblindedTest.*
 
@@ -20,18 +21,15 @@ namespace {
 const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
-class UnblindedTest : public ::testing::Test {
+class UnblindedTest : public MockLedgerTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  Unblinded unblinded_{mock_ledger_impl_};
+  Unblinded unblinded_;
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+  EXPECT_CALL(mock_ledger().mock_database(),
               GetSpendableUnblindedTokensByBatchTypes(_, _))
       .Times(1)
       .WillOnce([](const std::vector<mojom::CredsBatchType>&, auto callback) {
@@ -47,7 +45,7 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
         callback(std::move(tokens));
       });
 
-  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+  EXPECT_CALL(mock_ledger().mock_database(),
               GetContributionInfo(contribution_id, _))
       .Times(1)
       .WillOnce([](const std::string& id, auto callback) {
@@ -117,5 +115,4 @@ TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution

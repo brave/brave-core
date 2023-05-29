@@ -12,24 +12,22 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=DatabaseBalanceReportTest.*
 
 using ::testing::_;
 using ::testing::MockFunction;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseBalanceReportTest : public ::testing::Test {
+class DatabaseBalanceReportTest : public MockLedgerTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  DatabaseBalanceReport balance_report_{mock_ledger_impl_};
+  DatabaseBalanceReport balance_report_;
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -61,7 +59,7 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -85,7 +83,7 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -111,7 +109,7 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+  EXPECT_CALL(mock_ledger().mock_client(), RunDBTransaction(_, _))
       .Times(1)
       .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
@@ -132,5 +130,4 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
