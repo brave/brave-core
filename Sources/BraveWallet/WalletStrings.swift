@@ -3943,14 +3943,14 @@ extension Strings {
       "wallet.activityPageEmptyTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "No transactions yet",
+      value: "No transactions to view yet",
       comment: "The title when showing no transactions inside Activity tab."
     )
     public static let activityPageEmptyDescription = NSLocalizedString(
       "wallet.activityPageEmptyDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "After your first transaction you will be able to view it here.",
+      value: "Once you make a transaction, you'll be able to view it here.",
       comment: "The description when showing no transactions inside Activity tab."
     )
     public static let nftPageTitle = NSLocalizedString(
