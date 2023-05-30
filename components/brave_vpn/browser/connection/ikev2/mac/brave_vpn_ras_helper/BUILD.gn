@@ -1,0 +1,34 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/mac/config.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//build/apple/compile_plist.gni")
+import("//build/apple/tweak_info_plist.gni")
+import("//build/config/mac/rules.gni")
+
+assert(enable_brave_vpn)
+assert(is_mac)
+
+tweak_info_plist("ras_helper_plist") {
+  info_plist = "app-entitlements.plist"
+}
+
+mac_app_bundle("brave_vpn_ras_helper") {
+  info_plist_target = ":ras_helper_plist"
+  output_name = "BraveVpnHelper"
+  sources = [
+    "brave_vpn_connection_utils_mac.h",
+    "brave_vpn_connection_utils_mac.mm",
+    "brave_vpn_ras_helper.cc",
+  ]
+  extra_substitutions = [ "MAC_BUNDLE_IDENTIFIER=$mac_signing_identifier" ]
+
+  deps = [ "//base" ]
+  frameworks = [
+    "NetworkExtension.framework",
+    "Foundation.framework",
+  ]
+}

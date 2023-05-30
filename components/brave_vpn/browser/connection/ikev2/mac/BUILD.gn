@@ -17,6 +17,7 @@ source_set("mac") {
   ]
 
   deps = [
+    "brave_vpn_ras_helper",
     "//base",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/browser/connection/ikev2",

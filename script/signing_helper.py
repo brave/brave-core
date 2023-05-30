@@ -88,6 +88,12 @@ def BraveModifyPartsForSigning(parts, config):
             verify_options=VerifyOptions.DEEP | VerifyOptions.NO_STRICT)
         parts['sparkle-framework'].options = full_hardened_runtime_options
 
+    parts['vpn-helper-app'] = CodeSignedProduct(
+        '{.app_product}.app/Contents/Helpers/BraveVpnHelper.app'.format(config),
+        config.base_bundle_id,
+        options=CodeSignOptions.FULL_HARDENED_RUNTIME_OPTIONS,
+        verify_options=VerifyOptions.DEEP | VerifyOptions.STRICT)
+
     # Overwrite to avoid TeamID mismatch with widevine dylib.
     parts['helper-app'].entitlements = 'helper-entitlements.plist'
     parts['helper-app'].options = (CodeSignOptions.RESTRICT
