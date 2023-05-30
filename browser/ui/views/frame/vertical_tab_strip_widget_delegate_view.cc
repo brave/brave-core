@@ -124,6 +124,10 @@ VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() {
   // Child views will be deleted after this. Marks `region_view_` nullptr
   // so that they dont' access the `region_view_` via this view.
   region_view_ = nullptr;
+
+  DCHECK(fullscreen_observation_.IsObserving())
+      << "We didn't start to observe FullscreenController from BrowserList's "
+         "callback";
 }
 
 VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
@@ -141,6 +145,10 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
 
   // At this point, Browser hasn't finished its initialization. In order to
   // access some of its member, we should observe BrowserList.
+  DCHECK(base::ranges::find(*BrowserList::GetInstance(),
+                            browser_view_->browser()) ==
+         BrowserList::GetInstance()->end())
+      << "Browser shouldn't be added at this point.";
   BrowserList::AddObserver(this);
 
   ChildPreferredSizeChanged(region_view_);
