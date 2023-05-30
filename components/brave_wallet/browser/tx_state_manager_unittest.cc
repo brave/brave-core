@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <utility>
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
@@ -21,7 +22,9 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -58,6 +61,17 @@ class TxStateManagerUnitTest : public testing::Test {
     // base functions are their pref paths, so here we just use
     // EthTxStateManager to test common methods in TxStateManager.
     tx_state_manager_ = std::make_unique<EthTxStateManager>(&prefs_);
+  }
+
+  void UpdateCustomNetworks(PrefService* prefs,
+                            const std::vector<base::Value::Dict>& values,
+                            brave_wallet::mojom::CoinType coin) {
+    ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+    base::Value::List* list = update->EnsureList(GetPrefKeyForCoinType(coin));
+    list->clear();
+    for (auto& it : values) {
+      list->Append(it.Clone());
+    }
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -298,6 +312,63 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
     ASSERT_TRUE(base::StringToUint(meta->id(), &id));
     EXPECT_EQ(id % 5, 0u);
   }
+
+  // Add custom chain to prefs
+  std::vector<base::Value::Dict> values;
+  mojom::NetworkInfo custom_chain = GetTestNetworkInfo1("0xdeadbeef");
+  values.push_back(NetworkInfoToValue(custom_chain));
+  UpdateCustomNetworks(&prefs_, std::move(values), custom_chain.coin);
+
+  // Add a transaction on the custom chain
+  EthTxMeta meta;
+  meta.set_from(addr1);
+  meta.set_id("xyz");
+  meta.set_chain_id(custom_chain.chain_id);
+  meta.set_status(mojom::TransactionStatus::Submitted);
+  tx_state_manager_->AddOrUpdateTx(meta);
+
+  // OK: no filter
+  EXPECT_EQ(
+      tx_state_manager_
+          ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, absl::nullopt)
+          .size(),
+      21u);
+
+  // OK: filter by address
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, addr1)
+                .size(),
+            6u);
+
+  // OK: filter by chain_id
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(custom_chain.chain_id, absl::nullopt,
+                                          absl::nullopt)
+                .size(),
+            1u);
+
+  // OK: filter by chain_id and address
+  EXPECT_EQ(
+      tx_state_manager_
+          ->GetTransactionsByStatus(custom_chain.chain_id, absl::nullopt, addr1)
+          .size(),
+      1u);
+
+  // OK: filter by chain_id and status
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(custom_chain.chain_id,
+                                          mojom::TransactionStatus::Submitted,
+                                          absl::nullopt)
+                .size(),
+            1u);
+
+  // OK: filter by chain_id and status and address
+  EXPECT_EQ(
+      tx_state_manager_
+          ->GetTransactionsByStatus(custom_chain.chain_id,
+                                    mojom::TransactionStatus::Submitted, addr1)
+          .size(),
+      1u);
 }
 
 TEST_F(TxStateManagerUnitTest, MultiChainId) {
