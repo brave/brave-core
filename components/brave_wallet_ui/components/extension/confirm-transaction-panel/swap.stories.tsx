@@ -5,15 +5,11 @@
 
 import * as React from 'react'
 
-// Types
-import { BraveWallet } from '../../../constants/types'
-
 // Mocks
 import {
   mockBasicAttentionToken,
   mockBinanceCoinErc20Token
 } from '../../../stories/mock-data/mock-asset-options'
-import { mockTransactionInfo } from '../../../stories/mock-data/mock-transaction-info'
 
 // Components
 import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
@@ -22,8 +18,6 @@ import { PanelWrapper } from '../../../panel/style'
 import { ConfirmSwapTransaction } from './swap'
 
 export const _ConfirmSwapTransaction = () => {
-  const onConfirmTransaction = () => alert('Confirmed Transaction')
-  const onRejectTransaction = () => alert('Rejected Transaction')
 
   return (
     <WalletPanelStory
@@ -31,17 +25,6 @@ export const _ConfirmSwapTransaction = () => {
         fullTokenList: [mockBasicAttentionToken, mockBinanceCoinErc20Token],
         hasInitialized: true,
         isWalletCreated: true,
-        selectedPendingTransaction: {
-          ...mockTransactionInfo,
-          txType: BraveWallet.TransactionType.ETHSwap,
-          txArgs: [
-            '0x0D8775F648430679A709E98d2b0Cb6250d2887EF' + // BAT
-              'B8c77482e45F1F44dE1745F52C74426C631bDD52', // WETH
-            '0x4d12b6295c69ddebd5',
-            '0xa34b9dd76c89000'
-          ],
-          txParams: ['bytes', 'uint256', 'uint256']
-        }
       }}
       panelStateOverride={{
         hasInitialized: true
@@ -49,7 +32,7 @@ export const _ConfirmSwapTransaction = () => {
     >
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <ConfirmSwapTransaction onConfirm={onConfirmTransaction} onReject={onRejectTransaction} />
+          <ConfirmSwapTransaction />
         </LongWrapper>
       </PanelWrapper>
     </WalletPanelStory>
