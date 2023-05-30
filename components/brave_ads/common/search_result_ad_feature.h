@@ -15,6 +15,9 @@ BASE_DECLARE_FEATURE(kSearchResultAdFeature);
 
 bool IsSearchResultAdFeatureEnabled();
 
+constexpr base::FeatureParam<bool> kShouldAlwaysTriggerSearchResultAdEvents{
+    &kSearchResultAdFeature, "should_always_trigger_ad_events", false};
+
 constexpr base::FeatureParam<int> kMaximumSearchResultAdsPerHour{
     &kSearchResultAdFeature, "maximum_ads_per_hour", 10};
 

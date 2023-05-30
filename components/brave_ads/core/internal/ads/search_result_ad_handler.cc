@@ -12,10 +12,11 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
@@ -52,6 +53,13 @@ void SearchResultAd::TriggerEvent(
   CHECK_NE(mojom::SearchResultAdEventType::kServed, event_type)
       << " should not be called with kServed as this event is handled when "
          "calling TriggerEvent with kViewed";
+
+  if (!UserHasOptedInToBravePrivateAds() &&
+      !kShouldAlwaysTriggerSearchResultAdEvents.Get()) {
+    // Do not trigger events when the user has not opted-in to Brave Private
+    // Ads if |kShouldAlwaysTriggerSearchResultAdEvents| is set to |false|.
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   if (event_type == mojom::SearchResultAdEventType::kViewed) {
     return event_handler_.FireEvent(
