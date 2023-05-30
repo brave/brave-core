@@ -553,32 +553,45 @@ TEST(JsonParser, ConvertAllNumbersToString) {
   std::string json(
       R"({"a":[{"key":18446744073709551615},{"key":-2},{"key":3.14}]})");
   EXPECT_EQ(
-      std::string(json::convert_all_numbers_to_string(json)),
+      std::string(json::convert_all_numbers_to_string(json, "")),
       R"({"a":[{"key":"18446744073709551615"},{"key":"-2"},{"key":"3.14"}]})");
 
   // OK: convert deeply nested value to string
   json = R"({"some":[{"deeply":{"nested":[{"path":123}]}}]})";
-  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json)),
+  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json, "")),
             R"({"some":[{"deeply":{"nested":[{"path":"123"}]}}]})");
 
   // OK: values other than u64/f64/i64 are unchanged
   json = R"({"a":[{"key":18446744073709551615},{"key":null},{"key":true}]})";
   EXPECT_EQ(
-      std::string(json::convert_all_numbers_to_string(json)),
+      std::string(json::convert_all_numbers_to_string(json, "")),
       R"({"a":[{"key":"18446744073709551615"},{"key":null},{"key":true}]})");
 
   // OK: empty object array, nothing to convert
   json = R"({"a":[]})";
-  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json)), json);
+  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json, "")), json);
 
   // OK: empty array json, nothing to convert
   json = R"([])";
-  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json)), json);
+  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json, "")), json);
 
   // OK: convert floating point values in scientific notation to string
   json = R"({"a": 1.196568750220778e-7})";
-  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json)),
+  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json, "")),
             R"({"a":"0.0000001196568750220778"})");
+
+  // OK: convert under specified JSON path only
+  json = R"({"a":1,"outer":{"inner": 2}})";
+  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json, "/outer")),
+            R"({"a":1,"outer":{"inner":"2"}})");
+  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json, "/a")),
+            R"({"a":"1","outer":{"inner":2}})");
+
+  // KO: invalid path has no effect on the JSON
+  json = R"({"a":1,"outer":{"inner":2}})";
+  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json, "/invalid")),
+            json);
+  EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json, "/")), json);
 
   // KO: invalid cases
   std::vector<std::string> invalid_cases = {
@@ -593,8 +606,8 @@ TEST(JsonParser, ConvertAllNumbersToString) {
       // DBL_MAX
       R"("{a":[{"key":)" + std::to_string(DBL_MAX + 1) + "}]}"};
   for (const auto& invalid_case : invalid_cases) {
-    EXPECT_EQ("",
-              std::string(json::convert_all_numbers_to_string(invalid_case)))
+    EXPECT_EQ(
+        "", std::string(json::convert_all_numbers_to_string(invalid_case, "")))
         << invalid_case;
   }
 }

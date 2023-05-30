@@ -83,24 +83,34 @@ bool ParseEthGetFeeHistory(const base::Value& json_value,
   oldest_block->clear();
   reward->clear();
 
-  auto value = ParseResultValue(json_value);
-  if (!value)
+  auto value = ParseResultDict(json_value);
+  if (!value) {
     return false;
+  }
 
   auto fee_item_value =
-      json_rpc_responses::EthGetFeeHistoryResult::FromValueDeprecated(*value);
-  if (!fee_item_value)
+      json_rpc_responses::EthGetFeeHistoryResult::FromValue(*value);
+  if (!fee_item_value) {
     return false;
+  }
 
   *base_fee_per_gas = fee_item_value->base_fee_per_gas;
-  *gas_used_ratio = fee_item_value->gas_used_ratio;
+
+  for (const auto& gas_used_value : fee_item_value->gas_used_ratio) {
+    if (!base::StringToDouble(gas_used_value,
+                              &gas_used_ratio->emplace_back())) {
+      return false;
+    }
+  }
+
   *oldest_block = fee_item_value->oldest_block;
 
   if (fee_item_value->reward) {
     for (const auto& reward_list_value : *fee_item_value->reward) {
       const auto* reward_list = reward_list_value.GetIfList();
-      if (!reward_list)
+      if (!reward_list) {
         return false;
+      }
       reward->push_back(std::vector<std::string>());
       std::vector<std::string>& current_reward_vector = reward->back();
       if (!json_schema_compiler::util::PopulateArrayFromList(
