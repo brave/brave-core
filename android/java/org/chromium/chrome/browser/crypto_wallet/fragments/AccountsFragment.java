@@ -113,7 +113,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                     for (AccountInfo accountInfo : accountInfos) {
                         if (accountInfo.accountId.kind == AccountKind.DERIVED) {
                             WalletListItemModel model =
-                                    WalletListItemModel.MakeForAccountInfo(accountInfo);
+                                    WalletListItemModel.makeForAccountInfo(accountInfo);
                             walletListItemModelList.add(model);
                         }
                     }
@@ -140,7 +140,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                     for (AccountInfo accountInfo : accountInfos) {
                         if (accountInfo.accountId.kind == AccountKind.IMPORTED) {
                             walletListItemModelList.add(
-                                    WalletListItemModel.MakeForAccountInfo(accountInfo));
+                                    WalletListItemModel.makeForAccountInfo(accountInfo));
                         }
                     }
                     if (walletCoinAdapter != null) {

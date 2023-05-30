@@ -50,7 +50,7 @@ public class WalletListItemModel {
 
     private WalletListItemModel() {}
 
-    public static WalletListItemModel MakeForAccountInfoWithBalances(
+    public static WalletListItemModel makeForAccountInfoWithBalances(
             AccountInfo accountInfo, String fiatBalanceString, String cryptoBalanceString) {
         WalletListItemModel result = new WalletListItemModel();
         result.mIcon = Utils.getCoinIcon(accountInfo.accountId.coin);
@@ -63,8 +63,8 @@ public class WalletListItemModel {
         return result;
     }
 
-    public static WalletListItemModel MakeForAccountInfo(AccountInfo accountInfo) {
-        return MakeForAccountInfoWithBalances(accountInfo, null, null);
+    public static WalletListItemModel makeForAccountInfo(AccountInfo accountInfo) {
+        return makeForAccountInfoWithBalances(accountInfo, null, null);
     }
 
     public boolean isNft() {

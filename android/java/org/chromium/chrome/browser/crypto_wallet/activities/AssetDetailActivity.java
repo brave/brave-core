@@ -459,7 +459,7 @@ public class AssetDetailActivity
             final String cryptoBalanceString =
                     String.format(Locale.ENGLISH, "%.4f %s", thisAccountBalance, mAsset.symbol);
 
-            walletListItemModelList.add(WalletListItemModel.MakeForAccountInfoWithBalances(
+            walletListItemModelList.add(WalletListItemModel.makeForAccountInfoWithBalances(
                     accountInfo, fiatBalanceString, cryptoBalanceString));
         }
         return walletListItemModelList;

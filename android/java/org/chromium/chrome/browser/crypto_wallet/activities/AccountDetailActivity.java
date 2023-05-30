@@ -149,8 +149,7 @@ public class AccountDetailActivity
     }
 
     private void fetchAccountInfo(NetworkInfo selectedNetwork) {
-        AccountInfo[] accounts = new AccountInfo[1];
-        accounts[0] = mAccountInfo;
+        AccountInfo[] accounts = {mAccountInfo};
 
         LiveDataUtil.observeOnce(
                 mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks, allNetworks -> {
@@ -159,7 +158,7 @@ public class AccountDetailActivity
                             (assetPrices, fullTokenList, nativeAssetsBalances,
                                     blockchainTokensBalances) -> {
                                 WalletListItemModel thisAccountItemModel =
-                                        WalletListItemModel.MakeForAccountInfo(mAccountInfo);
+                                        WalletListItemModel.makeForAccountInfo(mAccountInfo);
                                 Utils.setUpTransactionList(this, accounts, allNetworks,
                                         thisAccountItemModel, assetPrices, fullTokenList,
                                         nativeAssetsBalances, blockchainTokensBalances,

@@ -100,7 +100,7 @@ public class AccountSelectorActivity
                     // TODO(apaymyshev): Why I'm not allowed to select imported account?
                     if (accountInfo.accountId.kind != AccountKind.IMPORTED) {
                         walletListItemModelList.add(
-                                WalletListItemModel.MakeForAccountInfo(accountInfo));
+                                WalletListItemModel.makeForAccountInfo(accountInfo));
                     }
                 }
 
