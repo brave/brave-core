@@ -23,15 +23,25 @@ mod ffi {
 // Parses and re-serializes json with the value at path converted from a uint64
 // to a string representation of the same number.
 // Returns an empty String if such conversion is not possible.
-// When optional is true, return the original string if path not found or value is null.
-// A path is a Unicode string with the reference tokens separated by /.
+// When optional is true, return the original string if path not found or value
+// is null. A path is a Unicode string with the reference tokens separated by /.
 // Inside tokens / is replaced by ~1 and ~ is replaced by ~0.
 // For more information read [RFC6901](https://tools.ietf.org/html/rfc6901).
-// Examples: convert_uint64_value_to_string("/a/b", json, false) for { a : { b : 1 }}
-//           convert_uint64_value_to_string("/a/0", json, false) for { a : [ 1 ]}
-//           convert_uint64_value_to_string("/a~0b/0", json, false) for { "a~b" : [ 1 ]}
-//           convert_uint64_value_to_string("/a~1b/0", json, false) for { "a/b" : [ 1 ]}
-//           convert_uint64_value_to_string("/a", json, true) for { a : null }
+// Examples:
+//   input: { a : { b : 1 }}
+//   convert_uint64_value_to_string("/a/b", json, false)
+//
+//   input: { a : [ 1 ]}
+//   convert_uint64_value_to_string("/a/0", json, false)
+//
+//   input: { "a~b" : [ 1 ]}
+//   convert_uint64_value_to_string("/a~0b/0", json, false)
+//
+//   input: { "a/b" : [ 1 ]}
+//   convert_uint64_value_to_string("/a~1b/0", json, false)
+//
+//   input: { a : null }
+//   convert_uint64_value_to_string("/a", json, true)
 pub fn convert_uint64_value_to_string(path: &str, json: &str, optional: bool) -> String {
     let result_value = serde_json::from_str(&json);
     if result_value.is_err() {
@@ -59,15 +69,25 @@ pub fn convert_uint64_value_to_string(path: &str, json: &str, optional: bool) ->
 // Parses and re-serializes json with the value at path converted from a int64
 // to a string representation of the same number.
 // Returns an empty String if such conversion is not possible.
-// When optional is true, return the original string if path not found or value is null.
-// A path is a Unicode string with the reference tokens separated by /.
+// When optional is true, return the original string if path not found or value
+// is null. A path is a Unicode string with the reference tokens separated by /.
 // Inside tokens / is replaced by ~1 and ~ is replaced by ~0.
 // For more information read [RFC6901](https://tools.ietf.org/html/rfc6901).
-// Examples: convert_int64_value_to_string("/a/b", json, false) for { a : { b : 1 }}
-//           convert_int64_value_to_string("/a/0", json, false) for { a : [ 1 ]}
-//           convert_int64_value_to_string("/a~0b/0", json, false) for { "a~b" : [ 1 ]}
-//           convert_int64_value_to_string("/a~1b/0", json, false) for { "a/b" : [ 1 ]}
-//           convert_int64_value_to_string("/a", json, true) for { a : null }
+// Examples:
+//   json: { a : { b : 1 }}
+//   convert_int64_value_to_string("/a/b", json, false)
+//
+//   json: { a : [ 1 ]}
+//   convert_int64_value_to_string("/a/0", json, false)
+//
+//   json: { "a~b" : [ 1 ]}
+//   convert_int64_value_to_string("/a~0b/0", json, false)
+//
+//   json: { "a/b" : [ 1 ]}
+//   convert_int64_value_to_string("/a~1b/0", json, false)
+//
+//   json: { a : null }
+//   convert_int64_value_to_string("/a", json, true)
 pub fn convert_int64_value_to_string(path: &str, json: &str, optional: bool) -> String {
     let result_value = serde_json::from_str(&json);
     if result_value.is_err() {
@@ -96,15 +116,25 @@ pub fn convert_int64_value_to_string(path: &str, json: &str, optional: bool) -> 
 // Parses and re-serializes json with the value at path converted from a string
 // to a uint64 representation of the same number.
 // Returns an empty String if such conversion is not possible.
-// When optional is true, return the original string if path not found or value is null.
-// A path is a Unicode string with the reference tokens separated by /.
+// When optional is true, return the original string if path not found or value
+// is null. A path is a Unicode string with the reference tokens separated by /.
 // Inside tokens / is replaced by ~1 and ~ is replaced by ~0.
 // For more information read [RFC6901](https://tools.ietf.org/html/rfc6901).
-// Examples: convert_string_value_to_uint64("/a/b", json, false) for { a : { b : '1' }} -> { a : { b : 1 }}
-//           convert_string_value_to_uint64("/a/0", json, false) for { a : [ '1' ]} -> { a : [ 1 ]}
-//           convert_string_value_to_uint64("/a~0c/b", json, false) for { "a~c" : { b : '1' }} -> { "a~c" : { b : 1 }}
-//           convert_string_value_to_uint64("/a~1b/0", json, false) for { "a/b" : [ '1' ]} -> { "a/b" : [ 1 ]}
-//           convert_string_value_to_uint64("/a", json, true) for { a : null }
+// Examples:
+//   json: { a : { b : '1' }} -> { a : { b : 1 }}
+//   convert_string_value_to_uint64("/a/b", json, false)
+//
+//   json: { a : [ '1' ]} -> { a : [ 1 ]}
+//   convert_string_value_to_uint64("/a/0", json, false)
+//
+//   json: { "a~c" : { b : '1' }} -> { "a~c" : { b : 1 }}
+//   convert_string_value_to_uint64("/a~0c/b", json, false)
+//
+//   json: { "a/b" : [ '1' ]} -> { "a/b" : [ 1 ]}
+//   convert_string_value_to_uint64("/a~1b/0", json, false)
+//
+//   json: { a : null }
+//   convert_string_value_to_uint64("/a", json, true)
 pub fn convert_string_value_to_uint64(path: &str, json: &str, optional: bool) -> String {
     let result_value = serde_json::from_str(&json);
     if result_value.is_err() {
@@ -137,15 +167,25 @@ pub fn convert_string_value_to_uint64(path: &str, json: &str, optional: bool) ->
 // Parses and re-serializes json with the value at path converted from a string
 // to a int64 representation of the same number.
 // Returns an empty String if such conversion is not possible.
-// When optional is true, return the original string if path not found or value is null.
-// A path is a Unicode string with the reference tokens separated by /.
+// When optional is true, return the original string if path not found or value
+// is null. A path is a Unicode string with the reference tokens separated by /.
 // Inside tokens / is replaced by ~1 and ~ is replaced by ~0.
 // For more information read [RFC6901](https://tools.ietf.org/html/rfc6901).
-// Examples: convert_string_value_to_int64("/a/b", json, false) for { a : { b : '1' }} -> { a : { b : 1 }}
-//           convert_string_value_to_int64("/a/0", json, false) for { a : [ '1' ]} -> { a : [ 1 ]}
-//           convert_string_value_to_uint64("/a~0c/b", json, false) for { "a~c" : { b : '1' }} -> { "a~c" : { b : 1 }}
-//           convert_string_value_to_uint64("/a~1b/0", json, false) for { "a/b" : [ '1' ]} -> { "a/b" : [ 1 ]}
-//           convert_string_value_to_uint64("/a", json, true) for { a : null }
+// Examples:
+//   json: { a : { b : '1' }} -> { a : { b : 1 }}
+//   convert_string_value_to_int64("/a/b", json, false)
+//
+//   json: { a : [ '1' ]} -> { a : [ 1 ]}
+//   convert_string_value_to_int64("/a/0", json, false)
+//
+//   json: { "a~c" : { b : '1' }} -> { "a~c" : { b : 1 }}
+//   convert_string_value_to_uint64("/a~0c/b", json, false)
+//
+//   json: { "a/b" : [ '1' ]} -> { "a/b" : [ 1 ]}
+//   convert_string_value_to_uint64("/a~1b/0", json, false)
+//
+//   json: { a : null }
+//   convert_string_value_to_uint64("/a", json, true)
 pub fn convert_string_value_to_int64(path: &str, json: &str, optional: bool) -> String {
     let result_value = serde_json::from_str(&json);
     if result_value.is_err() {
@@ -177,15 +217,18 @@ pub fn convert_string_value_to_int64(path: &str, json: &str, optional: bool) -> 
 }
 
 // Parses and re-serializes json with uint64 values for the given key of the
-// object located at path_to_object for all objects in the array located at path_to_array.
-// Original json string will be returned if object array at path is not found.
-// When the target uint64 value at key is not found in an object or is null,
-// the value will be unchanged.
+// object located at path_to_object for all objects in the array located at
+// path_to_array. Original json string will be returned if object array at path
+// is not found. When the target uint64 value at key is not found in an object
+// or is null, the value will be unchanged.
 // Examples:
-// convert_uint64_in_object_array_to_string("/a", "", "key", json) for
-// {a: [{"key": 1}, {"key": 2}, {"key": null]} -> {a: [{"key": "1"}, {"key": "2"}, {"key": null}]}
-// convert_uint64_in_object_array_to_string("/a", "/b", "key", json) for
-// {a: [{ "b": {"key": 1}}, {"b": {"key": 2}}, {"b": {"key": null]}} -> {a: [{"b": {"key": "1"}}, {"b": {"key": "2"}}, {"b": {"key": null}}]}
+//   in: {a: [{"key": 1}, {"key": 2}, {"key": null]}
+//   convert_uint64_in_object_array_to_string("/a", "", "key", json)
+//   out: {a: [{"key": "1"}, {"key": "2"}, {"key": null}]}
+//
+//   in: {a: [{ "b": {"key": 1}}, {"b": {"key": 2}}, {"b": {"key": null]}}
+//   convert_uint64_in_object_array_to_string("/a", "/b", "key", json)
+//   out: {a: [{"b": {"key": "1"}}, {"b": {"key": "2"}}, {"b": {"key": null}}]}
 pub fn convert_uint64_in_object_array_to_string(
     path_to_array: &str,
     path_to_object: &str,
@@ -253,7 +296,7 @@ pub fn convert_uint64_in_object_array_to_string(
 /// # Arguments
 /// * `json` - A arbitrary JSON string
 /// * `path` - A JSON pointer path to the field where the conversion is applied
-///            recursively. An empty string indicates the root of the JSON.
+///   recursively. An empty string indicates the root of the JSON.
 ///
 /// # Examples
 ///
