@@ -72,6 +72,14 @@ fuzzer_test("speedreader_rewriter_fuzzer") {
   dict = "//third_party/libxml/src/fuzz/html.dict"
 }
 
+fuzzer_test("text_sanitize_strip_characters_fuzzer") {
+  sources = [ "text_sanitize/strip_non_alphanumeric_or_ascii_characters_fuzzer.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/text_sanitize/rs:cxx",
+  ]
+}
+
 group("brave_fuzzers") {
   testonly = true
 
@@ -81,5 +89,6 @@ group("brave_fuzzers") {
     ":brave_news_parse_feed_bytes_fuzzer",
     ":brave_wallet_utils_fuzzer",
     ":speedreader_rewriter_fuzzer",
+    ":text_sanitize_strip_characters_fuzzer",
   ]
 }
