@@ -366,10 +366,7 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
 }
 
 void APIRequestHelper::URLLoaderHandler::OnRetry(
-    base::OnceClosure start_retry) {
-  // Retries are not enabled for these requests.
-  NOTREACHED();
-}
+    base::OnceClosure start_retry) {}
 
 void APIRequestHelper::URLLoaderHandler::OnResponse(
     ResultCallback callback,
