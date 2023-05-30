@@ -187,7 +187,8 @@ std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
         result.push_back(std::move(meta));
       }
     } else {
-      auto chain_id_from_pref = GetChainId(prefs_, GetCoinType(), it.first);
+      auto chain_id_from_pref =
+          GetChainIdByNetworkId(prefs_, GetCoinType(), it.first);
       if (!chain_id_from_pref) {
         continue;
       }
