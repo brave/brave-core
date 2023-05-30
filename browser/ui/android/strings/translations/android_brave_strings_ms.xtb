@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">Dayakan sokongan untuk memintas URL penjejakan hala semula aras atas.</translation>
 <translation id="94154759592465111">Sekat Skrip</translation>
 <translation id="7714773920987474116">Menyekat JavaScript (boleh merosakkan laman)</translation>
+<translation id="1660979054779793659">YouTube</translation>
+<translation id="2233004324252915283">Sekat kandungan disyorkan YouTube</translation>
+<translation id="1005372663692637999">Menyekat unsur seterusnya dan kad akhir di youtube.com.</translation>
+<translation id="5152595963250646670">Sekat unsur YouTube yang mengganggu</translation>
+<translation id="2998960761270772157">Menyekat unsur maklumat log masuk, menu, komen dan video di youtube.com.</translation>
 <translation id="6052725679982758334">Sekatan Media Sosial</translation>
 <translation id="7498695072878479744">Membenarkan butang log masuk Google di tapak pihak ketiga</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">Tapak boleh meminta penggunaan Log Masuk Google lama melalui kuki pihak ketiga</translation>
 <translation id="2903783737778379345">Jangan benarkan Log Masuk Google lama melalui kuki pihak ketiga</translation>
 <translation id="6880817299303842099">Dibenarkan menggunakan kuki pihak ketiga untuk Log Masuk Google lama</translation>
+<translation id="5169650598465327872">Akses Localhost</translation>
+<translation id="4172219483893066798">Laman boleh meminta akses kepada sumber localhost</translation>
+<translation id="7181706637590665047">Jangan benarkan akses kepada sumber localhost</translation>
+<translation id="1485435696620658073">Dibenarkan untuk mengakses sumber localhost</translation>
 <translation id="181905442828471321">Lalai global perisai Brave</translation>
 <translation id="2675679258824361492">Tetapan privasi lain</translation>
 <translation id="8026334261755873520">Kosongkan data semakan imbas</translation>
@@ -335,7 +344,7 @@ Pemadaman ini bersifat kekal dan tiada cara untuk memulihkan data tersebut. Seki
 <translation id="496896260395129787">Akaun Segerak Brave ini telah dipadamkan daripada peranti lain. Jika anda tidak sengaja menyahdayakan Segerak, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>cipta semula akaun</translation>
 <translation id="4094590686212463338">Tidak dapat menyertai rantaian segerak ini. Rantaian segerak telah dipadamkan.</translation>
-<translation id="5633907266617216186">Alamat, maklumat pembayaran dll.</translation>
+<translation id="4908081302669157000">Nombor telefon, e-mel dan alamat</translation>
 <translation id="1056898198331236512">Amaran</translation>
 <translation id="1426410128494586442">Ya</translation>
 <translation id="7811264919113243207">Ini akan mengongsikan data Brave anda, termasuk kemungkinan kata laluan anda, kepada peranti yang menghasilkan kod QR ini.
@@ -750,6 +759,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1118876217803190221">Baki tidak mencukupi</translation>
 <translation id="275990379543116961">Dana tidak mencukupi untuk gas</translation>
 <translation id="3292453499915466604">Kecairan tidak mencukupi</translation>
+<translation id="3025158262797849291">Format nombor tidak dikenali</translation>
 <translation id="3380365263193509176">Ralat tidak diketahui</translation>
 <translation id="5932938770824268122">Kekunci Persendirian</translation>
 <translation id="2472882733835903303">Tunjukkan Kekunci Persendirian</translation>
@@ -769,6 +779,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6015436276085482001">Ditolak</translation>
 <translation id="6666273175654835609">Dihantar</translation>
 <translation id="2331676293859649642">Disahkan</translation>
+<translation id="8214232307424031138">Ditandatangani</translation>
 <translation id="1165039591588034296">Ralat</translation>
 <translation id="8364362220156372884">Yuran: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Adakah anda menggunakan penyemak imbas web yang terpantas?</translation>
@@ -799,7 +810,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="5061574358754621254">Data harga dikuasakan oleh CoinGecko</translation>
 <translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
 <translation id="8574289650879708853">Tambah aset tersuai</translation>
-<translation id="1974060860693918893">Lanjutan</translation>
+<translation id="1255896809210433555">Tambah NFT</translation>
 <translation id="7791543448312431591">Tambah</translation>
 <translation id="6600400596821238377">Nama token</translation>
 <translation id="4432966365400169165">Alamat kontrak token</translation>
@@ -1023,10 +1034,10 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6605147707233193230">Hidupkan untuk membantu menyokong pencipta kandungan</translation>
 <translation id="1609556006143307897">Anda membantu menyokong pencipta kandungan</translation>
 <translation id="6067959437127691361">Tindakan menggunakan Ganjaran Brave dapat menyokong pencipta kandungan dan membolehkan anda memperoleh BAT</translation>
-<translation id="121894865378699201">Sedia untuk mula memperoleh BAT?</translation>
-<translation id="2648805457288107211">Hanya sambungkan akaun penjagaan anda dengan profil Ganjaran anda. Jika anda tiada akaun, anda akan berpeluang mencipta akaun.</translation>
+<translation id="3264975266761862670">Sudah bersedia untuk mula memperoleh pendapatan?</translation>
+<translation id="265337947574975838">Sambung atau cipta akaun dengan salah satu rakan kongsi kami.</translation>
 <translation id="1772961321862399863">Untuk memperoleh BAT, pengguna mesti menyambungkan akaun penjagaan dengan Ganjaran Brave. Malangnya, tiada penjagaan yang tersedia di rantau anda jadi pendapatan tidak tersedia. Buat masa ini, tindakan menghidupkan Ganjaran Brave akan menyokong pencipta secara automatik.</translation>
-<translation id="5430495762768325224">Ketahui lebih lanjut tentang BAT</translation>
+<translation id="654447476965480878">Ketahui lebih lanjut tentang perolehan BAT</translation>
 <translation id="6278643716658443228">Tetapan ganjaran</translation>
 <translation id="6516984207843289176">Hubungkan akaun</translation>
 <translation id="4272136334824111854">Pada bulan ini, anda telah melawat<ph name="CREATOR_COUNT"/> pencipta yang disokong oleh Ganjaran Brave</translation>
@@ -1057,6 +1068,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="171158953146804144">Pada <ph name="DUE_DATE"/>, kami akan menghentikan sokongan untuk baki BAT maya sedia ada. Malangnya, tiada penjaga yang tersedia di rantau anda (<ph name="REGION"/>) untuk mengeluarkan pendapatan anda. Sementara itu, anda masih boleh menyumbang kepada pencipta kegemaran anda.</translation>
 <translation id="8949422576126100041">Paparkan halaman dengan Speedreader?</translation>
 <translation id="591648995518106347">Memuatkan artikel layak secara automatik dalam mod pembaca</translation>
+<translation id="1295796122927221823">Paparkan dalam mod pembaca</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> pada <ph name="NETWORK"/></translation>
 <translation id="295620834661738195">Senarai Main Brave</translation>
 <translation id="4850886885716139402">Lihat</translation>
@@ -1129,4 +1141,10 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="3631131732607750008">Kandungan tamat tempoh. Cuba lagi dalam masa beberapa saat.</translation>
 <translation id="9085765419770918643">Belum ada NFT di sini.</translation>
 <translation id="8445532667841598737">Sedia untuk menambahkan beberapa data? Hanya klik butang di bawah untuk pengimportan.</translation>
+<translation id="5925465310724910998">Mahu NFT anda dipaparkan secara automatik?</translation>
+<translation id="2827460859891872324">Dompet Brave boleh menggunakan perkhidmatan pihak ketiga untuk memaparkan NFT anda secara automatik. Brave akan kongsikan alamat dompet anda dengan <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> untuk menyediakan perkhidmatan ini. <ph name="BEGIN_LINK_2"/>Ketahui lebih lanjut.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">Dayakan penemuan NFT</translation>
+<translation id="622372328961630111">Tambahkan NFT yang anda miliki secara automatik pada dompet menggunakan API pihak ketiga. <ph name="BEGIN_LINK_1"/>Ketahui lebih lanjut.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">Akaun Jadual Carian Alamat:</translation>
+<translation id="7659483790930268440">Indeks Jadual Carian Alamat:</translation>
 </translationbundle>

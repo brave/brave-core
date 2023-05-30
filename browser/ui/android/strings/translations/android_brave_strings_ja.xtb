@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">トップレベルのリダイレクト追跡URLのバイパスに対するサポートを有効にします</translation>
 <translation id="94154759592465111">スクリプトをブロックする</translation>
 <translation id="7714773920987474116">JavaScript をブロック（サイト破損の可能性あり）</translation>
+<translation id="1660979054779793659">YouTube</translation>
+<translation id="2233004324252915283">YouTubeのおすすめコンテンツをブロック</translation>
+<translation id="1005372663692637999">youtube.comで自動再生とエンドカードをブロック</translation>
+<translation id="5152595963250646670">YouTubeの表示要素をブロック</translation>
+<translation id="2998960761270772157">youtube.comのサインイン、メニュー、コメント、動画情報などの要素をブロックします。</translation>
 <translation id="6052725679982758334">ソーシャルメディアのブロック</translation>
 <translation id="7498695072878479744">第三者サイトのGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">サイトは、サードパーティのCookieを介して、レガシーのGoogleサインインの利用を求めることができる</translation>
 <translation id="2903783737778379345">サードパーティCookieを使用したレガシーのGoogleサインインを許可しない</translation>
 <translation id="6880817299303842099">レガシーのGoogleサインインにサードパーティCookieの使用を許可する</translation>
+<translation id="5169650598465327872">Localhostのアクセス</translation>
+<translation id="4172219483893066798">サイトがLocalhostのリソースへのアクセスを要求可能</translation>
+<translation id="7181706637590665047">Localhostのリソースへのアクセスを許可しない</translation>
+<translation id="1485435696620658073">Localhostのリソースへのアクセスを許可</translation>
 <translation id="181905442828471321">Brave Shields グローバルデフォルト</translation>
 <translation id="2675679258824361492">その他のプライバシー設定</translation>
 <translation id="8026334261755873520">閲覧履歴データの削除</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">このBrave同期アカウントは、同期先のデバイスから削除されました。同期を無効にする必要がない場合は、<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>アカウントを作成し直してください</translation>
 <translation id="4094590686212463338">この同期チェーンに参加できません。同期チェーンが削除されています。</translation>
-<translation id="5633907266617216186">住所、支払い情報など</translation>
+<translation id="4908081302669157000">電話番号、メールアドレス、住所</translation>
 <translation id="1056898198331236512">警告</translation>
 <translation id="1426410128494586442">はい</translation>
 <translation id="7811264919113243207">この操作を行うと、パスワードを含むBraveのデータが、このQRコードを生成したデバイスと共有されます。
@@ -750,6 +759,7 @@
 <translation id="1118876217803190221">残高不足です</translation>
 <translation id="275990379543116961">ガス代のための資金が不足しています</translation>
 <translation id="3292453499915466604">不十分な流動性</translation>
+<translation id="3025158262797849291">数字の形式が正しくありません</translation>
 <translation id="3380365263193509176">不明なエラー</translation>
 <translation id="5932938770824268122">秘密鍵</translation>
 <translation id="2472882733835903303">秘密鍵を表示</translation>
@@ -769,6 +779,7 @@
 <translation id="6015436276085482001">拒否されました</translation>
 <translation id="6666273175654835609">送信済</translation>
 <translation id="2331676293859649642">確認済</translation>
+<translation id="8214232307424031138">Signed</translation>
 <translation id="1165039591588034296">エラー</translation>
 <translation id="8364362220156372884">料金: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">今お使いのブラウザは最速ですか？</translation>
@@ -799,7 +810,7 @@
 <translation id="5061574358754621254">CoinGeckoによる価格データ</translation>
 <translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
 <translation id="8574289650879708853">カスタムアセットを追加</translation>
-<translation id="1974060860693918893">詳細</translation>
+<translation id="1255896809210433555">NFTを追加する</translation>
 <translation id="7791543448312431591">追加</translation>
 <translation id="6600400596821238377">トークン名</translation>
 <translation id="4432966365400169165">トークン契約アドレス</translation>
@@ -1023,10 +1034,10 @@
 <translation id="6605147707233193230">有効にしてコンテンツクリエイターを支援</translation>
 <translation id="1609556006143307897">あなたはコンテンツクリエイターを支援中です</translation>
 <translation id="6067959437127691361">Brave Rewardsを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
-<translation id="121894865378699201">BATの獲得を開始しますか?</translation>
-<translation id="2648805457288107211">カストディアルアカウントをRewardsプロファイルに接続してください。アカウントをお持ちでない場合は、この後作成してください。</translation>
+<translation id="3264975266761862670">報酬を受け取る準備はできましたか？</translation>
+<translation id="265337947574975838">いずれかのパートナーに接続するか、アカウントを作成してください。</translation>
 <translation id="1772961321862399863">BATを獲得するには、カストディアルアカウントをRewardsに接続する必要がありますが、この地域で使用できるカストディアンが存在しないため獲得できません。当面は、Braveリワードをオンにすることで、クリエイターを自動で支援してください。</translation>
-<translation id="5430495762768325224">BATに関する詳細</translation>
+<translation id="654447476965480878">BAT獲得の詳細について</translation>
 <translation id="6278643716658443228">Rewards設定</translation>
 <translation id="6516984207843289176">アカウントの接続</translation>
 <translation id="4272136334824111854">今月は、Brave Rewardsで支援されている<ph name="CREATOR_COUNT"/>人のクリエイターを訪問しました</translation>
@@ -1057,6 +1068,7 @@
 <translation id="171158953146804144"><ph name="DUE_DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。残念ながら、お住まいの地域 (<ph name="REGION"/>) には、収益を引き出すために利用可能なカストディアンが存在しません。上記の日程まではお気に入りのクリエイターに貢献することができます。</translation>
 <translation id="8949422576126100041">Speedreaderでページを表示しますか？</translation>
 <translation id="591648995518106347">リーダーモードで対象の記事を自動で読み込む</translation>
+<translation id="1295796122927221823">リーダーモードで表示</translation>
 <translation id="5062934803872044756"><ph name="NETWORK"/>上の<ph name="SYMBOL"/></translation>
 <translation id="295620834661738195">Brave Playlist</translation>
 <translation id="4850886885716139402">表示</translation>
@@ -1129,4 +1141,10 @@
 <translation id="3631131732607750008">コンテンツの有効期限が切れています。数秒後に再試行してください。</translation>
 <translation id="9085765419770918643">ここにはまだNFTはありません。</translation>
 <translation id="8445532667841598737">追加する準備はできていますか？下のボタンをクリックしてインポートしてください。</translation>
+<translation id="5925465310724910998">NFTを自動で表示しますか？</translation>
+<translation id="2827460859891872324">Braveウォレットは、サードパーティのサービスを利用してNFTを自動で表示することができます。Braveはこのサービスを提供するために、お客様のウォレットアドレスを<ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/>と共有します。<ph name="BEGIN_LINK_2"/>詳細はこちらをご覧ください。<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">NFTディスカバリーを有効にする</translation>
+<translation id="622372328961630111">サードパーティのAPIを使用して、所有するNFTを自動的にウォレットに追加します。<ph name="BEGIN_LINK_1"/>詳細はこちらをご覧ください。<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">アドレス検索テーブルのアカウント:</translation>
+<translation id="7659483790930268440">アドレス検索テーブルのインデックス:</translation>
 </translationbundle>

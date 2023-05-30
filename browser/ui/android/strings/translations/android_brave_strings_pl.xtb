@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">Włącz obsługę pomijania przekierowywania najwyższego poziomu w przypadku śledzących adresów URL.</translation>
 <translation id="94154759592465111">Zablokuj skrypty</translation>
 <translation id="7714773920987474116">Blokuje skrypty Javascript (może popsuć działanie stron internetowych)</translation>
+<translation id="1660979054779793659">YouTube</translation>
+<translation id="2233004324252915283">Blokuj treści rekomendowane przez YouTube</translation>
+<translation id="1005372663692637999">Blokuje ekrany końcowe i następne w serwisie youtube.com.</translation>
+<translation id="5152595963250646670">Blokuje rozpraszające elementy YouTube</translation>
+<translation id="2998960761270772157">Blokuje elementy logowania, menu, komentarzy oraz informacji o filmie w serwisie youtube.com.</translation>
 <translation id="6052725679982758334">Zablokuj sieci społecznościowe</translation>
 <translation id="7498695072878479744">Zezwalaj na logowanie za pomocą konta Google na stronach trzecich</translation>
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">Strony mogą poprosić o korzystanie ze starszej wersji funkcji Google Sign-In za pomocą plików cookie innych firm.</translation>
 <translation id="2903783737778379345">Nie zezwalaj na korzystanie ze starszej wersji funkcji Google Sign-In za pomocą plików cookie innych firm.</translation>
 <translation id="6880817299303842099">Zezwolono na pliki cookie innych firm w przypadku starszej wersji funkcji Google Sign-In</translation>
+<translation id="5169650598465327872">Dostęp do hosta lokalnego</translation>
+<translation id="4172219483893066798">Strony mogą poprosić o dostęp do zasobów hosta lokalnego</translation>
+<translation id="7181706637590665047">Nie zezwalaj na dostęp do zasobów hosta lokalnego</translation>
+<translation id="1485435696620658073">Zgoda na dostęp do zasobów hosta lokalnego</translation>
 <translation id="181905442828471321">Ustawienia ogólne tarczy Brave</translation>
 <translation id="2675679258824361492">Inne ustawienia prywatności</translation>
 <translation id="8026334261755873520">Wyczyść dane przeglądania</translation>
@@ -335,7 +344,7 @@ Takie usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zd
 <translation id="496896260395129787">Konto synchronizacji Brave zostało usunięte z poziomu innego urządzenia. Jeśli wyłączenie synchronizacji było przypadkowe, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>utwórz konto ponownie</translation>
 <translation id="4094590686212463338">Nie można połączyć z tym łańcuchem synchronizacji. Został on usunięty.</translation>
-<translation id="5633907266617216186">Adresy, informacje dotyczące płatności itp.</translation>
+<translation id="4908081302669157000">Numery telefonów, adresy e-mail i adresy fizyczne</translation>
 <translation id="1056898198331236512">Uwaga</translation>
 <translation id="1426410128494586442">Tak</translation>
 <translation id="7811264919113243207">Spowoduje to udostępnienie danych Brave, w tym potencjalnie haseł, urządzeniu, które wygenerowało ten kod QR.
@@ -750,6 +759,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="1118876217803190221">Niewystarczające saldo</translation>
 <translation id="275990379543116961">Niewystarczające środki na gaz</translation>
 <translation id="3292453499915466604">Niewystarczająca płynność</translation>
+<translation id="3025158262797849291">Nierozpoznany format liczbowy</translation>
 <translation id="3380365263193509176">Nieznany błąd</translation>
 <translation id="5932938770824268122">Klucz prywatny</translation>
 <translation id="2472882733835903303">Pokaż klucz prywatny</translation>
@@ -769,6 +779,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="6015436276085482001">Odrzucone</translation>
 <translation id="6666273175654835609">Wysłane</translation>
 <translation id="2331676293859649642">Potwierdzone</translation>
+<translation id="8214232307424031138">Podpisano</translation>
 <translation id="1165039591588034296">Błąd</translation>
 <translation id="8364362220156372884">Opłata: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> (<ph name="FIAT_VALUE"/> USD)</translation>
 <translation id="2561824823738097741">Czy używasz najszybszej przeglądarki internetowej?</translation>
@@ -799,7 +810,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="5061574358754621254">Dane dotyczące cen wspierane przez CoinGecko</translation>
 <translation id="4626407663177532837">Oferta zawiera opłatę Brave w wysokości 0,875%</translation>
 <translation id="8574289650879708853">Dodaj spersonalizowane aktywo</translation>
-<translation id="1974060860693918893">Zaawansowane</translation>
+<translation id="1255896809210433555">Dodaj NFT</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="6600400596821238377">Nazwa tokena</translation>
 <translation id="4432966365400169165">Adres kontraktu tokena</translation>
@@ -1023,10 +1034,10 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="6605147707233193230">Włącz, aby wspierać twórców treści</translation>
 <translation id="1609556006143307897">Pomagasz twórcom treści</translation>
 <translation id="6067959437127691361">Korzystanie z Nagród Brave pomaga we wsparciu twórców i pozwala na zdobywanie BAT.</translation>
-<translation id="121894865378699201">Gotowi, żeby zacząć zdobywać tokeny BAT?</translation>
-<translation id="2648805457288107211">Wystarczy, że połączysz swoje konto powiernicze z profilem Nagród. Jeśli nie masz konta, będziesz mieć okazję do utworzenia nowego.</translation>
+<translation id="3264975266761862670">Gotowy do zarabiania?</translation>
+<translation id="265337947574975838">Podłącz lub utwórz konto u jednego z naszych partnerów.</translation>
 <translation id="1772961321862399863">Żeby zacząć zarabiać BAT, użytkownicy muszą połączyć konto powiernicze z Nagrodami Brave. Niestety w Twoim regionie nie ma dostępnych kont powierniczych, więc nie możesz zdobywać tokenów. W tej chwili włączenie Nagród Brave automatycznie wspomoże twórców.</translation>
-<translation id="5430495762768325224">Dowiedz się więcej o BAT</translation>
+<translation id="654447476965480878">Dowiedz się więcej o zarabianiu BAT</translation>
 <translation id="6278643716658443228">Ustawienia nagród</translation>
 <translation id="6516984207843289176">Połącz konto</translation>
 <translation id="4272136334824111854">Liczba twórców, których udało Ci się odwiedzić w tym miesiącu, którzy są wspierani przez Nagrody Brave: <ph name="CREATOR_COUNT"/></translation>
@@ -1057,6 +1068,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="171158953146804144"><ph name="DUE_DATE"/> będziemy kończyć wsparcie dla istniejących wirtualnych sald BAT. Niestety w Twoim regionie nie ma dostępnych powierników (<ph name="REGION"/>), którzy umożliwiliby wypłatę Twoich środków. Do tego czasu możesz nadal wspierać swoich ulubionych twórców.</translation>
 <translation id="8949422576126100041">Wyświetlić stronę za pomocą Speedreader?</translation>
 <translation id="591648995518106347">Automatycznie wczytuje odpowiednie artykuły w trybie czytnika</translation>
+<translation id="1295796122927221823">Zobacz w trybie czytania</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> na <ph name="NETWORK"/></translation>
 <translation id="295620834661738195">Lista odtwarzania Brave</translation>
 <translation id="4850886885716139402">Widok</translation>
@@ -1129,4 +1141,10 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="3631131732607750008">Treść wygasła. Spróbuj ponownie za kilka sekund.</translation>
 <translation id="9085765419770918643">Nie ma tu jeszcze żadnych NFT.</translation>
 <translation id="8445532667841598737">Chcesz jakieś dodać? Wystarczy, że klikniesz poniższy przycisk, żeby rozpocząć importowanie.</translation>
+<translation id="5925465310724910998">Chcesz, żeby Twoje NFT były wyświetlane automatycznie?</translation>
+<translation id="2827460859891872324">Portfel Brave może korzystać z usług innych firm, żeby automatycznie wyświetlać Twoje NFT. Brave będzie udostępniać adresy Twoich portfeli <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> w celu zapewnienia tej usługi. <ph name="BEGIN_LINK_2"/>Dowiedz się więcej.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">Włącz odkrywanie NFT</translation>
+<translation id="622372328961630111">Automatycznie dodawaj posiadane przez siebie NFT do Portfela, używając API innych firm. <ph name="BEGIN_LINK_1"/>Dowiedz się więcej.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">Konto w tabeli adresów:</translation>
+<translation id="7659483790930268440">Indeks w tabeli adresów:</translation>
 </translationbundle>

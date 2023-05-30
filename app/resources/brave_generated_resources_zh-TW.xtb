@@ -31,7 +31,7 @@
 <translation id="3218385319396786393">此頁面已禁止自動播放</translation>
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST"/></translation>
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
-<translation id="8988939298652262600">Brave 不會審查延伸套件的漏洞和安全性。僅在您信任開發者的情況下，才安裝這個延伸套件。</translation>
+<translation id="3477357195688115718">Brave 不會審查擴充功能是否安全。請唯有在您信賴開發人員的情況下，才安裝此擴充功能。</translation>
 <translation id="9005883459983913482">Tor 視窗</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
 <translation id="6924909138923993900">此網站的新 Tor 連線</translation>
@@ -125,10 +125,15 @@
 <translation id="8184318863960255706">更多資訊</translation>
 <translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="1162706247109707219">按一下「確定」，即表示您瞭解在更新到 Windows 10 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
+<translation id="2770465223704140727">從清單中移除</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
 <translation id="6040143037577758943">關閉</translation>
 <translation id="6665472986740899785">Brave 通知廣告</translation>
+<translation id="5582087890067572966">🎉 您已開始賺取收益！</translation>
+<translation id="4364336119478610380">畫面上顯示這類通知時，就表示您已開始賺取收益。您不需要特地點選，也能開始賺取收益。</translation>
+<translation id="5893017172751072752">出現 Brave Ads 通知表示您已開始賺取收益</translation>
+<translation id="3447730462826640312">您不需要特地點選，也能開始賺取收益，但如果您想深入瞭解，記得點選入內查看！</translation>
 <translation id="4174337572777167894">Web 發現專案</translation>
 <translation id="8659271182272561965">貢獻一些匿名搜尋與瀏覽資料來改進 Brave 搜尋。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
@@ -257,6 +262,9 @@
 <translation id="8721331068159819483">與 macOS 相同</translation>
 <translation id="1692470335103807198">取得更多主題</translation>
 <translation id="2906510232093002459">Brave 預設圖像</translation>
+<translation id="8076492880354921740">分頁</translation>
+<translation id="5860254591544742609">顯示標題列</translation>
+<translation id="5371926069408837914">收合時將滑鼠游標停留於上方，垂直分頁面板就會展開。</translation>
 <translation id="3367129510799209147">索引標籤懸停模式</translation>
 <translation id="2113977810652731515">信用卡</translation>
 <translation id="4096343215397759358">顯示預覽的圖卡</translation>
@@ -379,6 +387,10 @@
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="6438096877646138757">關閉時清除 cookie 的網站</translation>
 <translation id="2988792685798128092">網站關閉時清除</translation>
+<translation id="4663317021223369617">Cookie 及網站資料</translation>
+<translation id="7050661313034564003">顯示此網站的所有 Cookie 和儲存於本機的資料</translation>
+<translation id="8339059274628563283"><ph name="SITE"/> 儲存在本機的資料</translation>
+<translation id="1963227389609234879">全部移除</translation>
 <translation id="814018970995616154">以 Brave 中儲存的不安全網站清單檢查 URL。</translation>
 <translation id="1144810021918451336">無法協助您防護危險網站、下載和延伸套件。</translation>
 <translation id="5570470519803062774">網站與 Shields 設定</translation>
@@ -396,6 +408,11 @@
 <translation id="2903783737778379345">不允許透過第三方 Cookie 使用舊版 Google 登入</translation>
 <translation id="2570833232754279153">不允許使用第三方 Cookie 進行舊版 Google 登入</translation>
 <translation id="6880817299303842099">允許使用第三方 Cookie 進行舊版 Google 登入</translation>
+<translation id="5169650598465327872">存取本地主機</translation>
+<translation id="4172219483893066798">網站可要求存取本地主機資源</translation>
+<translation id="7181706637590665047">禁止存取本地主機資源</translation>
+<translation id="1336116824874668514">未允許存取本地主機資源</translation>
+<translation id="1485435696620658073">已允許存取本地主機資源</translation>
 <translation id="6414370348346025511">標準防護已開啟。</translation>
 <translation id="5565355416171743213">開始使用同步</translation>
 <translation id="4332558599726753990">同步設定</translation>
@@ -463,7 +480,7 @@
 再次使用 Sync，您將需要建立新帳戶，並逐一重新新增每部裝置。</translation>
 <translation id="4860996720371753023">正在刪除帳戶…</translation>
 <translation id="4094590686212463338">無法加入此同步鏈。同步鏈已被刪除。</translation>
-<translation id="5633907266617216186">地址、付款資訊等</translation>
+<translation id="4908081302669157000">電話號碼、電子郵件和地址</translation>
 <translation id="294985549514492876">Web 應用程式 (PWA)</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
@@ -576,7 +593,7 @@
 <translation id="1062463687579789365">錢包網路自訂</translation>
 <translation id="2234108191702901162">無法新增網路</translation>
 <translation id="8996633027318264334">確定要刪除 <ph name="KEY_NAME"/> 嗎？</translation>
-<translation id="3316326558572563182">使用中的網路會一律顯示在錢包網路清單</translation>
+<translation id="8633484167132172058">預設網路會永遠顯示於錢包網路清單</translation>
 <translation id="232693303726691609">在錢包網路清單中顯示/隱藏網路</translation>
 <translation id="7893578599666249602">您是否真的想要重設 <ph name="KEY_NAME"/>？</translation>
 <translation id="2618193846561624884">要更新現有網路嗎？</translation>

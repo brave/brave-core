@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">Включить поддержку обхода URL-адресов отслеживания верхнего уровня.</translation>
 <translation id="94154759592465111">Блокировать скрипты</translation>
 <translation id="7714773920987474116">Блокировать JavaScript (сайты могут работать некорректно)</translation>
+<translation id="1660979054779793659">YouTube</translation>
+<translation id="2233004324252915283">Блокировать рекомендации YouTube</translation>
+<translation id="1005372663692637999">Блокировать конечные заставки и предложения следующего видео на сервисе YouTube.</translation>
+<translation id="5152595963250646670">Блокировать не обязательные элементы YouTube</translation>
+<translation id="2998960761270772157">Блокировка входа, меню, а также информации о видео на сервисе YouTube.</translation>
 <translation id="6052725679982758334">Блокировка соцсетей</translation>
 <translation id="7498695072878479744">Разрешить кнопки входа через Google на сторонних сайтах</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
@@ -84,7 +89,7 @@
 <translation id="2005732746077850308">Brave Щит и конфиденциальность</translation>
 <translation id="4692623383562244444">Поисковые системы</translation>
 <translation id="1468415711258933398">Стандартная вкладка</translation>
-<translation id="3377025655491224618">Вкладка инкогнито</translation>
+<translation id="3377025655491224618">Приватная вкладка</translation>
 <translation id="9148058034647219655">Выход</translation>
 <translation id="4022987104439075738">Шлюз IPFS</translation>
 <translation id="2688519859165248360">Разрешает навигацию по ресурсам IPFS с помощью шлюза IPFS</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">Сайты могут запрашивать разрешение на использование устаревшей системы входа Google через сторонние файлы cookie</translation>
 <translation id="2903783737778379345">Не разрешать использовать устаревшую систему входа Google через сторонние файлы cookie</translation>
 <translation id="6880817299303842099">Разрешено использовать сторонние файлы cookie для устаревшей системы входа Google</translation>
+<translation id="5169650598465327872">Доступ к localhost</translation>
+<translation id="4172219483893066798">Сайты могут запрашивать доступ к localhost</translation>
+<translation id="7181706637590665047">Запретить доступ к localhost</translation>
+<translation id="1485435696620658073">Разрешить доступ к localhost</translation>
 <translation id="181905442828471321">Общие настройки по умолчанию системы Brave Shields</translation>
 <translation id="2675679258824361492">Другие настройки конфиденциальности</translation>
 <translation id="8026334261755873520">Очистить историю</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">Этот аккаунт Brave Синхронизации удален с другого устройства. Если вы не хотели отключать Синхронизацию, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>создайте аккаунт заново.</translation>
 <translation id="4094590686212463338">Не удалось присоединиться к цепи синхронизации, потому что она удалена.</translation>
-<translation id="5633907266617216186">Адреса, платежные данные и т. д.</translation>
+<translation id="4908081302669157000">Тел. номера, эл. почта и адреса</translation>
 <translation id="1056898198331236512">Предупреждение</translation>
 <translation id="1426410128494586442">Да</translation>
 <translation id="7811264919113243207">Устройство, на котором был сгенерирован QR-код, получит доступ к вашим данным в Brave, в том числе к паролям.
@@ -348,7 +357,7 @@
 <translation id="597993392929850353">Лицензия Brave</translation>
 <translation id="6336451774241870485">Новая приватная вкладка</translation>
 <translation id="6199596294742117349">Это приватная вкладка</translation>
-<translation id="5858455511731621847">Несмотря на то, что сайты, которые вы посещаете в приватных вкладках, не сохраняются локально, они не делают вас анонимным или невидимым для вашего провайдера, работодателя или сайтов, которые вы посещаете.</translation>
+<translation id="5858455511731621847">Несмотря на то, что сайты, которые вы посещаете в приватных вкладках, не сохраняются локально, они не делают вас анонимными или невидимыми для вашего провайдера, работодателя или сайтов, которые вы посещаете.</translation>
 <translation id="5789441016350810005">Brave Ads отправляется, когда браузер работает в фоновом режиме</translation>
 <translation id="4059103952779533037">Взносы и вознаграждения</translation>
 <translation id="2892744985635833293">Ваш ежемесячный платеж обработан.</translation>
@@ -577,7 +586,7 @@
 <translation id="2339124864228588937">Подтвердите секретную фразу</translation>
 <translation id="3747079125031086337">В правильном порядке выберите слова секретной фразы.</translation>
 <translation id="6518133107902771759">Подтвердить</translation>
-<translation id="3157931365184549694">Restore</translation>
+<translation id="3157931365184549694">Восстановить</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">Пароль</translation>
 <translation id="5619264711680220002">Разблокировка по биометрии</translation>
@@ -750,6 +759,7 @@
 <translation id="1118876217803190221">Недостаточно средств.</translation>
 <translation id="275990379543116961">Недостаточно средств на газ.</translation>
 <translation id="3292453499915466604">Недостаточная ликвидность.</translation>
+<translation id="3025158262797849291">Неопознанный числовой формат</translation>
 <translation id="3380365263193509176">Неизвестная ошибка</translation>
 <translation id="5932938770824268122">Закрытый ключ</translation>
 <translation id="2472882733835903303">Показать закрытый ключ</translation>
@@ -769,6 +779,7 @@
 <translation id="6015436276085482001">Отклонена</translation>
 <translation id="6666273175654835609">Отправлена</translation>
 <translation id="2331676293859649642">Подтверждена</translation>
+<translation id="8214232307424031138">Signed</translation>
 <translation id="1165039591588034296">Ошибка</translation>
 <translation id="8364362220156372884">Комиссия: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Используете самый быстрый браузер?</translation>
@@ -799,7 +810,7 @@
 <translation id="5061574358754621254">Данные о ценах представлены порталом CoinGecko</translation>
 <translation id="4626407663177532837">Сумма включает комиссию Brave 0,875 %.</translation>
 <translation id="8574289650879708853">Добавить пользовательский актив</translation>
-<translation id="1974060860693918893">Дополнительные поля</translation>
+<translation id="1255896809210433555">Добавить NFT</translation>
 <translation id="7791543448312431591">Добавить</translation>
 <translation id="6600400596821238377">Название токена</translation>
 <translation id="4432966365400169165">Адрес контракта токена</translation>
@@ -1023,10 +1034,10 @@
 <translation id="6605147707233193230">Включите, если хотите поддерживать создателей контента</translation>
 <translation id="1609556006143307897">Вы помогаете поддерживать создателей контента</translation>
 <translation id="6067959437127691361">Используя Brave Награды, вы поддерживаете авторов и можете зарабатывать BAT.</translation>
-<translation id="121894865378699201">Готовы зарабатывать BAT?</translation>
-<translation id="2648805457288107211">Просто создайте кастодиальный аккаунт, если у вас его еще нет, и подключите к профилю Brave Наград.</translation>
+<translation id="3264975266761862670">Готовы начать зарабатывать?</translation>
+<translation id="265337947574975838">Подключите или создайте учетную запись одного из наших партнерских сервисов.</translation>
 <translation id="1772961321862399863">Чтобы зарабатывать BAT, нужно подключить кастодиальный аккаунт Brave Наград. К сожалению, в вашем регионе нет ни одного доступного кастодиана, поэтому вы не можете получать токены. Если вы включите Brave Награды, то автоматически будете поддерживать авторов.</translation>
-<translation id="5430495762768325224">Узнайте больше о BAT</translation>
+<translation id="654447476965480878">Подробнее о том, как зарабатывать токены BAT</translation>
 <translation id="6278643716658443228">Настройки Rewards</translation>
 <translation id="6516984207843289176">Подключить аккаунт</translation>
 <translation id="4272136334824111854">Столько авторов, получающих доход в сервисе «Brave Награды», вы посетили в этом месяце: <ph name="CREATOR_COUNT"/></translation>
@@ -1057,6 +1068,7 @@
 <translation id="171158953146804144">С <ph name="DUE_DATE"/> мы прекращаем поддержку существующих балансов виртуальных токенов BAT. К сожалению, в вашем регионе (<ph name="REGION"/>) нет доступных кастодианов для вывода заработанных средств. До этого срока вы можете перевести токены любимым авторам.</translation>
 <translation id="8949422576126100041">Просмотреть страницу с помощью Speedreader?</translation>
 <translation id="591648995518106347">Автоматически загружать статьи в режиме чтения, если они поддерживают это</translation>
+<translation id="1295796122927221823">Просмотр в режиме чтения</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> в <ph name="NETWORK"/></translation>
 <translation id="295620834661738195">Brave Плейлист</translation>
 <translation id="4850886885716139402">Посмотреть</translation>
@@ -1105,7 +1117,7 @@
 <translation id="39991094779686024">Плейлисты</translation>
 <translation id="1710072605877822603">Добавить медиафайлы</translation>
 <translation id="903678009070770568">Добавляйте видео в плейлист Brave и смотрите их позже, даже офлайн</translation>
-<translation id="3063627607780392015">Кончились мегабайты? Нужно срочно успокоить плачущего ребенка?</translation>
+<translation id="3063627607780392015">Вышли за зону действия сети? Нужно срочно успокоить плачущего ребенка?</translation>
 <translation id="2041014734809158138">В метро, машине или самолете? Плейлист всегда будет под рукой.</translation>
 <translation id="7287143275037417932">Или нажмите кнопку «Плейлист», когда она появится</translation>
 <translation id="6959838938954098206">Кнопка «Плейлист» появляется, когда есть медиафайлы для добавления. При длительном нажатии открываются дополнительные опции. Кроме того, вы можете скрыть ее.</translation>
@@ -1129,4 +1141,10 @@
 <translation id="3631131732607750008">Содержимое устарело. Повторите попытку через пару секунд.</translation>
 <translation id="9085765419770918643">Здесь еще нет NFT.</translation>
 <translation id="8445532667841598737">Хотите добавить? Просто нажмите кнопку ниже для импорта.</translation>
+<translation id="5925465310724910998">Хотите, чтобы NFT-токены отображались автоматически?</translation>
+<translation id="2827460859891872324">При помощи стороннего ПО в кошельке Brave можно включить автоматическое отображение NFT. Чтобы предоставить эту услугу, Brave передает адреса кошельков <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/>. <ph name="BEGIN_LINK_2"/>Подробнее…<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">Включить обнаружение NFT</translation>
+<translation id="622372328961630111">Автоматически добавляет токены NFT, которыми вы владеете, в кошелек, используя сторонние API. <ph name="BEGIN_LINK_1"/>Подробнее…<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">Аккаунт в таблице для поиска адреса:</translation>
+<translation id="7659483790930268440">Аккаунт в таблице для поиска индекса:</translation>
 </translationbundle>

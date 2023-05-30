@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">אפשר תמיכה בעקיפה של כתובות אתרים למעקב אחר הפניות מחדש.</translation>
 <translation id="94154759592465111">חסום תסריטים</translation>
 <translation id="7714773920987474116">חוסם JavaScript (עלול לשבור אתרים)</translation>
+<translation id="1660979054779793659">YouTube</translation>
+<translation id="2233004324252915283">חסום תוכן מומלץ ב-Youtube</translation>
+<translation id="1005372663692637999">חוסם את רכיבי הלשונית 'הבא' ו-'סיום' ב-youtube.com.</translation>
+<translation id="5152595963250646670">חסום אלמנטים מסיחים ב-YouTube</translation>
+<translation id="2998960761270772157">חוסם את הכניסה, התפריט, ההערות ופרטי הסרטון ב-youtube.com.</translation>
 <translation id="6052725679982758334">חסימת מדיה חברתית</translation>
 <translation id="7498695072878479744">אפשר לחצני כניסה של Google באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">אתרים יכולים לבקש להשתמש בכניסה מדור קודם של Google באמצעות קובצי Cookie של צד שלישי</translation>
 <translation id="2903783737778379345">אל תאפשר כניסה של Google מדור קודם באמצעות קובצי Cookie של צד שלישי</translation>
 <translation id="6880817299303842099">מותר להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
+<translation id="5169650598465327872">גישת Localhost</translation>
+<translation id="4172219483893066798">אתרים יכולים לבקש גישה למשאבי localhost</translation>
+<translation id="7181706637590665047">אל תאפשר גישה למשאבי localhost</translation>
+<translation id="1485435696620658073">מורשה לגשת למשאבי localhost</translation>
 <translation id="181905442828471321">הגדרות ברירת מחדל של Brave Shields</translation>
 <translation id="2675679258824361492">הגדרות פרטיות אחרות</translation>
 <translation id="8026334261755873520">ניקוי נתוני גלישה</translation>
@@ -336,7 +345,7 @@
 <translation id="496896260395129787">חשבון Brave Sync זה נמחק ממכשיר אחר. אם לא התכוונת להשבית את הסנכרון, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>מחדש את החשבון</translation>
 <translation id="4094590686212463338">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. שרשרת הסנכרון נמחקה.</translation>
-<translation id="5633907266617216186">כתובות, פרטי תשלום וכו'.</translation>
+<translation id="4908081302669157000">מספרי טלפון, דוא"ל וכתובות</translation>
 <translation id="1056898198331236512">אזהרה</translation>
 <translation id="1426410128494586442">כן</translation>
 <translation id="7811264919113243207">פעולה זו תשתף נתוני Brave שלך, העשויים לכלול את הסיסמאות שלך, עם המכשיר שיצר QR קוד זה.
@@ -751,6 +760,7 @@
 <translation id="1118876217803190221">אין מספיק בעובר ושב</translation>
 <translation id="275990379543116961">אין מספיק כסף לגז</translation>
 <translation id="3292453499915466604">אין מספיק נזילות</translation>
+<translation id="3025158262797849291">פורמט מספר לא מזוהה</translation>
 <translation id="3380365263193509176">שגיאה לא ידועה</translation>
 <translation id="5932938770824268122">מפתח פרטי</translation>
 <translation id="2472882733835903303">הצג מפתח פרטי</translation>
@@ -770,6 +780,7 @@
 <translation id="6015436276085482001">נדחה</translation>
 <translation id="6666273175654835609">הוגש</translation>
 <translation id="2331676293859649642">אושר</translation>
+<translation id="8214232307424031138">חתום</translation>
 <translation id="1165039591588034296">שגיאה</translation>
 <translation id="8364362220156372884">תשלום:
 <ph name="VALUE"/><ph name="CHAIN_ASSET"/>($<ph name="FIAT_VALUE"/>)</translation>
@@ -801,7 +812,7 @@
 <translation id="5061574358754621254">נתוני המחירים מופעלים על ידי CoinGecko</translation>
 <translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
 <translation id="8574289650879708853">הוסף נכס מותאם אישית</translation>
-<translation id="1974060860693918893">מתקדם</translation>
+<translation id="1255896809210433555">הוסף NFT</translation>
 <translation id="7791543448312431591">הוספה</translation>
 <translation id="6600400596821238377">שם Token</translation>
 <translation id="4432966365400169165">כתובת חוזה אסימון</translation>
@@ -1025,10 +1036,10 @@
 <translation id="6605147707233193230">הפעל כדי לעזור לתמוך ביוצרי תוכן</translation>
 <translation id="1609556006143307897">אתה עוזר לתמוך ביוצרי תוכן</translation>
 <translation id="6067959437127691361">השימוש ב-Brave Rewards עוזר לתמוך ביוצרי תוכן, ומאפשר לך להרוויח BAT.</translation>
-<translation id="121894865378699201">מוכן להתחיל להרוויח BAT?</translation>
-<translation id="2648805457288107211">רק חבר את חשבון המשמורת שלך לפרופיל התגמולים שלך. אם אין לך חשבון, תקבל את ההזדמנות ליצור אחד.</translation>
+<translation id="3264975266761862670">מוכנ/ה להתחיל להרוויח?</translation>
+<translation id="265337947574975838">התחבר או צור חשבון עם אחד מהשותפים שלנו.</translation>
 <translation id="1772961321862399863">כדי להרוויח BAT, המשתמשים חייבים לחבר חשבון משמורת ל-Brave Rewards. למרבה הצער, אין אפוטרופוס זמין באזור שלך, כך שהרווחים אינם זמינים. לעת עתה, הפעלת Brave Rewards תתמוך ביוצרים באופן אוטומטי.</translation>
-<translation id="5430495762768325224">למידע נוסף על BAT</translation>
+<translation id="654447476965480878">למוד עוד כיצד להרוויח BAT</translation>
 <translation id="6278643716658443228">הגדרות תשלומים</translation>
 <translation id="6516984207843289176">חבר חשבון</translation>
 <translation id="4272136334824111854">בחודש זה, ביקרתם <ph name="CREATOR_COUNT"/> תומכים של תגמולי Brave</translation>
@@ -1059,6 +1070,7 @@
 <translation id="171158953146804144">בתאריך <ph name="DUE_DATE"/> אנו נפסיק את התמיכה ביתרות BAT וירטואליות הקיימות. לצערנו לא קיימים אפוטרופוסים זמינים באזור שלך (<ph name="REGION"/>) כדי למשוך את הרווחים שלך. עד למועד שצוין תוכל עדיין לתרום ליוצרים האהובים עליך.</translation>
 <translation id="8949422576126100041">לצפות בעמוד עם Speedreader?</translation>
 <translation id="591648995518106347">טוען באופן אוטומטי מאמרים כשירים במצב קורא</translation>
+<translation id="1295796122927221823">הצג במצב קורא</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/>על<ph name="NETWORK"/></translation>
 <translation id="295620834661738195">רשימת השמעה Brave</translation>
 <translation id="4850886885716139402">הצג</translation>
@@ -1131,4 +1143,10 @@
 <translation id="3631131732607750008">תוקף התוכן פג. נסה שוב בעוד מספר שניות.</translation>
 <translation id="9085765419770918643">אין כאן עדיין NFTs.</translation>
 <translation id="8445532667841598737">מוכן להוסיף כמה? פשוט לחץ על הלחצן למטה כדי לייבא.</translation>
+<translation id="5925465310724910998">רוצה שה-NFT שלך יוצגו באופן אוטומטי?</translation>
+<translation id="2827460859891872324">Brave Wallet יכול להשתמש בשירות של צד שלישי כדי להציג אוטומטית את ה-NFTs שלך. Brave ישתף את כתובות הארנק שלך עם <ph name="BEGIN_LINK_1"/>SimpleHash <ph name="END_LINK_1"/>כדי לספק שירות זה. <ph name="BEGIN_LINK_2"/>למד עוד.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">אפשר גילוי NFT</translation>
+<translation id="622372328961630111">הוסף אוטומטית NFTs שבבעלותך לארנק באמצעות ממשקי API של צד שלישי.<ph name="BEGIN_LINK_1"/>למד עוד.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">חשבון טבלת חיפוש כתובות:</translation>
+<translation id="7659483790930268440">אינדקס טבלת חיפוש כתובות:</translation>
 </translationbundle>
