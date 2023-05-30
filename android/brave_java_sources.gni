@@ -203,6 +203,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/AutoFitVerticalGridLayoutManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/HeightWrappingViewPager.java",
+  "../../brave/android/java/org/chromium/chrome/browser/custom_layout/LockableNestedScrollView.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/NonSwipeableViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/VerticalViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/popup_window_tooltip/ArrowColorDrawable.java",
