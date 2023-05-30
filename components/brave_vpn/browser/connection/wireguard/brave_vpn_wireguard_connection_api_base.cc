@@ -47,11 +47,6 @@ void BraveVPNWireguardConnectionAPIBase::OnWireguardKeypairGenerated(
 }
 
 void BraveVPNWireguardConnectionAPIBase::Connect() {
-  if (GetConnectionState() == ConnectionState::CONNECTED) {
-    Disconnect();
-    return;
-  }
-
   VLOG(2) << __func__ << " : start connecting!";
   SetLastConnectionError(std::string());
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
@@ -153,6 +148,7 @@ void BraveVPNWireguardConnectionAPIBase::OnDisconnected(bool success) {
   if (!success) {
     VLOG(1) << "Failed to stop wireguard tunnel service";
     SetLastConnectionError("Failed to stop wireguard tunnel service");
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
     return;
   }
 
