@@ -8,7 +8,7 @@
 #include <tuple>
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/sanitize/sanitize_util.h"
+#include "brave/components/text_sanitize/text_sanitize_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,7 +21,9 @@ class BraveAdsTextEmbeddingProcessorUtilTest
   bool ShouldSanitizeHtmlContent() const { return GetParam(); }
 
   std::string MaybeSanitizeHtmlContent(const std::string& content) const {
-    return ShouldSanitizeHtmlContent() ? SanitizeHtmlContent(content) : content;
+    return ShouldSanitizeHtmlContent()
+               ? text_sanitize::StripNonAlphanumericOrAsciiCharacters(content)
+               : content;
   }
 };
 

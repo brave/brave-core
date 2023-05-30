@@ -5,14 +5,22 @@
 
 import("//testing/test.gni")
 
+static_library("text_sanitize") {
+  sources = [
+    "text_sanitize_util.cc",
+    "text_sanitize_util.h",
+  ]
+
+  deps = [ "//brave/components/text_sanitize/rs:cxx" ]
+}
+
 source_set("text_sanitize_unit_tests") {
   testonly = true
 
   sources = [ "strip_non_alphanumeric_or_ascii_characters_unittest.cc" ]
 
   deps = [
-    "//base",
-    "//brave/components/text_sanitize/rs:cxx",
+    ":text_sanitize",
     "//testing/gtest",
   ]
 }

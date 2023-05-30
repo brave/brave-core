@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/ads_client_notifier.h"
 
-#include "brave/components/brave_ads/core/internal/sanitize/sanitize_util.h"
+#include "brave/components/text_sanitize/text_sanitize_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -47,7 +47,8 @@ void AdsClientNotifier::NotifyTabTextContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) const {
-  const std::string sanitized_text = SanitizeHtmlContent(text);
+  const std::string sanitized_text =
+      text_sanitize::StripNonAlphanumericOrAsciiCharacters(text);
   for (auto& observer : observers_) {
     observer.OnNotifyTabTextContentDidChange(tab_id, redirect_chain,
                                              sanitized_text);
@@ -58,7 +59,8 @@ void AdsClientNotifier::NotifyTabHtmlContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) const {
-  const std::string sanitized_html = SanitizeHtmlContent(html);
+  const std::string sanitized_html =
+      text_sanitize::StripNonAlphanumericOrAsciiCharacters(html);
   for (auto& observer : observers_) {
     observer.OnNotifyTabHtmlContentDidChange(tab_id, redirect_chain,
                                              sanitized_html);

@@ -5,8 +5,7 @@
 
 #include <string>
 
-#include "base/strings/string_util.h"
-#include "brave/components/text_sanitize/rs/src/lib.rs.h"
+#include "brave/components/text_sanitize/text_sanitize_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace text_sanitize {
@@ -31,19 +30,28 @@ TEST(StripNonAlphanumericAsciiCharactersTest,
        "Falsches Üben von Xylophonmusik quält jeden größeren Zwerg. ξεσκεπάζω "
        "την ψυχοφθόρα \\t\\n\\v\\f\\r βδελυγμία. いろはにほへど ちりぬるを "
        "わがよたれぞ つねならむ うゐのおくやま けふこえて あさきゆめみじ "
-       "ゑひもせず"},
-      {"\u2002Test\u1680 \u2028String\u00A0\u3000", " Test   String  "},
+       "ゑひもせず"},  // Pangrams
+      {"\u2002Test\u1680 \u2028String\u00A0\u3000",
+       " Test   String  "},  // Non ASCII whitespaces
       {"A わ\x05\x04\x03\x02\x01Ü\x00 ABC123", "A わ     Ü"},
       {"\xEF\xBB\xBF-abc", " -abc"},  // U+FEFF used as UTF-8 BOM
       {"\xEF\xB7\x90 \xF4\x8F\xBF\xBE",
-       "   "},  // Non-characters U+FDD0 U+10FFFE
+       "   "},                       // Non-characters U+FDD0 U+10FFFE
+      {"\xF0\x8F\xBF\xBE", "    "},  // Invalid UTF8: invalid encoding of
+                                     // U+1FFFE (0x8F instead of 0x9F)
+      {"\xED\xA0\x80\xED\xBF\xBF",
+       "      "},                    // Invalid UTF8: Surrogate code points
+      {"\xE0\x80\x80", "   "},       // Invalid UTF8: Overlong sequences
+      {"\xF4\x90\x80\x80", "    "},  // Invalid UTF8: Beyond U+10FFFF (the upper
+                                     // limit of Unicode codespace)
+      {"\xFE\xFF", "  "},            // Invalid UTF8: BOM in UTF-16(BE|LE)
+      {"\xD9\xEE\xE4\xEE",
+       "    "},  // Invalid UTF8: U+0639 U+064E U+0644 U+064E in ISO-8859-6
+      {"\xef\xbb\xbf-abc", " -abc"},  // Invalid UTF8 mixed with valid UTF8
       {"", ""}};
 
   for (const auto& [text, expected_text] : samples) {
-    EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(text));
-    EXPECT_EQ(expected_text,
-              static_cast<std::string>(
-                  strip_non_alphanumeric_or_ascii_characters(text)));
+    EXPECT_EQ(expected_text, StripNonAlphanumericOrAsciiCharacters(text));
   }
 }
 
@@ -55,8 +63,7 @@ TEST(StripNonAlphanumericAsciiCharactersTest, BinaryData) {
       reinterpret_cast<const char*>(bytes_data) + sizeof(bytes_data));
 
   EXPECT_EQ("   \t         !",
-            static_cast<std::string>(
-                strip_non_alphanumeric_or_ascii_characters(binary_data)));
+            StripNonAlphanumericOrAsciiCharacters(binary_data));
 }
 
 }  // namespace text_sanitize
