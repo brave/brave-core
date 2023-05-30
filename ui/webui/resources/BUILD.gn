@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/css_to_wrapper.gni")
 import("//tools/polymer/html_to_wrapper.gni")
@@ -25,6 +26,7 @@ group("grdp") {
   public_deps = [
     ":fonts_grdp",
     ":icons_grdp",
+    ":leo_web_components",
     ":static_grdp",
   ]
   if (include_polymer) {
@@ -90,6 +92,25 @@ if (include_polymer) {
   ]
 }
 
+transpile_web_ui("leo_web_components") {
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  entry_points = [ [
+        "leo",
+        rebase_path("leo/web_components.ts"),
+      ] ]
+
+  resource_name = "leo"
+
+  deps = [
+    # The build fails if the Brave Rewards mojom files are not present. This is
+    # because they're used in some of the ambient type definitions present in
+    # //brave/components/definitions/rewards.d.ts
+    "//brave/components/brave_rewards/common/mojom:mojom_js",
+  ]
+}
+
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
 generate_grd("static_grdp") {
   grd_prefix = "brave_webui"
@@ -126,16 +147,52 @@ leo_icons_base_path = "../../../node_modules/@brave/leo/icons"
 # are a **LOT** of icons in Leo. You can check if there's an icon  which suits
 # your needs here: https://leo.bravesoftware.com/?path=/story/icon--all-icons
 leo_icons = [
-  "edit-box.svg",
-  "rocket.svg",
-  "history.svg",
+  "activity.svg",
+  "appearance.svg",
+  "arrow-down.svg",
+  "arrow-left.svg",
+  "arrow-right.svg",
+  "arrow-small-down.svg",
+  "arrow-small-up.svg",
+  "backward.svg",
+  "browser-extensions.svg",
+  "carat-down.svg",
+  "check-circle-filled.svg",
+  "check-normal.svg",
+  "checkbox-checked.svg",
+  "checkbox-unchecked.svg",
   "close.svg",
-  "news-default.svg",
-  "product-brave-monochrome.svg",
+  "coins-alt1.svg",
+  "coins.svg",
+  "copy.svg",
+  "crypto-wallets.svg",
+  "currency-exchange.svg",
+  "discover.svg",
+  "download.svg",
+  "edit-box.svg",
+  "edit-pencil.svg",
+  "eye-off.svg",
+  "eye-on.svg",
+  "flash.svg",
+  "graph.svg",
+  "grid04.svg",
+  "help-outline.svg",
+  "history.svg",
+  "info-filled.svg",
+  "info-outline.svg",
+  "key.svg",
+  "launch.svg",
+  "link-normal.svg",
+  "list-checks.svg",
+  "lock.svg",
+  "money-bag-coins.svg",
+  "more-horizontal.svg",
+  "more-vertical.svg",
+  "network-speed-average.svg",
   "news-business.svg",
   "news-car.svg",
-  "crypto-wallets.svg",
   "news-culture.svg",
+  "news-default.svg",
   "news-entertainment.svg",
   "news-fashion.svg",
   "news-filmandtv.svg",
@@ -149,62 +206,39 @@ leo_icons = [
   "news-regional.svg",
   "news-science.svg",
   "news-sports.svg",
-  "news-travel.svg",
   "news-technology.svg",
   "news-topnews.svg",
+  "news-travel.svg",
   "news-weather.svg",
   "news-worldnews.svg",
-  "search.svg",
-  "trash.svg",
-  "info-filled.svg",
+  "nft.svg",
+  "plus-add.svg",
+  "product-bat-outline.svg",
+  "product-brave-color.svg",
+  "product-brave-monochrome.svg",
+  "product-brave-wallet.svg",
+  "product-sync.svg",
+  "product-translate.svg",
+  "qr-code.svg",
   "radio-checked.svg",
   "radio-unchecked.svg",
-  "arrow-left.svg",
-  "arrow-right.svg",
-  "link-normal.svg",
-  "check-normal.svg",
-  "plus-add.svg",
-  "carat-down.svg",
-  "money-bag-coins.svg",
-  "send.svg",
-  "currency-exchange.svg",
-  "activity.svg",
-  "grid04.svg",
-  "discover.svg",
-  "user-accounts.svg",
-  "coins.svg",
-  "more-horizontal.svg",
-  "more-vertical.svg",
-  "coins-alt1.svg",
-  "lock.svg",
+  "rocket.svg",
   "safe.svg",
+  "search-fuel-tank.svg",
+  "search.svg",
+  "send.svg",
   "settings.svg",
-  "help-outline.svg",
-  "launch.svg",
-  "eye-off.svg",
-  "eye-on.svg",
-  "graph.svg",
-  "checkbox-checked.svg",
-  "checkbox-unchecked.svg",
-  "edit-pencil.svg",
-  "qr-code.svg",
-  "key.svg",
-  "copy.svg",
+  "shield-done.svg",
+  "swap-horizontal.svg",
+  "thumb-down.svg",
+  "trash.svg",
+  "tune.svg",
+  "user-accounts.svg",
+  "verification-filled-color.svg",
+  "verification-filled.svg",
   "warning-circle-filled.svg",
   "warning-triangle-filled.svg",
-  "check-circle-filled.svg",
-  "arrow-small-up.svg",
-  "arrow-small-down.svg",
-  "info-outline.svg",
-  "verification-filled.svg",
-  "verification-filled-color.svg",
-  "nft.svg",
-  "tune.svg",
-  "arrow-down.svg",
-  "search-fuel-tank.svg",
-  "swap-horizontal.svg",
-  "flash.svg",
-  "network-speed-average.svg",
+  "window-tab-new.svg",
 ]
 
 if (enable_brave_vpn_panel) {

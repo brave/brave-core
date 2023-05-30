@@ -11,6 +11,19 @@ import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrom
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {loadTimeData} from '../i18n_setup.js'
+import 'chrome://resources/brave/leo.bundle.js'
+
+// This maps a Chromium icon name to the leo-icon to replace it with.
+const iconConversions = {
+  'cr:security': 'lock',
+  'cr:search': 'search',
+  'settings:palette': 'appearance',
+  'settings:assignment': 'list-checks',
+  'settings:language': 'product-translate',
+  'settings:build': 'settings',
+  'settings:restore': 'backward',
+  'cr:file-download': 'download'
+}
 
 function createMenuElement(title, href, iconName, pageVisibilitySection) {
   const menuEl = document.createElement('a')
@@ -20,9 +33,11 @@ function createMenuElement(title, href, iconName, pageVisibilitySection) {
   menuEl.href = href
   menuEl.setAttribute('role', 'menuitem')
   menuEl.setAttribute('class', 'cr-nav-menu-item')
-  const iconChild = document.createElement('iron-icon')
-  iconChild.setAttribute('icon', iconName)
-  menuEl.appendChild(iconChild)
+
+  const icon = document.createElement('leo-icon')
+  icon.setAttribute('name', iconName)
+  menuEl.appendChild(icon)
+
   const text = document.createTextNode(title)
   menuEl.appendChild(text)
   const paperRippleChild = document.createElement('paper-ripple')
@@ -78,9 +93,7 @@ RegisterStyleOverride(
       }
 
       .cr-nav-menu-item[selected] {
-        --selected-gradient-color1: #FA7250;
-        --selected-gradient-color2: #FF1893;
-        --selected-gradient-color3: #A78AFF;
+        --leo-icon-color: var(--leo-gradient-icons-active);
 
         color: var(--cr-link-color) !important;
         background: transparent !important;
@@ -124,7 +137,7 @@ RegisterStyleOverride(
         color: #444DD0 !important;
       }
 
-      iron-icon {
+      iron-icon, leo-icon {
         margin-inline-end: 14px !important;
         width: 24px;
         height: 24px;
@@ -235,7 +248,7 @@ RegisterPolymerTemplateModifications({
     const getStartedEl = createMenuElement(
       loadTimeData.getString('braveGetStartedTitle'),
       '/getStarted',
-      'brave_settings:get-started',
+      'rocket',
       'getStarted'
     )
     peopleEl.insertAdjacentElement('afterend', getStartedEl)
@@ -247,7 +260,7 @@ RegisterPolymerTemplateModifications({
     const newTabEl = createMenuElement(
       loadTimeData.getString('braveNewTab'),
       '/newTab',
-      'brave_settings:new-tab',
+      'window-tab-new',
       'newTab'
     )
     appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
@@ -255,7 +268,7 @@ RegisterPolymerTemplateModifications({
     const shieldsEl = createMenuElement(
       loadTimeData.getString('braveShieldsTitle'),
       '/shields',
-      'brave_settings:shields',
+      'shield-done',
       'shields',
     )
     newTabEl.insertAdjacentElement('afterend', shieldsEl)
@@ -266,7 +279,7 @@ RegisterPolymerTemplateModifications({
       rewardsEl = createMenuElement(
         loadTimeData.getString('braveRewards'),
         '/rewards',
-        'brave_settings:rewards',
+        'product-bat-outline',
         'rewards',
       )
       shieldsEl.insertAdjacentElement('afterend', rewardsEl)
@@ -275,7 +288,7 @@ RegisterPolymerTemplateModifications({
     const embedEl = createMenuElement(
       loadTimeData.getString('socialBlocking'),
       '/socialBlocking',
-      'brave_settings:social-permissions',
+      'thumb-down',
       'socialBlocking',
     )
     if (isBraveRewardsSupported) {
@@ -290,7 +303,7 @@ RegisterPolymerTemplateModifications({
     const syncEl = createMenuElement(
       loadTimeData.getString('braveSync'),
       '/braveSync',
-      'brave_settings:sync',
+      'product-sync',
       'braveSync',
     )
     privacyEl.insertAdjacentElement('afterend', syncEl)
@@ -301,7 +314,7 @@ RegisterPolymerTemplateModifications({
     const extensionEl = createMenuElement(
       loadTimeData.getString('braveDefaultExtensions'),
       '/extensions',
-      'brave_settings:extensions',
+      'browser-extensions',
       'extensions',
     )
     searchEl.insertAdjacentElement('afterend', extensionEl)
@@ -310,7 +323,7 @@ RegisterPolymerTemplateModifications({
     const web3El = createMenuElement(
       loadTimeData.getString('braveWeb3'),
       '/web3',
-      'brave_settings:wallet',
+      'product-brave-wallet',
       'wallet',
     )
 
@@ -324,7 +337,7 @@ RegisterPolymerTemplateModifications({
     const helpTipsEl = createMenuElement(
       loadTimeData.getString('braveHelpTips'),
       '/braveHelpTips',
-      'brave_settings:help',
+      'help-outline',
       'braveHelpTips',
     )
     const downloadsEl = getMenuElement(templateContent, '/downloads')
@@ -354,8 +367,8 @@ RegisterPolymerTemplateModifications({
     const graphicsEl = document.createElement('div')
     graphicsEl.setAttribute('class', 'brave-about-graphic')
 
-    const icon = document.createElement('iron-icon')
-    icon.setAttribute('icon', 'brave_settings:full-color-brave-lion')
+    const icon = document.createElement('leo-icon')
+    icon.setAttribute('name', 'product-brave-color')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')
@@ -367,6 +380,20 @@ RegisterPolymerTemplateModifications({
     const versionEl = document.createElement('span')
     versionEl.setAttribute('class', 'brave-about-item brave-about-menu-version')
     versionEl.textContent = `v ${loadTimeData.getString('braveProductVersion')}`
+
+    for (const icon of templateContent.querySelectorAll('iron-icon')) {
+      const name = icon.getAttribute('icon')
+      const converted = iconConversions[name]
+      if (!icon) {
+        console.error("Couldn't find leo icon for", name)
+        continue
+      }
+
+      const leoIcon = document.createElement('leo-icon')
+      leoIcon.setAttribute('name', converted)
+      icon.insertAdjacentElement('beforebegin', leoIcon)
+      icon.remove()
+    }
 
     parent.appendChild(newAboutEl)
     newAboutEl.appendChild(graphicsEl)
