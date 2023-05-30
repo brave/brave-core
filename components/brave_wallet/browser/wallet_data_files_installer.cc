@@ -93,7 +93,7 @@ void OnSanitizedDappLists(data_decoder::JsonSanitizer::Result result) {
   }
 
   auto converted_json =
-      std::string(json::convert_all_numbers_to_string(*result));
+      std::string(json::convert_all_numbers_to_string(*result, ""));
   if (converted_json.empty()) {
     return;
   }

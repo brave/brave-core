@@ -41,6 +41,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -192,6 +193,18 @@ decentralized_dns::EnsOffchainResolveMethod FromMojomEnsOffchainResolveMethod(
 
   NOTREACHED();
   return EnsOffchainResolveMethod::kDisabled;
+}
+
+// Function to convert all numbers in JSON string to strings, recursively
+// under the top-level "result" key.
+absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(json, "/result"));
+  if (converted_json.empty()) {
+    return absl::nullopt;
+  }
+
+  return converted_json;
 }
 
 namespace solana {
@@ -809,11 +822,13 @@ void JsonRpcService::GetFeeHistory(const std::string& chain_id,
       base::BindOnce(&JsonRpcService::OnGetFeeHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+
   RequestInternal(eth::eth_feeHistory("0x28",  // blockCount = 40
                                       kEthereumBlockTagLatest,
                                       std::vector<double>{20, 50, 80}),
                   true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
-                  std::move(internal_callback));
+                  std::move(internal_callback), std::move(conversion_callback));
 }
 
 void JsonRpcService::OnGetFeeHistory(GetFeeHistoryCallback callback,

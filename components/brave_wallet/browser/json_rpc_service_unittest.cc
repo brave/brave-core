@@ -2658,6 +2658,7 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
           }));
   run_loop.Run();
 
+  // OK: valid response
   SetHTTPRequestTimeoutInterceptor();
   base::RunLoop run_loop2;
   json_rpc_service_->GetFeeHistory(
@@ -2675,8 +2676,28 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
           }));
   run_loop2.Run();
 
+  // KO: invalid JSON
   SetInvalidJsonInterceptor();
   base::RunLoop run_loop3;
+  json_rpc_service_->GetFeeHistory(
+      mojom::kLocalhostChainId,
+      base::BindLambdaForTesting(
+          [&](const std::vector<std::string>& base_fee_per_gas,
+              const std::vector<double>& gas_used_ratio,
+              const std::string& oldest_block,
+              const std::vector<std::vector<std::string>>& reward,
+              mojom::ProviderError error, const std::string& error_message) {
+            EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+            EXPECT_EQ(error_message,
+                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+            run_loop3.Quit();
+          }));
+  run_loop3.Run();
+
+  // KO: valid JSON but unexpected response
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH),
+                 "eth_feeHistory", "", "{\"foo\":0}");
+  base::RunLoop run_loop4;
   json_rpc_service_->GetFeeHistory(
       mojom::kLocalhostChainId,
       base::BindLambdaForTesting(
@@ -2688,12 +2709,13 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
             EXPECT_EQ(error, mojom::ProviderError::kParsingError);
             EXPECT_EQ(error_message,
                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-            run_loop3.Quit();
+            run_loop4.Quit();
           }));
-  run_loop3.Run();
+  run_loop4.Run();
 
+  // KO: valid error response
   SetLimitExceededJsonErrorResponse();
-  base::RunLoop run_loop4;
+  base::RunLoop run_loop5;
   json_rpc_service_->GetFeeHistory(
       mojom::kLocalhostChainId,
       base::BindLambdaForTesting(
@@ -2704,9 +2726,9 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
               mojom::ProviderError error, const std::string& error_message) {
             EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
             EXPECT_EQ(error_message, "Request exceeds defined limit");
-            run_loop4.Quit();
+            run_loop5.Quit();
           }));
-  run_loop4.Run();
+  run_loop5.Run();
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {

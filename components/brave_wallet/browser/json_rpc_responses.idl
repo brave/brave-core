@@ -18,7 +18,7 @@ namespace json_rpc_responses {
 
   dictionary EthGetFeeHistoryResult {
     DOMString[] baseFeePerGas;
-    double[] gasUsedRatio;
+    DOMString[] gasUsedRatio;
     DOMString oldestBlock;
     any[]? reward;
   };
