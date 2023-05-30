@@ -273,9 +273,8 @@ void BraveVpnService::CreateSupportTicket(
 void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
   std::string brave_version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
-  std::string os_version = version_info::GetOSType();
 
-  std::move(callback).Run(brave_version, os_version,
+  std::move(callback).Run(brave_version, std::string(version_info::GetOSType()),
                           connection_api_->GetHostname(), GetTimeZoneName());
 }
 
