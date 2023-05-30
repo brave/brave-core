@@ -10,8 +10,8 @@
     android:layout_height="wrap_content"
     android:layout_marginVertical="8dp"
     android:background="?android:attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
+    android:clickable="false"
+    android:focusable="false"
     android:orientation="horizontal">
 
     <ImageView
@@ -19,6 +19,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
+        android:background="@drawable/circle_shimmer"
         android:contentDescription="@null" />
 
     <LinearLayout
@@ -30,20 +31,22 @@
 
         <TextView
             android:id="@+id/coin_name"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/wallet_text_color"
+            android:background="@color/wallet_secondary_text_color"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:layout_gravity="start"/>
 
         <TextView
             android:id="@+id/symbol"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/wallet_secondary_text_color"
+            android:background="@color/wallet_secondary_text_color"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:layout_gravity="start"/>
@@ -58,16 +61,18 @@
 
         <TextView
             android:id="@+id/price"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_gravity="end"
+            android:background="@color/wallet_secondary_text_color"
             android:textColor="@color/wallet_text_color"/>
 
         <TextView
             android:id="@+id/change_percentage"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
+            android:background="@color/wallet_secondary_text_color"
             android:textSize="14sp"
             android:textColor="@color/wallet_secondary_text_color"
             android:layout_gravity="end"/>
