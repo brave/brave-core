@@ -279,9 +279,10 @@ public class BraveVPN {
           logAndStoreError("configureAndConnectVPN: \(error)")
         }
         
+        reconnectPending = false
+        
         // Re-connected user should update last used region - detail is pulled
         fetchLastUsedRegionDetail() { _, _ in
-          reconnectPending = false
           DispatchQueue.main.async {
             completion?(status == .success)
           }
@@ -302,9 +303,10 @@ public class BraveVPN {
           helper.ikev2VPNManager.removeFromPreferences()
         }
          
+        reconnectPending = false
+          
         // First time user will connect automatic region - detail is pulled
         fetchLastUsedRegionDetail() { _, _ in
-          reconnectPending = false
           DispatchQueue.main.async {  
             completion?(success)
           }

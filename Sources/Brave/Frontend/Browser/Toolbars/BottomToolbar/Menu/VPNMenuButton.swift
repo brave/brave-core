@@ -110,7 +110,12 @@ struct VPNMenuButton: View {
     }
     .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
       isVPNEnabled = BraveVPN.isConnected
-      isVPNStatusChanging = BraveVPN.reconnectPending
+      
+      if BraveVPN.isConnected {
+        isVPNStatusChanging = false
+      } else {
+        isVPNStatusChanging = BraveVPN.reconnectPending
+      }
     }
   }
 }
