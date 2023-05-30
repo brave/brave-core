@@ -269,7 +269,9 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
 void BraveBrowserCommandController::UpdateCommandForPlaylist() {
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    UpdateCommandEnabled(IDC_SHOW_PLAYLIST_BUBBLE, browser_->is_type_normal());
+    UpdateCommandEnabled(
+        IDC_SHOW_PLAYLIST_BUBBLE,
+        browser_->is_type_normal() && !browser_->profile()->IsOffTheRecord());
   }
 #endif
 }
