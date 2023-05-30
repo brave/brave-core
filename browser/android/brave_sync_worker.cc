@@ -41,7 +41,7 @@
 //    removeSyncStateChangedListener
 //    requestStart
 //    requestStop
-//    setFirstSetupComplete
+//    setInitialSyncFeatureSetupComplete
 //    isInitialSyncFeatureSetupComplete
 
 using base::android::ConvertUTF8ToJavaString;
@@ -169,7 +169,7 @@ void BraveSyncWorker::MarkFirstSetupComplete() {
 
   // We're done configuring, so notify SyncService that it is OK to start
   // syncing.
-  service->GetUserSettings()->SetFirstSetupComplete(
+  service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(
       syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
 }
 
