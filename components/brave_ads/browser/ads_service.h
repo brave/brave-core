@@ -103,27 +103,22 @@ class AdsService : public KeyedService {
   // Called when a notification ad with |placement_id| is clicked.
   virtual void OnNotificationAdClicked(const std::string& placement_id) = 0;
 
-  // Called to get diagnostics to help identify issues. The callback takes two
-  // arguments - |bool| is set to |true| if successful otherwise |false|.
-  // |base::Value::List| containing info of the obtained diagnostics.
+  // Called to get diagnostics to help identify issues. The callback takes one
+  // argument - |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
   // Called when a resource component has been updated.
   virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
 
-  // Called to get the statement of accounts. The callback takes five arguments
-  // - |bool| is set to |true| if successful otherwise |false|. |double|
-  // containing the next payment date which is the number of seconds since epoch
-  // (Jan 1, 1970). |int| containing the number of ads received this month.
-  // |double| containing the total earnings this month. |double| containing the
-  // total earnings last month.
+  // Called to get the statement of accounts. The callback takes one argument -
+  // |mojom::StatementInfo| containing info of the obtained statement of
+  // accounts.
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
   // Should be called to serve an inline content ad for the specified
-  // |dimensions|. The callback takes three arguments - |bool| is set to |true|
-  // if successful otherwise |false|, |std::string| containing the dimensions
-  // and |base::Value::Dict| containing the ad.
+  // |dimensions|. The callback takes two arguments - |std::string| containing
+  // the dimensions and |base::Value::Dict| containing the info for the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdAsDictCallback callback) = 0;
@@ -141,15 +136,15 @@ class AdsService : public KeyedService {
       mojom::InlineContentAdEventType event_type,
       TriggerAdEventCallback callback) = 0;
 
-  // Called to prefetch the next new tab page ad.
+  // Called to prefetch a new tab page ad.
   virtual void PrefetchNewTabPageAd() = 0;
 
-  // Called to get a prefetched new tab page ad for display.
+  // Called to get the prefetched new tab page ad for display.
   virtual absl::optional<NewTabPageAdInfo>
   GetPrefetchedNewTabPageAdForDisplay() = 0;
 
-  // Called when failing to prefetch a new tab page ad for |placement_id| and
-  // |creative_instance_id|.
+  // Called when failing to prefetch a new tab page ad for the specified
+  // |placement_id| and |creative_instance_id|.
   virtual void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) = 0;
@@ -187,9 +182,9 @@ class AdsService : public KeyedService {
       mojom::SearchResultAdEventType event_type,
       TriggerAdEventCallback callback) = 0;
 
-  // Called to purge orphaned served ad events. NOTE: You should call before
-  // triggering new ad events for the specified |ad_type|. The callback takes
-  // one argument - |bool| is set to |true| if successful otherwise |false|.
+  // Called to purge orphaned served ad events for the specified |ad_type|
+  // before calling |MaybeServe*Ad|. The callback takes one argument - |bool| is
+  // set to |true| if successful otherwise |false|.
   virtual void PurgeOrphanedAdEventsForType(
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;

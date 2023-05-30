@@ -136,14 +136,16 @@ class ADS_EXPORT Ads {
       TriggerAdEventCallback callback) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
-  // |event_type| event for the ad specified in |ad_mojom|.
+  // |event_type| event for the ad specified in |ad_mojom|. The callback takes
+  // one argument - |bool| is set to |true| if successful otherwise |false|.
   virtual void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
       mojom::SearchResultAdEventType event_type,
       TriggerAdEventCallback callback) = 0;
 
-  // Called to purge orphaned served ad events. NOTE: You should call before
-  // triggering new ad events for the specified |ad_type|.
+  // Called to purge orphaned served ad events for the specified |ad_type|
+  // before calling |MaybeServe*Ad|. The callback takes one argument - |bool| is
+  // set to |true| if successful otherwise |false|.
   virtual void PurgeOrphanedAdEventsForType(
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
