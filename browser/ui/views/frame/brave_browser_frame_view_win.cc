@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
 
+#include <algorithm>
+
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
@@ -54,7 +56,13 @@ int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
     return 0;
   }
 
-  return BrowserFrameViewWin::GetTopInset(restored);
+  // Make sure that inset is at least as tall as caption button.
+  auto inset = BrowserFrameViewWin::GetTopInset(restored);
+  if (inset && caption_button_container_) {
+    inset =
+        std::max(inset, caption_button_container_->GetPreferredSize().height());
+  }
+  return inset;
 }
 
 int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
