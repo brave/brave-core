@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
@@ -80,14 +81,21 @@ void NewTabPageAdHandler::TriggerEvent(
   CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK_NE(mojom::NewTabPageAdEventType::kServed, event_type)
       << " should not be called with kServed as this event is handled when "
-         "calling MaybeServe or when triggering kViewed if Brave Private Ads "
-         "are disabled";
+         "calling MaybeServe if the user has opted-in or when triggering a "
+         "kViewed event if the user has not opted-in to Brave Private Ads";
+
+  if (!UserHasOptedInToBravePrivateAds() &&
+      !kShouldAlwaysTriggerNewTabPageAdEvents.Get()) {
+    // Do not trigger events when the user has not opted-in to Brave Private
+    // Ads if |kShouldAlwaysTriggerNewTabPageAdEvents| is set to |false|.
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   if (!UserHasOptedInToBravePrivateAds() &&
       event_type == mojom::NewTabPageAdEventType::kViewed) {
     // |MaybeServe| will trigger a |kServed| event if Brave Private Ads are
     // enabled; otherwise, we need to trigger a |kServed| event when triggering
-    // a |kViewed| event.
+    // a |kViewed| event for non opted-in users.
     return event_handler_.FireEvent(
         placement_id, creative_instance_id,
         mojom::NewTabPageAdEventType::kServed,

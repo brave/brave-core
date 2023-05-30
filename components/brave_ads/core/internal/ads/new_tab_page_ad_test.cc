@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
@@ -11,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -67,6 +69,17 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
   // Arrange
   ForcePermissionRulesForTesting();
 
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["should_always_trigger_ad_events"] = "true";
+  enabled_features.emplace_back(kNewTabPageAdFeature, params);
+
+  std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([](const absl::optional<NewTabPageAdInfo>& ad) {
@@ -83,6 +96,17 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, DoNotServe) {
   // Arrange
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["should_always_trigger_ad_events"] = "true";
+  enabled_features.emplace_back(kNewTabPageAdFeature, params);
+
+  std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
   absl::optional<NewTabPageAdInfo> ad;
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run(ad));
@@ -94,6 +118,17 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, DoNotServe) {
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
+
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["should_always_trigger_ad_events"] = "true";
+  enabled_features.emplace_back(kNewTabPageAdFeature, params);
+
+  std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
@@ -124,6 +159,17 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   // Arrange
   DisableBravePrivateAds();
 
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["should_always_trigger_ad_events"] = "true";
+  enabled_features.emplace_back(kNewTabPageAdFeature, params);
+
+  std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
   // Act
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kViewed,
@@ -138,9 +184,40 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   EXPECT_EQ(0U, GetTransactionCount());
 }
 
+TEST_F(
+    BraveAdsNewTabPageAdIntegrationTest,
+    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndBravePrivateAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  // Act
+  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                           mojom::NewTabPageAdEventType::kViewed,
+                           /*should_fire_event*/ false);
+
+  // Assert
+  EXPECT_EQ(0U,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
+  EXPECT_EQ(0U,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetHistoryItemCount());
+  EXPECT_EQ(0U, GetTransactionCount());
+}
+
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
+
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["should_always_trigger_ad_events"] = "true";
+  enabled_features.emplace_back(kNewTabPageAdFeature, params);
+
+  std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
@@ -177,6 +254,17 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   // Arrange
   DisableBravePrivateAds();
 
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["should_always_trigger_ad_events"] = "true";
+  enabled_features.emplace_back(kNewTabPageAdFeature, params);
+
+  std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kViewed,
                            /*should_fire_event*/ true);
@@ -192,6 +280,32 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
   EXPECT_EQ(1U,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
+  EXPECT_EQ(0U, GetHistoryItemCount());
+  EXPECT_EQ(0U, GetTransactionCount());
+}
+
+TEST_F(
+    BraveAdsNewTabPageAdIntegrationTest,
+    DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBravePrivateAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                           mojom::NewTabPageAdEventType::kViewed,
+                           /*should_fire_event*/ false);
+
+  // Act
+  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                           mojom::NewTabPageAdEventType::kClicked,
+                           /*should_fire_event*/ false);
+
+  // Assert
+  EXPECT_EQ(0U,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
+  EXPECT_EQ(0U,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
   EXPECT_EQ(0U, GetHistoryItemCount());
   EXPECT_EQ(0U, GetTransactionCount());
