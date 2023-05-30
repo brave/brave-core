@@ -41,7 +41,8 @@ struct PlaylistSharedFolderModel: Decodable {
                    detected: true,
                    dateAdded: Date(),
                    tagId: item.mediaItemId,
-                   order: Int32(item.order) ?? -1)
+                   order: Int32(item.order) ?? -1,
+                   isInvisible: false)
     }.sorted(by: { $0.order < $1.order })
   }
   
@@ -178,7 +179,8 @@ struct PlaylistSharedFolderNetwork {
                                   detected: newItem.detected,
                                   dateAdded: newItem.dateAdded,
                                   tagId: item.tagId,
-                                  order: item.order)
+                                  order: item.order,
+                                  isInvisible: newItem.isInvisible)
           
           // Destroy the web loader when the callback is complete.
           webLoader.stop()

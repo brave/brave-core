@@ -119,6 +119,13 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       return
     }
     
+    if handler.url?.baseDomain != "soundcloud.com", item.isInvisible {
+      DispatchQueue.main.async {
+        handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
+      }
+      return
+    }
+    
     // Copy the item but use the web-view's title and location instead, if available
     // This is due to a iFrames security
     item = PlaylistInfo(name: item.name,
@@ -131,7 +138,8 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
                         detected: item.detected,
                         dateAdded: item.dateAdded,
                         tagId: item.tagId,
-                        order: item.order)
+                        order: item.order,
+                        isInvisible: item.isInvisible)
 
     Self.queue.async { [weak handler] in
       guard let handler = handler else { return }
