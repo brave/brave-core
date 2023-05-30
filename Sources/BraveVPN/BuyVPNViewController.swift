@@ -9,7 +9,7 @@ import Preferences
 import StoreKit
 import os.log
 
-class BuyVPNViewController: UIViewController {
+class BuyVPNViewController: VPNSetupLoadingController {
     
   let iapObserver: IAPObserver
   
@@ -27,40 +27,6 @@ class BuyVPNViewController: UIViewController {
 
   override func loadView() {
     view = View()
-  }
-
-  /// View to show when the vpn purchase is pending.
-  private var overlayView: UIView?
-
-  private var isLoading: Bool = false {
-    didSet {
-      overlayView?.removeFromSuperview()
-
-      // Toggle 'restore' button.
-      navigationItem.rightBarButtonItem?.isEnabled = !isLoading
-
-      // Prevent dismissing the modal by swipe when the VPN is being configured
-      navigationController?.isModalInPresentation = isLoading == true
-
-      if !isLoading { return }
-
-      let overlay = UIView().then {
-        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        let activityIndicator = UIActivityIndicatorView().then { indicator in
-          indicator.startAnimating()
-          indicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        }
-
-        $0.addSubview(activityIndicator)
-      }
-
-      buyVPNView.addSubview(overlay)
-      overlay.snp.makeConstraints {
-        $0.edges.equalToSuperview()
-      }
-
-      overlayView = overlay
-    }
   }
 
   override func viewDidLoad() {
@@ -172,6 +138,44 @@ extension BuyVPNViewController: IAPObserverDelegate {
       let ok = UIAlertAction(title: Strings.OKString, style: .default, handler: nil)
       alert.addAction(ok)
       self.present(alert, animated: true)
+    }
+  }
+}
+
+class VPNSetupLoadingController: UIViewController {
+  
+  private var overlayView: UIView?
+
+  var isLoading: Bool = false {
+    didSet {
+      overlayView?.removeFromSuperview()
+
+      // Disable Action bar button while loading
+      navigationItem.rightBarButtonItem?.isEnabled = !isLoading
+
+      // Prevent dismissing the modal by swipe
+      navigationController?.isModalInPresentation = isLoading == true
+
+      if !isLoading { return }
+
+      let overlay = UIView().then {
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        let activityIndicator = UIActivityIndicatorView().then {
+          $0.startAnimating()
+          $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+          $0.style = .large
+          $0.color = .white
+        }
+
+        $0.addSubview(activityIndicator)
+      }
+
+      view.addSubview(overlay)
+      overlay.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+
+      overlayView = overlay
     }
   }
 }
