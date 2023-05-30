@@ -362,7 +362,8 @@ mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
 //
 // For sample JSON response, refer to ParseJupiterQuote.
 absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
-  auto converted_json = std::string(json::convert_all_numbers_to_string(json));
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(json, ""));
   if (converted_json.empty()) {
     return absl::nullopt;
   }
