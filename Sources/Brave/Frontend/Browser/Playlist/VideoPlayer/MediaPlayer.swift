@@ -423,6 +423,30 @@ extension MediaPlayer {
 extension MediaPlayer {
   /// Registers basic notifications
   private func registerNotifications() {
+    NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
+      .sink { [weak self] _ in
+      guard let self = self else { return }
+
+      if let pictureInPictureController = self.pictureInPictureController,
+        pictureInPictureController.isPictureInPictureActive {
+        return
+      }
+
+      self.playerLayer.player = nil
+    }.store(in: &notificationObservers)
+
+    NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+      .sink { [weak self] _ in
+      guard let self = self else { return }
+
+      if let pictureInPictureController = self.pictureInPictureController,
+        pictureInPictureController.isPictureInPictureActive {
+        return
+      }
+
+      self.playerLayer.player = self.player
+    }.store(in: &notificationObservers)
+    
     NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
       .sink { [weak self] notification in
 
