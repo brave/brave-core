@@ -65,7 +65,7 @@ void TextEmbeddingResource::LoadCallback(
   }
 
   if (!result.value().IsInitialized()) {
-    return BLOG(7, kTextEmbeddingResourceId
+    return BLOG(1, kTextEmbeddingResourceId
                        << " text embedding resource is not available");
   }
 

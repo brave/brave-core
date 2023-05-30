@@ -66,7 +66,7 @@ void TextClassificationResource::LoadCallback(
   }
 
   if (!result.value().IsInitialized()) {
-    return BLOG(7, kTextClassificationResourceId
+    return BLOG(1, kTextClassificationResourceId
                        << " text classification resource is not available");
   }
 

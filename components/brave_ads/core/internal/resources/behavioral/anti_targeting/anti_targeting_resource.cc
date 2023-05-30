@@ -66,7 +66,7 @@ void AntiTargetingResource::LoadCallback(
   }
 
   if (result.value().version == 0) {
-    return BLOG(7, kAntiTargetingResourceId
+    return BLOG(1, kAntiTargetingResourceId
                        << " anti-targeting resource is not available");
   }
 

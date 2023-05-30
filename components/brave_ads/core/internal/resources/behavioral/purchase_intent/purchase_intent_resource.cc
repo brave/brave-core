@@ -66,7 +66,7 @@ void PurchaseIntentResource::LoadCallback(
   }
 
   if (result.value().version == 0) {
-    return BLOG(7, kPurchaseIntentResourceId
+    return BLOG(1, kPurchaseIntentResourceId
                        << " purchase intent resource is not available");
   }
 
