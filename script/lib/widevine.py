@@ -12,6 +12,9 @@ from lib.util import execute
 SIGNATURE_GENERATOR_PY = \
     realpath(join(dirname(dirname(dirname(dirname(__file__)))), 'third_party',
              'widevine', 'scripts', 'signature_generator_python3.py'))
+MACHOLIB_DIR = \
+    realpath(join(dirname(dirname(dirname(__file__))), 'third_party',
+             'macholib'))
 
 SIGN_WIDEVINE_CERT = os.getenv('SIGN_WIDEVINE_CERT')
 SIGN_WIDEVINE_KEY = os.getenv('SIGN_WIDEVINE_KEY')
@@ -24,21 +27,26 @@ def can_generate_sig_file():
 
 
 def generate_sig_file(input_file, output_file, flags):
-    execute([
-        # We use vpython3 because the script needs the `cryptography` library.
-        'vpython3',
-        SIGNATURE_GENERATOR_PY,
-        '--input_file',
-        input_file,
-        '--output_file',
-        output_file,
-        '--flags',
-        flags,
-        '--certificate',
-        SIGN_WIDEVINE_CERT,
-        '--private_key',
-        SIGN_WIDEVINE_KEY,
-        '--private_key_passphrase',
-        SIGN_WIDEVINE_PASSPHRASE
-    ])
+    env = dict(os.environ)
+    env['PYTHONPATH'] = MACHOLIB_DIR
+    execute(
+        [
+            # Use vpython3 because the script needs the `cryptography` library:
+            'vpython3',
+            SIGNATURE_GENERATOR_PY,
+            '--input_file',
+            input_file,
+            '--output_file',
+            output_file,
+            '--flags',
+            flags,
+            '--certificate',
+            SIGN_WIDEVINE_CERT,
+            '--private_key',
+            SIGN_WIDEVINE_KEY,
+            '--private_key_passphrase',
+            SIGN_WIDEVINE_PASSPHRASE
+        ],
+        env
+    )
     assert exists(output_file)
