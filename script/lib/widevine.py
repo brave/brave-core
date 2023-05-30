@@ -47,6 +47,5 @@ def generate_sig_file(input_file, output_file, flags):
             '--private_key_passphrase',
             SIGN_WIDEVINE_PASSPHRASE
         ],
-        env
-    )
+        env)
     assert exists(output_file)

@@ -13,6 +13,7 @@ from subprocess import run
 
 USAGE = "Usage: run.py ENV=value ENV=value ... -- executable [args]"
 
+
 def main(args):
     env, executable, executable_args = parse_args(args)
 
@@ -26,6 +27,7 @@ def main(args):
     # pylint: disable=subprocess-run-check
     sys.exit(run([executable_path] + executable_args, env=child_env).returncode)
 
+
 def parse_args(args):
     env = {}
     for i, arg in enumerate(args):
@@ -38,16 +40,20 @@ def parse_args(args):
         env[env_var] = value
     else:
         print_usage_and_exit()
+    # pylint: disable=undefined-loop-variable
+    remaining_args = args[i + 1:]
     try:
-        executable = args[i + 1]
+        executable = remaining_args[0]
     except IndexError:
         print_usage_and_exit()
-    executable_args = args[i + 2:]
+    executable_args = remaining_args[1:]
     return env, executable, executable_args
+
 
 def print_usage_and_exit():
     print(USAGE)
     sys.exit(1)
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])
