@@ -298,7 +298,7 @@ bool BraveSyncWorker::SetSetupComplete() {
   sync_service->SetSyncFeatureRequested();
 
   if (!sync_service->GetUserSettings()->IsInitialSyncFeatureSetupComplete()) {
-    sync_service->GetUserSettings()->SetFirstSetupComplete(
+    sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(
         syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
   }
 

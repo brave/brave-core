@@ -278,8 +278,10 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
 
   task_environment_.RunUntilIdle();
 
-  brave_sync_service_impl()->GetUserSettings()->SetFirstSetupComplete(
-      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  brave_sync_service_impl()
+      ->GetUserSettings()
+      ->SetInitialSyncFeatureSetupComplete(
+          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
 
   // Pretend we need the passphrase by triggering OnPassphraseRequired and
   // supplying the encrypted portion of data, as it is done in
@@ -352,8 +354,10 @@ TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   task_environment_.RunUntilIdle();
 
-  brave_sync_service_impl()->GetUserSettings()->SetFirstSetupComplete(
-      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  brave_sync_service_impl()
+      ->GetUserSettings()
+      ->SetInitialSyncFeatureSetupComplete(
+          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
   EXPECT_TRUE(engine());
 
   std::unique_ptr<testing::NiceMock<BraveMockSyncEngine>> mock_sync_engine =
