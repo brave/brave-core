@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
@@ -50,6 +51,10 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual void ToggleSidebar();
   virtual bool HasSelectedURL() const;
   virtual void CleanAndCopySelectedURL();
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  virtual void ShowPlaylistBubble() {}
 #endif
 
   virtual void ShowBraveVPNBubble() {}

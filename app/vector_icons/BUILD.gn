@@ -45,6 +45,8 @@ aggregate_vector_icons("brave_vector_icons") {
   if (toolkit_views) {
     leo_icons += [
       "leo_plus_add.icon",
+      "leo_product_playlist_add.icon",
+      "leo_product_playlist_added.icon",
       "leo_search.icon",
     ]
   }

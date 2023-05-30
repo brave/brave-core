@@ -579,6 +579,9 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemAdded, item->id);
+  for (auto& observer : service_observers_) {
+    observer->OnItemCreated(item.Clone());
+  }
 
   GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
@@ -691,7 +694,15 @@ void PlaylistService::ResetAll() {
   // Resets preference ---------------------------------------------------------
   prefs_->ClearPref(kPlaylistCacheByDefault);
   prefs_->ClearPref(kPlaylistDefaultSaveTargetListID);
+
+  auto items = GetAllPlaylistItems();
   prefs_->ClearPref(kPlaylistItemsPref);
+  for (const auto& item : items) {
+    for (auto& observer : service_observers_) {
+      observer->OnItemDeleted(item->id);
+    }
+  }
+
   prefs_->ClearPref(kPlaylistsPref);
 
   // Removes data on disk ------------------------------------------------------
@@ -813,6 +824,9 @@ void PlaylistService::DeletePlaylistItemData(const std::string& id) {
 
   RemovePlaylistItemValue(id);
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemDeleted, id);
+  for (auto& observer : service_observers_) {
+    observer->OnItemDeleted(id);
+  }
 
   // TODO(simonhong): Delete after getting cancel complete message from all
   // downloader.

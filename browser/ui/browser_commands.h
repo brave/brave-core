@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
+#include "brave/components/playlist/common/buildflags/buildflags.h"
+
 class Browser;
 class GURL;
 
@@ -41,6 +43,10 @@ void ToggleSidebar(Browser* browser);
 
 void ToggleShieldsEnabled(Browser* browser);
 void ToggleJavascriptEnabled(Browser* browser);
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+void ShowPlaylistBubble(Browser* browser);
+#endif
 
 }  // namespace brave
 

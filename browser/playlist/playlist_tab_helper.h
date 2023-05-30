@@ -10,13 +10,16 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 
 namespace playlist {
 
 class PlaylistService;
+class PlaylistTabHelperObserver;
 
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
@@ -27,9 +30,16 @@ class PlaylistTabHelper
 
   ~PlaylistTabHelper() override;
 
+  const std::vector<mojom::PlaylistItemPtr>& saved_items() const {
+    return saved_items_;
+  }
+
   const std::vector<mojom::PlaylistItemPtr>& found_items() const {
     return found_items_;
   }
+
+  void AddObserver(PlaylistTabHelperObserver* observer);
+  void RemoveObserver(PlaylistTabHelperObserver* observer);
 
   // content::WebContentsObserver:
   void DidFinishNavigation(
@@ -39,6 +49,8 @@ class PlaylistTabHelper
   // mojom::PlaylistServiceObserver:
   void OnEvent(mojom::PlaylistEvent event,
                const std::string& playlist_id) override {}
+  void OnItemCreated(mojom::PlaylistItemPtr item) override;
+  void OnItemDeleted(const std::string& id) override;
   void OnMediaFileDownloadProgressed(
       const std::string& id,
       int64_t total_bytes,
@@ -59,16 +71,23 @@ class PlaylistTabHelper
   PlaylistTabHelper(content::WebContents* contents, PlaylistService* service);
 
   void ResetData();
+  void UpdateSavedItemFromCurrentContents();
   void FindMediaFromCurrentContents();
   void OnFoundMediaFromContents(const GURL& url,
                                 std::vector<mojom::PlaylistItemPtr> items);
 
   raw_ptr<PlaylistService> service_;
 
+  GURL target_url;
+  bool sent_find_media_request_ = false;
+
+  std::vector<mojom::PlaylistItemPtr> saved_items_;
   std::vector<mojom::PlaylistItemPtr> found_items_;
 
-  mojo::PendingReceiver<mojom::PlaylistServiceObserver>
-      playlist_observer_receiver_;
+  base::ObserverList<PlaylistTabHelperObserver> observers_;
+
+  mojo::Receiver<mojom::PlaylistServiceObserver> playlist_observer_receiver_{
+      this};
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 };

@@ -17,6 +17,7 @@
 #include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
+#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
@@ -30,6 +31,7 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
+#include "chrome/browser/ui/views/page_action/page_action_icon_controller.h"
 #include "chrome/grit/chromium_strings.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
@@ -43,6 +45,7 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/view_utils.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
@@ -141,6 +144,17 @@ bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
 #else
   return false;
 #endif
+}
+
+void BraveLocationBarView::ShowPlaylistBubble() {
+  auto* playlist_action_icon_view =
+      page_action_icon_controller()->GetPlaylistActionIconView();
+  if (!playlist_action_icon_view || !playlist_action_icon_view->GetVisible()) {
+    return;
+  }
+
+  views::AsViewClass<PlaylistActionIconView>(playlist_action_icon_view)
+      ->ShowPlaylistBubble();
 }
 
 void BraveLocationBarView::Update(content::WebContents* contents) {

@@ -125,6 +125,7 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
   // If it's zero, all requested fetching are completed. Then |web_contents_|
   // destroying task will be scheduled.
   int in_progress_urls_count_ = 0;
+  GURL requested_url_;
   Request::Callback callback_for_current_request_ = base::NullCallback();
   base::Time request_start_time_;
 

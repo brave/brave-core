@@ -127,6 +127,10 @@ class PlaylistService : public KeyedService,
   void FindMediaFilesFromContents(content::WebContents* contents,
                                   FindMediaFilesFromContentsCallback callback);
 
+  // Synchronous versions of mojom::PlaylistService implementations
+  std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
+  mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
+
   // mojom::PlaylistService:
   // TODO(sko) Make getters without callbacks and simplify codes in
   // PlaylistService and tests.
@@ -235,9 +239,6 @@ class PlaylistService : public KeyedService,
   // contents that is different from the given |contents|.
   bool ShouldGetMediaFromBackgroundWebContents(
       content::WebContents* contents) const;
-
-  std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
-  mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);

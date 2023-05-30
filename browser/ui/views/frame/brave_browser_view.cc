@@ -445,6 +445,13 @@ void BraveBrowserView::CleanAndCopySelectedURL() {
   brave_omnibox_view->CleanAndCopySelectedURL();
 }
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+void BraveBrowserView::ShowPlaylistBubble() {
+  static_cast<BraveLocationBarView*>(GetLocationBarView())
+      ->ShowPlaylistBubble();
+}
+#endif
+
 WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
 }
