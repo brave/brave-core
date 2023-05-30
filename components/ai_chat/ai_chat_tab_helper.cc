@@ -357,7 +357,8 @@ void AIChatTabHelper::OnAPIStreamDataReceived(
     return;
   }
 
-  if (const std::string* completion = result->FindStringKey("completion")) {
+  if (const std::string* completion =
+          result->GetDict().FindString("completion")) {
     UpdateOrCreateLastAssistantEntry(*completion);
 
     // Trigger an observer update to refresh the UI.
@@ -383,7 +384,7 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
     // We're checking for a value body in case for non-streaming API results.
     if (result.value_body().is_dict()) {
       if (const std::string* completion =
-              result.value_body().FindStringKey("completion")) {
+              result.value_body().GetDict().FindString("completion")) {
         AddToConversationHistory(
             ConversationTurn{CharacterType::ASSISTANT,
                              ConversationTurnVisibility::VISIBLE, *completion});

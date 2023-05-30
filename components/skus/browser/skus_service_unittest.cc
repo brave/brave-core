@@ -243,7 +243,8 @@ base::Value GetExpectedCreds(const std::string& json,
                              const std::string& order_id) {
   auto value = base::JSONReader::Read(json);
   EXPECT_TRUE(value);
-  const auto* order_value = value->FindPath("orders." + order_id);
+  const auto* order_value =
+      value->GetDict().FindByDottedPath("orders." + order_id);
   EXPECT_TRUE(order_value);
   return order_value->Clone();
 }
@@ -305,7 +306,7 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
   auto credentials = GetCredentialsSummary(domain);
   EXPECT_FALSE(credentials.empty());
   auto credentials_json = base::JSONReader::Read(credentials);
-  auto* order = credentials_json->FindPath("order");
+  auto* order = credentials_json->GetDict().Find("order");
   EXPECT_TRUE(order);
   EXPECT_EQ(*order, GetExpectedCreds(testing_payload,
                                      "7df66bcb-921e-424b-ad53-37885948fb34"));
@@ -317,10 +318,10 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
   auto domain = skus::GetDomain("vpn", env);
   auto testing_payload = GenerateTestingCreds(domain);
   auto payload_value = base::JSONReader::Read(testing_payload);
-  auto* orders = payload_value->FindPath("orders");
+  auto* orders = payload_value->GetDict().FindDict("orders");
   EXPECT_TRUE(orders);
   // Remove unexpired creds
-  orders->RemoveKey("7df66bcb-921e-424b-ad53-37885948fb34");
+  orders->Remove("7df66bcb-921e-424b-ad53-37885948fb34");
   std::string json;
   base::JSONWriter::WriteWithOptions(
       payload_value.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);

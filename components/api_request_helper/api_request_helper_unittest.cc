@@ -234,7 +234,8 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
       base::BindRepeating(
           [](base::RunLoop* run_loop,
              data_decoder::DataDecoder::ValueOrError result) {
-            const std::string* completion = result->FindStringKey("completion");
+            const std::string* completion =
+                result->GetDict().FindString("completion");
             EXPECT_EQ(" Hello there!", *completion);
             run_loop->Quit();
           },
@@ -247,7 +248,8 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
       base::BindRepeating(
           [](base::RunLoop* run_loop,
              data_decoder::DataDecoder::ValueOrError result) {
-            const std::string* completion = result->FindStringKey("completion");
+            const std::string* completion =
+                result->GetDict().FindString("completion");
             EXPECT_EQ(" Hello there! How are you?", *completion);
             run_loop->Quit();
           },
