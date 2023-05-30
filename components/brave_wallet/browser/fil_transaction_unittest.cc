@@ -194,7 +194,8 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
   auto signature_value = base::JSONReader::Read(*signature);
   EXPECT_TRUE(signature_value);
   auto* message = signature_value->GetDict().Find("Message");
-  auto* signature_data = signature_value->FindStringPath("Signature.Data");
+  auto* signature_data =
+      signature_value->GetDict().FindStringByDottedPath("Signature.Data");
   EXPECT_TRUE(message);
   EXPECT_TRUE(signature_data);
   auto message_as_value = base::JSONReader::Read(*message_to_sign);
@@ -203,7 +204,8 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
             "SozNIZGNAvALCWtc38OUhO9wdFl82qESGhjnVVhI6CYNN0gP5qa+hZtyFh+"
             "j9K0wIVVU10ZJPgaV0yM6a+xwKgA=");
   EXPECT_EQ(*message, *message_as_value);
-  auto signature_type = signature_value->FindIntPath("Signature.Type");
+  auto signature_type =
+      signature_value->GetDict().FindIntByDottedPath("Signature.Type");
   ASSERT_TRUE(signature_type);
   EXPECT_EQ(signature_type, 1);
 }
@@ -247,7 +249,8 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
   auto signature_value = base::JSONReader::Read(*signature);
   EXPECT_TRUE(signature_value);
   auto* message = signature_value->GetDict().Find("Message");
-  auto* signature_data = signature_value->FindStringPath("Signature.Data");
+  auto* signature_data =
+      signature_value->GetDict().FindStringByDottedPath("Signature.Data");
   EXPECT_TRUE(message);
   EXPECT_TRUE(signature_data);
   auto message_as_value = base::JSONReader::Read(*message_to_sign);
@@ -258,7 +261,8 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
       "Hi6pMB84syUMuxRPC5JdpFvMl7gy5J2kvOEuDclSvc1ALQf2wOalPUOH022DNgLVATD36");
   EXPECT_EQ(*message, *message_as_value);
 
-  auto signature_type = signature_value->FindIntPath("Signature.Type");
+  auto signature_type =
+      signature_value->GetDict().FindIntByDottedPath("Signature.Type");
   ASSERT_TRUE(signature_type);
   EXPECT_EQ(signature_type, 2);
 }

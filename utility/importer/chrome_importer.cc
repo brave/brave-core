@@ -87,8 +87,13 @@ bool SetEncryptionKeyForPasswordImporting(
   base::ReadFileToString(local_state_path, &local_state_content);
   absl::optional<base::Value> local_state =
       base::JSONReader::Read(local_state_content);
+  if (!local_state || !local_state->is_dict()) {
+    return false;
+  }
+
   if (auto* base64_encrypted_key =
-          local_state->FindStringPath(kOsCryptEncryptedKeyPrefName)) {
+          local_state->GetDict().FindStringByDottedPath(
+              kOsCryptEncryptedKeyPrefName)) {
     std::string encrypted_key_with_header;
 
     base::Base64Decode(*base64_encrypted_key, &encrypted_key_with_header);

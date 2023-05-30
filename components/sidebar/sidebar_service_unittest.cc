@@ -525,11 +525,11 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   // Verify migration
   auto& items = prefs_.GetList(kSidebarItems);
   for (const auto& item : items) {
-    const auto item_type =
-        static_cast<SidebarItem::Type>(*item.FindIntKey(kSidebarItemTypeKey));
+    const auto item_type = static_cast<SidebarItem::Type>(
+        *item.GetDict().FindInt(kSidebarItemTypeKey));
     if (item_type == SidebarItem::Type::kTypeBuiltIn) {
       const auto built_in_type = static_cast<SidebarItem::BuiltInItemType>(
-          *item.FindIntKey(kSidebarItemBuiltInItemTypeKey));
+          *item.GetDict().FindInt(kSidebarItemBuiltInItemTypeKey));
       EXPECT_NE(built_in_type, SidebarItem::BuiltInItemType::kNone);
     }
   }
