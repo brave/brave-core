@@ -15,6 +15,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
@@ -239,6 +240,14 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
         net::AppendQueryParameter(transak_url, "apiKey", kTransakApiKey);
 
     std::move(callback).Run(std::move(transak_url.spec()), absl::nullopt);
+  } else if (provider == mojom::OnRampProvider::kStripe) {
+    GetStripeBuyURL(std::move(callback), address,
+                    currency_code,  // source currecy
+                    amount,         // source exchange amount
+                    chain_id,       // destination_network
+                    symbol,         // destination_currency
+                    {}              // supported_destination_networks
+    );
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }
@@ -322,6 +331,66 @@ void AssetRatioService::OnGetSardineAuthToken(
   GURL sardine_buy_url = GetSardineBuyURL(chain_id, address, symbol, amount,
                                           currency_code, *auth_token);
   std::move(callback).Run(std::move(sardine_buy_url.spec()), absl::nullopt);
+}
+
+void AssetRatioService::GetStripeBuyURL(
+    GetBuyUrlV1Callback callback,
+    const std::string& address,
+    const std::string& source_currency,
+    const std::string& source_exchange_amount,
+    const std::string& destination_network,
+    const std::string& destination_currency,
+    const std::vector<std::string>& supported_destination_networks) {
+  base::Value::Dict payload;
+  AddKeyIfNotEmpty(&payload, "wallet_address", address);
+  AddKeyIfNotEmpty(&payload, "source_currency", source_currency);
+  AddKeyIfNotEmpty(&payload, "source_exchange_amount", source_exchange_amount);
+  AddKeyIfNotEmpty(&payload, "destination_network", destination_network);
+  AddKeyIfNotEmpty(&payload, "destination_currency", destination_currency);
+
+  // Convert supported_destination_networks to base::Value::List
+  base::Value::List supported_destination_networks_value;
+  for (const auto& network : supported_destination_networks) {
+    supported_destination_networks_value.Append(base::Value(network));
+  }
+
+  // Add supported_destination_networks to payload
+  if (!supported_destination_networks_value.empty()) {
+    payload.Set("supported_destination_networks",
+                std::move(supported_destination_networks_value));
+  }
+
+  const std::string json_payload = GetJSON(payload);
+
+  GURL url = GURL(base::StringPrintf("%sv2/stripe/onramp_sessions",
+                                     base_url_for_test_.is_empty()
+                                         ? kAssetRatioBaseURL
+                                         : base_url_for_test_.spec().c_str()));
+
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetStripeBuyURL,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request(
+      "POST", url, json_payload, "application/json",
+      std::move(internal_callback), {},
+      {.auto_retry_on_network_change = true, .enable_cache = false});
+}
+
+void AssetRatioService::OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
+                                          APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
+    return;
+  }
+
+  auto url = ParseGetStripeBuyURL(api_request_result.value_body());
+  if (!url) {
+    std::move(callback).Run("", "PARSING_ERROR");
+    return;
+  }
+
+  std::move(callback).Run(*url, absl::nullopt);
 }
 
 void AssetRatioService::OnGetPrice(std::vector<std::string> from_assets,

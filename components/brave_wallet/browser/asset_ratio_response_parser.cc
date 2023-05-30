@@ -234,4 +234,21 @@ absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
   return values;
 }
 
+absl::optional<std::string> ParseGetStripeBuyURL(
+    const base::Value& json_value) {
+  // Parses results like this:
+  // POST /v2/stripe/onramp_sessions
+  // {
+  //   "url": "https://crypto.link.com?session_hash=abcdefgh"
+  // }
+  auto stripe_buy_url_response =
+      api::asset_ratio::StripeBuyURLResponse::FromValueDeprecated(json_value);
+
+  if (!stripe_buy_url_response) {
+    return absl::nullopt;
+  }
+
+  return stripe_buy_url_response->url;
+}
+
 }  // namespace brave_wallet

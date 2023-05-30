@@ -103,6 +103,8 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
+  friend class AssetRatioServiceUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(AssetRatioServiceUnitTest, GetStripeBuyURL);
   void OnGetSardineAuthToken(const std::string& network,
                              const std::string& address,
                              const std::string& symbol,
@@ -110,6 +112,18 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                              const std::string& currency_code,
                              GetBuyUrlV1Callback callback,
                              APIRequestResult api_request_result);
+
+  void GetStripeBuyURL(
+      GetBuyUrlV1Callback callback,
+      const std::string& address,
+      const std::string& source_currency,
+      const std::string& source_exchange_amount,
+      const std::string& destination_network,
+      const std::string& destination_currency,
+      const std::vector<std::string>& supported_destination_networks);
+
+  void OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
+                         APIRequestResult api_request_result);
 
   void OnGetPrice(std::vector<std::string> from_assets,
                   std::vector<std::string> to_assets,

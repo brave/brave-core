@@ -534,4 +534,27 @@ TEST_F(AssetRatioServiceUnitTest, GetCoinMarketsUnexpectedResponse) {
   EXPECT_TRUE(callback_run);
 }
 
+TEST_F(AssetRatioServiceUnitTest, GetStripeBuyURL) {
+  // bool callback_run = false;
+  SetInterceptor(R"({
+      "url": "https://crypto.link.com?session_hash=abcdefgh"
+    })");
+
+  TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
+                  "0xdeadbeef", "USDC", "55000000", "USD",
+                  "https://crypto.link.com?session_hash=abcdefgh",
+                  absl::nullopt);
+
+  // Test with unexpected response
+  SetInterceptor("mischief managed");
+  TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
+                  "0xdeadbeef", "USDC", "55000000", "USD", "", "PARSING_ERROR");
+
+  // Test with non 2XX response
+  SetErrorInterceptor("");
+  TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
+                  "0xdeadbeef", "USDC", "55000000", "USD", "",
+                  "INTERNAL_SERVICE_ERROR");
+}
+
 }  // namespace brave_wallet

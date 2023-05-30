@@ -344,4 +344,22 @@ TEST(AssetRatioResponseParserUnitTest, ParseCoinMarkets) {
   EXPECT_FALSE(ParseCoinMarkets(ParseJson(json)));
 }
 
+TEST(AssetRatioResponseParserUnitTest, ParseGetStripeBuyURL) {
+  std::string json(R"({
+      "url": "https://crypto.link.com?session_hash=abcdefgh"
+  })");
+
+  auto parsed_value = ParseGetStripeBuyURL(ParseJson(json));
+  ASSERT_TRUE(parsed_value);
+  EXPECT_EQ(*parsed_value, "https://crypto.link.com?session_hash=abcdefgh");
+
+  // Invalid input
+  json = R"({"url": []})";
+  EXPECT_FALSE(ParseGetStripeBuyURL(ParseJson(json)));
+  json = "3";
+  EXPECT_FALSE(ParseGetStripeBuyURL(ParseJson(json)));
+  json = "[3]";
+  EXPECT_FALSE(ParseGetStripeBuyURL(ParseJson(json)));
+}
+
 }  // namespace brave_wallet
