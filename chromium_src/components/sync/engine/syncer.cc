@@ -20,7 +20,7 @@
         VLOG(1) << "Forced poll of device info during long commit. Passed " \
                    "time since begin of commit operation is "               \
                 << the_brave_syncer_device_poll->SinceBegin();              \
-        ModelTypeSet device_only(ModelType::DEVICE_INFO);                   \
+        ModelTypeSet device_only({ModelType::DEVICE_INFO});                 \
         the_syncer->DownloadAndApplyUpdates(                                \
             &device_only, cycle, NormalGetUpdatesDelegate(*nudge_tracker)); \
       },                                                                    \

@@ -18,23 +18,23 @@ void RecordEnabledTypes(bool sync_everything_enabled,
 
   EnabledTypesAnswer sample;
   static const auto all_brave_supported_types = UserSelectableTypeSet(
-      UserSelectableType::kBookmarks, UserSelectableType::kHistory,
-      UserSelectableType::kExtensions, UserSelectableType::kApps,
-      UserSelectableType::kPasswords, UserSelectableType::kPreferences,
-      UserSelectableType::kThemes, UserSelectableType::kTabs,
-      UserSelectableType::kAutofill);
+      {UserSelectableType::kBookmarks, UserSelectableType::kHistory,
+       UserSelectableType::kExtensions, UserSelectableType::kApps,
+       UserSelectableType::kPasswords, UserSelectableType::kPreferences,
+       UserSelectableType::kThemes, UserSelectableType::kTabs,
+       UserSelectableType::kAutofill});
   if (sync_everything_enabled ||
       selected_types.HasAll(all_brave_supported_types)) {
     // Sync All
     sample = EnabledTypesAnswer::kAllTypes;
   } else if (selected_types.Empty() ||
              selected_types ==
-                 UserSelectableTypeSet(UserSelectableType::kBookmarks)) {
+                 UserSelectableTypeSet({UserSelectableType::kBookmarks})) {
     // Bookmarks or no types
     sample = EnabledTypesAnswer::kEmptyOrBookmarksOnly;
   } else if (selected_types ==
-             UserSelectableTypeSet(UserSelectableType::kBookmarks,
-                                   UserSelectableType::kHistory)) {
+             UserSelectableTypeSet({UserSelectableType::kBookmarks,
+                                    UserSelectableType::kHistory})) {
     // Bookmarks & History
     sample = EnabledTypesAnswer::kBookmarksAndHistory;
   } else {

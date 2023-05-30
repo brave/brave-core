@@ -96,8 +96,7 @@ class BraveSyncServiceImplTest : public testing::Test {
   ~BraveSyncServiceImplTest() override { sync_service_impl_->Shutdown(); }
 
   void CreateSyncService(
-      SyncServiceImpl::StartBehavior start_behavior,
-      ModelTypeSet registered_types = ModelTypeSet(BOOKMARKS)) {
+      ModelTypeSet registered_types = ModelTypeSet({BOOKMARKS})) {
     DataTypeController::TypeVector controllers;
     for (ModelType type : registered_types) {
       controllers.push_back(std::make_unique<FakeDataTypeController>(type));
