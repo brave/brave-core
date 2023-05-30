@@ -124,7 +124,8 @@ class PlaylistMediaStreamer {
                                      detected: newItem.detected,
                                      dateAdded: item.dateAdded, // Keep the same dateAdded
                                      tagId: item.tagId,  // Keep the same tagId
-                                     order: item.order) // Keep the same order
+                                     order: item.order,
+                                     isInvisible: item.isInvisible) // Keep the same order
       
       let item = try await withCheckedThrowingContinuation { continuation in
         PlaylistItem.updateItem(updatedItem) {

@@ -87,7 +87,8 @@ window.__firefox__.includeOnce("Playlist", function($) {
         "mimeType": type,
         "duration": clamp_duration(target.duration),
         "detected": detected,
-        "tagId": target.$<tagUUID>
+        "tagId": target.$<tagUUID>,
+        "invisible": !target.parentNode
       });
     })();
   });
@@ -130,7 +131,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
           if (node.src && node.src !== "") {
             if ((node.closest('video') === target) || (node.closest('audio') === target)) {
               tagNode(target);
-              sendMessage(name, node, target, type, detected);
+              sendMessage(name, target, target, type, detected);
             }
           }
         });

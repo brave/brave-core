@@ -20,6 +20,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
   public let dateAdded: Date
   public let tagId: String
   public let order: Int32
+  public let isInvisible: Bool
   
   public var id: String {
     tagId
@@ -37,6 +38,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     self.detected = false
     self.tagId = UUID().uuidString
     self.order = Int32.min
+    self.isInvisible = false
   }
 
   public init(item: PlaylistItem) {
@@ -51,9 +53,10 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     self.detected = false
     self.tagId = item.uuid ?? UUID().uuidString
     self.order = item.order
+    self.isInvisible = false
   }
 
-  public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, lastPlayedOffset: TimeInterval, detected: Bool, dateAdded: Date, tagId: String, order: Int32) {
+  public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, lastPlayedOffset: TimeInterval, detected: Bool, dateAdded: Date, tagId: String, order: Int32, isInvisible: Bool) {
     self.name = name
     self.src = src
     self.pageSrc = pageSrc
@@ -65,6 +68,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     self.dateAdded = dateAdded
     self.tagId = tagId.isEmpty ? UUID().uuidString : tagId
     self.order = order
+    self.isInvisible = isInvisible
   }
 
   public init(from decoder: Decoder) throws {
@@ -81,6 +85,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     self.dateAdded = Date()
     self.src = PlaylistInfo.fixSchemelessURLs(src: src, pageSrc: pageSrc)
     self.order = try container.decodeIfPresent(Int32.self, forKey: .order) ?? Int32.min
+    self.isInvisible = try container.decodeIfPresent(Bool.self, forKey: .isInvisible) ?? false
   }
 
   public static func from(message: WKScriptMessage) -> PlaylistInfo? {
@@ -131,5 +136,6 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     case tagId
     case dateAdded
     case order
+    case isInvisible = "invisible"
   }
 }

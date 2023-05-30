@@ -729,7 +729,8 @@ extension PlaylistManager {
               detected: item.detected,
               dateAdded: item.dateAdded,
               tagId: item.tagId,
-              order: item.order)
+              order: item.order,
+              isInvisible: item.isInvisible)
 
             if PlaylistItem.itemExists(uuid: item.tagId) || PlaylistItem.itemExists(pageSrc: item.pageSrc) {
               PlaylistItem.updateItem(newItem) {
