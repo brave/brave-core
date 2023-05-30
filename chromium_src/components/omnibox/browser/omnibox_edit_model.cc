@@ -59,7 +59,7 @@ void OmniboxEditModel::PasteAndGo(const std::u16string& text,
   GURL alternate_nav_url;
   ClassifyString(text, &match, &alternate_nav_url);
 
-  client_->OnInputAccepted(match);
+  client()->OnInputAccepted(match);
 
   PasteAndGo_Chromium(text, match_selection_timestamp);
 }
