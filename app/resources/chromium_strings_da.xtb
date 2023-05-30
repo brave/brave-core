@@ -8,6 +8,7 @@
 <translation id="5918095577778020936">Brave anmoder om at eksportere dine adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
 <translation id="5468853758063275923">Brave er din standardbrowser</translation>
 <translation id="8522292744959221145">Du kan tjekke, om dine adgangskoder er beskyttet mod brud på datasikkerheden og andre sikkerhedsproblemer ved at <ph name="BEGIN_LINK"/>logge ind på Brave<ph name="END_LINK"/>.</translation>
+<translation id="8468770846533807490">{NUM_DEVICES,plural, =0{Brave-udvidelser havde adgang til HID-enheder}=1{Brave-udvidelser har adgang 1 HID-enhed}one{Brave-udvidelser har adgang # HID-enhed}other{Brave-udvidelser har adgang # HID-enheder}}</translation>
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="3528799424770515097">{COUNT,plural, =1{Din administrator lukker automatisk Brave, når den ikke bruges i 1 minut. Browserdataene slettes. Disse kan omfatte historik, Autofyld og downloads.}one{Din administrator lukker automatisk Brave, når den ikke bruges i # minut. Browserdataene slettes. Disse kan omfatte historik, Autofyld og downloads.}other{Din administrator lukker automatisk Brave, når den ikke bruges i # minutter. Browserdataene slettes. Disse kan omfatte historik, Autofyld og downloads.}}</translation>
 <translation id="1203500561924088507">Tak for installationen. Du skal genstarte browseren, før du bruger <ph name="BUNDLE_NAME"/>.</translation>
@@ -51,6 +52,7 @@
 <translation id="6381750314821942592">Brave lukkes snart</translation>
 <translation id="6078442581074612226">I Brave</translation>
 <translation id="2485422356828889247">Afinstaller</translation>
+<translation id="70183448213529602">Brave forsøger at erstatte eksisterende adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
 <translation id="7798069806040634998">Brave skal have lageradgang for at downloade filer</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7291143854620707672">Alle Brave-data, der genereres ved brug af denne profil (f.eks. oprettelse af bogmærker, historik, adgangskoder og andre indstillinger) kan fjernes af arbejdsprofilens administrator. <ph name="LEARN_MORE"/></translation>
@@ -72,12 +74,11 @@
 <translation id="2928420929544864228">Installationen er fuldført.</translation>
 <translation id="8208853227947884571">Brave er opdateret</translation>
 <translation id="5122472867956731189">Hvis et website forsøger at stjæle din adgangskode, eller hvis du downloader en skadelig fil, sender Brave muligvis også webadresser, bl.a. mindre mængder sideindhold, til Beskyttet browsing</translation>
-<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave har forbindelse til en HID-enhed}one{Brave har forbindelse til en HID-enhed}other{Brave har forbindelse til HID-enheder}}</translation>
 <translation id="8755404239607088219">Brave kan ikke tjekke dine adgangskoder. Prøv igen senere.</translation>
 <translation id="8880183781256147665">Føjer til Brave...</translation>
 <translation id="3038232873781883849">Venter på at installere…</translation>
 <translation id="7918740962659365265">Hjælp med at gøre Brave bedre ved at sende fejlrapporter og <ph name="UMA_LINK"/> til Brave</translation>
-<translation id="5320085753638900910">Din browserhistorik påvirker de annoncer, som du ser, og de interesser, som er estimeret nedenfor. Af hensyn til beskyttelsen af dine personlige oplysninger sletter Brave automatisk dine interesser en gang om måneden. Interesserne kan blive opdateret, medmindre du fjerner dem.</translation>
+<translation id="5320085753638900910">Din browserhistorik påvirker de annoncer, som du ser, og de interesser, som er estimeret nedenfor. Af hensyn til privatlivsbeskyttelsen sletter Brave automatisk dine interesser en gang om måneden. Interesserne kan blive opdateret, medmindre du fjerner dem.</translation>
 <translation id="7365690458036015383">Installationsprogrammet kunne ikke pakke arkivet ud. Download Brave igen.</translation>
 <translation id="8919461291440820124">Brave bruger din mikrofon.</translation>
 <translation id="4805806622840861220">Genstart Brave</translation>
@@ -86,7 +87,6 @@
 <translation id="2585240446624043880">Brave kan ikke læse og skrive til sin datamappe:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
-<translation id="6823651909636163674">Denne vejledning hjælper dig med at forstå dine valg, så Brave kan fungere på den måde, der passer dig bedst</translation>
 <translation id="2423637317249323944">Brave version <ph name="PRODUCT_VERSION"/> er installeret</translation>
 <translation id="3286538390144397061">Genstart nu</translation>
 <translation id="2339258256897053758">Der mangler Brave API-nøgler. Nogle funktioner i Brave deaktiveres.</translation>
@@ -100,7 +100,7 @@
 <translation id="5853262807109651878">Denne handling sletter <ph name="ITEMS_COUNT"/> elementer på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> kan skifte mellem Brave-profiler</translation>
 <translation id="8703492925273919597">Luk alle Brave-vinduer, og prøv igen.</translation>
-<translation id="4061445349373849749">Vi sletter automatisk de interesser, der er ældre end 4 uger, for at beskytte dine personlige oplysninger Mens du surfer, kan en interesse vises på listen igen. Du kan også fjerne interesser, som du ikke vil have, at Brave skal tage med i betragtning.</translation>
+<translation id="4061445349373849749">Vi sletter automatisk de interesser, der er ældre end 4 uger, for at beskytte dit privatliv. Mens du surfer, kan en interesse vises på listen igen. Du kan også fjerne interesser, som du ikke vil have, at Brave skal tage med i betragtning.</translation>
 <translation id="691208314680168371">Din browserhistorik, dvs. en oversigt over, hvilke websites du har besøgt i Brave på denne enhed</translation>
 <translation id="1384923383737428730">Der er skadelig software på din computer. Brave kan fjerne den, gendanne dine indstillinger og deaktivere udgivelser, så din browser fungerer normalt igen.</translation>
 <translation id="1073077513148817424">En anden konto er allerede logget ind. Hvis du vil holde din browsing adskilt, kan Brave oprette en ny profil til dig.</translation>
@@ -167,7 +167,7 @@
 <translation id="9078804073692109646">Der er ingen gemte adgangskoder. Brave kan tjekke dine adgangskoder, når du gemmer dem.</translation>
 <translation id="729580998737807583"><ph name="EXISTING_USER"/> er allerede logget ind på denne Brave-profil. Denne handling vil oprette en ny Brave-profil til <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="8586264863973514035">Åbn Brave igen for at anvende ændringerne</translation>
-<translation id="300369155175407115">Når prøven er aktiveret, og hvis Brave har placeret dig tilfældigt i en aktiv prøve, vil din browserhistorik påvirke de annoncer, du ser, og de interesser, som er estimeret nedenfor. Af hensyn til beskyttelsen af dine personlige oplysninger sletter Brave dine interesser en gang om måneden.</translation>
+<translation id="300369155175407115">Når prøven er aktiveret, og hvis Brave har placeret dig tilfældigt i en aktiv prøve, vil din browserhistorik påvirke de annoncer, du ser, og de interesser, som er estimeret nedenfor. Af hensyn til privatlivsbeskyttelsen sletter Brave dine interesser en gang om måneden.</translation>
 <translation id="7708394612738038097">Du er ved at logge ind med en managerstyret konto og giver dens administrator kontrol over din profil i Brave. Dine Brave-data, f.eks. dine apps, bogmærker, historikdata, adgangskoder og andre indstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse data via kontrolpanelet for Brave Konti, men du kan ikke knytte disse data til en anden konto. <ph name="LEARN_MORE"/></translation>
 <translation id="1786715389543715322">Opdaterer Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Tillad login via Brave</translation>
@@ -177,7 +177,7 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave beta</translation>
 <translation id="894936507076470937">Brave fungerer muligvis ikke korrekt, da det ikke længere understøttes af denne Linux-distribution</translation>
 <translation id="696826782632239602">Brave skal have adgang til din lokation for at dele din lokation med dette website</translation>
-<translation id="3809116188788099368">Vi sletter automatisk de interesser, der er ældre end 4 uger, for at beskytte dine personlige oplysninger Mens du surfer, kan en interesse vises på listen igen. Hvis Brave tager fejl, eller du ikke vil se visse annoncer, kan du fjerne en interesse.</translation>
+<translation id="3809116188788099368">Vi sletter automatisk de interesser, der er ældre end 4 uger, for at beskytte dit privatliv. Mens du surfer, kan en interesse vises på listen igen. Hvis Brave tager fejl, eller du ikke vil se visse annoncer, kan du fjerne en interesse.</translation>
 <translation id="1744365871163268756">Vent, mens Brave installerer de nyeste systemopdateringer.</translation>
 <translation id="3861679447659630159">Brave forsøger at redigere adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
 <translation id="232381795826373334">Åbn PDF-filer i Brave</translation>
@@ -192,7 +192,7 @@
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Login på netværk</translation>
 <translation id="5924017743176219022">Opretter forbindelse til internettet…</translation>
 <translation id="5941711191222866238">Minimer</translation>
-<translation id="3613110494561632737">Hvis Brave har placeret dig tilfældigt i en aktiv prøve, vil din browserhistorik påvirke de annoncer, du ser, og de interesser, som er estimeret nedenfor. Af hensyn til beskyttelsen af dine personlige oplysninger sletter Brave dine interesser en gang om måneden. Interesserne opdateres, medmindre du fjerner dem.</translation>
+<translation id="3613110494561632737">Hvis Brave har placeret dig tilfældigt i en aktiv prøve, vil din browserhistorik påvirke de annoncer, du ser, og de interesser, som er estimeret nedenfor. Af hensyn til privatlivsbeskyttelsen sletter Brave dine interesser en gang om måneden. Interesserne opdateres, medmindre du fjerner dem.</translation>
 <translation id="3598551856834560515">Opdater Brave for at starte synkronisering</translation>
 <translation id="5225261774087485064">Det er almindeligt, at de websites, du besøger, husker ting, du er interesseret i, så din oplevelse tilpasses. Websites kan også gemme oplysninger med Brave om dine interesser.</translation>
 <translation id="6003112304606738118">Downloader… Der er <ph name="HOURS"/> timer tilbage</translation>
@@ -234,8 +234,10 @@
 <translation id="2139300032719313227">Genstart Chrome OS</translation>
 <translation id="1684121725014454063">Velkommen til Brave-profiler</translation>
 <translation id="2675662665675552980">Den styrer også, hvilken side der vises, når du åbner Brave.</translation>
+<translation id="648319183876919572">Udvidet beskyttet browsing gør mere for at beskytte dig mod skadelige websites og downloads</translation>
 <translation id="5590013613412457132">Afinstaller Brave</translation>
 <translation id="8646609321956191980">Hver profil har sine egne Brave-oplysninger som f.eks. bogmærker, historik, adgangskoder m.m.</translation>
+<translation id="2535436634051789953">Du kan skifte for at se adgangskoder fra en anden Brave-profil</translation>
 <translation id="2312399718665761438">Brave sender den tekst, du skriver i tekstfelter, til Brave for at rette stavefejl</translation>
 <translation id="3507835409099344374">Gå til indstillinger for Brave-notifikationer</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
@@ -309,7 +311,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="7845233973568007926">Tak for installationen. Du skal genstarte computeren, før du bruger <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="7963515534397191222">Brave kunne ikke opdatere til den nyeste version, så du går glip af nye funktioner og sikkerhedsrettelser.</translation>
 <translation id="7872446069773932638">Downloader… Der er <ph name="SECONDS"/> sekunder tilbage</translation>
-<translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Sådan kan du administrere dine data:<ph name="END_BOLD"/> Vi sletter automatisk de interesser, der er ældre end 4 uger, for at beskytte dine personlige oplysninger Mens du surfer, kan en interesse vises på listen igen. Du kan også fjerne interesser, som du ikke vil have, at Brave skal tage med i betragtning.</translation>
+<translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Sådan kan du administrere dine data:<ph name="END_BOLD"/> Vi sletter automatisk de interesser, der er ældre end 4 uger, for at beskytte dit privatliv. Mens du surfer, kan en interesse vises på listen igen. Du kan også fjerne interesser, som du ikke vil have, at Brave skal tage med i betragtning.</translation>
 <translation id="2925193881330501265">Du loggede ind på Brave som <ph name="USER_EMAIL_ADDRESS"/>. Brug den samme konto til at logge ind igen.</translation>
 <translation id="6915252145142862992">Dette er en sekundær installation af Brave, og den kan ikke gøres til din standardbrowser.</translation>
 <translation id="7685904775439037072">Når Brave har adgang, kan websites bede dig om adgang.</translation>
@@ -339,6 +341,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Sådan bruger vi disse data:<ph name="END_BOLD"/> Websites kan gemme oplysninger med Brave om dine interesser. Hvis du f.eks. besøger et website for at købe sko til et maraton, kan websitet muligvis definere, at din interesse er at løbe maraton. Hvis du derefter besøger et andet website for at tilmelde dig et løb, kan det website vise dig en annonce for løbesko baseret på dine interesser.</translation>
 <translation id="3052349005266761501">Starter Brave...</translation>
 <translation id="6283840329609797763">Installationen mislykkedes på grund af en uspecificeret fejl. Download Brave igen.</translation>
+<translation id="4668189655335212354">{NUM_DEVICES,plural, =0{En Brave-udvidelse havde adgang til HID-enheder}=1{En Brave-udvidelse har adgang til 1 HID-enhed}one{En Brave-udvidelse har adgang til # HID-enhed}other{En Brave-udvidelse har adgang til # HID-enheder}}</translation>
 <translation id="2433912322225810055">Den styrer også, hvilken side der vises, når du åbner Brave eller søger via omnifeltet.</translation>
 <translation id="4100716194836114130">Dette er din Brave-browser</translation>
 <translation id="4831743161813926460">Brave skal have tilladelse til at bruge dit kamera og din mikrofon på dette website</translation>
@@ -366,7 +369,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="296137235951584143">Tilpas Brave</translation>
 <translation id="7977787072794666032">Brave fungerer muligvis ikke korrekt på grund af manglende understøttelse i Windows XP og Windows Vista</translation>
 <translation id="8180288330711585962">Certifikater, der administreres af Brave</translation>
-<translation id="3050465115159165320">Få mest muligt ud af Brave</translation>
 <translation id="4484434718272972655">Hvem bruger Brave?</translation>
 <translation id="7173394303099002355">Få Braves stærkeste beskyttelse</translation>
 <translation id="5775101967851558962">Ryd altid websitedata fra din enhed, når du lukker Brave</translation>

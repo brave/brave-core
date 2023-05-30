@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">เปิดใช้การรองรับในการเลี่ยงเปลี่ยนเส้นทาง URL ติดตามระดับสูง</translation>
 <translation id="94154759592465111">สคริปต์บล็อก</translation>
 <translation id="7714773920987474116">บล็อก JavaScript (อาจทำเว็บเสียหาย)</translation>
+<translation id="1660979054779793659">Youtube</translation>
+<translation id="2233004324252915283">บล็อกเนื้อหาที่แนะนำของ YouTube</translation>
+<translation id="1005372663692637999">บล็อกองค์ประกอบการ์ดถัดไปและการ์ดสิ้นสุดบน youtube.com</translation>
+<translation id="5152595963250646670">บล็อกองค์ประกอบรบกวนของ YouTube</translation>
+<translation id="2998960761270772157">บล็อกองค์ประกอบเข้าสู่ระบบ เมนู ความคิดเห็น และข้อมูลวิดีโอบน youtube.com</translation>
 <translation id="6052725679982758334">การบล็อกโซเชียลมีเดีย</translation>
 <translation id="7498695072878479744">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">เว็บไซต์สามารถขอใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่าผ่านคุกกี้ของบุคคลที่สาม</translation>
 <translation id="2903783737778379345">ไม่อนุญาตให้ใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่าผ่านคุกกี้ของบุคคลที่สาม</translation>
 <translation id="6880817299303842099">อนุญาตการใช้คุกกี้ของบุคคลที่สามสำหรับการลงชื่อเข้าใช้ด้วย Google แบบเก่า</translation>
+<translation id="5169650598465327872">การเข้าถึง Localhost</translation>
+<translation id="4172219483893066798">เว็บไซต์สามารถขอสิทธิ์เข้าถึงทรัพยากร Localhost ได้</translation>
+<translation id="7181706637590665047">อย่าอนุญาตสิทธิ์เข้าถึงทรัพยากร Localhost</translation>
+<translation id="1485435696620658073">ได้รับอนุญาตให้เข้าถึงทรัพยากร Localhost</translation>
 <translation id="181905442828471321">ค่าเริ่มต้นทั่วไปของ Brave Shields</translation>
 <translation id="2675679258824361492">การตั้งค่าความเป็นส่วนตัวอื่นๆ</translation>
 <translation id="8026334261755873520">ล้างข้อมูลการท่องเว็บ</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">บัญชี Brave Sync นี้ถูกลบจากอุปกรณ์อื่น ถ้าคุณไม่ตั้งใจที่จะปิดการซิงค์ ให้ <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>สร้างบัญชีใหม่อีกครั้ง</translation>
 <translation id="4094590686212463338">ไม่สามารถเข้าร่วมกลุ่มการซิงค์ได้เนื่องจากกลุ่มการซิงค์ถูกลบไปแล้ว</translation>
-<translation id="5633907266617216186">ที่อยู่ ข้อมูลการชำระเงิน เป็นต้น</translation>
+<translation id="4908081302669157000">หมายเลขโทรศัพท์ อีเมล และที่อยู่</translation>
 <translation id="1056898198331236512">คำเตือน</translation>
 <translation id="1426410128494586442">ใช่</translation>
 <translation id="7811264919113243207">การดำเนินการนี้จะแชร์ข้อมูล Brave ของคุณ รวมถึงอาจแชร์รหัสผ่านของคุณ กับอุปกรณ์ที่สร้างรหัส QR นี้
@@ -750,6 +759,7 @@
 <translation id="1118876217803190221">ยอดคงเหลือไม่เพียงพอ</translation>
 <translation id="275990379543116961">เงินทุนไม่เพียงพอสำหรับค่าแก๊ส</translation>
 <translation id="3292453499915466604">สภาพคล่องไม่เพียงพอ</translation>
+<translation id="3025158262797849291">รูปแบบตัวเลขที่ไม่รู้จัก</translation>
 <translation id="3380365263193509176">ข้อผิดพลาดที่ไม่รู้จัก</translation>
 <translation id="5932938770824268122">คีย์ส่วนตัว</translation>
 <translation id="2472882733835903303">แสดงคีย์ส่วนตัว</translation>
@@ -769,6 +779,7 @@
 <translation id="6015436276085482001">ถูกปฏิเสธ</translation>
 <translation id="6666273175654835609">Submitted</translation>
 <translation id="2331676293859649642">Confirmed</translation>
+<translation id="8214232307424031138">ลงชื่อแล้ว</translation>
 <translation id="1165039591588034296">ข้อผิดพลาด</translation>
 <translation id="8364362220156372884">ค่าธรรมเนียม: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">คุณกำลังใช้งานเว็บเบราว์เซอร์ที่เร็วที่สุดอยู่หรือเปล่า</translation>
@@ -799,7 +810,7 @@
 <translation id="5061574358754621254">ข้อมูลราคาโดย CoinGecko</translation>
 <translation id="4626407663177532837">ใบเสนอราคารวมค่าธรรมเนียม Brave 0.875%</translation>
 <translation id="8574289650879708853">เพิ่มโทเค็นที่กำหนดเอง</translation>
-<translation id="1974060860693918893">ขั้นสูง</translation>
+<translation id="1255896809210433555">เพิ่ม NFT</translation>
 <translation id="7791543448312431591">เพิ่ม</translation>
 <translation id="6600400596821238377">ชื่อโทเค็น</translation>
 <translation id="4432966365400169165">แอดเดรสสัญญาโทเค็น</translation>
@@ -1023,10 +1034,10 @@
 <translation id="6605147707233193230">เปิดเพื่อช่วยสนับสนุนคอนเทนต์ครีเอเตอร์</translation>
 <translation id="1609556006143307897">คุณกำลังช่วยสนับสนุนคอนเทนต์ครีเอเตอร์</translation>
 <translation id="6067959437127691361">การใช้ Brave Rewards จะช่วยสนับสนุนคอนเทนต์ครีเอเตอร์และช่วยให้คุณได้รับ BAT ด้วย</translation>
-<translation id="121894865378699201">พร้อมที่จะรับ BAT แล้วหรือยัง?</translation>
-<translation id="2648805457288107211">เพียงเชื่อมต่อบัญชีดูแลรักษาสินทรัพย์กับบัญชี Rewards ของคุณ ถ้าคุณไม่มีบัญชี คุณจะสามารถสร้างบัญชีได้</translation>
+<translation id="3264975266761862670">พร้อมเริ่มสร้างรายได้แล้วหรือยัง</translation>
+<translation id="265337947574975838">เชื่อมต่อหรือสร้างบัญชีกับหนึ่งในพันธมิตรของเรา</translation>
 <translation id="1772961321862399863">เพื่อรับ BAT ผู้ใช้ต้องเชื่อมต่อบัญชีดูแลรักษาสินทรัพย์กับบัญชี Brave Rewards แต่เราขออภัยที่ต้องแจ้งให้ทราบว่าไม่มีผู้ดูแลรักษาสินทรัพย์ในภูมิภาคของคุณ ทำให้ไม่สามารถรับรายได้ได้ ตั้งแต่นี้ไป การเปิดใช้ Brave Rewards จะเป็นการสนับสนุนครีเอเตอร์โดยอัตโนมัติ</translation>
-<translation id="5430495762768325224">เรียนรู้เพิ่มเติมเกี่ยวกับ BAT</translation>
+<translation id="654447476965480878">เรียนรู้เพิ่มเติมเกี่ยวกับการรับ BAT</translation>
 <translation id="6278643716658443228">การตั้งค่า Rewards</translation>
 <translation id="6516984207843289176">เชื่อมต่อบัญชี</translation>
 <translation id="4272136334824111854">ในเดือนนี้ คุณได้เยี่ยมชมครีเอเตอร์ที่สนับสนุนโดย Brave Rewards <ph name="CREATOR_COUNT"/> คน</translation>
@@ -1057,6 +1068,7 @@
 <translation id="171158953146804144">ในวันที่ <ph name="DUE_DATE"/> เราจะยุติการสนับสนุนสำหรับยอดคงเหลือ BAT เสมือนที่มีอยู่ แต่เราขออภัยที่ต้องแจ้งให้ทราบว่าไม่มีผู้เก็บรักษาสินทรัพย์ในภูมิภาคของคุณ (<ph name="REGION"/>) ให้ถอนรายได้ของคุณ จนกว่าจะถึงวันดังกล่าว คุณจะยังคงสามารถสนับสนุนผู้สร้างสรรค์คนโปรดได้</translation>
 <translation id="8949422576126100041">ดูหน้านี้ด้วย Speedreader</translation>
 <translation id="591648995518106347">โหลดบทความที่มีสิทธิ์โดยอัตโนมัติในโหมดผู้อ่าน</translation>
+<translation id="1295796122927221823">ดูในโหมดผู้อ่าน</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> บน <ph name="NETWORK"/></translation>
 <translation id="295620834661738195">Brave เพลย์ลิสต์</translation>
 <translation id="4850886885716139402">มุมมอง</translation>
@@ -1129,4 +1141,10 @@
 <translation id="3631131732607750008">เนื้อหาหมดอายุ ลองอีกครั้งในอีกไม่กี่วินาทีถัดไป</translation>
 <translation id="9085765419770918643">ที่นี่ยังไม่มี NFT</translation>
 <translation id="8445532667841598737">พร้อมที่จะเพิ่มแล้ว? แค่คลิกปุ่มด้านล่างเพื่อนำเข้า</translation>
+<translation id="5925465310724910998">ต้องการให้ NFT ของคุณแสดงอัตโนมัติใช่ไหม?</translation>
+<translation id="2827460859891872324">กระเป๋าเงิน Brave สามารถใช้บริการบุคคลที่สามเพื่อแสดง NFT ของคุณโดยอัตโนมัติได้ โดย Brave จะแชร์ที่อยู่กระเป๋าเงินของคุณกับ <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> เพื่อให้บริการนี้ <ph name="BEGIN_LINK_2"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">เปิดใช้งาน NFT discovery</translation>
+<translation id="622372328961630111">เพิ่ม NFT ที่คุณเป็นเจ้าของไปยังกระเป๋าเงินโดยอัตโนมัติโดยใช้ API บุคคลที่สาม <ph name="BEGIN_LINK_1"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">บัญชีตารางค้นหาที่อยู่:</translation>
+<translation id="7659483790930268440">ดัชนีตารางค้นหาที่อยู่:</translation>
 </translationbundle>
