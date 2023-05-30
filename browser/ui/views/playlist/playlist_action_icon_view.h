@@ -38,7 +38,7 @@ class PlaylistActionIconView : public PageActionIconView,
   void UpdateImpl() override;
 
  private:
-  enum State { kNone, kAdded, kFound };
+  enum class State { kNone, kAdded, kFound };
 
   playlist::PlaylistTabHelper* playlist_tab_helper() {
     return playlist::PlaylistTabHelper::FromWebContents(
@@ -54,7 +54,7 @@ class PlaylistActionIconView : public PageActionIconView,
   void UpdateState(bool has_saved, bool found_items);
   void UpdateVisibilityPerState();
 
-  State state_ = kNone;
+  State state_ = State::kNone;
 
   raw_ptr<content::WebContents> last_web_contents_ = nullptr;
 

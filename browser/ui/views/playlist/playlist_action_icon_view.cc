@@ -41,8 +41,8 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
 }
 
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
-  return state_ == kAdded ? kLeoProductPlaylistAddedIcon
-                          : kLeoProductPlaylistAddIcon;
+  return state_ == State::kAdded ? kLeoProductPlaylistAddedIcon
+                                 : kLeoProductPlaylistAddIcon;
 }
 
 void PlaylistActionIconView::UpdateImpl() {
@@ -85,7 +85,9 @@ void PlaylistActionIconView::OnFoundItemsChanged(
 }
 
 void PlaylistActionIconView::UpdateState(bool has_saved, bool found_items) {
-  State target_state = has_saved ? kAdded : found_items ? kFound : kNone;
+  State target_state = has_saved     ? State::kAdded
+                       : found_items ? State::kFound
+                                     : State::kNone;
   if (auto old_state = std::exchange(state_, target_state);
       old_state == target_state) {
     return;
@@ -96,7 +98,7 @@ void PlaylistActionIconView::UpdateState(bool has_saved, bool found_items) {
 }
 
 void PlaylistActionIconView::UpdateVisibilityPerState() {
-  const bool should_be_visible = state_ != kNone;
+  const bool should_be_visible = state_ != State::kNone;
   if (GetVisible() == should_be_visible) {
     return;
   }

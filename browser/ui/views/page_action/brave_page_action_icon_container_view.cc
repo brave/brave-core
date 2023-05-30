@@ -14,30 +14,25 @@
 
 namespace {
 
-const PageActionIconParams& ModifyIconParamsForBrave(
-    const PageActionIconParams& params) {
-  // Unfortunately, |PageActionIconParams| can't not be copied or moved. So drop
-  // const qualifier to modify |param|.
-  auto& modifiable_params = const_cast<PageActionIconParams&>(params);
-
+PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   // Add actions for Brave
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
       params.browser->is_type_normal() &&
       !params.browser->profile()->IsOffTheRecord()) {
     // Insert Playlist action before sharing hub or at the end of the vector.
-    modifiable_params.types_enabled.insert(
-        base::ranges::find(modifiable_params.types_enabled,
+    params.types_enabled.insert(
+        base::ranges::find(params.types_enabled,
                            PageActionIconType::kSharingHub),
         brave::kPlaylistPageActionIconType);
   }
 
-  return modifiable_params;
+  return params;
 }
 
 }  // namespace
 
 BravePageActionIconContainerView::BravePageActionIconContainerView(
-    const PageActionIconParams& params)
+    PageActionIconParams& params)
     : PageActionIconContainerView(ModifyIconParamsForBrave(params)) {}
 
 BravePageActionIconContainerView::~BravePageActionIconContainerView() = default;

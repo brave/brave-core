@@ -12,7 +12,9 @@ class BravePageActionIconContainerView : public PageActionIconContainerView {
  public:
   METADATA_HEADER(BravePageActionIconContainerView);
 
-  explicit BravePageActionIconContainerView(const PageActionIconParams& param);
+  // Unfortunately, |PageActionIconParams| can't not be copied or moved. So drop
+  // const qualifier to modify |param| for Brave.
+  explicit BravePageActionIconContainerView(PageActionIconParams& param);
   ~BravePageActionIconContainerView() override;
 };
 
