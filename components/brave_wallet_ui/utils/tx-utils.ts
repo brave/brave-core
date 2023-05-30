@@ -207,13 +207,20 @@ export const transactionSortByDateComparer = <
   }
 }
 
-export function isSolanaTransaction (tx?: TransactionInfo): tx is SolanaTransactionInfo {
+export function isSolanaTransaction(
+  tx?: Pick<TransactionInfo, 'txType' | 'txDataUnion'>
+): tx is SolanaTransactionInfo {
   if (!tx) {
     return false
   }
-  const { txType, txDataUnion: { solanaTxData } } = tx
-  return SolanaTransactionTypes.includes(txType) ||
+  const {
+    txType,
+    txDataUnion: { solanaTxData }
+  } = tx
+  return (
+    SolanaTransactionTypes.includes(txType) ||
     (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)
+  )
 }
 
 export function shouldReportTransactionP3A({
@@ -352,7 +359,9 @@ export const getTransactionToAddress = (
   return tx.txDataUnion.ethTxData1559?.baseData.to || ''
 }
 
-export function getTransactionInteractionAddress (tx: TransactionInfo): string {
+export function getTransactionInteractionAddress(
+  tx: Pick<TransactionInfo, 'txDataUnion' | 'txType'>
+): string {
   if (isSolanaTransaction(tx)) {
     return tx.txDataUnion.solanaTxData.toWalletAddress ?? ''
   }
@@ -894,7 +903,7 @@ function isKnownTokenContractAddress (
  * @returns `true` if the to address is a known erc & SPL token contract address, `false` otherwise
 */
 export const isSendingToKnownTokenContractAddress = (
-  tx: TransactionInfo,
+  tx: Pick<TransactionInfo, 'txType' | 'txArgs' | 'txDataUnion'>,
   fullTokenList: BraveWallet.BlockchainToken[]
 ): boolean => {
   // ERC20Transfer
@@ -1110,7 +1119,7 @@ export function getTransactionTokenSymbol ({
   token
 }: {
   tx: TransactionInfo
-  txNetwork?: BraveWallet.NetworkInfo
+  txNetwork?: Pick<BraveWallet.NetworkInfo, 'symbol'>
   token?: BraveWallet.BlockchainToken
   sellToken?: BraveWallet.BlockchainToken
 }): string {
