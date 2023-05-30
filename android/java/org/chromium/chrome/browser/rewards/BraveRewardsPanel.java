@@ -981,8 +981,6 @@ public class BraveRewardsPanel
                 tvUSD.setText(textUSD);
             }
         }
-
-        mBraveRewardsNativeWorker.GetPendingContributionsTotal();
     }
 
     private void requestNotificationPermission() {

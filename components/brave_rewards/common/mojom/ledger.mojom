@@ -80,30 +80,6 @@ struct PublisherBanner {
   string web3_url;
 };
 
-struct PendingContribution {
-  string publisher_key;
-  double amount;
-  uint64 added_date;
-  string viewing_id;
-  RewardsType type;
-};
-
-struct PendingContributionInfo {
-  uint64 id;
-  string publisher_key;
-  RewardsType type;
-  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
-  uint64 status_updated_at;
-  string name;
-  string url;
-  string provider;
-  string favicon_url;
-  double amount;
-  uint64 added_date;
-  string viewing_id;
-  uint64 expiration_date;
-};
-
 struct VisitData {
   string domain;
   string path;
@@ -207,9 +183,6 @@ enum Result {
   GRANT_ALREADY_CLAIMED = 18,
 
   CONTRIBUTION_AMOUNT_TOO_LOW = 19,
-  VERIFIED_PUBLISHER = 20,
-  PENDING_PUBLISHER_REMOVED = 21,
-  PENDING_NOT_ENOUGH_FUNDS = 22,
   RECURRING_TABLE_EMPTY = 23,
   EXPIRED_TOKEN = 24,
   ALREADY_EXISTS = 26,

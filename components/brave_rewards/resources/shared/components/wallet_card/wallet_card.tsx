@@ -48,7 +48,6 @@ interface Props {
   summaryData: RewardsSummaryData
   autoContributeEnabled: boolean
   onExternalWalletAction: (action: ExternalWalletAction) => void
-  onViewPendingTips?: () => void
   onViewStatement?: () => void
 }
 
@@ -174,7 +173,6 @@ export function WalletCard (props: Props) {
                 nextPaymentDate={props.nextPaymentDate}
                 exchangeRate={props.exchangeRate}
                 exchangeCurrency={props.exchangeCurrency}
-                onViewPendingTips={props.onViewPendingTips}
               />
               {
                 props.onViewStatement &&

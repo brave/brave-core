@@ -70,7 +70,6 @@ export function Wallet () {
             summaryData={summaryData}
             autoContributeEnabled={true}
             onExternalWalletAction={actionLogger('onExternalWalletAction')}
-            onViewPendingTips={actionLogger('onViewPendingTips')}
             onViewStatement={actionLogger('onViewStatement')}
           />
         </div>

@@ -72,14 +72,6 @@ void LedgerClientIOS::PublisherListNormalized(
     std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   [bridge_ publisherListNormalized:std::move(list)];
 }
-void LedgerClientIOS::OnContributeUnverifiedPublishers(
-    brave_rewards::mojom::Result result,
-    const std::string& publisher_key,
-    const std::string& publisher_name) {
-  [bridge_ onContributeUnverifiedPublishers:result
-                               publisherKey:publisher_key
-                              publisherName:publisher_name];
-}
 void LedgerClientIOS::SetBooleanState(const std::string& name,
                                       bool value,
                                       SetBooleanStateCallback callback) {
@@ -183,10 +175,6 @@ void LedgerClientIOS::RunDBTransaction(
     RunDBTransactionCallback callback) {
   [bridge_ runDbTransaction:std::move(transaction)
                    callback:std::move(callback)];
-}
-void LedgerClientIOS::PendingContributionSaved(
-    const brave_rewards::mojom::Result result) {
-  [bridge_ pendingContributionSaved:result];
 }
 void LedgerClientIOS::ClearAllNotifications() {
   [bridge_ clearAllNotifications];

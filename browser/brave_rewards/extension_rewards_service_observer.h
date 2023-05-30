@@ -51,10 +51,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
   void OnRecurringTipRemoved(RewardsService* rewards_service,
                              bool success) override;
 
-  void OnPendingContributionRemoved(
-      RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result) override;
-
   void OnReconcileComplete(
       RewardsService* rewards_service,
       const brave_rewards::mojom::Result result,
@@ -79,10 +75,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
       RewardsService* rewards_service,
       const brave_rewards::mojom::Result result,
       brave_rewards::mojom::PromotionPtr promotion) override;
-
-  void OnPendingContributionSaved(
-      RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result) override;
 
   void OnAdsEnabled(RewardsService* rewards_service, bool ads_enabled) override;
 

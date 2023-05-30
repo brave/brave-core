@@ -113,7 +113,6 @@ declare namespace chrome.braveRewards {
   const fetchPromotions: (callback: (promotions: RewardsExtension.Promotion[]) => void) => {}
   const claimPromotion: (promotionId: string, callback: (properties: RewardsExtension.Captcha) => void) => {}
   const attestPromotion: (promotionId: string, solution: string, callback: (result: number, promotion?: RewardsExtension.Promotion) => void) => {}
-  const getPendingContributionsTotal: (callback: (amount: number) => void) => {}
   const onAdsEnabled: {
     addListener: (callback: (enabled: boolean) => void) => void
   }
@@ -124,9 +123,6 @@ declare namespace chrome.braveRewards {
   const getWalletExists: (callback: (exists: boolean) => void) => {}
   const saveAdsSetting: (key: string, value: string) => {}
   const setAutoContributeEnabled: (enabled: boolean) => {}
-  const onPendingContributionSaved: {
-    addListener: (callback: (result: number) => void) => void
-  }
   const getACEnabled: (callback: (enabled: boolean) => void) => {}
   const onPublisherListNormalized: {
     addListener: (callback: (properties: RewardsExtension.PublisherNormalized[]) => void) => void

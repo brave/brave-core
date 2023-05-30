@@ -16,7 +16,6 @@ public interface BraveRewardsObserver {
     default public void OnGetLatestNotification(
             String id, int type, long timestamp, String[] args){};
     default public void OnNotificationDeleted(String id){};
-    default public void OnGetPendingContributionsTotal(double amount){};
     default public void OnGetAutoContributeProperties(){};
     default public void onGetAutoContributionAmount(double amount){};
     default public void OnGetReconcileStamp(long timestamp){};
@@ -33,7 +32,6 @@ public interface BraveRewardsObserver {
     default public void onReconcileComplete(int resultCode, int rewardsType, double amount) {}
     default public void OnRefreshPublisher(int status, String publisherKey){};
     default public void onSendContribution(boolean result){};
-    default public void OnPendingContributionSaved(int result){};
     default public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
             int adsReceivedThisMonth, double earningsThisMonth, double earningsLastMonth){};
     default public void onPublisherBanner(String jsonBannerInfo){};

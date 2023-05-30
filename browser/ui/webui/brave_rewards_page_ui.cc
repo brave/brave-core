@@ -148,8 +148,6 @@ class RewardsDOMHandler
   void OnGetReconcileStamp(uint64_t reconcile_stamp);
   void OnAutoContributePropsReady(
       brave_rewards::mojom::AutoContributePropertiesPtr properties);
-  void GetPendingContributionsTotal(const base::Value::List& args);
-  void OnGetPendingContributionsTotal(double amount);
   void GetStatement(const base::Value::List& args);
   void OnGetStatement(brave_ads::mojom::StatementInfoPtr statement);
   void GetExcludedSites(const base::Value::List& args);
@@ -164,11 +162,6 @@ class RewardsDOMHandler
   void SetInlineTippingPlatformEnabled(const base::Value::List& args);
   void SetInlineTipsEnabled(const base::Value::List& args);
 
-  void GetPendingContributions(const base::Value::List& args);
-  void OnGetPendingContributions(
-      std::vector<brave_rewards::mojom::PendingContributionInfoPtr> list);
-  void RemovePendingContribution(const base::Value::List& args);
-  void RemoveAllPendingContributions(const base::Value::List& args);
   void FetchBalance(const base::Value::List& args);
   void OnFetchBalance(FetchBalanceResult result);
 
@@ -233,10 +226,6 @@ class RewardsDOMHandler
       const brave_rewards::mojom::RewardsType type,
       const brave_rewards::mojom::ContributionProcessor processor) override;
 
-  void OnPendingContributionSaved(
-      brave_rewards::RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result) override;
-
   void OnPublisherListNormalized(
       brave_rewards::RewardsService* rewards_service,
       std::vector<brave_rewards::mojom::PublisherInfoPtr> list) override;
@@ -249,10 +238,6 @@ class RewardsDOMHandler
 
   void OnRecurringTipRemoved(brave_rewards::RewardsService* rewards_service,
                              bool success) override;
-
-  void OnPendingContributionRemoved(
-      brave_rewards::RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result) override;
 
   void OnExternalWalletLoggedOut() override;
 
@@ -435,10 +420,6 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::SaveAdsSetting,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.getPendingContributionsTotal",
-      base::BindRepeating(&RewardsDOMHandler::GetPendingContributionsTotal,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "brave_rewards.getStatement",
       base::BindRepeating(&RewardsDOMHandler::GetStatement,
                           base::Unretained(this)));
@@ -453,18 +434,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.setInlineTipsEnabled",
       base::BindRepeating(&RewardsDOMHandler::SetInlineTipsEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.getPendingContributions",
-      base::BindRepeating(&RewardsDOMHandler::GetPendingContributions,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.removePendingContribution",
-      base::BindRepeating(&RewardsDOMHandler::RemovePendingContribution,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.removeAllPendingContribution",
-      base::BindRepeating(&RewardsDOMHandler::RemoveAllPendingContributions,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getExcludedSites",
@@ -1456,33 +1425,6 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
   GetAdsData(base::Value::List());
 }
 
-void RewardsDOMHandler::GetPendingContributionsTotal(
-    const base::Value::List& args) {
-  if (rewards_service_) {
-    AllowJavascript();
-    rewards_service_->GetPendingContributionsTotal(
-        base::BindOnce(&RewardsDOMHandler::OnGetPendingContributionsTotal,
-                       weak_factory_.GetWeakPtr()));
-  }
-}
-
-void RewardsDOMHandler::OnGetPendingContributionsTotal(double amount) {
-  if (IsJavascriptAllowed()) {
-    CallJavascriptFunction("brave_rewards.pendingContributionTotal",
-                           base::Value(amount));
-  }
-}
-
-void RewardsDOMHandler::OnPendingContributionSaved(
-    brave_rewards::RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-  CallJavascriptFunction("brave_rewards.onPendingContributionSaved",
-                         base::Value(static_cast<int>(result)));
-}
-
 void RewardsDOMHandler::OnPublisherListNormalized(
     brave_rewards::RewardsService* rewards_service,
     std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
@@ -1608,73 +1550,6 @@ void RewardsDOMHandler::SetInlineTipsEnabled(const base::Value::List& args) {
   bool enabled = args[0].GetBool();
   auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kInlineTipButtonsEnabled, enabled);
-}
-
-void RewardsDOMHandler::GetPendingContributions(const base::Value::List& args) {
-  if (rewards_service_) {
-    AllowJavascript();
-    rewards_service_->GetPendingContributions(
-        base::BindOnce(&RewardsDOMHandler::OnGetPendingContributions,
-                       weak_factory_.GetWeakPtr()));
-  }
-}
-
-void RewardsDOMHandler::OnGetPendingContributions(
-    std::vector<brave_rewards::mojom::PendingContributionInfoPtr> list) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-
-  base::Value::List contributions;
-  for (auto const& item : list) {
-    base::Value::Dict contribution;
-    contribution.Set("id", static_cast<int>(item->id));
-    contribution.Set("publisherKey", item->publisher_key);
-    contribution.Set("status", static_cast<int>(item->status));
-    contribution.Set("name", item->name);
-    contribution.Set("provider", item->provider);
-    contribution.Set("url", item->url);
-    contribution.Set("favIcon", item->favicon_url);
-    contribution.Set("amount", item->amount);
-    contribution.Set("addedDate", base::NumberToString(item->added_date));
-    contribution.Set("type", static_cast<int>(item->type));
-    contribution.Set("viewingId", item->viewing_id);
-    contribution.Set("expirationDate",
-                     base::NumberToString(item->expiration_date));
-    contributions.Append(std::move(contribution));
-  }
-
-  CallJavascriptFunction("brave_rewards.pendingContributions", contributions);
-}
-
-void RewardsDOMHandler::RemovePendingContribution(
-    const base::Value::List& args) {
-  CHECK_EQ(1U, args.size());
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-
-  const uint64_t id = args[0].GetInt();
-  rewards_service_->RemovePendingContribution(id);
-}
-
-void RewardsDOMHandler::RemoveAllPendingContributions(
-    const base::Value::List& args) {
-  if (rewards_service_) {
-    AllowJavascript();
-    rewards_service_->RemoveAllPendingContributions();
-  }
-}
-
-void RewardsDOMHandler::OnPendingContributionRemoved(
-    brave_rewards::RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result) {
-  if (IsJavascriptAllowed()) {
-    CallJavascriptFunction("brave_rewards.onRemovePendingContribution",
-                           base::Value(static_cast<int>(result)));
-  }
 }
 
 void RewardsDOMHandler::OnFetchBalance(FetchBalanceResult result) {

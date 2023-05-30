@@ -141,11 +141,6 @@ class TestLedgerClient : public mojom::LedgerClient {
 
   void IsBitFlyerRegion(IsBitFlyerRegionCallback callback) override;
 
-  void OnContributeUnverifiedPublishers(
-      mojom::Result result,
-      const std::string& publisher_key,
-      const std::string& publisher_name) override;
-
   void GetLegacyWallet(GetLegacyWalletCallback callback) override;
 
   void ShowNotification(const std::string& type,
@@ -160,8 +155,6 @@ class TestLedgerClient : public mojom::LedgerClient {
 
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
-
-  void PendingContributionSaved(mojom::Result result) override;
 
   void Log(const std::string& file,
            int32_t line,

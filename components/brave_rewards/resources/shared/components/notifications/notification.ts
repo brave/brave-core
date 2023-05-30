@@ -10,7 +10,6 @@ export type NotificationType =
   'monthly-tip-completed' |
   'monthly-contribution-failed' |
   'grant-available' |
-  'pending-publisher-verified' |
   'external-wallet-disconnected' |
   'uphold-bat-not-allowed' |
   'uphold-insufficient-capabilities'
@@ -34,11 +33,6 @@ export interface MonthlyContributionFailedNotification extends Notification {
 export interface GrantAvailableNotification extends Notification {
   type: 'grant-available'
   grantInfo: GrantInfo
-}
-
-export interface PendingPublisherVerifiedNotification extends Notification {
-  type: 'pending-publisher-verified'
-  publisherName: string
 }
 
 export interface ExternalWalletDisconnectedNotification extends Notification {

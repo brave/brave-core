@@ -17,7 +17,6 @@ import MainToggle from './mainToggle'
 import ModalActivity from './modalActivity'
 import ModalContribute from './modalContribute'
 import ModalDonation from './modalDonation'
-import ModalPending from './modalPending'
 import ModalRedirect from './modalRedirect'
 import ModalReset from './modalReset'
 import ModalShowAdsHistory from './modalShowAdsHistory'
@@ -31,7 +30,6 @@ import Tab from './tab'
 import TableAdsHistory from './tableAdsHistory'
 import TableContribute from './tableContribute'
 import TableDonation from './tableDonation'
-import TablePending from './tablePending'
 import TableTransactions from './tableTransactions'
 import ThumbLikePicker from './thumbLikePicker'
 import Tokens from './tokens'
@@ -52,7 +50,6 @@ export {
   ModalActivity,
   ModalContribute,
   ModalDonation,
-  ModalPending,
   ModalRedirect,
   ModalReset,
   ModalShowAdsHistory,
@@ -66,7 +63,6 @@ export {
   TableAdsHistory,
   TableContribute,
   TableDonation,
-  TablePending,
   TableTransactions,
   ThumbLikePicker,
   Tokens,

@@ -107,9 +107,6 @@ NS_ASSUME_NONNULL_BEGIN
               (brave_rewards::mojom::LedgerClient::ClearStateCallback)callback;
 - (void)isBitFlyerRegion:
     (brave_rewards::mojom::LedgerClient::IsBitFlyerRegionCallback)callback;
-- (void)onContributeUnverifiedPublishers:(brave_rewards::mojom::Result)result
-                            publisherKey:(const std::string&)publisherKey
-                           publisherName:(const std::string&)publisherName;
 - (void)legacyWallet:
     (brave_rewards::mojom::LedgerClient::GetLegacyWalletCallback)callback;
 - (void)
@@ -127,7 +124,6 @@ NS_ASSUME_NONNULL_BEGIN
             callback:
                 (brave_rewards::mojom::LedgerClient::RunDBTransactionCallback)
                     callback;
-- (void)pendingContributionSaved:(brave_rewards::mojom::Result)result;
 - (void)log:(const std::string&)file
             line:(int32_t)line
     verboseLevel:(int32_t)verboseLevel

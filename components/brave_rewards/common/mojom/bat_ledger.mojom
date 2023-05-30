@@ -144,14 +144,6 @@ interface Ledger {
 
   GetShareURL(map<string, string> args) => (string url);
 
-  GetPendingContributions() => (array<PendingContributionInfo> list);
-
-  RemovePendingContribution(uint64 id) => (Result result);
-
-  RemoveAllPendingContributions() => (Result result);
-
-  GetPendingContributionsTotal() => (double amount);
-
   FetchBalance() => (FetchBalanceResult result);
 
   GetExternalWallet(string wallet_type) => (GetExternalWalletResult result);
@@ -253,9 +245,6 @@ interface LedgerClient {
   [Sync]
   IsBitFlyerRegion() => (bool value);
 
-  OnContributeUnverifiedPublishers(Result result, string publisher_key,
-      string publisher_name);
-
   [Sync]
   GetLegacyWallet() => (string wallet);
 
@@ -269,8 +258,6 @@ interface LedgerClient {
   ReconcileStampReset();
 
   RunDBTransaction(DBTransaction transaction) => (DBCommandResponse response);
-
-  PendingContributionSaved(Result result);
 
   Log(string file, int32 line, int32 verbose_level, string message);
 

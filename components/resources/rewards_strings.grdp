@@ -39,9 +39,6 @@
   <message name="IDS_REWARDS_WALLET_ONE_TIME_TIPS" desc="">
     Contributions
   </message>
-  <message name="IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS" desc="">
-    Pending contributions
-  </message>
   <message name="IDS_REWARDS_WALLET_REWARDS_FROM_ADS" desc="">
     Rewards from Ads
   </message>
@@ -326,12 +323,6 @@
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TEXT" desc="">
     Your monthly contributions have been processed.
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TITLE" desc="">
-    Pending contribution
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TEXT" desc="">
-    Creator <ph name="PUBLISHER_NAME">$1<ex>brave.com</ex></ph> recently verified.
   </message>
 
   <!-- Adaptive captcha -->

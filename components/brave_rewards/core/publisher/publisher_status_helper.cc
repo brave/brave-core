@@ -117,27 +117,5 @@ void RefreshPublisherStatus(LedgerImpl& ledger,
                             });
 }
 
-void RefreshPublisherStatus(
-    LedgerImpl& ledger,
-    std::vector<mojom::PendingContributionInfoPtr>&& info_list,
-    GetPendingContributionsCallback callback) {
-  PublisherStatusMap map;
-  for (const auto& info : info_list) {
-    map[info->publisher_key] = {info->status, info->status_updated_at};
-  }
-
-  auto shared_list =
-      std::make_shared<std::vector<mojom::PendingContributionInfoPtr>>(
-          std::move(info_list));
-
-  RefreshPublisherStatusMap(ledger, std::move(map),
-                            [shared_list, callback](auto map) {
-                              for (const auto& info : *shared_list) {
-                                info->status = map[info->publisher_key].status;
-                              }
-                              callback(std::move(*shared_list));
-                            });
-}
-
 }  // namespace publisher
 }  // namespace brave_rewards::internal

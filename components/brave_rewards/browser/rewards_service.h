@@ -48,7 +48,6 @@ using GetPublisherMinVisitTimeCallback = base::OnceCallback<void(int)>;
 using GetPublisherMinVisitsCallback = base::OnceCallback<void(int)>;
 using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::OnceCallback<void(uint64_t)>;
-using GetPendingContributionsTotalCallback = base::OnceCallback<void(double)>;
 using GetRewardsInternalsInfoCallback =
     base::OnceCallback<void(mojom::RewardsInternalsInfoPtr info)>;
 using GetRecurringTipsCallback =
@@ -64,8 +63,6 @@ using GetPublisherInfoCallback =
 using SavePublisherInfoCallback = base::OnceCallback<void(const mojom::Result)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
-using GetPendingContributionsCallback = base::OnceCallback<void(
-    std::vector<mojom::PendingContributionInfoPtr> list)>;
 using ConnectExternalWalletResult =
     base::expected<void, mojom::ConnectExternalWalletError>;
 using ConnectExternalWalletCallback =
@@ -243,20 +240,13 @@ class RewardsService : public KeyedService {
   virtual RewardsNotificationService* GetNotificationService() const = 0;
   virtual void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) = 0;
-  virtual void GetPendingContributionsTotal(
-      GetPendingContributionsTotalCallback callback) = 0;
+
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
 
   virtual void RefreshPublisher(
       const std::string& publisher_key,
       RefreshPublisherCallback callback) = 0;
-
-  virtual void GetPendingContributions(
-    GetPendingContributionsCallback callback) = 0;
-
-  virtual void RemovePendingContribution(const uint64_t id) = 0;
-  virtual void RemoveAllPendingContributions() = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

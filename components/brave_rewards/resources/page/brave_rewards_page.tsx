@@ -138,12 +138,6 @@ function onToggleFlaggedAd (result: Rewards.ToggleFlaggedAd) {
   actions.onToggleFlaggedAd(result)
 }
 
-function onPendingContributionSaved (result: number) {
-  if (result === 0) {
-    actions.getPendingContributions()
-  }
-}
-
 function statement (data: any) {
   actions.onStatement(data)
 }
@@ -162,16 +156,6 @@ function recurringTipRemoved (success: boolean) {
 
 function externalWalletProviderList (list: Rewards.ExternalWalletProvider[]) {
   actions.onExternalWalletProviderList(list)
-}
-
-function pendingContributions (list: Rewards.PendingContribution[]) {
-  actions.onPendingContributions(list)
-}
-
-function onRemovePendingContribution (result: number) {
-  if (result === 0) {
-    actions.getPendingContributions()
-  }
 }
 
 function excludedSiteChanged () {
@@ -285,13 +269,10 @@ Object.defineProperty(window, 'brave_rewards', {
     onToggleAdOptOut,
     onToggleSavedAd,
     onToggleFlaggedAd,
-    pendingContributions,
-    onPendingContributionSaved,
     statement,
     statementChanged,
     recurringTipSaved,
     recurringTipRemoved,
-    onRemovePendingContribution,
     excludedSiteChanged,
     balance,
     reconcileComplete,

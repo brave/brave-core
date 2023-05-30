@@ -127,8 +127,6 @@ class BraveRewardsNativeWorker
   base::android::ScopedJavaLocalRef<jobjectArray> GetCurrentGrant(JNIEnv* env,
                                                                   int position);
 
-  void GetPendingContributionsTotal(JNIEnv* env);
-
   void GetRecurringDonations(JNIEnv* env);
 
   bool IsCurrentPublisherInRecurrentDonations(
@@ -192,8 +190,6 @@ class BraveRewardsNativeWorker
 
   void OnGetAutoContributionAmount(double auto_contribution_amount);
 
-  void OnGetPendingContributionsTotal(double amount);
-
   void OnPanelPublisherInfo(brave_rewards::RewardsService* rewards_service,
                             const brave_rewards::mojom::Result result,
                             const brave_rewards::mojom::PublisherInfo* info,
@@ -218,10 +214,6 @@ class BraveRewardsNativeWorker
       const double amount,
       const brave_rewards::mojom::RewardsType type,
       const brave_rewards::mojom::ContributionProcessor processor) override;
-
-  void OnPendingContributionSaved(
-      brave_rewards::RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result) override;
 
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,

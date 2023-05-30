@@ -209,29 +209,20 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_8_PendingContribution) {
 
   EXPECT_EQ(CountTableRows("pending_contribution"), 1);
 
-  auto pending_contribution = mojom::PendingContribution::New();
-  pending_contribution->publisher_key = "reddit.com";
-  pending_contribution->amount = 1.0;
-  pending_contribution->added_date = 1570614383;
-  pending_contribution->viewing_id = "";
-  pending_contribution->type = mojom::RewardsType::ONE_TIME_TIP;
-
   sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
       SELECT publisher_id, amount, added_date, viewing_id, type
       FROM pending_contribution
       WHERE publisher_id = ?
   )sql"));
 
-  info_sql.BindString(0, pending_contribution->publisher_key);
+  info_sql.BindString(0, "reddit.com");
 
   ASSERT_TRUE(info_sql.Step());
-  EXPECT_EQ(info_sql.ColumnString(0), pending_contribution->publisher_key);
-  EXPECT_EQ(info_sql.ColumnDouble(1), pending_contribution->amount);
-  EXPECT_EQ(static_cast<uint64_t>(info_sql.ColumnInt64(2)),
-            pending_contribution->added_date);
-  EXPECT_EQ(info_sql.ColumnString(3), pending_contribution->viewing_id);
+  EXPECT_EQ(info_sql.ColumnDouble(1), 1.0);
+  EXPECT_EQ(info_sql.ColumnInt64(2), 1570614383);
+  EXPECT_EQ(info_sql.ColumnString(3), "");
   EXPECT_EQ(info_sql.ColumnInt(4),
-            static_cast<int>(pending_contribution->type));
+            static_cast<int>(mojom::RewardsType::ONE_TIME_TIP));
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_11_ContributionInfo) {
@@ -290,24 +281,19 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_12_ContributionInfo) {
       FROM pending_contribution
   )sql"));
 
-  std::vector<mojom::PendingContributionInfoPtr> list;
-  while (info_sql.Step()) {
-    auto info = mojom::PendingContributionInfo::New();
-    info->id = info_sql.ColumnInt64(0);
-    info->publisher_key = info_sql.ColumnString(1);
-    list.push_back(std::move(info));
-  }
-
-  EXPECT_EQ(static_cast<int>(list.size()), 4);
-
-  EXPECT_EQ(list.at(0)->id, 1ull);
-  EXPECT_EQ(list.at(0)->publisher_key, "reddit.com");
-  EXPECT_EQ(list.at(1)->id, 4ull);
-  EXPECT_EQ(list.at(1)->publisher_key, "reddit.com");
-  EXPECT_EQ(list.at(2)->id, 2ull);
-  EXPECT_EQ(list.at(2)->publisher_key, "slo-tech.com");
-  EXPECT_EQ(list.at(3)->id, 3ull);
-  EXPECT_EQ(list.at(3)->publisher_key, "slo-tech.com");
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(info_sql.ColumnInt64(0), 1);
+  EXPECT_EQ(info_sql.ColumnString(1), "reddit.com");
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(info_sql.ColumnInt64(0), 4);
+  EXPECT_EQ(info_sql.ColumnString(1), "reddit.com");
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(info_sql.ColumnInt64(0), 2);
+  EXPECT_EQ(info_sql.ColumnString(1), "slo-tech.com");
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(info_sql.ColumnInt64(0), 3);
+  EXPECT_EQ(info_sql.ColumnString(1), "slo-tech.com");
+  EXPECT_FALSE(info_sql.Step());
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_13_Promotion) {
@@ -825,6 +811,14 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_39) {
   InitializeDatabaseAtVersion(38);
   InitializeLedger();
   EXPECT_TRUE(GetDB()->DoesColumnExist("server_publisher_banner", "web3_url"));
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_40) {
+  DatabaseMigration::SetTargetVersionForTesting(40);
+  InitializeDatabaseAtVersion(39);
+  InitializeLedger();
+  EXPECT_FALSE(GetDB()->DoesTableExist("pending_contribution"));
+  EXPECT_FALSE(GetDB()->DoesTableExist("processed_publisher"));
 }
 
 }  // namespace brave_rewards::internal

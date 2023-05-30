@@ -133,7 +133,6 @@ export function Settings () {
     const date = new Date()
     actions.getBalanceReport(date.getMonth() + 1, date.getFullYear())
     actions.getTipTable()
-    actions.getPendingContributions()
     actions.getStatement()
     actions.getAdsData()
     actions.getExcludedSites()

@@ -29,14 +29,12 @@ import { convertBalance } from './utils'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
 import { ConnectWalletModal } from './connect_wallet_modal'
-import { PendingContributionsModal } from './pending_contributions_modal'
 
 import * as mojom from '../../shared/lib/mojom'
 import { isPublisherVerified } from '../../shared/lib/publisher_status'
 
 interface State {
   modalActivity: boolean
-  modalPendingContribution: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -47,8 +45,7 @@ class PageWallet extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      modalActivity: false,
-      modalPendingContribution: false
+      modalActivity: false
     }
   }
 
@@ -104,12 +101,6 @@ class PageWallet extends React.Component<Props, State> {
     )
   }
 
-  onModalPendingToggle = () => {
-    this.setState({
-      modalPendingContribution: !this.state.modalPendingContribution
-    })
-  }
-
   isBackupUrl = () => {
     if (this.urlHashIs('#manage-wallet')) {
       this.onModalResetOpen()
@@ -145,14 +136,6 @@ class PageWallet extends React.Component<Props, State> {
       }
       this.actions.getMonthlyReport(parseInt(items[1], 10), parseInt(items[0], 10))
     }
-  }
-
-  removePendingContribution = (id: number) => {
-    this.actions.removePendingContribution(id)
-  }
-
-  removeAllPendingContribution = () => {
-    this.actions.removeAllPendingContribution()
   }
 
   handleExternalWalletLink = () => {
@@ -521,8 +504,6 @@ class PageWallet extends React.Component<Props, State> {
       ui,
       externalWallet,
       parameters,
-      pendingContributionTotal,
-      pendingContributions,
       userType
     } = this.props.rewardsData
     const { modalReset, modalConnect } = ui
@@ -543,8 +524,7 @@ class PageWallet extends React.Component<Props, State> {
       adEarnings: balanceReport && balanceReport.ads || 0,
       autoContributions: balanceReport && balanceReport.contribute || 0,
       oneTimeTips: balanceReport && balanceReport.tips || 0,
-      monthlyTips: balanceReport && balanceReport.monthly || 0,
-      pendingTips: pendingContributionTotal || 0
+      monthlyTips: balanceReport && balanceReport.monthly || 0
     }
 
     return (
@@ -565,7 +545,6 @@ class PageWallet extends React.Component<Props, State> {
               summaryData={summaryData}
               autoContributeEnabled={enabledContribute}
               onExternalWalletAction={this.onExternalWalletAction}
-              onViewPendingTips={this.onModalPendingToggle}
               onViewStatement={this.props.layout === 'wide' ? this.onModalActivityToggle : undefined}
             />
         }
@@ -576,17 +555,6 @@ class PageWallet extends React.Component<Props, State> {
               onReset={this.onModalResetOnReset}
             />
             : null
-        }
-        {
-          this.state.modalPendingContribution && (
-            <PendingContributionsModal
-              contributions={pendingContributions}
-              exchangeRate={parameters.rate}
-              exchangeCurrency='USD'
-              onDelete={this.removePendingContribution}
-              onDeleteAll={this.removeAllPendingContribution}
-              onClose={this.onModalPendingToggle} />
-          )
         }
         {
           modalConnect

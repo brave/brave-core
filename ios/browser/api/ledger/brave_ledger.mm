@@ -762,20 +762,6 @@ static const auto kOneDay =
   }];
 }
 
-#pragma mark - Pending Contributions
-
-- (void)removeAllPendingContributions:
-    (void (^)(BraveRewardsResult result))completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->RemoveAllPendingContributions(
-        base::BindOnce(^(const brave_rewards::mojom::Result result) {
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(static_cast<BraveRewardsResult>(result));
-          });
-        }));
-  }];
-}
-
 #pragma mark - Reconcile
 
 - (void)onReconcileComplete:(brave_rewards::mojom::Result)result
@@ -1324,12 +1310,6 @@ static const auto kOneDay =
   }
 }
 
-- (void)onContributeUnverifiedPublishers:(brave_rewards::mojom::Result)result
-                            publisherKey:(const std::string&)publisher_key
-                           publisherName:(const std::string&)publisher_name {
-  // Not used on iOS
-}
-
 - (void)onPublisherRegistryUpdated {
   // Not used on iOS
 }
@@ -1380,10 +1360,6 @@ static const auto kOneDay =
               std::move(completion).Run(std::move(response));
           },
           std::move(callback)));
-}
-
-- (void)pendingContributionSaved:(const brave_rewards::mojom::Result)result {
-  // Not used on iOS
 }
 
 - (void)walletDisconnected:(const std::string&)wallet_type {

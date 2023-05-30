@@ -942,30 +942,6 @@ void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
   Respond(WithArguments(static_cast<int>(result), std::move(data)));
 }
 
-BraveRewardsGetPendingContributionsTotalFunction::
-    ~BraveRewardsGetPendingContributionsTotalFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetPendingContributionsTotalFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(WithArguments(0.0));
-  }
-
-  rewards_service->GetPendingContributionsTotal(base::BindOnce(
-      &BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal,
-      this));
-  return RespondLater();
-}
-
-void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
-    double amount) {
-  Respond(WithArguments(amount));
-}
-
 BraveRewardsSaveAdsSettingFunction::~BraveRewardsSaveAdsSettingFunction() =
     default;
 

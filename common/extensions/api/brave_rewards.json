@@ -178,17 +178,6 @@
         ]
       },
       {
-        "name": "onPendingContributionSaved",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "result",
-            "type": "integer"
-          }
-        ]
-      },
-      {
         "name": "onPublisherListNormalized",
         "type": "function",
         "description": "Fired when publisher list was updated and normalized",
@@ -256,17 +245,6 @@
           {
             "name": "success",
             "type": "boolean"
-          }
-        ]
-      },
-      {
-        "name": "onPendingContributionRemoved",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "result",
-            "type": "integer"
           }
         ]
       },
@@ -1061,23 +1039,6 @@
                     "type": "integer"
                   }
                 }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getPendingContributionsTotal",
-        "type": "function",
-        "description": "Gets pending contributions total",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "amount",
-                "type": "number"
               }
             ]
           }

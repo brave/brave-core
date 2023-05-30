@@ -398,13 +398,6 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void GetPendingContributionsTotal() {
-        synchronized(lock) {
-            BraveRewardsNativeWorkerJni.get().getPendingContributionsTotal(
-                    mNativeBraveRewardsNativeWorker);
-        }
-    }
-
     public void GetRecurringDonations() {
         synchronized(lock) {
             BraveRewardsNativeWorkerJni.get().getRecurringDonations(
@@ -643,13 +636,6 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetPendingContributionsTotal(double amount) {
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetPendingContributionsTotal(amount);
-        }
-    }
-
-    @CalledByNative
     public void OnGetAutoContributeProperties() {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnGetAutoContributeProperties();
@@ -752,13 +738,6 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnPendingContributionSaved(int result) {
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.OnPendingContributionSaved(result);
-        }
-    }
-
-    @CalledByNative
     public void onUnblindedTokensReady() {
         for (BraveRewardsObserver observer : mObservers) {
             observer.onUnblindedTokensReady();
@@ -822,7 +801,6 @@ public class BraveRewardsNativeWorker {
         void deleteNotification(long nativeBraveRewardsNativeWorker, String notification_id);
         void getGrant(long nativeBraveRewardsNativeWorker, String promotionId);
         String[] getCurrentGrant(long nativeBraveRewardsNativeWorker, int position);
-        void getPendingContributionsTotal(long nativeBraveRewardsNativeWorker);
         void getRecurringDonations(long nativeBraveRewardsNativeWorker);
         boolean isCurrentPublisherInRecurrentDonations(
                 long nativeBraveRewardsNativeWorker, String publisher);
