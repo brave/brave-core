@@ -75,7 +75,7 @@ void InitializeResourceBundle() {
   rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::kScaleFactorNone);
   rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::k100Percent),
                          ui::k100Percent);
-  if (ui::ResourceBundle::IsScaleFactorSupported(ui::k200Percent)) {
+  if (ui::IsScaleFactorSupported(ui::k200Percent)) {
     rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::k200Percent),
                            ui::k200Percent);
   }
