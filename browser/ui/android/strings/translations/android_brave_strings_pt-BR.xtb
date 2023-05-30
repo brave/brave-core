@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">Ative o suporte ignorando o redirecionamento de URLs de rastreamento de nível superior.</translation>
 <translation id="94154759592465111">Bloquear scripts</translation>
 <translation id="7714773920987474116">Bloqueia JavaScript (alguns sites podem não funcionar corretamente)</translation>
+<translation id="1660979054779793659">Youtube</translation>
+<translation id="2233004324252915283">Bloquear conteúdo recomendado do YouTube</translation>
+<translation id="1005372663692637999">Bloqueia os elementos do cartão seguinte e final em youtube.com.</translation>
+<translation id="5152595963250646670">Bloqueie elementos de distração do YouTube</translation>
+<translation id="2998960761270772157">Bloqueia os elementos de login, menu, comentários e informações de vídeo em youtube.com.</translation>
 <translation id="6052725679982758334">Bloqueio de redes sociais</translation>
 <translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">Os sites podem pedir para usar o Google Sign-In herdado por meio de cookies de terceiros</translation>
 <translation id="2903783737778379345">Não permitir login herdado do Google por meio de cookies de terceiros</translation>
 <translation id="6880817299303842099">Permitido o uso de cookies de terceiros para o Google Sign-In herdado</translation>
+<translation id="5169650598465327872">Acesso localhost</translation>
+<translation id="4172219483893066798">Os sites podem solicitar acesso a recursos de localhost</translation>
+<translation id="7181706637590665047">Não permitir o acesso aos recursos de localhost</translation>
+<translation id="1485435696620658073">Permitido o acesso aos recursos de localhost</translation>
 <translation id="181905442828471321">Padrões globais do Brave Shields</translation>
 <translation id="2675679258824361492">Outras configurações de privacidade</translation>
 <translation id="8026334261755873520">Limpar dados de navegação</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">Esta conta da Sincronização do Brave foi excluída de outro dispositivo. Se você não tinha a intenção de desativar a Sincronização, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>recrie a conta</translation>
 <translation id="4094590686212463338">Não foi possível ingressar nesta cadeia de sincronização. A cadeia de sincronização foi excluída.</translation>
-<translation id="5633907266617216186">Endereços, informações de pagamento etc.</translation>
+<translation id="4908081302669157000">Número de telefone, e-mails e endereços</translation>
 <translation id="1056898198331236512">Aviso</translation>
 <translation id="1426410128494586442">Sim</translation>
 <translation id="7811264919113243207">Essa ação compartilhará seus dados do Brave, incluindo possivelmente suas senhas, com o dispositivo que gerou esse código QR.
@@ -750,6 +759,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1118876217803190221">Saldo insuficiente</translation>
 <translation id="275990379543116961">Fundos insuficientes para gás</translation>
 <translation id="3292453499915466604">Liquidez insuficiente</translation>
+<translation id="3025158262797849291">Formato de número não reconhecido</translation>
 <translation id="3380365263193509176">Erro desconhecido</translation>
 <translation id="5932938770824268122">Chave Privada</translation>
 <translation id="2472882733835903303">Mostrar chave privada</translation>
@@ -769,6 +779,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="6015436276085482001">Rejeitado</translation>
 <translation id="6666273175654835609">Enviado</translation>
 <translation id="2331676293859649642">Confirmado</translation>
+<translation id="8214232307424031138">Assinado</translation>
 <translation id="1165039591588034296">Erro</translation>
 <translation id="8364362220156372884">Taxa: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> (US$<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Você está usando o navegador da web mais rápido?</translation>
@@ -799,7 +810,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="5061574358754621254">Dados de preço disponibilizados pela CoinGecko</translation>
 <translation id="4626407663177532837">A cotação inclui uma taxa de 0,875% do Brave.</translation>
 <translation id="8574289650879708853">Adicionar ativo personalizado</translation>
-<translation id="1974060860693918893">Avançados</translation>
+<translation id="1255896809210433555">Adicionar NFT</translation>
 <translation id="7791543448312431591">Adicionar</translation>
 <translation id="6600400596821238377">Nome do token</translation>
 <translation id="4432966365400169165">Endereço de contrato de token</translation>
@@ -1023,10 +1034,10 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="6605147707233193230">Ative para apoiar criadores de conteúdo</translation>
 <translation id="1609556006143307897">Você está apoiando criadores de conteúdo</translation>
 <translation id="6067959437127691361">Ao usar as Recompensas Brave, você apoia os criadores de conteúdo e ganha BATs.</translation>
-<translation id="121894865378699201">Quer começar a ganhar BATs?</translation>
-<translation id="2648805457288107211">Conecte sua conta custodial ao seu perfil das Recompensas. Se não tiver uma conta, você terá a chance de criar uma.</translation>
+<translation id="3264975266761862670">Pronto para começar a ganhar?</translation>
+<translation id="265337947574975838">Conecte-se ou crie uma conta com um de nossos parceiros.</translation>
 <translation id="1772961321862399863">Para ganhar BATs, os usuários precisam conectar uma conta custodial às Recompensas Brave. Infelizmente, como não há custodiantes disponíveis na sua região, não é possível ganhar BATs. Por enquanto, ao ativar as Recompensas Brave, suas recompensas serão doadas automaticamente a criadores.</translation>
-<translation id="5430495762768325224">Saiba mais sobre o BAT</translation>
+<translation id="654447476965480878">Saiba mais sobre ganhar BAT</translation>
 <translation id="6278643716658443228">Configurações das Recompensas</translation>
 <translation id="6516984207843289176">Conectar conta</translation>
 <translation id="4272136334824111854">Este mês, você visitou <ph name="CREATOR_COUNT"/> criadores apoiados por Recompensas Brave</translation>
@@ -1057,6 +1068,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="171158953146804144">A <ph name="DUE_DATE"/>, iremos descontinuar o suporte do saldo virtual de BAT. Infelizmente, não existem opções de salvaguarda na sua região (<ph name="REGION"/>) para as quais possamos transferir o seu saldo. Até lá, ainda pode contribuir para os seus criadores favoritos.</translation>
 <translation id="8949422576126100041">Ver página com Speedreader?</translation>
 <translation id="591648995518106347">Carrega automaticamente artigos qualificados no modo leitor</translation>
+<translation id="1295796122927221823">Visualizar no modo de leitor</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> em <ph name="NETWORK"/></translation>
 <translation id="295620834661738195">Playlist do Brave</translation>
 <translation id="4850886885716139402">Visualizar</translation>
@@ -1129,4 +1141,10 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="3631131732607750008">O conteúdo expirou. Tente novamente em alguns segundos.</translation>
 <translation id="9085765419770918643">Ainda não há NFTs aqui.</translation>
 <translation id="8445532667841598737">Pronto para adicionar alguns? Basta clicar no botão abaixo para importar.</translation>
+<translation id="5925465310724910998">Quer que seus NFTs sejam exibidos automaticamente?</translation>
+<translation id="2827460859891872324">A Carteira Brave Wallet pode usar um serviço terceirizado para exibir automaticamente seus NFTs. O Brave compartilhará os endereços da sua carteira com <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> para fornecer este serviço. <ph name="BEGIN_LINK_2"/>Saiba mais.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">Habilitar NFT discovery</translation>
+<translation id="622372328961630111">Adicione NFTs automaticamente à Carteira usando APIs de terceiros. <ph name="BEGIN_LINK_1"/>Saiba mais.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">Conta da tabela de pesquisa de endereços:</translation>
+<translation id="7659483790930268440">Índice da tabela de pesquisa de endereço:</translation>
 </translationbundle>

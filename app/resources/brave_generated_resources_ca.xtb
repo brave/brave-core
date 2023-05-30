@@ -31,7 +31,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Reproducció automàtica bloquejada en aquesta pàgina</translation>
 <translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
-<translation id="8988939298652262600">Brave no revisa la seguretat de les extensions. Instal·leu aquesta extensió només si confieu en el desenvolupador.</translation>
+<translation id="3477357195688115718">Brave no revisa la seguretat de les extensions. Instal·leu aquesta extensió només si confieu en el desenvolupador.</translation>
 <translation id="9005883459983913482">Tor windows</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
 <translation id="6924909138923993900">Nova connexió Tor per a aquest lloc</translation>
@@ -125,10 +125,15 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8184318863960255706">Més informació</translation>
 <translation id="780301667611848630">No, gràcies</translation>
 <translation id="1162706247109707219">En fer clic a D'acord, reconeixeu que la vostra instal·lació de Brave NO rebrà correccions de seguretat crítiques fins que actualitzeu a Windows 10 o posterior. Aquest avís NO es tornarà a mostrar.</translation>
+<translation id="2770465223704140727">Suprimeix de la llista</translation>
 <translation id="2515126961943087659">Servei d'anuncis de BAT</translation>
 <translation id="7924918279836988121">Servei de comptabilitat Bat</translation>
 <translation id="6040143037577758943">Tanca</translation>
 <translation id="6665472986740899785">Anunci de notificació de Brave</translation>
+<translation id="5582087890067572966">🎉 Ja esteu guanyant!</translation>
+<translation id="4364336119478610380">Guanyeu sempre que aparegui una notificació com aquesta a la pantalla. No cal que feu clic per guanyar.</translation>
+<translation id="5893017172751072752">Guanyeu quan apareix una notificació de Brave Ads</translation>
+<translation id="3447730462826640312">No cal que feu clic per guanyar, però feu clic si esteu interessat!</translation>
 <translation id="4174337572777167894">Projecte Web Discovery</translation>
 <translation id="8659271182272561965">Aporteu dades de cerca i navegació anònimes per perfeccionar el cercador de Brave.</translation>
 <translation id="1516554614404600536">Descripció emergent de Brave</translation>
@@ -257,6 +262,9 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8721331068159819483">Mateix que MacOS</translation>
 <translation id="1692470335103807198">Obtén més temes</translation>
 <translation id="2906510232093002459">Imatges predeterminades de Brave</translation>
+<translation id="8076492880354921740">Pestanyes</translation>
+<translation id="5860254591544742609">Mostra la barra de títol</translation>
+<translation id="5371926069408837914">Desplegueu el panell de pestanyes verticals passant el ratolí per damunt quan estigui tancat</translation>
 <translation id="3367129510799209147">Mode de desplaçament de la pestanya</translation>
 <translation id="2113977810652731515">Targeta</translation>
 <translation id="4096343215397759358">Targeta amb vista prèvia</translation>
@@ -380,6 +388,10 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2808630562319398131">Restableix les dades de Brave Rewards...</translation>
 <translation id="6438096877646138757">Llocs que esborren les galetes quan les tanques</translation>
 <translation id="2988792685798128092">Esborra en tancar el lloc</translation>
+<translation id="4663317021223369617">Dades de llocs web i galetes</translation>
+<translation id="7050661313034564003">Mostrar totes les galetes i dades emmagatzemades localment per a aquest lloc</translation>
+<translation id="8339059274628563283">Dades emmagatzemades localment per <ph name="SITE"/></translation>
+<translation id="1963227389609234879">Suprimeix-ho tot</translation>
 <translation id="814018970995616154">Comprova els enllaços amb una llista de llocs no segurs emmagatzemats a Brave.</translation>
 <translation id="1144810021918451336">No us protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
 <translation id="5570470519803062774">Configuració del Lloc i dels Escuts</translation>
@@ -397,6 +409,11 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2903783737778379345">No permetis l'inici de sessió de Google anterior mitjançant galetes de tercers</translation>
 <translation id="2570833232754279153">No està permès utilitzar galetes de tercers per a l'inici de sessió de Google anterior</translation>
 <translation id="6880817299303842099">Es permet l'ús de galetes de tercers per a l'inici de sessió de Google anterior</translation>
+<translation id="5169650598465327872">Accés al localhost</translation>
+<translation id="4172219483893066798">Els llocs poden sol·licitar accés als recursos del localhost</translation>
+<translation id="7181706637590665047">No permetre l'accés als recursos del localhost</translation>
+<translation id="1336116824874668514">No es permet accedir als recursos del localhost</translation>
+<translation id="1485435696620658073">Es permet accedir als recursos del localhost</translation>
 <translation id="6414370348346025511">La protecció estàndard està activada.</translation>
 <translation id="5565355416171743213">Comenceu a utilitzar sincronització</translation>
 <translation id="4332558599726753990">Posada en marxa de la sincronització</translation>
@@ -463,7 +480,7 @@ Segur que vols continuar?</translation>
     començar a utilitzar Sync de nou, haureu de crear un compte nou i tornar a afegir cada dispositiu un per un.</translation>
 <translation id="4860996720371753023">La supressió del compte està en curs...</translation>
 <translation id="4094590686212463338">No s'ha pogut unir a aquesta cadena de sincronització. S'ha suprimit la cadena de sincronització.</translation>
-<translation id="5633907266617216186">Adreces, informació de pagament, etc.</translation>
+<translation id="4908081302669157000">Números de telèfon, correus electrònics i adreces</translation>
 <translation id="294985549514492876">Aplicacions web (PWA)</translation>
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
@@ -576,7 +593,7 @@ Segur que vols continuar?</translation>
 <translation id="1062463687579789365">Personalització de les xarxes del moneder</translation>
 <translation id="2234108191702901162">No s'ha pogut afegir la xarxa</translation>
 <translation id="8996633027318264334">Realment vols eliminar <ph name="KEY_NAME"/>?</translation>
-<translation id="3316326558572563182">La xarxa activa sempre és visible a la llista de xarxes del moneder</translation>
+<translation id="8633484167132172058">La xarxa predeterminada sempre és visible a la llista de xarxes del moneder</translation>
 <translation id="232693303726691609">Mostra/Amaga la xarxa a la llista de xarxes del moneder</translation>
 <translation id="7893578599666249602">Segur que vols restablir <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Vols actualtzar la xarxa existent?</translation>

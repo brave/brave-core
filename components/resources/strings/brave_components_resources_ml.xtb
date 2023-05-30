@@ -45,7 +45,6 @@
 <translation id="7180611975245234373">പുതുക്കുക</translation>
 <translation id="4309915981827077375">പൊതുവായ വിവരം</translation>
 <translation id="8874184842967597500">കണക്റ്റുചെയ്‌തിട്ടില്ല</translation>
-<translation id="2359808026110333948">തുടരൂ</translation>
 <translation id="3587482841069643663">എല്ലാം</translation>
 <translation id="2631006050119455616">സംരക്ഷിച്ചു</translation>
 <translation id="3866249974567520381">വിവരണം</translation>
@@ -70,15 +69,17 @@
 <translation id="572392919096807438">എന്റെ തീരുമാനം ഓർക്കുക</translation>
 <translation id="5308380583665731573">കണക്‌റ്റുചെയ്യുക</translation>
 <translation id="3368922792935385530">ബന്ധിപ്പിച്ചു</translation>
+<translation id="2359808026110333948">തുടരുക</translation>
 <translation id="6965382102122355670">ശരി</translation>
 <translation id="5234764350956374838">ബഹിഷ്‌ക്കരിക്കുക</translation>
 <translation id="8281886186245836920">ഉപേക്ഷിക്കുക</translation>
+<translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
+<translation id="1177863135347784049">ഇഷ്ടാനുസൃതം</translation>
 <translation id="8168435359814927499">ഉള്ളടക്കം</translation>
 <translation id="1383876407941801731">തിരയുക</translation>
 <translation id="2805756323405976993">ആപ്സ്</translation>
 <translation id="1987317783729300807">അക്കൗണ്ടുകൾ‌</translation>
 <translation id="629730747756840877">അക്കൗണ്ട്</translation>
-<translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
 <translation id="1201402288615127009">അടുത്തത്</translation>
 <translation id="8712637175834984815">വിജയകരം</translation>
 <translation id="6896758677409633944">പകര്‍ത്തുക</translation>
@@ -108,6 +109,7 @@
 <translation id="2941112035454246133">താഴ്ന്ന</translation>
 <translation id="9100765901046053179">വിപുലമായ ക്രമീകരണം</translation>
 <translation id="3380365263193509176">അജ്ഞാതമായ പിശക്</translation>
+<translation id="9218430445555521422">സ്ഥിരസ്ഥിതിയാക്കുക</translation>
 <translation id="4430019312045809116">അളവ്</translation>
 <translation id="6129953537138746214">സ്പെയ്സ്</translation>
 <translation id="4412698727486357573">സഹായ കേന്ദ്രം</translation>

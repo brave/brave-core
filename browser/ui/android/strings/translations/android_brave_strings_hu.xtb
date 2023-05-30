@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">Engedélyezi a felső szintű átirányításkövető URL-ek megkerülésének támogatását.</translation>
 <translation id="94154759592465111">Scriptek blokkolása</translation>
 <translation id="7714773920987474116">Blokkolja a JavaScriptet (megzavarhatja az oldalak működését)</translation>
+<translation id="1660979054779793659">YouTube</translation>
+<translation id="2233004324252915283">A YouTube ajánlott tartalmainak letiltása</translation>
+<translation id="1005372663692637999">Letiltja a Következő és a Záróképernyő elemeket a youtube.com webhelyen.</translation>
+<translation id="5152595963250646670">A YouTube zavaró elemeinek letiltása</translation>
+<translation id="2998960761270772157">Letiltja a Bejelentkezés, a Menü, a Hozzászólások és a Videóinformációk elemeket a youtube.com webhelyen.</translation>
 <translation id="6052725679982758334">Közösségi hálózatok tiltása</translation>
 <translation id="7498695072878479744">Google-bejelentkezési gombok engedélyezése külső webhelyeken</translation>
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">Az oldalak engedélyt kérhetnek a régi Google-bejelentkezés használatára harmadik felektől származó cookie-kon keresztül</translation>
 <translation id="2903783737778379345">Ne engedélyezze a régi Google-bejelentkezés használatát harmadik felektől származó cookie-kon keresztül</translation>
 <translation id="6880817299303842099">Engedélyezett a harmadik felektől származó cookie-k használata a régi Google-bejelentkezéshez</translation>
+<translation id="5169650598465327872">Localhost-hozzáférés</translation>
+<translation id="4172219483893066798">A webhelyek kérhetnek hozzáférést a localhost-erőforrásokhoz</translation>
+<translation id="7181706637590665047">A localhost-erőforrásokhoz való hozzáférés letiltása</translation>
+<translation id="1485435696620658073">Hozzáférhet a localhost-erőforrásokhoz</translation>
 <translation id="181905442828471321">Brave pajzsok globális alapbeállításai</translation>
 <translation id="2675679258824361492">Egyéb adatvédelmi beállítások</translation>
 <translation id="8026334261755873520">Böngészési adatok törlése</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">Ez a Brave szinkronizációs fiók törölve lett egy másik eszközről. Ha nem akarta letiltani a Szinkronizálást, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>hozza létre újra a fiókot.</translation>
 <translation id="4094590686212463338">Nem sikerült csatlakozni ehhez a szinkronizálási lánchoz, mert a lánc törölve lett.</translation>
-<translation id="5633907266617216186">Címek, fizetési adatok stb.</translation>
+<translation id="4908081302669157000">Telefonszámok, címek és e-mail-címek</translation>
 <translation id="1056898198331236512">Figyelmeztetés</translation>
 <translation id="1426410128494586442">Igen</translation>
 <translation id="7811264919113243207">Ezzel megosztja Brave adatait – beleértve akár a jelszavait – az ezt a QR-kódot generáló eszközzel.
@@ -750,6 +759,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="1118876217803190221">Nincs fedezet</translation>
 <translation id="275990379543116961">Nincs elegendő fedezet a gázra</translation>
 <translation id="3292453499915466604">Elégtelen likviditás</translation>
+<translation id="3025158262797849291">Ismeretlen számformátum</translation>
 <translation id="3380365263193509176">Ismeretlen hiba</translation>
 <translation id="5932938770824268122">Privát kulcs</translation>
 <translation id="2472882733835903303">Privát kulcs mutatása</translation>
@@ -769,6 +779,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="6015436276085482001">Elutasítva</translation>
 <translation id="6666273175654835609">Elküldve</translation>
 <translation id="2331676293859649642">Megerősítve</translation>
+<translation id="8214232307424031138">Aláírva</translation>
 <translation id="1165039591588034296">Hiba</translation>
 <translation id="8364362220156372884">Díj: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> (<ph name="FIAT_VALUE"/>$)</translation>
 <translation id="2561824823738097741">A leggyorsabb böngészőt használja?</translation>
@@ -799,7 +810,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="5061574358754621254">Az áradatokat a CoinGecko biztosítja</translation>
 <translation id="4626407663177532837">Az árajánlat tartalmazza a Brave 0,875% -os díját.</translation>
 <translation id="8574289650879708853">Egyéni eszköz hozzáadása</translation>
-<translation id="1974060860693918893">Speciális</translation>
+<translation id="1255896809210433555">NFT hozzáadása</translation>
 <translation id="7791543448312431591">Hozzáadás</translation>
 <translation id="6600400596821238377">Token neve</translation>
 <translation id="4432966365400169165">Token szerződéses cím</translation>
@@ -1023,10 +1034,10 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="6605147707233193230">A bekapcsolással segíthet támogatni a tartalomkészítőket</translation>
 <translation id="1609556006143307897">Ön segít támogatni a tartalomkészítőket</translation>
 <translation id="6067959437127691361">A Brave-jutalmak használata segít Önnek támogatni a tartalomkészítőket, és lehetővé teszi, hogy BAT-t kereshessen.</translation>
-<translation id="121894865378699201">Készen áll BAT-t keresni?</translation>
-<translation id="2648805457288107211">Egyszerűen csatlakoztassa letétkezelő fiókját a Jutalmak-profiljához. Ha nem rendelkezik ilyen fiókkal, lehetősége lesz létrehozni egyet.</translation>
+<translation id="3264975266761862670">Készen áll pénzt keresni?</translation>
+<translation id="265337947574975838">Csatlakoztasson vagy hozzon létre egy partnerünk által kezelt fiókot.</translation>
 <translation id="1772961321862399863">A felhasználóknak letétkezelő fiókot kell csatlakoztatniuk a Brave-jutalmakhoz, hogy BAT-t kereshessenek. Az Ön régiójában sajnos nincs elérhető letétkezelő, ezért a tokenszerzés nem érhető el. Egyelőre a Brave-jutalmak bekapcsolásával automatikusan támogathatja az alkotókat.</translation>
-<translation id="5430495762768325224">További tudnivalók a BAT-ről</translation>
+<translation id="654447476965480878">További tudnivalók a BAT-szerzésről</translation>
 <translation id="6278643716658443228">Rewards beállítások</translation>
 <translation id="6516984207843289176">Fiók csatlakoztatása</translation>
 <translation id="4272136334824111854">Ebben a hónapban <ph name="CREATOR_COUNT"/> olyan alkotót látogatott meg, akit támogat a Brave Rewards</translation>
@@ -1057,6 +1068,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="171158953146804144"><ph name="DUE_DATE"/> dátummal megszüntetjük a meglévő virtuális BAT-egyenlegek támogatását. Sajnos, az Ön régiójában (<ph name="REGION"/>) nincs elérhető letétkezelő, akihez átutalhatná az egyenlegét. Addig is azonban még támogathatja a kedvenc alkotóit.</translation>
 <translation id="8949422576126100041">Szeretné a Gyorsolvasóval megtekinteni az oldalt?</translation>
 <translation id="591648995518106347">Az arra alkalmas cikkeket automatikusan olvasási módban tölti be</translation>
+<translation id="1295796122927221823">Megtekintés olvasási módban</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> itt: <ph name="NETWORK"/></translation>
 <translation id="295620834661738195">Brave lejátszási lista</translation>
 <translation id="4850886885716139402">Nézet</translation>
@@ -1129,4 +1141,10 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="3631131732607750008">A tartalom lejárt. Néhány másodperc múlva próbálja újra.</translation>
 <translation id="9085765419770918643">Itt még nincsenek NFT-k.</translation>
 <translation id="8445532667841598737">Készen áll arra, hogy hozzáadjon néhányat? Egyszerűen kattintson a lenti gombra az importáláshoz.</translation>
+<translation id="5925465310724910998">Szeretné automatikusan megjeleníteni NFT-it?</translation>
+<translation id="2827460859891872324">A Brave-pénztárca egy harmadik féltől származó szolgáltatás segítségével automatikusan megjelenítheti az Ön NFT-it. A Brave e szolgáltatás biztosításához megosztja az Ön pénztárcacímeit a <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> szolgáltatóval. <ph name="BEGIN_LINK_2"/>További tudnivalókat itt olvashat.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">NFT-felderítés engedélyezése</translation>
+<translation id="622372328961630111">Az Ön által birtokolt NFT-k automatikus hozzáadása a Pénztárcához, harmadik féltől származó API-k segítségével. <ph name="BEGIN_LINK_1"/>További tudnivalók.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">Címkeresési tábla – fiók:</translation>
+<translation id="7659483790930268440">Címkeresési tábla – index:</translation>
 </translationbundle>

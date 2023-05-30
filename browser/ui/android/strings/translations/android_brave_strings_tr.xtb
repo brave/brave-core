@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">En üst seviye yönlendirme izleme URL'lerini atlamak için desteği etkinleştir</translation>
 <translation id="94154759592465111">Komut Dizilerini Engelle</translation>
 <translation id="7714773920987474116">JavaScript'i engeller (sitelerde bozulma olabilir)</translation>
+<translation id="1660979054779793659">Youtube</translation>
+<translation id="2233004324252915283">YouTube'da tavsiye edilen içerikleri engelle</translation>
+<translation id="1005372663692637999">youtube.com adresinde sonraki ve bitiş kartı öğelerini engeller.</translation>
+<translation id="5152595963250646670">Youtube'da dikkat dağıtıcı öğeleri engelle</translation>
+<translation id="2998960761270772157">youtube.com adresinde oturum açma, menü, yorumlar ve video bilgisi öğelerini engeller.</translation>
 <translation id="6052725679982758334">Sosyal Medya Engelleme</translation>
 <translation id="7498695072878479744">Üçüncü parti sitelerde Google giriş butonlarına izin ver</translation>
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">Siteler üçüncü taraf çerezler aracılığıyla eski Google Oturum Açma'yı kullanmak isteyebilir</translation>
 <translation id="2903783737778379345">Üçüncü taraf çerezler aracılığıyla eski Google Oturum Açma'ya izin verme</translation>
 <translation id="6880817299303842099">Eski Google Oturum Açma için üçüncü taraf çerezlerin kullanımına izin verilir</translation>
+<translation id="5169650598465327872">Localhost Erişimi</translation>
+<translation id="4172219483893066798">Siteler, localhost kaynaklarına erişim talep edebilir</translation>
+<translation id="7181706637590665047">Localhost kaynaklarına erişime izin verme</translation>
+<translation id="1485435696620658073">Localhost kaynaklarına erişim izni var</translation>
 <translation id="181905442828471321">Brave kalkanları genel varsayılanları</translation>
 <translation id="2675679258824361492">Diğer gizlilik ayarları</translation>
 <translation id="8026334261755873520">Tarama verilerini temizle</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">Bu Brave Sync hesabı, başka bir cihazdan silindi. Senkronizasyonu devre dışı bırakmak istemediyseniz <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>hesabı yeniden oluşturun</translation>
 <translation id="4094590686212463338">Bu senkronizasyon zincirine katılınamadı. Senkronizasyon zinciri silindi.</translation>
-<translation id="5633907266617216186">Adresler, ödeme bilgileri, vb.</translation>
+<translation id="4908081302669157000">Telefon numaraları, e-postalar ve adresler</translation>
 <translation id="1056898198331236512">Uyarı</translation>
 <translation id="1426410128494586442">Evet</translation>
 <translation id="7811264919113243207">Bu, potansiyel olarak şifrelerinizi de içeren Brave verilerinizi bu QR kodunu üretmiş olan cihazla paylaşacaktır.
@@ -751,6 +760,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1118876217803190221">Yetersiz bakiye</translation>
 <translation id="275990379543116961">GAS için yetersiz bakiye</translation>
 <translation id="3292453499915466604">Yetersiz likidite</translation>
+<translation id="3025158262797849291">Tanınmayan sayı biçimi</translation>
 <translation id="3380365263193509176">Bilinmeyen hata</translation>
 <translation id="5932938770824268122">Özel Anahtar</translation>
 <translation id="2472882733835903303">Özel Anahtarı Göster</translation>
@@ -770,6 +780,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6015436276085482001">Rededildi</translation>
 <translation id="6666273175654835609">Gönderildi</translation>
 <translation id="2331676293859649642">Onaylandı</translation>
+<translation id="8214232307424031138">İmzalandı</translation>
 <translation id="1165039591588034296">Hata</translation>
 <translation id="8364362220156372884">Ücret: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> (<ph name="FIAT_VALUE"/> $)</translation>
 <translation id="2561824823738097741">En hızlı web tarayıcısını kullanıyor musunuz?</translation>
@@ -800,7 +811,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="5061574358754621254">Fiyat verileri CoinGecko tarafından sağlanmaktadır</translation>
 <translation id="4626407663177532837">Teklif %0,875 Brave ücretini de içerir.</translation>
 <translation id="8574289650879708853">Özel varlık ekle</translation>
-<translation id="1974060860693918893">Gelişmiş</translation>
+<translation id="1255896809210433555">NFT ekle</translation>
 <translation id="7791543448312431591">Ekle</translation>
 <translation id="6600400596821238377">Token adı</translation>
 <translation id="4432966365400169165">Token kontrat adresi</translation>
@@ -1024,10 +1035,10 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6605147707233193230">İçerik oluşturucuları desteklemeye yardımcı olmak için açın</translation>
 <translation id="1609556006143307897">İçerik oluşturucuları desteklemeye yardımcı oluyorsunuz</translation>
 <translation id="6067959437127691361">Brave Ödüllerini kullanmak, içerik oluşturucuların desteklenmesine yardımcı olur ve BAT kazanmanızı sağlar.</translation>
-<translation id="121894865378699201">BAT kazanmaya hazır mısınız?</translation>
-<translation id="2648805457288107211">Korumalı hesabınızı Ödüller profilinize bağlamanız yeterli olacak. Bir hesabınız yoksa oluşturma şansı elde edeceksiniz.</translation>
+<translation id="3264975266761862670">Kazanmaya hazır mısınız?</translation>
+<translation id="265337947574975838">Bağlanın veya ortaklarımızdan biriyle bir hesap oluşturun.</translation>
 <translation id="1772961321862399863">BAT kazanmak için kullanıcıların Brave Ödüllerine bir korumalı hesap bağlamaları gerekir. Ne yazık ki bölgenizde ulaşılabilir bir koruyucu olmadığı için kazanç özelliği kullanılamıyor. Şimdilik Brave Ödüllerini açmak, oluşturucuları otomatik olarak destekler.</translation>
-<translation id="5430495762768325224">BAT hakkında daha fazla bilgi edinin</translation>
+<translation id="654447476965480878">BAT kazanmak hakkında daha fazla bilgi alın</translation>
 <translation id="6278643716658443228">Ödüller ayarları</translation>
 <translation id="6516984207843289176">Hesabı bağla</translation>
 <translation id="4272136334824111854">Bu ay, Brave Ödülleri tarafından desteklenen <ph name="CREATOR_COUNT"/> oluşturucuyu ziyaret ettiniz</translation>
@@ -1058,6 +1069,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="171158953146804144"><ph name="DUE_DATE"/> tarihinde, mevcut BAT bakiyeleri için destek vermeyi durduracağız. Ne yazık ki bölgenizde (<ph name="REGION"/>) kazancınızı çekebileceğiniz kullanılabilir korumalı hesaplar mevcut değil. O zamana kadar, favori oluşturucularınıza destek vermeye devam edebilirsiniz.</translation>
 <translation id="8949422576126100041">Sayfa Speedreader ile görüntülensin mi?</translation>
 <translation id="591648995518106347">Uygun makaleleri otomatik olarak okuyucu moduna yükler</translation>
+<translation id="1295796122927221823">Okuyucu modunda görüntüle</translation>
 <translation id="5062934803872044756"><ph name="NETWORK"/> üzerinde <ph name="SYMBOL"/></translation>
 <translation id="295620834661738195">Brave Oynatma Listesi</translation>
 <translation id="4850886885716139402">Görüntüle</translation>
@@ -1107,7 +1119,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1710072605877822603">Medya ekle</translation>
 <translation id="903678009070770568">Brave Oynatma Listesine videolar ekleyin ve çevrimdışı da dahil olmak üzere daha sonra izleyin</translation>
 <translation id="3063627607780392015">Telefonunuz mu çekmiyor? Ağlayan bebeğinizi sakinleştirmeniz mi gerekiyor?</translation>
-<translation id="2041014734809158138">İster metroda, ister uçakta, ister uzun bir araba yolculuğunda olun, Oynatma Listesi yardımınıza koşar.</translation>
+<translation id="2041014734809158138">İster metroda ister uçakta ister uzun bir araba yolculuğunda olun, Oynatma Listesi yardımınıza koşar.</translation>
 <translation id="7287143275037417932">Veya göründüğünde Oynatma Listesi düğmesine dokunun</translation>
 <translation id="6959838938954098206">Oynatma Listesi düğmesi, eklenecek medya olduğunda görünür. Seçenekleri görmek için uzun basın. İsterseniz gizleyebilirsiniz.</translation>
 <translation id="3620862810055853183">Oynatma Listesi Aç</translation>
@@ -1130,4 +1142,10 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="3631131732607750008">İçeriğin süresi doldu. Birkaç saniye içinde tekrar deneyin.</translation>
 <translation id="9085765419770918643">Burada henüz NFT yok.</translation>
 <translation id="8445532667841598737">Eklemeye hazır mısınız? İçe aktarmak için sadece aşağıdaki düğmeye tıklayın.</translation>
+<translation id="5925465310724910998">NFT'leriniz otomatik olarak görüntülensin mi?</translation>
+<translation id="2827460859891872324">Brave Cüzdan, NFT'lerinizi otomatik olarak göstermek için bir üçüncü taraf hizmeti kullanabilir. Brave, bu hizmeti sunmak için cüzdan adresinizi <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> ile paylaşır. <ph name="BEGIN_LINK_2"/>Daha fazla bilgi alın.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">NFT keşfini etkinleştir</translation>
+<translation id="622372328961630111">Üçüncü taraf API'ları kullanarak Cüzdanınıza otomatik olarak NFT ekleyin. <ph name="BEGIN_LINK_1"/>Daha fazla bilgi alın.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">Adres Araması Tablo Hesabı:</translation>
+<translation id="7659483790930268440">Adres Araması Tablo Dizini:</translation>
 </translationbundle>

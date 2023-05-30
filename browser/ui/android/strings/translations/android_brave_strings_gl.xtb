@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">Activar a compatibilidade coa excepción de redirección de máximo nivel das URL de seguimento</translation>
 <translation id="94154759592465111">Bloquear guións</translation>
 <translation id="7714773920987474116">Bloquea JavaScript (pode que os sitios non funcionen)</translation>
+<translation id="1660979054779793659">Youtube</translation>
+<translation id="2233004324252915283">Bloquear contido recomendado de YouTube</translation>
+<translation id="1005372663692637999">Bloquea os elementos da tarxeta final e A continuación en youtube.com.</translation>
+<translation id="5152595963250646670">Bloquear elementos de distracción de YouTube</translation>
+<translation id="2998960761270772157">Bloquea o inicio de sesión, o menú, os comentarios e os elementos de información do vídeo en youtube.com.</translation>
 <translation id="6052725679982758334">Bloqueo de redes sociais</translation>
 <translation id="7498695072878479744">Permitir os botóns de inicio de sesión en sitios de terceiros</translation>
 <translation id="863171915776379000">Permitir as conexións e publicacións incrustadas de Facebook</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">É posible que os sitios che soliciten utilizar o inicio de sesión herdado de Google mediante cookies de terceiros.</translation>
 <translation id="2903783737778379345">Non permitir o inicio de sesión herdado de Google mediante cookies de terceiros</translation>
 <translation id="6880817299303842099">Permítese utilizar cookies de terceiros para o inicio de sesión de Google herdado</translation>
+<translation id="5169650598465327872">Acceso a localhost</translation>
+<translation id="4172219483893066798">Os sitios poden solicitar acceso a recursos de localhost</translation>
+<translation id="7181706637590665047">Non permitir o acceso a recursos de localhost</translation>
+<translation id="1485435696620658073">Podes acceder aos recursos de localhost</translation>
 <translation id="181905442828471321">Opcións predeterminadas globais dos escudos de Brave</translation>
 <translation id="2675679258824361492">Outras opcións de configuración de privacidade</translation>
 <translation id="8026334261755873520">Borrar datos de navegación</translation>
@@ -220,7 +229,7 @@
 <translation id="5441565662498481293">Enviouse automaticamente un consello a:</translation>
 <translation id="1628742278973105368">O teu primeiro consello mensual será enviado en:</translation>
 <translation id="1642952941091001113">Este creador aínda non se rexistrou para recibir contribucións de usuarios de Brave. Seguiremos intentando contribuír ata que se verifique ou ata que pasen 90 días.</translation>
-<translation id="8228150955416632026">Conectácheste a <ph name="WALLET_PROVIDER"/>, pero este creador está conectado a  <ph name="SUPPORTED_WALLET_PROVIDER"/>, polo  que as túas propinas non poden chegar a este creador. De momento, as que deas permanecerán pendentes e volveranse intentar enviar automaticamente durante 90 días.</translation>
+<translation id="8228150955416632026">Conectácheste a <ph name="WALLET_PROVIDER"/>, pero este creador está conectado a  <ph name="SUPPORTED_WALLET_PROVIDER"/>, polo  que as túas propinas non poden chegar a este creador. De momento, as que deas permanecerán pendentes e o sistema seguirá tentando envialas automaticamente durante os próximos 90 días.</translation>
 <translation id="1910721550319506122">Benvido/a!</translation>
 <translation id="2734870894159530879">Inicia sesión en <ph name="WALLET_PROVIDER"/> para ver o teu saldo</translation>
 <translation id="5830114181292529917">Podes apoiar este sitio enviando unha propina. É un xeito de agradecerlles que fixeran un gran contido.</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">Esta conta de Sincronización de Brave eliminouse doutro dispositivo. Se non querías desactivar Sincronización, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>volve crear a conta.</translation>
 <translation id="4094590686212463338">Non foi posible unirse a esta cadea de sincronización. Eliminouse a cadea de sincronización.</translation>
-<translation id="5633907266617216186">Direccións, información de pago, etc.</translation>
+<translation id="4908081302669157000">Números de teléfono, correos electrónicos e enderezos</translation>
 <translation id="1056898198331236512">Advertencia</translation>
 <translation id="1426410128494586442">Si</translation>
 <translation id="7811264919113243207">Isto compartirá os teus datos de Brave, incluíndo potencialmente os teus contrasinais, co dispositivo que xerou este código QR.
@@ -750,6 +759,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="1118876217803190221">Saldo insuficiente</translation>
 <translation id="275990379543116961">Non tes fondos suficientes para gas</translation>
 <translation id="3292453499915466604">Liquidez insuficiente</translation>
+<translation id="3025158262797849291">Formato de número non recoñecido</translation>
 <translation id="3380365263193509176">Erro descoñecido</translation>
 <translation id="5932938770824268122">Clave privada</translation>
 <translation id="2472882733835903303">Amosar clave privada</translation>
@@ -769,6 +779,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6015436276085482001">Rexeitado</translation>
 <translation id="6666273175654835609">Enviado</translation>
 <translation id="2331676293859649642">Confirmado</translation>
+<translation id="8214232307424031138">Rexistrado</translation>
 <translation id="1165039591588034296">Erro</translation>
 <translation id="8364362220156372884">Tarifa: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> (<ph name="FIAT_VALUE"/> $)</translation>
 <translation id="2561824823738097741">Estás a utilizar o explorador web máis rápido?</translation>
@@ -799,7 +810,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="5061574358754621254">Datos dos prezos fornecidos por CoinGecko</translation>
 <translation id="4626407663177532837">O presuposto inclúe unha taxa dun 0,875 % de Brave.</translation>
 <translation id="8574289650879708853">Engadir activo personalizado</translation>
-<translation id="1974060860693918893">Configuración avanzada</translation>
+<translation id="1255896809210433555">Engadir NFT</translation>
 <translation id="7791543448312431591">Engadir</translation>
 <translation id="6600400596821238377">None do token</translation>
 <translation id="4432966365400169165">Enderezo do contrato de Token</translation>
@@ -1023,10 +1034,10 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6605147707233193230">Activa esta opción para apoiar aos creadores de contidos</translation>
 <translation id="1609556006143307897">Estás a apoiar aos creadores de contidos</translation>
 <translation id="6067959437127691361">Usar Recompensas de Brave apoia aos creadores de contidos e permíteche gañar BAT.</translation>
-<translation id="121894865378699201">Queres gañar BAT?</translation>
-<translation id="2648805457288107211">Conecta a túa conta de custodia ao teu perfil de Recompensas. Se non tes unha conta, poderás creala.</translation>
+<translation id="3264975266761862670">Estás listo para comezar a ganar cartos?</translation>
+<translation id="265337947574975838">Conecta ou crea unha conta cun dos nosos socios.</translation>
 <translation id="1772961321862399863">Para gañar BAT, os usuarios deben conectar unha conta de custodia a Recompensas de Brave. Por desgraza, non hai custodios dispoñibles na túa rexión, así que as gañanzas non están dispoñibles. De momento, se activas Recompensas de Brave, apoiarás automaticamente aos creadores.</translation>
-<translation id="5430495762768325224">Máis información sobre BAT</translation>
+<translation id="654447476965480878">Máis información sobre como gañar BAT</translation>
 <translation id="6278643716658443228">Configuración das recompensas</translation>
 <translation id="6516984207843289176">Conectar conta</translation>
 <translation id="4272136334824111854">Este mes, visitaches <ph name="CREATOR_COUNT"/> creadores que reciben apoio de Recompensas de Brave</translation>
@@ -1057,6 +1068,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="171158953146804144">O <ph name="DUE_DATE"/>, suspenderemos o soporte para os saldos BAT virtuais existentes. Desafortunadamente, non hai contas de custodia dispoñibles na túa rexión (<ph name="REGION"/>) para retirar as túas ganancias. Ata entón,  podes contribuír cos teus creadores favoritos.</translation>
 <translation id="8949422576126100041">Queres ver a páxina co lector de velocidade?</translation>
 <translation id="591648995518106347">Carga automaticamente artigos compatibles no modo de lector</translation>
+<translation id="1295796122927221823">Ver no modo de lector</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> en <ph name="NETWORK"/></translation>
 <translation id="295620834661738195">Lista de reprodución de Brave</translation>
 <translation id="4850886885716139402">Vista</translation>
@@ -1106,7 +1118,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="1710072605877822603">Engadir contido multimedia</translation>
 <translation id="903678009070770568">Engade vídeos á lista de reprodución Brave e míraos máis tarde, mesmo sen conexión</translation>
 <translation id="3063627607780392015">Non tes cobertura? Necesitas calmar un neno que chora?</translation>
-<translation id="2041014734809158138">Tanto nun traxecto en metro, como nun voo ou nunha longa viaxe en coche, con Lista de reprodución estaás cuberto.</translation>
+<translation id="2041014734809158138">Tanto nun traxecto en metro, como nun voo ou nunha longa viaxe en coche, con Lista de reprodución tes todo o que precisas.</translation>
 <translation id="7287143275037417932">Ou toca o botón Lista de reprodución cando apareza</translation>
 <translation id="6959838938954098206">O botón Lista de reprodución aparece cando hai contido multimedia para engadir. Manteno premido para ver as opcións. Incluso podes ocultalo.</translation>
 <translation id="3620862810055853183">Abrir Lista de reprodución</translation>
@@ -1129,4 +1141,10 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="3631131732607750008">O contido caducou. Téntao de novo nuns segundos.</translation>
 <translation id="9085765419770918643">Aínda non hai ningún NFT dispoñible aquí.</translation>
 <translation id="8445532667841598737">Estás preparado para engadir máis? Simplemente fai clic no botón seguinte para importar.</translation>
+<translation id="5925465310724910998">Queres que os teus NFT se amosen automaticamente?</translation>
+<translation id="2827460859891872324">Brave Wallet pode utilizar un servizo de terceiros para amosar os teus NFT automaticamente. Brave compartirá os enderezos da túa carteira con <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> para fornecer este servizo. <ph name="BEGIN_LINK_2"/>Máis información.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">Activar descubrimento de NFT</translation>
+<translation id="622372328961630111">Engade NFT da túa propiedade á carteira mediante API de terceiros. <ph name="BEGIN_LINK_1"/>Máis información.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">Conta de táboa de busca de enderezos:</translation>
+<translation id="7659483790930268440">Índice de táboa de busca de enderezos:</translation>
 </translationbundle>

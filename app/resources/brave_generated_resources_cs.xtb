@@ -31,7 +31,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3218385319396786393">Automatické přehrávání bylo na této stránce zablokováno</translation>
 <translation id="4988333904713528597">Vždy povolit automatické přehrávání na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
-<translation id="8988939298652262600">Brave nekontroluje bezpečnost rozšíření. Nainstalujte si toto rozšíření, jen pokud důvěřujete jeho vývojáři.</translation>
+<translation id="3477357195688115718">Brave nekontroluje bezpečnost rozšíření. Rozšíření si instalujte, jen pokud důvěřujete jeho vývojáři.</translation>
 <translation id="9005883459983913482">Okna Tor</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="6924909138923993900">Nové připojení Tor pro tento web</translation>
@@ -125,10 +125,15 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8184318863960255706">Další informace</translation>
 <translation id="780301667611848630">Ne, děkuji</translation>
 <translation id="1162706247109707219">Kliknutím na tlačítko OK berete na vědomí, že vaše instalace prohlížeče Brave NEBUDE dostávat kritické bezpečnostní opravy, dokud neaktualizujete systém na Windows 10 nebo novější. Toto upozornění se již NEBUDE zobrazovat.</translation>
+<translation id="2770465223704140727">Odstranit ze seznamu</translation>
 <translation id="2515126961943087659">Služba reklam BAT</translation>
 <translation id="7924918279836988121">Služba účetní knihy Bat</translation>
 <translation id="6040143037577758943">Zavřít</translation>
 <translation id="6665472986740899785">Oznámení Brave s reklamou</translation>
+<translation id="5582087890067572966">🎉 Nyní vyděláváte!</translation>
+<translation id="4364336119478610380">Vždy, když se na obrazovce objeví takovéto oznámení, vyděláte. Pro získání výdělku nemusíte na nic klikat.</translation>
+<translation id="5893017172751072752">Když se zobrazí oznámení reklam Brave, vyděláte</translation>
+<translation id="3447730462826640312">Abyste vydělali, nemusíte na nic klikat, ale pokud vás to zajímá, určitě klikněte!</translation>
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="8659271182272561965">Přispějte anonymními údaji o vyhledávání a prohlížení ke zdokonalení služby Brave Search.</translation>
 <translation id="1516554614404600536">Popis Brave</translation>
@@ -257,6 +262,9 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8721331068159819483">Stejné jako macOS</translation>
 <translation id="1692470335103807198">Získejte další témata</translation>
 <translation id="2906510232093002459">Výchozí obrázky Brave</translation>
+<translation id="8076492880354921740">Karty</translation>
+<translation id="5860254591544742609">Zobrazit lištu s názvem</translation>
+<translation id="5371926069408837914">Když je vertikální panel karet sbalený, rozbalit najetím myší</translation>
 <translation id="3367129510799209147">Režim Najetí na kartu</translation>
 <translation id="2113977810652731515">Karta</translation>
 <translation id="4096343215397759358">Karta s náhledem</translation>
@@ -379,6 +387,10 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2808630562319398131">Obnovit údaje o odměnách Brave Rewards...</translation>
 <translation id="6438096877646138757">Stránky, u kterých se při zavření vymažou soubory cookie</translation>
 <translation id="2988792685798128092">Vymazat při zavření stránky</translation>
+<translation id="4663317021223369617">Soubory cookie a data webových stránek</translation>
+<translation id="7050661313034564003">Zobrazit všechny soubory cookie a lokálně uložená data pro tento web</translation>
+<translation id="8339059274628563283">Data webu <ph name="SITE"/> v místním úložišti</translation>
+<translation id="1963227389609234879">Odstranit vše</translation>
 <translation id="814018970995616154">Kontroluje URL adresy pomocí seznamu nebezpečných webů, který je uložen v Brave.</translation>
 <translation id="1144810021918451336">Nechrání vás před nebezpečnými internetovými stránkami, staženými soubory a rozšířeními.</translation>
 <translation id="5570470519803062774">Nastavení webů a štítů</translation>
@@ -396,6 +408,11 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2903783737778379345">Starší službu přihlášení Google nepouživejte prostřednictvím souborů cookie třetích stran.</translation>
 <translation id="2570833232754279153">Není povoleno používání souborů cookie třetích stran pro starší službu přihlášení Google.</translation>
 <translation id="6880817299303842099">Je povoleno používání souborů cookie třetích stran pro starší službu přihlášení Google.</translation>
+<translation id="5169650598465327872">Přístup k místnímu hostitelskému počítači (localhost)</translation>
+<translation id="4172219483893066798">Weby mohou požádat o přístup k prostředkům localhost</translation>
+<translation id="7181706637590665047">Nepovolit přístup k prostředkům localhost</translation>
+<translation id="1336116824874668514">Přístup k prostředkům localhost není povolen</translation>
+<translation id="1485435696620658073">Přístup k prostředkům localhost je povolen</translation>
 <translation id="6414370348346025511">Je zapnutá standardní ochrana.</translation>
 <translation id="5565355416171743213">Začít používat synchronizaci</translation>
 <translation id="4332558599726753990">Nastavení synchronizace</translation>
@@ -462,7 +479,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
     znovu začít používat, budete muset vytvořit nový účet a znovu přidat jednotlivá zařízení.</translation>
 <translation id="4860996720371753023">Probíhá odstraňování účtu</translation>
 <translation id="4094590686212463338">K řetězu synchronizace se nepodařilo připojit. Řetěz synchronizace byl odstraněn.</translation>
-<translation id="5633907266617216186">Adresy, platební údaje, atd.</translation>
+<translation id="4908081302669157000">Telefonní čísla, e-maily a adresy</translation>
 <translation id="294985549514492876">Webové aplikace (PWA)</translation>
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
@@ -575,7 +592,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1062463687579789365">Přizpůsobení sítí peněženek</translation>
 <translation id="2234108191702901162">Nelze přidat síť</translation>
 <translation id="8996633027318264334">Opravdu chcete odstranit <ph name="KEY_NAME"/>?</translation>
-<translation id="3316326558572563182">Aktivní síť je vždy zobrazena v seznamu sítí peněženky</translation>
+<translation id="8633484167132172058">Výchozí síť je v seznamu sítí peněženky vždy viditelná</translation>
 <translation id="232693303726691609">Zobrazit/skrýt síť v seznamu sítí peněženky</translation>
 <translation id="7893578599666249602">Opravdu chcete resetovat <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Chcete aktualizovat stávající síť?</translation>

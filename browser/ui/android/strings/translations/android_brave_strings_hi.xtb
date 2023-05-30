@@ -72,6 +72,11 @@
 <translation id="1118970888826017401">अपने-आप दूसरे पेज पर भेजने वाले टॉप लेवल ट्रैकिंग URL को छोड़कर आगे बढ़ने के लिए सपोर्ट को चालू करें</translation>
 <translation id="94154759592465111">स्क्रिप्ट्स को अवरुद्ध करें</translation>
 <translation id="7714773920987474116">जावास्क्रिप्ट को ब्लॉक करता है (साइटों को ब्रेक कर सकता है)</translation>
+<translation id="1660979054779793659">Youtube</translation>
+<translation id="2233004324252915283">YouTube की ओर से सुझाए गए कंटेंट को ब्लॉक करें</translation>
+<translation id="1005372663692637999">YouTube पर 'अगला क्या है' और आखिर में दिखाए जाने वाले कार्ड को ब्लॉक करता है.</translation>
+<translation id="5152595963250646670">YouTube की ध्यान बँटाने वाली चीज़ों को ब्लॉक करें</translation>
+<translation id="2998960761270772157">YouTube पर साइन इन, मेन्यू, कमेंट और वीडियो की जानकारी ब्लॉक हो जाती है.</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
@@ -159,6 +164,10 @@
 <translation id="9110294136812584522">साइट्स, थर्ड पार्टी कुकीज़ के ज़रिए, लेगसी Google साइन-इन का इस्तेमाल कर सकती हैं</translation>
 <translation id="2903783737778379345">थर्ड पार्टी कुकीज़ के ज़रिए, लेगसी Google साइन-इन की अनुमति न दें</translation>
 <translation id="6880817299303842099">लेगसी Google साइन-इन के लिए, थर्ड पार्टी कुकीज़ के इस्तेमाल की अनुमति है</translation>
+<translation id="5169650598465327872">लोकलहोस्ट एक्सेस</translation>
+<translation id="4172219483893066798">साइट की ओर से लोकलहोस्ट के संसाधनों का ऐक्सेस पाने का अनुरोध किया जा सकता है</translation>
+<translation id="7181706637590665047">लोकलहोस्ट के संसाधनों का ऐक्सेस न दें</translation>
+<translation id="1485435696620658073">लोकलहोस्ट के संसाधनों के ऐक्सेस की इजाज़त है</translation>
 <translation id="181905442828471321">Brave शील्ड्स वैश्विक डिफॉल्ट्स</translation>
 <translation id="2675679258824361492">अन्य  गोपनीयता सेटिंग</translation>
 <translation id="8026334261755873520">ब्राउज़िंग डेटा साफ़ करें</translation>
@@ -335,7 +344,7 @@
 <translation id="496896260395129787">यह Brave सिंक अकाउंट दूसरे डिवाइस से मिट चुका है. अगर आप सिंक को बंद करना नहीं चाहते थे, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> तो फिर से अकाउंट बनाएँ</translation>
 <translation id="4094590686212463338">इस सिंक चेन में शामिल नहीं हो सकते. यह सिंक चेन मिट चुकी है.</translation>
-<translation id="5633907266617216186">पते, भुगतान की जानकारी, वगैरह.</translation>
+<translation id="4908081302669157000">फ़ोन नंबर, ईमेल और पता</translation>
 <translation id="1056898198331236512">चेतावनी</translation>
 <translation id="1426410128494586442">हां</translation>
 <translation id="7811264919113243207">इससे आपका Brave डेटा शेयर किया जाएगा, जिसमें यह QR कोड बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
@@ -749,6 +758,7 @@
 <translation id="1118876217803190221">अपर्याप्त बैलेंस</translation>
 <translation id="275990379543116961">गैस के लिए अपर्याप्त राशि</translation>
 <translation id="3292453499915466604">अपर्याप्त राशि</translation>
+<translation id="3025158262797849291">नंबर का यह फ़ॉर्मैट पहचाना नहीं जा रहा है</translation>
 <translation id="3380365263193509176">अज्ञात गड़बड़ी</translation>
 <translation id="5932938770824268122">निजी कुंजी</translation>
 <translation id="2472882733835903303">प्राइवेट की (Key) दिखाएँ</translation>
@@ -768,6 +778,7 @@
 <translation id="6015436276085482001">रिजेक्ट किया हुआ</translation>
 <translation id="6666273175654835609">प्रस्तुत किया गया</translation>
 <translation id="2331676293859649642">पुष्टि की गई</translation>
+<translation id="8214232307424031138">साइन किया गया</translation>
 <translation id="1165039591588034296">गड़बड़ी</translation>
 <translation id="8364362220156372884">शुल्क: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">क्या आप सबसे तेज़ ब्राउज़र का इस्तेमाल कर रहे हैं?</translation>
@@ -798,7 +809,7 @@
 <translation id="5061574358754621254">मूल्य डेटा CoinGecko द्वारा संचालित है</translation>
 <translation id="4626407663177532837">कोट में 0.875% Brave शुल्क शामिल है.</translation>
 <translation id="8574289650879708853">कस्टम एसेट जोड़ें</translation>
-<translation id="1974060860693918893">बेहतर</translation>
+<translation id="1255896809210433555">NFT जोड़ें</translation>
 <translation id="7791543448312431591">जोड़ें</translation>
 <translation id="6600400596821238377">टोकन नेम</translation>
 <translation id="4432966365400169165">टोकन कॉन्ट्रैक्ट एड्रेस</translation>
@@ -1022,10 +1033,10 @@
 <translation id="6605147707233193230">कंटेंट क्रिएटर को सपोर्ट करने के लिए चालू करें</translation>
 <translation id="1609556006143307897">आप कंटेंट क्रिएटर को सपोर्ट करने में मदद कर रहे हैं</translation>
 <translation id="6067959437127691361">Brave रिवॉर्ड का इस्तेमाल करने से कंटेंट क्रिएटर को सपोर्ट मिलता है और आपको BAT कमाने का मौका मिलता है.</translation>
-<translation id="121894865378699201">BAT कमाने के लिए तैयार हैं?</translation>
-<translation id="2648805457288107211">बस अपने कस्टोडियल अकाउंट को अपने रिवॉर्ड प्रोफ़ाइल से कनेक्ट करें. अगर आपके पास कोई अकाउंट नहीं है, तो आपको एक अकाउंट बनाने का मौका मिलेगा.</translation>
+<translation id="3264975266761862670">कमाई शुरू करने के लिए तैयार हैं?</translation>
+<translation id="265337947574975838">अपना अकाउंट कनेक्ट करें या हमारे किसी पार्टनर के साथ नया अकाउंट बनाएँ.</translation>
 <translation id="1772961321862399863">BAT कमाने के लिए यूज़र को एक कस्टोडियल अकाउंट Brave रिवॉर्ड से कनेक्ट करना होगा. बदकिस्मती से आपके क्षेत्र में कोई कस्टोडियन उपलब्ध नहीं है, इसलिए कमाई करना मुमकिन नहीं है. अभी के लिए सिर्फ़ Brave रिवॉर्ड चालू कर देने से क्रिएटर को अपने-आप सपोर्ट मिलेगा.</translation>
-<translation id="5430495762768325224">BAT के बारे में और जानें</translation>
+<translation id="654447476965480878">BAT कमाने के बारे में और जानें</translation>
 <translation id="6278643716658443228">रिवॉर्ड से जुड़ी सेटिंग</translation>
 <translation id="6516984207843289176">अकाउंट कनेक्ट करें</translation>
 <translation id="4272136334824111854">इस महीने आपने Brave रिवॉर्ड की ओर से सपोर्ट किए जाने वाले <ph name="CREATOR_COUNT"/> क्रिएटर देखे हैं.</translation>
@@ -1056,6 +1067,7 @@
 <translation id="171158953146804144"><ph name="DUE_DATE"/> को हम मौजूदा वर्चुअल BAT के बैलेंस का सपोर्ट बंद कर रहे हैं. बदकिस्मती से आपकी कमाई को निकालने के लिए आपके क्षेत्र (<ph name="REGION"/>) में कोई कस्टोडियन मौजूद नहीं है. हालाँकि, तब तक आप अपने पसंदीदा क्रिएटर को योगदान दे सकते हैं.</translation>
 <translation id="8949422576126100041">स्पीडरीडर वाला पेज देखें?</translation>
 <translation id="591648995518106347">रीडर मोड में योग्य आलेखों को अपने-आप लोड करता है</translation>
+<translation id="1295796122927221823">रीडर मोड में देखें</translation>
 <translation id="5062934803872044756"><ph name="NETWORK"/> पर <ph name="SYMBOL"/></translation>
 <translation id="295620834661738195">Brave प्लेलिस्ट</translation>
 <translation id="4850886885716139402">देखें</translation>
@@ -1128,4 +1140,10 @@
 <translation id="3631131732607750008">सामग्री की समय-सीमा समाप्त हो गई। कुछ सेकंड में फिर से कोशिश करें।</translation>
 <translation id="9085765419770918643">यहाँ अभी कोई NFT नहीं है।</translation>
 <translation id="8445532667841598737">कुछ को जोड़ने के लिए तैयार हैं? आयात करने के लिए बस नीचे दिए गए बटन पर क्लिक करें।</translation>
+<translation id="5925465310724910998">आप चाहते हैं कि आपके NFT अपने आप दिखाई दें?</translation>
+<translation id="2827460859891872324">आपके NFT को अपने आप दिखाने के लिए Brave वॉलेट किसी थर्ड पार्टी की सेवा ले सकती है. यह सेवा देने के लिए Brave आपके वॉलेट का पता <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> के साथ साझा करेगी. <ph name="BEGIN_LINK_2"/>और जानें.<ph name="END_LINK_2"/></translation>
+<translation id="7568430944629653319">NFT डिस्कवरी सक्षम करें</translation>
+<translation id="622372328961630111">थर्ड पार्टी API के ज़रिए अपने NFT को वॉलेट में अपने आप जोड़ें. <ph name="BEGIN_LINK_1"/>और जानें.<ph name="END_LINK_1"/></translation>
+<translation id="7618347247876614969">एड्रेस लुकअप टेबल अकाउंट</translation>
+<translation id="7659483790930268440">एड्रेस लुकअप टेबल इंडेक्स</translation>
 </translationbundle>

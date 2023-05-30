@@ -31,7 +31,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Automatska reprodukcija je blokirana na ovoj strani</translation>
 <translation id="4988333904713528597">Uvek dozvoli automatsko puštanje na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nastavite da blokirate automatsku reprodukciju</translation>
-<translation id="8988939298652262600">Brave ne pregledava proširenja radi sigurnosti i bezbednosti. Instalirajte ovo proširenje samo ako verujete programeru.</translation>
+<translation id="3477357195688115718">Brave ne pregleda proširenja radi sigurnosti i bezbednosti. Instalirajte ovo proširenje samo ako verujete programeru.</translation>
 <translation id="9005883459983913482">Tor prozori</translation>
 <translation id="7965178729203412357">Novi Tor identitet</translation>
 <translation id="6924909138923993900">Nova Tor veza za ovu lokaciju</translation>
@@ -125,10 +125,15 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8184318863960255706">Више информација</translation>
 <translation id="780301667611848630">Не, хвала</translation>
 <translation id="1162706247109707219">Klikom na OK, potvrđujete da vaša Brave instalacija NEĆE dobiti kritične bezbednosne ispravke dok ne ažurirate na Windows 10 ili noviji. Ovo upozorenje se NEĆE ponovo prikazati.</translation>
+<translation id="2770465223704140727">Уклони са листе</translation>
 <translation id="2515126961943087659">Bat Ads usluga</translation>
 <translation id="7924918279836988121">Usluga knjiženja BAT</translation>
 <translation id="6040143037577758943">Затвори</translation>
 <translation id="6665472986740899785">Brave reklamno obaveštenje</translation>
+<translation id="5582087890067572966">🎉 Sada zarađujete!</translation>
+<translation id="4364336119478610380">Zarađujete kad god se ovakvo obaveštenje pojavi na vašem ekranu. Ne morate da kliknete da biste zaradili.</translation>
+<translation id="5893017172751072752">Zarađujete kada se pojavi Brave Ads obaveštenje</translation>
+<translation id="3447730462826640312">Ne morate da kliknete da biste zaradili, ali kliknite ako ste zainteresovani!</translation>
 <translation id="4174337572777167894">Projekat istraživanja veba</translation>
 <translation id="8659271182272561965">Anonimno priložite neke podatke o pretrazi &amp; pregledanju kako biste unapredili Brave pretragu.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -257,6 +262,9 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8721331068159819483">Isto kao macOS</translation>
 <translation id="1692470335103807198">Dobijte više tema</translation>
 <translation id="2906510232093002459">Brave podrazumevane slike</translation>
+<translation id="8076492880354921740">Картице</translation>
+<translation id="5860254591544742609">Prikaži naslovnu traku</translation>
+<translation id="5371926069408837914">Proširite ploču sa vertikalnim karticama kada pređete mišem kada je skupljena</translation>
 <translation id="3367129510799209147">Režim prelaska pokazivača preko kartice</translation>
 <translation id="2113977810652731515">Kartica</translation>
 <translation id="4096343215397759358">Kartica sa pregledom</translation>
@@ -379,6 +387,10 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2808630562319398131">Ponovo postavi Brave Rewards podatke...</translation>
 <translation id="6438096877646138757">Sajtovi koji uklanjaju kolačiće kada ih zatvorite</translation>
 <translation id="2988792685798128092">Ukloniti prilikom zatvaranja sajta</translation>
+<translation id="4663317021223369617">Kolačići i podaci o veb lokaciji</translation>
+<translation id="7050661313034564003">Prikaži sve kolačiće i lokalno skladištene podatke za ovu veb lokaciju</translation>
+<translation id="8339059274628563283">Локално сачувани подаци са сајта <ph name="SITE"/></translation>
+<translation id="1963227389609234879">Уклони све</translation>
 <translation id="814018970995616154">Proverava URL adrese sa listom nebezbednih veb lokacija uskladištenih u Brave-u.</translation>
 <translation id="1144810021918451336">Ne štiti vas od opasnih veb lokacija, preuzimanja i proširenja.</translation>
 <translation id="5570470519803062774">Podešavanja lokacije i štitova</translation>
@@ -396,6 +408,11 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2903783737778379345">Ne dozvolite zastarelo prijavljivanje na Google preko kolačića treće strane</translation>
 <translation id="2570833232754279153">Nije dozvoljena upotreba kolačića trećih strana za zastarelo prijavljivanje na Google</translation>
 <translation id="6880817299303842099">Dozvoljena je upotreba kolačića trećih strana za zastarelo prijavljivanje na Google</translation>
+<translation id="5169650598465327872">Pristup stranici localhost</translation>
+<translation id="4172219483893066798">Stranice mogu da zatraže pristup localhost resursima</translation>
+<translation id="7181706637590665047">Nemojte dozvoliti pristup localhost resursima</translation>
+<translation id="1336116824874668514">Nije dozvoljen pristup localhost resursima</translation>
+<translation id="1485435696620658073">Dozvoljen pristup localhost resursima</translation>
 <translation id="6414370348346025511">Uključena je standardna zaštita.</translation>
 <translation id="5565355416171743213">Počni korišćenje sinhronizacije</translation>
 <translation id="4332558599726753990">Konfigurisanje sinhronizacije</translation>
@@ -462,7 +479,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
      ponovo počnete da koristite sinhronizaciju, moraćete da kreirate novi nalog i da ponovo dodate svaki uređaj jedan po jedan.</translation>
 <translation id="4860996720371753023">Brisanje naloga je u toku...</translation>
 <translation id="4094590686212463338">Nije moguće pridružiti se ovom lancu sinhronizacije. Lanac sinhronizacije je izbrisan.</translation>
-<translation id="5633907266617216186">Adrese, informacije o plaćanju, itd.</translation>
+<translation id="4908081302669157000">Brojevi telefona, e-pošte i adrese</translation>
 <translation id="294985549514492876">Internet aplikacije (PWA)</translation>
 <translation id="6285118765755298263">Indeksirajte ostale pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji slede OpenSearch specifikacije.</translation>
@@ -575,7 +592,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="1062463687579789365">Prilagođavanje mreže novčanika</translation>
 <translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
 <translation id="8996633027318264334">Da li zaista želite da izbrišete <ph name="KEY_NAME"/>?</translation>
-<translation id="3316326558572563182">Aktivna mreža je uvek vidljiva u listi mreža novčanika</translation>
+<translation id="8633484167132172058">Podrazumevana mreža je uvek vidljiva u listi mreža novčanika</translation>
 <translation id="232693303726691609">Prikaži/sakrij mrežu sa liste mreža novčanika</translation>
 <translation id="7893578599666249602">Želite li zaista da resetujete <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Da li želite da ažurirate postojeću mrežu?</translation>
