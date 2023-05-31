@@ -71,9 +71,11 @@ class Account final : public AdsClientNotifierObserver,
  private:
   void Initialize();
 
-  void Process();
+  void InitializeConfirmations();
 
   void MaybeRewardUsers();
+  void InitializeRewards();
+  void ShutdownRewards();
 
   void MaybeFetchIssuers() const;
 
@@ -101,14 +103,16 @@ class Account final : public AdsClientNotifierObserver,
                               const ConfirmationType& confirmation_type) const;
 
   void ProcessClearingCycle() const;
-  void ProcessUnclearedTransactions() const;
+  bool ShouldProcessUnclearedTransactions() const;
+  void MaybeProcessUnclearedTransactions() const;
 
   void Reset() const;
   void ResetCallback(bool success) const;
 
-  void MaybeResetIssuersAndConfirmations();
+  void MaybeResetConfirmationsAndIssuers();
 
-  void TopUpUnblindedTokens() const;
+  bool ShouldTopUpUnblindedTokens() const;
+  void MaybeTopUpUnblindedTokens() const;
 
   void NotifyDidInitializeWallet(const WalletInfo& wallet) const;
   void NotifyFailedToInitializeWallet() const;
@@ -152,9 +156,9 @@ class Account final : public AdsClientNotifierObserver,
 
   std::unique_ptr<Issuers> issuers_;
 
+  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
   std::unique_ptr<RedeemUnblindedPaymentTokens>
       redeem_unblinded_payment_tokens_;
-  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
 
   absl::optional<WalletInfo> wallet_;
 

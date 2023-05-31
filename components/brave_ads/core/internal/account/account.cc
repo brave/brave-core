@@ -49,7 +49,7 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
 
   AdsClientHelper::AddObserver(this);
 
-  Initialize();
+  InitializeConfirmations();
 }
 
 Account::~Account() {
@@ -126,14 +126,7 @@ void Account::GetStatement(GetStatementOfAccountsCallback callback) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Account::Initialize() {
-  confirmations_ = std::make_unique<Confirmations>(token_generator_);
-  confirmations_->SetDelegate(this);
-
-  MaybeRewardUsers();
-}
-
-void Account::Process() {
-  MaybeResetIssuersAndConfirmations();
+  MaybeResetConfirmationsAndIssuers();
 
   MaybeRewardUsers();
 
@@ -144,42 +137,60 @@ void Account::Process() {
   ProcessClearingCycle();
 }
 
+void Account::InitializeConfirmations() {
+  confirmations_ = std::make_unique<Confirmations>(token_generator_);
+  confirmations_->SetDelegate(this);
+}
+
 void Account::MaybeRewardUsers() {
-  if (!ShouldRewardUser()) {
-    if (issuers_) {
-      issuers_.reset();
-      ResetIssuers();
-      BLOG(1, "Reset and stop fetching issuers");
-    }
+  return ShouldRewardUser() ? InitializeRewards() : ShutdownRewards();
+}
 
-    if (redeem_unblinded_payment_tokens_) {
-      redeem_unblinded_payment_tokens_.reset();
-      BLOG(1, "Stop redeeming unblinded payment tokens");
-    }
-
-    if (refill_unblinded_tokens_) {
-      refill_unblinded_tokens_.reset();
-      BLOG(1, "Stop refilling unblinded tokens");
-    }
-
-    return;
+void Account::InitializeRewards() {
+  if (!issuers_) {
+    BLOG(1, "Initialize issuers request");
+    issuers_ = std::make_unique<Issuers>();
+    issuers_->SetDelegate(this);
   }
 
-  issuers_ = std::make_unique<Issuers>();
-  issuers_->SetDelegate(this);
+  if (!refill_unblinded_tokens_) {
+    BLOG(1, "Initialize refill unblinded tokens request");
+    refill_unblinded_tokens_ =
+        std::make_unique<RefillUnblindedTokens>(token_generator_);
+    refill_unblinded_tokens_->SetDelegate(this);
+  }
 
-  redeem_unblinded_payment_tokens_ =
-      std::make_unique<RedeemUnblindedPaymentTokens>();
-  redeem_unblinded_payment_tokens_->SetDelegate(this);
+  if (!redeem_unblinded_payment_tokens_) {
+    BLOG(1, "Initialize redeem unblinded payment tokens request");
+    redeem_unblinded_payment_tokens_ =
+        std::make_unique<RedeemUnblindedPaymentTokens>();
+    redeem_unblinded_payment_tokens_->SetDelegate(this);
+  }
+}
 
-  refill_unblinded_tokens_ =
-      std::make_unique<RefillUnblindedTokens>(token_generator_);
-  refill_unblinded_tokens_->SetDelegate(this);
+void Account::ShutdownRewards() {
+  if (issuers_) {
+    issuers_.reset();
+    BLOG(1, "Shutdown issuers request");
+
+    ResetIssuers();
+    BLOG(1, "Reset issuers");
+  }
+
+  if (refill_unblinded_tokens_) {
+    refill_unblinded_tokens_.reset();
+    BLOG(1, "Shutdown refill unblinded tokens request");
+  }
+
+  if (redeem_unblinded_payment_tokens_) {
+    redeem_unblinded_payment_tokens_.reset();
+    BLOG(1, "Shutdown redeem unblinded payment tokens request");
+  }
 }
 
 void Account::MaybeFetchIssuers() const {
   if (issuers_) {
-    issuers_->Fetch();
+    issuers_->PeriodicallyFetch();
   }
 }
 
@@ -258,11 +269,15 @@ void Account::FailedToProcessDeposit(
 void Account::ProcessClearingCycle() const {
   confirmations_->ProcessRetryQueue();
 
-  ProcessUnclearedTransactions();
+  MaybeProcessUnclearedTransactions();
 }
 
-void Account::ProcessUnclearedTransactions() const {
-  if (wallet_ && redeem_unblinded_payment_tokens_) {
+bool Account::ShouldProcessUnclearedTransactions() const {
+  return wallet_ && redeem_unblinded_payment_tokens_;
+}
+
+void Account::MaybeProcessUnclearedTransactions() const {
+  if (ShouldProcessUnclearedTransactions()) {
     redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(*wallet_);
   }
 }
@@ -281,26 +296,29 @@ void Account::ResetCallback(const bool success) const {
 
   NotifyStatementOfAccountsDidChange();
 
-  TopUpUnblindedTokens();
+  MaybeTopUpUnblindedTokens();
 }
 
-void Account::MaybeResetIssuersAndConfirmations() {
+void Account::MaybeResetConfirmationsAndIssuers() {
   if (!ShouldResetIssuersAndConfirmations()) {
     return;
   }
 
-  Initialize();
+  ResetConfirmations();
+  InitializeConfirmations();
 
   ResetIssuers();
-
-  ResetConfirmations();
 
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kShouldMigrateVerifiedRewardsUser, false);
 }
 
-void Account::TopUpUnblindedTokens() const {
-  if (wallet_ && refill_unblinded_tokens_) {
+bool Account::ShouldTopUpUnblindedTokens() const {
+  return wallet_ && refill_unblinded_tokens_;
+}
+
+void Account::MaybeTopUpUnblindedTokens() const {
+  if (ShouldTopUpUnblindedTokens()) {
     refill_unblinded_tokens_->MaybeRefill(*wallet_);
   }
 }
@@ -347,31 +365,31 @@ void Account::NotifyStatementOfAccountsDidChange() const {
 }
 
 void Account::OnNotifyDidInitializeAds() {
-  Process();
+  Initialize();
 }
 
 void Account::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
-    Process();
+    Initialize();
   } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
-    MaybeResetIssuersAndConfirmations();
+    MaybeResetConfirmationsAndIssuers();
   }
 }
 
 void Account::OnNotifyDidSolveAdaptiveCaptcha() {
-  TopUpUnblindedTokens();
+  MaybeTopUpUnblindedTokens();
 }
 
 void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
 
-  TopUpUnblindedTokens();
+  MaybeTopUpUnblindedTokens();
 }
 
 void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
 
-  TopUpUnblindedTokens();
+  MaybeTopUpUnblindedTokens();
 }
 
 void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
@@ -386,7 +404,7 @@ void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
     BLOG(1, "Issuers already up to date");
   }
 
-  TopUpUnblindedTokens();
+  MaybeTopUpUnblindedTokens();
 }
 
 void Account::OnDidRedeemUnblindedPaymentTokens(

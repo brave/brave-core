@@ -436,8 +436,8 @@ class AdsServiceImpl : public AdsService,
   bool did_cleanup_on_first_run_ = false;
   bool needs_browser_upgrade_to_serve_ads_ = false;
   bool is_upgrading_from_pre_brave_ads_build_ = false;
-  // Brave Ads Service starts count is needed to avoid possible double Brave Ads
-  // initialization.
+  // Brave Ads Service starts count is needed to avoid possible double Brave
+  // Ads initialization.
   // TODO(https://github.com/brave/brave-browser/issues/30247): Refactor Brave
   // Ads startup logic.
   size_t service_starts_count_ = 0;
