@@ -6,9 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_WALLET_BUTTON_NOTIFICATION_SOURCE_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_WALLET_BUTTON_NOTIFICATION_SOURCE_H_
 
-#include <memory>
-#include <string>
-
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"

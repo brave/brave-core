@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 
+#include <string>
 #include <utility>
 
 #include "base/metrics/histogram_functions.h"

@@ -6,10 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_PAGES_H_
 #define BRAVE_BROWSER_UI_BRAVE_PAGES_H_
 
-#include <string>
-
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 
 class Browser;
 

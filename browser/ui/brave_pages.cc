@@ -18,10 +18,6 @@
 #include "chrome/common/webui_url_constants.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_tab_helper.h"
-#endif
-
 namespace brave {
 
 void ShowBraveRewards(Browser* browser) {
