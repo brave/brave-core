@@ -444,7 +444,7 @@ export const PortfolioAsset = (props: Props) => {
     if (!selectedAsset || !selectedAssetsNetwork) return
 
     const account = accounts
-      .filter((account) => account.coin === selectedAsset.coin)
+      .filter((account) => account.accountId.coin === selectedAsset.coin)
       .find(acc => new Amount(getBalance(acc, selectedAsset)).gte('1'))
 
     if(!account) return
