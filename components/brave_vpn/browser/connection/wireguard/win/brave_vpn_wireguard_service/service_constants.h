@@ -9,11 +9,13 @@
 #include <guiddef.h>
 #include <string>
 
+#include "base/files/file_path.h"
+#include "base/version.h"
+
 namespace brave_vpn {
+
 constexpr wchar_t kBraveVpnWireguardServiceExecutable[] =
     L"brave_vpn_wireguard_service.exe";
-constexpr wchar_t kBraveVpnWireguardServiceRegistryStoragePath[] =
-    L"Software\\BraveSoftware\\Brave\\Vpn\\BraveWireguardService";
 constexpr char kBraveVpnWireguardServiceInstallSwitchName[] = "install";
 constexpr char kBraveVpnWireguardServiceConnectSwitchName[] = "connect";
 
@@ -22,7 +24,10 @@ const IID& GetBraveVpnWireguardServiceIid();
 std::wstring GetBraveVpnWireguardTunnelServiceName();
 std::wstring GetBraveVpnWireguardServiceName();
 std::wstring GetBraveVpnWireguardServiceDisplayName();
-
+std::wstring GetBraveVpnWireguardServiceRegistryStoragePath();
+base::FilePath GetBraveVPNWireguardServiceInstallationPath(
+    const base::FilePath& target_path,
+    const base::Version& version);
 }  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_CONSTANTS_H_

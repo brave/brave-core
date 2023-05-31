@@ -9,6 +9,7 @@
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service_constants.h"
 #endif
 #define UninstallProduct UninstallProduct_ChromiumImpl
 
@@ -71,6 +72,13 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
             brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {})) {
       LOG(WARNING) << "Failed to delete "
                    << brave_vpn::GetBraveVpnHelperServiceName();
+    }
+    if (!InstallServiceWorkItem::DeleteService(
+            brave_vpn::GetBraveVpnWireguardServiceName(),
+            brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath(), {},
+            {})) {
+      LOG(WARNING) << "Failed to delete "
+                   << brave_vpn::GetBraveVpnWireguardServiceName();
     }
   }
   brave_vpn::ras::RemoveEntry(brave_vpn::GetBraveVPNConnectionName());
