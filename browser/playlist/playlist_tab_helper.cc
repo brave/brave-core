@@ -39,7 +39,11 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
-PlaylistTabHelper::~PlaylistTabHelper() = default;
+PlaylistTabHelper::~PlaylistTabHelper() {
+  for (auto& observer : observers_) {
+    observer.PlaylistTabHelperWillBeDestroyed();
+  }
+}
 
 void PlaylistTabHelper::AddObserver(PlaylistTabHelperObserver* observer) {
   observers_.AddObserver(observer);

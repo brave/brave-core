@@ -46,6 +46,7 @@ class PlaylistActionIconView : public PageActionIconView,
   }
 
   // PlaylistTabHelperObserver:
+  void PlaylistTabHelperWillBeDestroyed() override;
   void OnSavedItemsChanged(const std::vector<playlist::mojom::PlaylistItemPtr>&
                                saved_items) override;
   void OnFoundItemsChanged(const std::vector<playlist::mojom::PlaylistItemPtr>&

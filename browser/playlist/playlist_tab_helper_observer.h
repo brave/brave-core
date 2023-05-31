@@ -14,6 +14,7 @@ namespace playlist {
 
 class PlaylistTabHelperObserver : public base::CheckedObserver {
  public:
+  virtual void PlaylistTabHelperWillBeDestroyed() = 0;
   virtual void OnSavedItemsChanged(
       const std::vector<mojom::PlaylistItemPtr>& items) = 0;
   virtual void OnFoundItemsChanged(
