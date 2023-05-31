@@ -10,6 +10,7 @@
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/constants.h"
@@ -160,7 +161,7 @@ void State::Initialize(ResultCallback callback) {
 }
 
 void State::SetVersion(const int version) {
-  ledger().database()->SaveEventLog(kVersion, std::to_string(version));
+  ledger().database()->SaveEventLog(kVersion, base::NumberToString(version));
   ledger().SetState(kVersion, version);
 }
 
@@ -169,7 +170,8 @@ int State::GetVersion() {
 }
 
 void State::SetPublisherMinVisitTime(const int duration) {
-  ledger().database()->SaveEventLog(kMinVisitTime, std::to_string(duration));
+  ledger().database()->SaveEventLog(kMinVisitTime,
+                                    base::NumberToString(duration));
   ledger().SetState(kMinVisitTime, duration);
   ledger().publisher()->CalcScoreConsts(duration);
   ledger().publisher()->SynopsisNormalizer();
@@ -180,7 +182,7 @@ int State::GetPublisherMinVisitTime() {
 }
 
 void State::SetPublisherMinVisits(const int visits) {
-  ledger().database()->SaveEventLog(kMinVisits, std::to_string(visits));
+  ledger().database()->SaveEventLog(kMinVisits, base::NumberToString(visits));
   ledger().SetState(kMinVisits, visits);
   ledger().publisher()->SynopsisNormalizer();
 }
@@ -190,8 +192,8 @@ int State::GetPublisherMinVisits() {
 }
 
 void State::SetScoreValues(double a, double b) {
-  ledger().database()->SaveEventLog(kScoreA, std::to_string(a));
-  ledger().database()->SaveEventLog(kScoreB, std::to_string(b));
+  ledger().database()->SaveEventLog(kScoreA, base::NumberToString(a));
+  ledger().database()->SaveEventLog(kScoreB, base::NumberToString(b));
   ledger().SetState(kScoreA, a);
   ledger().SetState(kScoreB, b);
 }
@@ -210,7 +212,7 @@ void State::SetAutoContributeEnabled(bool enabled) {
   }
 
   ledger().database()->SaveEventLog(kAutoContributeEnabled,
-                                    std::to_string(enabled));
+                                    base::NumberToString(enabled));
   ledger().SetState(kAutoContributeEnabled, enabled);
 
   if (enabled) {
@@ -230,7 +232,7 @@ bool State::GetAutoContributeEnabled() {
 
 void State::SetAutoContributionAmount(const double amount) {
   ledger().database()->SaveEventLog(kAutoContributeAmount,
-                                    std::to_string(amount));
+                                    base::NumberToString(amount));
   ledger().SetState(kAutoContributeAmount, amount);
 }
 
@@ -262,7 +264,7 @@ void State::SetReconcileStamp(const int reconcile_interval) {
   }
 
   ledger().database()->SaveEventLog(kNextReconcileStamp,
-                                    std::to_string(reconcile_stamp));
+                                    base::NumberToString(reconcile_stamp));
   ledger().SetState(kNextReconcileStamp, reconcile_stamp);
   ledger().client()->ReconcileStampReset();
 }
@@ -275,7 +277,8 @@ uint64_t State::GetCreationStamp() {
 }
 
 void State::SetCreationStamp(const uint64_t stamp) {
-  ledger().database()->SaveEventLog(kCreationStamp, std::to_string(stamp));
+  ledger().database()->SaveEventLog(kCreationStamp,
+                                    base::NumberToString(stamp));
   ledger().SetState(kCreationStamp, stamp);
 }
 
@@ -288,7 +291,8 @@ void State::SetInlineTippingPlatformEnabled(
     const mojom::InlineTipsPlatforms platform,
     const bool enabled) {
   const std::string platform_string = ConvertInlineTipPlatformToKey(platform);
-  ledger().database()->SaveEventLog(platform_string, std::to_string(enabled));
+  ledger().database()->SaveEventLog(platform_string,
+                                    base::NumberToString(enabled));
   ledger().SetState(platform_string, enabled);
 }
 
@@ -379,7 +383,7 @@ bool State::GetVBatExpired() {
 
 void State::SetEmptyBalanceChecked(const bool checked) {
   ledger().database()->SaveEventLog(kEmptyBalanceChecked,
-                                    std::to_string(checked));
+                                    base::NumberToString(checked));
   ledger().SetState(kEmptyBalanceChecked, checked);
 }
 
@@ -397,7 +401,7 @@ uint64_t State::GetServerPublisherListStamp() {
 
 void State::SetPromotionCorruptedMigrated(const bool migrated) {
   ledger().database()->SaveEventLog(kPromotionCorruptedMigrated,
-                                    std::to_string(migrated));
+                                    base::NumberToString(migrated));
   ledger().SetState(kPromotionCorruptedMigrated, migrated);
 }
 
