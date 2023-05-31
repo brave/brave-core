@@ -131,7 +131,8 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                             var accountInfoListPerCoin =
                                     mAllAccountInfoList.stream()
                                             .filter(accountInfo
-                                                    -> accountInfo.coin == networkInfo.coin)
+                                                    -> accountInfo.accountId.coin
+                                                            == networkInfo.coin)
                                             .collect(Collectors.toList());
 
                             Utils.getTxExtraInfo(mActivityRef, TokenUtils.TokenType.ALL,
