@@ -14,13 +14,8 @@
 
 namespace brave_rewards::internal {
 
-class TestLedgerClientTest : public testing::Test {
- protected:
-  base::test::TaskEnvironment task_environment_;
+TEST(TestLedgerClientTest, CanAccessDatabaseDirectly) {
   TestLedgerClient client_;
-};
-
-TEST_F(TestLedgerClientTest, CanAccessDatabaseDirectly) {
   sql::Database* db = client_.database()->GetInternalDatabaseForTesting();
   ASSERT_TRUE(db->Execute("CREATE TABLE test_table (num INTEGER);"));
   ASSERT_TRUE(db->Execute("INSERT INTO test_table VALUES (42);"));

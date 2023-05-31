@@ -4,18 +4,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
-#include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=ContributionUtilTest.*
 
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
-class ContributionUtilTest : public testing::Test {};
+class ContributionUtilTest : public MockLedgerTest {};
 
-TEST(ContributionUtilTest, GetReportTypeFromRewardsType) {
+TEST_F(ContributionUtilTest, GetReportTypeFromRewardsType) {
   ASSERT_EQ(mojom::ReportType::AUTO_CONTRIBUTION,
             GetReportTypeFromRewardsType(mojom::RewardsType::AUTO_CONTRIBUTE));
   ASSERT_EQ(mojom::ReportType::TIP,
@@ -24,7 +22,7 @@ TEST(ContributionUtilTest, GetReportTypeFromRewardsType) {
             GetReportTypeFromRewardsType(mojom::RewardsType::RECURRING_TIP));
 }
 
-TEST(ContributionUtilTest, GetProcessor) {
+TEST_F(ContributionUtilTest, GetProcessor) {
   ASSERT_EQ(mojom::ContributionProcessor::BRAVE_TOKENS,
             GetProcessor(constant::kWalletUnBlinded));
   ASSERT_EQ(mojom::ContributionProcessor::UPHOLD,
@@ -36,7 +34,7 @@ TEST(ContributionUtilTest, GetProcessor) {
   ASSERT_EQ(mojom::ContributionProcessor::NONE, GetProcessor("random-data"));
 }
 
-TEST(ContributionUtilTest, GetNextProcessor) {
+TEST_F(ContributionUtilTest, GetNextProcessor) {
   ASSERT_EQ(constant::kWalletUphold,
             GetNextProcessor(constant::kWalletUnBlinded));
   ASSERT_EQ(constant::kWalletBitflyer,
@@ -47,7 +45,7 @@ TEST(ContributionUtilTest, GetNextProcessor) {
   ASSERT_EQ(constant::kWalletUnBlinded, GetNextProcessor("random-data"));
 }
 
-TEST(ContributionUtilTest, HaveEnoughFundsToContribute) {
+TEST_F(ContributionUtilTest, HaveEnoughFundsToContribute) {
   double amount = 20.0;
   double balance = 0;
   ASSERT_FALSE(HaveEnoughFundsToContribute(&amount, true, balance));
@@ -63,5 +61,4 @@ TEST(ContributionUtilTest, HaveEnoughFundsToContribute) {
   ASSERT_TRUE(HaveEnoughFundsToContribute(&amount, false, balance));
 }
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution

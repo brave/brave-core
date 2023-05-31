@@ -10,14 +10,13 @@
 
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=PromotionUtilTest.*
 
-namespace brave_rewards::internal {
-namespace credential {
+namespace brave_rewards::internal::credential {
 
-class PromotionUtilTest : public testing::Test {
+class PromotionUtilTest : public MockLedgerTest {
  public:
   mojom::CredsBatch GetCredsBatch() {
     mojom::CredsBatch creds;
@@ -118,5 +117,4 @@ TEST_F(PromotionUtilTest, UnBlindCredsCredsNotCorrect) {
             "Unblinded creds size does not match signed creds sent in!");
 }
 
-}  // namespace credential
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::credential

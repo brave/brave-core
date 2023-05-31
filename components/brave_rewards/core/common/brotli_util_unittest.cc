@@ -27,8 +27,7 @@ constexpr char kUncompressed[] =
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace util {
+namespace brave_rewards::internal::util {
 
 class BraveLedgerBrotliHelpersTest : public testing::Test {
  protected:
@@ -70,5 +69,4 @@ TEST_F(BraveLedgerBrotliHelpersTest, TestDecodeWithBuffer) {
   EXPECT_FALSE(DecodeBrotliStringWithBuffer("not brotli", 16, &s));
 }
 
-}  // namespace util
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::util
