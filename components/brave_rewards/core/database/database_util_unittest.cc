@@ -4,16 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=DatabaseUtil.*
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseUtil : public testing::Test {};
+class DatabaseUtil : public MockLedgerTest {};
 
-TEST(DatabaseUtil, GenerateStringInCase) {
+TEST_F(DatabaseUtil, GenerateStringInCase) {
   // empty list
   std::string result = GenerateStringInCase({});
   ASSERT_EQ(result, "");
@@ -27,5 +26,4 @@ TEST(DatabaseUtil, GenerateStringInCase) {
   ASSERT_EQ(result, "'id_1', 'id_2', 'id_3'");
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

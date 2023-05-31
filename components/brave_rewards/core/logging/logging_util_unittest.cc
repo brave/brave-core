@@ -4,15 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/core/logging/logging_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=LoggingUtilTest.*
 
 namespace brave_rewards::internal {
 
-class LoggingUtilTest : public testing::Test {};
+class LoggingUtilTest : public MockLedgerTest {};
 
-TEST(LoggingUtilTest, ShouldLogHeader) {
+TEST_F(LoggingUtilTest, ShouldLogHeader) {
   EXPECT_TRUE(ShouldLogHeader("Content-Type: application/json; charset=UTF-8"));
 
   EXPECT_TRUE(ShouldLogHeader("Content-type: application/json; charset=UTF-8"));

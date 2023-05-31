@@ -4,15 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/core/legacy/bat_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=BatUtilTest.*
 
 namespace brave_rewards::internal {
 
-class BatUtilTest : public testing::Test {};
+class BatUtilTest : public MockLedgerTest {};
 
-TEST(BatUtilTest, ConvertToProbi) {
+TEST_F(BatUtilTest, ConvertToProbi) {
   // empty string
   std::string result = ConvertToProbi("");
   ASSERT_EQ(result, "0");
@@ -34,7 +34,7 @@ TEST(BatUtilTest, ConvertToProbi) {
   ASSERT_EQ(result, "5450000000000000000");
 }
 
-TEST(BatUtilTest, ProbiToDouble) {
+TEST_F(BatUtilTest, ProbiToDouble) {
   // empty string
   double result = ProbiToDouble("");
   ASSERT_EQ(result, 0);

@@ -7,15 +7,15 @@
 
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=MediaHelperTest.*
 
 namespace brave_rewards::internal {
 
-class MediaHelperTest : public testing::Test {};
+class MediaHelperTest : public MockLedgerTest {};
 
-TEST(MediaHelperTest, GetMediaKey) {
+TEST_F(MediaHelperTest, GetMediaKey) {
   // provider is missing
   std::string result = GetMediaKey("key", "");
   ASSERT_EQ(result, "");
@@ -29,7 +29,7 @@ TEST(MediaHelperTest, GetMediaKey) {
   ASSERT_EQ(result, "youtube_key");
 }
 
-TEST(MediaHelperTest, ExtractData) {
+TEST_F(MediaHelperTest, ExtractData) {
   //  // string empty
   std::string result = ExtractData("", "/", "!");
   ASSERT_EQ(result, "");
