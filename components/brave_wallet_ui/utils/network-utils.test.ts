@@ -88,13 +88,13 @@ describe('getCoinFromTxDataUnion', () => {
 
 describe('getFilecoinKeyringIdFromNetwork', () => {
   it('Filecoin testnet', () => {
-    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.FILECOIN_TESTNET, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.FILECOIN_TESTNET_KEYRING_ID)
+    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.FILECOIN_TESTNET, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.KeyringId.kFilecoinTestnetKeyringId)
   })
   it('Filecoin localhost', () => {
-    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.LOCALHOST_CHAIN_ID, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.FILECOIN_TESTNET_KEYRING_ID)
+    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.LOCALHOST_CHAIN_ID, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.KeyringId.kFilecoinTestnetKeyringId)
   })
   it('Filecoin mainnet', () => {
-    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.FILECOIN_MAINNET, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.FILECOIN_KEYRING_ID)
+    expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.FILECOIN_MAINNET, coin: BraveWallet.CoinType.FIL } as BraveWallet.NetworkInfo)).toEqual(BraveWallet.KeyringId.kFilecoinKeyringId)
   })
   it('Non filecoin', () => {
     expect(getFilecoinKeyringIdFromNetwork({ chainId: BraveWallet.GOERLI_CHAIN_ID, coin: BraveWallet.CoinType.ETH } as BraveWallet.NetworkInfo)).toEqual(undefined)

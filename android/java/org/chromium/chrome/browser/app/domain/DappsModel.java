@@ -12,6 +12,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
@@ -202,11 +203,10 @@ public class DappsModel implements KeyringServiceObserver {
         _mWalletIconNotificationVisible.setValue(false);
     }
 
-    public void addAccountCreationRequest(String keyringId) {
-        if (keyringId == null) return;
+    public void addAccountCreationRequest(@CoinType.EnumType int coinType) {
         Utils.removeIf(mPendingWalletAccountCreationRequests,
-                request -> request.getKeyringId().equals(keyringId));
-        WalletAccountCreationRequest request = new WalletAccountCreationRequest(keyringId);
+                request -> request.getCoinType() == coinType);
+        WalletAccountCreationRequest request = new WalletAccountCreationRequest(coinType);
         mPendingWalletAccountCreationRequests.add(request);
         updatePendingAccountCreationRequest();
     }
@@ -293,10 +293,10 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringCreated(String keyringId) {}
+    public void keyringCreated(@KeyringId.EnumType int keyringId) {}
 
     @Override
-    public void keyringRestored(String keyringId) {}
+    public void keyringRestored(@KeyringId.EnumType int keyringId) {}
 
     @Override
     public void keyringReset() {}

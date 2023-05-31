@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
-  AccountId,
   BraveWallet,
   Origin,
   SerializableOrigin,
@@ -100,12 +99,12 @@ export type SitePermissionsPayloadType = {
 }
 
 export type RemoveSitePermissionPayloadType = {
-  accountId: AccountId
+  accountId: BraveWallet.AccountId
   origin: SerializableOrigin
 }
 
 export type AddSitePermissionPayloadType = {
-  accountId: AccountId
+  accountId: BraveWallet.AccountId
   origin: SerializableOrigin
 }
 

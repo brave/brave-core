@@ -11,9 +11,22 @@
 #include <vector>
 
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
+
+namespace mojom {
+// Remove these aliases eventually.
+constexpr KeyringId kFilecoinKeyringId = KeyringId::kFilecoinKeyringId;
+constexpr KeyringId kFilecoinTestnetKeyringId =
+    KeyringId::kFilecoinTestnetKeyringId;
+constexpr KeyringId kSolanaKeyringId = KeyringId::kSolanaKeyringId;
+constexpr KeyringId kDefaultKeyringId = KeyringId::kDefaultKeyringId;
+constexpr KeyringId kBitcoinKeyring84Id = KeyringId::kBitcoinKeyring84Id;
+constexpr KeyringId kBitcoinKeyring84TestId =
+    KeyringId::kBitcoinKeyring84TestId;
+}  // namespace mojom
 
 using uint256_t = unsigned _BitInt(256);
 using int256_t = _BitInt(256);

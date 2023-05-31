@@ -147,7 +147,7 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
                                       bool allow_provider_overwrite) {
   CHECK(coin_type == mojom::CoinType::ETH || coin_type == mojom::CoinType::SOL);
 
-  absl::optional<std::string> keyring_id =
+  const auto keyring_id =
       keyring_service_->GetKeyringIdForCoinNonFIL(coin_type);
   CHECK(keyring_id.has_value());
 
@@ -395,7 +395,7 @@ void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
 }
 
 // KeyringServiceObserver
-void BraveWalletP3A::KeyringCreated(const std::string& keyring_id) {
+void BraveWalletP3A::KeyringCreated(mojom::KeyringId keyring_id) {
   keyring_service_->GetKeyringInfo(keyring_id,
                                    base::BindOnce(&RecordKeyringCreated));
 }

@@ -33,13 +33,13 @@ class AccountDiscoveryManager {
  private:
   struct DiscoveryContext {
     DiscoveryContext(const mojom::CoinType& coin_type,
-                     const std::string& keyring_id,
+                     const mojom::KeyringId& keyring_id,
                      const std::string& chain_id,
                      size_t discovery_account_index,
                      int attempts_left);
     ~DiscoveryContext();
     mojom::CoinType coin_type;
-    std::string keyring_id;
+    mojom::KeyringId keyring_id;
     std::string chain_id;
     size_t discovery_account_index;
     int attempts_left;

@@ -98,7 +98,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           chainList.includes(token?.chainId ?? '')
       )
 
-      if (accountsLocalHost && (account.accountId.keyringId !== BraveWallet.FILECOIN_KEYRING_ID)) {
+      if (accountsLocalHost && (account.accountId.keyringId !== BraveWallet.KeyringId.kFilecoinKeyringId)) {
         list.push(accountsLocalHost)
         return list
       }

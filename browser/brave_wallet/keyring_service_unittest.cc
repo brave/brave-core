@@ -24,7 +24,9 @@
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/switches.h"
@@ -104,14 +106,8 @@ class TestKeyringServiceObserver : public mojom::KeyringServiceObserver {
   ~TestKeyringServiceObserver() override = default;
 
   MOCK_METHOD(void, AutoLockMinutesChanged, (), (override));
-  MOCK_METHOD(void,
-              KeyringCreated,
-              (const std::string& keyring_id),
-              (override));
-  MOCK_METHOD(void,
-              KeyringRestored,
-              (const std::string& keyring_id),
-              (override));
+  MOCK_METHOD(void, KeyringCreated, (mojom::KeyringId keyring_id), (override));
+  MOCK_METHOD(void, KeyringRestored, (mojom::KeyringId keyring_id), (override));
   MOCK_METHOD(void, KeyringReset, (), (override));
   MOCK_METHOD(void, Locked, (), (override));
   MOCK_METHOD(void, Unlocked, (), (override));
@@ -178,14 +174,14 @@ class KeyringServiceUnitTest : public testing::Test {
     return url_loader_factory_;
   }
 
-  bool HasPrefForKeyring(const std::string& key, const std::string& id) {
-    return KeyringService::HasPrefForKeyring(*GetPrefs(), key, id);
+  bool HasPrefForKeyring(const std::string& key, mojom::KeyringId keyring_id) {
+    return KeyringService::HasPrefForKeyring(*GetPrefs(), key, keyring_id);
   }
 
   std::string GetStringPrefForKeyring(const std::string& key,
-                                      const std::string& id) {
+                                      mojom::KeyringId keyring_id) {
     const base::Value* value =
-        KeyringService::GetPrefForKeyring(*GetPrefs(), key, id);
+        KeyringService::GetPrefForKeyring(*GetPrefs(), key, keyring_id);
     if (!value) {
       return std::string();
     }
@@ -194,7 +190,7 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   static bool IsKeyringInfoEmpty(KeyringService* service,
-                                 const std::string& keyring_id) {
+                                 mojom::KeyringId keyring_id) {
     base::RunLoop run_loop;
     bool result = false;
     service->GetKeyringInfo(
@@ -415,7 +411,7 @@ class KeyringServiceUnitTest : public testing::Test {
 
   static mojom::AccountInfoPtr AddAccount(KeyringService* service,
                                           mojom::CoinType coin,
-                                          const std::string& keyring_id,
+                                          mojom::KeyringId keyring_id,
                                           const std::string& name) {
     return service->AddAccountSync(coin, keyring_id, name);
   }
@@ -424,7 +420,7 @@ class KeyringServiceUnitTest : public testing::Test {
       KeyringService* service,
       const std::string& account_name,
       const std::string& network_id,
-      const std::string& keyring_id) {
+      mojom::KeyringId keyring_id) {
     mojom::AccountInfoPtr result;
     base::RunLoop run_loop;
     service->AddBitcoinAccount(
@@ -441,7 +437,7 @@ class KeyringServiceUnitTest : public testing::Test {
       KeyringService* service,
       TestKeyringServiceObserver* observer,
       const std::vector<ImportData>& imported_accounts,
-      const std::string& keyring_id) {
+      mojom::KeyringId keyring_id) {
     for (size_t i = 0; i < imported_accounts.size(); ++i) {
       if (i == 0) {
         EXPECT_CALL(*observer, KeyringCreated(keyring_id));
@@ -580,9 +576,11 @@ TEST_F(KeyringServiceUnitTest, HasAndGetPrefForKeyring) {
   ASSERT_NE(value, nullptr);
   EXPECT_EQ(value->GetString(), "123");
 
+  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolanaKeyringId;
+
   EXPECT_FALSE(
-      KeyringService::HasPrefForKeyring(*GetPrefs(), "pref1", "keyring2"));
-  EXPECT_EQ(KeyringService::GetPrefForKeyring(*GetPrefs(), "pref1", "keyring2"),
+      KeyringService::HasPrefForKeyring(*GetPrefs(), "pref1", keyring2));
+  EXPECT_EQ(KeyringService::GetPrefForKeyring(*GetPrefs(), "pref1", keyring2),
             nullptr);
 
   EXPECT_FALSE(KeyringService::HasPrefForKeyring(*GetPrefs(), "pref2",
@@ -668,18 +666,19 @@ TEST_F(KeyringServiceUnitTest, SetPrefInBytesForKeyring) {
 TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
   std::string encoded_nonce;
   std::string encoded_nonce2;
+  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolanaKeyringId;
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> nonce =
         service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId);
     encoded_nonce = base::Base64Encode(nonce);
     const std::vector<uint8_t> nonce2 =
-        service.GetOrCreateNonceForKeyring("keyring2");
+        service.GetOrCreateNonceForKeyring(keyring2);
     encoded_nonce2 = base::Base64Encode(nonce2);
     EXPECT_EQ(encoded_nonce, GetStringPrefForKeyring(kPasswordEncryptorNonce,
                                                      mojom::kDefaultKeyringId));
     EXPECT_EQ(encoded_nonce2,
-              GetStringPrefForKeyring(kPasswordEncryptorNonce, "keyring2"));
+              GetStringPrefForKeyring(kPasswordEncryptorNonce, keyring2));
   }
   {  // It should be the same nonce as long as the pref exists
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
@@ -687,12 +686,12 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
         service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId);
     EXPECT_EQ(base::Base64Encode(nonce), encoded_nonce);
     const std::vector<uint8_t> nonce2 =
-        service.GetOrCreateNonceForKeyring("keyring2");
+        service.GetOrCreateNonceForKeyring(keyring2);
     EXPECT_EQ(base::Base64Encode(nonce2), encoded_nonce2);
     EXPECT_EQ(encoded_nonce, GetStringPrefForKeyring(kPasswordEncryptorNonce,
                                                      mojom::kDefaultKeyringId));
     EXPECT_EQ(encoded_nonce2,
-              GetStringPrefForKeyring(kPasswordEncryptorNonce, "keyring2"));
+              GetStringPrefForKeyring(kPasswordEncryptorNonce, keyring2));
   }
   GetPrefs()->ClearPref(kBraveWalletKeyrings);
   {  // nonce should be different now
@@ -701,7 +700,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
         service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId);
     EXPECT_NE(base::Base64Encode(nonce), encoded_nonce);
     const std::vector<uint8_t> nonce2 =
-        service.GetOrCreateNonceForKeyring("keyring2");
+        service.GetOrCreateNonceForKeyring(keyring2);
     EXPECT_NE(base::Base64Encode(nonce2), encoded_nonce2);
   }
   {  // nonce should change after calling with force_reset
@@ -709,36 +708,37 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
     const std::vector<uint8_t> nonce =
         service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId);
     const std::vector<uint8_t> nonce2 =
-        service.GetOrCreateNonceForKeyring("keyring2");
+        service.GetOrCreateNonceForKeyring(keyring2);
 
     const std::vector<uint8_t> nonce_new =
         service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId, true);
     const std::vector<uint8_t> nonce2_new =
-        service.GetOrCreateNonceForKeyring("keyring2", true);
+        service.GetOrCreateNonceForKeyring(keyring2, true);
     EXPECT_NE(nonce, nonce_new);
     EXPECT_NE(nonce2, nonce2_new);
 
     EXPECT_EQ(nonce_new,
               service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId));
-    EXPECT_EQ(nonce2_new, service.GetOrCreateNonceForKeyring("keyring2"));
+    EXPECT_EQ(nonce2_new, service.GetOrCreateNonceForKeyring(keyring2));
   }
 }
 
 TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
   std::string encoded_salt;
   std::string encoded_salt2;
+  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolanaKeyringId;
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> salt =
         service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
     encoded_salt = base::Base64Encode(salt);
     const std::vector<uint8_t> salt2 =
-        service.GetOrCreateSaltForKeyring("keyring2");
+        service.GetOrCreateSaltForKeyring(keyring2);
     encoded_salt2 = base::Base64Encode(salt2);
     EXPECT_EQ(encoded_salt, GetStringPrefForKeyring(kPasswordEncryptorSalt,
                                                     mojom::kDefaultKeyringId));
     EXPECT_EQ(encoded_salt2,
-              GetStringPrefForKeyring(kPasswordEncryptorSalt, "keyring2"));
+              GetStringPrefForKeyring(kPasswordEncryptorSalt, keyring2));
   }
   {  // It should be the same salt as long as the pref exists
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
@@ -746,12 +746,12 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
         service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
     EXPECT_EQ(base::Base64Encode(salt), encoded_salt);
     const std::vector<uint8_t> salt2 =
-        service.GetOrCreateSaltForKeyring("keyring2");
+        service.GetOrCreateSaltForKeyring(keyring2);
     EXPECT_EQ(base::Base64Encode(salt2), encoded_salt2);
     EXPECT_EQ(encoded_salt, GetStringPrefForKeyring(kPasswordEncryptorSalt,
                                                     mojom::kDefaultKeyringId));
     EXPECT_EQ(encoded_salt2,
-              GetStringPrefForKeyring(kPasswordEncryptorSalt, "keyring2"));
+              GetStringPrefForKeyring(kPasswordEncryptorSalt, keyring2));
   }
   GetPrefs()->ClearPref(kBraveWalletKeyrings);
   {  // salt should be different now
@@ -760,7 +760,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
         service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
     EXPECT_NE(base::Base64Encode(salt), encoded_salt);
     const std::vector<uint8_t> salt2 =
-        service.GetOrCreateSaltForKeyring("keyring2");
+        service.GetOrCreateSaltForKeyring(keyring2);
     EXPECT_NE(base::Base64Encode(salt2), encoded_salt2);
   }
   {  // salt should change after calling with force_reset
@@ -768,48 +768,49 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
     const std::vector<uint8_t> salt =
         service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
     const std::vector<uint8_t> salt2 =
-        service.GetOrCreateSaltForKeyring("keyring2");
+        service.GetOrCreateSaltForKeyring(keyring2);
 
     const std::vector<uint8_t> salt_new =
         service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId, true);
     const std::vector<uint8_t> salt2_new =
-        service.GetOrCreateSaltForKeyring("keyring2", true);
+        service.GetOrCreateSaltForKeyring(keyring2, true);
     EXPECT_NE(salt, salt_new);
     EXPECT_NE(salt2, salt2_new);
 
     EXPECT_EQ(salt_new,
               service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId));
-    EXPECT_EQ(salt2_new, service.GetOrCreateSaltForKeyring("keyring2"));
+    EXPECT_EQ(salt2_new, service.GetOrCreateSaltForKeyring(keyring2));
   }
 }
 
 TEST_F(KeyringServiceUnitTest, CreateEncryptorForKeyring) {
   std::string encoded_salt;
   std::string encoded_salt2;
+  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolanaKeyringId;
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     EXPECT_TRUE(
         service.CreateEncryptorForKeyring("123", mojom::kDefaultKeyringId));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
-    EXPECT_TRUE(service.CreateEncryptorForKeyring("456", "keyring2"));
-    EXPECT_NE(service.encryptors_.at("keyring2"), nullptr);
-    EXPECT_NE(service.encryptors_.at("keyring2"),
+    EXPECT_TRUE(service.CreateEncryptorForKeyring("456", keyring2));
+    EXPECT_NE(service.encryptors_.at(keyring2), nullptr);
+    EXPECT_NE(service.encryptors_.at(keyring2),
               service.encryptors_.at(mojom::kDefaultKeyringId));
     encoded_salt = GetStringPrefForKeyring(kPasswordEncryptorSalt,
                                            mojom::kDefaultKeyringId);
     EXPECT_FALSE(encoded_salt.empty());
-    encoded_salt2 = GetStringPrefForKeyring(kPasswordEncryptorSalt, "keyring2");
+    encoded_salt2 = GetStringPrefForKeyring(kPasswordEncryptorSalt, keyring2);
     EXPECT_FALSE(encoded_salt2.empty());
   }
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     EXPECT_TRUE(
         service.CreateEncryptorForKeyring("123", mojom::kDefaultKeyringId));
-    EXPECT_TRUE(service.CreateEncryptorForKeyring("456", "keyring2"));
+    EXPECT_TRUE(service.CreateEncryptorForKeyring("456", keyring2));
     EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt,
                                       mojom::kDefaultKeyringId),
               encoded_salt);
-    EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, "keyring2"),
+    EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, keyring2),
               encoded_salt2);
   }
   {
@@ -817,7 +818,7 @@ TEST_F(KeyringServiceUnitTest, CreateEncryptorForKeyring) {
     EXPECT_FALSE(
         service.CreateEncryptorForKeyring("", mojom::kDefaultKeyringId));
     ASSERT_TRUE(service.encryptors_.empty());
-    EXPECT_FALSE(service.CreateEncryptorForKeyring("", "keyring2"));
+    EXPECT_FALSE(service.CreateEncryptorForKeyring("", keyring2));
     ASSERT_TRUE(service.encryptors_.empty());
   }
 }
@@ -1172,9 +1173,6 @@ TEST_F(KeyringServiceUnitTest, GetKeyringInfo) {
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
-
-  // invalid id or keyring is not yet created
-  EXPECT_TRUE(IsKeyringInfoEmpty(&service, "invalid_id"));
 }
 
 TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
@@ -2169,7 +2167,17 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   observer.WaitAndVerify();
 
   for (const auto& account : accounts) {
-    auto path = account->keyring_id + ".hardware." + account->device_id +
+    std::string keyring_id_pref_key;
+    if (account->keyring_id == mojom::kDefaultKeyringId) {
+      keyring_id_pref_key = "default";
+    } else if (account->keyring_id == mojom::kFilecoinKeyringId) {
+      keyring_id_pref_key = "filecoin";
+    } else if (account->keyring_id == mojom::kFilecoinTestnetKeyringId) {
+      keyring_id_pref_key = "filecoin_testnet";
+    } else if (account->keyring_id == mojom::kSolanaKeyringId) {
+      keyring_id_pref_key = "solana";
+    }
+    auto path = keyring_id_pref_key + ".hardware." + account->device_id +
                 ".account_metas." + account->address;
     ASSERT_TRUE(
         GetPrefs()->GetDict(kBraveWalletKeyrings).FindByDottedPath(path));
@@ -3063,7 +3071,7 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
     const char* name;
     const char* vendor;
     const char* device_id;
-    const char* keyring_id;
+    const mojom::KeyringId keyring_id;
     mojom::CoinType coin;
   } hardware_accounts[] = {
       {"0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
@@ -3920,8 +3928,7 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
         base::Unretained(this)));
   }
 
-  void PrepareAccounts(mojom::CoinType coin_type,
-                       const std::string& keyring_id) {
+  void PrepareAccounts(mojom::CoinType coin_type, mojom::KeyringId keyring_id) {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     saved_mnemonic_ = CreateWallet(&service, "brave").value_or("");
     EXPECT_FALSE(saved_mnemonic_.empty());

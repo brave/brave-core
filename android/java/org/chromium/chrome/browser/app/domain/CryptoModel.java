@@ -25,6 +25,7 @@ import org.chromium.brave_wallet.mojom.DecryptRequest;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
@@ -46,6 +47,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.mojo.bindings.Callbacks.Callback1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -206,11 +208,9 @@ public class CryptoModel {
                 coins.add(cryptoAccountTypeInfo.getCoinType());
             }
 
-            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
-                List<AccountInfo> accountInfos =
-                        WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-                new SelectedAccountResponsesCollector(
-                        mKeyringService, mBraveWalletService, coins, accountInfos)
+            mKeyringService.getAllAccounts(allAccounts -> {
+                new SelectedAccountResponsesCollector(mKeyringService, mBraveWalletService, coins,
+                        Arrays.asList(allAccounts.accounts))
                         .getAccounts(defaultAccountPerCoin -> {
                             mPendingTxHelper.setAccountInfos(
                                     new ArrayList<>(defaultAccountPerCoin));
@@ -385,20 +385,6 @@ public class CryptoModel {
         @Override
         public LiveData<Integer> getCoinTypeLd() {
             return mCoinTypeMutableLiveData;
-        }
-
-        @Override
-        public String[] getEnabledKeyrings() {
-            ArrayList<String> keyRings = new ArrayList<>();
-            keyRings.add(BraveWalletConstants.DEFAULT_KEYRING_ID);
-            if (isSolanaEnabled()) {
-                keyRings.add(BraveWalletConstants.SOLANA_KEYRING_ID);
-            }
-            if (isFilecoinEnabled()) {
-                keyRings.add(BraveWalletConstants.FILECOIN_KEYRING_ID);
-                keyRings.add(BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID);
-            }
-            return keyRings.toArray(new String[0]);
         }
 
         @Override

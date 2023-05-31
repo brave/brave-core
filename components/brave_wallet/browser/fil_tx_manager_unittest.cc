@@ -89,7 +89,7 @@ class FilTxManagerUnitTest : public testing::Test {
         mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId, "Account 1");
   }
 
-  std::string from(const std::string& keyring_id) {
+  std::string from(mojom::KeyringId keyring_id) {
     return keyring_service_->GetHDKeyringById(keyring_id)->GetAddress(0);
   }
 

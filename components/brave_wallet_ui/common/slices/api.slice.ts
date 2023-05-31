@@ -13,7 +13,6 @@ import type { WalletPageApiProxy } from '../../page/wallet_page_api_proxy'
 import { WalletPanelApiProxy } from '../../panel/wallet_panel_api_proxy'
 import {
   ApproveERC20Params,
-  BraveKeyrings,
   BraveWallet,
   CoinTypes,
   ER20TransferParams,
@@ -197,10 +196,6 @@ const accountInfoToAccountInfoEntity = (
 ): AccountInfoEntity => {
   return {
     ...info,
-    accountId: {
-      ...info.accountId,
-      keyringId: info.accountId.keyringId as BraveKeyrings
-    },
     accountType: getAccountType(info),
     deviceId: info.hardware ? info.hardware.deviceId : ''
   }

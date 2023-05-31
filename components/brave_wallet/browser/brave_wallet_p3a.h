@@ -82,7 +82,7 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
 
   // KeyringServiceObserverBase:
-  void KeyringCreated(const std::string& keyring_id) override;
+  void KeyringCreated(mojom::KeyringId keyring_id) override;
 
  private:
   void MigrateUsageProfilePrefsToLocalState();

@@ -7,9 +7,7 @@ import {
   BraveWallet,
   GetPriceHistoryReturnObjectInfo,
   AssetPriceWithContractAndChainId,
-  BitcoinKeyring,
   BitcoinNetwork,
-  BraveKeyrings
 } from '../../constants/types'
 
 export type CreateWalletPayloadType = {
@@ -18,14 +16,14 @@ export type CreateWalletPayloadType = {
 
 export type AddAccountPayloadType = {
   accountName: string
-  keyringId: BraveKeyrings
+  keyringId: BraveWallet.KeyringId
   coin: BraveWallet.CoinType
 }
 
 export type AddBitcoinAccountPayloadType = {
   accountName: string
   networkId: BitcoinNetwork
-  keyringId: BitcoinKeyring
+  keyringId: BraveWallet.KeyringId
 }
 
 export type ImportAccountPayloadType = {

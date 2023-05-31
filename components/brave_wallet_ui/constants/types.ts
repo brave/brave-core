@@ -20,17 +20,6 @@ interface TokenBalanceRegistry {
   [contractAddress: string]: string
 }
 
-// TODO(apaymyshev): there should be mojo KeyringId enum.
-const BraveKeyringsTypes = [
-  BraveWallet.DEFAULT_KEYRING_ID,
-  BraveWallet.FILECOIN_KEYRING_ID,
-  BraveWallet.FILECOIN_TESTNET_KEYRING_ID,
-  BraveWallet.SOLANA_KEYRING_ID,
-  BraveWallet.BITCOIN_KEYRING84_ID,
-  BraveWallet.BITCOIN_KEYRING84_TEST_ID
-] as const
-export type BraveKeyrings = (typeof BraveKeyringsTypes)[number]
-
 export const FilecoinNetworkTypes = [
   BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
 ] as const
@@ -42,14 +31,9 @@ export type WalletAccountTypeName =
   | 'Ledger'
   | 'Trezor'
 
-export interface AccountId extends Omit<BraveWallet.AccountId, 'keyringId'> {
-  keyringId: BraveKeyrings
-}
-
-export interface WalletAccountType
-  extends Omit<BraveWallet.AccountInfo, 'accountId'> {
+export interface WalletAccountType extends BraveWallet.AccountInfo {
   id: string
-  accountId: AccountId
+  accountId: BraveWallet.AccountId
   tokenBalanceRegistry: TokenBalanceRegistry
   nativeBalanceRegistry: TokenBalanceRegistry
   accountType: WalletAccountTypeName
@@ -718,7 +702,7 @@ export type TransactionPanelPayload = {
 }
 
 export type UpdateAccountNamePayloadType = {
-  accountId: AccountId
+  accountId: BraveWallet.AccountId
   name: string
 }
 
@@ -1080,11 +1064,6 @@ export type DAppPermissionDurationOption = {
 export type DAppConnectedPermissionsOption = {
   name: string
 }
-
-const BitcoinKeyringTypes = [
-  BraveWallet.BITCOIN_KEYRING84_ID, BraveWallet.BITCOIN_KEYRING84_TEST_ID
-] as const
-export type BitcoinKeyring = typeof BitcoinKeyringTypes[number]
 
 const BitcoinNetworkTypes = [
   BraveWallet.BITCOIN_MAINNET, BraveWallet.BITCOIN_TESTNET

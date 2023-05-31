@@ -42,16 +42,16 @@ class BitcoinWalletService : public KeyedService,
   void Bind(mojo::PendingReceiver<mojom::BitcoinWalletService> receiver);
 
   void GetBitcoinAccountInfo(const std::string& network_id,
-                             const std::string& keyring_id,
+                             mojom::KeyringId keyring_id,
                              uint32_t account_index,
                              GetBitcoinAccountInfoCallback callback) override;
   mojom::BitcoinAccountInfoPtr GetBitcoinAccountInfoSync(
       const std::string& network_id,
-      const std::string& keyring_id,
+      mojom::KeyringId keyring_id,
       uint32_t account_index);
 
   void SendTo(const std::string& network_id,
-              const std::string& keyring_id,
+              mojom::KeyringId keyring_id,
               uint32_t account_index,
               const std::string& address_to,
               uint64_t amount,
@@ -65,11 +65,11 @@ class BitcoinWalletService : public KeyedService,
   void AccountsAdded(std::vector<mojom::AccountInfoPtr> accounts) override;
 
   void StartDatabaseSynchronizer(const std::string& network_id,
-                                 const std::string& keyring_id,
+                                 mojom::KeyringId keyring_id,
                                  uint32_t account_index);
 
   absl::optional<std::string> GetUnusedChangeAddress(
-      const std::string& keyring_id,
+      mojom::KeyringId keyring_id,
       uint32_t account_index);
 
   bool FillUtxoList(SendToContext& context);

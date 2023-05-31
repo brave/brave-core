@@ -2,7 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { BraveKeyrings, BraveWallet } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { getCoinName } from '../../api/hardware_keyrings'
 import { LedgerFilecoinKeyring } from '../interfaces'
 import {
@@ -65,10 +65,10 @@ export default class FilecoinLedgerBridgeKeyring extends LedgerBridgeKeyring imp
     return BraveWallet.CoinType.FIL
   }
 
-  keyringId = (network: FilecoinNetwork): BraveKeyrings => {
+  keyringId = (network: FilecoinNetwork): BraveWallet.KeyringId => {
     return network === BraveWallet.FILECOIN_MAINNET
-      ? BraveWallet.FILECOIN_KEYRING_ID
-      : BraveWallet.FILECOIN_TESTNET_KEYRING_ID
+      ? BraveWallet.KeyringId.kFilecoinKeyringId
+      : BraveWallet.KeyringId.kFilecoinTestnetKeyringId
   }
 
   signTransaction = async (message: string): Promise<SignHardwareOperationResult> => {
