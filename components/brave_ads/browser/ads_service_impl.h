@@ -144,6 +144,8 @@ class AdsServiceImpl : public AdsService,
 
   void InitializePrefChangeRegistrar();
   void OnEnabledPrefChanged();
+  void OnEnabledPrefChangedCallback(
+      brave_rewards::mojom::RewardsWalletPtr wallet);
   void OnIdleTimeThresholdPrefChanged();
   void OnBraveNewsOptedInPrefChanged();
   void OnNewTabPageShowTodayPrefChanged();

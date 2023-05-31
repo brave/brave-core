@@ -21,6 +21,7 @@
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/supported_subdivisions.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
@@ -951,15 +952,15 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
 
-  if (!rewards_service || !ads_service) {
+  if (!rewards_service) {
     return RespondNow(Error("Service is not initialized"));
   }
 
   if (params->key == "adsEnabled") {
-    ads_service->SetEnabled(params->value == "true" &&
-                            brave_ads::IsSupportedRegion());
+    profile->GetPrefs()->SetBoolean(
+        brave_ads::prefs::kEnabled,
+        params->value == "true" && brave_ads::IsSupportedRegion());
   }
 
   return RespondNow(NoArguments());
@@ -1460,9 +1461,7 @@ BraveRewardsEnableAdsFunction::~BraveRewardsEnableAdsFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsEnableAdsFunction::Run() {
   auto* profile = Profile::FromBrowserContext(browser_context());
-  if (auto* ads_service = AdsServiceFactory::GetForProfile(profile)) {
-    ads_service->SetEnabled(true);
-  }
+  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kEnabled, true);
   return RespondNow(NoArguments());
 }
 
@@ -1527,8 +1526,9 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
 
   if (ads_service) {
     auto& ads_enabled = params->prefs.ads_enabled;
-    if (ads_enabled)
-      ads_service->SetEnabled(*ads_enabled);
+    if (ads_enabled) {
+      profile->GetPrefs()->SetBoolean(brave_ads::prefs::kEnabled, *ads_enabled);
+    }
 
     auto& ads_per_hour = params->prefs.ads_per_hour;
     if (ads_per_hour)

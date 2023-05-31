@@ -691,7 +691,21 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
 
   MaybeStartBatAdsService();
 
-  NotifyPrefChanged(prefs::kEnabled);
+  if (ShouldRewardUser()) {
+    rewards_service_->GetRewardsWallet(base::BindOnce(
+        &AdsServiceImpl::OnEnabledPrefChangedCallback, AsWeakPtr()));
+  } else {
+    NotifyPrefChanged(prefs::kEnabled);
+  }
+}
+
+void AdsServiceImpl::OnEnabledPrefChangedCallback(
+    brave_rewards::mojom::RewardsWalletPtr wallet) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyRewardsWalletDidUpdate(
+        wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
+    NotifyPrefChanged(prefs::kEnabled);
+  }
 }
 
 void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
