@@ -118,8 +118,8 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
         mCoinMarkets.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMarketModel.getCoinMarkets(this);
 
-        int totalRow = getTotalRow(mSingleItemShimmer, mShimmerCardView);
-        for (int i = 1; i < totalRow; i++) {
+        final int visibleShimmerItems = getVisibleShimmerItems(mSingleItemShimmer, mShimmerCardView);
+        for (int i = 1; i < visibleShimmerItems; i++) {
             LayoutInflater.from(requireContext())
                     .inflate(R.layout.brave_wallet_divider, mShimmerListContainer, true);
             LayoutInflater.from(requireContext())
@@ -129,7 +129,7 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
         return mRootView;
     }
 
-    private int getTotalRow(final ViewGroup mSingleItemShimmer, final CardView shimmerCardView) {
+    private int getVisibleShimmerItems(final ViewGroup mSingleItemShimmer, final CardView shimmerCardView) {
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 
