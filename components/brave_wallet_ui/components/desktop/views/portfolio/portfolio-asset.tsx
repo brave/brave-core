@@ -150,7 +150,7 @@ export const PortfolioAsset = (props: Props) => {
   // memos
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    const amounts = accounts.filter((account) => account.coin === asset.coin).map((account) =>
+    const amounts = accounts.filter((account) => account.accountId.coin === asset.coin).map((account) =>
       getBalance(account, asset))
 
     // If a user has not yet created a FIL or SOL account,

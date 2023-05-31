@@ -30,9 +30,8 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 
 // types
 import {
-  BraveKeyrings,
+  AccountId,
   BraveWallet,
-  UpdateAccountNamePayloadType
 } from '../../../../constants/types'
 
 // components
@@ -92,14 +91,10 @@ export const AccountSettingsModal = () => {
 
   // methods
   const onViewPrivateKey = React.useCallback(async (
-    coin: BraveWallet.CoinType,
-    keyringId: BraveKeyrings,
-    address: string,
+    accountId: AccountId
   ) => {
     const { privateKey } = await keyringService.encodePrivateKeyForExport(
-      coin,
-      keyringId,
-      address,
+      accountId,
       password
     )
     if (isMounted) {
@@ -122,18 +117,17 @@ export const AccountSettingsModal = () => {
   }
 
   const onSubmitUpdateName = React.useCallback(() => {
-    if (selectedAccount) {
-      const isDerived = selectedAccount.accountType === 'Primary'
-      const payload: UpdateAccountNamePayloadType = {
-        coin: selectedAccount.coin,
-        keyringId: selectedAccount.keyringId,
-        address: selectedAccount.address,
-        name: accountName,
-        isDerived: isDerived
-      }
-      const result = dispatch(WalletPageActions.updateAccountName(payload))
-      return result ? onClose() : setUpdateError(true)
+    if (!selectedAccount || !accountName) {
+      return
     }
+
+    const result = dispatch(
+      WalletPageActions.updateAccountName({
+        accountId: selectedAccount.accountId,
+        name: accountName
+      })
+    )
+    return result ? onClose() : setUpdateError(true)
   }, [selectedAccount, accountName, dispatch, onClose])
 
   const generateQRData = React.useCallback(() => {
@@ -163,11 +157,7 @@ export const AccountSettingsModal = () => {
     setPassword('')
     setIsCorrectPassword(true)
 
-    onViewPrivateKey(
-      selectedAccount?.coin,
-      selectedAccount?.keyringId ?? '',
-      selectedAccount?.address ?? ''
-    )
+    onViewPrivateKey(selectedAccount.accountId)
   }
 
   const onHidePrivateKey = () => {
@@ -267,7 +257,7 @@ export const AccountSettingsModal = () => {
             </WarningWrapper>
             {privateKey
               ? <>
-                {selectedAccount?.coin === BraveWallet.CoinType.FIL &&
+                {selectedAccount?.accountId.coin === BraveWallet.CoinType.FIL &&
                   <WarningWrapper>
                     <WarningText>
                       {filPrivateKeyFormatDescriptionTextParts.beforeTag}

@@ -90,15 +90,9 @@ class SolanaTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void AddAccount() {
-    base::RunLoop run_loop;
-    keyring_service_->AddAccount(
-        "New Account", mojom::CoinType::SOL,
-        base::BindLambdaForTesting([&run_loop](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+  mojom::AccountInfoPtr AddAccount() {
+    return keyring_service_->AddAccountSync(
+        mojom::CoinType::SOL, mojom::kSolanaKeyringId, "New Account");
   }
 
   void SetInterceptor(const std::string& latest_blockhash,

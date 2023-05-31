@@ -301,7 +301,8 @@ function AccountListItem({
   const { data: balanceResult, isFetching: isLoadingBalance } =
     useGetAccountTokenCurrentBalanceQuery(
       {
-        account,
+        coin: account.coin,
+        address: account.address,
         token: {
           chainId: balanceAsset?.chainId || '',
           contractAddress: balanceAsset?.contractAddress || '',

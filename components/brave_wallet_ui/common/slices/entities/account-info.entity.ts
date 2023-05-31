@@ -9,7 +9,7 @@ import {
   EntityId
 } from '@reduxjs/toolkit'
 
-import { BraveWallet, WalletAccountTypeName } from '../../../constants/types'
+import { AccountId, BraveWallet, WalletAccountTypeName } from '../../../constants/types'
 import { RootStoreState } from '../../../page/store'
 import { getAccountId } from '../../../utils/account-utils'
 import { walletApi } from '../api.slice'
@@ -18,7 +18,8 @@ import {
   makeSelectEntityByIdFromRegistryQuery
 } from './entity.selectors'
 
-export type AccountInfoEntity = BraveWallet.AccountInfo & {
+export type AccountInfoEntity = Omit<BraveWallet.AccountInfo, 'accountId'> & {
+  accountId: AccountId
   accountType: WalletAccountTypeName
   deviceId: Exclude<BraveWallet.AccountInfo['hardware'], undefined>['deviceId']
 }

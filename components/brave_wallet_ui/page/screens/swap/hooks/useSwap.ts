@@ -89,7 +89,7 @@ export const useSwap = () => {
   const [getAccountTokenCurrentBalanceLazy] = useLazyGetAccountTokenCurrentBalanceQuery()
   const getBalance = useCallback(
     async (account: AccountInfoEntity, token: BraveWallet.BlockchainToken) => {
-      return await getAccountTokenCurrentBalanceLazy({ account, token }).unwrap()
+      return await getAccountTokenCurrentBalanceLazy({ coin: account.accountId.coin, address: account.address, token }).unwrap()
     },
     [getAccountTokenCurrentBalanceLazy]
   )
@@ -299,8 +299,8 @@ export const useSwap = () => {
 
       const { network, account } = overriddenParams
       const networkAccount =
-        account.coin !== network.coin
-          ? accounts.find(account => account.coin === network.coin)
+        account.accountId.coin !== network.coin
+          ? accounts.find(account => account.accountId.coin === network.coin)
           : account
       if (!networkAccount) {
         return

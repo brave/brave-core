@@ -216,7 +216,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   // memos
   const preAddedHardwareWalletAccounts = React.useMemo(() => {
     return savedAccounts.filter(account =>
-      ['Ledger', 'Trezor'].includes(account.accountType)
+      account.accountId.kind === BraveWallet.AccountKind.kHardware
     )
   }, [savedAccounts])
 

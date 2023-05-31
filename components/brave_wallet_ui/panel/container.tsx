@@ -331,7 +331,7 @@ function Container () {
             onCancel={onCancelConnectHardwareWallet}
             walletName={selectedAccount.name}
             accountAddress={selectedAccount.address}
-            coinType={selectedAccount.coin}
+            coinType={selectedAccount.accountId.coin}
             hardwareWalletCode={hardwareWalletCode}
             onClickInstructions={onClickInstructions}
           />

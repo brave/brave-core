@@ -103,7 +103,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                             allTxMultiResponse.singleResponseComplete, accountInfo.name);
             allTxContexts.add(allTxContext);
             mTxService.getAllTransactionInfo(
-                    accountInfo.coin, null, accountInfo.address, allTxContext);
+                    accountInfo.accountId.coin, null, accountInfo.address, allTxContext);
         }
         allTxMultiResponse.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {

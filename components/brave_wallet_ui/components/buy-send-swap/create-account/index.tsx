@@ -29,6 +29,7 @@ import { LockPanel } from '../../extension/lock-panel'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { suggestNewAccountName } from '../../../utils/address-utils'
+import { keyringIdForNewAccount } from '../../../utils/account-utils'
 
 // Styled Components
 import {
@@ -36,7 +37,6 @@ import {
   Description,
   ButtonRow
 } from './style'
-
 
 export interface Props {
   isPanel?: boolean
@@ -102,17 +102,16 @@ export const CreateAccountTab = ({
       return
     }
 
-    if (accountNetwork.coin === BraveWallet.CoinType.FIL) {
-      dispatch(WalletActions.addFilecoinAccount({
-        accountName: suggestedAccountName,
-        network: accountNetwork.chainId === BraveWallet.FILECOIN_TESTNET ? BraveWallet.FILECOIN_TESTNET : BraveWallet.FILECOIN_MAINNET
-      }))
-    } else {
-      dispatch(WalletActions.addAccount({
-        accountName: suggestedAccountName,
-        coin: accountNetwork.coin
-      }))
-    }
+    dispatch(
+      WalletActions.addAccount({
+        coin: accountNetwork.coin,
+        keyringId: keyringIdForNewAccount(
+          accountNetwork.coin,
+          accountNetwork.chainId
+        ),
+        accountName: suggestedAccountName
+      })
+    )
 
     if (isPanel) {
       dispatch(PanelActions.navigateTo('main'))

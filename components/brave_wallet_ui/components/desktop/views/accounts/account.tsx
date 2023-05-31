@@ -108,7 +108,7 @@ export const Account = ({
       ? {
           address: selectedAccount.address,
           chainId: null,
-          coinType: selectedAccount.coin
+          coinType: selectedAccount.accountId.coin
         }
       : skipToken,
     { skip: !selectedAccount }
@@ -156,13 +156,13 @@ export const Account = ({
     const hasLocalHostNetwork = networkList.some(
       (network) =>
         network.chainId === BraveWallet.LOCALHOST_CHAIN_ID
-        && network.coin === selectedAccount.coin
+        && network.coin === selectedAccount.accountId.coin
     )
-    const coinName = CoinTypesMap[selectedAccount?.coin ?? 0]
+    const coinName = CoinTypesMap[selectedAccount.accountId.coin]
     const localHostCoins = userVisibleTokensInfo.filter((token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
     const accountsLocalHost = localHostCoins.find((token) => token.symbol.toUpperCase() === coinName)
-    const chainList = networkList.filter((network) => network.coin === selectedAccount?.coin &&
-      (network.coin !== BraveWallet.CoinType.FIL || getFilecoinKeyringIdFromNetwork(network) === selectedAccount?.keyringId)).map((network) => network.chainId) ?? []
+    const chainList = networkList.filter((network) => network.coin === selectedAccount.accountId.coin &&
+      (network.coin !== BraveWallet.CoinType.FIL || getFilecoinKeyringIdFromNetwork(network) === selectedAccount.accountId.keyringId)).map((network) => network.chainId) ?? []
     const list =
       userVisibleTokensInfo.filter((token) => chainList.includes(token?.chainId ?? '') &&
         token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID) ?? []
@@ -170,7 +170,7 @@ export const Account = ({
       accountsLocalHost &&
       hasLocalHostNetwork &&
       (
-        selectedAccount.keyringId !==
+        selectedAccount.accountId.keyringId !==
         BraveWallet.FILECOIN_KEYRING_ID
       )
     ) {
@@ -192,7 +192,11 @@ export const Account = ({
   )
 
   const isHardwareWallet: boolean = React.useMemo(() => {
-    return selectedAccount?.accountType === 'Trezor' || selectedAccount?.accountType === 'Ledger'
+    if (!selectedAccount) {
+      return false
+    }
+
+    return selectedAccount.accountId.kind === BraveWallet.AccountKind.kHardware
   }, [selectedAccount])
 
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
@@ -213,10 +217,7 @@ export const Account = ({
     if (selectedAccount) {
       dispatch(
         AccountsTabActions.setAccountToRemove({
-          coin: selectedAccount.coin,
-          keyringId: selectedAccount.keyringId,
-          address: selectedAccount.address,
-          hardware: isHardwareWallet,
+          accountId: selectedAccount.accountId,
           name: selectedAccount.name
         })
       )

@@ -151,7 +151,7 @@ export const TransactionsScreen: React.FC = () => {
       foundAccountFromParam
         ? {
             address: foundAccountFromParam.address,
-            coinType: foundAccountFromParam.coin,
+            coinType: foundAccountFromParam.accountId.coin,
             chainId: chainId !== AllNetworksOption.chainId ? chainId : null
           }
         : {
@@ -209,13 +209,13 @@ export const TransactionsScreen: React.FC = () => {
 
   // methods
   const onSelectAccount = React.useCallback(
-    ({ address, coin }: WalletAccountType): void => {
+    ({ accountId }: WalletAccountType): void => {
       history.push(
         updatePageParams({
-          address: address || undefined,
+          address: accountId.address,
           // reset chains filter on account select
           chainId: AllNetworksOption.chainId,
-          chainCoinType: coin
+          chainCoinType: accountId.coin
         })
       )
     },

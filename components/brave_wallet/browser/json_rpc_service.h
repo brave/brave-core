@@ -21,7 +21,6 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
-#include "brave/components/brave_wallet/browser/nft_metadata_fetcher.h"
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"

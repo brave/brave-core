@@ -87,7 +87,7 @@ export const AccountFilterSelector = ({
   const accountsFilteredBySelectedNetworkFilter: WalletAccountType[] = React.useMemo(() => {
     return selectedNetwork.chainId === AllNetworksOption.chainId
       ? accounts
-      : accounts.filter((account) => account.coin === selectedNetwork.coin)
+      : accounts.filter((account) => account.accountId.coin === selectedNetwork.coin)
   }, [accounts, selectedNetwork])
 
   const accountsList: WalletAccountType[] = React.useMemo(() => {

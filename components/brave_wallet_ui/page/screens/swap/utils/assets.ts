@@ -9,8 +9,8 @@ export const getBalanceRegistryKey = (
   chainId: string,
   contract: string
 ) => {
-  return `${account.address.toLocaleLowerCase() //
-    }-${account.coin //
+  return `${account.accountId.address.toLocaleLowerCase() //
+    }-${account.accountId.coin //
     }-${chainId //
     }-${contract.toLowerCase()}`
 }

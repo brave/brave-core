@@ -151,12 +151,8 @@ public class Utils {
     public static final String ENS_OFFCHAIN_LEARN_MORE_URL =
             "https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
     public static final String BRAVE_SUPPORT_URL = "https://support.brave.com";
-    public static final String ADDRESS = "address";
     public static final String NAME = "name";
-    public static final String KEYRING_ID = "keyringId";
     public static final String COIN_TYPE = "coinType";
-    public static final String ISIMPORTED = "isImported";
-    public static final String ISUPDATEACCOUNT = "isUpdateAccount";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
     public static final String ASSET_SYMBOL = "assetSymbol";
     public static final String ASSET_NAME = "assetName";

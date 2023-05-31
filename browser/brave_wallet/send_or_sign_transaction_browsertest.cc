@@ -7,6 +7,7 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -240,6 +241,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
           run_loop.Quit();
         }));
     run_loop.Run();
+
+    default_account_ =
+        keyring_service_->GetAllAccountsSync()->accounts[0]->Clone();
+    EXPECT_EQ(base::ToLowerASCII(default_account_->address),
+              "0x084dcb94038af1715963f149079ce011c4b22961");
   }
 
   void LockWallet() {
@@ -262,23 +268,15 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     base::RunLoop().RunUntilIdle();
   }
 
-  void AddAccount(const std::string& account_name) {
-    base::RunLoop run_loop;
-    keyring_service_->AddAccount(account_name, mojom::CoinType::ETH,
-                                 base::BindLambdaForTesting([&](bool success) {
-                                   ASSERT_TRUE(success);
-                                   run_loop.Quit();
-                                 }));
-    run_loop.Run();
+  mojom::AccountInfoPtr AddAccount(const std::string& account_name) {
+    return keyring_service_->AddAccountSync(
+        mojom::CoinType::ETH, mojom::kDefaultKeyringId, account_name);
   }
 
-  void SetSelectedAccount(mojom::CoinType coin,
-                          const std::string& keyring_id,
-                          const std::string& address) {
+  void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        coin, keyring_id, address,
-        base::BindLambdaForTesting([&](bool success) {
+        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
           run_loop.Quit();
         }));
@@ -338,9 +336,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     std::string expected_address = "undefined";
     if (granted) {
       permissions::BraveWalletPermissionContext::AcceptOrCancel(
-          std::vector<std::string>{from()},
+          std::vector<std::string>{default_account()->address},
           mojom::PermissionLifetimeOption::kForever, web_contents());
-      expected_address = from();
+      expected_address = base::ToLowerASCII(default_account()->address);
     } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
     }
@@ -355,14 +353,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
               expected_address);
   }
 
-  void AddEthereumPermission(const url::Origin& origin, size_t from_index = 0) {
-    AddEthereumPermission(origin, from(from_index));
-  }
   void AddEthereumPermission(const url::Origin& origin,
-                             const std::string& address) {
+                             const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
     brave_wallet_service_->AddPermission(
-        mojom::CoinType::ETH, origin, address,
+        account_id.Clone(), origin,
         base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
@@ -370,14 +365,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  std::string from(size_t index = 0) {
-    if (index == 0) {
-      return "0x084dcb94038af1715963f149079ce011c4b22961";
-    }
-    if (index == 1) {
-      return "0xe60a2209372af1049c4848b1bf0136258c35f268";
-    }
-    return "";
+  const mojom::AccountInfoPtr& default_account() const {
+    return default_account_;
   }
 
   void ApproveTransaction(const std::string& chain_id,
@@ -452,8 +441,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
     auto infos = GetAllTransactionInfo(chain_id);
     ASSERT_EQ(1UL, infos.size());
-    EXPECT_TRUE(
-        base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
+    EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(default_account()->address,
+                                                 infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
     EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.com")),
               infos[0]->origin_info);
@@ -466,8 +455,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
     infos = GetAllTransactionInfo(chain_id);
     EXPECT_EQ(1UL, infos.size());
-    EXPECT_TRUE(
-        base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
+    EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(default_account()->address,
+                                                 infos[0]->from_address));
     if (sign_only) {
       EXPECT_EQ(mojom::TransactionStatus::Signed, infos[0]->tx_status);
     } else {
@@ -519,8 +508,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
     auto infos = GetAllTransactionInfo(chain_id);
     EXPECT_EQ(1UL, infos.size());
-    EXPECT_TRUE(
-        base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
+    EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(default_account()->address,
+                                                 infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
     EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.com")),
               infos[0]->origin_info);
@@ -533,8 +522,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
     infos = GetAllTransactionInfo(chain_id);
     EXPECT_EQ(1UL, infos.size());
-    EXPECT_TRUE(
-        base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
+    EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(default_account()->address,
+                                                 infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Rejected, infos[0]->tx_status);
     EXPECT_TRUE(infos[0]->tx_hash.empty());
     ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
@@ -555,7 +544,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
     tx_service_->GetAllTransactionInfo(
-        mojom::CoinType::ETH, chain_id, from(),
+        mojom::CoinType::ETH, chain_id, default_account()->address,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::TransactionInfoPtr> v) {
               transaction_infos = std::move(v);
@@ -632,6 +621,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
  protected:
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  mojom::AccountInfoPtr default_account_;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
@@ -867,7 +857,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NoEthPermission) {
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, SelectedAddress) {
   RestoreWallet();
-  AddAccount("account 2");
+  auto added_account = AddAccount("account 2");
   GURL url = https_server_for_files()->GetURL("a.com",
                                               "/send_or_sign_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -879,7 +869,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, SelectedAddress) {
   EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),
-            from());
+            base::ToLowerASCII(default_account()->address));
 
   // Locking the wallet makes the selectedAddress property undefined
   LockWallet();
@@ -893,25 +883,25 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, SelectedAddress) {
   EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),
-            from());
+            base::ToLowerASCII(default_account()->address));
 
   // Changing the selected account doesn't change selectedAddress property
   // because it's not allowed yet.
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(1));
+  SetSelectedAccount(added_account->account_id);
   EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),
-            from());
+            base::ToLowerASCII(default_account()->address));
 
   // But it does update the selectedAddress if the account is allowed
-  AddEthereumPermission(url::Origin::Create(url), 1);
+  AddEthereumPermission(url::Origin::Create(url), added_account->account_id);
   // Wait for KeyringService::GetSelectedAccount called by
   // BraveWalletProviderDelegateImpl::GetAllowedAccounts
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),
-            from(1));
+            base::ToLowerASCII(added_account->address));
 }
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NetworkVersion) {

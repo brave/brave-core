@@ -79,16 +79,16 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       // Since LOCALHOST's chainId is shared between coinType's
       // this check will make sure we are returning the correct
       // LOCALHOST asset for each account.
-      const coinName = CoinTypesMap[account?.coin ?? 0]
+      const coinName = CoinTypesMap[account.accountId.coin]
       const localHostCoins = userVisibleTokensInfo.filter((token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
       const accountsLocalHost = localHostCoins.find((token) => token.symbol.toUpperCase() === coinName)
 
       const chainList = networks
         .filter(
           (network) =>
-            network.coin === account?.coin &&
+            network.coin === account.accountId.coin &&
             (network.coin !== BraveWallet.CoinType.FIL ||
-              getFilecoinKeyringIdFromNetwork(network) === account?.keyringId)
+              getFilecoinKeyringIdFromNetwork(network) === account.accountId.keyringId)
         )
         .map((network) => network.chainId)
 
@@ -98,7 +98,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           chainList.includes(token?.chainId ?? '')
       )
 
-      if (accountsLocalHost && (account.keyringId !== BraveWallet.FILECOIN_KEYRING_ID)) {
+      if (accountsLocalHost && (account.accountId.keyringId !== BraveWallet.FILECOIN_KEYRING_ID)) {
         list.push(accountsLocalHost)
         return list
       }

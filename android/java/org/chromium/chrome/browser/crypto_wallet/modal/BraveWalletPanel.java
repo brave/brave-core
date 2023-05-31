@@ -100,7 +100,7 @@ public class BraveWalletPanel implements DialogInterface {
         }
         mSelectedAccount = accountInfo;
         mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
-                mSelectedAccount.keyringId, keyringInfo -> {
+                mSelectedAccount.accountId.keyringId, keyringInfo -> {
                     if (keyringInfo != null) {
                         mAccountInfos = keyringInfo.accountInfos;
                     }
@@ -218,7 +218,9 @@ public class BraveWalletPanel implements DialogInterface {
         } else if (item.getItemId() == R.id.action_view_on_block_explorer) {
             try {
                 BraveActivity activity = BraveActivity.getBraveActivity();
-                activity.viewOnBlockExplorer(mSelectedAccount.address, mSelectedAccount.coin);
+                // TODO(apaymyshev): address might be null for bitcoin?
+                activity.viewOnBlockExplorer(
+                        mSelectedAccount.address, mSelectedAccount.accountId.coin);
                 dismiss();
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "handleMenuItemClick action_view_on_block_explorer " + e);
@@ -294,7 +296,7 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void updateAccountConnected(AccountInfo selectedAccount) {
-        if (CoinType.SOL == selectedAccount.coin) {
+        if (CoinType.SOL == selectedAccount.accountId.coin) {
             if (mAccountsWithPermissions.size() == 0) {
                 mBtnConnectedStatus.setText("");
                 mBtnConnectedStatus.setVisibility(View.GONE);
@@ -377,7 +379,7 @@ public class BraveWalletPanel implements DialogInterface {
             return;
         }
         mBraveWalletPanelServices.getJsonRpcService().getNetwork(
-                selectedAccount.coin, null, selectedNetwork -> {
+                selectedAccount.accountId.coin, null, selectedNetwork -> {
                     BlockchainToken asset = Utils.makeNetworkAsset(selectedNetwork);
                     AssetsPricesHelper.fetchPrices(mBraveWalletPanelServices.getAssetRatioService(),
                             new BlockchainToken[] {asset}, assetPrices -> {

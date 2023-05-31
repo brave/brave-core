@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/cxx20_erase_vector.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
@@ -296,23 +297,20 @@ class EthereumProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void AddAccount() {
-    base::RunLoop run_loop;
-    keyring_service_->AddAccount(
-        "New Account", mojom::CoinType::ETH,
-        base::BindLambdaForTesting([&run_loop](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+  mojom::AccountInfoPtr AddAccount() {
+    return keyring_service_->AddAccountSync(
+        mojom::CoinType::ETH, mojom::kDefaultKeyringId, "New Account");
   }
-  void AddHardwareAccount(const std::string& address) {
+
+  mojom::AccountInfoPtr AddHardwareAccount(const std::string& address) {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
         address, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
         mojom::CoinType::ETH, mojom::kDefaultKeyringId));
 
-    keyring_service_->AddHardwareAccounts(std::move(hw_accounts));
+    auto added_accounts =
+        keyring_service_->AddHardwareAccountsSync(std::move(hw_accounts));
+    return std::move(added_accounts[0]);
   }
 
   void Unlock() {
@@ -330,13 +328,10 @@ class EthereumProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
   }
 
-  void SetSelectedAccount(mojom::CoinType coin,
-                          const std::string& keyring_id,
-                          const std::string& address) {
+  void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        coin, keyring_id, address,
-        base::BindLambdaForTesting([&](bool success) {
+        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));
@@ -447,11 +442,16 @@ class EthereumProviderImplUnitTest : public testing::Test {
   JsonRpcService* json_rpc_service() { return json_rpc_service_; }
   KeyringService* keyring_service() { return keyring_service_; }
   EthereumProviderImpl* provider() { return provider_.get(); }
-  std::string from(size_t from_index = 0) {
+  mojom::AccountIdPtr from_account_id(size_t from_index = 0) {
     CHECK(!keyring_service_->IsLockedSync());
-    return keyring_service()
-        ->GetHDKeyringById(mojom::kDefaultKeyringId)
-        ->GetAddress(from_index);
+    auto all_accounts = keyring_service()->GetAllAccountsSync();
+    base::EraseIf(all_accounts->accounts, [&](auto& account) {
+      return account->account_id->coin != mojom::CoinType::ETH;
+    });
+    return all_accounts->accounts[from_index]->account_id.Clone();
+  }
+  std::string from(size_t from_index = 0) {
+    return from_account_id(from_index)->address;
   }
   std::string from_lower(size_t from_index = 0) {
     return base::ToLowerASCII(from(from_index));
@@ -479,13 +479,13 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void AddEthereumPermission(const url::Origin& origin, size_t from_index = 0) {
-    AddEthereumPermission(GetOrigin(), from(from_index));
+    AddEthereumPermission(origin, from_account_id(from_index));
   }
   void AddEthereumPermission(const url::Origin& origin,
-                             const std::string& address) {
+                             const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
     brave_wallet_service_->AddPermission(
-        mojom::CoinType::ETH, origin, address,
+        account_id.Clone(), origin,
         base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
@@ -495,9 +495,18 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   void ResetEthereumPermission(const url::Origin& origin,
                                size_t from_index = 0) {
-    permissions::BraveWalletPermissionContext::ResetPermission(
-        blink::PermissionType::BRAVE_ETHEREUM, browser_context(), origin,
-        from(from_index));
+    ResetEthereumPermission(GetOrigin(), from_account_id(from_index));
+  }
+  void ResetEthereumPermission(const url::Origin& origin,
+                               mojom::AccountIdPtr account_id) {
+    base::RunLoop run_loop;
+    brave_wallet_service_->ResetPermission(
+        std::move(account_id), origin,
+        base::BindLambdaForTesting([&](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
   }
 
   void Web3ClientVersion(std::string* version,
@@ -765,7 +774,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
     tx_service()->GetAllTransactionInfo(
-        mojom::CoinType::ETH, chain_id, from(),
+        mojom::CoinType::ETH, chain_id, from_lower(),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::TransactionInfoPtr> v) {
               transaction_infos = std::move(v);
@@ -1104,7 +1113,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
   std::string normalized_json_request =
       "{\"id\":\"1\",\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\","
       "\"params\":[{\"from\":\"" +
-      from() +
+      from_lower() +
       "\",\"gasPrice\":\"0x09184e72a000\","
       "\"gas\":\"0x0974\",\"to\":"
       "\"0xbe862ad9abfe6f22bcb087716c7d89a26051f74c\","
@@ -1136,7 +1145,8 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
   std::vector<mojom::TransactionInfoPtr> infos =
       GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
+  EXPECT_TRUE(
+      base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from_lower()));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
   EXPECT_EQ(infos[0]->chain_id, chain_id);
@@ -1160,7 +1170,8 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
   EXPECT_TRUE(callback_called);
   infos = GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
+  EXPECT_TRUE(
+      base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from_lower()));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
 }
@@ -1257,7 +1268,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
   std::string normalized_json_request =
       "{\"id\":\"1\",\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\","
       "\"params\":[{\"from\":\"" +
-      from() +
+      from_lower() +
       "\",\"maxFeePerGas\":\"0x1\",\"maxPriorityFeePerGas\":\"0x1\","
       "\"gas\":\"0x1\",\"to\":\"0xbe862ad9abfe6f22bcb087716c7d89a26051f74c\","
       "\"value\":\"0x00\"}]}";
@@ -1288,7 +1299,8 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
   std::vector<mojom::TransactionInfoPtr> infos =
       GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
+  EXPECT_TRUE(
+      base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from_lower()));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
   EXPECT_EQ(infos[0]->chain_id, chain_id);
@@ -1309,7 +1321,8 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
   EXPECT_TRUE(callback_called);
   infos = GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
-  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
+  EXPECT_TRUE(
+      base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from_lower()));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
   EXPECT_EQ(infos[0]->chain_id, chain_id);
@@ -1576,13 +1589,13 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
 
   // Selected account should filter the accounts returned
   AddEthereumPermission(GetOrigin(), 1);
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(0));
+  SetSelectedAccount(from_account_id(0));
   EXPECT_EQ(RequestEthereumPermissions(),
             std::vector<std::string>{from_lower(0)});
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(1));
+  SetSelectedAccount(from_account_id(1));
   EXPECT_EQ(RequestEthereumPermissions(),
             std::vector<std::string>{from_lower(1)});
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(2));
+  SetSelectedAccount(from_account_id(2));
   EXPECT_EQ(RequestEthereumPermissions(),
             (std::vector<std::string>{from_lower(0), from_lower(1)}));
 
@@ -1899,13 +1912,13 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
 
 TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   CreateWallet();
-  AddAccount();
+  auto added_account = AddAccount();
   std::string hardware = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
-  AddHardwareAccount(hardware);
+  auto added_hw_account = AddHardwareAccount(hardware);
   GURL url("https://brave.com");
   Navigate(url);
   AddEthereumPermission(GetOrigin());
-  AddEthereumPermission(GetOrigin(), hardware);
+  AddEthereumPermission(GetOrigin(), added_hw_account->account_id);
   const std::vector<std::string> addresses = GetAddresses();
 
   // Select account that is not participating in signing process.
@@ -1913,8 +1926,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
   // this account may be used for signin process.
   // address[1] is not allowed because it has no permission.
   // Also see EthereumProviderImpl.FilterAccounts method.
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                     addresses[1]);
+  SetSelectedAccount(added_account->account_id);
 
   const std::string message1 = "0x68656c6c6f20776f726c64";
   const std::string message2 = "0x4120756e69636f646520c68e20737472696e6720c3b1";
@@ -2056,7 +2068,7 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
   // Does not fire for a different origin that has no permissions
   Navigate(GURL("https://bravesoftware.com"));
   AddEthereumPermission(GetOrigin(), 1);
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(0));
+  SetSelectedAccount(from_account_id(0));
   EXPECT_FALSE(observer_->AccountsChangedFired());
 }
 
@@ -2347,21 +2359,21 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
   observer_->Reset();
 
   // Changing the selected account only returns that account
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(0));
+  SetSelectedAccount(from_account_id(0));
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from_lower(0)}),
             observer_->GetLowercaseAccounts());
   observer_->Reset();
 
   // Changing to a different allowed account only returns that account
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(1));
+  SetSelectedAccount(from_account_id(1));
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from_lower(1)}),
             observer_->GetLowercaseAccounts());
   observer_->Reset();
 
   // Changing gto a not allowed account returns all allowed accounts
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(2));
+  SetSelectedAccount(from_account_id(2));
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from_lower(0), from_lower(1)}),
             observer_->GetLowercaseAccounts());
@@ -2418,13 +2430,13 @@ TEST_F(EthereumProviderImplUnitTest, GetAllowedAccounts) {
 
   // Selected account should filter the accounts returned
   AddEthereumPermission(GetOrigin(), 1);
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(0));
+  SetSelectedAccount(from_account_id(0));
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account0});
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(1));
+  SetSelectedAccount(from_account_id(1));
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account1});
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account1});
-  SetSelectedAccount(mojom::CoinType::ETH, mojom::kDefaultKeyringId, from(2));
+  SetSelectedAccount(from_account_id(2));
   EXPECT_EQ(GetAllowedAccounts(false),
             (std::vector<std::string>{account0, account1}));
   EXPECT_EQ(GetAllowedAccounts(true),
@@ -2440,14 +2452,14 @@ TEST_F(EthereumProviderImplUnitTest, GetAllowedAccounts) {
 TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
   CreateWallet();
   std::string address = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
-  AddHardwareAccount(address);
+  auto added_hw_account = AddHardwareAccount(address);
   std::string signature;
   std::string expected_signature = "0xExpectedSignature";
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   GURL url("https://brave.com");
   Navigate(url);
-  AddEthereumPermission(GetOrigin(), address);
+  AddEthereumPermission(GetOrigin(), added_hw_account->account_id);
 
   // success
   SignMessageHardware(true, address, "0x1234", expected_signature, "",

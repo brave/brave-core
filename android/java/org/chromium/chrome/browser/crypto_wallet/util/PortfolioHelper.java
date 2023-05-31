@@ -120,7 +120,7 @@ public class PortfolioHelper {
 
         for (NetworkInfo networkInfo : mSelectedNetworks) {
             List<AccountInfo> accountInfosPerCoin = JavaUtils.filter(
-                    mAccountInfos, accountInfo -> accountInfo.coin == networkInfo.coin);
+                    mAccountInfos, accountInfo -> accountInfo.accountId.coin == networkInfo.coin);
             Utils.getTxExtraInfo(mActivity, type, mCryptoNetworks, networkInfo,
                     accountInfosPerCoin.toArray(new AccountInfo[0]), null, true,
                     (assetPrices, userAssetsList, nativeAssetsBalances,

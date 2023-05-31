@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSh
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.DefaultFaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.FaviconImageCallback;
@@ -147,8 +148,9 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                     mSelectedAccount = accountInfoListPair.first;
                     List<AccountInfo> accountInfos = new ArrayList<>(accountInfoListPair.second);
                     if (mSelectedAccount != null) {
-                        Utils.removeIf(
-                                accountInfos, account -> account.coin != mSelectedAccount.coin);
+                        Utils.removeIf(accountInfos,
+                                account
+                                -> account.accountId.coin != mSelectedAccount.accountId.coin);
                     }
                     mAccountInfos = accountInfos.toArray(new AccountInfo[0]);
                     updateAccounts();
@@ -191,13 +193,12 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @Override
     public void connectAccount(AccountInfo account) {
         getBraveWalletService().addPermission(
-                account.coin, Utils.getCurrentMojomOrigin(), account.address, success -> {
+                account.accountId, Utils.getCurrentMojomOrigin(), success -> {
                     if (!success) {
                         return;
                     }
-                    if (CoinType.SOL != account.coin) {
-                        getKeyringService().setSelectedAccount(
-                                account.coin, account.keyringId, account.address, setSuccess -> {});
+                    if (CoinType.SOL != account.accountId.coin) {
+                        getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {});
                     }
                     updateAccounts();
                 });
@@ -206,11 +207,11 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @Override
     public void disconnectAccount(AccountInfo account) {
         getBraveWalletService().resetPermission(
-                account.coin, Utils.getCurrentMojomOrigin(), account.address, success -> {
+                account.accountId, Utils.getCurrentMojomOrigin(), success -> {
                     if (!success) {
                         return;
                     }
-                    if (!mSelectedAccount.address.equals(account.address)) {
+                    if (!WalletUtils.accountIdsEqual(mSelectedAccount, account)) {
                         updateAccounts();
                         return;
                     }
@@ -219,9 +220,9 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                     Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
                     while (it.hasNext()) {
                         AccountInfo accountInfo = it.next();
-                        if (!accountInfo.address.equals(account.address)) {
-                            getKeyringService().setSelectedAccount(accountInfo.coin,
-                                    accountInfo.keyringId, accountInfo.address, setSuccess -> {});
+                        if (!WalletUtils.accountIdsEqual(accountInfo, account)) {
+                            getKeyringService().setSelectedAccount(
+                                    accountInfo.accountId, setSuccess -> {});
                             break;
                         }
                     }
@@ -231,12 +232,11 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     @Override
     public void switchAccount(AccountInfo account) {
-        getKeyringService().setSelectedAccount(
-                account.coin, account.keyringId, account.address, setSuccess -> {
-                    if (setSuccess) {
-                        updateAccounts();
-                    }
-                });
+        getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {
+            if (setSuccess) {
+                updateAccounts();
+            }
+        });
     }
 
     private GURL getCurrentHostHttpAddress() {

@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import {assertNotReached} from 'chrome://resources/js/assert_ts.js';
+
 // types
 import {
   BraveWallet,
@@ -74,10 +76,10 @@ export const createTokenBalanceRegistryKey = (
 export const getAccountType = (
   info: BraveWallet.AccountInfo
 ): WalletAccountTypeName => {
-  if (info.hardware) {
-    return info.hardware.vendor as 'Ledger' | 'Trezor'
+  if (info.accountId.kind === BraveWallet.AccountKind.kHardware) {
+    return info.hardware!.vendor as 'Ledger' | 'Trezor'
   }
-  return info.isImported ? 'Secondary' : 'Primary'
+  return info.accountId.kind === BraveWallet.AccountKind.kImported ? 'Secondary' : 'Primary'
 }
 
 export const getAddressLabel = <
@@ -124,7 +126,6 @@ export function isHardwareAccount(
   return !!account.hardware?.deviceId
 }
 
-
 // FIXME(onyb): replace with findAccountFromRegistry
 export const findAccountInList = (
   account: WalletAccountType | undefined,
@@ -139,4 +140,33 @@ export const findAccountInList = (
         acc.address.toLowerCase() === account.address.toLowerCase()
     ) ?? account
   )
+}
+
+export const keyringIdForNewAccount = (
+  coin: BraveWallet.CoinType,
+  network?: string | undefined
+) => {
+  if (coin === BraveWallet.CoinType.ETH) {
+    return BraveWallet.DEFAULT_KEYRING_ID
+  }
+
+  if (coin === BraveWallet.CoinType.SOL) {
+    return BraveWallet.SOLANA_KEYRING_ID
+  }
+
+  if (
+    coin === BraveWallet.CoinType.FIL &&
+    network === BraveWallet.FILECOIN_MAINNET
+  ) {
+    return BraveWallet.FILECOIN_KEYRING_ID
+  }
+
+  if (
+    coin === BraveWallet.CoinType.FIL &&
+    network === BraveWallet.FILECOIN_TESTNET
+  ) {
+    return BraveWallet.FILECOIN_TESTNET_KEYRING_ID
+  }
+
+  assertNotReached()
 }

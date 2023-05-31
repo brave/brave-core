@@ -91,7 +91,7 @@ export const SelectAccountItem = (props: Props) => {
       networks
         .filter(
           (network) =>
-            network.coin === account.coin &&
+            network.coin === account.accountId.coin &&
             !SupportedTestNetworks.includes(network.chainId)
         )
         .map((network) => network.chainId) ?? []
@@ -102,7 +102,7 @@ export const SelectAccountItem = (props: Props) => {
         !token.isNft &&
         chainList.includes(token.chainId)
     )
-  }, [userVisibleTokensInfo, networks, account.coin, selectedNetwork?.coin, selectedNetwork?.chainId])
+  }, [userVisibleTokensInfo, networks, account, selectedNetwork?.coin, selectedNetwork?.chainId])
 
   const accountFiatValue = React.useMemo(() => {
     const amounts = tokenListByAccount.map((token) => {

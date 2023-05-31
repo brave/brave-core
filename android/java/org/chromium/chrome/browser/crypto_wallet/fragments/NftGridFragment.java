@@ -286,11 +286,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private void setRetrievedNetwork(NetworkInfo networkInfo, boolean success) {
         if (success) {
             mWalletModel.getKeyringModel().addAccount(
-                    WalletUtils.getUniqueNextAccountName(requireContext(),
-                            mWalletModel.getKeyringModel().mAccountInfos.getValue().toArray(
-                                    new AccountInfo[0]),
-                            networkInfo.symbolName, networkInfo.coin),
-                    networkInfo.coin, isAccountAdded -> {});
+                    networkInfo.coin, networkInfo.chainId, null, isAccountAdded -> {});
         }
         mWalletModel.getCryptoModel().getNetworkModel().clearCreateAccountState();
     }

@@ -130,7 +130,7 @@ public class BravePermissionAccountsListAdapter
             int connectionButtonText = R.string.fragment_connect_account_disconnect;
             boolean hasPermission = hasPermission(accountInfo.address);
             boolean isConnected = accountInfo.address.equals(mSelectedAccount.address);
-            if (CoinType.SOL == mSelectedAccount.coin) {
+            if (CoinType.SOL == mSelectedAccount.accountId.coin) {
                 connectionButtonText = hasPermission ? R.string.brave_wallet_site_permissions_revoke
                                                      : R.string.brave_wallet_site_permissions_trust;
             } else {
@@ -150,7 +150,7 @@ public class BravePermissionAccountsListAdapter
             holder.accountAction.setVisibility(View.VISIBLE);
             holder.accountAction.setOnClickListener(v -> {
                 assert mDelegate != null;
-                if (CoinType.SOL == accountInfo.coin) {
+                if (CoinType.SOL == accountInfo.accountId.coin) {
                     if (hasPermission) {
                         mDelegate.disconnectAccount(accountInfo);
                     } else {

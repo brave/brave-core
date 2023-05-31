@@ -106,7 +106,7 @@ export const AccountsAndTransactionsList = ({
     if (!selectedAsset) {
       return []
     }
-    return accounts.filter((account) => account.coin === selectedAsset.coin)
+    return accounts.filter((account) => account.accountId.coin === selectedAsset.coin)
   }, [accounts, selectedAsset])
 
   const accountsList = React.useMemo(() => {

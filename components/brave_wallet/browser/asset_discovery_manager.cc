@@ -136,11 +136,12 @@ void AssetDiscoveryManager::AccountsAdded(
     std::vector<mojom::AccountInfoPtr> added_accounts) {
   std::map<mojom::CoinType, std::vector<std::string>> account_addresses_map;
   for (const auto& account : added_accounts) {
-    if (account->coin != mojom::CoinType::ETH &&
-        account->coin != mojom::CoinType::SOL) {
+    if (account->account_id->coin != mojom::CoinType::ETH &&
+        account->account_id->coin != mojom::CoinType::SOL) {
       continue;
     }
-    account_addresses_map[account->coin].push_back(account->address);
+    account_addresses_map[account->account_id->coin].push_back(
+        account->address);
   }
 
   if (account_addresses_map.empty()) {

@@ -61,7 +61,7 @@ public class BalanceHelper {
 
         // Native balances
         for (AccountInfo accountInfo : accountInfos) {
-            if (accountInfo.coin != selectedNetwork.coin) continue;
+            if (accountInfo.accountId.coin != selectedNetwork.coin) continue;
 
             // Get CoinType SOL balances
             if (selectedNetwork.coin == CoinType.SOL) {
@@ -75,8 +75,8 @@ public class BalanceHelper {
                 GetBalanceResponseContext context = addBalanceResponseContext(contexts,
                         new GetBalanceResponseContext(balancesMultiResponse.singleResponseComplete),
                         accountInfo.address, null);
-                jsonRpcService.getBalance(
-                        accountInfo.address, accountInfo.coin, selectedNetwork.chainId, context);
+                jsonRpcService.getBalance(accountInfo.address, accountInfo.accountId.coin,
+                        selectedNetwork.chainId, context);
             }
         }
 
@@ -119,10 +119,10 @@ public class BalanceHelper {
 
         // Token balances
         for (AccountInfo accountInfo : accountInfos) {
-            if (accountInfo.coin != selectedNetwork.coin) continue;
+            if (accountInfo.accountId.coin != selectedNetwork.coin) continue;
 
             for (BlockchainToken token : tokens) {
-                if (accountInfo.coin == CoinType.ETH) {
+                if (accountInfo.accountId.coin == CoinType.ETH) {
                     if (selectedNetwork.chainId.equals(token.chainId)) {
                         if (token.isErc721) {
                             GetErc721TokenBalanceResponseContext context =
@@ -143,7 +143,7 @@ public class BalanceHelper {
                                     accountInfo.address, token.chainId, context);
                         }
                     }
-                } else if (accountInfo.coin == CoinType.SOL) {
+                } else if (accountInfo.accountId.coin == CoinType.SOL) {
                     if (selectedNetwork.chainId.equals(token.chainId)) {
                         GetSplTokenAccountBalanceResponseContext context =
                                 addBalanceResponseContext(contexts,

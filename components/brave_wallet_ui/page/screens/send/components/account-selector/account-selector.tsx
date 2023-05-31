@@ -60,7 +60,14 @@ export const AccountSelector = (props: Props) => {
 
   // Memos
   const accountsByNetwork = React.useMemo(() => {
-    return accounts.filter((account) => account.coin === selectedNetwork?.coin && account.keyringId === selectedAccount?.keyringId)
+    if (!selectedNetwork || !selectedAccount) {
+      return []
+    }
+    return accounts.filter(
+      (account) =>
+        account.accountId.coin === selectedNetwork.coin &&
+        account.accountId.keyringId === selectedAccount.accountId.keyringId
+    )
   }, [accounts, selectedNetwork, selectedAccount])
 
   // Hooks

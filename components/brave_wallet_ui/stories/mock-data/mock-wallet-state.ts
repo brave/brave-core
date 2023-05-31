@@ -16,10 +16,15 @@ import { AllAccountsOption } from '../../options/account-filter-options'
 import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
 
-const mockAccount: WalletAccountType & BraveWallet.AccountInfo = {
+const mockAccount: WalletAccountType = {
   accountType: 'Primary',
   address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
-  coin: 60,
+  accountId: {
+    coin: 60,
+    keyringId: 'default',
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1'
+  },
   deviceId: '',
   id: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
   name: 'Account 1',
@@ -31,15 +36,18 @@ const mockAccount: WalletAccountType & BraveWallet.AccountInfo = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: 'default',
-  isImported: false,
   hardware: undefined
 }
 
-const mockAccount2: WalletAccountType & BraveWallet.AccountInfo = {
+const mockAccount2: WalletAccountType = {
   accountType: 'Primary',
   address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
-  coin: 60,
+  accountId: {
+    coin: 60,
+    keyringId: 'default',
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2'
+  },
   deviceId: '',
   id: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
   name: 'Account 2',
@@ -51,15 +59,18 @@ const mockAccount2: WalletAccountType & BraveWallet.AccountInfo = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: 'default',
-  isImported: false,
   hardware: undefined
 }
 
-const mockAccount3: WalletAccountType & BraveWallet.AccountInfo = {
+const mockAccount3: WalletAccountType = {
   accountType: 'Primary',
   address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
-  coin: 60,
+  accountId: {
+    coin: 60,
+    keyringId: 'default',
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3'
+  },
   deviceId: '',
   id: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
   name: 'Account 3',
@@ -71,8 +82,6 @@ const mockAccount3: WalletAccountType & BraveWallet.AccountInfo = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: 'default',
-  isImported: false,
   hardware: undefined
 }
 

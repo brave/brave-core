@@ -45,7 +45,7 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
   selectedNetwork?: BraveWallet.NetworkInfo
-  selectedAccount?: Pick<WalletAccountType, 'address' | 'coin' | 'name'>
+  selectedAccount?: Pick<WalletAccountType, 'accountId' | 'address' | 'name'>
   onSelectNetwork?: (network: BraveWallet.NetworkInfo) => void
 }
 
@@ -99,10 +99,10 @@ export const NetworkFilterSelector = ({
       accountId === AllAccountsOption.id
         ? networkListSubset
         : networkListSubset?.filter(
-            (network) => network.coin === selectedAccount.coin
+            (network) => network.coin === selectedAccount.accountId.coin
           )
     return networks || reduxNetworkList
-  }, [networkListSubset, reduxNetworkList, accountId, selectedAccount.coin])
+  }, [networkListSubset, reduxNetworkList, accountId, selectedAccount])
 
   const sortedNetworks = React.useMemo(() => {
     const onlyMainnets = filteredNetworks.filter((network) =>

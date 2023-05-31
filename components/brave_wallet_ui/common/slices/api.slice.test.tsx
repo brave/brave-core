@@ -10,7 +10,6 @@ import { renderHook } from '@testing-library/react-hooks'
 import { useGetTransactionsQuery } from './api.slice'
 
 import {
-  mockAccount,
   mockEthAccountInfo,
   mockFilecoinAccountInfo,
   mockSolanaAccountInfo
@@ -89,7 +88,7 @@ describe('api slice: useGetTransactionsQuery', () => {
       () =>
         useGetTransactionsQuery({
           address: mockEthErc20SendTx.fromAddress,
-          coinType: mockAccount.coin,
+          coinType: BraveWallet.CoinType.ETH,
           chainId: null
         }),
       renderHookOptionsWithCustomStore(store)

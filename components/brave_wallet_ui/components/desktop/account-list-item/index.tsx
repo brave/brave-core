@@ -92,10 +92,7 @@ export const AccountListItem = ({
   const onRemoveAccount = React.useCallback(() => {
     dispatch(
       AccountsTabActions.setAccountToRemove({
-        coin: account.coin,
-        keyringId: account.keyringId,
-        address: account.address,
-        hardware: isHardwareWallet,
+        accountId: account.accountId,
         name: account.name
       })
     )

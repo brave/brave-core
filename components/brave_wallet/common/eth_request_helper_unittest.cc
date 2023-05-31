@@ -174,20 +174,25 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   const std::string hw_address = "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51CC";
 
   mojom::AccountInfoPtr primary_account = mojom::AccountInfo::New(
-      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8", "primary", false, nullptr,
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId);
+      mojom::AccountId::New(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
+                            mojom::AccountKind::kDerived,
+                            "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8"),
+      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8", "primary", nullptr);
   mojom::AccountInfoPtr ledger_account = mojom::AccountInfo::New(
-      ledger_address, "ledger", false,
-      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Ledger", "123"),
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId);
+      mojom::AccountId::New(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
+                            mojom::AccountKind::kHardware, ledger_address),
+      ledger_address, "ledger",
+      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Ledger", "123"));
   mojom::AccountInfoPtr trezor_account = mojom::AccountInfo::New(
-      trezor_address, "trezor", false,
-      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Trezor", "123"),
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId);
+      mojom::AccountId::New(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
+                            mojom::AccountKind::kHardware, trezor_address),
+      trezor_address, "trezor",
+      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Trezor", "123"));
   mojom::AccountInfoPtr hw_account = mojom::AccountInfo::New(
-      hw_address, "hw", false,
-      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Hardware", "123"),
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId);
+      mojom::AccountId::New(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
+                            mojom::AccountKind::kHardware, hw_address),
+      hw_address, "hw",
+      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Hardware", "123"));
   std::vector<mojom::AccountInfoPtr> account_infos;
   account_infos.push_back(std::move(primary_account));
   account_infos.push_back(std::move(ledger_account));
