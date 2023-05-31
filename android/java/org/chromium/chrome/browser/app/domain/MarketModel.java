@@ -13,7 +13,6 @@ import org.chromium.brave_wallet.mojom.CoinMarket;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Arrays;
 import java.util.Locale;
 
 public class MarketModel {
@@ -42,6 +41,10 @@ public class MarketModel {
         mAssetRatioService = assetRatioService;
     }
 
+    /**
+     * Gets the first 250 market assets.
+     * @param callback Callback used to notify when the assets have been downloaded.
+     */
     public void getCoinMarkets(@NonNull CoinMarketsCallback callback) {
         if (callback == null) {
             throw new IllegalArgumentException("Callback must not be null.");
@@ -59,17 +62,31 @@ public class MarketModel {
                 });
     }
 
+    /**
+     * Gets formatted price using the format `$0.00##########` (e.g. $27,160.00, or $0.523453456789).
+     * @param price Price to format.
+     * @return Formatted price.
+     */
     @NonNull
     public String getFormattedPrice(double price) {
         return mPriceFormatter.format(price);
     }
 
+    /**
+     * Gets formatted percentage change rounded up and using the format `0.00` (e.g. 0.05%).
+     * @param percentageChange Percentage change to format.
+     * @return Formatted percentage change.
+     */
     @NonNull
     public String getFormattedPercentageChange(double percentageChange) {
         double absoluteChange = Math.abs(percentageChange);
         return String.format(Locale.ENGLISH, "%s%%", mPercentageFormatter.format(absoluteChange));
     }
 
+    /**
+     * Callback used to notify if the coin market assets have been downloaded successfully.
+     * @see #getCoinMarkets(CoinMarketsCallback).
+     */
     public interface CoinMarketsCallback {
         void onCoinMarketsSuccess(final CoinMarket[] coinMarkets);
         void onCoinMarketsFail();
