@@ -103,6 +103,7 @@ brave_settings_non_web_component_files = [
   "brave_routes.ts",
   "brave_search_engines_page/brave_search_engines_page_browser_proxy.ts",
   "brave_site_details/brave_site_details.ts",
+  "brave_site_details/brave_site_details_permission.ts",
   "brave_site_settings/cookie_info.ts",
   "brave_site_settings/local_data_browser_proxy.ts",
   "brave_sync_page/brave_sync_browser_proxy.ts",
