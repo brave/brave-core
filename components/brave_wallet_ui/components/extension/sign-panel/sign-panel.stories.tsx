@@ -41,7 +41,6 @@ export const _SignPanel = () => {
     <SignPanel
       accounts={mockAccounts}
       onCancel={() => alert('')}
-      onSign={() => alert('')}
       showWarning={true}
       signMessageData={[evilUnicodeSignMessageData, signMessageData]}
     />
