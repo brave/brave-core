@@ -8,8 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +27,6 @@ import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MarketCoinAdapter extends RecyclerView.Adapter<MarketCoinAdapter.ViewHolder> {
     private static final int PERCENTAGE_CHANGE_DRAWABLE_PADDING_PX = 8;
@@ -38,15 +34,11 @@ public class MarketCoinAdapter extends RecyclerView.Adapter<MarketCoinAdapter.Vi
     private final List<CoinMarket> mCoinMarkets;
 
     private final Context mContext;
-    private final ExecutorService mExecutor;
-    private final Handler mHandler;
 
     public MarketCoinAdapter(
             @NonNull final Context context, @NonNull final MarketModel marketModel) {
         mContext = context;
         mMarketModel = marketModel;
-        mExecutor = Executors.newSingleThreadExecutor();
-        mHandler = new Handler(Looper.getMainLooper());
         mCoinMarkets = new ArrayList<>();
     }
 
