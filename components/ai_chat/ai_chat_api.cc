@@ -102,10 +102,27 @@ void AIChatAPI::QueryPrompt(
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
 
-  api_request_helper_.RequestSSE(
-      "POST", api_url, CreateJSONRequestBody(dict), "application/json",
-      std::move(data_received_callback), std::move(data_completed_callback),
-      headers, {});
+  const bool is_sse_enabled = ai_chat::features::kAIChatSSE.Get();
+
+  if (is_sse_enabled) {
+    api_request_helper_.RequestSSE(
+        "POST", api_url, CreateJSONRequestBody(dict), "application/json",
+        std::move(data_received_callback), std::move(data_completed_callback),
+        headers, {});
+  } else {
+    auto on_result_cb = base::BindOnce(
+        [](api_request_helper::APIRequestHelper::DataCompletedCallback
+               data_completed_callback,
+           api_request_helper::APIRequestResult result) {
+          std::move(data_completed_callback)
+              .Run(std::move(result), result.Is2XXResponseCode());
+        },
+        std::move(data_completed_callback));
+
+    api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
+                                "application/json", std::move(on_result_cb),
+                                headers, {});
+  }
 }
 
 base::Value::Dict AIChatAPI::CreateApiParametersDict(
@@ -118,6 +135,8 @@ base::Value::Dict AIChatAPI::CreateApiParametersDict(
   const auto model_name = ai_chat::features::kAIModelName.Get();
   DCHECK(!model_name.empty());
 
+  const bool is_sse_enabled = ai_chat::features::kAIChatSSE.Get();
+
   dict.Set("prompt", prompt);
   dict.Set("max_tokens_to_sample", 400);
   dict.Set("temperature", 1);
@@ -125,7 +144,7 @@ base::Value::Dict AIChatAPI::CreateApiParametersDict(
   dict.Set("top_p", 0.999);
   dict.Set("model", model_name);
   dict.Set("stop_sequences", std::move(stop_sequences));
-  dict.Set("stream", true);
+  dict.Set("stream", is_sse_enabled);
 
   DVLOG(1) << __func__ << " Prompt: |" << prompt << "|\n";
   DVLOG(1) << __func__ << " Using model: " << model_name;

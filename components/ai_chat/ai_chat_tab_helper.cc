@@ -353,7 +353,7 @@ bool AIChatTabHelper::IsRequestInProgress() {
 
 void AIChatTabHelper::OnAPIStreamDataReceived(
     data_decoder::DataDecoder::ValueOrError result) {
-  if (!result.has_value()) {
+  if (!result.has_value() || !result->is_dict()) {
     return;
   }
 
@@ -386,6 +386,15 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
   }
 
   is_request_in_progress_ = !success;
+
+  if (success && result.value_body().is_dict()) {
+    if (const std::string* completion =
+            result.value_body().FindStringKey("completion")) {
+      AddToConversationHistory(
+          ConversationTurn{CharacterType::ASSISTANT,
+                           ConversationTurnVisibility::VISIBLE, *completion});
+    }
+  }
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
