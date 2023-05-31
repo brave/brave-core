@@ -68,6 +68,10 @@ void PlaylistActionIconView::UpdateImpl() {
               playlist_tab_helper->found_items().size());
 }
 
+void PlaylistActionIconView::PlaylistTabHelperWillBeDestroyed() {
+  playlist_tab_helper_observation_.Reset();
+}
+
 void PlaylistActionIconView::OnSavedItemsChanged(
     const std::vector<playlist::mojom::PlaylistItemPtr>& saved_items) {
   auto* playlist_tab_helper = this->playlist_tab_helper();
