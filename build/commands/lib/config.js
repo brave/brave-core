@@ -504,6 +504,8 @@ Config.prototype.buildArgs = function () {
     } else if (this.channel === '') {
       args.android_channel = 'stable'
       args.chrome_public_manifest_package = 'com.brave.browser'
+      // Don't include unwind tables on stable builds, we can save 2.8..19.6 MBs
+      args.exclude_unwind_tables = true
     } else if (this.channel === 'beta') {
       args.chrome_public_manifest_package = 'com.brave.browser_beta'
       args.exclude_unwind_tables = false
