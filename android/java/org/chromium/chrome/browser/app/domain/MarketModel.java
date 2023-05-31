@@ -63,7 +63,8 @@ public class MarketModel {
     }
 
     /**
-     * Gets formatted price using the format `$0.00##########` (e.g. $27,160.00, or $0.523453456789).
+     * Gets formatted price using the format `$0.00##########` (e.g. $27,160.00, or
+     * $0.523453456789).
      * @param price Price to format.
      * @return Formatted price.
      */
