@@ -131,8 +131,8 @@ window.__firefox__.execute(function($) {
       }
     }
 
-    if (results.agressiveSelectors && results.agressiveSelectors.length > 0) {
-      if (processHideSelectors(results.agressiveSelectors, false)) {
+    if (results.aggressiveSelectors && results.aggressiveSelectors.length > 0) {
+      if (processHideSelectors(results.aggressiveSelectors, false)) {
         hasChanges = true
       }
     }
@@ -1049,8 +1049,8 @@ window.__firefox__.execute(function($) {
     processHideSelectors(args.standardSelectors, !args.hideFirstPartyContent)
   }
 
-  if (args.agressiveSelectors) {
-    processHideSelectors(args.agressiveSelectors, false)
+  if (args.aggressiveSelectors) {
+    processHideSelectors(args.aggressiveSelectors, false)
   }
 
   // Load some static style selectors if they are defined

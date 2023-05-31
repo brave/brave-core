@@ -131,6 +131,27 @@ class ScriptFactory {
     case .domainUserScript(let domainUserScript):
       resultingScript = try self.makeScript(for: domainUserScript)
       
+    case .selectorsPoller(let setup):
+      let encoder = JSONEncoder()
+      let data = try encoder.encode(setup)
+      let args = String(data: data, encoding: .utf8)!
+      let source = try ScriptFactory.shared.makeScriptSource(of: .selectorsPoller)
+        .replacingOccurrences(of: "$<args>", with: args)
+      
+      let secureSource = CosmeticFiltersScriptHandler.secureScript(
+        handlerNamesMap: [
+          "$<message_handler>": CosmeticFiltersScriptHandler.messageHandlerName,
+          "$<partiness_message_handler>": URLPartinessScriptHandler.messageHandlerName
+        ],
+        securityToken: CosmeticFiltersScriptHandler.scriptId,
+        script: source
+      )
+      
+      resultingScript = WKUserScript(
+        source: secureSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false,
+        in: CosmeticFiltersScriptHandler.scriptSandbox
+      )
+      
     case .engineScript(let configuration):
       let source = [
         "(function(){",

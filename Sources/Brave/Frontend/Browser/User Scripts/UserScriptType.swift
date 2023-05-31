@@ -14,12 +14,6 @@ enum UserScriptType: Hashable {
       let selector: String
       var rules: Set<String>
     }
-    
-    /// The url of the frame this script belongs to
-    ///
-    /// We need this to control which script gets executed on which frame
-    /// on the JS side since we cannot control this on the iOS side
-    let frameURL: URL
     /// Determines if we hide first party content or not. This is controlled via agressive or standard mode
     /// Standard mode may unhide 1p content for certain filter lists.
     let hideFirstPartyContent: Bool
@@ -34,7 +28,7 @@ enum UserScriptType: Hashable {
     let fetchNewClassIdRulesThrottlingMs: Int?
     /// These are agressive hide selectors that will get automatically processed when the script loads.
     /// Agressive selectors may never be unhidden even on standard mode
-    let agressiveSelectors: Set<String>
+    let aggressiveSelectors: Set<String>
     /// These are standard hide selectors that will get automatically processed when the script loads.
     /// Standard selectors may be unhidden on standard mode if they contain 1p content
     let standardSelectors: Set<String>
@@ -66,6 +60,9 @@ enum UserScriptType: Hashable {
   case domainUserScript(DomainUserScript)
   /// An engine script on the main frame
   case engineScript(EngineScriptConfiguration)
+  /// Selectors poller script (aka cosmetic filtering script) is responsible for hiding and unhiding css elements as dictated by the ad-block engines.
+  /// This script is actually executed rather than injected and this type is solely used for the creation rather than the injection of the script.
+  case selectorsPoller(SelectorsPollerSetup)
 
   /// The order in which we want to inject the scripts
   var order: Int {
@@ -74,7 +71,8 @@ enum UserScriptType: Hashable {
     case .farblingProtection: return 1
     case .domainUserScript: return 2
     case .siteStateListener: return 3
-    case .engineScript(let configuration): return 4 + configuration.order
+    case .selectorsPoller: return 4
+    case .engineScript(let configuration): return 5 + configuration.order
     }
   }
 }

@@ -74,6 +74,7 @@ public extension WKWebView {
   @discardableResult @MainActor func evaluateSafeJavaScript(
     functionName: String,
     args: [Any] = [],
+    frame: WKFrameInfo? = nil,
     contentWorld: WKContentWorld,
     escapeArgs: Bool = true,
     asFunction: Bool = true
@@ -82,11 +83,37 @@ public extension WKWebView {
       evaluateSafeJavaScript(
         functionName: functionName,
         args: args,
+        frame: frame,
         contentWorld: contentWorld,
         escapeArgs: escapeArgs,
         asFunction: asFunction) { value, error in
           continuation.resume(returning: (value, error))
-      }
+        }
+    }
+  }
+  
+  @discardableResult
+  @MainActor func evaluateSafeJavaScriptThrowing(
+    functionName: String,
+    args: [Any] = [],
+    frame: WKFrameInfo? = nil,
+    contentWorld: WKContentWorld,
+    escapeArgs: Bool = true,
+    asFunction: Bool = true
+  ) async throws -> Any? {
+    let result = await evaluateSafeJavaScript(
+      functionName: functionName,
+      args: args,
+      frame: frame,
+      contentWorld: contentWorld,
+      escapeArgs: escapeArgs,
+      asFunction: asFunction
+    )
+    
+    if let error = result.1 {
+      throw error
+    } else {
+      return result.0
     }
   }
   

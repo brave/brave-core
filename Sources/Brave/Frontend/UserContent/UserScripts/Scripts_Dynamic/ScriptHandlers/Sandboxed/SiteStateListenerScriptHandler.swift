@@ -68,39 +68,26 @@ class SiteStateListenerScriptHandler: TabContentScript {
           if domain.areAllShieldsOff { return }
           
           let models = await AdBlockStats.shared.cosmeticFilterModels(forFrameURL: frameURL, domain: domain)
-          let args = try self.makeArgs(from: models, frameURL: frameURL, isAggressive: ShieldPreferences.blockAdsAndTrackingLevel.isAggressive)
-          let source = try ScriptFactory.shared.makeScriptSource(of: .selectorsPoller).replacingOccurrences(of: "$<args>", with: args)
+          let setup = try self.makeSetup(from: models, isAggressive: ShieldPreferences.blockAdsAndTrackingLevel.isAggressive)
+          let script = try ScriptFactory.shared.makeScript(for: .selectorsPoller(setup))
           
-          let secureSource = CosmeticFiltersScriptHandler.secureScript(
-            handlerNamesMap: [
-              "$<message_handler>": CosmeticFiltersScriptHandler.messageHandlerName,
-              "$<partiness_message_handler>": URLPartinessScriptHandler.messageHandlerName
-            ],
-            securityToken: CosmeticFiltersScriptHandler.scriptId,
-            script: source
-          )
-          
-          webView.evaluateSafeJavaScript(
-            functionName: secureSource,
+          try await webView.evaluateSafeJavaScriptThrowing(
+            functionName: script.source,
             frame: message.frameInfo,
-            contentWorld: .defaultClient,
-            asFunction: false,
-            completion: { _, error in
-              guard let error = error else { return }
-              Logger.module.error("\(error.localizedDescription)")
-            }
+            contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+            asFunction: false
           )
         }
       }
     } catch {
-      assertionFailure("Invalid type of message. Fix the `Site.js` script")
+      assertionFailure("Invalid type of message. Fix the `SiteStateListenerScript.js` script")
       Logger.module.error("\(error.localizedDescription)")
     }
   }
   
-  @MainActor private func makeArgs(from modelTuples: [CachedAdBlockEngine.CosmeticFilterModelTuple], frameURL: URL, isAggressive: Bool) throws -> String {
+  @MainActor private func makeSetup(from modelTuples: [CachedAdBlockEngine.CosmeticFilterModelTuple], isAggressive: Bool) throws -> UserScriptType.SelectorsPollerSetup {
     var standardSelectors: Set<String> = []
-    var agressiveSelectors: Set<String> = []
+    var aggressiveSelectors: Set<String> = []
     var styleSelectors: [String: Set<String>] = [:]
     
     for modelTuple in modelTuples {
@@ -109,7 +96,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       }
       
       if modelTuple.source.isAlwaysAgressive(given: FilterListStorage.shared.filterLists) {
-        agressiveSelectors = agressiveSelectors.union(modelTuple.model.hideSelectors)
+        aggressiveSelectors = aggressiveSelectors.union(modelTuple.model.hideSelectors)
       } else {
         standardSelectors = standardSelectors.union(modelTuple.model.hideSelectors)
       }
@@ -121,24 +108,15 @@ class SiteStateListenerScriptHandler: TabContentScript {
       )
     }
     
-    // TODO: @JS #7352 Add UI and enable standard mode
-    // Standard mode is controlled by the `hideFirstPartyContent` boolean
-    // True means standard, false means aggresive
-    // (i.e. we don't hide first party content on standard mode)
-    let setup = UserScriptType.SelectorsPollerSetup(
-      frameURL: frameURL,
+    return UserScriptType.SelectorsPollerSetup(
       hideFirstPartyContent: isAggressive,
       genericHide: modelTuples.contains { $0.model.genericHide },
       firstSelectorsPollingDelayMs: nil,
       switchToSelectorsPollingThreshold: 1000,
       fetchNewClassIdRulesThrottlingMs: 100,
-      agressiveSelectors: agressiveSelectors,
+      aggressiveSelectors: aggressiveSelectors,
       standardSelectors: standardSelectors,
       styleSelectors: Set(styleSelectorObjects)
     )
-    
-    let encoder = JSONEncoder()
-    let data = try encoder.encode(setup)
-    return String(data: data, encoding: .utf8)!
   }
 }
