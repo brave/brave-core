@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useHistory } from 'react-router'
 import {
   useDispatch,
   useSelector
@@ -41,8 +42,9 @@ import {
 // style
 import { Column, CopyButton, HorizontalSpace, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
 import {
-  Title,
   Description,
+  NextButtonRow,
+  Title
 } from '../onboarding/onboarding.style'
 import {
   AddressText,
@@ -55,20 +57,24 @@ import {
 
 // components
 import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
+import { StepsNavigation } from '../../../components/desktop/steps-navigation/steps-navigation'
 import SearchBar from '../../../components/shared/search-bar/index'
 import SelectAccountItem from '../../../components/shared/select-account-item/index'
 import SelectAccount from '../../../components/shared/select-account/index'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
 import { CopiedToClipboardConfirmation } from '../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
+import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account/index'
 import SelectHeader from '../../../components/buy-send-swap/select-header/index'
 import {
   getBatTokensFromList,
   getAssetIdKey
 } from '../../../utils/asset-utils'
-import { DepositTitle } from './deposit-funds.style'
 
 export const DepositFundsScreen = () => {
+  // routing
+  const history = useHistory()
+
   // redux
   const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
@@ -97,6 +103,8 @@ export const DepositFundsScreen = () => {
   )
 
   // memos
+  const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
+
   const mainnetNetworkAssetsList = React.useMemo(() => {
     return (mainnetsList || []).map(makeNetworkAsset)
   }, [mainnetsList])
@@ -173,6 +181,27 @@ export const DepositFundsScreen = () => {
     setSelectedAccount(account)
     resetCopyState()
   }, [closeAccountSearch, resetCopyState])
+
+  const onBack = React.useCallback(() => {
+    resetCopyState()
+
+    if (!showDepositAddress && history.length) {
+      return history.goBack()
+    }
+
+    if (showDepositAddress) {
+      // go back to asset selection
+      setShowDepositAddress(false)
+      return closeAccountSearch()
+    }
+  }, [showDepositAddress, closeAccountSearch, history, resetCopyState])
+
+  const nextStep = React.useCallback(() => {
+    if (!isNextStepEnabled || !selectedAssetNetwork) {
+      return
+    }
+    setShowDepositAddress(true)
+  }, [isNextStepEnabled, selectedAssetNetwork])
 
   const goBackToSelectAssets = React.useCallback(() => {
     setShowDepositAddress(false)
@@ -251,14 +280,26 @@ export const DepositFundsScreen = () => {
   // render
   return (
     <>
+      {/* Hide nav when creating or searching accounts */}
+      {!showAccountSearch && !(
+        needsAccount && showDepositAddress
+      ) &&
+        <StepsNavigation
+          goBack={onBack}
+          steps={[]}
+          currentStep=''
+          preventGoBack={!showDepositAddress}
+        />
+      }
+
       {/* Asset Selection */}
       {!showDepositAddress &&
         <>
           <SelectAssetWrapper>
 
-            <DepositTitle>
+            <Title>
               {getLocale('braveWalletDepositFundsTitle')}
-            </DepositTitle>
+            </Title>
 
             {fullTokenList.length
               ? <TokenLists
@@ -292,6 +333,19 @@ export const DepositFundsScreen = () => {
             <VerticalSpace space={'12px'} />
 
           </SelectAssetWrapper>
+
+          <NextButtonRow>
+            <NavButton
+              buttonType={'primary'}
+              text={
+                selectedAsset
+                  ? getLocale('braveWalletButtonContinue')
+                  : getLocale('braveWalletBuySelectAsset')
+              }
+              onSubmit={nextStep}
+              disabled={!isNextStepEnabled}
+            />
+          </NextButtonRow>
         </>
       }
 

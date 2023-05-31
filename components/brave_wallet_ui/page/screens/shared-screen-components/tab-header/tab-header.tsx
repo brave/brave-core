@@ -14,6 +14,9 @@ import {
   WalletRoutes
 } from '../../../../constants/types'
 
+// Utils
+import { getLocale } from '../../../../../common/locale'
+
 // Styled Components
 import {
   HeaderWrapper,
@@ -22,14 +25,20 @@ import {
   SettingsIcon,
   SettingsWrapper
 } from './tab-header.style'
-import { Row } from '../../send/shared.styles'
+import { HorizontalDivider, Row, Text } from '../../send/shared.styles'
 
 // Components
 import {
   WalletSettingsMenu
 } from '../../../../components/desktop/wallet-menus/wallet-settings-menu'
 
-export const TabHeader = () => {
+interface Props {
+  title: string
+}
+
+export const TabHeader = (props: Props) => {
+  const { title } = props
+
   // Routing
   const history = useHistory()
 
@@ -56,6 +65,10 @@ export const TabHeader = () => {
     <HeaderWrapper>
       <Row rowHeight='full' verticalAlign='center'>
         <BraveLogo />
+        <HorizontalDivider height={22} marginRight={12} />
+        <Text textSize='18px' textColor='text02' isBold={true}>
+          {getLocale(title)}
+        </Text>
       </Row>
       <SettingsWrapper
         ref={settingsModalRef}
