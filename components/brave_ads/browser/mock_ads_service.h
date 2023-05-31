@@ -52,7 +52,8 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(GetDiagnostics, void(GetDiagnosticsCallback));
 
-  MOCK_METHOD1(OnDidUpdateResourceComponent, void(const std::string&));
+  MOCK_METHOD2(OnDidUpdateResourceComponent,
+               void(const std::string&, const std::string&));
 
   MOCK_METHOD1(GetStatementOfAccounts, void(GetStatementOfAccountsCallback));
 

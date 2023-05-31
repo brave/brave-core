@@ -44,8 +44,10 @@ class AdsClientNotifier {
   // Invoked when a preference has changed for the specified |path|.
   void NotifyPrefDidChange(const std::string& path) const;
 
-  // Invoked when a resource component has been updated.
-  void NotifyDidUpdateResourceComponent(const std::string& id) const;
+  // Invoked when a resource component with |id| has been updated to
+  // |manifest_version|.
+  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                        const std::string& id) const;
 
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that

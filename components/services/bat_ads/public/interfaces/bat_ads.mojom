@@ -28,7 +28,7 @@ interface BatAdsClientNotifier {
 
   NotifyPrefDidChange(string path);
 
-  NotifyDidUpdateResourceComponent(string id);
+  NotifyDidUpdateResourceComponent(string manifest_version, string id);
 
   NotifyRewardsWalletDidUpdate(string payment_id, string recovery_seed);
 

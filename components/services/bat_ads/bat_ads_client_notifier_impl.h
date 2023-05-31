@@ -48,8 +48,10 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   // Invoked when a preference has changed for the specified |path|.
   void NotifyPrefDidChange(const std::string& path) override;
 
-  // Invoked when a resource component has been updated.
-  void NotifyDidUpdateResourceComponent(const std::string& id) override;
+  // Invoked when a resource component with |id| has been updated to
+  // |manifest_version|.
+  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                        const std::string& id) override;
 
   // Invoked when the Brave Reward wallet did change.
   void NotifyRewardsWalletDidUpdate(const std::string& payment_id,

@@ -99,13 +99,15 @@ class BraveAdsTopSegmentsTest
     NotifyDidInitializeAds();
 
     purchase_intent_resource_ = std::make_unique<PurchaseIntentResource>();
-    NotifyDidUpdateResourceComponent(kCountryComponentId);
+    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                     kCountryComponentId);
     purchase_intent_processor_ =
         std::make_unique<PurchaseIntentProcessor>(*purchase_intent_resource_);
 
     text_classification_resource_ =
         std::make_unique<TextClassificationResource>();
-    NotifyDidUpdateResourceComponent(kLanguageComponentId);
+    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                     kLanguageComponentId);
     text_classification_processor_ =
         std::make_unique<TextClassificationProcessor>(
             *text_classification_resource_);

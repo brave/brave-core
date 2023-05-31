@@ -2156,12 +2156,14 @@ void AdsServiceImpl::OnBrowserDidEnterBackground() {
   }
 }
 
-void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
+void AdsServiceImpl::OnDidUpdateResourceComponent(
+    const std::string& manifest_version,
+    const std::string& id) {
   if (bat_ads_client_notifier_.is_bound()) {
-    bat_ads_client_notifier_->NotifyDidUpdateResourceComponent(id);
+    bat_ads_client_notifier_->NotifyDidUpdateResourceComponent(manifest_version,
+                                                               id);
   }
 }
-
 void AdsServiceImpl::OnRewardsWalletUpdated() {
   GetRewardsWallet();
 }

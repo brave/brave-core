@@ -42,8 +42,11 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   // Invoked when a preference has changed for the specified |path|.
   virtual void OnNotifyPrefDidChange(const std::string& path) {}
 
-  // Invoked when a resource component has been updated.
-  virtual void OnNotifyDidUpdateResourceComponent(const std::string& id) {}
+  // Invoked when a resource component with |id| has been updated to
+  // |manifest_version|.
+  virtual void OnNotifyDidUpdateResourceComponent(
+      const std::string& manifest_version,
+      const std::string& id) {}
 
   // Called when the Brave Rewards wallet did update.
   virtual void OnNotifyRewardsWalletDidUpdate(

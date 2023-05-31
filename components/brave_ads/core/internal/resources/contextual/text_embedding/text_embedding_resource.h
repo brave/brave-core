@@ -51,11 +51,13 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
   void OnNotifyPrefDidChange(const std::string& path) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                          const std::string& id) override;
 
   absl::optional<ml::pipeline::EmbeddingProcessing> embedding_processing_;
 
   bool did_load_ = false;
+  absl::optional<std::string> manifest_version_;
 
   base::WeakPtrFactory<TextEmbeddingResource> weak_factory_{this};
 };

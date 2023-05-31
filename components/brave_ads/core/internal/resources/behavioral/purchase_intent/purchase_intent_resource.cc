@@ -39,7 +39,7 @@ PurchaseIntentResource::~PurchaseIntentResource() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void PurchaseIntentResource::MaybeLoad() {
-  if (DoesRequireResource()) {
+  if (manifest_version_ && DoesRequireResource()) {
     Load();
   }
 }
@@ -105,10 +105,19 @@ void PurchaseIntentResource::OnNotifyPrefDidChange(const std::string& path) {
 }
 
 void PurchaseIntentResource::OnNotifyDidUpdateResourceComponent(
+    const std::string& manifest_version,
     const std::string& id) {
-  if (IsValidCountryComponentId(id)) {
-    MaybeLoad();
+  if (!IsValidCountryComponentId(id)) {
+    return;
   }
+
+  if (manifest_version == manifest_version_) {
+    return;
+  }
+
+  manifest_version_ = manifest_version;
+
+  MaybeLoad();
 }
 
 }  // namespace brave_ads

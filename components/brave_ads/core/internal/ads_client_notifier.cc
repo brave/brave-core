@@ -50,9 +50,10 @@ void AdsClientNotifier::NotifyPrefDidChange(const std::string& path) const {
 }
 
 void AdsClientNotifier::NotifyDidUpdateResourceComponent(
+    const std::string& manifest_version,
     const std::string& id) const {
   for (auto& observer : observers_) {
-    observer.OnNotifyDidUpdateResourceComponent(id);
+    observer.OnNotifyDidUpdateResourceComponent(manifest_version, id);
   }
 }
 

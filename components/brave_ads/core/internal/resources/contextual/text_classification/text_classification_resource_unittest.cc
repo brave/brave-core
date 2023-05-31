@@ -34,7 +34,7 @@ class BraveAdsTextClassificationResourceTest : public UnitTestBase {
   }
 
   void LoadResource(const std::string& id) {
-    NotifyDidUpdateResourceComponent(id);
+    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion, id);
     task_environment_.RunUntilIdle();
   }
 

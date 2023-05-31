@@ -37,7 +37,8 @@ class ConversionsResource final : public AdsClientNotifierObserver {
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                          const std::string& id) override;
 
   bool is_initialized_ = false;
 

@@ -108,7 +108,8 @@ class AdsService : public KeyedService {
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
   // Called when a resource component has been updated.
-  virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
+  virtual void OnDidUpdateResourceComponent(const std::string& manifest_version,
+                                            const std::string& id) = 0;
 
   // Called to get the statement of accounts. The callback takes one argument -
   // |mojom::StatementInfo| containing info of the obtained statement of

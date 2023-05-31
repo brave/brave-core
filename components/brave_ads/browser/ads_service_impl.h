@@ -430,7 +430,8 @@ class AdsServiceImpl : public AdsService,
   void OnBrowserDidEnterBackground() override;
 
   // ResourceComponentObserver:
-  void OnDidUpdateResourceComponent(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& manifest_version,
+                                    const std::string& id) override;
 
   // RewardsServiceObserver:
   void OnRewardsWalletUpdated() override;

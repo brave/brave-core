@@ -38,7 +38,8 @@ class BraveAdsConversionsTest : public UnitTestBase {
   }
 
   bool LoadResource() {
-    NotifyDidUpdateResourceComponent(kCountryComponentId);
+    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                     kCountryComponentId);
     task_environment_.RunUntilIdle();
     return resource_->IsInitialized();
   }

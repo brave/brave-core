@@ -844,7 +844,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                          base::SysNSStringToUTF8(languageCodeAdsResourceId);
                      strongSelf->adsClientNotifier
                          ->NotifyDidUpdateResourceComponent(
-                             bridged_language_code_adsResource_idkey);
+                             "1", bridged_language_code_adsResource_idkey);
                    }
                  }];
 
@@ -883,7 +883,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
                      strongSelf->adsClientNotifier
                          ->NotifyDidUpdateResourceComponent(
-                             bridged_country_code_adsResource_idkey);
+                             "1", bridged_country_code_adsResource_idkey);
                    }
                  }];
 
@@ -960,7 +960,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      BLOG(1, @"Notifying ads resource observers");
                      strongSelf->adsClientNotifier
                          ->NotifyDidUpdateResourceComponent(
-                             base::SysNSStringToUTF8(key));
+                             "1", base::SysNSStringToUTF8(key));
                    }];
   }
 }

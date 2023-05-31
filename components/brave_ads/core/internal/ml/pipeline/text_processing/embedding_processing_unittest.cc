@@ -26,7 +26,8 @@ class BraveAdsEmbeddingProcessingTest : public UnitTestBase {
   }
 
   bool LoadResource() {
-    NotifyDidUpdateResourceComponent(kLanguageComponentId);
+    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                     kLanguageComponentId);
     task_environment_.RunUntilIdle();
     return resource_->IsInitialized();
   }

@@ -48,11 +48,13 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
   void OnNotifyPrefDidChange(const std::string& path) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                          const std::string& id) override;
 
   absl::optional<AntiTargetingInfo> anti_targeting_;
 
   bool did_load_ = false;
+  absl::optional<std::string> manifest_version_;
 
   base::WeakPtrFactory<AntiTargetingResource> weak_factory_{this};
 };

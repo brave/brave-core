@@ -46,8 +46,9 @@ void BatAdsClientNotifierImpl::NotifyPrefDidChange(const std::string& path) {
 }
 
 void BatAdsClientNotifierImpl::NotifyDidUpdateResourceComponent(
+    const std::string& manifest_version,
     const std::string& id) {
-  notifier_.NotifyDidUpdateResourceComponent(id);
+  notifier_.NotifyDidUpdateResourceComponent(manifest_version, id);
 }
 
 void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(

@@ -34,7 +34,7 @@ class BraveAdsAntiTargetingResourceTest : public UnitTestBase {
   }
 
   void LoadResource(const std::string& id) {
-    NotifyDidUpdateResourceComponent(id);
+    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion, id);
     task_environment_.RunUntilIdle();
   }
 

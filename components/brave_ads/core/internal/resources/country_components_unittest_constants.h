@@ -8,6 +8,7 @@
 
 namespace brave_ads {
 
+constexpr char kCountryComponentManifestVersion[] = "1.0.0";
 constexpr char kCountryComponentId[] = "jememeholcpjpoahinnlafoiaknnmfgl";
 constexpr char kInvalidCountryComponentId[] =
     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";

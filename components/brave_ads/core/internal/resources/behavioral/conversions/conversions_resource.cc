@@ -69,6 +69,7 @@ void ConversionsResource::OnNotifyLocaleDidChange(
 }
 
 void ConversionsResource::OnNotifyDidUpdateResourceComponent(
+    const std::string& /*manifest_version*/,
     const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     Load();
