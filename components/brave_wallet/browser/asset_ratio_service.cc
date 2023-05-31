@@ -260,13 +260,8 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
 
     std::move(callback).Run(std::move(transak_url.spec()), absl::nullopt);
   } else if (provider == mojom::OnRampProvider::kStripe) {
-    GetStripeBuyURL(std::move(callback), address,
-                    currency_code,  // source currecy
-                    amount,         // source exchange amount
-                    chain_id,       // destination_network
-                    symbol,         // destination_currency
-                    {}              // supported_destination_networks
-    );
+    GetStripeBuyURL(std::move(callback), address, currency_code, amount,
+                    chain_id, symbol);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }
@@ -358,8 +353,7 @@ void AssetRatioService::GetStripeBuyURL(
     const std::string& source_currency,
     const std::string& source_exchange_amount,
     const std::string& chain_id,
-    const std::string& destination_currency,
-    const std::vector<std::string>& supported_destination_networks) {
+    const std::string& destination_currency) {
   // Convert the frontend supplied chain ID to the chain ID used by Stripe
   absl::optional<std::string> destination_network =
       ChainIdToStripeChainId(chain_id);
@@ -373,18 +367,6 @@ void AssetRatioService::GetStripeBuyURL(
   AddKeyIfNotEmpty(&payload, "source_exchange_amount", source_exchange_amount);
   AddKeyIfNotEmpty(&payload, "destination_network", *destination_network);
   AddKeyIfNotEmpty(&payload, "destination_currency", destination_currency);
-
-  // Convert supported_destination_networks to base::Value::List
-  base::Value::List supported_destination_networks_value;
-  for (const auto& network : supported_destination_networks) {
-    supported_destination_networks_value.Append(base::Value(network));
-  }
-
-  // Add supported_destination_networks to payload
-  if (!supported_destination_networks_value.empty()) {
-    payload.Set("supported_destination_networks",
-                std::move(supported_destination_networks_value));
-  }
 
   const std::string json_payload = GetJSON(payload);
 

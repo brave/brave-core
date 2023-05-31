@@ -113,14 +113,12 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                              GetBuyUrlV1Callback callback,
                              APIRequestResult api_request_result);
 
-  void GetStripeBuyURL(
-      GetBuyUrlV1Callback callback,
-      const std::string& address,
-      const std::string& source_currency,
-      const std::string& source_exchange_amount,
-      const std::string& chain_id,
-      const std::string& destination_currency,
-      const std::vector<std::string>& supported_destination_networks);
+  void GetStripeBuyURL(GetBuyUrlV1Callback callback,
+                       const std::string& address,
+                       const std::string& source_currency,
+                       const std::string& source_exchange_amount,
+                       const std::string& chain_id,
+                       const std::string& destination_currency);
 
   void OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
                          APIRequestResult api_request_result);
