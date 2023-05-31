@@ -95,6 +95,25 @@ std::vector<std::string> VectorToLowerCase(const std::vector<std::string>& v) {
   return v_lower;
 }
 
+constexpr char kEthereum[] = "ethereum";
+constexpr char kSolana[] = "solana";
+constexpr char kPolygon[] = "polygon";
+constexpr char kBitcoin[] = "bitcoin";
+
+absl::optional<std::string> ChainIdToStripeChainId(
+    const std::string& chain_id) {
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      chain_id_lookup({{brave_wallet::mojom::kMainnetChainId, kEthereum},
+                       {brave_wallet::mojom::kSolanaMainnet, kSolana},
+                       {brave_wallet::mojom::kPolygonMainnetChainId, kPolygon},
+                       {brave_wallet::mojom::kBitcoinMainnet, kBitcoin}});
+  if (!chain_id_lookup->contains(chain_id)) {
+    return absl::nullopt;
+  }
+
+  return chain_id_lookup->at(chain_id);
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -338,14 +357,21 @@ void AssetRatioService::GetStripeBuyURL(
     const std::string& address,
     const std::string& source_currency,
     const std::string& source_exchange_amount,
-    const std::string& destination_network,
+    const std::string& chain_id,
     const std::string& destination_currency,
     const std::vector<std::string>& supported_destination_networks) {
+  // Convert the frontend supplied chain ID to the chain ID used by Stripe
+  absl::optional<std::string> destination_network =
+      ChainIdToStripeChainId(chain_id);
+  if (!destination_network) {
+    std::move(callback).Run("", "UNSUPPORTED_CHAIN_ID");
+  }
+
   base::Value::Dict payload;
   AddKeyIfNotEmpty(&payload, "wallet_address", address);
   AddKeyIfNotEmpty(&payload, "source_currency", source_currency);
   AddKeyIfNotEmpty(&payload, "source_exchange_amount", source_exchange_amount);
-  AddKeyIfNotEmpty(&payload, "destination_network", destination_network);
+  AddKeyIfNotEmpty(&payload, "destination_network", *destination_network);
   AddKeyIfNotEmpty(&payload, "destination_currency", destination_currency);
 
   // Convert supported_destination_networks to base::Value::List
