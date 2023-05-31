@@ -26,6 +26,9 @@ constexpr CLSID kBraveWireguardServiceCLSID = {
     0x4a8e,
     {0x98, 0xad, 0x9d, 0x64, 0xd8, 0x91, 0x39, 0x68}};
 
+constexpr wchar_t kBraveWireguardTunnelServiceName[] =
+    L"BraveWireGuardTunnelService";
+
 }  // namespace
 
 // Returns the Brave Vpn Service CLSID, IID, Name, and Display Name
@@ -50,4 +53,7 @@ std::wstring GetBraveVpnWireguardServiceName() {
   return name;
 }
 
+std::wstring GetBraveVpnWireguardTunnelServiceName() {
+  return kBraveWireguardTunnelServiceName;
+}
 }  // namespace brave_vpn

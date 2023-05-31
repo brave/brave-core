@@ -28,6 +28,8 @@ constexpr char kBraveVpnShowDNSPolicyWarningDialog[] =
 constexpr char kBraveVPNShowNotificationDialog[] =
     "brave.brave_vpn.show_notification_dialog";
 #endif  // BUILDFLAG(IS_WIN)
+constexpr char kBraveVPNWireguardProfileCredentials[] =
+    "brave.brave_vpn.wireguard.profile_credentials";
 constexpr char kBraveVPNEnvironment[] = "brave.brave_vpn.env";
 // Dict that has subscriber credential its expiration date.
 constexpr char kBraveVPNSubscriberCredential[] =

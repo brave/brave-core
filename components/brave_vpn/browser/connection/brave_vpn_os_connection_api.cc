@@ -5,11 +5,19 @@
 
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 
+#include <vector>
+
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
+#include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
+#include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {
@@ -47,7 +55,8 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
 BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs)
-    : url_loader_factory_(url_loader_factory),
+    : local_prefs_(local_prefs),
+      url_loader_factory_(url_loader_factory),
       region_data_manager_(url_loader_factory, local_prefs) {
   DCHECK(url_loader_factory_);
   // Safe to use Unretained here because |region_data_manager_| is owned
@@ -116,7 +125,9 @@ BraveVpnAPIRequest* BraveVPNOSConnectionAPI::GetAPIRequest() {
 
   return api_request_.get();
 }
-
+void BraveVPNOSConnectionAPI::ResetHostname() {
+  hostname_.reset();
+}
 void BraveVPNOSConnectionAPI::ResetConnectionState() {
   // Don't use UpdateAndNotifyConnectionStateChange() to update connection state
   // and set state directly because we have a logic to ignore disconnected state
@@ -150,6 +161,9 @@ bool BraveVPNOSConnectionAPI::QuickCancelIfPossible() {
   ResetAPIRequestInstance();
   return true;
 }
+std::string BraveVPNOSConnectionAPI::GetHostname() const {
+  return hostname_ ? hostname_->hostname : "";
+}
 
 void BraveVPNOSConnectionAPI::ResetAPIRequestInstance() {
   api_request_.reset();
@@ -162,6 +176,90 @@ std::string BraveVPNOSConnectionAPI::GetLastConnectionError() const {
 void BraveVPNOSConnectionAPI::SetLastConnectionError(const std::string& error) {
   VLOG(2) << __func__ << " : " << error;
   last_connection_error_ = error;
+}
+
+void BraveVPNOSConnectionAPI::FetchHostnamesForRegion(const std::string& name) {
+  // Hostname will be replaced with latest one.
+  hostname_.reset();
+
+  if (!GetAPIRequest()) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  // Unretained is safe here becasue this class owns request helper.
+  GetAPIRequest()->GetHostnamesForRegion(
+      base::BindOnce(&BraveVPNOSConnectionAPI::OnFetchHostnames,
+                     base::Unretained(this), name),
+      name);
+}
+
+void BraveVPNOSConnectionAPI::OnFetchHostnames(const std::string& region,
+                                               const std::string& hostnames,
+                                               bool success) {
+  if (!success) {
+    VLOG(2) << __func__ << " : failed to fetch hostnames for " << region;
+    UpdateAndNotifyConnectionStateChange(
+        mojom::ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
+  ResetAPIRequestInstance();
+
+  absl::optional<base::Value> value = base::JSONReader::Read(hostnames);
+  if (value && value->is_list()) {
+    ParseAndCacheHostnames(region, value->GetList());
+    return;
+  }
+
+  VLOG(2) << __func__ << " : failed to fetch hostnames for " << region;
+  UpdateAndNotifyConnectionStateChange(mojom::ConnectionState::CONNECT_FAILED);
+}
+
+void BraveVPNOSConnectionAPI::ParseAndCacheHostnames(
+    const std::string& region,
+    const base::Value::List& hostnames_value) {
+  std::vector<Hostname> hostnames = ParseHostnames(hostnames_value);
+
+  if (hostnames.empty()) {
+    VLOG(2) << __func__ << " : got empty hostnames list for " << region;
+    UpdateAndNotifyConnectionStateChange(
+        mojom::ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
+  hostname_ = PickBestHostname(hostnames);
+  if (hostname_->hostname.empty()) {
+    VLOG(2) << __func__ << " : got empty hostnames list for " << region;
+    UpdateAndNotifyConnectionStateChange(
+        mojom::ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
+  VLOG(2) << __func__ << " : Picked " << hostname_->hostname << ", "
+          << hostname_->display_name << ", " << hostname_->is_offline << ", "
+          << hostname_->capacity_score;
+
+  if (!GetAPIRequest()) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  // Get profile credentials it to create OS VPN entry.
+  VLOG(2) << __func__ << " : request profile credential:"
+          << GetBraveVPNPaymentsEnv(GetCurrentEnvironment());
+  FetchProfileCredentials();
+}
+
+std::string BraveVPNOSConnectionAPI::GetCurrentEnvironment() const {
+  return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
+}
+
+void BraveVPNOSConnectionAPI::ToggleConnection() {
+  const bool can_disconnect =
+      (GetConnectionState() == mojom::ConnectionState::CONNECTED ||
+       GetConnectionState() == mojom::ConnectionState::CONNECTING);
+  can_disconnect ? Disconnect() : Connect();
 }
 
 }  // namespace brave_vpn

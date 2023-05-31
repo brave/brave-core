@@ -34,10 +34,6 @@ void BraveVPNOSConnectionAPISim::CreateVPNConnectionImpl(
                      weak_factory_.GetWeakPtr(), info.connection_name(), true));
 }
 
-std::string BraveVPNOSConnectionAPISim::GetHostname() const {
-  return std::string();
-}
-
 void BraveVPNOSConnectionAPISim::ConnectImpl(const std::string& name) {
   disconnect_requested_ = false;
 
@@ -80,10 +76,6 @@ void BraveVPNOSConnectionAPISim::DisconnectImpl(const std::string& name) {
                                 weak_factory_.GetWeakPtr(), name, true));
 }
 
-void BraveVPNOSConnectionAPISim::ResetConnectionInfo() {
-  BraveVPNOSConnectionAPIBase::ResetConnectionInfo();
-}
-
 void BraveVPNOSConnectionAPISim::Connect() {
   BraveVPNOSConnectionAPIBase::Connect();
 }
@@ -103,10 +95,6 @@ void BraveVPNOSConnectionAPISim::OnCreated(const std::string& name,
 
 void BraveVPNOSConnectionAPISim::Disconnect() {
   BraveVPNOSConnectionAPIBase::Disconnect();
-}
-
-void BraveVPNOSConnectionAPISim::ToggleConnection() {
-  BraveVPNOSConnectionAPIBase::ToggleConnection();
 }
 
 void BraveVPNOSConnectionAPISim::CheckConnection() {

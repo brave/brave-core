@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_SCOPED_SC_HANDLE_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_SCOPED_SC_HANDLE_H_
 
+#include <windows.h>
+#include <winsvc.h>
+
 #include "base/types/expected.h"
 #include "base/win/scoped_handle.h"
 

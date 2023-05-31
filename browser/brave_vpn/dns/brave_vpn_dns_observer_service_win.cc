@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/ui/views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -112,7 +113,7 @@ bool BraveVpnDnsObserverService::IsDNSHelperLive() {
     return false;
   }
 
-  if (IsBraveVPNHelperServiceRunning()) {
+  if (IsWindowsServiceRunning(brave_vpn::GetBraveVpnHelperServiceName())) {
     RunServiceWatcher();
   }
 
@@ -131,7 +132,7 @@ bool BraveVpnDnsObserverService::IsDNSHelperLive() {
 }
 
 void BraveVpnDnsObserverService::RunServiceWatcher() {
-  service_watcher_.reset(new ServiceWatcher());
+  service_watcher_.reset(new brave::ServiceWatcher());
   if (!service_watcher_->Subscribe(
           brave_vpn::GetBraveVpnHelperServiceName(), SERVICE_NOTIFY_STOPPED,
           base::BindOnce(&BraveVpnDnsObserverService::OnServiceStopped,
@@ -161,7 +162,8 @@ void BraveVpnDnsObserverService::OnCheckIfServiceStarted() {
     return;
   }
   // Checking if the service was not launched or filters were not set.
-  if (!IsNetworkFiltersInstalled() || !IsBraveVPNHelperServiceRunning()) {
+  if (!IsNetworkFiltersInstalled() ||
+      !IsWindowsServiceRunning(brave_vpn::GetBraveVpnHelperServiceName())) {
     LockDNS();
     return;
   }

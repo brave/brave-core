@@ -15,7 +15,6 @@ class FilePath;
 namespace brave_vpn {
 
 bool IsBraveVPNHelperServiceInstalled();
-bool IsBraveVPNHelperServiceRunning();
 bool IsNetworkFiltersInstalled();
 std::wstring GetBraveVPNConnectionName();
 std::wstring GetBraveVpnHelperServiceName();

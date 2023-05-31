@@ -36,6 +36,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
   registry->RegisterStringPref(prefs::kBraveVPNEnvironment,
                                skus::GetDefaultEnvironment());
+  registry->RegisterStringPref(prefs::kBraveVPNWireguardProfileCredentials, "");
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterDictionaryPref(prefs::kBraveVPNSubscriberCredential);
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);

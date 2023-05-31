@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_vpn/dns/brave_vpn_helper_watcher_win.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/brave_windows_service_watcher.h"
 
 #include <utility>
 
@@ -11,8 +11,8 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
+
+namespace brave {
 
 namespace {
 
@@ -54,8 +54,13 @@ ServiceWatcher::~ServiceWatcher() = default;
 void ServiceWatcher::OnServiceSignaled(base::OnceClosure callback,
                                        base::WaitableEvent* service_event) {
   if (callback) {
+    is_watching_ = false;
     std::move(callback).Run();
   }
+}
+
+bool ServiceWatcher::IsWatching() const {
+  return is_watching_;
 }
 
 bool ServiceWatcher::Subscribe(const std::wstring& service_name,
@@ -87,6 +92,8 @@ bool ServiceWatcher::Subscribe(const std::wstring& service_name,
       base::BindOnce(&ServiceWatcher::OnServiceSignaled,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
       task_runner_);
-
+  is_watching_ = true;
   return true;
 }
+
+}  // namespace brave

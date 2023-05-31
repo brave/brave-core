@@ -5,12 +5,21 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_connection_api.h"
 
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
-#include "brave/components/brave_vpn/common/pref_names.h"
-#include "components/prefs/pref_service.h"
+#include <memory>
+#include <tuple>
+
+#include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service_constants.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/wireguard_utils.h"
 
 namespace brave_vpn {
+
+namespace {
+constexpr char kCloudflareIPv4[] = "1.1.1.1";
+// Timer to recheck the service launch after some time.
+constexpr int kWireguardServiceRestartTimeoutSec = 5;
+}  // namespace
 
 using ConnectionState = mojom::ConnectionState;
 
@@ -19,41 +28,104 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
     PrefService* local_prefs,
     version_info::Channel channel) {
   return std::make_unique<BraveVPNWireguardConnectionAPI>(url_loader_factory,
-                                                          local_prefs, channel);
+                                                          local_prefs);
 }
 
-// TODO(spylogsster): Implement wireguard connection using Wireguard service.
 BraveVPNWireguardConnectionAPI::BraveVPNWireguardConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel)
-    : BraveVPNOSConnectionAPI(url_loader_factory, local_prefs),
-      local_prefs_(local_prefs),
-      url_loader_factory_(url_loader_factory) {
-  DCHECK(url_loader_factory_ && local_prefs_);
-}
+    PrefService* local_prefs)
+    : BraveVPNWireguardConnectionAPIBase(url_loader_factory, local_prefs) {}
 
 BraveVPNWireguardConnectionAPI::~BraveVPNWireguardConnectionAPI() {}
 
-std::string BraveVPNWireguardConnectionAPI::GetCurrentEnvironment() const {
-  return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
+void BraveVPNWireguardConnectionAPI::Disconnect() {
+  if (GetConnectionState() == ConnectionState::DISCONNECTED) {
+    VLOG(2) << __func__ << " : already disconnected";
+    return;
+  }
+  VLOG(2) << __func__ << " : Start stopping the service";
+  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
+
+  brave_vpn::wireguard::DisableBraveVpnWireguardService(
+      base::BindOnce(&BraveVPNWireguardConnectionAPI::OnDisconnected,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void BraveVPNWireguardConnectionAPI::Connect() {}
-
-void BraveVPNWireguardConnectionAPI::Disconnect() {}
-
-void BraveVPNWireguardConnectionAPI::ToggleConnection() {}
-
-void BraveVPNWireguardConnectionAPI::CheckConnection() {}
-
-void BraveVPNWireguardConnectionAPI::ResetConnectionInfo() {}
-
-std::string BraveVPNWireguardConnectionAPI::GetHostname() const {
-  return std::string();
+void BraveVPNWireguardConnectionAPI::CheckConnection() {
+  auto state = IsWindowsServiceRunning(
+                   brave_vpn::GetBraveVpnWireguardTunnelServiceName())
+                   ? ConnectionState::CONNECTED
+                   : ConnectionState::DISCONNECTED;
+  UpdateAndNotifyConnectionStateChange(state);
 }
 
-void BraveVPNWireguardConnectionAPI::SetSelectedRegion(
-    const std::string& name) {}
+void BraveVPNWireguardConnectionAPI::RequestNewProfileCredentials() {
+  brave_vpn::wireguard::WireguardGenerateKeypair(base::BindOnce(
+      &BraveVPNWireguardConnectionAPI::OnWireguardKeypairGenerated,
+      weak_factory_.GetWeakPtr()));
+}
+
+void BraveVPNWireguardConnectionAPI::PlatformConnectImpl(
+    const wireguard::WireguardProfileCredentials& credentials) {
+  auto vpn_server_hostname = GetHostname();
+  auto config = brave_vpn::wireguard::CreateWireguardConfig(
+      credentials.client_private_key, credentials.server_public_key,
+      vpn_server_hostname, credentials.mapped_ip4_address, kCloudflareIPv4);
+  if (!config.has_value()) {
+    VLOG(1) << __func__ << " : failed to get correct credentials";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+  brave_vpn::wireguard::EnableBraveVpnWireguardService(
+      config.value(),
+      base::BindOnce(
+          &BraveVPNWireguardConnectionAPI::OnWireguardServiceLaunched,
+          weak_factory_.GetWeakPtr()));
+}
+
+void BraveVPNWireguardConnectionAPI::OnServiceStopped() {
+  // Postpone check because the service can be restarted by the system due to
+  // configured failure actions.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&BraveVPNWireguardConnectionAPI::CheckConnection,
+                     weak_factory_.GetWeakPtr()),
+      base::Seconds(kWireguardServiceRestartTimeoutSec));
+}
+
+void BraveVPNWireguardConnectionAPI::RunServiceWatcher() {
+  if (service_watcher_ && service_watcher_->IsWatching()) {
+    return;
+  }
+  service_watcher_.reset(new brave::ServiceWatcher());
+  if (!service_watcher_->Subscribe(
+          brave_vpn::GetBraveVpnWireguardTunnelServiceName(),
+          SERVICE_NOTIFY_STOPPED,
+          base::BindOnce(&BraveVPNWireguardConnectionAPI::OnServiceStopped,
+                         weak_factory_.GetWeakPtr()))) {
+    VLOG(1) << "Unable to set service watcher";
+  }
+}
+
+void BraveVPNWireguardConnectionAPI::ResetServiceWatcher() {
+  if (service_watcher_) {
+    service_watcher_.reset();
+  }
+}
+
+void BraveVPNWireguardConnectionAPI::OnWireguardServiceLaunched(bool success) {
+  UpdateAndNotifyConnectionStateChange(
+      success ? ConnectionState::CONNECTED : ConnectionState::CONNECT_FAILED);
+}
+
+void BraveVPNWireguardConnectionAPI::OnConnectionStateChanged(
+    mojom::ConnectionState state) {
+  BraveVPNWireguardConnectionAPIBase::OnConnectionStateChanged(state);
+  if (state == ConnectionState::CONNECTED) {
+    RunServiceWatcher();
+    return;
+  }
+  ResetServiceWatcher();
+}
 
 }  // namespace brave_vpn

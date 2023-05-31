@@ -27,7 +27,6 @@ class PrefService;
 namespace brave_vpn {
 
 class BraveVpnAPIRequest;
-struct Hostname;
 
 class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
  public:
@@ -41,13 +40,11 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   // BraveVPNOSConnectionAPI
   void Connect() override;
   void Disconnect() override;
-  void ToggleConnection() override;
   void CheckConnection() override;
-  void ResetConnectionInfo() override;
-  std::string GetHostname() const override;
   void UpdateAndNotifyConnectionStateChange(
       mojom::ConnectionState state) override;
   void SetSelectedRegion(const std::string& name) override;
+  void FetchProfileCredentials() override;
 
  protected:
   BraveVPNOSConnectionAPIBase(
@@ -94,15 +91,11 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
                            IgnoreDisconnectedStateWhileConnecting);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            ClearLastConnectionErrorWhenNewConnectionStart);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest);
+
+  void ResetConnectionInfo();
 
   void CreateVPNConnection();
-  std::string GetCurrentEnvironment() const;
-  void FetchHostnamesForRegion(const std::string& name);
-  void OnFetchHostnames(const std::string& region,
-                        const std::string& hostnames,
-                        bool success);
-  void ParseAndCacheHostnames(const std::string& region,
-                              const base::Value::List& hostnames_value);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
 
@@ -114,8 +107,6 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   std::string target_vpn_entry_name_;
 
   BraveVPNConnectionInfo connection_info_;
-  raw_ptr<PrefService> local_prefs_ = nullptr;
-  std::unique_ptr<Hostname> hostname_;
 };
 
 }  // namespace brave_vpn
