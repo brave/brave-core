@@ -108,6 +108,8 @@ EpsilonGreedyBanditProcessor::~EpsilonGreedyBanditProcessor() {
 
 void EpsilonGreedyBanditProcessor::Process(
     const EpsilonGreedyBanditFeedbackInfo& feedback) const {
+  CHECK(mojom::IsKnownEnumValue(feedback.ad_event_type));
+
   if (!is_initialized_) {
     return;
   }
@@ -117,9 +119,7 @@ void EpsilonGreedyBanditProcessor::Process(
   const std::string segment = GetParentSegment(feedback.segment);
   CHECK(!segment.empty());
 
-  const mojom::NotificationAdEventType ad_event_type = feedback.ad_event_type;
-  CHECK(mojom::IsKnownEnumValue(ad_event_type));
-  switch (ad_event_type) {
+  switch (feedback.ad_event_type) {
     case mojom::NotificationAdEventType::kTimedOut:
     case mojom::NotificationAdEventType::kDismissed: {
       UpdateArm(/*reward*/ 0.0, segment);
