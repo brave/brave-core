@@ -111,17 +111,15 @@ export const CreateAccountModal = () => {
       return
     }
 
-    const createdAccount = dispatch(
+    dispatch(
       WalletActions.addAccount({
         coin: selectedAccountType.coin,
         keyringId: targetKeyringId,
         accountName
       })
     )
-    if (createdAccount) {
-      if (walletLocation.includes(WalletRoutes.Accounts)) {
-        history.push(WalletRoutes.Accounts)
-      }
+    if (walletLocation.includes(WalletRoutes.Accounts)) {
+      history.push(WalletRoutes.Accounts)
     }
   }, [accountName, selectedAccountType, targetKeyringId])
 

@@ -58,7 +58,7 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
     private ImageView mBiometricWalletImage;
     private Button mShowPrivateKeyBtn;
 
-    public static Intent createIntent(Context context, @NonNull AccountInfo accountInfo) {
+    public static Intent createIntent(@NonNull Context context, @NonNull AccountInfo accountInfo) {
         Intent intent = new Intent(context, AccountPrivateKeyActivity.class);
         WalletUtils.addAccountInfoToIntent(intent, accountInfo);
         return intent;

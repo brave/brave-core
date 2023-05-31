@@ -787,7 +787,7 @@ interface KeyringService {
   AddAccount(CoinType coin, string keyring_id, string account_name) => (AccountInfo? account_info);
 
   // Adds bitcoin account.
-  AddBitcoinAccount(string account_name, string network_id, string keyring_id) => (AccountInfo account_info);
+  AddBitcoinAccount(string account_name, string network_id, string keyring_id) => (AccountInfo? account_info);
 
   // Encodes the private key for exporting.
   EncodePrivateKeyForExport(AccountId account_id, string password)

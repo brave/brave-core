@@ -62,14 +62,14 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private String mSelectedFilecoinNetwork;
 
     public static Intent createIntentToEditAccount(
-            Context context, @NonNull AccountInfo accountInfo) {
+            @NonNull Context context, @NonNull AccountInfo accountInfo) {
         Intent intent = new Intent(context, AddAccountActivity.class);
         WalletUtils.addAccountInfoToIntent(intent, accountInfo);
         return intent;
     }
 
     public static Intent createIntentToAddAccount(
-            Context context, @CoinType.EnumType int coinForNewAccount) {
+            @NonNull Context context, @CoinType.EnumType int coinForNewAccount) {
         Intent intent = new Intent(context, AddAccountActivity.class);
         intent.putExtra(Utils.COIN_TYPE, coinForNewAccount);
         return intent;

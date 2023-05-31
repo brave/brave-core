@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -60,7 +61,7 @@ public class NetworkSelectorActivity
      * @return Intent object to open NetworkSelectorActivity in global/default wallet selection mode
      * <b>Note:</b>: It should only be called if the wallet is set up and unlocked
      */
-    public static Intent createIntent(Context context) {
+    public static Intent createIntent(@NonNull Context context) {
         return createIntent(context, DEFAULT_WALLET_NETWORK, null);
     }
 
@@ -76,7 +77,8 @@ public class NetworkSelectorActivity
      * @return Intent object to open NetworkSelectorActivity in given mode
      * <b>Note:</b>: It should only be called if the wallet is set up and unlocked
      */
-    public static Intent createIntent(Context context, NetworkSelectorModel.Mode mode, String key) {
+    public static Intent createIntent(
+            @NonNull Context context, NetworkSelectorModel.Mode mode, @NonNull String key) {
         Intent braveNetworkSelectionIntent = new Intent(context, NetworkSelectorActivity.class);
         braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         // Either in global or local network selection mode

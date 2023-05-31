@@ -41,7 +41,7 @@ public class AccountDetailsWithQrActivity extends BraveWalletBaseActivity {
     private ImageView qrCodeImage;
     private AccountInfo mAccountInfo;
 
-    public static Intent createIntent(Context context, @NonNull AccountInfo accountInfo) {
+    public static Intent createIntent(@NonNull Context context, @NonNull AccountInfo accountInfo) {
         Intent intent = new Intent(context, AccountDetailsWithQrActivity.class);
         WalletUtils.addAccountInfoToIntent(intent, accountInfo);
         return intent;

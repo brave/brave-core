@@ -72,7 +72,7 @@ public class AccountDetailActivity
     private WalletCoinAdapter mWalletTxCoinAdapter;
     private WalletModel mWalletModel;
 
-    public static Intent createIntent(Context context, @NonNull AccountInfo accountInfo) {
+    public static Intent createIntent(@NonNull Context context, @NonNull AccountInfo accountInfo) {
         Intent intent = new Intent(context, AccountDetailActivity.class);
         WalletUtils.addAccountInfoToIntent(intent, accountInfo);
         return intent;
