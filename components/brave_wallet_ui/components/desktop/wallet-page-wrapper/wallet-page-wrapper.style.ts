@@ -115,7 +115,10 @@ export const ContainerCard = styled.div<
   }
 `
 
-export const CardHeaderWrapper = styled.div`
+
+export const CardHeaderWrapper = styled.div<{
+    maxWidth?: number,
+  }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -123,17 +126,22 @@ export const CardHeaderWrapper = styled.div`
   top: ${layoutTopPosition}px;
   position: fixed;
   width: 100%;
+  max-width: ${(p) =>
+    p.maxWidth
+      ? `${p.maxWidth}px`
+      : 'unset'
+  };
   @media screen and (max-width: ${layoutScaleWithNav}px) {
-    padding: 0px 32px 0px 304px;
-    left: 0px;
-    right: 0px;
+    padding: ${(p) => p.maxWidth ? '0px': '0px 32px 0px 304px'}; 
+    left: ${(p) => p.maxWidth ? 'unset': '0px'};
+    right: ${(p) => p.maxWidth ? 'unset': '0px'};
     align-items: flex-start;
   }
   @media screen and (max-width: ${layoutSmallWidth}px) {
     left: unset;
     right: unset;
     align-items: center;
-    padding: 0px 32px;
+    padding: ${p => p.maxWidth ? '0px' : '0px 32px'};
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px;

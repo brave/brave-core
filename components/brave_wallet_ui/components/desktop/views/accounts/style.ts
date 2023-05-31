@@ -78,14 +78,6 @@ export const SubDivider = styled.div`
   background-color: ${(p) => p.theme.color.divider01};
 `
 
-export const TopRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-`
-
 export const WalletInfoRow = styled.div`
   display: flex;
   flex-direction: row;

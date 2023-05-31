@@ -9,6 +9,7 @@ import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-d
 
 // utils
 import { getWalletLocationTitle } from '../utils/string-utils'
+import { getLocale } from '../../common/locale'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
@@ -47,6 +48,7 @@ import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import {
   WalletPageWrapper
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { PageTitleHeader } from '../components/desktop/card-headers/page-title-header'
 
 export const Container = () => {
   // routing
@@ -261,6 +263,9 @@ export const Container = () => {
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={456}
+                  cardHeader={
+                    <PageTitleHeader title={getLocale('braveWalletBuy')} />
+                  }
                 >
                   <FundWalletScreen />
                 </WalletPageWrapper>
@@ -272,6 +277,9 @@ export const Container = () => {
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={456}
+                  cardHeader={
+                    <PageTitleHeader title={getLocale('braveWalletDepositCryptoButton')} />
+                  }
                 >
                   <DepositFundsScreen />
                 </WalletPageWrapper>
@@ -283,6 +291,9 @@ export const Container = () => {
                 <WalletPageWrapper
                   hideHeader={true}
                   hideBackground={true}
+                  cardHeader={
+                    <PageTitleHeader title={'braveWalletSwap'} />
+                  }
                 >
                   <Swap />
                 </WalletPageWrapper>
@@ -297,7 +308,14 @@ export const Container = () => {
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.SendPage} exact>
-                <WalletPageWrapper hideBackground={true}>
+                <WalletPageWrapper
+                  wrapContentInBox={true}
+                  hideBackground={true}
+                  cardWidth={512}
+                  cardHeader={
+                    <PageTitleHeader title={getLocale('braveWalletSend')}/>
+                  }
+                >
                   <SendScreen />
                 </WalletPageWrapper>
               </Route>
