@@ -256,13 +256,17 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_FALSE(IsPermissionBubbleShown());
 
+  const std::string js_error =
+      "a JavaScript error: \"NotSupportedError: Unsupported keySystem or "
+      "supportedConfigurations.\"\n";
+
   const std::string drm_js =
       "var config = [{initDataTypes: ['cenc']}];"
       "navigator.requestMediaKeySystemAccess($1, config);";
   const std::string widevine_js = content::JsReplace(drm_js,
                                                      "com.widevine.alpha");
 
-  EXPECT_TRUE(content::ExecJs(active_contents(), widevine_js));
+  EXPECT_EQ(js_error, content::EvalJs(active_contents(), widevine_js).error);
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(IsPermissionBubbleShown());
   ResetBubbleState();
@@ -283,14 +287,16 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   ResetBubbleState();
 
   // Check that non-widevine DRM is ignored.
-  EXPECT_TRUE(content::ExecJs(active_contents(),
-                              content::JsReplace(drm_js, "org.w3.clearkey")));
+  EXPECT_EQ(js_error,
+            content::EvalJs(active_contents(),
+                            content::JsReplace(drm_js, "org.w3.clearkey"))
+                .error);
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();
 
   // Finally check the widevine request.
-  EXPECT_TRUE(content::ExecJs(active_contents(), widevine_js));
+  EXPECT_EQ(js_error, content::EvalJs(active_contents(), widevine_js).error);
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(IsPermissionBubbleShown());
 }
