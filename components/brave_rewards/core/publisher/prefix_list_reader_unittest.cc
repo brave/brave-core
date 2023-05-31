@@ -9,14 +9,13 @@
 
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
-// npm run test -- brave_unit_tests --filter='PrefixListReaderTest.*'
+// npm run test -- brave_unit_tests --filter=PrefixListReaderTest.*
 
-namespace brave_rewards::internal {
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
-class PrefixListReaderTest : public testing::Test {
+class PrefixListReaderTest : public MockLedgerTest {
  protected:
   template <typename F>
   PrefixListReader::ParseError TestParse(F init) {
@@ -161,5 +160,4 @@ TEST_F(PrefixListReaderTest, BrotliCompression) {
   ASSERT_EQ(uncompressed, "aaaabbbbccccddddeeeeffffgggghhhh");
 }
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher

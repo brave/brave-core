@@ -8,36 +8,14 @@
 
 #include "base/base64.h"
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/components/brave_rewards/core/test/mock_ledger_test.h"
 
 // npm run test -- brave_unit_tests --filter=ClientStateTest.*
 
 namespace brave_rewards::internal {
 
-class ClientStateTest : public ::testing::Test {
+class ClientStateTest : public MockLedgerTest {
  protected:
-  ClientStateTest() {
-    // You can do set-up work for each test here
-  }
-
-  ~ClientStateTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
-
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
-
-  void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
-  }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
   WalletInfoProperties GetWalletInfoProperties() const {
     WalletInfoProperties wallet_info_properties;
     wallet_info_properties.payment_id = "PaymentId";

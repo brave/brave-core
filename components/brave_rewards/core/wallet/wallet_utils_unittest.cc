@@ -18,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=*WalletUtilTest*
 
 using testing::_;
-using testing::Test;
 using testing::Values;
 using testing::WithParamInterface;
 
@@ -27,7 +26,7 @@ namespace brave_rewards::internal::wallet {
 mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
                                                    std::string wallet_type);
 
-class WalletUtilTest : public Test {};
+class WalletUtilTest : public MockLedgerTest {};
 
 TEST_F(WalletUtilTest, InvalidJSON) {
   EXPECT_FALSE(ExternalWalletPtrFromJSON("", "uphold"));
