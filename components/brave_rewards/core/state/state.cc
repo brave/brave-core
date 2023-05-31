@@ -346,9 +346,6 @@ std::vector<double> State::GetAutoContributeChoices() {
   if (!base::Contains(amounts, current_amount)) {
     amounts.push_back(current_amount);
     std::sort(amounts.begin(), amounts.end());
-
-    ledger_->SetState(kParametersAutoContributeChoices,
-                      VectorDoubleToString(amounts));
   }
 
   return amounts;
