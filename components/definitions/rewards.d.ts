@@ -60,8 +60,6 @@ declare namespace Rewards {
     monthlyReportIds: string[]
     parameters: RewardsParameters
     promotions: Promotion[]
-    pendingContributions: PendingContribution[]
-    pendingContributionTotal: number
     reconcileStamp: number
     recurringList: Publisher[]
     showOnboarding: boolean | null
@@ -256,22 +254,6 @@ declare namespace Rewards {
   export interface ContributionSaved {
     success: boolean
     type: RewardsType
-  }
-
-  export interface PendingContribution {
-    id: number
-    publisherKey: string
-    percentage: number
-    status: PublisherStatus
-    url: string
-    name: string
-    provider: string
-    favIcon: string
-    amount: number
-    addedDate: string
-    type: RewardsType
-    viewingId: string
-    expirationDate: string
   }
 
   type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js').WalletStatus

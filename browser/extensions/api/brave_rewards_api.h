@@ -344,21 +344,6 @@ class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
                          brave_rewards::mojom::PromotionPtr promotion);
 };
 
-class BraveRewardsGetPendingContributionsTotalFunction
-    : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION(
-      "braveRewards.getPendingContributionsTotal", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetPendingContributionsTotalFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetPendingTotal(double amount);
-};
-
 class BraveRewardsSaveAdsSettingFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.saveAdsSetting", UNKNOWN)

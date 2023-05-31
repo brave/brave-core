@@ -51,10 +51,6 @@ class LedgerClientIOS : public brave_rewards::mojom::LedgerClient {
       brave_rewards::mojom::ContributionInfoPtr contribution) override;
   void PublisherListNormalized(
       std::vector<brave_rewards::mojom::PublisherInfoPtr> list) override;
-  void OnContributeUnverifiedPublishers(
-      brave_rewards::mojom::Result result,
-      const std::string& publisher_key,
-      const std::string& publisher_name) override;
   void SetBooleanState(const std::string& name,
                        bool value,
                        SetBooleanStateCallback callback) override;
@@ -107,8 +103,6 @@ class LedgerClientIOS : public brave_rewards::mojom::LedgerClient {
   void ReconcileStampReset() override;
   void RunDBTransaction(brave_rewards::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
-  void PendingContributionSaved(
-      const brave_rewards::mojom::Result result) override;
   void ClearAllNotifications() override;
   void ExternalWalletConnected() override;
   void ExternalWalletLoggedOut() override;

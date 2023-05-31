@@ -2182,15 +2182,6 @@ void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
   ledger_->SetRetryInterval(interval);
 }
 
-void RewardsServiceImpl::GetPendingContributionsTotal(
-    GetPendingContributionsTotalCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), 0);
-  }
-
-  ledger_->GetPendingContributionsTotal(std::move(callback));
-}
-
 void RewardsServiceImpl::PublisherListNormalized(
     std::vector<mojom::PublisherInfoPtr> list) {
   for (auto& observer : observers_) {
@@ -2270,74 +2261,6 @@ void RewardsServiceImpl::GetShareURL(
   }
 
   ledger_->GetShareURL(args, std::move(callback));
-}
-
-void RewardsServiceImpl::GetPendingContributions(
-    GetPendingContributionsCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         std::vector<mojom::PendingContributionInfoPtr>());
-  }
-
-  ledger_->GetPendingContributions(std::move(callback));
-}
-
-void RewardsServiceImpl::OnPendingContributionRemoved(
-    const mojom::Result result) {
-  for (auto& observer : observers_) {
-    observer.OnPendingContributionRemoved(this, result);
-  }
-}
-
-void RewardsServiceImpl::RemovePendingContribution(const uint64_t id) {
-  if (!Connected()) {
-    return;
-  }
-
-  ledger_->RemovePendingContribution(
-      id, base::BindOnce(&RewardsServiceImpl::OnPendingContributionRemoved,
-                         AsWeakPtr()));
-}
-
-void RewardsServiceImpl::OnRemoveAllPendingContributions(
-    const mojom::Result result) {
-  for (auto& observer : observers_) {
-    observer.OnPendingContributionRemoved(this, result);
-  }
-}
-
-void RewardsServiceImpl::RemoveAllPendingContributions() {
-  if (!Connected()) {
-    return;
-  }
-
-  ledger_->RemoveAllPendingContributions(base::BindOnce(
-      &RewardsServiceImpl::OnRemoveAllPendingContributions, AsWeakPtr()));
-}
-
-void RewardsServiceImpl::OnContributeUnverifiedPublishers(
-    mojom::Result result,
-    const std::string& publisher_key,
-    const std::string& publisher_name) {
-  switch (result) {
-    case mojom::Result::PENDING_PUBLISHER_REMOVED: {
-      for (auto& observer : observers_) {
-        observer.OnPendingContributionRemoved(this, mojom::Result::LEDGER_OK);
-      }
-      break;
-    }
-    case mojom::Result::VERIFIED_PUBLISHER: {
-      RewardsNotificationService::RewardsNotificationArgs args;
-      args.push_back(publisher_name);
-      notification_service_->AddNotification(
-          RewardsNotificationService::REWARDS_NOTIFICATION_VERIFIED_PUBLISHER,
-          args,
-          "rewards_notification_verified_publisher_" + publisher_key);
-      break;
-    }
-    default:
-      break;
-  }
 }
 
 void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
@@ -2606,12 +2529,6 @@ void RewardsServiceImpl::OnRunDBTransaction(
     mojom::DBCommandResponsePtr response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(std::move(response));
-}
-
-void RewardsServiceImpl::PendingContributionSaved(mojom::Result result) {
-  for (auto& observer : observers_) {
-    observer.OnPendingContributionSaved(this, result);
-  }
 }
 
 void RewardsServiceImpl::ForTestingSetTestResponseCallback(

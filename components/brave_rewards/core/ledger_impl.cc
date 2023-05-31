@@ -599,27 +599,6 @@ void LedgerImpl::GetShareURL(
   std::move(callback).Run(publisher()->GetShareURL(args));
 }
 
-void LedgerImpl::GetPendingContributions(
-    GetPendingContributionsCallback callback) {
-  std::move(callback).Run({});
-}
-
-void LedgerImpl::RemovePendingContribution(
-    uint64_t id,
-    RemovePendingContributionCallback callback) {
-  std::move(callback).Run(mojom::Result::LEDGER_OK);
-}
-
-void LedgerImpl::RemoveAllPendingContributions(
-    RemovePendingContributionCallback callback) {
-  std::move(callback).Run(mojom::Result::LEDGER_OK);
-}
-
-void LedgerImpl::GetPendingContributionsTotal(
-    GetPendingContributionsTotalCallback callback) {
-  std::move(callback).Run(0);
-}
-
 void LedgerImpl::FetchBalance(FetchBalanceCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     wallet()->FetchBalance(std::move(callback));

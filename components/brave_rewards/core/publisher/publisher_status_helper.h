@@ -20,12 +20,6 @@ void RefreshPublisherStatus(LedgerImpl& ledger,
                             std::vector<mojom::PublisherInfoPtr>&& info_list,
                             GetRecurringTipsCallback callback);
 
-// Refreshes the publisher status for each entry in the specified list
-void RefreshPublisherStatus(
-    LedgerImpl& ledger,
-    std::vector<mojom::PendingContributionInfoPtr>&& list,
-    GetPendingContributionsCallback callback);
-
 }  // namespace publisher
 }  // namespace brave_rewards::internal
 

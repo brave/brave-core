@@ -22,7 +22,6 @@ export interface RewardsSummaryData {
   autoContributions: number
   oneTimeTips: number
   monthlyTips: number
-  pendingTips: number
 }
 
 interface Props {
@@ -34,21 +33,16 @@ interface Props {
   nextPaymentDate: number
   exchangeRate: number
   exchangeCurrency?: string
-  onViewPendingTips?: () => void
 }
 
 export function RewardsSummary (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const { data } = props
 
-  function renderRowWithNode (
-    amount: number,
-    message: React.ReactNode,
-    key: string
-  ) {
+  function renderRow (amount: number, message: string, key: string) {
     return (
       <tr>
-        <td>{message}</td>
+        <td>{getString(message)}</td>
         <td className='amount' data-test-id={`rewards-summary-${key}`}>
           <TokenAmount
             minimumFractionDigits={2}
@@ -63,30 +57,6 @@ export function RewardsSummary (props: Props) {
           />
         </td>
       </tr>
-    )
-  }
-
-  function renderRow (amount: number, message: string, key: string) {
-    const messageNode = getString(message)
-    return renderRowWithNode(amount, messageNode, key)
-  }
-
-  function renderPendingTips () {
-    if (!data.pendingTips || !props.onViewPendingTips) {
-      return null
-    }
-
-    return (
-      renderRowWithNode(data.pendingTips,
-        <style.pendingAction>
-          <button
-            data-test-id='view-pending-button'
-            onClick={props.onViewPendingTips}
-          >
-            {getString('walletPendingContributions')}
-          </button>
-        </style.pendingAction>,
-        'pending')
     )
   }
 
@@ -115,7 +85,6 @@ export function RewardsSummary (props: Props) {
               }
               {renderRow(-data.oneTimeTips, 'walletOneTimeTips', 'one-time')}
               {renderRow(-data.monthlyTips, 'walletMonthlyTips', 'monthly')}
-              {renderPendingTips()}
             </tbody>
           </table>
         </style.dataTable>

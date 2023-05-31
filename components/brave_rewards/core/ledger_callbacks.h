@@ -93,11 +93,6 @@ using GetMonthlyReportCallback =
 using GetOneTimeTipsCallback =
     std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
 
-using GetPendingContributionsCallback =
-    std::function<void(std::vector<mojom::PendingContributionInfoPtr>)>;
-
-using GetPendingContributionsTotalCallback = std::function<void(double)>;
-
 using GetPublisherBannerCallback =
     std::function<void(mojom::PublisherBannerPtr)>;
 

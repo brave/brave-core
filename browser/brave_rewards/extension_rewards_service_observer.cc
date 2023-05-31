@@ -149,22 +149,6 @@ void ExtensionRewardsServiceObserver::OnAdsEnabled(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
-    RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result) {
-  auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router) {
-    return;
-  }
-
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnPendingContributionSaved::kEventName,
-      extensions::api::brave_rewards::OnPendingContributionSaved::Create(
-          static_cast<int>(result))));
-  event_router->BroadcastEvent(std::move(event));
-}
-
 void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
     RewardsService* rewards_service,
     std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
@@ -240,23 +224,6 @@ void ExtensionRewardsServiceObserver::OnRecurringTipRemoved(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnRecurringTipRemoved::kEventName,
       extensions::api::brave_rewards::OnRecurringTipRemoved::Create(success)));
-  event_router->BroadcastEvent(std::move(event));
-}
-
-void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
-    RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result) {
-  extensions::EventRouter* event_router =
-      extensions::EventRouter::Get(profile_);
-  if (!event_router) {
-    return;
-  }
-
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnPendingContributionRemoved::kEventName,
-      extensions::api::brave_rewards::OnPendingContributionRemoved::Create(
-          static_cast<int>(result))));
   event_router->BroadcastEvent(std::move(event));
 }
 

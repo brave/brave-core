@@ -227,15 +227,6 @@ void BraveRewardsNativeWorker::OnReconcileComplete(
       static_cast<int>(result), static_cast<int>(type), amount);
 }
 
-void BraveRewardsNativeWorker::OnPendingContributionSaved(
-    brave_rewards::RewardsService* rewards_service,
-    const brave_rewards::mojom::Result result) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnPendingContributionSaved(
-      env, weak_java_brave_rewards_native_worker_.get(env),
-      static_cast<int>(result));
-}
-
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetPublisherURL(JNIEnv* env, uint64_t tabId) {
   base::android::ScopedJavaLocalRef<jstring> res =
@@ -597,14 +588,6 @@ base::android::ScopedJavaLocalRef<jobjectArray>
   return base::android::ToJavaArrayOfStrings(env, values);
 }
 
-void BraveRewardsNativeWorker::GetPendingContributionsTotal(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->GetPendingContributionsTotal(base::BindOnce(
-        &BraveRewardsNativeWorker::OnGetPendingContributionsTotal,
-        weak_factory_.GetWeakPtr()));
-  }
-}
-
 void BraveRewardsNativeWorker::GetRecurringDonations(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetRecurringTips(
@@ -717,13 +700,6 @@ void BraveRewardsNativeWorker::OnGetGetReconcileStamp(uint64_t timestamp) {
 
   Java_BraveRewardsNativeWorker_OnGetReconcileStamp(env,
           weak_java_brave_rewards_native_worker_.get(env), timestamp);
-}
-
-void BraveRewardsNativeWorker::OnGetPendingContributionsTotal(double amount) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-
-  Java_BraveRewardsNativeWorker_OnGetPendingContributionsTotal(env,
-        weak_java_brave_rewards_native_worker_.get(env), amount);
 }
 
 void BraveRewardsNativeWorker::OnNotificationAdded(

@@ -243,6 +243,7 @@ static_library("ledger") {
     "database/migration/migration_v38.h",
     "database/migration/migration_v39.h",
     "database/migration/migration_v4.h",
+    "database/migration/migration_v40.h",
     "database/migration/migration_v5.h",
     "database/migration/migration_v6.h",
     "database/migration/migration_v7.h",

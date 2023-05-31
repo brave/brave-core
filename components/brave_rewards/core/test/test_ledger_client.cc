@@ -262,11 +262,6 @@ void TestLedgerClient::IsBitFlyerRegion(IsBitFlyerRegionCallback callback) {
   std::move(callback).Run(is_bitflyer_region_);
 }
 
-void TestLedgerClient::OnContributeUnverifiedPublishers(
-    mojom::Result result,
-    const std::string& publisher_key,
-    const std::string& publisher_name) {}
-
 void TestLedgerClient::GetLegacyWallet(GetLegacyWalletCallback callback) {
   std::move(callback).Run("");
 }
@@ -291,8 +286,6 @@ void TestLedgerClient::RunDBTransaction(mojom::DBTransactionPtr transaction,
   auto response = ledger_database_.RunTransaction(std::move(transaction));
   std::move(callback).Run(std::move(response));
 }
-
-void TestLedgerClient::PendingContributionSaved(mojom::Result result) {}
 
 void TestLedgerClient::Log(const std::string& file,
                            int32_t line,

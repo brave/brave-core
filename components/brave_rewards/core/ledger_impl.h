@@ -225,19 +225,6 @@ class LedgerImpl : public mojom::Ledger {
   void GetShareURL(const base::flat_map<std::string, std::string>& args,
                    GetShareURLCallback callback) override;
 
-  void GetPendingContributions(
-      GetPendingContributionsCallback callback) override;
-
-  void RemovePendingContribution(
-      uint64_t id,
-      RemovePendingContributionCallback callback) override;
-
-  void RemoveAllPendingContributions(
-      RemovePendingContributionCallback callback) override;
-
-  void GetPendingContributionsTotal(
-      GetPendingContributionsTotalCallback callback) override;
-
   void FetchBalance(FetchBalanceCallback callback) override;
 
   void GetExternalWallet(const std::string& wallet_type,

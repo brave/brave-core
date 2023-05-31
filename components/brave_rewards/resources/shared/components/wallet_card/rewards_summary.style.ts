@@ -4,8 +4,6 @@
 
 import styled from 'styled-components'
 
-import * as mixins from '../../lib/css_mixins'
-
 export const root = styled.div``
 
 export const header = styled.div`
@@ -36,23 +34,6 @@ export const body = styled.div`
   .brave-theme-dark & {
     background: rgb(23, 23, 31, 0.62);
     color: var(--brave-palette-grey000);
-  }
-`
-
-export const pendingAction = styled.div`
-  button {
-    ${mixins.buttonReset}
-    font-weight: 600;
-    color: var(--brave-color-brandBat);
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
-
-    .brave-theme-dark & {
-      color: var(--brave-palette-blurple300);
-    }
   }
 `
 

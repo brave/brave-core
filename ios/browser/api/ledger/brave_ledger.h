@@ -172,11 +172,6 @@ OBJC_EXPORT
                                     BraveRewardsPromotion* _Nullable promotion))
                      completion;
 
-#pragma mark - Pending Contributions
-
-- (void)removeAllPendingContributions:
-    (void (^)(BraveRewardsResult result))completion;
-
 #pragma mark - Misc
 
 - (void)rewardsInternalInfo:

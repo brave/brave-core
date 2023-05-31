@@ -9,7 +9,6 @@ import { AutoContributeCompleted } from './auto_contribute_completed'
 import { MonthlyTipCompleted } from './monthly_tip_completed'
 import { MonthlyContributionFailed } from './monthly_contribution_failed'
 import { GrantAvailable } from './grant_available'
-import { PendingPublisherVerified } from './pending_publisher_verified'
 import { ExternalWalletDisconnected } from './external_wallet_disconnected'
 import { UpholdBATNotAllowed } from './uphold_bat_not_allowed'
 import { UpholdInsufficientCapabilities } from './uphold_insufficient_capabilities'
@@ -29,8 +28,6 @@ export function getNotificationView (
       return MonthlyContributionFailed
     case 'grant-available':
       return GrantAvailable
-    case 'pending-publisher-verified':
-      return PendingPublisherVerified
     case 'external-wallet-disconnected':
       return ExternalWalletDisconnected
     case 'uphold-bat-not-allowed':

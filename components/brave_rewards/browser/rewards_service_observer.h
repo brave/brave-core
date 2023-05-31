@@ -53,9 +53,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnAdsEnabled(RewardsService* rewards_service, bool ads_enabled) {
   }
 
-  virtual void OnPendingContributionSaved(RewardsService* rewards_service,
-                                          const mojom::Result result) {}
-
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
       std::vector<mojom::PublisherInfoPtr> list) {}
@@ -71,9 +68,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnRecurringTipRemoved(RewardsService* rewards_service,
                                      bool success) {}
-
-  virtual void OnPendingContributionRemoved(RewardsService* rewards_service,
-                                            const mojom::Result result) {}
 
   virtual void OnExternalWalletConnected() {}
 

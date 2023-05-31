@@ -211,13 +211,6 @@ export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS
 
 export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
 
-export const getPendingContributions = () => action(types.GET_PENDING_CONTRIBUTIONS)
-
-export const onPendingContributions = (list: Rewards.PendingContribution[]) =>
-  action(types.ON_PENDING_CONTRIBUTIONS, {
-    list
-  })
-
 export const onStatement = (data: any) => action(types.ON_STATEMENT, { data })
 
 export const getStatement = () => action(types.GET_STATEMENT)
@@ -239,13 +232,6 @@ export const onInlineTipSettingChange = (key: string, value: boolean) => action(
 
 export const onInlineTipsEnabledChange = (enabled: boolean) =>
   action(types.ON_INLINE_TIPS_ENABLED_CHANGE, { enabled })
-
-export const removePendingContribution = (id: number) =>
-  action(types.REMOVE_PENDING_CONTRIBUTION, {
-    id
-  })
-
-export const removeAllPendingContribution = () => action(types.REMOVE_ALL_PENDING_CONTRIBUTION)
 
 export const restorePublisher = (publisherKey: string) => action(types.ON_RESTORE_PUBLISHER, {
   publisherKey

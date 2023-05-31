@@ -723,8 +723,6 @@
       <message name="IDS_BRAVE_UI_RELAUNCH" desc="">Relaunch</message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_REMOVE_AD_FROM_SAVED" desc="">Remove From Saved</message>
-      <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated [[reservedAmount]] [[currency]] for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
-      <message name="IDS_BRAVE_UI_RESERVED_MORE_LINK" desc="Text for the link that explains more about reserved amount">Learn more.</message>
       <message name="IDS_BRAVE_UI_RESET" desc="">Reset</message>
       <message name="IDS_BRAVE_UI_RESET_WALLET" desc="">Reset Brave Rewards</message>
       <message name="IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST" desc="">Clear exclude list</message>
@@ -754,14 +752,6 @@
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="">Your Brave Rewards</message>
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
       <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating your Brave Rewards profile</message>
-      <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTIONS" desc="Title of pending contribution modal">Pending contributions</message>
-      <message name="IDS_BRAVE_UI_PENDING_TYPE_RECURRING" desc="Name of recurring tip type">Monthly Contribution</message>
-      <message name="IDS_BRAVE_UI_PENDING_TYPE_TIP" desc="Name of on-demand tip type">Contribution</message>
-      <message name="IDS_BRAVE_UI_PENDING_TYPE_AC" desc="Name of auto contribute type">Auto-Contribute</message>
-      <message name="IDS_BRAVE_UI_RESERVED_ALL_LINK" desc="Link that shows all pending contributions">Show all pending contributions</message>
-      <message name="IDS_BRAVE_UI_PENDING_UNTIL" desc="Table header for pending contribution date">Pending until</message>
-      <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_EMPTY" desc="Text for empty pending table">No pending contributions…</message>
-      <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_REMOVE_ALL" desc="Text for remove all button">Remove All</message>
 
       <message name="IDS_BRAVE_UI_EXCLUDED_SITES_TEXT" desc="">Sites Excluded</message>
       <message name="IDS_BRAVE_UI_REMOVE_FROM_EXCLUDED" desc="">Remove from excluded</message>

@@ -207,8 +207,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) override;
-  void GetPendingContributionsTotal(
-      GetPendingContributionsTotalCallback callback) override;
 
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
   void RefreshPublisher(const std::string& publisher_key,
@@ -262,13 +260,6 @@ class RewardsServiceImpl : public RewardsService,
   void GetShareURL(
       const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) override;
-
-  void GetPendingContributions(
-    GetPendingContributionsCallback callback) override;
-
-  void RemovePendingContribution(const uint64_t id) override;
-
-  void RemoveAllPendingContributions() override;
 
   void OnTip(const std::string& publisher_key,
              double amount,
@@ -382,10 +373,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void MaybeShowNotificationTipsPaid();
   void ShowNotificationTipsPaid(bool ac_enabled);
-
-  void OnPendingContributionRemoved(const mojom::Result result);
-
-  void OnRemoveAllPendingContributions(const mojom::Result result);
 
   void OnSetPublisherExclude(const std::string& publisher_key,
                              const bool exclude,
@@ -521,8 +508,6 @@ class RewardsServiceImpl : public RewardsService,
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
-  void PendingContributionSaved(mojom::Result result) override;
-
   void ClearAllNotifications() override;
 
   void ExternalWalletConnected() override;
@@ -538,11 +523,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnRefreshPublisher(RefreshPublisherCallback callback,
                           const std::string& publisher_key,
                           mojom::PublisherStatus status);
-
-  void OnContributeUnverifiedPublishers(
-      mojom::Result result,
-      const std::string& publisher_key,
-      const std::string& publisher_name) override;
 
   bool Connected() const;
   void ConnectionClosed();

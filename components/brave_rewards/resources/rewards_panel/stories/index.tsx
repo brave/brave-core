@@ -110,8 +110,7 @@ function createHost (): Host {
       adEarnings: 10,
       autoContributions: 10,
       oneTimeTips: -2,
-      monthlyTips: -19,
-      pendingTips: 0
+      monthlyTips: -19
     },
     notifications: [
       {

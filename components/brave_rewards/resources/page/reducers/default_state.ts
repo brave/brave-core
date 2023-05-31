@@ -47,7 +47,6 @@ export function defaultState (): Rewards.State {
       adsEarningsLastMonth: 0
     },
     adsHistory: [],
-    pendingContributionTotal: 0,
     promotions: [],
     inlineTipsEnabled: true,
     inlineTip: {
@@ -55,7 +54,6 @@ export function defaultState (): Rewards.State {
       reddit: true,
       github: true
     },
-    pendingContributions: [],
     excludedList: [],
     externalWalletProviderList: [],
     balance: optional<number>(),
