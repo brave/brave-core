@@ -41,7 +41,7 @@ export const ConnectWalletButton = (props: Props) => {
 
   // Memos
   const accountOrb: string | undefined = React.useMemo(() => {
-    if (!selectedAccount) {
+    if (!selectedAccount?.address) {
       return
     }
 
@@ -69,7 +69,7 @@ export const ConnectWalletButton = (props: Props) => {
             isBold={true}
             responsiveTextSize='12px'
           >
-            {reduceAddress(selectedAccount.address)}
+            {selectedAccount.address ? reduceAddress(selectedAccount.address) : ' '}
           </Text>
           <HorizontalSpacer size={7} />
           <ButtonIcon name='carat-down' size={16} />
