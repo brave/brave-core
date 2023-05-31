@@ -12,7 +12,7 @@ import Preferences
 import Data
 
 class RequestBlockingContentScriptHandler: TabContentScript {
-  private struct RequestBlockingDTO: Decodable {
+  struct RequestBlockingDTO: Decodable {
     struct RequestBlockingDTOData: Decodable, Hashable {
       let resourceType: AdblockEngine.ResourceType
       let resourceURL: String

@@ -93,21 +93,31 @@ class MockScriptsViewController: UIViewController {
         continuation.finish()
       })
       
+      continuation.onTermination = { @Sendable _ in
+        userContentController.removeScriptMessageHandler(forName: name)
+      }
+      
       userContentController.addScriptMessageHandler(
         MockMessageHandler { message in
           timer.invalidate()
           continuation.yield(message)
-          
-          continuation.onTermination = { @Sendable _ in
-            userContentController.removeScriptMessageHandler(forName: name)
-          }
-          
           return nil
         },
         contentWorld: contentWorld,
         name: name
       )
     }
+  }
+  
+  @discardableResult
+  func attachScriptHandler(contentWorld: WKContentWorld, name: String, messageHandler: MockMessageHandler) -> MockMessageHandler {
+    webView.configuration.userContentController.addScriptMessageHandler(
+      messageHandler,
+      contentWorld: contentWorld,
+      name: name
+    )
+    
+    return messageHandler
   }
 }
 

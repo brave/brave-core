@@ -13,7 +13,7 @@ import os.log
 ///
 /// The ids and classes are collected in the `SelectorsPollerScript.js` file.
 class CosmeticFiltersScriptHandler: TabContentScript {
-  private struct CosmeticFiltersDTO: Decodable {
+  struct CosmeticFiltersDTO: Decodable {
     struct CosmeticFiltersDTOData: Decodable, Hashable {
       let sourceURL: String
       let ids: [String]
@@ -70,21 +70,21 @@ class CosmeticFiltersScriptHandler: TabContentScript {
         }
         
         var standardSelectors: Set<String> = []
-        var agressiveSelectors: Set<String> = []
+        var aggressiveSelectors: Set<String> = []
         for tuple in selectorArrays {
           let isAgressive = tuple.source.isAlwaysAgressive(
             given: FilterListStorage.shared.filterLists
           )
           
           if isAgressive {
-            agressiveSelectors = agressiveSelectors.union(tuple.selectors)
+            aggressiveSelectors = aggressiveSelectors.union(tuple.selectors)
           } else {
             standardSelectors = standardSelectors.union(tuple.selectors)
           }
         }
         
         replyHandler([
-          "agressiveSelectors": Array(agressiveSelectors),
+          "aggressiveSelectors": Array(aggressiveSelectors),
           "standardSelectors": Array(standardSelectors)
         ], nil)
       }

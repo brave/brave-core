@@ -13,7 +13,7 @@ import os.log
 ///
 /// The urls are collected in the `SelectorsPollerScript.js` file.
 class URLPartinessScriptHandler: TabContentScript {
-  private struct PartinessDTO: Decodable {
+  struct PartinessDTO: Decodable {
     struct PartinessDTOData: Decodable, Hashable {
       let sourceURL: String
       let urls: [String]
