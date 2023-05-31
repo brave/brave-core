@@ -6,7 +6,10 @@
 const os = require('os')
 const chalk = require('chalk')
 const logUpdate = require('log-update')
-const tsm = require("teamcity-service-messages")
+const tsm =
+  process.env.TEAMCITY_VERSION !== undefined
+    ? require('teamcity-service-messages')
+    : undefined
 
 let divider
 function setLineLength() {
@@ -23,12 +26,12 @@ const cmdDirStyle = chalk.blue
 const cmdCmdStyle = chalk.green
 const cmdArrowStyle = chalk.magenta
 
-const isTeamcity = process.env.TEAMCITY_VERSION !== undefined
-tsm.autoFlowId = false
+if (tsm) {
+  tsm.autoFlowId = false
+}
 
 function progressStart(message) {
-  if (isTeamcity) {
-    //tsm.progressStart(message)
+  if (tsm) {
     tsm.blockOpened({name: message})
   } else {
     console.log(progressStyle(message + '...'))
@@ -36,9 +39,8 @@ function progressStart(message) {
 }
 
 function progressFinish(message) {
-  if (isTeamcity) {
+  if (tsm) {
     tsm.blockClosed({name: message})
-    //tsm.progressFinish(message)
   }
 }
 
@@ -148,5 +150,6 @@ module.exports = {
   warn,
   command,
   updateStatus,
-  allPatchStatus
+  allPatchStatus,
+  tsm,
 }
