@@ -440,7 +440,22 @@ export const PortfolioAsset = (props: Props) => {
     history.push(`${WalletRoutes.DepositFundsPageStart}/${selectedAsset?.symbol}`)
   }, [selectedAsset?.symbol])
 
-  const onSend = React.useCallback(() => history.push(WalletRoutes.Send), [])
+  const onSend = React.useCallback(() => {
+    if (!selectedAsset || !selectedAssetsNetwork) return
+
+    const account = accounts
+      .filter((account) => account.coin === selectedAsset.coin)
+      .find(acc => new Amount(getBalance(acc, selectedAsset)).gte('1'))
+
+    if(!account) return
+
+    history.push(
+      WalletRoutes.SendPage.replace(':chainId?', selectedAssetsNetwork.chainId)
+        .replace(':accountAddress?', account.address)
+        .replace(':contractAddress?', selectedAsset.contractAddress)
+        .replace(':tokenId?', selectedAsset.tokenId)
+    )
+  }, [selectedAsset, accounts, selectedAssetsNetwork])
 
   // effects
   React.useEffect(() => {
@@ -496,6 +511,7 @@ export const PortfolioAsset = (props: Props) => {
             onBack={goBack}  
             assetName={selectedAsset?.name}
             tokenId={selectedAsset?.tokenId}
+            showSendButton={!new Amount(fullAssetBalances?.assetBalance || '').isZero()}
             onSend={onSend}
           />
       }

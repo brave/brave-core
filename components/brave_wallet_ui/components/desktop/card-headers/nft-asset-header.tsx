@@ -25,11 +25,12 @@ import { Row } from '../../shared/style'
 interface Props {
   assetName?: string
   tokenId?: string
+  showSendButton: boolean
   onBack: () => void
   onSend: () => void
 }
 
-export const NftAssetHeader = ({ assetName, tokenId, onBack, onSend }: Props) => {
+export const NftAssetHeader = ({ assetName, tokenId, showSendButton, onBack, onSend }: Props) => {
   return (
     <Row
       padding='26px 0px'
@@ -53,7 +54,7 @@ export const NftAssetHeader = ({ assetName, tokenId, onBack, onSend }: Props) =>
           {assetName}&nbsp;{tokenId ? `#${new Amount(tokenId).toNumber()}` : ''}
         </HeaderTitle>
       </Row>
-      <SendButton onClick={onSend}>{getLocale('braveWalletSend')}</SendButton>
+      {showSendButton && <SendButton onClick={onSend}>{getLocale('braveWalletSend')}</SendButton>}
     </Row>
   )
 }

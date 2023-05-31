@@ -139,7 +139,7 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
       walletLocation.includes(WalletRoutes.Market) ||
       walletLocation.includes(WalletRoutes.Swap) ||
-      walletLocation.includes(WalletRoutes.Send) ||
+      walletLocation.includes(WalletRoutes.SendPageStart) ||
       walletLocation.includes(WalletRoutes.LocalIpfsNode ||
         walletLocation.includes(WalletRoutes.InspectNfts))
     ) {
@@ -153,7 +153,7 @@ export const Container = () => {
     if (toobarElement && rootElement) {
       if (
         walletLocation === WalletRoutes.Swap ||
-        walletLocation === WalletRoutes.Send ||
+        walletLocation === WalletRoutes.SendPageStart ||
         walletLocation.includes(WalletRoutes.DepositFundsPage) ||
         walletLocation.includes(WalletRoutes.FundWalletPage) ||
         walletLocation.includes(WalletRoutes.LocalIpfsNode) ||
@@ -296,7 +296,7 @@ export const Container = () => {
             )}
 
             {!isWalletLocked &&
-              <Route path={WalletRoutes.Send} exact={true}>
+              <Route path={WalletRoutes.SendPage} exact>
                 <WalletPageWrapper hideBackground={true}>
                   <SendScreen />
                 </WalletPageWrapper>

@@ -516,6 +516,7 @@ export default function useSend (isSendTab?: boolean) {
     setShowEnsOffchainWarning,
     enableEnsOffchainLookup,
     searchingForDomain,
-    processAddressOrUrl
+    processAddressOrUrl,
+    sendAssetOptions
   }
 }
