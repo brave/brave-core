@@ -14,6 +14,7 @@ import BraveWallet
 import os.log
 import Favicon
 import Growth
+import SafariServices
 
 extension WKNavigationAction {
   /// Allow local requests only if the request is privileged.
@@ -192,6 +193,18 @@ extension BrowserViewController: WKNavigationDelegate {
     if url.scheme == "mailto" {
       // Do not allow opening external URLs from child tabs
       handleExternalURL(url, tab: tab, navigationAction: navigationAction)
+      return (.cancel, preferences)
+    }
+    
+    // Handling calendar .ics files
+    if navigationAction.targetFrame?.isMainFrame == true, url.pathExtension.lowercased() == "ics" {
+      // This is not ideal. It pushes a new view controller on top of the BVC
+      // and you have to dismiss it manually after you managed the calendar event.
+      // I do not see a workaround for it, Chrome iOS does the same thing.
+      let vc = SFSafariViewController(url: url, configuration: .init())
+      vc.modalPresentationStyle = .formSheet
+      self.present(vc, animated: true)
+      
       return (.cancel, preferences)
     }
     
