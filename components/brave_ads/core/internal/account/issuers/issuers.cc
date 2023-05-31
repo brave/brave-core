@@ -11,12 +11,10 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_json_reader.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -31,10 +29,6 @@ namespace {
 
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
-bool DoesRequireResource() {
-  return ShouldRewardUser();
-}
-
 base::TimeDelta GetFetchDelay() {
   return base::Milliseconds(
       AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing));
@@ -42,30 +36,23 @@ base::TimeDelta GetFetchDelay() {
 
 }  // namespace
 
-Issuers::Issuers() {
-  AdsClientHelper::AddObserver(this);
-}
+Issuers::Issuers() = default;
 
 Issuers::~Issuers() {
-  AdsClientHelper::RemoveObserver(this);
   delegate_ = nullptr;
 }
 
-void Issuers::MaybeFetch() {
-  if (DoesRequireResource()) {
-    Fetch();
+void Issuers::PeriodicallyFetch() {
+  if (is_periodically_fetching_) {
+    return;
   }
+
+  is_periodically_fetching_ = true;
+
+  Fetch();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void Issuers::MaybeFetchOrReset() {
-  if ((is_fetching_ || did_fetch_) && !DoesRequireResource()) {
-    Reset();
-  } else if (!did_fetch_ && DoesRequireResource()) {
-    Fetch();
-  }
-}
 
 void Issuers::Fetch() {
   if (is_fetching_ || retry_timer_.IsRunning()) {
@@ -108,23 +95,12 @@ void Issuers::FetchCallback(const mojom::UrlResponseInfo& url_response) {
   SuccessfullyFetchedIssuers(*issuers);
 }
 
-void Issuers::Reset() {
-  BLOG(1, "Reset issuers");
-
-  did_fetch_ = false;
-
-  CancelFetch();
-  return ResetIssuers();
-}
-
 void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
   StopRetrying();
 
   if (delegate_) {
     delegate_->OnDidFetchIssuers(issuers);
   }
-
-  did_fetch_ = true;
 
   FetchAfterDelay();
 }
@@ -149,14 +125,6 @@ void Issuers::FetchAfterDelay() {
       base::BindOnce(&Issuers::Fetch, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at));
-}
-
-void Issuers::CancelFetch() {
-  StopRetrying();
-
-  timer_.Stop();
-
-  is_fetching_ = false;
 }
 
 void Issuers::Retry() {
@@ -185,12 +153,6 @@ void Issuers::RetryCallback() {
 
 void Issuers::StopRetrying() {
   retry_timer_.Stop();
-}
-
-void Issuers::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == prefs::kEnabled) {
-    MaybeFetchOrReset();
-  }
 }
 
 }  // namespace brave_ads

@@ -180,43 +180,6 @@ TEST_F(BraveAdsAccountTest, GetWallet) {
   EXPECT_EQ(expected_wallet, account_->GetWallet());
 }
 
-TEST_F(BraveAdsAccountTest, GetIssuersWhenDidInitializeWallet) {
-  // Arrange
-  const URLResponseMap url_responses = {
-      {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
-
-  privacy::SetUnblindedTokens(/*count*/ 50);
-
-  // Act
-  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
-
-  // Assert
-  EXPECT_TRUE(wallet_did_initialize_);
-  EXPECT_FALSE(failed_to_initialize_wallet_);
-  EXPECT_FALSE(wallet_did_change_);
-
-  EXPECT_EQ(BuildIssuers(), GetIssuers());
-}
-
-TEST_F(BraveAdsAccountTest,
-       DoNotGetIssuersWhenDidInitializeWalletIfIssuersAlreadyExist) {
-  // Arrange
-  BuildAndSetIssuers();
-
-  privacy::SetUnblindedTokens(/*count*/ 50);
-
-  // Act
-  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
-
-  // Assert
-  EXPECT_TRUE(wallet_did_initialize_);
-  EXPECT_FALSE(failed_to_initialize_wallet_);
-  EXPECT_FALSE(wallet_did_change_);
-
-  EXPECT_EQ(BuildIssuers(), GetIssuers());
-}
-
 TEST_F(BraveAdsAccountTest, GetIssuersIfBravePrivateAdsAreEnabled) {
   // Arrange
   const URLResponseMap url_responses = {

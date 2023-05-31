@@ -91,7 +91,6 @@ void Account::SetWallet(const std::string& payment_id,
 
   BLOG(1, "Successfully initialized wallet");
   NotifyDidInitializeWallet(*wallet);
-  MaybeFetchIssuers();
 }
 
 void Account::Deposit(const std::string& creative_instance_id,
@@ -130,14 +129,13 @@ void Account::Initialize() {
   confirmations_ = std::make_unique<Confirmations>(token_generator_);
   confirmations_->SetDelegate(this);
 
-  issuers_ = std::make_unique<Issuers>();
-  issuers_->SetDelegate(this);
-
   MaybeRewardUsers();
 }
 
 void Account::Process() {
   MaybeResetIssuersAndConfirmations();
+
+  MaybeRewardUsers();
 
   NotifyStatementOfAccountsDidChange();
 
@@ -148,6 +146,12 @@ void Account::Process() {
 
 void Account::MaybeRewardUsers() {
   if (!ShouldRewardUser()) {
+    if (issuers_) {
+      issuers_.reset();
+      ResetIssuers();
+      BLOG(1, "Reset and stop fetching issuers");
+    }
+
     if (redeem_unblinded_payment_tokens_) {
       redeem_unblinded_payment_tokens_.reset();
       BLOG(1, "Stop redeeming unblinded payment tokens");
@@ -161,6 +165,9 @@ void Account::MaybeRewardUsers() {
     return;
   }
 
+  issuers_ = std::make_unique<Issuers>();
+  issuers_->SetDelegate(this);
+
   redeem_unblinded_payment_tokens_ =
       std::make_unique<RedeemUnblindedPaymentTokens>();
   redeem_unblinded_payment_tokens_->SetDelegate(this);
@@ -171,7 +178,9 @@ void Account::MaybeRewardUsers() {
 }
 
 void Account::MaybeFetchIssuers() const {
-  issuers_->MaybeFetch();
+  if (issuers_) {
+    issuers_->Fetch();
+  }
 }
 
 void Account::DepositCallback(const std::string& creative_instance_id,
@@ -343,7 +352,6 @@ void Account::OnNotifyDidInitializeAds() {
 
 void Account::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
-    MaybeRewardUsers();
     Process();
   } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
     MaybeResetIssuersAndConfirmations();
