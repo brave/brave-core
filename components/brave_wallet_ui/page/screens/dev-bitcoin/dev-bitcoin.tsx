@@ -62,7 +62,7 @@ const SendToLine = styled.div`
 `
 
 const defaultNetworkId = BraveWallet.BITCOIN_TESTNET
-const defaultKeyringId = BraveWallet.KeyringId.kBitcoinKeyring84TestId
+const defaultKeyringId = BraveWallet.KeyringId.kBitcoin84Testnet
 const accountIndex = 0
 
 const CreateAccountSection = () => {

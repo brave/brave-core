@@ -192,7 +192,7 @@ export const mockAccount: WalletAccountType = {
   },
   accountId: {
     coin: BraveWallet.CoinType.ETH,
-    keyringId: BraveWallet.KeyringId.kDefaultKeyringId,
+    keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'mockAddress',
   },
@@ -208,7 +208,7 @@ export const mockEthAccountInfo: BraveWallet.AccountInfo = {
   address: 'mockEthAddress',
   accountId: {
     coin: BraveWallet.CoinType.ETH,
-    keyringId: BraveWallet.KeyringId.kDefaultKeyringId,
+    keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'mockEthAddress',
   },
@@ -225,7 +225,7 @@ export const mockSolanaAccount: WalletAccountType = {
   },
   accountId: {
     coin: BraveWallet.CoinType.SOL,
-    keyringId: BraveWallet.KeyringId.kSolanaKeyringId,
+    keyringId: BraveWallet.KeyringId.kSolana,
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
   },
@@ -240,7 +240,7 @@ export const mockSolanaAccountInfo: BraveWallet.AccountInfo = {
   address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
   accountId: {
     coin: BraveWallet.CoinType.SOL,
-    keyringId: BraveWallet.KeyringId.kSolanaKeyringId,
+    keyringId: BraveWallet.KeyringId.kSolana,
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
   },
@@ -256,7 +256,7 @@ export const mockFilecoinAccount: WalletAccountType = {
   },
   accountId: {
     coin: BraveWallet.CoinType.FIL,
-    keyringId: BraveWallet.KeyringId.kFilecoinTestnetKeyringId,
+    keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
   },
@@ -271,7 +271,7 @@ export const mockFilecoinAccountInfo: BraveWallet.AccountInfo = {
   address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
   accountId: {
     coin: BraveWallet.CoinType.FIL,
-    keyringId: BraveWallet.KeyringId.kFilecoinTestnetKeyringId,
+    keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
   },

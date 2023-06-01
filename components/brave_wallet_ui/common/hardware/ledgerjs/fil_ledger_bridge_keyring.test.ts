@@ -97,7 +97,7 @@ test('Extracting accounts from device MAIN', async () => {
         deviceId: 'device1',
         hardwareVendor: 'Ledger',
         name: 'Filecoin Ledger',
-        keyringId: BraveWallet.KeyringId.kFilecoinKeyringId
+        keyringId: BraveWallet.KeyringId.kFilecoin
       }],
       success: true
     })
@@ -118,7 +118,7 @@ test('Extracting accounts from device TEST', async () => {
         deviceId: 'device1',
         hardwareVendor: 'Ledger',
         name: 'Filecoin Ledger',
-        keyringId: BraveWallet.KeyringId.kFilecoinTestnetKeyringId
+        keyringId: BraveWallet.KeyringId.kFilecoinTestnet
       }],
       success: true
     })

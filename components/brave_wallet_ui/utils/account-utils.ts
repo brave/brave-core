@@ -147,25 +147,25 @@ export const keyringIdForNewAccount = (
   network?: string | undefined
 ) => {
   if (coin === BraveWallet.CoinType.ETH) {
-    return BraveWallet.KeyringId.kDefaultKeyringId
+    return BraveWallet.KeyringId.kDefault
   }
 
   if (coin === BraveWallet.CoinType.SOL) {
-    return BraveWallet.KeyringId.kSolanaKeyringId
+    return BraveWallet.KeyringId.kSolana
   }
 
   if (
     coin === BraveWallet.CoinType.FIL &&
     network === BraveWallet.FILECOIN_MAINNET
   ) {
-    return BraveWallet.KeyringId.kFilecoinKeyringId
+    return BraveWallet.KeyringId.kFilecoin
   }
 
   if (
     coin === BraveWallet.CoinType.FIL &&
     network === BraveWallet.FILECOIN_TESTNET
   ) {
-    return BraveWallet.KeyringId.kFilecoinTestnetKeyringId
+    return BraveWallet.KeyringId.kFilecoinTestnet
   }
 
   assertNotReached()

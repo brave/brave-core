@@ -76,9 +76,9 @@ export function getFilecoinKeyringIdFromNetwork (
     return undefined
   }
   if (network.chainId === BraveWallet.FILECOIN_MAINNET) {
-    return BraveWallet.KeyringId.kFilecoinKeyringId
+    return BraveWallet.KeyringId.kFilecoin
   } else {
-    return BraveWallet.KeyringId.kFilecoinTestnetKeyringId
+    return BraveWallet.KeyringId.kFilecoinTestnet
   }
 }
 

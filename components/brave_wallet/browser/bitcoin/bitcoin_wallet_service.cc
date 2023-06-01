@@ -35,9 +35,9 @@ std::vector<brave_wallet::mojom::KeyringId> BitcoinKeyringsForNetwork(
     const std::string& network_id) {
   DCHECK(brave_wallet::IsBitcoinNetwork(network_id));
   if (network_id == brave_wallet::mojom::kBitcoinMainnet) {
-    return {brave_wallet::mojom::KeyringId::kBitcoinKeyring84Id};
+    return {brave_wallet::mojom::KeyringId::kBitcoin84};
   } else if (network_id == brave_wallet::mojom::kBitcoinTestnet) {
-    return {brave_wallet::mojom::KeyringId::kBitcoinKeyring84TestId};
+    return {brave_wallet::mojom::KeyringId::kBitcoin84Testnet};
   } else {
     NOTREACHED();
   }

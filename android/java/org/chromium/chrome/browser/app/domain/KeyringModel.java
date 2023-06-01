@@ -285,20 +285,20 @@ public class KeyringModel implements KeyringServiceObserver {
     private static @KeyringId.EnumType int getTargetKeyringId(
             @CoinType.EnumType int coinType, String chainId) {
         if (coinType == CoinType.ETH) {
-            return KeyringId.DEFAULT_KEYRING_ID;
+            return KeyringId.DEFAULT;
         } else if (coinType == CoinType.SOL) {
-            return KeyringId.SOLANA_KEYRING_ID;
+            return KeyringId.SOLANA;
         } else if (coinType == CoinType.FIL) {
             assert chainId != null;
             if (chainId.equals(BraveWalletConstants.FILECOIN_MAINNET)) {
-                return KeyringId.FILECOIN_KEYRING_ID;
+                return KeyringId.FILECOIN;
             } else if (chainId.equals(BraveWalletConstants.FILECOIN_TESTNET)) {
-                return KeyringId.FILECOIN_TESTNET_KEYRING_ID;
+                return KeyringId.FILECOIN_TESTNET;
             }
         }
 
         assert false;
-        return KeyringId.DEFAULT_KEYRING_ID;
+        return KeyringId.DEFAULT;
     }
 
     public void addAccount(@CoinType.EnumType int coinType, String chainId, String accountName,

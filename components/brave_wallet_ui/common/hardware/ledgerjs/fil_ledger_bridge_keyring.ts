@@ -67,8 +67,8 @@ export default class FilecoinLedgerBridgeKeyring extends LedgerBridgeKeyring imp
 
   keyringId = (network: FilecoinNetwork): BraveWallet.KeyringId => {
     return network === BraveWallet.FILECOIN_MAINNET
-      ? BraveWallet.KeyringId.kFilecoinKeyringId
-      : BraveWallet.KeyringId.kFilecoinTestnetKeyringId
+      ? BraveWallet.KeyringId.kFilecoin
+      : BraveWallet.KeyringId.kFilecoinTestnet
   }
 
   signTransaction = async (message: string): Promise<SignHardwareOperationResult> => {

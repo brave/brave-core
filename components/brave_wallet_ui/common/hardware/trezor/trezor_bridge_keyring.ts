@@ -48,7 +48,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   keyringId = (): BraveWallet.KeyringId => {
-    return BraveWallet.KeyringId.kDefaultKeyringId
+    return BraveWallet.KeyringId.kDefault
   }
 
   isUnlocked = (): boolean => {

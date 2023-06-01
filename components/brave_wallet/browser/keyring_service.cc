@@ -141,17 +141,17 @@ const char kSelectedAccount[] = "selected_account";
 
 std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
   switch (keyring_id) {
-    case mojom::KeyringId::kFilecoinKeyringId:
+    case mojom::KeyringId::kFilecoin:
       return "filecoin";
-    case mojom::KeyringId::kFilecoinTestnetKeyringId:
+    case mojom::KeyringId::kFilecoinTestnet:
       return "filecoin_testnet";
-    case mojom::KeyringId::kSolanaKeyringId:
+    case mojom::KeyringId::kSolana:
       return "solana";
-    case mojom::KeyringId::kDefaultKeyringId:
+    case mojom::KeyringId::kDefault:
       return "default";
-    case mojom::KeyringId::kBitcoinKeyring84Id:
+    case mojom::KeyringId::kBitcoin84:
       return "bitcoin_84";
-    case mojom::KeyringId::kBitcoinKeyring84TestId:
+    case mojom::KeyringId::kBitcoin84Testnet:
       return "bitcoin_84_test";
   }
   NOTREACHED();
@@ -167,9 +167,9 @@ std::string GetRootPath(mojom::KeyringId keyring_id) {
     return "m/44'/461'/0'/0";
   } else if (keyring_id == mojom::kFilecoinTestnetKeyringId) {
     return "m/44'/1'/0'/0";
-  } else if (keyring_id == mojom::kBitcoinKeyring84Id) {
+  } else if (keyring_id == mojom::KeyringId::kBitcoin84) {
     return "m/84'/0'";
-  } else if (keyring_id == mojom::kBitcoinKeyring84TestId) {
+  } else if (keyring_id == mojom::KeyringId::kBitcoin84Testnet) {
     return "m/84'/1'";
   }
 

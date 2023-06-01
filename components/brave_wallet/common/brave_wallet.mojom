@@ -573,12 +573,12 @@ const string kLedgerHardwareVendor = "Ledger";
 const string kTrezorHardwareVendor = "Trezor";
 
 enum KeyringId {
-  kDefaultKeyringId = 0,
-  kSolanaKeyringId = 1,
-  kFilecoinKeyringId = 2,
-  kFilecoinTestnetKeyringId = 3,
-  kBitcoinKeyring84Id = 4,
-  kBitcoinKeyring84TestId = 5,
+  kDefault = 0,
+  kSolana = 1,
+  kFilecoin = 2,
+  kFilecoinTestnet = 3,
+  kBitcoin84 = 4,
+  kBitcoin84Testnet = 5,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";

@@ -576,7 +576,7 @@ TEST_F(KeyringServiceUnitTest, HasAndGetPrefForKeyring) {
   ASSERT_NE(value, nullptr);
   EXPECT_EQ(value->GetString(), "123");
 
-  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolanaKeyringId;
+  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolana;
 
   EXPECT_FALSE(
       KeyringService::HasPrefForKeyring(*GetPrefs(), "pref1", keyring2));
@@ -666,7 +666,7 @@ TEST_F(KeyringServiceUnitTest, SetPrefInBytesForKeyring) {
 TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
   std::string encoded_nonce;
   std::string encoded_nonce2;
-  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolanaKeyringId;
+  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolana;
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> nonce =
@@ -726,7 +726,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
 TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
   std::string encoded_salt;
   std::string encoded_salt2;
-  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolanaKeyringId;
+  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolana;
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> salt =
@@ -786,7 +786,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
 TEST_F(KeyringServiceUnitTest, CreateEncryptorForKeyring) {
   std::string encoded_salt;
   std::string encoded_salt2;
-  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolanaKeyringId;
+  const mojom::KeyringId keyring2 = mojom::KeyringId::kSolana;
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     EXPECT_TRUE(

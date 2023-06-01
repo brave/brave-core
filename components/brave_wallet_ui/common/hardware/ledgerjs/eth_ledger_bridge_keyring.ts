@@ -41,7 +41,7 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
   }
 
   keyringId = (): BraveWallet.KeyringId => {
-    return BraveWallet.KeyringId.kDefaultKeyringId
+    return BraveWallet.KeyringId.kDefault
   }
 
   getAccounts = async (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult> => {
