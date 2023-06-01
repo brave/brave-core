@@ -1822,6 +1822,9 @@ Are you sure you want to do this?
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now
       </message>
+      <message name="IDS_SETTINGS_APP_LINKS_LABEL" desc="App Links setting label">
+        Allow app links to open in apps outside of Brave
+      </message>
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
         WebRTC IP handling policy
       </message>

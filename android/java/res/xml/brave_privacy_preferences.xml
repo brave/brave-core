@@ -122,6 +122,11 @@
         <PreferenceCategory
         android:key="other_privacy_settings_section"
         android:title="@string/prefs_section_other_privacy_settings"/>
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="app_links"
+            android:order="25"
+            android:title="@string/settings_app_links_label"
+            android:defaultValue="false"/>
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:fragment="org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreferencesFragment"
             android:key="webrtc_policy"
