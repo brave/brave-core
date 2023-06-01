@@ -495,6 +495,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   NodeShield* js_shield_node_;
   NodeShield* fingerprinting_shield_node_;
 
+  String source_url_;
+
   NodeStorageRoot* storage_node_;
   NodeStorageCookieJar* cookie_jar_node_;
   NodeStorageLocalStorage* local_storage_node_;
