@@ -317,6 +317,8 @@ AdsServiceImpl::AdsServiceImpl(
 
   g_brave_browser_process->resource_component()->AddObserver(this);
 
+  rewards_service_->AddObserver(this);
+
   if (kShouldAlwaysRunService.Get()) {
     RegisterResourceComponentsForDefaultLocale();
   }
@@ -324,6 +326,8 @@ AdsServiceImpl::AdsServiceImpl(
 
 AdsServiceImpl::~AdsServiceImpl() {
   g_brave_browser_process->resource_component()->RemoveObserver(this);
+
+  rewards_service_->RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -549,8 +553,6 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
   }
 
   BackgroundHelper::GetInstance()->AddObserver(this);
-
-  rewards_service_->AddObserver(this);
 
   CleanUpOnFirstRun();
 
@@ -1301,8 +1303,6 @@ void AdsServiceImpl::Shutdown() {
 
   if (is_bat_ads_initialized_) {
     BackgroundHelper::GetInstance()->RemoveObserver(this);
-
-    rewards_service_->RemoveObserver(this);
   }
 
   CloseAllNotificationAds();
