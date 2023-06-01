@@ -61,9 +61,13 @@ static constexpr auto kSimpleQueryStringTrackers =
          "vgo_ee"});
 
 static constexpr auto kConditionalQueryStringTrackers =
-    base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>(
-        {// https://github.com/brave/brave-browser/issues/9018
-         {"mkt_tok", "([uU]nsubscribe|emailWebview)"}});
+    base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>({
+        // https://github.com/brave/brave-browser/issues/9018
+        {"mkt_tok", "([uU]nsubscribe|emailWebview)"},
+        // https://github.com/brave/brave-browser/issues/30731
+        {"h_sid", "/email/"},
+        {"h_slt", "/email/"},
+    });
 
 static constexpr auto kScopedQueryStringTrackers =
     base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>({
