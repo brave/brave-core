@@ -20,7 +20,7 @@ CreativeAdPriorityPredictorVariable::GetDataType() const {
 
 brave_federated::mojom::CovariateType
 CreativeAdPriorityPredictorVariable::GetType() const {
-  return brave_federated::mojom::CovariateType::kNotificationAdEvent;
+  return brave_federated::mojom::CovariateType::kCreativeAdPriority;
 }
 
 std::string CreativeAdPriorityPredictorVariable::GetValue() const {

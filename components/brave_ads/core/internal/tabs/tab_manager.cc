@@ -132,8 +132,7 @@ void TabManager::NotifyDidCloseTab(const int32_t id) const {
   BLOG(2, "Tab id " << id << " closed start");
 
   std::unique_ptr<PredictorVariableInterface> predictor_tab_lifespan =
-      std::make_unique<AverageTabLifespanPredictorVariable>(
-          brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
+      std::make_unique<AverageTabLifespanPredictorVariable>();
   const std::string value_tab_lifespan = predictor_tab_lifespan->GetValue();
   BLOG(2, value_tab_lifespan);
 

@@ -20,7 +20,7 @@ AdLastSeenHoursAgoPredictorVariable::GetDataType() const {
 
 brave_federated::mojom::CovariateType
 AdLastSeenHoursAgoPredictorVariable::GetType() const {
-  return brave_federated::mojom::CovariateType::kNotificationAdEvent;
+  return brave_federated::mojom::CovariateType::kAdLastSeenHoursAgo;
 }
 
 std::string AdLastSeenHoursAgoPredictorVariable::GetValue() const {

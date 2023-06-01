@@ -39,7 +39,15 @@ enum CovariateType {
   kTimeSinceLastSubmittedFormEvent,
   kTimeSinceLastTypedAndSelectedNonUrlEvent,
   kTimeSinceLastTypedKeywordOtherThanDefaultSearchProviderEvent,
-  kTimeSinceLastTypedUrlEvent
+  kTimeSinceLastTypedUrlEvent,
+  kAdLastSeenHoursAgo,
+  kAdvertiserLastSeenHoursAgo,
+  kCreativeAdPriority,
+  kDoesMatchChildIntentSegment,
+  kDoesMatchChildInterestSegment,
+  kDoesMatchParentIntentSegment,
+  kDoesMatchParentInterestSegment,
+  kAverageTabLifespan
 };
 
 enum DataType {

@@ -9,23 +9,18 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/predictor_variable_interface.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_types.h"
 
 namespace brave_ads {
 
 class AverageTabLifespanPredictorVariable final
     : public PredictorVariableInterface {
 public:
-  AverageTabLifespanPredictorVariable(
-      brave_federated::mojom::CovariateType predictor_type);
+  AverageTabLifespanPredictorVariable();
 
   // PredictorVariableInterface:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetType() const override;
   std::string GetValue() const override;
-
-private:
-  const brave_federated::mojom::CovariateType predictor_type_;
 };
 
 } // namespace brave_ads

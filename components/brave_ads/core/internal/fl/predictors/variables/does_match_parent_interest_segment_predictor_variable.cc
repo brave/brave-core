@@ -20,7 +20,7 @@ DoesMatchParentInterestSegmentPredictorVariable::GetDataType() const {
 
 brave_federated::mojom::CovariateType
 DoesMatchParentInterestSegmentPredictorVariable::GetType() const {
-  return brave_federated::mojom::CovariateType::kNotificationAdEvent;
+  return brave_federated::mojom::CovariateType::kDoesMatchParentInterestSegment;
 }
 
 std::string DoesMatchParentInterestSegmentPredictorVariable::GetValue() const {

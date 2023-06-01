@@ -14,9 +14,8 @@
 
 namespace brave_ads {
 
-AverageTabLifespanPredictorVariable::AverageTabLifespanPredictorVariable(
-    brave_federated::mojom::CovariateType predictor_type)
-    : predictor_type_(predictor_type) {}
+AverageTabLifespanPredictorVariable::AverageTabLifespanPredictorVariable() =
+    default;
 
 brave_federated::mojom::DataType
 AverageTabLifespanPredictorVariable::GetDataType() const {
@@ -25,7 +24,7 @@ AverageTabLifespanPredictorVariable::GetDataType() const {
 
 brave_federated::mojom::CovariateType
 AverageTabLifespanPredictorVariable::GetType() const {
-  return predictor_type_;
+  return brave_federated::mojom::CovariateType::kAverageTabLifespan;
 }
 
 std::string AverageTabLifespanPredictorVariable::GetValue() const {

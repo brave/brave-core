@@ -37,29 +37,17 @@ absl::optional<T> PredictAd(const UserModelInfo& user_model,
   creative_ad_predictors = ComputePredictorFeaturesAndScores(
       creative_ad_predictors, user_model, ad_events);
 
-  //
   for (const auto &[creative_instance_id, ad_predictor] :
        creative_ad_predictors) {
 
-    float value_does_match_intent_parent_segments = 0;
-    if (ad_predictor.does_match_intent_parent_segments) {
-      value_does_match_intent_parent_segments = 1;
-    }
-
-    float value_does_match_intent_child_segments = 0;
-    if (ad_predictor.does_match_intent_child_segments) {
-      value_does_match_intent_child_segments = 1;
-    }
-
-    float value_does_match_interest_parent_segments = 0;
-    if (ad_predictor.does_match_interest_parent_segments) {
-      value_does_match_interest_parent_segments = 1;
-    }
-
-    float value_does_match_interest_child_segments = 0;
-    if (ad_predictor.does_match_interest_child_segments) {
-      value_does_match_interest_child_segments = 1;
-    }
+    float value_does_match_intent_parent_segments =
+        (ad_predictor.does_match_intent_parent_segments) ? 1 : 0;
+    float value_does_match_intent_child_segments =
+        (ad_predictor.does_match_intent_child_segments) ? 1 : 0;
+    float value_does_match_interest_parent_segments =
+        (ad_predictor.does_match_interest_parent_segments) ? 1 : 0;
+    float value_does_match_interest_child_segments =
+        (ad_predictor.does_match_interest_child_segments) ? 1 : 0;
 
     BLOG(2, ad_predictor.ad_last_seen_hours_ago);
     BLOG(2, ad_predictor.advertiser_last_seen_hours_ago);
@@ -82,7 +70,6 @@ absl::optional<T> PredictAd(const UserModelInfo& user_model,
     SetDoesMatchChildInterestSegmentPredictorVariable(
         value_does_match_interest_child_segments);
   }
-  //
 
   return SampleAdFromPredictors(creative_ad_predictors);
 }
