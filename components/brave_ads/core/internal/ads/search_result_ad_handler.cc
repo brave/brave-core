@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
@@ -62,8 +63,9 @@ void SearchResultAd::TriggerEvent(
   }
 
   if (event_type == mojom::SearchResultAdEventType::kViewed) {
+    mojom::SearchResultAdInfoPtr ad_mojom_copy = ad_mojom.Clone();
     return event_handler_.FireEvent(
-        ad_mojom.Clone(), mojom::SearchResultAdEventType::kServed,
+        std::move(ad_mojom_copy), mojom::SearchResultAdEventType::kServed,
         base::BindOnce(&SearchResultAd::FireServedEventCallback,
                        weak_factory_.GetWeakPtr(), std::move(ad_mojom),
                        std::move(callback)));

@@ -37,20 +37,21 @@ class BraveAdsSearchResultAdIntegrationTest : public UnitTestBase {
   void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
       const mojom::SearchResultAdEventType& event_type,
-      const bool should_fire) {
+      const bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
-    EXPECT_CALL(callback, Run(/*success*/ should_fire));
+    EXPECT_CALL(callback, Run(/*success*/ should_fire_event));
 
-    GetAds().TriggerSearchResultAdEvent(ad_mojom->Clone(), event_type,
+    GetAds().TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
                                         callback.Get());
   }
 
   void TriggerSearchResultAdEvents(
       mojom::SearchResultAdInfoPtr ad_mojom,
       const std::vector<mojom::SearchResultAdEventType>& event_types,
-      const bool should_fire) {
+      const bool should_fire_event) {
     for (const auto& event_type : event_types) {
-      TriggerSearchResultAdEvent(ad_mojom->Clone(), event_type, should_fire);
+      TriggerSearchResultAdEvent(ad_mojom->Clone(), event_type,
+                                 should_fire_event);
     }
   }
 };
