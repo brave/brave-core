@@ -98,9 +98,9 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                 return;
             NetworkModel.getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
                 mAllNetworkInfoList = new ArrayList<>(allNetworks);
-                KeyringModel.getKeyringInfos(mKeyringService, mSharedData.getEnabledKeyrings(), keyringInfos -> {
-                    mAllAccountInfoList = WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-                    var allAccountsArray = mAllAccountInfoList.toArray(new AccountInfo[0]);
+                mKeyringService.getAllAccounts(allAccounts -> {
+                    mAllAccountInfoList = Arrays.asList(allAccounts.accounts);
+                    var allAccountsArray = allAccounts.accounts;
                     // Fetch transactions
                     PendingTxHelper pendingTxHelper =
                             new PendingTxHelper(mTxService, allAccountsArray, true, null);
