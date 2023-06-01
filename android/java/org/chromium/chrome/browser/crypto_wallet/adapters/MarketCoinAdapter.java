@@ -68,8 +68,10 @@ public class MarketCoinAdapter extends RecyclerView.Adapter<MarketCoinAdapter.Vi
     }
 
     public void setCoinMarkets(@NonNull final List<CoinMarket> coinMarkets) {
+        final int itemCount = mCoinMarkets.size();
         mCoinMarkets.clear();
         mCoinMarkets.addAll(coinMarkets);
+        notifyItemRangeRemoved(0, itemCount);
         notifyItemRangeInserted(0, coinMarkets.size());
     }
 

@@ -36,7 +36,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.MarketModel;
-import org.chromium.chrome.browser.app.domain.MarketModel.CoinMarketsCallback;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.app.shimmer.ShimmerFrameLayout;
@@ -54,11 +53,9 @@ import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-public class MarketFragment extends Fragment implements CoinMarketsCallback {
+public class MarketFragment extends Fragment {
     private static final String TAG = "MarketFragment";
 
     private LockableNestedScrollView mRootView;
@@ -116,7 +113,6 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
                 new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         mCoinMarkets.setAdapter(mMarketCoinAdapter);
         mCoinMarkets.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mMarketModel.getCoinMarkets(this);
 
         final int visibleShimmerItems =
                 getVisibleShimmerItems(mSingleItemShimmer, mShimmerCardView);
@@ -124,6 +120,17 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
             inflater.inflate(R.layout.brave_wallet_divider, mShimmerListContainer, true);
             inflater.inflate(R.layout.market_coin_shimmer_item, mShimmerListContainer, true);
         }
+
+        mMarketModel.mCoinMarkets.observe(getViewLifecycleOwner(), coinMarkets -> {
+            if (coinMarkets == null) {
+                Log.e(TAG, "Failed to load coin market list.");
+                disableShimmerEffect();
+            } else {
+                mMarketCoinAdapter.setCoinMarkets(Arrays.asList(coinMarkets));
+                disableShimmerEffect();
+            }
+        });
+        mMarketModel.getCoinMarkets();
 
         return mRootView;
     }
@@ -141,18 +148,6 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
                 totalHeight - shimmerCardView.getPaddingTop() - shimmerCardView.getPaddingBottom();
 
         return Math.max(1, (int) Math.ceil((float) totalHeightNoPadding / itemHeight));
-    }
-
-    @Override
-    public void onCoinMarketsSuccess(final CoinMarket[] coinMarkets) {
-        mMarketCoinAdapter.setCoinMarkets(Arrays.asList(coinMarkets));
-        disableShimmerEffect();
-    }
-
-    @Override
-    public void onCoinMarketsFail() {
-        Log.e(TAG, "Failed to load coin market list.");
-        disableShimmerEffect();
     }
 
     @Override

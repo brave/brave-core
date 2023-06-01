@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser.app.domain;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.CoinMarket;
@@ -25,8 +27,14 @@ public class MarketModel {
     private final DecimalFormat mPriceFormatter;
     private final DecimalFormat mPercentageFormatter;
 
+    public final LiveData<CoinMarket[]> mCoinMarkets;
+    private final MutableLiveData<CoinMarket[]> _mCoinMarkets;
+
     public MarketModel(AssetRatioService assetRatioService) {
         mAssetRatioService = assetRatioService;
+
+        _mCoinMarkets = new MutableLiveData<>();
+        mCoinMarkets = _mCoinMarkets;
 
         mSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         mPriceFormatter = new DecimalFormat("$0.00##########", mSymbols);
@@ -43,21 +51,18 @@ public class MarketModel {
 
     /**
      * Gets the first 250 market assets.
-     * @param callback Callback used to notify when the assets have been downloaded.
+     * See {@link #mCoinMarkets} the live data used to emit the assets.
      */
-    public void getCoinMarkets(@NonNull CoinMarketsCallback callback) {
-        if (callback == null) {
-            throw new IllegalArgumentException("Callback must not be null.");
-        }
+    public void getCoinMarkets() {
         if (mAssetRatioService == null) {
             return;
         }
         mAssetRatioService.getCoinMarkets(
                 CURRENCY, ASSETS_REQUEST_LIMIT, (success, coinMarkets) -> {
                     if (success) {
-                        callback.onCoinMarketsSuccess(coinMarkets);
+                        _mCoinMarkets.postValue(coinMarkets);
                     } else {
-                        callback.onCoinMarketsFail();
+                        _mCoinMarkets.postValue(null);
                     }
                 });
     }
@@ -82,14 +87,5 @@ public class MarketModel {
     public String getFormattedPercentageChange(double percentageChange) {
         double absoluteChange = Math.abs(percentageChange);
         return String.format(Locale.ENGLISH, "%s%%", mPercentageFormatter.format(absoluteChange));
-    }
-
-    /**
-     * Callback used to notify if the coin market assets have been downloaded successfully.
-     * @see #getCoinMarkets(CoinMarketsCallback).
-     */
-    public interface CoinMarketsCallback {
-        void onCoinMarketsSuccess(final CoinMarket[] coinMarkets);
-        void onCoinMarketsFail();
     }
 }
