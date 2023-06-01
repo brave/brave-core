@@ -124,11 +124,10 @@ public class MarketFragment extends Fragment {
         mMarketModel.mCoinMarkets.observe(getViewLifecycleOwner(), coinMarkets -> {
             if (coinMarkets == null) {
                 Log.e(TAG, "Failed to load coin market list.");
-                disableShimmerEffect();
             } else {
                 mMarketCoinAdapter.setCoinMarkets(Arrays.asList(coinMarkets));
-                disableShimmerEffect();
             }
+            disableShimmerEffect();
         });
         mMarketModel.getCoinMarkets();
 
