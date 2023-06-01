@@ -85,7 +85,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
         return
       }
       
-      Task {
+      Task { @MainActor in
         let favicon = await Favicon.renderImage(icon, backgroundColor: .clear, shouldScale: true)
 
         // We can only cache favicons for non-private tabs
@@ -102,7 +102,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
         Logger.module.error("Website: \(url.absoluteString), has no Favicon")
       }
       
-      Task {
+      Task { @MainActor in
         let favicon = try await FaviconFetcher.monogramIcon(url: url, persistent: !isPrivate)
         FaviconFetcher.updateCache(favicon, for: url, persistent: true)
         

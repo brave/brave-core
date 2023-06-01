@@ -73,8 +73,7 @@ class Tab: NSObject {
   var blockAllAlerts: Bool = false
   
   private(set) var type: TabType = .regular
-  private let syncTab: BraveSyncTab?
-  let faviconDriver: FaviconDriver?
+  
   
   var redirectURLs = [URL]()
 
@@ -85,19 +84,46 @@ class Tab: NSObject {
   var secureContentState: TabSecureContentState = .unknown
   var sslPinningError: Error?
 
-  var walletEthProvider: BraveWalletEthereumProvider?
-  var walletSolProvider: BraveWalletSolanaProvider?
+  private let _syncTab: BraveSyncTab?
+  private let _faviconDriver: FaviconDriver?
+  private var _walletEthProvider: BraveWalletEthereumProvider?
+  private var _walletSolProvider: BraveWalletSolanaProvider?
+  private var _walletKeyringService: BraveWalletKeyringService? {
+    didSet {
+      _walletKeyringService?.add(self)
+    }
+  }
+  
+  private weak var syncTab: BraveSyncTab? {
+    _syncTab
+  }
+  
+  weak var faviconDriver: FaviconDriver? {
+    _faviconDriver
+  }
+  
+  weak var walletEthProvider: BraveWalletEthereumProvider? {
+    get { _walletEthProvider }
+    set { _walletEthProvider = newValue }
+  }
+  
+  weak var walletSolProvider: BraveWalletSolanaProvider? {
+    get { _walletSolProvider }
+    set { _walletSolProvider = newValue }
+  }
+  
+  weak var walletKeyringService: BraveWalletKeyringService? {
+    get { _walletKeyringService }
+    set { _walletKeyringService = newValue }
+  }
+  
   var tabDappStore: TabDappStore = .init()
   var isWalletIconVisible: Bool = false {
     didSet {
       tabDelegate?.updateURLBarWalletButton()
     }
   }
-  var walletKeyringService: BraveWalletKeyringService? {
-    didSet {
-      walletKeyringService?.add(self)
-    }
-  }
+  
   // PageMetadata is derived from the page content itself, and as such lags behind the
   // rest of the tab.
   var pageMetadata: PageMetadata?
@@ -269,14 +295,14 @@ class Tab: NSObject {
     self.id = id
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
-    syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
+    _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
     
-    if let syncTab = syncTab {
-      faviconDriver = FaviconDriver(webState: syncTab.webState).then {
+    if let syncTab = _syncTab {
+      _faviconDriver = FaviconDriver(webState: syncTab.webState).then {
         $0.setMaximumFaviconImageSize(CGSize(width: 1024, height: 1024))
       }
     } else {
-      faviconDriver = nil
+      _faviconDriver = nil
     }
 
     super.init()
@@ -427,10 +453,11 @@ class Tab: NSObject {
     // A number of mojo-powered core objects have to be deconstructed on the same
     // thread they were constructed
     var mojoObjects: [Any?] = [
-      faviconDriver,
-      walletEthProvider,
-      walletSolProvider,
-      walletKeyringService
+      _faviconDriver,
+      _syncTab,
+      _walletEthProvider,
+      _walletSolProvider,
+      _walletKeyringService
     ]
     
     DispatchQueue.main.async {
