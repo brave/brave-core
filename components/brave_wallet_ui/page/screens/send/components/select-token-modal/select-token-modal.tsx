@@ -165,7 +165,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         account: WalletAccountType
       ) => {
         selectSendAsset(token)
-        dispatch(WalletActions.selectAccount(account))
+        dispatch(WalletActions.selectAccount(account.accountId))
         await setNetwork({
           chainId: token.chainId,
           coin: token.coin

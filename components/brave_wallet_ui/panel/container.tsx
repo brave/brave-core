@@ -177,7 +177,7 @@ function Container () {
   }
 
   const onSelectAccount = (account: WalletAccountType) => () => {
-    dispatch(WalletActions.selectAccount(account))
+    dispatch(WalletActions.selectAccount(account.accountId))
     dispatch(WalletPanelActions.navigateTo('main'))
   }
 

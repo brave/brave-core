@@ -381,8 +381,8 @@ export const Send = (props: Props) => {
   React.useEffect(() => {
     // check if the user has selected an asset
     if (!chainId || !selectedAssetFromParams || !accountFromParams || selectedSendAsset) return
-    
-    dispatch(WalletActions.selectAccount(accountFromParams))
+
+    dispatch(WalletActions.selectAccount(accountFromParams.accountId))
     setNetwork({
       chainId: chainId,
       coin: selectedAssetFromParams.coin
