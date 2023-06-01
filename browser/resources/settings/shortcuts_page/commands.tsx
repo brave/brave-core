@@ -36,13 +36,24 @@ const SearchContainer = styled.div`
 `
 
 const SearchBox = styled.input`
-  border: 1px solid lightgray;
+  all: unset;
+
+  border: 1px solid ${color.divider.subtle};
   border-top-left-radius: ${radius[8]};
   border-top-right-radius: ${radius[8]};
   background: ${color.container.highlight};
   color: ${color.text.secondary};
   padding: ${spacing[16]} ${spacing[24]} ${spacing[16]} 44px;
   flex: 1;
+
+  &:hover {
+    border: 1px solid ${color.divider.strong};
+  }
+
+  &:focus-visible {
+    box-shadow: 0px 0px 0px 1.5px rgba(255, 255, 255, 0.5),
+    0px 0px 4px 2px #423eee;
+  }
 `
 
 const SearchIcon = styled(Icon)`
