@@ -332,6 +332,17 @@ AdsServiceImpl::~AdsServiceImpl() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+bool AdsServiceImpl::UserHasOptedInToBravePrivateAds() const {
+  return IsEnabled();
+}
+
+bool AdsServiceImpl::UserHasOptedInToBraveNews() const {
+  return base::FeatureList::IsEnabled(
+             brave_news::features::kBraveNewsFeature) &&
+         GetPrefService()->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
+         GetPrefService()->GetBoolean(brave_news::prefs::kNewTabPageShowToday);
+}
+
 void AdsServiceImpl::InitializeNotificationsForCurrentProfile() const {
   NotificationHelper::GetInstance()->InitForProfile(profile_);
 }
@@ -367,16 +378,10 @@ void AdsServiceImpl::GetDeviceIdCallback(std::string device_id) {
   MaybeStartBatAdsService();
 }
 
-bool AdsServiceImpl::UserHasOptedIn() const {
-  return base::FeatureList::IsEnabled(
-             brave_news::features::kBraveNewsFeature) &&
-         GetPrefService()->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
-         GetPrefService()->GetBoolean(brave_news::prefs::kNewTabPageShowToday);
-}
-
 bool AdsServiceImpl::CanStartBatAdsService() const {
   return IsSupportedRegion() &&
-         (kShouldAlwaysRunService.Get() || IsEnabled() || UserHasOptedIn());
+         (UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews() ||
+          kShouldAlwaysRunService.Get());
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
@@ -491,10 +496,6 @@ void AdsServiceImpl::InitializeDatabase() {
       std::make_unique<Database>(base_path_.AppendASCII("database.sqlite"));
 }
 
-bool AdsServiceImpl::ShouldRewardUser() const {
-  return IsEnabled();
-}
-
 void AdsServiceImpl::InitializeRewardsWallet(
     const size_t current_start_number) {
   rewards_service_->GetRewardsWallet(
@@ -513,7 +514,7 @@ void AdsServiceImpl::InitializeRewardsWalletCallback(
     return;
   }
 
-  if (!wallet && ShouldRewardUser()) {
+  if (!wallet && UserHasOptedInToBravePrivateAds()) {
     VLOG(1) << "Failed to initialize Brave Rewards wallet";
     return Shutdown();
   }
@@ -693,7 +694,7 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
 
   MaybeStartBatAdsService();
 
-  if (ShouldRewardUser()) {
+  if (UserHasOptedInToBravePrivateAds()) {
     rewards_service_->GetRewardsWallet(base::BindOnce(
         &AdsServiceImpl::OnEnabledPrefChangedCallback, AsWeakPtr()));
   } else {

@@ -96,6 +96,9 @@ class AdsServiceImpl : public AdsService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
+  bool UserHasOptedInToBravePrivateAds() const;
+  bool UserHasOptedInToBraveNews() const;
+
   void InitializeNotificationsForCurrentProfile() const;
 
   void MigrateConfirmationState();
@@ -103,8 +106,6 @@ class AdsServiceImpl : public AdsService,
 
   void GetDeviceId();
   void GetDeviceIdCallback(std::string device_id);
-
-  bool UserHasOptedIn() const;
 
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
@@ -119,7 +120,6 @@ class AdsServiceImpl : public AdsService,
   void Initialize(size_t current_start_number);
   void InitializeDatabase();
 
-  bool ShouldRewardUser() const;
   void InitializeRewardsWallet(size_t current_start_number);
   void InitializeRewardsWalletCallback(
       size_t current_start_number,
