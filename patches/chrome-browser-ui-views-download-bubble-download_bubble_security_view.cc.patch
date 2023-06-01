@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/download/bubble/download_bubble_security_view.cc b/chrome/browser/ui/views/download/bubble/download_bubble_security_view.cc
+index 97b2152c4862ef6f8fbb4593446b9998f44757c6..35b36e4e0838e12b2acd074f31f1bcc932b71b4d 100644
+--- a/chrome/browser/ui/views/download/bubble/download_bubble_security_view.cc
++++ b/chrome/browser/ui/views/download/bubble/download_bubble_security_view.cc
+@@ -327,6 +327,7 @@ void DownloadBubbleSecurityView::UpdateAccessibilityTextAndFocus() {
+   // Announce that the subpage was opened to inform the user about the changes
+   // in the UI.
+ #if BUILDFLAG(IS_MAC)
++  GetViewAccessibility().OverrideRole(ax::mojom::Role::kAlert);
+   GetViewAccessibility().OverrideName(ui_info.warning_summary);
+   NotifyAccessibilityEvent(ax::mojom::Event::kAlert, true);
+ #else
