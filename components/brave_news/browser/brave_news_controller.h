@@ -159,6 +159,7 @@ class BraveNewsController : public KeyedService,
 
   PrefChangeRegistrar pref_change_registrar_;
   base::OneShotTimer timer_prefetch_;
+  base::OneShotTimer p3a_enabled_report_timer_;
   base::RepeatingTimer timer_feed_update_;
   base::RepeatingTimer timer_publishers_update_;
   base::CancelableTaskTracker task_tracker_;
