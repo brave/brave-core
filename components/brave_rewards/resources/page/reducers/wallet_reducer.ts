@@ -9,6 +9,7 @@ import * as mojom from '../../shared/lib/mojom'
 import {
   optional
 } from '../../../../brave_rewards/resources/shared/lib/optional'
+import * as Rewards from '../lib/types'
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {

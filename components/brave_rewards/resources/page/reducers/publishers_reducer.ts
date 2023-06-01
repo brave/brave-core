@@ -4,6 +4,7 @@
 
 import { Reducer } from 'redux'
 import { types } from '../actions/rewards_types'
+import * as Rewards from '../lib/types'
 
 const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {

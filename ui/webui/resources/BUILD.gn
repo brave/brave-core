@@ -102,13 +102,6 @@ transpile_web_ui("leo_web_components") {
       ] ]
 
   resource_name = "leo"
-
-  deps = [
-    # The build fails if the Brave Rewards mojom files are not present. This is
-    # because they're used in some of the ambient type definitions present in
-    # //brave/components/definitions/rewards.d.ts
-    "//brave/components/brave_rewards/common/mojom:mojom_js",
-  ]
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD

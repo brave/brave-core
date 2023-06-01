@@ -6,6 +6,7 @@
 import { defaultState } from './default_state'
 import { createLocalStorageScope } from '../../shared/lib/local_storage_scope'
 import { userTypeFromString } from '../../shared/lib/user_type'
+import * as Rewards from '../lib/types'
 
 const storageScope = createLocalStorageScope<'state'>('rewards')
 

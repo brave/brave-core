@@ -24,6 +24,8 @@ import * as rewardsActions from './actions/rewards_actions'
 import { App } from './components/app'
 import * as mojom from '../shared/lib/mojom'
 
+import * as Rewards from './lib/types'
+
 const store = createStore(createReducer())
 const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
 

@@ -7,6 +7,7 @@ import { Reducer } from 'redux'
 
 import { types } from '../actions/rewards_types'
 import { userTypeFromMojo } from '../../shared/lib/user_type'
+import * as Rewards from '../lib/types'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {

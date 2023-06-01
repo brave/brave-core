@@ -7,6 +7,8 @@ import * as React from 'react'
 import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { ClaimGrantView } from './claim_grant_view'
 
+import * as Rewards from '../lib/types'
+
 function promotionTypesToGrantType (type: Rewards.PromotionTypes) {
   switch (type) {
     case 1: return 'ads' // Rewards.PromotionTypes.ADS

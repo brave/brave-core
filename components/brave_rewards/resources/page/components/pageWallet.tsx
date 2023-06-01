@@ -33,6 +33,8 @@ import { ConnectWalletModal } from './connect_wallet_modal'
 import * as mojom from '../../shared/lib/mojom'
 import { isPublisherVerified } from '../../shared/lib/publisher_status'
 
+import * as Rewards from '../lib/types'
+
 interface State {
   modalActivity: boolean
 }

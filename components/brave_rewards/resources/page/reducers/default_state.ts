@@ -6,6 +6,7 @@
 import {
   optional
 } from '../../../../brave_rewards/resources/shared/lib/optional'
+import * as Rewards from '../lib/types'
 
 export function defaultState (): Rewards.State {
   return {
