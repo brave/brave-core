@@ -42,7 +42,6 @@ import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 
-// TODO(pav): Show no transaction message
 public class TransactionsFragment extends Fragment implements OnWalletListItemClick {
     private static final String TAG = "TransactionsFragment";
     private WalletModel mWalletModel;
