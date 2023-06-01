@@ -115,6 +115,10 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                                                 transactionInfos -> Arrays.stream(transactionInfos))
                                         .filter(tx -> tx.txStatus != TransactionStatus.REJECTED)
                                         .toArray(TransactionInfo[] ::new);
+                        if (filteredTransactions.length == 0) {
+                            postTxListResponse(Collections.emptyList());
+                            return;
+                        }
                         // Fetch tokens, balances, price etc.
                         List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances =
                                 new ArrayList<>();
@@ -189,9 +193,13 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                         activityRef.get(), txInfo, txNetwork, parsedTx, allAccountsArray);
                 walletListItemModelList.add(itemModel);
             }
-            _mParsedTransactions.postValue(walletListItemModelList);
-            _mIsLoading.postValue(false);
+            postTxListResponse(walletListItemModelList);
         });
+    }
+
+    private void postTxListResponse(List<WalletListItemModel> walletListItemModelList) {
+        _mParsedTransactions.postValue(walletListItemModelList);
+        _mIsLoading.postValue(false);
     }
 
     private void addServiceObservers() {

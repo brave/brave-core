@@ -12,6 +12,21 @@
         android:layout_marginHorizontal="16dp"
         android:orientation="vertical">
 
+        <org.chromium.chrome.browser.app.shimmer.ShimmerFrameLayout
+            android:id="@+id/frag_tx_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shimmer_auto_start="false">
+
+            <LinearLayout
+                android:id="@+id/ll_shimmer_items"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+        </org.chromium.chrome.browser.app.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/frag_tx_rv_transactions"
             android:layout_width="match_parent"
@@ -19,8 +34,8 @@
             android:layout_marginTop="12dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <TextView
             android:id="@+id/frag_tx_empty_label"
@@ -46,18 +61,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/frag_tx_empty_label" />
-
-        <ProgressBar
-            android:id="@+id/frag_tx_pb"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="start|center_vertical"
-            android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

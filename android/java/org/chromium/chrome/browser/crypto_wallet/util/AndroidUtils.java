@@ -109,4 +109,15 @@ public class AndroidUtils {
         return !(frag.isRemoving() || frag.getActivity() == null || frag.isDetached()
                 || !frag.isAdded() || frag.getView() == null);
     }
+
+    /**
+     * Calculated an ideal row count for shimmer effect based on screen size
+     * @param context of app
+     * @param skeletonRowHeight of a skeleton row view in pixels
+     * @return count of rows for the skeleton list
+     */
+    public static int getSkeletonRowCount(int skeletonRowHeight) {
+        int pxHeight = getScreenHeight();
+        return (int) Math.floor(pxHeight / skeletonRowHeight);
+    }
 }
