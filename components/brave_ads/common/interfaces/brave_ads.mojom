@@ -65,7 +65,6 @@ struct ConversionInfo {
   string url_pattern;
   string advertiser_public_key;
   int32 observation_window;
-  mojo_base.mojom.Time expire_at;
 };
 
 enum NotificationAdEventType {
