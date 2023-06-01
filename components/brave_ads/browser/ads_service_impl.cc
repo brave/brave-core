@@ -694,20 +694,18 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
 
   MaybeStartBatAdsService();
 
-  if (UserHasOptedInToBravePrivateAds()) {
-    rewards_service_->GetRewardsWallet(base::BindOnce(
-        &AdsServiceImpl::OnEnabledPrefChangedCallback, AsWeakPtr()));
-  } else {
-    NotifyPrefChanged(prefs::kEnabled);
+  if (!UserHasOptedInToBravePrivateAds()) {
+    return NotifyPrefChanged(prefs::kEnabled);
   }
+
+  rewards_service_->GetRewardsWallet(base::BindOnce(
+      &AdsServiceImpl::OnEnabledPrefChangedCallback, AsWeakPtr()));
 }
 
 void AdsServiceImpl::OnEnabledPrefChangedCallback(
     brave_rewards::mojom::RewardsWalletPtr wallet) {
-  if (bat_ads_client_notifier_.is_bound() && wallet) {
-    bat_ads_client_notifier_->NotifyRewardsWalletDidUpdate(
-        wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
-  }
+  NotifyRewardsWalletDidUpdate(std::move(wallet));
+
   NotifyPrefChanged(prefs::kEnabled);
 }
 
@@ -741,6 +739,14 @@ void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
   }
 }
 
+void AdsServiceImpl::NotifyRewardsWalletDidUpdate(
+    brave_rewards::mojom::RewardsWalletPtr wallet) {
+  if (wallet && bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyRewardsWalletDidUpdate(
+        wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
+  }
+}
+
 void AdsServiceImpl::GetRewardsWallet() {
   rewards_service_->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::GetRewardsWalletCallback, AsWeakPtr()));
@@ -748,10 +754,7 @@ void AdsServiceImpl::GetRewardsWallet() {
 
 void AdsServiceImpl::GetRewardsWalletCallback(
     brave_rewards::mojom::RewardsWalletPtr wallet) {
-  if (wallet && bat_ads_client_notifier_.is_bound()) {
-    bat_ads_client_notifier_->NotifyRewardsWalletDidUpdate(
-        wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
-  }
+  NotifyRewardsWalletDidUpdate(std::move(wallet));
 }
 
 void AdsServiceImpl::CheckIdleStateAfterDelay() {

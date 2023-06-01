@@ -151,6 +151,9 @@ class AdsServiceImpl : public AdsService,
   void OnNewTabPageShowTodayPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 
+  void NotifyRewardsWalletDidUpdate(
+      brave_rewards::mojom::RewardsWalletPtr wallet);
+
   void GetRewardsWallet();
   void GetRewardsWalletCallback(brave_rewards::mojom::RewardsWalletPtr wallet);
 
