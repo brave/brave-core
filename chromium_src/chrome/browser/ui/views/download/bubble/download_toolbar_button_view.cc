@@ -77,16 +77,21 @@ void DownloadToolbarButtonView::UpdateIcon() {
     SkColor icon_color =
         GetColorProvider()->GetColor(ui::kColorAlertMediumSeverityIcon);
 
-    SetImageModel(ButtonState::STATE_NORMAL,
-                  ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
-    SetImageModel(ButtonState::STATE_HOVERED,
-                  ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
-    SetImageModel(ButtonState::STATE_PRESSED,
-                  ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
+    constexpr int kIconSize = 16;
+    SetImageModel(
+        ButtonState::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, kIconSize));
+    SetImageModel(
+        ButtonState::STATE_HOVERED,
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, kIconSize));
+    SetImageModel(
+        ButtonState::STATE_PRESSED,
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, kIconSize));
     SetImageModel(
         Button::STATE_DISABLED,
         ui::ImageModel::FromVectorIcon(
-            *new_icon, GetForegroundColor(ButtonState::STATE_DISABLED)));
+            *new_icon, GetForegroundColor(ButtonState::STATE_DISABLED),
+            kIconSize));
   }
 }
 
