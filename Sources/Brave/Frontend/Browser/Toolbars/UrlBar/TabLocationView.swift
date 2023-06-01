@@ -183,7 +183,6 @@ class TabLocationView: UIView {
   private(set) lazy var playlistButton = PlaylistURLBarButton(frame: .zero).then {
     $0.accessibilityIdentifier = "TabToolbar.playlistButton"
     $0.isAccessibilityElement = true
-    $0.accessibilityLabel = Strings.tabToolbarPlaylistButtonAccessibilityLabel
     $0.buttonState = .none
     $0.tintColor = .white
     $0.addTarget(self, action: #selector(didClickPlaylistButton), for: .touchUpInside)

@@ -105,6 +105,7 @@ class PlaylistURLBarButton: UIButton {
     didSet {
       switch buttonState {
       case .addToPlaylist:
+        accessibilityLabel = Strings.tabToolbarAddToPlaylistButtonAccessibilityLabel
         setImage(UIImage(sharedNamed: "leo.playlist.bold.add"), for: .normal)
         showsMenuAsPrimaryAction = false
         // Don't hide the menu if we're swapping it to show Undo
@@ -113,6 +114,7 @@ class PlaylistURLBarButton: UIButton {
           menu = nil
         }
       case .addedToPlaylist(let item):
+        accessibilityLabel = Strings.tabToolbarPlaylistButtonAccessibilityLabel
         setImage(UIImage(sharedNamed: "leo.playlist.bold.added"), for: .normal)
         showsMenuAsPrimaryAction = true
         menu = defaultMenu(for: item)
@@ -153,6 +155,7 @@ class PlaylistURLBarButton: UIButton {
       imageView?.snp.remakeConstraints {
         $0.width.equalTo(size.width * scale)
         $0.height.equalTo(size.height * scale)
+        $0.center.equalToSuperview()
       }
     }
   }

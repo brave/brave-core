@@ -95,6 +95,47 @@ public class PopoverController: UIViewController {
 
   /// Whether or not to automatically dismiss the popup when the device orientation changes
   var dismissesOnOrientationChanged = true
+  
+  /// The origin preview to use.
+  public struct OriginPreview {
+    /// The view to place on top of the origin. A snapshot will be taken of this view and placed where the
+    /// popover is presented from
+    public var view: UIView
+    /// Whether or not to add a background focus rings animation behind the `view` provided
+    public var displaysFocusRings: Bool
+    /// An action to take when the user taps on the `view` provided. Defaults to nil which will dismiss
+    /// the popover. If you handle this manually it is up to you to call `dismissPopover` on the popover
+    /// controller.
+    public var action: ((PopoverController) -> Void)?
+    
+    public init(view: UIView, displaysFocusRings: Bool = true, action: ((PopoverController) -> Void)? = nil) {
+      self.view = view
+      self.displaysFocusRings = displaysFocusRings
+      self.action = action
+    }
+  }
+  
+  /// Whether or not to display a preview where the popover originated from
+  public var previewForOrigin: OriginPreview? {
+    didSet {
+      if oldValue != nil && previewForOrigin == nil {
+        // Preview can be removed during presentation
+        let originFocusView = self.originFocusView
+        let originSnapshotView = self.originSnapshotView
+        self.originFocusView = nil
+        self.originSnapshotView = nil
+        let animator = UIViewPropertyAnimator(duration: 0.1, curve: .linear) {
+          originFocusView?.alpha = 0
+          originSnapshotView?.alpha = 0
+        }
+        animator.addCompletion { _ in
+          originFocusView?.removeFromSuperview()
+          originSnapshotView?.removeFromSuperview()
+        }
+        animator.startAnimation()
+      }
+    }
+  }
 
   /// Defines the desired color for the entire popup menu
   /// Child controller may specify their own `backgroundColor`, however arrow/carrot color is also handled here
@@ -142,6 +183,10 @@ public class PopoverController: UIViewController {
 
   private var autoLayoutTopConstraint: NSLayoutConstraint?
   private var autoLayoutBottomConstraint: NSLayoutConstraint?
+  private var panGesture: UIPanGestureRecognizer?
+  
+  private var originFocusView: PopoverOriginFocusView?
+  private var originSnapshotView: UIView?
 
   override public func viewDidLoad() {
     super.viewDidLoad()
@@ -150,12 +195,13 @@ public class PopoverController: UIViewController {
     let backgroundTap = UITapGestureRecognizer(target: self, action: #selector(tappedBackgroundOverlay(_:)))
     backgroundOverlayView.isAccessibilityElement = true
     backgroundOverlayView.accessibilityLabel = contentController.closeActionAccessibilityLabel
-    backgroundOverlayView.accessibilityElements = [backgroundTap]
+    backgroundOverlayView.accessibilityTraits = [.button]
     backgroundOverlayView.addGestureRecognizer(backgroundTap)
 
     let pan = UIPanGestureRecognizer(target: self, action: #selector(pannedPopover(_:)))
     pan.delegate = self
     view.addGestureRecognizer(pan)
+    panGesture = pan
 
     containerView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -169,6 +215,8 @@ public class PopoverController: UIViewController {
     addChild(contentController)
     containerView.contentView.addSubview(contentController.view)
     contentController.didMove(toParent: self)
+    
+    containerView.contentView.backgroundColor = contentController.popoverBackgroundColor
 
     switch contentSizeBehavior {
     case .autoLayout(let configuration):
@@ -212,7 +260,7 @@ public class PopoverController: UIViewController {
       containerViewWidthConstraint?.isActive = true
     }
   }
-
+  
   override public var preferredStatusBarStyle: UIStatusBarStyle {
     return .default
   }
@@ -244,9 +292,14 @@ public class PopoverController: UIViewController {
           autoLayoutTopConstraint?.constant = PopoverUX.arrowSize.height
         } else {
           autoLayoutTopConstraint?.constant = 0
-          autoLayoutBottomConstraint?.constant = PopoverUX.arrowSize.height
+          autoLayoutBottomConstraint?.constant = -PopoverUX.arrowSize.height
         }
       }
+    }
+    
+    if let presentationContext, panGesture?.state == .possible {
+      let translationDelta = anchorPointDelta(from: presentationContext, popoverRect: containerView.frame)
+      containerView.arrowOrigin = CGPoint(x: containerView.bounds.midX + translationDelta.x, y: 0.0)
     }
   }
 
@@ -386,6 +439,14 @@ public class PopoverController: UIViewController {
       dismissPopover()
     }
   }
+  
+  @objc private func tappedOriginView() {
+    if let action = previewForOrigin?.action {
+      action(self)
+    } else {
+      dismissPopover()
+    }
+  }
 }
 
 // MARK: - Actions
@@ -505,6 +566,31 @@ extension PopoverController: BasicAnimationControllerDelegate {
       size.height += PopoverUX.arrowSize.height
     }
     contentController.view.frame = CGRect(origin: origin, size: size)
+    
+    if let previewForOrigin, let snapshotView = previewForOrigin.view.snapshotView(afterScreenUpdates: false) {
+      view.insertSubview(snapshotView, aboveSubview: backgroundOverlayView)
+      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedOriginView))
+      snapshotView.addGestureRecognizer(tapGesture)
+      snapshotView.snp.makeConstraints {
+        $0.edges.equalTo(originLayoutGuide)
+      }
+      snapshotView.isAccessibilityElement = true
+      snapshotView.accessibilityTraits = [.button]
+      snapshotView.accessibilityLabel = previewForOrigin.view.accessibilityLabel
+      self.originSnapshotView = snapshotView
+      
+      if previewForOrigin.displaysFocusRings {
+        let originFocusView: PopoverOriginFocusView = .init()
+        view.insertSubview(originFocusView, belowSubview: snapshotView)
+        originFocusView.snp.makeConstraints {
+          $0.center.equalTo(originLayoutGuide)
+          let length = max(previewForOrigin.view.bounds.width, previewForOrigin.view.bounds.height) + 8
+          $0.size.equalTo(length)
+        }
+        originFocusView.layoutIfNeeded()
+        self.originFocusView = originFocusView
+      }
+    }
 
     containerView.snp.makeConstraints {
       switch containerView.arrowDirection {
@@ -521,8 +607,10 @@ extension PopoverController: BasicAnimationControllerDelegate {
     }
 
     backgroundOverlayView.alpha = 0.0
+    originFocusView?.alpha = 0.0
     UIViewPropertyAnimator(duration: 0.2, curve: .linear) { [self] in
       backgroundOverlayView.alpha = 1.0
+      originFocusView?.alpha = 1.0
     }
     .startAnimation()
     
@@ -545,6 +633,12 @@ extension PopoverController: BasicAnimationControllerDelegate {
       withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.beginFromCurrentState, .allowUserInteraction],
       animations: {
         self.containerView.transform = .identity
+      },
+      completion: { _ in
+        self.originFocusView?.beginAnimating()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+          UIAccessibility.post(notification: .screenChanged, argument: self.contentController.view)
+        }
       })
     context.completeTransition(true)
   }
@@ -554,6 +648,8 @@ extension PopoverController: BasicAnimationControllerDelegate {
       context.completeTransition(false)
       return
     }
+    
+    self.originFocusView?.stopAnimating()
 
     UIViewPropertyAnimator(duration: 0.15, curve: .linear) {
       self.backgroundOverlayView.alpha = 0.0
@@ -617,19 +713,81 @@ extension PopoverController: UINavigationControllerDelegate {
 
 extension PopoverController {
   private class PopoverHostingController<Content>: UIHostingController<Content>, PopoverContentComponent where Content: View & PopoverContentComponent {
+    weak var popoverController: PopoverController?
+    
+    override init(rootView: Content) {
+      super.init(rootView: rootView)
+#if compiler(>=5.8)
+      if #available(iOS 16.4, *) {
+        safeAreaRegions = []
+      } else {
+        disableSafeArea()
+      }
+#else
+      disableSafeArea()
+#endif
+    }
+    
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+      fatalError()
+    }
+    
+    override func viewDidLoad() {
+      super.viewDidLoad()
+      view.backgroundColor = .clear
+    }
+    
     override func viewDidLayoutSubviews() {
       super.viewDidLayoutSubviews()
-      if #unavailable(iOS 16) {
-        // For some reason these 2 calls are required in order for the `UIHostingController` to layout
-        // correctly. Without this it for some reason becomes taller than what it needs to be despite its
-        // `sizeThatFits(_:)` calls returning the correct value once the parent does layout.
-        view.setNeedsUpdateConstraints()
-        view.updateConstraintsIfNeeded()
+      // For some reason these 2 calls are required in order for the `UIHostingController` to layout
+      // correctly. Without this it for some reason becomes taller than what it needs to be despite its
+      // `sizeThatFits(_:)` calls returning the correct value once the parent does layout.
+      //
+      // This is also required even on iOS 16 when the SwiftUI view changes its size presentation
+      view.setNeedsUpdateConstraints()
+      view.updateConstraintsIfNeeded()
+      
+      // Animates changes.
+      UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.9) { [self] in
+        popoverController?.view.layoutIfNeeded()
+      }
+      .startAnimation()
+    }
+    
+    @available(iOS, introduced: 15.0, obsoleted: 16.4, message: "This hack is replaced by UIHostingController.safeAreaRegions")
+    func disableSafeArea() {
+      // https://gist.github.com/steipete/da72299613dcc91e8d729e48b4bb582c
+      guard let viewClass = object_getClass(view) else { return }
+      
+      let viewSubclassName = String(cString: class_getName(viewClass)).appending("_IgnoreSafeArea")
+      if let viewSubclass = NSClassFromString(viewSubclassName) {
+        object_setClass(view, viewSubclass)
+      } else {
+        guard let viewClassNameUtf8 = (viewSubclassName as NSString).utf8String else { return }
+        guard let viewSubclass = objc_allocateClassPair(viewClass, viewClassNameUtf8, 0) else { return }
+        
+        if let method = class_getInstanceMethod(UIView.self, #selector(getter: UIView.safeAreaInsets)) {
+          let safeAreaInsets: @convention(block) (AnyObject) -> UIEdgeInsets = { _ in
+            return .zero
+          }
+          class_addMethod(viewSubclass, #selector(getter: UIView.safeAreaInsets), imp_implementationWithBlock(safeAreaInsets), method_getTypeEncoding(method))
+        }
+        
+        if let method2 = class_getInstanceMethod(viewClass, NSSelectorFromString("keyboardWillShowWithNotification:")) {
+          let keyboardWillShow: @convention(block) (AnyObject, AnyObject) -> Void = { _, _ in }
+          class_addMethod(viewSubclass, NSSelectorFromString("keyboardWillShowWithNotification:"), imp_implementationWithBlock(keyboardWillShow), method_getTypeEncoding(method2))
+        }
+        
+        objc_registerClassPair(viewSubclass)
+        object_setClass(view, viewSubclass)
       }
     }
     
+    // Unfortunately due to UIHostingController bugs not syncing safe areas properly when SwiftUI changes
+    // the size of the popover (except in iOS 15?), this is not supported in SwiftUI
     var extendEdgeIntoArrow: Bool {
-      rootView.extendEdgeIntoArrow
+      false
     }
     
     var isPanToDismissEnabled: Bool {
@@ -643,16 +801,22 @@ extension PopoverController {
     var closeActionAccessibilityLabel: String {
       rootView.closeActionAccessibilityLabel
     }
+    
+    var popoverBackgroundColor: UIColor {
+      rootView.popoverBackgroundColor
+    }
   }
   
   /// Create a popover displaying a SwiftUI view hierarchy as its content
   public convenience init<Content: View & PopoverContentComponent>(
     content: Content,
-    contentSizeBehavior: ContentSizeBehavior = .autoLayout()
+    autoLayoutConfiguration: ContentSizeConfiguration? = nil
   ) {
+    let contentController = PopoverHostingController(rootView: content)
     self.init(
-      contentController: PopoverHostingController(rootView: content),
-      contentSizeBehavior: contentSizeBehavior
+      contentController: contentController,
+      contentSizeBehavior: .autoLayout(autoLayoutConfiguration)
     )
+    contentController.popoverController = self
   }
 }

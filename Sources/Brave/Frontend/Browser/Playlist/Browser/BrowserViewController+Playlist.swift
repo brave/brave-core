@@ -52,7 +52,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
           }
         }
       },
-      contentSizeBehavior: .autoLayout(.phoneWidth)
+      autoLayoutConfiguration: .phoneWidth
     )
   }
 
@@ -213,47 +213,29 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
 
         topToolbar.layoutIfNeeded()
         view.layoutIfNeeded()
+        
+        // Ensure url bar is expanded before presenting a popover on it
+        toolbarVisibilityViewModel.toolbarState = .expanded
 
         DispatchQueue.main.async {
-          let onboardingController = PlaylistOnboardingViewController()
-          let popover = PopoverController(contentController: onboardingController)
-          popover.present(from: self.topToolbar.locationView.playlistButton, on: self)
-
-          let pulseAnimation = RadialPulsingAnimation(ringCount: 3)
-          pulseAnimation.present(
-            icon: self.topToolbar.locationView.playlistButton.snapshot,
-            from: self.topToolbar.locationView.playlistButton,
-            on: popover,
-            controller: self)
-          pulseAnimation.frame = pulseAnimation.frame.insetBy(dx: 10.0, dy: 12.0)
-          
-          pulseAnimation.animationViewPressed = {
-            popover.dismissPopover()
-          }
-          
-          popover.popoverDidDismiss = { _ in
-            pulseAnimation.removeFromSuperview()
-          }
-
-          onboardingController.rootView.onButtonPressed = { [weak self, unowned popover] in
-            guard let self = self else {
-              popover.dismiss(animated: true) {
-                pulseAnimation.removeFromSuperview()
-              }
+          let model = OnboardingPlaylistModel()
+          let popover = PopoverController(content: OnboardingPlaylistView(model: model))
+          popover.previewForOrigin = .init(view: self.topToolbar.locationView.playlistButton, action: { popover in
+            guard let item = tab?.playlistItem else {
+              popover.dismissPopover()
               return
             }
-
-            let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
-            self.topToolbar.leaveOverlayMode()
-            let tab = self.tabManager.addTab(
-              PrivilegedRequest(url: .brave.playlist) as URLRequest,
-              afterTab: self.tabManager.selectedTab,
-              isPrivate: isPrivate)
-            self.tabManager.selectTab(tab)
-
-            popover.dismiss(animated: true) {
-              pulseAnimation.removeFromSuperview()
+            popover.previewForOrigin = nil
+            self.addToPlaylist(item: item) { didAddItem in
+              let folderName = PlaylistItem.getItem(uuid: item.tagId)?.playlistFolder?.title ?? ""
+              model.step = .completed(folderName: folderName)
             }
+          })
+          popover.present(from: self.topToolbar.locationView.playlistButton, on: self)
+
+          model.onboardingCompleted = {
+            popover.dismissPopover()
+            self.openPlaylist(tab: tab, item: tab?.playlistItem)
           }
         }
 

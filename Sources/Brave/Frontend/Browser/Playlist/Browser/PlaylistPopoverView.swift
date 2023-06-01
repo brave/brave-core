@@ -28,6 +28,7 @@ struct PlaylistPopoverView: View {
     HStack(spacing: dynamicTypeSize.isAccessibilitySize ? 0 : 10) {
       Image(braveSystemName: "leo.check.circle-filled")
         .foregroundStyle(Color(.braveSuccessLabel))
+        .accessibilityHidden(true)
       if dynamicTypeSize.isAccessibilitySize {
         VStack(alignment: .leading, content: content)
       } else {
@@ -71,7 +72,8 @@ struct PlaylistPopoverView: View {
     .task {
       // task modifier will cancel when the view is removed
       do {
-        try await Task.sleep(nanoseconds: NSEC_PER_SEC * 4)
+        let isVoiceOverRunning = UIAccessibility.isVoiceOverRunning
+        try await Task.sleep(nanoseconds: NSEC_PER_SEC * (isVoiceOverRunning ? 15 : 4))
         action?(.timedOut)
       } catch { }
     }
