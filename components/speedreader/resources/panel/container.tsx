@@ -5,19 +5,24 @@
 
 import * as React from 'react'
 
-import { dataHandler, SiteSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed, eventsHandler } from './api/browser'
+import { dataHandler, SiteSettings, ContentViewSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed, eventsHandler } from './api/browser'
 import Toolbar from './components/toolbar'
 
 function Container() {
   const [siteSettings, setSiteSettings] = React.useState<SiteSettings | undefined>()
+  const [contentViewSettings, setContentViewSettings] = React.useState<ContentViewSettings | undefined>()
   const [ttsSettings, setTtsSettings] = React.useState<TtsSettings | undefined>()
 
   React.useEffect(() => {
     dataHandler.getSiteSettings().then(res => setSiteSettings(res.siteSettings))
+    dataHandler.getContentViewSettings().then(res => setContentViewSettings(res.viewSettings))
     dataHandler.getTtsSettings().then(res => setTtsSettings(res.ttsSettings))
     dataHandler.observeThemeChange()
     eventsHandler.onSiteSettingsChanged.addListener((settings: SiteSettings) => {
       setSiteSettings(settings)
+    })
+    eventsHandler.onContentViewSettingsChanged.addListener((settings: ContentViewSettings) => {
+      setContentViewSettings(settings)
     })
     eventsHandler.onBrowserThemeChanged.addListener((colors: ToolbarColors) => {
       const toColor = (color: number) => {
@@ -33,23 +38,28 @@ function Container() {
     })
   }, [])
 
-  if (!siteSettings || !ttsSettings) {
+  if (!siteSettings || !contentViewSettings || !ttsSettings) {
     return null
   }
 
-  const handleThemeChange = (theme: Theme) => {
-    const settings = { ...siteSettings, theme }
+  const handleSpeedreaderChange = (speedreaderEnabled: boolean) => {
+    const settings = { ...siteSettings, speedreaderEnabled }
     dataHandler.setSiteSettings(settings)
+  }
+
+  const handleThemeChange = (theme: Theme) => {
+    const settings = { ...contentViewSettings, theme }
+    dataHandler.setContentViewSettings(settings)
   }
 
   const handleFontSizeChange = (fontSize: FontSize) => {
-    const settings = { ...siteSettings, fontSize }
-    dataHandler.setSiteSettings(settings)
+    const settings = { ...contentViewSettings, fontSize }
+    dataHandler.setContentViewSettings(settings)
   }
 
   const handleFontFamilyChange = (fontFamily: FontFamily) => {
-    const settings = { ...siteSettings, fontFamily }
-    dataHandler.setSiteSettings(settings)
+    const settings = { ...contentViewSettings, fontFamily }
+    dataHandler.setContentViewSettings(settings)
   }
 
   const handleTtsVoiceChange = (voice: string) => {
@@ -64,15 +74,22 @@ function Container() {
     dataHandler.setTtsSettings(settings)
   }
 
+  const handleAiChat = () => {
+    dataHandler.aiChat()
+  }
+
   return (
     <Toolbar
       siteSettings={siteSettings}
+      contentViewSettings={contentViewSettings}
       ttsSettings={ttsSettings}
+      onSpeedreaderChange={handleSpeedreaderChange}
       onThemeChange={handleThemeChange}
       onFontSizeChange={handleFontSizeChange}
       onFontFamilyChange={handleFontFamilyChange}
       onTtsVoiceChange={handleTtsVoiceChange}
       onTtsSpeedChange={handleTtsSpeedChange}
+      onAiChat={handleAiChat}
     />
   )
 }

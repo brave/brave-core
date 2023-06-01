@@ -190,10 +190,6 @@ void SpeedreaderTabHelper::ProcessIconClick() {
 }
 
 void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
-  if (!IsSpeedreaderEnabled()) {
-    return;
-  }
-
   const bool enabled = speedreader::IsEnabledForSite(
       content_rules_, web_contents()->GetLastCommittedURL());
   if (enabled == on) {
@@ -202,6 +198,7 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
 
   speedreader::SetEnabledForSite(content_rules_,
                                  web_contents()->GetLastCommittedURL(), on);
+
   ClearPersistedData();
   ReloadContents();
 }
@@ -331,26 +328,6 @@ void SpeedreaderTabHelper::HideBubble() {
 void SpeedreaderTabHelper::OnShowOriginalPage() {
   show_original_page_ = distill_state_ == DistillState::kSpeedreaderMode;
   ReloadContents();
-}
-
-mojom::SiteSettingsPtr SpeedreaderTabHelper::GetSiteSettings() {
-  auto* speedreader_service =
-      SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service) {
-    return nullptr;
-  }
-
-  return speedreader_service->GetSiteSettings().Clone();
-}
-
-void SpeedreaderTabHelper::SetSiteSettings(
-    const mojom::SiteSettings& site_settings) {
-  auto* speedreader_service =
-      SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service) {
-    return;
-  }
-  speedreader_service->SetSiteSettings(site_settings);
 }
 
 void SpeedreaderTabHelper::ClearPersistedData() {

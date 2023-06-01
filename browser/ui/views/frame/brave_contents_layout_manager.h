@@ -23,8 +23,8 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
     sidebar_on_left_ = sidebar_on_left;
   }
 
-  void set_reader_mode_panel(views::View* reader_mode_panel_view) {
-    reader_mode_panel_view_ = reader_mode_panel_view;
+  void set_reader_mode_toolbar(views::View* reader_mode_toolbar_view) {
+    reader_mode_toolbar_view_ = reader_mode_toolbar_view;
   }
 
   // ContentsLayoutManager overrides:
@@ -32,7 +32,7 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
 
  private:
   raw_ptr<views::View> sidebar_container_view_ = nullptr;
-  raw_ptr<views::View> reader_mode_panel_view_ = nullptr;
+  raw_ptr<views::View> reader_mode_toolbar_view_ = nullptr;
   bool sidebar_on_left_ = true;
 };
 

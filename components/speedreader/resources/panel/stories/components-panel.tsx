@@ -9,7 +9,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import './locale'
 import Toolbar from '../components/toolbar'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
-import { FontFamily, FontSize, PlaybackSpeed, SiteSettings, Theme, TtsSettings } from '../api/browser'
+import { ContentViewSettings, FontFamily, FontSize, PlaybackSpeed, SiteSettings, Theme, TtsSettings } from '../api/browser'
 
 export default {
   title: 'Speedreader/Toolbar',
@@ -33,6 +33,10 @@ export default {
 
 export const _Main = () => {
   const siteSettings: SiteSettings = {
+    speedreaderEnabled: true
+  }
+
+  const viewSettings: ContentViewSettings = {
     fontFamily: FontFamily.kSans,
     fontSize: FontSize.k100,
     theme: Theme.kDark
@@ -47,13 +51,16 @@ export const _Main = () => {
     <S.PanelFrame>
       <Toolbar
         siteSettings={siteSettings}
+        contentViewSettings={viewSettings}
         ttsSettings={ttsSettings}
-        onThemeChange={() => {}}
-        onFontSizeChange={() => {}}
-        onFontFamilyChange={() => {}}
-        onTtsSpeedChange={()=> {}}
-        onTtsVoiceChange={()=> {}}
-      />
+        onThemeChange={() => { } }
+        onFontSizeChange={() => { } }
+        onFontFamilyChange={() => { } }
+        onTtsSpeedChange={() => { } }
+        onTtsVoiceChange={() => { } }
+        onSpeedreaderChange={()=> {}}
+        onAiChat={()=>{}}
+       />
     </S.PanelFrame>
   )
 }

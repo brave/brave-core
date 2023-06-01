@@ -23,8 +23,8 @@ class SpeedreaderService : public KeyedService {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnSiteSettingsChanged(
-        const mojom::SiteSettings& site_settings) {}
+    virtual void OnContentViewSettingsChanged(
+        const mojom::ContentViewSettings& view_settings) {}
     virtual void OnTtsSettingsChanged(const mojom::TtsSettings& tts_settings) {}
 
    protected:
@@ -45,8 +45,8 @@ class SpeedreaderService : public KeyedService {
   bool ShouldPromptUserToEnable() const;
   void IncrementPromptCount();
 
-  void SetSiteSettings(const mojom::SiteSettings& site_settings);
-  mojom::SiteSettings GetSiteSettings() const;
+  void SetContentViewSettings(const mojom::ContentViewSettings& view_settings);
+  mojom::ContentViewSettings GetContentViewSettings() const;
 
   void SetTtsSettings(const mojom::TtsSettings& tts_settings);
   mojom::TtsSettings GetTtsSettings() const;

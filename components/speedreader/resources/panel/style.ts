@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 
-export const ToolbarWrapper = styled.div`
+export const ToolbarWrapperStyles = styled.div`
   width: 100%;
   height: 2.5rem;
   display: flex;
@@ -12,4 +12,6 @@ export const ToolbarWrapper = styled.div`
   color: var(--color-foreground);
   font-family: ${(p) => p.theme.fontFamily.heading};
   border-bottom: 1px solid var(--color-border);
+
+  --leo-icon-size: 16px;
 `

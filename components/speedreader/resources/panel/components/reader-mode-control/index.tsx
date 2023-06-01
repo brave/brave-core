@@ -6,12 +6,12 @@
 import * as React from 'react'
 
 import * as S from './style'
-import ReaderModeSVG from '../../svg/reader_mode'
-import CloseSVG from '../../svg/close'
+import { SiteSettings, dataHandler } from '../../api/browser'
 import { getLocale } from '$web-common/locale'
-import { dataHandler } from '../../api/browser'
+import Icon from '@brave/leo/react/icon'
 
 interface ReaderModeControlProps {
+  siteSettings: SiteSettings
   onClick?: Function
 }
 
@@ -20,12 +20,13 @@ function ReaderModeControl (props: ReaderModeControlProps) {
     <S.Box>
       <span></span>
       <S.Caption>
-        <ReaderModeSVG />
+        {!props.siteSettings.speedreaderEnabled && <Icon name='product-readermode' />}
+        {props.siteSettings.speedreaderEnabled && <Icon name='product-speedreader' />}
         {getLocale('braveReaderModeCaption')}
       </S.Caption>
-      <S.Button onClick={() => { dataHandler.hideToolbar() }}>
-        <CloseSVG />
-      </S.Button>
+      <S.Button onClick={() => { dataHandler.viewOriginal() }}>
+        <Icon name='close' />
+      </S.Button> 
     </S.Box>
   )
 }

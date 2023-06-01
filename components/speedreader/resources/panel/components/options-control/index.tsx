@@ -8,12 +8,12 @@ import * as React from 'react'
 import * as S from './style'
 import ThemeControl from '../theme-control'
 
-import { SiteSettings, Theme, FontSize, FontFamily } from '../../api/browser'
+import { ContentViewSettings, Theme, FontSize, FontFamily } from '../../api/browser'
 import { FontStyleList, FontSizeList } from '../lists'
 import { getLocale } from '$web-common/locale'
 
 interface OptionsControlProps {
-  siteSettings: SiteSettings
+  contentViewSettings: ContentViewSettings
   onThemeChange: (theme: Theme) => void
   onFontFamilyChange: (fontFamily: FontFamily) => void
   onFontSizeChange: (fontSize: FontSize) => void
@@ -24,17 +24,17 @@ function OptionsControl(props: OptionsControlProps) {
   return (
     <S.Box>
       <ThemeControl
-        activeTheme={props.siteSettings.theme}
+        activeTheme={props.contentViewSettings.theme}
         onClick={props.onThemeChange}
       />
       <S.VDelemiter />
       <FontStyleList
-        activeFontFamily={props.siteSettings.fontFamily}
+        activeFontFamily={props.contentViewSettings.fontFamily}
         onClick={props.onFontFamilyChange}
       />
       <S.VDelemiter />
       <FontSizeList
-        currentSize={props.siteSettings.fontSize}
+        currentSize={props.contentViewSettings.fontSize}
         onClick={props.onFontSizeChange}
       />
       <S.VDelemiter />

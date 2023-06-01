@@ -28,7 +28,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/views/speedreader/reader_mode_panel_view.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
 namespace speedreader {
@@ -162,7 +162,7 @@ class BraveBrowserView : public BrowserView,
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  std::unique_ptr<ReaderModePanelView> reader_mode_panel_view_;
+  std::unique_ptr<ReaderModeToolbarView> reader_mode_toolbar_view_;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

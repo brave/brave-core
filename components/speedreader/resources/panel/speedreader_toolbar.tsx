@@ -6,18 +6,22 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { initLocale } from 'brave-ui'
-import { ToolbarWrapper } from './style'
+import { ToolbarWrapperStyles } from './style'
 
 import { loadTimeData } from '../../../common/loadTimeData'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import Container from './container'
 
+import { setIconBasePath } from '@brave/leo/react/icon'
+
+setIconBasePath('//resources/brave-icons')
+
 function App () {
   return (
     <BraveCoreThemeProvider>
-      <ToolbarWrapper>
+      <ToolbarWrapperStyles>
         <Container />
-      </ToolbarWrapper>
+      </ToolbarWrapperStyles>
     </BraveCoreThemeProvider>
   )
 }

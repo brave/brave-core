@@ -35,7 +35,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "brave/browser/ui/views/speedreader/reader_mode_panel_view.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -400,22 +400,23 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 }
 
 void BraveBrowserView::ShowReaderModeToolbar() {
-  if (!reader_mode_panel_view_) {
-    reader_mode_panel_view_ =
-        std::make_unique<ReaderModePanelView>(GetProfile());
-    contents_web_view()->parent()->AddChildView(reader_mode_panel_view_.get());
+  if (!reader_mode_toolbar_view_) {
+    reader_mode_toolbar_view_ =
+        std::make_unique<ReaderModeToolbarView>(GetProfile());
+    contents_web_view()->parent()->AddChildView(
+        reader_mode_toolbar_view_.get());
     static_cast<BraveContentsLayoutManager*>(GetContentsLayoutManager())
-        ->set_reader_mode_panel(reader_mode_panel_view_.get());
+        ->set_reader_mode_toolbar(reader_mode_toolbar_view_.get());
   } else {
-    reader_mode_panel_view_->SetVisible(true);
+    reader_mode_toolbar_view_->SetVisible(true);
   }
 
   Layout();
 }
 
 void BraveBrowserView::HideReaderModeToolbar() {
-  if (reader_mode_panel_view_) {
-    reader_mode_panel_view_->SetVisible(false);
+  if (reader_mode_toolbar_view_) {
+    reader_mode_toolbar_view_->SetVisible(false);
     Layout();
   }
 }

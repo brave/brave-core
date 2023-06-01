@@ -14,6 +14,9 @@ interface ToolbarDataHandler {
   GetSiteSettings() => (SiteSettings site_settings);
   SetSiteSettings(SiteSettings site_settings);
 
+  GetContentViewSettings() =>(ContentViewSettings view_settings);
+  SetContentViewSettings(ContentViewSettings view_settings);
+
   GetTtsSettings() => (TtsSettings tts_settings);
   SetTtsSettings(TtsSettings tts_settings);
 
@@ -36,6 +39,7 @@ interface ToolbarDataHandler {
 
 interface ToolbarEventsHandler {
   OnSiteSettingsChanged(SiteSettings site_settings);
+  OnContentViewSettingsChanged(ContentViewSettings view_settings);
   OnTtsSettingsChanged(TtsSettings tts_settings);
   OnBrowserThemeChanged(ToolbarColors colors);
 
@@ -43,9 +47,13 @@ interface ToolbarEventsHandler {
 };
 
 struct SiteSettings {
-  Theme theme;
-  FontSize fontSize;
-  FontFamily fontFamily;
+  bool speedreader_enabled = false;
+};
+
+struct ContentViewSettings {
+  Theme theme = Theme.kNone;
+  FontSize fontSize = FontSize.k100;
+  FontFamily fontFamily = FontFamily.kSans;
 };
 
 struct TtsSettings {

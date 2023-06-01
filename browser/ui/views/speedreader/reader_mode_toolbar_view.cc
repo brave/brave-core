@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/speedreader/reader_mode_panel_view.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 
 #include <memory>
 
@@ -43,7 +43,7 @@ class Toolbar : public views::WebView {
 
 }  // namespace
 
-ReaderModePanelView::ReaderModePanelView(
+ReaderModeToolbarView::ReaderModeToolbarView(
     content::BrowserContext* browser_context) {
   SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
   SetBorder(views::CreateThemedSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
@@ -53,28 +53,28 @@ ReaderModePanelView::ReaderModePanelView(
   AddChildView(toolbar_.get());
 }
 
-ReaderModePanelView::~ReaderModePanelView() = default;
+ReaderModeToolbarView::~ReaderModeToolbarView() = default;
 
-content::WebContents* ReaderModePanelView::GetWebContentsForTesting() {
+content::WebContents* ReaderModeToolbarView::GetWebContentsForTesting() {
   return toolbar_->web_contents();
 }
 
-gfx::Size ReaderModePanelView::CalculatePreferredSize() const {
+gfx::Size ReaderModeToolbarView::CalculatePreferredSize() const {
   return toolbar_->GetPreferredSize();
 }
 
-void ReaderModePanelView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
+void ReaderModeToolbarView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   views::View::OnBoundsChanged(previous_bounds);
   UpdateToolbarBounds();
 }
 
-void ReaderModePanelView::ChildPreferredSizeChanged(views::View* view) {
+void ReaderModeToolbarView::ChildPreferredSizeChanged(views::View* view) {
   if (view == toolbar_.get()) {
     UpdateToolbarBounds();
   }
 }
 
-void ReaderModePanelView::UpdateToolbarBounds() {
+void ReaderModeToolbarView::UpdateToolbarBounds() {
   auto toolbar_size = toolbar_->GetPreferredSize();
 
   auto toolbar_bounds = GetLocalBounds();

@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/css_to_wrapper.gni")
 import("//tools/polymer/html_to_wrapper.gni")
@@ -287,6 +288,28 @@ if (enable_brave_vpn_panel) {
     "country-nl.svg",
     "country-sg.svg",
     "country-us.svg",
+  ]
+}
+
+if (enable_speedreader) {
+  leo_icons += [
+    "characters.svg",
+    "font-size.svg",
+    "forward-outline.svg",
+    "headphones.svg",
+    "minus.svg",
+    "pause-outline.svg",
+    "play-outline.svg",
+    "product-brave-ai.svg",
+    "product-readermode.svg",
+    "product-speedreader.svg",
+    "readermode-dislexyc.svg",
+    "readermode-mono.svg",
+    "readermode-sans.svg",
+    "readermode-serif.svg",
+    "rewind-outline.svg",
+    "speed.svg",
+    "theme-system.svg",
   ]
 }
 

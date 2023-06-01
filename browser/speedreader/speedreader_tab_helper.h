@@ -107,9 +107,6 @@ class SpeedreaderTabHelper
   // mojom::SpeedreaderHost:
   void OnShowOriginalPage() override;
 
-  mojom::SiteSettingsPtr GetSiteSettings();
-  void SetSiteSettings(const mojom::SiteSettings& site_settings);
-
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents);

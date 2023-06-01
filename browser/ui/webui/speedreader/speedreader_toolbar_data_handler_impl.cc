@@ -14,6 +14,8 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/ai_chat/ai_chat_tab_helper.h"
 #include "brave/components/speedreader/tts_player.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -55,6 +57,9 @@ SpeedreaderToolbarDataHandlerImpl::SpeedreaderToolbarDataHandlerImpl(
       browser->tab_strip_model()->GetActiveWebContents());
   speedreader_service_observation_.Observe(GetSpeedreaderService());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
+  host_content_settings_map_observation_.Observe(
+      HostContentSettingsMapFactory::GetForProfile(browser_->profile()));
+
   speedreader::TtsPlayer::GetInstance()->set_delegate(
       std::make_unique<TtsPlayerDelegate>());
   SetTtsSettings(GetSpeedreaderService()->GetTtsSettings().Clone());
@@ -66,7 +71,9 @@ SpeedreaderToolbarDataHandlerImpl::~SpeedreaderToolbarDataHandlerImpl() =
 void SpeedreaderToolbarDataHandlerImpl::GetSiteSettings(
     GetSiteSettingsCallback callback) {
   if (active_tab_helper_) {
-    std::move(callback).Run(active_tab_helper_->GetSiteSettings());
+    auto site_settings = speedreader::mojom::SiteSettings::New(
+        active_tab_helper_->IsEnabledForSite());
+    std::move(callback).Run(std::move(site_settings));
   } else {
     std::move(callback).Run(speedreader::mojom::SiteSettings::New());
   }
@@ -75,7 +82,24 @@ void SpeedreaderToolbarDataHandlerImpl::GetSiteSettings(
 void SpeedreaderToolbarDataHandlerImpl::SetSiteSettings(
     speedreader::mojom::SiteSettingsPtr settings) {
   if (active_tab_helper_) {
-    active_tab_helper_->SetSiteSettings(*settings);
+    active_tab_helper_->MaybeToggleEnabledForSite(
+        settings->speedreader_enabled);
+  }
+}
+
+void SpeedreaderToolbarDataHandlerImpl::GetContentViewSettings(
+    GetContentViewSettingsCallback callback) {
+  if (auto* service = GetSpeedreaderService()) {
+    std::move(callback).Run(service->GetContentViewSettings().Clone());
+  } else {
+    std::move(callback).Run(speedreader::mojom::ContentViewSettings::New());
+  }
+}
+
+void SpeedreaderToolbarDataHandlerImpl::SetContentViewSettings(
+    speedreader::mojom::ContentViewSettingsPtr view_settings) {
+  if (auto* service = GetSpeedreaderService()) {
+    service->SetContentViewSettings(*view_settings);
   }
 }
 
@@ -187,9 +211,9 @@ SpeedreaderToolbarDataHandlerImpl::GetTabPlaybackState() {
   return speedreader::mojom::PlaybackState::kStopped;
 }
 
-void SpeedreaderToolbarDataHandlerImpl::OnSiteSettingsChanged(
-    const speedreader::mojom::SiteSettings& site_settings) {
-  events_->OnSiteSettingsChanged(site_settings.Clone());
+void SpeedreaderToolbarDataHandlerImpl::OnContentViewSettingsChanged(
+    const speedreader::mojom::ContentViewSettings& view_settings) {
+  events_->OnContentViewSettingsChanged(view_settings.Clone());
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnTtsSettingsChanged(
@@ -225,6 +249,10 @@ void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
       active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
           selection.new_contents);
       events_->SetPlaybackState(GetTabPlaybackState());
+
+      auto site_settings = speedreader::mojom::SiteSettings::New(
+          active_tab_helper_->IsEnabledForSite());
+      events_->OnSiteSettingsChanged(std::move(site_settings));
     }
   }
 }
@@ -257,4 +285,18 @@ void SpeedreaderToolbarDataHandlerImpl::OnNativeThemeUpdated(
     native_theme_observation_.Observe(current_theme);
   }
   OnThemeChanged();
+}
+
+void SpeedreaderToolbarDataHandlerImpl::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsTypeSet content_type_set) {
+  if (!content_type_set.Contains(ContentSettingsType::BRAVE_SPEEDREADER)) {
+    return;
+  }
+  if (active_tab_helper_) {
+    auto site_settings = speedreader::mojom::SiteSettings::New(
+        active_tab_helper_->IsEnabledForSite());
+    events_->OnSiteSettingsChanged(std::move(site_settings));
+  }
 }

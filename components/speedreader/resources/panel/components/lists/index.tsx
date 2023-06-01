@@ -5,31 +5,16 @@
 import * as React from 'react'
 
 import * as S from './style'
-import fontSerifSvg from '../../svg/readermode_serif'
-import fontSansSvg from '../../svg/readermode_sans'
-import fontMonoSvg from '../../svg/readermode_mono'
-import fontDyslexicSvg from '../../svg/readermode_dislexyc'
-import SettingsSVG from '../../svg/characters'
-import HeadphonesSVG from '../../svg/headphones'
-import OriginalSVG from '../../svg/product_speedreader'
-import AiSVG from '../../svg/product_brave_ai'
-import PlusSVG from '../../svg/plus_add'
-import MinusSVG from '../../svg/minus'
-import RewindSVG from '../../svg/rewind_outline'
-import PlaySVG from '../../svg/play_outline'
-import PauseSVG from '../../svg/pause_outline'
-import ForwardSVG from '../../svg/forward_outline'
-import SpeedSVG from '../../svg/speed'
-import FontSizeSVG from '../../svg/font_size'
 import { FontFamily, FontSize, PlaybackSpeed, PlaybackState } from '../../api/browser'
 import classnames from '$web-common/classnames'
 import { loadTimeData } from '$web-common/loadTimeData'
+import Icon from '@brave/leo/react/icon'
 
 export enum MainButtonType {
   None,
   Options,
   TextToSpeech,
-  ViewOriginal,
+  Speedreader,
   AI
 }
 
@@ -37,23 +22,23 @@ const mainButtonsOptions = [
   {
     id: 'options',
     type: MainButtonType.Options,
-    svgIcon: SettingsSVG
+    iconName: 'characters'
   },
   {
     id: 'tts',
     type: MainButtonType.TextToSpeech,
-    svgIcon: HeadphonesSVG,
-    hidden: true  // TODO(boocmp): Enable in future PR.
+    iconName: 'headphones',
+    hidden: false  // TODO(boocmp): Enable in future PR.
   },
   {
-    id: 'view-original',
-    type: MainButtonType.ViewOriginal,
-    svgIcon: OriginalSVG
+    id: 'speedreader',
+    type: MainButtonType.Speedreader,
+    iconName: 'product-speedreader',
   },
   {
     id: 'ai',
     type: MainButtonType.AI,
-    svgIcon: AiSVG,
+    iconName: 'product-brave-ai',
     hidden: !loadTimeData.getBoolean('aiChatFeatureEnabled')
   }
 ]
@@ -62,22 +47,22 @@ const fontStyleOptions = [
   {
     id: 'font-sans',
     family: FontFamily.kSans,
-    svgIcon: fontSansSvg
+    iconName: 'readermode-sans'
   },
   {
     id: 'font-serif',
     family: FontFamily.kSerif,
-    svgIcon: fontSerifSvg
+    iconName: 'readermode-serif'
   },
   {
     id: 'font-mono',
     family: FontFamily.kMono,
-    svgIcon: fontMonoSvg
+    iconName: 'readermode-mono'
   },
   {
     id: 'font-dyslexic',
     family: FontFamily.kDyslexic,
-    svgIcon: fontDyslexicSvg
+    iconName: 'readermode-dislexyc'
   }
 ]
 
@@ -142,7 +127,7 @@ export function MainButtonsList(props: MainButtonsListProps) {
             isSelected={props.activeButton === entry.type}
             onClick={handleClick.bind(this, entry.type)}
           >
-            {<entry.svgIcon />}
+            <Icon name={entry.iconName} />
           </Option>
         )
       })}
@@ -171,7 +156,7 @@ export function FontStyleList(props: FontStyleListProps) {
             inGroup={true}
             onClick={handleClick.bind(this, entry.family)}
           >
-            {<entry.svgIcon />}
+            <Icon name={entry.iconName} />
           </Option>
         )
       })}
@@ -209,10 +194,10 @@ export function FontSizeList(props: FontSizeListProps) {
         isSelected={false}
         onClick={() => updateSize(ActionType.Dec)}
       >
-        <MinusSVG />
+        <Icon name='minus' />
       </Option>
       <S.CurrentState className='group' disabled={true}>
-        <FontSizeSVG />
+        <Icon name='font-size' />
         <span>{props.currentSize}% </span>
       </S.CurrentState>
       <Option
@@ -221,7 +206,7 @@ export function FontSizeList(props: FontSizeListProps) {
         isSelected={false}
         onClick={() => updateSize(ActionType.Inc)}
       >
-        <PlusSVG />
+        <Icon name='plus-add' />
       </Option>
     </ListBox>
   )
@@ -248,7 +233,7 @@ export function PlaybackControl(props: PlaybackControlProps) {
         isSelected={false}
         onClick={() => { props.onClick?.(Playback.Rewind) }}
       >
-        <RewindSVG />
+        <Icon name='rewind-outline' />
       </Option>
       <Option
         inGroup={true}
@@ -268,9 +253,9 @@ export function PlaybackControl(props: PlaybackControlProps) {
         }}
       >
         <div>
-          {props.playbackState === PlaybackState.kStopped && <PlaySVG />}
-          {props.playbackState === PlaybackState.kPlayingThisPage && <PauseSVG />}
-          {props.playbackState === PlaybackState.kPlayingAnotherPage && <PauseSVG />}
+          {props.playbackState === PlaybackState.kStopped && <Icon name='play-outline' />}
+          {props.playbackState === PlaybackState.kPlayingThisPage && <Icon name='pause-outline' />}
+          {props.playbackState === PlaybackState.kPlayingAnotherPage && <Icon name='pause-outline' />}
         </div>
       </Option>
       <Option
@@ -278,7 +263,7 @@ export function PlaybackControl(props: PlaybackControlProps) {
         isSelected={false}
         onClick={() => { props.onClick?.(Playback.Forward) }}
       >
-        <ForwardSVG />
+        <Icon name='forward-outline' />
       </Option>
     </ListBox>
   )
@@ -299,7 +284,7 @@ export function PlaybackSpeedControl(props: PlaybackSpeedControlProps) {
     const newSpeed = action === ActionType.Dec ?
       props.speed - 10 : props.speed + 10
     if (newSpeed >= PlaybackSpeed.MIN_VALUE &&
-        newSpeed <= PlaybackSpeed.MAX_VALUE) {
+      newSpeed <= PlaybackSpeed.MAX_VALUE) {
       props.onClick?.(newSpeed)
       return
     }
@@ -313,10 +298,10 @@ export function PlaybackSpeedControl(props: PlaybackSpeedControlProps) {
         isSelected={false}
         onClick={() => updateSpeed(ActionType.Dec)}
       >
-        <MinusSVG />
+        <Icon name='minus' />
       </Option>
       <S.CurrentState className='group' disabled={true}>
-        <SpeedSVG />
+        <Icon name='speed' />
         {props.speed}%
       </S.CurrentState>
       <Option
@@ -324,7 +309,7 @@ export function PlaybackSpeedControl(props: PlaybackSpeedControlProps) {
         isSelected={false}
         onClick={() => updateSpeed(ActionType.Inc)}
       >
-        <PlusSVG />
+        <Icon name='plus-add' />
       </Option>
     </ListBox>
   )

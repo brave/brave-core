@@ -76,13 +76,7 @@ void SpeedreaderIconView::UpdateImpl() {
 }
 
 const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {
-  const DistillState state = GetDistillState();
-  if (state == DistillState::kSpeedreaderMode ||
-      state == DistillState::kSpeedreaderOnDisabledPage) {
-    return kLeoProductSpeedreaderIcon;
-  } else {
-    return kLeoProductReadermodeIcon;
-  }
+  return kLeoProductReadermodeIcon;
 }
 
 std::u16string SpeedreaderIconView::GetTextForTooltipAndAccessibleName() const {

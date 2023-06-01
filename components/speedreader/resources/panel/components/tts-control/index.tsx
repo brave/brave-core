@@ -9,6 +9,7 @@ import * as S from './style'
 
 import { TtsSettings, dataHandler, PlaybackSpeed, eventsHandler, PlaybackState } from '../../api/browser'
 import { Playback, PlaybackControl, PlaybackSpeedControl } from '../lists'
+import { getLocale } from '$web-common/locale'
 
 interface TtsControlProps {
   ttsSettings: TtsSettings
@@ -79,7 +80,9 @@ function TtsControl(props: TtsControlProps) {
         </span>
       </S.Voice>
       <S.VDelemiter />
-      <S.Close onClick={props.onClose}>Close</S.Close>
+      <S.Close onClick={props.onClose}>
+        {getLocale('braveReaderModeClose')}
+      </S.Close>
     </S.Box>
   )
 }

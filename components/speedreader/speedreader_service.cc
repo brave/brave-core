@@ -66,8 +66,9 @@ void StoreTogglesHistogram(uint64_t toggles) {
 
 void RecordHistograms(PrefService* prefs, bool toggled, bool enabled_now) {
   WeeklyStorage weekly_toggles(prefs, kSpeedreaderPrefToggleCount);
-  if (toggled)
+  if (toggled) {
     weekly_toggles.AddDelta(1);
+  }
   const uint64_t toggle_count = weekly_toggles.GetWeeklySum();
   StoreTogglesHistogram(toggle_count);
 
@@ -127,8 +128,9 @@ void SpeedreaderService::RemoveObserver(Observer* observer) {
 void SpeedreaderService::ToggleSpeedreader() {
   const bool toggled_value = !prefs_->GetBoolean(kSpeedreaderPrefEnabled);
   prefs_->SetBoolean(kSpeedreaderPrefEnabled, toggled_value);
-  if (toggled_value)
+  if (toggled_value) {
     prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, true);
+  }
   RecordHistograms(prefs_, true, toggled_value);
 }
 
@@ -164,31 +166,31 @@ void SpeedreaderService::IncrementPromptCount() {
   prefs_->SetInteger(kSpeedreaderPrefPromptCount, count + 1);
 }
 
-void SpeedreaderService::SetSiteSettings(
-    const mojom::SiteSettings& site_settings) {
+void SpeedreaderService::SetContentViewSettings(
+    const mojom::ContentViewSettings& view_settings) {
   prefs_->SetInteger(kSpeedreaderPrefTheme,
-                     static_cast<int>(site_settings.theme));
+                     static_cast<int>(view_settings.theme));
   prefs_->SetInteger(kSpeedreaderPrefFontSize,
-                     static_cast<int>(site_settings.fontSize));
+                     static_cast<int>(view_settings.fontSize));
   prefs_->SetInteger(kSpeedreaderPrefFontFamily,
-                     static_cast<int>(site_settings.fontFamily));
+                     static_cast<int>(view_settings.fontFamily));
 
   for (auto& o : observers_) {
-    o.OnSiteSettingsChanged(site_settings);
+    o.OnContentViewSettingsChanged(view_settings);
   }
 }
 
-mojom::SiteSettings SpeedreaderService::GetSiteSettings() const {
-  mojom::SiteSettings settings;
+mojom::ContentViewSettings SpeedreaderService::GetContentViewSettings() const {
+  mojom::ContentViewSettings view_settings;
 
-  settings.theme =
+  view_settings.theme =
       static_cast<mojom::Theme>(prefs_->GetInteger(kSpeedreaderPrefTheme));
-  settings.fontSize =
+  view_settings.fontSize =
       static_cast<FontSize>(prefs_->GetInteger(kSpeedreaderPrefFontSize));
-  settings.fontFamily =
+  view_settings.fontFamily =
       static_cast<FontFamily>(prefs_->GetInteger(kSpeedreaderPrefFontFamily));
 
-  return settings;
+  return view_settings;
 }
 
 void SpeedreaderService::SetTtsSettings(
@@ -212,7 +214,7 @@ mojom::TtsSettings SpeedreaderService::GetTtsSettings() const {
 }
 
 std::string SpeedreaderService::GetThemeName() const {
-  const auto settings = GetSiteSettings();
+  const auto settings = GetContentViewSettings();
   switch (settings.theme) {
     default:
       return {};
@@ -228,11 +230,12 @@ std::string SpeedreaderService::GetThemeName() const {
 }
 
 std::string SpeedreaderService::GetFontSizeName() const {
-  return base::NumberToString(static_cast<int>(GetSiteSettings().fontSize));
+  return base::NumberToString(
+      static_cast<int>(GetContentViewSettings().fontSize));
 }
 
 std::string SpeedreaderService::GetFontFamilyName() const {
-  switch (GetSiteSettings().fontFamily) {
+  switch (GetContentViewSettings().fontFamily) {
     case FontFamily::kSans:
       return "sans";
     case FontFamily::kSerif:

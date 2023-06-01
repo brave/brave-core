@@ -13,6 +13,10 @@ export const Box = styled.div`
   background-color: transparent;
   gap: 8px;
 
+  #theme-system .icon-box {
+    color: black;
+  }
+
   .chip {
     display: grid;
     grid-template-columns: 1fr;
@@ -42,8 +46,6 @@ export const Box = styled.div`
 
   .mark {
     grid-area: 1 / 1 / 2 / 2;
-    width: 16px;
-    height: 16px;
     align-self: center;
     justify-self: center;
     color: #5F5CF1;

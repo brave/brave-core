@@ -6,30 +6,26 @@ import * as React from 'react'
 
 import * as S from './style'
 import classnames from '$web-common/classnames'
-import CheckMarkSvg from '../../svg/check_circle_filled'
-import ThemeSystemSvg from '../../svg/dark_mode'
 import { Theme } from '../../api/browser'
+import Icon from '@brave/leo/react/icon'
 
 const themeOptions = [
   {
     id: 'theme-light',
     type: Theme.kLight,
-    svgIcon: null
   },
   {
     id: 'theme-sepia',
     type: Theme.kSepia,
-    svgIcon: null
   },
   {
     id: 'theme-dark',
     type: Theme.kDark,
-    svgIcon: null
   },
   {
     id: 'theme-system',
     type: Theme.kNone,
-    svgIcon: ThemeSystemSvg
+    iconName: 'theme-system'
   }
 ]
 
@@ -61,11 +57,11 @@ function ThemeControl(props: ThemeControlProps) {
             aria-selected={props.activeTheme === entry.type}
             onClick={handleClick.bind(this, entry.type)}
           >
-            {entry.svgIcon && (
-              <entry.svgIcon className='icon-box' />
+            {entry.iconName && (
+              <Icon name={entry.iconName} className='icon-box' />
             )}
             {props.activeTheme === entry.type && (
-              <CheckMarkSvg className='mark' id='check-mark' />
+              <Icon name='check-circle-filled' className='mark' id='check-mark' />
             )}
           </button>
         )
