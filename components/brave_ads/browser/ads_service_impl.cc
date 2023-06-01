@@ -701,11 +701,11 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
 
 void AdsServiceImpl::OnEnabledPrefChangedCallback(
     brave_rewards::mojom::RewardsWalletPtr wallet) {
-  if (bat_ads_client_notifier_.is_bound()) {
+  if (bat_ads_client_notifier_.is_bound() && wallet) {
     bat_ads_client_notifier_->NotifyRewardsWalletDidUpdate(
         wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
-    NotifyPrefChanged(prefs::kEnabled);
   }
+  NotifyPrefChanged(prefs::kEnabled);
 }
 
 void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
