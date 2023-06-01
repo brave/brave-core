@@ -30,22 +30,19 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:id="@+id/coin_name"
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/wallet_text_color"
             android:background="@color/wallet_secondary_text_color"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:layout_gravity="start"/>
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:id="@+id/symbol"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/wallet_secondary_text_color"
             android:background="@color/wallet_secondary_text_color"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
@@ -60,21 +57,17 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:id="@+id/price"
             android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:layout_gravity="end"
-            android:background="@color/wallet_secondary_text_color"
-            android:textColor="@color/wallet_text_color"/>
+            android:background="@color/wallet_secondary_text_color" />
 
         <TextView
+            style="@style/BraveWalletTextView"
             android:id="@+id/change_percentage"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
             android:background="@color/wallet_secondary_text_color"
-            android:textSize="14sp"
-            android:textColor="@color/wallet_secondary_text_color"
             android:layout_gravity="end"/>
 
     </LinearLayout>

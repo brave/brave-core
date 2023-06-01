@@ -121,10 +121,8 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
         final int visibleShimmerItems =
                 getVisibleShimmerItems(mSingleItemShimmer, mShimmerCardView);
         for (int i = 1; i < visibleShimmerItems; i++) {
-            LayoutInflater.from(requireContext())
-                    .inflate(R.layout.brave_wallet_divider, mShimmerListContainer, true);
-            LayoutInflater.from(requireContext())
-                    .inflate(R.layout.market_coin_shimmer_item, mShimmerListContainer, true);
+            inflater.inflate(R.layout.brave_wallet_divider, mShimmerListContainer, true);
+            inflater.inflate(R.layout.market_coin_shimmer_item, mShimmerListContainer, true);
         }
 
         return mRootView;
@@ -175,7 +173,7 @@ public class MarketFragment extends Fragment implements CoinMarketsCallback {
 
     private void disableShimmerEffect() {
         if (mShimmerActive) {
-            mShimmerViewContainer.stopShimmer();
+            mShimmerViewContainer.hideShimmer();
             mShimmerViewContainer.setVisibility(View.GONE);
             mRootView.setScrollingEnabled(true);
             mMarketListCardView.setVisibility(View.VISIBLE);
