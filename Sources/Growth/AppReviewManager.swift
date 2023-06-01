@@ -94,7 +94,7 @@ public class AppReviewManager: ObservableObject {
   }
     
   @Published public var isRevisedReviewRequired = false
-  private var activeAppReviewLogicType: AppReviewLogicType = .revisedCrossPlatform
+  private var activeAppReviewLogicType: AppReviewLogicType = .legacy
   
   // MARK: Lifecycle
   
