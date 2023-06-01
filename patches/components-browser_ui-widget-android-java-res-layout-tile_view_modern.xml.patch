@@ -1,0 +1,12 @@
+diff --git a/components/browser_ui/widget/android/java/res/layout/tile_view_modern.xml b/components/browser_ui/widget/android/java/res/layout/tile_view_modern.xml
+index 0b8be83e29d8070fd062d2620acdaace007a2a0d..79219b3f411144cee209e40a93396ac118bf1c56 100644
+--- a/components/browser_ui/widget/android/java/res/layout/tile_view_modern.xml
++++ b/components/browser_ui/widget/android/java/res/layout/tile_view_modern.xml
+@@ -19,6 +19,7 @@ found in the LICENSE file.
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="@dimen/tile_view_title_margin_top_modern"
++        android:layout_marginBottom="@dimen/tile_view_icon_background_margin_top_modern"
+         android:ellipsize="end"
+         android:gravity="center_horizontal"
+         android:lines="2"
