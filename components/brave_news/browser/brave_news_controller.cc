@@ -18,6 +18,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "base/location.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -56,6 +57,9 @@ namespace {
 // The favicon size we desire. The favicons are rendered at 24x24 pixels but
 // they look quite a bit nicer if we get a 48x48 pixel icon and downscale it.
 constexpr uint32_t kDesiredFaviconSizePixels = 48;
+// Since we have two boolean prefs for the News enabled status, a delay
+// will be used so that we only report the histogram once for both pref updates.
+constexpr base::TimeDelta kP3AEnabledReportTimeDelay = base::Seconds(3);
 }  // namespace
 
 bool GetIsEnabled(PrefService* prefs) {
@@ -627,7 +631,9 @@ void BraveNewsController::Prefetch() {
 }
 
 void BraveNewsController::OnOptInChange() {
-  p3a::RecordFeatureEnabledChange(prefs_);
+  p3a_enabled_report_timer_.Start(
+      FROM_HERE, kP3AEnabledReportTimeDelay,
+      base::BindOnce(&p3a::RecordFeatureEnabledChange, prefs_));
   ConditionallyStartOrStopTimer();
 }
 
