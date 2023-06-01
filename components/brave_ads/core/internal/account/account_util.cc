@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 
 namespace brave_ads {
 
@@ -29,8 +30,12 @@ bool UserHasOptedInToBraveNews() {
              brave_news::prefs::kNewTabPageShowToday);
 }
 
-bool UserHasOptedIn() {
-  return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews();
+bool UserHasOptedInToNewTabPageAds() {
+  return AdsClientHelper::GetInstance()->GetBooleanPref(
+             ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
+         AdsClientHelper::GetInstance()->GetBooleanPref(
+             ntp_background_images::prefs::
+                 kNewTabPageShowSponsoredImagesBackgroundImage);
 }
 
 bool ShouldRewardUser() {

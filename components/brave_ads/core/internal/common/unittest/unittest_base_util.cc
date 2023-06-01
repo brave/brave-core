@@ -29,6 +29,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -209,6 +210,12 @@ void MockDefaultPrefs() {
 
   SetDefaultBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
   SetDefaultBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
+
+  SetDefaultBooleanPref(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
+  SetDefaultBooleanPref(ntp_background_images::prefs::
+                            kNewTabPageShowSponsoredImagesBackgroundImage,
+                        true);
 
   SetDefaultStringPref(prefs::kDiagnosticId, "");
 

@@ -32,7 +32,7 @@ constexpr double kDefaultArmValue = 1.0;
 constexpr int kDefaultArmPulls = 0;
 
 bool DoesRequireResource() {
-  return UserHasOptedIn();
+  return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews();
 }
 
 void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {

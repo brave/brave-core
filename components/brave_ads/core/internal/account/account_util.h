@@ -14,7 +14,7 @@ using ResetRewardsCallback = base::OnceCallback<void(bool success)>;
 
 bool UserHasOptedInToBravePrivateAds();
 bool UserHasOptedInToBraveNews();
-bool UserHasOptedIn();
+bool UserHasOptedInToNewTabPageAds();
 
 bool ShouldRewardUser();
 

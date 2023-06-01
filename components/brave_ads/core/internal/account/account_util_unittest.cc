@@ -67,24 +67,23 @@ TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToBraveNews) {
   EXPECT_FALSE(UserHasOptedInToBraveNews());
 }
 
-TEST_F(BraveAdsAccountUtilTest, UserHasOptedIn) {
+TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToNewTabPageAds) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(UserHasOptedIn());
+  EXPECT_TRUE(UserHasOptedInToNewTabPageAds());
 }
 
-TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedIn) {
+TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToNewTabPageAds) {
   // Arrange
-  DisableBravePrivateAds();
-  DisableBraveNewsAds();
+  DisableNewTabPageAds();
 
   // Act
 
   // Assert
-  EXPECT_FALSE(UserHasOptedIn());
+  EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
 }
 
 TEST_F(BraveAdsAccountUtilTest, ShouldRewardUser) {

@@ -23,7 +23,7 @@ namespace brave_ads {
 namespace {
 
 bool DoesRequireResource() {
-  return UserHasOptedIn();
+  return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews();
 }
 
 }  // namespace

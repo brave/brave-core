@@ -41,7 +41,7 @@ constexpr base::TimeDelta kDebugFetchAfter = base::Minutes(5);
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
 bool ShouldAllowAndFetch() {
-  return UserHasOptedIn();
+  return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews();
 }
 
 }  // namespace

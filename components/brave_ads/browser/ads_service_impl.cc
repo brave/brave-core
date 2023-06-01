@@ -54,12 +54,12 @@
 #include "brave/components/brave_ads/core/notification_ad_value_util.h"
 #include "brave/components/brave_ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
@@ -337,9 +337,7 @@ bool AdsServiceImpl::UserHasOptedInToBravePrivateAds() const {
 }
 
 bool AdsServiceImpl::UserHasOptedInToBraveNews() const {
-  return base::FeatureList::IsEnabled(
-             brave_news::features::kBraveNewsFeature) &&
-         GetPrefService()->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
+  return GetPrefService()->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
          GetPrefService()->GetBoolean(brave_news::prefs::kNewTabPageShowToday);
 }
 
@@ -685,6 +683,20 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
       brave_news::prefs::kNewTabPageShowToday,
       base::BindRepeating(&AdsServiceImpl::OnNewTabPageShowTodayPrefChanged,
                           base::Unretained(this)));
+
+  pref_change_registrar_.Add(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
+      base::BindRepeating(
+          &AdsServiceImpl::NotifyPrefChanged, base::Unretained(this),
+          ntp_background_images::prefs::kNewTabPageShowBackgroundImage));
+
+  pref_change_registrar_.Add(
+      ntp_background_images::prefs::
+          kNewTabPageShowSponsoredImagesBackgroundImage,
+      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
+                          base::Unretained(this),
+                          ntp_background_images::prefs::
+                              kNewTabPageShowSponsoredImagesBackgroundImage));
 }
 
 void AdsServiceImpl::OnEnabledPrefChanged() {

@@ -17,7 +17,7 @@ class CatalogObserver : public base::CheckedObserver {
   // Invoked when the catalog has updated.
   virtual void OnDidUpdateCatalog(const CatalogInfo& catalog) {}
 
-  // Invoked when the catalog failes to update.
+  // Invoked when the catalog failed to update.
   virtual void OnFailedToUpdateCatalog() {}
 };
 
