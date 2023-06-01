@@ -1765,8 +1765,8 @@ void AdsServiceImpl::GetBrowsingHistory(const int max_count,
              history::QueryResults results) {
             std::vector<GURL> history;
             for (const auto& result : results) {
-              // history.push_back(result.url().GetWithEmptyPath());
-              history.push_back(result.url());
+              history.push_back(
+                  result.url()); // TODO check break anti-targeting
             }
 
             base::ranges::sort(history);
