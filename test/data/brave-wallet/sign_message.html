@@ -12,7 +12,7 @@
   }
 
   function getPermissionGranted() {
-    window.domAutomationController.send(permissionGranted)
+    return permissionGranted;
   }
 
   var signMessageResult
@@ -68,9 +68,10 @@
   }
 
   function getSignMessageResult() {
-    window.domAutomationController.send(signMessageResult)
+    let result = signMessageResult;
     // Reset signMessageResult
-    signMessageResult = undefined
+    signMessageResult = undefined;
+    return result;
   }
 </script>
 

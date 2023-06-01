@@ -67,16 +67,18 @@ const char kScriptDefaultAPIGetValue[] = R"(
 )";
 
 std::string GetChromeFetchBackupResultsAvailScript() {
-  return base::StringPrintf(R"(function waitForFunction() {
-        setTimeout(waitForFunction, 200);
-      }
-      navigator.serviceWorker.addEventListener('message', msg => {
-        if (msg.data && msg.data.result === 'INJECTED') {
-          window.domAutomationController.send(msg.data.response === '%s');
-        } else if (msg.data && msg.data.result === 'FAILED') {
-          window.domAutomationController.send(false);
-      }});
-      waitForFunction();)",
+  return base::StringPrintf(R"(
+      new Promise(resolve => {
+        setTimeout(function () {
+          navigator.serviceWorker.addEventListener('message', msg => {
+            if (msg.data && msg.data.result === 'INJECTED') {
+              resolve(msg.data.response === '%s');
+            } else if (msg.data && msg.data.result === 'FAILED') {
+              resolve(false);
+          }});
+        }, 200)
+      });
+    )",
                             kBackupSearchContent);
 }
 
@@ -195,8 +197,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first = EvalJs(contents, GetChromeFetchBackupResultsAvailScript(),
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first =
+      EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -207,8 +209,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first = EvalJs(contents, GetChromeFetchBackupResultsAvailScript(),
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first =
+      EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -219,8 +221,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first = EvalJs(contents, GetChromeFetchBackupResultsAvailScript(),
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result_first =
+      EvalJs(contents, GetChromeFetchBackupResultsAvailScript());
   EXPECT_EQ(base::Value(false), result_first.value);
 }
 

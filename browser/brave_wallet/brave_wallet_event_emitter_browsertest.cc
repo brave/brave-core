@@ -41,15 +41,15 @@ const char kEmbeddedTestServerDirectory[] = "brave-wallet";
 
 std::string CheckForEventScript(const std::string& event_var) {
   return base::StringPrintf(R"(
-          let attempts = 100;
-          function waitForEvent() {
-            if (%s) {
-              window.domAutomationController.send(true);
-            } else if (attempts-- > 0) {
-              setInterval(waitForEvent, 100)
-            }
+      new Promise(resolve => {
+        const timer = setInterval(function () {
+          if (%s) {
+            clearInterval(timer);
+            resolve(true);
           }
-          setInterval(waitForEvent, 100); )",
+        }, 100);
+      });
+    )",
                             event_var.c_str());
 }
 
@@ -187,8 +187,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest, CheckForAConnectEvent) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto result_first =
-      EvalJs(contents, CheckForEventScript("received_connect_event"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+      EvalJs(contents, CheckForEventScript("received_connect_event"));
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -205,8 +204,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
                       base::DoNothing());
 
   auto result_first =
-      EvalJs(contents, CheckForEventScript("received_chain_changed_event"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+      EvalJs(contents, CheckForEventScript("received_chain_changed_event"));
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -232,8 +230,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   SetSelectedAccount(address);
 
   auto result_first =
-      EvalJs(contents, CheckForEventScript("received_account_changed_event"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+      EvalJs(contents, CheckForEventScript("received_account_changed_event"));
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 

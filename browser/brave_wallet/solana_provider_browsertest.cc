@@ -495,9 +495,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
     } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
     }
-    ASSERT_EQ(EvalJs(web_contents(), "getConnectedAccount()",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                  .ExtractString(),
+    ASSERT_EQ(EvalJs(web_contents(), "getConnectedAccount()").ExtractString(),
               granted ? kFirstAccount : "");
   }
 
@@ -559,9 +557,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   void CallSolanaDisconnect(
       const content::ToRenderFrameHost& execution_target) {
-    ASSERT_TRUE(EvalJs(execution_target, "solanaDisconnect()",
-                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                    .ExtractBool());
+    ASSERT_TRUE(EvalJs(execution_target, "solanaDisconnect()").ExtractBool());
   }
 
   void CallSolanaSignMessage(const std::string& message,
@@ -580,9 +576,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   std::string GetSignMessageResult() {
-    return EvalJs(web_contents(), "getSignMessageResult()",
-                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-        .ExtractString();
+    return EvalJs(web_contents(), "getSignMessageResult()").ExtractString();
   }
 
   void CallSolanaSignAndSendTransaction(
@@ -609,8 +603,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   std::string GetSignAndSendTransactionResult() {
-    return EvalJs(web_contents(), "getSignAndSendTransactionResult()",
-                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+    return EvalJs(web_contents(), "getSignAndSendTransactionResult()")
         .ExtractString();
   }
 
@@ -658,45 +651,33 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   std::string GetSignTransactionResult() {
-    return EvalJs(web_contents(), "getSignTransactionResult()",
-                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-        .ExtractString();
+    return EvalJs(web_contents(), "getSignTransactionResult()").ExtractString();
   }
 
   std::string GetSignAllTransactionsResult() {
-    return EvalJs(web_contents(), "getSignAllTransactionsResult()",
-                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+    return EvalJs(web_contents(), "getSignAllTransactionsResult()")
         .ExtractString();
   }
 
   std::string GetRequestResult() {
-    return EvalJs(web_contents(), "getRequestResult()",
-                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-        .ExtractString();
+    return EvalJs(web_contents(), "getRequestResult()").ExtractString();
   }
 
   std::string GetAccountChangedResult() {
-    return EvalJs(web_contents(), "getAccountChangedResult()",
-                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-        .ExtractString();
+    return EvalJs(web_contents(), "getAccountChangedResult()").ExtractString();
   }
 
   bool IsSolanaConnected(const content::ToRenderFrameHost& execution_target) {
-    return EvalJs(execution_target, "isSolanaConnected()",
-                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-        .ExtractBool();
+    return EvalJs(execution_target, "isSolanaConnected()").ExtractBool();
   }
 
   bool GetIsBraveWalletViaProxy() {
-    return EvalJs(web_contents(), "getIsBraveWalletViaProxy()",
-                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-        .ExtractBool();
+    return EvalJs(web_contents(), "getIsBraveWalletViaProxy()").ExtractBool();
   }
 
   void CallSolanaDisconnectViaProxy() {
-    ASSERT_TRUE(EvalJs(web_contents(), "solanaDisconnectViaProxy()",
-                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                    .ExtractBool());
+    ASSERT_TRUE(
+        EvalJs(web_contents(), "solanaDisconnectViaProxy()").ExtractBool());
   }
 
   void WaitForResultReady() {
@@ -893,29 +874,22 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   constexpr char get_public_key_script[] =
-      "window.domAutomationController.send(window.braveSolana."
-      "publicKey ? window.braveSolana.publicKey.toString() : '')";
+      "window.braveSolana.publicKey ? window.braveSolana.publicKey.toString() "
+      ": ''";
 
   // Will get null in disconnected state
-  EXPECT_EQ(EvalJs(web_contents(), get_public_key_script,
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractString(),
-            "");
+  EXPECT_EQ(EvalJs(web_contents(), get_public_key_script).ExtractString(), "");
 
   CallSolanaConnect(web_contents());
   UserGrantPermission(true);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
-  EXPECT_EQ(EvalJs(web_contents(), get_public_key_script,
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractString(),
+  EXPECT_EQ(EvalJs(web_contents(), get_public_key_script).ExtractString(),
             kFirstAccount);
 
   LockWallet();
   // Publickey is still accessible when wallet is locked
-  EXPECT_EQ(EvalJs(web_contents(), get_public_key_script,
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractString(),
+  EXPECT_EQ(EvalJs(web_contents(), get_public_key_script).ExtractString(),
             kFirstAccount);
 }
 

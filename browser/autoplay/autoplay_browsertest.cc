@@ -103,11 +103,9 @@ class AutoplayBrowserTest : public InProcessBrowserTest {
 
   void GotoAutoplayByAttr(bool muted) {
     if (muted) {
-      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByAttrMuted()",
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
+      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByAttrMuted()"));
     } else {
-      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByAttr()",
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
+      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByAttr()"));
     }
     ASSERT_TRUE(WaitForLoadStop(contents()));
     WaitForCanPlay();
@@ -115,19 +113,16 @@ class AutoplayBrowserTest : public InProcessBrowserTest {
 
   void GotoAutoplayByMethod(bool muted) {
     if (muted) {
-      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByMethodMuted()",
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
+      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByMethodMuted()"));
     } else {
-      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByMethod()",
-                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
+      ASSERT_EQ(true, EvalJs(contents(), "clickAutoplayByMethod()"));
     }
     ASSERT_TRUE(WaitForLoadStop(contents()));
     WaitForCanPlay();
   }
 
   void WaitForCanPlay() {
-    ASSERT_EQ("CANPLAY", EvalJs(contents(), "notifyWhenCanPlay()",
-                                content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
+    ASSERT_EQ("CANPLAY", EvalJs(contents(), "notifyWhenCanPlay()"));
   }
 
  private:
