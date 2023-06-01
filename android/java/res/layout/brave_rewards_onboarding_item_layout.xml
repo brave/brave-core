@@ -21,7 +21,7 @@
         android:gravity="center"
         android:layout_marginTop="24dp"
         android:textSize="20sp"
-        android:fontFamily="@font/poppins_600"
+        android:fontFamily="sans-serif-medium"
         android:textColor="@color/rewards_panel_text_color"/>
 
       <TextView
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:fontFamily="@font/poppins_400"
+        android:fontFamily="sans-serif"
         android:textSize="14sp"
         android:textColor="@color/rewards_panel_secondary_text_color"/>
 

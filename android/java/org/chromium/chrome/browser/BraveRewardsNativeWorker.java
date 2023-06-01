@@ -693,11 +693,12 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetAdsAccountStatement(boolean success, double next_payment_date,
-            int ads_received_this_month, double earnings_this_month, double earnings_last_month) {
+    public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
+            int adsReceivedThisMonth, double minEarningsThisMonth, double maxEarningsThisMonth,
+            double earningsLastMonth) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetAdsAccountStatement(success, next_payment_date, ads_received_this_month,
-                    earnings_this_month, earnings_last_month);
+            observer.OnGetAdsAccountStatement(success, nextPaymentDate, adsReceivedThisMonth,
+                    minEarningsThisMonth, maxEarningsThisMonth, earningsLastMonth);
         }
     }
 

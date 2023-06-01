@@ -25,6 +25,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:layout_marginStart="4dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -41,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tip"
                 android:textAllCaps="false"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:textSize="16sp"/>
 
         </LinearLayout>
@@ -71,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/summary"
                 android:textAllCaps="false"
-                android:fontFamily="@font/poppins_600"
+                android:fontFamily="sans-serif-medium"
                 android:textSize="16sp"/>
 
         </LinearLayout>
