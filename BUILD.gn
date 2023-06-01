@@ -77,6 +77,11 @@ if (is_win) {
       "$root_out_dir/gen/chrome/installer/mini_installer/packed_delta_files.rc"
   action("delta_installer_archive") {
     script = "//brave/tools/win/create_delta_archive.py"
+    if (skip_signing) {
+      setup_exe = "setup.exe"
+    } else {
+      setup_exe = "presigned_binaries/setup.exe"
+    }
     inputs = [
       # The original tool for delta archive generation was called "courgette".
       # But it runs out of memory on recent Chromium / Brave revisions. Its
@@ -84,7 +89,7 @@ if (is_win) {
       # again prevent out of memory errors.
       "$root_out_dir/zucchini64.exe",
       "$root_out_dir/chrome.7z",
-      "$root_out_dir/setup.exe",
+      "$root_out_dir/" + setup_exe,
     ]
     outputs = [
       "$root_out_dir/chrome_patch.diff",
@@ -98,12 +103,15 @@ if (is_win) {
       "//chrome/installer/setup:setup",
       "//components/zucchini:zucchini64",
     ]
+    if (!skip_signing) {
+      deps += [ ":signed_setup_exe" ]
+    }
     args = [
       "zucchini64.exe",
       "$last_chrome_installer/chrome.7z",
       "chrome.7z",
       "$last_chrome_installer/setup.exe",
-      "setup.exe",
+      setup_exe,
       "chrome_patch.diff",
       "chrome_patch.packed.7z",
       "setup_patch.diff",
