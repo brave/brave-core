@@ -58,6 +58,16 @@ class TestObserver : public infobars::InfoBarManager::Observer {
   MOCK_METHOD(void, OnInfoBarAdded, (infobars::InfoBar * infobar), (override));
 };
 
+std::unique_ptr<net::test_server::HttpResponse> RespondWithCustomHeader(
+    const net::test_server::HttpRequest& request) {
+  auto http_response = std::make_unique<net::test_server::BasicHttpResponse>();
+  http_response->set_code(net::HTTP_OK);
+  http_response->set_content_type("text/plain");
+  http_response->set_content("Well OK I guess");
+  http_response->AddCustomHeader("Request-OTR", "1");
+  return http_response;
+}
+
 }  // namespace
 
 using request_otr::features::kBraveRequestOTRTab;
@@ -506,6 +516,27 @@ IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
   NavigateTo(https_server_.GetURL("sensitive.a.com",
                                   "/workers/service_worker_setup.html"));
   ASSERT_TRUE(content::ExecJs(web_contents(), "setup();"));
+}
+
+// Define a subclass that sets up a special HTTP server that responds with
+// a custom header to trigger an OTR tab.
+class RequestOTRCustomHeaderBrowserTest : public RequestOTRBrowserTest {
+ public:
+  void SetUp() override {
+    content::SetupCrossSiteRedirector(embedded_test_server());
+    embedded_test_server()->RegisterRequestHandler(
+        base::BindRepeating(&RespondWithCustomHeader));
+    ASSERT_TRUE(embedded_test_server()->Start());
+    ExtensionBrowserTest::SetUp();
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(RequestOTRCustomHeaderBrowserTest,
+                       CustomHeaderShowsInterstitial) {
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+  GURL url = embedded_test_server()->GetURL("z.com", "/simple.html");
+  NavigateTo(url);
+  ASSERT_TRUE(IsShowingInterstitial());
 }
 
 }  // namespace request_otr
