@@ -253,24 +253,14 @@ extension BrowserViewController {
     }
 
     let popover = PopoverController(contentController: controller)
-    popover.present(from: topToolbar.locationView.shieldsButton, on: self)
-
-    let pulseAnimationView = RadialPulsingAnimation(ringCount: 3)
-    pulseAnimationView.present(
-      icon: topToolbar.locationView.shieldsButton.imageView?.image,
-      from: topToolbar.locationView.shieldsButton,
-      on: popover,
-      controller: self)
-
-    pulseAnimationView.animationViewPressed = { [weak self] in
+    popover.previewForOrigin = .init(view: topToolbar.locationView.shieldsButton, action: { [weak self] popover in
       popover.dismissPopover() {
         self?.presentBraveShieldsViewController()
       }
-    }
+    })
+    popover.present(from: topToolbar.locationView.shieldsButton, on: self)
 
     popover.popoverDidDismiss = { [weak self] _ in
-      pulseAnimationView.removeFromSuperview()
-
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
         guard let self = self else { return }
 

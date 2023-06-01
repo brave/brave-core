@@ -20,6 +20,9 @@ public protocol PopoverContentComponent {
 
   /// Description for closing the popover view for accessibility users
   var closeActionAccessibilityLabel: String { get }
+  
+  /// The background color applied to the popover
+  var popoverBackgroundColor: UIColor { get }
 }
 
 public extension PopoverContentComponent {
@@ -45,6 +48,10 @@ public extension PopoverContentComponent {
       value: "Close Context Menu",
       comment: "Description for closing a popover menu that is displayed."
     )
+  }
+  
+  var popoverBackgroundColor: UIColor {
+    .braveBackground
   }
 }
 
