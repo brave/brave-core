@@ -3710,7 +3710,6 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "test.bitcoin",
       "brave.zil",
       "test.klever",
-      "test.hi",
       "test.kresus",
       "test.polygon",
       "test.anime",

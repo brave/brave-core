@@ -7,7 +7,7 @@
     Enable support of Unstoppable Domains in Brave?
   </message>
   <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of unstoppable domains opt-in interstitial page.">
-    Brave will be using Infura to resolve .crypto (and also .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil, .klever, .hi, .kresus, .polygon, .anime, .manga, .binanceus) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
+    Brave will be using Infura to resolve .crypto (and also .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil, .klever, .kresus, .polygon, .anime, .manga, .binanceus) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_ENS_OPT_IN_TITLE" desc="Title of interstitial opt-in page for ENS.">
     Ethereum Name Service
