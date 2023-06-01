@@ -16,6 +16,7 @@ source_set("ras_utils") {
   libs = [ "rasapi32.lib" ]
   deps = [
     "//base",
+    "//brave/base",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
   ]
