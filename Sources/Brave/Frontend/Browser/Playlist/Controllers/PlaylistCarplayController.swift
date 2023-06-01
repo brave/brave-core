@@ -68,17 +68,6 @@ class PlaylistCarplayController: NSObject {
   }
 
   func observeFolderStates() {
-    PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.eraseToAnyPublisher()
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] in
-        guard let self = self else { return }
-        self.interfaceController.popToRootTemplate(animated: true) { success, error in
-          if !success, let error = error {
-            Logger.module.error("\(error.localizedDescription)")
-          }
-        }
-      }.store(in: &playlistObservers)
-
     PlaylistManager.shared.onCurrentFolderDidChange
       .receive(on: DispatchQueue.main)
       .sink { [weak self] in
@@ -124,26 +113,8 @@ class PlaylistCarplayController: NSObject {
       guard let tabTemplate = self.interfaceController.rootTemplate as? CPTabBarTemplate else {
         return
       }
-
-      // The folder is already showing all its items
-      var currentTemplate = self.interfaceController.topTemplate as? CPListTemplate
-
-      // If the folder's items isn't showing, then we're either on the folder view or settings view
-      // Therefore we need to push the folder view onto the stack
-      if currentTemplate == nil || (currentTemplate?.userInfo as? [String: String])?["id"] != PlaylistCarPlayTemplateID.itemsList.rawValue {
-
-        // Fetch the root playlistTabTemplate
-        currentTemplate = tabTemplate.templates.compactMap({ $0 as? CPListTemplate }).first(where: {
-          ($0.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.itemsList.rawValue
-        })
-      }
-
-      // We need to ensure the template that is showing is the list of playlist items
-      guard (currentTemplate?.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.itemsList.rawValue else {
-        return
-      }
-
-      if let playlistTabTemplate = currentTemplate {
+      
+      if let playlistTabTemplate = self.getItemListTemplate() {
         let items = playlistTabTemplate.sections.flatMap({ $0.items }).compactMap({ $0 as? CPListItem })
 
         items.forEach({
@@ -162,7 +133,7 @@ class PlaylistCarplayController: NSObject {
           }
         })
       }
-
+      
       tabTemplate.updateTemplates(tabTemplate.templates)
 
       if self.interfaceController.topTemplate != CPNowPlayingTemplate.shared {
@@ -239,6 +210,29 @@ class PlaylistCarplayController: NSObject {
         reloadData()
       }.store(in: &playlistObservers)
   }
+  
+  private func getFolderTemplateList() -> CPListTemplate? {
+    // Retrieve the tab-bar
+    guard let tabTemplate = self.interfaceController.rootTemplate as? CPTabBarTemplate else {
+      return nil
+    }
+
+    // Retrieve the folder list item
+    let folderTemplate = tabTemplate.templates.compactMap({ $0 as? CPListTemplate }).first(where: {
+      ($0.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.folders.rawValue
+    })
+    
+    return folderTemplate
+  }
+  
+  private func getItemListTemplate() -> CPListTemplate? {
+    // Retrieve the item-list
+    let listTemplate = interfaceController.templates.compactMap({ $0 as? CPListTemplate }).first(where: {
+      ($0.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.itemsList.rawValue
+    })
+    
+    return listTemplate
+  }
 
   private func doLayout() {
     do {
@@ -273,48 +267,19 @@ class PlaylistCarplayController: NSObject {
   }
 
   private func reloadData() {
-    guard let tabBarTemplate = interfaceController.rootTemplate as? CPTabBarTemplate else {
-      return
-    }
-
-    // Need to unwind the navigation stack to the root before attempting any modifications
-    // Some cars will crash if we replace or modify the RootTemplate while
-    // an alert of CPNowPlayingTemplate.shared is being displayed
-    // interfaceController.pop(to: tabBarTemplate, animated: true)
-
     // Update Currently Playing Index before layout (so we can show the playing indicator)
     if let itemId = PlaylistCarplayManager.shared.currentPlaylistItem?.tagId {
       PlaylistCarplayManager.shared.currentlyPlayingItemIndex = PlaylistManager.shared.index(of: itemId) ?? -1
     }
-
-    do {
-      try foldersFRC.performFetch()
-      try sharedFoldersFRC.performFetch()
-    } catch {
-      Logger.module.error("\(error.localizedDescription)")
-    }
-
+    
     // FOLDERS TEMPLATE
-    let foldersTemplate = generatePlaylistFolderListTemplate()
-
-    // SETTINGS TEMPLATE
-    let settingsTemplate = generateSettingsTemplate()
-
-    // ALL TEMPLATES
-    let tabTemplates: [CPTemplate] = [
-      foldersTemplate,
-      settingsTemplate,
-    ]
-
-    // If we have any controllers presented, we need to remove them.
-    interfaceController.popToRootTemplate(animated: true) { success, error in
-      if !success, let error = error {
-        Logger.module.error("\(error.localizedDescription)")
-      }
+    guard let foldersTemplate = generatePlaylistFolderListTemplate() as? CPListTemplate else {
+      Logger.module.error("Invalid Folders Template - NOT A CPListTemplate!")
+      return
     }
-
-    // Reload the templates instead of replacing the RootTemplate
-    tabBarTemplate.updateTemplates(tabTemplates)
+    
+    let oldFoldersTemplate = getFolderTemplateList()
+    oldFoldersTemplate?.updateSections(foldersTemplate.sections)
   }
 
   private func generatePlaylistFolderListTemplate() -> CPTemplate {
@@ -413,7 +378,7 @@ class PlaylistCarplayController: NSObject {
         let listItem = selectableItem as? CPListItem ?? listItem
         listItem?.accessoryType = .none
         
-        Task { [listItems] in
+        Task { @MainActor in
           do {
             try await self.initiatePlaybackOfItem(itemId: itemId)
           } catch {
@@ -428,12 +393,6 @@ class PlaylistCarplayController: NSObject {
           }
 
           listItem.accessoryType = PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
-
-          let isPlaying = self.player.isPlaying || self.player.isWaitingToPlay
-          for item in listItems.enumerated() {
-            let userInfo = item.element.userInfo as? [String: Any] ?? [:]
-            item.element.isPlaying = isPlaying && (PlaylistCarplayManager.shared.currentPlaylistItem?.src == userInfo["id"] as? String)
-          }
 
           let userInfo = listItem.userInfo as? [String: Any]
           PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo?["icon"] as? UIImage)
@@ -558,13 +517,6 @@ class PlaylistCarplayController: NSObject {
 extension PlaylistCarplayController: CPInterfaceControllerDelegate {
   func templateWillAppear(_ aTemplate: CPTemplate, animated: Bool) {
     Logger.module.debug("Template \(aTemplate.classForCoder) will appear.")
-
-    if interfaceController.topTemplate != CPNowPlayingTemplate.shared,
-      (aTemplate.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.folders.rawValue {
-      self.stop()
-
-      PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.send()
-    }
   }
 
   func templateDidAppear(_ aTemplate: CPTemplate, animated: Bool) {
@@ -611,6 +563,7 @@ extension PlaylistCarplayController {
     return thumbnailRenderer
   }
 
+  @MainActor
   func initiatePlaybackOfItem(itemId: String) async throws {
     guard let index = PlaylistManager.shared.index(of: itemId),
       let item = PlaylistManager.shared.itemAtIndex(index)
@@ -634,16 +587,17 @@ extension PlaylistCarplayController {
 
     // Reset Now Playing when playback is starting.
     PlaylistMediaStreamer.clearNowPlayingInfo()
-
-    PlaylistCarplayManager.shared.currentPlaylistItem = item
-    PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
     
-    try await playItem(item: item)
-    
-    if player.isPlaying {
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+    do {
       PlaylistCarplayManager.shared.currentPlaylistItem = item
-    } else {
+      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+      
+      try await playItem(item: item)
+      
+      if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+        updateLastPlayedItem(item: item)
+      }
+    } catch {
       PlaylistCarplayManager.shared.currentPlaylistItem = nil
       PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
     }
@@ -750,6 +704,15 @@ extension PlaylistCarplayController {
     PlaylistCarplayManager.shared.currentPlaylistItem = nil
     player.stop()
     
+    PlaylistManager.shared.playbackTask?.cancel()
+    PlaylistManager.shared.playbackTask = nil
+  }
+  
+  private func clear() {
+    PlaylistMediaStreamer.clearNowPlayingInfo()
+    player.clear()
+    
+    PlaylistManager.shared.playbackTask?.cancel()
     PlaylistManager.shared.playbackTask = nil
   }
 
@@ -772,12 +735,14 @@ extension PlaylistCarplayController {
     }
   }
 
+  @MainActor
   func load(url: URL, autoPlayEnabled: Bool) async throws {
     try await load(asset: AVURLAsset(url: url, options: AVAsset.defaultOptions), autoPlayEnabled: autoPlayEnabled)
   }
 
+  @MainActor
   func load(asset: AVURLAsset, autoPlayEnabled: Bool) async throws {
-    player.stop()
+    self.clear()
     
     let isNewItem = try await player.load(asset: asset)
     
@@ -795,6 +760,7 @@ extension PlaylistCarplayController {
     }
   }
 
+  @MainActor
   func playItem(item: PlaylistInfo) async throws {
     let isPlaying = player.isPlaying
 
@@ -828,6 +794,7 @@ extension PlaylistCarplayController {
     return try await streamItem(item: item)
   }
 
+  @MainActor
   func streamItem(item: PlaylistInfo) async throws {
     let isPlaying = player.isPlaying
     var item = item
@@ -864,8 +831,7 @@ extension PlaylistCarplayController {
       return
     }
     
-    let lastPlayedTime = Preferences.Playlist.playbackLeftOff.value ? playTime.seconds : 0.0
-    PlaylistItem.updateLastPlayed(itemId: item.tagId, pageSrc: item.pageSrc, lastPlayedOffset: lastPlayedTime)
+    PlaylistManager.shared.updateLastPlayed(item: item, playTime: playTime.seconds)
   }
 
   func displayExpiredResourceError(item: PlaylistInfo?) {

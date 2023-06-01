@@ -590,14 +590,11 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
   }
 
   func updateLastPlayedItem(item: PlaylistInfo) {
-    Preferences.Playlist.lastPlayedItemUrl.value = item.pageSrc
-    
     guard let playTime = player.currentItem?.currentTime() else {
       return
     }
     
-    let lastPlayedTime = Preferences.Playlist.playbackLeftOff.value ? playTime.seconds : 0.0
-    PlaylistItem.updateLastPlayed(itemId: item.tagId, pageSrc: item.pageSrc, lastPlayedOffset: lastPlayedTime)
+    PlaylistManager.shared.updateLastPlayed(item: item, playTime: playTime.seconds)
   }
 
   func displayLoadingResourceError() {
@@ -736,6 +733,7 @@ extension PlaylistViewController: VideoViewDelegate {
             self.updateLastPlayedItem(item: item)
           } catch {
             PlaylistCarplayManager.shared.currentPlaylistItem = nil
+            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
             Logger.module.error("Playlist Error Playing Item: \(error)")
             
             if isUserInitiated || self.repeatMode == .repeatOne || assetCount <= 1 {
@@ -845,13 +843,21 @@ extension PlaylistViewController: VideoViewDelegate {
   func toggleRepeatMode(_ videoView: VideoView) {
     player.toggleRepeatMode()
   }
+  
+  private func clear() {
+    PlaylistMediaStreamer.clearNowPlayingInfo()
+    player.clear()
+    
+    PlaylistManager.shared.playbackTask?.cancel()
+    PlaylistManager.shared.playbackTask = nil
+  }
 
   func load(_ videoView: VideoView, url: URL, autoPlayEnabled: Bool) async throws {
     try await load(videoView, asset: AVURLAsset(url: url, options: AVAsset.defaultOptions), autoPlayEnabled: autoPlayEnabled)
   }
 
   func load(_ videoView: VideoView, asset: AVURLAsset, autoPlayEnabled: Bool) async throws /*`MediaPlaybackError`*/ {
-    player.stop()
+    self.clear()
     
     let isNewItem = try await player.load(asset: asset)
     

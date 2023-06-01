@@ -194,8 +194,7 @@ class PlaylistListViewController: UIViewController {
     // Store the last played item's time-offset
     if let playTime = delegate?.currentPlaylistItem?.currentTime(),
        let item = PlaylistCarplayManager.shared.currentPlaylistItem {
-      let lastPlayedTime = Preferences.Playlist.playbackLeftOff.value ? playTime.seconds : 0.0
-      PlaylistItem.updateLastPlayed(itemId: item.tagId, pageSrc: item.pageSrc, lastPlayedOffset: lastPlayedTime)
+      PlaylistManager.shared.updateLastPlayed(item: item, playTime: playTime.seconds)
     }
 
     onCancelEditingItems()
@@ -206,9 +205,15 @@ class PlaylistListViewController: UIViewController {
 
     folderObserver = nil
     if isMovingFromParent || isBeingDismissed {
-      delegate?.stopPlaying()
+      if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+        delegate?.stopPlaying()
+      }
+      
       stopLoadingSharedPlaylist()
-      PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.send()
+      
+      if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+        PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.send()
+      }
     }
   }
 
@@ -327,9 +332,11 @@ class PlaylistListViewController: UIViewController {
 
       PlaylistManager.shared.playbackTask = Task { @MainActor in
         do {
-          let item = try await delegate.playItem(item: item)
           PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
           PlaylistCarplayManager.shared.currentPlaylistItem = item
+          
+          let item = try await delegate.playItem(item: item)
+          
           self.commitPlayerItemTransaction(
             at: indexPath,
             isExpired: false)
@@ -345,6 +352,8 @@ class PlaylistListViewController: UIViewController {
           delegate.updateLastPlayedItem(item: item)
         } catch {
           PlaylistCarplayManager.shared.currentPlaylistItem = nil
+          PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+          
           self.commitPlayerItemTransaction(
             at: indexPath,
             isExpired: false)
