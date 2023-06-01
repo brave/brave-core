@@ -10,6 +10,7 @@ import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.content_public.browser.WebContents;
@@ -55,10 +56,10 @@ public class BraveWalletProviderDelegateImplHelper {
     }
 
     @CalledByNative
-    public static void ShowAccountCreation(String keyringId) {
+    public static void ShowAccountCreation(@CoinType.EnumType int coinType) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.showAccountCreation(keyringId);
+            activity.showAccountCreation(coinType);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "ShowAccountCreation " + e);
         }

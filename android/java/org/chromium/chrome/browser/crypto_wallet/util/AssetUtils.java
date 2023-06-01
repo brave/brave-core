@@ -15,6 +15,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 
 import java.util.Arrays;
@@ -110,14 +111,15 @@ public class AssetUtils {
                 && chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID);
     }
 
-    public static String getKeyring(@CoinType.EnumType int coinType, @Nullable String chainId) {
+    public static @KeyringId.EnumType int getKeyring(
+            @CoinType.EnumType int coinType, @Nullable String chainId) {
         if (coinType == CoinType.FIL) {
             switch (chainId) {
                 case BraveWalletConstants.FILECOIN_MAINNET:
-                    return BraveWalletConstants.FILECOIN_KEYRING_ID;
+                    return KeyringId.FILECOIN;
 
                 case BraveWalletConstants.FILECOIN_TESTNET:
-                    return BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID;
+                    return KeyringId.FILECOIN_TESTNET;
 
                 default:
                     throw new IllegalStateException(
@@ -134,12 +136,13 @@ public class AssetUtils {
      * @return Keyring Id for coin tpye. If coin type does not belong to Ethereum or Solana it
      *         defaults to {@link BraveWalletConstants.DEFAULT_KEYRING_ID}.
      */
-    public static String getKeyringForEthOrSolOnly(@CoinType.EnumType int coinType) {
+    public static @KeyringId.EnumType int getKeyringForEthOrSolOnly(
+            @CoinType.EnumType int coinType) {
         switch (coinType) {
             case CoinType.ETH:
-                return BraveWalletConstants.DEFAULT_KEYRING_ID;
+                return KeyringId.DEFAULT;
             case CoinType.SOL:
-                return BraveWalletConstants.SOLANA_KEYRING_ID;
+                return KeyringId.SOLANA;
             case CoinType.FIL:
                 throw new IllegalArgumentException(
                         "Keyring Id for Filecoin cannot be obtained by coin type. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
@@ -148,24 +151,8 @@ public class AssetUtils {
                         String.format(Locale.ENGLISH,
                                 "Keyring Id for coin type %d cannot be found. Returning default keyring Id.",
                                 coinType));
-                return BraveWalletConstants.DEFAULT_KEYRING_ID;
+                return KeyringId.DEFAULT;
         }
-    }
-
-    public static @CoinType.EnumType int getCoinForKeyring(String keyringId) {
-        int coin = CoinType.ETH; // For default keyring
-        switch (keyringId) {
-            case BraveWalletConstants.SOLANA_KEYRING_ID:
-                coin = CoinType.SOL;
-                break;
-            case BraveWalletConstants.FILECOIN_KEYRING_ID:
-            case BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID:
-                coin = CoinType.FIL;
-                break;
-            default:
-                // Do nothing
-        }
-        return coin;
     }
 
     public static String mapToRampNetworkSymbol(

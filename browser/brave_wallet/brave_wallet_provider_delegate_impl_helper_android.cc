@@ -10,6 +10,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/build/android/jni_headers/BraveWalletProviderDelegateImplHelper_jni.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
@@ -27,10 +28,11 @@ void ShowWalletOnboarding(content::WebContents*) {
   Java_BraveWalletProviderDelegateImplHelper_showWalletOnboarding(env);
 }
 
-void ShowAccountCreation(content::WebContents*, const std::string& keyring_id) {
+void ShowAccountCreation(content::WebContents*,
+                         brave_wallet::mojom::CoinType coin_type) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveWalletProviderDelegateImplHelper_ShowAccountCreation(
-      env, base::android::ConvertUTF8ToJavaString(env, keyring_id));
+      env, static_cast<int>(coin_type));
 }
 
 void WalletInteractionDetected(content::WebContents* web_contents) {

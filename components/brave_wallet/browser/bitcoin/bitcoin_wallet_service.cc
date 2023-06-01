@@ -31,13 +31,13 @@ namespace {
 constexpr uint32_t kTransactionsVersion = 2;
 constexpr uint32_t kSigHashAll = 1;
 
-std::vector<std::string> BitcoinKeyringsForNetwork(
+std::vector<brave_wallet::mojom::KeyringId> BitcoinKeyringsForNetwork(
     const std::string& network_id) {
   DCHECK(brave_wallet::IsBitcoinNetwork(network_id));
   if (network_id == brave_wallet::mojom::kBitcoinMainnet) {
-    return {brave_wallet::mojom::kBitcoinKeyring84Id};
+    return {brave_wallet::mojom::KeyringId::kBitcoin84};
   } else if (network_id == brave_wallet::mojom::kBitcoinTestnet) {
-    return {brave_wallet::mojom::kBitcoinKeyring84TestId};
+    return {brave_wallet::mojom::KeyringId::kBitcoin84Testnet};
   } else {
     NOTREACHED();
   }
@@ -123,7 +123,7 @@ struct SendToContext {
   };
 
   std::string network_id;
-  std::string keyring_id;
+  mojom::KeyringId keyring_id;
   uint32_t account_index;
   std::string address_to;
   uint64_t amount = 0;
@@ -201,7 +201,7 @@ void BitcoinWalletService::Bind(
 
 void BitcoinWalletService::GetBitcoinAccountInfo(
     const std::string& network_id,
-    const std::string& keyring_id,
+    mojom::KeyringId keyring_id,
     uint32_t account_index,
     GetBitcoinAccountInfoCallback callback) {
   if (!IsValidBitcoinNetworkKeyringPair(network_id, keyring_id)) {
@@ -216,7 +216,7 @@ void BitcoinWalletService::GetBitcoinAccountInfo(
 
 mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
     const std::string& network_id,
-    const std::string& keyring_id,
+    mojom::KeyringId keyring_id,
     uint32_t account_index) {
   if (!IsValidBitcoinNetworkKeyringPair(network_id, keyring_id)) {
     NOTREACHED();
@@ -258,7 +258,7 @@ mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
 }
 
 void BitcoinWalletService::SendTo(const std::string& network_id,
-                                  const std::string& keyring_id,
+                                  mojom::KeyringId keyring_id,
                                   uint32_t account_index,
                                   const std::string& address_to,
                                   uint64_t amount,
@@ -608,7 +608,7 @@ void BitcoinWalletService::WorkOnSendTo(
 
 void BitcoinWalletService::StartDatabaseSynchronizer(
     const std::string& network_id,
-    const std::string& keyring_id,
+    mojom::KeyringId keyring_id,
     uint32_t account_index) {
   CHECK(IsValidBitcoinNetworkKeyringPair(network_id, keyring_id));
   // TODO(apaymyshev): init address history from persistent storage.
@@ -629,7 +629,7 @@ void BitcoinWalletService::StartDatabaseSynchronizer(
 }
 
 absl::optional<std::string> BitcoinWalletService::GetUnusedChangeAddress(
-    const std::string& keyring_id,
+    mojom::KeyringId keyring_id,
     uint32_t account_index) {
   // TODO(apaymyshev): this always returns first change address. Should return
   // first unused change address.

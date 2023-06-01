@@ -16,7 +16,7 @@ const int kDiscoveryAttempts = 20;
 
 AccountDiscoveryManager::DiscoveryContext::DiscoveryContext(
     const mojom::CoinType& coin_type,
-    const std::string& keyring_id,
+    const mojom::KeyringId& keyring_id,
     const std::string& chain_id,
     size_t discovery_account_index,
     int attempts_left)

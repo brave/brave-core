@@ -78,7 +78,7 @@ export const CreateAccountModal = () => {
 
   const targetKeyringId = React.useMemo(() => {
     if (!selectedAccountType) {
-      return null
+      return
     }
 
     return keyringIdForNewAccount(selectedAccountType.coin, filecoinNetwork)

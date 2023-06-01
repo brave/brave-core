@@ -572,15 +572,14 @@ struct JupiterErrorResponse {
 const string kLedgerHardwareVendor = "Ledger";
 const string kTrezorHardwareVendor = "Trezor";
 
-const string kFilecoinKeyringId = "filecoin";
-const string kFilecoinTestnetKeyringId = "filecoin_testnet";
-
-const string kSolanaKeyringId = "solana";
-const string kDefaultKeyringId = "default";
-
-// BIP 84 keyrings.
-const string kBitcoinKeyring84Id = "bitcoin_84";
-const string kBitcoinKeyring84TestId = "bitcoin_84_test";
+enum KeyringId {
+  kDefault = 0,
+  kSolana = 1,
+  kFilecoin = 2,
+  kFilecoinTestnet = 3,
+  kBitcoin84 = 4,
+  kBitcoin84Testnet = 5,
+};
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
 const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks";
@@ -597,7 +596,7 @@ struct HardwareWalletAccount {
   string hardware_vendor;
   string device_id;
   CoinType coin;
-  string keyring_id;
+  KeyringId keyring_id;
 };
 
 struct HardwareInfo {
@@ -615,7 +614,7 @@ enum AccountKind {
 struct AccountId {
   CoinType coin;
   // TODO(apaymyshev): that should be different keyrings for different kinds.
-  string keyring_id;
+  KeyringId keyring_id;
   AccountKind kind;
   // TODO(apaymyshev): should be an index within keyring.
   string address;
@@ -635,7 +634,7 @@ struct AllAccountsInfo {
 };
 
 struct KeyringInfo {
-  string id;
+  KeyringId id;
   bool is_keyring_created;
   bool is_locked;
   bool is_backed_up;
@@ -685,10 +684,10 @@ interface Page {
 
 interface KeyringServiceObserver {
   // Fired when a keyring is created
-  KeyringCreated(string keyring_id);
+  KeyringCreated(KeyringId keyring_id);
 
   // Fired when a keyring is restored
-  KeyringRestored(string keyring_id);
+  KeyringRestored(KeyringId keyring_id);
 
   // Fired when a keyring is reset
   KeyringReset();
@@ -784,10 +783,10 @@ interface KeyringService {
   IsLocked() => (bool isLocked);
 
   // Adds an account to the keyring.
-  AddAccount(CoinType coin, string keyring_id, string account_name) => (AccountInfo? account_info);
+  AddAccount(CoinType coin, KeyringId keyring_id, string account_name) => (AccountInfo? account_info);
 
   // Adds bitcoin account.
-  AddBitcoinAccount(string account_name, string network_id, string keyring_id) => (AccountInfo? account_info);
+  AddBitcoinAccount(string account_name, string network_id, KeyringId keyring_id) => (AccountInfo? account_info);
 
   // Encodes the private key for exporting.
   EncodePrivateKeyForExport(AccountId account_id, string password)
@@ -814,9 +813,7 @@ interface KeyringService {
   NotifyWalletBackupComplete();
 
   // Obtains the keyring information
-  GetKeyringsInfo(array<string> keyrings) => (array<KeyringInfo> keyrings);
-  // Obtains the keyring information
-  GetKeyringInfo(string keyringId) => (KeyringInfo keyring);
+  GetKeyringInfo(KeyringId keyring_id) => (KeyringInfo keyring);
 
   // Adds a KeyringServiceObserver
   AddObserver(pending_remote<KeyringServiceObserver> observer);
@@ -1289,8 +1286,8 @@ struct BitcoinAccountInfo {
 };
 
 interface BitcoinWalletService {
-  GetBitcoinAccountInfo(string network_id, string keyring_id, uint32 account_index) => (BitcoinAccountInfo? account_info);
-  SendTo(string network_id, string keyring_id, uint32 account_index, string address_to, uint64 amount, uint64 fee) => (string txid, string error);
+  GetBitcoinAccountInfo(string network_id, KeyringId keyring_id, uint32 account_index) => (BitcoinAccountInfo? account_info);
+  SendTo(string network_id, KeyringId keyring_id, uint32 account_index, string address_to, uint64 amount, uint64 fee) => (string txid, string error);
 };
 
 enum TransactionStatus {

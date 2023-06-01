@@ -19,6 +19,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
@@ -35,6 +36,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -47,7 +49,6 @@ public class KeyringModel implements KeyringServiceObserver {
     private BraveWalletService mBraveWalletService;
     @FilecoinNetworkType
     private String mSelectedFilecoinNetwork;
-    private MutableLiveData<KeyringInfo[]> _mKeyringInfosLiveData;
     private MutableLiveData<KeyringInfo> _mSelectedCoinKeyringInfoLiveData;
     private final MutableLiveData<AccountInfo> _mSelectedAccount;
     private final MutableLiveData<List<AccountInfo>> _mAccountInfos;
@@ -61,7 +62,6 @@ public class KeyringModel implements KeyringServiceObserver {
     public LiveData<List<AccountInfo>> mAccountInfos;
     public LiveData<KeyringInfo> mSelectedCoinKeyringInfoLiveData;
     public LiveData<AccountInfo> mSelectedAccount;
-    public LiveData<KeyringInfo[]> mKeyringInfosLiveData;
 
     public KeyringModel(Context context, KeyringService keyringService, CryptoSharedData sharedData,
             BraveWalletService braveWalletService, CryptoSharedActions cryptoSharedActions) {
@@ -69,8 +69,6 @@ public class KeyringModel implements KeyringServiceObserver {
         mKeyringService = keyringService;
         mBraveWalletService = braveWalletService;
         mSharedData = sharedData;
-        _mKeyringInfosLiveData = new MutableLiveData<>(new KeyringInfo[0]);
-        mKeyringInfosLiveData = _mKeyringInfosLiveData;
         _mSelectedAccount = new MutableLiveData<>();
         mSelectedAccount = _mSelectedAccount;
         mCryptoSharedActions = cryptoSharedActions;
@@ -112,11 +110,9 @@ public class KeyringModel implements KeyringServiceObserver {
                     mSharedData.getSupportedCryptoAccountTypes()) {
                 coins.add(cryptoAccountTypeInfo.getCoinType());
             }
-            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
-                List<AccountInfo> accountInfos =
-                        WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-                new SelectedAccountResponsesCollector(
-                        mKeyringService, mBraveWalletService, coins, accountInfos)
+            mKeyringService.getAllAccounts(allAccounts -> {
+                new SelectedAccountResponsesCollector(mKeyringService, mBraveWalletService, coins,
+                        Arrays.asList(allAccounts.accounts))
                         .getAccounts(defaultAccountPerCoin -> {
                             defaultAccountPerCoins.call(defaultAccountPerCoin);
                         });
@@ -131,11 +127,9 @@ public class KeyringModel implements KeyringServiceObserver {
             }
             mKeyringService.getKeyringInfo(getSelectedCoinKeyringId(coinType, chainId),
                     keyringInfo -> { _mSelectedCoinKeyringInfoLiveData.postValue(keyringInfo); });
-            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
-                final List<AccountInfo> accountInfos =
-                        WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
+            mKeyringService.getAllAccounts(allAccounts -> {
+                final List<AccountInfo> accountInfos = Arrays.asList(allAccounts.accounts);
                 _mAccountInfos.postValue(accountInfos);
-                _mKeyringInfosLiveData.postValue(keyringInfos);
                 if (coinType == CoinType.FIL) {
                     mKeyringService.getFilecoinSelectedAccount(chainId, accountAddress -> {
                         updateSelectedAccountAndState(accountAddress, accountInfos);
@@ -238,8 +232,10 @@ public class KeyringModel implements KeyringServiceObserver {
 
     public void getKeyringInfo(Callback callback) {
         mBraveWalletService.getChainIdForActiveOrigin(mSharedData.getCoinType(), chainId -> {
-            callback.onKeyringInfoReady(
-                    getSelectedCoinKeyringInfo(mSharedData.getCoinType(), chainId));
+            @KeyringId.EnumType
+            int keyringId = getSelectedCoinKeyringId(mSharedData.getCoinType(), chainId);
+            mKeyringService.getKeyringInfo(
+                    keyringId, keyringInfo -> { callback.onKeyringInfoReady(keyringInfo); });
         });
     }
 
@@ -260,10 +256,10 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    public void getKeyringPerId(String keyringId, Callbacks.Callback1<KeyringInfo> callback) {
-        if (TextUtils.isEmpty(keyringId)) return;
+    public void getKeyringPerId(
+            @KeyringId.EnumType int keyringId, Callbacks.Callback1<KeyringInfo> callback) {
         KeyringInfo selectedCoinKeyring = _mSelectedCoinKeyringInfoLiveData.getValue();
-        if (selectedCoinKeyring != null && selectedCoinKeyring.id.equals(keyringId)) {
+        if (selectedCoinKeyring != null && selectedCoinKeyring.id == keyringId) {
             callback.call(selectedCoinKeyring);
         } else {
             if (mKeyringService == null) {
@@ -276,39 +272,39 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     public void getAccounts(Callbacks.Callback1<AccountInfo[]> callback1) {
-        mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
-            List<AccountInfo> accountInfos = WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-            callback1.call(accountInfos.toArray(new AccountInfo[0]));
-        });
+        mKeyringService.getAllAccounts(allAccounts -> { callback1.call(allAccounts.accounts); });
     }
 
-    private void addAccountInternal(@CoinType.EnumType int coinType, String keyringId,
-            String accountName, Callbacks.Callback1<Boolean> callback) {
+    private void addAccountInternal(@CoinType.EnumType int coinType,
+            @KeyringId.EnumType int keyringId, String accountName,
+            Callbacks.Callback1<Boolean> callback) {
         mKeyringService.addAccount(coinType, keyringId, accountName,
                 result -> { handleAddAccountResult(result, callback); });
     }
 
-    private static String getTargetKeyringId(@CoinType.EnumType int coinType, String chainId) {
+    private static @KeyringId.EnumType int getTargetKeyringId(
+            @CoinType.EnumType int coinType, String chainId) {
         if (coinType == CoinType.ETH) {
-            return BraveWalletConstants.DEFAULT_KEYRING_ID;
+            return KeyringId.DEFAULT;
         } else if (coinType == CoinType.SOL) {
-            return BraveWalletConstants.SOLANA_KEYRING_ID;
+            return KeyringId.SOLANA;
         } else if (coinType == CoinType.FIL) {
             assert chainId != null;
             if (chainId.equals(BraveWalletConstants.FILECOIN_MAINNET)) {
-                return BraveWalletConstants.FILECOIN_KEYRING_ID;
+                return KeyringId.FILECOIN;
             } else if (chainId.equals(BraveWalletConstants.FILECOIN_TESTNET)) {
-                return BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID;
+                return KeyringId.FILECOIN_TESTNET;
             }
         }
 
         assert false;
-        return null;
+        return KeyringId.DEFAULT;
     }
 
     public void addAccount(@CoinType.EnumType int coinType, String chainId, String accountName,
             Callbacks.Callback1<Boolean> callback) {
-        String keyringId = getTargetKeyringId(coinType, chainId);
+        @KeyringId.EnumType
+        int keyringId = getTargetKeyringId(coinType, chainId);
         if (accountName == null) {
             LiveDataUtil.observeOnce(mAccountInfos, accounts -> {
                 addAccountInternal(coinType, keyringId,
@@ -341,16 +337,7 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    private KeyringInfo getSelectedCoinKeyringInfo(
-            @CoinType.EnumType int coinType, @Nullable String chainId) {
-        String selectedCoinKeyringId = getSelectedCoinKeyringId(coinType, chainId);
-        for (KeyringInfo keyringInfo : _mKeyringInfosLiveData.getValue()) {
-            if (keyringInfo.id.equals(selectedCoinKeyringId)) return keyringInfo;
-        }
-        return null;
-    }
-
-    private String getSelectedCoinKeyringId(
+    private @KeyringId.EnumType int getSelectedCoinKeyringId(
             @CoinType.EnumType int coinType, @Nullable String chainId) {
         return AssetUtils.getKeyring(coinType, chainId);
     }
@@ -360,12 +347,12 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringCreated(String keyringId) {
+    public void keyringCreated(@KeyringId.EnumType int keyringId) {
         update();
     }
 
     @Override
-    public void keyringRestored(String keyringId) {
+    public void keyringRestored(@KeyringId.EnumType int keyringId) {
         update();
     }
 

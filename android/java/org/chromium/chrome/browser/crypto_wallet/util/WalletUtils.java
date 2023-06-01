@@ -85,15 +85,6 @@ public class WalletUtils {
         return txDataUnion;
     }
 
-    @NonNull
-    public static List<AccountInfo> getAccountInfosFromKeyrings(KeyringInfo[] keyringInfos) {
-        List<AccountInfo> accountInfos = new ArrayList<>();
-        for (KeyringInfo keyringInfo : keyringInfos) {
-            accountInfos.addAll(Arrays.asList(keyringInfo.accountInfos));
-        }
-        return accountInfos;
-    }
-
     private static final String ACCOUNT_INFO = "accountInfo";
 
     public static void addAccountInfoToIntent(

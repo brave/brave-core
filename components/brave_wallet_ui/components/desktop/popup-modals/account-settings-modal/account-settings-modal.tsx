@@ -30,7 +30,6 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 
 // types
 import {
-  AccountId,
   BraveWallet,
 } from '../../../../constants/types'
 
@@ -91,7 +90,7 @@ export const AccountSettingsModal = () => {
 
   // methods
   const onViewPrivateKey = React.useCallback(async (
-    accountId: AccountId
+    accountId: BraveWallet.AccountId
   ) => {
     const { privateKey } = await keyringService.encodePrivateKeyForExport(
       accountId,

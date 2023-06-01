@@ -113,7 +113,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
   return new Promise((resolve) => {
     resolve(Array.from({ length: opts.stopIndex - opts.startIndex }, (_, i) => ({
       coin: BraveWallet.CoinType.ETH,
-      keyringId: BraveWallet.DEFAULT_KEYRING_ID,
+      keyringId: BraveWallet.KeyringId.kDefault,
       address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
       derivationPath: makeDerivationPath(i + opts.startIndex),
       name: 'Ledger 1',

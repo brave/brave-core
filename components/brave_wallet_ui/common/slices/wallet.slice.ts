@@ -17,7 +17,6 @@ import {
   SolFeeEstimates,
   SerializableOriginInfo,
   NetworkFilterType,
-  BraveKeyrings,
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -261,10 +260,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           (info: BraveWallet.AccountInfo, idx: number): WalletAccountType => {
             return {
               ...info,
-              accountId: {
-                ...info.accountId,
-                keyringId: info.accountId.keyringId as BraveKeyrings,
-              },
               id: `${idx + 1}`,
               accountType: getAccountType(info),
               deviceId: info.hardware ? info.hardware.deviceId : '',

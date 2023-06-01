@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveKeyrings, BraveWallet, SerializableTransactionInfo } from '../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
 import { HardwareVendor } from '../api/hardware_keyrings'
 import {
   FilecoinNetwork,
@@ -14,7 +14,7 @@ import {
 
 export abstract class HardwareKeyring {
   abstract coin (): BraveWallet.CoinType
-  abstract keyringId (network?: string): BraveKeyrings
+  abstract keyringId (network?: string): BraveWallet.KeyringId
   abstract type (): HardwareVendor
   abstract unlock (): Promise<HardwareOperationResult>
 }

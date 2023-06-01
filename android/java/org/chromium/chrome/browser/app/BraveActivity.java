@@ -638,9 +638,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
-    public void showAccountCreation(String keyringId) {
+    public void showAccountCreation(@CoinType.EnumType int coinType) {
         assert mWalletModel != null : " mWalletModel is null ";
-        mWalletModel.getDappsModel().addAccountCreationRequest(keyringId);
+        mWalletModel.getDappsModel().addAccountCreationRequest(coinType);
     }
 
     private void updateWalletBadgeVisibility() {

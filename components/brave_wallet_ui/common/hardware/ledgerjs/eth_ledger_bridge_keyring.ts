@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { assert } from 'chrome://resources/js/assert_ts.js'
-import { BraveKeyrings, BraveWallet } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { LedgerEthereumKeyring } from '../interfaces'
 import {
@@ -40,8 +40,8 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
     return BraveWallet.CoinType.ETH
   }
 
-  keyringId = (): BraveKeyrings => {
-    return BraveWallet.DEFAULT_KEYRING_ID
+  keyringId = (): BraveWallet.KeyringId => {
+    return BraveWallet.KeyringId.kDefault
   }
 
   getAccounts = async (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult> => {

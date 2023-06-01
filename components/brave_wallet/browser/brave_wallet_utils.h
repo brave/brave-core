@@ -190,27 +190,27 @@ std::string eTLDPlusOne(const url::Origin& origin);
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
 
-bool IsFilecoinKeyringId(const std::string& keyring_id);
+bool IsFilecoinKeyringId(mojom::KeyringId keyring_id);
 
-bool IsBitcoinKeyring(const std::string& keyring_id);
+bool IsBitcoinKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinNetwork(const std::string& network_id);
 bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
-                                      const std::string& keyring_id);
+                                      mojom::KeyringId keyring_id);
 
-std::string GetFilecoinKeyringId(const std::string& network);
+mojom::KeyringId GetFilecoinKeyringId(const std::string& network);
 
-std::string GetFilecoinChainId(const std::string& keyring_id);
+std::string GetFilecoinChainId(mojom::KeyringId keyring_id);
 
-mojom::CoinType GetCoinForKeyring(const std::string& keyring_id);
+mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 
 // optional chain_id only matters to FIL
-absl::optional<std::string> CoinTypeToKeyringId(
+absl::optional<mojom::KeyringId> CoinTypeToKeyringId(
     mojom::CoinType coin_type,
     const absl::optional<std::string>& chain_id);
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
-std::vector<std::string> GetSupportedKeyrings();
+std::vector<mojom::KeyringId> GetSupportedKeyrings();
 
 }  // namespace brave_wallet
 

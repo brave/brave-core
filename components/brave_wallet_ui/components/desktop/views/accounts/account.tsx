@@ -171,7 +171,7 @@ export const Account = ({
       hasLocalHostNetwork &&
       (
         selectedAccount.accountId.keyringId !==
-        BraveWallet.FILECOIN_KEYRING_ID
+        BraveWallet.KeyringId.kFilecoin
       )
     ) {
       return [...list, accountsLocalHost]

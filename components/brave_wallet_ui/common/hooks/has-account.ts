@@ -29,8 +29,8 @@ export function useHasAccount () {
   const hasFilAccount = React.useMemo((): boolean => {
     const keyringForCurrentNetwork =
       selectedNetwork?.chainId === BraveWallet.FILECOIN_MAINNET
-        ? BraveWallet.FILECOIN_KEYRING_ID
-        : BraveWallet.FILECOIN_TESTNET_KEYRING_ID
+        ? BraveWallet.KeyringId.kFilecoin
+        : BraveWallet.KeyringId.kFilecoinTestnet
     return accounts.some(
       (account) =>
         account.accountId.coin === BraveWallet.CoinType.FIL &&

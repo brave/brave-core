@@ -232,11 +232,12 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
   mojom::AccountInfoPtr GetAccountByIndex(
       size_t index,
-      const std::string& id = mojom::kSolanaKeyringId) {
+      mojom::KeyringId keyring_id = mojom::kSolanaKeyringId) {
     CHECK(!keyring_service_->IsLockedSync());
     auto all_accounts = keyring_service_->GetAllAccountsSync();
-    base::EraseIf(all_accounts->accounts,
-                  [&](auto& acc) { return acc->account_id->keyring_id != id; });
+    base::EraseIf(all_accounts->accounts, [&](auto& acc) {
+      return acc->account_id->keyring_id != keyring_id;
+    });
     return all_accounts->accounts[index].Clone();
   }
 

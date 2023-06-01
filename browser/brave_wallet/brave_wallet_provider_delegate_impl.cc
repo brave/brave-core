@@ -106,10 +106,7 @@ void BraveWalletProviderDelegateImpl::ShowWalletOnboarding() {
 
 void BraveWalletProviderDelegateImpl::ShowAccountCreation(
     mojom::CoinType type) {
-  auto keyring_id = CoinTypeToKeyringId(type, absl::nullopt);
-  if (keyring_id) {
-    ::brave_wallet::ShowAccountCreation(web_contents_, *keyring_id);
-  }
+  ::brave_wallet::ShowAccountCreation(web_contents_, type);
 }
 
 absl::optional<std::vector<std::string>>

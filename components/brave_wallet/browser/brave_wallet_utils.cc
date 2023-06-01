@@ -1594,12 +1594,12 @@ std::string GetWeb3ClientVersion() {
       "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
 }
 
-bool IsFilecoinKeyringId(const std::string& keyring_id) {
+bool IsFilecoinKeyringId(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::kFilecoinKeyringId ||
          keyring_id == mojom::kFilecoinTestnetKeyringId;
 }
 
-bool IsBitcoinKeyring(const std::string& keyring_id) {
+bool IsBitcoinKeyring(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::kBitcoinKeyring84Id ||
          keyring_id == mojom::kBitcoinKeyring84TestId;
 }
@@ -1610,7 +1610,7 @@ bool IsBitcoinNetwork(const std::string& network_id) {
 }
 
 bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
-                                      const std::string& keyring_id) {
+                                      mojom::KeyringId keyring_id) {
   if (!IsBitcoinKeyring(keyring_id) || !IsBitcoinNetwork(network_id)) {
     return false;
   }
@@ -1624,7 +1624,7 @@ bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
   return false;
 }
 
-std::string GetFilecoinKeyringId(const std::string& network) {
+mojom::KeyringId GetFilecoinKeyringId(const std::string& network) {
   if (network == mojom::kFilecoinMainnet) {
     return mojom::kFilecoinKeyringId;
   } else if (network == mojom::kFilecoinTestnet ||
@@ -1632,10 +1632,10 @@ std::string GetFilecoinKeyringId(const std::string& network) {
     return mojom::kFilecoinTestnetKeyringId;
   }
   NOTREACHED() << "Unsupported chain id for filecoin " << network;
-  return mojom::kFilecoinMainnet;
+  return mojom::kFilecoinKeyringId;
 }
 
-std::string GetFilecoinChainId(const std::string& keyring_id) {
+std::string GetFilecoinChainId(mojom::KeyringId keyring_id) {
   if (keyring_id == mojom::kFilecoinKeyringId) {
     return mojom::kFilecoinMainnet;
   } else if (keyring_id == mojom::kFilecoinTestnetKeyringId) {
@@ -1645,7 +1645,7 @@ std::string GetFilecoinChainId(const std::string& keyring_id) {
   return "";
 }
 
-mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
+mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
   if (IsFilecoinKeyringId(keyring_id)) {
     return mojom::CoinType::FIL;
   } else if (keyring_id == mojom::kSolanaKeyringId) {
@@ -1658,7 +1658,7 @@ mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
   return mojom::CoinType::ETH;
 }
 
-absl::optional<std::string> CoinTypeToKeyringId(
+absl::optional<mojom::KeyringId> CoinTypeToKeyringId(
     mojom::CoinType coin_type,
     const absl::optional<std::string>& chain_id) {
   switch (coin_type) {
@@ -1686,8 +1686,8 @@ GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
   return GURL();
 }
 
-std::vector<std::string> GetSupportedKeyrings() {
-  std::vector<std::string> ids = {mojom::kDefaultKeyringId};
+std::vector<mojom::KeyringId> GetSupportedKeyrings() {
+  std::vector<mojom::KeyringId> ids = {mojom::kDefaultKeyringId};
   if (IsFilecoinEnabled()) {
     ids.push_back(mojom::kFilecoinKeyringId);
     ids.push_back(mojom::kFilecoinTestnetKeyringId);

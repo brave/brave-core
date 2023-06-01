@@ -5,7 +5,7 @@
 
 import { assert } from 'chrome://resources/js/assert_ts.js'
 import { publicToAddress, toChecksumAddress, bufferToHex } from 'ethereumjs-util'
-import { BraveKeyrings, BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import {
   TrezorCommand,
@@ -47,8 +47,8 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return BraveWallet.CoinType.ETH
   }
 
-  keyringId = (): BraveKeyrings => {
-    return BraveWallet.DEFAULT_KEYRING_ID
+  keyringId = (): BraveWallet.KeyringId => {
+    return BraveWallet.KeyringId.kDefault
   }
 
   isUnlocked = (): boolean => {

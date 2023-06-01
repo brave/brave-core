@@ -155,19 +155,13 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                         mAllNetworkInfos = new ArrayList<>(allNetworks);
                         if (selectedNetwork.chainId.equals(
                                     NetworkUtils.getAllNetworkOption(mContext).chainId)) {
-                            mKeyringService.getKeyringsInfo(
-                                    mSharedData.getEnabledKeyrings(), keyringInfos -> {
-                                        AccountInfo[] accountInfos =
-                                                WalletUtils
-                                                        .getAccountInfosFromKeyrings(keyringInfos)
-                                                        .toArray(new AccountInfo[0]);
-                                        mPortfolioHelper =
-                                                new PortfolioHelper(braveWalletBaseActivity,
-                                                        mAllNetworkInfos, accountInfos);
-                                        mPortfolioHelper.setSelectedNetworks(
-                                                NetworkUtils.nonTestNetwork(mAllNetworkInfos));
-                                        mPortfolioHelper.fetchAssetsAndDetails(type, callback);
-                                    });
+                            mKeyringService.getAllAccounts(allAccounts -> {
+                                mPortfolioHelper = new PortfolioHelper(braveWalletBaseActivity,
+                                        mAllNetworkInfos, allAccounts.accounts);
+                                mPortfolioHelper.setSelectedNetworks(
+                                        NetworkUtils.nonTestNetwork(mAllNetworkInfos));
+                                mPortfolioHelper.fetchAssetsAndDetails(type, callback);
+                            });
                         } else {
                             mKeyringService.getKeyringInfo(
                                     AssetUtils.getKeyring(

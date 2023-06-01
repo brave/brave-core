@@ -11,7 +11,7 @@ export const AllAccountsOption: WalletAccountType = {
   address: 'all',
   accountId: {
     coin: 0,
-    keyringId: BraveWallet.DEFAULT_KEYRING_ID,
+    keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'all'
   },

@@ -6,9 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_WALLET_BUTTON_NOTIFICATION_SOURCE_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_WALLET_BUTTON_NOTIFICATION_SOURCE_H_
 
-#include <memory>
-#include <string>
-
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
@@ -57,10 +54,10 @@ class WalletButtonNotificationSource
   void OnTxServiceReset() override;
 
   // brave_wallet::KeyringServiceObserverBase
-  void KeyringCreated(const std::string& keyring_id) override;
-  void KeyringRestored(const std::string& keyring_id) override;
+  void KeyringCreated(brave_wallet::mojom::KeyringId keyring_id) override;
+  void KeyringRestored(brave_wallet::mojom::KeyringId keyring_id) override;
 
-  void OnKeyringReady(const std::string& keyring_id);
+  void OnKeyringReady(brave_wallet::mojom::KeyringId keyring_id);
   void CheckTxStatus();
   void OnTxStatusResolved(uint32_t count);
   void OnKeyringInfoResolved(brave_wallet::mojom::KeyringInfoPtr keyring_info);

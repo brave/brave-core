@@ -6,9 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_P3A_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_P3A_H_
 
-#include <string>
-#include <vector>
-
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -82,7 +79,7 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
 
   // KeyringServiceObserverBase:
-  void KeyringCreated(const std::string& keyring_id) override;
+  void KeyringCreated(mojom::KeyringId keyring_id) override;
 
  private:
   void MigrateUsageProfilePrefsToLocalState();
