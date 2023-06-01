@@ -85,19 +85,19 @@ const SitePermissionAccountItem = (props: Props) => {
   const onClickConnect = React.useCallback(() => {
     dispatch(WalletActions.addSitePermission({ accountId: account.accountId, origin: activeOrigin.origin }))
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
-      dispatch(WalletActions.selectAccount(account))
+      dispatch(WalletActions.selectAccount(account.accountId))
     }
   }, [activeOrigin, account, selectedCoin])
 
   const onClickDisconnect = React.useCallback(() => {
     dispatch(WalletActions.removeSitePermission({ accountId: account.accountId, origin: activeOrigin.origin }))
     if (connectedAccounts.length !== 0 && selectedCoin !== BraveWallet.CoinType.SOL) {
-      dispatch(WalletActions.selectAccount(connectedAccounts[0]))
+      dispatch(WalletActions.selectAccount(connectedAccounts[0].accountId))
     }
   }, [connectedAccounts, activeOrigin, account, selectedCoin])
 
   const onClickSwitchAccount = React.useCallback(() => {
-    dispatch(WalletActions.selectAccount(account))
+    dispatch(WalletActions.selectAccount(account.accountId))
   }, [account])
 
   const onClickConnectDisconnectOrSwitch = React.useCallback(() => {
