@@ -7,6 +7,8 @@ module playlist.mojom;
 
 import "url/mojom/url.mojom";
 
+// TODO(sko) This should be removed
+// https://github.com/brave/brave-browser/issues/30735
 enum PlaylistEvent {
   kNone,
   kItemAdded,             // a new playlist item added but not ready state
@@ -125,6 +127,7 @@ interface PlaylistService {
 interface PlaylistServiceObserver {
   // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
   // and parameters for client side.
+  // https://github.com/brave/brave-browser/issues/30735
   OnEvent(PlaylistEvent event, string playlist_id);
 
   OnItemCreated(PlaylistItem item);

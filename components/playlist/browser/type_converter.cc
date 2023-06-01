@@ -11,7 +11,6 @@
 
 #include "base/json/values_util.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/playlist_types.h"
 
 static_assert(
     std::numeric_limits<

@@ -23,7 +23,6 @@
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
-#include "brave/components/playlist/browser/playlist_service_observer.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/app/chrome_command_ids.h"

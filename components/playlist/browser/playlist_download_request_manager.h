@@ -16,7 +16,6 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
-#include "brave/components/playlist/browser/playlist_types.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"

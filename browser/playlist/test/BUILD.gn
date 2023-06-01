@@ -17,7 +17,11 @@ source_set("browser_tests") {
   ]
 
   if (enable_playlist_webui) {
-    sources += [ "playlist_browsertest.cc" ]
+    sources += [
+      "mock_playlist_service_observer.cc",
+      "mock_playlist_service_observer.h",
+      "playlist_browsertest.cc",
+    ]
   }
 
   deps = [
@@ -50,6 +54,8 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "mock_playlist_service_observer.cc",
+    "mock_playlist_service_observer.h",
     "playlist_p3a_unittest.cc",
     "playlist_service_unittest.cc",
   ]

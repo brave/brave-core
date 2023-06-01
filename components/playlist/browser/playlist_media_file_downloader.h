@@ -16,7 +16,6 @@
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
-#include "brave/components/playlist/browser/playlist_types.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/download/public/common/download_item.h"
 #include "components/download/public/common/simple_download_manager.h"
