@@ -119,6 +119,11 @@ class MediaPlayer: NSObject {
     // Stop receiving remote commands
     UIApplication.shared.endReceivingRemoteControlEvents()
   }
+  
+  func clear() {
+    player.replaceCurrentItem(with: nil)
+    pendingMediaItem = nil
+  }
 
   func load(url: URL) async throws -> Bool {
     try await load(asset: AVURLAsset(url: url, options: AVAsset.defaultOptions))

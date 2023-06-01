@@ -131,6 +131,12 @@ public class PlaylistManager: NSObject {
   var fetchedObjects: [PlaylistItem] {
     frc.fetchedObjects ?? []
   }
+  
+  func updateLastPlayed(item: PlaylistInfo, playTime: Double) {
+    let lastPlayedTime = Preferences.Playlist.playbackLeftOff.value ? playTime : 0.0
+    Preferences.Playlist.lastPlayedItemUrl.value = item.pageSrc
+    PlaylistItem.updateLastPlayed(itemId: item.tagId, pageSrc: item.pageSrc, lastPlayedOffset: lastPlayedTime)
+  }
 
   func itemAtIndex(_ index: Int) -> PlaylistInfo? {
     if index >= 0 && index < numberOfAssets {
