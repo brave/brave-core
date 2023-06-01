@@ -108,7 +108,7 @@ RequestOTRNavigationThrottle::WillStartRequest() {
   }
   // If user has already indicated they want to go off-the-record,
   // don't show another interstitial. (Everything is already set up.)
-  if (tab_storage->requested_otr()) {
+  if (tab_storage->has_requested_otr()) {
     return content::NavigationThrottle::PROCEED;
   }
 
@@ -150,7 +150,7 @@ RequestOTRNavigationThrottle::WillProcessResponse() {
 
     // If we have already offered to go off-the-record (i.e. shown our
     // interstitial), don't offer again.
-    if (tab_storage->offered_otr()) {
+    if (tab_storage->has_offered_otr()) {
       return content::NavigationThrottle::PROCEED;
     }
   }

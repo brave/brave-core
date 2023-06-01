@@ -47,7 +47,7 @@ void RequestOTRTabHelper::DidFinishNavigation(
   if (!storage) {
     return;
   }
-  if (!storage->requested_otr()) {
+  if (!storage->has_requested_otr()) {
     return;
   }
 

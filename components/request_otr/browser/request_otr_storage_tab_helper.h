@@ -43,9 +43,9 @@ class RequestOTRStorageTabHelper
   void set_is_proceeding(bool is_proceeding) { is_proceeding_ = is_proceeding; }
   bool is_proceeding() const { return is_proceeding_; }
   void set_offered_otr(bool offered) { offered_ = offered; }
-  bool offered_otr() { return offered_; }
+  bool has_offered_otr() { return offered_; }
   void set_requested_otr(bool otr) { otr_ = otr; }
-  bool requested_otr() { return otr_; }
+  bool has_requested_otr() { return otr_; }
 
   void MaybeEnable1PESForUrl(
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,

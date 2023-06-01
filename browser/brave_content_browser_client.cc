@@ -619,7 +619,7 @@ bool BraveContentBrowserClient::CanCreateWindow(
             RequestOTRStorageTabHelper* request_otr_storage_tab_helper =
                 request_otr::RequestOTRStorageTabHelper::FromWebContents(
                     web_contents)) {
-      if (request_otr_storage_tab_helper->requested_otr()) {
+      if (request_otr_storage_tab_helper->has_requested_otr()) {
         *no_javascript_access = true;
       }
     }

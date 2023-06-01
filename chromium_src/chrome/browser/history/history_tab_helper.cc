@@ -23,7 +23,7 @@ bool BraveTabRequestedOffTheRecord(content::WebContents* web_contents) {
   if (request_otr::RequestOTRStorageTabHelper* tab_storage =
           request_otr::RequestOTRStorageTabHelper::FromWebContents(
               web_contents)) {
-    return tab_storage->requested_otr();
+    return tab_storage->has_requested_otr();
   }
   return false;
 }
