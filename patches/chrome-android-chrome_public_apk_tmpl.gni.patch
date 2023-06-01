@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 516ed6b5abd52d24391f82b24c565f41d07bdc19..88e834a926b4837d4997baf46eaf1b66e6d258b1 100644
+index 516ed6b5abd52d24391f82b24c565f41d07bdc19..59da4b2bf81271c99bfe8b6d5723c384e89e1cb1 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -317,6 +317,7 @@ template("chrome_common_apk_or_module_tmpl") {
@@ -18,15 +18,7 @@ index 516ed6b5abd52d24391f82b24c565f41d07bdc19..88e834a926b4837d4997baf46eaf1b66
        if (_is_monochrome) {
          proguard_configs +=
              [ "//android_webview/nonembedded/java/proguard.flags" ]
-@@ -462,6 +464,7 @@ template("chrome_common_apk_or_module_tmpl") {
-       assert(!_is_trichrome)
-       deps += [ "//chrome/android:chrome_apk_pak_assets" ]
-     }
-+    deps += brave_public_apk_or_module_tmpl_deps loadable_modules = brave_public_apk_or_module_tmpl_loadable_modules
- 
-     if (defined(invoker.add_upstream_only_deps) &&
-         invoker.add_upstream_only_deps) {
-@@ -728,6 +731,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -728,6 +730,7 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])
@@ -34,7 +26,7 @@ index 516ed6b5abd52d24391f82b24c565f41d07bdc19..88e834a926b4837d4997baf46eaf1b66
    }
  }
  
-@@ -756,6 +760,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+@@ -756,6 +759,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
      if (!defined(is_monochrome)) {
        is_trichrome = true
      }
