@@ -392,7 +392,7 @@ void AssetRatioService::OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
     return;
   }
 
-  auto url = ParseGetStripeBuyURL(api_request_result.value_body());
+  auto url = ParseStripeBuyURL(api_request_result.value_body());
   if (!url) {
     std::move(callback).Run("", "PARSING_ERROR");
     return;

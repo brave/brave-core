@@ -535,7 +535,6 @@ TEST_F(AssetRatioServiceUnitTest, GetCoinMarketsUnexpectedResponse) {
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetStripeBuyURL) {
-  // bool callback_run = false;
   SetInterceptor(R"({
       "url": "https://crypto.link.com?session_hash=abcdefgh"
     })");

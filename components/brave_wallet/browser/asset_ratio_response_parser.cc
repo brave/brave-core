@@ -234,10 +234,8 @@ absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
   return values;
 }
 
-absl::optional<std::string> ParseGetStripeBuyURL(
-    const base::Value& json_value) {
+absl::optional<std::string> ParseStripeBuyURL(const base::Value& json_value) {
   // Parses results like this:
-  // POST /v2/stripe/onramp_sessions
   // {
   //   "url": "https://crypto.link.com?session_hash=abcdefgh"
   // }
