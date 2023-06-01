@@ -7,7 +7,6 @@ import { BraveWallet, WalletAccountType } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
 export const AllAccountsOption: WalletAccountType = {
-  accountType: 'Primary',
   address: 'all',
   accountId: {
     coin: 0,

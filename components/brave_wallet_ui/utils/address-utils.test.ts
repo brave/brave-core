@@ -2,9 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { isHardwareAccount, isValidAddress, isValidFilAddress } from './address-utils'
-import { mockAddresses, mockAccount, mockFilAddresses, mockFilInvalilAddresses } from '../common/constants/mocks'
-import { WalletAccountType } from '../constants/types'
+import { isValidAddress, isValidFilAddress } from './address-utils'
+import { mockAddresses, mockFilAddresses, mockFilInvalilAddresses } from '../common/constants/mocks'
 
 const validAdresses = mockAddresses.map((addr: string) => [addr, true])
 const invalidAddresses = [
@@ -35,23 +34,6 @@ describe('Address Utils', () => {
     it('should return false if address does not start with 0x', () => {
       const testAddress = mockAddresses[1].substring(3) // exclude 0x
       expect(isValidAddress(testAddress, 20)).toBe(false)
-    })
-  })
-
-  describe('isHardwareAddress', () => {
-    it('should return true if accounts have deviceId and address matches', () => {
-      const accounts: WalletAccountType[] = [
-        {
-          ...mockAccount,
-          deviceId: 'testDeviceId'
-        },
-        {
-          ...mockAccount,
-          address: 'mockAccount2',
-          deviceId: 'testDeviceId2'
-        }
-      ]
-      expect(isHardwareAccount(accounts, mockAccount.address)).toBe(true)
     })
   })
 

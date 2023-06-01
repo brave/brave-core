@@ -197,10 +197,8 @@ export const mockAccount: WalletAccountType = {
     kind: BraveWallet.AccountKind.kDerived,
     address: 'mockAddress',
   },
-  accountType: 'Primary',
   tokenBalanceRegistry: {},
   hardware: undefined,
-  deviceId: ''
 }
 
 export const mockEthAccountInfo: BraveWallet.AccountInfo = {
@@ -230,10 +228,8 @@ export const mockSolanaAccount: WalletAccountType = {
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
   },
-  accountType: 'Primary',
   tokenBalanceRegistry: {},
   hardware: undefined,
-  deviceId: ''
 }
 
 export const mockSolanaAccountInfo: BraveWallet.AccountInfo = {
@@ -261,10 +257,8 @@ export const mockFilecoinAccount: WalletAccountType = {
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
   },
-  accountType: 'Primary',
   tokenBalanceRegistry: {},
   hardware: undefined,
-  deviceId: ''
 }
 
 export const mockFilecoinAccountInfo: BraveWallet.AccountInfo = {

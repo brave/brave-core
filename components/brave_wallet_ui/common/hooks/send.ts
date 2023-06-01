@@ -373,7 +373,6 @@ export default function useSend (isSendTab?: boolean) {
 
     const fromAccount: BaseTransactionParams['fromAccount'] = {
       accountId: selectedAccount.accountId,
-      accountType: selectedAccount.accountType,
       address: selectedAccount.address,
       hardware: selectedAccount.hardware,
     }

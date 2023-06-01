@@ -7,7 +7,6 @@ import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 import { NftsPinningStatusType } from '../page/constants/action_types'
-import { AccountInfoEntity } from '../common/slices/entities/account-info.entity'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
@@ -38,11 +37,8 @@ export type WalletAccountTypeName =
 
 export interface WalletAccountType extends BraveWallet.AccountInfo {
   id: string
-  accountId: BraveWallet.AccountId
   tokenBalanceRegistry: TokenBalanceRegistry
   nativeBalanceRegistry: TokenBalanceRegistry
-  accountType: WalletAccountTypeName
-  deviceId?: string
 }
 
 export interface UserAccountType {
@@ -422,8 +418,8 @@ export interface PortfolioTokenHistoryAndInfo {
 export interface BaseTransactionParams {
   network: BraveWallet.NetworkInfo
   fromAccount: Pick<
-    WalletAccountType | AccountInfoEntity,
-    'accountId' | 'accountType' | 'address' | 'hardware'
+    BraveWallet.AccountInfo,
+    'accountId' | 'address' | 'hardware'
   >
   to: string
   value: string

@@ -22,6 +22,7 @@ import {
 
 // types
 import {
+  BraveWallet,
   WalletAccountType,
   AccountButtonOptionsObjectType,
   AccountModalTypes
@@ -60,12 +61,10 @@ export interface Props {
   onDelete?: () => void
   onClick: (account: WalletAccountType) => void
   account: WalletAccountType
-  isHardwareWallet: boolean
 }
 
 export const AccountListItem = ({
   account,
-  isHardwareWallet,
   onClick
 }: Props) => {
   // redux
@@ -96,7 +95,7 @@ export const AccountListItem = ({
         name: account.name
       })
     )
-  }, [account, isHardwareWallet])
+  }, [account])
 
   const onShowAccountsModal = React.useCallback((modalType: AccountModalTypes) => {
     dispatch(AccountsTabActions.setShowAccountModal(true))
@@ -122,16 +121,18 @@ export const AccountListItem = ({
   }, [account.address])
 
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
-    // We are not able to remove a Primary account so we filter out this option.
-    if (account.accountType === 'Primary') {
+    // We are not able to remove a Derived account so we filter out this option.
+    if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
       return AccountButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'remove')
     }
     // We are not able to fetch Private Keys for a Hardware account so we filter out this option.
-    if (isHardwareWallet) {
+    if (account.accountId.kind === BraveWallet.AccountKind.kHardware) {
       return AccountButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'privateKey')
     }
     return AccountButtonOptions
-  }, [account, isHardwareWallet])
+  }, [account])
+
+  const isHardwareAccount = account.accountId.kind === BraveWallet.AccountKind.kHardware;
 
   // render
   return (
@@ -140,7 +141,7 @@ export const AccountListItem = ({
         <AccountCircle orb={orb} />
         <AccountAndAddress>
           <AccountNameRow>
-            {isHardwareWallet && <HardwareIcon />}
+            {isHardwareAccount && <HardwareIcon />}
             <AccountNameButton onClick={onSelectAccount}>{account.name}</AccountNameButton>
           </AccountNameRow>
           <AddressAndButtonRow>

@@ -27,10 +27,19 @@ const mockHardware = {
 const mockHardwareAccounts: BraveWallet.AccountInfo[] = [
   {
     ...mockAccount,
+    accountId: {
+      ...mockAccount.accountId,
+      kind: BraveWallet.AccountKind.kHardware
+    },
     hardware: mockHardware
   },
   {
     ...mockAccount,
+    accountId: {
+      ...mockAccount.accountId,
+      kind: BraveWallet.AccountKind.kHardware,
+      address: 'mockAccount2'
+    },
     address: 'mockAccount2',
     hardware: {
       ...mockHardware,
@@ -42,12 +51,14 @@ const mockHardwareAccounts: BraveWallet.AccountInfo[] = [
 const mockAccounts: AccountInfoEntity[] = [
   {
     ...mockAccount,
-    deviceId: ''
   },
   {
     ...mockAccount,
+    accountId: {
+      ...mockAccount.accountId,
+      address: 'mockAccount2'
+    },
     address: 'mockAccount2',
-    deviceId: ''
   }
 ]
 

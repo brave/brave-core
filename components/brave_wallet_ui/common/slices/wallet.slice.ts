@@ -46,7 +46,6 @@ import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import Amount from '../../utils/amount'
 import {
   createTokenBalanceRegistryKey,
-  getAccountType,
   findAccountInList
 } from '../../utils/account-utils'
 import {
@@ -292,8 +291,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
             return {
               ...info,
               id: `${idx + 1}`,
-              accountType: getAccountType(info),
-              deviceId: info.hardware ? info.hardware.deviceId : '',
               tokenBalanceRegistry: {},
               nativeBalanceRegistry: {},
             }

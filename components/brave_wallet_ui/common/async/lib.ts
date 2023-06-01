@@ -29,6 +29,7 @@ import {
   getNetworksByCoinType,
   hasEIP1559Support
 } from '../../utils/network-utils'
+import { getAccountType } from '../../utils/account-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { getAssetIdKey, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
@@ -934,7 +935,7 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
 
     // Check if network and keyring support EIP-1559.
     default:
-      isEIP1559 = hasEIP1559Support(payload.fromAccount.accountType, payload.network)
+      isEIP1559 = hasEIP1559Support(getAccountType(payload.fromAccount), payload.network)
   }
 
   const { chainId } =

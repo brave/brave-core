@@ -1361,7 +1361,7 @@ export function createWalletApi () {
               payload.gasPrice === undefined ||
               // Check if network and keyring support EIP-1559.
               hasEIP1559Support(
-                payload.fromAccount.accountType,
+                getAccountType(payload.fromAccount),
                 payload.network
               )
 
