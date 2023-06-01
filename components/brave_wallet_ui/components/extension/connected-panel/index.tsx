@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import {
   useSelector
 } from 'react-redux'
@@ -21,11 +22,15 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
 import { deserializeOrigin } from '../../../utils/model-serialization-utils'
+import { makeNetworkAsset } from '../../../options/asset-options'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
 import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
+import {
+  useScopedBalanceUpdater
+} from '../../../common/hooks/use-scoped-balance-updater'
 
 // types
 import {
@@ -83,6 +88,25 @@ export const ConnectedPanel = (props: Props) => {
   // queries
   const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
   const selectedCoin = selectedNetwork?.coin
+
+  const networkAsset = React.useMemo(() =>
+    makeNetworkAsset(selectedNetwork),
+    [selectedNetwork]
+  )
+
+  const {
+    data: balances,
+    isLoading: isLoadingBalances,
+    isFetching: isFetchingBalances
+  } = useScopedBalanceUpdater(
+    selectedNetwork && selectedAccount && networkAsset
+      ? {
+        network: selectedNetwork,
+        account: selectedAccount,
+        tokens: [networkAsset]
+      }
+      : skipToken
+  )
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
@@ -180,18 +204,24 @@ export const ConnectedPanel = (props: Props) => {
   }, [selectedAccountAddress])
 
   const selectedAccountFiatBalance = React.useMemo(() => {
-    if (!selectedNetwork || !selectedAccount) {
+    if (!balances || !networkAsset || isLoadingBalances || isFetchingBalances) {
       return Amount.empty()
     }
 
     return computeFiatAmount(
-      selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId],
-      selectedNetwork.symbol,
-      selectedNetwork.decimals,
+      balances[networkAsset.contractAddress],
+      networkAsset.symbol,
+      networkAsset.decimals,
       '',
-      selectedNetwork.chainId
+      networkAsset.chainId
     )
-  }, [computeFiatAmount, selectedNetwork, selectedAccount])
+  }, [
+    computeFiatAmount,
+    networkAsset,
+    balances,
+    isLoadingBalances,
+    isFetchingBalances
+  ])
 
   const isConnected = React.useMemo((): boolean => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
@@ -229,11 +259,15 @@ export const ConnectedPanel = (props: Props) => {
   }, [selectedCoin, connectedAccounts, originInfo, isPermissionDenied])
 
   // computed
-  const formattedAssetBalance = selectedNetwork && selectedAccount
-    ? new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
-      .divideByDecimals(selectedNetwork.decimals)
-      .formatAsAsset(6, selectedNetwork.symbol)
-    : ''
+  const formattedAssetBalance = React.useMemo(() => {
+    if (!networkAsset || !balances || isLoadingBalances || isFetchingBalances) {
+      return ''
+    }
+
+    return new Amount(balances[networkAsset.contractAddress] ?? '')
+      .divideByDecimals(networkAsset.decimals)
+      .formatAsAsset(6, networkAsset.symbol)
+  }, [networkAsset, balances, isLoadingBalances, isFetchingBalances])
 
   // render
   return (

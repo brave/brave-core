@@ -100,7 +100,7 @@ export const createMockStore = (
   proxy?.addKeyringServiceObserver?.(store)
   proxy?.addTxServiceObserver?.(store)
   proxy?.addBraveWalletServiceObserver?.(store)
-  store.dispatch(WalletActions.initialize())
+  store.dispatch(WalletActions.initialize({}))
 
   return store
 }

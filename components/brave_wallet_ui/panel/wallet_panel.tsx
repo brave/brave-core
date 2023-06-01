@@ -46,7 +46,9 @@ function App () {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize())
+  store.dispatch(WalletActions.initialize({
+    skipBalancesRefresh: true
+  }))
   render(<App />, document.getElementById('mountPoint'))
 }
 

@@ -304,6 +304,7 @@ function AccountListItem({
         coin: account.coin,
         address: account.address,
         token: {
+          coin: account.coin,
           chainId: balanceAsset?.chainId || '',
           contractAddress: balanceAsset?.contractAddress || '',
           isErc721: balanceAsset?.isErc721 || false,
@@ -326,18 +327,18 @@ function AccountListItem({
   const balance = React.useMemo(() => {
     if (
       isLoadingBalance ||
-      !balanceResult?.balance ||
+      !balanceResult ||
       balanceAsset?.decimals === undefined
     ) {
       return undefined
     }
 
-    return new Amount(balanceResult.balance)
+    return new Amount(balanceResult)
       .divideByDecimals(balanceAsset.decimals)
       .formatAsAsset(undefined, balanceAsset.symbol)
   }, [
     isLoadingBalance,
-    balanceResult?.balance,
+    balanceResult,
     balanceAsset?.decimals,
     balanceAsset?.symbol
   ])

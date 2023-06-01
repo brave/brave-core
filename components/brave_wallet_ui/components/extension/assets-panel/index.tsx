@@ -4,16 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 import {
-  BraveWallet,
   WalletRoutes,
-  WalletAccountType
+  WalletAccountType,
+  BraveWallet
 } from '../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../common/locale'
-import { getBalance } from '../../../utils/balance-utils'
 
 // Styled Components
 import {
@@ -21,17 +21,29 @@ import {
   AddAssetButton
 } from './style'
 
+// RTK
+import {
+  useGetSelectedChainQuery,
+  useGetUserTokensRegistryQuery
+} from '../../../common/slices/api.slice'
+import {
+  makeSelectAllUserAssetsForChainFromQueryResult
+} from '../../../common/slices/entities/blockchain-token.entity'
+
+// Hooks
+import {
+  useScopedBalanceUpdater
+} from '../../../common/hooks/use-scoped-balance-updater'
+
 import { PortfolioAssetItem } from '../../desktop'
 import { getAssetIdKey } from '../../../utils/asset-utils'
 export interface Props {
-  userAssetList: BraveWallet.BlockchainToken[]
   selectedAccount?: WalletAccountType
   onAddAsset: () => void
 }
 
 const AssetsPanel = (props: Props) => {
   const {
-    userAssetList,
     selectedAccount,
     onAddAsset
   } = props
@@ -43,6 +55,47 @@ const AssetsPanel = (props: Props) => {
       }
     })
   }
+
+  const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
+
+  const userTokensByChainIdSelector = React.useMemo(() => {
+    return makeSelectAllUserAssetsForChainFromQueryResult()
+  }, [])
+
+  const { data: userTokens } = useGetUserTokensRegistryQuery(
+    undefined,
+    {
+      selectFromResult: (res) => ({
+        ...res,
+        data: selectedNetwork !== undefined
+          ? userTokensByChainIdSelector(res, selectedNetwork.chainId)
+          : undefined
+      }),
+      skip: selectedNetwork === undefined
+    }
+  )
+
+  const {
+    data: balances,
+    isLoading: isLoadingBalances,
+    isFetching: isFetchingBalances
+  } = useScopedBalanceUpdater(
+    selectedNetwork && selectedAccount
+      ? {
+        network: selectedNetwork,
+        account: selectedAccount,
+        tokens: selectedNetwork.coin === BraveWallet.CoinType.SOL
+          // Use optimised balance scanner for SOL, which doesn't need a
+          // reference tokens list.
+          ? undefined
+
+          // ETH needs a reference tokens list to scan for balances.
+          // If this is undefined, for example while userTokens is being
+          // fetched, then the hook will skip the query.
+          : userTokens
+      }
+      : skipToken
+  )
 
   const onClickAsset = React.useCallback(
     (
@@ -82,17 +135,21 @@ const AssetsPanel = (props: Props) => {
       >
         {getLocale('braveWalletAddAsset')}
       </AddAssetButton>
-      {userAssetList?.map((asset) =>
+      {userTokens?.map((token) =>
         <PortfolioAssetItem
           action={onClickAsset(
-            asset.contractAddress,
-            asset.symbol,
-            asset.tokenId,
-            asset.chainId
+            token.contractAddress,
+            token.symbol,
+            token.tokenId,
+            token.chainId
           )}
-          key={getAssetIdKey(asset)}
-          assetBalance={getBalance(selectedAccount, asset)}
-          token={asset}
+          key={getAssetIdKey(token)}
+          assetBalance={
+            balances && !isLoadingBalances && !isFetchingBalances
+              ? balances[token.contractAddress] ?? '0'
+              : ''
+          }
+          token={token}
           isPanel={true}
         />
       )}

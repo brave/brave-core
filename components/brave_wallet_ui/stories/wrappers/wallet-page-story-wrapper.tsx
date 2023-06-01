@@ -53,7 +53,7 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
   ])
 
   React.useEffect(() => {
-    store && store.dispatch(WalletActions.initialize())
+    store && store.dispatch(WalletActions.initialize({}))
   }, [store])
 
   // render

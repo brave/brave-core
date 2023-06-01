@@ -18,7 +18,8 @@ import {
   SendSolTransactionParams,
   SolanaSerializedTransactionParams,
   SupportedOnRampNetworks,
-  SupportedOffRampNetworks
+  SupportedOffRampNetworks,
+  RefreshOpts
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -825,7 +826,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
   }
 }
 
-export function refreshKeyringInfo () {
+export function refreshKeyringInfo (opts: RefreshOpts) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
     const { keyringService, walletHandler, jsonRpcService } = apiProxy
@@ -836,6 +837,7 @@ export function refreshKeyringInfo () {
     // Get/Set selectedAccount
     if (!walletInfo.isWalletCreated) {
       dispatch(WalletActions.initialized(walletInfo))
+      dispatch(WalletActions.refreshAll(opts))
       return
     }
 
@@ -880,6 +882,7 @@ export function refreshKeyringInfo () {
     }
 
     dispatch(WalletActions.initialized(walletInfo))
+    dispatch(WalletActions.refreshAll(opts))
   }
 }
 

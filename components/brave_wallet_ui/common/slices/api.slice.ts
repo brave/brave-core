@@ -7,6 +7,7 @@ import { batch } from 'react-redux'
 import { EntityId, Store } from '@reduxjs/toolkit'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { PatchCollection } from '@reduxjs/toolkit/dist/query/core/buildThunks'
+import { mapLimit } from 'async'
 
 // types
 import { WalletPanelApiProxy } from '../../panel/wallet_panel_api_proxy'
@@ -55,9 +56,9 @@ import {
 import {
   blockchainTokenEntityAdaptor,
   blockchainTokenEntityAdaptorInitialState,
-  BlockchainTokenEntityAdaptorState,
+  BlockchainTokenEntityAdaptorState
 } from './entities/blockchain-token.entity'
-import { AccountTokenBalanceForChainId, TokenBalancesForChainId } from './entities/token-balance.entity'
+import { TokenBalancesForChainId } from './entities/token-balance.entity'
 
 // utils
 import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
@@ -95,12 +96,11 @@ export type AssetPriceById = BraveWallet.AssetPrice & {
   fromAssetId: EntityId
 }
 
-const emptyBalance = '0x0'
 
 type GetAccountTokenCurrentBalanceArg = {
   coin: BraveWallet.CoinType,
   address: string,
-  token: GetBlockchainTokenIdArg & Pick<BraveWallet.BlockchainToken, 'isNft'>
+  token: GetBlockchainTokenIdArg
 }
 
 type GetCombinedTokenBalanceForAllAccountsArg =
@@ -110,11 +110,17 @@ type GetCombinedTokenBalanceForAllAccountsArg =
 type GetSPLTokenBalancesArg = {
   pubkey: string
   chainId: string
+
+  /**
+   * optional, if not provided, will fetch all tokens using
+   * getTokenAccountsByOwner.
+   */
+  tokens?: GetBlockchainTokenIdArg[]
   coin: typeof CoinTypes.SOL
 }
 type GetERC20TokenBalancesArg = {
   address: string
-  contracts: string[]
+  tokens: GetBlockchainTokenIdArg[]
   chainId: string
   coin: typeof CoinTypes.ETH
 }
@@ -705,10 +711,12 @@ export function createWalletApi () {
             // Get NFTMetadata
             const { metadata } = await dispatch(
               walletApi.endpoints.getERC721Metadata.initiate({
+                coin: tokenArg.coin,
                 chainId: tokenArg.chainId,
                 contractAddress: tokenArg.contractAddress,
                 isErc721: tokenArg.isErc721,
-                tokenId: tokenArg.tokenId
+                tokenId: tokenArg.tokenId,
+                isNft: tokenArg.isNft
               })
             ).unwrap()
 
@@ -849,7 +857,7 @@ export function createWalletApi () {
       // Token balances
       //
       getAccountTokenCurrentBalance: query<
-        AccountTokenBalanceForChainId,
+        string,
         GetAccountTokenCurrentBalanceArg
       >({
         queryFn: async (
@@ -860,77 +868,51 @@ export function createWalletApi () {
         ) => {
           const { jsonRpcService } = baseQuery(undefined).data // apiProxy
 
-          // entity lookup ids
-          const accountEntityId: EntityId = accountInfoEntityAdaptor.selectId({
-            address
-          })
-
-          const networkChainId = token.chainId
-          const networkCoinType = coin
-
-          const tokenEntityId: EntityId =
-            blockchainTokenEntityAdaptor.selectId(token)
-
-          // create default response
-          const emptyBalanceResult: AccountTokenBalanceForChainId = {
-            accountEntityId,
-            balance: emptyBalance,
-            chainId: networkChainId,
-            tokenEntityId
-          }
-
           // Native asset balances
           if (isNativeAsset(token)) {
-            const nativeAssetDefaultBalanceResult = emptyBalanceResult
-
             // LOCALHOST
             if (
               token.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
-              networkCoinType !== BraveWallet.CoinType.SOL
+              coin !== BraveWallet.CoinType.SOL
             ) {
               const { balance, error, errorMessage } =
                 await jsonRpcService.getBalance(
                   address,
-                  networkCoinType,
-                  networkChainId
+                  coin,
+                  token.chainId
                 )
 
               // LOCALHOST will error until a local instance is detected
               // return a '0' balance until it's detected.
               if (error !== 0) {
+                console.log(`getBalance error: ${errorMessage}`)
                 return {
-                  error: errorMessage
+                  data: Amount.zero().format()
                 }
               }
 
               return {
-                data: {
-                  ...nativeAssetDefaultBalanceResult,
-                  balance
-                }
+                data: Amount.normalize(balance)
               }
             }
 
-            switch (networkCoinType) {
+            switch (coin) {
               case BraveWallet.CoinType.SOL: {
                 const { balance, error } =
                   await jsonRpcService.getSolanaBalance(
                     address,
-                    networkChainId
+                    token.chainId
                   )
 
                 if (
-                  networkChainId === BraveWallet.LOCALHOST_CHAIN_ID &&
+                  token.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
                   error !== 0
                 ) {
-                  return { data: emptyBalanceResult }
+                  return { data: Amount.zero().format() }
                 }
 
                 return {
-                  data: {
-                    ...nativeAssetDefaultBalanceResult,
-                    balance: balance.toString()
-                  } as AccountTokenBalanceForChainId
+                  data: Amount.normalize(balance.toString())
                 }
               }
 
@@ -940,7 +922,7 @@ export function createWalletApi () {
                 const { balance, error, errorMessage } =
                   await jsonRpcService.getBalance(
                     address,
-                    networkCoinType,
+                    coin,
                     token.chainId
                   )
 
@@ -951,18 +933,13 @@ export function createWalletApi () {
                 }
 
                 return {
-                  data: {
-                    ...nativeAssetDefaultBalanceResult,
-                    balance
-                  } as AccountTokenBalanceForChainId
+                  data: Amount.normalize(balance)
                 }
               }
             }
           }
 
           // Token Balances
-          const tokenDefaultBalanceResult = emptyBalanceResult
-
           switch (coin) {
             // Ethereum Network tokens
             case BraveWallet.CoinType.ETH: {
@@ -971,12 +948,12 @@ export function createWalletApi () {
                     token.contractAddress,
                     token.tokenId ?? '',
                     address,
-                    networkChainId
+                    token.chainId
                   )
                 : await jsonRpcService.getERC20TokenBalance(
                     token.contractAddress,
                     address,
-                    token?.chainId ?? ''
+                    token.chainId
                   )
 
               if (error && errorMessage) {
@@ -984,10 +961,7 @@ export function createWalletApi () {
               }
 
               return {
-                data: {
-                  ...tokenDefaultBalanceResult,
-                  balance
-                } as AccountTokenBalanceForChainId
+                data: Amount.normalize(balance)
               }
             }
             // Solana Network Tokens
@@ -1003,20 +977,17 @@ export function createWalletApi () {
                 return { error: errorMessage }
               }
 
-              const accountTokenBalance: AccountTokenBalanceForChainId = {
-                ...tokenDefaultBalanceResult,
-                balance: token.isNft ? uiAmountString : amount
-              }
-
               return {
-                data: accountTokenBalance
+                data: token.isNft
+                  ? uiAmountString
+                  : amount
               }
             }
 
             // Other network type tokens
             default: {
               return {
-                data: emptyBalanceResult
+                data: Amount.zero().format()
               }
             }
           }
@@ -1042,13 +1013,14 @@ export function createWalletApi () {
 
           const accountTokenBalancesForChainId: string[] = await Promise.all(
             accountsForAssetCoinType.map(async (account) => {
-              const balanceResult: AccountTokenBalanceForChainId =
+              const balance =
                 await dispatch(
                   walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
                     coin: account.accountId.coin,
                     address: account.address,
                     token: {
                       chainId: asset.chainId,
+                      coin: asset.coin,
                       contractAddress: asset.contractAddress,
                       isErc721: asset.isErc721,
                       isNft: asset.isNft,
@@ -1057,7 +1029,7 @@ export function createWalletApi () {
                   })
                 ).unwrap()
 
-              return balanceResult?.balance ?? ''
+              return balance ?? ''
             })
           )
 
@@ -1090,38 +1062,97 @@ export function createWalletApi () {
         GetTokenBalancesForChainIdArg
       >({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+          // Construct arg to query native token for use in case the optimised
+          // balance fetcher kicks in.
+          const nativeTokenArg = arg.coin === CoinTypes.ETH
+            ? arg.tokens.find(isNativeAsset)
+            : arg.tokens // arg.coin is SOL
+              ? arg.tokens.find(isNativeAsset)
+              : {
+                coin: arg.coin,
+                chainId: arg.chainId,
+                contractAddress: '',
+                isErc721: false,
+                isNft: false,
+                tokenId: ''
+              }
+
+          const baseTokenBalances: TokenBalancesForChainId = {}
+          if (nativeTokenArg) {
+            const balance = await dispatch(
+              walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
+                coin: arg.coin,
+                address: arg.coin === CoinTypes.SOL
+                  ? arg.pubkey
+                  : arg.address,
+                token: nativeTokenArg
+              }, {
+                forceRefetch: true
+              })
+            ).unwrap()
+            baseTokenBalances[nativeTokenArg.contractAddress] = balance
+          }
+
           try {
-            const { jsonRpcService } = baseQuery(undefined).data
+            const { jsonRpcService, braveWalletService } =
+              baseQuery(undefined).data
 
             if (arg.coin === CoinTypes.ETH) {
-              const result = await jsonRpcService.getERC20TokenBalances(
-                arg.contracts,
-                arg.address,
-                arg.chainId
-              )
-              if (result.error === BraveWallet.ProviderError.kSuccess) {
+              // jsonRpcService.getERC20TokenBalances cannot handle native
+              // assets
+              const contracts = arg.tokens
+                .filter(token => !isNativeAsset(token))
+                .map(token => token.contractAddress)
+              if (contracts.length === 0) {
                 return {
-                  data: result.balances.reduce((acc, balanceResult) => {
-                    if (balanceResult.balance) {
-                      return {
-                        ...acc,
-                        [balanceResult.contractAddress]: Amount.normalize(
-                          balanceResult.balance
-                        )
-                      }
-                    }
-
-                    return acc
-                  }, {})
+                  data: baseTokenBalances
                 }
-              } else {
-                return {
-                  error: result.errorMessage
+              }
+
+              // TODO(josheleonard): aggresively cache this response since it
+              // never changes
+              const { chainIds: supportedChainIds } =
+                await braveWalletService.getBalanceScannerSupportedChains()
+
+              if (supportedChainIds.includes(arg.chainId)) {
+                const result = await jsonRpcService.getERC20TokenBalances(
+                  contracts,
+                  arg.address,
+                  arg.chainId
+                )
+                if (result.error === BraveWallet.ProviderError.kSuccess) {
+                  return {
+                    data: result.balances
+                      .reduce((acc, { balance, contractAddress }) => {
+                      const token = arg.tokens
+                        .find(token =>
+                          token.contractAddress === contractAddress)
+
+                      const balanceAmount = balance
+                        ? new Amount(balance)
+                        : undefined
+
+                      if (balanceAmount && token) {
+                        return {
+                          ...acc,
+                          [contractAddress]: balanceAmount.format()
+                        }
+                      }
+
+                      return acc
+                    }, baseTokenBalances)
+                  }
+                } else {
+                  console.error(
+                    `Error calling jsonRpcService.getERC20TokenBalances:
+                    error=${result.errorMessage}
+                    arg=`, arg
+                  )
                 }
               }
             }
 
-            if (arg.coin === CoinTypes.SOL) {
+            if (arg.coin === CoinTypes.SOL && !arg.tokens) {
               const result = await jsonRpcService.getSPLTokenBalances(
                 arg.pubkey,
                 arg.chainId
@@ -1140,20 +1171,55 @@ export function createWalletApi () {
                     }
 
                     return acc
-                  }, {})
+                  }, baseTokenBalances)
                 }
               } else {
-                return {
-                  error: result.errorMessage
-                }
+                console.error(
+                  `Error calling jsonRpcService.getSPLTokenBalances:
+                  error=${result.errorMessage}
+                  arg=`, arg
+                )
               }
             }
-            
-            throw new Error(
-              `Unsupported CoinType found in args - args: ${
-                arg //
-              }`
+
+            // Fallback to fetching individual balances
+            const tokens = (arg.tokens ?? [])
+              .filter(token => !isNativeAsset(token))
+
+            const combinedBalancesResult = await mapLimit(
+              tokens,
+              10,
+              async (token: BraveWallet.BlockchainToken) => {
+                const result: string = await dispatch(
+                  walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
+                    coin: arg.coin,
+                    address: arg.coin === CoinTypes.ETH
+                      ? arg.address
+                      : arg.pubkey,
+                    token
+                  }, {
+                    forceRefetch: true
+                  })
+                ).unwrap()
+
+                return {
+                  key: token.contractAddress,
+                  value: result
+                }
+              }
             )
+
+            return {
+              data: combinedBalancesResult
+                .filter(item => new Amount(item.value).gt(0))
+                .reduce(
+                  (obj, item) => {
+                    obj[item.key] = item.value
+                    return obj
+                  },
+                  baseTokenBalances
+                )
+            }
           } catch (error) {
             console.error(error)
             return {

@@ -237,15 +237,14 @@ export const makeSelectUserAssetIdsForChainIdFromQueryResult = () => {
   )
 }
 
-export const makeSelectAllUserAssetsForChainFromQueryResult = () => {
-  return createDraftSafeSelector(
+export const makeSelectAllUserAssetsForChainFromQueryResult =
+  () => createDraftSafeSelector(
     [
       selectTokensRegistryFromQueryResult,
       (_, chainId: EntityId) => chainId
     ],
     (registry, chainId) => getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId])
   )
-}
 
 // combined tokens list
 export const selectCombinedTokensList = createDraftSafeSelector(

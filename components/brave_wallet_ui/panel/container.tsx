@@ -50,7 +50,7 @@ import {
 
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
-import { useAssets, useHasAccount, usePrevNetwork, useBalanceUpdater } from '../common/hooks'
+import { useHasAccount, usePrevNetwork } from '../common/hooks'
 import { isSolanaTransaction } from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
@@ -128,12 +128,6 @@ function Container () {
   // that loading indicator ASAP.
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
 
-  const {
-    panelUserAssetList
-  } = useAssets()
-
-  // hooks
-  useBalanceUpdater()
   const { selectedPendingTransaction } = usePendingTransactions()
 
   const { needsAccount } = useHasAccount()
@@ -596,7 +590,6 @@ function Container () {
             <ScrollContainer>
               <AssetsPanel
                 selectedAccount={selectedAccount}
-                userAssetList={panelUserAssetList}
                 onAddAsset={onAddAsset}
               />
             </ScrollContainer>

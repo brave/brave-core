@@ -431,10 +431,12 @@ export class MockedWalletApiProxy {
         balance:
           this.nativeBalanceRegistry[address][
             blockchainTokenEntityAdaptor.selectId({
+              coin: BraveWallet.CoinType.ETH,
               chainId,
               contractAddress: contract,
               isErc721: false,
-              tokenId: ''
+              tokenId: '',
+              isNft: false
             })
           ],
         error: 0,
@@ -451,10 +453,12 @@ export class MockedWalletApiProxy {
         balance:
           this.nativeBalanceRegistry[accountAddress][
             blockchainTokenEntityAdaptor.selectId({
+              coin: BraveWallet.CoinType.ETH,
               chainId,
               contractAddress: contractAddress,
               isErc721: true,
-              tokenId
+              tokenId,
+              isNft: false
             })
           ],
         error: 0,
@@ -471,10 +475,12 @@ export class MockedWalletApiProxy {
         balance:
           this.nativeBalanceRegistry[accountAddress][
             blockchainTokenEntityAdaptor.selectId({
+              coin: BraveWallet.CoinType.ETH,
               chainId,
               contractAddress: contractAddress,
               isErc721: true,
-              tokenId
+              tokenId,
+              isNft: false
             })
           ],
         error: 0,
@@ -489,11 +495,13 @@ export class MockedWalletApiProxy {
       return {
         amount:
           this.nativeBalanceRegistry[walletAddress][
-            blockchainTokenEntityAdaptor.selectId({
+          blockchainTokenEntityAdaptor.selectId({
+              coin: BraveWallet.CoinType.ETH,
               chainId,
               contractAddress: tokenMintAddress,
-              isErc721: true,
-              tokenId: ''
+              isErc721: false,
+              tokenId: '',
+              isNft: true
             })
           ],
         decimals: 9,
