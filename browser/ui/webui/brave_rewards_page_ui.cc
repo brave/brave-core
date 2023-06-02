@@ -1860,9 +1860,7 @@ void RewardsDOMHandler::GetPluralString(const base::Value::List& args) {
   int count = args[2].GetInt();
 
   static const base::flat_map<std::string, int> name_to_id = {
-      {"publisherCountText", IDS_REWARDS_PUBLISHER_COUNT_TEXT},
-      {"onboardingSetupAdsPerHour",
-       IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR}};
+      {"publisherCountText", IDS_REWARDS_PUBLISHER_COUNT_TEXT}};
 
   auto message_id_it = name_to_id.find(message_name);
   CHECK(name_to_id.end() != message_id_it);

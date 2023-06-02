@@ -33,11 +33,6 @@ bool RewardsPanelCoordinator::OpenRewardsPanelToDeclareCountry() {
       mojom::RewardsPanelArgs(mojom::RewardsPanelView::kDeclareCountry, ""));
 }
 
-bool RewardsPanelCoordinator::ShowRewardsTour() {
-  return OpenWithArgs(
-      mojom::RewardsPanelArgs(mojom::RewardsPanelView::kRewardsTour, ""));
-}
-
 bool RewardsPanelCoordinator::ShowGrantCaptcha(const std::string& grant_id) {
   return OpenWithArgs(mojom::RewardsPanelArgs(
       mojom::RewardsPanelView::kGrantCaptcha, grant_id));

@@ -388,109 +388,14 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT_DECLARE_COUNTRY" desc="">
     To continue using Brave Rewards, select your country so we can show you the right options and ads for your region.
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">
-    Maybe Later
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_HEADER" desc="">
-    Need a refresher on Rewards?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT" desc="">
-    Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SAVE" desc="">
-    Save
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY" desc="">
     Select
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">
-    How often do you want to see ads?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR" desc="">
-    {ADS_PER_HOUR, plural,
-      =1 {# Ad per hour}
-      other {# Ads per hour}
-    }
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_1" desc="">
-    More private ads, more rewards
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_2" desc="">
-    With more ads, you can support more creators
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CHANGE_LATER" desc="">
-    You can change this later in settings.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">
     Start using Rewards
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR" desc="">
-    Take a quick tour
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">
     By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK" desc="">
-    Go Back
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BEGIN" desc="">
-    Let’s take a quick tour
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_CONTINUE" desc="">
-    Continue
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_DONE" desc="">
-    Done
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP" desc="">
-    Skip
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP_FOR_NOW" desc="">
-    Skip for now
-  </message>
-
-  <!-- Rewards onboarding tour panels -->
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_HEADER" desc="">
-    Welcome to Brave Rewards!
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT" desc="">
-    Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER" desc="">
-    Where do ads show up?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT" desc="">
-    Brave Private Ads appear as notifications on your screen. You control how often you see these ads.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER" desc="">
-    Giving back made effortless
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT" desc="">
-    Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER" desc="">
-    Say thank you with contributions
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT" desc="">
-    Contributions are a way to personally encourage and support content or creators that you love.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER" desc="">
-    Lastly, let’s get you set up
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER" desc="">
-    Woohoo, you’re all set!
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT" desc="">
-    By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_SUBTEXT" desc="">
-    Connect a custodial account so you can earn BAT and withdraw your rewards
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER" desc="">
-    I’ll do it later
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW" desc="">
-    Connect account
   </message>
 
   <!-- Rewards unsupported region notice -->

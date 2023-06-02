@@ -18,7 +18,7 @@ import { AdsPanel } from './ads_panel'
 import { AutoContributePanel } from './auto_contribute_panel'
 import { TipsPanel } from './tips_panel'
 import { MonthlyTipsPanel } from './monthly_tips_panel'
-import { SettingsOptInForm, RewardsTourModal } from '../../shared/components/onboarding'
+import { SettingsOptInForm } from '../../shared/components/onboarding'
 import { ProviderRedirectModal } from './provider_redirect_modal'
 import { GrantList } from './grant_list'
 import { SidebarPromotionPanel } from './sidebar_promotion_panel'
@@ -35,8 +35,6 @@ export function Settings () {
   const { getString } = React.useContext(LocaleContext)
   const actions = useActions()
   const rewardsData = useRewardsData((data) => data)
-
-  const [showRewardsTour, setShowRewardsTour] = React.useState(false)
 
   const scrollToDeeplinkId = (deeplinkId: string) => {
     if (deeplinkId) {
@@ -163,8 +161,6 @@ export function Settings () {
     actions.getReconcileStamp()
   }, [rewardsData.enabledContribute])
 
-  const onTakeTour = () => { setShowRewardsTour(true) }
-
   const canConnectAccount = () => {
     const {
       currentCountryCode,
@@ -176,43 +172,6 @@ export function Settings () {
       const regionInfo = parameters.walletProviderRegions[provider] || null
       return isExternalWalletProviderAllowed(currentCountryCode, regionInfo)
     })
-  }
-
-  const renderRewardsTour = () => {
-    if (!showRewardsTour) {
-      return null
-    }
-
-    const { adsData, externalWallet } = rewardsData
-
-    const onDone = () => {
-      setShowRewardsTour(false)
-    }
-
-    const onAdsPerHourChanged = (adsPerHour: number) => {
-      actions.onAdsSettingSave('adsPerHour', adsPerHour)
-    }
-
-    const onConnectAccount = () => {
-      actions.onModalConnectOpen()
-    }
-
-    const canAutoContribute =
-      !(externalWallet && externalWallet.type === 'bitflyer')
-
-    return (
-      <RewardsTourModal
-        layout={layoutKind}
-        firstTimeSetup={false}
-        adsPerHour={adsData.adsPerHour}
-        canAutoContribute={canAutoContribute}
-        canConnectAccount={canConnectAccount()}
-        onAdsPerHourChanged={onAdsPerHourChanged}
-        onConnectAccount={onConnectAccount}
-        onDone={onDone}
-        onClose={onDone}
-      />
-    )
   }
 
   const onManageClick = () => { actions.onModalResetOpen() }
@@ -333,7 +292,7 @@ export function Settings () {
         <style.sidebar>
           {rewardsData.userType !== 'unconnected' && <GrantList />}
           <PageWallet layout={layoutKind} />
-          <SidebarPromotionPanel onTakeRewardsTour={onTakeTour} />
+          <SidebarPromotionPanel />
         </style.sidebar>
       </style.content>
     )
@@ -342,7 +301,6 @@ export function Settings () {
   return (
     <style.root className={`layout-${layoutKind}`}>
       <ProviderRedirectModal />
-      {renderRewardsTour()}
       {renderContent()}
     </style.root>
   )

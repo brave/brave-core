@@ -6,15 +6,13 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
-import { OnboardingResult, RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
+import { OnboardingResult, RewardsOptInModal } from '../../shared/components/onboarding'
 import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
 import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
 import { VBATNoticeModal } from './vbat_notice_modal'
 import { shouldShowVBATNotice } from '../../shared/components/vbat_notice'
 import { TabOpenerContext } from '../../shared/components/new_tab_link'
-
-import * as derivedState from '../lib/derived_state'
 
 import * as urls from '../../shared/lib/rewards_urls'
 
@@ -32,21 +30,14 @@ export function PanelOverlays() {
     React.useState(host.state.availableCountries)
   const [defaultCountry, setDefaultCountry] =
     React.useState(host.state.defaultCountry)
-  const [settings, setSettings] = React.useState(host.state.settings)
   const [options, setOptions] = React.useState(host.state.options)
-  const [externalWalletProviders, setExternalWalletProviders] =
-    React.useState(host.state.externalWalletProviders)
   const [grantCaptchaInfo, setGrantCaptchaInfo] =
     React.useState(host.state.grantCaptchaInfo)
   const [adaptiveCaptchaInfo, setAdaptiveCaptchaInfo] =
     React.useState(host.state.adaptiveCaptchaInfo)
   const [notifications, setNotifications] =
     React.useState(host.state.notifications)
-  const [canConnectAccount, setCanConnectAccount] =
-    React.useState(derivedState.canConnectAccount(host.state))
   const [userType, setUserType] = React.useState(host.state.userType)
-
-  const [showTour, setShowTour] = React.useState(false)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
   const [hideVBATNotice, setHideVBATNotice] = React.useState(false)
   const [onboardingResult, setOnboardingResult] =
@@ -60,44 +51,12 @@ export function PanelOverlays() {
     setDeclaredCountry(state.declaredCountry)
     setAvailableCountries(state.availableCountries)
     setDefaultCountry(state.defaultCountry)
-    setSettings(state.settings)
     setOptions(state.options)
-    setExternalWalletProviders(state.externalWalletProviders)
     setGrantCaptchaInfo(state.grantCaptchaInfo)
     setNotifications(state.notifications)
     setAdaptiveCaptchaInfo(state.adaptiveCaptchaInfo)
-    setCanConnectAccount(derivedState.canConnectAccount(state))
     setUserType(state.userType)
   })
-
-  React.useEffect(() => {
-    if (requestedView === 'rewards-tour') {
-      setShowTour(true)
-    }
-  }, [requestedView])
-
-  function toggleTour () {
-    setShowTour(!showTour)
-  }
-
-  if (showTour) {
-    const onConnectAccount = () => {
-      host.handleExternalWalletAction('verify')
-    }
-
-    return (
-      <RewardsTourModal
-        firstTimeSetup={rewardsEnabled}
-        adsPerHour={settings.adsPerHour}
-        canAutoContribute={!externalWalletProviders.includes('bitflyer')}
-        canConnectAccount={canConnectAccount}
-        onAdsPerHourChanged={host.setAdsPerHour}
-        onConnectAccount={onConnectAccount}
-        onDone={toggleTour}
-        onClose={toggleTour}
-      />
-    )
-  }
 
   if (onboardingResult || !rewardsEnabled || needsCountry) {
     const onHideResult = () => {

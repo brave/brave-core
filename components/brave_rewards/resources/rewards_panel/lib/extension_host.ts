@@ -188,9 +188,6 @@ export function createHost (): Host {
       case mojom.RewardsPanelView.kDeclareCountry:
         stateManager.update({ requestedView: 'declare-country' })
         break
-      case mojom.RewardsPanelView.kRewardsTour:
-        stateManager.update({ requestedView: 'rewards-tour' })
-        break
       case mojom.RewardsPanelView.kGrantCaptcha:
         loadGrantCaptcha(args.data, 'pending')
         break

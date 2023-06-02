@@ -8,10 +8,8 @@ import * as React from 'react'
 import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
 
-import { RewardsTourModal } from '../rewards_tour_modal'
 import { RewardsOptInModal } from '../rewards_opt_in_modal'
 import { SettingsOptInForm } from '../settings_opt_in_form'
-import { RewardsTourPromo } from '../rewards_tour_promo'
 
 import { localeStrings } from './locale_strings'
 
@@ -40,50 +38,9 @@ function StoryWrapper (props: StoryWrapperProps) {
   )
 }
 
-function getRewardsTourProps () {
-  return {
-    firstTimeSetup: true,
-    adsPerHour: 3,
-    canAutoContribute: true,
-    canConnectAccount: true,
-    onAdsPerHourChanged: actionLogger('onAdsPerHourChanged'),
-    onConnectAccount: actionLogger('onConnectAccount'),
-    onDone: actionLogger('onDone')
-  }
-}
-
 export default {
   title: 'Rewards/Onboarding'
 }
-
-export function TourModal () {
-  const [adsPerHour, setAdsPerHour] = React.useState(3)
-
-  return (
-    <StoryWrapper>
-      <RewardsTourModal
-        {...getRewardsTourProps()}
-        adsPerHour={adsPerHour}
-        onAdsPerHourChanged={setAdsPerHour}
-        onClose={actionLogger('onClose')}
-      />
-    </StoryWrapper>
-  )
-}
-
-export function TourModalWide () {
-  return (
-    <StoryWrapper>
-      <RewardsTourModal
-        {...getRewardsTourProps()}
-        layout='wide'
-        onClose={actionLogger('onClose')}
-      />
-    </StoryWrapper>
-  )
-}
-
-TourModalWide.storyName = 'Tour Modal (Wide)'
 
 export function OptInModal() {
   return (
@@ -208,17 +165,6 @@ export function SettingsOptIn () {
     <StoryWrapper style={{ width: '619px' }}>
       <SettingsOptInForm
         onEnable={actionLogger('onEnable')}
-      />
-    </StoryWrapper>
-  )
-}
-
-export function TourPromo () {
-  return (
-    <StoryWrapper style={{ width: '373px' }}>
-      <RewardsTourPromo
-        onClose={actionLogger('onClose')}
-        onTakeTour={actionLogger('onTakeTour')}
       />
     </StoryWrapper>
   )
