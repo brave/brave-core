@@ -11,14 +11,17 @@
 #include <raserror.h>
 #include <stdio.h>
 
+#include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_file.h"
 #include "base/logging.h"
 #include "base/path_service.h"
+#include "base/process/launch.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/base/process/process_launcher.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 
@@ -382,6 +385,74 @@ RasOperationResult RemoveEntry(const std::wstring& entry_name) {
   return GetRasSuccessResult();
 }
 
+// `Set-VpnConnectionIPsecConfiguration` cmdlet:
+// https://docs.microsoft.com/en-us/powershell/module/vpnclient/set-vpnconnectionipsecconfiguration?view=windowsserver2019-ps
+RasOperationResult SetConnectionParamsUsingPowerShell(
+    const std::wstring& entry_name) {
+  base::CommandLine power_shell(base::FilePath(L"PowerShell"));
+  power_shell.AppendArg("Set-VpnConnectionIPsecConfiguration");
+  power_shell.AppendArg("-ConnectionName");
+  power_shell.AppendArg(base::WideToUTF8(entry_name));
+  power_shell.AppendArg("-AuthenticationTransformConstants");
+  power_shell.AppendArg("SHA256128");
+  power_shell.AppendArg("-CipherTransformConstants");
+  power_shell.AppendArg("AES256");
+  power_shell.AppendArg("-DHGroup");
+  power_shell.AppendArg("Group2");
+  power_shell.AppendArg("-IntegrityCheckMethod");
+  power_shell.AppendArg("SHA384");
+  power_shell.AppendArg("-PfsGroup");
+  power_shell.AppendArg("None");
+  power_shell.AppendArg("-EncryptionMethod");
+  power_shell.AppendArg("AES256");
+  power_shell.AppendArg("-Force");
+  base::LaunchOptions options;
+  options.start_hidden = true;
+  auto result = brave::ProcessLauncher::ReadAppOutput(power_shell, options, 10);
+  if (!result.has_value()) {
+    return GetRasErrorResult(logging::SystemErrorCodeToString(GetLastError()));
+  }
+  return GetRasSuccessResult();
+}
+
+RasOperationResult SetConnectionParamsWin32(
+    const std::wstring& entry_name,
+    const std::wstring& phone_book_path) {
+  // RAS doesn't expose public methods for editing policy. However, the storage
+  // is just an INI format file:
+  // `%APPDATA%\Microsoft\Network\Connections\Pbk\rasphone.pbk`
+  //
+  // The variable being set in this file is similar to the structure
+  // `ROUTER_CUSTOM_IKEv2_POLICY0` which was part of MPR (Multiprotocol
+  // Routing). The DWORDs are written out byte by byte in 02d format as
+  // `CustomIPSecPolicies` and `NumCustomPolicy` is always being set to 1.
+  //
+  // NOTE: *This IKEv2 implementation (due to policy) might only be supported on
+  // Windows 8 and above; we need to check that.*
+  //
+
+  constexpr wchar_t kNumCustomPolicy[] = L"1";
+  constexpr wchar_t kCustomIPSecPolicies[] =
+      L"030000000400000002000000050000000200000000000000";
+  // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-writeprivateprofilestringw
+  BOOL wrote_entry =
+      WritePrivateProfileString(entry_name.c_str(), L"NumCustomPolicy",
+                                kNumCustomPolicy, phone_book_path.c_str());
+  if (!wrote_entry) {
+    return GetRasErrorResult(
+        "failed to write \"NumCustomPolicy\" field to `rasphone.pbk`");
+  }
+
+  wrote_entry =
+      WritePrivateProfileString(entry_name.c_str(), L"CustomIPSecPolicies",
+                                kCustomIPSecPolicies, phone_book_path.c_str());
+  if (!wrote_entry) {
+    return GetRasErrorResult(
+        "failed to write \"CustomIPSecPolicies\" field to `rasphone.pbk`");
+  }
+  return GetRasSuccessResult();
+}
+
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetentrypropertiesa
 RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
   const auto entry_name = base::UTF8ToWide(info.connection_name());
@@ -461,51 +532,9 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
   // >> The user DESKTOP - DRCJVG6\brian dialed a connection named BRAVEVPN
   // which has failed.The error code returned on failure is 13868.
   //
-  // I've found you can set this manually via PowerShell using the
-  // `Set-VpnConnectionIPsecConfiguration` cmdlet:
-  // https://docs.microsoft.com/en-us/powershell/module/vpnclient/set-vpnconnectionipsecconfiguration?view=windowsserver2019-ps
-  //
-  // I've used the following parameters via PowerShell:
-  // >> AuthenticationTransformConstants: GCMAES256
-  // >> CipherTransformConstants : GCMAES256
-  // >> DHGroup : ECP384
-  // >> IntegrityCheckMethod : SHA256
-  // >> PfsGroup : None
-  // >> EncryptionMethod : GCMAES256
-  //
-  // RAS doesn't expose public methods for editing policy. However, the storage
-  // is just an INI format file:
-  // `%APPDATA%\Microsoft\Network\Connections\Pbk\rasphone.pbk`
-  //
-  // The variable being set in this file is similar to the structure
-  // `ROUTER_CUSTOM_IKEv2_POLICY0` which was part of MPR (Multiprotocol
-  // Routing). The DWORDs are written out byte by byte in 02d format as
-  // `CustomIPSecPolicies` and `NumCustomPolicy` is always being set to 1.
-  //
-  // NOTE: *This IKEv2 implementation (due to policy) might only be supported on
-  // Windows 8 and above; we need to check that.*
-  //
-
-  constexpr wchar_t kNumCustomPolicy[] = L"1";
-  constexpr wchar_t kCustomIPSecPolicies[] =
-      L"030000000400000002000000050000000200000000000000";
-  // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-writeprivateprofilestringw
-  BOOL wrote_entry =
-      WritePrivateProfileString(entry_name.c_str(), L"NumCustomPolicy",
-                                kNumCustomPolicy, phone_book_path.c_str());
-  if (!wrote_entry) {
-    return GetRasErrorResult(
-        "failed to write \"NumCustomPolicy\" field to `rasphone.pbk`");
+  if (!SetConnectionParamsUsingPowerShell(entry_name).success) {
+    return SetConnectionParamsWin32(entry_name, phone_book_path);
   }
-
-  wrote_entry =
-      WritePrivateProfileString(entry_name.c_str(), L"CustomIPSecPolicies",
-                                kCustomIPSecPolicies, phone_book_path.c_str());
-  if (!wrote_entry) {
-    return GetRasErrorResult(
-        "failed to write \"CustomIPSecPolicies\" field to `rasphone.pbk`");
-  }
-
   return GetRasSuccessResult();
 }
 
