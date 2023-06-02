@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.brave.playlist.PlaylistDownloadUtils;
 import com.brave.playlist.PlaylistViewModel;
 import com.brave.playlist.enums.PlaylistEventEnum;
 import com.brave.playlist.enums.PlaylistOptions;
@@ -28,6 +29,7 @@ import com.brave.playlist.util.PlaylistUtils;
 import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -155,6 +157,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     for (PlaylistItemModel playlistItem : playlistItems.getItems()) {
                         mPlaylistService.removeItemFromPlaylist(
                                 playlistItems.getId(), playlistItem.getId());
+                        PlaylistDownloadUtils.removeDownloadRequest(
+                                PlaylistHostActivity.this, playlistItem);
                     }
                     loadPlaylist(playlistItems.getId());
                 });
@@ -199,11 +203,10 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         if (playlistOptionsModel.getPlaylistModel() != null) {
                             for (PlaylistItemModel playlistItemModel :
                                     playlistOptionsModel.getPlaylistModel().getItems()) {
-                                mPlaylistService.recoverLocalDataForItem(playlistItemModel.getId(),
-                                        true,
-                                        playlistItem
-                                        -> {
-
+                                mPlaylistService.recoverLocalDataForItem(
+                                        playlistItemModel.getId(), true, playlistItem -> {
+                                            PlaylistDownloadUtils.startDownloadRequest(
+                                                    PlaylistHostActivity.this, playlistItemModel);
                                         });
                             }
                         }
@@ -211,6 +214,11 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         if (playlistOptionsModel.getPlaylistModel() != null) {
                             mPlaylistService.removePlaylist(
                                     playlistOptionsModel.getPlaylistModel().getId());
+                            for (PlaylistItemModel playlistItem :
+                                    playlistOptionsModel.getPlaylistModel().getItems()) {
+                                PlaylistDownloadUtils.removeDownloadRequest(
+                                        PlaylistHostActivity.this, playlistItem);
+                            }
                             loadAllPlaylists();
                         }
                     } else if (option == PlaylistOptions.MOVE_PLAYLIST_ITEMS) {
@@ -238,10 +246,23 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         mPlaylistService.getAllPlaylists(playlists -> {
                             for (Playlist playlist : playlists) {
                                 for (PlaylistItem playlistItem : playlist.items) {
-                                    mPlaylistService.recoverLocalDataForItem(playlistItem.id, true,
-                                            tempPlaylistItem
-                                            -> {
-
+                                    mPlaylistService.recoverLocalDataForItem(
+                                            playlistItem.id, true, tempPlaylistItem -> {
+                                                PlaylistItemModel playlistItemModel =
+                                                        new PlaylistItemModel(playlistItem.id,
+                                                                ConstantUtils.DEFAULT_PLAYLIST,
+                                                                playlistItem.name,
+                                                                playlistItem.pageSource.url,
+                                                                playlistItem.mediaPath.url,
+                                                                playlistItem.mediaSource.url,
+                                                                playlistItem.thumbnailPath.url,
+                                                                playlistItem.author,
+                                                                playlistItem.duration,
+                                                                playlistItem.lastPlayedPosition,
+                                                                playlistItem.cached, false, 0);
+                                                PlaylistDownloadUtils.startDownloadRequest(
+                                                        PlaylistHostActivity.this,
+                                                        playlistItemModel);
                                             });
                                 }
                             }
@@ -262,6 +283,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     } else if (option == PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA) {
                         mPlaylistService.removeLocalDataForItem(
                                 playlistItemOption.getPlaylistItemModel().getId());
+                        PlaylistDownloadUtils.removeDownloadRequest(PlaylistHostActivity.this,
+                                playlistItemOption.getPlaylistItemModel());
                         loadPlaylist(playlistItemOption.getPlaylistId());
                     } else if (option == PlaylistOptions.OPEN_IN_NEW_TAB) {
                         openPlaylistInTab(
@@ -272,6 +295,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     } else if (option == PlaylistOptions.DELETE_PLAYLIST_ITEM) {
                         mPlaylistService.removeItemFromPlaylist(playlistItemOption.getPlaylistId(),
                                 playlistItemOption.getPlaylistItemModel().getId());
+                        PlaylistDownloadUtils.removeDownloadRequest(PlaylistHostActivity.this,
+                                playlistItemOption.getPlaylistItemModel());
                         loadPlaylist(playlistItemOption.getPlaylistId());
                     } else if (option == PlaylistOptions.RECOVER_PLAYLIST_ITEM) {
                         mPlaylistService.recoverLocalDataForItem(
@@ -283,6 +308,9 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                 });
 
         if (getIntent() != null) {
+            Log.e(TAG,
+                    "getIntent().getStringExtra(ConstantUtils.PLAYLIST_NAME) : "
+                            + getIntent().getStringExtra(ConstantUtils.PLAYLIST_NAME));
             if (!TextUtils.isEmpty(getIntent().getAction())
                     && getIntent().getAction().equals(ConstantUtils.PLAYLIST_ACTION)
                     && !TextUtils.isEmpty(
@@ -398,6 +426,11 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         if (PlaylistOptions.DELETE_PLAYLIST == playlistOptionsModel.getOptionType()
                 && mPlaylistService != null && playlistOptionsModel.getPlaylistModel() != null) {
             mPlaylistService.removePlaylist(playlistOptionsModel.getPlaylistModel().getId());
+            for (PlaylistItemModel playlistItem :
+                    playlistOptionsModel.getPlaylistModel().getItems()) {
+                PlaylistDownloadUtils.removeDownloadRequest(
+                        PlaylistHostActivity.this, playlistItem);
+            }
             finish();
         }
     }

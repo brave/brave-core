@@ -222,8 +222,15 @@
     android:exported="false"
     android:launchMode="singleTask"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen" />
+
 <service android:name="com.brave.playlist.PlaylistVideoService"
     android:exported="false"/>
+
+    <service
+            android:name="com.brave.playlist.PlaylistDownloadService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback"
+            android:stopWithTask="false" />
 
 <!-- This activity is used for search provider widget -->
 <activity android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"
