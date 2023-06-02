@@ -70,6 +70,7 @@ export const createMockStore = (
   // api
   const mockedApiProxy = getMockedAPIProxy()
   const mockedRewardsApiProxy = getMockedBraveRewardsProxy()
+  
   mockedApiProxy.applyOverrides(apiOverrides)
   mockedRewardsApiProxy.applyOverrides(rewardsApiOverrides)
 

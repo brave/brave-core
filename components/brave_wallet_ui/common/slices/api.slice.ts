@@ -2864,7 +2864,6 @@ export function createWalletApi () {
       })
     }}
   })
-    // panel endpoints
     .injectEndpoints({
       endpoints: ({ mutation, query }) => ({
         openPanelUI: mutation<boolean, void>({

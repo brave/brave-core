@@ -110,7 +110,6 @@ export class BraveRewardsProxy {
     chrome.braveRewards.onExternalWalletLoggedOut.addListener
 
   onPublisherData = chrome.braveRewards.onPublisherData.addListener
-
   onPublisherListNormalized =
     chrome.braveRewards.onPublisherListNormalized.addListener
 

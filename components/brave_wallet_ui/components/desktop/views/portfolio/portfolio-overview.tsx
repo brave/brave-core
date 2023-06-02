@@ -7,6 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
+
 import {
   Route,
   Switch,
@@ -20,6 +21,13 @@ import {
   useSafePageSelector,
   useUnsafePageSelector
 } from '../../../../common/hooks/use-safe-selector'
+import {
+  useGetExternalRewardsWalletQuery,
+  useGetRewardsBalanceQuery,
+  useGetRewardsEnabledQuery,
+  useGetVisibleNetworksQuery,
+  useGetTokenSpotPricesQuery
+} from '../../../../common/slices/api.slice'
 import { WalletSelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
@@ -32,6 +40,9 @@ import {
 import {
   LOCAL_STORAGE_KEYS
 } from '../../../../common/constants/local-storage-keys'
+import {
+  mockBasicAttentionToken
+} from '../../../../stories/mock-data/mock-asset-options'
 
 // actions
 import { WalletActions } from '../../../../common/actions'
@@ -45,8 +56,8 @@ import {
   getTokenPriceAmountFromRegistry
 } from '../../../../utils/pricing-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
-import { formatAsDouble } from '../../../../utils/string-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { formatAsDouble, toProperCase } from '../../../../utils/string-utils'
 import {
   networkEntityAdapter
 } from '../../../../common/slices/entities/network.entity'
@@ -58,6 +69,10 @@ import {
 } from '../../../../options/group-assets-by-options'
 
 // Components
+import {
+  WalletProviderIcon
+} from '../../../../../brave_rewards/resources/shared/components/icons/wallet_provider_icon'
+
 import { LoadingSkeleton } from '../../../shared'
 import {
   SegmentedControl
@@ -95,12 +110,10 @@ import {
   HorizontalSpace
 } from '../../../shared/style'
 import {
-  useGetVisibleNetworksQuery,
-  useGetTokenSpotPricesQuery
-} from '../../../../common/slices/api.slice'
-import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
+import { WalletStatus } from '../../../../common/async/brave_rewards_api_proxy'
+import styled from 'styled-components'
 
 export const PortfolioOverview = () => {
   // routing
@@ -142,6 +155,14 @@ export const PortfolioOverview = () => {
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
+  const { data: isRewardsEnabled, isLoading: isCheckingRewardsStatus } =
+    useGetRewardsEnabledQuery()
+  const { data: rewardsBalance } = useGetRewardsBalanceQuery(
+    isRewardsEnabled ? undefined : skipToken
+  )
+  const { data: externalRewardsWallet } = useGetExternalRewardsWalletQuery(
+    isRewardsEnabled ? undefined : skipToken
+  )
 
   // State
   const [showPortfolioSettings, setShowPortfolioSettings] =
@@ -438,11 +459,7 @@ export const PortfolioOverview = () => {
       <Column
         fullWidth={true}
         justifyContent='flex-start'
-        margin={
-          hidePortfolioNFTsTab
-            ? '0px 0px 15px 0px'
-            : '0px'
-        }
+        margin={hidePortfolioNFTsTab ? '0px 0px 15px 0px' : '0px'}
       >
         <BalanceAndButtonsWrapper
           fullWidth={true}
@@ -454,40 +471,25 @@ export const PortfolioOverview = () => {
               <BalanceText>
                 {hidePortfolioBalances
                   ? '******'
-                  : formattedFullPortfolioFiatBalance
-                }
+                  : formattedFullPortfolioFiatBalance}
               </BalanceText>
             ) : (
               <Column padding='9px 0px'>
                 <LoadingSkeleton width={150} height={36} />
               </Column>
             )}
-            <Row
-              alignItems='center'
-              justifyContent='center'
-              width='unset'
-            >
+            <Row alignItems='center' justifyContent='center' width='unset'>
               {formattedFullPortfolioFiatBalance !== '' ? (
                 <>
-                  <FiatChange
-                    isDown={isPortfolioDown}
-                  >
+                  <FiatChange isDown={isPortfolioDown}>
                     {hidePortfolioBalances
                       ? '*****'
-                      : `${isPortfolioDown
-                        ? ''
-                        : '+'}${fiatValueChange}`
-                    }
+                      : `${isPortfolioDown ? '' : '+'}${fiatValueChange}`}
                   </FiatChange>
-                  <PercentBubble
-                    isDown={isPortfolioDown}
-                  >
+                  <PercentBubble isDown={isPortfolioDown}>
                     {hidePortfolioBalances
                       ? '*****'
-                      : `${isPortfolioDown
-                        ? ''
-                        : '+'}${percentageChange}%`
-                    }
+                      : `${isPortfolioDown ? '' : '+'}${percentageChange}%`}
                   </PercentBubble>
                 </>
               ) : (
@@ -502,33 +504,82 @@ export const PortfolioOverview = () => {
           <BuySendSwapDepositNav />
         </BalanceAndButtonsWrapper>
         <ColumnReveal hideContent={hidePortfolioGraph}>
-          <SelectTimelineWrapper
-            padding='0px 32px'
-            marginBottom={8}
-          >
+          <SelectTimelineWrapper padding='0px 32px' marginBottom={8}>
             <LineChartControls
               onSelectTimeline={onChangeTimeline}
               selectedTimeline={selectedPortfolioTimeline}
             />
           </SelectTimelineWrapper>
-          <PortfolioOverviewChart
-            hasZeroBalance={isZeroBalance}
-          />
+          <PortfolioOverviewChart hasZeroBalance={isZeroBalance} />
         </ColumnReveal>
       </Column>
 
-      {!hidePortfolioNFTsTab &&
+      {!hidePortfolioNFTsTab && (
         <ControlsRow>
-          <SegmentedControl
-            navOptions={PortfolioNavOptions}
-            width={384}
-          />
+          <SegmentedControl navOptions={PortfolioNavOptions} width={384} />
         </ControlsRow>
-      }
+      )}
 
       <Switch>
         <Route path={WalletRoutes.PortfolioAssets} exact>
           {tokenLists}
+          <div>
+            <h1>Rewards</h1>
+
+            {!isRewardsEnabled && !isCheckingRewardsStatus && (
+              // TODO: implement
+              <button onClick={() => alert('not implemented')}>
+                Enable rewards
+              </button>
+            )}
+
+            {externalRewardsWallet?.status === WalletStatus.kLoggedOut && (
+              <div>
+                <p>LOGGED OUT OF REWARDS</p>
+                {/* // TODO: implement */}
+
+                {/* Provider Icons */}
+                <ProviderIconContainer>
+                  <WalletProviderIcon
+                    provider={externalRewardsWallet.provider}
+                  />
+                </ProviderIconContainer>
+                <button
+                  onClick={() =>
+                    chrome.tabs.create({
+                      url: externalRewardsWallet.links.reconnect
+                    })
+                  }
+                >
+                  LOGIN to your {toProperCase(externalRewardsWallet.provider)}{' '}
+                  account
+                </button>
+              </div>
+            )}
+
+            {externalRewardsWallet?.status === WalletStatus.kNotConnected && (
+              <h1>Rewards account not connected</h1>
+            )}
+
+            {externalRewardsWallet?.status === WalletStatus.kConnected && (
+              <>
+                <PortfolioAssetItem
+                  // TODO: implement
+                  spotPrice={
+                    // TODO: get BAT price
+                    '0'
+                  }
+                  action={() => alert('not implemented')}
+                  assetBalance={new Amount(rewardsBalance || 0).format() || '0'}
+                  token={
+                    // purposely mocked so we don't have to wait for & search a tokens list
+                    mockBasicAttentionToken
+                  }
+                  hideBalances={hidePortfolioBalances}
+                />
+              </>
+            )}
+          </div>
         </Route>
 
         <Route path={WalletRoutes.AddAssetModal} exact>
@@ -546,19 +597,29 @@ export const PortfolioOverview = () => {
         <Route
           path={WalletRoutes.Portfolio}
           exact={true}
-          render={() => <Redirect to={WalletRoutes.PortfolioAssets} />
-          }
+          render={() => <Redirect to={WalletRoutes.PortfolioAssets} />}
         />
-
       </Switch>
 
-      {showPortfolioSettings &&
+      {showPortfolioSettings && (
         <PortfolioFiltersModal
           onClose={() => setShowPortfolioSettings(false)}
         />
-      }
+      )}
     </>
   )
 }
+
+export const ProviderIconContainer = styled.div`
+  height: 40px;
+  width: fit-content;
+  display: inline-block;
+
+  & > svg {
+    height: 100%;
+    width: auto;
+  }
+`
+
 
 export default PortfolioOverview
