@@ -626,6 +626,9 @@ public class BraveRewardsPanel
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT: // UGP grant
                 long claimableUntilGrant = Long.parseLong(args[2]);
+                if (claimableUntilGrant < new Date().getTime()) {
+                    break;
+                }
                 long grantDays =
                         TimeUnit.MILLISECONDS.toDays(claimableUntilGrant - new Date().getTime());
                 notificationClaimImg.setVisibility(View.VISIBLE);
@@ -645,6 +648,9 @@ public class BraveRewardsPanel
                 String grantAmount = args[0];
                 long createdAtGrantAds = Long.parseLong(args[1]);
                 long claimableUntilGrantAds = Long.parseLong(args[2]);
+                if (claimableUntilGrantAds < new Date().getTime()) {
+                    break;
+                }
                 String createdAtMonthGrantAds = (String) android.text.format.DateFormat.format(
                         "MMMM", new Date(createdAtGrantAds));
                 long grantAdsDays =
