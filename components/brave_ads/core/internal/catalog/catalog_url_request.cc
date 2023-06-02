@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/catalog/catalog_request.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request.h"
 
 #include <utility>
 
@@ -35,13 +35,13 @@ constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(15);
 
 }  // namespace
 
-CatalogRequest::CatalogRequest() = default;
+CatalogUrlRequest::CatalogUrlRequest() = default;
 
-CatalogRequest::~CatalogRequest() {
+CatalogUrlRequest::~CatalogUrlRequest() {
   delegate_ = nullptr;
 }
 
-void CatalogRequest::PeriodicallyFetch() {
+void CatalogUrlRequest::PeriodicallyFetch() {
   if (is_periodically_fetching_) {
     return;
   }
@@ -53,12 +53,12 @@ void CatalogRequest::PeriodicallyFetch() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CatalogRequest::Fetch() {
+void CatalogUrlRequest::Fetch() {
   if (is_fetching_ || retry_timer_.IsRunning()) {
     return;
   }
 
-  BLOG(1, "FetchCatalog " << BuildCatalogUrlPath());
+  BLOG(1, "Fetching catalog " << BuildCatalogUrlPath());
 
   is_fetching_ = true;
 
@@ -68,12 +68,13 @@ void CatalogRequest::Fetch() {
   BLOG(7, UrlRequestHeadersToString(url_request));
 
   AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request), base::BindOnce(&CatalogRequest::FetchCallback,
+      std::move(url_request), base::BindOnce(&CatalogUrlRequest::FetchCallback,
                                              weak_factory_.GetWeakPtr()));
 }
 
-void CatalogRequest::FetchCallback(const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnFetchCatalog");
+void CatalogUrlRequest::FetchCallback(
+    const mojom::UrlResponseInfo& url_response) {
+  BLOG(1, "Fetched catalog");
 
   BLOG(7, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
@@ -86,11 +87,7 @@ void CatalogRequest::FetchCallback(const mojom::UrlResponseInfo& url_response) {
   }
 
   if (url_response.status_code != net::HTTP_OK) {
-    if (delegate_) {
-      delegate_->OnFailedToFetchCatalog();
-    }
-
-    return Retry();
+    return FailedToFetchCatalog();
   }
 
   BLOG(1, "Parsing catalog");
@@ -98,57 +95,79 @@ void CatalogRequest::FetchCallback(const mojom::UrlResponseInfo& url_response) {
       json::reader::ReadCatalog(url_response.body);
   if (!catalog) {
     BLOG(1, "Failed to parse catalog");
-
-    if (delegate_) {
-      delegate_->OnFailedToFetchCatalog();
-    }
-
-    return Retry();
+    return FailedToFetchCatalog();
   }
 
   if (catalog->version != kCatalogVersion) {
     BLOG(1, "Catalog version mismatch");
-
-    if (delegate_) {
-      delegate_->OnFailedToFetchCatalog();
-    }
-
-    return Retry();
+    return FailedToFetchCatalog();
   }
 
+  SuccessfullyFetchedCatalog(*catalog);
+}
+
+void CatalogUrlRequest::FetchAfterDelay() {
+  CHECK(!retry_timer_.IsRunning());
+
+  const base::Time fetch_at = timer_.StartWithPrivacy(
+      FROM_HERE, ShouldDebug() ? kDebugCatalogPing : GetCatalogPing(),
+      base::BindOnce(&CatalogUrlRequest::Fetch, weak_factory_.GetWeakPtr()));
+
+  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at));
+
   if (delegate_) {
-    delegate_->OnDidFetchCatalog(*catalog);
+    delegate_->OnWillFetchCatalog(fetch_at);
+  }
+}
+
+void CatalogUrlRequest::SuccessfullyFetchedCatalog(const CatalogInfo& catalog) {
+  StopRetrying();
+
+  BLOG(1, "Successfully fetched catalog");
+
+  if (delegate_) {
+    delegate_->OnDidFetchCatalog(catalog);
   }
 
   FetchAfterDelay();
 }
 
-void CatalogRequest::FetchAfterDelay() {
-  StopRetrying();
+void CatalogUrlRequest::FailedToFetchCatalog() {
+  BLOG(1, "Failed to fetch catalog");
 
-  const base::Time fetch_at = timer_.StartWithPrivacy(
-      FROM_HERE, ShouldDebug() ? kDebugCatalogPing : GetCatalogPing(),
-      base::BindOnce(&CatalogRequest::Fetch, weak_factory_.GetWeakPtr()));
+  if (delegate_) {
+    delegate_->OnFailedToFetchCatalog();
+  }
 
-  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at));
+  Retry();
 }
 
-void CatalogRequest::Retry() {
+void CatalogUrlRequest::Retry() {
+  CHECK(!timer_.IsRunning());
+
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&CatalogRequest::RetryCallback,
+      base::BindOnce(&CatalogUrlRequest::RetryCallback,
                      weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(retry_at));
+
+  if (delegate_) {
+    delegate_->OnWillRetryFetchingCatalog(retry_at);
+  }
 }
 
-void CatalogRequest::RetryCallback() {
+void CatalogUrlRequest::RetryCallback() {
   BLOG(1, "Retry fetching catalog");
+
+  if (delegate_) {
+    delegate_->OnDidRetryFetchingCatalog();
+  }
 
   Fetch();
 }
 
-void CatalogRequest::StopRetrying() {
+void CatalogUrlRequest::StopRetrying() {
   retry_timer_.Stop();
 }
 
