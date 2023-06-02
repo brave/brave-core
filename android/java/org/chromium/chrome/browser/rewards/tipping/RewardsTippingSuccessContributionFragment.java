@@ -65,7 +65,10 @@ public class RewardsTippingSuccessContributionFragment extends BottomSheetDialog
 
     private void setGoBackClick(View view) {
         View goBackButton = view.findViewById(R.id.go_back_button);
-        goBackButton.setOnClickListener(v -> { dismiss(); });
+        goBackButton.setOnClickListener(v -> {
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
+        });
     }
 
     private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
