@@ -281,6 +281,7 @@ public class CardBuilderFeedCard {
                     (LinearLayout.LayoutParams) adLayoutUp.getLayoutParams();
             adImageLinearParams.weight = 1.0f;
             adImage.setLayoutParams(adImageLinearParams);
+            adImage.setContentDescription(mActivity.getResources().getText(R.string.brave_news_ad));
 
             setDisplayAdImage(adImage, adData.image, 1);
             adLayoutUp.addView(adImage);

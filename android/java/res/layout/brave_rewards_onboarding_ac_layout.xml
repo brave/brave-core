@@ -73,6 +73,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:stepSize="1.0"
+              android:contentDescription="@string/slider"
               android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
               app:trackColor="@color/rewards_onboarding_ac_slider_track_color"
               app:trackColorActive="@color/rewards_onboarding_ac_slider_active_track_color" />

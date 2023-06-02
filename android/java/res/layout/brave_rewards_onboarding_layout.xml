@@ -147,7 +147,7 @@
                 android:id="@+id/brave_rewards_onboarding_layout_modal_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@null"
+                android:contentDescription="@string/close_text"
                 android:layout_gravity="end|top"
                 android:src="@drawable/btn_close"/>
 

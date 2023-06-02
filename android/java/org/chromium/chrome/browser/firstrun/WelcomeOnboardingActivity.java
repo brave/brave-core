@@ -65,8 +65,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private ImageView mIvBrave;
     private ImageView mIvArrowDown;
     private LinearLayout mLayoutCard;
-    private LinearLayout mLayoutCrash;
-    private LinearLayout mLayoutP3a;
     private TextView mTvWelcome;
     private TextView mTvCard;
     private TextView mTvDefault;
@@ -99,8 +97,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         mIvBrave = findViewById(R.id.iv_brave);
         mIvArrowDown = findViewById(R.id.iv_arrow_down);
         mLayoutCard = findViewById(R.id.layout_card);
-        mLayoutCrash = findViewById(R.id.layout_crash);
-        mLayoutP3a = findViewById(R.id.layout_p3a);
         mTvWelcome = findViewById(R.id.tv_welcome);
         mTvCard = findViewById(R.id.tv_card);
         mTvDefault = findViewById(R.id.tv_default);
@@ -319,11 +315,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             if (mTvCard != null) {
                 mTvCard.setVisibility(View.VISIBLE);
             }
-            if (mLayoutCrash != null) {
-                mLayoutCrash.setVisibility(View.VISIBLE);
+            if (mCheckboxCrash != null) {
+                mCheckboxCrash.setVisibility(View.VISIBLE);
             }
-            if (mLayoutP3a != null) {
-                mLayoutP3a.setVisibility(View.VISIBLE);
+            if (mCheckboxP3a != null) {
+                mCheckboxP3a.setVisibility(View.VISIBLE);
             }
             if (mLayoutCard != null) {
                 mLayoutCard.setVisibility(View.VISIBLE);

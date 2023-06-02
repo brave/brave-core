@@ -282,6 +282,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_LIKING_BRAVE"  desc="Text for Liking Brave?">
         Liking Brave?
       </message>
+      <message name="IDS_HAPPY"  desc="Text for happy">
+        Happy
+      </message>
+      <message name="IDS_SAD"  desc="Text for sad">
+        Sad
+      </message>
       <message name="IDS_LEAVE_A_PLAY_STORE_RATING"  desc="Text for Leave a Play Store rating?">
         Leave a Play Store rating?
       </message>
@@ -1570,6 +1576,9 @@ Are you sure you want to do this?
       <message name="IDS_TURN_ON_PRIVACY_STATS" desc="Button text for onboading bottomsheet.">
         Turn on privacy reports
       </message>
+      <message name="IDS_VISIBILITY" desc="Text for visibility.">
+        Visibility
+      </message>
       <message name="IDS_WEEK" desc="Tab title text">
         Week
       </message>
@@ -1734,6 +1743,9 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_YOU_CAN_CHANGE_THIS_LATER" desc="Brave rewards onboarding text">
         You can change this later.
+      </message>
+      <message name="IDS_SLIDER" desc="Text for slider">
+        Slider
       </message>
       <message name="IDS_HOW_OFTEN_DO_YOU_SEE_ADS" desc="Brave rewards onboarding text">
         How often do you want to see ads?
