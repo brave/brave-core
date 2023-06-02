@@ -4,9 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  useSelector
-} from 'react-redux'
+import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
@@ -36,12 +34,13 @@ import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 import { Column, Flex, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
 import {
   Description,
+  NextButtonRow,
   Title
 } from '../onboarding/onboarding.style'
 import {
   ScrollContainer,
   SearchWrapper,
-  SelectAssetWrapper
+  SelectAssetWrapper,
 } from './fund-wallet.style'
 
 // components
@@ -50,12 +49,19 @@ import SelectAccountItem from '../../../components/shared/select-account-item'
 import SelectAccount from '../../../components/shared/select-account'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
 import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
+import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account'
 import SwapInputComponent from '../../../components/buy-send-swap/swap-input-component'
 import SelectHeader from '../../../components/buy-send-swap/select-header'
 import { SelectCurrency } from '../../../components/buy-send-swap/select-currency/select-currency'
 
-export const FundWalletScreen = () => {
+interface Props {
+  showBuyOptions: boolean
+  onShowBuyOptions: (showBuyOptions: boolean) => void
+}
+
+export const FundWalletScreen = (props: Props) => {
+  const { showBuyOptions, onShowBuyOptions } = props
   // redux
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
@@ -87,12 +93,14 @@ export const FundWalletScreen = () => {
   const scrollIntoView = useScrollIntoView()
 
   // state
-  const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
   const [showFiatSelection, setShowFiatSelection] = React.useState<boolean>(false)
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [selectedCurrency, setSelectedCurrency] = React.useState<string>(defaultCurrencies.fiat || 'usd')
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
+
+  // memos & computed
+  const isNextStepEnabled = !!selectedAsset
 
   const selectedNetwork = selectedAssetNetwork || selectedNetworkFromFilter
 
@@ -139,6 +147,13 @@ export const FundWalletScreen = () => {
     setSelectedAccount(account)
   }, [closeAccountSearch])
 
+  const nextStep = React.useCallback(() => {
+    if (!isNextStepEnabled) {
+      return
+    }
+    onShowBuyOptions(true)
+  }, [isNextStepEnabled, onShowBuyOptions])
+
   const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
     if (!selectedAsset || !selectedAssetNetwork || !selectedAccount) {
       return
@@ -150,9 +165,9 @@ export const FundWalletScreen = () => {
   }, [selectedAsset, selectedAssetNetwork, selectedAccount, selectedCurrency])
 
   const goBackToSelectAssets = React.useCallback(() => {
-    setShowBuyOptions(false)
+    onShowBuyOptions(false)
     setSelectedAsset(undefined)
-  }, [])
+  }, [onShowBuyOptions])
 
   const checkIsBuyAssetSelected = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (selectedAsset) {
@@ -229,6 +244,12 @@ export const FundWalletScreen = () => {
     selectedAccount
   ])
 
+  React.useEffect(() => {
+    if(!showBuyOptions && showAccountSearch) {
+      closeAccountSearch()
+    }
+  }, [showBuyOptions, showAccountSearch, closeAccountSearch])
+
   // render
   return (
     <>
@@ -288,6 +309,19 @@ export const FundWalletScreen = () => {
             <VerticalSpace space='12px' />
 
           </SelectAssetWrapper>
+
+          <NextButtonRow>
+            <NavButton
+              buttonType='primary'
+              text={
+                selectedAsset
+                  ? getLocale('braveWalletBuyContinueButton')
+                  : getLocale('braveWalletBuySelectAsset')
+              }
+              onSubmit={nextStep}
+              disabled={!isNextStepEnabled}
+            />
+          </NextButtonRow>
         </>
       }
 

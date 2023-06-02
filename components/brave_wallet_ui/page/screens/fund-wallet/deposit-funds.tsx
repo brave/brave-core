@@ -41,8 +41,9 @@ import {
 // style
 import { Column, CopyButton, HorizontalSpace, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
 import {
-  Title,
   Description,
+  NextButtonRow,
+  Title
 } from '../onboarding/onboarding.style'
 import {
   AddressText,
@@ -60,6 +61,7 @@ import SelectAccountItem from '../../../components/shared/select-account-item/in
 import SelectAccount from '../../../components/shared/select-account/index'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
 import { CopiedToClipboardConfirmation } from '../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
+import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account/index'
 import SelectHeader from '../../../components/buy-send-swap/select-header/index'
 import {
@@ -68,7 +70,14 @@ import {
 } from '../../../utils/asset-utils'
 import { DepositTitle } from './deposit-funds.style'
 
-export const DepositFundsScreen = () => {
+interface Props {
+  showDepositAddress: boolean
+  onShowDepositAddress: (showDepositAddress: boolean) => void
+}
+
+export const DepositFundsScreen = (props: Props) => {
+  const { showDepositAddress, onShowDepositAddress } = props
+
   // redux
   const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
@@ -81,7 +90,6 @@ export const DepositFundsScreen = () => {
   const scrollIntoView = useScrollIntoView()
 
   // state
-  const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [qrCode, setQRCode] = React.useState<string>('')
@@ -97,6 +105,8 @@ export const DepositFundsScreen = () => {
   )
 
   // memos
+  const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
+
   const mainnetNetworkAssetsList = React.useMemo(() => {
     return (mainnetsList || []).map(makeNetworkAsset)
   }, [mainnetsList])
@@ -174,10 +184,18 @@ export const DepositFundsScreen = () => {
     resetCopyState()
   }, [closeAccountSearch, resetCopyState])
 
+  const nextStep = React.useCallback(() => {
+    if (!isNextStepEnabled || !selectedAssetNetwork) {
+      return
+    }
+    onShowDepositAddress(true)
+  }, [isNextStepEnabled, selectedAssetNetwork, onShowDepositAddress])
+
   const goBackToSelectAssets = React.useCallback(() => {
-    setShowDepositAddress(false)
+    onShowDepositAddress(false)
+    resetCopyState()
     setSelectedAsset(undefined)
-  }, [])
+  }, [onShowDepositAddress, resetCopyState])
 
   const copyAddressToClipboard = React.useCallback(() => {
     copyToClipboard(selectedAccount?.address || '')
@@ -248,9 +266,22 @@ export const DepositFundsScreen = () => {
     }
   }, [fullTokenList])
 
+  React.useEffect(() => {
+    if (!showDepositAddress) {
+      if (isCopied) {
+        resetCopyState()
+      }
+
+      if (showAccountSearch) {
+        closeAccountSearch()
+      }
+    }
+  }, [showDepositAddress, showAccountSearch, isCopied, closeAccountSearch, resetCopyState])
+
   // render
   return (
     <>
+
       {/* Asset Selection */}
       {!showDepositAddress &&
         <>
@@ -292,6 +323,19 @@ export const DepositFundsScreen = () => {
             <VerticalSpace space={'12px'} />
 
           </SelectAssetWrapper>
+
+          <NextButtonRow>
+            <NavButton
+              buttonType={'primary'}
+              text={
+                selectedAsset
+                  ? getLocale('braveWalletButtonContinue')
+                  : getLocale('braveWalletBuySelectAsset')
+              }
+              onSubmit={nextStep}
+              disabled={!isNextStepEnabled}
+            />
+          </NextButtonRow>
         </>
       }
 
