@@ -531,8 +531,12 @@ public class BrowserViewController: UIViewController {
     // Used in App Rating criteria
     AppReviewManager.shared.processMainCriteria(for: .daysInUse)
     
+    // P3A Record
     maybeRecordInitialShieldsP3A()
     recordVPNUsageP3A(vpnEnabled: BraveVPN.isConnected)
+    recordAccessibilityDisplayZoomEnabledP3A()
+    recordAccessibilityDocumentsDirectorySizeP3A()
+    recordTimeBasedNumberReaderModeUsedP3A(activated: false)
     
     // Revised Review Handling
     AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)

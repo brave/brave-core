@@ -8,6 +8,9 @@ import Preferences
 import Growth
 import Data
 import BraveShields
+import BraveCore
+import Shared
+import os.log
 
 extension BrowserViewController {
   
@@ -94,6 +97,92 @@ extension BrowserViewController {
     
     usage.recordReturningUsageMetric()
   }
+  
+  func recordAccessibilityDisplayZoomEnabledP3A() {
+    // Q100 Do you have iOS display zoom enabled?
+    let isDisplayZoomEnabled = UIScreen.main.scale < UIScreen.main.nativeScale
+    UmaHistogramBoolean("Brave.Accessibility.DisplayZoomEnabled", isDisplayZoomEnabled)
+  }
+  
+  func recordAccessibilityDocumentsDirectorySizeP3A() {
+    func fetchDocumentsAndDataSize() -> Int? {
+      let fileManager = FileManager.default
+      
+      var directorySize = 0
+      
+      if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+        do {
+          if let documentsDirectorySize = try fileManager.directorySize(at: documentsDirectory){
+            directorySize += Int(documentsDirectorySize / 1024 / 1024)
+          }
+        } catch {
+          Logger.module.error("Cant fetch document directory size")
+          return nil
+        }
+      }
+      
+      let temporaryDirectory = FileManager.default.temporaryDirectory
+      
+      do {
+        if let temporaryDirectorySize = try fileManager.directorySize(at: temporaryDirectory){
+          directorySize += Int(temporaryDirectorySize / 1024 / 1024)
+        }
+      } catch {
+        Logger.module.error("Cant fetch temporary directory size")
+        return nil
+      }
+      
+      return directorySize
+    }
+    
+    let buckets: [Bucket] = [
+      .r(0...50),
+      .r(50...200),
+      .r(200...500),
+      .r(500...1000),
+      .r(1000...),
+    ]
+    
+    // Q103 What is the document directory size in MB?
+    if let documentsSize = fetchDocumentsAndDataSize() {
+      UmaHistogramRecordValueToBucket("Brave.Core.DocumentsDirectorySizeMB", buckets: buckets, value: documentsSize)
+    }
+  }
+
+  func recordGeneralBottomBarLocationP3A() {
+    if UIDevice.isIpad {
+      return
+    }
+      
+    enum Answer: Int, CaseIterable {
+      case top = 0
+      case bottom = 1
+    }
+    
+    // Q101 Which location Bottom bar being used?
+    let answer: Answer = Preferences.General.isUsingBottomBar.value ? .bottom : .top
+    UmaHistogramEnumeration("Brave.General.BottomBarLocation", sample: answer)
+  }
+  
+  func recordTimeBasedNumberReaderModeUsedP3A(activated: Bool) {
+    var storage = P3ATimedStorage<Int>.readerModeActivated
+    if activated {
+      storage.add(value: 1, to: Date())
+    }
+    
+    // Q102- How many times did you use reader mode in the last 7 days?
+    UmaHistogramRecordValueToBucket(
+      "Brave.ReaderMode.NumberReaderModeActivated",
+      buckets: [
+        0,
+        .r(1...5),
+        .r(5...20),
+        .r(20...50),
+        .r(51...)
+      ],
+      value: storage.combinedValue
+    )
+  }
 }
 
 extension P3AFeatureUsage {
@@ -108,4 +197,5 @@ extension P3ATimedStorage where Value == Int {
   /// Holds timed storage for question 21 (`Brave.Savings.BandwidthSavingsMB`)
   fileprivate static var dataSavedStorage: Self { .init(name: "data-saved", lifetimeInDays: 7) }
   fileprivate static var braveVPNDaysInMonthUsedStorage: Self { .init(name: "vpn-days-in-month-used", lifetimeInDays: 30) }
+  fileprivate static var readerModeActivated: Self { .init(name: "reader-mode-activated", lifetimeInDays: 7) }
 }
