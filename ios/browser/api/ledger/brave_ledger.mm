@@ -16,6 +16,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
+#include "base/threading/thread.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
@@ -97,12 +98,7 @@ static const auto kOneDay =
 /// ---
 
 @interface BraveLedger () <LedgerClientBridge> {
-  // DO NOT ACCESS DIRECTLY, use `postLedgerTask` or ensure you are accessing
-  // _ledger from a task posted in `_ledgerTaskRunner`
-  std::unique_ptr<brave_rewards::internal::LedgerImpl,
-                  brave_rewards::internal::task_deleter<
-                      brave_rewards::internal::LedgerImpl>>
-      _ledger;
+  std::unique_ptr<base::Thread> _ledgerThread;
   std::unique_ptr<LedgerClientIOS,
                   brave_rewards::internal::task_deleter<LedgerClientIOS>>
       _ledgerClient;
@@ -145,10 +141,9 @@ static const auto kOneDay =
 
 - (instancetype)initWithStateStoragePath:(NSString*)path {
   if ((self = [super init])) {
-    _ledgerTaskRunner = base::ThreadPool::CreateSequencedTaskRunner(
-        {base::MayBlock(), base::WithBaseSyncPrimitives(),
-         base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+    _ledgerThread = std::make_unique<base::Thread>("ledger");
+    _ledgerThread->Start();
+    _ledgerTaskRunner = _ledgerThread->task_runner();
 
     self.storagePath = path;
     self.commonOps =
@@ -175,8 +170,6 @@ static const auto kOneDay =
       self.prefs[walletProviderRegionsKey] = @"{}";
     }
 
-    [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
-
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
@@ -191,10 +184,10 @@ static const auto kOneDay =
         FROM_HERE, base::BindOnce(^{
           self->_ledgerClient =
               brave_rewards::internal::make_task_ptr<LedgerClientIOS>(self);
-          self->_ledger = brave_rewards::internal::make_task_ptr<
-              brave_rewards::internal::LedgerImpl>(
-              self->_ledgerClient->MakeRemote());
+          brave_rewards::internal::ledger(self->_ledgerClient->MakeRemote());
         }));
+
+    [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter
@@ -217,40 +210,38 @@ static const auto kOneDay =
 }
 
 - (void)handleFlags:(const brave_rewards::RewardsFlags&)flags {
-  if (flags.environment) {
-    switch (*flags.environment) {
-      case brave_rewards::RewardsFlags::Environment::kDevelopment:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::DEVELOPMENT;
-        break;
-      case brave_rewards::RewardsFlags::Environment::kStaging:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::STAGING;
-        break;
-      case brave_rewards::RewardsFlags::Environment::kProduction:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::PRODUCTION;
-        break;
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    if (flags.environment) {
+      switch (*flags.environment) {
+        case brave_rewards::RewardsFlags::Environment::kDevelopment:
+          ledger.SetEnvironment(brave_rewards::mojom::Environment::DEVELOPMENT);
+          break;
+        case brave_rewards::RewardsFlags::Environment::kStaging:
+          ledger.SetEnvironment(brave_rewards::mojom::Environment::STAGING);
+          break;
+        case brave_rewards::RewardsFlags::Environment::kProduction:
+          ledger.SetEnvironment(brave_rewards::mojom::Environment::PRODUCTION);
+          break;
+      }
     }
-  }
 
-  if (flags.debug) {
-    brave_rewards::internal::is_debug = true;
-  }
+    if (flags.debug) {
+      ledger.SetDebug(true);
+    }
 
-  if (flags.reconcile_interval) {
-    brave_rewards::internal::reconcile_interval = *flags.reconcile_interval;
-  }
+    if (flags.reconcile_interval) {
+      ledger.SetReconcileInterval(*flags.reconcile_interval);
+    }
 
-  if (flags.retry_interval) {
-    brave_rewards::internal::retry_interval = *flags.retry_interval;
-  }
+    if (flags.retry_interval) {
+      ledger.SetRetryInterval(*flags.retry_interval);
+    }
+  }];
 }
 
-- (void)postLedgerTask:(void (^)(brave_rewards::internal::LedgerImpl*))task {
+- (void)postLedgerTask:(void (^)(brave_rewards::internal::LedgerImpl&))task {
   _ledgerTaskRunner->PostTask(FROM_HERE, base::BindOnce(^{
-                                CHECK(self->_ledger != nullptr);
-                                task(self->_ledger.get());
+                                task(brave_rewards::internal::ledger());
                               }));
 }
 
@@ -260,8 +251,8 @@ static const auto kOneDay =
   }
   self.initializing = YES;
 
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->Initialize(base::BindOnce(^(brave_rewards::mojom::Result result) {
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.Initialize(base::BindOnce(^(brave_rewards::mojom::Result result) {
       self.initialized =
           (result == brave_rewards::mojom::Result::LEDGER_OK ||
            result == brave_rewards::mojom::Result::NO_LEDGER_STATE ||
@@ -343,8 +334,8 @@ static const auto kOneDay =
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->CreateRewardsWallet(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.CreateRewardsWallet(
         "", base::BindOnce(^(
                 brave_rewards::mojom::CreateRewardsWalletResult create_result) {
           const auto strongSelf = weakSelf;
@@ -405,8 +396,8 @@ static const auto kOneDay =
 
 - (void)currentWalletInfo:
     (void (^)(BraveRewardsRewardsWallet* _Nullable wallet))completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->GetRewardsWallet(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.GetRewardsWallet(
         base::BindOnce(^(brave_rewards::mojom::RewardsWalletPtr wallet) {
           const auto bridgedWallet = wallet.get() != nullptr
                                          ? [[BraveRewardsRewardsWallet alloc]
@@ -421,8 +412,8 @@ static const auto kOneDay =
 
 - (void)getRewardsParameters:
     (void (^)(BraveRewardsRewardsParameters* _Nullable))completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->GetRewardsParameters(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.GetRewardsParameters(
         base::BindOnce(^(brave_rewards::mojom::RewardsParametersPtr info) {
           if (info) {
             self.rewardsParameters = [[BraveRewardsRewardsParameters alloc]
@@ -442,8 +433,8 @@ static const auto kOneDay =
 
 - (void)fetchBalance:(void (^)(BraveRewardsBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->FetchBalance(base::BindOnce(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.FetchBalance(base::BindOnce(
         ^(base::expected<brave_rewards::mojom::BalancePtr,
                          brave_rewards::mojom::FetchBalanceError> result) {
           const auto strongSelf = weakSelf;
@@ -486,11 +477,11 @@ static const auto kOneDay =
                        completion:
                            (void (^)(NSArray<BraveRewardsPublisherInfo*>*))
                                completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
     auto cppFilter = filter ? filter.cppObjPtr
                             : brave_rewards::mojom::ActivityInfoFilter::New();
     if (filter.excluded == BraveRewardsExcludeFilterFilterExcluded) {
-      ledger->GetExcludedList(base::BindOnce(^(
+      ledger.GetExcludedList(base::BindOnce(^(
           std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
         const auto publishers = NSArrayFromVector(
             &list, ^BraveRewardsPublisherInfo*(
@@ -503,7 +494,7 @@ static const auto kOneDay =
         });
       }));
     } else {
-      ledger->GetActivityInfoList(
+      ledger.GetActivityInfoList(
           start, limit, std::move(cppFilter),
           base::BindOnce(^(
               std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
@@ -525,7 +516,7 @@ static const auto kOneDay =
                            faviconURL:(nullable NSURL*)faviconURL
                         publisherBlob:(nullable NSString*)publisherBlob
                                 tabId:(uint64_t)tabId {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
     if (!URL.absoluteString) {
       return;
     }
@@ -561,7 +552,7 @@ static const auto kOneDay =
       blob = base::SysNSStringToUTF8(publisherBlob);
     }
 
-    ledger->GetPublisherActivityFromUrl(tabId, std::move(visitData), blob);
+    ledger.GetPublisherActivityFromUrl(tabId, std::move(visitData), blob);
   }];
 }
 
@@ -572,8 +563,8 @@ static const auto kOneDay =
     completion(BraveRewardsPublisherStatusNotVerified);
     return;
   }
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->RefreshPublisher(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.RefreshPublisher(
         base::SysNSStringToUTF8(publisherId),
         base::BindOnce(^(brave_rewards::mojom::PublisherStatus status) {
           dispatch_async(dispatch_get_main_queue(), ^{
@@ -587,8 +578,8 @@ static const auto kOneDay =
 
 - (void)listRecurringTips:
     (void (^)(NSArray<BraveRewardsPublisherInfo*>*))completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->GetRecurringTips(base::BindOnce(^(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.GetRecurringTips(base::BindOnce(^(
         std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
       const auto publishers = NSArrayFromVector(
           &list, ^BraveRewardsPublisherInfo*(
@@ -604,8 +595,8 @@ static const auto kOneDay =
 }
 
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->RemoveRecurringTip(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.RemoveRecurringTip(
         base::SysNSStringToUTF8(publisherId),
         base::BindOnce(^(brave_rewards::mojom::Result result){
             // Not Used
@@ -632,8 +623,8 @@ static const auto kOneDay =
 }
 
 - (void)updatePendingAndFinishedPromotions:(void (^)())completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->GetAllPromotions(base::BindOnce(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.GetAllPromotions(base::BindOnce(
         ^(base::flat_map<std::string, brave_rewards::mojom::PromotionPtr> map) {
           NSMutableArray* promos = [[NSMutableArray alloc] init];
           for (auto it = map.begin(); it != map.end(); ++it) {
@@ -672,8 +663,8 @@ static const auto kOneDay =
 
 - (void)fetchPromotions:
     (nullable void (^)(NSArray<BraveRewardsPromotion*>* grants))completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->FetchPromotions(base::BindOnce(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.FetchPromotions(base::BindOnce(
         ^(brave_rewards::mojom::Result result,
           std::vector<brave_rewards::mojom::PromotionPtr> promotions) {
           if (result != brave_rewards::mojom::Result::LEDGER_OK) {
@@ -705,8 +696,8 @@ static const auto kOneDay =
   }
   const auto jsonString = [[NSString alloc] initWithData:jsonData
                                                 encoding:NSUTF8StringEncoding];
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->ClaimPromotion(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.ClaimPromotion(
         base::SysNSStringToUTF8(promotionId),
         base::SysNSStringToUTF8(jsonString),
         base::BindOnce(^(brave_rewards::mojom::Result result,
@@ -724,8 +715,8 @@ static const auto kOneDay =
              completion:(void (^)(BraveRewardsResult result,
                                   BraveRewardsPromotion* _Nullable promotion))
                             completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->AttestPromotion(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.AttestPromotion(
         base::SysNSStringToUTF8(promotionId),
         base::SysNSStringToUTF8(solution.JSONPayload),
         base::BindOnce(^(brave_rewards::mojom::Result result,
@@ -777,8 +768,8 @@ static const auto kOneDay =
 
 - (void)rewardsInternalInfo:
     (void (^)(BraveRewardsRewardsInternalsInfo* _Nullable info))completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->GetRewardsInternalsInfo(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.GetRewardsInternalsInfo(
         base::BindOnce(^(brave_rewards::mojom::RewardsInternalsInfoPtr info) {
           auto bridgedInfo = info.get() != nullptr
                                  ? [[BraveRewardsRewardsInternalsInfo alloc]
@@ -794,8 +785,8 @@ static const auto kOneDay =
 - (void)allContributions:
     (void (^)(NSArray<BraveRewardsContributionInfo*>* contributions))
         completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->GetAllContributions(base::BindOnce(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.GetAllContributions(base::BindOnce(
         ^(std::vector<brave_rewards::mojom::ContributionInfoPtr> list) {
           const auto convetedList = NSArrayFromVector(
               &list, ^BraveRewardsContributionInfo*(
@@ -813,8 +804,8 @@ static const auto kOneDay =
 - (void)fetchAutoContributeProperties:
     (void (^)(BraveRewardsAutoContributeProperties* _Nullable properties))
         completion {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->GetAutoContributeProperties(base::BindOnce(
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.GetAutoContributeProperties(base::BindOnce(
         ^(brave_rewards::mojom::AutoContributePropertiesPtr props) {
           auto properties =
               props.get() != nullptr
@@ -838,14 +829,14 @@ static const auto kOneDay =
   const auto time = [[NSDate date] timeIntervalSince1970];
   if (_selectedTabId != selectedTabId) {
     const auto oldTabId = _selectedTabId;
-    [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-      ledger->OnHide(oldTabId, time);
+    [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+      ledger.OnHide(oldTabId, time);
     }];
   }
   _selectedTabId = selectedTabId;
   if (_selectedTabId > 0) {
-    [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-      ledger->OnShow(selectedTabId, time);
+    [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+      ledger.OnShow(selectedTabId, time);
     }];
   }
 }
@@ -856,8 +847,8 @@ static const auto kOneDay =
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->OnForeground(self.selectedTabId, time);
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.OnForeground(self.selectedTabId, time);
   }];
 
   // Check if the last notification check was more than a day ago
@@ -872,8 +863,8 @@ static const auto kOneDay =
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->OnBackground(self.selectedTabId, time);
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.OnBackground(self.selectedTabId, time);
   }];
 }
 
@@ -883,7 +874,7 @@ static const auto kOneDay =
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
     GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
     url::Origin origin = url::Origin::Create(parsedUrl);
     const std::string baseDomain = GetDomainAndRegistry(
@@ -905,7 +896,7 @@ static const auto kOneDay =
     data->tab_id = tabId;
     data->url = publisher_url;
 
-    ledger->OnLoad(std::move(data), time);
+    ledger.OnLoad(std::move(data), time);
   }];
 }
 
@@ -917,7 +908,7 @@ static const auto kOneDay =
     return;
   }
 
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
     base::flat_map<std::string, std::string> partsMap;
     const auto urlComponents = [[NSURLComponents alloc] initWithURL:url
                                             resolvingAgainstBaseURL:NO];
@@ -939,8 +930,8 @@ static const auto kOneDay =
             ? base::SysNSStringToUTF8(firstPartyURL.absoluteString)
             : "";
 
-    ledger->OnXHRLoad(tabId, base::SysNSStringToUTF8(url.absoluteString),
-                      partsMap, fpu, ref, std::move(visit));
+    ledger.OnXHRLoad(tabId, base::SysNSStringToUTF8(url.absoluteString),
+                     partsMap, fpu, ref, std::move(visit));
   }];
 }
 
@@ -950,34 +941,34 @@ static const auto kOneDay =
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->OnUnload(tabId, time);
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.OnUnload(tabId, time);
   }];
 }
 
 #pragma mark - Preferences
 
 - (void)setMinimumVisitDuration:(int)minimumVisitDuration {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->SetPublisherMinVisitTime(minimumVisitDuration);
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.SetPublisherMinVisitTime(minimumVisitDuration);
   }];
 }
 
 - (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->SetPublisherMinVisits(minimumNumberOfVisits);
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.SetPublisherMinVisits(minimumNumberOfVisits);
   }];
 }
 
 - (void)setContributionAmount:(double)contributionAmount {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->SetAutoContributionAmount(contributionAmount);
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.SetAutoContributionAmount(contributionAmount);
   }];
 }
 
 - (void)setAutoContributeEnabled:(bool)autoContributeEnabled {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->SetAutoContributeEnabled(autoContributeEnabled);
+  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl& ledger) {
+    ledger.SetAutoContributeEnabled(autoContributeEnabled);
   }];
 }
 
@@ -1310,6 +1301,12 @@ static const auto kOneDay =
   }
 }
 
+- (void)onContributeUnverifiedPublishers:(brave_rewards::mojom::Result)result
+                            publisherKey:(const std::string&)publisher_key
+                           publisherName:(const std::string&)publisher_name {
+  // Not used on iOS
+}
+
 - (void)onPublisherRegistryUpdated {
   // Not used on iOS
 }
@@ -1360,6 +1357,10 @@ static const auto kOneDay =
               std::move(completion).Run(std::move(response));
           },
           std::move(callback)));
+}
+
+- (void)pendingContributionSaved:(const brave_rewards::mojom::Result)result {
+  // Not used on iOS
 }
 
 - (void)walletDisconnected:(const std::string&)wallet_type {
