@@ -506,14 +506,14 @@ Config.prototype.buildArgs = function () {
       args.chrome_public_manifest_package = 'com.brave.browser'
     } else if (this.channel === 'beta') {
       args.chrome_public_manifest_package = 'com.brave.browser_beta'
-      args.exclude_unwind_tables = false
     } else if (this.channel === 'dev') {
       args.chrome_public_manifest_package = 'com.brave.browser_dev'
     } else if (this.channel === 'nightly') {
       args.android_channel = 'canary'
       args.chrome_public_manifest_package = 'com.brave.browser_nightly'
-      args.exclude_unwind_tables = false
     }
+    // exclude_unwind_tables is inherited form upstream and is false for any
+    // Android build
 
     args.target_android_base = this.targetAndroidBase
     args.target_android_output_format =
