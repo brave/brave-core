@@ -9,9 +9,9 @@ import Shared
 import XCTest
 
 class BraveTalkTests: XCTestCase {
-  @MainActor func testBraveTalkJitsiIntegrationDisabledOnRelease() {
+  @MainActor func testBraveTalkJitsiIntegrationEnabledOnRelease() {
     AppConstants.buildChannel = .release
-    XCTAssertFalse(BraveTalkJitsiCoordinator.isIntegrationEnabled)
+    XCTAssertTrue(BraveTalkJitsiCoordinator.isIntegrationEnabled)
   }
   
   @MainActor func testBraveTalkJitsiIntegrationEnabledOnBeta() {

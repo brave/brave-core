@@ -13,7 +13,8 @@ import JitsiMeetSDK
 @MainActor public class BraveTalkJitsiCoordinator: Sendable {
   /// Whether or not the jitsi SDK integration is enabled
   static var isIntegrationEnabled: Bool {
-    return AppConstants.buildChannel != .release
+    // If needed to disable for certain build channels, check AppConstants.buildChannel here
+    return true
   }
   
   public init() {}
