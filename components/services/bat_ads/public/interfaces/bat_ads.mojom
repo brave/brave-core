@@ -22,11 +22,15 @@ interface BatAdsService {
 interface BatAdsClientNotifier {
   // See AdsClientNotifier for documentation.
 
+  NotifyDidInitializeAds();
+
   NotifyLocaleDidChange(string locale);
 
   NotifyPrefDidChange(string path);
 
-  NotifyDidUpdateResourceComponent(string id);
+  NotifyDidUpdateResourceComponent(string manifest_version, string id);
+
+  NotifyRewardsWalletDidUpdate(string payment_id, string recovery_seed);
 
   NotifyTabHtmlContentDidChange(int32 tab_id,
                                 array<url.mojom.Url> redirect_chain,
@@ -152,12 +156,10 @@ interface BatAds {
 
   SetFlags(brave_ads.mojom.Flags flags);
 
-  Initialize() => (bool success);
+  Initialize(brave_ads.mojom.WalletInfo? wallet) => (bool success);
   Shutdown() => (bool success);
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
-
-  OnRewardsWalletDidChange(string payment_id, string recovery_seed);
 
   GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? statement);
 
@@ -166,28 +168,28 @@ interface BatAds {
   TriggerInlineContentAdEvent(
       string placement_id,
       string creative_instance_id,
-      brave_ads.mojom.InlineContentAdEventType event_type);
+      brave_ads.mojom.InlineContentAdEventType event_type) => (bool success);
 
   MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
   TriggerNewTabPageAdEvent(
       string placement_id,
       string creative_instance_id,
-      brave_ads.mojom.NewTabPageAdEventType event_type);
+      brave_ads.mojom.NewTabPageAdEventType event_type) => (bool success);
 
   MaybeGetNotificationAd(string placement_id) =>
       (mojo_base.mojom.DictionaryValue? value);
   TriggerNotificationAdEvent(
       string placement_id,
-      brave_ads.mojom.NotificationAdEventType event_type);
+      brave_ads.mojom.NotificationAdEventType event_type) => (bool success);
 
   TriggerPromotedContentAdEvent(
       string placement_id,
       string creative_instance_id,
-      brave_ads.mojom.PromotedContentAdEventType event_type);
+      brave_ads.mojom.PromotedContentAdEventType event_type) => (bool success);
 
   TriggerSearchResultAdEvent(
       brave_ads.mojom.SearchResultAdInfo ad_mojom,
-      brave_ads.mojom.SearchResultAdEventType event_type);
+      brave_ads.mojom.SearchResultAdEventType event_type) => (bool success);
 
   PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType ad_type) =>
       (bool success);

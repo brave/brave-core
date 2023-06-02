@@ -11,7 +11,9 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/internal/common/locale/subdivision_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -23,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_json_reader_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/supported_subdivision_codes.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "net/http/http_status_code.h"
 
@@ -36,6 +39,10 @@ constexpr char kDisabled[] = "DISABLED";
 constexpr base::TimeDelta kFetchAfter = base::Days(1);
 constexpr base::TimeDelta kDebugFetchAfter = base::Minutes(5);
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
+
+bool ShouldAllowAndFetch() {
+  return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews();
+}
 
 }  // namespace
 
@@ -60,21 +67,31 @@ bool SubdivisionTargeting::ShouldAllow() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(
       prefs::kShouldAllowSubdivisionTargeting);
 }
-
-void SubdivisionTargeting::MaybeAllow() {
-  MaybeAllowForLocale(brave_l10n::GetDefaultLocaleString());
-}
-
-void SubdivisionTargeting::MaybeFetch() {
-  MaybeFetchForLocale(brave_l10n::GetDefaultLocaleString());
-}
-
 const std::string& SubdivisionTargeting::GetSubdivisionCode() const {
   return ShouldAutoDetect() ? GetLazyAutoDetectedSubdivisionCode()
                             : GetLazySubdivisionCode();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void SubdivisionTargeting::MaybeAllow() {
+  if (ShouldAllowAndFetch()) {
+    MaybeAllowForLocale(GetLocale());
+  }
+}
+
+void SubdivisionTargeting::MaybeFetch() {
+  if (ShouldAllowAndFetch()) {
+    MaybeFetchForLocale(GetLocale());
+  }
+}
+
+void SubdivisionTargeting::MaybeAllowAndFetch() {
+  if (!did_fetch_) {
+    MaybeAllow();
+    MaybeFetch();
+  }
+}
 
 void SubdivisionTargeting::SetAutoDetectedSubdivisionCode(
     const std::string& subdivision_code) {
@@ -182,10 +199,6 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
 }
 
 void SubdivisionTargeting::MaybeFetchForLocale(const std::string& locale) {
-  if (retry_timer_.IsRunning()) {
-    return;
-  }
-
   const std::string country_code = brave_l10n::GetISOCountryCode(locale);
   if (!DoesSupportSubdivisionTargeting(country_code)) {
     BLOG(1, "Subdivision targeting is unsupported for " << country_code
@@ -219,7 +232,13 @@ void SubdivisionTargeting::FetchAfterDelay() {
 }
 
 void SubdivisionTargeting::Fetch() {
+  if (is_fetching_ || retry_timer_.IsRunning()) {
+    return;
+  }
+
   BLOG(1, "FetchSubdivisionTargeting " << BuildSubdivisionTargetingUrlPath());
+
+  is_fetching_ = true;
 
   GetSubdivisionUrlRequestBuilder url_request_builder;
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -239,6 +258,8 @@ void SubdivisionTargeting::FetchCallback(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
+  is_fetching_ = false;
+
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch subdivision targeting code");
     return Retry();
@@ -254,10 +275,11 @@ void SubdivisionTargeting::FetchCallback(
   }
 
   StopRetrying();
-
   SetAutoDetectedSubdivisionCode(*subdivision_code);
 
-  MaybeAllowForLocale(brave_l10n::GetDefaultLocaleString());
+  MaybeAllowForLocale(GetLocale());
+
+  did_fetch_ = true;
 
   FetchAfterDelay();
 }
@@ -282,13 +304,21 @@ void SubdivisionTargeting::StopRetrying() {
   retry_timer_.Stop();
 }
 
+void SubdivisionTargeting::OnNotifyDidInitializeAds() {
+  MaybeAllow();
+  MaybeFetch();
+}
+
 void SubdivisionTargeting::OnNotifyLocaleDidChange(const std::string& locale) {
   MaybeAllowForLocale(locale);
   MaybeFetchForLocale(locale);
 }
 
 void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == prefs::kAutoDetectedSubdivisionTargetingCode) {
+  if (path == prefs::kEnabled || path == brave_news::prefs::kBraveNewsOptedIn ||
+      path == brave_news::prefs::kNewTabPageShowToday) {
+    MaybeAllowAndFetch();
+  } else if (path == prefs::kAutoDetectedSubdivisionTargetingCode) {
     UpdateAutoDetectedSubdivisionCode();
   } else if (path == prefs::kSubdivisionTargetingCode) {
     UpdateSubdivisionCode();

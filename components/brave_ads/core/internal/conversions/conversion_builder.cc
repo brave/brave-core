@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_builder.h"
 
+#include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
@@ -25,8 +26,7 @@ absl::optional<ConversionInfo> BuildConversion(
       ad_mojom->conversion->advertiser_public_key;
   conversion.observation_window =
       base::Days(ad_mojom->conversion->observation_window);
-  conversion.expire_at =
-      ad_mojom->conversion->expire_at + conversion.observation_window;
+  conversion.expire_at = base::Time::Now() + conversion.observation_window;
 
   if (!conversion.IsValid()) {
     return absl::nullopt;

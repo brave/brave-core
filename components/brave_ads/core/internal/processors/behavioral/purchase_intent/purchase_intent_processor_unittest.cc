@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -30,7 +31,8 @@ class BraveAdsPurchaseIntentProcessorTest : public UnitTestBase {
   }
 
   bool LoadResource() {
-    resource_->Load();
+    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                     kCountryComponentId);
     task_environment_.RunUntilIdle();
     return resource_->IsInitialized();
   }
@@ -74,8 +76,9 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
-  // Act
   const PurchaseIntentModel model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -235,7 +238,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
        {PurchaseIntentSignalHistoryInfo(now_1, weight),
         PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
 
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_EQ(expected_history, history);
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
@@ -259,7 +262,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
            PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 3),
        }}};
 
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_EQ(expected_history, history);
 }
 
 }  // namespace brave_ads

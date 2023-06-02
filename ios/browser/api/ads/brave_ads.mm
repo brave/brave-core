@@ -239,6 +239,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
+                   walletInfo:(BraveAdsWalletInfo*)walletInfo
                    completion:(void (^)(bool))completion {
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();
@@ -248,19 +249,22 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                                  : brave_ads::mojom::BuildChannelInfo::New();
   ads->SetBuildChannel(std::move(cppBuildChannelInfo));
   ads->SetFlags(brave_ads::BuildFlags());
-  ads->Initialize(base::BindOnce(^(const bool success) {
-    [self periodicallyCheckForAdsResourceUpdates];
-    [self registerAdsResources];
-    completion(success);
-  }));
+  ads->Initialize(walletInfo.cppObjPtr, base::BindOnce(^(const bool success) {
+                    [self periodicallyCheckForAdsResourceUpdates];
+                    [self registerAdsResources];
+                    if (success) {
+                      self->adsClientNotifier->NotifyDidInitializeAds();
+                    }
+                    completion(success);
+                  }));
 }
 
 - (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnRewardsWalletDidChange(base::SysNSStringToUTF8(paymentId),
-                                base::SysNSStringToUTF8(base64Seed));
+  adsClientNotifier->NotifyRewardsWalletDidUpdate(
+      base::SysNSStringToUTF8(paymentId), base::SysNSStringToUTF8(base64Seed));
 }
 
 - (NSString*)adsDatabasePath {
@@ -582,25 +586,33 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)reportNotificationAdEvent:(NSString*)placementId
-                        eventType:(BraveAdsNotificationAdEventType)eventType {
+                        eventType:(BraveAdsNotificationAdEventType)eventType
+                       completion:(void (^)(BOOL success))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->TriggerNotificationAdEvent(
       base::SysNSStringToUTF8(placementId),
-      static_cast<brave_ads::mojom::NotificationAdEventType>(eventType));
+      static_cast<brave_ads::mojom::NotificationAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
 }
 
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BraveAdsNewTabPageAdEventType)eventType {
+                      eventType:(BraveAdsNewTabPageAdEventType)eventType
+                     completion:(void (^)(BOOL success))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
       base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType));
+      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
 }
 
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensionsArg
@@ -628,27 +640,35 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)reportInlineContentAdEvent:(NSString*)placementId
                 creativeInstanceId:(NSString*)creativeInstanceId
-                         eventType:(BraveAdsInlineContentAdEventType)eventType {
+                         eventType:(BraveAdsInlineContentAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->TriggerInlineContentAdEvent(
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType));
+      static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
 }
 
 - (void)reportPromotedContentAdEvent:(NSString*)placementId
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:
-                               (BraveAdsPromotedContentAdEventType)eventType {
+                               (BraveAdsPromotedContentAdEventType)eventType
+                          completion:(void (^)(BOOL success))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->TriggerPromotedContentAdEvent(
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType));
+      static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
 }
 
 - (void)purgeOrphanedAdEvents:(BraveAdsAdType)adType
@@ -824,7 +844,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                          base::SysNSStringToUTF8(languageCodeAdsResourceId);
                      strongSelf->adsClientNotifier
                          ->NotifyDidUpdateResourceComponent(
-                             bridged_language_code_adsResource_idkey);
+                             "1", bridged_language_code_adsResource_idkey);
                    }
                  }];
 
@@ -863,7 +883,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
                      strongSelf->adsClientNotifier
                          ->NotifyDidUpdateResourceComponent(
-                             bridged_country_code_adsResource_idkey);
+                             "1", bridged_country_code_adsResource_idkey);
                    }
                  }];
 
@@ -940,7 +960,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      BLOG(1, @"Notifying ads resource observers");
                      strongSelf->adsClientNotifier
                          ->NotifyDidUpdateResourceComponent(
-                             base::SysNSStringToUTF8(key));
+                             "1", base::SysNSStringToUTF8(key));
                    }];
   }
 }

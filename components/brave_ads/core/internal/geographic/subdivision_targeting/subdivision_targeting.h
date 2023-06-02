@@ -34,13 +34,15 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
   bool ShouldAutoDetect() const;
 
   static bool ShouldAllow();
-  void MaybeAllow();
-
-  void MaybeFetch();
 
   const std::string& GetSubdivisionCode() const;
 
  private:
+  void MaybeAllow();
+
+  void MaybeFetch();
+  void MaybeAllowAndFetch();
+
   void SetAutoDetectedSubdivisionCode(const std::string& subdivision_code);
   void UpdateAutoDetectedSubdivisionCode();
   const std::string& GetLazyAutoDetectedSubdivisionCode() const;
@@ -64,8 +66,12 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
   void StopRetrying();
 
   // AdsClientNotifierObserver:
+  void OnNotifyDidInitializeAds() override;
   void OnNotifyLocaleDidChange(const std::string& locale) override;
   void OnNotifyPrefDidChange(const std::string& path) override;
+
+  bool is_fetching_ = false;
+  bool did_fetch_ = false;
 
   Timer timer_;
   BackoffTimer retry_timer_;

@@ -10,9 +10,9 @@
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
+#include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {
 
@@ -72,8 +72,8 @@ SegmentList TextClassificationModel::GetSegments() const {
           .GetTextClassificationProbabilitiesHistory();
 
   if (probabilities.empty()) {
-    BLOG(1, "No text classification probabilities found for "
-                << brave_l10n::GetDefaultLocaleString() << " locale");
+    BLOG(1, "No text classification probabilities found for " << GetLocale()
+                                                              << " locale");
 
     return {};
   }

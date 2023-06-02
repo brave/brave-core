@@ -17,8 +17,6 @@ void DeleteCreativeInlineContentAds() {
     if (!success) {
       return BLOG(0, "Failed to delete creative inline content ads");
     }
-
-    BLOG(3, "Successfully deleted creative inline content ads");
   }));
 }
 

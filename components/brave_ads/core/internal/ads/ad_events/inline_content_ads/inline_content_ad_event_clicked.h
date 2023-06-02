@@ -15,7 +15,8 @@ struct InlineContentAdInfo;
 class InlineContentAdEventClicked final
     : public AdEventInterface<InlineContentAdInfo> {
  public:
-  void FireEvent(const InlineContentAdInfo& ad) override;
+  void FireEvent(const InlineContentAdInfo& ad,
+                 ResultCallback callback) override;
 };
 
 }  // namespace brave_ads

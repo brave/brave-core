@@ -104,22 +104,7 @@ void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad,
     return FailedToServeAd(std::move(callback));
   }
 
-  BLOG(1, "Served new tab page ad:\n"
-              << "  placementId: " << ad.placement_id << "\n"
-              << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
-              << "  creativeSetId: " << ad.creative_set_id << "\n"
-              << "  campaignId: " << ad.campaign_id << "\n"
-              << "  advertiserId: " << ad.advertiser_id << "\n"
-              << "  segment: " << ad.segment << "\n"
-              << "  companyName: " << ad.company_name << "\n"
-              << "  imageUrl: " << ad.image_url << "\n"
-              << "  alt: " << ad.alt << "\n"
-              << "  targetUrl: " << ad.target_url << "\n"
-              << "  wallpaper:\n"
-              << "    imageUrl: " << ad.wallpapers[0].image_url << "\n"
-              << "    focalPoint:\n"
-              << "      x: " << ad.wallpapers[0].focal_point.x << "\n"
-              << "      y: " << ad.wallpapers[0].focal_point.y);
+  BLOG(1, "Served new tab page ad");
 
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);

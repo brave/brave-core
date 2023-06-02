@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_out_confirmation_url_request_builder.h"
 
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -37,9 +37,10 @@ class BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
 };
 
-TEST_F(BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest, BuildUrl) {
+TEST_F(BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest,
+       BuildUrlIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   MockBuildChannel(BuildChannelType::kRelease);
 

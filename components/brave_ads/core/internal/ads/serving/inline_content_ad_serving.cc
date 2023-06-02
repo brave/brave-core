@@ -110,19 +110,7 @@ void InlineContentAdServing::ServeAd(
     return FailedToServeAd(ad.dimensions, std::move(callback));
   }
 
-  BLOG(1, "Served inline content ad:\n"
-              << "  placementId: " << ad.placement_id << "\n"
-              << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
-              << "  creativeSetId: " << ad.creative_set_id << "\n"
-              << "  campaignId: " << ad.campaign_id << "\n"
-              << "  advertiserId: " << ad.advertiser_id << "\n"
-              << "  segment: " << ad.segment << "\n"
-              << "  title: " << ad.title << "\n"
-              << "  description: " << ad.description << "\n"
-              << "  imageUrl: " << ad.image_url << "\n"
-              << "  dimensions: " << ad.dimensions << "\n"
-              << "  ctaText: " << ad.cta_text << "\n"
-              << "  targetUrl: " << ad.target_url);
+  BLOG(1, "Served inline content ad")
 
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);

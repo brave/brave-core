@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
@@ -33,19 +35,30 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
          {{net::HTTP_OK,
            /*response_body*/ "/catalog_with_promoted_content_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
+
+    EXPECT_CALL(ads_client_mock_, RecordP2AEvent).Times(0);
+  }
+
+  void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const mojom::PromotedContentAdEventType& event_type,
+      const bool should_fire_event) {
+    base::MockCallback<TriggerAdEventCallback> callback;
+    EXPECT_CALL(callback, Run(/*success*/ should_fire_event));
+
+    GetAds().TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
+                                           event_type, callback.Get());
   }
 };
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  GetAds().TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceId,
-      mojom::PromotedContentAdEventType::kServed);
 
   // Act
-  GetAds().TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceId,
-      mojom::PromotedContentAdEventType::kViewed);
+  TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
+                                mojom::PromotedContentAdEventType::kViewed,
+                                /*should_fire_event*/ true);
 
   // Assert
   EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
@@ -58,17 +71,14 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  GetAds().TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceId,
-      mojom::PromotedContentAdEventType::kServed);
-  GetAds().TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceId,
-      mojom::PromotedContentAdEventType::kViewed);
+  TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
+                                mojom::PromotedContentAdEventType::kViewed,
+                                /*should_fire_event*/ true);
 
   // Act
-  GetAds().TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceId,
-      mojom::PromotedContentAdEventType::kClicked);
+  TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
+                                mojom::PromotedContentAdEventType::kClicked,
+                                /*should_fire_event*/ true);
 
   // Assert
   EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,

@@ -33,6 +33,7 @@ void MockLoadDataResource(AdsClientMock& mock);
 
 void MockRunDBTransaction(AdsClientMock& mock, Database& database);
 
+void MockDefaultPrefs();
 void MockGetBooleanPref(const AdsClientMock& mock);
 void MockGetIntegerPref(const AdsClientMock& mock);
 void MockGetDoublePref(const AdsClientMock& mock);

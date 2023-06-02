@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -102,27 +103,23 @@ class AdsService : public KeyedService {
   // Called when a notification ad with |placement_id| is clicked.
   virtual void OnNotificationAdClicked(const std::string& placement_id) = 0;
 
-  // Called to get diagnostics to help identify issues. The callback takes two
-  // arguments - |bool| is set to |true| if successful otherwise |false|.
-  // |base::Value::List| containing info of the obtained diagnostics.
+  // Called to get diagnostics to help identify issues. The callback takes one
+  // argument - |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
   // Called when a resource component has been updated.
-  virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
+  virtual void OnDidUpdateResourceComponent(const std::string& manifest_version,
+                                            const std::string& id) = 0;
 
-  // Called to get the statement of accounts. The callback takes five arguments
-  // - |bool| is set to |true| if successful otherwise |false|. |double|
-  // containing the next payment date which is the number of seconds since epoch
-  // (Jan 1, 1970). |int| containing the number of ads received this month.
-  // |double| containing the total earnings this month. |double| containing the
-  // total earnings last month.
+  // Called to get the statement of accounts. The callback takes one argument -
+  // |mojom::StatementInfo| containing info of the obtained statement of
+  // accounts.
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
   // Should be called to serve an inline content ad for the specified
-  // |dimensions|. The callback takes three arguments - |bool| is set to |true|
-  // if successful otherwise |false|, |std::string| containing the dimensions
-  // and |base::Value::Dict| containing the ad.
+  // |dimensions|. The callback takes two arguments - |std::string| containing
+  // the dimensions and |base::Value::Dict| containing the info for the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdAsDictCallback callback) = 0;
@@ -132,21 +129,23 @@ class AdsService : public KeyedService {
   // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
-  // same ad placement.
+  // same ad placement. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
   virtual void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::InlineContentAdEventType event_type) = 0;
+      mojom::InlineContentAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
-  // Called to prefetch the next new tab page ad.
+  // Called to prefetch a new tab page ad.
   virtual void PrefetchNewTabPageAd() = 0;
 
-  // Called to get a prefetched new tab page ad for display.
+  // Called to get the prefetched new tab page ad for display.
   virtual absl::optional<NewTabPageAdInfo>
   GetPrefetchedNewTabPageAdForDisplay() = 0;
 
-  // Called when failing to prefetch a new tab page ad for |placement_id| and
-  // |creative_instance_id|.
+  // Called when failing to prefetch a new tab page ad for the specified
+  // |placement_id| and |creative_instance_id|.
   virtual void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) = 0;
@@ -156,32 +155,37 @@ class AdsService : public KeyedService {
   // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
-  // same ad placement.
-  virtual void TriggerNewTabPageAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::NewTabPageAdEventType event_type) = 0;
+  // same ad placement. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
+  virtual void TriggerNewTabPageAdEvent(const std::string& placement_id,
+                                        const std::string& creative_instance_id,
+                                        mojom::NewTabPageAdEventType event_type,
+                                        TriggerAdEventCallback callback) = 0;
 
   // Called when a user views or interacts with a promoted content ad to trigger
   // an |event_type| event for the specified |placement_id| and
   // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
-  // same ad placement.
+  // same ad placement. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type) = 0;
+      mojom::PromotedContentAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
-  // |event_type| event for the ad specified in |ad_mojom|.
+  // |event_type| event for the ad specified in |ad_mojom|. The callback takes
+  // one argument - |bool| is set to |true| if successful otherwise |false|.
   virtual void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
-      mojom::SearchResultAdEventType event_type) = 0;
+      mojom::SearchResultAdEventType event_type,
+      TriggerAdEventCallback callback) = 0;
 
-  // Called to purge orphaned served ad events. NOTE: You should call before
-  // triggering new ad events for the specified |ad_type|. The callback takes
-  // one argument - |bool| is set to |true| if successful otherwise |false|.
+  // Called to purge orphaned served ad events for the specified |ad_type|
+  // before calling |MaybeServe*Ad|. The callback takes one argument - |bool| is
+  // set to |true| if successful otherwise |false|.
   virtual void PurgeOrphanedAdEventsForType(
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;

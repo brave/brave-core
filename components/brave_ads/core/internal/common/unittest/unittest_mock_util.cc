@@ -131,7 +131,7 @@ void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
 
 void MockGetBrowsingHistory(AdsClientMock& mock,
                             const std::vector<GURL>& history) {
-  ON_CALL(mock, GetBrowsingHistory(_, _, _))
+  ON_CALL(mock, GetBrowsingHistory)
       .WillByDefault(
           Invoke([history](const size_t max_count, const size_t /*days_ago*/,
                            GetBrowsingHistoryCallback callback) {
@@ -143,7 +143,7 @@ void MockGetBrowsingHistory(AdsClientMock& mock,
 
 void MockUrlResponses(AdsClientMock& mock,
                       const URLResponseMap& url_responses) {
-  ON_CALL(mock, UrlRequest(_, _))
+  ON_CALL(mock, UrlRequest)
       .WillByDefault(
           Invoke([url_responses](const mojom::UrlRequestInfoPtr& url_request,
                                  UrlRequestCallback callback) {

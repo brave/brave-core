@@ -8,16 +8,23 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
+#include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
 namespace brave_ads {
 
 namespace {
-constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
+
+bool DoesRequireResource() {
+  return UserHasOptedInToBravePrivateAds();
+}
+
 }  // namespace
 
 TextEmbeddingResource::TextEmbeddingResource() {
@@ -28,50 +35,87 @@ TextEmbeddingResource::~TextEmbeddingResource() {
   AdsClientHelper::RemoveObserver(this);
 }
 
-bool TextEmbeddingResource::IsInitialized() const {
-  return embedding_processing_.IsInitialized();
+///////////////////////////////////////////////////////////////////////////////
+
+void TextEmbeddingResource::MaybeLoad() {
+  if (manifest_version_ && DoesRequireResource()) {
+    Load();
+  }
+}
+
+void TextEmbeddingResource::MaybeLoadOrReset() {
+  DidLoad() ? MaybeReset() : MaybeLoad();
 }
 
 void TextEmbeddingResource::Load() {
-  LoadAndParseResource(
-      kResourceId, kTextEmbeddingResourceVersion.Get(),
-      base::BindOnce(&TextEmbeddingResource::LoadAndParseResourceCallback,
-                     weak_factory_.GetWeakPtr()));
+  did_load_ = true;
+
+  LoadAndParseResource(kTextEmbeddingResourceId,
+                       kTextEmbeddingResourceVersion.Get(),
+                       base::BindOnce(&TextEmbeddingResource::LoadCallback,
+                                      weak_factory_.GetWeakPtr()));
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
-void TextEmbeddingResource::LoadAndParseResourceCallback(
+void TextEmbeddingResource::LoadCallback(
     ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result) {
   if (!result.has_value()) {
-    return BLOG(0, "Failed to initialize " << kResourceId
+    return BLOG(0, "Failed to initialize " << kTextEmbeddingResourceId
                                            << " text embedding resource ("
                                            << result.error() << ")");
   }
 
   if (!result.value().IsInitialized()) {
-    return BLOG(7, kResourceId << " text embedding resource does not exist");
+    return BLOG(1, kTextEmbeddingResourceId
+                       << " text embedding resource is not available");
   }
 
-  BLOG(1, "Successfully loaded " << kResourceId << " text embedding resource");
+  BLOG(1, "Successfully loaded " << kTextEmbeddingResourceId
+                                 << " text embedding resource");
 
   embedding_processing_ = std::move(result).value();
 
-  BLOG(1, "Successfully initialized " << kResourceId
+  BLOG(1, "Successfully initialized " << kTextEmbeddingResourceId
                                       << " text embedding resource version "
                                       << kTextEmbeddingResourceVersion.Get());
 }
 
+void TextEmbeddingResource::MaybeReset() {
+  if (DidLoad() && !DoesRequireResource()) {
+    Reset();
+  }
+}
+
+void TextEmbeddingResource::Reset() {
+  BLOG(1, "Reset " << kTextEmbeddingResourceId << " text embedding resource");
+  embedding_processing_.reset();
+  did_load_ = false;
+}
+
 void TextEmbeddingResource::OnNotifyLocaleDidChange(
     const std::string& /*locale*/) {
-  Load();
+  MaybeLoad();
+}
+
+void TextEmbeddingResource::OnNotifyPrefDidChange(const std::string& path) {
+  if (path == prefs::kEnabled) {
+    MaybeLoadOrReset();
+  }
 }
 
 void TextEmbeddingResource::OnNotifyDidUpdateResourceComponent(
+    const std::string& manifest_version,
     const std::string& id) {
-  if (IsValidLanguageComponentId(id)) {
-    Load();
+  if (!IsValidLanguageComponentId(id)) {
+    return;
   }
+
+  if (manifest_version == manifest_version_) {
+    return;
+  }
+
+  manifest_version_ = manifest_version;
+
+  MaybeLoad();
 }
 
 }  // namespace brave_ads

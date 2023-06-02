@@ -9,7 +9,6 @@
 #include "base/guid.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 #include "url/gurl.h"
 
@@ -24,7 +23,6 @@ constexpr int kValue = 1.0;
 constexpr char kConversionType[] = "postview";
 constexpr char kConversionUrlPattern[] = "https://brave.com/*";
 constexpr int kConversionObservationWindow = 3;
-const base::Time kConversionExpireAt = DistantFuture();
 
 }  // namespace
 
@@ -77,7 +75,6 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversion(
   ad->conversion->url_pattern = kConversionUrlPattern;
   ad->conversion->advertiser_public_key = kConversionAdvertiserPublicKey;
   ad->conversion->observation_window = kConversionObservationWindow;
-  ad->conversion->expire_at = kConversionExpireAt;
 
   return ad;
 }

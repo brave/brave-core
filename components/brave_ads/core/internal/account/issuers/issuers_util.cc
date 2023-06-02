@@ -28,7 +28,7 @@ void SetIssuers(const IssuersInfo& issuers) {
 absl::optional<IssuersInfo> GetIssuers() {
   const absl::optional<base::Value::List> list =
       AdsClientHelper::GetInstance()->GetListPref(prefs::kIssuers);
-  if (!list) {
+  if (!list || list->empty()) {
     return absl::nullopt;
   }
 
@@ -59,13 +59,13 @@ bool HasIssuers() {
          IssuerExistsForType(IssuerType::kPayments);
 }
 
-bool HasIssuersChanged(const IssuersInfo& issuers) {
-  const absl::optional<IssuersInfo> last_issuers = GetIssuers();
-  if (!last_issuers) {
+bool HasIssuersChanged(const IssuersInfo& other) {
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  if (!issuers) {
     return true;
   }
 
-  return issuers != *last_issuers;
+  return other != *issuers;
 }
 
 bool IssuerExistsForType(const IssuerType issuer_type) {

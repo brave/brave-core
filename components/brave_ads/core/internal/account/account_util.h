@@ -12,6 +12,10 @@ namespace brave_ads {
 
 using ResetRewardsCallback = base::OnceCallback<void(bool success)>;
 
+bool UserHasOptedInToBravePrivateAds();
+bool UserHasOptedInToBraveNews();
+bool UserHasOptedInToNewTabPageAds();
+
 bool ShouldRewardUser();
 
 void ResetRewards(ResetRewardsCallback callback);

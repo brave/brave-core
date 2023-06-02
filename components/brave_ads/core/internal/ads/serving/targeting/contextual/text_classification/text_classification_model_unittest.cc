@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_classification/text_classification_processor.h"
-#include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/language_components_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,7 +26,8 @@ class BraveAdsTextClassificationModelTest : public UnitTestBase {
   }
 
   bool LoadResource() {
-    resource_->Load();
+    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                     kLanguageComponentId);
     task_environment_.RunUntilIdle();
     return resource_->IsInitialized();
   }

@@ -13,6 +13,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -37,11 +38,12 @@ class PurchaseIntentProcessor final : public TabManagerObserver {
   void Process(const GURL& url);
 
  private:
-  PurchaseIntentSignalInfo ExtractSignal(const GURL& url) const;
+  absl::optional<PurchaseIntentSignalInfo> ExtractSignal(const GURL& url) const;
 
-  PurchaseIntentSiteInfo GetSite(const GURL& url) const;
+  absl::optional<PurchaseIntentSiteInfo> GetSite(const GURL& url) const;
 
-  SegmentList GetSegmentsForSearchQuery(const std::string& search_query) const;
+  absl::optional<SegmentList> GetSegmentsForSearchQuery(
+      const std::string& search_query) const;
 
   uint16_t GetFunnelWeightForSearchQuery(const std::string& search_query) const;
 

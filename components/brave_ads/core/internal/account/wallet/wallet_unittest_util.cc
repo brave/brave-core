@@ -5,25 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 
-#include <vector>
-
-#include "base/base64.h"
-#include "base/check.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 
 namespace brave_ads {
 
 WalletInfo GetWalletForTesting() {
-  const absl::optional<std::vector<uint8_t>> raw_recovery_seed =
-      base::Base64Decode(kWalletRecoverySeed);
-  CHECK(raw_recovery_seed);
-
-  Wallet wallet;
-  wallet.Set(kWalletPaymentId, *raw_recovery_seed);
-  return wallet.Get();
+  return ToWallet(kWalletPaymentId, kWalletRecoverySeed).value_or(WalletInfo{});
 }
 
 }  // namespace brave_ads

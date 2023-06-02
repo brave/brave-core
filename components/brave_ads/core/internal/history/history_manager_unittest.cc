@@ -5,11 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 
-#include "base/containers/circular_deque.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
@@ -22,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/internal/history/history_item_util.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
@@ -46,7 +45,8 @@ class BraveAdsHistoryManagerTest : public HistoryManagerObserver,
     UnitTestBase::TearDown();
   }
 
-  void OnDidAddHistory(const HistoryItemInfo& /*history_item*/) override {
+  void OnDidAddHistory(const HistoryItemInfo& history_item) override {
+    history_item_ = history_item;
     did_add_history_ = true;
   }
 
@@ -83,13 +83,18 @@ class BraveAdsHistoryManagerTest : public HistoryManagerObserver,
     did_mark_ad_as_inappropriate_ = true;
   }
 
+  HistoryItemInfo history_item_;
   bool did_add_history_ = false;
+
   bool did_like_ad_ = false;
   bool did_dislike_ad_ = false;
+
   bool did_like_category_ = false;
   bool did_dislike_category_ = false;
+
   bool did_save_ad_ = false;
   bool did_unsave_ad_ = false;
+
   bool did_mark_ad_as_inappropriate_ = false;
   bool did_mark_ad_as_appropriate_ = false;
 };
@@ -101,17 +106,29 @@ TEST_F(BraveAdsHistoryManagerTest, AddNotificationAd) {
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Assert
-  const HistoryItemList expected_history = {history_item};
-
-  const HistoryItemList& history =
-      ClientStateManager::GetInstance().GetHistory();
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  const HistoryItemInfo expected_history_item =
+      BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.body);
+  EXPECT_EQ(expected_history_item, history_item_);
   EXPECT_TRUE(did_add_history_);
+}
+
+TEST_F(BraveAdsHistoryManagerTest,
+       DoNotAddNotificationAdIfBravePrivateAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
+  // Act
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+
+  // Assert
+  EXPECT_FALSE(did_add_history_);
 }
 
 TEST_F(BraveAdsHistoryManagerTest, AddNewTabPageAd) {
@@ -121,17 +138,29 @@ TEST_F(BraveAdsHistoryManagerTest, AddNewTabPageAd) {
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Assert
-  const HistoryItemList expected_history = {history_item};
-
-  const HistoryItemList& history =
-      ClientStateManager::GetInstance().GetHistory();
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  const HistoryItemInfo expected_history_item =
+      BuildHistoryItem(ad, ConfirmationType::kViewed, ad.company_name, ad.alt);
+  EXPECT_EQ(expected_history_item, history_item_);
   EXPECT_TRUE(did_add_history_);
+}
+
+TEST_F(BraveAdsHistoryManagerTest,
+       DoNotAddNewTabPageAdIfBravePrivateAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  const CreativeNewTabPageAdInfo creative_ad =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ false);
+  const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
+
+  // Act
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+
+  // Assert
+  EXPECT_FALSE(did_add_history_);
 }
 
 TEST_F(BraveAdsHistoryManagerTest, AddPromotedContentAd) {
@@ -141,17 +170,29 @@ TEST_F(BraveAdsHistoryManagerTest, AddPromotedContentAd) {
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
 
   // Act
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Assert
-  const HistoryItemList expected_history = {history_item};
-
-  const HistoryItemList& history =
-      ClientStateManager::GetInstance().GetHistory();
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  const HistoryItemInfo expected_history_item =
+      BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.description);
+  EXPECT_EQ(expected_history_item, history_item_);
   EXPECT_TRUE(did_add_history_);
+}
+
+TEST_F(BraveAdsHistoryManagerTest,
+       DoNotAddPromotedContentAdIfBravePrivateAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  const CreativePromotedContentAdInfo creative_ad =
+      BuildCreativePromotedContentAd(/*should_use_random_guids*/ false);
+  const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
+
+  // Act
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+
+  // Assert
+  EXPECT_FALSE(did_add_history_);
 }
 
 TEST_F(BraveAdsHistoryManagerTest, AddInlineContentAd) {
@@ -161,17 +202,29 @@ TEST_F(BraveAdsHistoryManagerTest, AddInlineContentAd) {
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
   // Act
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Assert
-  const HistoryItemList expected_history = {history_item};
-
-  const HistoryItemList& history =
-      ClientStateManager::GetInstance().GetHistory();
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  const HistoryItemInfo expected_history_item =
+      BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.description);
+  EXPECT_EQ(expected_history_item, history_item_);
   EXPECT_TRUE(did_add_history_);
+}
+
+TEST_F(BraveAdsHistoryManagerTest,
+       DoNotAddInlineContentAdIfBravePrivateAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  const CreativeInlineContentAdInfo creative_ad =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ false);
+  const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
+
+  // Act
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+
+  // Assert
+  EXPECT_FALSE(did_add_history_);
 }
 
 TEST_F(BraveAdsHistoryManagerTest, AddSearchResultAd) {
@@ -181,17 +234,29 @@ TEST_F(BraveAdsHistoryManagerTest, AddSearchResultAd) {
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   // Act
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Assert
-  const HistoryItemList expected_history = {history_item};
-
-  const HistoryItemList& history =
-      ClientStateManager::GetInstance().GetHistory();
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  const HistoryItemInfo expected_history_item = BuildHistoryItem(
+      ad, ConfirmationType::kViewed, ad.headline_text, ad.description);
+  EXPECT_EQ(expected_history_item, history_item_);
   EXPECT_TRUE(did_add_history_);
+}
+
+TEST_F(BraveAdsHistoryManagerTest,
+       DoNotAddSearchResultAdIfBravePrivateAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  const mojom::SearchResultAdInfoPtr ad_mojom =
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
+
+  // Act
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+
+  // Assert
+  EXPECT_FALSE(did_add_history_);
 }
 
 TEST_F(BraveAdsHistoryManagerTest, LikeAd) {
@@ -200,11 +265,10 @@ TEST_F(BraveAdsHistoryManagerTest, LikeAd) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Act
-  HistoryManager::GetInstance().LikeAd(history_item.ad_content);
+  HistoryManager::GetInstance().LikeAd(history_item_.ad_content);
 
   // Assert
   EXPECT_TRUE(did_like_ad_);
@@ -217,11 +281,10 @@ TEST_F(BraveAdsHistoryManagerTest, DislikeAd) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Act
-  HistoryManager::GetInstance().DislikeAd(history_item.ad_content);
+  HistoryManager::GetInstance().DislikeAd(history_item_.ad_content);
 
   // Assert
   EXPECT_FALSE(did_like_ad_);
@@ -268,11 +331,10 @@ TEST_F(BraveAdsHistoryManagerTest, SaveAd) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Act
-  HistoryManager::GetInstance().ToggleSaveAd(history_item.ad_content);
+  HistoryManager::GetInstance().ToggleSaveAd(history_item_.ad_content);
 
   // Assert
   EXPECT_TRUE(did_save_ad_);
@@ -285,12 +347,11 @@ TEST_F(BraveAdsHistoryManagerTest, UnsaveAd) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
-  history_item.ad_content.is_saved = true;
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  history_item_.ad_content.is_saved = true;
 
   // Act
-  HistoryManager::GetInstance().ToggleSaveAd(history_item.ad_content);
+  HistoryManager::GetInstance().ToggleSaveAd(history_item_.ad_content);
 
   // Assert
   EXPECT_FALSE(did_save_ad_);
@@ -303,12 +364,11 @@ TEST_F(BraveAdsHistoryManagerTest, MarkAdAsInappropriate) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Act
   HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
-      history_item.ad_content);
+      history_item_.ad_content);
 
   // Assert
   EXPECT_TRUE(did_mark_ad_as_inappropriate_);
@@ -321,13 +381,12 @@ TEST_F(BraveAdsHistoryManagerTest, MarkAdAsAppropriate) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryItemInfo history_item =
-      HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
-  history_item.ad_content.is_flagged = true;
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  history_item_.ad_content.is_flagged = true;
 
   // Act
   HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
-      history_item.ad_content);
+      history_item_.ad_content);
 
   // Assert
   EXPECT_FALSE(did_mark_ad_as_inappropriate_);

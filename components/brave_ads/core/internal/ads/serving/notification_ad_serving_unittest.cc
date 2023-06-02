@@ -88,10 +88,7 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   EXPECT_TRUE(opportunity_arose_to_serve_ad_);
   EXPECT_TRUE(did_serve_ad_);
   EXPECT_FALSE(failed_to_serve_ad_);
-
-  const NotificationAdInfo expected_ad =
-      BuildNotificationAd(creative_ad, ad_.placement_id);
-  EXPECT_EQ(expected_ad, ad_);
+  EXPECT_EQ(BuildNotificationAd(creative_ad, ad_.placement_id), ad_);
 }
 
 TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {

@@ -48,6 +48,7 @@ class UserActivityManager final : public AdsClientNotifierObserver,
   void RecordEventForPageTransition(PageTransitionType type);
 
   // AdsClientNotifierObserver:
+  void OnNotifyDidInitializeAds() override;
   void OnNotifyUserGestureEventTriggered(int32_t type) override;
 
   // BrowserManagerObserver:

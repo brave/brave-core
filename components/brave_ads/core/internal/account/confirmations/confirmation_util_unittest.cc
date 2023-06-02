@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
@@ -30,9 +30,10 @@ class BraveAdsConfirmationUtilTest : public UnitTestBase {
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
 };
 
-TEST_F(BraveAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
+TEST_F(BraveAdsConfirmationUtilTest,
+       CreateConfirmationForNonOptedInUserIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
@@ -52,9 +53,8 @@ TEST_F(BraveAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
   EXPECT_TRUE(IsValid(*confirmation));
 }
 
-TEST_F(BraveAdsConfirmationUtilTest, IsNotValidForNonOptedInUser) {
+TEST_F(BraveAdsConfirmationUtilTest, IsNotValidIfBravePrivateAdsAreDisabled) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   const ConfirmationInfo confirmation;

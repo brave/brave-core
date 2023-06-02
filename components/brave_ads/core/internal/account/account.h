@@ -19,8 +19,9 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -36,7 +37,6 @@ class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
 struct IssuersInfo;
 struct TransactionInfo;
-struct WalletInfo;
 
 class Account final : public AdsClientNotifierObserver,
                       public ConfirmationsDelegate,
@@ -59,9 +59,7 @@ class Account final : public AdsClientNotifierObserver,
 
   void SetWallet(const std::string& payment_id,
                  const std::string& recovery_seed);
-  const WalletInfo& GetWallet() const;
-
-  void Process();
+  const absl::optional<WalletInfo>& GetWallet() const { return wallet_; }
 
   void Deposit(const std::string& creative_instance_id,
                const AdType& ad_type,
@@ -73,7 +71,13 @@ class Account final : public AdsClientNotifierObserver,
  private:
   void Initialize();
 
-  void MaybeGetIssuers() const;
+  void InitializeConfirmations();
+
+  void MaybeRewardUsers();
+  void InitializeRewards();
+  void ShutdownRewards();
+
+  void MaybeFetchIssuers() const;
 
   void DepositCallback(const std::string& creative_instance_id,
                        const AdType& ad_type,
@@ -99,22 +103,20 @@ class Account final : public AdsClientNotifierObserver,
                               const ConfirmationType& confirmation_type) const;
 
   void ProcessClearingCycle() const;
-  void ProcessUnclearedTransactions() const;
+  bool ShouldProcessUnclearedTransactions() const;
+  void MaybeProcessUnclearedTransactions() const;
 
-  void WalletWasCreated(const WalletInfo& wallet) const;
-  void WalletDidUpdate(const WalletInfo& wallet) const;
-  void WalletDidChange(const WalletInfo& wallet) const;
+  void Reset() const;
+  void ResetCallback(bool success) const;
 
-  void ResetRewardsCallback(bool success) const;
+  void MaybeResetConfirmationsAndIssuers();
 
-  void MaybeResetIssuersAndConfirmations();
+  bool ShouldTopUpUnblindedTokens() const;
+  void MaybeTopUpUnblindedTokens() const;
 
-  void TopUpUnblindedTokens() const;
-
-  void NotifyWalletWasCreated(const WalletInfo& wallet) const;
-  void NotifyWalletDidUpdate(const WalletInfo& wallet) const;
+  void NotifyDidInitializeWallet(const WalletInfo& wallet) const;
+  void NotifyFailedToInitializeWallet() const;
   void NotifyWalletDidChange(const WalletInfo& wallet) const;
-  void NotifyInvalidWallet() const;
 
   void NotifyDidProcessDeposit(const TransactionInfo& transaction) const;
   void NotifyFailedToProcessDeposit(
@@ -125,7 +127,11 @@ class Account final : public AdsClientNotifierObserver,
   void NotifyStatementOfAccountsDidChange() const;
 
   // AdsClientNotifierObserver:
+  void OnNotifyDidInitializeAds() override;
   void OnNotifyPrefDidChange(const std::string& path) override;
+  void OnNotifyRewardsWalletDidUpdate(
+      const std::string& payment_id,
+      const std::string& recovery_seed) override;
   void OnNotifyDidSolveAdaptiveCaptcha() override;
 
   // ConfirmationsDelegate:
@@ -153,11 +159,11 @@ class Account final : public AdsClientNotifierObserver,
 
   std::unique_ptr<Issuers> issuers_;
 
+  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
   std::unique_ptr<RedeemUnblindedPaymentTokens>
       redeem_unblinded_payment_tokens_;
-  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
 
-  Wallet wallet_;
+  absl::optional<WalletInfo> wallet_;
 
   base::WeakPtrFactory<Account> weak_factory_{this};
 };

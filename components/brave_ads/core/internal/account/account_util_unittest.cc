@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
@@ -29,6 +29,63 @@ class BraveAdsAccountUtilTest : public UnitTestBase {
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
 };
 
+TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToBravePrivateAds) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(UserHasOptedInToBravePrivateAds());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToBravePrivateAds) {
+  // Arrange
+  DisableBravePrivateAds();
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(UserHasOptedInToBravePrivateAds());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToBraveNews) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(UserHasOptedInToBraveNews());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToBraveNews) {
+  // Arrange
+  DisableBraveNewsAds();
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(UserHasOptedInToBraveNews());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasOptedInToNewTabPageAds) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(UserHasOptedInToNewTabPageAds());
+}
+
+TEST_F(BraveAdsAccountUtilTest, UserHasNotOptedInToNewTabPageAds) {
+  // Arrange
+  DisableNewTabPageAds();
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
+}
+
 TEST_F(BraveAdsAccountUtilTest, ShouldRewardUser) {
   // Arrange
 
@@ -40,7 +97,7 @@ TEST_F(BraveAdsAccountUtilTest, ShouldRewardUser) {
 
 TEST_F(BraveAdsAccountUtilTest, ShouldNotRewardUser) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+  DisableBravePrivateAds();
 
   // Act
 
@@ -71,6 +128,7 @@ TEST_F(BraveAdsAccountUtilTest, ResetRewards) {
   ResetRewards(base::BindOnce([](const bool success) {
     ASSERT_TRUE(success);
 
+    // Assert
     const database::table::Transactions database_table;
     database_table.GetAll(base::BindOnce(
         [](const bool success, const TransactionList& transactions) {
@@ -84,17 +142,16 @@ TEST_F(BraveAdsAccountUtilTest, ResetRewards) {
 
     EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
   }));
-
-  // Assert
 }
 
-TEST_F(BraveAdsAccountUtilTest, ResetRewardsWithNoState) {
+TEST_F(BraveAdsAccountUtilTest, ResetRewardsIfNoState) {
   // Arrange
 
   // Act
   ResetRewards(base::BindOnce([](const bool success) {
     ASSERT_TRUE(success);
 
+    // Assert
     const database::table::Transactions database_table;
     database_table.GetAll(base::BindOnce(
         [](const bool success, const TransactionList& transactions) {
@@ -108,8 +165,6 @@ TEST_F(BraveAdsAccountUtilTest, ResetRewardsWithNoState) {
 
     EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
   }));
-
-  // Assert
 }
 
 }  // namespace brave_ads

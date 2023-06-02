@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -16,7 +17,7 @@ class BraveAdsLegacyClientMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasMigrated) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, true);
+  SetDefaultBooleanPref(prefs::kHasMigratedClientState, true);
 
   // Act
 
@@ -26,7 +27,7 @@ TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasMigrated) {
 
 TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, false);
+  SetDefaultBooleanPref(prefs::kHasMigratedClientState, false);
 
   // Act
 

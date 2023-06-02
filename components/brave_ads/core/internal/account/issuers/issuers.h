@@ -18,7 +18,7 @@ namespace brave_ads {
 
 struct IssuersInfo;
 
-class Issuers {
+class Issuers final {
  public:
   Issuers();
 
@@ -35,7 +35,7 @@ class Issuers {
     delegate_ = delegate;
   }
 
-  void MaybeFetch();
+  void PeriodicallyFetch();
 
  private:
   void Fetch();
@@ -51,6 +51,8 @@ class Issuers {
   void StopRetrying();
 
   raw_ptr<IssuersDelegate> delegate_ = nullptr;
+
+  bool is_periodically_fetching_ = false;
 
   bool is_fetching_ = false;
 

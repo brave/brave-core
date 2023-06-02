@@ -124,6 +124,10 @@ void UserActivityManager::RecordEventForPageTransition(
   RecordEvent(*event_type);
 }
 
+void UserActivityManager::OnNotifyDidInitializeAds() {
+  RecordEvent(UserActivityEventType::kInitializedAds);
+}
+
 void UserActivityManager::OnNotifyUserGestureEventTriggered(
     const int32_t type) {
   const auto page_transition_type = static_cast<PageTransitionType>(type);

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad_feature.h"
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 
 #include <vector>
 
@@ -16,6 +16,15 @@ namespace brave_ads {
 
 TEST(BraveAdsSearchResultAdFeatureTest, IsEnabled) {
   // Arrange
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  enabled_features.emplace_back(kSearchResultAdFeature, params);
+
+  const std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
 
   // Act
 
@@ -24,6 +33,46 @@ TEST(BraveAdsSearchResultAdFeatureTest, IsEnabled) {
 }
 
 TEST(BraveAdsSearchResultAdFeatureTest, IsDisabled) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(IsSearchResultAdFeatureEnabled());
+}
+
+TEST(BraveAdsSearchResultAdFeatureTest,
+     ShouldAlwaysTriggerSearchResultAdEvents) {
+  // Arrange
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["should_always_trigger_ad_events"] = "true";
+  enabled_features.emplace_back(kSearchResultAdFeature, params);
+
+  const std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(kShouldAlwaysTriggerSearchResultAdEvents.Get());
+}
+
+TEST(BraveAdsSearchResultAdFeatureTest,
+     DefaultShouldAlwaysTriggerSearchResultAdEvents) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(kShouldAlwaysTriggerSearchResultAdEvents.Get());
+}
+
+TEST(BraveAdsSearchResultAdFeatureTest,
+     DefaulShouldAlwaysTriggerSearchResultAdEventsWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -37,7 +86,7 @@ TEST(BraveAdsSearchResultAdFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsSearchResultAdFeatureEnabled());
+  EXPECT_FALSE(kShouldAlwaysTriggerSearchResultAdEvents.Get());
 }
 
 TEST(BraveAdsSearchResultAdFeatureTest, GetMaximumAdsPerHour) {

@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/language_components_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,7 +27,8 @@ class BraveAdsTextClassificationProcessorTest : public UnitTestBase {
   }
 
   bool LoadResource() {
-    resource_->Load();
+    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                     kLanguageComponentId);
     task_environment_.RunUntilIdle();
     return resource_->IsInitialized();
   }
@@ -67,17 +69,18 @@ TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
-  // Act
+  // Arrange
   ASSERT_TRUE(LoadResource());
 
   const TextClassificationModel model;
   const SegmentList segments = model.GetSegments();
 
-  // Assert
+  // Act
   const TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();
 
+  // Assert
   EXPECT_TRUE(list.empty());
 }
 

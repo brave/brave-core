@@ -34,7 +34,8 @@ class ConfirmationStateManager final {
 
   static ConfirmationStateManager& GetInstance();
 
-  void Load(const WalletInfo& wallet, InitializeCallback callback);
+  void Load(const absl::optional<WalletInfo>& wallet,
+            InitializeCallback callback);
 
   bool IsInitialized() const { return is_initialized_; }
 
@@ -47,7 +48,7 @@ class ConfirmationStateManager final {
   bool GetFailedConfirmationsFromDictionary(
       const base::Value::Dict& dict,
       ConfirmationList* confirmations) const;
-  const ConfirmationList& GetFailedConfirmations() const;
+  ConfirmationList GetFailedConfirmations() const;
   void AppendFailedConfirmation(const ConfirmationInfo& confirmation);
   bool RemoveFailedConfirmation(const ConfirmationInfo& confirmation);
   void reset_failed_confirmations() { failed_confirmations_.clear(); }
@@ -88,7 +89,7 @@ class ConfirmationStateManager final {
 
   bool is_initialized_ = false;
 
-  WalletInfo wallet_;
+  absl::optional<WalletInfo> wallet_;
 
   ConfirmationList failed_confirmations_;
 

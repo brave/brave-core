@@ -39,14 +39,23 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   // Binds the receiver by consuming the pending receiver swhich was created.
   void BindReceiver();
 
+  // Invoked when ads did initialize.
+  void NotifyDidInitializeAds() override;
+
   // Invoked when the operating system locale changes.
   void NotifyLocaleDidChange(const std::string& locale) override;
 
   // Invoked when a preference has changed for the specified |path|.
   void NotifyPrefDidChange(const std::string& path) override;
 
-  // Invoked when a resource component has been updated.
-  void NotifyDidUpdateResourceComponent(const std::string& id) override;
+  // Invoked when a resource component with |id| has been updated to
+  // |manifest_version|.
+  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                        const std::string& id) override;
+
+  // Invoked when the Brave Reward wallet did change.
+  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
+                                    const std::string& recovery_seed) override;
 
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that

@@ -13,6 +13,11 @@
 
 namespace brave_ads {
 
+void ResetEpsilonGreedyBanditEligibleSegments() {
+  AdsClientHelper::GetInstance()->ClearPref(
+      prefs::kEpsilonGreedyBanditEligibleSegments);
+}
+
 void SetEpsilonGreedyBanditEligibleSegments(const SegmentList& segments) {
   AdsClientHelper::GetInstance()->SetListPref(
       prefs::kEpsilonGreedyBanditEligibleSegments, SegmentsToValue(segments));

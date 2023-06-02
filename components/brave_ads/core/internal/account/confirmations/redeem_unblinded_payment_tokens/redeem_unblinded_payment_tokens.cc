@@ -67,13 +67,10 @@ RedeemUnblindedPaymentTokens::~RedeemUnblindedPaymentTokens() {
 
 void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
     const WalletInfo& wallet) {
+  CHECK(wallet.IsValid());
+
   if (is_processing_ || timer_.IsRunning() || retry_timer_.IsRunning()) {
     return;
-  }
-
-  if (!wallet.IsValid()) {
-    BLOG(0, "Failed to redeem unblinded payment tokens due to invalid wallet");
-    return FailedToRedeem(/*should_retry*/ false);
   }
 
   wallet_ = wallet;

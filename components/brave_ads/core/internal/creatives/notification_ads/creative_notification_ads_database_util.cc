@@ -17,8 +17,6 @@ void DeleteCreativeNotificationAds() {
     if (!success) {
       return BLOG(0, "Failed to delete creative notification ads");
     }
-
-    BLOG(3, "Successfully deleted creative notification ads");
   }));
 }
 

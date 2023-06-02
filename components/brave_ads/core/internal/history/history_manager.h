@@ -52,16 +52,16 @@ class HistoryManager final {
                              base::Time from_time,
                              base::Time to_time);
 
-  HistoryItemInfo Add(const InlineContentAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
-  HistoryItemInfo Add(const NewTabPageAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
-  HistoryItemInfo Add(const NotificationAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
-  HistoryItemInfo Add(const PromotedContentAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
-  HistoryItemInfo Add(const SearchResultAdInfo& ad,
-                      const ConfirmationType& confirmation_type) const;
+  void Add(const InlineContentAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
+  void Add(const NewTabPageAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
+  void Add(const NotificationAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
+  void Add(const PromotedContentAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
+  void Add(const SearchResultAdInfo& ad,
+           const ConfirmationType& confirmation_type) const;
 
   mojom::UserReactionType LikeAd(const AdContentInfo& ad_content) const;
   mojom::UserReactionType DislikeAd(const AdContentInfo& ad_content) const;

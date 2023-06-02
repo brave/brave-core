@@ -14,7 +14,6 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder.h"
@@ -67,7 +66,6 @@ void RedeemOptedInConfirmation::Redeem(
     RedeemOptedInConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
-  CHECK(ShouldRewardUser());
   CHECK(confirmation.opted_in);
 
   BLOG(1, "Redeem opted-in confirmation");
@@ -371,7 +369,7 @@ void RedeemOptedInConfirmation::FailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
     const bool should_retry,
     const bool should_backoff) {
-  BLOG(1, "Failed to redeem opted-in  "
+  BLOG(1, "Failed to redeem opted-in "
               << confirmation.type << " confirmation for "
               << confirmation.ad_type << " with transaction id "
               << confirmation.transaction_id << " and creative instance id "

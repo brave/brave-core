@@ -1,5 +1,5 @@
 # Wallet
 
-User's wallet for earning Brave Rewards.
+Wallet for earning Brave Rewards when a user opts into Brave Private Ads.
 
 Please add to it!

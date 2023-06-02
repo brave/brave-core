@@ -18,6 +18,8 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -153,7 +155,7 @@ ConfirmationStateManager& ConfirmationStateManager::GetInstance() {
   return GlobalState::GetInstance()->GetConfirmationStateManager();
 }
 
-void ConfirmationStateManager::Load(const WalletInfo& wallet,
+void ConfirmationStateManager::Load(const absl::optional<WalletInfo>& wallet,
                                     InitializeCallback callback) {
   BLOG(3, "Loading confirmations state");
 
@@ -220,6 +222,10 @@ void ConfirmationStateManager::Save() {
 
 absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
     const base::Value::Dict& dict) const {
+  if (!wallet_) {
+    return absl::nullopt;
+  }
+
   OptedInInfo opted_in;
 
   // Token
@@ -265,9 +271,8 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
         return absl::nullopt;
       }
 
-      CHECK(wallet_.IsValid());
       const absl::optional<std::string> signature =
-          crypto::Sign(*unblinded_token_base64, wallet_.secret_key);
+          crypto::Sign(*unblinded_token_base64, wallet_->secret_key);
       if (!signature) {
         return absl::nullopt;
       }
@@ -381,10 +386,25 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
   return true;
 }
 
-const ConfirmationList& ConfirmationStateManager::GetFailedConfirmations()
-    const {
+ConfirmationList ConfirmationStateManager::GetFailedConfirmations() const {
   CHECK(is_initialized_);
-  return failed_confirmations_;
+
+  if (ShouldRewardUser()) {
+    return failed_confirmations_;
+  }
+
+  // User is not opted-in to Brave Private Ads so only return opted-out
+  // confirmations, opted-in confirmations will be redeemed if and when the user
+  // rejoins Brave Private Ads.
+  ConfirmationList opted_out_confirmations;
+
+  base::ranges::copy_if(failed_confirmations_,
+                        std::back_inserter(opted_out_confirmations),
+                        [](const ConfirmationInfo& confirmation) {
+                          return !confirmation.opted_in;
+                        });
+
+  return opted_out_confirmations;
 }
 
 void ConfirmationStateManager::AppendFailedConfirmation(
@@ -481,9 +501,8 @@ bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
   privacy::UnblindedTokenList filtered_unblinded_tokens =
       privacy::UnblindedTokensFromValue(*list);
 
-  if (!filtered_unblinded_tokens.empty()) {
-    CHECK(wallet_.IsValid());
-    const std::string public_key = wallet_.public_key;
+  if (wallet_ && !filtered_unblinded_tokens.empty()) {
+    const std::string public_key = wallet_->public_key;
 
     filtered_unblinded_tokens.erase(
         base::ranges::remove_if(

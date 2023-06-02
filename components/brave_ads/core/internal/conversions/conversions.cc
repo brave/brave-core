@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -47,19 +48,34 @@ bool HasObservationWindowForAdEventExpired(
 }
 
 bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
-  if (ad_event.type == AdType::kInlineContentAd) {
-    // Only convert post clicks for inline content ads for opted-out and
-    // opted-in users.
-    return ad_event.confirmation_type != ConfirmationType::kViewed;
+  switch (ad_event.type.value()) {
+    case AdType::kInlineContentAd:
+    case AdType::kPromotedContentAd: {
+      // Only convert post clicks.
+      return ad_event.confirmation_type != ConfirmationType::kViewed;
+    }
+
+    case AdType::kNewTabPageAd: {
+      // Always convert.
+      return true;
+    }
+
+    case AdType::kNotificationAd: {
+      return UserHasOptedInToBravePrivateAds();
+    }
+
+    case AdType::kSearchResultAd: {
+      // Always convert.
+      return true;
+    }
+
+    case AdType::kUndefined: {
+      NOTREACHED_NORETURN();
+    }
   }
 
-  if (ad_event.type == AdType::kSearchResultAd) {
-    // Always convert search result ads for both opted-out and opted-in users.
-    return true;
-  }
-
-  // Only convert for opted-in users for all other ad types.
-  return ShouldRewardUser();
+  NOTREACHED_NORETURN() << "Unexpected value for AdType: "
+                        << static_cast<int>(ad_event.type.value());
 }
 
 bool DoesConfirmationTypeMatchConversionType(
@@ -74,7 +90,6 @@ bool DoesConfirmationTypeMatchConversionType(
       return conversion_type == "postclick";
     }
 
-    case ConfirmationType::kUndefined:
     case ConfirmationType::kServed:
     case ConfirmationType::kDismissed:
     case ConfirmationType::kTransferred:
@@ -84,6 +99,10 @@ bool DoesConfirmationTypeMatchConversionType(
     case ConfirmationType::kDownvoted:
     case ConfirmationType::kConversion: {
       return false;
+    }
+
+    case ConfirmationType::kUndefined: {
+      NOTREACHED_NORETURN();
     }
   }
 
@@ -197,10 +216,12 @@ ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
 }  // namespace
 
 Conversions::Conversions() {
+  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 Conversions::~Conversions() {
+  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
@@ -230,13 +251,13 @@ void Conversions::MaybeConvert(
   CheckRedirectChain(redirect_chain, html, conversion_id_patterns);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void Conversions::Process() {
   const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(base::BindOnce(&Conversions::ProcessCallback,
                                                weak_factory_.GetWeakPtr()));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void Conversions::ProcessCallback(
     const bool success,
@@ -415,7 +436,7 @@ void Conversions::FailedToConvertQueueItem(
            << " and advertiser id " << conversion_queue_item.advertiser_id
            << " " << LongFriendlyDateAndTime(conversion_queue_item.process_at));
 
-  NotifyConversionFailed(conversion_queue_item);
+  NotifyFailedToConvertAd(conversion_queue_item);
 
   Process();
 }
@@ -431,7 +452,7 @@ void Conversions::ConvertedQueueItem(
            << " and advertiser id " << conversion_queue_item.advertiser_id
            << " " << LongFriendlyDateAndTime(conversion_queue_item.process_at));
 
-  NotifyConversion(conversion_queue_item);
+  NotifyDidConvertAd(conversion_queue_item);
 
   Process();
 }
@@ -532,18 +553,22 @@ void Conversions::StartTimer(
                      << FriendlyDateAndTime(process_queue_at));
 }
 
-void Conversions::NotifyConversion(
+void Conversions::NotifyDidConvertAd(
     const ConversionQueueItemInfo& conversion_queue_item) const {
   for (ConversionsObserver& observer : observers_) {
-    observer.OnConversion(conversion_queue_item);
+    observer.OnDidConvertAd(conversion_queue_item);
   }
 }
 
-void Conversions::NotifyConversionFailed(
+void Conversions::NotifyFailedToConvertAd(
     const ConversionQueueItemInfo& conversion_queue_item) const {
   for (ConversionsObserver& observer : observers_) {
-    observer.OnConversionFailed(conversion_queue_item);
+    observer.OnFailedToConvertAd(conversion_queue_item);
   }
+}
+
+void Conversions::OnNotifyDidInitializeAds() {
+  Process();
 }
 
 void Conversions::OnHtmlContentDidChange(

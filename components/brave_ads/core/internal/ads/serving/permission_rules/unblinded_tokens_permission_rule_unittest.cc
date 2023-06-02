@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/unblinded_tokens_permission_rule.h"
 
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
@@ -20,6 +21,17 @@ class BraveAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 10);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
+}
+
+TEST_F(BraveAdsUnblindedTokensPermissionRuleTest,
+       AllowAdIfShouldNotRewardUser) {
+  // Arrange
+  DisableBravePrivateAds();
 
   // Act
 

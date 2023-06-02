@@ -16,7 +16,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/flags_util.h"
@@ -37,8 +36,18 @@
 
 namespace brave_ads {
 
-using ::testing::_;
 using ::testing::Invoke;
+
+namespace {
+
+mojom::WalletInfoPtr GetWallet() {
+  mojom::WalletInfoPtr wallet = mojom::WalletInfo::New();
+  wallet->payment_id = kWalletPaymentId;
+  wallet->recovery_seed = kWalletRecoverySeed;
+  return wallet;
+}
+
+}  // namespace
 
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
@@ -210,7 +219,7 @@ void UnitTestBase::Initialize() {
 }
 
 void UnitTestBase::MockAdsClientAddObserver() {
-  ON_CALL(ads_client_mock_, AddObserver(_))
+  ON_CALL(ads_client_mock_, AddObserver)
       .WillByDefault(Invoke(
           [=](AdsClientNotifierObserver* observer) { AddObserver(observer); }));
 }
@@ -269,7 +278,7 @@ void UnitTestBase::MockDefaultAdsClient() {
 }
 
 void UnitTestBase::MockSetBooleanPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetBooleanPref(_, _))
+  ON_CALL(mock, SetBooleanPref)
       .WillByDefault(Invoke([=](const std::string& path, const bool value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(static_cast<int>(value));
@@ -278,7 +287,7 @@ void UnitTestBase::MockSetBooleanPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetIntegerPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetIntegerPref(_, _))
+  ON_CALL(mock, SetIntegerPref)
       .WillByDefault(Invoke([=](const std::string& path, const int value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(value);
@@ -287,7 +296,7 @@ void UnitTestBase::MockSetIntegerPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetDoublePref(AdsClientMock& mock) {
-  ON_CALL(mock, SetDoublePref(_, _))
+  ON_CALL(mock, SetDoublePref)
       .WillByDefault(Invoke([=](const std::string& path, const double value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(value);
@@ -296,7 +305,7 @@ void UnitTestBase::MockSetDoublePref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetStringPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetStringPref(_, _))
+  ON_CALL(mock, SetStringPref)
       .WillByDefault(
           Invoke([=](const std::string& path, const std::string& value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);
@@ -306,7 +315,7 @@ void UnitTestBase::MockSetStringPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetInt64Pref(AdsClientMock& mock) {
-  ON_CALL(mock, SetInt64Pref(_, _))
+  ON_CALL(mock, SetInt64Pref)
       .WillByDefault(Invoke([=](const std::string& path, const int64_t value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(value);
@@ -315,7 +324,7 @@ void UnitTestBase::MockSetInt64Pref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetUint64Pref(AdsClientMock& mock) {
-  ON_CALL(mock, SetUint64Pref(_, _))
+  ON_CALL(mock, SetUint64Pref)
       .WillByDefault(Invoke([=](const std::string& path, const uint64_t value) {
         const std::string uuid = GetUuidForCurrentTestAndValue(path);
         Prefs()[uuid] = base::NumberToString(value);
@@ -324,7 +333,7 @@ void UnitTestBase::MockSetUint64Pref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetDictPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetDictPref(_, _))
+  ON_CALL(mock, SetDictPref)
       .WillByDefault(
           Invoke([=](const std::string& path, base::Value::Dict value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);
@@ -334,7 +343,7 @@ void UnitTestBase::MockSetDictPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetListPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetListPref(_, _))
+  ON_CALL(mock, SetListPref)
       .WillByDefault(
           Invoke([=](const std::string& path, base::Value::List value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);
@@ -344,7 +353,7 @@ void UnitTestBase::MockSetListPref(AdsClientMock& mock) {
 }
 
 void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
-  ON_CALL(mock, SetTimePref(_, _))
+  ON_CALL(mock, SetTimePref)
       .WillByDefault(
           Invoke([=](const std::string& path, const base::Time value) {
             const std::string uuid = GetUuidForCurrentTestAndValue(path);
@@ -352,53 +361,6 @@ void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
                 value.ToDeltaSinceWindowsEpoch().InMicroseconds());
             NotifyPrefDidChange(path);
           }));
-}
-
-void UnitTestBase::MockDefaultPrefs() {
-  ads_client_mock_.SetBooleanPref(prefs::kEnabled, true);
-
-  ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "");
-
-  ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
-
-  ads_client_mock_.SetIntegerPref(prefs::kIdleTimeThreshold, 15);
-
-  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                  false);
-  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode, "AUTO");
-  ads_client_mock_.SetStringPref(prefs::kAutoDetectedSubdivisionTargetingCode,
-                                 "");
-
-  ads_client_mock_.SetStringPref(prefs::kCatalogId, "");
-  ads_client_mock_.SetIntegerPref(prefs::kCatalogVersion, 1);
-  ads_client_mock_.SetInt64Pref(prefs::kCatalogPing, 7'200'000);
-  ads_client_mock_.SetTimePref(prefs::kCatalogLastUpdated, DistantPast());
-
-  ads_client_mock_.SetInt64Pref(prefs::kIssuerPing, 0);
-  ads_client_mock_.SetListPref(prefs::kIssuers, base::Value::List());
-
-  ads_client_mock_.SetDictPref(prefs::kEpsilonGreedyBanditArms,
-                               base::Value::Dict());
-  ads_client_mock_.SetListPref(prefs::kEpsilonGreedyBanditEligibleSegments,
-                               base::Value::List());
-
-  ads_client_mock_.SetListPref(prefs::kNotificationAds, base::Value::List());
-  ads_client_mock_.SetTimePref(prefs::kServeAdAt, Now());
-
-  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
-
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConversionState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedNotificationState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedRewardsState, true);
-  ads_client_mock_.SetBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
-                                  false);
-
-  ads_client_mock_.SetUint64Pref(prefs::kConfirmationsHash, 0);
-  ads_client_mock_.SetUint64Pref(prefs::kClientHash, 0);
-
-  ads_client_mock_.SetStringPref(prefs::kBrowserVersionNumber, "");
 }
 
 void UnitTestBase::SetUpIntegrationTest() {
@@ -412,11 +374,15 @@ void UnitTestBase::SetUpIntegrationTest() {
 
   ads_->SetFlags(BuildFlags());
 
-  ads_->OnRewardsWalletDidChange(kWalletPaymentId, kWalletRecoverySeed);
+  ads_->Initialize(GetWallet(),
+                   base::BindOnce(&UnitTestBase::InitializeCallback,
+                                  weak_factory_.GetWeakPtr()));
+}
 
-  ads_->Initialize(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+void UnitTestBase::InitializeCallback(const bool success) {
+  ASSERT_TRUE(success);
 
+  NotifyDidInitializeAds();
   task_environment_.RunUntilIdle();
 }
 

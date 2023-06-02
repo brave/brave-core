@@ -24,12 +24,14 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/idle/idle.h"
@@ -94,15 +96,16 @@ class AdsServiceImpl : public AdsService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
+  bool UserHasOptedInToBravePrivateAds() const;
+  bool UserHasOptedInToBraveNews() const;
+
   void InitializeNotificationsForCurrentProfile() const;
 
   void MigrateConfirmationState();
   void MigrateConfirmationStateCallback(bool success);
 
   void GetDeviceId();
-  void OnGetDeviceId(std::string device_id);
-
-  bool UserHasOptedIn() const;
+  void GetDeviceIdCallback(std::string device_id);
 
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
@@ -111,19 +114,21 @@ class AdsServiceImpl : public AdsService,
   void CancelRestartBatAdsService();
   bool ShouldProceedInitialization(size_t current_start_number) const;
 
-  void OnBatAdsServiceCreated(size_t current_start_number);
-  void OnInitializeBasePathDirectory(size_t current_start_number, bool success);
+  void BatAdsServiceCreatedCallback(size_t current_start_number);
+  void InitializeBasePathDirectoryCallback(size_t current_start_number,
+                                           bool success);
   void Initialize(size_t current_start_number);
   void InitializeDatabase();
 
-  bool ShouldRewardUser() const;
   void InitializeRewardsWallet(size_t current_start_number);
-  void OnInitializeRewardsWallet(size_t current_start_number,
-                                 brave_rewards::mojom::RewardsWalletPtr wallet);
-  void InitializeBatAds();
-  void OnInitializeBatAds(bool success);
+  void InitializeRewardsWalletCallback(
+      size_t current_start_number,
+      brave_rewards::mojom::RewardsWalletPtr wallet);
+  void InitializeBatAds(brave_rewards::mojom::RewardsWalletPtr rewards_wallet);
+  void InitializeBatAdsCallback(bool success);
 
   void ShutdownAndResetState();
+  void ShutdownAndResetStateCallback(bool /*success*/);
 
   void SetSysInfo();
   void SetBuildChannel();
@@ -139,13 +144,18 @@ class AdsServiceImpl : public AdsService,
 
   void InitializePrefChangeRegistrar();
   void OnEnabledPrefChanged();
+  void OnEnabledPrefChangedCallback(
+      brave_rewards::mojom::RewardsWalletPtr wallet);
   void OnIdleTimeThresholdPrefChanged();
   void OnBraveNewsOptedInPrefChanged();
   void OnNewTabPageShowTodayPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 
+  void NotifyRewardsWalletDidUpdate(
+      brave_rewards::mojom::RewardsWalletPtr wallet);
+
   void GetRewardsWallet();
-  void OnGetRewardsWallet(brave_rewards::mojom::RewardsWalletPtr wallet);
+  void GetRewardsWalletCallback(brave_rewards::mojom::RewardsWalletPtr wallet);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.
@@ -164,22 +174,22 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/26192) Decouple new
   // tab page ad business logic.
-  void OnPrefetchNewTabPageAd(absl::optional<base::Value::Dict> dict);
+  void PrefetchNewTabPageAdCallback(absl::optional<base::Value::Dict> dict);
 
   // TODO(https://github.com/brave/brave-browser/issues/26193) Decouple open
   // new tab with ad business logic.
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OnOpenNewTabWithAd(absl::optional<base::Value::Dict> dict);
+  void OpenNewTabWithAdCallback(absl::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
   void OpenNewTabWithUrl(const GURL& url);
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
-  void OnURLRequest(SimpleURLLoaderList::iterator url_loader_iter,
-                    UrlRequestCallback callback,
-                    std::unique_ptr<std::string> response_body);
+  void URLRequestCallback(SimpleURLLoaderList::iterator url_loader_iter,
+                          UrlRequestCallback callback,
+                          std::unique_ptr<std::string> response_body);
 
   PrefService* GetPrefService();
   const PrefService* GetPrefService() const;
@@ -242,10 +252,10 @@ class AdsServiceImpl : public AdsService,
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdAsDictCallback callback) override;
-  void TriggerInlineContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::InlineContentAdEventType event_type) override;
+  void TriggerInlineContentAdEvent(const std::string& placement_id,
+                                   const std::string& creative_instance_id,
+                                   mojom::InlineContentAdEventType event_type,
+                                   TriggerAdEventCallback callback) override;
 
   absl::optional<NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
       override;
@@ -253,19 +263,20 @@ class AdsServiceImpl : public AdsService,
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
-  void TriggerNewTabPageAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::NewTabPageAdEventType event_type) override;
+  void TriggerNewTabPageAdEvent(const std::string& placement_id,
+                                const std::string& creative_instance_id,
+                                mojom::NewTabPageAdEventType event_type,
+                                TriggerAdEventCallback callback) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type) override;
+      mojom::PromotedContentAdEventType event_type,
+      TriggerAdEventCallback callback) override;
 
-  void TriggerSearchResultAdEvent(
-      mojom::SearchResultAdInfoPtr ad_mojom,
-      mojom::SearchResultAdEventType event_type) override;
+  void TriggerSearchResultAdEvent(mojom::SearchResultAdInfoPtr ad_mojom,
+                                  mojom::SearchResultAdEventType event_type,
+                                  TriggerAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(
       mojom::AdType ad_type,
@@ -422,7 +433,8 @@ class AdsServiceImpl : public AdsService,
   void OnBrowserDidEnterBackground() override;
 
   // ResourceComponentObserver:
-  void OnDidUpdateResourceComponent(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& manifest_version,
+                                    const std::string& id) override;
 
   // RewardsServiceObserver:
   void OnRewardsWalletUpdated() override;
@@ -433,8 +445,8 @@ class AdsServiceImpl : public AdsService,
   bool did_cleanup_on_first_run_ = false;
   bool needs_browser_upgrade_to_serve_ads_ = false;
   bool is_upgrading_from_pre_brave_ads_build_ = false;
-  // Brave Ads Service starts count is needed to avoid possible double Brave Ads
-  // initialization.
+  // Brave Ads Service starts count is needed to avoid possible double Brave
+  // Ads initialization.
   // TODO(https://github.com/brave/brave-browser/issues/30247): Refactor Brave
   // Ads startup logic.
   size_t service_starts_count_ = 0;
@@ -492,6 +504,8 @@ class AdsServiceImpl : public AdsService,
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
   mojo::Remote<bat_ads::mojom::BatAdsClientNotifier> bat_ads_client_notifier_;
+  mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_receiver_;
 };
 
 }  // namespace brave_ads

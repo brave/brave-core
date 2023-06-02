@@ -5,7 +5,7 @@
 
 import("//brave/build/config.gni")
 
-source_set("browser") {
+static_library("browser") {
   sources = [
     "ads_p2a.cc",
     "ads_p2a.h",

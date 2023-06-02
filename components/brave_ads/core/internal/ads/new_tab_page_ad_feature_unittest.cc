@@ -40,6 +40,53 @@ TEST(BraveAdsNewTabPageAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsNewTabPageAdFeatureEnabled());
 }
 
+TEST(BraveAdsNewTabPageAdFeatureTest, ShouldAlwaysTriggerNewTabPageAdEvents) {
+  // Arrange
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["should_always_trigger_ad_events"] = "true";
+  enabled_features.emplace_back(kNewTabPageAdFeature, params);
+
+  const std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(kShouldAlwaysTriggerNewTabPageAdEvents.Get());
+}
+
+TEST(BraveAdsNewTabPageAdFeatureTest,
+     DefaultShouldAlwaysTriggerNewTabPageAdEvents) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(kShouldAlwaysTriggerNewTabPageAdEvents.Get());
+}
+
+TEST(BraveAdsNewTabPageAdFeatureTest,
+     DefaulShouldAlwaysTriggerNewTabPageAdEventsWhenDisabled) {
+  // Arrange
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
+
+  std::vector<base::test::FeatureRef> disabled_features;
+  disabled_features.emplace_back(kNewTabPageAdFeature);
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(kShouldAlwaysTriggerNewTabPageAdEvents.Get());
+}
+
 TEST(BraveAdsNewTabPageAdFeatureTest, GetMaximumAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;

@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -25,7 +26,8 @@ class BraveAdsPurchaseIntentModelTest : public UnitTestBase {
   }
 
   bool LoadResource() {
-    resource_->Load();
+    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                     kCountryComponentId);
     task_environment_.RunUntilIdle();
     return resource_->IsInitialized();
   }

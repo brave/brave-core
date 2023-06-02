@@ -53,8 +53,7 @@ GURL GetSearchResultAdClickedUrl() {
 class SearchResultAdHandlerTest : public ::testing::Test {
  public:
   SearchResultAdHandlerTest() {
-    feature_list_.InitAndEnableFeature(
-        kShouldTriggerSearchResultAdEventsFeature);
+    feature_list_.InitAndEnableFeature(kSearchResultAdFeature);
   }
 
   static void SimulateOnRetrieveSearchResultAdEntities(
@@ -107,10 +106,10 @@ TEST_F(SearchResultAdHandlerTest,
 TEST_F(SearchResultAdHandlerTest, NullWebPage) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
+                                _, mojom::SearchResultAdEventType::kViewed, _))
       .Times(0);
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+                                _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(0);
 
   auto search_result_ad_handler =
@@ -139,10 +138,10 @@ TEST_F(SearchResultAdHandlerTest, NullWebPage) {
 TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
+                                _, mojom::SearchResultAdEventType::kViewed, _))
       .Times(0);
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+                                _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(0);
 
   auto search_result_ad_handler =
@@ -171,10 +170,10 @@ TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
 TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
+                                _, mojom::SearchResultAdEventType::kViewed, _))
       .Times(0);
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+                                _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(0);
 
   auto search_result_ad_handler =
@@ -204,11 +203,10 @@ TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
 TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kServed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked));
+                                _, mojom::SearchResultAdEventType::kViewed, _));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kClicked, _));
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
@@ -246,10 +244,10 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
 
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(false));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
+                                _, mojom::SearchResultAdEventType::kViewed, _))
       .Times(0);
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+                                _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(0);
 
   base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
@@ -271,11 +269,9 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
 TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kServed));
+                                _, mojom::SearchResultAdEventType::kViewed, _));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+                                _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(2);
 
   auto search_result_ad_handler =
@@ -306,10 +302,11 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
 TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed))
+                                _, mojom::SearchResultAdEventType::kViewed, _))
       .Times(0);
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, mojom::SearchResultAdEventType::kClicked, _));
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
@@ -336,11 +333,9 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
 TEST_F(SearchResultAdHandlerTest, WrongClickedUrl) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kServed));
+                                _, mojom::SearchResultAdEventType::kViewed, _));
   EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kViewed));
-  EXPECT_CALL(ads_service_, TriggerSearchResultAdEvent(
-                                _, mojom::SearchResultAdEventType::kClicked))
+                                _, mojom::SearchResultAdEventType::kClicked, _))
       .Times(0);
 
   auto search_result_ad_handler =

@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_dynamic_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,8 +22,8 @@ class BraveAdsConfirmationDynamicUserDataBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest, Build) {
   // Arrange
-  ads_client_mock_.SetStringPref(prefs::kDiagnosticId,
-                                 "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  SetDefaultStringPref(prefs::kDiagnosticId,
+                       "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
   AdvanceClockTo(
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));

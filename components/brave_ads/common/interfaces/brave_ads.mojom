@@ -27,6 +27,11 @@ struct Flags {
   EnvironmentType environment_type;
 };
 
+struct WalletInfo {
+  string payment_id;
+  string recovery_seed;
+};
+
 struct StatementInfo {
   double earnings_last_month;
   double min_earnings_this_month;
@@ -60,7 +65,6 @@ struct ConversionInfo {
   string url_pattern;
   string advertiser_public_key;
   int32 observation_window;
-  mojo_base.mojom.Time expire_at;
 };
 
 enum NotificationAdEventType {

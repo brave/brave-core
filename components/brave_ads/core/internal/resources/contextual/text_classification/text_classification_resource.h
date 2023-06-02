@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -29,23 +30,36 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   ~TextClassificationResource() override;
 
-  bool IsInitialized() const;
+  bool IsInitialized() const {
+    return static_cast<bool>(text_processing_pipeline_);
+  }
 
-  void Load();
-
-  const ml::pipeline::TextProcessing& get() const {
+  const absl::optional<ml::pipeline::TextProcessing>& get() const {
     return text_processing_pipeline_;
   }
 
  private:
-  void LoadAndParseResourceCallback(
+  void MaybeLoad();
+  void MaybeLoadOrReset();
+
+  bool DidLoad() const { return did_load_; }
+  void Load();
+  void LoadCallback(
       ResourceParsingErrorOr<ml::pipeline::TextProcessing> result);
+
+  void MaybeReset();
+  void Reset();
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
+  void OnNotifyPrefDidChange(const std::string& path) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                          const std::string& id) override;
 
-  ml::pipeline::TextProcessing text_processing_pipeline_;
+  absl::optional<ml::pipeline::TextProcessing> text_processing_pipeline_;
+
+  bool did_load_ = false;
+  absl::optional<std::string> manifest_version_;
 
   base::WeakPtrFactory<TextClassificationResource> weak_factory_{this};
 };

@@ -6,7 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_H_
 
+#include <string>
+
 #include "base/memory/raw_ref.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
@@ -15,7 +18,8 @@ namespace brave_ads {
 class Catalog;
 struct CatalogInfo;
 
-class EpsilonGreedyBanditResource final : public CatalogObserver {
+class EpsilonGreedyBanditResource final : public AdsClientNotifierObserver,
+                                          public CatalogObserver {
  public:
   explicit EpsilonGreedyBanditResource(Catalog& catalog);
 
@@ -31,11 +35,17 @@ class EpsilonGreedyBanditResource final : public CatalogObserver {
 
   bool IsInitialized() const { return is_initialized_; }
 
-  void LoadFromCatalog(const CatalogInfo& catalog);
-
   static SegmentList Get();
 
  private:
+  void LoadFromCatalog(const CatalogInfo& catalog);
+
+  void MaybeReset();
+  void Reset();
+
+  // AdsClientNotifierObserver:
+  void OnNotifyPrefDidChange(const std::string& path) override;
+
   // CatalogObserver:
   void OnDidUpdateCatalog(const CatalogInfo& catalog) override;
 

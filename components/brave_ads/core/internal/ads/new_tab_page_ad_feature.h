@@ -19,6 +19,9 @@ BASE_DECLARE_FEATURE(kNewTabPageAdFeature);
 
 bool IsNewTabPageAdFeatureEnabled();
 
+constexpr base::FeatureParam<bool> kShouldAlwaysTriggerNewTabPageAdEvents{
+    &kNewTabPageAdFeature, "should_always_trigger_ad_events", false};
+
 constexpr base::FeatureParam<int> kMaximumNewTabPageAdsPerHour{
     &kNewTabPageAdFeature, "maximum_ads_per_hour", 4};
 

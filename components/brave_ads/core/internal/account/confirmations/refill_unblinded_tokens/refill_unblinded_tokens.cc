@@ -67,18 +67,10 @@ RefillUnblindedTokens::~RefillUnblindedTokens() {
 }
 
 void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
+  CHECK(wallet.IsValid());
+
   if (!ConfirmationStateManager::GetInstance().IsInitialized() ||
       is_processing_ || retry_timer_.IsRunning()) {
-    return;
-  }
-
-  if (!wallet.IsValid()) {
-    BLOG(0, "Failed to refill unblinded tokens due to an invalid wallet");
-
-    if (delegate_) {
-      delegate_->OnFailedToRefillUnblindedTokens();
-    }
-
     return;
   }
 

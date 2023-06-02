@@ -30,6 +30,9 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
 
   ~AdsClientNotifierObserver() override;
 
+  // Called when ads did initialize.
+  virtual void OnNotifyDidInitializeAds() {}
+
   // Called when the user changes the locale of their operating system. This
   // call is not required if the operating system restarts the browser when
   // changing the locale. |locale| should be specified in either
@@ -39,8 +42,16 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   // Invoked when a preference has changed for the specified |path|.
   virtual void OnNotifyPrefDidChange(const std::string& path) {}
 
-  // Invoked when a resource component has been updated.
-  virtual void OnNotifyDidUpdateResourceComponent(const std::string& id) {}
+  // Invoked when a resource component with |id| has been updated to
+  // |manifest_version|.
+  virtual void OnNotifyDidUpdateResourceComponent(
+      const std::string& manifest_version,
+      const std::string& id) {}
+
+  // Called when the Brave Rewards wallet did update.
+  virtual void OnNotifyRewardsWalletDidUpdate(
+      const std::string& payment_id,
+      const std::string& recovery_seed) {}
 
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that

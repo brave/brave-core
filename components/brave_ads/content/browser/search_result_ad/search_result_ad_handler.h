@@ -47,7 +47,6 @@ class SearchResultAdHandler final {
       base::OnceCallback<void(std::vector<std::string>)> callback);
 
   void MaybeTriggerSearchResultAdViewedEvent(const std::string& placement_id);
-
   void MaybeTriggerSearchResultAdClickedEvent(const GURL& navigation_url);
 
  private:
@@ -55,6 +54,8 @@ class SearchResultAdHandler final {
 
   SearchResultAdHandler(AdsService* ads_service,
                         bool should_trigger_viewed_event);
+
+  bool IsEnabled();
 
   void OnRetrieveSearchResultAdEntities(
       mojo::Remote<blink::mojom::DocumentMetadata> document_metadata,

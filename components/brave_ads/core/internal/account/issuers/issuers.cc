@@ -30,9 +30,8 @@ namespace {
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
 base::TimeDelta GetFetchDelay() {
-  const int ping =
-      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing);
-  return base::Milliseconds(ping);
+  return base::Milliseconds(
+      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIssuerPing));
 }
 
 }  // namespace
@@ -43,20 +42,24 @@ Issuers::~Issuers() {
   delegate_ = nullptr;
 }
 
-void Issuers::MaybeFetch() {
-  if (is_fetching_ || retry_timer_.IsRunning()) {
+void Issuers::PeriodicallyFetch() {
+  if (is_periodically_fetching_) {
     return;
   }
+
+  is_periodically_fetching_ = true;
 
   Fetch();
 }
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 void Issuers::Fetch() {
-  CHECK(!is_fetching_);
+  if (is_fetching_ || retry_timer_.IsRunning()) {
+    return;
+  }
 
-  BLOG(1, "FetchIssuers" << BuildIssuersUrlPath());
+  BLOG(1, "FetchIssuers " << BuildIssuersUrlPath());
 
   is_fetching_ = true;
 

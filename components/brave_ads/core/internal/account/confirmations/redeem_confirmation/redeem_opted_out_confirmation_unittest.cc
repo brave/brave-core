@@ -6,11 +6,11 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_opted_out_confirmation.h"
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_confirmation_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_out_confirmation_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -22,7 +22,6 @@
 
 namespace brave_ads {
 
-using ::testing::_;
 using ::testing::NiceMock;
 
 class BraveAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
@@ -30,7 +29,7 @@ class BraveAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
+    DisableBravePrivateAds();
   }
 
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
@@ -55,14 +54,13 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest, Redeem) {
 
   // Act
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(*confirmation));
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnFailedToRedeemConfirmation(_, _, _))
+  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnFailedToRedeemConfirmation)
       .Times(0);
 
   RedeemOptedOutConfirmation::CreateAndRedeem(
@@ -88,11 +86,11 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
 
   // Act
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(
@@ -123,11 +121,11 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
 
   // Act
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(
@@ -158,11 +156,11 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
 
   // Act
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(
@@ -193,11 +191,11 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest, RetryRedeeming) {
 
   // Act
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedInConfirmation(_, _))
+              OnDidRedeemOptedInConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemOptedOutConfirmation(_))
+              OnDidRedeemOptedOutConfirmation)
       .Times(0);
 
   EXPECT_CALL(redeem_confirmation_delegate_mock_,

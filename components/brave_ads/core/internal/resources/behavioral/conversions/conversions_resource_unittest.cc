@@ -10,8 +10,11 @@
 #include <utility>
 
 #include "base/files/file.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource_constants.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,10 +24,6 @@ namespace brave_ads {
 using testing::_;
 using testing::Invoke;
 
-namespace {
-constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
-}  // namespace
-
 class BraveAdsConversionsResourceTest : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -33,37 +32,37 @@ class BraveAdsConversionsResourceTest : public UnitTestBase {
     resource_ = std::make_unique<ConversionsResource>();
   }
 
-  bool LoadResource() {
-    resource_->Load();
+  void LoadResource(const std::string& id) {
+    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion, id);
     task_environment_.RunUntilIdle();
-    return resource_->IsInitialized();
   }
 
   std::unique_ptr<ConversionsResource> resource_;
 };
 
-TEST_F(BraveAdsConversionsResourceTest, LoadResource) {
+TEST_F(BraveAdsConversionsResourceTest, IsNotInitialized) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(LoadResource());
+  EXPECT_FALSE(resource_->IsInitialized());
 }
 
 TEST_F(BraveAdsConversionsResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
+  CopyFileFromTestPathToTempPath(kInvalidResourceId, kConversionsResourceId);
 
   // Act
+  LoadResource(kCountryComponentId);
 
   // Assert
-  EXPECT_FALSE(LoadResource());
+  EXPECT_FALSE(resource_->IsInitialized());
 }
 
 TEST_F(BraveAdsConversionsResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_, LoadFileResource(kResourceId, _, _))
+  EXPECT_CALL(ads_client_mock_, LoadFileResource(kConversionsResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
@@ -75,18 +74,73 @@ TEST_F(BraveAdsConversionsResourceTest, DoNotLoadMissingResource) {
       }));
 
   // Act
-
-  // Assert
-  EXPECT_FALSE(LoadResource());
-}
-
-TEST_F(BraveAdsConversionsResourceTest, IsNotInitialized) {
-  // Arrange
-
-  // Act
+  LoadResource(kCountryComponentId);
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
+}
+
+TEST_F(BraveAdsConversionsResourceTest, LoadResourceWhenLocaleDidChange) {
+  // Arrange
+
+  // Act
+  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  task_environment_.RunUntilIdle();
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
+}
+
+TEST_F(
+    BraveAdsConversionsResourceTest,
+    LoadResourceWhenLocaleDidChangeIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+  DisableBraveNewsAds();
+
+  // Act
+  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  task_environment_.RunUntilIdle();
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
+}
+
+TEST_F(BraveAdsConversionsResourceTest,
+       LoadResourceWhenDidUpdateResourceComponent) {
+  // Arrange
+
+  // Act
+  LoadResource(kCountryComponentId);
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
+}
+
+TEST_F(
+    BraveAdsConversionsResourceTest,
+    DoNotLoadResourceWhenDidUpdateResourceComponentIfInvalidCountryComponentId) {
+  // Arrange
+
+  // Act
+  LoadResource(kInvalidCountryComponentId);
+
+  // Assert
+  EXPECT_FALSE(resource_->IsInitialized());
+}
+
+TEST_F(
+    BraveAdsConversionsResourceTest,
+    LoadResourceWhenDidUpdateResourceComponentIfBravePrivateAdsAndBraveNewsAdsAreDisabled) {
+  // Arrange
+  DisableBravePrivateAds();
+  DisableBraveNewsAds();
+
+  // Act
+  LoadResource(kCountryComponentId);
+
+  // Assert
+  EXPECT_TRUE(resource_->IsInitialized());
 }
 
 }  // namespace brave_ads

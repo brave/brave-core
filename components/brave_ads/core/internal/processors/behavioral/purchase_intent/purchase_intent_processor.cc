@@ -30,7 +30,7 @@ namespace {
 
 constexpr uint16_t kPurchaseIntentDefaultSignalWeight = 1;
 
-void AppendIntentSignalToHistory(
+void AppendSignalToHistory(
     const PurchaseIntentSignalInfo& purchase_intent_signal) {
   for (const auto& segment : purchase_intent_signal.segments) {
     const PurchaseIntentSignalHistoryInfo history(
@@ -42,13 +42,9 @@ void AppendIntentSignalToHistory(
 }
 
 KeywordList ToKeywords(const std::string& value) {
-  const std::string lowercase_value = base::ToLowerASCII(value);
-
-  const std::string stripped_value =
-      StripNonAlphaNumericCharacters(lowercase_value);
-
-  return base::SplitString(stripped_value, " ", base::TRIM_WHITESPACE,
-                           base::SPLIT_WANT_NONEMPTY);
+  return base::SplitString(
+      StripNonAlphaNumericCharacters(base::ToLowerASCII(value)), " ",
+      base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 }
 
 bool IsSubset(KeywordList keywords_lhs, KeywordList keywords_rhs) {
@@ -71,102 +67,112 @@ PurchaseIntentProcessor::~PurchaseIntentProcessor() {
 
 void PurchaseIntentProcessor::Process(const GURL& url) {
   if (!resource_->IsInitialized()) {
-    return BLOG(1,
-                "Failed to process purchase intent signal for visited URL due "
-                "to uninitialized purchase intent resource");
+    return;
   }
 
   if (!url.is_valid()) {
     return BLOG(1,
-                "Failed to process purchase intent signal for visited URL due "
-                "to an invalid url");
+                "Failed to process purchase intent signal because the visited "
+                "URL is invalid");
   }
 
-  const PurchaseIntentSignalInfo purchase_intent_signal = ExtractSignal(url);
-
-  if (purchase_intent_signal.segments.empty()) {
+  const absl::optional<PurchaseIntentSignalInfo> signal = ExtractSignal(url);
+  if (!signal || signal->segments.empty()) {
     return BLOG(1, "No purchase intent matches found for visited URL");
   }
 
   BLOG(1, "Extracted purchase intent signal from visited URL");
 
-  AppendIntentSignalToHistory(purchase_intent_signal);
+  AppendSignalToHistory(*signal);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-PurchaseIntentSignalInfo PurchaseIntentProcessor::ExtractSignal(
+absl::optional<PurchaseIntentSignalInfo> PurchaseIntentProcessor::ExtractSignal(
     const GURL& url) const {
-  PurchaseIntentSignalInfo purchase_intent_signal;
-
   const absl::optional<std::string> search_query =
       ExtractSearchTermQueryValue(url);
   if (search_query) {
-    const SegmentList keyword_segments =
+    const absl::optional<SegmentList> segments =
         GetSegmentsForSearchQuery(*search_query);
-    if (!keyword_segments.empty()) {
-      purchase_intent_signal.created_at = base::Time::Now();
-      purchase_intent_signal.segments = keyword_segments;
-      purchase_intent_signal.weight =
-          GetFunnelWeightForSearchQuery(*search_query);
+    if (!segments || segments->empty()) {
+      return absl::nullopt;
     }
-  } else {
-    const PurchaseIntentSiteInfo purchase_intent_site = GetSite(url);
 
-    if (purchase_intent_site.url_netloc.is_valid()) {
-      purchase_intent_signal.created_at = base::Time::Now();
-      purchase_intent_signal.segments = purchase_intent_site.segments;
-      purchase_intent_signal.weight = purchase_intent_site.weight;
-    }
+    PurchaseIntentSignalInfo purchase_intent_signal;
+    purchase_intent_signal.created_at = base::Time::Now();
+    purchase_intent_signal.segments = *segments;
+    purchase_intent_signal.weight =
+        GetFunnelWeightForSearchQuery(*search_query);
+    return purchase_intent_signal;
   }
 
+  const absl::optional<PurchaseIntentSiteInfo> site = GetSite(url);
+  if (!site || !site->url_netloc.is_valid()) {
+    return absl::nullopt;
+  }
+
+  PurchaseIntentSignalInfo purchase_intent_signal;
+  purchase_intent_signal.created_at = base::Time::Now();
+  purchase_intent_signal.segments = site->segments;
+  purchase_intent_signal.weight = site->weight;
   return purchase_intent_signal;
 }
 
-PurchaseIntentSiteInfo PurchaseIntentProcessor::GetSite(const GURL& url) const {
-  PurchaseIntentSiteInfo purchase_intent_site;
+absl::optional<PurchaseIntentSiteInfo> PurchaseIntentProcessor::GetSite(
+    const GURL& url) const {
+  const absl::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  if (!purchase_intent) {
+    return absl::nullopt;
+  }
 
-  for (const auto& site : resource_->get().sites) {
+  for (const auto& site : purchase_intent->sites) {
     if (SameDomainOrHost(url, site.url_netloc)) {
-      purchase_intent_site = site;
-      break;
+      return site;
     }
   }
 
-  return purchase_intent_site;
+  return absl::nullopt;
 }
 
-SegmentList PurchaseIntentProcessor::GetSegmentsForSearchQuery(
+absl::optional<SegmentList> PurchaseIntentProcessor::GetSegmentsForSearchQuery(
     const std::string& search_query) const {
-  SegmentList segments;
+  const absl::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  if (!purchase_intent) {
+    return absl::nullopt;
+  }
 
   const KeywordList search_query_keywords = ToKeywords(search_query);
 
-  for (const auto& keyword : resource_->get().segment_keywords) {
+  for (const auto& keyword : purchase_intent->segment_keywords) {
     // Intended behavior relies on early return from list traversal and
     // implicitely on the ordering of |segment_keywords_| to ensure specific
     // segments are matched over general segments, e.g. "audi a6" segments
-    // should be returned over "audi" segments if possible
+    // should be returned over "audi" segments if possible.
     if (IsSubset(search_query_keywords, ToKeywords(keyword.keywords))) {
-      segments = keyword.segments;
-      break;
+      return keyword.segments;
     }
   }
 
-  return segments;
+  return absl::nullopt;
 }
 
 uint16_t PurchaseIntentProcessor::GetFunnelWeightForSearchQuery(
     const std::string& search_query) const {
+  const absl::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  if (!purchase_intent) {
+    return kPurchaseIntentDefaultSignalWeight;
+  }
+
   const KeywordList search_query_keywords = ToKeywords(search_query);
 
   uint16_t max_weight = kPurchaseIntentDefaultSignalWeight;
 
-  for (const auto& keyword : resource_->get().funnel_keywords) {
+  for (const auto& keyword : purchase_intent->funnel_keywords) {
     const KeywordList keywords = ToKeywords(keyword.keywords);
 
-    if (IsSubset(search_query_keywords, keywords) &&
-        keyword.weight > max_weight) {
+    if (keyword.weight > max_weight &&
+        IsSubset(search_query_keywords, keywords)) {
       max_weight = keyword.weight;
     }
   }

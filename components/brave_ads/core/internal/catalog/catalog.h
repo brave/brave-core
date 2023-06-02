@@ -6,19 +6,23 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_H_
 
-#include "base/memory/weak_ptr.h"
+#include <memory>
+#include <string>
+
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_observer.h"
-#include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
-#include "brave/components/brave_ads/core/internal/common/timer/timer.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 
 namespace brave_ads {
 
+class CatalogRequest;
 struct CatalogInfo;
 
-class Catalog final : public DatabaseManagerObserver {
+class Catalog final : public AdsClientNotifierObserver,
+                      public CatalogRequestDelegate,
+                      public DatabaseManagerObserver {
  public:
   Catalog();
 
@@ -33,31 +37,31 @@ class Catalog final : public DatabaseManagerObserver {
   void AddObserver(CatalogObserver* observer);
   void RemoveObserver(CatalogObserver* observer);
 
-  void MaybeFetch();
-
  private:
-  void Fetch();
-  void FetchCallback(const mojom::UrlResponseInfo& url_response);
-  void FetchAfterDelay();
+  void Initialize();
 
-  void Retry();
-  void RetryCallback();
-  void StopRetrying();
+  void MaybeAllowCatalogRequest();
+  void InitializeCatalogRequest();
+  void ShutdownCatalogRequest();
+  void MaybeFetchCatalog() const;
 
   void NotifyDidUpdateCatalog(const CatalogInfo& catalog) const;
   void NotifyFailedToUpdateCatalog() const;
+
+  // AdsClientNotifierObserver:
+  void OnNotifyDidInitializeAds() override;
+  void OnNotifyPrefDidChange(const std::string& path) override;
+
+  // CatalogRequestDelegate:
+  void OnDidFetchCatalog(const CatalogInfo& catalog) override;
+  void OnFailedToFetchCatalog() override;
 
   // DatabaseManagerObserver:
   void OnDidMigrateDatabase(int from_version, int to_version) override;
 
   base::ObserverList<CatalogObserver> observers_;
 
-  bool is_fetching_ = false;
-
-  Timer timer_;
-  BackoffTimer retry_timer_;
-
-  base::WeakPtrFactory<Catalog> weak_factory_{this};
+  std::unique_ptr<CatalogRequest> catalog_request_;
 };
 
 }  // namespace brave_ads

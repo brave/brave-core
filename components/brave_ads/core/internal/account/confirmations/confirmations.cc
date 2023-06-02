@@ -96,10 +96,10 @@ void Confirmations::ProcessRetryQueue() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Confirmations::Retry() {
-  const ConfirmationList& failed_confirmations =
+  const ConfirmationList failed_confirmations =
       ConfirmationStateManager::GetInstance().GetFailedConfirmations();
   if (failed_confirmations.empty()) {
-    return BLOG(1, "No failed confirmations to retry");
+    return;
   }
 
   CHECK(!retry_timer_.IsRunning());
@@ -113,20 +113,22 @@ void Confirmations::Retry() {
 }
 
 void Confirmations::RetryCallback() {
-  const ConfirmationList& failed_confirmations =
+  const ConfirmationList failed_confirmations =
       ConfirmationStateManager::GetInstance().GetFailedConfirmations();
-  CHECK(!failed_confirmations.empty());
+  if (failed_confirmations.empty()) {
+    return;
+  }
 
   BLOG(1, "Retry sending failed confirmations");
 
-  const ConfirmationInfo confirmation_copy = failed_confirmations.front();
-  RemoveFromRetryQueue(confirmation_copy);
+  const ConfirmationInfo& confirmation = failed_confirmations.front();
+  RemoveFromRetryQueue(confirmation);
 
-  if (confirmation_copy.opted_in) {
-    return RecreateOptedInDynamicUserDataAndRedeem(confirmation_copy);
+  if (confirmation.opted_in) {
+    return RecreateOptedInDynamicUserDataAndRedeem(confirmation);
   }
 
-  Redeem(confirmation_copy);
+  Redeem(confirmation);
 }
 
 void Confirmations::StopRetrying() {

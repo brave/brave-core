@@ -1407,7 +1407,9 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
   const std::string value = args[1].GetString();
 
   if (key == "adsEnabled") {
-    ads_service_->SetEnabled(value == "true" && brave_ads::IsSupportedRegion());
+    auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+    prefs->SetBoolean(brave_ads::prefs::kEnabled,
+                      value == "true" && brave_ads::IsSupportedRegion());
   } else if (key == "adsPerHour") {
     int64_t int64_value;
     if (!base::StringToInt64(value, &int64_value)) {

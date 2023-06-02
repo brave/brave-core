@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -46,12 +47,15 @@ TextClassificationProcessor::~TextClassificationProcessor() {
 
 void TextClassificationProcessor::Process(const std::string& text) {
   if (!resource_->IsInitialized()) {
-    return BLOG(
-        1, "Failed to process text classification as resource not initialized");
+    return;
   }
 
+  const absl::optional<ml::pipeline::TextProcessing>& text_processing =
+      resource_->get();
+  CHECK(text_processing);
+
   const TextClassificationProbabilityMap probabilities =
-      resource_->get().ClassifyPage(text);
+      text_processing->ClassifyPage(text);
   if (probabilities.empty()) {
     return BLOG(1, "Text not classified as not enough content");
   }

@@ -76,8 +76,9 @@ void BatAdsImpl::SetFlags(brave_ads::mojom::FlagsPtr flags) {
   GetAds()->SetFlags(std::move(flags));
 }
 
-void BatAdsImpl::Initialize(InitializeCallback callback) {
-  GetAds()->Initialize(std::move(callback));
+void BatAdsImpl::Initialize(brave_ads::mojom::WalletInfoPtr wallet,
+                            InitializeCallback callback) {
+  GetAds()->Initialize(std::move(wallet), std::move(callback));
 }
 
 void BatAdsImpl::Shutdown(ShutdownCallback callback) {
@@ -101,10 +102,12 @@ void BatAdsImpl::MaybeGetNotificationAd(
 
 void BatAdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const brave_ads::mojom::NotificationAdEventType event_type) {
+    const brave_ads::mojom::NotificationAdEventType event_type,
+    TriggerNotificationAdEventCallback callback) {
   DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
-  GetAds()->TriggerNotificationAdEvent(placement_id, event_type);
+  GetAds()->TriggerNotificationAdEvent(placement_id, event_type,
+                                       std::move(callback));
 }
 
 void BatAdsImpl::MaybeServeNewTabPageAd(
@@ -127,21 +130,23 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
 void BatAdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const brave_ads::mojom::NewTabPageAdEventType event_type) {
+    const brave_ads::mojom::NewTabPageAdEventType event_type,
+    TriggerNewTabPageAdEventCallback callback) {
   DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
   GetAds()->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                     event_type);
+                                     event_type, std::move(callback));
 }
 
 void BatAdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const brave_ads::mojom::PromotedContentAdEventType event_type) {
+    const brave_ads::mojom::PromotedContentAdEventType event_type,
+    TriggerPromotedContentAdEventCallback callback) {
   DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
   GetAds()->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                          event_type);
+                                          event_type, std::move(callback));
 }
 
 void BatAdsImpl::MaybeServeInlineContentAd(
@@ -169,19 +174,22 @@ void BatAdsImpl::MaybeServeInlineContentAd(
 void BatAdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const brave_ads::mojom::InlineContentAdEventType event_type) {
+    const brave_ads::mojom::InlineContentAdEventType event_type,
+    TriggerInlineContentAdEventCallback callback) {
   DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
   GetAds()->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                        event_type);
+                                        event_type, std::move(callback));
 }
 
 void BatAdsImpl::TriggerSearchResultAdEvent(
     brave_ads::mojom::SearchResultAdInfoPtr ad_mojom,
-    const brave_ads::mojom::SearchResultAdEventType event_type) {
+    const brave_ads::mojom::SearchResultAdEventType event_type,
+    TriggerSearchResultAdEventCallback callback) {
   DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
-  GetAds()->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
+  GetAds()->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
+                                       std::move(callback));
 }
 
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
@@ -190,11 +198,6 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
   DCHECK(brave_ads::mojom::IsKnownEnumValue(ad_type));
 
   GetAds()->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
-}
-
-void BatAdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
-                                          const std::string& recovery_seed) {
-  GetAds()->OnRewardsWalletDidChange(payment_id, recovery_seed);
 }
 
 void BatAdsImpl::GetHistory(const base::Time from_time,

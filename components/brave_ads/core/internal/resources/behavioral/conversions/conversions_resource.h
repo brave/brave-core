@@ -29,17 +29,16 @@ class ConversionsResource final : public AdsClientNotifierObserver {
 
   bool IsInitialized() const { return is_initialized_; }
 
-  void Load();
-
   const ConversionsInfo& get() const { return conversions_; }
 
  private:
-  void LoadAndParseResourceCallback(
-      ResourceParsingErrorOr<ConversionsInfo> result);
+  void Load();
+  void LoadCallback(ResourceParsingErrorOr<ConversionsInfo> result);
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                          const std::string& id) override;
 
   bool is_initialized_ = false;
 
