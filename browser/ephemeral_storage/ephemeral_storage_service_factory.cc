@@ -50,6 +50,13 @@ void EphemeralStorageServiceFactory::RegisterProfilePrefs(
 
 KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
+      !base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage) &&
+      !base::FeatureList::IsEnabled(
+          net::features::kBraveForgetFirstPartyStorage)) {
+    return nullptr;
+  }
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.
   auto* host_content_settings_map =
