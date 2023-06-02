@@ -14,8 +14,7 @@
 
 namespace brave_ads {
 
-void ConfirmationDynamicUserDataBuilder::Build(
-    UserDataBuilderCallback callback) const {
+void BuildConfirmationDynamicUserData(BuildUserDataCallback callback) {
   base::Value::Dict user_data;
 
   user_data.Merge(BuildDiagnosticIdUserData());

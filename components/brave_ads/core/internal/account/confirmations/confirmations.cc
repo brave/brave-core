@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_dynamic_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
@@ -84,7 +85,8 @@ Confirmations::~Confirmations() {
 void Confirmations::Confirm(const TransactionInfo& transaction) {
   CHECK(transaction.IsValid());
 
-  ConfirmTransaction(transaction);
+  ShouldRewardUser() ? ConfirmOptedIn(transaction)
+                     : ConfirmOptedOut(transaction);
 }
 
 void Confirmations::ProcessRetryQueue() {
@@ -94,6 +96,120 @@ void Confirmations::ProcessRetryQueue() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Confirmations::ConfirmOptedIn(const TransactionInfo& transaction) {
+  CHECK(transaction.IsValid());
+  CHECK(ShouldRewardUser());
+
+  BLOG(1, "Confirming opted-in " << transaction.confirmation_type << " for "
+                                 << transaction.ad_type
+                                 << " with transaction id " << transaction.id
+                                 << " and creative instance id "
+                                 << transaction.creative_instance_id);
+
+  BuildDynamicUserData(transaction);
+}
+
+void Confirmations::BuildDynamicUserData(const TransactionInfo& transaction) {
+  CHECK(transaction.IsValid());
+  CHECK(ShouldRewardUser());
+
+  BuildConfirmationDynamicUserData(
+      base::BindOnce(&Confirmations::BuildFixedUserData,
+                     weak_factory_.GetWeakPtr(), transaction));
+}
+
+void Confirmations::BuildFixedUserData(
+    const TransactionInfo& transaction,
+    base::Value::Dict dynamic_opted_in_user_data) {
+  CHECK(transaction.IsValid());
+  CHECK(ShouldRewardUser());
+
+  BuildConfirmationUserData(
+      transaction, base::BindOnce(&Confirmations::CreateAndRedeemOptedIn,
+                                  weak_factory_.GetWeakPtr(), transaction,
+                                  std::move(dynamic_opted_in_user_data)));
+}
+
+void Confirmations::CreateAndRedeemOptedIn(
+    const TransactionInfo& transaction,
+    base::Value::Dict dynamic_opted_in_user_data,
+    base::Value::Dict fixed_opted_in_user_data) {
+  CHECK(transaction.IsValid());
+  CHECK(ShouldRewardUser());
+
+  OptedInUserDataInfo opted_in_user_data;
+  opted_in_user_data.dynamic = std::move(dynamic_opted_in_user_data);
+  opted_in_user_data.fixed = std::move(fixed_opted_in_user_data);
+
+  const absl::optional<ConfirmationInfo> confirmation =
+      CreateOptedInConfirmation(token_generator_, transaction,
+                                opted_in_user_data);
+  if (!confirmation) {
+    return BLOG(0, "Failed to create opted-in confirmation");
+  }
+
+  Redeem(*confirmation);
+}
+
+void Confirmations::RecreateOptedInDynamicUserDataAndRedeem(
+    const ConfirmationInfo& confirmation) {
+  CHECK(IsValid(confirmation));
+  CHECK(ShouldRewardUser());
+
+  BuildConfirmationDynamicUserData(base::BindOnce(
+      &Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback,
+      weak_factory_.GetWeakPtr(), confirmation));
+}
+
+void Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback(
+    const ConfirmationInfo& confirmation,
+    base::Value::Dict dynamic_opted_in_user_data) {
+  CHECK(IsValid(confirmation));
+  CHECK(ShouldRewardUser());
+
+  ConfirmationInfo mutable_confirmation(confirmation);
+  mutable_confirmation.opted_in->user_data.dynamic =
+      std::move(dynamic_opted_in_user_data);
+  mutable_confirmation.opted_in->credential_base64url =
+      CreateOptedInCredential(mutable_confirmation);
+
+  Redeem(mutable_confirmation);
+}
+
+void Confirmations::ConfirmOptedOut(const TransactionInfo& transaction) {
+  CHECK(transaction.IsValid());
+  CHECK(!ShouldRewardUser());
+
+  BLOG(1, "Confirming opted-out " << transaction.confirmation_type << " for "
+                                  << transaction.ad_type
+                                  << " with transaction id " << transaction.id
+                                  << " and creative instance id "
+                                  << transaction.creative_instance_id);
+
+  CreateAndRedeemOptedOut(transaction);
+}
+
+void Confirmations::CreateAndRedeemOptedOut(
+    const TransactionInfo& transaction) {
+  CHECK(transaction.IsValid());
+  CHECK(!ShouldRewardUser());
+
+  const absl::optional<ConfirmationInfo> confirmation =
+      CreateOptedOutConfirmation(transaction);
+  if (!confirmation) {
+    return BLOG(0, "Failed to create opted-out confirmation");
+  }
+
+  Redeem(*confirmation);
+}
+
+void Confirmations::Redeem(const ConfirmationInfo& confirmation) {
+  CHECK(IsValid(confirmation));
+
+  RedeemConfirmationFactory::BuildAndRedeemConfirmation(
+      weak_factory_.GetWeakPtr(), confirmation);
+}
 
 void Confirmations::Retry() {
   const ConfirmationList failed_confirmations =
@@ -133,78 +249,6 @@ void Confirmations::RetryCallback() {
 
 void Confirmations::StopRetrying() {
   retry_timer_.Stop();
-}
-
-void Confirmations::ConfirmTransaction(const TransactionInfo& transaction) {
-  BLOG(1, "Confirming " << transaction.confirmation_type << " for "
-                        << transaction.ad_type << " with transaction id "
-                        << transaction.id << " and creative instance id "
-                        << transaction.creative_instance_id);
-
-  BuildDynamicUserData(transaction);
-}
-
-void Confirmations::BuildDynamicUserData(const TransactionInfo& transaction) {
-  const ConfirmationDynamicUserDataBuilder user_data_builder;
-  user_data_builder.Build(base::BindOnce(&Confirmations::BuildFixedUserData,
-                                         weak_factory_.GetWeakPtr(),
-                                         transaction));
-}
-
-void Confirmations::BuildFixedUserData(
-    const TransactionInfo& transaction,
-    base::Value::Dict dynamic_opted_in_user_data) {
-  const ConfirmationUserDataBuilder user_data_builder(transaction);
-  user_data_builder.Build(base::BindOnce(
-      &Confirmations::CreateAndRedeem, weak_factory_.GetWeakPtr(), transaction,
-      std::move(dynamic_opted_in_user_data)));
-}
-
-void Confirmations::CreateAndRedeem(
-    const TransactionInfo& transaction,
-    base::Value::Dict dynamic_opted_in_user_data,
-    base::Value::Dict fixed_opted_in_user_data) {
-  OptedInUserDataInfo opted_in_user_data;
-  opted_in_user_data.dynamic = std::move(dynamic_opted_in_user_data);
-  opted_in_user_data.fixed = std::move(fixed_opted_in_user_data);
-
-  const absl::optional<ConfirmationInfo> confirmation =
-      CreateConfirmation(token_generator_, transaction, opted_in_user_data);
-  if (!confirmation) {
-    return BLOG(0, "Failed to create confirmation");
-  }
-
-  Redeem(*confirmation);
-}
-
-void Confirmations::RecreateOptedInDynamicUserDataAndRedeem(
-    const ConfirmationInfo& confirmation) {
-  const ConfirmationDynamicUserDataBuilder user_data_builder;
-  user_data_builder.Build(base::BindOnce(
-      &Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback,
-      weak_factory_.GetWeakPtr(), confirmation));
-}
-
-void Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback(
-    const ConfirmationInfo& confirmation,
-    base::Value::Dict dynamic_opted_in_user_data) {
-  if (!confirmation.opted_in) {
-    return Redeem(confirmation);
-  }
-
-  ConfirmationInfo mutable_confirmation(confirmation);
-  mutable_confirmation.opted_in->user_data.dynamic =
-      std::move(dynamic_opted_in_user_data);
-  mutable_confirmation.opted_in->credential_base64url =
-      CreateOptedInCredential(mutable_confirmation);
-  Redeem(mutable_confirmation);
-}
-
-void Confirmations::Redeem(const ConfirmationInfo& confirmation) {
-  CHECK(IsValid(confirmation));
-
-  RedeemConfirmationFactory::BuildAndRedeemConfirmation(
-      weak_factory_.GetWeakPtr(), confirmation);
 }
 
 void Confirmations::OnDidRedeemOptedInConfirmation(

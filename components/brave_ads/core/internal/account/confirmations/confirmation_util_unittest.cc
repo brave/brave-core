@@ -30,8 +30,63 @@ class BraveAdsConfirmationUtilTest : public UnitTestBase {
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
 };
 
-TEST_F(BraveAdsConfirmationUtilTest,
-       CreateConfirmationForNonOptedInUserIfBravePrivateAdsAreDisabled) {
+TEST_F(BraveAdsConfirmationUtilTest, CreateOptedInCredential) {
+  // Arrange
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
+  privacy::SetUnblindedTokens(/*count*/ 1);
+
+  const TransactionInfo transaction =
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+
+  const absl::optional<ConfirmationInfo> confirmation =
+      CreateOptedInConfirmation(&token_generator_mock_, transaction,
+                                /*user_data*/ {});
+  ASSERT_TRUE(confirmation);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(CreateOptedInCredential(*confirmation));
+}
+
+TEST_F(BraveAdsConfirmationUtilTest, CreateOptedInConfirmation) {
+  // Arrange
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
+  privacy::SetUnblindedTokens(/*count*/ 1);
+
+  const TransactionInfo transaction =
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+
+  // Act
+  const absl::optional<ConfirmationInfo> confirmation =
+      CreateOptedInConfirmation(&token_generator_mock_, transaction,
+                                /*user_data*/ {});
+  ASSERT_TRUE(confirmation);
+
+  // Assert
+  EXPECT_TRUE(confirmation->opted_in);
+  EXPECT_TRUE(IsValid(*confirmation));
+}
+
+TEST_F(BraveAdsConfirmationUtilTest, FailToCreateOptedInConfirmation) {
+  // Arrange
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
+  const TransactionInfo transaction =
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+
+  // Act
+  const absl::optional<ConfirmationInfo> confirmation =
+      CreateOptedInConfirmation(&token_generator_mock_, transaction,
+                                /*user_data*/ {});
+
+  // Assert
+  EXPECT_FALSE(confirmation);
+}
+
+TEST_F(BraveAdsConfirmationUtilTest, CreateOptedOutConfirmation) {
   // Arrange
   DisableBravePrivateAds();
 
@@ -44,8 +99,7 @@ TEST_F(BraveAdsConfirmationUtilTest,
 
   // Act
   const absl::optional<ConfirmationInfo> confirmation =
-      CreateConfirmation(&token_generator_mock_, transaction,
-                         /*user_data*/ {});
+      CreateOptedOutConfirmation(transaction);
   ASSERT_TRUE(confirmation);
 
   // Assert
@@ -53,53 +107,7 @@ TEST_F(BraveAdsConfirmationUtilTest,
   EXPECT_TRUE(IsValid(*confirmation));
 }
 
-TEST_F(BraveAdsConfirmationUtilTest, IsNotValidIfBravePrivateAdsAreDisabled) {
-  // Arrange
-
-  // Act
-  const ConfirmationInfo confirmation;
-
-  // Assert
-  EXPECT_FALSE(IsValid(confirmation));
-}
-
-TEST_F(BraveAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
-  // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
-
-  privacy::SetUnblindedTokens(/*count*/ 1);
-
-  const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
-
-  // Act
-  const absl::optional<ConfirmationInfo> confirmation =
-      CreateConfirmation(&token_generator_mock_, transaction,
-                         /*user_data*/ {});
-  ASSERT_TRUE(confirmation);
-
-  // Assert
-  EXPECT_TRUE(confirmation->opted_in);
-  EXPECT_TRUE(IsValid(*confirmation));
-}
-
-TEST_F(BraveAdsConfirmationUtilTest, FailToCreateConfirmationForOptedInUser) {
-  // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
-
-  const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
-
-  // Act
-  const absl::optional<ConfirmationInfo> confirmation =
-      CreateConfirmation(&token_generator_mock_, transaction,
-                         /*user_data*/ {});
-
-  // Assert
-  EXPECT_FALSE(confirmation);
-}
-
-TEST_F(BraveAdsConfirmationUtilTest, IsNotValidForOptedInUser) {
+TEST_F(BraveAdsConfirmationUtilTest, Invalid) {
   // Arrange
 
   // Act

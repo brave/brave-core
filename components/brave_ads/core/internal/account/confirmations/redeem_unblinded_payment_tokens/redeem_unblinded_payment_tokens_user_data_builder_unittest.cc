@@ -23,16 +23,16 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
-  const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
-      privacy::BuildUnblindedPaymentTokens(/*count*/ 2));
-
   // Act
-  user_data_builder.Build(base::BindOnce([](base::Value::Dict user_data) {
-    EXPECT_EQ(
-        base::test::ParseJsonDict(
-            R"({"platform":"windows","totals":[{"ad_format":"ad_notification","view":2}]})"),
-        user_data);
-  }));
+  BuildRedeemUnblindedPaymentTokensUserData(
+      privacy::BuildUnblindedPaymentTokens(
+          /*count*/ 2),
+      base::BindOnce([](base::Value::Dict user_data) {
+        EXPECT_EQ(
+            base::test::ParseJsonDict(
+                R"({"platform":"windows","totals":[{"ad_format":"ad_notification","view":2}]})"),
+            user_data);
+      }));
 
   // Assert
 }

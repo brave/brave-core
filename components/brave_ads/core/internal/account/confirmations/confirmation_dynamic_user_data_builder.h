@@ -6,15 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_DYNAMIC_USER_DATA_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_DYNAMIC_USER_DATA_BUILDER_H_
 
-#include "brave/components/brave_ads/core/internal/account/user_data/user_data_builder_interface.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 
 namespace brave_ads {
 
-class ConfirmationDynamicUserDataBuilder final
-    : public UserDataBuilderInterface {
- public:
-  void Build(UserDataBuilderCallback callback) const override;
-};
+void BuildConfirmationDynamicUserData(BuildUserDataCallback callback);
 
 }  // namespace brave_ads
 

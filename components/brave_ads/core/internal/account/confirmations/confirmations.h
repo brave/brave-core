@@ -44,25 +44,27 @@ class Confirmations final : public RedeemConfirmationDelegate {
   void ProcessRetryQueue();
 
  private:
-  void Retry();
-  void RetryCallback();
-  void StopRetrying();
-
-  void ConfirmTransaction(const TransactionInfo& transaction);
+  void ConfirmOptedIn(const TransactionInfo& transaction);
   void BuildDynamicUserData(const TransactionInfo& transaction);
   void BuildFixedUserData(const TransactionInfo& transaction,
                           base::Value::Dict dynamic_opted_in_user_data);
-  void CreateAndRedeem(const TransactionInfo& transaction,
-                       base::Value::Dict dynamic_opted_in_user_data,
-                       base::Value::Dict fixed_opted_in_user_data);
-
+  void CreateAndRedeemOptedIn(const TransactionInfo& transaction,
+                              base::Value::Dict dynamic_opted_in_user_data,
+                              base::Value::Dict fixed_opted_in_user_data);
   void RecreateOptedInDynamicUserDataAndRedeem(
       const ConfirmationInfo& confirmation);
   void RecreateOptedInDynamicUserDataAndRedeemCallback(
       const ConfirmationInfo& confirmation,
       base::Value::Dict dynamic_opted_in_user_data);
 
+  void ConfirmOptedOut(const TransactionInfo& transaction);
+  void CreateAndRedeemOptedOut(const TransactionInfo& transaction);
+
   void Redeem(const ConfirmationInfo& confirmation);
+
+  void Retry();
+  void RetryCallback();
+  void StopRetrying();
 
   // RedeemConfirmationDelegate:
   void OnDidRedeemOptedInConfirmation(const ConfirmationInfo& confirmation,
