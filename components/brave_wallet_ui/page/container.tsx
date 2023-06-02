@@ -346,14 +346,7 @@ export const Container = () => {
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.SendPage} exact>
-                <WalletPageWrapper
-                  wrapContentInBox={true}
-                  hideBackground={true}
-                  cardWidth={512}
-                  cardHeader={
-                    <PageTitleHeader title={getLocale('braveWalletSend')}/>
-                  }
-                >
+                <WalletPageWrapper hideBackground={true}>
                   <SendScreen />
                 </WalletPageWrapper>
               </Route>
