@@ -474,7 +474,11 @@ var braveTarget: PackageDescription.Target = .target(
   plugins: ["LoggerPlugin"]
 )
 
-if ProcessInfo.processInfo.environment["BRAVE_APPSTORE_BUILD"] == nil {
+// Keeping this in case we need to disable it at any time
+// Can use `BRAVE_APPSTORE_BUILD` environment like before to disable only on Release builds as well
+let isNativeTalkEnabled = true
+
+if isNativeTalkEnabled {
   // Not a release build, add BraveTalk integrations
   braveTarget.dependencies.append("BraveTalk")
   braveTarget.resources?.append(
