@@ -11,15 +11,17 @@ import android.text.TextUtils;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.brave.playlist.PlaylistDownloadUtils;
 import com.brave.playlist.PlaylistViewModel;
 import com.brave.playlist.enums.PlaylistEventEnum;
-import com.brave.playlist.enums.PlaylistOptions;
+import com.brave.playlist.enums.PlaylistItemEventEnum;
+import com.brave.playlist.enums.PlaylistOptionsEnum;
 import com.brave.playlist.fragment.AllPlaylistFragment;
 import com.brave.playlist.fragment.PlaylistFragment;
 import com.brave.playlist.listener.PlaylistOptionsListener;
 import com.brave.playlist.model.DownloadProgressModel;
 import com.brave.playlist.model.MoveOrCopyModel;
-import com.brave.playlist.model.PlaylistEventModel;
+import com.brave.playlist.model.PlaylistItemEventModel;
 import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.model.PlaylistModel;
 import com.brave.playlist.model.PlaylistOptionsModel;
@@ -46,6 +48,7 @@ import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
@@ -102,9 +105,9 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     mPlaylistService.createPlaylist(playlist, createdPlaylist -> {
                         if (createPlaylistModel.isMoveOrCopy()) {
                             MoveOrCopyModel tempMoveOrCopyModel = PlaylistUtils.moveOrCopyModel;
-                            PlaylistUtils.moveOrCopyModel =
-                                    new MoveOrCopyModel(tempMoveOrCopyModel.getPlaylistOptions(),
-                                            createdPlaylist.id, tempMoveOrCopyModel.getItems());
+                            PlaylistUtils.moveOrCopyModel = new MoveOrCopyModel(
+                                    tempMoveOrCopyModel.getPlaylistOptionsEnum(),
+                                    createdPlaylist.id, tempMoveOrCopyModel.getItems());
                             mPlaylistViewModel.performMoveOrCopy(PlaylistUtils.moveOrCopyModel);
                         }
                     });
@@ -158,6 +161,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     for (PlaylistItemModel playlistItem : playlistItems.getItems()) {
                         mPlaylistService.removeItemFromPlaylist(
                                 playlistItems.getId(), playlistItem.getId());
+                        PlaylistDownloadUtils.removeDownloadRequest(
+                                PlaylistHostActivity.this, playlistItem);
                     }
                     loadPlaylist(playlistItems.getId());
                 });
@@ -167,9 +172,10 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     if (mPlaylistService == null) {
                         return;
                     }
-                    if (moveOrCopyModel.getPlaylistOptions() == PlaylistOptions.MOVE_PLAYLIST_ITEM
-                            || moveOrCopyModel.getPlaylistOptions()
-                                    == PlaylistOptions.MOVE_PLAYLIST_ITEMS) {
+                    if (moveOrCopyModel.getPlaylistOptionsEnum()
+                                    == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM
+                            || moveOrCopyModel.getPlaylistOptionsEnum()
+                                    == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
                         for (PlaylistItemModel playlistItem : moveOrCopyModel.getItems()) {
                             mPlaylistService.moveItem(playlistItem.getPlaylistId(),
                                     moveOrCopyModel.getToPlaylistId(), playlistItem.getId());
@@ -192,33 +198,37 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     if (mPlaylistService == null) {
                         return;
                     }
-                    PlaylistOptions option = playlistOptionsModel.getOptionType();
-                    if (option == PlaylistOptions.REMOVE_PLAYLIST_OFFLINE_DATA) {
+                    PlaylistOptionsEnum option = playlistOptionsModel.getOptionType();
+                    if (option == PlaylistOptionsEnum.REMOVE_PLAYLIST_OFFLINE_DATA) {
                         if (playlistOptionsModel.getPlaylistModel() != null) {
                             mPlaylistService.removeLocalDataForItemsInPlaylist(
                                     playlistOptionsModel.getPlaylistModel().getId());
                         }
-                    } else if (option == PlaylistOptions.DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE) {
+                    } else if (option == PlaylistOptionsEnum.DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE) {
                         if (playlistOptionsModel.getPlaylistModel() != null) {
                             for (PlaylistItemModel playlistItemModel :
                                     playlistOptionsModel.getPlaylistModel().getItems()) {
-                                mPlaylistService.recoverLocalDataForItem(playlistItemModel.getId(),
-                                        true,
-                                        playlistItem
-                                        -> {
-
+                                mPlaylistService.recoverLocalDataForItem(
+                                        playlistItemModel.getId(), true, playlistItem -> {
+                                            PlaylistDownloadUtils.startDownloadRequest(
+                                                    PlaylistHostActivity.this, playlistItemModel);
                                         });
                             }
                         }
-                    } else if (option == PlaylistOptions.DELETE_PLAYLIST) {
+                    } else if (option == PlaylistOptionsEnum.DELETE_PLAYLIST) {
                         if (playlistOptionsModel.getPlaylistModel() != null) {
                             mPlaylistService.removePlaylist(
                                     playlistOptionsModel.getPlaylistModel().getId());
+                            for (PlaylistItemModel playlistItem :
+                                    playlistOptionsModel.getPlaylistModel().getItems()) {
+                                PlaylistDownloadUtils.removeDownloadRequest(
+                                        PlaylistHostActivity.this, playlistItem);
+                            }
                             loadAllPlaylists();
                         }
-                    } else if (option == PlaylistOptions.MOVE_PLAYLIST_ITEMS) {
+                    } else if (option == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
                         showMoveOrCopyPlaylistBottomSheet();
-                    } else if (option == PlaylistOptions.COPY_PLAYLIST_ITEMS) {
+                    } else if (option == PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS) {
                         showMoveOrCopyPlaylistBottomSheet();
                     }
                 });
@@ -228,8 +238,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     if (mPlaylistService == null) {
                         return;
                     }
-                    PlaylistOptions option = playlistOptionsModel.getOptionType();
-                    if (option == PlaylistOptions.REMOVE_ALL_OFFLINE_DATA) {
+                    PlaylistOptionsEnum option = playlistOptionsModel.getOptionType();
+                    if (option == PlaylistOptionsEnum.REMOVE_ALL_OFFLINE_DATA) {
                         if (playlistOptionsModel.getAllPlaylistModels() != null) {
                             for (PlaylistModel playlistModel :
                                     playlistOptionsModel.getAllPlaylistModels()) {
@@ -237,14 +247,28 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                         playlistModel.getId());
                             }
                         }
-                    } else if (option == PlaylistOptions.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE) {
+                    } else if (option
+                            == PlaylistOptionsEnum.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE) {
                         mPlaylistService.getAllPlaylists(playlists -> {
                             for (Playlist playlist : playlists) {
                                 for (PlaylistItem playlistItem : playlist.items) {
-                                    mPlaylistService.recoverLocalDataForItem(playlistItem.id, true,
-                                            tempPlaylistItem
-                                            -> {
-
+                                    mPlaylistService.recoverLocalDataForItem(
+                                            playlistItem.id, true, tempPlaylistItem -> {
+                                                PlaylistItemModel playlistItemModel =
+                                                        new PlaylistItemModel(playlistItem.id,
+                                                                ConstantUtils.DEFAULT_PLAYLIST,
+                                                                playlistItem.name,
+                                                                playlistItem.pageSource.url,
+                                                                playlistItem.mediaPath.url,
+                                                                playlistItem.mediaSource.url,
+                                                                playlistItem.thumbnailPath.url,
+                                                                playlistItem.author,
+                                                                playlistItem.duration,
+                                                                playlistItem.lastPlayedPosition,
+                                                                playlistItem.cached, false, 0);
+                                                PlaylistDownloadUtils.startDownloadRequest(
+                                                        PlaylistHostActivity.this,
+                                                        playlistItemModel);
                                             });
                                 }
                             }
@@ -257,30 +281,35 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     if (mPlaylistService == null) {
                         return;
                     }
-                    PlaylistOptions option = playlistItemOption.getOptionType();
-                    if (option == PlaylistOptions.MOVE_PLAYLIST_ITEM) {
+                    PlaylistOptionsEnum option = playlistItemOption.getOptionType();
+                    if (option == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM) {
                         showMoveOrCopyPlaylistBottomSheet();
-                    } else if (option == PlaylistOptions.COPY_PLAYLIST_ITEM) {
+                    } else if (option == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
                         showMoveOrCopyPlaylistBottomSheet();
-                    } else if (option == PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA) {
+                    } else if (option == PlaylistOptionsEnum.DELETE_ITEMS_OFFLINE_DATA) {
                         mPlaylistService.removeLocalDataForItem(
                                 playlistItemOption.getPlaylistItemModel().getId());
-                        loadPlaylist(playlistItemOption.getPlaylistId());
-                    } else if (option == PlaylistOptions.OPEN_IN_NEW_TAB) {
+                        PlaylistDownloadUtils.removeDownloadRequest(PlaylistHostActivity.this,
+                                playlistItemOption.getPlaylistItemModel());
+                        // Playlist item will be updated based on event
+                    } else if (option == PlaylistOptionsEnum.OPEN_IN_NEW_TAB) {
                         openPlaylistInTab(
                                 false, playlistItemOption.getPlaylistItemModel().getPageSource());
-                    } else if (option == PlaylistOptions.OPEN_IN_PRIVATE_TAB) {
+                    } else if (option == PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB) {
                         openPlaylistInTab(
                                 true, playlistItemOption.getPlaylistItemModel().getPageSource());
-                    } else if (option == PlaylistOptions.DELETE_PLAYLIST_ITEM) {
+                    } else if (option == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
                         mPlaylistService.removeItemFromPlaylist(playlistItemOption.getPlaylistId(),
                                 playlistItemOption.getPlaylistItemModel().getId());
+                        PlaylistDownloadUtils.removeDownloadRequest(PlaylistHostActivity.this,
+                                playlistItemOption.getPlaylistItemModel());
                         loadPlaylist(playlistItemOption.getPlaylistId());
-                    } else if (option == PlaylistOptions.RECOVER_PLAYLIST_ITEM) {
+                    } else if (option == PlaylistOptionsEnum.RECOVER_PLAYLIST_ITEM) {
                         mPlaylistService.recoverLocalDataForItem(
                                 playlistItemOption.getPlaylistItemModel().getId(), true,
-                                playlistItem -> {
-                                    loadPlaylist(playlistItemOption.getPlaylistId());
+                                playlistItem
+                                -> {
+                                        // Playlist item will be updated based on event
                                 });
                     }
                 });
@@ -348,6 +377,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         playlistItem.lastPlayedPosition, playlistItem.cached, false, 0);
                 playlistItems.add(playlistItemModel);
             }
+            Collections.reverse(playlistItems); // To have latest item on top
             PlaylistModel playlistModel =
                     new PlaylistModel(playlist.id, playlist.name, playlistItems);
             if (mPlaylistViewModel != null) {
@@ -398,9 +428,14 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
 
     @Override
     public void onOptionClicked(PlaylistOptionsModel playlistOptionsModel) {
-        if (PlaylistOptions.DELETE_PLAYLIST == playlistOptionsModel.getOptionType()
+        if (PlaylistOptionsEnum.DELETE_PLAYLIST == playlistOptionsModel.getOptionType()
                 && mPlaylistService != null && playlistOptionsModel.getPlaylistModel() != null) {
             mPlaylistService.removePlaylist(playlistOptionsModel.getPlaylistModel().getId());
+            for (PlaylistItemModel playlistItem :
+                    playlistOptionsModel.getPlaylistModel().getItems()) {
+                PlaylistDownloadUtils.removeDownloadRequest(
+                        PlaylistHostActivity.this, playlistItem);
+            }
             finish();
         }
     }
@@ -411,50 +446,60 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onEvent(int eventType, String playlistId) {
-        if (mPlaylistViewModel == null) {
+    public void onEvent(int eventType, String playlistItemId) {
+        if (mPlaylistService == null || mPlaylistViewModel == null) {
             return;
         }
-        PlaylistEventEnum playlistEvent;
+        PlaylistEventEnum playlistEvent = PlaylistEventEnum.NONE;
+        PlaylistItemEventEnum playlistItemEvent = PlaylistItemEventEnum.NONE;
         switch (eventType) {
             case PlaylistEvent.ITEM_ADDED:
-                playlistEvent = PlaylistEventEnum.kItemAdded;
+                playlistItemEvent = PlaylistItemEventEnum.ITEM_ADDED;
                 break;
             case PlaylistEvent.ITEM_THUMBNAIL_READY:
-                playlistEvent = PlaylistEventEnum.kItemThumbnailReady;
+                playlistItemEvent = PlaylistItemEventEnum.ITEM_THUMBNAIL_READY;
                 break;
             case PlaylistEvent.ITEM_THUMBNAIL_FAILED:
-                playlistEvent = PlaylistEventEnum.kItemThumbnailFailed;
+                playlistItemEvent = PlaylistItemEventEnum.ITEM_THUMBNAIL_FAILED;
                 break;
             case PlaylistEvent.ITEM_CACHED:
-                playlistEvent = PlaylistEventEnum.kItemCached;
+                playlistItemEvent = PlaylistItemEventEnum.ITEM_CACHED;
                 break;
             case PlaylistEvent.ITEM_DELETED:
-                playlistEvent = PlaylistEventEnum.kItemDeleted;
+                playlistItemEvent = PlaylistItemEventEnum.ITEM_DELETED;
                 break;
             case PlaylistEvent.ITEM_UPDATED:
-                playlistEvent = PlaylistEventEnum.kItemUpdated;
+                playlistItemEvent = PlaylistItemEventEnum.ITEM_UPDATED;
                 break;
             case PlaylistEvent.ITEM_MOVED:
-                playlistEvent = PlaylistEventEnum.kItemMoved;
+                playlistItemEvent = PlaylistItemEventEnum.ITEM_MOVED;
                 break;
             case PlaylistEvent.ITEM_ABORTED:
-                playlistEvent = PlaylistEventEnum.kItemAborted;
+                playlistItemEvent = PlaylistItemEventEnum.ITEM_ABORTED;
                 break;
             case PlaylistEvent.ITEM_LOCAL_DATA_REMOVED:
-                playlistEvent = PlaylistEventEnum.kItemLocalDataRemoved;
+                playlistItemEvent = PlaylistItemEventEnum.ITEM_LOCAL_DATA_REMOVED;
                 break;
             case PlaylistEvent.LIST_CREATED:
-                playlistEvent = PlaylistEventEnum.kListCreated;
+                playlistEvent = PlaylistEventEnum.LIST_CREATED;
                 break;
             case PlaylistEvent.ALL_DELETED:
-                playlistEvent = PlaylistEventEnum.kAllDeleted;
-                break;
-            default:
-                playlistEvent = PlaylistEventEnum.kNone;
+                playlistEvent = PlaylistEventEnum.ALL_DELETED;
                 break;
         }
-        mPlaylistViewModel.updatePlaylistEvent(new PlaylistEventModel(playlistEvent, playlistId));
+        if (playlistItemEvent != PlaylistItemEventEnum.NONE) {
+            final PlaylistItemEventEnum localPlaylistItemEvent = playlistItemEvent;
+            mPlaylistService.getPlaylistItem(playlistItemId, playlistItem -> {
+                PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
+                        ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name,
+                        playlistItem.pageSource.url, playlistItem.mediaPath.url,
+                        playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
+                        playlistItem.author, playlistItem.duration, playlistItem.lastPlayedPosition,
+                        playlistItem.cached, false, 0);
+                mPlaylistViewModel.updatePlaylistItemEvent(
+                        new PlaylistItemEventModel(localPlaylistItemEvent, playlistItemModel));
+            });
+        }
     }
 
     @Override
