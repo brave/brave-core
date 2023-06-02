@@ -24,8 +24,9 @@ import { Header } from '../header/header'
 import {
   Background,
   Container,
-  PrivacyButton,
-  Wrapper
+  ActionButton,
+  Wrapper,
+  Row
 } from './swap-container.style'
 
 interface Props {
@@ -49,6 +50,15 @@ export const SwapContainer = (props: Props) => {
   // Refs
   const ref = React.createRef<HTMLInputElement>()
 
+  // Methods
+  const onClickHelpCenter = React.useCallback(() => {
+    window.open(
+      'https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet',
+      '_blank',
+      'noopener'
+    )
+  }, [])
+
   // Effects
   React.useEffect(() => {
     // Keeps track of the Swap Containers Height to update
@@ -65,15 +75,16 @@ export const SwapContainer = (props: Props) => {
 
   return (
     <Wrapper>
-      <Header
-        refreshBlockchainState={refreshBlockchainState}
-      />
+      <Header refreshBlockchainState={refreshBlockchainState} />
       <Container ref={ref}>{children}</Container>
-      <PrivacyButton
-        onClick={showPrivacyModal}
-      >
-        {getLocale('braveSwapPrivacyPolicy')}
-      </PrivacyButton>
+      <Row>
+        <ActionButton onClick={showPrivacyModal}>
+          {getLocale('braveSwapPrivacyPolicy')}
+        </ActionButton>
+        <ActionButton onClick={onClickHelpCenter}>
+          {getLocale('braveSwapHelpCenter')}
+        </ActionButton>
+      </Row>
       <Background
         height={backgroundHeight}
         network={selectedNetwork?.chainId ?? ''}
