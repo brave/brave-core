@@ -33,9 +33,9 @@ import {
 } from './style'
 
 export interface Props {
-  selectedNetwork?: BraveWallet.NetworkInfo
-  selectedAccountAddress?: string
-  selectedAccountCoinType?: BraveWallet.CoinType
+  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  selectedAccountAddress: string | undefined
+  selectedAccountCoinType: BraveWallet.CoinType | undefined
 }
 
 export const TransactionsPanel = ({
@@ -49,10 +49,10 @@ export const TransactionsPanel = ({
   // queries
   const { data: sortedNonRejectedTransactionList = [] } =
     useGetTransactionsQuery(
-      selectedAccountAddress && selectedAccountCoinType
+      selectedAccountAddress && selectedAccountCoinType !== undefined
         ? {
             address: selectedAccountAddress ?? null,
-            chainId: null,
+            chainId: selectedNetwork?.chainId ?? null,
             coinType: selectedAccountCoinType ?? null
           }
         : skipToken
