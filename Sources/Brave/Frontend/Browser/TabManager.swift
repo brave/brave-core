@@ -1207,7 +1207,7 @@ extension TabManager: NSFetchedResultsControllerDelegate {
       let tabsForDomain = self.allTabs.filter { $0.url?.domainURL.absoluteString.caseInsensitiveCompare(domainURL) == .orderedSame }
       tabsForDomain.forEach { tab in
         Task { @MainActor in
-          let accounts = await tab.allowedAccountsForCurrentCoin().1
+          let accounts = await tab.allowedAccountsForCurrentCoin()
           tab.accountsChangedEvent(Array(accounts))
         }
       }

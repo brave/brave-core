@@ -237,6 +237,14 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   func isSolanaBlockhashValid(_ chainId: String, blockhash: String, commitment: String?, completion: @escaping (Bool, BraveWallet.SolanaProviderError, String) -> Void) {
     completion(true, .success, "")
   }
+  
+  func ethTokenSymbol(_ chainId: String, contractAddress: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .internalError, "Error Message")
+  }
+  
+  func ethTokenDecimals(_ chainId: String, contractAddress: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .internalError, "Error Message")
+  }
 }
 
 extension BraveWallet.NetworkInfo {

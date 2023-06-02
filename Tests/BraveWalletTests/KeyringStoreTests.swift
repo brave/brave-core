@@ -34,7 +34,7 @@ class KeyringStoreTests: XCTestCase {
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
     keyringService._selectedAccount = { $1(currentSelectedAccount.address) }
-    keyringService._setSelectedAccount = { $2(true) }
+    keyringService._setSelectedAccount = { $3(true) }
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }

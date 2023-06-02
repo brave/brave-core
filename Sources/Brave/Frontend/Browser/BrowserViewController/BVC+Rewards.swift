@@ -174,7 +174,6 @@ extension BrowserViewController {
     // Update defaults
     ledger.setMinimumVisitDuration(8)
     ledger.setMinimumNumberOfVisits(1)
-    ledger.setAllowUnverifiedPublishers(false)
     ledger.setContributionAmount(Double.greatestFiniteMagnitude)
 
     // Create ledger observer
