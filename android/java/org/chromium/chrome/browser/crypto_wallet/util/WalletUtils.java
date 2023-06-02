@@ -18,12 +18,17 @@ import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
+import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.nio.ByteBuffer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,6 +46,11 @@ public class WalletUtils {
         }
         assert false;
         return "";
+    }
+
+    public static String timeDeltaToDateString(TimeDelta timeDelta) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+        return dateFormat.format(new Date(timeDelta.microseconds / 1000));
     }
 
     public static String generateUniqueAccountName(

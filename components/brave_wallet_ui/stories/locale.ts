@@ -590,8 +590,8 @@ provideStrings({
   braveWalletConnectHardwarePanelOpenApp: 'Hardware wallet requires $1 App opened on $2',
 
   // Transaction History Panel (Empty)
-  braveWalletNoTransactionsYet: 'No transactions yet',
-  braveWalletNoTransactionsYetDescription: 'After your first transaction you will be able to view it here.',
+  braveWalletNoTransactionsYet: 'No transactions to view yet.',
+  braveWalletNoTransactionsYetDescription: 'Once you make a transaction, you\'ll be able to view it here.',
 
   // Transaction List Item
   braveWalletTransactionSent: 'sent',

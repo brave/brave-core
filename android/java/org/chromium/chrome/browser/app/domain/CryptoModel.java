@@ -84,6 +84,7 @@ public class CryptoModel {
 
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
     public LiveData<Boolean> mIsSwapEnabled;
+    private TransactionsModel mTransactionsModel;
 
     public CryptoModel(Context context, TxService txService, KeyringService keyringService,
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
@@ -102,7 +103,7 @@ public class CryptoModel {
         mSwapService = swapService;
         mCryptoSharedActions = cryptoSharedActions;
         mSharedData = new CryptoSharedDataImpl();
-        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
+        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true, null);
         mNetworkModel =
                 new NetworkModel(mJsonRpcService, mSharedData, mCryptoSharedActions, context);
         mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
@@ -137,6 +138,11 @@ public class CryptoModel {
                     mAssetRatioService);
             if (mBuyModel != null) {
                 mBuyModel.resetServices(mAssetRatioService, mBlockchainRegistry);
+            }
+            if (mTransactionsModel != null) {
+                mTransactionsModel.resetServices(mContext, mTxService, mKeyringService,
+                        mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy,
+                        mSolanaTxManagerProxy, mBraveWalletService, mAssetRatioService);
             }
         }
         init();
@@ -283,6 +289,15 @@ public class CryptoModel {
 
     public PortfolioModel getPortfolioModel() {
         return mPortfolioModel;
+    }
+
+    public TransactionsModel createTransactionModel() {
+        if (mTransactionsModel == null) {
+            mTransactionsModel = new TransactionsModel(mContext, mTxService, mKeyringService,
+                    mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
+                    mBraveWalletService, mAssetRatioService, mSharedData);
+        }
+        return mTransactionsModel;
     }
 
     public SendModel createSendModel() {

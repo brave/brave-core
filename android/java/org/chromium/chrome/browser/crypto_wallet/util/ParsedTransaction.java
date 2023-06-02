@@ -71,6 +71,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
     private BlockchainToken erc721BlockchainToken;
     private String erc721TokenId = "";
     private boolean isSwap;
+    public double marketPrice;
 
     // Token approvals
     private String approvalTarget = "";
@@ -197,6 +198,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.senderLabel = getAddressLabel(accounts, txInfo.fromAddress);
         parsedTransaction.isSolanaDappTransaction =
                 WalletConstants.SOLANA_DAPPS_TRANSACTION_TYPES.contains(txInfo.txType);
+        parsedTransaction.marketPrice = networkSpotPrice;
 
         int txType = txInfo.txType;
         if (txType == TransactionType.SOLANA_DAPP_SIGN_TRANSACTION
