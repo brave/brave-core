@@ -126,7 +126,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
 
   const openRewardsPanel = () => {
     chrome.braveRewards.recordNTPPanelTrigger()
-    chrome.braveRewards.openRewardsPanelToDeclareCountry()
+    chrome.braveRewards.showRewardsSetup()
   }
 
   const enableAds = () => {

@@ -178,13 +178,12 @@ ExtensionFunction::ResponseAction BraveRewardsOpenRewardsPanelFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsOpenRewardsPanelToDeclareCountryFunction::
-    ~BraveRewardsOpenRewardsPanelToDeclareCountryFunction() = default;
+BraveRewardsShowRewardsSetupFunction::~BraveRewardsShowRewardsSetupFunction() =
+    default;
 
-ExtensionFunction::ResponseAction
-BraveRewardsOpenRewardsPanelToDeclareCountryFunction::Run() {
+ExtensionFunction::ResponseAction BraveRewardsShowRewardsSetupFunction::Run() {
   if (auto* coordinator = GetPanelCoordinator(this)) {
-    coordinator->OpenRewardsPanelToDeclareCountry();
+    coordinator->ShowRewardsSetup();
   }
   return RespondNow(NoArguments());
 }

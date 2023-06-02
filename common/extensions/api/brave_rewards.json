@@ -370,9 +370,9 @@
         "parameters": []
       },
       {
-        "name": "openRewardsPanelToDeclareCountry",
+        "name": "showRewardsSetup",
         "type": "function",
-        "description": "Opens the Rewards panel in the active window and shows country declaration.",
+        "description": "Opens the Rewards panel in the active window and shows setup.",
         "parameters": []
       },
       {

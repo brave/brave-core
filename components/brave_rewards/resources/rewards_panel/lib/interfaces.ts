@@ -79,7 +79,7 @@ export interface Options {
   vbatExpired: boolean
 }
 
-type RequestedView = 'declare-country' | 'inline-tip'
+type RequestedView = 'rewards-setup' | 'inline-tip'
 
 export interface HostState {
   openTime: number

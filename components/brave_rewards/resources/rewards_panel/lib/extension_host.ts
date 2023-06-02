@@ -185,8 +185,8 @@ export function createHost (): Host {
 
   function handleRewardsPanelArgs (args: mojom.RewardsPanelArgs) {
     switch (args.view) {
-      case mojom.RewardsPanelView.kDeclareCountry:
-        stateManager.update({ requestedView: 'declare-country' })
+      case mojom.RewardsPanelView.kRewardsSetup:
+        stateManager.update({ requestedView: 'rewards-setup' })
         break
       case mojom.RewardsPanelView.kGrantCaptcha:
         loadGrantCaptcha(args.data, 'pending')

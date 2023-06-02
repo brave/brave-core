@@ -61,23 +61,6 @@ export function OptInModalDeclareCountry() {
   return (
     <StoryWrapper>
       <RewardsOptInModal
-        initialView='skip-to-declare-country'
-        availableCountries={['US']}
-        defaultCountry={'US'}
-        result={null}
-        onEnable={actionLogger('onEnable')}
-        onHideResult={actionLogger('onHideResult')}
-      />
-    </StoryWrapper>
-  )
-}
-
-OptInModalDeclareCountry.storyName = 'Opt In Modal (declare country)'
-
-export function OptInModalDeclareCountryLegacy() {
-  return (
-    <StoryWrapper>
-      <RewardsOptInModal
         initialView='declare-country'
         availableCountries={['US']}
         defaultCountry={'US'}
@@ -89,8 +72,7 @@ export function OptInModalDeclareCountryLegacy() {
   )
 }
 
-OptInModalDeclareCountryLegacy.storyName =
-  'Opt In Modal (legacy declare country)'
+OptInModalDeclareCountry.storyName = 'Opt In Modal (declare country)'
 
 export function OptInModalSuccess () {
   return (

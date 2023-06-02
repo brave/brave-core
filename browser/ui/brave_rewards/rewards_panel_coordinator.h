@@ -34,8 +34,8 @@ class RewardsPanelCoordinator
   // Opens the Rewards panel with the default view.
   bool OpenRewardsPanel();
 
-  // Opens the Rewards panel with country declaration view.
-  bool OpenRewardsPanelToDeclareCountry();
+  // Opens the Rewards panel with setup view.
+  bool ShowRewardsSetup();
 
   // Displays a grant captcha for the specified grant in the Rewards panel.
   bool ShowGrantCaptcha(const std::string& grant_id);

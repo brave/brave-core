@@ -25,7 +25,7 @@ export type OnboardingResult =
   'country-already-declared' |
   'unexpected-error'
 
-type InitialView = 'default' | 'skip-to-declare-country' | 'declare-country'
+type InitialView = 'default' | 'declare-country'
 
 interface Props {
   initialView: InitialView
@@ -41,8 +41,7 @@ export function RewardsOptInModal (props: Props) {
   const [countryCode, setCountryCode] = React.useState('')
   const [processing, setProcessing] = React.useState(false)
   const [showCountrySelect, setShowCountrySelect] =
-    React.useState(props.initialView === 'declare-country' ||
-      props.initialView === 'skip-to-declare-country')
+    React.useState(props.initialView === 'declare-country')
 
   React.useEffect(() => {
     setProcessing(false)
@@ -124,10 +123,6 @@ export function RewardsOptInModal (props: Props) {
       props.onEnable(countryCode)
     }
 
-    const text = props.initialView === 'declare-country'
-      ? getString('onboardingGeoTextDeclareCountry')
-      : getString('onboardingGeoText')
-
     return (
       <Modal hideSpacers={true}>
         <style.root>
@@ -138,7 +133,7 @@ export function RewardsOptInModal (props: Props) {
             {getString('onboardingGeoHeader')}
           </style.header>
           <style.text>
-            {text}
+            {getString('onboardingGeoText')}
           </style.text>
           <style.selectCountry>
             <CountrySelect

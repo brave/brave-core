@@ -17,7 +17,6 @@ export const localeStrings = {
   onboardingGeoSuccessHeader: 'Woohoo! You\'re all set!',
   onboardingGeoSuccessText: 'Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!',
   onboardingGeoText: 'Select your country so we can show you the right options and ads for your region.',
-  onboardingGeoTextDeclareCountry: 'To continue using Brave Rewards, select your country so we can show you the right options and ads for your region.',
   onboardingSelectCountry: 'Select',
   onboardingStartUsingRewards: 'Start using Brave Rewards',
   onboardingTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',

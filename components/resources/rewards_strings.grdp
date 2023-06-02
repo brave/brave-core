@@ -385,9 +385,6 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT" desc="">
     Select your country so we can show you the right options and ads for your region.
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT_DECLARE_COUNTRY" desc="">
-    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region.
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY" desc="">
     Select
   </message>

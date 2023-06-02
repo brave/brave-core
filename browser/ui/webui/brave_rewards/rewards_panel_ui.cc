@@ -124,8 +124,6 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_HEADER},
     {"onboardingGeoSuccessText", IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_TEXT},
     {"onboardingGeoText", IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT},
-    {"onboardingGeoTextDeclareCountry",
-     IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT_DECLARE_COUNTRY},
     {"onboardingSelectCountry", IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY},
     {"onboardingStartUsingRewards",
      IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS},
