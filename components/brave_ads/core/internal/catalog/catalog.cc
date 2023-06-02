@@ -24,14 +24,15 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRequireResource() {
-  const bool is_required_for_new_tab_page_ads_when_always_triggering_ad_events =
-      kShouldAlwaysRunService.Get() &&
-      kShouldAlwaysTriggerNewTabPageAdEvents.Get() &&
-      UserHasOptedInToNewTabPageAds();
+bool DoesRequireResourceForNewTabPageAds() {
+  return kShouldAlwaysRunService.Get() &&
+         kShouldAlwaysTriggerNewTabPageAdEvents.Get() &&
+         UserHasOptedInToNewTabPageAds();
+}
 
+bool DoesRequireResource() {
   return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews() ||
-         is_required_for_new_tab_page_ads_when_always_triggering_ad_events;
+         DoesRequireResourceForNewTabPageAds();
 }
 
 }  // namespace
