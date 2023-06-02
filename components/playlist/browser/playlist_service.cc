@@ -52,32 +52,6 @@ std::vector<base::FilePath> GetOrphanedPaths(
   return orphaned_paths;
 }
 
-std::string ToString(mojom::PlaylistEvent type) {
-  switch (type) {
-    case mojom::PlaylistEvent::kItemAdded:
-      return "item: added";
-    case mojom::PlaylistEvent::kItemDeleted:
-      return "item: deleted";
-    case mojom::PlaylistEvent::kItemAborted:
-      return "item: aborted";
-    case mojom::PlaylistEvent::kItemThumbnailReady:
-      return "item: thumbnail_ready";
-    case mojom::PlaylistEvent::kItemThumbnailFailed:
-      return "item: thumbnail_failed";
-    case mojom::PlaylistEvent::kItemCached:
-      return "item: cached";
-    case mojom::PlaylistEvent::kListCreated:
-      return "list: created";
-    case mojom::PlaylistEvent::kAllDeleted:
-      return "item: all deleted";
-    case mojom::PlaylistEvent::kNone:
-      [[fallthrough]];
-    default:
-      NOTREACHED() << "Unknown type: " << static_cast<int>(type);
-      return "item: unknown";
-  }
-}
-
 }  // namespace
 
 PlaylistService::PlaylistService(content::BrowserContext* context,
@@ -340,7 +314,7 @@ void PlaylistService::AddMediaFilesFromItems(
 
 void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
                                             const std::string& playlist_id) {
-  VLOG(2) << __func__ << ": params=" << ToString(playlist_event);
+  VLOG(2) << __func__ << ": params=" << playlist_event;
   for (auto& observer : observers_) {
     observer->OnEvent(playlist_event, playlist_id);
   }
