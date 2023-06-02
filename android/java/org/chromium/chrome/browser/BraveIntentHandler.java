@@ -16,6 +16,7 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.content_public.browser.BrowserStartupController;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -74,7 +75,8 @@ public class BraveIntentHandler extends IntentHandler {
         }
 
         String query = IntentUtils.safeGetStringExtra(intent, SearchManager.QUERY);
-        if (query == null || TextUtils.isEmpty(query)) {
+        if (TextUtils.isEmpty(query)
+                || !BrowserStartupController.getInstance().isFullBrowserStarted()) {
             return null;
         }
 
