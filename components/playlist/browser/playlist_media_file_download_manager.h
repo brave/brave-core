@@ -54,17 +54,16 @@ class PlaylistMediaFileDownloadManager
   class Delegate {
    public:
     virtual bool IsValidPlaylistItem(const std::string& id) = 0;
+    virtual base::FilePath GetMediaPathForPlaylistItemItem(
+        const std::string& id) = 0;
+    virtual base::SequencedTaskRunner* GetTaskRunner() = 0;
 
    protected:
     virtual ~Delegate() {}
   };
 
-  static constexpr base::FilePath::CharType kMediaFileName[] =
-      FILE_PATH_LITERAL("media_file.mp4");
-
   PlaylistMediaFileDownloadManager(content::BrowserContext* context,
-                                   Delegate* delegate,
-                                   const base::FilePath& base_dir);
+                                   Delegate* delegate);
   ~PlaylistMediaFileDownloadManager() override;
 
   PlaylistMediaFileDownloadManager(const PlaylistMediaFileDownloadManager&) =
@@ -90,6 +89,7 @@ class PlaylistMediaFileDownloadManager
   void OnMediaFileReady(const std::string& id,
                         const std::string& media_file_path) override;
   void OnMediaFileGenerationFailed(const std::string& id) override;
+  base::SequencedTaskRunner* GetTaskRunner() override;
 
   void TryStartingDownloadTask();
   std::unique_ptr<DownloadJob> PopNextJob();
@@ -97,7 +97,6 @@ class PlaylistMediaFileDownloadManager
   void CancelCurrentDownloadingPlaylistItem();
   bool IsCurrentDownloadingInProgress() const;
 
-  const base::FilePath base_dir_;
   raw_ptr<Delegate> delegate_;
   base::queue<std::unique_ptr<DownloadJob>> pending_media_file_creation_jobs_;
 

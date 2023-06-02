@@ -63,13 +63,15 @@ class PlaylistMediaFileDownloader
     // Called when target media file generation failed.
     virtual void OnMediaFileGenerationFailed(const std::string& id) = 0;
 
+    // Returns task runner to move file.
+    virtual base::SequencedTaskRunner* GetTaskRunner() = 0;
+
    protected:
     virtual ~Delegate() {}
   };
 
   PlaylistMediaFileDownloader(Delegate* delegate,
-                              content::BrowserContext* context,
-                              base::FilePath::StringType media_file_name);
+                              content::BrowserContext* context);
   ~PlaylistMediaFileDownloader() override;
 
   PlaylistMediaFileDownloader(const PlaylistMediaFileDownloader&) = delete;
@@ -94,7 +96,8 @@ class PlaylistMediaFileDownloader
  private:
   void ResetDownloadStatus();
   void DownloadMediaFile(const GURL& url);
-  void OnMediaFileDownloaded(base::FilePath path);
+  void OnMediaFileDownloaded(const std::string& mime_type, base::FilePath path);
+  void OnRenameFile(const base::FilePath& new_path, bool result);
 
   void NotifyFail(const std::string& id);
   void NotifySucceed(const std::string& id, const std::string& media_file_path);
@@ -118,10 +121,8 @@ class PlaylistMediaFileDownloader
                                      download::DownloadItem::Observer>
       download_item_observation_{this};
 
-  const base::FilePath::StringType media_file_name_;
-
   // All below variables are only for playlist creation.
-  base::FilePath playlist_dir_path_;
+  base::FilePath destination_path_;
   mojom::PlaylistItemPtr current_item_;
 
   // true when this class is working for playlist now.
