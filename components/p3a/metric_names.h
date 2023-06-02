@@ -177,10 +177,14 @@ constexpr inline auto kCollectedTypicalHistograms =
 
 constexpr inline auto kCollectedSlowHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
+    "Brave.Accessibility.DisplayZoomEnabled",
+    "Brave.Core.DocumentsDirectorySizeMB",
     "Brave.Core.ProfileCount",
     "Brave.Core.UsageMonthly",
+    "Brave.General.BottomBarLocation",
     "Brave.P3A.TestSlowMetric",
     "Brave.Playlist.LastUsageTime",
+    "Brave.ReaderMode.NumberReaderModeActivated",
     "Brave.Rewards.TipsSent",
     "Brave.Sync.EnabledTypes",
     "Brave.Sync.SyncedObjectsCount",
