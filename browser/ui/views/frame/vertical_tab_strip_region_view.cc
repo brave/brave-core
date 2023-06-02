@@ -745,6 +745,10 @@ void VerticalTabStripRegionView::Layout() {
                                  header_view_->y() + header_view_->height()});
     UpdateTabSearchButtonVisibility();
 
+    // Put resize area on the right side, overlapped with contents.
+    constexpr int kResizeAreaWidth = 4;
+    resize_area_->SetBounds(width() - kResizeAreaWidth, contents_bounds.y(),
+                            kResizeAreaWidth, contents_bounds.height());
     return;
   }
 
