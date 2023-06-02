@@ -240,7 +240,7 @@ absl::optional<std::string> ParseStripeBuyURL(const base::Value& json_value) {
   //   "url": "https://crypto.link.com?session_hash=abcdefgh"
   // }
   auto stripe_buy_url_response =
-      api::asset_ratio::StripeBuyURLResponse::FromValueDeprecated(json_value);
+      api::asset_ratio::StripeBuyURLResponse::FromValue(json_value);
 
   if (!stripe_buy_url_response) {
     return absl::nullopt;

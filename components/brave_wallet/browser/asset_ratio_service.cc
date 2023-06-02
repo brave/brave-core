@@ -95,18 +95,13 @@ std::vector<std::string> VectorToLowerCase(const std::vector<std::string>& v) {
   return v_lower;
 }
 
-constexpr char kEthereum[] = "ethereum";
-constexpr char kSolana[] = "solana";
-constexpr char kPolygon[] = "polygon";
-constexpr char kBitcoin[] = "bitcoin";
-
 absl::optional<std::string> ChainIdToStripeChainId(
     const std::string& chain_id) {
   static base::NoDestructor<base::flat_map<std::string, std::string>>
-      chain_id_lookup({{brave_wallet::mojom::kMainnetChainId, kEthereum},
-                       {brave_wallet::mojom::kSolanaMainnet, kSolana},
-                       {brave_wallet::mojom::kPolygonMainnetChainId, kPolygon},
-                       {brave_wallet::mojom::kBitcoinMainnet, kBitcoin}});
+      chain_id_lookup(
+          {{brave_wallet::mojom::kMainnetChainId, "ethereum"},
+           {brave_wallet::mojom::kSolanaMainnet, "solana"},
+           {brave_wallet::mojom::kPolygonMainnetChainId, "polygon"}});
   if (!chain_id_lookup->contains(chain_id)) {
     return absl::nullopt;
   }
@@ -359,6 +354,7 @@ void AssetRatioService::GetStripeBuyURL(
       ChainIdToStripeChainId(chain_id);
   if (!destination_network) {
     std::move(callback).Run("", "UNSUPPORTED_CHAIN_ID");
+    return;
   }
 
   base::Value::Dict payload;
