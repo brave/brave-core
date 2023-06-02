@@ -28,7 +28,6 @@ import SwapTooltip from './swap-tooltip'
 import WithHideBalancePlaceholder from './with-hide-balance-placeholder'
 import NetworkFilterSelector from './network-filter-selector'
 import { CryptoView, PortfolioAsset, PortfolioOverview } from './views'
-import { AssetFilterSelector } from './asset-filter-selector/asset-filter-selector'
 import AssetsFilterDropdown from './assets-filter-dropdown'
 import { AccountFilterSelector } from './account-filter-selector/account-filter-selector'
 
@@ -61,6 +60,5 @@ export {
   WithHideBalancePlaceholder,
   AssetsFilterDropdown,
   NetworkFilterSelector,
-  AssetFilterSelector,
   AccountFilterSelector
 }

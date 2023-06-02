@@ -48,7 +48,10 @@ import {
   getAccountType,
   findAccountInList
 } from '../../utils/account-utils'
-import { parseJSONFromLocalStorage } from '../../utils/local-storage-utils'
+import {
+  parseJSONFromLocalStorage,
+  makeInitialFilteredOutNetworkKeys
+} from '../../utils/local-storage-utils'
 
 // Options
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
@@ -153,6 +156,22 @@ const defaultState: WalletState = {
       .HIDE_PORTFOLIO_NFTS_TAB
   ) === 'true',
   removedNonFungibleTokens: [] as BraveWallet.BlockchainToken[],
+  filteredOutPortfolioNetworkKeys:
+    parseJSONFromLocalStorage(
+      'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
+      makeInitialFilteredOutNetworkKeys()
+    ),
+  filteredOutPortfolioAccountAddresses:
+    parseJSONFromLocalStorage(
+      'FILTERED_OUT_PORTFOLIO_ACCOUNT_ADDRESSES',
+      []
+    ),
+  hidePortfolioSmallBalances: window
+    .localStorage
+    .getItem(
+      LOCAL_STORAGE_KEYS
+        .HIDE_PORTFOLIO_SMALL_BALANCES
+    ) === 'true',
 }
 
 // async actions
@@ -444,6 +463,38 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setRemovedNonFungibleTokens (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
         state.removedNonFungibleTokens = payload
+      },
+
+      setFilteredOutPortfolioNetworkKeys
+        (
+          state: WalletState,
+          { payload }: PayloadAction<string[]>
+        ) {
+        state.filteredOutPortfolioNetworkKeys = payload
+      },
+
+      setFilteredOutPortfolioAccountAddresses
+        (
+          state: WalletState,
+          { payload }: PayloadAction<string[]>
+        ) {
+        state.filteredOutPortfolioAccountAddresses = payload
+      },
+
+      setHidePortfolioSmallBalances
+        (
+          state: WalletState,
+          { payload }: PayloadAction<boolean>
+        ) {
+        state.hidePortfolioSmallBalances = payload
+      },
+
+      setIsFetchingPortfolioPriceHistory
+        (
+          state: WalletState,
+          { payload }: PayloadAction<boolean>
+        ) {
+        state.isFetchingPortfolioPriceHistory = payload
       },
 
       setHidePortfolioBalances

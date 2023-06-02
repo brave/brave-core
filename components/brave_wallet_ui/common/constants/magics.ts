@@ -14,3 +14,9 @@ export const WRAPPED_SOL_CONTRACT_ADDRESS = 'So111111111111111111111111111111111
  * This will allow for fallback UI when we do have all the required token info
  */
 export const UNKNOWN_TOKEN_COINGECKO_ID = 'UNKNOWN_TOKEN'
+
+/**
+ * Fiat value threshold for hidding small balances on the portolio view.
+ * This may turn into a pref in the future.
+ */
+export const HIDE_SMALL_BALANCES_FIAT_THRESHOLD = 1

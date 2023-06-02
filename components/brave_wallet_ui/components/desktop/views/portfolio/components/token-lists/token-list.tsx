@@ -6,6 +6,11 @@
 import * as React from 'react'
 import { useHistory, useParams } from 'react-router'
 
+// Constants
+import {
+  HIDE_SMALL_BALANCES_FIAT_THRESHOLD
+} from '../../../../../../common/constants/magics'
+
 // Selectors
 import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../../../common/selectors'
@@ -26,47 +31,51 @@ import { getLocale } from '../../../../../../../common/locale'
 
 // Components
 import SearchBar from '../../../../../shared/search-bar/index'
-import AddButton from '../../../../add-button/index'
 import NetworkFilterSelector from '../../../../network-filter-selector/index'
-import { AccountFilterSelector } from '../../../../account-filter-selector/account-filter-selector'
-import { AssetFilterSelector } from '../../../../asset-filter-selector/asset-filter-selector'
 import { PortfolioAssetItemLoadingSkeleton } from '../../../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 
 // Hooks
 import usePricing from '../../../../../../common/hooks/pricing'
 
 // Styled Components
-import { Column, ScrollableColumn } from '../../../../../shared/style'
 import {
-  ButtonRow,
-  FilterTokenRow
+  Column,
+  Row,
+  ScrollableColumn,
+  Text,
+  VerticalSpace
+} from '../../../../../shared/style'
+import {
+  FilterTokenRow,
+  CircleButton,
+  ButtonIcon
 } from '../../style'
 
 interface Props {
   userAssetList: UserAssetInfoType[]
-  networks: BraveWallet.NetworkInfo[]
+  networks?: BraveWallet.NetworkInfo[]
   renderToken: RenderTokenFunc
-  hideAddButton?: boolean
-  hideAssetFilter?: boolean
-  hideAccountFilter?: boolean
   hideAutoDiscovery?: boolean
   enableScroll?: boolean
   maxListHeight?: string
   estimatedItemSize: number
   horizontalPadding?: number
+  hideSmallBalances?: boolean
+  isPortfolio?: boolean
+  onShowPortfolioSettings?: () => void
 }
 
 export const TokenLists = ({
   userAssetList,
   networks,
   renderToken,
-  hideAddButton,
   enableScroll,
   maxListHeight,
-  hideAssetFilter,
-  hideAccountFilter,
   hideAutoDiscovery,
-  horizontalPadding
+  horizontalPadding,
+  hideSmallBalances,
+  isPortfolio,
+  onShowPortfolioSettings
 }: Props) => {
   // routing
   const history = useHistory()
@@ -101,11 +110,28 @@ export const TokenLists = ({
     return userAssetList.filter((asset) => asset.asset.visible)
   }, [userAssetList])
 
+  const filteredOutSmallBalanceTokens = React.useMemo(() => {
+    if (hideSmallBalances) {
+      return visibleTokens.filter(
+        (token) =>
+          computeFiatAmount(
+            token.assetBalance,
+            token.asset.symbol,
+            token.asset.decimals,
+            token.asset.contractAddress,
+            token.asset.chainId)
+            .gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
+      )
+    }
+    return visibleTokens
+  }, [visibleTokens, hideSmallBalances, computeFiatAmount])
+
   const filteredAssetList = React.useMemo(() => {
     if (searchValue === '') {
-      return visibleTokens.filter((asset) => asset.asset.visible)
+      return filteredOutSmallBalanceTokens
+        .filter((asset) => asset.asset.visible)
     }
-    return visibleTokens.filter((item) => {
+    return filteredOutSmallBalanceTokens.filter((item) => {
       return (
         item.asset.name.toLowerCase() === searchValue.toLowerCase() ||
         item.asset.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
@@ -113,7 +139,7 @@ export const TokenLists = ({
         item.asset.symbol.toLowerCase().startsWith(searchValue.toLowerCase())
       )
     })
-  }, [searchValue, visibleTokens])
+  }, [searchValue, filteredOutSmallBalanceTokens])
 
   const fungibleTokens = React.useMemo(() => {
     return filteredAssetList
@@ -133,9 +159,6 @@ export const TokenLists = ({
   }, [selectedAssetFilter])
 
   const sortedFungibleTokensList: UserAssetInfoType[] = React.useMemo(() => {
-    if (hideAssetFilter) {
-      return fungibleTokens
-    }
     if (
       assetFilterItemInfo.id === 'highToLow' ||
       assetFilterItemInfo.id === 'lowToHigh'
@@ -166,8 +189,7 @@ export const TokenLists = ({
   }, [
     assetFilterItemInfo.id,
     fungibleTokens,
-    computeFiatAmount,
-    hideAssetFilter
+    computeFiatAmount
   ])
 
   const listUi = React.useMemo(() => {
@@ -195,27 +217,65 @@ export const TokenLists = ({
   // render
   return (
     <>
-      <FilterTokenRow horizontalPadding={horizontalPadding}>
+      {!isPortfolio &&
+        <FilterTokenRow horizontalPadding={horizontalPadding}>
+          <Column flex={1} style={{ minWidth: '25%' }} alignItems='flex-start'>
+            <SearchBar
+              placeholder={getLocale('braveWalletSearchText')}
+              action={onSearchValueChange}
+              value={searchValue}
+            />
+          </Column>
+          <NetworkFilterSelector networkListSubset={networks} />
+        </FilterTokenRow>
+      }
 
-        <Column flex={1} style={{ minWidth: '25%' }} alignItems='flex-start'>
-          <SearchBar
-            placeholder={getLocale('braveWalletSearchText')}
-            action={onSearchValueChange}
-            value={searchValue}
-          />
-        </Column>
+      {isPortfolio &&
+        <Row
+          justifyContent='space-between'
+          alignItems='center'
+          padding='0px 18px'
+          marginBottom={16}
+        >
+          <Text
+            textSize='16px'
+            isBold={true}
+          >
+            {getLocale('braveWalletAccountsAssets')}
+          </Text>
+          <Row
+            width='unset'
+          >
+            <Row
+              style={{ width: 230 }}
+              margin='0px 12px 0px 0px'
+            >
+              <SearchBar
+                placeholder={getLocale('braveWalletSearchText')}
+                action={onSearchValueChange}
+                value={searchValue}
+                isV2={true}
+              />
+            </Row>
+            <Row
+              width='unset'
+            >
+              <CircleButton
+                marginRight={12}
+                onClick={showAddAssetsModal}
+              >
+                <ButtonIcon name='list-settings' />
+              </CircleButton>
 
-        <NetworkFilterSelector networkListSubset={networks} />
-
-        {!hideAssetFilter &&
-          <AssetFilterSelector />
-        }
-
-        {!hideAccountFilter &&
-          <AccountFilterSelector />
-        }
-
-      </FilterTokenRow>
+              <CircleButton
+                onClick={onShowPortfolioSettings}
+              >
+                <ButtonIcon name='filter-settings' />
+              </CircleButton>
+            </Row>
+          </Row>
+        </Row>
+      }
 
       {enableScroll
         ? (
@@ -233,16 +293,8 @@ export const TokenLists = ({
         : listUi
       }
 
-      {!hideAddButton &&
-        <ButtonRow
-          horizontalPadding={horizontalPadding}
-        >
-          <AddButton
-            buttonType='secondary'
-            onSubmit={showAddAssetsModal}
-            text={getLocale('braveWalletAccountsEditVisibleAssets')}
-          />
-        </ButtonRow>
+      {isPortfolio &&
+        <VerticalSpace space='18px' />
       }
     </>
   )

@@ -28,6 +28,7 @@ export const Modal = styled.div<{ width?: string, borderRadius?: number }>`
   justify-content: center;
   min-width: ${p => p.width ? p.width : '580px'};
   max-width: ${p => p.width ? p.width : '580px'};
+  max-height: 90vh;
   background-color: ${(p) => p.theme.color.background02};
   border-radius: ${(p) => p.borderRadius ? p.borderRadius : 8}px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
