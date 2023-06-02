@@ -102,7 +102,7 @@ extension BraveWallet.CoinType {
     case .fil:
       return BraveWallet.FilecoinKeyringId
     case .btc:
-      return BraveWallet.BitcoinKeyringId
+      return BraveWallet.BitcoinKeyring84Id
     @unknown default:
       return BraveWallet.DefaultKeyringId
     }

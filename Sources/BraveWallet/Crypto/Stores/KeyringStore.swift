@@ -88,7 +88,12 @@ public class KeyringStore: ObservableObject {
       else {
         return
       }
-      keyringService.setSelectedAccount(selectedAccount.address, coin: selectedAccount.coin) { _ in }
+      keyringService.setSelectedAccount(
+        selectedAccount.coin,
+        keyringId: selectedAccount.keyringId,
+        address: selectedAccount.address,
+        completion: { _ in }
+      )
     }
   }
   /// All available `KeyringInfo` for all supported coin type
@@ -305,7 +310,7 @@ public class KeyringStore: ObservableObject {
   }
 
   func removeSecondaryAccount(for account: BraveWallet.AccountInfo, password: String, completion: ((Bool) -> Void)? = nil) {
-    keyringService.removeImportedAccount(account.address, password: password, coin: account.coin) { success in
+    keyringService.removeImportedAccount(account.coin, keyringId: account.keyringId, address: account.address, password: password) { success in
       completion?(success)
       if success {
         self.updateKeyringInfo()
@@ -319,16 +324,16 @@ public class KeyringStore: ObservableObject {
       completion?(success)
     }
     if account.isImported {
-      keyringService.setKeyringImportedAccountName(account.coin.keyringId, address: account.address, name: name, completion: handler)
+      keyringService.setKeyringImportedAccountName(account.coin, keyringId: account.keyringId, address: account.address, name: name, completion: handler)
     } else {
-      keyringService.setKeyringDerivedAccountName(account.coin.keyringId, address: account.address, name: name, completion: handler)
+      keyringService.setKeyringDerivedAccountName(account.coin, keyringId: account.keyringId, address: account.address, name: name, completion: handler)
     }
   }
 
   func privateKey(for account: BraveWallet.AccountInfo, password: String, completion: @escaping (String?) -> Void) {
-    keyringService.encodePrivateKey(forExport: account.address, password: password, coin: account.coin) { key in
+    keyringService.encodePrivateKey(forExport: account.coin, keyringId: account.keyringId, address: account.address, password: password, completion: { key in
       completion(key.isEmpty ? nil : key)
-    }
+    })
   }
 
   func notifyUserInteraction() {
@@ -398,7 +403,7 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
         let selectedAccount = await keyringService.selectedAccount(newKeyringCoin)
         // if the new Keyring doesn't have a selected account, select the first account
         if selectedAccount == nil, let newAccount = newKeyring.accountInfos.first {
-          await keyringService.setSelectedAccount(newAccount.address, coin: newAccount.coin)
+          await keyringService.setSelectedAccount(newAccount.coin, keyringId: newAccount.keyringId, address: newAccount.address)
         }
       }
       updateKeyringInfo()
@@ -428,7 +433,7 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
     updateKeyringInfo()
   }
   
-  public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
   }
 }
 

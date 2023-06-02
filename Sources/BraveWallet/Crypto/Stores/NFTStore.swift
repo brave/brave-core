@@ -193,7 +193,7 @@ extension NFTStore: BraveWalletKeyringServiceObserver {
     }
   }
   
-  public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
   }
 }
 

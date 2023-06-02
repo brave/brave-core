@@ -300,7 +300,7 @@ extension AccountActivityStore: BraveWalletKeyringServiceObserver {
     }
   }
   
-  func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
   }
 }
 

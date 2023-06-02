@@ -183,8 +183,8 @@ public class BraveRewards: NSObject {
       ledger?.selectedTabId = UInt32(tabId)
       tabRetrieved(tabId, url: url, html: nil)
     }
-    if isAdsInitialized {
-      ads.reportTabUpdated(tabId, url: url, redirectedFrom: tab.redirectURLs, isSelected: isSelected, isPrivate: isPrivate)
+    if isAdsInitialized && !isPrivate {
+      ads.reportTabUpdated(tabId, url: url, redirectedFrom: tab.redirectURLs, isSelected: isSelected)
     }
   }
 

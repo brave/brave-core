@@ -68,7 +68,6 @@ extension BraveLedger {
 
       self.setMinimumVisitDuration(8)
       self.setMinimumNumberOfVisits(1)
-      self.setAllowUnverifiedPublishers(false)
       self.setContributionAmount(Double.greatestFiniteMagnitude)
 
       let group = DispatchGroup()

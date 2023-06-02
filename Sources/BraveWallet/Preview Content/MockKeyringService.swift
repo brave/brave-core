@@ -204,7 +204,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(false, "")
   }
 
-  func encodePrivateKey(forExport address: String, password: String, coin: BraveWallet.CoinType, completion: @escaping (String) -> Void) {
+  func encodePrivateKey(forExport coin: BraveWallet.CoinType, keyringId: String, address: String, password: String, completion: @escaping (String) -> Void) {
     completion("807df4db569fab37cdf475a4bda779897f0f3dd9c5d90a2cb953c88ef762fd96")
   }
 
@@ -215,8 +215,8 @@ class MockKeyringService: BraveWalletKeyringService {
       completion(false, "")
     }
   }
-
-  func removeImportedAccount(_ address: String, password: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+  
+  func removeImportedAccount(_ coin: BraveWallet.CoinType, keyringId: String, address: String, password: String, completion: @escaping (Bool) -> Void) {
     guard let index = defaultKeyring.accountInfos.firstIndex(where: { $0.address == address }) else {
       completion(false)
       return
@@ -242,7 +242,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(selectedAccount?.address)
   }
 
-  func setSelectedAccount(_ address: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+  func setSelectedAccount(_ coin: BraveWallet.CoinType, keyringId: String, address: String, completion: @escaping (Bool) -> Void) {
     guard let account = defaultKeyring.accountInfos.first(where: { $0.address == address }) else {
       completion(false)
       return
@@ -274,7 +274,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(false)
   }
 
-  func setKeyringDerivedAccountName(_ keyringId: String, address: String, name: String, completion: @escaping (Bool) -> Void) {
+  func setKeyringDerivedAccountName(_ coin: BraveWallet.CoinType, keyringId: String, address: String, name: String, completion: @escaping (Bool) -> Void) {
     keyringInfo(keyringId) { keyring in
       if let account = keyring.accountInfos.first(where: { $0.address == address }) {
         account.name = name
@@ -285,7 +285,7 @@ class MockKeyringService: BraveWalletKeyringService {
     }
   }
 
-  func setKeyringImportedAccountName(_ keyringId: String, address: String, name: String, completion: @escaping (Bool) -> Void) {
+  func setKeyringImportedAccountName(_ coin: BraveWallet.CoinType, keyringId: String, address: String, name: String, completion: @escaping (Bool) -> Void) {
     keyringInfo(keyringId) { keyring in
       if let account = keyring.accountInfos.first(where: { $0.address == address && $0.isImported }) {
         account.name = name
@@ -307,23 +307,31 @@ class MockKeyringService: BraveWalletKeyringService {
   func addHardwareAccounts(_ info: [BraveWallet.HardwareWalletAccount]) {
   }
 
-  func setHardwareAccountName(_ address: String, name: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+  func setHardwareAccountName(_ coin: BraveWallet.CoinType, keyringId: String, address: String, name: String, completion: @escaping (Bool) -> Void) {
     completion(true)
   }
 
-  func removeHardwareAccount(_ address: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+  func removeHardwareAccount(_ coin: BraveWallet.CoinType, keyringId: String, address: String, completion: @escaping (Bool) -> Void) {
     completion(true)
   }
 
   func notifyUserInteraction() {
   }
   
-  func addFilecoinAccount(_ accountName: String, fileCoinNetwork: String, completion: @escaping (Bool) -> Void) {
+  func addFilecoinAccount(_ accountName: String, filecoinNetwork fileCoinNetwork: String, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
   
   func filecoinSelectedAccount(_ network: String, completion: @escaping (String?) -> Void) {
     completion("")
+  }
+  
+  func addBitcoinAccount(_ accountName: String, networkId: String, keyringId: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+
+  func allAccounts(_ completion: @escaping (BraveWallet.AllAccountsInfo) -> Void) {
+    
   }
 }
 

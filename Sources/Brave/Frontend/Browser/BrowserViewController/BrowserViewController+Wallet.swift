@@ -224,20 +224,19 @@ extension Tab: BraveWalletProviderDelegate {
         completion(.internal, nil)
         return
       }
-      let (success, allowedAccounts) = await allowedAccounts(coinType, accounts: accounts)
-      if !success {
+      let allowedAccounts = getAllowedAccounts(coinType, accounts: accounts) ?? []
+      if !allowedAccounts.isEmpty {
         completion(.internal, [])
         return
       }
       switch coinType {
       case .eth:
-        if success, !allowedAccounts.isEmpty {
+        if !allowedAccounts.isEmpty {
           completion(.none, allowedAccounts)
           return
         }
       case .sol:
-        if success,
-           accounts.count == 1, // only 1 Solana account connect at a time
+        if accounts.count == 1, // only 1 Solana account connect at a time
            let account = accounts.first,
            allowedAccounts.contains(account) {
           completion(.none, allowedAccounts)
@@ -284,35 +283,32 @@ extension Tab: BraveWalletProviderDelegate {
 
   /// Helper to fetch the allowed accounts for the current coin. Unlike `allowedAccounts(_:accounts:)`
   /// this will filter the selected account to the front of the array if it is an allowed/permitted account
-  @MainActor func allowedAccountsForCurrentCoin() async -> (Bool, [String]) {
+  @MainActor func allowedAccountsForCurrentCoin() async -> [String] {
     guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
           let walletService = BraveWallet.ServiceFactory.get(privateMode: false) else {
-      return (false, [])
+      return []
     }
     let coin = await walletService.selectedCoin()
-    let accounts = await keyringService.keyringInfo(coin.keyringId).accountInfos.map(\.address)
-    let (success, allowedAccounts) = await allowedAccounts(coin, accounts: accounts)
-    guard success else {
-      return (false, [])
+    let allAccounts = await keyringService.keyringInfo(coin.keyringId).accountInfos.map(\.address)
+    guard let allowedAccounts = getAllowedAccounts(coin, accounts: allAccounts) else {
+      return []
     }
     let selectedAccounts = await keyringService.selectedAccount(coin)
-    return (true, filterAllowedAccounts(allowedAccounts, selectedAccount: selectedAccounts))
+    return filterAllowedAccounts(allowedAccounts, selectedAccount: selectedAccounts)
   }
   
   /// Fetches all allowed accounts for the current origin.
-  @MainActor func allowedAccounts(_ type: BraveWallet.CoinType, accounts: [String]) async -> (Bool, [String]) {
-    guard !isPermissionDenied(type),
-          let originURL = url?.origin.url else {
-      return (false, [])
+  func getAllowedAccounts(_ type: BraveWallet.CoinType, accounts: [String]) -> [String]? {
+    guard let originURL = url?.origin.url,
+          let permissions = Domain.walletPermissions(forUrl: originURL, coin: type) else {
+      return []
     }
-    let permissions = Domain.walletPermissions(forUrl: originURL, coin: type) ?? []
     // keyring locked status is checked in `EthereumProviderImpl::GetAllowedAccounts`
-    return (true, permissions)
+    return permissions
   }
   
-  @MainActor func isAccountAllowed(_ type: BraveWallet.CoinType, account: String) async -> Bool {
-    let (success, allowedAccounts) = await allowedAccounts(type, accounts: [account])
-    guard success else {
+  func isAccountAllowed(_ type: BraveWallet.CoinType, account: String) -> Bool {
+    guard let allowedAccounts = getAllowedAccounts(type, accounts: [account]) else {
       return false
     }
     return allowedAccounts.contains(account)
@@ -490,13 +486,11 @@ extension Tab: BraveWalletEventsListener {
     let selectedAccount: String
     if keyring.isLocked {
       // Check for locked status before assigning account address.
-      // `allowedAccounts` does not check locked status.
+      // `getAllowedAccounts` is not async, can't check locked status.
       selectedAccount = valueOrUndefined(Optional<String>.none)
     } else {
       let allAccounts = keyring.accountInfos.map(\.address)
-      let (success, allowedAccounts) = await allowedAccounts(coin, accounts: allAccounts)
-      if success {
-        // Assign the selected account if it's permitted / allowed
+      if let allowedAccounts = getAllowedAccounts(coin, accounts: allAccounts) {
         let selectedAccountForCoin = await keyringService.selectedAccount(coin)
         let filteredAllowedAccounts = filterAllowedAccounts(allowedAccounts, selectedAccount: selectedAccountForCoin)
         selectedAccount = valueOrUndefined(filteredAllowedAccounts.first)
@@ -616,8 +610,8 @@ extension Tab: BraveWalletKeyringServiceObserver {
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
       if permissionRequestManager.hasPendingRequest(for: origin, coinType: .eth) {
         let pendingRequests = permissionRequestManager.pendingRequests(for: origin, coinType: .eth)
-        let (success, accounts) = await allowedAccountsForCurrentCoin()
-        if success, !accounts.isEmpty {
+        let accounts = await allowedAccountsForCurrentCoin()
+        if !accounts.isEmpty {
           for request in pendingRequests {
             // cancel the requests if `allowedAccounts` is not empty for this domain
             permissionRequestManager.cancelRequest(request)
@@ -641,6 +635,6 @@ extension Tab: BraveWalletKeyringServiceObserver {
   func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
   }
   
-  func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
   }
 }
