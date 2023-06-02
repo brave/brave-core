@@ -44,9 +44,11 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.brave.playlist.PlaylistDownloadUtils;
 import com.brave.playlist.enums.PlaylistOptions;
 import com.brave.playlist.listener.PlaylistOnboardingActionClickListener;
 import com.brave.playlist.listener.PlaylistOptionsListener;
+import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.model.PlaylistOptionsModel;
 import com.brave.playlist.model.SnackBarActionModel;
 import com.brave.playlist.util.ConnectionUtils;
@@ -700,36 +702,45 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
             };
             if (!isPlaylistButtonVisible()) {
-                PlaylistViewUtils.showPlaylistButton(
-                        BraveActivity.getBraveActivity(), viewGroup, playlistOptionsListener);
-                if (SharedPreferencesManager.getInstance().readBoolean(
-                            PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
-                    View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
-                    if (playlistButton != null) {
-                        playlistButton.post(new Runnable() {
+                PlaylistOnboardingActionClickListener playlistOnboardingActionClickListener =
+                        new PlaylistOnboardingActionClickListener() {
                             @Override
-                            public void run() {
-                                PlaylistOnboardingActionClickListener
-                                        playlistOnboardingActionClickListener =
-                                                new PlaylistOnboardingActionClickListener() {
-                                                    @Override
-                                                    public void onOnboardingActionClick() {
-                                                        addMediaToPlaylist(items);
-                                                    }
-                                                };
-                                try {
-                                    new PlaylistOnboardingPanel(
-                                            (FragmentActivity) BraveActivity.getBraveActivity(),
-                                            playlistButton, playlistOnboardingActionClickListener);
-                                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                    Log.e(TAG, "showPlaylistButton " + e);
-                                }
+                            public void onOnboardingActionClick() {
+                                addMediaToPlaylist(items);
                             }
-                        });
-                    }
-                    SharedPreferencesManager.getInstance().writeBoolean(
-                            PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
-                }
+                        };
+
+                PlaylistViewUtils.showPlaylistButton(BraveActivity.getBraveActivity(), viewGroup,
+                        playlistOptionsListener, playlistOnboardingActionClickListener);
+                // if (SharedPreferencesManager.getInstance().readBoolean(
+                //             PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
+                //     View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
+                //     if (playlistButton != null) {
+                //         playlistButton.post(new Runnable() {
+                //             @Override
+                //             public void run() {
+                //                 PlaylistOnboardingActionClickListener
+                //                         playlistOnboardingActionClickListener =
+                //                                 new PlaylistOnboardingActionClickListener() {
+                //                                     @Override
+                //                                     public void onOnboardingActionClick() {
+                //                                         addMediaToPlaylist(items);
+                //                                     }
+                //                                 };
+                //                 try {
+                //                     new PlaylistOnboardingPanel(
+                //                             (FragmentActivity) BraveActivity.getBraveActivity(),
+                //                             playlistButton,
+                //                             playlistOnboardingActionClickListener);
+                //                 } catch (BraveActivity.BraveActivityNotFoundException e) {
+                //                     Log.e(TAG, "showPlaylistButton " + e);
+                //                 }
+                //             }
+                //         });
+                //     }
+                //     SharedPreferencesManager.getInstance().writeBoolean(
+                //             PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
+                // }
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showPlaylistButton " + e);
@@ -1753,9 +1764,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
-    public void onEvent(int eventType, String playlistId) {
+    public void onEvent(int eventType, String id) {
         if (eventType == PlaylistEvent.ITEM_ADDED) {
             showAddedToPlaylistSnackBar();
+            if (mPlaylistService != null) {
+            }
+            mPlaylistService.getPlaylistItem(id, playlistItem -> {
+                Log.e("BravePlaylist", "PlaylistItem : " + playlistItem.toString());
+
+                PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
+                        ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name,
+                        playlistItem.pageSource.url, playlistItem.mediaPath.url,
+                        playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
+                        playlistItem.author, playlistItem.duration, playlistItem.lastPlayedPosition,
+                        playlistItem.cached, false, 0);
+                PlaylistDownloadUtils.startDownloadRequest(getContext(), playlistItemModel);
+            });
         }
     }
 

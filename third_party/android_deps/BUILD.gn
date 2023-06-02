@@ -13,6 +13,7 @@ group("android_deps") {
     ":com_google_android_exoplayer_exoplayer_datasource_java",
     ":com_google_android_exoplayer_exoplayer_decoder_java",
     ":com_google_android_exoplayer_exoplayer_extractor_java",
+    ":com_google_android_exoplayer_exoplayer_hls_java",
     ":com_google_android_exoplayer_exoplayer_ui_java",
     ":com_google_android_exoplayer_extension_cast_java",
     ":com_google_android_exoplayer_extension_mediasession_java",
@@ -93,6 +94,7 @@ android_aar_prebuilt("com_brave_playlist_java") {
   deps = [
     ":com_github_bumptech_glide_java",
     ":com_google_android_exoplayer_exoplayer_core_java",
+    ":com_google_android_exoplayer_exoplayer_hls_java",
     ":com_google_android_exoplayer_exoplayer_ui_java",
     ":com_google_android_exoplayer_extension_cast_java",
     ":com_google_android_exoplayer_extension_mediasession_java",
@@ -202,6 +204,16 @@ android_aar_prebuilt(
   deps = [
     ":com_google_android_exoplayer_exoplayer_common_java",
     "//third_party/androidx:androidx_media_media_java",
+  ]
+}
+
+android_aar_prebuilt("com_google_android_exoplayer_exoplayer_hls_java") {
+  aar_path =
+      "libs/com_google_android_exoplayer_exoplayer_hls/exoplayer-hls-2.17.1.aar"
+  info_path = "libs/com_google_android_exoplayer_exoplayer_hls/com_google_android_exoplayer_exoplayer_hls.info"
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_core_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
   ]
 }
 
