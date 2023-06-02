@@ -133,13 +133,11 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
   const bool is_vertical_tabs_floating =
       static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();
 
-  auto* tab_style = TabStyle::Get();
-
   std::vector<gfx::Rect> bounds;
   int x = 0;
   int y = 0;
   for (const TabSlotView* view : views) {
-    auto width = tab_style->GetStandardWidth();
+    auto width = tab_strip->GetDragContext()->GetTabDragAreaWidth();
     const int height = view->height();
     if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab) {
       if (!is_vertical_tabs_floating &&

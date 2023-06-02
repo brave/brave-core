@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.AccountsFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.MarketFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.NftGridFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TransactionsFragment;
@@ -30,6 +31,7 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
     private static final int NFT_GRID_FRAGMENT_POSITION = 1;
     private static final int TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION = 2;
     private static final int ACCOUNTS_FRAGMENT_POSITION = 3;
+    private static final int MARKET_FRAGMENT_POSITION = 4;
 
     private final List<String> mTitles;
 
@@ -41,7 +43,7 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
         mTitles = new ArrayList<>(Arrays.asList(resources.getString(R.string.portfolio),
                 resources.getString(R.string.brave_wallet_nfts),
                 resources.getString(R.string.brave_wallet_activity),
-                resources.getString(R.string.accounts)));
+                resources.getString(R.string.accounts), resources.getString(R.string.market)));
     }
 
     @NonNull
@@ -57,6 +59,8 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
                 return TransactionsFragment.newInstance();
             case ACCOUNTS_FRAGMENT_POSITION:
                 return AccountsFragment.newInstance();
+            case MARKET_FRAGMENT_POSITION:
+                return MarketFragment.newInstance();
             default:
                 throw new IllegalStateException(
                         String.format("No fragment found for position %d.", position));

@@ -108,17 +108,26 @@ Polymer({
 
   /** @private */
   onMenuTap_: function() {
-    console.debug('[br_toolbar] Not Implemented: onMenuTap_')
+    this.dispatchEvent(new CustomEvent(
+      'cr-toolbar-menu-tap', {bubbles: true, composed: true}))
   },
 
   focusMenuButton() {
-    console.debug('[br_toolbar] Not Implemented: focusMenuButton')
+    requestAnimationFrame(() => {
+      // Wait for next animation frame in case dom-if has not applied yet and
+      // added the menu button.
+      const menuButton =
+          this.shadowRoot!.querySelector<HTMLElement>('#menuButton');
+      if (menuButton) {
+        menuButton.focus();
+      }
+    });
   },
 
   /** @return {boolean} */
   isMenuFocused() {
-    console.debug('[br_toolbar] Not Implemented: isMenuFocused (no menuButton)')
-    return false;
+    return !!this.shadowRoot!.activeElement &&
+        this.shadowRoot!.activeElement.id === 'menuButton';
   },
 
   /** @private */

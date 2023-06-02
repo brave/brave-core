@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/market_coin_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="false"
+    android:focusable="false"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/circle_shimmer"
+        android:contentDescription="@null" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/BraveWalletTextView"
+            android:id="@+id/coin_name"
+            android:layout_width="80dp"
+            android:background="@color/wallet_secondary_text_color"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="start"/>
+
+        <TextView
+            style="@style/BraveWalletTextView"
+            android:id="@+id/symbol"
+            android:layout_width="40dp"
+            android:textSize="12sp"
+            android:background="@color/wallet_secondary_text_color"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="start"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/BraveWalletTextView"
+            android:id="@+id/price"
+            android:layout_width="60dp"
+            android:layout_gravity="end"
+            android:background="@color/wallet_secondary_text_color" />
+
+        <TextView
+            style="@style/BraveWalletTextView"
+            android:id="@+id/change_percentage"
+            android:layout_width="40dp"
+            android:background="@color/wallet_secondary_text_color"
+            android:layout_gravity="end"/>
+
+    </LinearLayout>
+</LinearLayout>

@@ -168,7 +168,7 @@ export const WalletAsyncActions = {
   setUserAssetVisible: createAction<SetUserAssetVisiblePayloadType>(
     'setUserAssetVisible'
   ), // alias for ApiProxy.braveWalletService.setUserAssetVisible
-  selectAccount: createAction<WalletAccountType>('selectAccount'), // should use apiProxy - keyringService
+  selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
   chainChangedEvent:
     createAction<ChainChangedEventPayloadType>('chainChangedEvent'),

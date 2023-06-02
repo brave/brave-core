@@ -15,6 +15,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/token.h"
@@ -29,6 +31,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "net/base/filename_util.h"
 
 namespace playlist {
 namespace {
@@ -65,8 +68,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   content::URLDataSource::Add(context,
                               std::make_unique<PlaylistDataSource>(this));
   media_file_download_manager_ =
-      std::make_unique<PlaylistMediaFileDownloadManager>(context, this,
-                                                         base_dir_);
+      std::make_unique<PlaylistMediaFileDownloadManager>(context, this);
   thumbnail_downloader_ =
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   download_request_manager_ =
@@ -459,6 +461,10 @@ mojom::PlaylistItemPtr PlaylistService::GetPlaylistItem(const std::string& id) {
   }
 
   return ConvertValueToPlaylistItem(*item_value);
+}
+
+bool PlaylistService::HasPlaylistItem(const std::string& id) const {
+  return prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
 }
 
 void PlaylistService::AddMediaFilesFromPageToPlaylist(
@@ -893,6 +899,9 @@ void PlaylistService::RemoveLocalDataForItemImpl(
   if (!item->cached)
     return;
 
+  base::FilePath media_path;
+  CHECK(net::FileURLToFilePath(item->media_path, &media_path));
+
   item->cached = false;
   DCHECK(item->media_source.is_valid()) << "media_source should be valid";
   item->media_path = item->media_source;
@@ -900,12 +909,9 @@ void PlaylistService::RemoveLocalDataForItemImpl(
                           base::Value(ConvertPlaylistItemToValue(item)));
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemLocalDataRemoved, item->id);
 
-  base::FilePath media_path;
-  if (GetMediaPath(item->id, &media_path)) {
-    auto delete_file = base::BindOnce(
-        [](const base::FilePath& path) { base::DeleteFile(path); }, media_path);
-    GetTaskRunner()->PostTask(FROM_HERE, std::move(delete_file));
-  }
+  auto delete_file = base::BindOnce(
+      [](const base::FilePath& path) { base::DeleteFile(path); }, media_path);
+  GetTaskRunner()->PostTask(FROM_HERE, std::move(delete_file));
 }
 
 void PlaylistService::OnMediaFileDownloadFinished(
@@ -1011,6 +1017,13 @@ bool PlaylistService::IsValidPlaylistItem(const std::string& id) {
   return HasPrefStorePlaylistItem(id);
 }
 
+base::FilePath PlaylistService::GetMediaPathForPlaylistItemItem(
+    const std::string& id) {
+  base::FilePath path;
+  CHECK(GetMediaPath(id, &path));
+  return path;
+}
+
 void PlaylistService::OnGetOrphanedPaths(
     const std::vector<base::FilePath> orphaned_paths) {
   if (orphaned_paths.empty()) {
@@ -1071,10 +1084,32 @@ bool PlaylistService::GetThumbnailPath(const std::string& id,
 
 bool PlaylistService::GetMediaPath(const std::string& id,
                                    base::FilePath* media_path) {
-  // TODO(sko) The extension of the media file can differ.
-  // We should iterate files in the directory and find the match.
-  *media_path = GetPlaylistItemDirPath(id).Append(
-      PlaylistMediaFileDownloadManager::kMediaFileName);
+  constexpr base::FilePath::CharType kMediaFileName[] =
+      FILE_PATH_LITERAL("media_file");
+  CHECK(media_path);
+  *media_path = GetPlaylistItemDirPath(id).Append(kMediaFileName);
+
+  if (HasPlaylistItem(id)) {
+    // Try to infer file extension from the source URL.
+    auto item = GetPlaylistItem(id);
+    GURL url(item->media_source);
+    auto path = url.path();
+    std::string extension;
+    if (!path.empty()) {
+      auto parts = base::SplitString(path, ".", base::TRIM_WHITESPACE,
+                                     base::SPLIT_WANT_NONEMPTY);
+      if (parts.size() > 1) {
+        extension = parts.back();
+      }
+    }
+
+    if (!extension.empty()) {
+      *media_path = media_path->AddExtensionASCII(extension);
+    }
+  }
+
+  DCHECK(!media_path->empty());
+
   if (media_path->ReferencesParent()) {
     media_path->clear();
     return false;

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<vector android:height="18dp" android:viewportHeight="960"
+    android:viewportWidth="960" android:width="18dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="@color/brave_wallet_day_night_bull" android:pathData="M450,880v-686L242,402l-42,-42 280,-280 280,280 -42,42 -208,-208v686h-60Z"/>
+</vector>
