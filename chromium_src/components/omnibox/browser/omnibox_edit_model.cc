@@ -34,8 +34,10 @@ void BraveAdjustTextForCopy(GURL* url) {
 #define BRAVE_ADJUST_TEXT_FOR_COPY BraveAdjustTextForCopy(url_from_text);
 
 #define CanPasteAndGo CanPasteAndGo_Chromium
+#define PasteAndGo PasteAndGo_Chromium
 #include "src/components/omnibox/browser/omnibox_edit_model.cc"
 #undef CanPasteAndGo
+#undef PasteAndGo
 #undef BRAVE_ADJUST_TEXT_FOR_COPY
 
 bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
@@ -46,4 +48,18 @@ bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
   }
 #endif
   return CanPasteAndGo_Chromium(text);
+}
+
+void OmniboxEditModel::PasteAndGo(const std::u16string& text,
+                                  base::TimeTicks match_selection_timestamp) {
+  if (view_) {
+    view_->RevertAll();
+  }
+  AutocompleteMatch match;
+  GURL alternate_nav_url;
+  ClassifyString(text, &match, &alternate_nav_url);
+
+  client_->OnInputAccepted(match);
+
+  PasteAndGo_Chromium(text, match_selection_timestamp);
 }
