@@ -32,3 +32,23 @@ source_set("browser_tests") {
     ]
   }
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.cc",
+    "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.h",
+    "brave_tab_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
