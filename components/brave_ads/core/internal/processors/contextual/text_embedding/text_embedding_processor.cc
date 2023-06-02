@@ -35,7 +35,7 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
         1, "Failed to process text embeddings as resource not initialized");
   }
 
-  const std::string text = SanitizeHtml(html);
+  const std::string text = ParseAndSanitizeHtmlTagAttribute(html);
   if (text.empty()) {
     return BLOG(1, "No text available for embedding");
   }

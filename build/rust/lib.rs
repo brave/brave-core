@@ -20,3 +20,5 @@ pub use brave_wallet_cxx;
 pub use filecoin_cxx;
 
 pub use json_cxx;
+
+pub use text_sanitize;

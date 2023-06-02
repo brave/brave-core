@@ -8,15 +8,25 @@
 #include <tuple>
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/sanitize/sanitize_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {};
+class BraveAdsTextEmbeddingProcessorUtilTest
+    : public ::testing::TestWithParam<bool> {
+ protected:
+  bool ShouldSanitizeHtmlContent() const { return GetParam(); }
 
-TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
+  std::string MaybeSanitizeHtmlContent(const std::string& content) const {
+    return ShouldSanitizeHtmlContent() ? SanitizeHtmlContent(content) : content;
+  }
+};
+
+TEST_P(BraveAdsTextEmbeddingProcessorUtilTest,
+       ParseAndSanitizeHtmlTagAttribute) {
   // Arrange
   const std::vector<std::tuple<std::string, std::string>> samples = {
       {R"(<meta property="og:title" content="test">)", "test"},
@@ -42,11 +52,12 @@ TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
     // Act
 
     // Assert
-    EXPECT_EQ(expected_text, SanitizeHtml(html));
+    const std::string sanitized_html = MaybeSanitizeHtmlContent(html);
+    EXPECT_EQ(expected_text, ParseAndSanitizeHtmlTagAttribute(sanitized_html));
   }
 }
 
-TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
+TEST_P(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
   // Arrange
   const std::vector<std::tuple<std::string, std::string>> samples = {
       {"test", "test"},
@@ -65,8 +76,17 @@ TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
     // Act
 
     // Assert
-    EXPECT_EQ(expected_sanitized_text, SanitizeText(text));
+    const std::string sanitized_text = MaybeSanitizeHtmlContent(text);
+    EXPECT_EQ(expected_sanitized_text, SanitizeText(sanitized_text));
   }
 }
+
+INSTANTIATE_TEST_SUITE_P(,
+                         BraveAdsTextEmbeddingProcessorUtilTest,
+                         ::testing::Bool(),
+                         [](::testing::TestParamInfo<bool> test_param) {
+                           return test_param.param ? "HtmlSanitized"
+                                                   : "HtmlNotSanitized";
+                         });
 
 }  // namespace brave_ads

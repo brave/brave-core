@@ -288,6 +288,7 @@ dependencies = [
  "json-cxx",
  "skus-cxx",
  "speedreader-ffi",
+ "text-sanitize",
 ]
 
 [[package]]
@@ -2649,6 +2650,13 @@ dependencies = [
  "futf",
  "mac",
  "utf-8",
+]
+
+[[package]]
+name = "text-sanitize"
+version = "0.1.0"
+dependencies = [
+ "cxx",
 ]
 
 [[package]]
