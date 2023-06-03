@@ -42,8 +42,8 @@ extern const char kIdleTimeThreshold[];
 
 // Subdivision targeting prefs
 extern const char kShouldAllowSubdivisionTargeting[];
-extern const char kSubdivisionTargetingCode[];
-extern const char kAutoDetectedSubdivisionTargetingCode[];
+extern const char kSubdivisionTargetingSubdivision[];
+extern const char kSubdivisionTargetingAutoDetectedSubdivision[];
 
 // Catalog prefs
 extern const char kCatalogId[];

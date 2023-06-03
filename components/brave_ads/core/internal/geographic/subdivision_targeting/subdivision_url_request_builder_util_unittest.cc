@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_url_request_builder_util.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -11,13 +11,13 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsSubdivisionTargetingUrlRequestBuilderUtilTest, GetPath) {
+TEST(BraveAdsSubdivisionUrlRequestBuilderUtilTest, GetPath) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ("/v1/getstate", BuildSubdivisionTargetingUrlPath());
+  EXPECT_EQ("/v1/getstate", BuildSubdivisionUrlPath());
 }
 
 }  // namespace brave_ads

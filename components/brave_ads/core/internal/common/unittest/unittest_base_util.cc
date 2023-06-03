@@ -224,8 +224,8 @@ void MockDefaultPrefs() {
   SetDefaultIntegerPref(prefs::kIdleTimeThreshold, 15);
 
   SetDefaultBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
-  SetDefaultStringPref(prefs::kSubdivisionTargetingCode, "AUTO");
-  SetDefaultStringPref(prefs::kAutoDetectedSubdivisionTargetingCode, "");
+  SetDefaultStringPref(prefs::kSubdivisionTargetingSubdivision, "AUTO");
+  SetDefaultStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision, "");
 
   SetDefaultStringPref(prefs::kCatalogId, "");
   SetDefaultIntegerPref(prefs::kCatalogVersion, 1);

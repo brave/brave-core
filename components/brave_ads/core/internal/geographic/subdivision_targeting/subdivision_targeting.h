@@ -6,18 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_SUBDIVISION_TARGETING_SUBDIVISION_TARGETING_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_SUBDIVISION_TARGETING_SUBDIVISION_TARGETING_H_
 
+#include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
-#include "brave/components/brave_ads/core/internal/common/timer/timer.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_url_request_delegate.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-class SubdivisionTargeting final : public AdsClientNotifierObserver {
+class SubdivisionUrlRequest;
+
+class SubdivisionTargeting final : public AdsClientNotifierObserver,
+                                   public SubdivisionUrlRequestDelegate {
  public:
   SubdivisionTargeting();
 
@@ -35,49 +37,46 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
 
   static bool ShouldAllow();
 
-  const std::string& GetSubdivisionCode() const;
+  const std::string& GetSubdivision() const;
 
  private:
-  void MaybeAllow();
+  void Initialize();
 
-  void MaybeFetch();
-  void MaybeAllowAndFetch();
+  void MaybeRequireSubdivision();
+  void InitializeSubdivisionUrlRequest();
+  void ShutdownSubdivisionUrlRequest();
 
-  void SetAutoDetectedSubdivisionCode(const std::string& subdivision_code);
-  void UpdateAutoDetectedSubdivisionCode();
-  const std::string& GetLazyAutoDetectedSubdivisionCode() const;
+  void DisableSubdivision();
 
-  void SetSubdivisionCode(const std::string& subdivision_code);
-  void UpdateSubdivisionCode();
-  const std::string& GetLazySubdivisionCode() const;
-
-  void MaybeDisable();
-
-  void MaybeAutoDetectSubdivisionCode();
+  void AutoDetectSubdivision();
 
   void MaybeAllowForLocale(const std::string& locale);
 
-  void MaybeFetchForLocale(const std::string& locale);
-  void FetchAfterDelay();
-  void Fetch();
-  void FetchCallback(const mojom::UrlResponseInfo& url_response);
-  void Retry();
-  void RetryCallback();
-  void StopRetrying();
+  bool ShouldFetchSubdivision();
+  void MaybeFetchSubdivision();
+
+  void MaybeAllowAndFetchSubdivisionForLocale(const std::string& locale);
+
+  void SetAutoDetectedSubdivision(const std::string& subdivision);
+  void UpdateAutoDetectedSubdivision();
+  const std::string& GetLazyAutoDetectedSubdivision() const;
+
+  void SetSubdivision(const std::string& subdivision);
+  void UpdateSubdivision();
+  const std::string& GetLazySubdivision() const;
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
   void OnNotifyLocaleDidChange(const std::string& locale) override;
   void OnNotifyPrefDidChange(const std::string& path) override;
 
-  bool is_fetching_ = false;
-  bool did_fetch_ = false;
+  // SubdivisionUrlRequestDelegate:
+  void OnDidFetchSubdivision(const std::string& subdivision) override;
 
-  Timer timer_;
-  BackoffTimer retry_timer_;
+  std::unique_ptr<SubdivisionUrlRequest> subdivision_url_request_;
 
-  mutable absl::optional<std::string> auto_detected_subdivision_code_;
-  mutable absl::optional<std::string> subdivision_code_;
+  mutable absl::optional<std::string> auto_detected_subdivision_;
+  mutable absl::optional<std::string> subdivision_;
 
   base::WeakPtrFactory<SubdivisionTargeting> weak_factory_{this};
 };

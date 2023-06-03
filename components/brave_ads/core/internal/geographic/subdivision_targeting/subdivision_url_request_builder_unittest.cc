@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/get_subdivision_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_url_request_builder.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -13,9 +13,9 @@
 
 namespace brave_ads {
 
-class BraveAdsGetSubdivisionUrlRequestBuilderTest : public UnitTestBase {};
+class BraveAdsSubdivisionUrlRequestBuilderTest : public UnitTestBase {};
 
-TEST_F(BraveAdsGetSubdivisionUrlRequestBuilderTest, BuildUrl) {
+TEST_F(BraveAdsSubdivisionUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

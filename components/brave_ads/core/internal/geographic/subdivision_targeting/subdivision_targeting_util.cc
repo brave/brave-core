@@ -7,12 +7,24 @@
 
 #include "base/containers/contains.h"
 #include "base/strings/string_piece.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/supported_subdivision_codes.h"
+#include "brave/components/brave_ads/core/supported_subdivisions.h"
 
 namespace brave_ads {
 
-bool DoesSupportSubdivisionTargeting(const std::string& country_code) {
-  return base::Contains(GetSupportedSubdivisionCodes(), country_code);
+bool DoesSupportCountryCode(const std::string& country_code) {
+  return base::Contains(GetSupportedSubdivisions(), country_code);
+}
+
+bool DoesCountryCodeSupportSubdivision(const std::string& country_code,
+                                       const std::string& subdivision) {
+  const auto iter = GetSupportedSubdivisions().find(country_code);
+  if (iter == GetSupportedSubdivisions().cend()) {
+    return false;
+  }
+
+  const auto& [_, subdivisions] = *iter;
+
+  return subdivisions.find(subdivision) != subdivisions.cend();
 }
 
 }  // namespace brave_ads

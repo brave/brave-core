@@ -1366,22 +1366,23 @@ bool AdsServiceImpl::ShouldAllowSubdivisionTargeting() const {
 }
 
 std::string AdsServiceImpl::GetSubdivisionTargetingCode() const {
-  return GetPrefService()->GetString(prefs::kSubdivisionTargetingCode);
+  return GetPrefService()->GetString(prefs::kSubdivisionTargetingSubdivision);
 }
 
 void AdsServiceImpl::SetSubdivisionTargetingCode(
     const std::string& subdivision_targeting_code) {
-  SetStringPref(prefs::kSubdivisionTargetingCode, subdivision_targeting_code);
+  SetStringPref(prefs::kSubdivisionTargetingSubdivision,
+                subdivision_targeting_code);
 }
 
 std::string AdsServiceImpl::GetAutoDetectedSubdivisionTargetingCode() const {
   return GetPrefService()->GetString(
-      prefs::kAutoDetectedSubdivisionTargetingCode);
+      prefs::kSubdivisionTargetingAutoDetectedSubdivision);
 }
 
 void AdsServiceImpl::SetAutoDetectedSubdivisionTargetingCode(
     const std::string& subdivision_targeting_code) {
-  SetStringPref(prefs::kAutoDetectedSubdivisionTargetingCode,
+  SetStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
                 subdivision_targeting_code);
 }
 
