@@ -43,6 +43,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest,
   // Act
   TextClassificationProcessor processor(*resource_);
   processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
+  task_environment_.RunUntilIdle();
 
   // Assert
   const TextClassificationProbabilityList& list =
@@ -59,6 +60,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   const std::string text;
   TextClassificationProcessor processor(*resource_);
   processor.Process(text);
+  task_environment_.RunUntilIdle();
 
   // Assert
   const TextClassificationProbabilityList& list =
@@ -90,6 +92,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
 
   TextClassificationProcessor processor(*resource_);
   processor.Process(/*text*/ "Some content about technology & computing");
+  task_environment_.RunUntilIdle();
 
   // Assert
   const TextClassificationProbabilityList& list =
@@ -107,6 +110,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   processor.Process(/*text*/ "Some content about cooking food");
   processor.Process(/*text*/ "Some content about finance & banking");
   processor.Process(/*text*/ "Some content about technology & computing");
+  task_environment_.RunUntilIdle();
 
   // Assert
   const TextClassificationProbabilityList& list =

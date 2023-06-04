@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
-
 #include <memory>
 #include <tuple>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components_unittest_constants.h"
@@ -16,6 +15,12 @@
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
+
+namespace {
+
+using testing::_;
+
+}  // namespace
 
 class BraveAdsEmbeddingProcessingTest : public UnitTestBase {
  protected:
@@ -47,17 +52,17 @@ TEST_F(BraveAdsEmbeddingProcessingTest, EmbedText) {
       {"this 54 is simple", {0.85F, 0.2F, 1.0F}},
       {{}, {}}};
 
-  const absl::optional<ml::pipeline::EmbeddingProcessing>&
-      embedding_processing = resource_->get();
-  ASSERT_TRUE(embedding_processing);
-
   for (const auto& [text, expected_embedding] : k_samples) {
-    // Act
-    const ml::pipeline::TextEmbeddingInfo text_embedding =
-        embedding_processing->EmbedText(text);
+    base::MockCallback<EmbedTextCallback> embed_text_callback;
+    EXPECT_CALL(embed_text_callback, Run(_))
+        .WillOnce([&expected_embedding](
+                      const ml::pipeline::TextEmbeddingInfo& text_embedding) {
+          EXPECT_EQ(expected_embedding, text_embedding.embedding);
+        });
 
-    // Assert
-    EXPECT_EQ(expected_embedding, text_embedding.embedding);
+    // Act
+    resource_->EmbedText(text, embed_text_callback.Get());
+    task_environment_.RunUntilIdle();
   }
 }
 
