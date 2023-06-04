@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/search_result_ad_handler.h"
 
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
@@ -60,8 +60,8 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_ad_events"] = "true";
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
+  params["should_always_trigger_search_result_ad_events"] = "true";
+  enabled_features.emplace_back(kBraveAdsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -93,8 +93,8 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_ad_events"] = "true";
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
+  params["should_always_trigger_search_result_ad_events"] = "true";
+  enabled_features.emplace_back(kBraveAdsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -140,8 +140,8 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_ad_events"] = "true";
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
+  params["should_always_trigger_search_result_ad_events"] = "true";
+  enabled_features.emplace_back(kBraveAdsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -179,8 +179,8 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_ad_events"] = "true";
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
+  params["should_always_trigger_search_result_ad_events"] = "true";
+  enabled_features.emplace_back(kBraveAdsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -236,8 +236,8 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_ad_events"] = "true";
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
+  params["should_always_trigger_search_result_ad_events"] = "true";
+  enabled_features.emplace_back(kBraveAdsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -286,8 +286,8 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_ad_events"] = "true";
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
+  params["should_always_trigger_search_result_ad_events"] = "true";
+  enabled_features.emplace_back(kBraveAdsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 

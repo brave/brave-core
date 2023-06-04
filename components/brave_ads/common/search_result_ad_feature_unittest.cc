@@ -41,54 +41,6 @@ TEST(BraveAdsSearchResultAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsSearchResultAdFeatureEnabled());
 }
 
-TEST(BraveAdsSearchResultAdFeatureTest,
-     ShouldAlwaysTriggerSearchResultAdEvents) {
-  // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["should_always_trigger_ad_events"] = "true";
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(kShouldAlwaysTriggerSearchResultAdEvents.Get());
-}
-
-TEST(BraveAdsSearchResultAdFeatureTest,
-     DefaultShouldAlwaysTriggerSearchResultAdEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(kShouldAlwaysTriggerSearchResultAdEvents.Get());
-}
-
-TEST(BraveAdsSearchResultAdFeatureTest,
-     DefaulShouldAlwaysTriggerSearchResultAdEventsWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kSearchResultAdFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(kShouldAlwaysTriggerSearchResultAdEvents.Get());
-}
-
 TEST(BraveAdsSearchResultAdFeatureTest, GetMaximumAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
