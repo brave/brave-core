@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
 import {
   useDispatch,
   useSelector
@@ -57,7 +56,6 @@ import {
 
 // components
 import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
-import { StepsNavigation } from '../../../components/desktop/steps-navigation/steps-navigation'
 import SearchBar from '../../../components/shared/search-bar/index'
 import SelectAccountItem from '../../../components/shared/select-account-item/index'
 import SelectAccount from '../../../components/shared/select-account/index'
@@ -70,10 +68,15 @@ import {
   getBatTokensFromList,
   getAssetIdKey
 } from '../../../utils/asset-utils'
+import { DepositTitle } from './deposit-funds.style'
 
-export const DepositFundsScreen = () => {
-  // routing
-  const history = useHistory()
+interface Props {
+  showDepositAddress: boolean
+  onShowDepositAddress: (showDepositAddress: boolean) => void
+}
+
+export const DepositFundsScreen = (props: Props) => {
+  const { showDepositAddress, onShowDepositAddress } = props
 
   // redux
   const dispatch = useDispatch()
@@ -87,7 +90,6 @@ export const DepositFundsScreen = () => {
   const scrollIntoView = useScrollIntoView()
 
   // state
-  const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [qrCode, setQRCode] = React.useState<string>('')
@@ -182,31 +184,18 @@ export const DepositFundsScreen = () => {
     resetCopyState()
   }, [closeAccountSearch, resetCopyState])
 
-  const onBack = React.useCallback(() => {
-    resetCopyState()
-
-    if (!showDepositAddress && history.length) {
-      return history.goBack()
-    }
-
-    if (showDepositAddress) {
-      // go back to asset selection
-      setShowDepositAddress(false)
-      return closeAccountSearch()
-    }
-  }, [showDepositAddress, closeAccountSearch, history, resetCopyState])
-
   const nextStep = React.useCallback(() => {
     if (!isNextStepEnabled || !selectedAssetNetwork) {
       return
     }
-    setShowDepositAddress(true)
-  }, [isNextStepEnabled, selectedAssetNetwork])
+    onShowDepositAddress(true)
+  }, [isNextStepEnabled, selectedAssetNetwork, onShowDepositAddress])
 
   const goBackToSelectAssets = React.useCallback(() => {
-    setShowDepositAddress(false)
+    onShowDepositAddress(false)
+    resetCopyState()
     setSelectedAsset(undefined)
-  }, [])
+  }, [onShowDepositAddress, resetCopyState])
 
   const copyAddressToClipboard = React.useCallback(() => {
     copyToClipboard(selectedAccount?.address || '')
@@ -277,29 +266,30 @@ export const DepositFundsScreen = () => {
     }
   }, [fullTokenList])
 
+  React.useEffect(() => {
+    if (!showDepositAddress) {
+      if (isCopied) {
+        resetCopyState()
+      }
+
+      if (showAccountSearch) {
+        closeAccountSearch()
+      }
+    }
+  }, [showDepositAddress, showAccountSearch, isCopied, closeAccountSearch, resetCopyState])
+
   // render
   return (
     <>
-      {/* Hide nav when creating or searching accounts */}
-      {!showAccountSearch && !(
-        needsAccount && showDepositAddress
-      ) &&
-        <StepsNavigation
-          goBack={onBack}
-          steps={[]}
-          currentStep=''
-          preventGoBack={!showDepositAddress}
-        />
-      }
 
       {/* Asset Selection */}
       {!showDepositAddress &&
         <>
           <SelectAssetWrapper>
 
-            <Title>
+            <DepositTitle>
               {getLocale('braveWalletDepositFundsTitle')}
-            </Title>
+            </DepositTitle>
 
             {fullTokenList.length
               ? <TokenLists

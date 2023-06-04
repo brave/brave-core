@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
 import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
@@ -41,7 +40,7 @@ import {
 import {
   ScrollContainer,
   SearchWrapper,
-  SelectAssetWrapper
+  SelectAssetWrapper,
 } from './fund-wallet.style'
 
 // components
@@ -49,7 +48,6 @@ import SearchBar from '../../../components/shared/search-bar'
 import SelectAccountItem from '../../../components/shared/select-account-item'
 import SelectAccount from '../../../components/shared/select-account'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
-import { StepsNavigation } from '../../../components/desktop/steps-navigation/steps-navigation'
 import { TokenLists } from '../../../components/desktop/views/portfolio/components/token-lists/token-list'
 import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account'
@@ -57,10 +55,13 @@ import SwapInputComponent from '../../../components/buy-send-swap/swap-input-com
 import SelectHeader from '../../../components/buy-send-swap/select-header'
 import { SelectCurrency } from '../../../components/buy-send-swap/select-currency/select-currency'
 
-export const FundWalletScreen = () => {
-  // routing
-  const history = useHistory()
+interface Props {
+  showBuyOptions: boolean
+  onShowBuyOptions: (showBuyOptions: boolean) => void
+}
 
+export const FundWalletScreen = (props: Props) => {
+  const { showBuyOptions, onShowBuyOptions } = props
   // redux
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
@@ -92,7 +93,6 @@ export const FundWalletScreen = () => {
   const scrollIntoView = useScrollIntoView()
 
   // state
-  const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
   const [showFiatSelection, setShowFiatSelection] = React.useState<boolean>(false)
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
@@ -147,24 +147,12 @@ export const FundWalletScreen = () => {
     setSelectedAccount(account)
   }, [closeAccountSearch])
 
-  const onBack = React.useCallback(() => {
-    if (!showBuyOptions && history.length) {
-      return history.goBack()
-    }
-
-    if (showBuyOptions) {
-      // go back to asset selection
-      setShowBuyOptions(false)
-      return closeAccountSearch()
-    }
-  }, [showBuyOptions, closeAccountSearch, history])
-
   const nextStep = React.useCallback(() => {
     if (!isNextStepEnabled) {
       return
     }
-    setShowBuyOptions(true)
-  }, [isNextStepEnabled])
+    onShowBuyOptions(true)
+  }, [isNextStepEnabled, onShowBuyOptions])
 
   const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
     if (!selectedAsset || !selectedAssetNetwork || !selectedAccount) {
@@ -177,9 +165,9 @@ export const FundWalletScreen = () => {
   }, [selectedAsset, selectedAssetNetwork, selectedAccount, selectedCurrency])
 
   const goBackToSelectAssets = React.useCallback(() => {
-    setShowBuyOptions(false)
+    onShowBuyOptions(false)
     setSelectedAsset(undefined)
-  }, [])
+  }, [onShowBuyOptions])
 
   const checkIsBuyAssetSelected = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (selectedAsset) {
@@ -256,21 +244,15 @@ export const FundWalletScreen = () => {
     selectedAccount
   ])
 
+  React.useEffect(() => {
+    if(!showBuyOptions && showAccountSearch) {
+      closeAccountSearch()
+    }
+  }, [showBuyOptions, showAccountSearch, closeAccountSearch])
+
   // render
   return (
     <>
-      {/* Hide nav when creating or searching accounts */}
-      {!showAccountSearch && !showFiatSelection && !(
-        needsAccount && showBuyOptions
-      ) &&
-        <StepsNavigation
-          goBack={onBack}
-          steps={[]}
-          currentStep=''
-          preventGoBack={!showBuyOptions}
-        />
-      }
-
       {/* Fiat Selection */}
       {showFiatSelection &&
         <SelectCurrency

@@ -59,6 +59,7 @@ import {
 import {
   PortfolioOverviewHeader
 } from '../../card-headers/portfolio-overview-header'
+import { PageTitleHeader } from '../../card-headers/page-title-header'
 
 export interface Props {
   onOpenWalletSettings: () => void
@@ -207,19 +208,15 @@ const CryptoView = (props: Props) => {
     <>
       <Switch>
         {/* Portfolio */}
-        <Route path={WalletRoutes.AddAssetModal} exact>{/* Show portfolio overview in background */}
+        <Route path={WalletRoutes.AddAssetModal} exact>
+          {/* Show portfolio overview in background */}
           <WalletPageWrapper
             wrapContentInBox={true}
             noCardPadding={true}
-            cardHeader={
-              <PortfolioOverviewHeader />
-            }
+            cardHeader={<PortfolioOverviewHeader />}
           >
             <StyledWrapper>
-              <Column
-                fullWidth={true}
-                padding='20px 20px 0px 20px'
-              >
+              <Column fullWidth={true} padding="20px 20px 0px 20px">
                 {banners}
                 {ipfsBanner}
               </Column>
@@ -238,15 +235,10 @@ const CryptoView = (props: Props) => {
           <WalletPageWrapper
             wrapContentInBox={true}
             noCardPadding={true}
-            cardHeader={
-              <PortfolioOverviewHeader />
-            }
+            cardHeader={<PortfolioOverviewHeader />}
           >
             <StyledWrapper>
-              <Column
-                fullWidth={true}
-                padding='20px 20px 0px 20px'
-              >
+              <Column fullWidth={true} padding="20px 20px 0px 20px">
                 {banners}
                 {ipfsBanner}
               </Column>
@@ -258,10 +250,9 @@ const CryptoView = (props: Props) => {
         </Route>
 
         {/* Accounts */}
-        <Route path={WalletRoutes.AddAccountModal}>{/* Show accounts overview in background */}
-          <WalletPageWrapper
-            wrapContentInBox={true}
-          >
+        <Route path={WalletRoutes.AddAccountModal}>
+          {/* Show accounts overview in background */}
+          <WalletPageWrapper wrapContentInBox={true}>
             <StyledWrapper>
               {banners}
               <Accounts />
@@ -271,19 +262,23 @@ const CryptoView = (props: Props) => {
 
         <Route path={WalletRoutes.Account}>
           <WalletPageWrapper
-            wrapContentInBox={true}
+            wrapContentInBox
+            cardHeader={
+              <PageTitleHeader title={''} showBackButton onBack={goBack} />
+            }
           >
             <StyledWrapper>
-              <Account
-                goBack={goBack}
-              />
+              <Account />
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>
 
         <Route path={WalletRoutes.Accounts}>
           <WalletPageWrapper
-            wrapContentInBox={true}
+            wrapContentInBox
+            cardHeader={
+              <PageTitleHeader title={getLocale('braveWalletTopNavAccounts')} />
+            }
           >
             <StyledWrapper>
               {banners}
@@ -295,7 +290,10 @@ const CryptoView = (props: Props) => {
         {/* Market */}
         <Route path={WalletRoutes.Market} exact={true}>
           <WalletPageWrapper
-            wrapContentInBox={true}
+            wrapContentInBox
+            cardHeader={
+              <PageTitleHeader title={getLocale('braveWalletTopNavMarket')} />
+            }
           >
             <StyledWrapper>
               {banners}
@@ -305,14 +303,10 @@ const CryptoView = (props: Props) => {
         </Route>
 
         <Route path={WalletRoutes.MarketSub} exact={true}>
-          <WalletPageWrapper
-            wrapContentInBox={true}
-          >
+          <WalletPageWrapper wrapContentInBox={true}>
             <StyledWrapper>
               {banners}
-              <PortfolioAsset
-                isShowingMarketData={true}
-              />
+              <PortfolioAsset isShowingMarketData={true} />
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>
@@ -321,6 +315,9 @@ const CryptoView = (props: Props) => {
         <Route path={WalletRoutes.Activity} exact={true}>
           <WalletPageWrapper
             wrapContentInBox={true}
+            cardHeader={
+              <PageTitleHeader title={getLocale('braveWalletActivity')} />
+            }
           >
             <StyledWrapper>
               {banners}
@@ -333,17 +330,20 @@ const CryptoView = (props: Props) => {
         <Route
           path={WalletRoutes.LocalIpfsNode}
           exact={true}
-          render={(props) => isNftPinningFeatureEnabled
-            ? <WalletPageWrapper
-              noPadding={true}
-              hideNav={true}
-              hideHeader={true}
-            >
-              <StyledWrapper>
-                <LocalIpfsNodeScreen onClose={onClose} {...props} />
-              </StyledWrapper>
-            </WalletPageWrapper>
-            : <Redirect to={WalletRoutes.PortfolioAssets} />
+          render={(props) =>
+            isNftPinningFeatureEnabled ? (
+              <WalletPageWrapper
+                noPadding={true}
+                hideNav={true}
+                hideHeader={true}
+              >
+                <StyledWrapper>
+                  <LocalIpfsNodeScreen onClose={onClose} {...props} />
+                </StyledWrapper>
+              </WalletPageWrapper>
+            ) : (
+              <Redirect to={WalletRoutes.PortfolioAssets} />
+            )
           }
         />
 
@@ -351,35 +351,34 @@ const CryptoView = (props: Props) => {
         <Route
           path={WalletRoutes.InspectNfts}
           exact={true}
-          render={(props) => isNftPinningFeatureEnabled
-            ? <WalletPageWrapper
-              noPadding={true}
-              hideNav={true}
-              hideHeader={true}
-            >
-              <StyledWrapper>
-                <InspectNftsScreen
-                  onClose={onClose}
-                  onBack={onBack}
-                  {...props}
-                />
-              </StyledWrapper>
-            </WalletPageWrapper>
-
-            : <Redirect to={WalletRoutes.PortfolioAssets} />
+          render={(props) =>
+            isNftPinningFeatureEnabled ? (
+              <WalletPageWrapper
+                noPadding={true}
+                hideNav={true}
+                hideHeader={true}
+              >
+                <StyledWrapper>
+                  <InspectNftsScreen
+                    onClose={onClose}
+                    onBack={onBack}
+                    {...props}
+                  />
+                </StyledWrapper>
+              </WalletPageWrapper>
+            ) : (
+              <Redirect to={WalletRoutes.PortfolioAssets} />
+            )
           }
         />
 
         <Redirect to={sessionRoute || WalletRoutes.PortfolioAssets} />
-
       </Switch>
 
       {/* modals */}
       <Switch>
         <Route path={WalletRoutes.AddAssetModal} exact>
-          <EditVisibleAssetsModal
-            onClose={hideVisibleAssetsModal}
-          />
+          <EditVisibleAssetsModal onClose={hideVisibleAssetsModal} />
         </Route>
 
         <Route path={WalletRoutes.AddAccountModal}>
@@ -387,13 +386,9 @@ const CryptoView = (props: Props) => {
         </Route>
       </Switch>
 
-      {accountToRemove !== undefined &&
-        <ConfirmPasswordModal />
-      }
+      {accountToRemove !== undefined && <ConfirmPasswordModal />}
 
-      {showAccountModal && selectedAccount &&
-        <AccountSettingsModal />
-      }
+      {showAccountModal && selectedAccount && <AccountSettingsModal />}
     </>
   )
 }

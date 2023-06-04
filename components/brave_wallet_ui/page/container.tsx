@@ -9,6 +9,7 @@ import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-d
 
 // utils
 import { getWalletLocationTitle } from '../utils/string-utils'
+import { getLocale } from '../../common/locale'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
@@ -47,6 +48,7 @@ import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import {
   WalletPageWrapper
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { PageTitleHeader } from '../components/desktop/card-headers/page-title-header'
 
 export const Container = () => {
   // routing
@@ -75,6 +77,8 @@ export const Container = () => {
   // state
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
   const [inputValue, setInputValue] = React.useState<string>('')
+  const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
+  const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
 
   // methods
   const onToggleShowRestore = React.useCallback(() => {
@@ -115,6 +119,28 @@ export const Container = () => {
   const onOpenWalletSettings = React.useCallback(() => {
     dispatch(WalletPageActions.openWalletSettings())
   }, [])
+
+  const handleBuyScreenBack = React.useCallback(() => {
+    if (!showBuyOptions && history.length) {
+      return history.goBack()
+    }
+
+    if (showBuyOptions) {
+      // go back to asset selection
+      setShowBuyOptions(false)
+    }
+  }, [showBuyOptions, history])
+
+  const handleDepositScreenBack = React.useCallback(() => {
+    if (!showDepositAddress && history.length) {
+      return history.goBack()
+    }
+
+    if (showDepositAddress) {
+      // go back to asset selection
+      setShowDepositAddress(false)
+    }
+  }, [showDepositAddress, history])
 
   // computed
   const walletNotYetCreated = (!isWalletCreated || setupStillInProgress)
@@ -261,8 +287,18 @@ export const Container = () => {
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={456}
+                  cardHeader={
+                    <PageTitleHeader
+                      title={getLocale('braveWalletBuy')}
+                      showBackButton={showBuyOptions}
+                      onBack={handleBuyScreenBack}
+                    />
+                  }
                 >
-                  <FundWalletScreen />
+                  <FundWalletScreen
+                    showBuyOptions={showBuyOptions}
+                    onShowBuyOptions={setShowBuyOptions}
+                  />
                 </WalletPageWrapper>
               </Route>
             }
@@ -272,8 +308,18 @@ export const Container = () => {
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={456}
+                  cardHeader={
+                    <PageTitleHeader
+                      title={getLocale('braveWalletDepositCryptoButton')}
+                      showBackButton={showDepositAddress}
+                      onBack={handleDepositScreenBack}
+                    />
+                  }
                 >
-                  <DepositFundsScreen />
+                  <DepositFundsScreen
+                    showDepositAddress={showDepositAddress}
+                    onShowDepositAddress={setShowDepositAddress}
+                  />
                 </WalletPageWrapper>
               </Route>
             }
@@ -283,6 +329,9 @@ export const Container = () => {
                 <WalletPageWrapper
                   hideHeader={true}
                   hideBackground={true}
+                  cardHeader={
+                    <PageTitleHeader title={'braveWalletSwap'} />
+                  }
                 >
                   <Swap />
                 </WalletPageWrapper>
