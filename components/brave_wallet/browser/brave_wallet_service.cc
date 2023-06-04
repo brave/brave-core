@@ -181,8 +181,7 @@ BraveWalletService::BraveWalletService(
                                                   keyring_service,
                                                   profile_prefs)),
       eth_allowance_manager_(
-          std::make_unique<EthAllowanceManager>(this,
-                                                json_rpc_service,
+          std::make_unique<EthAllowanceManager>(json_rpc_service,
                                                 keyring_service,
                                                 profile_prefs)),
       weak_ptr_factory_(this) {

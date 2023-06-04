@@ -12,7 +12,6 @@
 #include <tuple>
 #include <vector>
 
-#include "base/barrier_callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -24,12 +23,10 @@ namespace brave_wallet {
 
 class JsonRpcService;
 class KeyringService;
-class BraveWalletService;
 
 class EthAllowanceManager {
  public:
-  EthAllowanceManager(BraveWalletService* wallet_service,
-                      JsonRpcService* json_rpc_service,
+  EthAllowanceManager(JsonRpcService* json_rpc_service,
                       KeyringService* keyring_service,
                       PrefService* prefs);
   EthAllowanceManager(const EthAllowanceManager&) = delete;
@@ -80,36 +77,42 @@ class EthAllowanceManager {
   void LoadCachedAllowances(
       const std::string& chain_id,
       const std::string& hex_account_address,
-      std::map<std::string, std::tuple<uint256_t, mojom::AllowanceInfoPtr>>&
-          allowances_map);
-  using EthAllowanceCollection =
-      base::flat_map<std::string,
-                     std::tuple<brave_wallet::uint256_t,
-                                std::vector<mojom::AllowanceInfoPtr>>>;
+      uint256_t& block_number,
+      std::map<std::string, mojom::AllowanceInfoPtr>& allowance_map);
   struct EthAllowanceTask {
-    explicit EthAllowanceTask(const int& taskid);
+    explicit EthAllowanceTask(const int& taskid,
+                              const std::string& chain_id,
+                              const std::string& account_address);
     EthAllowanceTask(const EthAllowanceTask&) = delete;
     EthAllowanceTask& operator=(const EthAllowanceTask&) = delete;
     EthAllowanceTask(const EthAllowanceTask&&) = delete;
     EthAllowanceTask& operator=(const EthAllowanceTask&&) = delete;
     ~EthAllowanceTask();
 
-    void SetResults(const std::string& chain_id,
-                    const uint256_t& max_block_number,
+    void SetResults(const uint256_t& latest_block_number,
                     std::vector<mojom::AllowanceInfoPtr> alwns);
     void MarkComplete();
     int task_id;
-    EthAllowanceCollection allowances;
-    bool is_completed{false};
+    std::vector<mojom::AllowanceInfoPtr> allowances_;
+    std::string account_address_;
+    brave_wallet::uint256_t latest_block_number_{0};
+    std::string chain_id_;
+    bool is_completed_{false};
   };
+  void OnGetCurrentBlock(const std::string& chain_id,
+                         base::Value::List contract_addresses,
+                         const std::vector<std::string>& account_addresses,
+                         uint256_t block_num,
+                         mojom::ProviderError error,
+                         const std::string& error_message);
   bool IsAllTasksCompleted() const;
   void MergeAllResultsAnCallBack();
   void OnDiscoverEthAllowancesCompleted(
-      std::vector<mojom::AllowanceInfoPtr> result);
+      const std::vector<mojom::AllowanceInfoPtr>& result);
 
-  std::map<int, std::unique_ptr<EthAllowanceTask>> tasks_;
-  std::vector<ResultCallback> discover_eth_allowance_callback_;
-  raw_ptr<BraveWalletService> wallet_service_;
+  int get_block_tasks_{0};
+  std::map<int, std::unique_ptr<EthAllowanceTask>> allowance_discovery_tasks_;
+  std::vector<ResultCallback> discover_eth_allowance_callbacks_;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<KeyringService> keyring_service_;
   raw_ptr<PrefService> prefs_;
