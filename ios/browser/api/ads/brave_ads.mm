@@ -80,7 +80,7 @@ static NSString* const kLegacyAdsSubdivisionTargetingCodePrefKey =
 static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
     @"BATAutoDetectedAdsSubdivisionTargetingCodePrefKey";
 
-static NSString* const kAdsEnabledPrefKey =
+static NSString* const kEnabledPrefKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kEnabled);
 static NSString* const kNumberOfAdsPerHourKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kMaximumNotificationAdsPerHour);
@@ -329,12 +329,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 #pragma mark - Configuration
 
 - (BOOL)isEnabled {
-  return [self.prefs[kAdsEnabledPrefKey] boolValue];
+  return [self.prefs[kEnabledPrefKey] boolValue];
 }
 
 - (void)setEnabled:(BOOL)enabled {
-  self.prefs[kAdsEnabledPrefKey] = @(enabled);
-  [self savePref:kAdsEnabledPrefKey];
+  self.prefs[kEnabledPrefKey] = @(enabled);
+  [self savePref:kEnabledPrefKey];
 }
 
 - (NSInteger)numberOfAllowableAdsPerHour {
@@ -402,7 +402,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)migratePrefs {
   if ([self.prefs objectForKey:kLegacyAdsEnabledPrefKey]) {
-    self.prefs[kAdsEnabledPrefKey] = self.prefs[kLegacyAdsEnabledPrefKey];
+    self.prefs[kEnabledPrefKey] = self.prefs[kLegacyAdsEnabledPrefKey];
     [self.prefs removeObjectForKey:kLegacyAdsEnabledPrefKey];
   }
 
