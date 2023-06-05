@@ -122,7 +122,6 @@ export const Send = (props: Props) => {
   const [setNetwork] = useSetNetworkMutation()
 
   // Refs
-  const ref = React.createRef<HTMLDivElement>()
   const checksumInfoModalRef = React.useRef<HTMLDivElement>(null)
 
   // State
@@ -385,7 +384,7 @@ export const Send = (props: Props) => {
           <PageTitleHeader title={getLocale('braveWalletSend')}/>
         }
       >
-        <SendContainer ref={ref}>
+        <SendContainer>
           <Row rowWidth='full' marginBottom={16}>
             <SelectSendOptionButton
               selectedSendOption={selectedSendOption}
