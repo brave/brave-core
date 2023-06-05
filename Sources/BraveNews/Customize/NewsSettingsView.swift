@@ -174,7 +174,7 @@ public struct NewsSettingsView: View {
         ChannelListContainerView(dataSource: dataSource)
       } label: {
         DestinationLabel(
-          image: Image(braveSystemName: "leo.newspaper"),
+          image: Image(braveSystemName: "leo.product.brave-news"),
           title: Strings.BraveNews.channelsButtonTitle,
           subtitle: Strings.BraveNews.channelsButtonSubtitle
         )

@@ -21,7 +21,7 @@ class ReaderModeBarView: UIView {
   }
 
   private let settingsButton = UIButton(type: .system).then {
-    $0.setImage(UIImage(braveSystemNamed: "leo.configuration"), for: .normal)
+    $0.setImage(UIImage(braveSystemNamed: "leo.tune"), for: .normal)
     $0.tintColor = .braveLabel
     $0.accessibilityIdentifier = "ReaderModeBarView.settingsButton"
   }

@@ -36,7 +36,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   }
 
   private lazy var importExportButton: UIBarButtonItem? = UIBarButtonItem().then {
-    $0.image = UIImage(braveSystemNamed: "leo.share.browser")
+    $0.image = UIImage(braveSystemNamed: "leo.share.macos")
     $0.style = .plain
     $0.target = self
     $0.action = #selector(importExportAction(_:))

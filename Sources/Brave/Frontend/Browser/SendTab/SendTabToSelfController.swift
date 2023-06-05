@@ -185,7 +185,7 @@ extension SendTabToSelfContentController {
       
       switch device.deviceType {
       case .mobile:
-        deviceTypeImage = UIImage(braveSystemNamed: "leo.smartphone.tablet")
+        deviceTypeImage = UIImage(braveSystemNamed: "leo.smartphone.tablet-portrait")
       case .PC:
         deviceTypeImage = UIImage(braveSystemNamed: "leo.laptop")
       default:

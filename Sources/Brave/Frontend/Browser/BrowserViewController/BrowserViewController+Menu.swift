@@ -257,7 +257,7 @@ extension BrowserViewController {
             }
             .animation(.default, value: playlistItemAdded)
           }
-          MenuItemButton(icon: Image(braveSystemName: "leo.share.browser"), title: Strings.shareWithMenuItem) {
+          MenuItemButton(icon: Image(braveSystemName: "leo.share.macos"), title: Strings.shareWithMenuItem) {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
           }
