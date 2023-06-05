@@ -223,6 +223,10 @@ export function isSolanaTransaction(
   )
 }
 
+export function isEthereumTransaction (tx?: TransactionInfo) {
+  return tx?.txDataUnion.ethTxData !== undefined || tx?.txDataUnion.ethTxData1559 !== undefined
+}
+
 export function shouldReportTransactionP3A({
   txInfo
 }: {
@@ -327,36 +331,15 @@ export const getTransactionToAddress = (
     return getToAddressesFromSolanaTransaction(tx)[0] ?? ''
   }
 
-  if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
-    const [recipient] = tx.txArgs // (address recipient, uint256 amount)
-    return recipient
-  }
-
-  if (
-    tx.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
-    tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
-  ) {
-    const [, toAddress] = tx.txArgs // (address owner, address to, uint256 tokenId)
-    return toAddress
-  }
-
-  if (
-    tx.txType === BraveWallet.TransactionType.ERC20Approve ||
-    tx.txType === BraveWallet.TransactionType.ETHSwap
-  ) {
-    return tx.txDataUnion?.ethTxData1559?.baseData.to || ''
+  if (isEthereumTransaction(tx) || isFilecoinTransaction(tx)) {
+    return tx.finalRecipient || ''
   }
 
   if (isSolanaTransaction(tx)) {
     return tx.txDataUnion.solanaTxData?.toWalletAddress ?? ''
   }
 
-  if (isFilecoinTransaction(tx)) {
-    return tx.txDataUnion.filTxData.to
-  }
-
-  // ETHSend & unknown
-  return tx.txDataUnion.ethTxData1559?.baseData.to || ''
+  return ''
 }
 
 export function getTransactionInteractionAddress(

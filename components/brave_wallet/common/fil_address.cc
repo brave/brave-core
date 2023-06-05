@@ -119,6 +119,22 @@ FilAddress FilAddress::FromAddress(const std::string& address) {
   return FilAddress::FromPayload(payload, protocol.value(), network);
 }
 
+// static
+FilAddress FilAddress::FromBytes(const std::string& chain_id,
+                                 const std::vector<uint8_t>& bytes) {
+  if (!IsValidNetwork(chain_id)) {
+    return FilAddress();
+  }
+  if (bytes.empty()) {
+    return FilAddress();
+  }
+  mojom::FilecoinAddressProtocol protocol =
+      static_cast<mojom::FilecoinAddressProtocol>(bytes.at(0));
+  std::vector<uint8_t> payload(std::next(bytes.begin(), 1), bytes.end());
+
+  return FilAddress::FromPayload(payload, protocol, chain_id);
+}
+
 // Creates FilAddress from SECP256K uncompressed public key
 // with specified protocol and network.
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
@@ -205,6 +221,13 @@ std::string FilAddress::EncodeAsString() const {
       base32::Base32Encode(input, base32::Base32EncodePolicy::OMIT_PADDING));
   return network_ + std::to_string(static_cast<int>(protocol_)) +
          encoded_output;
+}
+
+std::vector<uint8_t> FilAddress::GetBytes() {
+  std::vector<uint8_t> result;
+  result.push_back(static_cast<int>(protocol_));
+  result.insert(result.end(), bytes_.begin(), bytes_.end());
+  return result;
 }
 
 }  // namespace brave_wallet

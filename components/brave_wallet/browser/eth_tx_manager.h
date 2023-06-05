@@ -93,7 +93,11 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       mojom::EthTxManagerProxy::ProcessHardwareSignatureCallback;
   using GetGasEstimation1559Callback =
       mojom::EthTxManagerProxy::GetGasEstimation1559Callback;
+  using MakeFilForwarderDataCallback =
+      mojom::EthTxManagerProxy::MakeFilForwarderTransferDataCallback;
 
+  void MakeFilForwarderTransferData(const std::vector<uint8_t>& destination,
+                                    MakeFilForwarderDataCallback callback);
   void MakeERC20TransferData(const std::string& to_address,
                              const std::string& amount,
                              MakeERC20TransferDataCallback);

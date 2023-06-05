@@ -29,7 +29,9 @@ bool IsValidHexString(const std::string& hex_input);
 // Pads a hex encoded parameter to 32-bytes
 // i.e. 64 hex characters.
 // Input must be prefixed with 0x
-bool PadHexEncodedParameter(const std::string& hex_input, std::string* out);
+bool PadHexEncodedParameter(const std::string& hex_input,
+                            std::string* out,
+                            bool left_padded = true);
 std::string PadHexEncodedParameter(const std::string& hex_input);
 
 // Takes 2 inputs prefixed by 0x and combines them into an output with a single

@@ -42,7 +42,7 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.ToJavaTime()),
       base::Milliseconds(confirmed_time_.ToJavaTime()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_,
-      chain_id_);
+      chain_id_, absl::nullopt);
 }
 
 }  // namespace brave_wallet

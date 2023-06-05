@@ -16,6 +16,14 @@
 
 namespace brave_wallet {
 
+namespace filforwarder {
+
+// Allows to forward funds from FEVM account fo FVM account
+// https://github.com/lotus-web3/FilForwarder/blob/main/contracts/FilForwarder.sol
+bool Forward(const std::vector<uint8_t>& destination, std::string* data);
+
+}  // namespace filforwarder
+
 namespace erc20 {
 
 // Allows transferring ERC20 tokens

@@ -55,7 +55,9 @@ bool IsValidHexString(const std::string& hex_input) {
 
 // Pads a hex encoded parameter to 32-bytes
 // i.e. 64 hex characters.
-bool PadHexEncodedParameter(const std::string& hex_input, std::string* out) {
+bool PadHexEncodedParameter(const std::string& hex_input,
+                            std::string* out,
+                            bool left_padded) {
   if (!out) {
     return false;
   }
@@ -70,7 +72,11 @@ bool PadHexEncodedParameter(const std::string& hex_input, std::string* out) {
   size_t padding_len = 64 - hex_substr.length();
   std::string padding(padding_len, '0');
 
-  *out = "0x" + padding + hex_substr;
+  if (left_padded) {
+    *out = "0x" + padding + hex_substr;
+  } else {
+    *out = "0x" + hex_substr + padding;
+  }
   return true;
 }
 

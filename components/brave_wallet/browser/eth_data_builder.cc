@@ -59,6 +59,37 @@ absl::optional<std::string> ChainIdToVersion(const std::string& symbol,
 
 }  // namespace
 
+namespace filforwarder {
+
+bool Forward(const std::vector<uint8_t>& destination, std::string* data) {
+  auto function_hash = GetFunctionHash("forward(bytes)");
+  size_t destination_padding = 32;
+  size_t destination_size = destination.size();
+  std::string padded_padding;
+  std::string padded_dest_size;
+
+  if (!PadHexEncodedParameter(Uint256ValueToHex(destination_padding),
+                              &padded_padding)) {
+    return false;
+  }
+
+  if (!PadHexEncodedParameter(Uint256ValueToHex(destination_size),
+                              &padded_dest_size)) {
+    return false;
+  }
+
+  std::string padded_destination;
+  auto dest = brave_wallet::ToHex(destination);
+  if (!PadHexEncodedParameter(dest, &padded_destination, false)) {
+    return false;
+  }
+  std::vector<std::string> hex_strings = {function_hash, padded_padding,
+                                          padded_dest_size, padded_destination};
+  return ConcatHexStrings(hex_strings, data);
+}
+
+}  // namespace filforwarder
+
 namespace erc20 {
 
 bool Transfer(const std::string& to_address,
