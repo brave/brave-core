@@ -600,13 +600,10 @@ if (is_mac) {
 
   bundle_data("brave_vpn_helper") {
     sources = [ "$root_out_dir/BraveVpnHelper.app" ]
-    outputs = [
-      "{{bundle_contents_dir}}/Helpers/{{source_file_part}}",
-    ]
+    outputs = [ "{{bundle_contents_dir}}/Helpers/{{source_file_part}}" ]
 
     public_deps = [ "//brave/components/brave_vpn/browser/connection/ikev2/mac/brave_vpn_ras_helper" ]
   }
-
 
   brave_tweak_info_plist("brave_helper_plist") {
     info_plist = "$root_gen_dir/chrome/chrome_helper_plist_tweaked.plist"
