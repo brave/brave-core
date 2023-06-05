@@ -13,6 +13,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -149,6 +150,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsServiceFactory::GetInstance();
 #endif
+  brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   brave_wallet::BraveWalletAutoPinServiceFactory::GetInstance();
