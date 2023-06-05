@@ -143,7 +143,6 @@ import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
-import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
@@ -931,8 +930,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             checkForYandexSE();
         }
 
-        //set bg ads to off for existing and new installations
-        setBgBraveAdsDefaultOff();
         migrateBgPlaybackToFeature();
 
         Context app = ContextUtils.getApplicationContext();
@@ -1781,22 +1778,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    /**
-     * Disable background ads on Android. Issue #8641.
-     */
-    private void setBgBraveAdsDefaultOff() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        boolean exists = sharedPreferences.contains(
-                BraveRewardsPreferences.PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET);
-        if (!exists) {
-            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(BraveRewardsPreferences.PREF_ADS_SWITCH, false);
-            sharedPreferencesEditor.putBoolean(
-                    BraveRewardsPreferences.PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET, true);
-            sharedPreferencesEditor.apply();
-        }
     }
 
     @Override

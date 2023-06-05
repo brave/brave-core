@@ -984,7 +984,6 @@ brave_java_resources = [
   "java/res/xml/brave_playlist_save_media_preference.xml",
   "java/res/xml/brave_privacy_preferences.xml",
   "java/res/xml/brave_rewards_debug_preferences.xml",
-  "java/res/xml/brave_rewards_preferences.xml",
   "java/res/xml/brave_search_engines_preferences.xml",
   "java/res/xml/brave_solana_preferences.xml",
   "java/res/xml/brave_stats_preferences.xml",

@@ -86,7 +86,6 @@ public class BraveMainPreferencesBase
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
-    private static final String PREF_BRAVE_REWARDS = "brave_rewards";
     private static final String PREF_BRAVE_WALLET = "brave_wallet";
     private static final String PREF_BRAVE_VPN = "brave_vpn";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
@@ -205,12 +204,6 @@ public class BraveMainPreferencesBase
         // rearanges programmatically the order for the prefs from Brave and Chromium
         rearrangePreferenceOrders();
 
-        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (braveRewardsNativeWorker == null || !braveRewardsNativeWorker.IsSupported()
-                || BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
-            removePreferenceIfPresent(PREF_BRAVE_REWARDS);
-        }
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M 
             || (NTPUtil.isReferralEnabled() && NTPBackgroundImagesBridge.enableSponsoredImages())) {
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
@@ -273,7 +266,8 @@ public class BraveMainPreferencesBase
         findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
 
         findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
-        findPreference(PREF_BRAVE_REWARDS).setOrder(++firstSectionOrder);
+        findPreference(PREF_BRAVE_NEWS).setOrder(++firstSectionOrder);
+        findPreference(PREF_BRAVE_NEWS_V2).setOrder(++firstSectionOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
             findPreference(PREF_BRAVE_WALLET).setOrder(++firstSectionOrder);
