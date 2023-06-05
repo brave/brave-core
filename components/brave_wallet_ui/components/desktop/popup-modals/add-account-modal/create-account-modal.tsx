@@ -107,7 +107,7 @@ export const CreateAccountModal = () => {
     if (!selectedAccountType) {
       return
     }
-    if (!targetKeyringId) {
+    if (targetKeyringId === undefined) {
       return
     }
 
