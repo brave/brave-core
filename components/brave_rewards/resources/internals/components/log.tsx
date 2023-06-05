@@ -36,6 +36,10 @@ export class Log extends React.Component<Props, State> {
     }
   }
 
+  componentDidMount () {
+    this.props.onGet()
+  }
+
   componentDidUpdate (prevProps: Props) {
     if (this.props.fullLog.length !== 0) {
       this.downloadFile(this.props.fullLog)
