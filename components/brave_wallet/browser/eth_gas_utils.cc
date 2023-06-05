@@ -16,7 +16,18 @@ namespace brave_wallet {
 
 namespace eth {
 
-absl::optional<uint256_t> ScaleBaseFeePerGas(const std::string value) {
+// Scale the base fee by 33% to get a suggested value. This is done to account
+// for sufficient fluctionations in the base fee, so that the transaction will
+// not get stuck.
+//
+// A higher scaling factor increases the likelihood of confirmation within the
+// next few blocks, but also makes the transaction appear more expensive to
+// the user.
+//
+// Note that base fee is not part of the RLP. Any excees base fee is refunded,
+// so the user will not be charged more than the base fee of the block that
+// includes the transaction.
+absl::optional<uint256_t> ScaleBaseFeePerGas(const std::string& value) {
   uint256_t value_uint256;
   if (!HexValueToUint256(value, &value_uint256)) {
     return absl::nullopt;
@@ -32,15 +43,11 @@ absl::optional<uint256_t> ScaleBaseFeePerGas(const std::string value) {
   double value_double =
       static_cast<double>(static_cast<uint64_t>(value_uint256));
 
-  // The base fee is not part of the RLP. We only specify priority fee and max
-  // fee. So the excess will be refunded and it will be at most 33% It's best
-  // to assume a larger value here so there's a better chance it will get in
-  // the next block and if it's too high it will go back to the user.
   value_double *= 1.33;
   value_double = std::floor(value_double);
 
   // Compiler crashes without these 2 casts :(
-  return (uint256_t)(uint64_t)value_double;
+  return static_cast<uint256_t>(static_cast<uint64_t>(value_double));
 }
 
 // Assumes there are 3 reward percentiles per element
