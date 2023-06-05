@@ -23,6 +23,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureUtil;
+import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -231,6 +232,15 @@ public class BraveMainPreferencesBase
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
         setBgPlaybackPreference();
+        setCustomTabPreference();
+    }
+
+    private void setCustomTabPreference() {
+        Preference preference = findPreference(PREF_USE_CUSTOM_TABS);
+        if (preference instanceof ChromeSwitchPreference) {
+            ((ChromeSwitchPreference) preference)
+                    .setChecked(BraveLaunchIntentDispatcher.useCustomTabs());
+        }
     }
 
     private void setBgPlaybackPreference() {
