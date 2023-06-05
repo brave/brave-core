@@ -30,7 +30,8 @@ class VerticalTabStripScrollContentsView;
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View,
                                    public TabStripModelObserver,
-                                   public views::ResizeAreaDelegate {
+                                   public views::ResizeAreaDelegate,
+                                   public views::AnimationDelegateViews {
  public:
   METADATA_HEADER(VerticalTabStripRegionView);
 
@@ -105,6 +106,10 @@ class VerticalTabStripRegionView : public views::View,
   // views::ResizeAreaDelegate
   void OnResize(int resize_amount, bool done_resizing) override;
 
+  // views::AnimationDelegateViews:
+  void AnimationProgressed(const gfx::Animation* animation) override;
+  void AnimationEnded(const gfx::Animation* animation) override;
+
  private:
   class HeaderView;
 
@@ -127,8 +132,12 @@ class VerticalTabStripRegionView : public views::View,
 
   void ScheduleFloatingModeTimer();
 
-  gfx::Size GetPreferredSizeForState(State state, bool include_border) const;
-  int GetPreferredWidthForState(State state, bool include_border) const;
+  gfx::Size GetPreferredSizeForState(State state,
+                                     bool include_border,
+                                     bool ignore_animation) const;
+  int GetPreferredWidthForState(State state,
+                                bool include_border,
+                                bool ignore_animation) const;
 
   // Returns valid object only when the related flag is enabled.
   TabStripScrollContainer* GetTabStripScrollContainer();
@@ -175,6 +184,8 @@ class VerticalTabStripRegionView : public views::View,
 
   bool layout_dirty_ = false;
   gfx::Size last_size_;
+
+  gfx::SlideAnimation width_animation_{this};
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };

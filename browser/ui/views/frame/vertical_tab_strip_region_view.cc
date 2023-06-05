@@ -527,7 +527,8 @@ END_METADATA
 VerticalTabStripRegionView::VerticalTabStripRegionView(
     BrowserView* browser_view,
     TabStripRegionView* region_view)
-    : browser_(browser_view->browser()),
+    : views::AnimationDelegateViews(this),
+      browser_(browser_view->browser()),
       original_region_view_(region_view),
       tab_style_(TabStyle::Get()) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
@@ -536,6 +537,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   browser_->tab_strip_model()->AddObserver(this);
 
   SetNotifyEnterExitOnChild(true);
+
+  // The default state is kExpanded, so reset animation state to 1.0.
+  width_animation_.Reset(1.0);
 
   if (base::FeatureList::IsEnabled(
           tabs::features::kBraveVerticalTabsStickyPinnedTabs)) {
@@ -656,6 +660,11 @@ void VerticalTabStripRegionView::SetState(State state) {
 
   resize_area_->SetEnabled(state == State::kExpanded);
 
+  if (gfx::Animation::ShouldRenderRichAnimation()) {
+    state_ == State::kCollapsed ? width_animation_.Hide()
+                                : width_animation_.Show();
+  }
+
   PreferredSizeChanged();
 }
 
@@ -695,20 +704,24 @@ gfx::Vector2d VerticalTabStripRegionView::GetOffsetForDraggedTab() const {
 }
 
 int VerticalTabStripRegionView::GetAvailableWidthForTabContainer() {
-  return GetPreferredWidthForState(state_, /*include_border=*/false);
+  return GetPreferredWidthForState(state_, /*include_border=*/false,
+                                   /*ignore_animation=*/false);
 }
 
 gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
-  return GetPreferredSizeForState(state_, /*include_border=*/true);
+  return GetPreferredSizeForState(state_, /*include_border=*/true,
+                                  /*ignore_animation=*/false);
 }
 
 gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
   if (state_ == State::kFloating) {
     return GetPreferredSizeForState(State::kCollapsed,
-                                    /* include_border=*/true);
+                                    /*include_border=*/true,
+                                    /*ignore_animation=*/true);
   }
 
-  return GetPreferredSizeForState(state_, /* include_border= */ true);
+  return GetPreferredSizeForState(state_, /*include_border=*/true,
+                                  /*ignore_animation=*/true);
 }
 
 void VerticalTabStripRegionView::Layout() {
@@ -968,7 +981,22 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
   // changed to the normal cursor. Reset it resize cursor.
   GetWidget()->SetCursor(ui::Cursor(ui::mojom::CursorType::kEastWestResize));
 
+  if (width_animation_.is_animating()) {
+    width_animation_.Stop();
+    width_animation_.Reset(state_ == State::kCollapsed ? 0 : 1);
+  }
+
   expanded_width_.SetValue(dest_width);
+  PreferredSizeChanged();
+}
+
+void VerticalTabStripRegionView::AnimationProgressed(
+    const gfx::Animation* animation) {
+  PreferredSizeChanged();
+}
+
+void VerticalTabStripRegionView::AnimationEnded(
+    const gfx::Animation* animation) {
   PreferredSizeChanged();
 }
 
@@ -1021,7 +1049,8 @@ void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
 
 gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     State state,
-    bool include_border) const {
+    bool include_border,
+    bool ignore_animation) const {
   if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
     return {};
   }
@@ -1029,22 +1058,37 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
   if (IsTabFullscreen())
     return {};
 
-  return {GetPreferredWidthForState(state, include_border),
+  return {GetPreferredWidthForState(state, include_border, ignore_animation),
           View::CalculatePreferredSize().height()};
 }
 
 int VerticalTabStripRegionView::GetPreferredWidthForState(
     State state,
-    bool include_border) const {
-  if (state == State::kExpanded || state == State::kFloating) {
+    bool include_border,
+    bool ignore_animation) const {
+  auto calculate_expanded_width = [&]() {
     return *expanded_width_ + (include_border ? GetInsets().width() : 0);
+  };
+
+  auto calculate_collapsed_width = [&]() {
+    return tabs::kVerticalTabMinWidth +
+           tabs::kMarginForVerticalTabContainers * 2 +
+           (include_border ? GetInsets().width() : 0);
+  };
+
+  if (!ignore_animation && width_animation_.is_animating()) {
+    return gfx::Tween::IntValueBetween(width_animation_.GetCurrentValue(),
+                                       calculate_collapsed_width(),
+                                       calculate_expanded_width());
+  }
+
+  if (state == State::kExpanded || state == State::kFloating) {
+    return calculate_expanded_width();
   }
 
   CHECK_EQ(state, State::kCollapsed) << "If a new state was added, "
                                      << __FUNCTION__ << " should be revisited.";
-  return tabs::kVerticalTabMinWidth +
-         tabs::kMarginForVerticalTabContainers * 2 +
-         (include_border ? GetInsets().width() : 0);
+  return calculate_collapsed_width();
 }
 
 TabStripScrollContainer*
