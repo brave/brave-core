@@ -268,6 +268,19 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
   var keyringStore: KeyringStore
   @ObservedObject var cryptoStore: CryptoStore
   var toolbarDismissContent: DismissContent
+  @ToolbarContentBuilder
+  // This toolbar content is for `PendingRequestView` which is presented on top of full screen wallet
+  private var pendingRequestToolbarDismissContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .cancellationAction) {
+      Button(action: {
+        cryptoStore.isPresentingPendingRequest = false
+      }) {
+        Image("wallet-dismiss", bundle: .module)
+          .renderingMode(.template)
+          .foregroundColor(Color(.braveBlurpleTint))
+      }
+    }
+  }
 
   var body: some View {
     UIKitNavigationView {
@@ -311,7 +324,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
             RequestContainerView(
               keyringStore: keyringStore,
               cryptoStore: cryptoStore,
-              toolbarDismissContent: toolbarDismissContent,
+              toolbarDismissContent: pendingRequestToolbarDismissContent,
               onDismiss: {
                 cryptoStore.isPresentingPendingRequest = false
               }
