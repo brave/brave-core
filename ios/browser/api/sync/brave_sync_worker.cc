@@ -439,7 +439,7 @@ bool BraveSyncWorker::CanSyncFeatureStart() {
     return false;
   }
 
-  return setup_service->CanSyncFeatureStart();
+  return setup_service->IsSyncFeatureEnabled();
 }
 
 bool BraveSyncWorker::IsSyncFeatureActive() {
