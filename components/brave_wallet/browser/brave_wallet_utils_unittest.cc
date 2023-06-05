@@ -1428,4 +1428,39 @@ TEST(BraveWalletUtilsUnitTest, GetSupportedKeyrings) {
   }
 }
 
+TEST(BraveWalletUtilsUnitTest, MakeAccountId) {
+  auto id1 = MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                           mojom::AccountKind::kDerived,
+                           "0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+  EXPECT_EQ(id1->unique_key,
+            "60_0_0_0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+
+  // Same AccountId
+  EXPECT_EQ(id1->unique_key,
+            MakeAccountId(id1->coin, id1->keyring_id, id1->kind, id1->address)
+                ->unique_key);
+
+  // Coin differs.
+  EXPECT_NE(id1->unique_key,
+            MakeAccountId(mojom::CoinType::SOL, id1->keyring_id, id1->kind,
+                          id1->address)
+                ->unique_key);
+
+  // Keyring differs
+  EXPECT_NE(id1->unique_key, MakeAccountId(id1->coin, mojom::KeyringId::kSolana,
+                                           id1->kind, id1->address)
+                                 ->unique_key);
+
+  // Kind differs
+  EXPECT_NE(id1->unique_key,
+            MakeAccountId(id1->coin, id1->keyring_id,
+                          mojom::AccountKind::kImported, id1->address)
+                ->unique_key);
+
+  // Address differs
+  EXPECT_NE(id1->unique_key,
+            MakeAccountId(id1->coin, id1->keyring_id, id1->kind, "0x123")
+                ->unique_key);
+}
+
 }  // namespace brave_wallet

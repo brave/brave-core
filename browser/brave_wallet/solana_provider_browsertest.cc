@@ -478,8 +478,8 @@ class SolanaProviderTest : public InProcessBrowserTest {
   void SetSelectedAccount(const std::string& address) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        mojom::AccountId::New(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
-                              mojom::AccountKind::kDerived, address),
+        MakeAccountId(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
+                      mojom::AccountKind::kDerived, address),
         base::BindLambdaForTesting([&run_loop](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();

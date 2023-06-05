@@ -85,13 +85,11 @@ class SolanaTransactionUnitTest : public testing::Test {
                                    mojom::kSolanaKeyringId, account_name);
   }
 
-  void SetSelectedAccount(const std::string& address) {
+  void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
     bool success = false;
     base::RunLoop run_loop;
     keyring_service()->SetSelectedAccount(
-        mojom::AccountId::New(mojom::CoinType::SOL, mojom::kSolanaKeyringId,
-                              mojom::AccountKind::kDerived, address),
-        base::BindLambdaForTesting([&](bool v) {
+        account_id.Clone(), base::BindLambdaForTesting([&](bool v) {
           success = v;
           run_loop.Quit();
         }));
@@ -99,7 +97,7 @@ class SolanaTransactionUnitTest : public testing::Test {
     ASSERT_TRUE(success);
     ASSERT_EQ(
         keyring_service()->GetSelectedAccount(mojom::CoinType::SOL).value(),
-        address);
+        account_id->address);
   }
 
  private:
@@ -120,8 +118,10 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
 
   ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2"));
-  SetSelectedAccount(kFromAccount);
+  auto acc2 = AddAccount(keyring_service(), "Account 2");
+  ASSERT_TRUE(acc2);
+  ASSERT_EQ(acc2->address, kFromAccount);
+  SetSelectedAccount(acc2->account_id);
 
   uint64_t last_valid_block_height = 3090;
 
@@ -790,8 +790,10 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
 
   ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2"));
-  SetSelectedAccount(kFromAccount);
+  auto acc2 = AddAccount(keyring_service(), "Account 2");
+  ASSERT_TRUE(acc2);
+  ASSERT_EQ(acc2->address, kFromAccount);
+  SetSelectedAccount(acc2->account_id);
 
   // Empty message is invalid
   std::vector<uint8_t> signature_bytes;

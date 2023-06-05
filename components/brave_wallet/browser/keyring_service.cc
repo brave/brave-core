@@ -194,8 +194,8 @@ mojom::AccountInfoPtr MakeAccountInfoForHardwareAccount(
     const std::string& device_id,
     mojom::KeyringId keyring_id) {
   return mojom::AccountInfo::New(
-      mojom::AccountId::New(GetCoinForKeyring(keyring_id), keyring_id,
-                            mojom::AccountKind::kHardware, address),
+      MakeAccountId(GetCoinForKeyring(keyring_id), keyring_id,
+                    mojom::AccountKind::kHardware, address),
       address, name,
       mojom::HardwareInfo::New(derivation_path, hardware_vendor, device_id));
 }
@@ -499,9 +499,9 @@ mojom::AccountInfoPtr MakeAccountInfoForDerivedAccount(
     const DerivedAccountInfo& derived_account_info,
     mojom::KeyringId keyring_id) {
   return mojom::AccountInfo::New(
-      mojom::AccountId::New(GetCoinForKeyring(keyring_id), keyring_id,
-                            mojom::AccountKind::kDerived,
-                            derived_account_info.account_address),
+      MakeAccountId(GetCoinForKeyring(keyring_id), keyring_id,
+                    mojom::AccountKind::kDerived,
+                    derived_account_info.account_address),
       derived_account_info.account_address, derived_account_info.account_name,
       nullptr);
 }
@@ -510,9 +510,9 @@ mojom::AccountInfoPtr MakeAccountInfoForImportedAccount(
     const ImportedAccountInfo& imported_account_info,
     mojom::KeyringId keyring_id) {
   return mojom::AccountInfo::New(
-      mojom::AccountId::New(GetCoinForKeyring(keyring_id), keyring_id,
-                            mojom::AccountKind::kImported,
-                            imported_account_info.account_address),
+      MakeAccountId(GetCoinForKeyring(keyring_id), keyring_id,
+                    mojom::AccountKind::kImported,
+                    imported_account_info.account_address),
       imported_account_info.account_address, imported_account_info.account_name,
       nullptr);
 }

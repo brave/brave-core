@@ -12,7 +12,8 @@ export const AllAccountsOption: WalletAccountType = {
     coin: 0,
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
-    address: 'all'
+    address: 'all',
+    uniqueKey: 'all'
   },
   id: 'all',
   name: getLocale('braveWalletAccountFilterAllAccounts'),
