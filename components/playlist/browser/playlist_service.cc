@@ -22,8 +22,6 @@
 #include "base/token.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_data_source.h"
-#include "brave/components/playlist/browser/playlist_service_observer.h"
-#include "brave/components/playlist/browser/playlist_types.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
 #include "brave/components/playlist/common/features.h"
@@ -85,7 +83,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
 PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
-  service_observers_.Clear();
+  observers_.Clear();
   download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
@@ -316,15 +314,10 @@ void PlaylistService::AddMediaFilesFromItems(
 
 void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
                                             const std::string& playlist_id) {
-  VLOG(2) << __func__ << ": params="
-          << PlaylistChangeParams::GetPlaylistChangeTypeAsString(
-                 playlist_event);
-  for (auto& service_observer : service_observers_) {
-    service_observer->OnEvent(playlist_event, playlist_id);
+  VLOG(2) << __func__ << ": params=" << playlist_event;
+  for (auto& observer : observers_) {
+    observer->OnEvent(playlist_event, playlist_id);
   }
-
-  for (PlaylistServiceObserver& obs : observers_)
-    obs.OnPlaylistStatusChanged({playlist_event, playlist_id});
 }
 
 void PlaylistService::NotifyMediaFilesUpdated(
@@ -337,12 +330,12 @@ void PlaylistService::NotifyMediaFilesUpdated(
   DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
            << " were updated: count =>" << items.size();
 
-  for (auto& service_observer : service_observers_) {
+  for (auto& observer : observers_) {
     std::vector<mojom::PlaylistItemPtr> cloned_items;
     base::ranges::transform(
         items, std::back_inserter(cloned_items),
         [](const auto& item_ptr) { return item_ptr->Clone(); });
-    service_observer->OnMediaFilesUpdated(url, std::move(cloned_items));
+    observer->OnMediaFilesUpdated(url, std::move(cloned_items));
   }
 }
 
@@ -585,7 +578,7 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemAdded, item->id);
-  for (auto& observer : service_observers_) {
+  for (auto& observer : observers_) {
     observer->OnItemCreated(item.Clone());
   }
 
@@ -704,7 +697,7 @@ void PlaylistService::ResetAll() {
   auto items = GetAllPlaylistItems();
   prefs_->ClearPref(kPlaylistItemsPref);
   for (const auto& item : items) {
-    for (auto& observer : service_observers_) {
+    for (auto& observer : observers_) {
       observer->OnItemDeleted(item->id);
     }
   }
@@ -830,7 +823,7 @@ void PlaylistService::DeletePlaylistItemData(const std::string& id) {
 
   RemovePlaylistItemValue(id);
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemDeleted, id);
-  for (auto& observer : service_observers_) {
+  for (auto& observer : observers_) {
     observer->OnItemDeleted(id);
   }
 
@@ -964,7 +957,7 @@ mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
 
 void PlaylistService::AddObserver(
     mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) {
-  service_observers_.Add(std::move(observer));
+  observers_.Add(std::move(observer));
 }
 
 void PlaylistService::OnMediaUpdatedFromContents(
@@ -982,14 +975,6 @@ void PlaylistService::OnMediaUpdatedFromContents(
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
-void PlaylistService::AddObserverForTest(PlaylistServiceObserver* observer) {
-  observers_.AddObserver(observer);
-}
-
-void PlaylistService::RemoveObserverForTest(PlaylistServiceObserver* observer) {
-  observers_.RemoveObserver(observer);
-}
-
 void PlaylistService::OnMediaFileDownloadProgressed(
     const mojom::PlaylistItemPtr& item,
     int64_t total_bytes,
@@ -1001,13 +986,7 @@ void PlaylistService::OnMediaFileDownloadProgressed(
           << percent_complete << " " << time_remaining;
 
   for (auto& observer : observers_) {
-    observer.OnMediaFileDownloadProgressed(item->id, total_bytes,
-                                           received_bytes, percent_complete,
-                                           time_remaining);
-  }
-
-  for (auto& service_observer : service_observers_) {
-    service_observer->OnMediaFileDownloadProgressed(
+    observer->OnMediaFileDownloadProgressed(
         item->id, total_bytes, received_bytes, percent_complete,
         base::TimeDeltaToValue(time_remaining).GetString());
   }

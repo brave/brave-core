@@ -20,7 +20,6 @@
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
-#include "brave/components/playlist/browser/playlist_types.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -50,7 +49,6 @@ class PrefService;
 
 namespace playlist {
 
-class PlaylistServiceObserver;
 class MediaDetectorComponentManager;
 
 // This class is key interface for playlist. Client will ask any playlist
@@ -216,9 +214,6 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
 
-  void AddObserverForTest(PlaylistServiceObserver* observer);
-  void RemoveObserverForTest(PlaylistServiceObserver* observer);
-
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
   void AddMediaFilesFromContentsToPlaylist(const std::string& playlist_id,
@@ -251,7 +246,8 @@ class PlaylistService : public KeyedService,
   void CleanUpOrphanedPlaylistItemDirs();
   void OnGetOrphanedPaths(const std::vector<base::FilePath> paths);
 
-  void NotifyPlaylistChanged(const PlaylistChangeParams& params);
+  // TODO(sko) Remove this version
+  // https://github.com/brave/brave-browser/issues/30735
   void NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
                              const std::string& playlist_id);
   void NotifyMediaFilesUpdated(const GURL& url,
@@ -336,9 +332,8 @@ class PlaylistService : public KeyedService,
   std::unique_ptr<Delegate> delegate_;
 
   const base::FilePath base_dir_;
-  base::ObserverList<PlaylistServiceObserver> observers_;
 
-  mojo::RemoteSet<mojom::PlaylistServiceObserver> service_observers_;
+  mojo::RemoteSet<mojom::PlaylistServiceObserver> observers_;
 
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;

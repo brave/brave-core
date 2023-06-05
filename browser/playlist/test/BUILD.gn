@@ -12,6 +12,8 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "mock_playlist_service_observer.cc",
+    "mock_playlist_service_observer.h",
     "playlist_download_request_manager_browsertests.cc",
     "playlist_render_frame_observer_browsertest.cc",
   ]
@@ -50,6 +52,8 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "mock_playlist_service_observer.cc",
+    "mock_playlist_service_observer.h",
     "playlist_p3a_unittest.cc",
     "playlist_service_unittest.cc",
   ]
