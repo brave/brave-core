@@ -805,6 +805,7 @@
       <part file="wallet_strings.grdp" />
       <part file="tor_strings.grdp" />
       <part file="brave_news_strings.grdp" />
+      <part file="commands.grdp" />
       <if expr="not is_android">
         <part file="speedreader_strings.grdp" />
         <part file="brave_shields_strings.grdp" />

@@ -35,6 +35,9 @@ EXCLUDE_COMMANDS = [
     # These commands target a selected tab (i.e. via Ctrl+Click)
     "_TARGET_",
 
+    # These commands are in a submenu, which we can't trigger
+    "_SUBMENU",
+
     # Requires a current url
     "IDC_OPEN_CURRENT_URL",
 
@@ -49,6 +52,8 @@ EXCLUDE_COMMANDS = [
     "IDC_VIRTUAL_CARD_MANUAL_FALLBACK",
     "IDC_BOOKMARK_BAR_TRACK_PRICE_FOR_SHOPPING_BOOKMARK",
     "IDC_BOOKMARK_BAR_UNTRACK_PRICE_FOR_SHOPPING_BOOKMARK",
+    "IDC_CHROME_MENU",
+    "IDC_LACROS_DATA_MIGRATION",
 
     # Crashes if speedreader doesn't work on page.
     "IDC_SPEEDREADER_ICON_ONCLICK",
@@ -71,6 +76,9 @@ EXCLUDE_COMMANDS = [
     "IDC_BRAVE_BOOKMARK_BAR_SUBMENU",
     "IDC_DEBUG_FRAME_TOGGLE",
     "IDC_SEND_TAB_TO_SELF",
+    "IDC_HELP_PAGE_VIA_MENU", # There's a keyboard command for this
+    "IDC_MORE_TOOLS_MENU",
+    "IDC_READING_LIST_MENU",
 
     # Not actually commands
     "IDC_BRAVE_COMMANDS_START",
@@ -80,14 +88,15 @@ EXCLUDE_COMMANDS = [
     "IDC_MANAGE_HID_DEVICES_LAST",
     "IDC_OPEN_LINK_IN_PROFILE_FIRST",
     "IDC_OPEN_LINK_IN_PROFILE_LAST",
+    "IDC_VISIT_DESKTOP_OF_LRU_USER_NEXT",
+    "IDC_VISIT_DESKTOP_OF_LRU_USER_LAST",
+    "IDC_SHOW_SETTINGS_CHANGE_FIRST",
+    "IDC_SHOW_SETTINGS_CHANGE_LAST",
+    "IDC_EXTENSION_INSTALL_ERROR_FIRST",
+    "IDC_EXTENSION_INSTALL_ERROR_LAST",
+    "IDC_DEVICE_SYSTEM_TRAY_ICON_FIRST",
+    "IDC_DEVICE_SYSTEM_TRAY_ICON_LAST"
 ]
-
-
-def get_cmd_name(command):
-    def capitalize(word):
-        return word[0] + word[1:].lower()
-
-    return ' '.join(map(capitalize, command[4:].split('_')))
 
 
 def extract_relevant_lines(filename):
@@ -120,9 +129,12 @@ def generate_command_info(command_definition_files, template_file):
     def get_command(line):
         return line.split(' ')[1]
 
+    def get_command_l10n(line):
+        return 'IDS_' + get_command(line)
+
     def get_line(line):
         if line.startswith(COMMAND_PREFIX):
-            return f'  {{{get_id(line)}, "{get_cmd_name(get_command(line))}"}},'
+            return f'  {{{get_id(line)}, {get_command_l10n(line)}}},'
 
         return line
 
