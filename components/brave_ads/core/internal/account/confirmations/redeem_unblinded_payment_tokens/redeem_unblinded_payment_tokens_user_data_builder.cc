@@ -9,24 +9,19 @@
 
 #include "base/functional/callback.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/platform_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/summary_user_data.h"
 
 namespace brave_ads {
 
-RedeemUnblindedPaymentTokensUserDataBuilder::
-    RedeemUnblindedPaymentTokensUserDataBuilder(
-        privacy::UnblindedPaymentTokenList unblinded_payment_tokens)
-    : unblinded_payment_tokens_(std::move(unblinded_payment_tokens)) {}
-
-RedeemUnblindedPaymentTokensUserDataBuilder::
-    ~RedeemUnblindedPaymentTokensUserDataBuilder() = default;
-
-void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
-    UserDataBuilderCallback callback) const {
+void BuildRedeemUnblindedPaymentTokensUserData(
+    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+    BuildUserDataCallback callback) {
   base::Value::Dict user_data;
+
   user_data.Merge(BuildPlatformUserData());
-  user_data.Merge(BuildSummaryUserData(unblinded_payment_tokens_));
+  user_data.Merge(BuildSummaryUserData(unblinded_payment_tokens));
 
   std::move(callback).Run(std::move(user_data));
 }

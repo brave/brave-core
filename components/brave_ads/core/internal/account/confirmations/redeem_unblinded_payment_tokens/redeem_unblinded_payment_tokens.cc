@@ -102,9 +102,8 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetAllUnblindedPaymentTokens();
 
-  const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
-      unblinded_payment_tokens);
-  user_data_builder.Build(
+  BuildRedeemUnblindedPaymentTokensUserData(
+      unblinded_payment_tokens,
       base::BindOnce(&RedeemUnblindedPaymentTokens::BuildUserDataCallback,
                      weak_factory_.GetWeakPtr()));
 }

@@ -31,8 +31,8 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest, Build) {
   // Act
 
   // Assert
-  const ConfirmationDynamicUserDataBuilder user_data_builder;
-  user_data_builder.Build(base::BindOnce([](base::Value::Dict user_data) {
+  BuildConfirmationDynamicUserData(base::BindOnce([](base::Value::Dict
+                                                         user_data) {
     EXPECT_EQ(
         base::test::ParseJsonDict(
             R"~({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})~"),

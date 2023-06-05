@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_user_data_info.h"
@@ -21,7 +22,11 @@ absl::optional<ConfirmationInfo> BuildConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction) {
   CHECK(token_generator);
-  return CreateConfirmation(token_generator, transaction, /*user_data*/ {});
+
+  return ShouldRewardUser()
+             ? CreateOptedInConfirmation(token_generator, transaction,
+                                         /*user_data*/ {})
+             : CreateOptedOutConfirmation(transaction);
 }
 
 absl::optional<ConfirmationInfo> BuildConfirmation(

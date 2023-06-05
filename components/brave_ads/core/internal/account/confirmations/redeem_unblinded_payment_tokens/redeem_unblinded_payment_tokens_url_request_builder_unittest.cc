@@ -41,33 +41,33 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest, BuildUrl) {
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::BuildUnblindedPaymentTokens(/*count*/ 7);
 
-  const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
-      unblinded_payment_tokens);
-
   // Act
-  user_data_builder.Build(base::BindOnce(
-      [](const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-         base::Value::Dict user_data) {
-        RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
-            GetWalletForTesting(), unblinded_payment_tokens,
-            std::move(user_data));
+  BuildRedeemUnblindedPaymentTokensUserData(
+      unblinded_payment_tokens,
+      base::BindOnce(
+          [](const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+             base::Value::Dict user_data) {
+            RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
+                GetWalletForTesting(), unblinded_payment_tokens,
+                std::move(user_data));
 
-        const mojom::UrlRequestInfoPtr url_request =
-            url_request_builder.Build();
+            const mojom::UrlRequestInfoPtr url_request =
+                url_request_builder.Build();
 
-        mojom::UrlRequestInfoPtr expected_url_request =
-            mojom::UrlRequestInfo::New();
-        expected_url_request->url = GURL(
-            "https://mywallet.ads.bravesoftware.com/v3/confirmation/payment/"
-            "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7");
-        expected_url_request->headers = {"accept: application/json"};
-        expected_url_request->content = kExpectedUrlRequestContent;
-        expected_url_request->content_type = "application/json";
-        expected_url_request->method = mojom::UrlRequestMethodType::kPut;
+            mojom::UrlRequestInfoPtr expected_url_request =
+                mojom::UrlRequestInfo::New();
+            expected_url_request->url = GURL(
+                "https://mywallet.ads.bravesoftware.com/v3/confirmation/"
+                "payment/"
+                "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7");
+            expected_url_request->headers = {"accept: application/json"};
+            expected_url_request->content = kExpectedUrlRequestContent;
+            expected_url_request->content_type = "application/json";
+            expected_url_request->method = mojom::UrlRequestMethodType::kPut;
 
-        EXPECT_EQ(url_request, expected_url_request);
-      },
-      unblinded_payment_tokens));
+            EXPECT_EQ(url_request, expected_url_request);
+          },
+          unblinded_payment_tokens));
 
   // Assert
 }

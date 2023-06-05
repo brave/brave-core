@@ -22,11 +22,13 @@ struct TransactionInfo;
 
 absl::optional<std::string> CreateOptedInCredential(
     const ConfirmationInfo& confirmation);
-
-absl::optional<ConfirmationInfo> CreateConfirmation(
+absl::optional<ConfirmationInfo> CreateOptedInConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
     const OptedInUserDataInfo& opted_in_user_data);
+
+absl::optional<ConfirmationInfo> CreateOptedOutConfirmation(
+    const TransactionInfo& transaction);
 
 bool IsValid(const ConfirmationInfo& confirmation);
 

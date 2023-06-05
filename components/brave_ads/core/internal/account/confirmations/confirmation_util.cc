@@ -45,6 +45,7 @@ absl::optional<OptedInInfo> CreateOptedIn(
     const ConfirmationInfo& confirmation,
     const OptedInUserDataInfo& opted_in_user_data) {
   CHECK(token_generator);
+  CHECK(IsValid(confirmation));
   CHECK(ShouldRewardUser());
 
   OptedInInfo opted_in;
@@ -91,10 +92,6 @@ absl::optional<OptedInInfo> CreateOptedIn(
 
 absl::optional<std::string> CreateOptedInCredential(
     const ConfirmationInfo& confirmation) {
-  if (!confirmation.opted_in) {
-    return absl::nullopt;
-  }
-
   const absl::optional<std::string> credential =
       json::writer::WriteOptedInCredential(
           confirmation.opted_in->unblinded_token,
@@ -111,12 +108,13 @@ absl::optional<std::string> CreateOptedInCredential(
   return credential_base64url;
 }
 
-absl::optional<ConfirmationInfo> CreateConfirmation(
+absl::optional<ConfirmationInfo> CreateOptedInConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
     const OptedInUserDataInfo& opted_in_user_data) {
   CHECK(token_generator);
   CHECK(transaction.IsValid());
+  CHECK(ShouldRewardUser());
 
   ConfirmationInfo confirmation;
   confirmation.transaction_id = transaction.id;
@@ -125,20 +123,32 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
   confirmation.ad_type = transaction.ad_type;
   confirmation.created_at = transaction.created_at;
 
-  if (!ShouldRewardUser()) {
-    return confirmation;
-  }
-
   const absl::optional<OptedInInfo> opted_in =
       CreateOptedIn(token_generator, confirmation, opted_in_user_data);
   if (!opted_in) {
     BLOG(0, "Failed to create opted-in");
     return absl::nullopt;
   }
+
   confirmation.opted_in = opted_in;
 
   CHECK(IsValid(confirmation));
+  return confirmation;
+}
 
+absl::optional<ConfirmationInfo> CreateOptedOutConfirmation(
+    const TransactionInfo& transaction) {
+  CHECK(transaction.IsValid());
+  CHECK(!ShouldRewardUser());
+
+  ConfirmationInfo confirmation;
+  confirmation.transaction_id = transaction.id;
+  confirmation.creative_instance_id = transaction.creative_instance_id;
+  confirmation.type = transaction.confirmation_type;
+  confirmation.ad_type = transaction.ad_type;
+  confirmation.created_at = transaction.created_at;
+
+  CHECK(IsValid(confirmation));
   return confirmation;
 }
 
