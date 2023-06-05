@@ -297,7 +297,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
   items_to_add.push_back(playlist_tab_helper->found_items().front()->Clone());
   GetService()->AddMediaFiles(std::move(items_to_add),
                               playlist::kDefaultPlaylistID,
-                              /* can_cache= */ false);
+                              /* can_cache= */ false, base::DoNothing());
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return playlist_tab_helper->saved_items().size() > 0; }));
 

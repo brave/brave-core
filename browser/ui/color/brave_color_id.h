@@ -95,6 +95,12 @@
     E_CPONLY(kColorBraveVerticalTabNTBTextColor)        \
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
 
+#define BRAVE_PLAYLIST_COLOR_IDS                    \
+    E_CPONLY(kColorBravePlaylistAddedIcon)          \
+    E_CPONLY(kColorBravePlaylistCheckedIcon)        \
+    E_CPONLY(kColorBravePlaylistSelectedBackground) \
+    E_CPONLY(kColorBravePlaylistListBorder)
+
 #define BRAVE_COLOR_IDS               \
     BRAVE_COMMON_COLOR_IDS            \
     BRAVE_SEARCH_CONVERSION_COLOR_IDS \
@@ -102,6 +108,7 @@
     BRAVE_SPEEDREADER_COLOR_IDS       \
     BRAVE_VPN_COLOR_IDS               \
     BRAVE_VERTICAL_TAB_COLOR_IDS      \
+    BRAVE_PLAYLIST_COLOR_IDS
 
 #include "ui/color/color_id_macros.inc"
 

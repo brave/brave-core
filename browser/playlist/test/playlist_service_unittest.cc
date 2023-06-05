@@ -790,8 +790,12 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
     std::vector<mojom::PlaylistItemPtr> items;
     items.push_back(std::move(item));
 
-    service->AddMediaFilesFromItems(kDefaultPlaylistID, /*cache*/ false,
-                                    std::move(items));
+    service->AddMediaFilesFromItems(
+        kDefaultPlaylistID, /*cache*/ false,
+        base::BindOnce([](std::vector<mojom::PlaylistItemPtr> items) {
+          EXPECT_TRUE(items.empty());
+        }),
+        std::move(items));
 
     EXPECT_EQ(old_item_size, GetPlaylist(kDefaultPlaylistID)->items.size());
     EXPECT_FALSE(prefs->GetDict(kPlaylistItemsPref).FindDict("new_id"));
@@ -960,12 +964,6 @@ TEST_F(PlaylistServiceUnitTest, UpdateItem) {
   playlist_service()->UpdatePlaylistItemValue(
       item.id, base::Value(ConvertPlaylistItemToValue(item.Clone())));
 
-  std::vector<mojom::PlaylistItemPtr> items;
-  items.push_back(item.Clone());
-  playlist_service()->AddMediaFilesFromItems(
-      std::string() /* will be saved to default list*/, false /* no caching */,
-      std::move(items));
-
   WaitUntil(base::BindLambdaForTesting([&]() {
     return !!prefs()->GetDict(kPlaylistItemsPref).FindDict(item.id);
   }));
@@ -1013,7 +1011,8 @@ TEST_F(PlaylistServiceUnitTest, ReorderItemFromPlaylist) {
 
   auto* service = playlist_service();
   service->AddMediaFilesFromItems(playlist::kDefaultPlaylistID,
-                                  false /* no caching */, std::move(items));
+                                  false /* no caching */, base::NullCallback(),
+                                  std::move(items));
 
   auto order_checker = [](const std::vector<std::string>& expected_orders) {
     return base::BindLambdaForTesting(
@@ -1159,7 +1158,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
         ASSERT_EQ(playlist->items.size(), 0u);
       }));
   service->AddMediaFilesFromItems(kDefaultPlaylistID, /* cache = */ true,
-                                  std::move(items));
+                                  base::NullCallback(), std::move(items));
   service->GetPlaylist(
       kDefaultPlaylistID,
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
@@ -1178,7 +1177,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
         ASSERT_EQ(playlist->items.size(), 0u);
       }));
   service->AddMediaFilesFromItems(another_playlist_id, false /* no caching */,
-                                  std::move(items));
+                                  base::NullCallback(), std::move(items));
   service->GetPlaylist(
       another_playlist_id,
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
@@ -1238,7 +1237,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
   item->id = base::Token::CreateRandom().ToString();
   items.push_back(item.Clone());
   service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
-                                  std::move(items));
+                                  base::NullCallback(), std::move(items));
 
   WaitUntil(base::BindRepeating(
       [](base::FilePath item_path) {
@@ -1265,7 +1264,7 @@ TEST_F(PlaylistServiceUnitTest, CleanUpOrphanedPlaylistItemDirs) {
   items.push_back(item.Clone());
 
   service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
-                                  std::move(items));
+                                  base::NullCallback(), std::move(items));
 
   WaitUntil(base::BindRepeating(
       [](base::FilePath item_path) { return base::DirectoryExists(item_path); },

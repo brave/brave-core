@@ -45,15 +45,17 @@ class PlaylistActionIconView : public PageActionIconView,
         last_web_contents_.get());
   }
 
+  void UpdateState(bool has_saved, bool found_items);
+  void UpdateVisibilityPerState();
+
   // PlaylistTabHelperObserver:
   void PlaylistTabHelperWillBeDestroyed() override;
   void OnSavedItemsChanged(const std::vector<playlist::mojom::PlaylistItemPtr>&
                                saved_items) override;
   void OnFoundItemsChanged(const std::vector<playlist::mojom::PlaylistItemPtr>&
                                found_items) override;
-
-  void UpdateState(bool has_saved, bool found_items);
-  void UpdateVisibilityPerState();
+  void OnAddedItemFromTabHelper(
+      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
 
   State state_ = State::kNone;
 
@@ -62,6 +64,8 @@ class PlaylistActionIconView : public PageActionIconView,
   base::ScopedObservation<playlist::PlaylistTabHelper,
                           playlist::PlaylistTabHelperObserver>
       playlist_tab_helper_observation_{this};
+
+  base::WeakPtrFactory<PlaylistActionIconView> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_ICON_VIEW_H_

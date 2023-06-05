@@ -1099,6 +1099,54 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
         </if>
       </if>
+
+      <!-- Playlist -->
+      <if expr="enable_playlist_webui">
+          <message name="IDS_PLAYLIST_ADD_TO_PLAYLIST" desc="A title label on a bubble to add media files to Playlist">
+            Add to Playlist
+          </message>
+          <message name="IDS_PLAYLIST_MEDIA_FOUND_IN_THIS_PAGE" desc="A sub title in a bubble to add media files to playlist">
+            Media found in this page
+          </message>
+          <message name="IDS_PLAYLIST_ADDED_TO_PLAY_LATER" desc="A label on a bubble that shows up when items were added from the current page">
+            Added to Play Later
+          </message>
+        <if expr="use_titlecase">
+          <message name="IDS_PLAYLIST_OPEN_IN_PLAYLIST" desc="A menu name to open added media files on Playlist">
+            Open in Playlist
+          </message>
+          <message name="IDS_PLAYLIST_CHANGE_FOLDER" desc="A menu name to move items to another folder">
+            Open Folder
+          </message>
+          <message name="IDS_PLAYLIST_REMOVE_FROM_PLAYLIST" desc="A menu name to remove items">
+            Remove from Playlist
+          </message>
+          <message name="IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE" desc="A menu name to see found media files">
+            More Media in This Page...
+          </message>
+          <message name="IDS_PLAYLIST_ADD_SELECTED" desc="A label on a button to add selected items">
+            Add Selected
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_PLAYLIST_OPEN_IN_PLAYLIST" desc="A menu name to open added media files on Playlist">
+            Open in playlist
+          </message>
+          <message name="IDS_PLAYLIST_CHANGE_FOLDER" desc="A menu name to move items to another folder">
+            Open folder
+          </message>
+          <message name="IDS_PLAYLIST_REMOVE_FROM_PLAYLIST" desc="A menu name to remove items">
+            Remove from Playlist
+          </message>
+          <message name="IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE" desc="A menu name to see found media files">
+            More media in this page...
+          </message>
+          <message name="IDS_PLAYLIST_ADD_SELECTED" desc="A label on a button to add selected items">
+            Add selected
+          </message>
+        </if>
+      </if>
+
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

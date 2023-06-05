@@ -87,7 +87,8 @@ interface PlaylistService {
   FindMediaFilesFromActiveTab() => (url.mojom.Url page_url,
                                     array<PlaylistItem> items);
 
-  AddMediaFiles(array<PlaylistItem> items, string playlist_id, bool can_cache);
+  AddMediaFiles(array<PlaylistItem> items, string playlist_id, bool can_cache)
+      => (array<PlaylistItem> items);
 
   CopyItemToPlaylist(array<string> item_ids, string playlist_id);
 
@@ -98,7 +99,7 @@ interface PlaylistService {
   UpdateItem(PlaylistItem item);
 
   // Try downloading media files again. Returns PlaylistItem after trying
-  // recovery. If it succeeded, |cached| state of the return itme would be true.
+  // recovery. If it succeeded, |cached| state of the return item would be true.
   RecoverLocalDataForItem(string id, bool update_media_src_before_recovery)
       => (PlaylistItem result);
 
