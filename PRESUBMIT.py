@@ -343,4 +343,10 @@ def _ChangeHasSecurityReviewer(*_):
     return False
 
 
+@override_utils.override_function(globals())
+def CheckJavaStyle(original_check, input_api, output_api):
+    with override_utils.override_scope_variable(
+            output_api, 'PresubmitError', output_api.PresubmitPromptWarning):
+        return original_check(input_api, output_api)
+
 # DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit_from_src().

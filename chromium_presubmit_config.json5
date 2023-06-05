@@ -81,7 +81,6 @@
     ],
 
     // Checks to be fixed.
-    "CheckJavaStyle": [".*\\.java"],
     "CheckUnwantedDependencies": [".*\\.java"],
     "CheckSpamLogging": [
       "browser/browsing_data/brave_clear_browsing_data\\.cc",

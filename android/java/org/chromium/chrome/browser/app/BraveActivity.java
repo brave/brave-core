@@ -247,7 +247,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
     /**
-     * Settings for sending local notification reminders.
+     * Settings for sending local notification reminders. +++
      */
     public static final String CHANNEL_ID = "com.brave.browser";
 
