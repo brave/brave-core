@@ -82,7 +82,7 @@ static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
 
 static NSString* const kEnabledPrefKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kEnabled);
-static NSString* const kNumberOfAdsPerHourKey =
+static NSString* const kMaximumNotificationAdsPerHourPrefKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kMaximumNotificationAdsPerHour);
 static NSString* const kShouldAllowSubdivisionTargetingPrefKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kShouldAllowSubdivisionTargeting);
@@ -338,12 +338,13 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (NSInteger)numberOfAllowableAdsPerHour {
-  return [self.prefs[kNumberOfAdsPerHourKey] integerValue];
+  return [self.prefs[kMaximumNotificationAdsPerHourPrefKey] integerValue];
 }
 
 - (void)setNumberOfAllowableAdsPerHour:(NSInteger)numberOfAllowableAdsPerHour {
-  self.prefs[kNumberOfAdsPerHourKey] = @(numberOfAllowableAdsPerHour);
-  [self savePref:kNumberOfAdsPerHourKey];
+  self.prefs[kMaximumNotificationAdsPerHourPrefKey] =
+      @(numberOfAllowableAdsPerHour);
+  [self savePref:kMaximumNotificationAdsPerHourPrefKey];
 }
 
 - (BOOL)shouldAllowSubdivisionTargeting {
@@ -407,7 +408,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 
   if ([self.prefs objectForKey:kLegacyNumberOfAdsPerHourKey]) {
-    self.prefs[kNumberOfAdsPerHourKey] =
+    self.prefs[kMaximumNotificationAdsPerHourPrefKey] =
         self.prefs[kLegacyNumberOfAdsPerHourKey];
     [self.prefs removeObjectForKey:kLegacyNumberOfAdsPerHourKey];
   }
