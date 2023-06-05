@@ -1154,9 +1154,9 @@ void EthTxManager::OnGetGasEstimation1559(
   // from eth_getBlockByNumber.
   if (error == mojom::ProviderError::kMethodNotFound) {
     json_rpc_service_->GetBaseFeePerGas(
-        chain_id, base::BindOnce(&EthTxManager::OnGetBaseFeePerGas,
-                                 weak_factory_.GetWeakPtr(),
-                                 std::move(callback), chain_id));
+        chain_id,
+        base::BindOnce(&EthTxManager::OnGetBaseFeePerGas,
+                       weak_factory_.GetWeakPtr(), std::move(callback)));
     return;
   }
 
@@ -1195,7 +1195,6 @@ void EthTxManager::OnGetGasEstimation1559(
 }
 
 void EthTxManager::OnGetBaseFeePerGas(GetGasEstimation1559Callback callback,
-                                      const std::string& chain_id,
                                       const std::string& base_fee_per_gas,
                                       mojom::ProviderError error,
                                       const std::string& error_message) {

@@ -288,7 +288,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& error_message);
 
   void OnGetBaseFeePerGas(GetGasEstimation1559Callback callback,
-                          const std::string& chain_id,
                           const std::string& base_fee_per_gas,
                           mojom::ProviderError error,
                           const std::string& error_message);
