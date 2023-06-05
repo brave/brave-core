@@ -58,7 +58,9 @@ class PageWallet extends React.Component<Props, State> {
     this.isVerifyUrl()
     this.actions.getMonthlyReportIds()
     this.actions.getExternalWalletProviders()
-    this.isMonthlyStatementsUrl()
+    if (this.props.rewardsData.userType !== 'unconnected') {
+      this.isMonthlyStatementsUrl()
+    }
   }
 
   onModalResetClose = () => {
