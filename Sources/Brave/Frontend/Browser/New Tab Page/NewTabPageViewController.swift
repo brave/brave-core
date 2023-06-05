@@ -315,7 +315,17 @@ class NewTabPageViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    reportSponsoredImageBackgroundEvent(.viewed)
+    reportSponsoredImageBackgroundEvent(.served)
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      // As a temporary fix until 1.53.x, we trigger the .viewed event after 1 second to
+      // give time for the .served event to be triggered; otherwise, the sponsored image
+      // viewed event will fail because it needs a corresponding served event. In 1.53.x
+      // and above we should trigger the .served event and in the completion block if
+      // successful we should trigger a .viewed event.
+      self.reportSponsoredImageBackgroundEvent(.viewed)
+    }
+
     presentNotification()
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
