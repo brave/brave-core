@@ -343,4 +343,64 @@ def _ChangeHasSecurityReviewer(*_):
     return False
 
 
+@chromium_presubmit_overrides.override_check(globals())
+def CheckJavaStyle(_original_check, input_api, output_api):
+    """ Copy of upstream's CheckJavaStyle. The only difference - it uses
+    brave/tools/android/checkstyle/brave-style-5.0.xml style file where all
+    errors are replaced with warnings except UnusedImports.
+    When all style error will be fixed, this function should be removed and
+    the original function from upstream must be used again """
+    def _IsJavaFile(input_api, file_path):
+        return input_api.os_path.splitext(file_path)[1] == ".java"
+
+    # Return early if no java files were modified.
+    if not any(
+            _IsJavaFile(input_api, f.LocalPath())
+            for f in input_api.AffectedFiles()):
+        return []
+
+    import sys  # pylint: disable=import-outside-toplevel
+    # Android toolchain is only available on Linux.
+    if not sys.platform.startswith('linux'):
+        return []
+
+    with import_inline.sys_path(
+            input_api.os_path.join(input_api.PresubmitLocalPath(), 'tools',
+                                   'android')):
+        from checkstyle import checkstyle  # pylint: disable=import-outside-toplevel, import-error
+
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
+
+    # Filter out non-Java files and files that were deleted.
+    java_files = [
+        x.AbsoluteLocalPath() for x in
+        input_api.AffectedSourceFiles(lambda f: input_api.FilterSourceFile(
+            f, files_to_skip=files_to_skip)) if x.LocalPath().endswith('.java')
+    ]
+    if not java_files:
+        return []
+
+    local_path = os.path.join(input_api.PresubmitLocalPath(), 'brave')
+    style_file = os.path.join(input_api.PresubmitLocalPath(), 'brave', 'tools',
+                              'android', 'checkstyle', 'brave-style-5.0.xml')
+    violations = checkstyle.run_checkstyle(local_path, style_file, java_files)
+    warnings = ['  ' + str(v) for v in violations if v.is_warning()]
+    errors = ['  ' + str(v) for v in violations if v.is_error()]
+
+    ret = []
+    if warnings:
+        ret.append(output_api.PresubmitPromptWarning('\n'.join(warnings)))
+    if errors:
+        remove_unused_imports_path = input_api.os_path.join(
+            input_api.PresubmitLocalPath(), 'tools', 'android', 'checkstyle',
+            'remove_unused_imports.py')
+        msg = '\n'.join(errors)
+        if 'Unused import:' in msg or 'Duplicate import' in msg:
+            msg += """
+
+To remove unused imports: """ + input_api.os_path.relpath(
+                remove_unused_imports_path, local_path)
+        ret.append(output_api.PresubmitError(msg))
+    return ret
+
 # DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit_from_src().
