@@ -7,7 +7,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#import "ios/chrome/browser/url/chrome_url_constants.h"
+#import "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/browser_state.h"
 #include "ios/web/public/navigation/navigation_manager.h"
