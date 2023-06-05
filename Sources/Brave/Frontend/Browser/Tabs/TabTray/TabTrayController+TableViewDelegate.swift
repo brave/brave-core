@@ -71,7 +71,7 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
     
     switch sectionDetails.deviceFormFactor {
     case .phone, .tablet:
-      deviceTypeImage = UIImage(braveSystemNamed: "leo.smartphone.tablet")
+      deviceTypeImage = UIImage(braveSystemNamed: "leo.smartphone.tablet-portrait")
     case .desktop:
       deviceTypeImage = UIImage(braveSystemNamed: "leo.laptop")
     default:
