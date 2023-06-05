@@ -27,11 +27,13 @@ class AIChatAPI {
   using CompletionCallback =
       base::OnceCallback<void(bool success, int response_code)>;
 
-  void QueryPrompt(api_request_helper::APIRequestHelper::DataReceivedCallback
-                       data_received_callback,
+  // This function queries both types of APIs: SSE and non-SSE.
+  // In non-SSE cases, only the data_completed_callback will be triggered.
+  void QueryPrompt(const std::string& prompt,
                    api_request_helper::APIRequestHelper::DataCompletedCallback
                        data_completed_callback,
-                   const std::string& prompt);
+                   api_request_helper::APIRequestHelper::DataReceivedCallback
+                       data_received_callback = base::NullCallback());
 
  private:
   base::Value::Dict CreateApiParametersDict(const std::string& prompt);

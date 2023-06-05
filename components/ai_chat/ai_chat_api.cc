@@ -85,11 +85,11 @@ AIChatAPI::AIChatAPI(
 AIChatAPI::~AIChatAPI() = default;
 
 void AIChatAPI::QueryPrompt(
-    api_request_helper::APIRequestHelper::DataReceivedCallback
-        data_received_callback,
+    const std::string& prompt,
     api_request_helper::APIRequestHelper::DataCompletedCallback
         data_completed_callback,
-    const std::string& prompt) {
+    api_request_helper::APIRequestHelper::DataReceivedCallback
+        data_received_callback) {
   const GURL api_base_url = GetEndpointBaseUrl();
 
   // Validate that the path is valid

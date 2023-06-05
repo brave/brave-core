@@ -340,9 +340,9 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
                      base::Unretained(this), is_summarize_prompt);
 
   is_request_in_progress_ = true;
-  ai_chat_api_->QueryPrompt(std::move(data_received_callback),
+  ai_chat_api_->QueryPrompt(std::move(prompt_with_history),
                             std::move(data_completed_callback),
-                            std::move(prompt_with_history));
+                            std::move(data_received_callback));
 }
 
 bool AIChatTabHelper::IsRequestInProgress() {
@@ -387,6 +387,7 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
 
   is_request_in_progress_ = !success;
 
+  // We're checking for a value body in case for non-streaming API results.
   if (success && result.value_body().is_dict()) {
     if (const std::string* completion =
             result.value_body().FindStringKey("completion")) {

@@ -426,6 +426,9 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
     auto on_json_parsed =
         [](base::WeakPtr<APIRequestHelper::URLLoaderHandler> handler,
            data_decoder::DataDecoder::ValueOrError result) {
+          if (!handler) {
+            return;
+          }
           DCHECK(handler->data_received_callback_);
           handler->data_received_callback_.Run(std::move(result));
         };

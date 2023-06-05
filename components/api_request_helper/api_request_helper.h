@@ -84,6 +84,9 @@ struct APIRequestOptions {
 };
 
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
+// Unit tests which need to use the data decoding from this class can use
+// data_decoder::test::InProcessDataDecoder to run all decode operations
+// in-process.
 class APIRequestHelper {
  public:
   using DataReceivedCallback = base::RepeatingCallback<void(
