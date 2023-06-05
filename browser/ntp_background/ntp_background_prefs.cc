@@ -60,7 +60,7 @@ void NTPBackgroundPrefs::RegisterPref(
   dict.Set(kTypeKey, TypeToString(Type::kBrave));
   dict.Set(kRandomKey, false);
   dict.Set(kSelectedValueKey, "");
-  registry->RegisterDictionaryPref(kPrefName, base::Value(std::move(dict)));
+  registry->RegisterDictionaryPref(kPrefName, std::move(dict));
 
   registry->RegisterListPref(kCustomImageListPrefName);
 }
