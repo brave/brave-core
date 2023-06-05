@@ -66,7 +66,6 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               request: .getEncryptionPublicKey(request),
               cryptoStore: cryptoStore,
               keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
           case let .decrypt(request):
@@ -74,7 +73,6 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               request: .decrypt(request),
               cryptoStore: cryptoStore,
               keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
           case let .signTransaction(requests):
