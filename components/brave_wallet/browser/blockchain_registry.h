@@ -38,7 +38,10 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
                        std::vector<mojom::BlockchainTokenPtr> list);
   void UpdateChainList(ChainList chains);
   void UpdateDappList(DappListMap dapp_lists);
-
+  void UpdateOnRampTokenLists(OnRampTokensListMap onramp_lists);
+  void UpdateOffRampTokenLists(OffRampTokensListMap onramp_lists);
+  void UpdateOnRampCurrenciesLists(
+      std::vector<mojom::OnRampCurrency> onramp_currencies_lists);
   mojom::BlockchainTokenPtr GetTokenByAddress(const std::string& chain_id,
                                               mojom::CoinType coin,
                                               const std::string& address);
@@ -70,7 +73,6 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void GetOnRampCurrencies(GetOnRampCurrenciesCallback callback) override;
   void GetPrepopulatedNetworks(
       GetPrepopulatedNetworksCallback callback) override;
-
   void GetTopDapps(const std::string& chain_id,
                    mojom::CoinType coin,
                    GetTopDappsCallback callback) override;
@@ -83,6 +85,10 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   ChainList chain_list_;
   DappListMap dapp_lists_;
   friend base::NoDestructor<BlockchainRegistry>;
+  OnRampTokensListMap on_ramp_token_lists_;
+  OffRampTokensListMap off_ramp_token_lists_;
+  std::vector<mojom::OnRampCurrency> on_ramp_currencies_list_;
+  friend struct base::DefaultSingletonTraits<BlockchainRegistry>;
 
   BlockchainRegistry();
 

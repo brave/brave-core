@@ -96,4 +96,68 @@ namespace blockchain_lists {
     DappList fantom;
   };
 
+  dictionary Token {
+    // Hexadecimal string, e.g. "0x1"
+    DOMString chain_id;
+
+    // e.g. 60
+    long coin;
+
+    // e.g. ""
+    DOMString coingecko_id;
+
+    // Hexadecimal string, e.g. ""
+    DOMString contract_address;
+
+    // e.g. 18
+    long decimals;
+
+    // e.g. false
+    boolean is_erc1155;
+
+    // e.g. false
+    boolean is_erc20;
+
+    // e.g. false
+    boolean is_erc721;
+
+    // e.g. false
+    boolean is_nft;
+
+    // An url for the token logo, e.g. "aave.png"
+    DOMString logo;
+
+    // e.g. "Ethereum"
+    DOMString name;
+
+    // e.g. "ETH"
+    DOMString symbol;
+
+    // Hexadecimal string, e.g. ""
+    DOMString token_id;
+
+    // e.g. true
+    boolean visible;
+  };
+
+  dictionary TokenListMap {
+    Token[] ramp;
+    Token[] sardine;
+    Token[] transak;
+  };
+
+  dictionary OnRampCurrency {
+    // e.g. "ARS"
+    DOMString currency_code;
+
+    // e.g. "Argentine Peso"
+    DOMString currency_name;
+
+    // e.g. ["transak"]
+    DOMString[] providers;
+  };
+
+  dictionary OnRampCurrencyLists {
+    OnRampCurrency[] currencies;
+  };
 };
