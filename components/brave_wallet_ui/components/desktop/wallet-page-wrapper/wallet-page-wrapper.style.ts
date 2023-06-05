@@ -79,6 +79,7 @@ export const ContainerCard = styled.div<
     noPadding?: boolean,
     maxWidth?: number,
     hideCardHeader?: boolean
+    noMinCardHeight?: boolean
   }>`
   display: flex;
   flex: none;
@@ -94,7 +95,7 @@ export const ContainerCard = styled.div<
   align-items: center;
   padding: ${(p) => p.noPadding ? 0 : 20}px;
   width: 100%;
-  min-height: ${minCardHeight}px;
+  min-height: ${p => p.noMinCardHeight ? 'unset' : `${minCardHeight}px`};
   max-width: ${(p) => p.maxWidth ? p.maxWidth : maxCardWidth}px;
   position: relative;
   @media screen and (max-width: ${layoutSmallWidth}px) {
