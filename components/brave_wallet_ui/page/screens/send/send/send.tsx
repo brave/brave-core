@@ -6,13 +6,12 @@
 import * as React from 'react'
 import { useParams } from 'react-router'
 import { useDispatch } from 'react-redux'
-import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Messages
 import { ENSOffchainLookupMessage, FailedChecksumMessage } from '../send-ui-messages'
 
 // Types
-import { BraveWallet, SendOptionTypes, AddressMessageInfo } from '../../../../constants/types'
+import { SendOptionTypes, AddressMessageInfo } from '../../../../constants/types'
 
 // Actions
 import { WalletActions } from '../../../../common/actions'
@@ -34,7 +33,7 @@ import { endsWithAny } from '../../../../utils/string-utils'
 // Hooks
 import { usePreset, useBalanceUpdater, useSend } from '../../../../common/hooks'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
-import { useGetNetworkQuery, useSetNetworkMutation } from '../../../../common/slices/api.slice'
+import { useSetNetworkMutation } from '../../../../common/slices/api.slice'
 
 // Styled Components
 import {
@@ -42,7 +41,6 @@ import {
   SectionBox,
   AddressInput,
   AmountInput,
-  Background,
   DIVForWidth,
   InputRow,
   DomainLoadIcon,
@@ -121,9 +119,6 @@ export const Send = (props: Props) => {
   } = useSend(true)
 
   // Queries & Mutations
-  const { data: selectedTokensNetwork } = useGetNetworkQuery(
-    selectedSendAsset ?? skipToken
-  )
   const [setNetwork] = useSetNetworkMutation()
 
   // Refs
@@ -131,8 +126,6 @@ export const Send = (props: Props) => {
   const checksumInfoModalRef = React.useRef<HTMLDivElement>(null)
 
   // State
-  const [backgroundHeight, setBackgroundHeight] = React.useState<number>(0)
-  const [backgroundOpacity, setBackgroundOpacity] = React.useState<number>(0.3)
   const [domainPosition, setDomainPosition] = React.useState<number>(0)
   const [showChecksumInfoModal, setShowChecksumInfoModal] = React.useState<boolean>(false)
 
@@ -359,29 +352,6 @@ export const Send = (props: Props) => {
 
   // Effects
   React.useEffect(() => {
-    // Keeps track of the Swap Containers Height to update
-    // the network backgrounds height.
-    setBackgroundHeight(ref?.current?.clientHeight ?? 0)
-  }, [ref?.current?.clientHeight])
-
-  React.useEffect(() => {
-    let subscribed = true
-    // Changes network background opacity to 0.6 after changing networks
-    setBackgroundOpacity(0.6)
-    // Changes network background opacity back to 0.3 after 1 second
-    setTimeout(() => {
-      if (subscribed) {
-        setBackgroundOpacity(0.3)
-      }
-    }, 1000)
-
-    // cleanup
-    return () => {
-      subscribed = false
-    }
-  }, [selectedTokensNetwork])
-
-  React.useEffect(() => {
     // check if the user has selected an asset
     if (!chainId || !selectedAssetFromParams || !accountFromParams || selectedSendAsset) return
 
@@ -557,15 +527,6 @@ export const Send = (props: Props) => {
           />
         </SendContainer>
       </WalletPageWrapper>
-      <Background
-        backgroundOpacity={backgroundOpacity}
-        height={backgroundHeight}
-        network={
-          selectedTokensNetwork?.chainId === BraveWallet.LOCALHOST_CHAIN_ID
-            ? `${selectedTokensNetwork?.chainId}${selectedTokensNetwork?.coin}`
-            : selectedTokensNetwork?.chainId ?? ''
-        }
-      />
       {showSelectTokenModal &&
         <SelectTokenModal
           onClose={onHideSelectTokenModal}
