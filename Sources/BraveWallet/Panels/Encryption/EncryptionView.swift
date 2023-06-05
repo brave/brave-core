@@ -35,7 +35,6 @@ struct EncryptionView: View {
   var request: EncryptionType
   @ObservedObject var cryptoStore: CryptoStore
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var networkStore: NetworkStore
   var onDismiss: () -> Void
   
   @State private var isShowingDecryptMessage = false
@@ -68,12 +67,6 @@ struct EncryptionView: View {
   
   var body: some View {
     ScrollView(.vertical) {
-      HStack(alignment: .top) {
-        Text(networkStore.defaultSelectedChain.chainName)
-        Spacer()
-      }
-      .font(.callout)
-      .padding(.bottom, 6)
       VStack(spacing: 12) {
         VStack(spacing: 8) {
           Blockie(address: request.address)
@@ -267,7 +260,6 @@ struct EncryptionView_Previews: PreviewProvider {
           request: request,
           cryptoStore: .previewStore,
           keyringStore: .previewStoreWithWalletCreated,
-          networkStore: .previewStore,
           onDismiss: { }
         )
       }
