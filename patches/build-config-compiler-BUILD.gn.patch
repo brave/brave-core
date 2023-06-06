@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..69b9b371ae7d8642fc297bded28efa7eeb59ca4a 100644
+index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..8459a79978989e94f61315ebeacdff23a51da5df 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -260,6 +260,7 @@ config("compiler") {
@@ -18,19 +18,23 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..69b9b371ae7d8642fc297bded28efa7e
  
      if (!is_clang) {
        # Use pipes for communicating between sub-processes. Faster.
-@@ -740,6 +742,11 @@ config("compiler") {
+@@ -740,6 +742,15 @@ config("compiler") {
      # arm32.
      if (!is_android || current_cpu == "arm64") {
        cflags += [ "-fwhole-program-vtables" ]
 +
 +      # whole-program-vtables implies -fsplit-lto-unit, and Rust needs to match
-+      # behaviour.
-+      rustflags += [ "-Zsplit-lto-unit" ]
++      # behaviour. Rust needs to know the linker will be doing LTO in this case
++      # or it rejects the Zsplit-lto-unit flag.
++      rustflags += [
++        "-Zsplit-lto-unit",
++        "-Clinker-plugin-lto=yes",
++      ]
 +
        if (!is_win) {
          ldflags += [ "-fwhole-program-vtables" ]
        }
-@@ -861,7 +868,7 @@ config("compiler") {
+@@ -861,7 +872,7 @@ config("compiler") {
  
    # Rust compiler flags setup.
    # ---------------------------
@@ -39,7 +43,7 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..69b9b371ae7d8642fc297bded28efa7e
      # Overflow checks are optional in Rust, but even if switched
      # off they do not cause undefined behavior (the overflowing
      # behavior is defined). Because containers are bounds-checked
-@@ -906,6 +913,17 @@ config("compiler") {
+@@ -906,6 +917,17 @@ config("compiler") {
    if (is_official_build) {
      rustflags += [ "-Ccodegen-units=1" ]
    }
@@ -57,7 +61,7 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..69b9b371ae7d8642fc297bded28efa7e
  }
  
  # Defers LTO optimization to the linker, for use when:
-@@ -2448,7 +2466,7 @@ config("symbols") {
+@@ -2448,7 +2470,7 @@ config("symbols") {
        if (use_dwarf5) {
          cflags += [ "-gdwarf-5" ]
          rustflags += [ "-Zdwarf-version=5" ]
@@ -66,7 +70,7 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..69b9b371ae7d8642fc297bded28efa7e
          # Recent clang versions default to DWARF5 on Linux, and Android is about
          # to switch. TODO: Adopt that in controlled way.
          # Apple platforms still default to 4, so the flag is not needed there.
-@@ -2551,6 +2569,7 @@ config("symbols") {
+@@ -2551,6 +2573,7 @@ config("symbols") {
  # This config guarantees to hold symbol for stack trace which are shown to user
  # when crash happens in unittests running on buildbot.
  config("minimal_symbols") {
@@ -74,7 +78,7 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..69b9b371ae7d8642fc297bded28efa7e
    if (is_win) {
      # Functions, files, and line tables only.
      cflags = []
-@@ -2578,11 +2597,13 @@ config("minimal_symbols") {
+@@ -2578,11 +2601,13 @@ config("minimal_symbols") {
        # at least 10.11.
        # TODO(thakis): Remove this once mac_deployment_target is 10.11.
        cflags += [ "-gdwarf-4" ]
@@ -88,7 +92,7 @@ index 53db095c1b1efa8ae71ee0051d7d35c6a95d9828..69b9b371ae7d8642fc297bded28efa7e
      }
  
      if (use_dwarf5 && !is_nacl) {
-@@ -2618,7 +2639,6 @@ config("minimal_symbols") {
+@@ -2618,7 +2643,6 @@ config("minimal_symbols") {
  
      asmflags = cflags
    }

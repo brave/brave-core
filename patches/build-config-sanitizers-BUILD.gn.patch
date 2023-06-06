@@ -1,5 +1,5 @@
 diff --git a/build/config/sanitizers/BUILD.gn b/build/config/sanitizers/BUILD.gn
-index c320ed8d996961465702d149c407f425521b33f8..8ac3c4646c47d968bfcda9acceb5d0bf497231dd 100644
+index c320ed8d996961465702d149c407f425521b33f8..4eee358c82edf1f6dbb5e2642ba389d563040899 100644
 --- a/build/config/sanitizers/BUILD.gn
 +++ b/build/config/sanitizers/BUILD.gn
 @@ -303,6 +303,7 @@ config("link_shared_library") {
@@ -10,19 +10,23 @@ index c320ed8d996961465702d149c407f425521b33f8..8ac3c4646c47d968bfcda9acceb5d0bf
    if (is_cfi && current_toolchain == default_toolchain) {
      if (!defined(cfi_ignorelist_path)) {
        cfi_ignorelist_path =
-@@ -313,6 +314,11 @@ config("cfi_flags") {
+@@ -313,6 +314,15 @@ config("cfi_flags") {
        "-fsanitize-ignorelist=$cfi_ignorelist_path",
      ]
  
 +    # sanitize=cfi implies -fsplit-lto-unit, and Rust needs to match
-+    # behaviour.
++    # behaviour.  Rust needs to know the linker will be doing LTO in this case
++    # or it rejects the Zsplit-lto-unit flag.
 +    # TODO(crbug.com/1442331): Add -Zsanitize=cfi instead.
-+    rustflags += [ "-Zsplit-lto-unit" ]
++    rustflags += [
++      "-Zsplit-lto-unit",
++      "-Clinker-plugin-lto=yes",
++    ]
 +
      if (use_cfi_cast) {
        cflags += [
          "-fsanitize=cfi-derived-cast",
-@@ -322,6 +328,10 @@ config("cfi_flags") {
+@@ -322,6 +332,10 @@ config("cfi_flags") {
  
      if (use_cfi_icall) {
        cflags += [ "-fsanitize=cfi-icall" ]
