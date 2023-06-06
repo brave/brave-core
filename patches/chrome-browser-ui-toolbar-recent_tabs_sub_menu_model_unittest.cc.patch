@@ -1,13 +1,12 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index 0b6e5c01eaf7d3f6ab0b500f9aa89bba9901abe0..4165e5e5e94afb3e0fb99c79c743f76d657cbcf3 100644
+index bfaa95d9bc1302d872b42f5c9750b36ea95c6a5f..319bc449e57307c471eb5f9fbab8b9687b10c5f1 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-@@ -773,7 +773,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
-   // 5-8         <4 most-recent tabs of session>
+@@ -554,6 +554,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
+       {ui::MenuModel::TYPE_COMMAND, true},    // <tab>
+       // max tabs per sessions is 4, so only the 4 most tabs will show,
+       // independent of which window they came from.
++      BRAVE_MAX_TABS_PER_SESSION_AND_RECENCY
+   };
+   VerifyModel(model, kData);
  
-   TestRecentTabsSubMenuModel model(nullptr, browser());
--  EXPECT_EQ(9u, model.GetItemCount());
-+  BRAVE_MAX_TABS_PER_SESSION_AND_RECENCY
- 
-   std::vector<std::u16string> tab_titles =
-       recent_tabs_builder.GetTabTitlesSortedByRecency();
