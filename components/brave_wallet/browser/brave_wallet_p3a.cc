@@ -25,8 +25,8 @@ namespace brave_wallet {
 const char kKeyringCreatedHistogramName[] = "Brave.Wallet.KeyringCreated";
 const char kOnboardingConversionHistogramName[] =
     "Brave.Wallet.OnboardingConversion.2";
-const char kEthProviderHistogramName[] = "Brave.Wallet.EthProvider.3";
-const char kSolProviderHistogramName[] = "Brave.Wallet.SolProvider";
+const char kEthProviderHistogramName[] = "Brave.Wallet.EthProvider.4";
+const char kSolProviderHistogramName[] = "Brave.Wallet.SolProvider.2";
 const char kEthTransactionSentHistogramName[] =
     "Brave.Wallet.EthTransactionSent";
 const char kSolTransactionSentHistogramName[] =
@@ -135,7 +135,6 @@ void BraveWalletP3A::ReportUsage(bool unlocked) {
 
 void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
                                       mojom::CoinType coin_type,
-                                      bool use_native_wallet_enabled,
                                       bool allow_provider_overwrite) {
   CHECK(coin_type == mojom::CoinType::ETH || coin_type == mojom::CoinType::SOL);
 
@@ -160,20 +159,20 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
 
   switch (provider_type) {
     case mojom::JSProviderType::None:
-      // If there is no provider at all, we can assume that
-      // the native wallet is disabled
-      answer = JSProviderAnswer::kWalletDisabled;
+      if (is_wallet_setup) {
+        answer = JSProviderAnswer::kWalletDisabled;
+      } else {
+        answer = JSProviderAnswer::kNoWallet;
+      }
       break;
     case mojom::JSProviderType::ThirdParty:
       // Third-party overriding is considered if the native wallet
       // is enabled and the native wallet is setup.
-      answer = use_native_wallet_enabled && is_wallet_setup
+      answer = is_wallet_setup && allow_provider_overwrite
                    ? JSProviderAnswer::kThirdPartyOverriding
                    : JSProviderAnswer::kThirdPartyNotOverriding;
       break;
     case mojom::JSProviderType::Native:
-      // Only report native wallet provider if wallet has been set up,
-      // otherwise report "no wallet".
       if (is_wallet_setup) {
         // A native wallet is definitely not being overridden
         // if provider overwrites are allowed.

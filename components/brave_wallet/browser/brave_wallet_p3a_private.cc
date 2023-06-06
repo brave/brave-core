@@ -10,7 +10,6 @@ namespace brave_wallet {
 void BraveWalletP3APrivate::ReportJSProvider(
     mojom::JSProviderType provider_type,
     mojom::CoinType coin_type,
-    bool use_native_wallet_enabled,
     bool allow_provider_overwrite) {}
 
 void BraveWalletP3APrivate::ReportOnboardingAction(
