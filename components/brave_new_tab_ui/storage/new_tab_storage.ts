@@ -51,9 +51,6 @@ export const defaultState: NewTab.State = {
     httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
   },
-  braveTalkPromptDismissed: false,
-  braveTalkPromptAutoDismissed: false,
-  braveTalkPromptAllowed: loadTimeData.getBoolean('braveTalkPromptAllowed'),
   rewardsState: {
     adsAccountStatement: {
       nextPaymentDate: 0,
@@ -193,8 +190,6 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
     const dataToSave = {
       braveRewardsSupported: data.braveRewardsSupported,
       braveTalkSupported: data.braveTalkSupported,
-      braveTalkPromptDismissed: data.braveTalkPromptDismissed,
-      braveTalkPromptAutoDismissed: data.braveTalkPromptAutoDismissed,
       bitcoinDotComSupported: data.bitcoinDotComSupported,
       rewardsState: data.rewardsState,
       removedStackWidgets: data.removedStackWidgets,
