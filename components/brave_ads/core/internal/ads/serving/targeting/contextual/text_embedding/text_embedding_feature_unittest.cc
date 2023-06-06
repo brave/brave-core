@@ -16,8 +16,8 @@ namespace brave_ads {
 
 TEST(BraveAdsTextEmbeddingFeatureTest, IsEnabled) {
   // Arrange
-  base::FieldTrialParams params;
   std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
   enabled_features.emplace_back(kTextEmbeddingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;

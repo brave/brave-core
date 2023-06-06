@@ -81,9 +81,7 @@ void NewTabPageAdHandler::TriggerEvent(
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (!UserHasOptedInToBravePrivateAds() &&
-      !kShouldAlwaysTriggerNewTabPageAdEvents.Get()) {
-    // Do not trigger events when the user has not opted-in to Brave Private
-    // Ads if |kShouldAlwaysTriggerNewTabPageAdEvents| is set to |false|.
+      !ShouldAlwaysTriggerNewTabPageAdEvents()) {
     return std::move(callback).Run(/*success*/ false);
   }
 

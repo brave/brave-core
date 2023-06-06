@@ -7,10 +7,39 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kBraveAdsFeature, "BraveAds", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kShouldLaunchBraveAdsAsInProcessServiceFeature,
+             "ShouldLaunchBraveAdsAsInProcessService",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
-bool IsBraveAdsFeatureEnabled() {
-  return base::FeatureList::IsEnabled(kBraveAdsFeature);
+bool ShouldLaunchAsInProcessService() {
+  return base::FeatureList::IsEnabled(
+      kShouldLaunchBraveAdsAsInProcessServiceFeature);
+}
+
+BASE_FEATURE(kShouldAlwaysRunBraveAdsServiceFeature,
+             "ShouldAlwaysRunBraveAdsService",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool ShouldAlwaysRunService() {
+  return base::FeatureList::IsEnabled(kShouldAlwaysRunBraveAdsServiceFeature);
+}
+
+BASE_FEATURE(kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature,
+             "ShouldAlwaysTriggerBraveNewTabPageAdEvents",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool ShouldAlwaysTriggerNewTabPageAdEvents() {
+  return base::FeatureList::IsEnabled(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+}
+
+BASE_FEATURE(kShouldAlwaysTriggerBraveSearchResultAdEventsFeature,
+             "ShouldAlwaysTriggerBraveSearchResultAdEvents",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool ShouldAlwaysTriggerSearchResultAdEvents() {
+  return base::FeatureList::IsEnabled(
+      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 }
 
 }  // namespace brave_ads

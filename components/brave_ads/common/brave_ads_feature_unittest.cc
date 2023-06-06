@@ -14,38 +14,12 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsBraveAdsFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsBraveAdsFeatureEnabled());
-}
-
-TEST(BraveAdsBraveAdsFeatureTest, IsDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kBraveAdsFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsBraveAdsFeatureEnabled());
-}
-
 TEST(BraveAdsBraveAdsFeatureTest, ShouldLaunchAsInProcessService) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_launch_as_in_process_service"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  base::FieldTrialParams params;
+  enabled_features.emplace_back(kShouldLaunchBraveAdsAsInProcessServiceFeature,
+                                params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,41 +30,23 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldLaunchAsInProcessService) {
   // Act
 
   // Assert
-  EXPECT_TRUE(kShouldLaunchAsInProcessRunService.Get());
+  EXPECT_TRUE(ShouldLaunchAsInProcessService());
 }
 
-TEST(BraveAdsBraveAdsFeatureTest, DefaultShouldLaunchAsInProcessService) {
+TEST(BraveAdsBraveAdsFeatureTest, ShouldNotLaunchAsInProcessService) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_FALSE(kShouldLaunchAsInProcessRunService.Get());
-}
-
-TEST(BraveAdsBraveAdsFeatureTest, ShouldLaunchAsInProcessServiceWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kBraveAdsFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(kShouldLaunchAsInProcessRunService.Get());
+  EXPECT_FALSE(ShouldLaunchAsInProcessService());
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysRunService) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_always_run_service"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  base::FieldTrialParams params;
+  enabled_features.emplace_back(kShouldAlwaysRunBraveAdsServiceFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -101,41 +57,24 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysRunService) {
   // Act
 
   // Assert
-  EXPECT_TRUE(kShouldAlwaysRunService.Get());
+  EXPECT_TRUE(ShouldAlwaysRunService());
 }
 
-TEST(BraveAdsBraveAdsFeatureTest, DefaultShouldAlwaysRunService) {
+TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysRunService) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_FALSE(kShouldAlwaysRunService.Get());
-}
-
-TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysRunServiceWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kBraveAdsFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(kShouldAlwaysRunService.Get());
+  EXPECT_FALSE(ShouldAlwaysRunService());
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysTriggerNewTabPageAdEvents) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_new_tab_page_ad_events"] = "true";
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  enabled_features.emplace_back(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -146,43 +85,24 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysTriggerNewTabPageAdEvents) {
   // Act
 
   // Assert
-  EXPECT_TRUE(kShouldAlwaysTriggerNewTabPageAdEvents.Get());
+  EXPECT_TRUE(ShouldAlwaysTriggerNewTabPageAdEvents());
 }
 
-TEST(BraveAdsBraveAdsFeatureTest,
-     DefaultShouldAlwaysTriggerNewTabPageAdEvents) {
+TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysTriggerNewTabPageAdEvents) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_FALSE(kShouldAlwaysTriggerNewTabPageAdEvents.Get());
-}
-
-TEST(BraveAdsBraveAdsFeatureTest,
-     DefaulShouldAlwaysTriggerNewTabPageAdEventsWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kBraveAdsFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(kShouldAlwaysTriggerNewTabPageAdEvents.Get());
+  EXPECT_FALSE(ShouldAlwaysTriggerNewTabPageAdEvents());
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysTriggerSearchResultAdEvents) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_search_result_ad_events"] = "true";
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  enabled_features.emplace_back(
+      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -193,35 +113,16 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysTriggerSearchResultAdEvents) {
   // Act
 
   // Assert
-  EXPECT_TRUE(kShouldAlwaysTriggerSearchResultAdEvents.Get());
+  EXPECT_TRUE(ShouldAlwaysTriggerSearchResultAdEvents());
 }
 
-TEST(BraveAdsBraveAdsFeatureTest,
-     DefaultShouldAlwaysTriggerSearchResultAdEvents) {
+TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysTriggerSearchResultAdEvents) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_FALSE(kShouldAlwaysTriggerSearchResultAdEvents.Get());
-}
-
-TEST(BraveAdsSearchResultAdFeatureTest,
-     DefaulShouldAlwaysTriggerSearchResultAdEventsWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kBraveAdsFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(kShouldAlwaysTriggerSearchResultAdEvents.Get());
+  EXPECT_FALSE(ShouldAlwaysTriggerSearchResultAdEvents());
 }
 
 }  // namespace brave_ads

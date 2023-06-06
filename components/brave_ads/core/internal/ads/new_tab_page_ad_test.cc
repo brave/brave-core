@@ -71,8 +71,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_new_tab_page_ad_events"] = "true";
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  enabled_features.emplace_back(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -98,8 +98,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, DoNotServe) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_new_tab_page_ad_events"] = "true";
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  enabled_features.emplace_back(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -121,8 +121,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_new_tab_page_ad_events"] = "true";
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  enabled_features.emplace_back(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -161,8 +161,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_new_tab_page_ad_events"] = "true";
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  enabled_features.emplace_back(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -210,8 +210,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_new_tab_page_ad_events"] = "true";
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  enabled_features.emplace_back(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 
@@ -256,8 +256,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["should_always_trigger_new_tab_page_ad_events"] = "true";
-  enabled_features.emplace_back(kBraveAdsFeature, params);
+  enabled_features.emplace_back(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
 
   std::vector<base::test::FeatureRef> disabled_features;
 

@@ -319,7 +319,7 @@ AdsServiceImpl::AdsServiceImpl(
 
   rewards_service_->AddObserver(this);
 
-  if (kShouldAlwaysRunService.Get()) {
+  if (ShouldAlwaysRunService()) {
     RegisterResourceComponentsForDefaultLocale();
   }
 }
@@ -379,7 +379,7 @@ void AdsServiceImpl::GetDeviceIdCallback(std::string device_id) {
 bool AdsServiceImpl::CanStartBatAdsService() const {
   return IsSupportedRegion() &&
          (UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews() ||
-          kShouldAlwaysRunService.Get());
+          ShouldAlwaysRunService());
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
@@ -547,7 +547,7 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
 
   is_bat_ads_initialized_ = true;
 
-  if (!kShouldAlwaysRunService.Get()) {
+  if (!ShouldAlwaysRunService()) {
     RegisterResourceComponentsForDefaultLocale();
   }
 
