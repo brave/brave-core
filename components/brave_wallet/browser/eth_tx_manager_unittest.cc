@@ -1478,6 +1478,186 @@ TEST_F(EthTxManagerUnitTest,
 }
 
 TEST_F(EthTxManagerUnitTest,
+       AddUnapproved1559TransactionFeeHistoryNotFoundWithGasLimit) {
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [this](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        std::string header_value;
+        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        if (header_value == "eth_getBlockByNumber") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc": "2.0",
+              "result": {
+                "baseFeePerGas": "0x64"
+              },
+              "id": 1
+            })");
+        } else if (header_value == "eth_feeHistory") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc": "2.0",
+              "error": {
+                "code": -32601,
+                "message": "Method not found"
+              },
+              "id": 1
+            }
+          )");
+        }
+      }));
+
+  const std::string gas_limit = "0x974";
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_, false, absl::nullopt),
+      "0x04", "", "", nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  AddUnapproved1559Transaction(
+      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta =
+      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->gas_limit()), gas_limit);
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), 0ULL);
+  EXPECT_EQ(tx1559->max_fee_per_gas(), 133ULL);  // 0x64 x 1.33
+
+  auto estimation =
+      mojom::GasEstimation1559::New("0x0",    // slow_max_priority_fee_per_gas
+                                    "0x85",   // slow_max_fee_per_gas
+                                    "0x0",    // avg_max_priority_fee_per_gas
+                                    "0x85",   // avg_max_fee_per_gas
+                                    "0x0",    // fast_max_priority_fee_per_gas
+                                    "0x85",   // fast_max_fee_per_gas
+                                    "0x85");  // base_fee_per_gas (0x64 x 1.33)
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                std::move(estimation)));
+}
+
+TEST_F(EthTxManagerUnitTest,
+       AddUnapproved1559TransactionFeeHistoryNotFoundWithoutGasLimit) {
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [this](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        std::string header_value;
+        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        if (header_value == "eth_getBlockByNumber") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc": "2.0",
+              "result": {
+                "baseFeePerGas": "0x64"
+              },
+              "id": 1
+            })");
+        } else if (header_value == "eth_feeHistory") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc": "2.0",
+              "error": {
+                "code": -32601,
+                "message": "Method not found"
+              },
+              "id": 1
+            }
+          )");
+        } else if (header_value == "eth_estimateGas") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc": "2.0",
+              "result": "0x00000000000009604",
+              "id": 1
+            })");
+        }
+      }));
+
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_, false, absl::nullopt),
+      "0x04", "", "", nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  AddUnapproved1559Transaction(
+      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta =
+      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->gas_limit()), "0x9604");
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), 0ULL);
+  EXPECT_EQ(tx1559->max_fee_per_gas(), 133ULL);  // 0x64 x 1.33
+
+  auto estimation =
+      mojom::GasEstimation1559::New("0x0",    // slow_max_priority_fee_per_gas
+                                    "0x85",   // slow_max_fee_per_gas
+                                    "0x0",    // avg_max_priority_fee_per_gas
+                                    "0x85",   // avg_max_fee_per_gas
+                                    "0x0",    // fast_max_priority_fee_per_gas
+                                    "0x85",   // fast_max_fee_per_gas
+                                    "0x85");  // base_fee_per_gas (0x64 x 1.33)
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                std::move(estimation)));
+}
+
+TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionFeeHistoryFailed) {
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [this](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        std::string header_value;
+        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        if (header_value == "eth_feeHistory") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc": "2.0",
+              "error": {
+                "code": -32600,
+                "message": "Invalid request"
+              },
+              "id": 1
+            }
+          )");
+        }
+      }));
+
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "0x9604",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_, false, absl::nullopt),
+      "0x04", "", "", nullptr);
+
+  bool callback_called = false;
+  AddUnapproved1559Transaction(
+      mojom::kLocalhostChainId, std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionFailureCallback,
+                     &callback_called));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthTxManagerUnitTest,
        AddUnapproved1559TransactionWithoutGasFeeAndLimitForEthSend) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New(

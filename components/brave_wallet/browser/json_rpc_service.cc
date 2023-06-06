@@ -611,19 +611,20 @@ void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {
     return;
   }
 
-  GetIsEip1559(chain_id,
-               base::BindOnce(&JsonRpcService::UpdateIsEip1559,
-                              weak_ptr_factory_.GetWeakPtr(), chain_id));
+  GetBaseFeePerGas(chain_id,
+                   base::BindOnce(&JsonRpcService::UpdateIsEip1559,
+                                  weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
 void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
-                                     bool is_eip1559,
+                                     const std::string& base_fee_per_gas,
                                      mojom::ProviderError error,
                                      const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {
     return;
   }
 
+  bool is_eip1559 = !base_fee_per_gas.empty();
   bool changed = false;
   if (chain_id == brave_wallet::mojom::kLocalhostChainId) {
     changed = prefs_->GetBoolean(kSupportEip1559OnLocalhostChain) != is_eip1559;
@@ -2104,21 +2105,26 @@ void JsonRpcService::OnGetGasPrice(GetGasPriceCallback callback,
   std::move(callback).Run(*result, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetIsEip1559(const std::string& chain_id,
-                                  GetIsEip1559Callback callback) {
+// Retrieves the BASEFEE per gas for a given chain ID.
+//
+// If the chain does not support EIP-1559, and assuming no other provider
+// errors, an empty string as base fee with kSuccess error will be delivered
+// to the provided callback.
+void JsonRpcService::GetBaseFeePerGas(const std::string& chain_id,
+                                      GetBaseFeePerGasCallback callback) {
   auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetIsEip1559,
+      base::BindOnce(&JsonRpcService::OnGetBaseFeePerGas,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_getBlockByNumber(kEthereumBlockTagLatest, false),
                   true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetIsEip1559(GetIsEip1559Callback callback,
-                                    APIRequestResult api_request_result) {
+void JsonRpcService::OnGetBaseFeePerGas(GetBaseFeePerGasCallback callback,
+                                        APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        false, mojom::ProviderError::kInternalError,
+        "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -2129,13 +2135,17 @@ void JsonRpcService::OnGetIsEip1559(GetIsEip1559Callback callback,
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
                                            &error, &error_message);
-    std::move(callback).Run(false, error, error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
   const std::string* base_fee = result->FindString("baseFeePerGas");
-  std::move(callback).Run(base_fee && !base_fee->empty(),
-                          mojom::ProviderError::kSuccess, "");
+  if (base_fee && !base_fee->empty()) {
+    std::move(callback).Run(*base_fee, mojom::ProviderError::kSuccess, "");
+  } else {
+    // Successful response, but the chain does not support EIP-1559.
+    std::move(callback).Run("", mojom::ProviderError::kSuccess, "");
+  }
 }
 
 void JsonRpcService::GetBlockByNumber(const std::string& chain_id,

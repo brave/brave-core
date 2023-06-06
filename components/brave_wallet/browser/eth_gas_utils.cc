@@ -16,6 +16,40 @@ namespace brave_wallet {
 
 namespace eth {
 
+// Scale the base fee by 33% to get a suggested value. This is done to account
+// for sufficient fluctionations in the base fee, so that the transaction will
+// not get stuck.
+//
+// A higher scaling factor increases the likelihood of confirmation within the
+// next few blocks, but also makes the transaction appear more expensive to
+// the user.
+//
+// Note that base fee is not part of the RLP. Any excees base fee is refunded,
+// so the user will not be charged more than the base fee of the block that
+// includes the transaction.
+absl::optional<uint256_t> ScaleBaseFeePerGas(const std::string& value) {
+  uint256_t value_uint256;
+  if (!HexValueToUint256(value, &value_uint256)) {
+    return absl::nullopt;
+  }
+
+  // We use "double" math and this is unlikely to get hit, so return
+  // absl::nullopt if the value is too big.
+  if (value_uint256 > kMaxSafeIntegerUint64) {
+    return absl::nullopt;
+  }
+
+  // Compiler crashes without these 2 casts :(
+  double value_double =
+      static_cast<double>(static_cast<uint64_t>(value_uint256));
+
+  value_double *= 1.33;
+  value_double = std::floor(value_double);
+
+  // Compiler crashes without these 2 casts :(
+  return static_cast<uint256_t>(static_cast<uint64_t>(value_double));
+}
+
 // Assumes there are 3 reward percentiles per element
 // The first for low, the second for avg, and the third for high.
 // The following calculations will be made:
@@ -48,30 +82,12 @@ bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
   // "pending" is the last element in base_fee_per_gas
   // "latest" is the 2nd last element in base_fee_per_gas
   std::string pending_base_fee_per_gas = base_fee_per_gas.back();
-  uint256_t pending_base_fee_per_gas_uint;
-  if (!HexValueToUint256(pending_base_fee_per_gas,
-                         &pending_base_fee_per_gas_uint)) {
+
+  auto scaled_base_fee_per_gas = ScaleBaseFeePerGas(pending_base_fee_per_gas);
+  if (!scaled_base_fee_per_gas) {
     return false;
   }
-
-  // We use "double" math and this is unlikely to get hit, so return false
-  // if the value is too big.
-  if (pending_base_fee_per_gas_uint > kMaxSafeIntegerUint64) {
-    return false;
-  }
-
-  // Compiler crashes without these 2 casts :(
-  double pending_base_fee_per_gas_dbl =
-      static_cast<double>(static_cast<uint64_t>(pending_base_fee_per_gas_uint));
-  // The base fee is not part of the RLP. We only specify priority fee and max
-  // fee. So the excess will be refunded and it will be at most 33% It's best
-  // to assume a larger value here so there's a better chance it will get in the
-  // next block and if it's too high it will go back to the user
-  pending_base_fee_per_gas_dbl *= 1.33;
-  pending_base_fee_per_gas_dbl = std::floor(pending_base_fee_per_gas_dbl);
-  // Compiler crashes without these 2 casts :(
-  *suggested_base_fee_per_gas =
-      (uint256_t)(uint64_t)pending_base_fee_per_gas_dbl;
+  *suggested_base_fee_per_gas = *scaled_base_fee_per_gas;
 
   const uint256_t fallback_priority_fee = uint256_t(2e9);
   *low_priority_fee = fallback_priority_fee;
