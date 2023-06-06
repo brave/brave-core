@@ -12,11 +12,11 @@
     <color name="brave_link">#4C54D2</color>
 
     <!-- Overriding chromium theme colors to brave theme colors -->
-    <color name="baseline_primary_100">#F9C3B6</color>
-    <color name="baseline_primary_200">#FF7654</color>
-    <color name="baseline_primary_600">#EA3A0D</color>
-    <color name="baseline_primary_800">@color/modern_blue_600</color>
-    <color name="baseline_primary_900">@color/modern_blue_700</color>
+    <color name="baseline_primary_90">#F9C3B6</color>
+    <color name="baseline_primary_80">#FF7654</color>
+    <color name="baseline_primary_40">#EA3A0D</color>
+    <color name="baseline_primary_20">@color/modern_blue_600</color>
+    <color name="baseline_primary_10">@color/modern_blue_700</color>
     <color name="black_alpha_30">#4D000000</color>
     <color name="black_alpha_50">#80000000</color>
     <color name="modern_blue_300">#FF7654</color>
@@ -93,7 +93,7 @@
 
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
-    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
+    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
     <color name="brave_wallet_button_pressed">#737ADE</color>
     <color name="brave_add_widget_button_pressed">#737ADE</color>
 

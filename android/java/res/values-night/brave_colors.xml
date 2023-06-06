@@ -8,13 +8,13 @@
 <resources>
     <!-- Theme colors -->
     <!-- Overriding chromium theme colors to brave theme colors -->
-    <color name="baseline_primary_100">#5B2A23</color>
-    <color name="baseline_primary_200">#F35333</color>
+    <color name="baseline_primary_90">#5B2A23</color>
+    <color name="baseline_primary_80">#F35333</color>
     <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark_baseline">@color/default_bg_color_baseline</color>
 
     <!-- Theme colors -->
-    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
+    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
     <color name="brave_link">#A0A5EB</color>
 
     <color name="onboarding_text_color">#F0F2FF</color>
