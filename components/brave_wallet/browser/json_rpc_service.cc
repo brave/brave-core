@@ -207,6 +207,36 @@ absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
   return converted_json;
 }
 
+// Retrieves a custom network dict from the preferences based on the chain ID.
+// This function is templated to work with both base::Value::Dict as well as
+// const base::Value::Dict types, for read/write and read-only access
+// respectively.
+template <typename T>
+T* GetCustomEVMNetworkFromPrefsDict(const std::string& chain_id,
+                                    T& custom_networks) {
+  auto* custom_evm_networks =
+      custom_networks.FindList(brave_wallet::kEthereumPrefKey);
+  if (!custom_evm_networks) {
+    return nullptr;
+  }
+
+  for (auto& item : *custom_evm_networks) {
+    T* custom_network = item.GetIfDict();
+    if (!custom_network) {
+      continue;
+    }
+
+    const std::string* id = custom_network->FindString("chainId");
+    if (!id || *id != chain_id) {
+      continue;
+    }
+
+    return custom_network;
+  }
+
+  return nullptr;
+}
+
 namespace solana {
 // https://github.com/solana-labs/solana/blob/f7b2951c79cd07685ed62717e78ab1c200924924/rpc/src/rpc.rs#L1717
 constexpr char kAccountNotCreatedError[] = "could not find account";
@@ -629,26 +659,33 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
     changed = prefs_->GetBoolean(kSupportEip1559OnLocalhostChain) != is_eip1559;
     prefs_->SetBoolean(kSupportEip1559OnLocalhostChain, is_eip1559);
   } else {
-    // TODO(apaymyshev): move all work with kBraveWalletCustomNetworks into one
-    // file.
-    ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
-    for (base::Value& item : *update->FindList(kEthereumPrefKey)) {
-      base::Value::Dict* custom_network = item.GetIfDict();
-      if (!custom_network) {
-        continue;
+    // TODO(apaymyshev): move all work with kBraveWalletCustomNetworks into
+    // one file.
+
+    // Read is_eip1559 field of the custom network from prefs, without
+    // triggering notifications. See comments in the next block for more
+    // details.
+    auto& custom_networks = prefs_->GetDict(kBraveWalletCustomNetworks);
+    auto* custom_network =
+        GetCustomEVMNetworkFromPrefsDict(chain_id, custom_networks);
+    if (!custom_network) {
+      return;
+    }
+    changed =
+        custom_network->FindBool("is_eip1559").value_or(false) != is_eip1559;
+
+    // ScopedDictPrefUpdate always notifies PrefObservers at destruction time.
+    // Initialize ScopedDictPrefUpdate only if is_eip1559 field of the custom
+    // network has changed, to avoid unnecessary notifications.
+    if (changed) {
+      ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
+      auto* custom_network_for_update =
+          GetCustomEVMNetworkFromPrefsDict(chain_id, *update);
+      if (!custom_network_for_update) {
+        return;
       }
 
-      const std::string* id = custom_network->FindString("chainId");
-      if (!id || *id != chain_id) {
-        continue;
-      }
-
-      changed =
-          custom_network->FindBool("is_eip1559").value_or(false) != is_eip1559;
-      custom_network->Set("is_eip1559", is_eip1559);
-      // Break the loop cuz we don't expect multiple entries with the same
-      // chainId in the list.
-      break;
+      custom_network_for_update->Set("is_eip1559", is_eip1559);
     }
   }
 
