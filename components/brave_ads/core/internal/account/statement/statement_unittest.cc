@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
+#include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -41,7 +41,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.0;
     expected_statement->min_earnings_this_month =
-        0.02 * kMinEstimatedEarningsMultiplier;
+        0.02 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.02;
     expected_statement->next_payment_date =
         TimeFromString("7 December 2020 23:59:59.999", /*is_local*/ false);
@@ -105,7 +105,7 @@ TEST_F(BraveAdsStatementTest,
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.01;
     expected_statement->min_earnings_this_month =
-        0.05 * kMinEstimatedEarningsMultiplier;
+        0.05 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.05;
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
@@ -158,7 +158,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.01;
     expected_statement->min_earnings_this_month =
-        0.04 * kMinEstimatedEarningsMultiplier;
+        0.04 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.04;
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
@@ -216,7 +216,7 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactionsForThisMonth) {
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.0;
     expected_statement->min_earnings_this_month =
-        0.01 * kMinEstimatedEarningsMultiplier;
+        0.01 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.02;
     expected_statement->next_payment_date =
         TimeFromString("7 December 2020 23:59:59.999", /*is_local*/ false);

@@ -17,8 +17,6 @@ class Time;
 
 namespace brave_ads {
 
-constexpr double kMinEstimatedEarningsMultiplier = 0.8;
-
 base::Time GetNextPaymentDate(const TransactionList& transactions);
 
 std::pair</*range_low*/ double, /*range_high*/ double>

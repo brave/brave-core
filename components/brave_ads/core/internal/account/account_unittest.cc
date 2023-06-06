@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_opted_in_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder_unittest_constants.h"
@@ -19,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
@@ -490,7 +490,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.01;
     expected_statement->min_earnings_this_month =
-        0.05 * kMinEstimatedEarningsMultiplier;
+        0.05 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.05;
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);

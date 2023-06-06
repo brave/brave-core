@@ -81,7 +81,7 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
   const auto [min, max] = GetEstimatedEarningsForThisMonth(transactions);
 
   // Assert
-  EXPECT_DOUBLE_EQ(0.07 * kMinEstimatedEarningsMultiplier, min);
+  EXPECT_DOUBLE_EQ(0.07 * kMinEstimatedEarningsMultiplier.Get(), min);
   EXPECT_DOUBLE_EQ(0.09, max);
 }
 
