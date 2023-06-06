@@ -88,10 +88,8 @@ void PageDistiller::OnGetOuterHTML(DistillContentCallback callback,
   if (state_ == State::kDistilled) {
     return std::move(callback).Run(true, std::move(result).TakeString());
   } else {
-    auto* profile =
-        Profile::FromBrowserContext(web_contents_->GetBrowserContext());
-    auto* speedreader_service =
-        SpeedreaderServiceFactory::GetForProfile(profile);
+    auto* speedreader_service = SpeedreaderServiceFactory::GetForBrowserContext(
+        web_contents_->GetBrowserContext());
     auto* speedreader_service_rewriter =
         g_brave_browser_process->speedreader_rewriter_service();
     if (!speedreader_service || !speedreader_service_rewriter) {

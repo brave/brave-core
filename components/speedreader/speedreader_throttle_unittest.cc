@@ -8,15 +8,13 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/speedreader/speedreader_rewriter_service.h"
+#include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "brave/components/speedreader/speedreader_throttle_delegate.h"
-#include "brave/components/speedreader/speedreader_util.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/site_instance.h"
@@ -69,12 +67,8 @@ class SpeedreaderThrottleTest : public testing::Test {
 
   GURL url() { return GURL("https://brave.com"); }
 
-  TestingProfile* profile() { return profile_; }
-
-  content::WebContents* web_contents() { return web_contents_.get(); }
-
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(profile());
+  SpeedreaderService* speedreader() {
+    return SpeedreaderServiceFactory::GetForBrowserContext(profile_);
   }
 
   std::unique_ptr<SpeedReaderThrottle> speedreader_throttle(
@@ -82,7 +76,7 @@ class SpeedreaderThrottleTest : public testing::Test {
       bool check_disabled_sites = false) {
     auto runner = content::GetUIThreadTaskRunner({});
     return SpeedReaderThrottle::MaybeCreateThrottleFor(
-        nullptr, nullptr, content_settings(), delegate_.AsWeakPtr(), url,
+        nullptr, speedreader(), delegate_.AsWeakPtr(), url,
         check_disabled_sites, runner);
   }
 
@@ -104,7 +98,7 @@ TEST_F(SpeedreaderThrottleTest, ToggleThrottle) {
   auto runner = content::GetUIThreadTaskRunner({});
   std::unique_ptr<SpeedReaderThrottle> throttle;
 
-  speedreader::SetEnabledForSite(content_settings(), url(), false);
+  speedreader()->EnableForSite(url(), false);
   throttle = speedreader_throttle(url(), true /* check_disabled_sites */);
   EXPECT_EQ(throttle.get(), nullptr);
   // no other domains are affected by the rule.
@@ -112,7 +106,7 @@ TEST_F(SpeedreaderThrottleTest, ToggleThrottle) {
                                   true /* check_disabled_sites */);
   EXPECT_NE(throttle.get(), nullptr);
 
-  speedreader::SetEnabledForSite(content_settings(), url(), true);
+  speedreader()->EnableForSite(url(), true);
   throttle = speedreader_throttle(url(), true /* check_disabled_sites */);
   EXPECT_NE(throttle.get(), nullptr);
 }
@@ -121,7 +115,7 @@ TEST_F(SpeedreaderThrottleTest, ThrottleIgnoreDisabled) {
   auto runner = content::GetUIThreadTaskRunner({});
   std::unique_ptr<SpeedReaderThrottle> throttle;
 
-  speedreader::SetEnabledForSite(content_settings(), url(), false);
+  speedreader()->EnableForSite(url(), false);
 
   throttle = speedreader_throttle(url(), true /* check_disabled_sites */);
   EXPECT_EQ(throttle.get(), nullptr);
@@ -136,8 +130,9 @@ TEST_F(SpeedreaderThrottleTest, ThrottleNestedURL) {
 
   // Even though we call this function on SetSiteSpeedreadable, it should apply
   // to all of brave.com.
-  speedreader::SetEnabledForSite(
-      content_settings(), GURL("https://brave.com/some/nested/page"), false);
+  speedreader()->EnableForSite(GURL("https://brave.com/some/nested/page"),
+                               false);
+
   throttle = speedreader_throttle(url(), true /* check_disabled_sites */);
   EXPECT_EQ(throttle.get(), nullptr);
 }

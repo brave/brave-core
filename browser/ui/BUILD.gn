@@ -679,14 +679,8 @@ source_set("ui") {
       "views/speedreader/reader_mode_bubble.h",
       "views/speedreader/reader_mode_toolbar_view.cc",
       "views/speedreader/reader_mode_toolbar_view.h",
-      "views/speedreader/speedreader_bubble_util.cc",
-      "views/speedreader/speedreader_bubble_util.h",
-      "views/speedreader/speedreader_dancing_books.cc",
-      "views/speedreader/speedreader_dancing_books.h",
       "views/speedreader/speedreader_icon_view.cc",
       "views/speedreader/speedreader_icon_view.h",
-      "views/speedreader/speedreader_mode_bubble.cc",
-      "views/speedreader/speedreader_mode_bubble.h",
     ]
   }
 

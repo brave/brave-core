@@ -7,28 +7,21 @@
 
 #include <string>
 
-#include "base/feature_list.h"
-#include "base/notreached.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/theme_provider.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/animation/ink_drop_host.h"
 #include "ui/views/animation/ink_drop_state.h"
-
-using DistillState = speedreader::DistillState;
 
 SpeedreaderIconView::SpeedreaderIconView(
     CommandUpdater* command_updater,
@@ -46,9 +39,8 @@ SpeedreaderIconView::SpeedreaderIconView(
 SpeedreaderIconView::~SpeedreaderIconView() = default;
 
 void SpeedreaderIconView::UpdateImpl() {
-  const DistillState state = GetDistillState();
-  if (!speedreader::PageStateIsDistilled(state) &&
-      !speedreader::PageSupportsDistillation(state)) {
+  const auto state = GetDistillState();
+  if (!speedreader::DistillStates::IsDistillable(state)) {
     SetVisible(false);
     return;
   }
@@ -59,11 +51,11 @@ void SpeedreaderIconView::UpdateImpl() {
   }
 
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    if (speedreader::PageStateIsDistilled(state)) {
+    if (speedreader::DistillStates::IsDistilled(state)) {
       const SkColor icon_color_active =
           color_provider->GetColor(kColorSpeedreaderIcon);
       SetIconColor(icon_color_active);
-    } else if (speedreader::PageSupportsDistillation(state)) {
+    } else {
       // Reset the icon color
       const SkColor icon_color_default =
           color_provider->GetColor(kColorOmniboxResultsIcon);
@@ -75,24 +67,32 @@ void SpeedreaderIconView::UpdateImpl() {
   SetVisible(true);
 }
 
+bool SpeedreaderIconView::OnMousePressed(const ui::MouseEvent& event) {
+  if (event.IsOnlyRightMouseButton() && event.type() == ui::ET_MOUSE_PRESSED) {
+    auto* web_contents = GetWebContents();
+    if (!web_contents) {
+      return PageActionIconView::OnMousePressed(event);
+    }
+    auto* tab_helper =
+        speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+    if (!tab_helper) {
+      return PageActionIconView::OnMousePressed(event);
+    }
+    tab_helper->ShowSpeedreaderBubble(
+        speedreader::SpeedreaderBubbleLocation::kLocationBar);
+  }
+  return PageActionIconView::OnMousePressed(event);
+}
+
 const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {
   return kLeoProductReadermodeIcon;
 }
 
 std::u16string SpeedreaderIconView::GetTextForTooltipAndAccessibleName() const {
-  int id;
-  const DistillState state = GetDistillState();
-  switch (state) {
-    case DistillState::kSpeedreaderMode:
-    case DistillState::kSpeedreaderOnDisabledPage:
-      id = IDS_SPEEDREADER_ICON_SPEEDREADER_SETTINGS;
-      break;
-    case DistillState::kReaderMode:
-      id = IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE;
-      break;
-    default:
-      id = IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE;
-  }
+  const auto state = GetDistillState();
+  const int id = (speedreader::DistillStates::IsDistilled(state))
+                     ? IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE
+                     : IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE;
   return brave_l10n::GetLocalizedResourceUTF16String(id);
 }
 
@@ -115,17 +115,17 @@ views::BubbleDialogDelegate* SpeedreaderIconView::GetBubble() const {
       tab_helper->speedreader_bubble_view());
 }
 
-DistillState SpeedreaderIconView::GetDistillState() const {
-  DistillState state = DistillState::kUnknown;
+speedreader::DistillState SpeedreaderIconView::GetDistillState() const {
   auto* web_contents = GetWebContents();
   if (web_contents) {
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
     if (tab_helper) {
-      state = tab_helper->PageDistillState();
+      return tab_helper->PageDistillState();
+    }
     }
   }
-  return state;
+  return {};
 }
 
 BEGIN_METADATA(SpeedreaderIconView, PageActionIconView)

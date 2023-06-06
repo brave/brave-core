@@ -76,12 +76,7 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
-#include "brave/browser/ui/views/speedreader/speedreader_mode_bubble.h"
-#include "brave/components/constants/webui_url_constants.h"
-#include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
-#include "components/grit/brave_components_strings.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -385,23 +380,26 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
 
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
     speedreader::SpeedreaderTabHelper* tab_helper,
-    bool is_enabled) {
-  speedreader::SpeedreaderBubbleView* bubble = nullptr;
-  if (is_enabled) {
-    auto* speedreader_mode_bubble = new speedreader::SpeedreaderModeBubble(
-        GetLocationBarView(), tab_helper);
-    views::BubbleDialogDelegateView::CreateBubble(speedreader_mode_bubble);
-    bubble = speedreader_mode_bubble;
-  } else {
-    auto* reader_mode_bubble =
-        new speedreader::ReaderModeBubble(GetLocationBarView(), tab_helper);
-    views::BubbleDialogDelegateView::CreateBubble(reader_mode_bubble);
-    bubble = reader_mode_bubble;
+    speedreader::SpeedreaderBubbleLocation location) {
+  views::View* anchor = nullptr;
+  views::BubbleBorder::Arrow arrow = views::BubbleBorder::NONE;
+  switch (location) {
+    case speedreader::SpeedreaderBubbleLocation::kLocationBar:
+      anchor = GetLocationBarView();
+      arrow = views::BubbleBorder::TOP_RIGHT;
+      break;
+    case speedreader::SpeedreaderBubbleLocation::kToolbar:
+      anchor = reader_mode_toolbar_view_->toolbar();
+      arrow = views::BubbleBorder::TOP_LEFT;
+      break;
   }
 
-  bubble->Show();
-
-  return bubble;
+  auto* reader_mode_bubble =
+      new speedreader::ReaderModeBubble(anchor, tab_helper);
+  views::BubbleDialogDelegateView::CreateBubble(reader_mode_bubble);
+  reader_mode_bubble->SetArrow(arrow);
+  reader_mode_bubble->Show();
+  return reader_mode_bubble;
 }
 
 void BraveBrowserView::ShowReaderModeToolbar() {

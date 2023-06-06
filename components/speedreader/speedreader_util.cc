@@ -6,66 +6,132 @@
 #include "brave/components/speedreader/speedreader_util.h"
 
 #include <memory>
-#include <tuple>
 #include <utility>
 
-#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/common/content_settings.h"
-#include "components/content_settings/core/common/content_settings_pattern.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 #include "url/gurl.h"
 
 namespace speedreader {
 
-bool PageSupportsDistillation(DistillState state) {
-  return state == DistillState::kSpeedreaderOnDisabledPage ||
-         state == DistillState::kPageProbablyReadable;
+namespace DistillStates {
+
+bool IsTransition(const State& state) {
+  if (absl::holds_alternative<None>(state)) {
+    return false;
+  }
+  if (const auto* s = absl::get_if<ViewOriginal>(&state)) {
+    return s->reason == ViewOriginal::Reason::kUserAction;
+  }
+  if (IsPending(state)) {
+    return true;
+  } else if (IsDistilled(state)) {
+    return false;
+  }
+  NOTREACHED();
+  return false;
 }
 
-bool PageStateIsDistilled(DistillState state) {
-  return state == DistillState::kReaderMode ||
-         state == DistillState::kSpeedreaderMode;
+bool IsPending(const State& state) {
+  return absl::holds_alternative<Pending>(state);
 }
 
-bool PageWantsDistill(DistillState state) {
-  return state == DistillState::kReaderMode ||
-         state == DistillState::kSpeedreaderMode ||
-         state == DistillState::kReaderModePending ||
-         state == DistillState::kSpeedreaderModePending;
+bool IsDistilled(const State& state) {
+  return absl::holds_alternative<Distilled>(state);
 }
 
-void SetEnabledForSite(HostContentSettingsMap* map,
-                       const GURL& url,
-                       bool enable) {
-  DCHECK(!url.is_empty());  // Not supported. Disable Speedreader in settings.
+bool IsDistillable(const State& state) {
+  return IsDistilled(state) ||
+         (IsViewOriginal(state) &&
+          absl::get<DistillStates::ViewOriginal>(state).reason !=
+              DistillStates::ViewOriginal::Reason::kError);
+}
 
-  // Rule covers all protocols and pages.
-  auto pattern = ContentSettingsPattern::FromString("*://" + url.host() + "/*");
-  if (!pattern.IsValid()) {
-    return;
+bool IsViewOriginal(const State& state) {
+  return absl::holds_alternative<ViewOriginal>(state);
+}
+
+bool IsNotDistillable(const State& state) {
+  return IsViewOriginal(state) &&
+         absl::get<DistillStates::ViewOriginal>(state).reason ==
+             DistillStates::ViewOriginal::Reason::kError;
+}
+
+}  // namespace DistillStates
+
+bool TransitToDistilledDirection(
+    DistillState& state,
+    DistillStates::Pending::Reason reason,
+    DistillationResult result = DistillationResult::kNone) {
+  if (absl::holds_alternative<DistillStates::Pending>(state)) {
+    if (result == DistillationResult::kSuccess) {
+      state = DistillStates::Distilled(result);
+      return false;
+    } else {
+      // Distillation failed.
+      state = DistillStates::ViewOriginal(
+          DistillStates::ViewOriginal::Reason::kError);
+    }
+    return false;
+  }
+  if (absl::holds_alternative<DistillStates::ViewOriginal>(state)) {
+    state = DistillStates::Pending(reason);
+    return true;
+  }
+  if (absl::holds_alternative<DistillStates::Distilled>(state)) {
+    // Already distilled.
+    return false;
   }
 
-  ContentSetting setting =
-      enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
-  map->SetContentSettingCustomScope(pattern, ContentSettingsPattern::Wildcard(),
-                                    ContentSettingsType::BRAVE_SPEEDREADER,
-                                    setting);
+  NOTREACHED();
+  return false;
 }
 
-bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url) {
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::BRAVE_SPEEDREADER);
-  const bool enabled =
-      setting == CONTENT_SETTING_ALLOW || setting == CONTENT_SETTING_DEFAULT;
-  return enabled;
+bool TransitToOriginalDirection(DistillState& state, DistillState&& desired) {
+  if (absl::holds_alternative<DistillStates::ViewOriginal>(state)) {
+    // Already shows original.
+    state = std::move(desired);
+    return false;
+  }
+  if (absl::holds_alternative<DistillStates::Pending>(state) ||
+      absl::holds_alternative<DistillStates::Distilled>(state)) {
+    state = std::move(desired);
+    return true;
+  }
+
+  NOTREACHED();
+  return false;
+}
+
+bool Transit(DistillState& state, DistillState&& desired) {
+  if (absl::holds_alternative<DistillStates::None>(desired)) {
+    // Nothing to do.
+  } else if (absl::holds_alternative<DistillStates::ViewOriginal>(desired)) {
+    return TransitToOriginalDirection(state, std::move(desired));
+  } else if (absl::holds_alternative<DistillStates::Pending>(desired)) {
+    return TransitToDistilledDirection(
+        state, absl::get<DistillStates::Pending>(desired).reason);
+  } else {
+    CHECK(absl::holds_alternative<DistillStates::Distilled>(desired));
+    return TransitToDistilledDirection(
+        state, DistillStates::Pending::Reason::kNone,
+        absl::get<DistillStates::Distilled>(desired).result);
+  }
+  return false;
+}
+
+void PerformStateTransition(DistillState& state) {
+  if (absl::holds_alternative<DistillStates::None>(state)) {
+    NOTREACHED() << "'None' is not transition state.";
+    return;
+  }
+  if (auto* s = absl::get_if<DistillStates::ViewOriginal>(&state)) {
+    s->reason = DistillStates::ViewOriginal::Reason::kNone;
+  }
 }
 
 void DistillPage(const GURL& url,

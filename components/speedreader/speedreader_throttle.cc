@@ -11,14 +11,12 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/speedreader/speedreader_local_url_loader.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_url_loader.h"
 #include "brave/components/speedreader/speedreader_util.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/common/content_settings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/system/data_pipe.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
@@ -29,7 +27,6 @@ std::unique_ptr<SpeedReaderThrottle>
 SpeedReaderThrottle::MaybeCreateThrottleFor(
     SpeedreaderRewriterService* rewriter_service,
     SpeedreaderService* speedreader_service,
-    HostContentSettingsMap* content_settings,
     base::WeakPtr<SpeedreaderThrottleDelegate> speedreader_delegate,
     const GURL& url,
     bool check_disabled_sites,
@@ -38,9 +35,6 @@ SpeedReaderThrottle::MaybeCreateThrottleFor(
   if (!speedreader_delegate->IsPageDistillationAllowed()) {
     return nullptr;
   }
-
-  if (check_disabled_sites && !IsEnabledForSite(content_settings, url))
-    return nullptr;
 
   return std::make_unique<SpeedReaderThrottle>(
       rewriter_service, speedreader_service, speedreader_delegate, task_runner);

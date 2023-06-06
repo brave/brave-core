@@ -16,8 +16,6 @@
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "url/gurl.h"
 
-class HostContentSettingsMap;
-
 namespace speedreader {
 
 class SpeedreaderThrottleDelegate;
@@ -47,7 +45,6 @@ class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
   static std::unique_ptr<SpeedReaderThrottle> MaybeCreateThrottleFor(
       SpeedreaderRewriterService* rewriter_service,
       SpeedreaderService* speedreader_service,
-      HostContentSettingsMap* content_settings,
       base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
       const GURL& url,
       bool check_disabled_sites,

@@ -9,69 +9,46 @@
 #include <string>
 #include <utility>
 
-#include "base/functional/bind.h"
-#include "base/notreached.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
-#include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
-#include "brave/components/constants/url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/speedreader_service.h"
-#include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
-#include "chrome/grit/generated_resources.h"
-#include "components/strings/grit/components_strings.h"
-#include "content/public/browser/page_navigator.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_ui_controller.h"
-#include "content/public/common/referrer.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/color/color_id.h"
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/insets.h"
-#include "ui/views/controls/button/md_text_button.h"
+#include "ui/views/controls/button/toggle_button.h"
 #include "ui/views/controls/label.h"
-#include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/view.h"
 
 namespace {
 
-constexpr int kBubbleWidth = 264;  // width is 264 pixels
+constexpr int kBubbleWidth = 256;
 
-constexpr int kFontHeading = 16;  // heading text font size
+constexpr const int kBoxLayoutChildSpacing = 16;
+constexpr const int kToggleLineHeight = 18;
+constexpr const int kToggleFontSize = 14;
 
-constexpr int kFontSizeButton = 13;  // button text font size
+constexpr const int kNotesFontSize = 12;
+constexpr const int kNotesLineHeight = 16;
+
+constexpr const int kCornerRadius = 8;
 
 }  // anonymous namespace
 
 namespace speedreader {
 
-// Material Design button, overriding the font list in the LabelButton.
-class ReaderButton : public views::MdTextButton {
- public:
-  explicit ReaderButton(PressedCallback callback = PressedCallback(),
-                        const std::u16string& text = std::u16string(),
-                        int button_context = views::style::CONTEXT_BUTTON_MD)
-      : views::MdTextButton(callback, text, button_context) {
-    label()->SetFontList(GetFont(kFontSizeButton, gfx::Font::Weight::SEMIBOLD));
-  }
-
-  void SetEnabledColor(SkColor color) { label()->SetEnabledColor(color); }
-  ~ReaderButton() override = default;
-};
-
 ReaderModeBubble::ReaderModeBubble(views::View* anchor_view,
                                    SpeedreaderTabHelper* tab_helper)
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
       tab_helper_(tab_helper) {
-  SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
+  DCHECK(GetSpeedreaderService());
 
-  gfx::Insets m = margins();
-  m.set_bottom(kBubbleBottomMargin);
-  set_margins(m);
+  SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
+  set_margins(gfx::Insets(0));
 }
 
 void ReaderModeBubble::Show() {
@@ -93,7 +70,7 @@ gfx::Size ReaderModeBubble::CalculatePreferredSize() const {
 }
 
 bool ReaderModeBubble::ShouldShowCloseButton() const {
-  return true;
+  return false;
 }
 
 void ReaderModeBubble::WindowClosing() {
@@ -108,53 +85,108 @@ void ReaderModeBubble::Init() {
       views::BoxLayout::Orientation::kVertical, gfx::Insets(),
       kBoxLayoutChildSpacing));
 
-  // Heading
-  auto heading_label = std::make_unique<views::Label>(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_SPEEDREADER_ASK_ENABLE));
-  heading_label->SetMultiLine(true);
-  heading_label->SetFontList(
-      GetFont(kFontHeading, gfx::Font::Weight::SEMIBOLD));
-  heading_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  heading_label_ = AddChildView(std::move(heading_label));
+  SetPaintClientToLayer(true);
+  set_use_round_corners(true);
+  set_corner_radius(kCornerRadius);
 
-  // Explanation of Speedreader features
-  auto global_toggle_label = BuildLabelWithEndingLink(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_SPEEDREADER_EXPLANATION),
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_LEARN_MORE),
-      base::BindRepeating(&ReaderModeBubble::OnLinkClicked,
-                          base::Unretained(this)));
-  global_toggle_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  global_toggle_label->SetLineHeight(kLineHeight);
-  global_toggle_label_ = AddChildView(std::move(global_toggle_label));
+  const auto add_toogle = [this](int ids, int acc_ids,
+                                 const gfx::Insets& insets,
+                                 const gfx::Insets& border) {
+    auto font = gfx::FontList();
+    font = font.DeriveWithSizeDelta(
+        std::abs(kToggleFontSize - font.GetFontSize()));
 
-  // Enable Speedreader button
-  auto enable_speedreader_button = std::make_unique<ReaderButton>(
-      base::BindRepeating(&ReaderModeBubble::OnButtonPressed,
-                          base::Unretained(this)),
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SPEEDREADER_ENABLE_BUTTON));
-  enable_speedreader_button_ =
-      AddChildView(std::move(enable_speedreader_button));
+    auto* box = AddChildView(std::make_unique<views::View>());
 
-  // Speedreader Graphic
-  AddChildView(std::make_unique<SpeedreaderDancingBooks>());
+    auto* layout = box->SetLayoutManager(std::make_unique<views::BoxLayout>(
+        views::BoxLayout::Orientation::kHorizontal, insets));
+
+    if (!border.IsEmpty()) {
+      box->SetBorder(
+          views::CreateThemedSolidSidedBorder(border, ui::kColorMenuSeparator));
+    }
+
+    auto label = std::make_unique<views::Label>();
+    label->SetText(brave_l10n::GetLocalizedResourceUTF16String(ids));
+    label->SetFontList(font);
+    label->SetLineHeight(kToggleLineHeight);
+    label->SetMultiLine(true);
+    // label->SetMaximumWidth(kToggleWidth);
+    label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+    layout->SetFlexForView(box->AddChildView(std::move(label)),
+                           1);  // show the button and force text to wrap
+    layout->set_main_axis_alignment(views::BoxLayout::MainAxisAlignment::kEnd);
+
+    auto toggle = std::make_unique<views::ToggleButton>();
+    toggle->SetAccessibleName(
+        brave_l10n::GetLocalizedResourceUTF16String(acc_ids));
+    return box->AddChildView(std::move(toggle));
+  };
+
+  // Always use speedreader for this site
+  {
+    site_toggle_ = add_toogle(IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL,
+                              IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_ACC,
+                              gfx::Insets::TLBR(24, 24, 0, 24), gfx::Insets());
+    site_toggle_->SetCallback(base::BindRepeating(
+        &ReaderModeBubble::OnSiteToggled, base::Unretained(this)));
+    site_toggle_->SetIsOn(GetSpeedreaderService()->GetEnabledForSiteSetting(
+                              tab_helper_->web_contents()) ==
+                          CONTENT_SETTING_ALLOW);
+  }
+
+  // Always use speedreader for all sites
+  {
+    all_sites_toggle_ = add_toogle(
+        IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL,
+        IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_ACC,
+        gfx::Insets::TLBR(0, 24, 24, 24), gfx::Insets::TLBR(0, 0, 1, 0));
+    all_sites_toggle_->SetCallback(base::BindRepeating(
+        &ReaderModeBubble::OnAllSitesToggled, base::Unretained(this)));
+    all_sites_toggle_->SetIsOn(GetSpeedreaderService()->IsEnabledForAllSites());
+  }
+
+  // Notes section
+  {
+    auto* box = AddChildView(std::make_unique<views::View>());
+    auto* layout = box->SetLayoutManager(std::make_unique<views::BoxLayout>(
+        views::BoxLayout::Orientation::kHorizontal,
+        gfx::Insets::TLBR(0, 16, 16, 16)));
+    layout->set_main_axis_alignment(
+        views::BoxLayout::MainAxisAlignment::kCenter);
+    layout->set_cross_axis_alignment(
+        views::BoxLayout::CrossAxisAlignment::kCenter);
+
+    auto font = gfx::FontList();
+    font =
+        font.DeriveWithSizeDelta(std::abs(kNotesFontSize - font.GetFontSize()));
+
+    auto label = std::make_unique<views::Label>();
+    label->SetText(brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_READER_MODE_NOTE_LABEL));
+    label->SetFontList(font);
+    label->SetMultiLine(true);
+    label->SetLineHeight(kNotesLineHeight);
+    label->SetEnabledColorId(ui::kColorSecondaryForeground);
+    layout->SetFlexForView(box->AddChildView(std::move(label)), 1);
+  }
 }
 
-void ReaderModeBubble::OnButtonPressed(const ui::Event& event) {
-  auto* contents = tab_helper_->web_contents();
-  Profile* profile = Profile::FromBrowserContext(contents->GetBrowserContext());
-  auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
-  speedreader_service->ToggleSpeedreader();
-  tab_helper_->web_contents()->GetController().Reload(
-      content::ReloadType::NORMAL, false);
-  CloseBubble();
+SpeedreaderService* ReaderModeBubble::GetSpeedreaderService() {
+  return speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
+      tab_helper_->web_contents()->GetBrowserContext());
 }
 
-void ReaderModeBubble::OnLinkClicked(const ui::Event& event) {
-  tab_helper_->web_contents()->OpenURL(content::OpenURLParams(
-      GURL(kSpeedreaderLearnMoreUrl), content::Referrer(),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
-      false));
+void ReaderModeBubble::OnSiteToggled(const ui::Event& event) {
+  DCHECK_EQ(event.target(), site_toggle_);
+  const bool on = site_toggle_->GetIsOn();
+  GetSpeedreaderService()->EnableForSite(tab_helper_->web_contents(), on);
+}
+
+void ReaderModeBubble::OnAllSitesToggled(const ui::Event& event) {
+  DCHECK_EQ(event.target(), all_sites_toggle_);
+  const bool on = all_sites_toggle_->GetIsOn();
+  GetSpeedreaderService()->EnableForAllSites(on);
 }
 
 BEGIN_METADATA(ReaderModeBubble, LocationBarBubbleDelegateView)

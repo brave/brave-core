@@ -20,7 +20,7 @@ function ReaderModeControl(props: ReaderModeControlProps) {
         <Icon name='product-readermode' />
         {getLocale('braveReaderModeCaption')}
       </S.Caption>
-      <S.CloseButton onClick={() => { props.onClose?.() }} title={getLocale('braveReaderModeExit')}>
+      <S.CloseButton id="close" onClick={() => { props.onClose?.() }} title={getLocale('braveReaderModeExit')}>
         <Icon name='close' />
       </S.CloseButton>
     </S.Box>

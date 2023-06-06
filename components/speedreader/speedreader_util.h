@@ -9,55 +9,13 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
-
-class GURL;
-class HostContentSettingsMap;
+#include "third_party/abseil-cpp/absl/types/variant.h"
+#include "url/gurl.h"
 
 namespace speedreader {
 
 class SpeedreaderService;
 class SpeedreaderRewriterService;
-
-// DistillState is an enum for the current state of a speedreader WebContents
-enum class DistillState {
-  // Used as an initialization state
-  kUnknown,
-
-  // The web contents is not distilled
-  kNone,
-
-  // -------------------------------------------------------------------------
-  // Pending states. The user requested the page be distilled.
-  //
-  // TODO(keur): Should we use bitstrings and make pending a bit both
-  // speedreader and reader mode can share?
-
-  // Reader mode state that can only be reached when Speedreader is disabled
-  // The Speedreader icon will pop up in the address bar, and the user clicks
-  // it. It runs Speedreader is "Single Shot Mode".  The Speedreader throttle
-  // is created for the following request, then deactivated.
-  //
-  // The first time a user activates reader mode on a page, a bubble drops
-  // down asking them to enable the Speedreader feature for automatic
-  // distillation.
-  kReaderModePending,
-
-  // Speedreader is enabled and the page was automatically distilled.
-  kSpeedreaderModePending,
-  // -------------------------------------------------------------------------
-
-  // kReaderModePending was ACKed
-  kReaderMode,
-
-  // kSpeedreaderModePending was ACKed
-  kSpeedreaderMode,
-
-  // Speedreader is enabled, but the page was blacklisted by the user.
-  kSpeedreaderOnDisabledPage,
-
-  // Speedreader is disabled, the URL passes the heuristic.
-  kPageProbablyReadable,
-};
 
 enum class DistillationResult : int {
   kNone,
@@ -65,23 +23,50 @@ enum class DistillationResult : int {
   kFail,
 };
 
-// Page is in reader mode or speedreader mode.
-bool PageStateIsDistilled(DistillState state);
+namespace DistillStates {
 
-// Page can be distilled.
-bool PageSupportsDistillation(DistillState state);
+using None = absl::monostate;
 
-// Page is in reader mode, speedreader mode, or a pending state.
-bool PageWantsDistill(DistillState state);
+struct ViewOriginal {
+  enum class Reason {
+    kNone,        // Original page shown because no action was performed.
+    kUserAction,  // Reader mode toggle clicked or settings changed.
+    kError,       // Original page shown because distillation was failed.
+  } reason = Reason::kNone;
 
-// Enable or disable Speedreader using a ContentSettingPattern derived from the
-// url.
-void SetEnabledForSite(HostContentSettingsMap* map,
-                       const GURL& url,
-                       bool enable);
+  GURL url;
+};
 
-// Checks content settings if Speedreader is disabled for the URL
-bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url);
+struct Pending {
+  enum class Reason {
+    kNone,
+    kAutomatic,  // Speedreader mode.
+    kManual,     // Reader mode toggle clicked or settings changed.
+  } reason = Reason::kNone;
+};
+
+struct Distilled {
+  DistillationResult result = DistillationResult::kNone;
+};
+
+using State = absl::variant<DistillStates::None,
+                            DistillStates::ViewOriginal,
+                            DistillStates::Pending,
+                            DistillStates::Distilled>;
+
+bool IsTransition(const State& state);
+bool IsPending(const State& state);
+bool IsDistilled(const State& state);
+bool IsDistillable(const State& state);
+bool IsViewOriginal(const State& state);
+bool IsNotDistillable(const State& state);
+
+}  // namespace DistillStates
+
+using DistillState = DistillStates::State;
+
+void PerformStateTransition(DistillState& state);
+bool Transit(DistillState& state, DistillState&& desired);
 
 using DistillationResultCallback =
     base::OnceCallback<void(DistillationResult result,

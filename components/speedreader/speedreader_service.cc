@@ -9,14 +9,18 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
-#include "brave/components/time_period_storage/weekly_storage.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/web_contents.h"
 
 namespace speedreader {
 
@@ -27,66 +31,23 @@ using mojom::FontSize;
 using mojom::PlaybackSpeed;
 using mojom::Theme;
 
-// Note: append-only array! Never remove any existing values, as this array
-// is used to bucket a UMA histogram, and removing values breaks that.
-constexpr std::array<uint64_t, 5> kSpeedReaderToggleBuckets{
-    0,   // 0
-    5,   // >0-5
-    10,  // 6-10
-    20,  // 11-20
-    30,  // 21-30
-         // 30+ => bucket 5
-};
-
-// Note: append-only enumeration! Never remove any existing values, as this enum
-// is used to bucket a UMA histogram, and removing values breaks that.
-enum class EnabledStatus {
-  kUnused,
-  kEverEnabled,
-  kRecentlyUsed,
-  kMaxValue = kRecentlyUsed
-};
-
-constexpr char kSpeedreaderToggleUMAHistogramName[] =
-    "Brave.SpeedReader.ToggleCount";
-
-constexpr char kSpeedreaderEnabledUMAHistogramName[] =
-    "Brave.SpeedReader.Enabled";
-
-void StoreTogglesHistogram(uint64_t toggles) {
-  int bucket = 0;
-  for (const auto& bucket_upper_bound : kSpeedReaderToggleBuckets) {
-    if (toggles > bucket_upper_bound) {
-      bucket = bucket + 1;
-    }
-  }
-
-  UMA_HISTOGRAM_EXACT_LINEAR(kSpeedreaderToggleUMAHistogramName, bucket, 5);
-}
-
-void RecordHistograms(PrefService* prefs, bool toggled, bool enabled_now) {
-  WeeklyStorage weekly_toggles(prefs, kSpeedreaderPrefToggleCount);
-  if (toggled) {
-    weekly_toggles.AddDelta(1);
-  }
-  const uint64_t toggle_count = weekly_toggles.GetWeeklySum();
-  StoreTogglesHistogram(toggle_count);
-
-  // Has been "recently" enabled if currently enabled,
-  // or got disabled this week.
-  EnabledStatus status = EnabledStatus::kUnused;
-  if (enabled_now || toggle_count > 0) {
-    status = EnabledStatus::kRecentlyUsed;
-  } else if (prefs->GetBoolean(kSpeedreaderPrefEverEnabled)) {
-    status = EnabledStatus::kEverEnabled;
-  }
-
-  UMA_HISTOGRAM_ENUMERATION(kSpeedreaderEnabledUMAHistogramName, status);
-}
-
 }  // namespace
 
-SpeedreaderService::SpeedreaderService(PrefService* prefs) : prefs_(prefs) {}
+namespace features {
+
+bool IsSpeedreaderEnabled() {
+  return base::FeatureList::IsEnabled(kSpeedreaderFeature);
+}
+
+}  // namespace features
+
+SpeedreaderService::SpeedreaderService(content::BrowserContext* browser_context,
+                                       HostContentSettingsMap* content_rules)
+    : browser_context_(browser_context),
+      content_rules_(content_rules),
+      prefs_(user_prefs::UserPrefs::Get(browser_context_)) {
+  DCHECK(features::IsSpeedreaderEnabled());
+}
 
 SpeedreaderService::~SpeedreaderService() = default;
 
@@ -125,45 +86,89 @@ void SpeedreaderService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void SpeedreaderService::ToggleSpeedreader() {
-  const bool toggled_value = !prefs_->GetBoolean(kSpeedreaderPrefEnabled);
-  prefs_->SetBoolean(kSpeedreaderPrefEnabled, toggled_value);
-  if (toggled_value) {
-    prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, true);
+bool SpeedreaderService::IsEnabledForAllSites() {
+  return prefs_->GetBoolean(kSpeedreaderPrefEnabled);
+}
+
+ContentSetting SpeedreaderService::GetEnabledForSiteSetting(const GURL& url) {
+  if (!url.is_valid()) {
+    return CONTENT_SETTING_BLOCK;
   }
-  RecordHistograms(prefs_, true, toggled_value);
+  if (!content_rules_) {
+    return CONTENT_SETTING_BLOCK;
+  }
+  return content_rules_->GetContentSetting(
+      url, GURL::EmptyGURL(), ContentSettingsType::BRAVE_SPEEDREADER);
 }
 
-void SpeedreaderService::DisableSpeedreaderForTest() {
-  prefs_->SetBoolean(kSpeedreaderPrefEnabled, false);
-  prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, false);
-  prefs_->SetInteger(kSpeedreaderPrefPromptCount, 0);
+ContentSetting SpeedreaderService::GetEnabledForSiteSetting(
+    content::WebContents* contents) {
+  if (!contents) {
+    return CONTENT_SETTING_BLOCK;
+  }
+  return GetEnabledForSiteSetting(contents->GetLastCommittedURL());
 }
 
-bool SpeedreaderService::IsEnabled() {
-  if (!base::FeatureList::IsEnabled(kSpeedreaderFeature)) {
+bool SpeedreaderService::IsEnabledForSite(const GURL& url) {
+  const auto setting = GetEnabledForSiteSetting(url);
+  if (setting == CONTENT_SETTING_BLOCK) {
+    return false;
+  } else if (setting == CONTENT_SETTING_ALLOW) {
+    return true;
+  }
+  return IsEnabledForAllSites();
+}
+
+bool SpeedreaderService::IsEnabledForSite(content::WebContents* contents) {
+  if (!contents) {
     return false;
   }
-
-  const bool enabled = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
-  RecordHistograms(prefs_, false, enabled);
-  return enabled;
+  return IsEnabledForSite(contents->GetLastCommittedURL());
 }
 
-bool SpeedreaderService::ShouldPromptUserToEnable() const {
-  constexpr int max_speedreader_prompts = 2;
-
-  if (prefs_->GetBoolean(kSpeedreaderPrefEverEnabled) ||
-      prefs_->GetInteger(kSpeedreaderPrefPromptCount) >
-          max_speedreader_prompts) {
-    return false;
+void SpeedreaderService::EnableForAllSites(bool enabled) {
+  if (IsEnabledForAllSites() == enabled) {
+    return;
   }
-  return true;
+  prefs_->SetBoolean(kSpeedreaderPrefEnabled, enabled);
+
+  for (auto& o : observers_) {
+    o.OnAllSitesEnableSettingChanged(enabled);
+  }
 }
 
-void SpeedreaderService::IncrementPromptCount() {
-  const int count = prefs_->GetInteger(kSpeedreaderPrefPromptCount);
-  prefs_->SetInteger(kSpeedreaderPrefPromptCount, count + 1);
+void SpeedreaderService::EnableForSite(const GURL& url, bool enabled) {
+  if (!url.is_valid()) {
+    return;
+  }
+  const ContentSetting setting =
+      enabled ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
+  if (IsEnabledForSite(url) == setting) {
+    return;
+  }
+  if (!content_rules_) {
+    return;
+  }
+  // Rule covers all protocols and pages.
+  const auto pattern =
+      ContentSettingsPattern::FromString("*://" + url.host() + "/*");
+  if (!pattern.IsValid()) {
+    return;
+  }
+
+  content_rules_->SetContentSettingCustomScope(
+      pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_SPEEDREADER, setting);
+}
+
+void SpeedreaderService::EnableForSite(content::WebContents* contents,
+                                       bool enabled) {
+  if (contents) {
+    EnableForSite(contents->GetLastCommittedURL(), enabled);
+    for (auto& o : observers_) {
+      o.OnSiteEnableSettingChanged(contents, enabled);
+    }
+  }
 }
 
 void SpeedreaderService::SetAppearanceSettings(

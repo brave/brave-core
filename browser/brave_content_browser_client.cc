@@ -864,20 +864,14 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 #if BUILDFLAG(ENABLE_SPEEDREADER)
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(contents);
-    auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
-        Profile::FromBrowserContext(browser_context));
     if (tab_helper && isMainFrame) {
-      const bool check_disabled_sites =
-          tab_helper->PageDistillState() ==
-          speedreader::DistillState::kSpeedreaderModePending;
       auto* speedreader_service =
-          speedreader::SpeedreaderServiceFactory::GetForProfile(
-              Profile::FromBrowserContext(browser_context));
+          speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
+              browser_context);
       std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
           speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
               g_brave_browser_process->speedreader_rewriter_service(),
-              speedreader_service, settings_map, tab_helper->GetWeakPtr(),
-              request.url, check_disabled_sites,
+              speedreader_service, tab_helper->GetWeakPtr(), request.url, false,
               base::SingleThreadTaskRunner::GetCurrentDefault());
       if (throttle) {
         result.push_back(std::move(throttle));

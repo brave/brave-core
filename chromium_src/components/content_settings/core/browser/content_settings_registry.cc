@@ -109,7 +109,7 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   Register(ContentSettingsType::BRAVE_SPEEDREADER, "braveSpeedreader",
-           CONTENT_SETTING_ALLOW, WebsiteSettingsInfo::SYNCABLE,
+           CONTENT_SETTING_DEFAULT, WebsiteSettingsInfo::SYNCABLE,
            /*allowlisted_schemes=*/{},
            /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,

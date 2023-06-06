@@ -7,8 +7,8 @@
 
 #include "base/no_destructor.h"
 #include "brave/components/speedreader/speedreader_service.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace speedreader {
@@ -19,21 +19,23 @@ SpeedreaderServiceFactory* SpeedreaderServiceFactory::GetInstance() {
   return instance.get();
 }
 
-SpeedreaderService* SpeedreaderServiceFactory::GetForProfile(Profile* profile) {
+SpeedreaderService* SpeedreaderServiceFactory::GetForBrowserContext(
+    content::BrowserContext* browser_context) {
   return static_cast<SpeedreaderService*>(
       SpeedreaderServiceFactory::GetInstance()->GetServiceForBrowserContext(
-          profile, true /*create*/));
+          browser_context, true /*create*/));
 }
 
 SpeedreaderServiceFactory::SpeedreaderServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "SpeedreaderService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(HostContentSettingsMapFactory::GetInstance());
+}
 
 SpeedreaderServiceFactory::~SpeedreaderServiceFactory() = default;
 
-content::BrowserContext*
-SpeedreaderServiceFactory::GetBrowserContextToUse(
+content::BrowserContext* SpeedreaderServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextOwnInstanceInIncognito(context);
 }
@@ -41,7 +43,7 @@ SpeedreaderServiceFactory::GetBrowserContextToUse(
 KeyedService* SpeedreaderServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new SpeedreaderService(
-      Profile::FromBrowserContext(context)->GetPrefs());
+      context, HostContentSettingsMapFactory::GetForProfile(context));
 }
 
 bool SpeedreaderServiceFactory::ServiceIsCreatedWithBrowserContext() const {

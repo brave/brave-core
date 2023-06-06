@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <if expr="enable_speedreader">
-    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL" desc="Used for a checkbox label">Always use reader mode for this site</message>
-    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL" desc="Used for a checkbox label">Always use reader mode for all sites</message>
-    <message name="IDS_READER_MODE_NOTE_LABEL" desc="Used for note label">Not all sites provide reader mode capabilities.</message>
-    <message name="IDS_READER_MODE_CAPTION" desc="Used for toolbar label">Reader mode</message>
+    <message name="IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE" desc="Accessible text shown when a page is in Reader Mode">Turn off speedreader</message>
+    <message name="IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE" desc="Accessible text shown when a page can be distilled">Turn on speedreader</message>
+    <message name="IDS_READER_MODE_SHOW_ORIGINAL_PAGE_LINK" desc="Text of the link to show original page">View original</message>
+    <message name="IDS_READER_MODE_MINUTES_TEXT" desc="Text of the read time element">min. read</message>
+    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL" desc="Used for a toogble button label">Always use speedreader for this site</message>
+    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_ACC" desc="Accessible text for the toggle to enable or disable speedreader per site">
+      Toggle to turn on/off speedreader for this website.
+    </message>
+    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL" desc="Used for a toogble button label">Always use speedreader for all sites</message>
+    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_ACC" desc="Accessible text for the toggle to enable or disable speedreader per site">
+      Toggle to turn on/off speedreader for all websites.
+    </message>
+    <message name="IDS_READER_MODE_NOTE_LABEL" desc="Used for note label">Not all sites provide speedreader capabilities.</message>
+    <message name="IDS_READER_MODE_CAPTION" desc="Used for toolbar label">Speedreader</message>
     <message name="IDS_READER_MODE_CLOSE" desc="Used for close button in toolbar">Close</message>
-    <message name="IDS_READER_MODE_EXIT" desc="Used for exit button in toolbar">Exit reader mode</message>
+    <message name="IDS_READER_MODE_EXIT" desc="Used for exit button in toolbar">Exit speedreader</message>
     <message name="IDS_READER_MODE_VOICE" desc="Used for label of the voice dropdown">Voice</message>
+    <message name="IDS_READER_MODE_TUNE" desc="Tooltop for tune button">Tune speedreader</message>
     <message name="IDS_READER_MODE_APPEARANCE" desc="Tooltip for appearance button">Appearance settings</message>
     <message name="IDS_READER_MODE_APPEARANCE_THEME_LIGHT" desc="Tooltip for light theme button">Light theme</message>
-    <message name="IDS_READER_MODE_APPEARANCE_THEME_SEPIA" desc="Tooltip for light theme button">Sepia theme</message>
-    <message name="IDS_READER_MODE_APPEARANCE_THEME_DARK" desc="Tooltip for light theme button">Dark theme</message>
+    <message name="IDS_READER_MODE_APPEARANCE_THEME_SEPIA" desc="Tooltip for sepia theme button">Sepia theme</message>
+    <message name="IDS_READER_MODE_APPEARANCE_THEME_DARK" desc="Tooltip for dark theme button">Dark theme</message>
     <message name="IDS_READER_MODE_APPEARANCE_THEME_SYSTEM" desc="Tooltip for system theme button">System theme</message>    
     <message name="IDS_READER_MODE_APPEARANCE_FONT_SANS"  desc="Tooltip for sans font button">Sans</message>
     <message name="IDS_READER_MODE_APPEARANCE_FONT_SERIF"  desc="Tooltip for serif font button">Serif</message>
@@ -25,7 +36,6 @@
     <message name="IDS_READER_MODE_TEXT_TO_SPEECH_FORWARD"  desc="Tooltip for forward button">Forward</message>
     <message name="IDS_READER_MODE_TEXT_TO_SPEECH_SPEED_DECREASE"  desc="Tooltip for decrease playback speed button">Decrease the playback speed</message>
     <message name="IDS_READER_MODE_TEXT_TO_SPEECH_SPEED_INCREASE"  desc="Tooltip for increase playback speed button">Increase the playback speed</message>
-    <message name="IDS_READER_MODE_SPEEDREADER" desc="Tooltip for disable/enable speedreader button">Speedreader mode toggle</message>
     <message name="IDS_READER_MODE_AI" desc="Tooltop for AI button">Brave AI</message>
   </if>
 </grit-part>

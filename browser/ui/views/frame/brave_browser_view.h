@@ -31,10 +31,13 @@
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 namespace speedreader {
 class SpeedreaderBubbleView;
 class SpeedreaderTabHelper;
+enum class SpeedreaderBubbleLocation : int;
 }  // namespace speedreader
+#endif
 
 namespace content {
 class WebContents;
@@ -73,7 +76,7 @@ class BraveBrowserView : public BrowserView,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
-      bool is_enabled) override;
+      speedreader::SpeedreaderBubbleLocation location) override;
   void ShowReaderModeToolbar() override;
   void HideReaderModeToolbar() override;
 #if BUILDFLAG(ENABLE_AI_CHAT)

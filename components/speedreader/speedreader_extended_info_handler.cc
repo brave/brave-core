@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
 
@@ -43,13 +43,8 @@ void SpeedreaderExtendedInfoHandler::PersistMode(
     DistillState state) {
   DCHECK(entry);
   std::unique_ptr<SpeedreaderNavigationData> data;
-  switch (state) {
-    case DistillState::kReaderMode:
-    case DistillState::kSpeedreaderMode:
-      data = std::make_unique<SpeedreaderNavigationData>(kPageSavedDistilled);
-      break;
-    default:
-      return;
+  if (speedreader::DistillStates::IsDistilled(state)) {
+    data = std::make_unique<SpeedreaderNavigationData>(kPageSavedDistilled);
   }
 
   entry->SetUserData(kSpeedreaderKey, std::move(data));
@@ -60,17 +55,12 @@ DistillState SpeedreaderExtendedInfoHandler::GetCachedMode(
     content::NavigationEntry* entry,
     SpeedreaderService* service) {
   DCHECK(entry);
-  auto* data = static_cast<SpeedreaderNavigationData*>(
+  const auto* data = static_cast<SpeedreaderNavigationData*>(
       entry->GetUserData(kSpeedreaderKey));
-  if (!data) {
-    return DistillState::kUnknown;
+  if (data && data->value == kPageSavedDistilled) {
+    return DistillStates::Distilled();
   }
-  if (data->value == kPageSavedDistilled) {
-    return service->IsEnabled() ? DistillState::kSpeedreaderMode
-                                : DistillState::kReaderMode;
-  } else {
-    return DistillState::kUnknown;
-  }
+  return {};
 }
 
 // static

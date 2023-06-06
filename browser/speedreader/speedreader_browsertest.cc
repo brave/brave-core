@@ -64,12 +64,6 @@ const char kTestPageReadableOnUnreadablePath[] =
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
 const char kTestXml[] = "/article/rss.xml";
 
-constexpr char kSpeedreaderToggleUMAHistogramName[] =
-    "Brave.SpeedReader.ToggleCount";
-
-constexpr char kSpeedreaderEnabledUMAHistogramName[] =
-    "Brave.SpeedReader.Enabled";
-
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
   SpeedReaderBrowserTest()
@@ -124,7 +118,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
   speedreader::SpeedreaderService* speedreader_service() {
-    return speedreader::SpeedreaderServiceFactory::GetForProfile(
+    return speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
         browser()->profile());
   }
 
@@ -141,24 +135,56 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
         ->GetPageActionIconView(PageActionIconType::kReaderMode);
   }
 
-  void ClickReaderButton() {
-    browser()->command_controller()->ExecuteCommand(
-        IDC_SPEEDREADER_ICON_ONCLICK);
-    if (tab_helper()->PageDistillState() ==
-        speedreader::DistillState::kReaderModePending) {
-      while (tab_helper()->PageDistillState() !=
-             speedreader::DistillState::kReaderMode) {
-        NonBlockingDelay(base::Milliseconds(10));
-      }
+  void WaitDistilled(speedreader::SpeedreaderTabHelper* th = nullptr) {
+    if (!th) {
+      th = tab_helper();
+    }
+    while (!speedreader::DistillStates::IsDistilled(th->PageDistillState())) {
+      NonBlockingDelay(base::Milliseconds(10));
     }
     content::WaitForLoadStop(ActiveWebContents());
   }
 
-  void ToggleSpeedreader() { speedreader_service()->ToggleSpeedreader(); }
-
-  void DisableSpeedreader() {
-    speedreader_service()->DisableSpeedreaderForTest();
+  void WaitDistillable(speedreader::SpeedreaderTabHelper* th = nullptr) {
+    if (!th) {
+      th = tab_helper();
+    }
+    while (!speedreader::DistillStates::IsDistillable(th->PageDistillState())) {
+      NonBlockingDelay(base::Milliseconds(10));
+    }
+    content::WaitForLoadStop(ActiveWebContents());
   }
+
+  void WaitOriginal(speedreader::SpeedreaderTabHelper* th = nullptr) {
+    if (!th) {
+      th = tab_helper();
+    }
+    while (
+        !speedreader::DistillStates::IsViewOriginal(th->PageDistillState())) {
+      NonBlockingDelay(base::Milliseconds(10));
+    }
+    content::WaitForLoadStop(ActiveWebContents());
+  }
+
+  void ClickReaderButton() {
+    const auto was_distilled = speedreader::DistillStates::IsDistilled(
+        tab_helper()->PageDistillState());
+    browser()->command_controller()->ExecuteCommand(
+        IDC_SPEEDREADER_ICON_ONCLICK);
+    if (!was_distilled) {
+      WaitDistilled();
+    } else {
+      WaitDistillable();
+    }
+    content::WaitForLoadStop(ActiveWebContents());
+  }
+
+  void ToggleSpeedreader() {
+    speedreader_service()->EnableForAllSites(
+        !speedreader_service()->IsEnabledForAllSites());
+  }
+
+  void DisableSpeedreader() { speedreader_service()->EnableForAllSites(false); }
 
   void GoBack(Browser* browser) {
     content::TestNavigationObserver observer(ActiveWebContents());
@@ -184,8 +210,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
-  EXPECT_TRUE(
-      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
 
   Profile* profile = browser()->profile();
 
@@ -199,36 +225,36 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
   chrome::OpenWindowWithRestoredTabs(profile);
   EXPECT_EQ(1u, BrowserList::GetInstance()->size());
   SelectFirstBrowser();
-  EXPECT_TRUE(
-      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageSimple);
-  EXPECT_FALSE(
-      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
-  EXPECT_TRUE(
-      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
 
   // Ensure distill state doesn't stick when we back-navigate from a readable
   // page to a non-readable one.
   GoBack(browser());
-  EXPECT_FALSE(
-      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
-  EXPECT_TRUE(
-      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
-  tab_helper()->MaybeToggleEnabledForSite(false);
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
+  speedreader_service()->EnableForSite(ActiveWebContents(), false);
   EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
-  EXPECT_FALSE(
-      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
@@ -296,51 +322,36 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {
                   .ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
-  base::HistogramTester tester;
-
-  // SpeedReader never enabled
-  EXPECT_FALSE(speedreader_service()->IsEnabled());
-  tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 0, 1);
-  tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 0, 1);
-
-  // SpeedReader recently enabled, toggled once
-  ToggleSpeedreader();
-  tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 2, 2);
-  tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 1, 1);
-  tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 2, 0);
-}
-
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ClickingOnReaderButton) {
-  EXPECT_FALSE(speedreader_service()->IsEnabled());
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
 
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_TRUE(GetReaderButton()->GetVisible());
 
-  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
-            tab_helper()->PageDistillState());
+  EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
   ClickReaderButton();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  EXPECT_EQ(speedreader::DistillState::kReaderMode,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
   EXPECT_TRUE(GetReaderButton()->GetVisible());
 
   ClickReaderButton();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper()->PageDistillState()));
 
-  EXPECT_FALSE(speedreader_service()->IsEnabled());
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
-  EXPECT_FALSE(speedreader_service()->IsEnabled());
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
 
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_TRUE(GetReaderButton()->GetVisible());
 
-  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper()->PageDistillState()));
   // Change content on the page.
   constexpr const char kChangeContent[] =
       R"js(
@@ -351,8 +362,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS));
   ClickReaderButton();
 
-  EXPECT_EQ(speedreader::DistillState::kReaderMode,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
 
   // Check title on the distilled page.
   constexpr const char kCheckContent[] =
@@ -367,33 +378,38 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {
-  EXPECT_FALSE(speedreader_service()->IsEnabled());
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
   NavigateToPageSynchronously(kTestPageReadable);
 
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper()->PageDistillState()));
   ToggleSpeedreader();
+  WaitDistilled();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
   DisableSpeedreader();
+  WaitOriginal();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper()->PageDistillState()));
 
   ClickReaderButton();
+  WaitDistilled();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  EXPECT_EQ(speedreader::DistillState::kReaderMode,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
   ToggleSpeedreader();
+  WaitDistilled();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
   DisableSpeedreader();
+  WaitOriginal();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
-  EXPECT_EQ(speedreader::DistillState::kReaderMode,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper()->PageDistillState()));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TogglingSiteSpeedreader) {
@@ -402,17 +418,17 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TogglingSiteSpeedreader) {
 
   for (int i = 0; i < 2; ++i) {
     EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
-    EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
-              tab_helper()->PageDistillState());
+    EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+        tab_helper()->PageDistillState()));
     EXPECT_TRUE(GetReaderButton()->GetVisible());
 
-    tab_helper()->MaybeToggleEnabledForSite(false);
+    speedreader_service()->EnableForSite(ActiveWebContents(), false);
     EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
-    EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
-              tab_helper()->PageDistillState());
+    EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+        tab_helper()->PageDistillState()));
     EXPECT_TRUE(GetReaderButton()->GetVisible());
 
-    tab_helper()->MaybeToggleEnabledForSite(true);
+    speedreader_service()->EnableForSite(ActiveWebContents(), true);
     EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
   }
 }
@@ -429,25 +445,25 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
   auto* tab_helper_2 =
       speedreader::SpeedreaderTabHelper::FromWebContents(contents_2);
 
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
-            tab_helper_1->PageDistillState());
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
-            tab_helper_2->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper_1->PageDistillState()));
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper_2->PageDistillState()));
 
-  tab_helper_1->MaybeToggleEnabledForSite(false);
+  speedreader_service()->EnableForSite(tab_helper_1->web_contents(), false);
   content::WaitForLoadStop(contents_1);
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
-            tab_helper_1->PageDistillState());
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
-            tab_helper_2->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper_1->PageDistillState()));
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper_2->PageDistillState()));
 
   contents_2->GetController().Reload(content::ReloadType::NORMAL, false);
   content::WaitForLoadStop(contents_2);
 
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
-            tab_helper_1->PageDistillState());
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
-            tab_helper_2->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper_1->PageDistillState()));
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper_2->PageDistillState()));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
@@ -482,15 +498,15 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   content::WaitForLoadStop(web_contents);
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
-            tab_helper->PageDistillState());
-  EXPECT_TRUE(tab_helper->IsEnabledForSite());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper->PageDistillState()));
+  EXPECT_TRUE(speedreader_service()->IsEnabledForSite(web_contents));
 
   // Click on speedreader button
   ClickReaderButton();
   content::WaitForLoadStop(web_contents);
-  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
-            tab_helper->PageDistillState());
+  EXPECT_TRUE(
+      speedreader::DistillStates::IsDistilled(tab_helper->PageDistillState()));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
@@ -672,17 +688,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
     Click(toolbar, "font-size-increase");
     WaitAttr(page, "data-font-size", "110");
   }
+  Click(toolbar, "appearance");
 
-  Click(toolbar, "speedreader");
+  Click(toolbar, "tune");
   {
-    auto* tab_helper = speedreader::SpeedreaderTabHelper::FromWebContents(page);
-    while (speedreader::DistillState::kSpeedreaderOnDisabledPage !=
-           tab_helper->PageDistillState()) {
+    while (!tab_helper()->speedreader_bubble_view()) {
       NonBlockingDelay(base::Milliseconds(10));
     }
-    content::WaitForLoadStop(page);
+  }
+  Click(toolbar, "tune");
+
+  Click(toolbar, "close");
+  {
+    WaitOriginal();
     EXPECT_FALSE(toolbar_view->GetVisible());
-    EXPECT_FALSE(tab_helper->IsEnabledForSite());
   }
 }
 
@@ -711,7 +730,7 @@ class SpeedReaderWithDistillationServiceBrowserTest
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderWithDistillationServiceBrowserTest,
                        OnDemandReader) {
-  EXPECT_FALSE(speedreader_service()->IsEnabled());
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
 
   struct MockObserver : speedreader::PageDistiller::Observer {
     MOCK_METHOD(void,
@@ -721,7 +740,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithDistillationServiceBrowserTest,
   };
 
   testing::NiceMock<MockObserver> observer;
-  tab_helper()->AddObserver(&observer);
+  tab_helper()->speedreader::PageDistiller::AddObserver(&observer);
 
   base::RunLoop run_loop;
   ON_CALL(observer, OnPageDistillStateChanged(
@@ -732,15 +751,15 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithDistillationServiceBrowserTest,
   NavigateToPageSynchronously(kTestPageReadableOnUnreadablePath,
                               WindowOpenDisposition::CURRENT_TAB);
   run_loop.Run();
-  tab_helper()->RemoveObserver(&observer);
+  tab_helper()->speedreader::PageDistiller::RemoveObserver(&observer);
 
   EXPECT_TRUE(GetReaderButton()->GetVisible());
 
-  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
+      tab_helper()->PageDistillState()));
 
   ClickReaderButton();
 
-  EXPECT_EQ(speedreader::DistillState::kReaderMode,
-            tab_helper()->PageDistillState());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
 }

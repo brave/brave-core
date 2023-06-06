@@ -10,9 +10,11 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
@@ -20,7 +22,6 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 
-class PrefChangeRegistrar;
 namespace content {
 class NavigationEntry;
 class NavigationHandle;
@@ -41,6 +42,11 @@ void SetShowOriginalLinkTitle(const std::u16string* title);
 
 class SpeedreaderBubbleView;
 
+enum class SpeedreaderBubbleLocation : int {
+  kLocationBar,
+  kToolbar,
+};
+
 // Determines if speedreader should be active for a given top-level navigation.
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
@@ -48,8 +54,15 @@ class SpeedreaderTabHelper
       public PageDistiller,
       public SpeedreaderThrottleDelegate,
       public mojom::SpeedreaderHost,
+      public SpeedreaderService::Observer,
       public dom_distiller::DistillabilityObserver {
  public:
+  struct Observer : public base::CheckedObserver {
+    ~Observer() override = default;
+
+    virtual void OnTuneBubbleClosed() {}
+  };
+
   ~SpeedreaderTabHelper() override;
 
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
@@ -67,42 +80,27 @@ class SpeedreaderTabHelper
 
   base::WeakPtr<SpeedreaderTabHelper> GetWeakPtr();
 
-  // Returns |true| if Speedreader is turned on for all sites.
-  bool IsSpeedreaderEnabled() const;
-
-  // Returns |true| if the user has enabled Speedreader but the domain in the
-  // active web contents is blacklisted.
-  bool IsEnabledForSite();
-
   // In Speedreader mode shows bubble. In Reader mode toggles state.
   void ProcessIconClick();
 
   DistillState PageDistillState() const { return distill_state_; }
 
-  // Allow or deny a site from being run through speedreader if |on| toggles
-  // the setting. Triggers page reload on toggle.
-  void MaybeToggleEnabledForSite(bool on);
-
-  // Get the current page's content and run it through Speedreader, without
-  // turning it on. This mimics the standard reader mode.
-  void SingleShotSpeedreader();
-
   // returns nullptr if no bubble currently shown
   SpeedreaderBubbleView* speedreader_bubble_view() const;
 
   // Displays speedreader information
-  void ShowSpeedreaderBubble();
+  void ShowSpeedreaderBubble(SpeedreaderBubbleLocation location);
 
-  // Displays reader mode information
-  void ShowReaderModeBubble();
+  // Hides speedreader information
+  void HideSpeedreaderBubble();
 
   void HideReaderModeToolbar();
 
-  // Hides speedreader information
-  void HideBubble();
-
   // Handler for when the bubble is dismissed.
   void OnBubbleClosed();
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
 
   // mojom::SpeedreaderHost:
   void OnShowOriginalPage() override;
@@ -114,32 +112,13 @@ class SpeedreaderTabHelper
   void BindReceiver(
       mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver);
 
-  Profile* GetProfile() const;
-
-  // Called by ShowSpeedreaderBubble and ShowReaderModeBubble.
-  // |is_bubble_speedreader| will show a bubble for pages in Speedreader if set
-  // to true, otherwise pages in reader mode.
-  void ShowBubble(bool is_bubble_speedreader);
-
-  // Returns |true| if the user has enabled Speedreader but the URL is
-  // blacklisted. This method is used when the URL we want to check has not been
-  // committed to the WebContents.
-  bool IsEnabledForSite(const GURL& url);
-
   bool MaybeUpdateCachedState(content::NavigationHandle* handle);
-  void UpdateActiveState(const GURL& url);
-  void SetNextRequestState(DistillState state);
 
   void ClearPersistedData();
   void ReloadContents();
 
   // Applies the distill state & updates UI for the navigation.
   void ProcessNavigation(content::NavigationHandle* navigation_handle);
-
-  // Updates the distill state when the global speedreader state is changed.
-  void OnPrefChanged();
-
-  void OnPropertyPrefChanged(const std::string& path);
 
   // Updates UI if the tab is visible.
   void UpdateUI();
@@ -160,6 +139,13 @@ class SpeedreaderTabHelper
   std::string TakePageContent() override;
   void OnDistillComplete(DistillationResult result) override;
 
+  // SpeedreaderService::Observer:
+  void OnSiteEnableSettingChanged(content::WebContents* site,
+                                  bool enabled_on_site) override;
+  void OnAllSitesEnableSettingChanged(bool enabled_on_all_sites) override;
+  void OnAppearanceSettingsChanged(
+      const mojom::AppearanceSettings& view_settings) override;
+
   // dom_distiller::DistillabilityObserver:
   void OnResult(const dom_distiller::DistillabilityResult& result) override;
 
@@ -167,6 +153,10 @@ class SpeedreaderTabHelper
                             const std::string& value);
 
   void OnGetDocumentSource(bool success, std::string html);
+
+  SpeedreaderService* GetSpeedreaderService();
+
+  void TransitStateTo(DistillState desired_state, bool no_reload = false);
 
 #if BUILDFLAG(IS_ANDROID)
   friend class ui::ViewAndroid;
@@ -176,25 +166,22 @@ class SpeedreaderTabHelper
                         int64_t time_ms,
                         float scale);
 #endif
-
-  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
-
   bool is_visible_ = false;
 
-  bool single_shot_next_request_ =
-      false;  // run speedreader once on next page load
   std::string single_show_content_;
 
-  bool show_original_page_ = false;   // next request should not be distilled
-  bool original_page_shown_ = false;  // true if reload was performed using the
-                                      // 'show original page' link
   bool toolbar_hidden_ = false;
 
-  DistillState distill_state_ = DistillState::kNone;
+  DistillState distill_state_{DistillStates::ViewOriginal()};
+
   raw_ptr<SpeedreaderBubbleView> speedreader_bubble_ = nullptr;
-  raw_ptr<HostContentSettingsMap> content_rules_ = nullptr;
 
   mojo::AssociatedReceiver<mojom::SpeedreaderHost> receiver_{this};
+
+  base::ScopedObservation<SpeedreaderService, SpeedreaderService::Observer>
+      speedreader_service_observation_{this};
+
+  base::ObserverList<Observer> observers_;
 
   base::WeakPtrFactory<SpeedreaderTabHelper> weak_factory_{this};
 
