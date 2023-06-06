@@ -103,4 +103,13 @@
   }
 }
 
+- (void)registerLocalFilesComponentWithCallback:
+    (void (^)(NSString* _Nullable installPath))callback {
+  brave_shields::RegisterLocalDataFilesComponent(
+      _cus, base::BindRepeating(^(const base::FilePath& install_path) {
+        const auto installPath = base::SysUTF8ToNSString(install_path.value());
+        callback(installPath);
+      }));
+}
+
 @end

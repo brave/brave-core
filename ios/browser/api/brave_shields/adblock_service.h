@@ -37,6 +37,12 @@ OBJC_EXPORT
 - (void)unregisterFilterListComponent:(AdblockFilterListCatalogEntry*)entry
                    useLegacyComponent:(bool)useLegacyComponent;
 
+/// Register the local data files data component
+/// which returns some basic files such as debounce.json, clean_urls.json and
+/// https_exceptions.json
+- (void)registerLocalFilesComponentWithCallback:
+    (void (^)(NSString* _Nullable installPath))callback;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
