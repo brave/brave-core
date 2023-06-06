@@ -36,15 +36,8 @@ export type WalletAccountTypeName =
   | 'Trezor'
 
 export interface WalletAccountType extends BraveWallet.AccountInfo {
-  id: string
   tokenBalanceRegistry: TokenBalanceRegistry
   nativeBalanceRegistry: TokenBalanceRegistry
-}
-
-export interface UserAccountType {
-  id: string
-  name: string
-  address: string
 }
 
 export interface AssetOptionType {

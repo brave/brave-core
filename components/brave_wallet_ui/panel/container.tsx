@@ -170,7 +170,7 @@ function Container () {
     filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
-  const onSelectAccount = (account: WalletAccountType) => () => {
+  const onSelectAccount = (account: WalletAccountType) => {
     dispatch(WalletActions.selectAccount(account.accountId))
     dispatch(WalletPanelActions.navigateTo('main'))
   }

@@ -96,7 +96,7 @@ export const Accounts = () => {
         <PrimaryListContainer>
           {primaryAccounts.map((account) =>
             <AccountListItem
-              key={account.id}
+              key={account.accountId.uniqueKey}
               onClick={onSelectAccount}
               account={account}
             />
@@ -124,7 +124,7 @@ export const Accounts = () => {
         <SecondaryListContainer isHardwareWallet={false}>
           {secondaryAccounts.map((account) =>
             <AccountListItem
-              key={account.id}
+              key={account.accountId.uniqueKey}
               onClick={onSelectAccount}
               account={account}
             />
@@ -136,7 +136,7 @@ export const Accounts = () => {
             {sortAccountsByName(trezorAccounts[key])
               .map((account: WalletAccountType) =>
                 <AccountListItem
-                  key={account.id}
+                  key={account.accountId.uniqueKey}
                   onClick={onSelectAccount}
                   account={account}
                 />
@@ -149,7 +149,7 @@ export const Accounts = () => {
             {sortAccountsByName(ledgerAccounts[key])
               .map((account: WalletAccountType) =>
                 <AccountListItem
-                  key={account.id}
+                  key={account.accountId.uniqueKey}
                   onClick={onSelectAccount}
                   account={account}
                 />

@@ -80,7 +80,7 @@ export const SitePermissions = () => {
         <AddressScrollContainer>
           {accountByCoinType.map((account) => (
             <ConnectedAccountItem
-              key={account.id}
+              key={account.accountId.uniqueKey}
               account={account}
             />
           ))}

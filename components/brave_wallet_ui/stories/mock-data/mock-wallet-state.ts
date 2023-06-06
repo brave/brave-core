@@ -10,7 +10,7 @@ import { USDCIconUrl } from './asset-icons'
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
-import { AllAccountsOption } from '../../options/account-filter-options'
+import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
 import { NoneGroupByOption } from '../../options/group-assets-by-options'
 
 // mocks
@@ -18,16 +18,14 @@ import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
 
 const mockAccount: WalletAccountType = {
-  accountType: 'Primary',
   address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
   accountId: {
     coin: 60,
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
-    address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1'
+    address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
+    uniqueKey: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1'
   },
-  deviceId: '',
-  id: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
   name: 'Account 1',
   tokenBalanceRegistry: {
     '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
@@ -41,16 +39,14 @@ const mockAccount: WalletAccountType = {
 }
 
 const mockAccount2: WalletAccountType = {
-  accountType: 'Primary',
   address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
   accountId: {
     coin: 60,
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
-    address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2'
+    address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
+    uniqueKey: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2'
   },
-  deviceId: '',
-  id: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
   name: 'Account 2',
   tokenBalanceRegistry: {
     '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
@@ -64,16 +60,14 @@ const mockAccount2: WalletAccountType = {
 }
 
 const mockAccount3: WalletAccountType = {
-  accountType: 'Primary',
   address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
   accountId: {
     coin: 60,
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
-    address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3'
+    address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
+    uniqueKey: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3'
   },
-  deviceId: '',
-  id: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
   name: 'Account 3',
   tokenBalanceRegistry: {
     '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
@@ -295,7 +289,7 @@ export const mockWalletState: WalletState = {
   ],
   selectedNetworkFilter: AllNetworksOptionDefault,
   selectedAssetFilter: HighToLowAssetsFilterOption.id,
-  selectedAccountFilter: AllAccountsOption.id,
+  selectedAccountFilter: AllAccountsOptionUniqueKey,
   onRampCurrencies: mockCurrencies,
   selectedCurrency: mockCurrency,
   passwordAttempts: 0,

@@ -226,7 +226,7 @@ export const TransactionsScreen: React.FC = () => {
     ({ chainId, coin }: BraveWallet.NetworkInfo) => {
       history.push(
         updatePageParams({
-          address: foundAccountFromParam?.address || AllAccountsOption.id,
+          address: foundAccountFromParam?.address,
           chainId,
           chainCoinType: coin
         })
