@@ -220,7 +220,7 @@ export interface Captcha {
 
 export interface Subdivision {
   name: string
-  code: string
+  subdivision: string
 }
 
 export interface AdsData {
@@ -249,22 +249,6 @@ export enum RewardsType {
 export interface ContributionSaved {
   success: boolean
   type: RewardsType
-}
-
-export interface PendingContribution {
-  id: number
-  publisherKey: string
-  percentage: number
-  status: PublisherStatus
-  url: string
-  name: string
-  provider: string
-  favIcon: string
-  amount: number
-  addedDate: string
-  type: RewardsType
-  viewingId: string
-  expirationDate: string
 }
 
 export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
