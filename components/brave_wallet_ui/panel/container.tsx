@@ -278,10 +278,10 @@ function Container () {
   }, [])
 
   React.useEffect(() => {
-    if (needsAccount) {
+    if (needsAccount && selectedPanel === 'main') {
       dispatch(WalletPanelActions.navigateTo('createAccount'))
     }
-  }, [needsAccount])
+  }, [needsAccount, selectedPanel])
 
   if (!hasInitialized || !accounts) {
     return null
