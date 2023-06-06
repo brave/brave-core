@@ -3,15 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { mockAccount } from "../constants/mocks"
-import { BaseQueryCache, setApiProxyFetcher } from "../slices/api.slice"
-import { getMockedAPIProxy } from "./__mocks__/bridge"
+import {
+  BaseQueryCache,
+  resetCache,
+  setApiProxyFetcher
+} from './base-query-cache'
+
+// mocks
+import { mockAccount } from '../constants/mocks'
+import { getMockedAPIProxy } from './__mocks__/bridge'
 
 describe('BaseQueryCache', () => {
 
-  beforeEach(() => {
-    // mock the api Proxy
+  beforeAll(() => {
     setApiProxyFetcher(getMockedAPIProxy)
+  })
+
+  beforeEach(() => {
+    resetCache()
   })
 
   it('should cache WalletInfo after fetching', async () => {
@@ -21,7 +30,11 @@ describe('BaseQueryCache', () => {
     )
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(0)
 
+    expect(BaseQueryCache).toBeDefined()
+
     const cache = new BaseQueryCache()
+
+    expect(cache).toBeDefined()
 
     // access the uncached WalletInfo
     const accounts = await cache.getWalletInfo()
