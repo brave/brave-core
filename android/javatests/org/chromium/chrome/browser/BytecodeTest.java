@@ -758,6 +758,9 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/BraveAppHooks"));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
                 "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, boolean.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
+                "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, String.class,
+                boolean.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoMediator",
                 "org/chromium/chrome/browser/logo/BraveLogoMediator", Context.class, Callback.class,
                 PropertyModel.class, boolean.class, Callback.class, Runnable.class, boolean.class,
@@ -1031,6 +1034,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/bookmarks/BookmarkToolbarCoordinator", "mToolbar"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/bookmarks/BookmarkPage",
                 "mBookmarkManagerCoordinator"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/flags/CachedFlag", "mDefaultValue"));
     }
 
     @Test
