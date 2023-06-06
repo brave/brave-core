@@ -346,9 +346,7 @@ export const Container = () => {
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.SendPage} exact>
-                <WalletPageWrapper hideBackground={true}>
-                  <SendScreen />
-                </WalletPageWrapper>
+                <SendScreen />
               </Route>
             }
 

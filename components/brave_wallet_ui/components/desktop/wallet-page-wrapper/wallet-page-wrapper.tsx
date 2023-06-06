@@ -48,6 +48,7 @@ export interface Props {
   hideHeader?: boolean
   hideDivider?: boolean
   cardHeader?: JSX.Element | undefined | null
+  noMinCardHeight?: boolean
   children?: React.ReactNode
 }
 
@@ -62,7 +63,8 @@ export const WalletPageWrapper = (props: Props) => {
     hideBackground,
     hideNav,
     hideHeader,
-    hideDivider
+    hideDivider,
+    noMinCardHeight
   } = props
 
   // Wallet Selectors (safe)
@@ -180,6 +182,7 @@ export const WalletPageWrapper = (props: Props) => {
               noPadding={noCardPadding}
               maxWidth={cardWidth}
               hideCardHeader={!cardHeader}
+              noMinCardHeight={noMinCardHeight}
             >
               {children}
             </ContainerCard>
