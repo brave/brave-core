@@ -6,10 +6,10 @@
 package org.chromium.chrome.browser.ntp_background_images.model;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 
 public class SponsoredTab {
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;

@@ -13,13 +13,13 @@ import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.task.AsyncTask;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.local_database.DatabaseHelper;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.local_database.DatabaseHelper;
 
 /**
  * Fragment to keep track of all the display related preferences.
