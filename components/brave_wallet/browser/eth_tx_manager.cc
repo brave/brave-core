@@ -1136,19 +1136,30 @@ void EthTxManager::RetryTransaction(const std::string& chain_id,
 void EthTxManager::GetGasEstimation1559(const std::string& chain_id,
                                         GetGasEstimation1559Callback callback) {
   json_rpc_service_->GetFeeHistory(
-      chain_id,
-      base::BindOnce(&EthTxManager::OnGetGasEstimation1559,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      chain_id, base::BindOnce(&EthTxManager::OnGetGasEstimation1559,
+                               weak_factory_.GetWeakPtr(), std::move(callback),
+                               chain_id));
 }
 
 void EthTxManager::OnGetGasEstimation1559(
     GetGasEstimation1559Callback callback,
+    const std::string& chain_id,
     const std::vector<std::string>& base_fee_per_gas,
     const std::vector<double>& gas_used_ratio,
     const std::string& oldest_block,
     const std::vector<std::vector<std::string>>& reward,
     mojom::ProviderError error,
     const std::string& error_message) {
+  // If eth_feeHistory method was not found, try to get the base fee
+  // from eth_getBlockByNumber.
+  if (error == mojom::ProviderError::kMethodNotFound) {
+    json_rpc_service_->GetBaseFeePerGas(
+        chain_id,
+        base::BindOnce(&EthTxManager::OnGetBaseFeePerGas,
+                       weak_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
+
   if (error != mojom::ProviderError::kSuccess) {
     std::move(callback).Run(nullptr);
     return;
@@ -1180,6 +1191,36 @@ void EthTxManager::OnGetGasEstimation1559(
       Uint256ValueToHex(suggested_base_fee_per_gas + avg_priority_fee);
   estimation->fast_max_fee_per_gas =
       Uint256ValueToHex(suggested_base_fee_per_gas + high_priority_fee);
+  std::move(callback).Run(std::move(estimation));
+}
+
+void EthTxManager::OnGetBaseFeePerGas(GetGasEstimation1559Callback callback,
+                                      const std::string& base_fee_per_gas,
+                                      mojom::ProviderError error,
+                                      const std::string& error_message) {
+  if (base_fee_per_gas.empty()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  mojom::GasEstimation1559Ptr estimation = mojom::GasEstimation1559::New();
+  auto scaled_base_fee_per_gas_uint256 =
+      eth::ScaleBaseFeePerGas(base_fee_per_gas);
+  if (!scaled_base_fee_per_gas_uint256) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  const auto& scaled_base_fee_per_gas =
+      Uint256ValueToHex(*scaled_base_fee_per_gas_uint256);
+
+  estimation->base_fee_per_gas = scaled_base_fee_per_gas;
+  estimation->slow_max_priority_fee_per_gas = "0x0";
+  estimation->avg_max_priority_fee_per_gas = "0x0";
+  estimation->fast_max_priority_fee_per_gas = "0x0";
+  estimation->slow_max_fee_per_gas = scaled_base_fee_per_gas;
+  estimation->avg_max_fee_per_gas = scaled_base_fee_per_gas;
+  estimation->fast_max_fee_per_gas = scaled_base_fee_per_gas;
   std::move(callback).Run(std::move(estimation));
 }
 
