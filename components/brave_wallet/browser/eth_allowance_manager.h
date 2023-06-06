@@ -67,8 +67,6 @@ class EthAllowanceManager {
   FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest, AllowancesLoadingReset);
 
   void OnGetAllowances(const int& task_id,
-                       const std::string& chain_id,
-                       const std::string& hex_account_address,
                        const std::vector<Log>& logs,
                        base::Value rawlogs,
                        mojom::ProviderError error,
@@ -77,25 +75,24 @@ class EthAllowanceManager {
   void LoadCachedAllowances(
       const std::string& chain_id,
       const std::string& hex_account_address,
-      uint256_t& block_number,
       std::map<std::string, mojom::AllowanceInfoPtr>& allowance_map);
   struct EthAllowanceTask {
     explicit EthAllowanceTask(const int& taskid,
                               const std::string& chain_id,
-                              const std::string& account_address);
+                              const std::string& account_address,
+                              const uint256_t& latest_block_number);
     EthAllowanceTask(const EthAllowanceTask&) = delete;
     EthAllowanceTask& operator=(const EthAllowanceTask&) = delete;
     EthAllowanceTask(const EthAllowanceTask&&) = delete;
     EthAllowanceTask& operator=(const EthAllowanceTask&&) = delete;
     ~EthAllowanceTask();
 
-    void SetResults(const uint256_t& latest_block_number,
-                    std::vector<mojom::AllowanceInfoPtr> alwns);
+    void SetResults(std::vector<mojom::AllowanceInfoPtr> alwns);
     void MarkComplete();
     int task_id;
     std::vector<mojom::AllowanceInfoPtr> allowances_;
     std::string account_address_;
-    brave_wallet::uint256_t latest_block_number_{0};
+    brave_wallet::uint256_t latest_block_number_;
     std::string chain_id_;
     bool is_completed_{false};
   };
@@ -106,7 +103,7 @@ class EthAllowanceManager {
                          mojom::ProviderError error,
                          const std::string& error_message);
   bool IsAllTasksCompleted() const;
-  void MergeAllResultsAnCallBack();
+  void MaybeMergeAllResultsAndCallBack();
   void OnDiscoverEthAllowancesCompleted(
       const std::vector<mojom::AllowanceInfoPtr>& result);
 

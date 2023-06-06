@@ -33,9 +33,9 @@ constexpr char kTopics[] = "topics";
 constexpr char kFromBlock[] = "fromBlock";
 constexpr char kToBlock[] = "toBlock";
 constexpr char kEarliestBlock[] = "earliest";
-constexpr char kLatestBlock[] = "latest";
 
-constexpr char kApprovalTopicHash[] = "Approval(address,address,uint256)";
+constexpr char kApprovalTopicFunctionSignature[] =
+    "Approval(address,address,uint256)";
 
 // Returns vector of chain_ids supported by allowance discovering.
 const std::vector<std::string>& GetChainIdsForAlowanceDiscovering() {
@@ -48,11 +48,28 @@ const std::vector<std::string>& GetChainIdsForAlowanceDiscovering() {
        brave_wallet::mojom::kOptimismMainnetChainId});
   return *supported_chain_ids;
 }
-static std::string GetAllowanceMapKey(const std::string& contract_address,
-                                      const std::string& approver_addr,
-                                      const std::string& spender_address) {
+std::string GetAllowanceMapKey(const std::string& contract_address,
+                               const std::string& approver_addr,
+                               const std::string& spender_address) {
   return base::JoinString({contract_address, approver_addr, spender_address},
                           "_");
+}
+
+std::string GetBlocknumberFilterFromCache(
+    const base::Value::Dict& allowance_cache_dict,
+    const std::string& chain_id,
+    const std::string& hex_account_address) {
+  std::string result(kEarliestBlock);
+  const auto* last_block_number_ptr =
+      allowance_cache_dict.FindStringByDottedPath(base::JoinString(
+          {chain_id, kLastBlockNumber, hex_account_address}, "."));
+
+  brave_wallet::uint256_t block_number{0};
+  if (last_block_number_ptr && !last_block_number_ptr->empty() &&
+      brave_wallet::HexValueToUint256(*last_block_number_ptr, &block_number)) {
+    result = brave_wallet::Uint256ValueToHex(++block_number);
+  }
+  return result;
 }
 
 }  // namespace
@@ -61,13 +78,15 @@ namespace brave_wallet {
 EthAllowanceManager::EthAllowanceTask::EthAllowanceTask(
     const int& taskid,
     const std::string& chain_id,
-    const std::string& account_address)
-    : task_id(taskid), account_address_(account_address), chain_id_(chain_id) {}
+    const std::string& account_address,
+    const uint256_t& latest_block_number)
+    : task_id(taskid),
+      account_address_(account_address),
+      latest_block_number_(latest_block_number),
+      chain_id_(chain_id) {}
 EthAllowanceManager::EthAllowanceTask::~EthAllowanceTask() = default;
 void EthAllowanceManager::EthAllowanceTask::SetResults(
-    const uint256_t& latest_block_number,
     std::vector<mojom::AllowanceInfoPtr> alwns) {
-  latest_block_number_ = latest_block_number;
   allowances_ = std::move(alwns);
   MarkComplete();
 }
@@ -105,14 +124,13 @@ void EthAllowanceManager::DiscoverEthAllowancesOnAllSupportedChains(
     return;
   }
 
+  allowance_discovery_tasks_.clear();
+  get_block_tasks_ = 0;
+
   const auto token_list_map =
       BlockchainRegistry::GetInstance()->GetEthTokenListMap(
           GetChainIdsForAlowanceDiscovering());
 
-  if (!allowance_discovery_tasks_.empty()) {
-    allowance_discovery_tasks_.clear();
-    get_block_tasks_ = 0;
-  }
   for (const auto& [chain_id, token_list] : token_list_map) {
     base::Value::List contract_addresses;
     for (const auto& token : token_list) {
@@ -137,52 +155,28 @@ void EthAllowanceManager::OnGetCurrentBlock(
     uint256_t block_num,
     mojom::ProviderError error,
     const std::string& error_message) {
-  const std::string latest_block_num_hex(error == mojom::ProviderError::kSuccess
-                                             ? Uint256ValueToHex(block_num)
-                                             : kLatestBlock);
+  if (error != mojom::ProviderError::kSuccess) {
+    get_block_tasks_--;
+    MaybeMergeAllResultsAndCallBack();
+    return;
+  }
+
   const auto& allowance_cache_dict =
       prefs_->GetDict(kBraveWalletEthAllowancesCache);
 
-  auto get_blocknumber_filter_from_cache =
-      [&](const std::string& chain_id, const std::string& hex_account_address) {
-        std::string result(kEarliestBlock);
-        const auto* chain_cached_data = allowance_cache_dict.FindDict(chain_id);
-        if (!chain_cached_data) {
-          return result;
-        }
-
-        const auto* last_block_number_section =
-            chain_cached_data->FindDict(kLastBlockNumber);
-        if (!last_block_number_section) {
-          return result;
-        }
-
-        const auto* last_block_number_ptr =
-            last_block_number_section->FindString(hex_account_address);
-        if (!last_block_number_ptr) {
-          return result;
-        }
-
-        uint256_t block_number{0};
-        if (!last_block_number_ptr->empty() &&
-            HexValueToUint256(*last_block_number_ptr, &block_number)) {
-          result = Uint256ValueToHex(++block_number);
-        }
-        return result;
-      };
-  const auto approval_topic_hash = KeccakHash(kApprovalTopicHash);
+  const auto approval_topic_hash = KeccakHash(kApprovalTopicFunctionSignature);
   for (const auto& account_address : account_addresses) {
     std::string account_address_hex;
     if (!PadHexEncodedParameter(account_address, &account_address_hex)) {
       continue;
     }
     const int task_id(allowance_discovery_tasks_.size());
-    auto internal_callback = base::BindOnce(
-        &EthAllowanceManager::OnGetAllowances, weak_ptr_factory_.GetWeakPtr(),
-        task_id, chain_id, account_address_hex);
+    auto internal_callback =
+        base::BindOnce(&EthAllowanceManager::OnGetAllowances,
+                       weak_ptr_factory_.GetWeakPtr(), task_id);
     allowance_discovery_tasks_.insert_or_assign(
-        task_id, std::make_unique<EthAllowanceTask>(task_id, chain_id,
-                                                    account_address_hex));
+        task_id, std::make_unique<EthAllowanceTask>(
+                     task_id, chain_id, account_address_hex, block_num));
 
     base::Value::List topics;
     topics.Append(approval_topic_hash);
@@ -191,9 +185,10 @@ void EthAllowanceManager::OnGetCurrentBlock(
     base::Value::Dict filter_options;
     filter_options.Set(kAddress, contract_addresses.Clone());
     filter_options.Set(kTopics, std::move(topics));
-    filter_options.Set(kFromBlock, get_blocknumber_filter_from_cache(
-                                       chain_id, account_address_hex));
-    filter_options.Set(kToBlock, latest_block_num_hex);
+    filter_options.Set(
+        kFromBlock, GetBlocknumberFilterFromCache(
+                        allowance_cache_dict, chain_id, account_address_hex));
+    filter_options.Set(kToBlock, Uint256ValueToHex(block_num));
     json_rpc_service_->EthGetLogs(chain_id, std::move(filter_options),
                                   std::move(internal_callback));
   }
@@ -213,7 +208,6 @@ void EthAllowanceManager::Reset() {
 void EthAllowanceManager::LoadCachedAllowances(
     const std::string& chain_id,
     const std::string& hex_account_address,
-    uint256_t& block_number,
     std::map<std::string, mojom::AllowanceInfoPtr>& allowance_map) {
   const auto& allowance_cache_dict =
       prefs_->GetDict(kBraveWalletEthAllowancesCache);
@@ -234,17 +228,6 @@ void EthAllowanceManager::LoadCachedAllowances(
     return;
   }
 
-  const auto* block_number_ptr =
-      block_number_section_ptr->FindString(hex_account_address);
-  if (!block_number_ptr) {
-    return;
-  }
-
-  if (!block_number_ptr ||
-      !HexValueToUint256(*block_number_ptr, &block_number)) {
-    return;
-  }
-
   for (const auto& ca_item : *cached_allowances_ptr) {
     const auto* ca_dict = ca_item.GetIfDict();
     if (!ca_dict) {
@@ -255,9 +238,12 @@ void EthAllowanceManager::LoadCachedAllowances(
     const auto* spender_address = ca_dict->FindString(kSpenderAddress);
     const auto* amount = ca_dict->FindString(kAmount);
 
-    if (!approver_address || !contract_address || !spender_address || !amount ||
-        base::ToUpperASCII(*approver_address) !=
-            base::ToUpperASCII(hex_account_address)) {
+    if (!approver_address || !contract_address || !spender_address || !amount) {
+      NOTREACHED() << " Wrong allowance cache format";
+    }
+
+    if (!base::EqualsCaseInsensitiveASCII(*approver_address,
+                                          hex_account_address)) {
       continue;
     }
 
@@ -271,20 +257,20 @@ void EthAllowanceManager::LoadCachedAllowances(
 }
 
 // Processes each data portion retrieved from logs
-void EthAllowanceManager::OnGetAllowances(
-    const int& task_id,
-    const std::string& chain_id,
-    const std::string& hex_account_address,
-    const std::vector<Log>& logs,
-    base::Value rawlogs,
-    mojom::ProviderError error,
-    const std::string& error_message) {
+void EthAllowanceManager::OnGetAllowances(const int& task_id,
+                                          const std::vector<Log>& logs,
+                                          base::Value rawlogs,
+                                          mojom::ProviderError error,
+                                          const std::string& error_message) {
+  auto task_iter = allowance_discovery_tasks_.find(task_id);
+  if (task_iter == allowance_discovery_tasks_.end()) {
+    MaybeMergeAllResultsAndCallBack();
+    return;
+  }
+
   if (error != mojom::ProviderError::kSuccess) {
-    if (allowance_discovery_tasks_.find(task_id) !=
-        allowance_discovery_tasks_.end()) {
-      allowance_discovery_tasks_[task_id]->MarkComplete();
-      MergeAllResultsAnCallBack();
-    }
+    task_iter->second->MarkComplete();
+    MaybeMergeAllResultsAndCallBack();
     return;
   }
 
@@ -298,9 +284,8 @@ void EthAllowanceManager::OnGetAllowances(
   // Collection of the latest allowances per contract & spender & approver.
   std::map<std::string, mojom::AllowanceInfoPtr> allowance_map;
   // Put cached data into the map first if available.
-  uint256_t latest_block_number{0};
-  LoadCachedAllowances(chain_id, hex_account_address, latest_block_number,
-                       allowance_map);
+  LoadCachedAllowances(task_iter->second->chain_id_,
+                       task_iter->second->account_address_, allowance_map);
   for (const auto& log_item : logs_tmp) {
     // Skip pending logs.
     if (log_item.block_number == 0) {
@@ -321,24 +306,20 @@ void EthAllowanceManager::OnGetAllowances(
     if (parsed_amount > 0) {
       // Replace if same key exists by the fresh allowance data.
       allowance_map.insert_or_assign(
-          current_map_key, mojom::AllowanceInfo::New(
-                               chain_id, log_item.address, log_item.topics[1],
-                               log_item.topics[2], log_item.data));
+          current_map_key,
+          mojom::AllowanceInfo::New(task_iter->second->chain_id_,
+                                    log_item.address, log_item.topics[1],
+                                    log_item.topics[2], log_item.data));
     } else if (allowance_map.find(current_map_key) != allowance_map.end()) {
       allowance_map.erase(current_map_key);
     }
-    latest_block_number = log_item.block_number;
   }
   std::vector<mojom::AllowanceInfoPtr> allowances_found;
   for (const auto& [allowance_map_key, allowance] : allowance_map) {
     allowances_found.push_back(allowance.Clone());
   }
-  if (allowance_discovery_tasks_.find(task_id) !=
-      allowance_discovery_tasks_.end()) {
-    allowance_discovery_tasks_[task_id]->SetResults(
-        latest_block_number, std::move(allowances_found));
-    MergeAllResultsAnCallBack();
-  }
+  task_iter->second->SetResults(std::move(allowances_found));
+  MaybeMergeAllResultsAndCallBack();
 }
 
 bool EthAllowanceManager::IsAllTasksCompleted() const {
@@ -350,7 +331,7 @@ bool EthAllowanceManager::IsAllTasksCompleted() const {
          });
 }
 
-void EthAllowanceManager::MergeAllResultsAnCallBack() {
+void EthAllowanceManager::MaybeMergeAllResultsAndCallBack() {
   if (!IsAllTasksCompleted()) {
     return;
   }
@@ -359,37 +340,42 @@ void EthAllowanceManager::MergeAllResultsAnCallBack() {
                                               kBraveWalletEthAllowancesCache);
   auto& allowance_cache = allowance_cache_update.Get();
 
-  for (const auto& [tid, allowance_task_info] : allowance_discovery_tasks_) {
-    base::Value::List allw_list;
-    for (const auto& allowance : allowance_task_info->allowances_) {
-      if (allowance.is_null()) {
-        continue;
-      }
-      base::Value::Dict allw_dict_item;
-      allw_dict_item.Set(kContractAddress, allowance->contract_address);
-      allw_dict_item.Set(kApproverAddress, allowance->approver_address);
-      allw_dict_item.Set(kSpenderAddress, allowance->spender_address);
-      allw_dict_item.Set(kAmount, allowance->amount);
-      allw_list.Append(std::move(allw_dict_item));
-      result.push_back(allowance.Clone());
+  std::map<std::string, std::vector<std::unique_ptr<EthAllowanceTask>>>
+      allowance_tasks_by_chain_ids;
+  for (auto& [tid, allowance_task_info] : allowance_discovery_tasks_) {
+    if (!allowance_tasks_by_chain_ids.contains(
+            allowance_task_info->chain_id_)) {
+      allowance_tasks_by_chain_ids.insert_or_assign(
+          allowance_task_info->chain_id_,
+          std::vector<std::unique_ptr<EthAllowanceTask>>());
     }
+    allowance_tasks_by_chain_ids[allowance_task_info->chain_id_].push_back(
+        std::move(allowance_task_info));
+  }
 
-    auto* chain_section =
-        allowance_cache.EnsureDict(allowance_task_info->chain_id_);
+  for (const auto& [chain_id, allowance_task_infos] :
+       allowance_tasks_by_chain_ids) {
+    auto* chain_section = allowance_cache.EnsureDict(chain_id);
     auto* last_block_section = chain_section->EnsureDict(kLastBlockNumber);
-    last_block_section->Set(
-        allowance_task_info->account_address_,
-        Uint256ValueToHex(allowance_task_info->latest_block_number_));
-    auto* allowances_found_list = chain_section->FindList(kAllowanceFound);
-    if (!allowances_found_list) {
-      chain_section->Set(kAllowanceFound, std::move(allw_list));
-    } else {
-      for (const auto& item : allw_list) {
-        if (!base::Contains(*allowances_found_list, item)) {
-          allowances_found_list->Append(item.Clone());
+    base::Value::List allw_list;
+    for (const auto& allowance_task_info : allowance_task_infos) {
+      last_block_section->Set(
+          allowance_task_info->account_address_,
+          Uint256ValueToHex(allowance_task_info->latest_block_number_));
+      for (const auto& allowance : allowance_task_info->allowances_) {
+        if (allowance.is_null()) {
+          continue;
         }
+        base::Value::Dict allw_dict_item;
+        allw_dict_item.Set(kContractAddress, allowance->contract_address);
+        allw_dict_item.Set(kApproverAddress, allowance->approver_address);
+        allw_dict_item.Set(kSpenderAddress, allowance->spender_address);
+        allw_dict_item.Set(kAmount, allowance->amount);
+        allw_list.Append(std::move(allw_dict_item));
+        result.push_back(allowance.Clone());
       }
     }
+    chain_section->Set(kAllowanceFound, std::move(allw_list));
   }
   OnDiscoverEthAllowancesCompleted(result);
 }

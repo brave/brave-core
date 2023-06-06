@@ -489,11 +489,10 @@ class EthAllowanceManagerUnitTest : public testing::Test {
 
   void TestLoadCachedAllowances(const std::string& chain_id,
                                 const std::string& hex_account_address,
-                                uint256_t& block_number,
                                 AllowancesMapCallback test_validation) {
     AllowancesMap allowance_map;
     eth_allowance_manager_->LoadCachedAllowances(chain_id, hex_account_address,
-                                                 block_number, allowance_map);
+                                                 allowance_map);
     std::move(test_validation).Run(allowance_map);
   }
 
@@ -557,11 +556,9 @@ class EthAllowanceManagerUnitTest : public testing::Test {
 
 TEST_F(EthAllowanceManagerUnitTest, LoadCachedAllowances) {
   CreateCachedAllowancesPrefs(allowance_chache_json);
-  uint256_t block_num(0);
   TestLoadCachedAllowances(
       "0x1",
       "0x00000000000000000000000091272b2c4990927d1fE28201cf0A6CE288a221d6",
-      block_num,
       base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
         EXPECT_EQ(allowance_map.size(), 1u);
         const auto map_key =
@@ -587,15 +584,12 @@ TEST_F(EthAllowanceManagerUnitTest, LoadCachedAllowances) {
                   "0x0000000000000000000000000000000000000000000000000000000000"
                   "000001");
       }));
-  EXPECT_EQ(block_num, uint256_t(17124350));
 }
 
 TEST_F(EthAllowanceManagerUnitTest, CouldNotLoadCachedAllowancesPrefsEmpty) {
-  uint256_t block_num(0);
   TestLoadCachedAllowances(
       "0x1",
       "0x00000000000000000000000091272b2c4990927d1fE28201cf0A6CE288a221d6",
-      block_num,
       base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
         EXPECT_TRUE(allowance_map.empty());
       }));
@@ -603,11 +597,9 @@ TEST_F(EthAllowanceManagerUnitTest, CouldNotLoadCachedAllowancesPrefsEmpty) {
 
 TEST_F(EthAllowanceManagerUnitTest, CouldNotLoadCachedAllowancesByAddress) {
   CreateCachedAllowancesPrefs(allowance_chache_json);
-  uint256_t block_num(0);
   TestLoadCachedAllowances(
       "0x1",
       "0x000000000000000000000000000000000000000000000000000000000000AAAA",
-      block_num,
       base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
         EXPECT_TRUE(allowance_map.empty());
       }));
@@ -615,7 +607,6 @@ TEST_F(EthAllowanceManagerUnitTest, CouldNotLoadCachedAllowancesByAddress) {
   TestLoadCachedAllowances(
       "0x99",
       "0x00000000000000000000000091272b2c4990927d1fE28201cf0A6CE288a221d6",
-      block_num,
       base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
         EXPECT_TRUE(allowance_map.empty());
       }));
@@ -624,11 +615,9 @@ TEST_F(EthAllowanceManagerUnitTest, CouldNotLoadCachedAllowancesByAddress) {
 TEST_F(EthAllowanceManagerUnitTest,
        CouldNotLoadCachedAllowancesIncorrectCacheData) {
   CreateCachedAllowancesPrefs(incorrect_allowance_chache_data_json);
-  uint256_t block_num(0);
   TestLoadCachedAllowances(
       "0x1",
       "0x00000000000000000000000091272b2c4990927d1fe28201cf0a6ce288a221d6",
-      block_num,
       base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
         EXPECT_TRUE(allowance_map.empty());
       }));
@@ -637,11 +626,9 @@ TEST_F(EthAllowanceManagerUnitTest,
 TEST_F(EthAllowanceManagerUnitTest,
        CouldNotLoadCachedAllowancesIncorrectCacheBlockNumber) {
   CreateCachedAllowancesPrefs(incorrect_allowance_chache_block_number_json);
-  uint256_t block_num(0);
   TestLoadCachedAllowances(
       "0x1",
       "0x00000000000000000000000091272b2c4990927d1fe28201cf0a6ce288a221d6",
-      block_num,
       base::BindLambdaForTesting([](const AllowancesMap& allowance_map) {
         EXPECT_TRUE(allowance_map.empty());
       }));
@@ -716,7 +703,7 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesLoading) {
   const auto* last_block_number_ptr = last_block_number_dict_ptr->FindString(
       "0x000000000000000000000000f81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
   ASSERT_TRUE(nullptr != last_block_number_ptr);
-  EXPECT_EQ(*last_block_number_ptr, "0x101a7f1");
+  EXPECT_EQ(*last_block_number_ptr, "0x10964ec");
   const auto* allowances_found_ptr =
       chain_id_dict->FindList("allowances_found");
   ASSERT_TRUE(nullptr != allowances_found_ptr);
@@ -746,23 +733,8 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesLoadingFailedGetBlock) {
       });
 
   auto allowances_validation = base::BindLambdaForTesting(
-      [&expected_allowances](
-          const std::vector<mojom::AllowanceInfoPtr>& allowances) {
-        ASSERT_EQ(allowances.size(), expected_allowances.size());
-        for (const auto& expected_allowance : expected_allowances) {
-          const auto& allowance_iter = std::find_if(
-              allowances.begin(), allowances.end(),
-              [&expected_allowance](const auto& item) {
-                return expected_allowance->amount == item->amount &&
-                       expected_allowance->contract_address ==
-                           item->contract_address &&
-                       expected_allowance->approver_address ==
-                           item->approver_address &&
-                       expected_allowance->spender_address ==
-                           item->spender_address;
-              });
-          ASSERT_FALSE(allowance_iter == allowances.end());
-        }
+      [](const std::vector<mojom::AllowanceInfoPtr>& allowances) {
+        ASSERT_EQ(allowances.size(), 0u);
       });
   size_t account_count(2);
   TestAllowancesLoading(token_list_json, generate_responses, account_count, 3,
@@ -771,18 +743,7 @@ TEST_F(EthAllowanceManagerUnitTest, AllowancesLoadingFailedGetBlock) {
   const auto& allowance_cashe_dict =
       GetPrefs()->GetDict(kBraveWalletEthAllowancesCache);
   const auto* chain_id_dict = allowance_cashe_dict.FindDict("0x1");
-  ASSERT_TRUE(nullptr != chain_id_dict);
-  const auto* last_block_number_dict_ptr =
-      chain_id_dict->FindDict("last_block_number");
-  ASSERT_TRUE(nullptr != last_block_number_dict_ptr);
-  const auto* last_block_number_ptr = last_block_number_dict_ptr->FindString(
-      "0x000000000000000000000000f81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
-  ASSERT_TRUE(nullptr != last_block_number_ptr);
-  EXPECT_EQ(*last_block_number_ptr, "0x101a7f1");
-  const auto* allowances_found_ptr =
-      chain_id_dict->FindList("allowances_found");
-  ASSERT_TRUE(nullptr != allowances_found_ptr);
-  EXPECT_EQ(allowances_found_ptr->size(), account_count);
+  ASSERT_TRUE(!chain_id_dict);
 }
 
 TEST_F(EthAllowanceManagerUnitTest, AllowancesRevoked) {
