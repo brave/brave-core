@@ -371,10 +371,23 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
     bool is_summarize_prompt,
     api_request_helper::APIRequestResult result,
     bool success) {
-  if (is_summarize_prompt && success && !chat_history_.empty()) {
-    const ConversationTurn& last_turn = chat_history_.back();
-    if (last_turn.character_type == CharacterType::ASSISTANT) {
-      SetArticleSummaryString(last_turn.text);
+  if (success) {
+    // TODO(nullhook): Remove this as we don't cache summaries anymore
+    if (is_summarize_prompt && !chat_history_.empty()) {
+      const ConversationTurn& last_turn = chat_history_.back();
+      if (last_turn.character_type == CharacterType::ASSISTANT) {
+        SetArticleSummaryString(last_turn.text);
+      }
+    }
+
+    // We're checking for a value body in case for non-streaming API results.
+    if (result.value_body().is_dict()) {
+      if (const std::string* completion =
+              result.value_body().FindStringKey("completion")) {
+        AddToConversationHistory(
+            ConversationTurn{CharacterType::ASSISTANT,
+                             ConversationTurnVisibility::VISIBLE, *completion});
+      }
     }
   }
 
@@ -386,16 +399,6 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
   }
 
   is_request_in_progress_ = !success;
-
-  // We're checking for a value body in case for non-streaming API results.
-  if (success && result.value_body().is_dict()) {
-    if (const std::string* completion =
-            result.value_body().FindStringKey("completion")) {
-      AddToConversationHistory(
-          ConversationTurn{CharacterType::ASSISTANT,
-                           ConversationTurnVisibility::VISIBLE, *completion});
-    }
-  }
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
