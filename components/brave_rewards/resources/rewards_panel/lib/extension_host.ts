@@ -573,6 +573,8 @@ export function createHost (): Host {
       }
     },
 
+    closePanel,
+
     onAppRendered () {
       proxy.handler.showUI()
     }

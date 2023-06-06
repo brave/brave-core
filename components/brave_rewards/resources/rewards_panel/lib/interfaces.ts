@@ -127,5 +127,6 @@ export interface Host {
   clearGrantCaptcha: () => void
   clearAdaptiveCaptcha: () => void
   handleAdaptiveCaptchaResult: (result: AdaptiveCaptchaResult) => void
+  closePanel: () => void
   onAppRendered: () => void
 }

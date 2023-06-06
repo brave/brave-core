@@ -63,9 +63,10 @@ export function PanelOverlays() {
       if (onboardingResult === 'success') {
         setTimeout(() => {
           tabOpener.openTab(urls.rewardsTourURL)
-        }, 2000)
+        }, 1000)
       }
       setOnboardingResult(null)
+      host.closePanel()
     }
 
     const onEnable = (country: string) => {

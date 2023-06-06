@@ -247,6 +247,11 @@ function createHost (): Host {
           break
       }
     },
+
+    closePanel() {
+      console.log('closePanel')
+    },
+
     onAppRendered () {
       console.log('onAppRendered')
     }
