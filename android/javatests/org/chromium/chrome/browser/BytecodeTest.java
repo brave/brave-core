@@ -706,7 +706,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
                 Resources.class, UiConfig.class, ViewGroup.class, ViewStub.class,
                 TileRenderer.class, PropertyModel.class, boolean.class, boolean.class,
-                boolean.class, Runnable.class, Runnable.class));
+                boolean.class, Runnable.class, Runnable.class, boolean.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
                         "org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager",
@@ -717,8 +717,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
-                Supplier.class, BookmarkState.class, OmniboxActionDelegate.class,
-                OpenHistoryClustersDelegate.class));
+                Supplier.class, BookmarkState.class, OpenHistoryClustersDelegate.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
@@ -785,7 +784,7 @@ public class BytecodeTest {
                 Supplier.class, Supplier.class, int.class, Supplier.class, Supplier.class,
                 AppMenuDelegate.class, StatusBarColorProvider.class, ObservableSupplierImpl.class,
                 IntentRequestTracker.class, int.class, Supplier.class, Function.class,
-                OneshotSupplier.class, boolean.class, BackPressManager.class));
+                OneshotSupplier.class, boolean.class, BackPressManager.class, Supplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbar", Context.class,
                 AttributeSet.class));
@@ -795,7 +794,7 @@ public class BytecodeTest {
                 Context.class, SelectableListLayout.class, SelectionDelegate.class,
                 SearchDelegate.class, DragReorderableRecyclerViewAdapter.class, boolean.class,
                 OneshotSupplier.class, BookmarkModel.class, BookmarkOpener.class,
-                BookmarkUiPrefs.class));
+                BookmarkUiPrefs.class, ModalDialogManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator",
@@ -809,7 +808,7 @@ public class BytecodeTest {
                         DragReorderableRecyclerViewAdapter.class, LargeIconBridge.class,
                         boolean.class, boolean.class, ObservableSupplierImpl.class, Profile.class,
                         BookmarkUndoController.class, ModelList.class, BookmarkUiPrefs.class,
-                        Runnable.class, ImageFetcher.class));
+                        Runnable.class, BookmarkImageFetcher.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkModel",

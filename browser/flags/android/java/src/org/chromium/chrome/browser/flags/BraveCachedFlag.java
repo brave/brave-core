@@ -37,7 +37,7 @@ public class BraveCachedFlag extends CachedFlag {
     @Override
     public boolean isEnabled() {
         if (sFlags.containsKey(mFeatureName)) {
-            return CachedFeatureFlags.isEnabled(mFeatureName, mDefaultValue);
+            return CachedFeatureFlags.isEnabled(mFeatureName);
         }
 
         return super.isEnabled();

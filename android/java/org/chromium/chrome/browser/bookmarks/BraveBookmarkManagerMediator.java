@@ -59,7 +59,7 @@ class BraveBookmarkManagerMediator
             ObservableSupplierImpl<Boolean> backPressStateSupplier, Profile profile,
             BookmarkUndoController bookmarkUndoController, ModelList modelList,
             BookmarkUiPrefs bookmarkUiPrefs, Runnable hideKeyboardRunnable,
-            ImageFetcher imageFetcher) {
+            BookmarkImageFetcher imageFetcher) {
         super(context, bookmarkModel, bookmarkOpener, selectableListLayout, selectionDelegate,
                 recyclerView, dragReorderableRecyclerViewAdapter, largeIconBridge, isDialogUi,
                 isIncognito, backPressStateSupplier, profile, bookmarkUndoController, modelList,

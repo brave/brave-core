@@ -202,7 +202,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private void setLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
         mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
             @Override
-            public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
+            public void onStartedShowing(@LayoutType int layoutType) {
                 if (layoutType == LayoutType.TAB_SWITCHER) {
                     try {
                         BraveActivity braveActivity = BraveActivity.getBraveActivity();

@@ -128,9 +128,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     }
 
     @Override
-    public void setTabSwitcherMode(
-            boolean inTabSwitcherMode, boolean showToolbar, boolean delayAnimation) {
-        super.setTabSwitcherMode(inTabSwitcherMode, showToolbar, delayAnimation);
+    public void setTabSwitcherMode(boolean inTabSwitcherMode) {
+        super.setTabSwitcherMode(inTabSwitcherMode);
 
         if (mBraveToolbarLayout instanceof ToolbarPhone) {
             mBraveToolbarLayout.setVisibility(
