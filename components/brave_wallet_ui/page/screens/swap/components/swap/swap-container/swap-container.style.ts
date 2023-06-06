@@ -115,7 +115,13 @@ export const Container = styled(StyledDiv)`
   }
 `
 
-export const PrivacyButton = styled(StyledButton)`
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+`
+
+export const ActionButton = styled(StyledButton)`
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;

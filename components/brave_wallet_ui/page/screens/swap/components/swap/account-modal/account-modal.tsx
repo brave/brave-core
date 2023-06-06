@@ -32,7 +32,6 @@ import { RefreshBlockchainStateParams } from '../../../constants/types'
 
 // Components
 import { AccountListItemButton } from './account-list-item-button'
-import { AccountModalButton } from './account-modal-button'
 
 // Styled Components
 import { ModalBox, Title } from './account-modal.style'
@@ -80,14 +79,6 @@ export const AccountModal = (props: Props) => {
       refreshBlockchainState
     ]
   )
-
-  const onClickHelpCenter = React.useCallback(() => {
-    window.open(
-      'https://support.brave.com/hc/en-us/articles/8155407080845-Brave-Swaps-FAQ',
-      '_blank',
-      'noopener'
-    )
-  }, [])
 
   return (
     <ModalBox>
@@ -166,11 +157,6 @@ export const AccountModal = (props: Props) => {
           icon={PortfolioIcon}
           onClick={onClickViewPortfolio}
         /> */}
-        <AccountModalButton
-          text={getLocale('braveSwapHelpCenter')}
-          iconName='info-outline'
-          onClick={onClickHelpCenter}
-        />
       </Column>
     </ModalBox>
   )
