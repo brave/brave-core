@@ -62,9 +62,8 @@ mojo::Remote<bat_ads::mojom::BatAdsService> BatAdsServiceFactoryImpl::Launch()
     const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  return kShouldLaunchAsInProcessRunService.Get()
-             ? LaunchInProcessBatAdsService()
-             : LaunchOutOfProcessBatAdsService();
+  return ShouldLaunchAsInProcessService() ? LaunchInProcessBatAdsService()
+                                          : LaunchOutOfProcessBatAdsService();
 }
 
 }  // namespace brave_ads

@@ -7,34 +7,33 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_COMMON_BRAVE_ADS_FEATURE_H_
 
 #include "base/feature_list.h"
-#include "base/metrics/field_trial_params.h"
 
 namespace brave_ads {
 
-BASE_DECLARE_FEATURE(kBraveAdsFeature);
-
-bool IsBraveAdsFeatureEnabled();
-
 // Set to |true| to launch as an in process service.
-constexpr base::FeatureParam<bool> kShouldLaunchAsInProcessRunService{
-    &kBraveAdsFeature, "should_launch_as_in_process_service", false};
+BASE_DECLARE_FEATURE(kShouldLaunchBraveAdsAsAnInProcessServiceFeature);
+
+bool ShouldLaunchAsInProcessService();
 
 // Set to |true| to always run the ads service, even if Brave Private Ads are
 // disabled.
-constexpr base::FeatureParam<bool> kShouldAlwaysRunService{
-    &kBraveAdsFeature, "should_always_run_service", false};
+BASE_DECLARE_FEATURE(kShouldAlwaysRunBraveAdsServiceFeature);
+
+bool ShouldAlwaysRunService();
 
 // Set to |true| to always trigger new tab page ad events even if Brave Private
-// Ads are disabled. |kShouldAlwaysRunService| must be set to |true|, otherwise
+// Ads are disabled. |ShouldAlwaysRunService| must be set to |true|, otherwise
 // this feature param will be ignored.
-constexpr base::FeatureParam<bool> kShouldAlwaysTriggerNewTabPageAdEvents{
-    &kBraveAdsFeature, "should_always_trigger_new_tab_page_ad_events", false};
+BASE_DECLARE_FEATURE(kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+
+bool ShouldAlwaysTriggerNewTabPageAdEvents();
 
 // Set to |true| to always trigger search result ad events even if Brave Private
-// Ads are disabled. |kShouldAlwaysRunService| must be set to |true|, otherwise
+// Ads are disabled. |ShouldAlwaysRunService| must be set to |true|, otherwise
 // this feature param will be ignored.
-constexpr base::FeatureParam<bool> kShouldAlwaysTriggerSearchResultAdEvents{
-    &kBraveAdsFeature, "should_always_trigger_search_result_ad_events", false};
+BASE_DECLARE_FEATURE(kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
+
+bool ShouldAlwaysTriggerSearchResultAdEvents();
 
 }  // namespace brave_ads
 

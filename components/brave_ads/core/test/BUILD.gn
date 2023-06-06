@@ -496,6 +496,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_feature_unittest.cc",
+    "//brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions_unittest.cc",
   ]

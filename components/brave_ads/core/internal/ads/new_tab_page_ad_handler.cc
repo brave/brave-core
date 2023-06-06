@@ -79,15 +79,9 @@ void NewTabPageAdHandler::TriggerEvent(
     const mojom::NewTabPageAdEventType event_type,
     TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
-  CHECK_NE(mojom::NewTabPageAdEventType::kServed, event_type)
-      << " should not be called with kServed as this event is handled when "
-         "calling MaybeServe if the user has opted-in or when triggering a "
-         "kViewed event if the user has not opted-in to Brave Private Ads";
 
   if (!UserHasOptedInToBravePrivateAds() &&
-      !kShouldAlwaysTriggerNewTabPageAdEvents.Get()) {
-    // Do not trigger events when the user has not opted-in to Brave Private
-    // Ads if |kShouldAlwaysTriggerNewTabPageAdEvents| is set to |false|.
+      !ShouldAlwaysTriggerNewTabPageAdEvents()) {
     return std::move(callback).Run(/*success*/ false);
   }
 

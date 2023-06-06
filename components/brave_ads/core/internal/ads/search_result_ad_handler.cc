@@ -56,9 +56,7 @@ void SearchResultAd::TriggerEvent(
          "calling TriggerEvent with kViewed";
 
   if (!UserHasOptedInToBravePrivateAds() &&
-      !kShouldAlwaysTriggerSearchResultAdEvents.Get()) {
-    // Do not trigger events when the user has not opted-in to Brave Private
-    // Ads if |kShouldAlwaysTriggerSearchResultAdEvents| is set to |false|.
+      !ShouldAlwaysTriggerSearchResultAdEvents()) {
     return std::move(callback).Run(/*success*/ false);
   }
 

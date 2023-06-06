@@ -24,8 +24,7 @@ namespace brave_ads {
 namespace {
 
 bool DoesRequireResourceForNewTabPageAds() {
-  return kShouldAlwaysRunService.Get() &&
-         kShouldAlwaysTriggerNewTabPageAdEvents.Get() &&
+  return ShouldAlwaysRunService() && ShouldAlwaysTriggerNewTabPageAdEvents() &&
          UserHasOptedInToNewTabPageAds();
 }
 

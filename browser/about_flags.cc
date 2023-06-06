@@ -12,6 +12,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -683,6 +684,45 @@
                                  kAllowUnsupportedWalletProvidersFeature),     \
       },                                                                       \
       {                                                                        \
+          "brave-ads-should-launch-brave-ads-as-an-in-process-service",        \
+          "Launch Brave Ads as an in-process service",                         \
+          "Launch Brave Ads as an in-process service removing the utility "    \
+          "process.",                                                          \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_ads::kShouldLaunchBraveAdsAsAnInProcessServiceFeature),    \
+      },                                                                       \
+      {                                                                        \
+          "brave-ads-should-always-run-brave-ads-service",                     \
+          "Should always run Brave Ads service",                               \
+          "Always run Brave Ads service to support triggering ad events when " \
+          "Brave Private Ads are disabled.",                                   \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_ads::kShouldAlwaysRunBraveAdsServiceFeature),              \
+      },                                                                       \
+      {                                                                        \
+          "brave-ads-should-always-trigger-new-tab-page-ad-events",            \
+          "Should always trigger new tab page ad events",                      \
+          "Support triggering new tab page ad events if Brave Private Ads "    \
+          "are disabled. Requires "                                            \
+          "#brave-ads-should-always-run-brave-ads-service to be enabled.",     \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_ads::kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature),  \
+      },                                                                       \
+      {                                                                        \
+          "brave-ads-should-always-trigger-search-result-ad-events",           \
+          "Should always trigger search result ad events",                     \
+          "Support triggering search result ad events if Brave Private Ads "   \
+          "are disabled. Requires "                                            \
+          "#brave-ads-should-always-run-brave-ads-service to be enabled.",     \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_ads::                                                      \
+                  kShouldAlwaysTriggerBraveSearchResultAdEventsFeature),       \
+      },                                                                       \
+      {                                                                        \
           "brave-ads-custom-push-notifications-ads",                           \
           "Enable Brave Ads custom push notifications",                        \
           "Enable Brave Ads custom push notifications to support rich media",  \
@@ -839,7 +879,6 @@
   BRAVE_SHARED_PINNED_TABS                                                     \
   BRAVE_AI_CHAT                                                                \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
-
 namespace flags_ui {
 namespace {
 
