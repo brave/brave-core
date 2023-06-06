@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/optimize_webui.py b/ui/webui/resources/tools/optimize_webui.py
-index 6b5978eeb4145..73eca52c875b9 100755
+index cd128b6e3da213413589e7a695d9ef1e5b84387e..92f8ae51992e8da37cb061fcf78e0185f0cd9156 100755
 --- a/ui/webui/resources/tools/optimize_webui.py
 +++ b/ui/webui/resources/tools/optimize_webui.py
 @@ -314,5 +314,6 @@ def main(argv):
