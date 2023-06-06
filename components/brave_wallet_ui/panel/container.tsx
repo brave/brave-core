@@ -575,7 +575,8 @@ function Container () {
           >
             <TransactionsPanel
               selectedNetwork={selectedNetwork}
-              selectedAccountAddress={selectedAccount?.address}
+              selectedAccountAddress={selectedAccount?.accountId.address}
+              selectedAccountCoinType={selectedAccount?.accountId.coin}
             />
           </Panel>
         </StyledExtensionWrapper>

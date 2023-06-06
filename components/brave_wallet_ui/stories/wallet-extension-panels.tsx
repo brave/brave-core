@@ -745,6 +745,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         {selectedPanel === 'activity' && (
                           <TransactionsPanel
                             selectedNetwork={mockNetworks[0]}
+                            selectedAccountCoinType={
+                              mockedTransactionAccounts[0].accountId.coin
+                            }
                             selectedAccountAddress={
                               mockedTransactionAccounts[0].address
                             }
@@ -904,6 +907,9 @@ export const _RecentTransaction = () => {
             <TransactionsPanel
               selectedNetwork={mockNetworks[0]}
               selectedAccountAddress={mockedTransactionAccounts[0].address}
+              selectedAccountCoinType={
+                mockedTransactionAccounts[0].accountId.coin
+              }
             />
           </ScrollContainer>
         </Panel>
