@@ -45,7 +45,7 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.brave.playlist.PlaylistDownloadUtils;
-import com.brave.playlist.enums.PlaylistOptions;
+import com.brave.playlist.enums.PlaylistOptionsEnum;
 import com.brave.playlist.listener.PlaylistOnboardingActionClickListener;
 import com.brave.playlist.listener.PlaylistOptionsListener;
 import com.brave.playlist.model.PlaylistItemModel;
@@ -670,7 +670,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 @Override
                 public void onOptionClicked(PlaylistOptionsModel playlistOptionsModel) {
                     try {
-                        if (playlistOptionsModel.getOptionType() == PlaylistOptions.ADD_MEDIA) {
+                        if (playlistOptionsModel.getOptionType() == PlaylistOptionsEnum.ADD_MEDIA) {
                             int mediaCount = SharedPreferencesManager.getInstance().readInt(
                                     PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
                             if (mediaCount == 2) {
@@ -703,11 +703,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 addMediaToPlaylist(items);
                             }
                         } else if (playlistOptionsModel.getOptionType()
-                                == PlaylistOptions.OPEN_PLAYLIST) {
+                                == PlaylistOptionsEnum.OPEN_PLAYLIST) {
                             BraveActivity.getBraveActivity().openPlaylistActivity(
                                     getContext(), ConstantUtils.DEFAULT_PLAYLIST);
                         } else if (playlistOptionsModel.getOptionType()
-                                == PlaylistOptions.PLAYLIST_SETTINGS) {
+                                == PlaylistOptionsEnum.PLAYLIST_SETTINGS) {
                             BraveActivity.getBraveActivity().openBravePlaylistSettings();
                         }
                     } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -726,35 +726,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
                 PlaylistViewUtils.showPlaylistButton(BraveActivity.getBraveActivity(), viewGroup,
                         playlistOptionsListener, playlistOnboardingActionClickListener);
-                // if (SharedPreferencesManager.getInstance().readBoolean(
-                //             PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
-                //     View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
-                //     if (playlistButton != null) {
-                //         playlistButton.post(new Runnable() {
-                //             @Override
-                //             public void run() {
-                //                 PlaylistOnboardingActionClickListener
-                //                         playlistOnboardingActionClickListener =
-                //                                 new PlaylistOnboardingActionClickListener() {
-                //                                     @Override
-                //                                     public void onOnboardingActionClick() {
-                //                                         addMediaToPlaylist(items);
-                //                                     }
-                //                                 };
-                //                 try {
-                //                     new PlaylistOnboardingPanel(
-                //                             (FragmentActivity) BraveActivity.getBraveActivity(),
-                //                             playlistButton,
-                //                             playlistOnboardingActionClickListener);
-                //                 } catch (BraveActivity.BraveActivityNotFoundException e) {
-                //                     Log.e(TAG, "showPlaylistButton " + e);
-                //                 }
-                //             }
-                //         });
-                //     }
-                //     SharedPreferencesManager.getInstance().writeBoolean(
-                //             PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
-                // }
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showPlaylistButton " + e);
@@ -1786,8 +1757,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (mPlaylistService != null) {
             }
             mPlaylistService.getPlaylistItem(id, playlistItem -> {
-                Log.e("BravePlaylist", "PlaylistItem : " + playlistItem.toString());
-
                 PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
                         ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name,
                         playlistItem.pageSource.url, playlistItem.mediaPath.url,
