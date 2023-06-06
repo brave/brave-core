@@ -39,8 +39,7 @@ class PermissionLifetimeManagerBrowserTest;
 
 namespace ephemeral_storage {
 
-// Service to enable or disable first party ephemeral storage from external
-// actors.
+// Handles Ephemeral Storage cleanup/queuing and other events.
 class EphemeralStorageService : public KeyedService {
  public:
   using TLDEphemeralAreaOnDestroyCallbacks =
