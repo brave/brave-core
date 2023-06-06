@@ -64,7 +64,7 @@ function Accelerator({
           commandsCache.unassignAccelerator(commandId, accelerator.codes)
         }
       >
-        <Icon name="trash" />
+        <Icon name="remove-circle-outline" />
       </RemoveButton>
     </Row>
   )
