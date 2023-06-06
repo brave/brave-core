@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <!--
+    Please reuse existing strings as much as possible rather than adding new
+    strings here.
+  -->
   <message name="IDS_IDC_BACK">
     Back
   </message>

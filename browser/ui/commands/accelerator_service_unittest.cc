@@ -151,7 +151,7 @@ TEST_F(AcceleratorServiceUnitTest, DefaultAcceleratorsCanBeUpdated) {
          {commands::FromCodesString("Control+KeyT"),
           commands::FromCodesString("Control+KeyY"),
           commands::FromCodesString("Control+KeyW")}},
-        {IDC_PIN_TARGET_TAB, {commands::FromCodesString("Alt+KeyP")}}}});
+        {IDC_WINDOW_PIN_TAB, {commands::FromCodesString("Alt+KeyP")}}}});
   auto accelerators = new_service.GetAcceleratorsForTesting();
   ASSERT_EQ(4u, accelerators[IDC_NEW_TAB].size());
   EXPECT_EQ("Control+KeyT",
@@ -165,9 +165,9 @@ TEST_F(AcceleratorServiceUnitTest, DefaultAcceleratorsCanBeUpdated) {
 
   EXPECT_EQ(0u, accelerators[IDC_NEW_WINDOW].size());
 
-  ASSERT_EQ(1u, accelerators[IDC_PIN_TARGET_TAB].size());
+  ASSERT_EQ(1u, accelerators[IDC_WINDOW_PIN_TAB].size());
   EXPECT_EQ("Alt+KeyP",
-            commands::ToCodesString(accelerators[IDC_PIN_TARGET_TAB][0]));
+            commands::ToCodesString(accelerators[IDC_WINDOW_PIN_TAB][0]));
 }
 
 TEST_F(AcceleratorServiceUnitTest, DuplicateDefaultsAreIgnored) {

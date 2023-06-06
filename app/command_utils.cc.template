@@ -56,9 +56,10 @@ std::string GetCommandName(int command_id) {
 
   auto result = l10n_util::GetStringUTF8(it->second);
   
-  // Note: A bunch of the Chromium strings have a random &amp; in them. I'm not
-  // sure what it's for but it looks really odd if we show it in the UI, so we
-  // strip it out.
+  // Note: A bunch of the Chromium strings have a &amp; in them, which denotes
+  // the shortcut key you can press to jump to it in a menu. We don't want to
+  // display this in the shortcuts page or in the command palette, so we remove
+  // them.
   // Currently no commands have a '&amp;' in the translated name, so this is
   // okay (for now).
   base::ReplaceSubstringsAfterOffset(&result, 0, "&", "");
