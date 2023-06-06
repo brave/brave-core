@@ -12,10 +12,6 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"
 
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/variables/average_tab_lifespan_predictor_variable.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/variables/does_match_parent_intent_segment_predictor_variable.h"
-
 namespace brave_ads {
 
 TabManager::TabManager() {
@@ -127,26 +123,6 @@ void TabManager::NotifyHtmlContentDidChange(
 }
 
 void TabManager::NotifyDidCloseTab(const int32_t id) const {
-
-  //
-  BLOG(2, "Tab id " << id << " closed start");
-
-  std::unique_ptr<PredictorVariableInterface> predictor_tab_lifespan =
-      std::make_unique<AverageTabLifespanPredictorVariable>();
-  const std::string value_tab_lifespan = predictor_tab_lifespan->GetValue();
-  BLOG(2, value_tab_lifespan);
-
-  // std::vector<CreativeNotificationAdInfo> ads_default;
-  // std::unique_ptr<PredictorVariableInterface> predictor_ad_user =
-  //     std::make_unique<DoesMatchParentIntentSegmentPredictorVariable>(
-  //         brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents,
-  //         ads_default);
-  // const std::string value_ad_user = predictor_ad_user->GetValue();
-  // BLOG(2, value_ad_user);
-
-  BLOG(2, "Tab id " << id << " closed stop");
-  //
-
   for (TabManagerObserver &observer : observers_) {
     observer.OnDidCloseTab(id);
   }

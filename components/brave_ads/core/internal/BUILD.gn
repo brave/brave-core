@@ -796,8 +796,6 @@ source_set("internal") {
     "fl/predictors/variables/advertiser_last_seen_hours_ago_predictor_variable_util.h",
     "fl/predictors/variables/average_clickthrough_rate_predictor_variable.cc",
     "fl/predictors/variables/average_clickthrough_rate_predictor_variable.h",
-    "fl/predictors/variables/average_tab_lifespan_predictor_variable.cc",
-    "fl/predictors/variables/average_tab_lifespan_predictor_variable.h",
     "fl/predictors/variables/creative_ad_priority_predictor_variable.cc",
     "fl/predictors/variables/creative_ad_priority_predictor_variable.h",
     "fl/predictors/variables/creative_ad_priority_predictor_variable_util.cc",
