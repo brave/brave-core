@@ -209,6 +209,36 @@ absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
   return converted_json;
 }
 
+// Retrieves a custom network dict from the preferences based on the chain ID.
+// This function is templated to work with both base::Value::Dict as well as
+// const base::Value::Dict types, for read/write and read-only access
+// respectively.
+template <typename T>
+T* GetCustomEVMNetworkFromPrefsDict(const std::string& chain_id,
+                                    T& custom_networks) {
+  auto* custom_evm_networks =
+      custom_networks.FindList(brave_wallet::kEthereumPrefKey);
+  if (!custom_evm_networks) {
+    return nullptr;
+  }
+
+  for (auto& item : *custom_evm_networks) {
+    T* custom_network = item.GetIfDict();
+    if (!custom_network) {
+      continue;
+    }
+
+    const std::string* id = custom_network->FindString("chainId");
+    if (!id || *id != chain_id) {
+      continue;
+    }
+
+    return custom_network;
+  }
+
+  return nullptr;
+}
+
 namespace solana {
 // https://github.com/solana-labs/solana/blob/f7b2951c79cd07685ed62717e78ab1c200924924/rpc/src/rpc.rs#L1717
 constexpr char kAccountNotCreatedError[] = "could not find account";
@@ -618,35 +648,6 @@ void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {
                                   weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
-// Retrieves a custom network dict from the preferences based on the chain ID.
-// This function is templated to work with both base::Value::Dict as well as
-// const base::Value::Dict types, for read/write and read-only access
-// respectively.
-template <typename T>
-T* JsonRpcService::GetCustomNetworkFromPrefsDict(const std::string& chain_id,
-                                                 T& custom_networks) {
-  auto* custom_evm_networks = custom_networks.FindList(kEthereumPrefKey);
-  if (!custom_evm_networks) {
-    return nullptr;
-  }
-
-  for (auto& item : *custom_evm_networks) {
-    T* custom_network = item.GetIfDict();
-    if (!custom_network) {
-      continue;
-    }
-
-    const std::string* id = custom_network->FindString("chainId");
-    if (!id || *id != chain_id) {
-      continue;
-    }
-
-    return custom_network;
-  }
-
-  return nullptr;
-}
-
 void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
                                      const std::string& base_fee_per_gas,
                                      mojom::ProviderError error,
@@ -669,7 +670,7 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
     // details.
     auto& custom_networks = prefs_->GetDict(kBraveWalletCustomNetworks);
     auto* custom_network =
-        GetCustomNetworkFromPrefsDict(chain_id, custom_networks);
+        GetCustomEVMNetworkFromPrefsDict(chain_id, custom_networks);
     if (!custom_network) {
       return;
     }
@@ -682,7 +683,7 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
     if (changed) {
       ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
       auto* custom_network_for_update =
-          GetCustomNetworkFromPrefsDict(chain_id, *update);
+          GetCustomEVMNetworkFromPrefsDict(chain_id, *update);
       if (!custom_network_for_update) {
         return;
       }
@@ -1474,8 +1475,7 @@ void JsonRpcService::EnsGetContentHash(const std::string& domain,
       allow_offchain = false;
     }
 
-    // JsonRpcService owns EnsResolverTask instance, so Unretained is safe
-    // here.
+    // JsonRpcService owns EnsResolverTask instance, so Unretained is safe here.
     auto done_callback = base::BindOnce(
         &JsonRpcService::OnEnsGetContentHashTaskDone, base::Unretained(this));
 
@@ -1614,8 +1614,7 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
       allow_offchain = false;
     }
 
-    // JsonRpcService owns EnsResolverTask instance, so Unretained is safe
-    // here.
+    // JsonRpcService owns EnsResolverTask instance, so Unretained is safe here.
     auto done_callback = base::BindOnce(
         &JsonRpcService::OnEnsGetEthAddrTaskDone, base::Unretained(this));
 
