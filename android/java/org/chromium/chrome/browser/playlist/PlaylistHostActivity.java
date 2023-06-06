@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.brave.playlist.PlaylistDownloadUtils;
 import com.brave.playlist.PlaylistViewModel;
 import com.brave.playlist.enums.PlaylistEventEnum;
+import com.brave.playlist.enums.PlaylistItemEventEnum;
 import com.brave.playlist.enums.PlaylistOptions;
 import com.brave.playlist.fragment.AllPlaylistFragment;
 import com.brave.playlist.fragment.PlaylistFragment;
@@ -21,6 +22,7 @@ import com.brave.playlist.listener.PlaylistOptionsListener;
 import com.brave.playlist.model.DownloadProgressModel;
 import com.brave.playlist.model.MoveOrCopyModel;
 import com.brave.playlist.model.PlaylistEventModel;
+import com.brave.playlist.model.PlaylistItemEventModel;
 import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.model.PlaylistModel;
 import com.brave.playlist.model.PlaylistOptionsModel;
@@ -45,6 +47,7 @@ import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
@@ -285,7 +288,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 playlistItemOption.getPlaylistItemModel().getId());
                         PlaylistDownloadUtils.removeDownloadRequest(PlaylistHostActivity.this,
                                 playlistItemOption.getPlaylistItemModel());
-                        loadPlaylist(playlistItemOption.getPlaylistId());
+                        // loadPlaylist(playlistItemOption.getPlaylistId());
                     } else if (option == PlaylistOptions.OPEN_IN_NEW_TAB) {
                         openPlaylistInTab(
                                 false, playlistItemOption.getPlaylistItemModel().getPageSource());
@@ -301,8 +304,9 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     } else if (option == PlaylistOptions.RECOVER_PLAYLIST_ITEM) {
                         mPlaylistService.recoverLocalDataForItem(
                                 playlistItemOption.getPlaylistItemModel().getId(), true,
-                                playlistItem -> {
-                                    loadPlaylist(playlistItemOption.getPlaylistId());
+                                playlistItem
+                                -> {
+                                        // loadPlaylist(playlistItemOption.getPlaylistId());
                                 });
                     }
                 });
@@ -373,6 +377,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         playlistItem.lastPlayedPosition, playlistItem.cached, false, 0);
                 playlistItems.add(playlistItemModel);
             }
+            Collections.reverse(playlistItems); // To have latest item on top
             PlaylistModel playlistModel =
                     new PlaylistModel(playlist.id, playlist.name, playlistItems);
             if (mPlaylistViewModel != null) {
@@ -441,38 +446,40 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onEvent(int eventType, String playlistId) {
-        if (mPlaylistViewModel == null) {
+    public void onEvent(int eventType, String playlistItemId) {
+        Log.e(TAG, "eventType : " + eventType);
+        if (mPlaylistService == null || mPlaylistViewModel == null) {
             return;
         }
-        PlaylistEventEnum playlistEvent;
+        PlaylistEventEnum playlistEvent = PlaylistEventEnum.kNone;
+        PlaylistItemEventEnum playlistItemEvent = PlaylistItemEventEnum.kNone;
         switch (eventType) {
             case PlaylistEvent.ITEM_ADDED:
-                playlistEvent = PlaylistEventEnum.kItemAdded;
+                playlistItemEvent = PlaylistItemEventEnum.kItemAdded;
                 break;
             case PlaylistEvent.ITEM_THUMBNAIL_READY:
-                playlistEvent = PlaylistEventEnum.kItemThumbnailReady;
+                playlistItemEvent = PlaylistItemEventEnum.kItemThumbnailReady;
                 break;
             case PlaylistEvent.ITEM_THUMBNAIL_FAILED:
-                playlistEvent = PlaylistEventEnum.kItemThumbnailFailed;
+                playlistItemEvent = PlaylistItemEventEnum.kItemThumbnailFailed;
                 break;
             case PlaylistEvent.ITEM_CACHED:
-                playlistEvent = PlaylistEventEnum.kItemCached;
+                playlistItemEvent = PlaylistItemEventEnum.kItemCached;
                 break;
             case PlaylistEvent.ITEM_DELETED:
-                playlistEvent = PlaylistEventEnum.kItemDeleted;
+                playlistItemEvent = PlaylistItemEventEnum.kItemDeleted;
                 break;
             case PlaylistEvent.ITEM_UPDATED:
-                playlistEvent = PlaylistEventEnum.kItemUpdated;
+                playlistItemEvent = PlaylistItemEventEnum.kItemUpdated;
                 break;
             case PlaylistEvent.ITEM_MOVED:
-                playlistEvent = PlaylistEventEnum.kItemMoved;
+                playlistItemEvent = PlaylistItemEventEnum.kItemMoved;
                 break;
             case PlaylistEvent.ITEM_ABORTED:
-                playlistEvent = PlaylistEventEnum.kItemAborted;
+                playlistItemEvent = PlaylistItemEventEnum.kItemAborted;
                 break;
             case PlaylistEvent.ITEM_LOCAL_DATA_REMOVED:
-                playlistEvent = PlaylistEventEnum.kItemLocalDataRemoved;
+                playlistItemEvent = PlaylistItemEventEnum.kItemLocalDataRemoved;
                 break;
             case PlaylistEvent.LIST_CREATED:
                 playlistEvent = PlaylistEventEnum.kListCreated;
@@ -480,11 +487,23 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
             case PlaylistEvent.ALL_DELETED:
                 playlistEvent = PlaylistEventEnum.kAllDeleted;
                 break;
-            default:
-                playlistEvent = PlaylistEventEnum.kNone;
-                break;
         }
-        mPlaylistViewModel.updatePlaylistEvent(new PlaylistEventModel(playlistEvent, playlistId));
+        Log.e(TAG, "playlistEvent.toString() : " + playlistEvent.toString());
+        if (playlistItemEvent != PlaylistItemEventEnum.kNone) {
+            final PlaylistItemEventEnum localPlaylistItemEvent = playlistItemEvent;
+            mPlaylistService.getPlaylistItem(playlistItemId, playlistItem -> {
+                Log.e("BravePlaylist", "PlaylistItem : " + playlistItem.toString());
+
+                PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
+                        ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name,
+                        playlistItem.pageSource.url, playlistItem.mediaPath.url,
+                        playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
+                        playlistItem.author, playlistItem.duration, playlistItem.lastPlayedPosition,
+                        playlistItem.cached, false, 0);
+                mPlaylistViewModel.updatePlaylistItemEvent(
+                        new PlaylistItemEventModel(localPlaylistItemEvent, playlistItemModel));
+            });
+        }
     }
 
     @Override
