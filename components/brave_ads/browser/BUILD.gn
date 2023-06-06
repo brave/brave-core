@@ -96,7 +96,7 @@ source_set("test_support") {
   deps = [ "//testing/gmock" ]
 
   sources = [
-    "mock_ads_service.cc",
-    "mock_ads_service.h",
+    "ads_service_mock.cc",
+    "ads_service_mock.h",
   ]
 }

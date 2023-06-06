@@ -12,7 +12,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/mock_ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/constants/brave_paths.h"
@@ -138,13 +138,13 @@ class SearchResultAdTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  MockAdsService* ads_service() { return &ads_service_; }
+  AdsServiceMock* ads_service() { return &ads_service_mock_; }
 
  private:
   base::test::ScopedFeatureList feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  MockAdsService ads_service_;
+  AdsServiceMock ads_service_mock_;
 };
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AdsDisabled) {
