@@ -9,7 +9,7 @@
 
 #include "base/check_op.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "brave/components/request_otr/browser/request_otr_tab_storage.h"
+#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "build/build_config.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/grit/generated_resources.h"
@@ -22,7 +22,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
-using request_otr::RequestOTRTabStorage;
+using request_otr::RequestOTRStorageTabHelper;
 
 // static
 void RequestOTRInfoBarDelegate::Create(
@@ -63,11 +63,11 @@ std::u16string RequestOTRInfoBarDelegate::GetButtonLabel(
 bool RequestOTRInfoBarDelegate::Accept() {
   content::WebContents* web_contents =
       infobars::ContentInfoBarManager::WebContentsFromInfoBar(infobar());
-  RequestOTRTabStorage* tab_storage =
-      RequestOTRTabStorage::GetOrCreate(web_contents);
+  RequestOTRStorageTabHelper* tab_storage =
+      RequestOTRStorageTabHelper::GetOrCreate(web_contents);
   /* reload, not in Off-The-Record mode, and suppress interstitial */
-  tab_storage->SetIsProceeding(true);
-  tab_storage->SetRequestedOTR(false);
+  tab_storage->set_is_proceeding(true);
+  tab_storage->set_requested_otr(false);
   web_contents->GetController().Reload(content::ReloadType::NORMAL, true);
   return true;
 }

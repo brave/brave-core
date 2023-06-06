@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/request_otr/browser/request_otr_tab_storage.h"
+#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 
 #include <utility>
 
@@ -15,19 +15,20 @@
 
 namespace request_otr {
 
-RequestOTRTabStorage::RequestOTRTabStorage(content::WebContents* contents)
-    : content::WebContentsUserData<RequestOTRTabStorage>(*contents) {}
+RequestOTRStorageTabHelper::RequestOTRStorageTabHelper(
+    content::WebContents* contents)
+    : content::WebContentsUserData<RequestOTRStorageTabHelper>(*contents) {}
 
-RequestOTRTabStorage::~RequestOTRTabStorage() = default;
+RequestOTRStorageTabHelper::~RequestOTRStorageTabHelper() = default;
 
 // static
-RequestOTRTabStorage* RequestOTRTabStorage::GetOrCreate(
+RequestOTRStorageTabHelper* RequestOTRStorageTabHelper::GetOrCreate(
     content::WebContents* web_contents) {
   if (!base::FeatureList::IsEnabled(
           request_otr::features::kBraveRequestOTRTab)) {
     return nullptr;
   }
-  RequestOTRTabStorage* storage = FromWebContents(web_contents);
+  RequestOTRStorageTabHelper* storage = FromWebContents(web_contents);
   if (!storage) {
     CreateForWebContents(web_contents);
     storage = FromWebContents(web_contents);
@@ -35,7 +36,7 @@ RequestOTRTabStorage* RequestOTRTabStorage::GetOrCreate(
   return storage;
 }
 
-void RequestOTRTabStorage::MaybeEnable1PESForUrl(
+void RequestOTRStorageTabHelper::MaybeEnable1PESForUrl(
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     const GURL& url,
     base::OnceCallback<void()> on_ready) {
@@ -43,9 +44,9 @@ void RequestOTRTabStorage::MaybeEnable1PESForUrl(
   blocked_domain_1pes_lifetime_ =
       BlockedDomain1PESLifetime::GetOrCreate(ephemeral_storage_service, url);
   blocked_domain_1pes_lifetime_->AddOnReadyCallback(std::move(on_ready));
-  DVLOG(1) << "RequestOTRTabStorage::MaybeEnable1PESForUrl successful!";
+  DVLOG(1) << "RequestOTRStorageTabHelper::MaybeEnable1PESForUrl successful!";
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(RequestOTRTabStorage);
+WEB_CONTENTS_USER_DATA_KEY_IMPL(RequestOTRStorageTabHelper);
 
 }  // namespace request_otr

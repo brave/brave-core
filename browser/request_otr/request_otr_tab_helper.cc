@@ -11,7 +11,7 @@
 #include "base/containers/flat_set.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/infobars/request_otr_infobar_delegate.h"
-#include "brave/components/request_otr/browser/request_otr_tab_storage.h"
+#include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
@@ -20,7 +20,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 
-using request_otr::RequestOTRTabStorage;
+using request_otr::RequestOTRStorageTabHelper;
 
 RequestOTRTabHelper::RequestOTRTabHelper(content::WebContents* contents)
     : WebContentsObserver(contents),
@@ -38,8 +38,8 @@ void RequestOTRTabHelper::DidFinishNavigation(
     return;
   }
 
-  RequestOTRTabStorage* storage =
-      RequestOTRTabStorage::GetOrCreate(web_contents());
+  RequestOTRStorageTabHelper* storage =
+      RequestOTRStorageTabHelper::GetOrCreate(web_contents());
   // GetOrCreate should only return null if the runtime flag is disabled, and
   // this tab helper should never even be created if the runtime flag is
   // disabled, so a null here is bad news.
@@ -47,7 +47,7 @@ void RequestOTRTabHelper::DidFinishNavigation(
   if (!storage) {
     return;
   }
-  if (!storage->RequestedOTR()) {
+  if (!storage->has_requested_otr()) {
     return;
   }
 
