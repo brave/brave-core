@@ -197,42 +197,37 @@ TEST_F(BraveWalletP3AUnitTest, JSProviders) {
   auto test_func = [&](mojom::CoinType coin_type, const char* histogram_name) {
     histogram_tester_->ExpectTotalCount(histogram_name, 0);
 
-    wallet_p3a_->ReportJSProvider(mojom::JSProviderType::Native, coin_type,
-                                  /*use_native_wallet_enabled*/ true,
+    wallet_p3a_->ReportJSProvider(mojom::JSProviderType::None, coin_type,
                                   /*allow_provider_override*/ true);
     histogram_tester_->ExpectUniqueSample(histogram_name, 0, 1);
-
-    wallet_p3a_->ReportJSProvider(mojom::JSProviderType::None, coin_type,
-                                  /*use_native_wallet_enabled*/ false,
-                                  /*allow_provider_override*/ true);
-    histogram_tester_->ExpectBucketCount(histogram_name, 1, 1);
 
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     WaitForResponse();
 
+    wallet_p3a_->ReportJSProvider(mojom::JSProviderType::None, coin_type,
+                                  /*allow_provider_override*/ true);
+    histogram_tester_->ExpectBucketCount(histogram_name, 1, 1);
+
     wallet_p3a_->ReportJSProvider(mojom::JSProviderType::Native, coin_type,
-                                  /*use_native_wallet_enabled*/ true,
                                   /*allow_provider_override*/ true);
     histogram_tester_->ExpectBucketCount(histogram_name, 2, 1);
 
     wallet_p3a_->ReportJSProvider(mojom::JSProviderType::Native, coin_type,
-                                  /*use_native_wallet_enabled*/ true,
                                   /*allow_provider_override*/ false);
     histogram_tester_->ExpectBucketCount(histogram_name, 3, 1);
 
     wallet_p3a_->ReportJSProvider(mojom::JSProviderType::ThirdParty, coin_type,
-                                  /*use_native_wallet_enabled*/ false,
-                                  /*allow_provider_override*/ true);
-    histogram_tester_->ExpectBucketCount(histogram_name, 4, 1);
-
-    wallet_p3a_->ReportJSProvider(mojom::JSProviderType::ThirdParty, coin_type,
-                                  /*use_native_wallet_enabled*/ true,
                                   /*allow_provider_override*/ true);
     histogram_tester_->ExpectBucketCount(histogram_name, 5, 1);
 
     keyring_service_->Reset();
+
+    wallet_p3a_->ReportJSProvider(mojom::JSProviderType::ThirdParty, coin_type,
+                                  /*allow_provider_override*/ true);
+    histogram_tester_->ExpectBucketCount(histogram_name, 4, 1);
+
+    keyring_service_->Reset();
     wallet_p3a_->ReportJSProvider(mojom::JSProviderType::Native, coin_type,
-                                  /*use_native_wallet_enabled*/ true,
                                   /*allow_provider_override*/ true);
     histogram_tester_->ExpectBucketCount(histogram_name, 0, 2);
   };
