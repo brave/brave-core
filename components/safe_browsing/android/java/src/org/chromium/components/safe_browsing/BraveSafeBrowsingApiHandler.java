@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 
-public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
+public class BraveSafeBrowsingApiHandler implements SafetyNetApiHandler {
     public static final long SAFE_BROWSING_INIT_INTERVAL_MS = 30000;
     private static final long DEFAULT_CHECK_DELTA = 10;
     private static final String SAFE_METADATA = "{}";
