@@ -24,6 +24,7 @@
 @class BraveTabGeneratorAPI;
 @class WebImageDownloader;
 @class NTPBackgroundImagesService;
+@class LocalDataFileServiceWrapper;
 @protocol IpfsAPI;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -93,6 +94,8 @@ OBJC_EXPORT
 @property(readonly) BraveP3AUtils* p3aUtils;
 
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
+
+@property(readonly) LocalDataFileServiceWrapper* localDataFileService;
 
 /// Sets up bundle path overrides and initializes ICU from the BraveCore bundle
 /// without setting up a BraveCoreMain instance.

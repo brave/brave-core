@@ -11,6 +11,7 @@ import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
 import("//brave/ios/browser/api/favicon/headers.gni")
 import("//brave/ios/browser/api/ipfs/headers.gni")
+import("//brave/ios/browser/api/local_data_file_service/headers.gni")
 import("//brave/ios/browser/api/ntp_background_images/headers.gni")
 import("//brave/ios/browser/api/opentabs/headers.gni")
 import("//brave/ios/browser/api/p3a/headers.gni")
@@ -68,6 +69,7 @@ brave_core_public_headers = [
 
 brave_core_public_headers += ads_public_headers
 brave_core_public_headers += brave_shields_public_headers
+brave_core_public_headers += local_data_file_service_public_headers
 brave_core_public_headers += brave_stats_public_headers
 brave_core_public_headers += brave_wallet_public_headers
 brave_core_public_headers += browser_api_certificate_public_headers

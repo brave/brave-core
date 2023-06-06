@@ -35,6 +35,7 @@ BraveComponentUpdaterDelegate::BraveComponentUpdaterDelegate(
 BraveComponentUpdaterDelegate::~BraveComponentUpdaterDelegate() = default;
 
 void BraveComponentUpdaterDelegate::Register(
+    const std::string& component_id,
     const std::string& component_name,
     const std::string& component_base64_public_key,
     base::OnceClosure registered_callback,

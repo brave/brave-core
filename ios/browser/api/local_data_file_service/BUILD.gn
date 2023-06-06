@@ -1,0 +1,29 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("local_data_file_service") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+  sources = [
+    "local_data_file_service_installer_delegate.h",
+    "local_data_file_service_installer_delegate.mm",
+    "local_data_file_service_installer_policy.cc",
+    "local_data_file_service_installer_policy.h",
+    "local_data_file_service_wrapper+private.h",
+    "local_data_file_service_wrapper.h",
+    "local_data_file_service_wrapper.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/base/mac",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/browser:component_installer",
+    "//brave/components/brave_shields/common",
+    "//brave/components/url_sanitizer/browser",
+    "//components/component_updater",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//net",
+    "//url",
+  ]
+}

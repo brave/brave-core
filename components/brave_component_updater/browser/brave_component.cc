@@ -36,10 +36,9 @@ void BraveComponent::Register(const std::string& component_name,
                           weak_factory_.GetWeakPtr(),
                           component_id);
 
-  delegate_->Register(component_name_,
+  delegate_->Register(component_id_, component_name_,
                       component_base64_public_key_,
-                      std::move(registered_callback),
-                      ready_callback);
+                      std::move(registered_callback), ready_callback);
 }
 
 bool BraveComponent::Unregister() {

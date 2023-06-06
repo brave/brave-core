@@ -32,6 +32,7 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
+#include "brave/ios/browser/api/local_data_file_service/local_data_file_service_wrapper+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
@@ -113,6 +114,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
+@property(nonatomic) LocalDataFileServiceWrapper* localDataFileService;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @end
 
@@ -321,6 +323,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   brave_wallet::RegisterWalletDataFilesComponent(cus);
 
   [self.adblockService registerDefaultShieldsComponent];
+  [self.localDataFileService start];
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {
@@ -487,6 +490,13 @@ static bool CustomLogHandler(int severity,
                   p3aService:_p3a_service];
   }
   return _p3aUtils;
+}
+
+- (LocalDataFileServiceWrapper*)localDataFileService {
+  if (!_localDataFileService) {
+    _localDataFileService = [[LocalDataFileServiceWrapper alloc] init];
+  }
+  return _localDataFileService;
 }
 
 + (bool)initializeICUForTesting {

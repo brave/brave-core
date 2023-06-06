@@ -28,7 +28,8 @@ class BraveComponent {
   class Delegate {
    public:
     virtual ~Delegate() = default;
-    virtual void Register(const std::string& component_name,
+    virtual void Register(const std::string& component_id,
+                          const std::string& component_name,
                           const std::string& component_base64_public_key,
                           base::OnceClosure registered_callback,
                           ReadyCallback ready_callback) = 0;
