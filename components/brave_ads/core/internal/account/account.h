@@ -135,8 +135,9 @@ class Account final : public AdsClientNotifierObserver,
   void OnNotifyDidSolveAdaptiveCaptcha() override;
 
   // ConfirmationsDelegate:
-  void OnDidConfirm(const ConfirmationInfo& confirmation) override;
-  void OnFailedToConfirm(const ConfirmationInfo& confirmation) override;
+  void OnDidRedeemConfirmation(const ConfirmationInfo& confirmation) override;
+  void OnFailedToRedeemConfirmation(
+      const ConfirmationInfo& confirmation) override;
 
   // IssuersUrlRequestDelegate:
   void OnDidFetchIssuers(const IssuersInfo& issuers) override;
