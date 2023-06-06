@@ -6,6 +6,8 @@
 #ifndef BRAVE_APP_COMMAND_UTILS_H_
 #define BRAVE_APP_COMMAND_UTILS_H_
 
+#include <string>
+
 #include "base/containers/span.h"
 
 namespace commands {

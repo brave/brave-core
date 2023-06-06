@@ -10,12 +10,17 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/span.h"
 #include "base/feature_list.h"
+#include "base/strings/string_util.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "ui/base/l10n/l10n_util.h"
+#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/strings/grit/components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/strings/grit/ui_strings.h"
 
 namespace commands {
 namespace {
@@ -49,7 +54,15 @@ std::string GetCommandName(int command_id) {
          "commands (i.e. commands in |GetCommands()|). "
          "This command should probably be added.";
 
-  return l10n_util::GetStringUTF8(it->second);
+  auto result = l10n_util::GetStringUTF8(it->second);
+  
+  // Note: A bunch of the Chromium strings have a random &amp; in them. I'm not
+  // sure what it's for but it looks really odd if we show it in the UI, so we
+  // strip it out.
+  // Currently no commands have a '&amp;' in the translated name, so this is
+  // okay (for now).
+  base::ReplaceSubstringsAfterOffset(&result, 0, "&", "");
+  return result;
 }
 
 }  // namespace commands

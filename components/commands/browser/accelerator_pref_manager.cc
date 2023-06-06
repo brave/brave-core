@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/containers/flat_map.h"
-#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
