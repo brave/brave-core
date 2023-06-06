@@ -278,6 +278,9 @@ export interface WalletState {
   removedNonFungibleTokenIds: string[]
   hidePortfolioNFTsTab: boolean
   removedNonFungibleTokens: BraveWallet.BlockchainToken[]
+  filteredOutPortfolioNetworkKeys: string[]
+  filteredOutPortfolioAccountAddresses: string[]
+  hidePortfolioSmallBalances: boolean
 }
 
 export interface PanelState {
@@ -947,7 +950,7 @@ export type AssetFilterOptionIds =
   | 'aToZ'
   | 'zToA'
 
-export interface AssetFilterOption {
+export interface DropdownFilterOption {
   name: string
   id: AssetFilterOptionIds
 }

@@ -36,6 +36,12 @@ export const hidePortfolioBalances = ({ wallet }: State) =>
 export const hidePortfolioNFTsTab = ({ wallet }: State) =>
   wallet.hidePortfolioNFTsTab
 export const removedNonFungibleTokens = ({ wallet }: State) => wallet.removedNonFungibleTokens
+export const filteredOutPortfolioNetworkKeys = ({ wallet }: State) =>
+  wallet.filteredOutPortfolioNetworkKeys
+export const filteredOutPortfolioAccountAddresses = ({ wallet }: State) =>
+  wallet.filteredOutPortfolioAccountAddresses
+export const hidePortfolioSmallBalances = ({ wallet }: State) =>
+  wallet.hidePortfolioSmallBalances
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const accounts = ({ wallet }: State) => wallet.accounts

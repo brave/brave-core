@@ -79,5 +79,9 @@ export const {
   setRemovedFungibleTokenIds,
   setRemovedNonFungibleTokenIds,
   setHidePortfolioNFTsTab,
-  setRemovedNonFungibleTokens
+  setRemovedNonFungibleTokens,
+  setFilteredOutPortfolioNetworkKeys,
+  setFilteredOutPortfolioAccountAddresses,
+  setHidePortfolioSmallBalances,
+  setIsFetchingPortfolioPriceHistory
 } = WalletActions

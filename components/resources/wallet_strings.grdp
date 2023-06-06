@@ -149,6 +149,7 @@
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TERMS" desc="Backup screen terms check box">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_SKIP" desc="Generic skip button">Skip</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_CANCEL" desc="Generic cancel action button">Cancel</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_SAVE_CHANGES" desc="Generic save changes action button">Save changes</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_TITLE" desc="Recovery screen title">Your recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_DESCRIPTION" desc="Recovery screen description">Write down or copy these words in the exact order shown below, and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_WARNING1" desc="Recovery screen warning title">WARNING:</message>
@@ -563,10 +564,24 @@
   <message name="IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION" desc="Sardine description in buy options list">Easiest, fastest and cheapest way to buy crypto with card and bank transfers.</message>
   <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION" desc="Transak description in buy options list">Instant buy with your bank account. Lower fees.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
-  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Aseet Filter Selector Low to High">Balance ↑</message>
-  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Aseet Filter Selector High to Low">Balance ↓</message>
-  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_A_TO_Z" desc="Aseet Filter Selector A to Z">Name ↓</message>
-  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_Z_TO_A" desc="Aseet Filter Selector Z to A">Name ↑</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Asset Filter Selector Low to High">Low to High</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Asset Filter Selector High to Low">High to Low</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_A_TO_Z" desc="Asset Filter Selector A to Z">A to Z</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_Z_TO_A" desc="Asset Filter Selector Z to A">Z to A</message>
+  <message name="IDS_BRAVE_WALLET_PORTFOLIO_FILTERS_TITLE" desc="Portfolio Filters and Display settings modal">Filters and display settings</message>
+  <message name="IDS_BRAVE_WALLET_SORT_ASSETS" desc="Portfolio settings sort assets dropdown title">Sort assets</message>
+  <message name="IDS_BRAVE_WALLET_SORT_ASSETS_DESCRIPTION" desc="Portfolio settings sort assets dropdown description">Sort by fiat value or name</message>
+  <message name="IDS_BRAVE_WALLET_SMALL_BALANCES" desc="Portfolio settings hide small balances toggle title">Hide small balances</message>
+  <message name="IDS_BRAVE_WALLET_SMALL_BALANCES_DESCRIPTION" desc="Portfolio settings hide small balances toggle description">Assets with value less than <ph name="FIAT_VALUE"><ex>$100</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_SELECT_ACCOUNTS" desc="Portfolio settings select accounts title">Select accounts</message>
+  <message name="IDS_BRAVE_WALLET_SELECT_NETWORKS" desc="Portfolio settings select networks title">Select networks</message>
+  <message name="IDS_BRAVE_WALLET_SELECT_ALL" desc="Portfolio settings select all button">Select all</message>
+  <message name="IDS_BRAVE_WALLET_DESELECT_ALL" desc="Portfolio settings deselect all button">Deselect all</message>
+  <message name="IDS_BRAVE_WALLET_PRIMARY_NETWORKS" desc="Portfolio settings primary networks title">Primary networks</message>
+  <message name="IDS_BRAVE_WALLET_ETH_ACCOUNT_DESCRIPTION" desc="Ethereum account description">Ethereum + EVM Chains</message>
+  <message name="IDS_BRAVE_WALLET_SOL_ACCOUNT_DESCRIPTION" desc="Solana account description">Solana + SVM Chains</message>
+  <message name="IDS_BRAVE_WALLET_FIL_ACCOUNT_DESCRIPTION" desc="Filecoin account description">Filecoin</message>
+  <message name="IDS_BRAVE_WALLET_BTC_ACCOUNT_DESCRIPTION" desc="Bitcoin account description">Bitcoin</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All accounts</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>
@@ -591,8 +606,8 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_DAPP_INTERACTION" desc="Transaction intent for dapp interactions">Dapp interaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SEND" desc="Transaction intent for transfers">Send <ph name="VALUE">$1<ex>1000 USDC</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SWAP" desc="Transaction intent for swaps">Swap <ph name="MAKER">$1<ex>1000 USDC</ex></ph> to <ph name="TAKER">$2<ex>990 USDT</ex></ph></message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary Networks</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_TEST_NETWORKS" desc="Network Filter Selector Test Networks">Test Networks</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary networks</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_TEST_NETWORKS" desc="Network Filter Selector Test Networks">Test networks</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR" desc="An eroor regarding an incorrect gas limit value">
     Gas limit must be an integer greater than 0
   </message>

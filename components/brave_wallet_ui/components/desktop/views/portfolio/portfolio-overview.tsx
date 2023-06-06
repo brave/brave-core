@@ -27,7 +27,6 @@ import { PageSelectors } from '../../../../page/selectors'
 import {
   BraveWallet,
   UserAssetInfoType,
-  SupportedTestNetworks,
   WalletRoutes
 } from '../../../../constants/types'
 import {
@@ -44,10 +43,11 @@ import { getBalance } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { formatAsDouble } from '../../../../utils/string-utils'
+import {
+  networkEntityAdapter
+} from '../../../../common/slices/entities/network.entity'
 
 // Options
-import { AllNetworksOption } from '../../../../options/network-filter-options'
-import { AllAccountsOption } from '../../../../options/account-filter-options'
 import { PortfolioNavOptions } from '../../../../options/nav-options'
 
 // Components
@@ -68,6 +68,9 @@ import {
 import {
   LineChartControls
 } from '../../line-chart/line-chart-controls/line-chart-controls'
+import {
+  PortfolioFiltersModal
+} from '../../popup-modals/filter-modals/portfolio-filters-modal'
 
 // Styled Components
 import {
@@ -107,10 +110,6 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     useUnsafeWalletSelector(WalletSelectors.accounts)
   const transactionSpotPrices =
     useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
-  const selectedNetworkFilter =
-    useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
-  const selectedAccountFilter =
-    useSafeWalletSelector(WalletSelectors.selectedAccountFilter)
   const selectedTimeline =
     useSafePageSelector(PageSelectors.selectedTimeline)
   const nftMetadata =
@@ -123,14 +122,34 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
   const hidePortfolioNFTsTab =
     useSafeWalletSelector(WalletSelectors.hidePortfolioNFTsTab)
-
+  const filteredOutPortfolioNetworkKeys =
+    useUnsafeWalletSelector(WalletSelectors.filteredOutPortfolioNetworkKeys)
+  const filteredOutPortfolioAccountAddresses =
+    useUnsafeWalletSelector(
+      WalletSelectors.filteredOutPortfolioAccountAddresses
+    )
+  const hidePortfolioSmallBalances =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioSmallBalances)
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
 
+  // State
+  const [showPortfolioSettings, setShowPortfolioSettings] =
+    React.useState<boolean>(false)
+
+  const usersFilteredAccounts = React.useMemo(() => {
+    return accounts
+      .filter(
+        (account) =>
+          !filteredOutPortfolioAccountAddresses
+            .includes(account.address)
+      )
+  }, [accounts, filteredOutPortfolioAccountAddresses])
+
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    const amounts = accounts
+    const amounts = usersFilteredAccounts
       .filter((account) => account.accountId.coin === asset.coin)
       .map((account) => getBalance(account, asset))
 
@@ -145,61 +164,66 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
         ? new Amount(a).plus(b).format()
         : ''
     })
-  }, [accounts, getBalance])
+  }, [usersFilteredAccounts, getBalance])
 
   // memos / computed
 
-  // filter the user's assets based on the selected network
-  const visibleTokensForSupportedChains = React.useMemo(() => {
-    // By default we dont show any testnetwork assets
-    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId))
-    }
-
-    // If chainId is Localhost we also do a check for coinType to return
-    // the correct asset
-    if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
-      return userVisibleTokensInfo.filter((token) =>
-        token.chainId === selectedNetworkFilter.chainId &&
-        token.coin === selectedNetworkFilter.coin
+  // Filters the user's tokens based on the users
+  // filteredOutPortfolioNetworkKeys pref.
+  const visibleTokensForFilteredChains = React.useMemo(() => {
+    return userVisibleTokensInfo
+      .filter(
+        (token) =>
+          !filteredOutPortfolioNetworkKeys
+            .includes(
+              networkEntityAdapter
+                .selectId(
+                  {
+                    chainId: token.chainId,
+                    coin: token.coin
+                  }
+                ).toString()
+            )
       )
-    }
-    // Filter by all other assets by chainId's
-    return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
   }, [
-    selectedNetworkFilter.chainId,
-    selectedNetworkFilter.coin,
+    filteredOutPortfolioNetworkKeys,
     userVisibleTokensInfo
   ])
 
-  // Filters visibleTokensForSupportedChains if a selectedAccountFilter is selected.
-  const visibleTokensForFilteredAccount: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    return selectedAccountFilter === AllAccountsOption.id
-      ? visibleTokensForSupportedChains
-      : visibleTokensForSupportedChains.filter((token) => token.coin === accounts.find(account => account.id === selectedAccountFilter)?.accountId?.coin)
-  }, [visibleTokensForSupportedChains, selectedAccountFilter, accounts])
-
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList: UserAssetInfoType[] = React.useMemo(() => {
-    return visibleTokensForFilteredAccount.map((asset) => ({
+    return visibleTokensForFilteredChains.map((asset) => ({
       asset: asset,
-      assetBalance: selectedAccountFilter === AllAccountsOption.id
-        ? fullAssetBalance(asset)
-        : getBalance(accounts.find(account => account.id === selectedAccountFilter), asset)
+      assetBalance: fullAssetBalance(asset)
     }))
   }, [
-    visibleTokensForFilteredAccount,
-    selectedAccountFilter,
+    visibleTokensForFilteredChains,
     fullAssetBalance,
-    accounts
   ])
 
   const visibleAssetOptions = React.useMemo((): UserAssetInfoType[] => {
     return userAssetList.filter(({ asset }) => asset.visible && !(asset.isErc721 || asset.isNft))
   }, [userAssetList])
 
+  const allNetworksAreHidden = React.useMemo(() => {
+    return networks
+      .every(
+        (network) =>
+          filteredOutPortfolioNetworkKeys
+            .includes(
+              networkEntityAdapter
+                .selectId(network)
+                .toString()
+            )
+      )
+  }, [networks, filteredOutPortfolioNetworkKeys])
+
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioFiatBalance = React.useMemo((): Amount => {
+    if (allNetworksAreHidden) {
+      return new Amount(0)
+    }
+
     if (visibleAssetOptions.length === 0) {
       return new Amount('')
     }
@@ -225,7 +249,8 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
   },
     [
       visibleAssetOptions,
-      transactionSpotPrices
+      transactionSpotPrices,
+      allNetworksAreHidden
     ])
 
   const formattedFullPortfolioFiatBalance = React.useMemo(() => {
@@ -244,7 +269,7 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
   }, [fullPortfolioFiatBalance])
 
   const percentageChange = React.useMemo(() => {
-    if (portfolioPriceHistory.length !== 0) {
+    if (portfolioPriceHistory.length !== 0 && !isZeroBalance) {
       const oldestValue =
         new Amount(portfolioPriceHistory[0].close)
       const difference =
@@ -252,10 +277,14 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
       return `${difference.div(oldestValue).times(100).format(2)}`
     }
     return '0.00'
-  }, [portfolioPriceHistory, fullPortfolioFiatBalance])
+  }, [
+    portfolioPriceHistory,
+    fullPortfolioFiatBalance,
+    isZeroBalance
+  ])
 
   const fiatValueChange = React.useMemo(() => {
-    if (portfolioPriceHistory.length !== 0) {
+    if (portfolioPriceHistory.length !== 0 && !isZeroBalance) {
       const oldestValue =
         new Amount(portfolioPriceHistory[0].close)
       return fullPortfolioFiatBalance
@@ -263,7 +292,11 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
         .formatAsFiat(defaultCurrencies.fiat)
     }
     return new Amount(0).formatAsFiat(defaultCurrencies.fiat)
-  }, [defaultCurrencies.fiat, portfolioPriceHistory])
+  }, [
+    defaultCurrencies.fiat,
+    portfolioPriceHistory,
+    isZeroBalance
+  ])
 
   const isPortfolioDown = Number(percentageChange) < 0
 
@@ -410,9 +443,11 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
         <Route path={WalletRoutes.PortfolioAssets} exact>
           <TokenLists
             userAssetList={userAssetList}
-            networks={networks || []}
             estimatedItemSize={58}
             horizontalPadding={20}
+            onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
+            hideSmallBalances={hidePortfolioSmallBalances}
+            isPortfolio
             renderToken={({ item }) =>
               <PortfolioAssetItem
                 action={() => onSelectAsset(item.asset)}
@@ -440,6 +475,11 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
 
       </Switch>
 
+      {showPortfolioSettings &&
+        <PortfolioFiltersModal
+          onClose={() => setShowPortfolioSettings(false)}
+        />
+      }
     </>
   )
 }

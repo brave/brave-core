@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 import {
   AssetIconProps,
   AssetIconFactory,
@@ -262,4 +263,34 @@ export const BalanceAndChangeWrapper = styled(Column)`
     justify-content: flex-start;
     margin-bottom: 24px;
   }
+`
+
+export const CircleButton = styled(WalletButton) <{
+  marginRight?: number
+}>`
+  --button-border-color: ${leo.color.primary[20]};
+  @media (prefers-color-scheme: dark) {
+    --button-border-color: ${leo.color.primary[50]};
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  background-color: ${leo.color.container.background};
+  border-radius: 100%;
+  border: 1px solid var(--button-border-color);
+  height: 36px;
+  width: 36px;
+  margin-right: ${(p) =>
+    p.marginRight !== undefined
+      ? p.marginRight
+      : 0
+  }px;
+`
+
+export const ButtonIcon = styled(Icon)`
+  --leo-icon-size: 18px;
+  color: ${leo.color.icon.interactive};
 `

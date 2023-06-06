@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {assertNotReached} from 'chrome://resources/js/assert_ts.js';
+import { assertNotReached } from 'chrome://resources/js/assert_ts.js';
+import { getLocale } from '../../common/locale'
 
 // types
 import {
@@ -169,4 +170,19 @@ export const keyringIdForNewAccount = (
   }
 
   assertNotReached()
+}
+
+export const getAccountTypeDescription = (coin: BraveWallet.CoinType) => {
+  switch (coin) {
+    case BraveWallet.CoinType.ETH:
+      return getLocale('braveWalletETHAccountDescrption')
+    case BraveWallet.CoinType.SOL:
+      return getLocale('braveWalletSOLAccountDescrption')
+    case BraveWallet.CoinType.FIL:
+      return getLocale('braveWalletFILAccountDescrption')
+    case BraveWallet.CoinType.BTC:
+      return getLocale('braveWalletBTCAccountDescrption')
+    default:
+      return ''
+  }
 }

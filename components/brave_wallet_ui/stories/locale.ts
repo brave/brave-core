@@ -148,6 +148,7 @@ provideStrings({
   braveWalletButtonDone: 'Done',
   braveWalletButtonSkip: 'Skip',
   braveWalletButtonCancel: 'Cancel',
+  braveWalletButtonSaveChanges: 'Save changes',
   braveWalletLearnMore: 'Learn more',
 
   // Onboarding - Welcome
@@ -737,14 +738,30 @@ provideStrings({
 
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',
-  braveWalletNetworkFilterSecondary: 'Secondary Networks',
-  braveWalletNetworkFilterTestNetworks: 'Test Networks',
+  braveWalletNetworkFilterSecondary: 'Secondary networks',
+  braveWalletNetworkFilterTestNetworks: 'Test networks',
 
   // Asset Filter
-  braveWalletAssetFilterLowToHigh: 'Balance ↑',
-  braveWalletAssetFilterHighToLow: 'Balance ↓',
-  braveWalletAssetFilterAToZ: 'Name ↓',
-  braveWalletAssetFilterZToA: 'Name ↑',
+  braveWalletAssetFilterLowToHigh: 'Low to High',
+  braveWalletAssetFilterHighToLow: 'High to Low',
+  braveWalletAssetFilterAToZ: 'A to Z',
+  braveWalletAssetFilterZToA: 'Z to A',
+
+  // Portfolio Filters
+  braveWalletPortfolioFiltersTitle: 'Filters and display settings',
+  braveWalletSortAssets: 'Sort assets',
+  braveWalletSortAssetsDescription: 'Sort by fiat value or name',
+  braveWalletHideSmallBalances: 'Hide small balances',
+  braveWalletHideSmallBalancesDescription: 'Assets with value less than $1',
+  braveWalletSelectAccounts: 'Select accounts',
+  braveWalletSelectNetworks: 'Select networks',
+  braveWalletSelectAll: 'Select all',
+  braveWalletDeselectAll: 'Deselect all',
+  braveWalletPrimaryNetworks: 'Primary networks',
+  braveWalletETHAccountDescrption: 'Ethereum + EVM Chains',
+  braveWalletSOLAccountDescrption: 'Solana + SVM Chains',
+  braveWalletFILAccountDescrption: 'Filecoin',
+  braveWalletBTCAccountDescrption: 'Bitcoin',
 
   // Account Filter
   braveWalletAccountFilterAllAccounts: 'All accounts',

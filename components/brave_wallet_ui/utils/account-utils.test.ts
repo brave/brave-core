@@ -7,7 +7,11 @@ import { BraveWallet } from '../constants/types'
 
 import { mockAccount } from '../common/constants/mocks'
 
-import { isHardwareAccount, findAccountFromRegistry } from './account-utils'
+import {
+  isHardwareAccount,
+  findAccountFromRegistry,
+  getAccountTypeDescription
+} from './account-utils'
 
 import {
   AccountInfoEntity,
@@ -70,5 +74,24 @@ describe('Account Utils', () => {
         ).toBe(account)
       }
     )
+  })
+})
+
+describe('Test getAccountTypeDescription', () => {
+  test('CoinType ETH Address Description', () => {
+    expect(getAccountTypeDescription(BraveWallet.CoinType.ETH))
+      .toEqual('braveWalletETHAccountDescrption')
+  })
+  test('CoinType SOL Address Description', () => {
+    expect(getAccountTypeDescription(BraveWallet.CoinType.SOL))
+      .toEqual('braveWalletSOLAccountDescrption')
+  })
+  test('CoinType FIL Address Description', () => {
+    expect(getAccountTypeDescription(BraveWallet.CoinType.FIL))
+      .toEqual('braveWalletFILAccountDescrption')
+  })
+  test('CoinType BTC Address Description', () => {
+    expect(getAccountTypeDescription(BraveWallet.CoinType.BTC))
+      .toEqual('braveWalletBTCAccountDescrption')
   })
 })

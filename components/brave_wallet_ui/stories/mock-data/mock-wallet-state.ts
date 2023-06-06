@@ -308,5 +308,8 @@ export const mockWalletState: WalletState = {
   removedFungibleTokenIds: [],
   removedNonFungibleTokenIds: [],
   removedNonFungibleTokens: [],
-  hidePortfolioNFTsTab: false
+  hidePortfolioNFTsTab: false,
+  filteredOutPortfolioNetworkKeys: [],
+  filteredOutPortfolioAccountAddresses: [],
+  hidePortfolioSmallBalances: false
 }

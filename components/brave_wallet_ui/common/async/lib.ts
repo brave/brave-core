@@ -33,6 +33,9 @@ import Amount from '../../utils/amount'
 import { getAssetIdKey, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
 import { getVisibleNetworksList } from '../slices/api.slice'
+import {
+  networkEntityAdapter
+} from '../slices/entities/network.entity'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
@@ -753,28 +756,40 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
     const apiProxy = getAPIProxy()
     const { assetRatioService } = apiProxy
 
-    const { wallet: { accounts, defaultCurrencies, userVisibleTokensInfo, selectedNetworkFilter, selectedAccountFilter } } = getState()
+    const {
+      wallet: {
+        accounts,
+        defaultCurrencies,
+        userVisibleTokensInfo,
+        filteredOutPortfolioAccountAddresses,
+        filteredOutPortfolioNetworkKeys
+      }
+    } = getState()
 
-    // By default, we do not fetch Price history for Test Networks Tokens if
-    // Selected Network Filter is all
-    const filteredTokenInfo = selectedNetworkFilter.chainId === AllNetworksOption.chainId
-      ? userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId))
-      // If chainId is Localhost we also do a check for coinType to only
-      // fetch Price History for the correct tokens
-      : selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID
-        ? userVisibleTokensInfo.filter((token) =>
-          token.chainId === selectedNetworkFilter.chainId &&
-          token.coin === selectedNetworkFilter.coin)
-        // Fetch Price History for Tokens by Selected Network Filter's chainId
-        : userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
+    // Filter out tokens that are included in the
+    // filteredOutPortfolioNetworkKeys
+    const filteredTokenInfo =
+      userVisibleTokensInfo
+        .filter(
+          (token) =>
+            !filteredOutPortfolioNetworkKeys
+              .includes(networkEntityAdapter.selectId(
+                {
+                  chainId: token.chainId,
+                  coin: token.coin
+                }
+              ).toString())
+        )
 
-    const foundSelectedAccountForFilter = accounts.find(account => account.id === selectedAccountFilter)
-
-    // If a selectedAccountFilter is selected, we only return the selectedAccountFilter
-    // in the list.
-    const accountsList = selectedAccountFilter === AllAccountsOption.id
-      ? accounts
-      : foundSelectedAccountForFilter ? [foundSelectedAccountForFilter] : []
+    // Filter out accounts that are included in the
+    // filteredOutPortfolioAccountAddresses
+    const accountsList =
+      accounts
+        .filter(
+          (account) =>
+            !filteredOutPortfolioAccountAddresses
+              .includes(account.address)
+        )
 
     // Get all Price History
     const priceHistory = await Promise.all(getFlattenedAccountBalances(accountsList, filteredTokenInfo)
