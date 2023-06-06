@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/common/locale/subdivision_code_util.h"
+#include "brave/components/brave_ads/core/internal/common/locale/subdivision_util.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsSubdivisionCodeUtilTest, GetCountryCode) {
+TEST(BraveAdsSubdivisionUtilTest, GetCountryCode) {
   // Arrange
 
   // Act
@@ -20,7 +20,7 @@ TEST(BraveAdsSubdivisionCodeUtilTest, GetCountryCode) {
   EXPECT_EQ("US", GetCountryCode(/*subdivision*/ "US-CA"));
 }
 
-TEST(BraveAdsSubdivisionCodeUtilTest, GetSubdivisionCode) {
+TEST(BraveAdsSubdivisionUtilTest, GetSubdivisionCode) {
   // Arrange
 
   // Act
