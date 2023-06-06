@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import org.chromium.chrome.browser.onboarding.SearchEngineOnboardingFragment;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 
 public class SearchActivity extends FragmentActivity {
 

@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.download.settings;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
 import org.chromium.base.BravePreferenceKeys;

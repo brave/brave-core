@@ -5,22 +5,10 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
 import androidx.annotation.ColorInt;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
 
-import org.chromium.base.ApiCompatibilityUtils;
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.AppHooks;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.ThemeColorObserver;
-import org.chromium.components.feature_engagement.FeatureConstants;
-import org.chromium.components.feature_engagement.Tracker;
 
 /**
  * This class is responsible for reacting to events from the outside world, interacting with other

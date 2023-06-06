@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.mojo.bindings.Callbacks;

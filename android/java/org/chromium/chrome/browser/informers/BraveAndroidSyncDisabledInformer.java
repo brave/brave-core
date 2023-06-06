@@ -20,7 +20,6 @@ import org.chromium.chrome.browser.sync.SyncService;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
-import org.chromium.chrome.browser.util.TabUtils;
 
 public class BraveAndroidSyncDisabledInformer {
     private static final String TAG = "SyncDisabled";

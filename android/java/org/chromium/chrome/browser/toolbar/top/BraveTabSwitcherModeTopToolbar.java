@@ -9,11 +9,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
-import org.chromium.chrome.R;
 import org.chromium.chrome.browser.toolbar.NewTabButton;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
-import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.components.browser_ui.styles.ChromeColors;
 
 public class BraveTabSwitcherModeTopToolbar extends TabSwitcherModeTopToolbar {

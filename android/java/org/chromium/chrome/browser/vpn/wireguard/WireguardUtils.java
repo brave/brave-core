@@ -7,12 +7,10 @@ package org.chromium.chrome.browser.vpn.wireguard;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.util.Pair;
 
 import com.wireguard.config.BadConfigException;
 import com.wireguard.config.Interface;
 import com.wireguard.config.Peer;
-import com.wireguard.crypto.KeyPair;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;

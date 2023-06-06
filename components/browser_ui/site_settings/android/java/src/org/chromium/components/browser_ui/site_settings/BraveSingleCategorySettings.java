@@ -6,12 +6,9 @@
 package org.chromium.components.browser_ui.site_settings;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import org.chromium.base.BraveReflectionUtil;
-import org.chromium.base.Log;
 import org.chromium.build.annotations.UsedByReflection;
-import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.content_public.browser.BrowserContextHandle;
 
 @UsedByReflection("brave_site_settings_preferences.xml")

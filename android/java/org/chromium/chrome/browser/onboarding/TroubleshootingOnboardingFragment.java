@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
 
 public class TroubleshootingOnboardingFragment extends Fragment {
     private OnViewPagerAction onViewPagerAction;

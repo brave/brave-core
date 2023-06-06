@@ -9,7 +9,6 @@ import static org.chromium.chrome.browser.app.domain.NetworkSelectorModel.Mode.D
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,12 +28,9 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.NetworkSelectorModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter;
-import org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl;
 import org.chromium.chrome.browser.settings.BraveWalletAddNetworksFragment;
-import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
 import java.util.ArrayList;

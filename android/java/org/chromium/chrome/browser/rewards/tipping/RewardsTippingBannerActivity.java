@@ -9,8 +9,6 @@ package org.chromium.chrome.browser.rewards.tipping;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -31,11 +29,9 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
-import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.TabUtils;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class RewardsTippingBannerActivity

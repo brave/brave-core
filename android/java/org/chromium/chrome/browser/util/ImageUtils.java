@@ -20,7 +20,6 @@ import android.graphics.BitmapFactory;
 
 import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 public class ImageUtils {
     public static Bitmap topOffset(Bitmap src, int offsetY) {

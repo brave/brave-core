@@ -6,21 +6,15 @@
 package org.chromium.chrome.browser.suggestions.tile;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
-import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
-import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.components.browser_ui.widget.tile.TileView;
 import org.chromium.components.user_prefs.UserPrefs;
 

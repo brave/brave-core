@@ -8,9 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,15 +22,9 @@ import com.google.zxing.common.BitMatrix;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AccountDetailsWithQrActivity extends BraveWalletBaseActivity {
     private static final int WIDTH = 300;

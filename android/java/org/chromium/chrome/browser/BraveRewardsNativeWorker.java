@@ -13,14 +13,10 @@ import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 
-import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_rewards.mojom.PublisherStatus;
-import org.chromium.chrome.browser.BraveRewardsBalance;
-import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.embedder_support.util.UrlConstants;
 

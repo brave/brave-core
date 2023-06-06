@@ -24,14 +24,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveDialogFragment;
-import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.ui.permissions.PermissionConstants;
 
 /**
  * This dialog is used to show different messages when notification permission is off and

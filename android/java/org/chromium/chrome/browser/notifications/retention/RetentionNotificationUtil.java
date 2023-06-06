@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.notifications.retention;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -21,7 +20,6 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
-import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 

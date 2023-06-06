@@ -23,16 +23,11 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.onboarding.v2.OnboardingV2PagerAdapter;
-import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.components.user_prefs.UserPrefs;
 
 import java.util.Arrays;
 import java.util.List;

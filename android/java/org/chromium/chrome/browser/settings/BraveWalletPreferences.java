@@ -7,10 +7,6 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.text.style.UnderlineSpan;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;

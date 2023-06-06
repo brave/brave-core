@@ -5,14 +5,12 @@
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

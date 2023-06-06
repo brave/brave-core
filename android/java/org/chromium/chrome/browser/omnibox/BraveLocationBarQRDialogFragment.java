@@ -37,7 +37,6 @@ import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
-import org.chromium.ui.base.PageTransition;
 
 import java.io.IOException;
 

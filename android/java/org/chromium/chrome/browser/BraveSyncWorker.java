@@ -18,8 +18,6 @@ import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 
-import java.lang.Runnable;
-
 @JNINamespace("chrome::android")
 public class BraveSyncWorker {
     private static final String TAG = "SYNC";

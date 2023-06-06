@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.brave_news;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +19,6 @@ import com.bumptech.glide.RequestManager;
 
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
-import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 
 import java.util.concurrent.CopyOnWriteArrayList;

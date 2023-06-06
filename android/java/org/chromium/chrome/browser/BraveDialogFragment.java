@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 
 import androidx.fragment.app.DialogFragment;
 
-import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 

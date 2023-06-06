@@ -5,11 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetPrice;
-import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -21,7 +17,6 @@ import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetBalanceResponseBaseContext;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetBalanceResponseContext;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetBlockchainTokensBalancesResponseContext;
@@ -32,7 +27,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetSolanaBalanc
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetSplTokenAccountBalanceResponseContext;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.MultiResponseHandler;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.mojo.bindings.Callbacks;
 
 import java.lang.ref.WeakReference;

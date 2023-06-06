@@ -5,9 +5,6 @@
 
 package org.chromium.chrome.browser.preferences;
 
-import androidx.annotation.NonNull;
-
-import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;

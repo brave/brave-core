@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import static java.util.stream.Collectors.toMap;
-
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -25,9 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class PortfolioHelper {
     private static final String TAG = "PortfolioHelper";

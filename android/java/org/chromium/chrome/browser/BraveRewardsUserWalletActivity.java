@@ -8,7 +8,6 @@
 package org.chromium.chrome.browser;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +19,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsExternalWallet;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 

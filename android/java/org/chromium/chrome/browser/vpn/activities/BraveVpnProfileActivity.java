@@ -18,14 +18,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
-import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.ui.widget.Toast;
 
 public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;

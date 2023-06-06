@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet;
 
-import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -15,7 +14,6 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
 import org.chromium.mojo.system.MessagePipeHandle;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")

@@ -11,7 +11,6 @@ import android.app.SearchManager;
 import android.content.Intent;
 
 import org.chromium.base.IntentUtils;
-import org.chromium.chrome.browser.searchwidget.SearchActivity;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityConstants;
 
 public class SearchWidgetProviderActivity extends SearchActivity {

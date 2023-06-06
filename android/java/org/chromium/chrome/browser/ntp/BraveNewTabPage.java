@@ -8,9 +8,6 @@ package org.chromium.chrome.browser.ntp;
 import android.app.Activity;
 import android.view.LayoutInflater;
 
-import androidx.annotation.Nullable;
-
-import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;

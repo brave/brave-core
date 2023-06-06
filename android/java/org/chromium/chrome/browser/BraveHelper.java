@@ -5,10 +5,7 @@
 
 package org.chromium.chrome.browser;
 
-import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.firstrun.FirstRunStatus;
-import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridge;

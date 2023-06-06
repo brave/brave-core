@@ -16,8 +16,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -34,7 +32,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BraveWalletDAppsActivity extends BraveWalletBaseActivity

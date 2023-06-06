@@ -10,15 +10,11 @@ package org.chromium.chrome.browser.notifications;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Process;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -27,9 +23,7 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ApplicationStatus;
-import org.chromium.chrome.browser.notifications.R;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
 import org.chromium.components.browser_ui.notifications.NotificationWrapper;

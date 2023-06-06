@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.safe_browsing.settings;
 
 import android.os.Bundle;
 
-import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 
 /**

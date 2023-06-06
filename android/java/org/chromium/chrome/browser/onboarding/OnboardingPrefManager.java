@@ -7,25 +7,17 @@
 
 package org.chromium.chrome.browser.onboarding;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
-import org.chromium.chrome.browser.util.PackageUtils;
-import org.chromium.components.user_prefs.UserPrefs;
 
-import java.lang.System;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;

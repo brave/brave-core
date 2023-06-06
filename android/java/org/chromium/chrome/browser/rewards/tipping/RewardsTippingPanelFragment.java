@@ -16,14 +16,11 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -63,7 +60,6 @@ import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Locale;
 
 public class RewardsTippingPanelFragment
         extends BottomSheetDialogFragment implements BraveRewardsObserver {

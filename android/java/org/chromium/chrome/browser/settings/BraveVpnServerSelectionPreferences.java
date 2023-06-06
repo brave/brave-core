@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,9 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnServerSelectionAdapter;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
