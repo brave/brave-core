@@ -3500,58 +3500,56 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
   testing::Mock::VerifyAndClearExpectations(&callback3);
 }
 
-TEST_F(JsonRpcServiceUnitTest, GetIsEip1559) {
+TEST_F(JsonRpcServiceUnitTest, GetBaseFeePerGas) {
   bool callback_called = false;
   GURL expected_network =
       GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
   // Successful path when the network is EIP1559
   SetIsEip1559Interceptor(expected_network, true);
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
-                     mojom::ProviderError::kSuccess, "", true));
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kSuccess, "", "0x181f22e7a9"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   // Successful path when the network is not EIP1559
   callback_called = false;
   SetIsEip1559Interceptor(expected_network, false);
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
-                     mojom::ProviderError::kSuccess, "", false));
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kSuccess, "", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
+      base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-                     false));
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetInvalidJsonInterceptor();
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
+      base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
-                     false));
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetLimitExceededJsonErrorResponse();
-  json_rpc_service_->GetIsEip1559(
+  json_rpc_service_->GetBaseFeePerGas(
       mojom::kLocalhostChainId,
-      base::BindOnce(&OnBoolResponse, &callback_called,
+      base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
-                     "Request exceeds defined limit", false));
+                     "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }

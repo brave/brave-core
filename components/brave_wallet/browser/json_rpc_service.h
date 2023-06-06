@@ -314,11 +314,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& error_message)>;
   void GetGasPrice(const std::string& chain_id, GetGasPriceCallback callback);
 
-  using GetIsEip1559Callback =
-      base::OnceCallback<void(bool is_eip1559,
+  using GetBaseFeePerGasCallback =
+      base::OnceCallback<void(const std::string& base_fee_per_gas,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
-  void GetIsEip1559(const std::string& chain_id, GetIsEip1559Callback callback);
+  void GetBaseFeePerGas(const std::string& chain_id,
+                        GetBaseFeePerGasCallback callback);
 
   using GetBlockByNumberCallback =
       base::OnceCallback<void(base::Value result,
@@ -594,14 +595,14 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                         APIRequestResult api_request_result);
   void OnGetGasPrice(GetGasPriceCallback callback,
                      APIRequestResult api_request_result);
-  void OnGetIsEip1559(GetIsEip1559Callback callback,
-                      APIRequestResult api_request_result);
+  void OnGetBaseFeePerGas(GetBaseFeePerGasCallback callback,
+                          APIRequestResult api_request_result);
   void OnGetBlockByNumber(GetBlockByNumberCallback callback,
                           APIRequestResult api_request_result);
 
   void MaybeUpdateIsEip1559(const std::string& chain_id);
   void UpdateIsEip1559(const std::string& chain_id,
-                       bool is_eip1559,
+                       const std::string& base_fee_per_gas,
                        mojom::ProviderError error,
                        const std::string& error_message);
 
