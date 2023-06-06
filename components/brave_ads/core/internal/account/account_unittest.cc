@@ -450,35 +450,35 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_2 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo transaction_4 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_4 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
-  const TransactionInfo transaction_6 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_6 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_7);
 
   SaveTransactions(transactions);

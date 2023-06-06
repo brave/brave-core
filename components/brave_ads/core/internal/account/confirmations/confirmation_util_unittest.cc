@@ -37,7 +37,7 @@ TEST_F(BraveAdsConfirmationUtilTest, CreateOptedInCredential) {
   privacy::SetUnblindedTokens(/*count*/ 1);
 
   const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
 
   const absl::optional<ConfirmationInfo> confirmation =
       CreateOptedInConfirmation(&token_generator_mock_, transaction,
@@ -57,7 +57,7 @@ TEST_F(BraveAdsConfirmationUtilTest, CreateOptedInConfirmation) {
   privacy::SetUnblindedTokens(/*count*/ 1);
 
   const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
 
   // Act
   const absl::optional<ConfirmationInfo> confirmation =
@@ -75,7 +75,7 @@ TEST_F(BraveAdsConfirmationUtilTest, FailToCreateOptedInConfirmation) {
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
 
   // Act
   const absl::optional<ConfirmationInfo> confirmation =
@@ -95,7 +95,7 @@ TEST_F(BraveAdsConfirmationUtilTest, CreateOptedOutConfirmation) {
   privacy::SetUnblindedTokens(/*count*/ 1);
 
   const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
 
   // Act
   const absl::optional<ConfirmationInfo> confirmation =

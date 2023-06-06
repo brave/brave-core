@@ -45,7 +45,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   AdvanceClockBy(base::Days(5));
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   // Act
@@ -66,8 +66,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction);
 
   SaveTransactions(transactions);
@@ -97,7 +97,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   AdvanceClockBy(base::Days(5));
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
@@ -128,7 +128,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   transactions.push_back(transaction_1);
 
   TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
@@ -167,7 +167,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);

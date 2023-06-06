@@ -45,7 +45,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
   TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
   transaction.creative_instance_id = kCreativeInstanceId;
 
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
@@ -82,8 +82,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   AdvanceClockTo(
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
-  TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kConversion);
+  TransactionInfo transaction = BuildUnreconciledTransaction(
+      /*value*/ 0.0, ConfirmationType::kConversion);
   transaction.creative_instance_id = kCreativeInstanceId;
 
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,

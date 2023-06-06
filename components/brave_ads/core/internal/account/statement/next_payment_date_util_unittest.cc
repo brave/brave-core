@@ -29,8 +29,8 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
   AdvanceClockTo(TimeFromString("1 January 2020", /*is_local*/ false));
 
   TransactionList transactions;
-  const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction);
 
   AdvanceClockTo(TimeFromString("1 February 2020", /*is_local*/ false));
@@ -86,8 +86,8 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 
   TransactionList transactions;
-  const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction);
 
   const base::Time next_token_redemption_at =
