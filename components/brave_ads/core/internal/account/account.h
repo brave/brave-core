@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -32,7 +32,7 @@ class TokenGeneratorInterface;
 class AdType;
 class ConfirmationType;
 class Confirmations;
-class Issuers;
+class IssuersUrlRequest;
 class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
 struct IssuersInfo;
@@ -40,7 +40,7 @@ struct TransactionInfo;
 
 class Account final : public AdsClientNotifierObserver,
                       public ConfirmationsDelegate,
-                      public IssuersDelegate,
+                      public IssuersUrlRequestDelegate,
                       public RedeemUnblindedPaymentTokensDelegate,
                       public RefillUnblindedTokensDelegate {
  public:
@@ -138,7 +138,7 @@ class Account final : public AdsClientNotifierObserver,
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;
   void OnFailedToConfirm(const ConfirmationInfo& confirmation) override;
 
-  // IssuersDelegate:
+  // IssuersUrlRequestDelegate:
   void OnDidFetchIssuers(const IssuersInfo& issuers) override;
 
   // RedeemUnblindedPaymentTokensDelegate:
@@ -157,7 +157,7 @@ class Account final : public AdsClientNotifierObserver,
 
   std::unique_ptr<Confirmations> confirmations_;
 
-  std::unique_ptr<Issuers> issuers_;
+  std::unique_ptr<IssuersUrlRequest> issuers_url_request_;
 
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
   std::unique_ptr<RedeemUnblindedPaymentTokens>

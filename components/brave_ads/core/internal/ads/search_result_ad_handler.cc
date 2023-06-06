@@ -11,9 +11,9 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"

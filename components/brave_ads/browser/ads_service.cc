@@ -46,9 +46,9 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterIntegerPref(prefs::kIdleTimeThreshold, 15);
 
   registry->RegisterBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
-  registry->RegisterStringPref(prefs::kSubdivisionTargetingCode, "AUTO");
-  registry->RegisterStringPref(prefs::kAutoDetectedSubdivisionTargetingCode,
-                               "");
+  registry->RegisterStringPref(prefs::kSubdivisionTargetingSubdivision, "AUTO");
+  registry->RegisterStringPref(
+      prefs::kSubdivisionTargetingAutoDetectedSubdivision, "");
 
   registry->RegisterStringPref(prefs::kCatalogId, "");
   registry->RegisterIntegerPref(prefs::kCatalogVersion, 0);

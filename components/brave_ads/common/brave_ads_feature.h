@@ -15,14 +15,26 @@ BASE_DECLARE_FEATURE(kBraveAdsFeature);
 
 bool IsBraveAdsFeatureEnabled();
 
+// Set to |true| to launch as an in process service.
+constexpr base::FeatureParam<bool> kShouldLaunchAsInProcessRunService{
+    &kBraveAdsFeature, "should_launch_as_in_process_service", false};
+
 // Set to |true| to always run the ads service, even if Brave Private Ads are
 // disabled.
 constexpr base::FeatureParam<bool> kShouldAlwaysRunService{
     &kBraveAdsFeature, "should_always_run_service", false};
 
-// Set to |true| to launch as an in process service.
-constexpr base::FeatureParam<bool> kShouldLaunchAsInProcessRunService{
-    &kBraveAdsFeature, "should_launch_as_in_process_service", false};
+// Set to |true| to always trigger new tab page ad events even if Brave Private
+// Ads are disabled. |kShouldAlwaysRunService| must be set to |true|, otherwise
+// this feature param will be ignored.
+constexpr base::FeatureParam<bool> kShouldAlwaysTriggerNewTabPageAdEvents{
+    &kBraveAdsFeature, "should_always_trigger_new_tab_page_ad_events", false};
+
+// Set to |true| to always trigger search result ad events even if Brave Private
+// Ads are disabled. |kShouldAlwaysRunService| must be set to |true|, otherwise
+// this feature param will be ignored.
+constexpr base::FeatureParam<bool> kShouldAlwaysTriggerSearchResultAdEvents{
+    &kBraveAdsFeature, "should_always_trigger_search_result_ad_events", false};
 
 }  // namespace brave_ads
 

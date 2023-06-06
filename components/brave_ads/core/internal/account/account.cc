@@ -20,8 +20,8 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/refill_unblinded_tokens/refill_unblinded_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_factory.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
@@ -147,10 +147,10 @@ void Account::MaybeRewardUsers() {
 }
 
 void Account::InitializeRewards() {
-  if (!issuers_) {
-    BLOG(1, "Initialize issuers request");
-    issuers_ = std::make_unique<Issuers>();
-    issuers_->SetDelegate(this);
+  if (!issuers_url_request_) {
+    BLOG(1, "Initialize issuers url request");
+    issuers_url_request_ = std::make_unique<IssuersUrlRequest>();
+    issuers_url_request_->SetDelegate(this);
   }
 
   if (!refill_unblinded_tokens_) {
@@ -169,9 +169,9 @@ void Account::InitializeRewards() {
 }
 
 void Account::ShutdownRewards() {
-  if (issuers_) {
-    issuers_.reset();
-    BLOG(1, "Shutdown issuers request");
+  if (issuers_url_request_) {
+    issuers_url_request_.reset();
+    BLOG(1, "Shutdown issuers url request");
 
     ResetIssuers();
     BLOG(1, "Reset issuers");
@@ -189,8 +189,8 @@ void Account::ShutdownRewards() {
 }
 
 void Account::MaybeFetchIssuers() const {
-  if (issuers_) {
-    issuers_->PeriodicallyFetch();
+  if (issuers_url_request_) {
+    issuers_url_request_->PeriodicallyFetch();
   }
 }
 

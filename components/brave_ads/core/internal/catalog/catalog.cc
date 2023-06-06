@@ -10,10 +10,9 @@
 #include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_request.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
@@ -24,14 +23,15 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRequireResource() {
-  const bool is_required_for_new_tab_page_ads_when_always_triggering_ad_events =
-      kShouldAlwaysRunService.Get() &&
-      kShouldAlwaysTriggerNewTabPageAdEvents.Get() &&
-      UserHasOptedInToNewTabPageAds();
+bool DoesRequireResourceForNewTabPageAds() {
+  return kShouldAlwaysRunService.Get() &&
+         kShouldAlwaysTriggerNewTabPageAdEvents.Get() &&
+         UserHasOptedInToNewTabPageAds();
+}
 
+bool DoesRequireResource() {
   return UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews() ||
-         is_required_for_new_tab_page_ads_when_always_triggering_ad_events;
+         DoesRequireResourceForNewTabPageAds();
 }
 
 }  // namespace
@@ -59,26 +59,27 @@ void Catalog::RemoveObserver(CatalogObserver* observer) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Catalog::Initialize() {
-  MaybeAllowCatalogRequest();
+  MaybeRequireCatalog();
   MaybeFetchCatalog();
 }
 
-void Catalog::MaybeAllowCatalogRequest() {
-  DoesRequireResource() ? InitializeCatalogRequest() : ShutdownCatalogRequest();
+void Catalog::MaybeRequireCatalog() {
+  DoesRequireResource() ? InitializeCatalogUrlRequest()
+                        : ShutdownCatalogUrlRequest();
 }
 
-void Catalog::InitializeCatalogRequest() {
-  if (!catalog_request_) {
-    BLOG(1, "Initialize catalog request");
-    catalog_request_ = std::make_unique<CatalogRequest>();
-    catalog_request_->SetDelegate(this);
+void Catalog::InitializeCatalogUrlRequest() {
+  if (!catalog_url_request_) {
+    BLOG(1, "Initialize catalog URL request");
+    catalog_url_request_ = std::make_unique<CatalogUrlRequest>();
+    catalog_url_request_->SetDelegate(this);
   }
 }
 
-void Catalog::ShutdownCatalogRequest() {
-  if (catalog_request_) {
-    catalog_request_.reset();
-    BLOG(1, "Shutdown catalog request");
+void Catalog::ShutdownCatalogUrlRequest() {
+  if (catalog_url_request_) {
+    catalog_url_request_.reset();
+    BLOG(1, "Shutdown catalog URL request");
 
     ResetCatalog();
     BLOG(1, "Reset catalog");
@@ -86,8 +87,8 @@ void Catalog::ShutdownCatalogRequest() {
 }
 
 void Catalog::MaybeFetchCatalog() const {
-  if (catalog_request_) {
-    catalog_request_->PeriodicallyFetch();
+  if (catalog_url_request_) {
+    catalog_url_request_->PeriodicallyFetch();
   }
 }
 
@@ -118,8 +119,6 @@ void Catalog::OnNotifyPrefDidChange(const std::string& path) {
 }
 
 void Catalog::OnDidFetchCatalog(const CatalogInfo& catalog) {
-  BLOG(1, "Successfully fetched catalog");
-
   SetCatalogLastUpdated(base::Time::Now());
 
   if (!HasCatalogChanged(catalog.id)) {
@@ -132,8 +131,6 @@ void Catalog::OnDidFetchCatalog(const CatalogInfo& catalog) {
 }
 
 void Catalog::OnFailedToFetchCatalog() {
-  BLOG(1, "Failed to fetch catalog");
-
   NotifyFailedToUpdateCatalog();
 }
 

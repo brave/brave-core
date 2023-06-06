@@ -1378,15 +1378,8 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
     ads_data.Set("adsUIEnabled", true);
   }
 
-  base::Value::List subdivisions;
-  const auto subdivision_infos = brave_ads::GetSupportedSubdivisions();
-  for (const auto& info : subdivision_infos) {
-    base::Value::Dict subdivision;
-    subdivision.Set("value", info.first);
-    subdivision.Set("name", info.second);
-    subdivisions.Append(std::move(subdivision));
-  }
-  ads_data.Set("subdivisions", std::move(subdivisions));
+  ads_data.Set("subdivisions",
+               brave_ads::GetSupportedSubdivisionsAsValueList());
 
   return RespondNow(WithArguments(std::move(ads_data)));
 }
@@ -1400,7 +1393,6 @@ ExtensionFunction::ResponseAction BraveRewardsIsInitializedFunction::Run() {
   return RespondNow(
       WithArguments(rewards_service && rewards_service->IsInitialized()));
 }
-
 BraveRewardsGetScheduledCaptchaInfoFunction::
     ~BraveRewardsGetScheduledCaptchaInfoFunction() = default;
 

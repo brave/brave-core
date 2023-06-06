@@ -80,17 +80,17 @@ static NSString* const kLegacyAdsSubdivisionTargetingCodePrefKey =
 static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
     @"BATAutoDetectedAdsSubdivisionTargetingCodePrefKey";
 
-static NSString* const kAdsEnabledPrefKey =
+static NSString* const kEnabledPrefKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kEnabled);
-static NSString* const kNumberOfAdsPerHourKey =
+static NSString* const kMaximumNotificationAdsPerHourPrefKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kMaximumNotificationAdsPerHour);
-static NSString* const kShouldAllowAdsSubdivisionTargetingPrefKey =
+static NSString* const kShouldAllowSubdivisionTargetingPrefKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kShouldAllowSubdivisionTargeting);
-static NSString* const kAdsSubdivisionTargetingCodePrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kSubdivisionTargetingCode);
-static NSString* const kAutoDetectedAdsSubdivisionTargetingCodePrefKey =
+static NSString* const kSubdivisionTargetingSubdivisionPrefKey =
+    base::SysUTF8ToNSString(brave_ads::prefs::kSubdivisionTargetingSubdivision);
+static NSString* const kSubdivisionTargetingAutoDetectedSubdivisionPrefKey =
     base::SysUTF8ToNSString(
-        brave_ads::prefs::kAutoDetectedSubdivisionTargetingCode);
+        brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
 static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 
 namespace {
@@ -329,52 +329,56 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 #pragma mark - Configuration
 
 - (BOOL)isEnabled {
-  return [self.prefs[kAdsEnabledPrefKey] boolValue];
+  return [self.prefs[kEnabledPrefKey] boolValue];
 }
 
 - (void)setEnabled:(BOOL)enabled {
-  self.prefs[kAdsEnabledPrefKey] = @(enabled);
-  [self savePref:kAdsEnabledPrefKey];
+  self.prefs[kEnabledPrefKey] = @(enabled);
+  [self savePref:kEnabledPrefKey];
 }
 
 - (NSInteger)numberOfAllowableAdsPerHour {
-  return [self.prefs[kNumberOfAdsPerHourKey] integerValue];
+  return [self.prefs[kMaximumNotificationAdsPerHourPrefKey] integerValue];
 }
 
 - (void)setNumberOfAllowableAdsPerHour:(NSInteger)numberOfAllowableAdsPerHour {
-  self.prefs[kNumberOfAdsPerHourKey] = @(numberOfAllowableAdsPerHour);
-  [self savePref:kNumberOfAdsPerHourKey];
+  self.prefs[kMaximumNotificationAdsPerHourPrefKey] =
+      @(numberOfAllowableAdsPerHour);
+  [self savePref:kMaximumNotificationAdsPerHourPrefKey];
 }
 
 - (BOOL)shouldAllowSubdivisionTargeting {
-  return [self.prefs[kShouldAllowAdsSubdivisionTargetingPrefKey] boolValue];
+  return [self.prefs[kShouldAllowSubdivisionTargetingPrefKey] boolValue];
 }
 
 - (void)setAllowSubdivisionTargeting:(BOOL)allowAdsSubdivisionTargeting {
-  self.prefs[kShouldAllowAdsSubdivisionTargetingPrefKey] =
+  self.prefs[kShouldAllowSubdivisionTargetingPrefKey] =
       @(allowAdsSubdivisionTargeting);
-  [self savePref:kShouldAllowAdsSubdivisionTargetingPrefKey];
+  [self savePref:kShouldAllowSubdivisionTargetingPrefKey];
 }
 
 - (NSString*)subdivisionTargetingCode {
-  return (NSString*)self.prefs[kAdsSubdivisionTargetingCodePrefKey] ?: @"AUTO";
+  return (NSString*)self.prefs[kSubdivisionTargetingSubdivisionPrefKey]
+             ?: @"AUTO";
 }
 
 - (void)setSubdivisionTargetingCode:(NSString*)subdivisionTargetingCode {
-  self.prefs[kAdsSubdivisionTargetingCodePrefKey] = subdivisionTargetingCode;
-  [self savePref:kAdsSubdivisionTargetingCodePrefKey];
+  self.prefs[kSubdivisionTargetingSubdivisionPrefKey] =
+      subdivisionTargetingCode;
+  [self savePref:kSubdivisionTargetingSubdivisionPrefKey];
 }
 
 - (NSString*)autoDetectedSubdivisionTargetingCode {
-  return (NSString*)self.prefs[kAutoDetectedAdsSubdivisionTargetingCodePrefKey]
+  return (NSString*)
+                 self.prefs[kSubdivisionTargetingAutoDetectedSubdivisionPrefKey]
              ?: @"";
 }
 
 - (void)setAutoDetectedSubdivisionTargetingCode:
     (NSString*)autoDetectedSubdivisionTargetingCode {
-  self.prefs[kAutoDetectedAdsSubdivisionTargetingCodePrefKey] =
+  self.prefs[kSubdivisionTargetingAutoDetectedSubdivisionPrefKey] =
       autoDetectedSubdivisionTargetingCode;
-  [self savePref:kAutoDetectedAdsSubdivisionTargetingCodePrefKey];
+  [self savePref:kSubdivisionTargetingAutoDetectedSubdivisionPrefKey];
 }
 
 - (void)savePref:(NSString*)name {
@@ -399,33 +403,33 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)migratePrefs {
   if ([self.prefs objectForKey:kLegacyAdsEnabledPrefKey]) {
-    self.prefs[kAdsEnabledPrefKey] = self.prefs[kLegacyAdsEnabledPrefKey];
+    self.prefs[kEnabledPrefKey] = self.prefs[kLegacyAdsEnabledPrefKey];
     [self.prefs removeObjectForKey:kLegacyAdsEnabledPrefKey];
   }
 
   if ([self.prefs objectForKey:kLegacyNumberOfAdsPerHourKey]) {
-    self.prefs[kNumberOfAdsPerHourKey] =
+    self.prefs[kMaximumNotificationAdsPerHourPrefKey] =
         self.prefs[kLegacyNumberOfAdsPerHourKey];
     [self.prefs removeObjectForKey:kLegacyNumberOfAdsPerHourKey];
   }
 
   if ([self.prefs
           objectForKey:kLegacyShouldAllowAdsSubdivisionTargetingPrefKey]) {
-    self.prefs[kShouldAllowAdsSubdivisionTargetingPrefKey] =
+    self.prefs[kShouldAllowSubdivisionTargetingPrefKey] =
         self.prefs[kLegacyShouldAllowAdsSubdivisionTargetingPrefKey];
     [self.prefs
         removeObjectForKey:kLegacyShouldAllowAdsSubdivisionTargetingPrefKey];
   }
 
   if ([self.prefs objectForKey:kLegacyAdsSubdivisionTargetingCodePrefKey]) {
-    self.prefs[kAdsSubdivisionTargetingCodePrefKey] =
+    self.prefs[kSubdivisionTargetingSubdivisionPrefKey] =
         self.prefs[kLegacyAdsSubdivisionTargetingCodePrefKey];
     [self.prefs removeObjectForKey:kLegacyAdsSubdivisionTargetingCodePrefKey];
   }
 
   if ([self.prefs
           objectForKey:kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey]) {
-    self.prefs[kAutoDetectedAdsSubdivisionTargetingCodePrefKey] =
+    self.prefs[kSubdivisionTargetingAutoDetectedSubdivisionPrefKey] =
         self.prefs[kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];
     [self.prefs removeObjectForKey:
                     kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];

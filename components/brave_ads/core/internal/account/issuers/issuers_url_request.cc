@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
 
 #include <utility>
 
@@ -36,13 +36,13 @@ base::TimeDelta GetFetchDelay() {
 
 }  // namespace
 
-Issuers::Issuers() = default;
+IssuersUrlRequest::IssuersUrlRequest() = default;
 
-Issuers::~Issuers() {
+IssuersUrlRequest::~IssuersUrlRequest() {
   delegate_ = nullptr;
 }
 
-void Issuers::PeriodicallyFetch() {
+void IssuersUrlRequest::PeriodicallyFetch() {
   if (is_periodically_fetching_) {
     return;
   }
@@ -54,12 +54,12 @@ void Issuers::PeriodicallyFetch() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Issuers::Fetch() {
+void IssuersUrlRequest::Fetch() {
   if (is_fetching_ || retry_timer_.IsRunning()) {
     return;
   }
 
-  BLOG(1, "FetchIssuers " << BuildIssuersUrlPath());
+  BLOG(1, "Fetching issuers " << BuildIssuersUrlPath());
 
   is_fetching_ = true;
 
@@ -69,12 +69,13 @@ void Issuers::Fetch() {
   BLOG(7, UrlRequestHeadersToString(url_request));
 
   AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request),
-      base::BindOnce(&Issuers::FetchCallback, weak_factory_.GetWeakPtr()));
+      std::move(url_request), base::BindOnce(&IssuersUrlRequest::FetchCallback,
+                                             weak_factory_.GetWeakPtr()));
 }
 
-void Issuers::FetchCallback(const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnFetchIssuers");
+void IssuersUrlRequest::FetchCallback(
+    const mojom::UrlResponseInfo& url_response) {
+  BLOG(1, "Fetched issuers");
 
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
@@ -82,21 +83,24 @@ void Issuers::FetchCallback(const mojom::UrlResponseInfo& url_response) {
   is_fetching_ = false;
 
   if (url_response.status_code != net::HTTP_OK) {
-    return FailedToFetchIssuers(/*should_retry*/ true);
+    return FailedToFetchIssuers();
   }
 
+  BLOG(1, "Parsing issuers");
   const absl::optional<IssuersInfo> issuers =
       json::reader::ReadIssuers(url_response.body);
   if (!issuers) {
-    BLOG(3, "Failed to parse response: " << url_response.body);
-    return FailedToFetchIssuers(/*should_retry*/ true);
+    BLOG(3, "Failed to parse issuers");
+    return FailedToFetchIssuers();
   }
 
   SuccessfullyFetchedIssuers(*issuers);
 }
 
-void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
+void IssuersUrlRequest::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
   StopRetrying();
+
+  BLOG(1, "Successfully fetched issuers");
 
   if (delegate_) {
     delegate_->OnDidFetchIssuers(issuers);
@@ -105,34 +109,37 @@ void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
   FetchAfterDelay();
 }
 
-void Issuers::FailedToFetchIssuers(const bool should_retry) {
-  BLOG(0, "Failed to fetch issuers");
+void IssuersUrlRequest::FailedToFetchIssuers() {
+  BLOG(1, "Failed to fetch issuers");
 
   if (delegate_) {
     delegate_->OnFailedToFetchIssuers();
   }
 
-  if (should_retry) {
-    Retry();
-  }
+  Retry();
 }
 
-void Issuers::FetchAfterDelay() {
+void IssuersUrlRequest::FetchAfterDelay() {
   CHECK(!retry_timer_.IsRunning());
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, GetFetchDelay(),
-      base::BindOnce(&Issuers::Fetch, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&IssuersUrlRequest::Fetch, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at));
+
+  if (delegate_) {
+    delegate_->OnWillFetchIssuers(fetch_at);
+  }
 }
 
-void Issuers::Retry() {
+void IssuersUrlRequest::Retry() {
   CHECK(!timer_.IsRunning());
 
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&Issuers::RetryCallback, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&IssuersUrlRequest::RetryCallback,
+                     weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(retry_at));
 
@@ -141,7 +148,7 @@ void Issuers::Retry() {
   }
 }
 
-void Issuers::RetryCallback() {
+void IssuersUrlRequest::RetryCallback() {
   BLOG(1, "Retry fetching issuers");
 
   if (delegate_) {
@@ -151,7 +158,7 @@ void Issuers::RetryCallback() {
   Fetch();
 }
 
-void Issuers::StopRetrying() {
+void IssuersUrlRequest::StopRetrying() {
   retry_timer_.Stop();
 }
 

@@ -523,7 +523,7 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      brave_ads::prefs::kSubdivisionTargetingCode,
+      brave_ads::prefs::kSubdivisionTargetingSubdivision,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
 
@@ -1183,16 +1183,9 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   ads_data.Set("needsBrowserUpgradeToServeAds",
                ads_service_->NeedsBrowserUpgradeToServeAds());
 
-  base::Value::List subdivisions;
-  const auto supported_subdivisions = brave_ads::GetSupportedSubdivisions();
-  for (const auto& subdivision : supported_subdivisions) {
-    base::Value::Dict subdivision_dict;
-    subdivision_dict.Set("code", subdivision.first);
-    subdivision_dict.Set("name", subdivision.second);
-    subdivisions.Append(std::move(subdivision_dict));
-  }
+  ads_data.Set("subdivisions",
+               brave_ads::GetSupportedSubdivisionsAsValueList());
 
-  ads_data.Set("subdivisions", std::move(subdivisions));
   CallJavascriptFunction("brave_rewards.adsData", ads_data);
 }
 

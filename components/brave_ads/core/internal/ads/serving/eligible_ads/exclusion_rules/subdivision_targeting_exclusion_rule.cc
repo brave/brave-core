@@ -19,10 +19,10 @@ namespace brave_ads {
 namespace {
 
 bool DoesCreativeAdSupportSubdivisionCode(const CreativeAdInfo& creative_ad,
-                                          const std::string& subdivision_code) {
-  return creative_ad.geo_targets.find(subdivision_code) !=
+                                          const std::string& subdivision) {
+  return creative_ad.geo_targets.find(subdivision) !=
              creative_ad.geo_targets.cend() ||
-         creative_ad.geo_targets.find(GetCountryCode(subdivision_code)) !=
+         creative_ad.geo_targets.find(GetCountryCode(subdivision)) !=
              creative_ad.geo_targets.cend();
 }
 
@@ -73,13 +73,12 @@ bool SubdivisionTargetingExclusionRule::DoesRespectCap(
     return !DoesCreativeAdTargetSubdivision(creative_ad);
   }
 
-  const std::string& subdivision_code =
-      subdivision_targeting_->GetSubdivisionCode();
-  if (subdivision_code.empty()) {
+  const std::string& subdivision = subdivision_targeting_->GetSubdivision();
+  if (subdivision.empty()) {
     return false;
   }
 
-  return DoesCreativeAdSupportSubdivisionCode(creative_ad, subdivision_code);
+  return DoesCreativeAdSupportSubdivisionCode(creative_ad, subdivision);
 }
 
 }  // namespace brave_ads

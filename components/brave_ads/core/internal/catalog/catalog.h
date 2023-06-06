@@ -12,16 +12,16 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_observer.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_request_delegate.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 
 namespace brave_ads {
 
-class CatalogRequest;
+class CatalogUrlRequest;
 struct CatalogInfo;
 
 class Catalog final : public AdsClientNotifierObserver,
-                      public CatalogRequestDelegate,
+                      public CatalogUrlRequestDelegate,
                       public DatabaseManagerObserver {
  public:
   Catalog();
@@ -40,9 +40,10 @@ class Catalog final : public AdsClientNotifierObserver,
  private:
   void Initialize();
 
-  void MaybeAllowCatalogRequest();
-  void InitializeCatalogRequest();
-  void ShutdownCatalogRequest();
+  void MaybeRequireCatalog();
+  void InitializeCatalogUrlRequest();
+  void ShutdownCatalogUrlRequest();
+
   void MaybeFetchCatalog() const;
 
   void NotifyDidUpdateCatalog(const CatalogInfo& catalog) const;
@@ -52,7 +53,7 @@ class Catalog final : public AdsClientNotifierObserver,
   void OnNotifyDidInitializeAds() override;
   void OnNotifyPrefDidChange(const std::string& path) override;
 
-  // CatalogRequestDelegate:
+  // CatalogUrlRequestDelegate:
   void OnDidFetchCatalog(const CatalogInfo& catalog) override;
   void OnFailedToFetchCatalog() override;
 
@@ -61,7 +62,7 @@ class Catalog final : public AdsClientNotifierObserver,
 
   base::ObserverList<CatalogObserver> observers_;
 
-  std::unique_ptr<CatalogRequest> catalog_request_;
+  std::unique_ptr<CatalogUrlRequest> catalog_url_request_;
 };
 
 }  // namespace brave_ads
