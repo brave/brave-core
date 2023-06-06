@@ -443,6 +443,7 @@ class BraveClassVisitor extends ClassVisitor {
 
         if (shouldMakeProtectedField(name)) {
             System.out.println("make " + name + " public in " + mName);
+            access &= ~ACC_FINAL;
             access &= ~ACC_PRIVATE;
             access |= ACC_PROTECTED;
         }
