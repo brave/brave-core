@@ -28,6 +28,8 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
 absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
     const base::Value& json_value);
 
+absl::optional<std::string> ParseStripeBuyURL(const base::Value& json_value);
+
 mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
                                          const std::string& chain_id,
                                          mojom::CoinType coin);

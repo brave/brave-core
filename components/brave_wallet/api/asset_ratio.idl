@@ -196,5 +196,11 @@ namespace asset_ratio {
     // A payload list.
     CoinMarketPayload[] payload;
   };
+  
+  // A payload with a URL field
+  dictionary StripeBuyURLResponse {
+    // e.g "https://crypto.link.com?session_hash=abcdefgh"
+    DOMString url;
+  };
 
 };

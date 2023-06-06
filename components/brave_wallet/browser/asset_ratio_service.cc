@@ -15,6 +15,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
@@ -92,6 +93,20 @@ std::vector<std::string> VectorToLowerCase(const std::vector<std::string>& v) {
                    return base::ToLowerASCII(from);
                  });
   return v_lower;
+}
+
+absl::optional<std::string> ChainIdToStripeChainId(
+    const std::string& chain_id) {
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      chain_id_lookup(
+          {{brave_wallet::mojom::kMainnetChainId, "ethereum"},
+           {brave_wallet::mojom::kSolanaMainnet, "solana"},
+           {brave_wallet::mojom::kPolygonMainnetChainId, "polygon"}});
+  if (!chain_id_lookup->contains(chain_id)) {
+    return absl::nullopt;
+  }
+
+  return chain_id_lookup->at(chain_id);
 }
 
 }  // namespace
@@ -239,6 +254,9 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
         net::AppendQueryParameter(transak_url, "apiKey", kTransakApiKey);
 
     std::move(callback).Run(std::move(transak_url.spec()), absl::nullopt);
+  } else if (provider == mojom::OnRampProvider::kStripe) {
+    GetStripeBuyURL(std::move(callback), address, currency_code, amount,
+                    chain_id, symbol);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }
@@ -322,6 +340,61 @@ void AssetRatioService::OnGetSardineAuthToken(
   GURL sardine_buy_url = GetSardineBuyURL(chain_id, address, symbol, amount,
                                           currency_code, *auth_token);
   std::move(callback).Run(std::move(sardine_buy_url.spec()), absl::nullopt);
+}
+
+void AssetRatioService::GetStripeBuyURL(
+    GetBuyUrlV1Callback callback,
+    const std::string& address,
+    const std::string& source_currency,
+    const std::string& source_exchange_amount,
+    const std::string& chain_id,
+    const std::string& destination_currency) {
+  // Convert the frontend supplied chain ID to the chain ID used by Stripe
+  absl::optional<std::string> destination_network =
+      ChainIdToStripeChainId(chain_id);
+  if (!destination_network) {
+    std::move(callback).Run("", "UNSUPPORTED_CHAIN_ID");
+    return;
+  }
+
+  base::Value::Dict payload;
+  AddKeyIfNotEmpty(&payload, "wallet_address", address);
+  AddKeyIfNotEmpty(&payload, "source_currency", source_currency);
+  AddKeyIfNotEmpty(&payload, "source_exchange_amount", source_exchange_amount);
+  AddKeyIfNotEmpty(&payload, "destination_network", *destination_network);
+  AddKeyIfNotEmpty(&payload, "destination_currency", destination_currency);
+
+  const std::string json_payload = GetJSON(payload);
+
+  GURL url = GURL(base::StringPrintf("%sv2/stripe/onramp_sessions",
+                                     base_url_for_test_.is_empty()
+                                         ? kAssetRatioBaseURL
+                                         : base_url_for_test_.spec().c_str()));
+
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetStripeBuyURL,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request(
+      "POST", url, json_payload, "application/json",
+      std::move(internal_callback), {},
+      {.auto_retry_on_network_change = true, .enable_cache = false});
+}
+
+void AssetRatioService::OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
+                                          APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
+    return;
+  }
+
+  auto url = ParseStripeBuyURL(api_request_result.value_body());
+  if (!url) {
+    std::move(callback).Run("", "PARSING_ERROR");
+    return;
+  }
+
+  std::move(callback).Run(*url, absl::nullopt);
 }
 
 void AssetRatioService::OnGetPrice(std::vector<std::string> from_assets,
