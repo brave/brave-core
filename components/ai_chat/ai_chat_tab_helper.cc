@@ -398,7 +398,7 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
         l10n_util::GetStringUTF8(IDS_CHAT_UI_API_ERROR)});
   }
 
-  is_request_in_progress_ = !success;
+  is_request_in_progress_ = false;
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
