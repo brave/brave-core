@@ -601,6 +601,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                           APIRequestResult api_request_result);
 
   void MaybeUpdateIsEip1559(const std::string& chain_id);
+  template <typename T>
+  T* GetCustomNetworkFromPrefsDict(const std::string& chain_id,
+                                   T& custom_networks);
   void UpdateIsEip1559(const std::string& chain_id,
                        const std::string& base_fee_per_gas,
                        mojom::ProviderError error,
