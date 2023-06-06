@@ -147,7 +147,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, AutoContribution) {
   contribution_->IsBalanceCorrect();
 
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "20.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -231,7 +231,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   contribution_->IsBalanceCorrect();
 
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "20.00 BAT");
 
   context_helper_->LoadURL(test_util::GetRewardsInternalsUrl());
 
@@ -287,7 +287,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   contribution_->IsBalanceCorrect();
 
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "20.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -463,7 +463,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Check that summary table shows the appropriate contribution
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-5.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "5.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -505,7 +505,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Check that summary table shows the appropriate contribution
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-4.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "4.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -551,7 +551,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Wait for UI to update with contribution
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-50.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "50.00 BAT");
 
   test_util::WaitForElementThenClick(contents(),
                                      "[data-test-id=view-statement-button]");
@@ -559,10 +559,10 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   test_util::WaitForElementToAppear(contents(), "#transactionTable");
 
   test_util::WaitForElementToContain(contents(), "#transactionTable",
-                                     "-30.000BAT");
+                                     "30.000BAT");
 
   test_util::WaitForElementToContain(contents(), "#transactionTable",
-                                     "-20.000BAT");
+                                     "20.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,

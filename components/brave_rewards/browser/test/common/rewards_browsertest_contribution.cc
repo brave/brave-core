@@ -197,7 +197,7 @@ void RewardsBrowserTestContribution::VerifyTip(const double amount,
                                    : "[data-test-id=rewards-summary-one-time]";
 
   test_util::WaitForElementToContain(contents(), selector,
-                                     base::StringPrintf("-%.2f BAT", amount));
+                                     base::StringPrintf("%.2f BAT", amount));
 }
 
 void RewardsBrowserTestContribution::IsBalanceCorrect() {
