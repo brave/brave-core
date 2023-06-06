@@ -7,13 +7,13 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kShouldLaunchBraveAdsAsInProcessServiceFeature,
+BASE_FEATURE(kShouldLaunchBraveAdsAsAnInProcessServiceFeature,
              "ShouldLaunchBraveAdsAsInProcessService",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool ShouldLaunchAsInProcessService() {
   return base::FeatureList::IsEnabled(
-      kShouldLaunchBraveAdsAsInProcessServiceFeature);
+      kShouldLaunchBraveAdsAsAnInProcessServiceFeature);
 }
 
 BASE_FEATURE(kShouldAlwaysRunBraveAdsServiceFeature,

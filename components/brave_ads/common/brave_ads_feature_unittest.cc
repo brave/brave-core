@@ -18,8 +18,8 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldLaunchAsInProcessService) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  enabled_features.emplace_back(kShouldLaunchBraveAdsAsInProcessServiceFeature,
-                                params);
+  enabled_features.emplace_back(
+      kShouldLaunchBraveAdsAsAnInProcessServiceFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
