@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
-index 3742e72a7c1287a9f23ccc1648dc312e4bdc95a6..6cea82b5a17de47d2ca9085e3036625ecbd98460 100644
+index e698cc345ad9c148382c431a07e12bac071d2237..dbb293dfeecccb465e8406768c8282ea32ae3608 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
-@@ -463,6 +463,8 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
-          ++k) {
+@@ -438,6 +438,8 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+          k < std::min(tabs_in_session.size(), kMaxTabsPerSessionToShow); ++k) {
        BuildOtherDevicesTabItem(session_tag, *tabs_in_session[k]);
      }  // for all tabs in one session
 +

@@ -1,23 +1,8 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..7b3c26faec0d86e539e24e16d48834254d64e6bc 100644
+index ae742b0b85a506f550852e611471338bde0da390..bb72d65adcd5a063bba6c86420f6334a8538b7b6 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -772,8 +772,12 @@ config("compiler") {
-       cflags += [ "-fwhole-program-vtables" ]
- 
-       # whole-program-vtables implies -fsplit-lto-unit, and Rust needs to match
--      # behaviour.
--      rustflags += [ "-Zsplit-lto-unit" ]
-+      # behaviour. Rust needs to know the linker will be doing LTO in this case
-+      # or it rejects the Zsplit-lto-unit flag.
-+      rustflags += [
-+        "-Zsplit-lto-unit",
-+        "-Clinker-plugin-lto=yes",
-+      ]
- 
-       if (!is_win) {
-         ldflags += [ "-fwhole-program-vtables" ]
-@@ -1554,6 +1558,87 @@ config("compiler_arm") {
+@@ -1568,6 +1569,87 @@ config("compiler_arm") {
    }
  }
  
@@ -105,7 +90,7 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..7b3c26faec0d86e539e24e16d4883425
  # runtime_library -------------------------------------------------------------
  #
  # Sets the runtime library and associated options.
-@@ -1575,6 +1660,10 @@ config("runtime_library") {
+@@ -1589,6 +1671,10 @@ config("runtime_library") {
      configs += [ "//build/config/c++:runtime_library" ]
    }
  
@@ -113,31 +98,10 @@ index 23a8da453c3d29ab8efeacbb7da6e01e280afd55..7b3c26faec0d86e539e24e16d4883425
 +    configs += [ ":compiler_builtins" ]
 +  }
 +
-   # TODO(crbug.com/830987): Come up with a better name for is POSIX + Fuchsia
-   # configuration.
-   if (is_posix || is_fuchsia) {
-@@ -1746,6 +1835,11 @@ config("default_warnings") {
-           # TODO(crbug.com/1412713) Evaluate and possibly enable.
-           "-Wno-deprecated-this-capture",
-         ]
-+
-+        if (llvm_force_head_revision) {
-+          # TODO(https://crbug.com/1448905): Evaluate and possibly enable.
-+          cflags += [ "-Wno-builtin-macro-redefined" ]
-+        }
-       }
-     }
-   }
-@@ -1951,7 +2045,7 @@ config("no_chromium_code") {
- config("noshadowing") {
-   # This flag has to be disabled for nacl because the nacl compiler is too
-   # strict about shadowing.
--  if (is_clang && (!is_nacl || is_nacl_saigo)) {
-+  if (is_clang && (!is_nacl || is_nacl_saigo) && !llvm_force_head_revision) {
-     cflags = [ "-Wshadow" ]
-   }
- }
-@@ -2534,7 +2628,7 @@ config("symbols") {
+   # Rust and C++ both provide intrinsics for LLVM to call for math operations. We
+   # want to use the C++ intrinsics, not the ones in the Rust compiler_builtins
+   # library. The Rust symbols are marked as weak, so that they can be replaced by
+@@ -2570,7 +2656,7 @@ config("symbols") {
        if (use_dwarf5) {
          cflags += [ "-gdwarf-5" ]
          rustflags += [ "-Zdwarf-version=5" ]

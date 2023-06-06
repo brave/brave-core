@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index eac19b09d14df27aa877dadb04045e86e7754257..1a608cc874506b2e3df625464f8931352f71a3f1 100644
+index 1994d1a97772eeaa2db869549a737b7e2889dadd..af23022bab37f1898dae0cd7beac751d42fe0b95 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -104,6 +104,7 @@ class GM2TabStyleViews : public TabStyleViews {
-   double GetHoverAnimationValue() const override;
+@@ -126,6 +126,7 @@ class GM2TabStyleViews : public TabStyleViews {
+                                              const Tab* other_tab) const;
  
   private:
 +  BRAVE_GM2_TAB_STYLE_H
    // Gets the bounds for the leading and trailing separators for a tab.
    TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
  
-@@ -271,6 +272,7 @@ SkPath GM2TabStyleViews::GetPath(TabStyle::PathType path_type,
+@@ -274,6 +275,7 @@ SkPath GM2TabStyleViews::GetPath(TabStyle::PathType path_type,
    const ShapeModifier shape_modifier = GetShapeModifier(path_type);
    const bool extend_left_to_bottom = shape_modifier & kNoLowerLeftArc;
    const bool extend_right_to_bottom = shape_modifier & kNoLowerRightArc;
@@ -18,16 +18,17 @@ index eac19b09d14df27aa877dadb04045e86e7754257..1a608cc874506b2e3df625464f893135
  
    SkPath path;
  
-@@ -545,7 +547,7 @@ TabStyle::SeparatorBounds GM2TabStyleViews::GetSeparatorBounds(
-   separator_bounds.leading =
-       gfx::RectF(aligned_bounds.x() + corner_radius,
-                  aligned_bounds.y() +
--                     (aligned_bounds.height() - separator_size.height()) / 2,
-+                     aligned_bounds.height() - separator_size.height(),
-                  separator_size.width(), separator_size.height());
+@@ -548,8 +550,7 @@ TabStyle::SeparatorBounds GM2TabStyleViews::GetSeparatorBounds(
+       aligned_bounds.x() + corner_radius - separator_margin.right() -
+           separator_size.width(),
+       aligned_bounds.y() + (aligned_bounds.height() - separator_size.height() -
+-                            separator_margin.bottom()) /
+-                               2,
++                            separator_margin.bottom()),
+       separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -934,12 +936,16 @@ void GM2TabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -923,12 +924,16 @@ void GM2TabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  

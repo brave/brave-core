@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 60afa8e0c3bb97fe2866eb6a8c81723d06c03a1f..04dd187409188fd79e74c1f465dff3eb7342f640 100644
+index e238be9d538dd257f74101c413cbb69cf04f39f5..fdede737f382949a667b56301edaf618af09f2db 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -330,6 +330,22 @@ enum class ContentSettingsType : int32_t {
-   // Used to indicate whether HTTPS-First Mode is enabled on the hostname.
-   HTTPS_ENFORCED,
+@@ -331,6 +331,22 @@ enum class ContentSettingsType : int32_t {
+   // https://github.com/screen-share/capture-all-screens
+   ALL_SCREEN_CAPTURE,
  
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,
