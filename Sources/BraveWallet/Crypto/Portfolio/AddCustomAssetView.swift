@@ -78,6 +78,33 @@ struct AddCustomAssetView: View {
           }
         }
         Section(
+          header: WalletListHeaderView(title: networkSelectionStore.networkSelectionInForm?.coin == .sol ? Text(Strings.Wallet.tokenMintAddress) : Text(Strings.Wallet.tokenAddress))
+        ) {
+          TextField(Strings.Wallet.enterAddress, text: $addressInput)
+            .onChange(of: addressInput) { newValue in
+              guard !newValue.isEmpty else { return }
+              userAssetStore.tokenInfo(address: newValue) { token in
+                guard let token else { return }
+                if nameInput.isEmpty {
+                  nameInput = token.name
+                }
+                if symbolInput.isEmpty {
+                  symbolInput = token.symbol
+                }
+                if !token.isErc721, !token.isNft, decimalsInput.isEmpty {
+                  decimalsInput = "\(token.decimals)"
+                }
+                if let network = networkStore.allChains.first(where: { $0.chainId == token.chainId }) {
+                  networkSelectionStore.networkSelectionInForm = network
+                }
+              }
+            }
+            .autocapitalization(.none)
+            .autocorrectionDisabled()
+            .disabled(userAssetStore.isSearchingToken)
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+        Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.customTokenNetworkHeader))
         ) {
           HStack {
@@ -106,33 +133,6 @@ struct AddCustomAssetView: View {
             }
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }
-        Section(
-          header: WalletListHeaderView(title: networkSelectionStore.networkSelectionInForm?.coin == .sol ? Text(Strings.Wallet.tokenMintAddress) : Text(Strings.Wallet.tokenAddress))
-        ) {
-          TextField(Strings.Wallet.enterAddress, text: $addressInput)
-            .onChange(of: addressInput) { newValue in
-              guard !newValue.isEmpty else { return }
-              userAssetStore.tokenInfo(address: newValue) { token in
-                guard let token else { return }
-                if nameInput.isEmpty {
-                  nameInput = token.name
-                }
-                if symbolInput.isEmpty {
-                  symbolInput = token.symbol
-                }
-                if !token.isErc721, !token.isNft, decimalsInput.isEmpty {
-                  decimalsInput = "\(token.decimals)"
-                }
-                if let network = networkStore.allChains.first(where: { $0.chainId == token.chainId }) {
-                  networkSelectionStore.networkSelectionInForm = network
-                }
-              }
-            }
-            .autocapitalization(.none)
-            .autocorrectionDisabled()
-            .disabled(userAssetStore.isSearchingToken)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenSymbol))
