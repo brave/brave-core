@@ -3,6 +3,9 @@
   <!--
     Please reuse existing strings as much as possible rather than adding new
     strings here.
+
+    If the command is only available on a platform we don't support (i.e.
+    ChromeOS) prefer to not add the command.
   -->
   <message name="IDS_IDC_BACK">
     Back
@@ -88,9 +91,6 @@
   <message name="IDS_IDC_ALL_WINDOWS_FRONT">
     Show all Windows
   </message>
-  <message name="IDS_IDC_TOGGLE_MULTITASK_MENU">
-    Show Multitask Menu
-  </message>
   <message name="IDS_IDC_USE_SYSTEM_TITLE_BAR">
     Toggle System Title Bar
   </message>
@@ -102,18 +102,6 @@
   </message>
   <message name="IDS_IDC_WEB_APP_MENU_APP_INFO">
     Web App Info
-  </message>
-  <message name="IDS_IDC_VISIT_DESKTOP_OF_LRU_USER_2">
-    Visit Desktop Of LRU User 2
-  </message>
-  <message name="IDS_IDC_VISIT_DESKTOP_OF_LRU_USER_3">
-    Visit Desktop Of LRU User 3
-  </message>
-  <message name="IDS_IDC_VISIT_DESKTOP_OF_LRU_USER_4">
-    Visit Desktop Of LRU User 4
-  </message>
-  <message name="IDS_IDC_VISIT_DESKTOP_OF_LRU_USER_5">
-    Visit Desktop Of LRU User 5
   </message>
   <message name="IDS_IDC_BOOKMARK_THIS_TAB">
     Bookmark Tab
@@ -303,9 +291,6 @@
   </message>
   <message name="IDS_IDC_CARET_BROWSING_TOGGLE">
     Caret Browsing Toggle
-  </message>
-  <message name="IDS_IDC_LACROS_DATA_MIGRATION">
-    Lacros Data Migration
   </message>
   <message name="IDS_IDC_PERFORMANCE">
     Show Performance Settings
