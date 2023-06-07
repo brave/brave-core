@@ -20,453 +20,453 @@
     Stop
   </message>
   <message name="IDS_IDC_RELOAD_BYPASSING_CACHE">
-    Reload Bypassing Cache
+    Reload bypassing cache
   </message>
   <message name="IDS_IDC_RELOAD_CLEARING_CACHE">
-    Reload Clearing Cache
+    Reload clearing cache
   </message>
   <message name="IDS_IDC_CLOSE_WINDOW">
-    Close Window
+    Close window
   </message>
   <message name="IDS_IDC_ALWAYS_ON_TOP">
-    Toggle Always On Top
+    Toggle always on top
   </message>
   <message name="IDS_IDC_CLOSE_TAB">
-    Close Tab
+    Close tab
   </message>
   <message name="IDS_IDC_SELECT_NEXT_TAB">
-    Next Tab
+    Next tab
   </message>
   <message name="IDS_IDC_SELECT_PREVIOUS_TAB">
-    Previous Tab
+    Previous tab
   </message>
   <message name="IDS_IDC_SELECT_TAB_0">
-    Select Tab 0
+    Select tab 0
   </message>
   <message name="IDS_IDC_SELECT_TAB_1">
-    Select Tab 1
+    Select tab 1
   </message>
   <message name="IDS_IDC_SELECT_TAB_2">
-    Select Tab 2
+    Select tab 2
   </message>
   <message name="IDS_IDC_SELECT_TAB_3">
-    Select Tab 3
+    Select tab 3
   </message>
   <message name="IDS_IDC_SELECT_TAB_4">
-    Select Tab 4
+    Select tab 4
   </message>
   <message name="IDS_IDC_SELECT_TAB_5">
-    Select Tab 5
+    Select tab 5
   </message>
   <message name="IDS_IDC_SELECT_TAB_6">
-    Select Tab 6
+    Select tab 6
   </message>
   <message name="IDS_IDC_SELECT_TAB_7">
-    Select Tab 7
+    Select tab 7
   </message>
   <message name="IDS_IDC_SELECT_LAST_TAB">
-    Select Last Tab
+    Select last tab
   </message>
   <message name="IDS_IDC_DUPLICATE_TAB">
-    Duplicate Tab
+    Duplicate tab
   </message>
   <message name="IDS_IDC_MOVE_TAB_NEXT">
-    Move Tab Next
+    Move tab next
   </message>
   <message name="IDS_IDC_MOVE_TAB_PREVIOUS">
-    Move Tab Previous
+    Move tab previous
   </message>
   <message name="IDS_IDC_SEARCH">
     Search
   </message>
   <message name="IDS_IDC_WINDOW_MENU">
-    Window Menu
+    Window menu
   </message>
   <message name="IDS_IDC_MINIMIZE_WINDOW">
-    Minimize Window
+    Minimize window
   </message>
   <message name="IDS_IDC_MAXIMIZE_WINDOW">
-    Maximize Window
+    Maximize window
   </message>
   <message name="IDS_IDC_ALL_WINDOWS_FRONT">
-    Show all Windows
+    Show all windows
   </message>
   <message name="IDS_IDC_USE_SYSTEM_TITLE_BAR">
-    Toggle System Title Bar
+    Toggle system title bar
   </message>
   <message name="IDS_IDC_OPEN_IN_PWA_WINDOW">
-    Open In PWA Window
+    Open in PWA window
   </message>
   <message name="IDS_IDC_WEB_APP_SETTINGS">
-    Web App Settings
+    Web app settings
   </message>
   <message name="IDS_IDC_WEB_APP_MENU_APP_INFO">
-    Web App Info
+    Web app info
   </message>
   <message name="IDS_IDC_BOOKMARK_THIS_TAB">
-    Bookmark Tab
+    Bookmark tab
   </message>
   <message name="IDS_IDC_BOOKMARK_ALL_TABS">
-    Bookmark All Tabs
+    Bookmark all tabs
   </message>
   <message name="IDS_IDC_EMAIL_PAGE_LOCATION">
-    Email Page URL
+    Email page URL
   </message>
   <message name="IDS_IDC_BASIC_PRINT">
-    Basic Print
+    Basic print
   </message>
   <message name="IDS_IDC_SAVE_CREDIT_CARD_FOR_PAGE">
-    Save Credit Card for Page
+    Save credit card for page
   </message>
   <message name="IDS_IDC_TRANSLATE_PAGE">
-    Translate Page
+    Translate page
   </message>
   <message name="IDS_IDC_ROUTE_MEDIA">
-    Route Media
+    Route media
   </message>
   <message name="IDS_IDC_WINDOW_MUTE_SITE">
-    Mute Site
+    Mute site
   </message>
   <message name="IDS_IDC_WINDOW_PIN_TAB">
-    Pin Tab
+    Pin tab
   </message>
   <message name="IDS_IDC_WINDOW_GROUP_TAB">
-    Group Tab
+    Group tab
   </message>
   <message name="IDS_IDC_MIGRATE_LOCAL_CREDIT_CARD_FOR_PAGE">
-    Migrate Local Credit Card For Page
+    Migrate local credit card for page
   </message>
   <message name="IDS_IDC_FOCUS_THIS_TAB">
-    Focus Tab
+    Focus tab
   </message>
   <message name="IDS_IDC_QRCODE_GENERATOR">
-    QR Code Generator
+    QR code generator
   </message>
   <message name="IDS_IDC_SAVE_AUTOFILL_ADDRESS">
-    Save Autofill Address
+    Save autofill address
   </message>
   <message name="IDS_IDC_OFFERS_AND_REWARDS_FOR_PAGE">
-    Offers and Rewards for Page
+    Offers and rewards for page
   </message>
   <message name="IDS_IDC_WEBAUTHN">
-    Web Authn
+    Web authn
   </message>
   <message name="IDS_IDC_SHARING_HUB">
-    Sharing Hub
+    Sharing hub
   </message>
   <message name="IDS_IDC_SHARING_HUB_MENU">
-    Sharing Hub Menu
+    Sharing hub menu
   </message>
   <message name="IDS_IDC_SHARING_HUB_SCREENSHOT">
-    Sharing Hub Screenshot
+    Sharing hub screenshot
   </message>
   <message name="IDS_IDC_SAVE_IBAN_FOR_PAGE">
-    Save IBAN For Page
+    Save IBAN for page
   </message>
   <message name="IDS_IDC_SHOW_PASSWORD_MANAGER">
-    Show Password Manager
+    Show password manager
   </message>
   <message name="IDS_IDC_SHOW_PAYMENT_METHODS">
-    Show Payment Methods
+    Show payment methods
   </message>
   <message name="IDS_IDC_SHOW_ADDRESSES">
-    Show Addresses
+    Show addresses
   </message>
   <message name="IDS_IDC_EDIT_MENU">
-    Edit Menu
+    Edit menu
   </message>
   <message name="IDS_IDC_FIND_NEXT">
-    Find Next
+    Find next
   </message>
   <message name="IDS_IDC_FIND_PREVIOUS">
-    Find Previous
+    Find previous
   </message>
   <message name="IDS_IDC_CLOSE_FIND_OR_STOP">
-    Close Find Or Stop
+    Close find or stop
   </message>
   <message name="IDS_IDC_FIND_MENU">
-    Find Menu
+    Find menu
   </message>
   <message name="IDS_IDC_ZOOM_PLUS">
-    Zoom In
+    Zoom in
   </message>
   <message name="IDS_IDC_ZOOM_NORMAL">
-    Reset Zoom
+    Reset zoom
   </message>
   <message name="IDS_IDC_ZOOM_MINUS">
-    Zoom Out
+    Zoom out
   </message>
   <message name="IDS_IDC_ZOOM_PERCENT_DISPLAY">
     Show current zoom
   </message>
   <message name="IDS_IDC_FOCUS_TOOLBAR">
-    Focus Toolbar
+    Focus toolbar
   </message>
   <message name="IDS_IDC_FOCUS_LOCATION">
-    Focus Location
+    Focus location
   </message>
   <message name="IDS_IDC_FOCUS_SEARCH">
-    Focus Search
+    Focus search
   </message>
   <message name="IDS_IDC_FOCUS_MENU_BAR">
-    Focus Menu Bar
+    Focus menu bar
   </message>
   <message name="IDS_IDC_FOCUS_NEXT_PANE">
-    Focus Next Pane
+    Focus next pane
   </message>
   <message name="IDS_IDC_FOCUS_PREVIOUS_PANE">
-    Focus Previous Pane
+    Focus previous pane
   </message>
   <message name="IDS_IDC_FOCUS_BOOKMARKS">
-    Focus Bookmarks
+    Focus bookmarks
   </message>
   <message name="IDS_IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY">
-    Focus Inactive Popup For Accessibility
+    Focus inactive popup for accessibility
   </message>
   <message name="IDS_IDC_FOCUS_WEB_CONTENTS_PANE">
-    Focus Web Contents Pane
+    Focus web contents pane
   </message>
   <message name="IDS_IDC_SHOW_BOOKMARK_BAR">
-    Show Bookmark Bar
+    Show bookmark bar
   </message>
   <message name="IDS_IDC_SHOW_HISTORY">
-    Show History
+    Show history
   </message>
   <message name="IDS_IDC_SHOW_BOOKMARK_MANAGER">
-    Show Bookmark Manager
+    Show bookmark manager
   </message>
   <message name="IDS_IDC_IMPORT_SETTINGS">
-    Import Settings
+    Import settings
   </message>
   <message name="IDS_IDC_EDIT_SEARCH_ENGINES">
-    Edit Search Engines
+    Edit search engines
   </message>
   <message name="IDS_IDC_HELP_PAGE_VIA_KEYBOARD">
-    Show Help
+    Show help
   </message>
   <message name="IDS_IDC_SHOW_APP_MENU">
-    Show App Menu
+    Show app menu
   </message>
   <message name="IDS_IDC_DEV_TOOLS_INSPECT">
-    Dev Tools Inspect
+    Dev tools inspect
   </message>
   <message name="IDS_IDC_UPGRADE_DIALOG">
-    Upgrade Brave
+    Upgrade brave
   </message>
   <message name="IDS_IDC_SHOW_AVATAR_MENU">
-    Show Avatar Menu
+    Show avatar menu
   </message>
   <message name="IDS_IDC_DEV_TOOLS_TOGGLE">
-    Dev Tools Toggle
+    Dev tools toggle
   </message>
   <message name="IDS_IDC_SHOW_SETTINGS_RESET_BUBBLE">
-    Reset Settings
+    Reset settings
   </message>
   <message name="IDS_IDC_SHOW_SRT_BUBBLE">
-    Show SRT Bubble
+    Show SRT bubble
   </message>
   <message name="IDS_IDC_TOGGLE_FULLSCREEN_TOOLBAR">
-    Toggle Fullscreen Toolbar
+    Toggle fullscreen toolbar
   </message>
   <message name="IDS_IDC_CUSTOMIZE_TOUCH_BAR">
-    Customize Touch Bar
+    Customize touch bar
   </message>
   <message name="IDS_IDC_SHOW_BETA_FORUM">
-    Show Beta Forum
+    Show beta forum
   </message>
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT_APPLE_EVENTS">
-    Toggle Javascript Apple Events
+    Toggle javascript apple events
   </message>
   <message name="IDS_IDC_INSTALL_PWA">
     Install PWA
   </message>
   <message name="IDS_IDC_SHOW_MANAGEMENT_PAGE">
-    Show Management Page
+    Show management page
   </message>
   <message name="IDS_IDC_PASTE_AND_GO">
-    Paste And Go
+    Paste and go
   </message>
   <message name="IDS_IDC_SHOW_FULL_URLS">
-    Show Full Urls
+    Show full URLs
   </message>
   <message name="IDS_IDC_CARET_BROWSING_TOGGLE">
-    Caret Browsing Toggle
+    Caret browsing toggle
   </message>
   <message name="IDS_IDC_PERFORMANCE">
-    Show Performance Settings
+    Show performance settings
   </message>
   <message name="IDS_IDC_SHOW_BOOKMARK_SIDE_PANEL">
-    Show Bookmark Side Panel
+    Show bookmark side panel
   </message>
   <message name="IDS_IDC_TRANSLATE_ORIGINAL_LANGUAGE_BASE">
-    Translate Original Language Base
+    Translate original language base
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL">
-    Bookmark Bar Open All
+    Bookmark bar open all
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_NEW_WINDOW">
-    Bookmark Bar Open All New Window
+    Bookmark bar open all in new window
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_INCOGNITO">
-    Bookmark Bar Open All Incognito
+    Bookmark bar open all in private window
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_INCOGNITO">
-    Bookmark Bar Open Incognito
+    Bookmark bar open in private
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_NEW_TAB_GROUP">
-    Bookmark Bar Open All New Tab Group
+    Bookmark bar open all new tab group
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_RENAME_FOLDER">
-    Bookmark Bar Rename Folder
+    Bookmark bar rename folder
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_EDIT">
-    Bookmark Bar Edit
+    Bookmark bar edit
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_REMOVE">
-    Bookmark Bar Remove
+    Bookmark bar remove
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_UNDO">
-    Bookmark Bar Undo
+    Bookmark bar undo
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_REDO">
-    Bookmark Bar Redo
+    Bookmark bar redo
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_ADD_NEW_BOOKMARK">
-    Bookmark Bar Add New Bookmark
+    Bookmark bar add new bookmark
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_NEW_FOLDER">
-    Bookmark Bar New Folder
+    Bookmark bar new folder
   </message>
   <message name="IDS_IDC_BOOKMARK_MANAGER">
-    Bookmark Manager
+    Bookmark manager
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_ALWAYS_SHOW">
-    Bookmark Bar Always Show
+    Bookmark bar always show
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT">
-    Bookmark Bar Show Apps Shortcut
+    Bookmark bar show apps shortcut
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_SHOW_READING_LIST">
-    Bookmark Bar Show Reading List
+    Bookmark bar show reading list
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_SHOW_MANAGED_BOOKMARKS">
-    Bookmark Bar Show Managed Bookmarks
+    Bookmark bar show managed bookmarks
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_ADD_TO_BOOKMARKS_BAR">
-    Bookmark Bar Add To Bookmarks Bar
+    Bookmark bar add to bookmarks bar
   </message>
   <message name="IDS_IDC_BOOKMARK_BAR_REMOVE_FROM_BOOKMARKS_BAR">
-    Bookmark Bar Remove From Bookmarks Bar
+    Bookmark bar remove from bookmarks bar
   </message>
   <message name="IDS_IDC_CONTENT_CLIPBOARD_HISTORY_MENU">
-    Content Clipboard History Menu
+    Content clipboard history menu
   </message>
   <message name="IDS_IDC_MEDIA_ROUTER_SHOW_IN_TOOLBAR">
-    Show Media Router In Toolbar
+    Show media router in toolbar
   </message>
   <message name="IDS_IDC_MEDIA_STREAM_DEVICE_STATUS_TRAY">
-    Media Stream Device Status Tray
+    Media stream device status tray
   </message>
   <message name="IDS_IDC_MEDIA_STREAM_DEVICE_ALWAYS_ALLOW">
-    Media Stream Device Always Allow
+    Media stream device always allow
   </message>
   <message name="IDS_IDC_TAB_SEARCH">
-    Tab Search
+    Tab search
   </message>
   <message name="IDS_IDC_TAB_SEARCH_CLOSE">
-    Tab Search Close
+    Tab search close
   </message>
   <message name="IDS_IDC_DEBUG_TOGGLE_TABLET_MODE">
-    Debug Toggle Tablet Mode
+    Debug toggle tablet mode
   </message>
   <message name="IDS_IDC_DEBUG_PRINT_VIEW_TREE">
-    Debug Print View Tree
+    Debug print view tree
   </message>
   <message name="IDS_IDC_DEBUG_PRINT_VIEW_TREE_DETAILS">
-    Debug Print View Tree Details
+    Debug print view tree details
   </message>
   <message name="IDS_IDC_LIVE_CAPTION">
-    Toggle Live Captions
+    Toggle live captions
   </message>
   <message name="IDS_IDC_RUN_SCREEN_AI_VISUAL_ANNOTATIONS">
     Run screen AI visual annotations
   </message>
   <message name="IDS_IDC_SIDEBAR_SHOW_OPTION_ALWAYS">
-    Show Sidebar
+    Show sidebar
   </message>
   <message name="IDS_IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER">
-    Show Sidebar on Mouseover
+    Show sidebar on mouseover
   </message>
   <message name="IDS_IDC_SIDEBAR_SHOW_OPTION_NEVER">
-    Hide Sidebar
+    Hide sidebar
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_WALLET_PANEL">
-    Show Brave Wallet Panel
+    Show brave wallet panel
   </message>
   <message name="IDS_IDC_CLOSE_BRAVE_WALLET_PANEL">
-    Close Brave Wallet Panel
+    Close brave wallet panel
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_VPN_PANEL">
-    Show Brave VPN Panel
+    Show brave VPN panel
   </message>
   <message name="IDS_IDC_BRAVE_VPN_MENU">
-    Brave VPN Menu
+    Brave VPN menu
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON">
-    Toggle Brave VPN Toolbar Button
+    Toggle brave VPN toolbar button
   </message>
   <message name="IDS_IDC_SEND_BRAVE_VPN_FEEDBACK">
-    Send Brave VPN Feedback
+    Send brave VPN feedback
   </message>
   <message name="IDS_IDC_ABOUT_BRAVE_VPN">
-    About Brave VPN
+    About brave VPN
   </message>
   <message name="IDS_IDC_MANAGE_BRAVE_VPN_PLAN">
-    Manage Brave VPN Plan
+    Manage brave VPN plan
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN">
-    Toggle Brave VPN
+    Toggle brave VPN
   </message>
   <message name="IDS_IDC_TOGGLE_TAB_MUTE">
-    Toggle Tab Mute
+    Toggle tab mute
   </message>
   <message name="IDS_IDC_SIDEBAR_TOGGLE_POSITION">
-    Toggle Sidebar Position
+    Toggle sidebar position
   </message>
   <message name="IDS_IDC_TOGGLE_SIDEBAR">
-    Toggle Sidebar
+    Toggle sidebar
   </message>
   <message name="IDS_IDC_TOGGLE_VERTICAL_TABS">
-    Toggle Vertical Tabs
+    Toggle vertical tabs
   </message>
   <message name="IDS_IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE">
-    Toggle Vertical Tabs Window Title
+    Toggle vertical tabs window title
   </message>
   <message name="IDS_IDC_CONFIGURE_BRAVE_NEWS">
-    Configure Brave News
+    Configure brave news
   </message>
   <message name="IDS_IDC_CONFIGURE_SHORTCUTS">
-    Configure Shortcuts
+    Configure shortcuts
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_TALK">
-    Show Brave Talk
+    Show brave talk
   </message>
   <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_ALWAYS">
-    Brave Bookmark Bar Always
+    Always show bookmark bar
   </message>
   <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_NTP">
-    Brave Bookmark Bar NTP
+    Show bookmark bar on NTP
   </message>
   <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_NEVER">
-    Brave Bookmark Bar Never
+    Hide bookmark bar
   </message>
   <message name="IDS_IDC_TOGGLE_SHIELDS">
-    Toggle Shields
+    Toggle shields
   </message>
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT">
-    Toggle Javascript
+    Toggle javascript
   </message>
   <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
-    Show Playlist Bubble
+    Show playlist bubble
   </message>
 </grit-part>
