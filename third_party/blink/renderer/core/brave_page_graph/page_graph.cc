@@ -1599,10 +1599,8 @@ void PageGraph::RegisterScriptCompilation(
         GetHTMLElementNode(script_data.source.dom_node_id);
     AddEdge<EdgeExecute>(script_elm_node, code_node);
   } else {
-    DCHECK(execution_context_nodes_.Contains(execution_context));
-    AddEdge<EdgeExecute>(
-        execution_context_nodes_.at(execution_context).extensions_node,
-        code_node);
+    NodeActor* const acting_node = GetCurrentActingNode(execution_context);
+    AddEdge<EdgeExecute>(acting_node, code_node);
   }
 }
 

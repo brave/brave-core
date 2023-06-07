@@ -5,6 +5,7 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/execute/edge_execute.h"
 
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_extensions.h"
@@ -22,7 +23,7 @@ EdgeExecute::EdgeExecute(GraphItemContext* context,
     : GraphEdge(context, out_node, in_node) {}
 
 EdgeExecute::EdgeExecute(GraphItemContext* context,
-                         NodeScript* out_node,
+                         NodeActor* out_node,
                          NodeScript* in_node)
     : GraphEdge(context, out_node, in_node) {}
 
