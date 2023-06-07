@@ -64,7 +64,8 @@ class ResourceContextData : public base::SupportsUserData::Data {
       int render_process_id,
       int frame_tree_node_id,
       mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
-      mojo::PendingRemote<network::mojom::URLLoaderFactory> target_factory);
+      mojo::PendingRemote<network::mojom::URLLoaderFactory> target_factory,
+      scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
   static BraveProxyingWebSocket* StartProxyingWebSocket(
       content::ContentBrowserClient::WebSocketFactory factory,

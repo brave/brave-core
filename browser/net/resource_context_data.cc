@@ -32,7 +32,8 @@ void ResourceContextData::StartProxying(
     int render_process_id,
     int frame_tree_node_id,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
-    mojo::PendingRemote<network::mojom::URLLoaderFactory> target_factory) {
+    mojo::PendingRemote<network::mojom::URLLoaderFactory> target_factory,
+    scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   auto* self = static_cast<ResourceContextData*>(
@@ -52,7 +53,8 @@ void ResourceContextData::StartProxying(
       frame_tree_node_id, std::move(receiver), std::move(target_factory),
       self->request_id_generator_,
       base::BindOnce(&ResourceContextData::RemoveProxy,
-                     self->weak_factory_.GetWeakPtr()));
+                     self->weak_factory_.GetWeakPtr()),
+      navigation_response_task_runner);
 
   self->proxies_.emplace(std::move(proxy));
 }
