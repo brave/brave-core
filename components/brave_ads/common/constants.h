@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-constexpr int kCurrentPrefVersion = 12;
+constexpr int kCurrentPrefVersion = 1;
 
 }  // namespace brave_ads
 
