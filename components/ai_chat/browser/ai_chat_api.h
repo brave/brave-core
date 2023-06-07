@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_API_H_
-#define BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_API_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_API_H_
+#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_API_H_
 
 #include <memory>
 #include <string>
@@ -32,9 +32,10 @@ class AIChatAPI {
                        data_received_callback = base::NullCallback());
 
  private:
-  base::Value::Dict CreateApiParametersDict(const std::string& prompt, const bool is_sse_enabled);
+  base::Value::Dict CreateApiParametersDict(const std::string& prompt,
+                                            const bool is_sse_enabled);
 
   api_request_helper::APIRequestHelper api_request_helper_;
 };
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_API_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_API_H_

@@ -48,8 +48,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/features.h"
+#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

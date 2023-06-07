@@ -3,10 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-include_rules = [
-  "+content/public/renderer",
-  "+third_party/abseil-cpp/absl",
-  "+third_party/blink/public",
-  "+v8/include",
-  "+ui/accessibility",
-]
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojom") {
+  sources = [
+    "ai_chat.mojom",
+    "page_content_extractor.mojom",
+  ]
+
+  deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}

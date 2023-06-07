@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_PREF_NAMES_H_
-#define BRAVE_COMPONENTS_AI_CHAT_PREF_NAMES_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_COMMON_PREF_NAMES_H_
+#define BRAVE_COMPONENTS_AI_CHAT_COMMON_PREF_NAMES_H_
 
 class PrefRegistrySimple;
 
@@ -19,4 +19,4 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace ai_chat::prefs
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_PREF_NAMES_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_COMMON_PREF_NAMES_H_

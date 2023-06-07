@@ -146,8 +146,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/components/ai_chat/ai_chat.mojom.h"
-#include "brave/components/ai_chat/features.h"
+#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -701,15 +701,17 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::TipPanelHandlerFactory, brave_rewards::TipPanelUI>(
       map);
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        commands::mojom::CommandsService, BraveSettingsUI>(map);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT) && !BUILDFLAG(IS_ANDROID)
   if (ai_chat::features::IsAIChatEnabled() &&
       !render_frame_host->GetBrowserContext()->IsTor()) {
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
-  }
-
-  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
 #endif
 

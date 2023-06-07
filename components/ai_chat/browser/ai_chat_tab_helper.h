@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_TAB_HELPER_H_
-#define BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_TAB_HELPER_H_
+#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_TAB_HELPER_H_
 
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "base/observer_list.h"
-#include "brave/components/ai_chat/ai_chat.mojom.h"
-#include "brave/components/ai_chat/ai_chat_api.h"
+#include "brave/components/ai_chat/browser/ai_chat_api.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -109,4 +109,4 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_TAB_HELPER_H_

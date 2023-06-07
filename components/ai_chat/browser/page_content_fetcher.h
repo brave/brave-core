@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_PAGE_CONTENT_FETCHER_H_
-#define BRAVE_COMPONENTS_AI_CHAT_PAGE_CONTENT_FETCHER_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_PAGE_CONTENT_FETCHER_H_
+#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_PAGE_CONTENT_FETCHER_H_
 
 #include <string>
 
@@ -23,4 +23,4 @@ void FetchPageContent(content::WebContents* web_contents,
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_PAGE_CONTENT_FETCHER_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_PAGE_CONTENT_FETCHER_H_
