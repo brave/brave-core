@@ -73,11 +73,22 @@ bool GetStringValue(const schema_org::mojom::PropertyPtr& ad_property,
   }
 
   const std::string& value = ad_property->values->get_string_values().front();
-  if (value.empty()) {
+  *out_value = value;
+  return true;
+}
+
+bool GetNotEmptyStringValue(const schema_org::mojom::PropertyPtr& ad_property,
+                            std::string* out_value) {
+  CHECK(out_value);
+
+  if (!GetStringValue(ad_property, out_value)) {
     return false;
   }
 
-  *out_value = value;
+  if (out_value->empty()) {
+    return false;
+  }
+
   return true;
 }
 
@@ -141,23 +152,26 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
 
   const std::string& name = ad_property->name;
   if (name == kDataPlacementId) {
-    return GetStringValue(ad_property, &search_result_ad->placement_id);
+    return GetNotEmptyStringValue(ad_property, &search_result_ad->placement_id);
   }
 
   if (name == kDataCreativeInstanceId) {
-    return GetStringValue(ad_property, &search_result_ad->creative_instance_id);
+    return GetNotEmptyStringValue(ad_property,
+                                  &search_result_ad->creative_instance_id);
   }
 
   if (name == kDataCreativeSetId) {
-    return GetStringValue(ad_property, &search_result_ad->creative_set_id);
+    return GetNotEmptyStringValue(ad_property,
+                                  &search_result_ad->creative_set_id);
   }
 
   if (name == kDataCampaignId) {
-    return GetStringValue(ad_property, &search_result_ad->campaign_id);
+    return GetNotEmptyStringValue(ad_property, &search_result_ad->campaign_id);
   }
 
   if (name == kDataAdvertiserId) {
-    return GetStringValue(ad_property, &search_result_ad->advertiser_id);
+    return GetNotEmptyStringValue(ad_property,
+                                  &search_result_ad->advertiser_id);
   }
 
   if (name == kDataLandingPage) {
@@ -165,11 +179,12 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
   }
 
   if (name == kDataHeadlineText) {
-    return GetStringValue(ad_property, &search_result_ad->headline_text);
+    return GetNotEmptyStringValue(ad_property,
+                                  &search_result_ad->headline_text);
   }
 
   if (name == kDataDescription) {
-    return GetStringValue(ad_property, &search_result_ad->description);
+    return GetNotEmptyStringValue(ad_property, &search_result_ad->description);
   }
 
   if (name == kDataRewardsValue) {
@@ -186,11 +201,11 @@ bool SetConversionProperty(const schema_org::mojom::PropertyPtr& ad_property,
 
   const std::string& name = ad_property->name;
   if (name == kDataConversionTypeValue) {
-    return GetStringValue(ad_property, &conversion->type);
+    return GetNotEmptyStringValue(ad_property, &conversion->type);
   }
 
   if (name == kDataConversionUrlPatternValue) {
-    return GetStringValue(ad_property, &conversion->url_pattern);
+    return GetNotEmptyStringValue(ad_property, &conversion->url_pattern);
   }
 
   if (name == kDataConversionAdvertiserPublicKeyValue) {
