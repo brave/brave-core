@@ -205,6 +205,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &ntp_features::kNtpChromeCartModule,
     &ntp_features::kNtpHistoryClustersModule,
     &ntp_features::kNtpHistoryClustersModuleLoad,
+    &omnibox::kRichAutocompletion,
     &optimization_guide::features::kOptimizationHints,
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
