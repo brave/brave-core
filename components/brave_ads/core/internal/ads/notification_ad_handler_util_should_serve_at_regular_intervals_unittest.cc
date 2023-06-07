@@ -76,7 +76,7 @@ struct ParamInfo final {
 
 }  // namespace
 
-class BraveAdsNotificationAdUtilShouldServeAtRegularIntervalsTest
+class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
@@ -95,7 +95,7 @@ class BraveAdsNotificationAdUtilShouldServeAtRegularIntervalsTest
   }
 };
 
-TEST_P(BraveAdsNotificationAdUtilShouldServeAtRegularIntervalsTest,
+TEST_P(BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest,
        NotificationAdHandler) {
   // Arrange
   const ParamInfo param = GetParam();
@@ -138,7 +138,7 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
 
 INSTANTIATE_TEST_SUITE_P(
     ,
-    BraveAdsNotificationAdUtilShouldServeAtRegularIntervalsTest,
+    BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest,
     testing::ValuesIn(kTests),
     TestParamToString);
 
