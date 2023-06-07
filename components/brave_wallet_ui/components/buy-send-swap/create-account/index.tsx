@@ -86,6 +86,18 @@ export const CreateAccountTab = ({
       })
     }
 
+    // prevNetwork can become undefined if the 
+    // user closes and then reopens
+    // the wallet, we need to have a fallback network
+    // when the user clicks No or else the user will get
+    // stuck on the createAccount screen.
+    if (!prevNetwork) {
+      await setNetwork({
+        chainId: BraveWallet.MAINNET_CHAIN_ID,
+        coin: BraveWallet.CoinType.ETH
+      })
+    }
+
     if (isPanel) {
       dispatch(PanelActions.navigateTo('main'))
     }
