@@ -25,6 +25,7 @@ extern const char kBraveWalletHiddenNetworks[];
 extern const char kBraveWalletSelectedNetworks[];
 extern const char kBraveWalletSelectedNetworksPerOrigin[];
 extern const char kBraveWalletUserAssets[];
+extern const char kBraveWalletEthAllowancesCache[];
 // Added 10/2021 to migrate contract address to an empty string for ETH.
 extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
 // Added 06/2022 to add native assets of preloading networks to user assets.

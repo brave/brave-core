@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_allowance_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -179,6 +180,10 @@ BraveWalletService::BraveWalletService(
                                                   json_rpc_service,
                                                   keyring_service,
                                                   profile_prefs)),
+      eth_allowance_manager_(
+          std::make_unique<EthAllowanceManager>(json_rpc_service,
+                                                keyring_service,
+                                                profile_prefs)),
       weak_ptr_factory_(this) {
   if (delegate_) {
     delegate_->AddObserver(this);
@@ -1768,6 +1773,10 @@ void BraveWalletService::OnNetworkChanged() {
 void BraveWalletService::Reset() {
   delegate_->ClearWalletUIStoragePartition();
 
+  if (eth_allowance_manager_) {
+    eth_allowance_manager_->Reset();
+  }
+
   if (tx_service_) {
     tx_service_->Reset();
   }
@@ -1791,6 +1800,12 @@ void BraveWalletService::Reset() {
   for (const auto& observer : observers_) {
     observer->OnResetWallet();
   }
+}
+
+void BraveWalletService::DiscoverEthAllowances(
+    DiscoverEthAllowancesCallback callback) {
+  eth_allowance_manager_->DiscoverEthAllowancesOnAllSupportedChains(
+      std::move(callback));
 }
 
 }  // namespace brave_wallet
