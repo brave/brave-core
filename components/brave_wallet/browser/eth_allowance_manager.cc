@@ -56,10 +56,13 @@ std::string GetAllowanceMapKey(const std::string& contract_address,
 }
 
 std::string GetBlocknumberFilterFromCache(
-    const base::Value::Dict& allowance_cache_dict,
+    PrefService* prefs,
     const std::string& chain_id,
     const std::string& hex_account_address) {
   std::string result(kEarliestBlock);
+  const auto& allowance_cache_dict =
+      prefs->GetDict(kBraveWalletEthAllowancesCache);
+
   const auto* last_block_number_ptr =
       allowance_cache_dict.FindStringByDottedPath(base::JoinString(
           {chain_id, kLastBlockNumber, hex_account_address}, "."));
@@ -161,9 +164,6 @@ void EthAllowanceManager::OnGetCurrentBlock(
     return;
   }
 
-  const auto& allowance_cache_dict =
-      prefs_->GetDict(kBraveWalletEthAllowancesCache);
-
   const auto approval_topic_hash = KeccakHash(kApprovalTopicFunctionSignature);
   for (const auto& account_address : account_addresses) {
     std::string account_address_hex;
@@ -185,9 +185,8 @@ void EthAllowanceManager::OnGetCurrentBlock(
     base::Value::Dict filter_options;
     filter_options.Set(kAddress, contract_addresses.Clone());
     filter_options.Set(kTopics, std::move(topics));
-    filter_options.Set(
-        kFromBlock, GetBlocknumberFilterFromCache(
-                        allowance_cache_dict, chain_id, account_address_hex));
+    filter_options.Set(kFromBlock, GetBlocknumberFilterFromCache(
+                                       prefs_, chain_id, account_address_hex));
     filter_options.Set(kToBlock, Uint256ValueToHex(block_num));
     json_rpc_service_->EthGetLogs(chain_id, std::move(filter_options),
                                   std::move(internal_callback));
@@ -240,6 +239,7 @@ void EthAllowanceManager::LoadCachedAllowances(
 
     if (!approver_address || !contract_address || !spender_address || !amount) {
       NOTREACHED() << " Wrong allowance cache format";
+      continue;
     }
 
     if (!base::EqualsCaseInsensitiveASCII(*approver_address,
@@ -343,12 +343,6 @@ void EthAllowanceManager::MaybeMergeAllResultsAndCallBack() {
   std::map<std::string, std::vector<std::unique_ptr<EthAllowanceTask>>>
       allowance_tasks_by_chain_ids;
   for (auto& [tid, allowance_task_info] : allowance_discovery_tasks_) {
-    if (!allowance_tasks_by_chain_ids.contains(
-            allowance_task_info->chain_id_)) {
-      allowance_tasks_by_chain_ids.insert_or_assign(
-          allowance_task_info->chain_id_,
-          std::vector<std::unique_ptr<EthAllowanceTask>>());
-    }
     allowance_tasks_by_chain_ids[allowance_task_info->chain_id_].push_back(
         std::move(allowance_task_info));
   }
