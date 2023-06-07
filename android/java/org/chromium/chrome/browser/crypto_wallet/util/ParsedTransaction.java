@@ -9,7 +9,6 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.SOL
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Pair;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -37,7 +36,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

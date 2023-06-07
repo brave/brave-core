@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.externalnav;
 
-import android.annotation.SuppressLint;
-
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;

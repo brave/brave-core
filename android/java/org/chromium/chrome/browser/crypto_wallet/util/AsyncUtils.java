@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.warnWhenError;
 
-import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;

@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;

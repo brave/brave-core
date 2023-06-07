@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.presenters;
 import android.content.Context;
 import android.text.TextUtils;
 
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.SolanaAccountMeta;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;

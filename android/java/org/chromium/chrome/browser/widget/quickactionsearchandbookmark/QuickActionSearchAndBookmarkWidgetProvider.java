@@ -63,9 +63,7 @@ import org.chromium.components.webapps.ShortcutSource;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.url.GURL;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;

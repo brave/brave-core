@@ -6,16 +6,6 @@
  */
 package org.chromium.chrome.browser;
 
-import android.content.Context;
-import android.net.Uri;
-import android.text.TextUtils;
-
-import org.chromium.base.Log;
-import org.chromium.chrome.browser.externalnav.BraveExternalNavigationHandler;
-import org.chromium.components.external_intents.ExternalNavigationParams;
-
-import java.util.Locale;
-
 // Used from org.chromium.chrome.browser.externalnav
 public class BraveWalletProvider {
     public static final String ACTION_VALUE = "authorization";

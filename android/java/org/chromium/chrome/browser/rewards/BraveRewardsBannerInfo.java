@@ -7,17 +7,12 @@
 
 package org.chromium.chrome.browser.rewards;
 
-import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.VisibleForTesting;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**

@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.language.settings;
 
 import static org.junit.Assert.assertTrue;
 
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.preference.PreferenceCategory;
 import androidx.test.filters.SmallTest;
 
@@ -16,8 +15,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.chromium.chrome.browser.language.R;
-import org.chromium.chrome.browser.settings.SettingsActivity;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 

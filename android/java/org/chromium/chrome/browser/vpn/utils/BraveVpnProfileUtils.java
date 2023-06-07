@@ -16,11 +16,8 @@ import android.os.Build;
 
 import androidx.core.content.ContextCompat;
 
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
-import org.chromium.ui.widget.Toast;
 
 public class BraveVpnProfileUtils {
     private static volatile BraveVpnProfileUtils sBraveVpnProfileUtils;

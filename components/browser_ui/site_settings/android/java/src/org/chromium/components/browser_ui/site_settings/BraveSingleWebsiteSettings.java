@@ -9,7 +9,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveReflectionUtil;

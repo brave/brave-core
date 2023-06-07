@@ -7,14 +7,11 @@
 
 package org.chromium.chrome.browser.vpn.activities;
 
-import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
-
 import android.content.Intent;
 import android.util.Pair;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
 
 import com.android.billingclient.api.Purchase;
 import com.wireguard.android.backend.GoBackend;
@@ -33,11 +30,9 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
-import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 import org.chromium.ui.widget.Toast;
 
 import java.util.List;
-import java.util.TimeZone;
 
 public abstract class BraveVpnParentActivity
         extends AsyncInitializationActivity implements BraveVpnObserver {

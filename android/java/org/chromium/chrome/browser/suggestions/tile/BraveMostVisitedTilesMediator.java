@@ -11,7 +11,6 @@ import android.view.ViewStub;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.ui.modelutil.PropertyModel;

@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.app.domain;
 
 import android.content.res.Resources;
-import android.text.TextUtils;
 
 import androidx.core.os.ConfigurationCompat;
 

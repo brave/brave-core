@@ -6,10 +6,6 @@
 package org.chromium.chrome.browser.search_engines.settings;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ListView;
-
-import androidx.fragment.app.ListFragment;
 
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.R;

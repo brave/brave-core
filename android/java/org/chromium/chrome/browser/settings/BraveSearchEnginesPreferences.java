@@ -11,7 +11,6 @@ import android.os.Handler;
 import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 

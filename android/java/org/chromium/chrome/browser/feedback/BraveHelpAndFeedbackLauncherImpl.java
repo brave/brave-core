@@ -18,8 +18,6 @@ import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 public class BraveHelpAndFeedbackLauncherImpl implements HelpAndFeedbackLauncher {
     private static final String FALLBACK_SUPPORT_URL = "https://community.brave.com/";
     private static final String SAFE_BROWSING_URL =

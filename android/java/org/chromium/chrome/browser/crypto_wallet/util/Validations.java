@@ -15,7 +15,6 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.HashSet;

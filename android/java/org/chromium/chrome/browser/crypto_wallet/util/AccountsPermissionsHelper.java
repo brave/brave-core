@@ -7,8 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;

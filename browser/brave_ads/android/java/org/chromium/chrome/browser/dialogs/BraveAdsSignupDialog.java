@@ -28,13 +28,9 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.util.PackageUtils;
-import org.chromium.components.user_prefs.UserPrefs;
-
-import java.lang.System;
 
 public class BraveAdsSignupDialog {
     private static final String TAG = "BraveAdsSignupDialog";

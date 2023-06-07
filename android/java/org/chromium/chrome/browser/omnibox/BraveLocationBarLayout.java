@@ -12,8 +12,6 @@ import android.widget.ImageButton;
 
 import androidx.core.widget.ImageViewCompat;
 
-import org.chromium.base.ApiCompatibilityUtils;
-
 public class BraveLocationBarLayout extends LocationBarLayout {
     private ImageButton mQRButton;
 

@@ -13,9 +13,6 @@ import android.content.Context;
 import com.wireguard.config.BadConfigException;
 import com.wireguard.config.Config;
 
-import org.chromium.base.Log;
-import org.chromium.chrome.browser.vpn.wireguard.TunnelModel;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

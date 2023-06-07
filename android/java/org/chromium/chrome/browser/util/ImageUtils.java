@@ -8,19 +8,18 @@
 package org.chromium.chrome.browser.util;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Canvas;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
-import android.graphics.BitmapFactory;
 
-import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.R;
 
 public class ImageUtils {
     public static Bitmap topOffset(Bitmap src, int offsetY) {

@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.app.domain;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.AssetRatioService;

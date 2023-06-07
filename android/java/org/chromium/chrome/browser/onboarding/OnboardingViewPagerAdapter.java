@@ -12,9 +12,6 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-
 public class OnboardingViewPagerAdapter extends FragmentPagerAdapter {
     private final OnViewPagerAction onViewPagerAction;
     private final Context context;

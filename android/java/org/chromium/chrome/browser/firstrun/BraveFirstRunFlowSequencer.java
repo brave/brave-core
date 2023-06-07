@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.firstrun;
 import android.app.Activity;
 
-import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.components.signin.AccountManagerFacadeProvider;
 
 public abstract class BraveFirstRunFlowSequencer extends FirstRunFlowSequencer {

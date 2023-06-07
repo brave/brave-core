@@ -5,10 +5,7 @@
 
 package org.chromium.chrome.browser.search_engines.settings;
 
-import androidx.annotation.NonNull;
-
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 
 public class BraveSearchEnginePrefHelper {

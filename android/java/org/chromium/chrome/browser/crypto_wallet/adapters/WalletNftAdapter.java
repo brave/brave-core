@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;

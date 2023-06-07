@@ -9,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import org.chromium.chrome.browser.homepage.HomepageManager;
-import org.chromium.chrome.browser.homepage.settings.HomepageSettings;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 
 public class BraveHomepageSettings extends HomepageSettings {
