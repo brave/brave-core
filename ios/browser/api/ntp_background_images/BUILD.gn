@@ -1,0 +1,23 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("ntp_background_images") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+  sources = [
+    "ntp_background_image+private.h",
+    "ntp_background_image.h",
+    "ntp_background_image.mm",
+    "ntp_background_images_service_ios+private.h",
+    "ntp_background_images_service_ios.h",
+    "ntp_background_images_service_ios.mm",
+    "ntp_sponsored_image+private.h",
+    "ntp_sponsored_image.h",
+    "ntp_sponsored_image.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/ntp_background_images/browser",
+  ]
+}

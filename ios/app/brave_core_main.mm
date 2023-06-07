@@ -20,6 +20,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -31,6 +32,7 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
+#include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
@@ -110,6 +112,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) WebImageDownloader* webImageDownloader;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
+@property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @end
 
 @implementation BraveCoreMain
@@ -230,6 +233,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
     [self registerComponentsForUpdate:cus];
+
+    _backgroundImagesService = [[NTPBackgroundImagesService alloc]
+        initWithBackgroundImagesService:
+            std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
+                cus, GetApplicationContext()->GetLocalState())];
   }
   return self;
 }
