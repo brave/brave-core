@@ -152,10 +152,10 @@ void Confirmations::BuildDynamicUserData(const TransactionInfo& transaction) {
 void Confirmations::BuildFixedUserData(
     const TransactionInfo& transaction,
     base::Value::Dict dynamic_opted_in_user_data) {
-  const ConfirmationUserDataBuilder user_data_builder(transaction);
-  user_data_builder.Build(base::BindOnce(
-      &Confirmations::CreateAndRedeem, weak_factory_.GetWeakPtr(), transaction,
-      std::move(dynamic_opted_in_user_data)));
+  BuildConfirmationUserData(
+      transaction, base::BindOnce(&Confirmations::CreateAndRedeem,
+                                  weak_factory_.GetWeakPtr(), transaction,
+                                  std::move(dynamic_opted_in_user_data)));
 }
 
 void Confirmations::CreateAndRedeem(
