@@ -220,9 +220,11 @@ public class TransactionConfirmationStore: ObservableObject {
         allNetworks = await rpcService.allNetworksForSupportedCoins()
       }
       guard let network = allNetworks.first(where: { $0.chainId == transaction.chainId }) else {
-        // Transactions should be removed if their network is removed
-        // https://github.com/brave/brave-browser/issues/30234
-        assertionFailure("The NetworkInfo for the transaction's chainId (\(transaction.chainId)) is unavailable")
+        if !transaction.chainId.isEmpty { // default `BraveWallet.TransactionInfo()` has empty chainId
+          // Transactions should be removed if their network is removed
+          // https://github.com/brave/brave-browser/issues/30234
+          assertionFailure("The NetworkInfo for the transaction's chainId (\(transaction.chainId)) is unavailable")
+        }
         return
       }
       let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin) + tokenInfoCache.map(\.value)
@@ -556,7 +558,7 @@ public class TransactionConfirmationStore: ObservableObject {
       allChainIdsForCoin[coin] = allNetworks.map(\.chainId)
     }
     return await txService.pendingTransactions(chainIdsForCoin: allChainIdsForCoin, for: allKeyrings)
-      .sorted(by: { $0.createdTime < $1.createdTime })
+      .sorted(by: { $0.createdTime > $1.createdTime })
   }
 
   func confirm(transaction: BraveWallet.TransactionInfo, completion: @escaping (_ error: String?) -> Void) {
