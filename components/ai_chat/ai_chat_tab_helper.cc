@@ -150,6 +150,23 @@ void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
   }
 }
 
+void AIChatTabHelper::UpdateOrCreateLastAssistantEntry(
+    const std::string& updated_text) {
+  if (chat_history_.empty() ||
+      chat_history_.back().character_type != CharacterType::ASSISTANT) {
+    AddToConversationHistory({CharacterType::ASSISTANT,
+                              ConversationTurnVisibility::VISIBLE,
+                              updated_text});
+  } else {
+    chat_history_.back().text = updated_text;
+  }
+
+  // Trigger an observer update to refresh the UI.
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
+  }
+}
+
 void AIChatTabHelper::SetArticleSummaryString(const std::string& text) {
   article_summary_ = text;
 }
@@ -286,8 +303,9 @@ void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
   article_summary_.clear();
   article_text_.clear();
-  SetRequestInProgress(false);
+  is_request_in_progress_ = false;
 
+  // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
   }
@@ -308,55 +326,88 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
 
   DCHECK(ai_chat_api_);
 
-  SetRequestInProgress(true);
-
   // Assuming a hidden conversation has a summary prompt,
   // the incoming response is expected to include the AI-generated summary.
   // TODO(nullhook): Improve this heuristic, as it may or may not be true.
   bool is_summarize_prompt =
       turn.visibility == ConversationTurnVisibility::INTERNAL ? true : false;
 
-  ai_chat_api_->QueryPrompt(
-      base::BindOnce(&AIChatTabHelper::OnAPIResponse, base::Unretained(this),
-                     is_summarize_prompt),
-      std::move(prompt_with_history));
+  auto data_received_callback = base::BindRepeating(
+      &AIChatTabHelper::OnAPIStreamDataReceived, base::Unretained(this));
+
+  auto data_completed_callback =
+      base::BindOnce(&AIChatTabHelper::OnAPIStreamDataComplete,
+                     base::Unretained(this), is_summarize_prompt);
+
+  is_request_in_progress_ = true;
+  ai_chat_api_->QueryPrompt(std::move(prompt_with_history),
+                            std::move(data_completed_callback),
+                            std::move(data_received_callback));
 }
 
-void AIChatTabHelper::OnAPIResponse(bool contains_summary,
-                                    const std::string& assistant_input,
-                                    bool success) {
-  SetRequestInProgress(false);
+bool AIChatTabHelper::IsRequestInProgress() {
+  DCHECK(ai_chat_api_);
 
-  if (!success) {
+  return is_request_in_progress_;
+}
+
+void AIChatTabHelper::OnAPIStreamDataReceived(
+    data_decoder::DataDecoder::ValueOrError result) {
+  if (!result.has_value() || !result->is_dict()) {
+    return;
+  }
+
+  if (const std::string* completion = result->FindStringKey("completion")) {
+    UpdateOrCreateLastAssistantEntry(*completion);
+
+    // Trigger an observer update to refresh the UI.
+    for (auto& obs : observers_) {
+      obs.OnAPIRequestInProgress(IsRequestInProgress());
+    }
+  }
+}
+
+void AIChatTabHelper::OnAPIStreamDataComplete(
+    bool is_summarize_prompt,
+    api_request_helper::APIRequestResult result,
+    bool success) {
+  if (success) {
+    // TODO(nullhook): Remove this as we don't cache summaries anymore
+    if (is_summarize_prompt && !chat_history_.empty()) {
+      const ConversationTurn& last_turn = chat_history_.back();
+      if (last_turn.character_type == CharacterType::ASSISTANT) {
+        SetArticleSummaryString(last_turn.text);
+      }
+    }
+
+    // We're checking for a value body in case for non-streaming API results.
+    if (result.value_body().is_dict()) {
+      if (const std::string* completion =
+              result.value_body().FindStringKey("completion")) {
+        AddToConversationHistory(
+            ConversationTurn{CharacterType::ASSISTANT,
+                             ConversationTurnVisibility::VISIBLE, *completion});
+      }
+    }
+  }
+
+  if (!success || !result.Is2XXResponseCode()) {
     // TODO(petemill): show error state separate from assistant message
     AddToConversationHistory(ConversationTurn{
         CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,
         l10n_util::GetStringUTF8(IDS_CHAT_UI_API_ERROR)});
-
-    return;
   }
 
-  ConversationTurn turn = {CharacterType::ASSISTANT,
-                           ConversationTurnVisibility::VISIBLE,
-                           assistant_input};
+  is_request_in_progress_ = false;
 
-  if (contains_summary && !assistant_input.empty()) {
-    SetArticleSummaryString(assistant_input);
-  }
-
-  AddToConversationHistory(turn);
-}
-
-void AIChatTabHelper::SetRequestInProgress(bool in_progress) {
-  is_request_in_progress_ = in_progress;
-
+  // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnAPIRequestInProgress(IsRequestInProgress());
   }
 }
 
 void AIChatTabHelper::PrimaryPageChanged(content::Page& page) {
-  // TODO(nullhook): Cancel inflight API requests
+  // TODO(nullhook): Cancel inflight API request
   CleanUp();
 }
 

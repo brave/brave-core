@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_API_H_
 #define BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_API_H_
 
+#include <memory>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 namespace network {
@@ -23,20 +23,22 @@ class AIChatAPI {
   AIChatAPI& operator=(const AIChatAPI&) = delete;
   ~AIChatAPI();
 
-  using ResponseCallback =
-      base::OnceCallback<void(const std::string&, bool success)>;
-  using APIRequestResult = api_request_helper::APIRequestResult;
+  using ResponseCallback = base::RepeatingCallback<void(const std::string&)>;
+  using CompletionCallback =
+      base::OnceCallback<void(bool success, int response_code)>;
 
-  void QueryPrompt(ResponseCallback callback, const std::string& prompt);
+  // This function queries both types of APIs: SSE and non-SSE.
+  // In non-SSE cases, only the data_completed_callback will be triggered.
+  void QueryPrompt(const std::string& prompt,
+                   api_request_helper::APIRequestHelper::DataCompletedCallback
+                       data_completed_callback,
+                   api_request_helper::APIRequestHelper::DataReceivedCallback
+                       data_received_callback = base::NullCallback());
 
  private:
-  using URLRequestCallback = base::OnceCallback<void(APIRequestResult)>;
-
-  void OnGetResponse(ResponseCallback callback,
-                     APIRequestResult api_request_result);
+  base::Value::Dict CreateApiParametersDict(const std::string& prompt);
 
   api_request_helper::APIRequestHelper api_request_helper_;
-  base::WeakPtrFactory<AIChatAPI> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_AI_CHAT_API_H_

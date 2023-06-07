@@ -24,8 +24,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"aboutDescription", IDS_CHAT_UI_ABOUT_DESCRIPTION},
       {"aboutDescription_2", IDS_CHAT_UI_ABOUT_DESCRIPTION_2},
       {"aboutNote", IDS_CHAT_UI_ABOUT_NOTE},
-      {"placeholderLabel", IDS_CHAT_UI_PLACEHOLDER_LABEL},
-      {"loadingLabel", IDS_CHAT_UI_LOADING_LABEL}};
+      {"placeholderLabel", IDS_CHAT_UI_PLACEHOLDER_LABEL}};
 
   return kLocalizedStrings;
 }

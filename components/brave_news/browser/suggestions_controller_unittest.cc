@@ -103,6 +103,7 @@ class SuggestionsControllerTest : public testing::Test {
   content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
   network::TestURLLoaderFactory test_url_loader_factory_;
+  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
   DirectFeedController direct_feed_controller_;

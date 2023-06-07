@@ -15,6 +15,7 @@ namespace ai_chat::features {
 
 BASE_DECLARE_FEATURE(kAIChat);
 extern const base::FeatureParam<std::string> kAIModelName;
+extern const base::FeatureParam<bool> kAIChatSSE;
 
 bool IsAIChatEnabled();
 

@@ -8,6 +8,7 @@
 #include <base/containers/flat_map.h>
 
 #include <utility>
+#include <vector>
 
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
@@ -18,6 +19,7 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
 namespace {
@@ -82,23 +84,49 @@ AIChatAPI::AIChatAPI(
 
 AIChatAPI::~AIChatAPI() = default;
 
-void AIChatAPI::QueryPrompt(ResponseCallback callback,
-                            const std::string& prompt) {
+void AIChatAPI::QueryPrompt(
+    const std::string& prompt,
+    api_request_helper::APIRequestHelper::DataCompletedCallback
+        data_completed_callback,
+    api_request_helper::APIRequestHelper::DataReceivedCallback
+        data_received_callback) {
   const GURL api_base_url = GetEndpointBaseUrl();
-  // Verify that we have a Url configured
-  if (api_base_url.is_empty()) {
-    std::move(callback).Run("", false);
-    return;
-  }
+
   // Validate that the path is valid
   GURL api_url = api_base_url.Resolve(ai_chat::kAIChatCompletionPath);
   CHECK(api_url.is_valid())
       << "Invalid API Url, check path: " << api_url.spec();
 
-  auto internal_callback =
-      base::BindOnce(&AIChatAPI::OnGetResponse, weak_ptr_factory_.GetWeakPtr(),
-                     std::move(callback));
+  const base::Value::Dict& dict = CreateApiParametersDict(prompt);
+  base::flat_map<std::string, std::string> headers;
+  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  headers.emplace("Accept", "text/event-stream");
 
+  const bool is_sse_enabled = ai_chat::features::kAIChatSSE.Get();
+
+  if (is_sse_enabled) {
+    api_request_helper_.RequestSSE(
+        "POST", api_url, CreateJSONRequestBody(dict), "application/json",
+        std::move(data_received_callback), std::move(data_completed_callback),
+        headers, {});
+  } else {
+    auto on_result_cb = base::BindOnce(
+        [](api_request_helper::APIRequestHelper::DataCompletedCallback
+               data_completed_callback,
+           api_request_helper::APIRequestResult result) {
+          std::move(data_completed_callback)
+              .Run(std::move(result), result.Is2XXResponseCode());
+        },
+        std::move(data_completed_callback));
+
+    api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
+                                "application/json", std::move(on_result_cb),
+                                headers, {});
+  }
+}
+
+base::Value::Dict AIChatAPI::CreateApiParametersDict(
+    const std::string& prompt) {
   base::Value::Dict dict;
   base::Value::List stop_sequences;
   stop_sequences.Append("\n\nHuman:");
@@ -107,6 +135,8 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   const auto model_name = ai_chat::features::kAIModelName.Get();
   DCHECK(!model_name.empty());
 
+  const bool is_sse_enabled = ai_chat::features::kAIChatSSE.Get();
+
   dict.Set("prompt", prompt);
   dict.Set("max_tokens_to_sample", 400);
   dict.Set("temperature", 1);
@@ -114,40 +144,10 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   dict.Set("top_p", 0.999);
   dict.Set("model", model_name);
   dict.Set("stop_sequences", std::move(stop_sequences));
-  dict.Set("stream", false);
-
-  base::flat_map<std::string, std::string> headers;
-  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  dict.Set("stream", is_sse_enabled);
 
   DVLOG(1) << __func__ << " Prompt: |" << prompt << "|\n";
   DVLOG(1) << __func__ << " Using model: " << model_name;
 
-  api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
-                              "application/json", std::move(internal_callback),
-                              headers);
-
-  DVLOG(1) << __func__ << " API Request sent\n";
-}
-
-void AIChatAPI::OnGetResponse(ResponseCallback callback,
-                              api_request_helper::APIRequestResult result) {
-  const bool success = result.response_code() == 200;
-
-  if (!success) {
-    DVLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
-             << result.response_code() << ")";
-  }
-
-  std::string response = result.body();
-  const base::Value::Dict* dict = result.value_body().GetIfDict();
-
-  if (dict) {
-    if (const std::string* completion = dict->FindString("completion")) {
-      response = *completion;
-    }
-  } else {
-    DVLOG(1) << __func__ << " Result dict not found\n";
-  }
-
-  std::move(callback).Run(response, success);
+  return dict;
 }
