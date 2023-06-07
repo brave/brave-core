@@ -104,8 +104,8 @@ struct NFTView: View {
       self.isPresentingNetworkFilter = true
     }) {
       HStack {
-        Text(nftStore.networkFilter.title)
         Image(braveSystemName: "leo.list")
+        Text(nftStore.networkFilter.title)
       }
       .font(.footnote.weight(.medium))
       .foregroundColor(Color(.braveBlurpleTint))
@@ -128,16 +128,27 @@ struct NFTView: View {
       Text(Strings.Wallet.assetsTitle)
         .font(.footnote)
         .foregroundColor(Color(.secondaryBraveLabel))
+        .padding(.leading, 16)
       if nftStore.isLoadingDiscoverAssets && isNFTDiscoveryEnabled {
         ProgressView()
           .padding(.leading, 5)
       }
       Spacer()
       networkFilterButton
+        .padding(.trailing, 10)
+      addCustomAssetButton
     }
     .textCase(nil)
     .padding(.horizontal, 10)
     .frame(maxWidth: .infinity, alignment: .leading)
+  }
+  
+  private var addCustomAssetButton: some View {
+    Button(action: {
+      isShowingAddCustomNFT = true
+    }) {
+      Image(systemName: "plus")
+    }
   }
   
   private var nftDiscoveryDescriptionText: NSAttributedString? {
@@ -156,44 +167,57 @@ struct NFTView: View {
     return attributedString
   }
   
+  @ViewBuilder var nftGridsView: some View {
+    if nftStore.userVisibleNFTs.isEmpty {
+      emptyView
+        .listRowBackground(Color(.clear))
+    } else {
+      LazyVGrid(columns: nftGrids) {
+        ForEach(nftStore.userVisibleNFTs) { nft in
+          Button(action: {
+            selectedNFTViewModel = nft
+          }) {
+            VStack(alignment: .leading, spacing: 4) {
+              nftImage(nft)
+                .padding(.bottom, 8)
+              Text(nft.token.nftTokenTitle)
+                .font(.callout.weight(.medium))
+                .foregroundColor(Color(.braveLabel))
+                .multilineTextAlignment(.leading)
+              if !nft.token.symbol.isEmpty {
+                Text(nft.token.symbol)
+                  .font(.caption)
+                  .foregroundColor(Color(.secondaryBraveLabel))
+                  .multilineTextAlignment(.leading)
+              }
+            }
+          }
+          .contextMenu {
+            Button(action: {
+              nftStore.updateVisibility(nft.token, visible: false)
+            }) {
+              Label(Strings.recentSearchHide, braveSystemImage: "leo.eye.off")
+            }
+          }
+        }
+      }
+      VStack(spacing: 16) {
+        Divider()
+        editUserAssetsButton
+      }
+      .padding(.top, 20)
+    }
+  }
+  
   var body: some View {
     ScrollView {
       VStack {
         nftHeaderView
-        if nftStore.userVisibleNFTs.isEmpty {
-          emptyView
-            .listRowBackground(Color(.clear))
-        } else {
-          LazyVGrid(columns: nftGrids) {
-            ForEach(nftStore.userVisibleNFTs) { nft in
-              Button(action: {
-                selectedNFTViewModel = nft
-              }) {
-                VStack(alignment: .leading, spacing: 4) {
-                  nftImage(nft)
-                    .padding(.bottom, 8)
-                  Text(nft.token.nftTokenTitle)
-                    .font(.callout.weight(.medium))
-                    .foregroundColor(Color(.braveLabel))
-                    .multilineTextAlignment(.leading)
-                  if !nft.token.symbol.isEmpty {
-                    Text(nft.token.symbol)
-                      .font(.caption)
-                      .foregroundColor(Color(.secondaryBraveLabel))
-                      .multilineTextAlignment(.leading)
-                  }
-                }
-              }
-            }
-          }
-          VStack(spacing: 16) {
-            Divider()
-            editUserAssetsButton
-          }
-          .padding(.top, 20)
-        }
+          .padding(.horizontal, 8)
+        nftGridsView
+          .padding(.horizontal, 24)
       }
-      .padding(24)
+      .padding(.vertical, 24)
     }
     .background(Color(UIColor.braveGroupedBackground))
     .background(

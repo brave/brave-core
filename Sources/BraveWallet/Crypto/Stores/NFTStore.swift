@@ -151,6 +151,14 @@ public class NFTStore: ObservableObject {
   func enableNFTDiscovery() {
     walletService.setNftDiscoveryEnabled(true)
   }
+  
+  func updateVisibility(_ token: BraveWallet.BlockchainToken, visible: Bool) {
+    walletService.setUserAssetVisible(token, visible: visible) { [weak self] success in
+      if success {
+        self?.update()
+      }
+    }
+  }
 }
 
 extension NFTStore: BraveWalletJsonRpcServiceObserver {
