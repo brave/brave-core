@@ -329,10 +329,10 @@ import BraveCore
       .sink { networks in
         defer { networkExpectation.fulfill() }
         XCTAssertEqual(networks.count, 4)
-        XCTAssertEqual(networks[safe: 0], BraveWallet.NetworkInfo.mockGoerli)
-        XCTAssertEqual(networks[safe: 1], BraveWallet.NetworkInfo.mockMainnet)
-        XCTAssertEqual(networks[safe: 2], BraveWallet.NetworkInfo.mockSolana)
-        XCTAssertEqual(networks[safe: 3], BraveWallet.NetworkInfo.mockSolanaTestnet)
+        XCTAssertEqual(networks[safe: 0], BraveWallet.NetworkInfo.mockSolanaTestnet)
+        XCTAssertEqual(networks[safe: 1], BraveWallet.NetworkInfo.mockSolana)
+        XCTAssertEqual(networks[safe: 2], BraveWallet.NetworkInfo.mockMainnet)
+        XCTAssertEqual(networks[safe: 3], BraveWallet.NetworkInfo.mockGoerli)
       }
       .store(in: &cancellables)
     let activeTransactionIdExpectation = expectation(description: "activeTransactionId-expectation")
@@ -342,10 +342,10 @@ import BraveCore
       .sink { activeTransactionIds in
         defer { activeTransactionIdExpectation.fulfill() }
         XCTAssertEqual(activeTransactionIds.count, 4)
-        XCTAssertEqual(activeTransactionIds[safe: 0], pendingTransactions[safe: 0]?.id)
-        XCTAssertEqual(activeTransactionIds[safe: 1], pendingTransactions[safe: 1]?.id)
-        XCTAssertEqual(activeTransactionIds[safe: 2], pendingTransactions[safe: 2]?.id)
-        XCTAssertEqual(activeTransactionIds[safe: 3], pendingTransactions[safe: 3]?.id)
+        XCTAssertEqual(activeTransactionIds[safe: 0], pendingTransactions[safe: 3]?.id)
+        XCTAssertEqual(activeTransactionIds[safe: 1], pendingTransactions[safe: 2]?.id)
+        XCTAssertEqual(activeTransactionIds[safe: 2], pendingTransactions[safe: 1]?.id)
+        XCTAssertEqual(activeTransactionIds[safe: 3], pendingTransactions[safe: 0]?.id)
       }
       .store(in: &cancellables)
     
