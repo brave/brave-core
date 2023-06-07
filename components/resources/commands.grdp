@@ -290,7 +290,7 @@
     Toggle Javascript Apple Events
   </message>
   <message name="IDS_IDC_INSTALL_PWA">
-    Install Pwa
+    Install PWA
   </message>
   <message name="IDS_IDC_SHOW_MANAGEMENT_PAGE">
     Show Management Page
@@ -422,25 +422,25 @@
     Close Brave Wallet Panel
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_VPN_PANEL">
-    Show Brave Vpn Panel
+    Show Brave VPN Panel
   </message>
   <message name="IDS_IDC_BRAVE_VPN_MENU">
-    Brave Vpn Menu
+    Brave VPN Menu
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON">
-    Toggle Brave Vpn Toolbar Button
+    Toggle Brave VPN Toolbar Button
   </message>
   <message name="IDS_IDC_SEND_BRAVE_VPN_FEEDBACK">
-    Send Brave Vpn Feedback
+    Send Brave VPN Feedback
   </message>
   <message name="IDS_IDC_ABOUT_BRAVE_VPN">
-    About Brave Vpn
+    About Brave VPN
   </message>
   <message name="IDS_IDC_MANAGE_BRAVE_VPN_PLAN">
-    Manage Brave Vpn Plan
+    Manage Brave VPN Plan
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN">
-    Toggle Brave Vpn
+    Toggle Brave VPN
   </message>
   <message name="IDS_IDC_TOGGLE_TAB_MUTE">
     Toggle Tab Mute
