@@ -64,6 +64,7 @@ export const {
   setSelectedAccount,
   setSelectedAccountFilterItem,
   setSelectedAssetFilterItem,
+  setSelectedGroupAssetsByItem,
   setSelectedNetworkFilter,
   setSitePermissions,
   setSolFeeEstimates,

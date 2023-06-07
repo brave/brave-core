@@ -49,6 +49,9 @@ import {
 
 // Options
 import { PortfolioNavOptions } from '../../../../options/nav-options'
+import {
+  AccountsGroupByOption
+} from '../../../../options/group-assets-by-options'
 
 // Components
 import { LoadingSkeleton } from '../../../shared'
@@ -130,6 +133,8 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     )
   const hidePortfolioSmallBalances =
     useSafeWalletSelector(WalletSelectors.hidePortfolioSmallBalances)
+  const selectedGroupAssetsByItem =
+    useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
@@ -298,6 +303,14 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     isZeroBalance
   ])
 
+  const visiblePortfolioNetworks = React.useMemo(() => {
+    return networks.filter(
+      (network) => !filteredOutPortfolioNetworkKeys
+        .includes(networkEntityAdapter
+          .selectId(network).toString())
+    )
+  }, [networks, filteredOutPortfolioNetworkKeys])
+
   const isPortfolioDown = Number(percentageChange) < 0
 
   // methods
@@ -447,12 +460,19 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
             horizontalPadding={20}
             onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
             hideSmallBalances={hidePortfolioSmallBalances}
+            networks={visiblePortfolioNetworks}
+            accounts={usersFilteredAccounts}
             isPortfolio
-            renderToken={({ item }) =>
+            renderToken={({ item, account }) =>
               <PortfolioAssetItem
                 action={() => onSelectAsset(item.asset)}
                 key={getAssetIdKey(item.asset)}
-                assetBalance={item.assetBalance}
+                assetBalance={
+                  selectedGroupAssetsByItem ===
+                    AccountsGroupByOption.id
+                    ? getBalance(account, item.asset)
+                    : item.assetBalance
+                }
                 token={item.asset}
                 hideBalances={hidePortfolioBalances}
               />

@@ -11,6 +11,9 @@ import { useDispatch } from 'react-redux'
 import {
   AssetFilterOptions
 } from '../../../../options/asset-filter-options'
+import {
+  GroupAssetsByOptions
+} from '../../../../options/group-assets-by-options'
 
 // Selectors
 import {
@@ -89,6 +92,8 @@ export const PortfolioFiltersModal = (props: Props) => {
     )
   const selectedAssetFilter =
     useSafeWalletSelector(WalletSelectors.selectedAssetFilter)
+  const selectedGroupAssetsByItem =
+    useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
   const hidePortfolioSmallBalances =
     useSafeWalletSelector(WalletSelectors.hidePortfolioSmallBalances)
   const defaultCurrencies =
@@ -105,6 +110,8 @@ export const PortfolioFiltersModal = (props: Props) => {
     React.useState<boolean>(hidePortfolioSmallBalances)
   const [selectedAssetFilterOption, setSelectedAssetFilterOption] =
     React.useState<string>(selectedAssetFilter)
+  const [selectedGroupAssetsByOption, setSelectedGroupAssetsByOption] =
+    React.useState<string>(selectedGroupAssetsByItem)
 
   // refs
   const portfolioFiltersRef =
@@ -118,6 +125,19 @@ export const PortfolioFiltersModal = (props: Props) => {
   )
 
   const { refreshTokenPriceHistory } = useLib()
+
+  const onUpdateSelectedGroupAssetsByOption = React.useCallback(() => {
+    // Update Selected Group Assets By Option in Local Storage
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
+      selectedGroupAssetsByOption
+    )
+    // Update Selected Group Assets By Option in Redux
+    dispatch(
+      WalletActions
+        .setSelectedGroupAssetsByItem(selectedGroupAssetsByOption)
+    )
+  }, [selectedGroupAssetsByOption])
 
   const onUpdateSelectedAssetFilterOption = React.useCallback(() => {
     // Update Selected Asset Filter Option in Local Storage
@@ -190,6 +210,7 @@ export const PortfolioFiltersModal = (props: Props) => {
 
   // Methods
   const onSaveChanges = React.useCallback(() => {
+    onUpdateSelectedGroupAssetsByOption()
     onUpdateSelectedAssetFilterOption()
     onUpdateFilteredOutNetworkKeys()
     onUpdateFilteredOutAccountAddresses()
@@ -198,6 +219,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
     onClose()
   }, [
+    onUpdateSelectedGroupAssetsByOption,
     onUpdateSelectedAssetFilterOption,
     onUpdateFilteredOutNetworkKeys,
     onUpdateFilteredOutAccountAddresses,
@@ -221,6 +243,15 @@ export const PortfolioFiltersModal = (props: Props) => {
           fullWidth={true}
           alignItems='flex-start'
         >
+
+          <FilterDropdownSection
+            title={getLocale('braveWalletPortfolioGroupByTitle')}
+            description={getLocale('braveWalletPortfolioGroupByDescription')}
+            icon='stack'
+            dropdownOptions={GroupAssetsByOptions}
+            selectedOptionId={selectedGroupAssetsByOption}
+            onSelectOption={setSelectedGroupAssetsByOption}
+          />
 
           <FilterDropdownSection
             title={getLocale('braveWalletSortAssets')}

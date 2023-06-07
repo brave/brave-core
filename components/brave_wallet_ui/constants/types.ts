@@ -265,6 +265,7 @@ export interface WalletState {
   coinMarketData: BraveWallet.CoinMarket[]
   selectedNetworkFilter: NetworkFilterType
   selectedAssetFilter: string
+  selectedGroupAssetsByItem: string
   selectedAccountFilter: string
   onRampCurrencies: BraveWallet.OnRampCurrency[]
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
@@ -950,9 +951,14 @@ export type AssetFilterOptionIds =
   | 'aToZ'
   | 'zToA'
 
+export type GroupAssetsByOptionIds =
+  | 'none'
+  | 'accounts'
+  | 'networks'
+
 export interface DropdownFilterOption {
   name: string
-  id: AssetFilterOptionIds
+  id: AssetFilterOptionIds | GroupAssetsByOptionIds
 }
 
 export type ImportAccountErrorType = boolean | undefined

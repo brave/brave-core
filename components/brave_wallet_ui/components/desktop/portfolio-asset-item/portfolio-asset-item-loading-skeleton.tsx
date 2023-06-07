@@ -20,8 +20,8 @@ export const PortfolioAssetItemLoadingSkeleton = () => {
         <IconsWrapper>
           <LoadingSkeleton
             circle={true}
-            width={40}
-            height={40}
+            width={32}
+            height={32}
           />
         </IconsWrapper>
         <NameColumn>

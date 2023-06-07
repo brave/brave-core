@@ -78,7 +78,12 @@ export const PortfolioAssetItem = ({
   const isNonFungibleToken = React.useMemo(() => token.isNft || token.isErc721, [token.isNft, token.isErc721])
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(isNonFungibleToken && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+    return withPlaceholderIcon(
+      isNonFungibleToken &&
+        !isDataURL(token.logo)
+        ? NftIcon
+        : AssetIcon,
+      { size: 'medium', marginLeft: 0, marginRight: 8 })
   }, [isNonFungibleToken, token.logo])
 
   const formattedAssetBalance = isNonFungibleToken

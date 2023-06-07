@@ -7,7 +7,11 @@ import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 
 // types
-import { BraveWallet, UserAssetInfoType } from '../../../../../../constants/types'
+import {
+  BraveWallet,
+  UserAssetInfoType,
+  WalletAccountType
+} from '../../../../../../constants/types'
 import { getAssetIdKey } from '../../../../../../utils/asset-utils'
 
 type ViewMode = 'list' | 'grid'
@@ -16,6 +20,7 @@ type RenderTokenProps = {
   item: UserAssetInfoType
   viewMode: ViewMode
   index: number
+  account?: WalletAccountType
 }
 
 export type RenderTokenFunc = (props: RenderTokenProps) => JSX.Element | undefined | null

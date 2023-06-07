@@ -568,6 +568,10 @@
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Asset Filter Selector High to Low">High to Low</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_A_TO_Z" desc="Asset Filter Selector A to Z">A to Z</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_Z_TO_A" desc="Asset Filter Selector Z to A">Z to A</message>
+  <message name="IDS_BRAVE_WALLET_NONE" desc="Group assets by none option">None</message>
+  <message name="IDS_BRAVE_WALLET_NETWORKS" desc="Group assets by networks option">Networks</message>
+  <message name="IDS_BRAVE_WALLET_PORTFOLIO_GROUP_BY_TITLE" desc="Group assets by dropdown title">Group by</message>
+  <message name="IDS_BRAVE_WALLET_PORTFOLIO_GROUP_BY_DESCRIPTION" desc="Group assets by dropdown description">Group assets by</message>
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_FILTERS_TITLE" desc="Portfolio Filters and Display settings modal">Filters and display settings</message>
   <message name="IDS_BRAVE_WALLET_SORT_ASSETS" desc="Portfolio settings sort assets dropdown title">Sort assets</message>
   <message name="IDS_BRAVE_WALLET_SORT_ASSETS_DESCRIPTION" desc="Portfolio settings sort assets dropdown description">Sort by fiat value or name</message>

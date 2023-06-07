@@ -747,6 +747,12 @@ provideStrings({
   braveWalletAssetFilterAToZ: 'A to Z',
   braveWalletAssetFilterZToA: 'Z to A',
 
+  // Asset Group By
+  braveWalletNone: 'None',
+  braveWalletNetworks: 'Networks',
+  braveWalletPortfolioGroupByTitle: 'Group by',
+  braveWalletPortfolioGroupByDescription: 'Group assets by',
+
   // Portfolio Filters
   braveWalletPortfolioFiltersTitle: 'Filters and display settings',
   braveWalletSortAssets: 'Sort assets',

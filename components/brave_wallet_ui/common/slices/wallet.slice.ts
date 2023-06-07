@@ -55,6 +55,9 @@ import {
 
 // Options
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
+import {
+  AccountsGroupByOption
+} from '../../options/group-assets-by-options'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -115,6 +118,13 @@ const defaultState: WalletState = {
   coinMarketData: [],
   selectedNetworkFilter: parseJSONFromLocalStorage('PORTFOLIO_NETWORK_FILTER_OPTION', AllNetworksOptionDefault),
   selectedAssetFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION) || HighToLowAssetsFilterOption.id,
+  selectedGroupAssetsByItem:
+    window
+      .localStorage
+      .getItem(
+        LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY
+      ) ||
+      AccountsGroupByOption.id,
   selectedAccountFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION) || AllAccountsOption.id,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
@@ -435,6 +445,13 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setSelectedAssetFilterItem (state: WalletState, { payload }: PayloadAction<string>) {
         state.selectedAssetFilter = payload
+      },
+
+      setSelectedGroupAssetsByItem (
+        state: WalletState,
+        { payload }: PayloadAction<string>
+      ) {
+        state.selectedGroupAssetsByItem = payload
       },
 
       setHidePortfolioGraph

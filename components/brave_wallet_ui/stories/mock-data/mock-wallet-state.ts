@@ -11,6 +11,7 @@ import { BraveWallet, WalletAccountType, WalletState } from '../../constants/typ
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
+import { NoneGroupByOption } from '../../options/group-assets-by-options'
 
 // mocks
 import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
@@ -311,5 +312,6 @@ export const mockWalletState: WalletState = {
   hidePortfolioNFTsTab: false,
   filteredOutPortfolioNetworkKeys: [],
   filteredOutPortfolioAccountAddresses: [],
-  hidePortfolioSmallBalances: false
+  hidePortfolioSmallBalances: false,
+  selectedGroupAssetsByItem: NoneGroupByOption.id
 }

@@ -290,7 +290,6 @@ export const FundWalletScreen = (props: Props) => {
                 maxListHeight='38vh'
                 userAssetList={assetsForFilteredNetwork}
                 networks={networksFilterOptions}
-                hideAutoDiscovery
                 estimatedItemSize={100}
                 renderToken={renderToken}
               />
