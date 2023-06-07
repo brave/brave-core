@@ -31,7 +31,7 @@ namespace {
 
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
-constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(15);
+constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(3);
 
 }  // namespace
 

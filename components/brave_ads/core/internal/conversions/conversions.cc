@@ -36,8 +36,8 @@ namespace brave_ads {
 namespace {
 
 constexpr base::TimeDelta kConvertAfter = base::Days(1);
-constexpr base::TimeDelta kDebugConvertAfter = base::Minutes(10);
-constexpr base::TimeDelta kConvertExpiredAfter = base::Minutes(1);
+constexpr base::TimeDelta kDebugConvertAfter = base::Minutes(1);
+constexpr base::TimeDelta kConvertWhenExpiredAfter = base::Minutes(1);
 
 constexpr char kSearchInUrl[] = "url";
 
@@ -407,7 +407,7 @@ void Conversions::AddItemToQueue(
 
   conversion_queue_item.process_at =
       base::Time::Now() +
-      RandTimeDelta(ShouldDebug() ? kDebugConvertAfter : kConvertAfter);
+      (ShouldDebug() ? kDebugConvertAfter : RandTimeDelta(kConvertAfter));
 
   database::table::ConversionQueue database_table;
   database_table.Save({conversion_queue_item},
@@ -535,8 +535,9 @@ void Conversions::StartTimer(
 
   const base::Time now = base::Time::Now();
 
-  const base::TimeDelta delay =
-      now < process_at ? process_at - now : RandTimeDelta(kConvertExpiredAfter);
+  const base::TimeDelta delay = now < process_at
+                                    ? process_at - now
+                                    : RandTimeDelta(kConvertWhenExpiredAfter);
 
   const base::Time process_queue_at = timer_.Start(
       FROM_HERE, delay,
