@@ -150,7 +150,7 @@ struct ActivityInfoFilter {
   array<ActivityInfoFilterOrderPair> order_by;
   uint64 min_duration = 0;
   uint64 reconcile_stamp = 0;
-  bool non_verified = true;
+  bool non_verified = false;
   uint32 min_visits = 0;
 };
 
