@@ -1017,7 +1017,7 @@ const PrefService* AdsServiceImpl::GetPrefService() const {
 
 void AdsServiceImpl::DisableAdsIfUnsupportedRegion() {
   if (!IsSupportedRegion() && IsEnabled()) {
-    SetEnabled(false);
+    SetBooleanPref(prefs::kEnabled, false);
   }
 }
 
@@ -1068,10 +1068,6 @@ void AdsServiceImpl::Shutdown() {
 
 bool AdsServiceImpl::IsEnabled() const {
   return GetPrefService()->GetBoolean(prefs::kEnabled);
-}
-
-void AdsServiceImpl::SetEnabled(const bool is_enabled) {
-  SetBooleanPref(prefs::kEnabled, is_enabled);
 }
 
 int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
