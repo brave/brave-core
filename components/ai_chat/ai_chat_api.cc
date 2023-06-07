@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
@@ -97,12 +98,15 @@ void AIChatAPI::QueryPrompt(
   CHECK(api_url.is_valid())
       << "Invalid API Url, check path: " << api_url.spec();
 
-  const base::Value::Dict& dict = CreateApiParametersDict(prompt);
+  const bool is_sse_enabled = ai_chat::features::kAIChatSSE.Get() &&
+      !data_received_callback.is_null();
+
+  const base::Value::Dict& dict = CreateApiParametersDict(
+      prompt, is_sse_enabled);
   base::flat_map<std::string, std::string> headers;
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
 
-  const bool is_sse_enabled = ai_chat::features::kAIChatSSE.Get();
 
   if (is_sse_enabled) {
     VLOG(2) << "Making streaming AI Chat API Request";
@@ -128,7 +132,7 @@ void AIChatAPI::QueryPrompt(
 }
 
 base::Value::Dict AIChatAPI::CreateApiParametersDict(
-    const std::string& prompt) {
+    const std::string& prompt, const bool is_sse_enabled) {
   base::Value::Dict dict;
   base::Value::List stop_sequences;
   stop_sequences.Append("\n\nHuman:");
@@ -136,8 +140,6 @@ base::Value::Dict AIChatAPI::CreateApiParametersDict(
 
   const auto model_name = ai_chat::features::kAIModelName.Get();
   DCHECK(!model_name.empty());
-
-  const bool is_sse_enabled = ai_chat::features::kAIChatSSE.Get();
 
   dict.Set("prompt", prompt);
   dict.Set("max_tokens_to_sample", 400);

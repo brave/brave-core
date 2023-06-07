@@ -32,7 +32,7 @@ class AIChatAPI {
                        data_received_callback = base::NullCallback());
 
  private:
-  base::Value::Dict CreateApiParametersDict(const std::string& prompt);
+  base::Value::Dict CreateApiParametersDict(const std::string& prompt, const bool is_sse_enabled);
 
   api_request_helper::APIRequestHelper api_request_helper_;
 };
