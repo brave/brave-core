@@ -105,7 +105,4 @@ const char kHasMigratedRewardsState[] =
 const char kShouldMigrateVerifiedRewardsUser[] =
     "brave.brave_ads.rewards.verified_user.should_migrate";
 
-const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash";
-const char kClientHash[] = "brave.brave_ads.client.hash";
-
 }  // namespace brave_ads::prefs

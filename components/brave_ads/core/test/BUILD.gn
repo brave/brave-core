@@ -88,7 +88,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/user_data/created_at_timestamp_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/diagnostic_id_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/locale_user_data_unittest.cc",
-    "//brave/components/brave_ads/core/internal/account/user_data/mutated_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/platform_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/rotating_hash_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/segment_user_data_unittest.cc",

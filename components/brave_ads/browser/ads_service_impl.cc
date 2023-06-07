@@ -16,7 +16,6 @@
 #include "base/files/important_file_writer.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
@@ -57,7 +56,6 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
@@ -1279,18 +1277,7 @@ void AdsServiceImpl::MigratePrefsVersion10To11() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion11To12() {
-  std::string value;
-
-  if (base::ReadFileToString(base_path_.AppendASCII("confirmations.json"),
-                             &value)) {
-    const auto hash = static_cast<uint64_t>(base::PersistentHash(value));
-    SetUint64Pref(prefs::kConfirmationsHash, hash);
-  }
-
-  if (base::ReadFileToString(base_path_.AppendASCII("client.json"), &value)) {
-    const auto hash = static_cast<uint64_t>(base::PersistentHash(value));
-    SetUint64Pref(prefs::kClientHash, hash);
-  }
+  // Intentionally empty as migration is no longer required
 }
 
 void AdsServiceImpl::Shutdown() {

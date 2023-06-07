@@ -14,7 +14,6 @@ See [anonymous confirmation token redemption](../utility/redeem_confirmation/REA
 | createdAtTimestamp  | no  | no  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp  |
 | diagnosticId  | yes  | yes  | Diagnostic id from brave://rewards-internals to help diagnose issues.  |
 | locale  | yes  | no  | Privacy-preserving operating system locale  |
-| mutated  | yes  | no  | A change in the structure of the genes or chromosomes of an organism  |
 | platform  | no  | no  | Operating system  |
 | rotating_hash  | yes  | no  | Privacy-preserving time-based rotating hash  |
 | segment  | yes  | no  | Advertising segment taxonomy for the chosen ad  |

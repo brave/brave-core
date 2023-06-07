@@ -15,12 +15,7 @@
 namespace brave_ads::client {
 
 namespace {
-
-constexpr uint64_t kClientJsonHash = 1891112954;
-constexpr uint64_t kMigratedClientJsonHash = 1204433941;
-
 constexpr char kInvalidJsonFilename[] = "invalid.json";
-
 }  // namespace
 
 class BraveAdsLegacyClientMigrationTest : public UnitTestBase {
@@ -34,13 +29,11 @@ TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
   // Arrange
   CopyFileFromTestPathToTempPath(kClientStateFilename);
 
-  SetHash(kClientJsonHash);
-
   // Act
   Migrate(/*should_migrate*/ true);
 
   // Assert
-  EXPECT_EQ(kMigratedClientJsonHash, GetHash());
+  EXPECT_TRUE(HasMigrated());
 }
 
 TEST_F(BraveAdsLegacyClientMigrationTest, InvalidState) {
@@ -52,22 +45,6 @@ TEST_F(BraveAdsLegacyClientMigrationTest, InvalidState) {
 
   // Assert
   EXPECT_FALSE(HasMigrated());
-}
-
-TEST_F(BraveAdsLegacyClientMigrationTest, AlreadyMigrated) {
-  // Arrange
-  CopyFileFromTestPathToTempPath(kClientStateFilename);
-
-  SetHash(kClientJsonHash);
-
-  Migrate(/*should_migrate*/ true);
-  ASSERT_EQ(kMigratedClientJsonHash, GetHash());
-
-  // Act
-  Migrate(/*should_migrate*/ true);
-
-  // Assert
-  EXPECT_EQ(kMigratedClientJsonHash, GetHash());
 }
 
 }  // namespace brave_ads::client

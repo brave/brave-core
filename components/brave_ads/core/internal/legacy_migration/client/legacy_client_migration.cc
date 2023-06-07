@@ -57,7 +57,6 @@ void Migrate(InitializeCallback callback) {
             BLOG(1, "Migrating client state");
 
             const std::string migrated_json = client.ToJson();
-            SetHashForJson(migrated_json);
 
             AdsClientHelper::GetInstance()->Save(
                 kClientStateFilename, migrated_json,

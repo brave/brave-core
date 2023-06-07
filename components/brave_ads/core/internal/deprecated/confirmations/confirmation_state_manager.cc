@@ -11,13 +11,11 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/guid.h"
-#include "base/hash/hash.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
@@ -38,20 +36,6 @@
 namespace brave_ads {
 
 namespace {
-
-uint64_t GenerateHash(const std::string& value) {
-  return uint64_t{base::PersistentHash(value)};
-}
-
-void SetHash(const std::string& value) {
-  AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kConfirmationsHash,
-                                                GenerateHash(value));
-}
-
-bool IsMutated(const std::string& value) {
-  return AdsClientHelper::GetInstance()->GetUint64Pref(
-             prefs::kConfirmationsHash) != GenerateHash(value);
-}
 
 base::Value::Dict GetFailedConfirmationsAsDictionary(
     const ConfirmationList& confirmations) {
@@ -189,11 +173,6 @@ void ConfirmationStateManager::LoadCallback(
     is_initialized_ = true;
   }
 
-  is_mutated_ = IsMutated(ToJson());
-  if (is_mutated_) {
-    BLOG(9, "Confirmation state is mutated");
-  }
-
   std::move(callback).Run(/*success*/ true);
 }
 
@@ -204,14 +183,9 @@ void ConfirmationStateManager::Save() {
 
   BLOG(9, "Saving confirmations state");
 
-  const std::string json = ToJson();
-
-  if (!is_mutated_) {
-    SetHash(json);
-  }
-
   AdsClientHelper::GetInstance()->Save(
-      kConfirmationStateFilename, json, base::BindOnce([](const bool success) {
+      kConfirmationStateFilename, ToJson(),
+      base::BindOnce([](const bool success) {
         if (!success) {
           return BLOG(0, "Failed to save confirmations state");
         }

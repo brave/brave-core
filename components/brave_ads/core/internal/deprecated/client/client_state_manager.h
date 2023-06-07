@@ -90,8 +90,6 @@ class ClientStateManager final {
   const TextClassificationProbabilityList&
   GetTextClassificationProbabilitiesHistory() const;
 
-  bool is_mutated() const { return is_mutated_; }
-
  private:
   void Save();
 
@@ -101,8 +99,6 @@ class ClientStateManager final {
   bool FromJson(const std::string& json);
 
   ClientInfo client_;
-
-  bool is_mutated_ = false;
 
   bool is_initialized_ = false;
 

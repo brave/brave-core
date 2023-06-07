@@ -7,8 +7,6 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 
 namespace brave_ads::confirmations {
@@ -19,16 +17,6 @@ void Migrate(const bool should_migrate) {
         CHECK_EQ(success, should_migrate);
       },
       should_migrate));
-}
-
-uint64_t GetHash() {
-  return AdsClientHelper::GetInstance()->GetUint64Pref(
-      prefs::kConfirmationsHash);
-}
-
-void SetHash(const uint64_t hash) {
-  AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kConfirmationsHash,
-                                                hash);
 }
 
 }  // namespace brave_ads::confirmations
