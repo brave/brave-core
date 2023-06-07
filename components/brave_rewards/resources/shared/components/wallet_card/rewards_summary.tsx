@@ -81,10 +81,10 @@ export function RewardsSummary (props: Props) {
               }
               {
                 props.autoContributeEnabled && renderRow(
-                  -data.autoContributions, 'walletAutoContribute', 'ac')
+                  data.autoContributions, 'walletAutoContribute', 'ac')
               }
-              {renderRow(-data.oneTimeTips, 'walletOneTimeTips', 'one-time')}
-              {renderRow(-data.monthlyTips, 'walletMonthlyTips', 'monthly')}
+              {renderRow(data.oneTimeTips, 'walletOneTimeTips', 'one-time')}
+              {renderRow(data.monthlyTips, 'walletMonthlyTips', 'monthly')}
             </tbody>
           </table>
         </style.dataTable>
