@@ -92,14 +92,12 @@ export const StyledImage = styled.img`
 `
 
 export const StyledVerified = styled('span')<{}>`
-  top: -6px;
+  top: -4px;
   right: -8px;
   width: 16px;
   height: 16px;
-  color: ${p => p.theme.palette.blurple500};
-  background-color: #FFFFFF;
-  border-radius: 20px;
   position: absolute;
+  --leo-icon-size: 16px;
 `
 
 export const StyledContent = styled('div')<Partial<Props>>`
