@@ -21,6 +21,7 @@
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -48,6 +49,8 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   void UpdateAndNotifyConnectionStateChange(
       mojom::ConnectionState state) override;
   void SetSelectedRegion(const std::string& name) override;
+  void OnNetworkChanged(
+      net::NetworkChangeNotifier::ConnectionType type) override;
 
  protected:
   BraveVPNOSConnectionAPIBase(
@@ -61,6 +64,7 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   virtual void ConnectImpl(const std::string& name) = 0;
   virtual void DisconnectImpl(const std::string& name) = 0;
   virtual void CheckConnectionImpl(const std::string& name) = 0;
+  virtual bool IsPlatformNetworkAvailable() = 0;
 
   // Subclass should call below callbacks whenever corresponding event happens.
   void OnCreated();
@@ -70,6 +74,7 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   void OnConnectFailed();
   void OnDisconnected();
   void OnIsDisconnecting();
+  bool MaybeReconnect();
 
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
 
@@ -94,7 +99,6 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
                            IgnoreDisconnectedStateWhileConnecting);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            ClearLastConnectionErrorWhenNewConnectionStart);
-
   void CreateVPNConnection();
   std::string GetCurrentEnvironment() const;
   void FetchHostnamesForRegion(const std::string& name);
@@ -112,7 +116,6 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   bool needs_connect_ = false;
   bool prevent_creation_ = false;
   std::string target_vpn_entry_name_;
-
   BraveVPNConnectionInfo connection_info_;
   raw_ptr<PrefService> local_prefs_ = nullptr;
   std::unique_ptr<Hostname> hostname_;

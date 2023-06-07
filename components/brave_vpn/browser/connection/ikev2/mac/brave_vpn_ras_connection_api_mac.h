@@ -29,6 +29,7 @@ class BraveVPNOSConnectionAPIMac : public BraveVPNOSConnectionAPIBase {
   void ConnectImpl(const std::string& name) override;
   void DisconnectImpl(const std::string& name) override;
   void CheckConnectionImpl(const std::string& name) override;
+  bool IsPlatformNetworkAvailable() override;
   void ObserveVPNConnectionChange();
 
   id vpn_observer_ = nil;
