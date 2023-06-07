@@ -70,6 +70,7 @@ import {
 import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
 
 // utils
+import { getAccountType } from '../../utils/account-utils'
 import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
 import type WalletApiProxy from '../wallet_api_proxy'
 import {

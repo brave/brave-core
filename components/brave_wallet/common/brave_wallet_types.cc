@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
+#include <utility>
+
 #include "base/strings/string_number_conversions.h"
 
 namespace brave_wallet {
