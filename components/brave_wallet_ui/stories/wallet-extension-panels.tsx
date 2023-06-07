@@ -64,7 +64,7 @@ import { mockTransactionSpotPrices } from './mock-data/current-price-data'
 import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet-accounts'
 import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
-import { mockAccountAssetOptions, mockNewAssetOptions } from './mock-data/mock-asset-options'
+import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { mockUserAccounts } from './mock-data/user-accounts'
 import { createMockStore } from '../utils/test-utils'
 import { deserializeTransaction } from '../utils/model-serialization-utils'
@@ -756,7 +756,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         {selectedPanel === 'assets' && (
                           <AssetsPanel
                             selectedAccount={selectedAccount}
-                            userAssetList={mockAccountAssetOptions}
                             onAddAsset={onAddAsset}
                           />
                         )}

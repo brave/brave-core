@@ -17,6 +17,7 @@ import {
   SolFeeEstimates,
   SerializableOriginInfo,
   NetworkFilterType,
+  RefreshOpts
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -176,7 +177,8 @@ const defaultState: WalletState = {
 
 // async actions
 export const WalletAsyncActions = {
-  initialize: createAction('initialize'),
+  initialize: createAction<RefreshOpts>('initialize'),
+  refreshAll: createAction<RefreshOpts>('refreshAll'),
   lockWallet: createAction('lockWallet'), // keyringService.lock()
   unlockWallet: createAction<UnlockWalletPayloadType>('unlockWallet'),
   addFavoriteApp: createAction<BraveWallet.AppItem>('addFavoriteApp'), // should use ApiProxy.walletHandler + refreshWalletInfo
@@ -223,8 +225,8 @@ export const WalletAsyncActions = {
   ),
   addSitePermission:
     createAction<AddSitePermissionPayloadType>('addSitePermission'),
-  refreshBalancesAndPrices: createAction('refreshBalancesAndPrices'),
-  refreshNetworksAndTokens: createAction('refreshNetworksAndTokens'),
+  refreshNetworksAndTokens:
+    createAction<RefreshOpts>('refreshNetworksAndTokens'),
   expandWalletNetworks: createAction('expandWalletNetworks'), // replace with chrome.tabs.create helper
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory'

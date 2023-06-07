@@ -128,7 +128,7 @@ export const Nfts = (props: Props) => {
   }, [hideNftDiscoveryModal, setNftDiscovery])
 
   const onRefresh = React.useCallback(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens())
+    dispatch(WalletActions.refreshNetworksAndTokens({}))
   }, [])
 
   const onSelectTab = React.useCallback((selectedTab: TabOption) => {

@@ -202,6 +202,7 @@ export const usePendingTransactions = () => {
           coin: txAccount.accountId.coin,
           address: txAccount.address,
           token: {
+            coin: transactionsNetwork.coin,
             chainId: transactionsNetwork.chainId,
             contractAddress: '',
             isErc721: false,
@@ -218,6 +219,7 @@ export const usePendingTransactions = () => {
           coin: txAccount.accountId.coin,
           address: txAccount.address,
           token: {
+            coin: transactionDetails.token.coin,
             chainId: transactionDetails.token.chainId,
             contractAddress: transactionDetails.token.contractAddress,
             isErc721: transactionDetails.token.isErc721,
@@ -234,6 +236,7 @@ export const usePendingTransactions = () => {
           coin: txAccount.accountId.coin,
           address: txAccount.address,
           token: {
+            coin: transactionDetails.sellToken.coin,
             chainId: transactionDetails.sellToken.chainId,
             contractAddress: transactionDetails.sellToken.contractAddress,
             isErc721: transactionDetails.sellToken.isErc721,
@@ -247,29 +250,29 @@ export const usePendingTransactions = () => {
   const insufficientFundsError = React.useMemo(() => {
     return transactionInfo
       ? accountHasInsufficientFundsForTransaction({
-          accountNativeBalance: nativeBalance?.balance || '',
-          accountTokenBalance: transferTokenBalance?.balance || '',
+          accountNativeBalance: nativeBalance || '',
+          accountTokenBalance: transferTokenBalance || '',
           gasFee,
           sellAmountWei: transactionDetails?.sellAmountWei || Amount.empty(),
-          sellTokenBalance: sellTokenBalance?.balance || '',
+          sellTokenBalance: sellTokenBalance || '',
           tx: transactionInfo
         })
       : undefined
   }, [
     gasFee,
-    nativeBalance?.balance,
-    sellTokenBalance?.balance,
+    nativeBalance,
+    sellTokenBalance,
     transactionDetails?.sellAmountWei,
     transactionInfo,
-    transferTokenBalance?.balance,
+    transferTokenBalance
   ])
 
   const insufficientFundsForGasError = React.useMemo(() => {
     return accountHasInsufficientFundsForGas({
-      accountNativeBalance: nativeBalance?.balance || '',
+      accountNativeBalance: nativeBalance || '',
       gasFee
     })
-  }, [nativeBalance?.balance, gasFee])
+  }, [nativeBalance, gasFee])
 
   const { suggestedMaxPriorityFeeChoices, baseFeePerGas } = React.useMemo(
     () => ({

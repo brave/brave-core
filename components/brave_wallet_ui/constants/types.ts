@@ -16,6 +16,10 @@ export { Url } from 'gen/url/mojom/url.mojom.m.js'
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
 
+export type RefreshOpts = {
+  skipBalancesRefresh?: boolean
+}
+
 interface TokenBalanceRegistry {
   [contractAddress: string]: string
 }

@@ -168,7 +168,13 @@ export class WalletApiProxy {
         store.dispatch(WalletActions.defaultBaseCryptocurrencyChanged({ cryptocurrency }))
       },
       onNetworkListChanged: function () {
-        store.dispatch(WalletActions.refreshNetworksAndTokens())
+        // FIXME(onyb): Due to a bug, the OnNetworkListChanged event is fired
+        // merely upon switching to a custom network.
+        //
+        // Skipping balances refresh for now, until the bug is fixed.
+        store.dispatch(WalletActions.refreshNetworksAndTokens({
+          skipBalancesRefresh: true
+        }))
       },
       onDiscoverAssetsStarted: function () { },
       onDiscoverAssetsCompleted: function (discoveredAssets) {

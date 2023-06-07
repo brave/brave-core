@@ -52,6 +52,7 @@ async function refreshWalletInfo(store: Store) {
       selectedAccount: ''
     })
   )
+  store.dispatch(WalletActions.refreshAll({}))
 }
 
 async function importFromExternalWallet (

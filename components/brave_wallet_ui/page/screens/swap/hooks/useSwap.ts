@@ -264,7 +264,7 @@ export const useSwap = () => {
           const result = await getBalance(account, asset)
           return {
             key: balanceRegistryKey,
-            value: Amount.normalize(result.balance)
+            value: result
           }
         } catch (e) {
           console.log('Error querying balance: error=%s asset=%s', e, JSON.stringify(asset))
@@ -339,7 +339,7 @@ export const useSwap = () => {
         if (network.coin === BraveWallet.CoinType.ETH) {
           tokenBalancesResult = await getTokenBalances({
             address: networkAccount.address,
-            contracts: networkTokens.map(asset => asset.contractAddress),
+            tokens: networkTokens,
             chainId: network.chainId,
             coin: CoinTypes.ETH
           }).unwrap()
