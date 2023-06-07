@@ -28,6 +28,7 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
 
   bool IsConnectionCreated() const;
   bool IsConnectionChecked() const;
+  void SetNetworkAvailableForTesting(bool value);
 
  protected:
   friend class base::NoDestructor<BraveVPNOSConnectionAPISim>;
@@ -42,6 +43,7 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
   void ConnectImpl(const std::string& name) override;
   void DisconnectImpl(const std::string& name) override;
   void CheckConnectionImpl(const std::string& name) override;
+  bool IsPlatformNetworkAvailable() override;
 
  private:
   friend class BraveVPNServiceTest;
@@ -66,6 +68,7 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
   bool connection_created_ = false;
   bool check_connection_called_ = false;
 
+  absl::optional<bool> network_available_;
   base::WeakPtrFactory<BraveVPNOSConnectionAPISim> weak_factory_{this};
 };
 

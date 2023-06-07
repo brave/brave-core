@@ -21,6 +21,7 @@
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -45,6 +46,8 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
       mojom::ConnectionState state) override;
   void SetSelectedRegion(const std::string& name) override;
   void FetchProfileCredentials() override;
+  void OnNetworkChanged(
+      net::NetworkChangeNotifier::ConnectionType type) override;
 
  protected:
   BraveVPNOSConnectionAPIBase(
@@ -58,6 +61,7 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   virtual void ConnectImpl(const std::string& name) = 0;
   virtual void DisconnectImpl(const std::string& name) = 0;
   virtual void CheckConnectionImpl(const std::string& name) = 0;
+  virtual bool IsPlatformNetworkAvailable() = 0;
 
   // Subclass should call below callbacks whenever corresponding event happens.
   void OnCreated();
@@ -67,6 +71,7 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   void OnConnectFailed();
   void OnDisconnected();
   void OnIsDisconnecting();
+  bool MaybeReconnect();
 
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
 
@@ -94,7 +99,6 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest);
 
   void ResetConnectionInfo();
-
   void CreateVPNConnection();
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
@@ -105,7 +109,6 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   bool needs_connect_ = false;
   bool prevent_creation_ = false;
   std::string target_vpn_entry_name_;
-
   BraveVPNConnectionInfo connection_info_;
 };
 

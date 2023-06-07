@@ -7,8 +7,9 @@
 
 #include <windows.h>
 
+#include <netlistmgr.h>  // For CLSID_NetworkListManager
 #include <ras.h>
-
+#include <wrl/client.h>
 #include <memory>
 
 #include "base/logging.h"
@@ -17,7 +18,6 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
-
 // Most of Windows implementations are based on Brian Clifton
 // (brian@clifton.me)'s work (https://github.com/bsclifton/winvpntool).
 
@@ -172,6 +172,30 @@ void BraveVPNOSConnectionAPIWin::StartVPNConnectionChangeMonitoring() {
                              RASCN_Connection | RASCN_Disconnection);
   connected_disconnected_event_watcher_.StartWatchingMultipleTimes(
       event_handle_for_connected_disconnected_, this);
+}
+
+bool BraveVPNOSConnectionAPIWin::IsPlatformNetworkAvailable() {
+  // If any errors occur, return that internet connection is available.
+  Microsoft::WRL::ComPtr<INetworkListManager> manager;
+  HRESULT hr = ::CoCreateInstance(CLSID_NetworkListManager, nullptr, CLSCTX_ALL,
+                                  IID_PPV_ARGS(&manager));
+  if (FAILED(hr)) {
+    LOG(ERROR) << "CoCreateInstance(NetworkListManager) hr=" << std::hex << hr;
+    return true;
+  }
+
+  VARIANT_BOOL is_connected;
+  hr = manager->get_IsConnectedToInternet(&is_connected);
+  if (FAILED(hr)) {
+    LOG(ERROR) << "get_IsConnectedToInternet failed hr=" << std::hex << hr;
+    return true;
+  }
+
+  // Normally VARIANT_TRUE/VARIANT_FALSE are used with the type VARIANT_BOOL
+  // but in this case the docs explicitly say to use FALSE.
+  // https://docs.microsoft.com/en-us/windows/desktop/api/Netlistmgr/
+  //     nf-netlistmgr-inetworklistmanager-get_isconnectedtointernet
+  return is_connected != FALSE;
 }
 
 }  // namespace brave_vpn
