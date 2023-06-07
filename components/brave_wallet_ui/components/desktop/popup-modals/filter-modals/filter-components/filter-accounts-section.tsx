@@ -22,8 +22,6 @@ import {
 
 // Styled Components
 import {
-  CheckboxRow,
-  CheckboxWrapper,
   AccountCircle,
   SelectAllButton,
   Title,
@@ -121,11 +119,13 @@ export const FilterAccountsSection = (props: Props) => {
           }
         </SelectAllButton>
       </Row>
-      <CheckboxRow
-        justifyContent='space-between'
+      <Column
+        justifyContent='flex-start'
+        alignItems='flex-start'
+        fullWidth={true}
       >
         {accountsList.map((account) =>
-          <CheckboxWrapper
+          <Row
             width='unset'
             justifyContent='flex-start'
             marginBottom={16}
@@ -157,9 +157,9 @@ export const FilterAccountsSection = (props: Props) => {
                 </Description>
               </Column>
             </Checkbox>
-          </CheckboxWrapper>
+          </Row>
         )}
-      </CheckboxRow>
+      </Column>
     </>
 
   )
