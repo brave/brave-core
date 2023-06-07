@@ -129,22 +129,6 @@ void BraveNewTabMessageHandler::RecordInitialP3AValues(
       kNTPCustomizeUsageStatus, local_state);
 }
 
-bool BraveNewTabMessageHandler::CanPromptBraveTalk() {
-  return BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time::Now());
-}
-
-bool BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time now) {
-  // Only show Brave Talk prompt 4 days after first run.
-  // CreateSentinelIfNeeded() is called in chrome_browser_main.cc, making this a
-  // non-blocking read of the cached sentinel value when running from production
-  // code. However tests will never create the sentinel file due to being run
-  // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
-  base::ScopedAllowBlockingForTesting allow_blocking;
-  base::Time time_first_run = first_run::GetFirstRunSentinelCreationTime();
-  base::Time talk_prompt_trigger_time = now - base::Days(3);
-  return (time_first_run <= talk_prompt_trigger_time);
-}
-
 // static
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     content::WebUIDataSource* source,
@@ -167,8 +151,6 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 
   source->AddBoolean("featureFlagBraveNTPSponsoredImagesWallpaper",
                      is_ads_supported_locale);
-  source->AddBoolean("braveTalkPromptAllowed",
-                     BraveNewTabMessageHandler::CanPromptBraveTalk());
 
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
