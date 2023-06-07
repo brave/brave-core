@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index f2028894e91955337200f1b22dc59374774beedf..e6ce67add93bcafdd514a70b6480f2cbf5bd49b4 100644
+index 3b229431fc69c56bcbd4163ae46285a489882bf2..ee4d68cbdf2f0b83a02bb11e0429cf03462fb046 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -356,7 +356,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
