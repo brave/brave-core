@@ -39,6 +39,7 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
   void ConnectImpl(const std::string& name) override;
   void DisconnectImpl(const std::string& name) override;
   void CheckConnectionImpl(const std::string& name) override;
+  bool IsPlatformNetworkAvailable() override;
 
   // base::win::ObjectWatcher::Delegate overrides:
   void OnObjectSignaled(HANDLE object) override;
