@@ -146,8 +146,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/components/ai_chat/ai_chat.mojom.h"
-#include "brave/components/ai_chat/features.h"
+#include "brave/components/ai_chat/common/ai_chat.mojom.h"
+#include "brave/components/ai_chat/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

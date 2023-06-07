@@ -20,7 +20,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
-#include "brave/components/ai_chat/features.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/pref_names.h"
@@ -48,6 +48,10 @@
 #include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/controls/separator.h"
 #include "ui/views/layout/box_layout.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif
 
 namespace {
 
@@ -444,6 +448,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
         GetImageForBuiltInItems(item.built_in_item_type, /* focus= */ false,
                                 /* disabled= */ true));
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
     if (ai_chat::features::IsAIChatEnabled() && browser_->profile()->IsTor()) {
       auto is_ai_chat = [](const auto& item) {
         return item.built_in_item_type ==
@@ -454,6 +459,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
         item_view->SetEnabled(false);
       }
     }
+#endif
 
     if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
         browser_->profile()->IsOffTheRecord()) {

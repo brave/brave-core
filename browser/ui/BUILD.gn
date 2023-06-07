@@ -6,6 +6,7 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
@@ -119,10 +120,6 @@ source_set("ui") {
       "toolbar/brave_bookmark_sub_menu_model.cc",
       "toolbar/brave_bookmark_sub_menu_model.h",
       "toolbar/brave_recent_tabs_sub_menu_model.h",
-      "webui/ai_chat/ai_chat_ui.cc",
-      "webui/ai_chat/ai_chat_ui.h",
-      "webui/ai_chat/ai_chat_ui_page_handler.cc",
-      "webui/ai_chat/ai_chat_ui_page_handler.h",
       "webui/brave_rewards/rewards_panel_handler.cc",
       "webui/brave_rewards/rewards_panel_handler.h",
       "webui/brave_rewards/rewards_panel_ui.cc",
@@ -218,6 +215,15 @@ source_set("ui") {
       ]
     }
 
+    if (enable_ai_chat) {
+      sources += [
+        "webui/ai_chat/ai_chat_ui.cc",
+        "webui/ai_chat/ai_chat_ui.h",
+        "webui/ai_chat/ai_chat_ui_page_handler.cc",
+        "webui/ai_chat/ai_chat_ui_page_handler.h",
+      ]
+    }
+
     if (is_mac) {
       sources += [
         "webui/settings/brave_full_disk_access_confirm_dialog_delegate.h",
@@ -305,9 +311,6 @@ source_set("ui") {
       "views/playlist/playlist_action_bubble_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
-      "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.cc",
-      "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.h",
-      "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc",
       "views/side_panel/brave_side_panel.cc",
       "views/side_panel/brave_side_panel.h",
       "views/side_panel/playlist/playlist_side_panel_coordinator.cc",
@@ -356,6 +359,13 @@ source_set("ui") {
           "webui/settings/brave_settings_secure_dns_handler.h",
         ]
       }
+    }
+    if (enable_ai_chat) {
+      sources += [
+        "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.cc",
+        "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.h",
+        "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc",
+      ]
     }
     if (use_aura) {
       sources += [
@@ -449,6 +459,7 @@ source_set("ui") {
     # to pull in dependencies needed for the overwrite codes in chromium_src.
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
+    "//brave/components/ai_chat/common/buildflags",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
     "//brave/components/brave_ads/browser",
@@ -717,9 +728,6 @@ source_set("ui") {
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
       "//brave/common/importer",
-      "//brave/components/ai_chat",
-      "//brave/components/ai_chat:mojom",
-      "//brave/components/ai_chat_ui:generated_resources",
       "//brave/components/brave_adaptive_captcha",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_new_tab_ui:mojom",
@@ -748,6 +756,15 @@ source_set("ui") {
       "//components/sync_device_info",
       "//mojo/public/cpp/bindings",
       "//third_party/blink/public/common",
+    ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/components/ai_chat/browser",
+      "//brave/components/ai_chat/common",
+      "//brave/components/ai_chat/common:mojom",
+      "//brave/components/ai_chat_ui:generated_resources",
     ]
   }
 

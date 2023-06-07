@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/page_content_fetcher.h"
+#include "brave/components/ai_chat/browser/page_content_fetcher.h"
 
 #include <memory>
 #include <utility>
@@ -11,7 +11,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
-#include "brave/components/ai_chat/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/common/page_content_extractor.mojom.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"

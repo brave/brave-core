@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/renderer/ai_chat_render_frame_observer.h"
+#include "brave/components/ai_chat/renderer/page_content_extractor.h"
 
 #include <string>
 #include <utility>
@@ -14,8 +14,8 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/page_content_extractor.mojom-shared.h"
-#include "brave/components/ai_chat/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/common/page_content_extractor.mojom-shared.h"
+#include "brave/components/ai_chat/common/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -39,6 +39,7 @@ const char16_t kYoutubeTranscriptUrlExtractionScript[] =
 
 const char16_t kVideoTrackTranscriptUrlExtractionScript[] =
     // TODO(petemill): Make more informed srclang choice.
+    // TODO(petemill): Observe <video>.textTracks
     uR"JS(
       (function() {
         const nodes = document.querySelectorAll('video track')
@@ -66,7 +67,7 @@ constexpr auto kVideoTrackHosts =
 
 namespace ai_chat {
 
-AIRenderFrameObserver::AIRenderFrameObserver(
+PageContentExtractor::PageContentExtractor(
     content::RenderFrame* render_frame,
     service_manager::BinderRegistry* registry,
     int32_t global_world_id,
@@ -83,16 +84,16 @@ AIRenderFrameObserver::AIRenderFrameObserver(
   // Unretained is safe here because `registry` is also scoped to the
   // RenderFrame.
   registry->AddInterface(base::BindRepeating(
-      &AIRenderFrameObserver::BindReceiver, base::Unretained(this)));
+      &PageContentExtractor::BindReceiver, base::Unretained(this)));
 }
 
-AIRenderFrameObserver::~AIRenderFrameObserver() = default;
+PageContentExtractor::~PageContentExtractor() = default;
 
-void AIRenderFrameObserver::OnDestruct() {
+void PageContentExtractor::OnDestruct() {
   delete this;
 }
 
-void AIRenderFrameObserver::ExtractPageContent(
+void PageContentExtractor::ExtractPageContent(
     mojom::PageContentExtractor::ExtractPageContentCallback callback) {
   VLOG(1) << "AI Chat renderer has been asked for page content.";
   blink::WebLocalFrame* main_frame = render_frame()->GetWebFrame();
@@ -114,7 +115,7 @@ void AIRenderFrameObserver::ExtractPageContent(
       blink::WebScriptSource source = blink::WebScriptSource(
           blink::WebString::FromUTF16(kYoutubeTranscriptUrlExtractionScript));
       auto script_callback = base::BindOnce(
-          &AIRenderFrameObserver::OnJSTranscriptUrlResult,
+          &PageContentExtractor::OnJSTranscriptUrlResult,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback),
           ai_chat::mojom::PageContentType::VideoTranscriptYouTube);
       // Main world so that we can access a global variable
@@ -137,7 +138,7 @@ void AIRenderFrameObserver::ExtractPageContent(
           blink::WebScriptSource(blink::WebString::FromUTF16(
               kVideoTrackTranscriptUrlExtractionScript));
       auto script_callback = base::BindOnce(
-          &AIRenderFrameObserver::OnJSTranscriptUrlResult,
+          &PageContentExtractor::OnJSTranscriptUrlResult,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback),
           ai_chat::mojom::PageContentType::VideoTranscriptYouTube);
       // Main world so that we can access a global variable
@@ -156,18 +157,18 @@ void AIRenderFrameObserver::ExtractPageContent(
   // Do text extraction
   DistillPageText(
       render_frame(),
-      base::BindOnce(&AIRenderFrameObserver::OnDistillResult,
+      base::BindOnce(&PageContentExtractor::OnDistillResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AIRenderFrameObserver::BindReceiver(
+void PageContentExtractor::BindReceiver(
     mojo::PendingReceiver<mojom::PageContentExtractor> receiver) {
-  VLOG(1) << "AIChat AIRenderFrameObserver handler bound.";
+  VLOG(1) << "AIChat PageContentExtractor handler bound.";
   receiver_.reset();
   receiver_.Bind(std::move(receiver));
 }
 
-void AIRenderFrameObserver::OnDistillResult(
+void PageContentExtractor::OnDistillResult(
     mojom::PageContentExtractor::ExtractPageContentCallback callback,
     const absl::optional<std::string>& content) {
   // Validate
@@ -189,7 +190,7 @@ void AIRenderFrameObserver::OnDistillResult(
   std::move(callback).Run(std::move(result));
 }
 
-void AIRenderFrameObserver::OnJSTranscriptUrlResult(
+void PageContentExtractor::OnJSTranscriptUrlResult(
     ai_chat::mojom::PageContentExtractor::ExtractPageContentCallback callback,
     ai_chat::mojom::PageContentType type,
     absl::optional<base::Value> value,

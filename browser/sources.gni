@@ -281,8 +281,9 @@ if (enable_request_otr) {
 
 if (enable_ai_chat) {
   brave_chrome_browser_deps += [
-    "//brave/components/ai_chat",
-    "//brave/components/ai_chat:mojom",
+    "//brave/components/ai_chat/browser",
+    "//brave/components/ai_chat/common",
+    "//brave/components/ai_chat/common:mojom",
   ]
 }
 

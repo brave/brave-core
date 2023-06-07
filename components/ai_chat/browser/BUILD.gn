@@ -5,7 +5,6 @@
 
 import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
-import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(enable_ai_chat)
 
@@ -13,7 +12,7 @@ if (is_official_build) {
   assert(brave_ai_chat_endpoint != "")
 }
 
-source_set("ai_chat") {
+source_set("browser") {
   sources = [
     "ai_chat_api.cc",
     "ai_chat_api.h",
@@ -21,18 +20,15 @@ source_set("ai_chat") {
     "ai_chat_tab_helper.h",
     "constants.cc",
     "constants.h",
-    "features.cc",
-    "features.h",
     "page_content_fetcher.cc",
     "page_content_fetcher.h",
-    "pref_names.cc",
-    "pref_names.h",
   ]
 
   deps = [
-    ":mojom",
-    "common/buildflags",
     "//base",
+    "//brave/components/ai_chat/common",
+    "//brave/components/ai_chat/common:mojom",
+    "//brave/components/ai_chat/common/buildflags",
     "//brave/components/api_request_helper",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
@@ -46,17 +42,5 @@ source_set("ai_chat") {
     "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//url",
-  ]
-}
-
-mojom("mojom") {
-  sources = [
-    "ai_chat.mojom",
-    "page_content_extractor.mojom",
-  ]
-
-  deps = [
-    "//mojo/public/mojom/base",
-    "//url/mojom:url_mojom_gurl",
   ]
 }

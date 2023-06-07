@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_RENDERER_AI_CHAT_RENDER_FRAME_OBSERVER_H_
-#define BRAVE_COMPONENTS_AI_CHAT_RENDERER_AI_CHAT_RENDER_FRAME_OBSERVER_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_RENDERER_PAGE_CONTENT_EXTRACTOR_H_
+#define BRAVE_COMPONENTS_AI_CHAT_RENDERER_PAGE_CONTENT_EXTRACTOR_H_
 
 #include <cstdint>
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/ai_chat/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/common/page_content_extractor.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -18,16 +18,16 @@
 
 namespace ai_chat {
 
-class AIRenderFrameObserver : public ai_chat::mojom::PageContentExtractor,
-                              public content::RenderFrameObserver {
+class PageContentExtractor : public ai_chat::mojom::PageContentExtractor,
+                             public content::RenderFrameObserver {
  public:
-  explicit AIRenderFrameObserver(content::RenderFrame* render_frame,
-                                 service_manager::BinderRegistry* registry,
-                                 int32_t global_world_id,
-                                 int32_t isolated_world_id);
-  AIRenderFrameObserver(const AIRenderFrameObserver&) = delete;
-  AIRenderFrameObserver& operator=(const AIRenderFrameObserver&) = delete;
-  ~AIRenderFrameObserver() override;
+  explicit PageContentExtractor(content::RenderFrame* render_frame,
+                                service_manager::BinderRegistry* registry,
+                                int32_t global_world_id,
+                                int32_t isolated_world_id);
+  PageContentExtractor(const PageContentExtractor&) = delete;
+  PageContentExtractor& operator=(const PageContentExtractor&) = delete;
+  ~PageContentExtractor() override;
 
  private:
   void OnJSTranscriptUrlResult(
@@ -56,9 +56,9 @@ class AIRenderFrameObserver : public ai_chat::mojom::PageContentExtractor,
   int32_t global_world_id_;
   int32_t isolated_world_id_;
 
-  base::WeakPtrFactory<AIRenderFrameObserver> weak_ptr_factory_{this};
+  base::WeakPtrFactory<PageContentExtractor> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_RENDERER_AI_CHAT_RENDER_FRAME_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_RENDERER_PAGE_CONTENT_EXTRACTOR_H_

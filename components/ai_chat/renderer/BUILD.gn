@@ -9,15 +9,15 @@ assert(enable_ai_chat)
 
 source_set("renderer") {
   sources = [
-    "ai_chat_render_frame_observer.cc",
-    "ai_chat_render_frame_observer.h",
+    "page_content_extractor.cc",
+    "page_content_extractor.h",
     "page_text_distilling.cc",
     "page_text_distilling.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/ai_chat:mojom",
+    "//brave/components/ai_chat/common:mojom",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 
 #include <memory>
 #include <string>
@@ -15,10 +15,10 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/components/ai_chat/ai_chat.mojom-shared.h"
-#include "brave/components/ai_chat/constants.h"
-#include "brave/components/ai_chat/page_content_fetcher.h"
-#include "brave/components/ai_chat/pref_names.h"
+#include "brave/components/ai_chat/browser/constants.h"
+#include "brave/components/ai_chat/browser/page_content_fetcher.h"
+#include "brave/components/ai_chat/common/ai_chat.mojom-shared.h"
+#include "brave/components/ai_chat/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -170,7 +170,6 @@ void AIChatTabHelper::CleanUp() {
   has_generated_questions_ = false;
   OnSuggestedQuestionsChanged();
 
-
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
@@ -218,12 +217,12 @@ void AIChatTabHelper::GenerateQuestions() {
   // Do not call SetRequestInProgress, this progress
   // does not need to be shown to the UI.
   auto navigation_id_for_query = current_navigation_id_;
-  ai_chat_api_->QueryPrompt(prompt,
+  ai_chat_api_->QueryPrompt(
+      prompt,
       base::BindOnce(
           [](base::WeakPtr<AIChatTabHelper> tab_helper,
              int64_t navigation_id_for_query,
-             api_request_helper::APIRequestResult result,
-             bool success) {
+             api_request_helper::APIRequestResult result, bool success) {
             if (!tab_helper) {
               VLOG(1) << "TabHelper was deleted before API call completed";
               return;
@@ -236,21 +235,20 @@ void AIChatTabHelper::GenerateQuestions() {
             // Validate
             if (!result.value_body().is_dict()) {
               DVLOG(1) << "Expected dictionary for question suggestion result"
-                      << " but got: "
-                      << result.value_body().DebugString();
+                       << " but got: " << result.value_body().DebugString();
               return;
             }
             const std::string* completion =
                 result.value_body().FindStringKey("completion");
             if (!completion || completion->empty()) {
               DVLOG(1) << "Expected completion param for question suggestion"
-                      << " result but got: "
-                      << result.value_body().DebugString();
+                       << " result but got: "
+                       << result.value_body().DebugString();
               return;
             }
 
             DVLOG(2) << "Received " << (success ? "success" : "failed")
-                    << " suggested questions response: " << completion;
+                     << " suggested questions response: " << completion;
             // We might have navigated away whilst this async operation is in
             // progress, so check if we're the same navigation.
             if (tab_helper->current_navigation_id_ != navigation_id_for_query) {
@@ -269,7 +267,8 @@ void AIChatTabHelper::GenerateQuestions() {
             // Notify observers
             tab_helper->OnSuggestedQuestionsChanged();
             DVLOG(2) << "Got questions:"
-                    << base::JoinString(tab_helper->suggested_questions_, "\n");
+                     << base::JoinString(tab_helper->suggested_questions_,
+                                         "\n");
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(navigation_id_for_query)));
 }
@@ -334,8 +333,9 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
 
   DCHECK(ai_chat_api_);
 
-  auto data_received_callback = base::BindRepeating(
-      &AIChatTabHelper::OnAPIStreamDataReceived, weak_ptr_factory_.GetWeakPtr());
+  auto data_received_callback =
+      base::BindRepeating(&AIChatTabHelper::OnAPIStreamDataReceived,
+                          weak_ptr_factory_.GetWeakPtr());
 
   auto data_completed_callback =
       base::BindOnce(&AIChatTabHelper::OnAPIStreamDataComplete,

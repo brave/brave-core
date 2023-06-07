@@ -19,7 +19,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/features.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -35,6 +35,10 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
@@ -623,7 +627,8 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 
       return SidebarItem();
     }
-    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kChatUI: {
+#if BUILDFLAG(ENABLE_AI_CHAT)
       if (ai_chat::features::IsAIChatEnabled()) {
         return SidebarItem::Create(
             brave_l10n::GetLocalizedResourceUTF16String(IDS_CHAT_UI_TITLE),
@@ -633,6 +638,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       } else {
         return SidebarItem();
       }
+#else   // BUILDFLAG(ENABLE_AI_CHAT)
+      return SidebarItem();
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+    }
     case SidebarItem::BuiltInItemType::kNone: {
       NOTREACHED();
       break;

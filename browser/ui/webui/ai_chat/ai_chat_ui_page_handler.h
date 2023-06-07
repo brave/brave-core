@@ -13,8 +13,8 @@
 #include <vector>
 
 #include "base/scoped_observation.h"
-#include "brave/components/ai_chat/ai_chat.mojom.h"
-#include "brave/components/ai_chat/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/common/ai_chat.mojom.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"

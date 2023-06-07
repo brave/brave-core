@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "base/notreached.h"
-#include "brave/components/ai_chat/ai_chat.mojom.h"
-#include "brave/components/ai_chat/constants.h"
-#include "brave/components/ai_chat/pref_names.h"
+#include "brave/components/ai_chat/browser/constants.h"
+#include "brave/components/ai_chat/common/ai_chat.mojom.h"
+#include "brave/components/ai_chat/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"

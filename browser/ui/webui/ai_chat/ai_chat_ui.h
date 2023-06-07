@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/ai_chat/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/common/ai_chat.mojom-forward.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/webui_config.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"

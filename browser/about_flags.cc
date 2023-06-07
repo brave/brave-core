@@ -12,6 +12,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
@@ -43,8 +44,8 @@
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/components/ai_chat/features.h"
+#if !BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -412,7 +413,7 @@
 #define BRAVE_SHARED_PINNED_TABS
 #endif
 
-#if !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT                                          \
   EXPAND_FEATURE_ENTRIES({                                     \
       "brave-ai-chat",                                         \

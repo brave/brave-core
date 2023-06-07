@@ -10,8 +10,8 @@
 #include "content/public/common/isolated_world_ids.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/features.h"
-#include "brave/components/ai_chat/renderer/ai_chat_render_frame_observer.h"
+#include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/renderer/page_content_extractor.h"
 #endif
 
 namespace {
@@ -22,9 +22,9 @@ void RenderFrameWithBinderRegistryCreated(
   new feed::RssLinkReader(render_frame, registry);
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
-    new ai_chat::AIRenderFrameObserver(render_frame, registry,
-                                       content::ISOLATED_WORLD_ID_GLOBAL,
-                                       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+    new ai_chat::PageContentExtractor(render_frame, registry,
+                                      content::ISOLATED_WORLD_ID_GLOBAL,
+                                      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
 }
