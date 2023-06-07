@@ -12,6 +12,7 @@
 #include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/build_channel_user_data.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/catalog_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/created_at_timestamp_user_data.h"
@@ -25,39 +26,34 @@
 
 namespace brave_ads {
 
-ConfirmationUserDataBuilder::ConfirmationUserDataBuilder(
-    TransactionInfo transaction)
-    : transaction_(std::move(transaction)) {
-  DCHECK(transaction_.IsValid());
-}
+namespace {
 
-ConfirmationUserDataBuilder::~ConfirmationUserDataBuilder() = default;
-
-void ConfirmationUserDataBuilder::Build(
-    UserDataBuilderCallback callback) const {
-  BuildConversionUserData(
-      transaction_.creative_instance_id, transaction_.confirmation_type,
-      base::BindOnce(&ConfirmationUserDataBuilder::OnGetConversion,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void ConfirmationUserDataBuilder::OnGetConversion(
-    UserDataBuilderCallback callback,
-    base::Value::Dict user_data) const {
+void BuildCallback(const TransactionInfo& transaction,
+                   BuildUserDataCallback callback,
+                   base::Value::Dict user_data) {
   user_data.Merge(BuildBuildChannelUserData());
   user_data.Merge(BuildCatalogUserData());
-  user_data.Merge(BuildCreatedAtTimestampUserData(transaction_));
+  user_data.Merge(BuildCreatedAtTimestampUserData(transaction));
   user_data.Merge(BuildLocaleUserData());
   user_data.Merge(BuildMutatedUserData());
   user_data.Merge(BuildPlatformUserData());
-  user_data.Merge(BuildRotatingHashUserData(transaction_));
-  user_data.Merge(BuildSegmentUserData(transaction_));
+  user_data.Merge(BuildRotatingHashUserData(transaction));
+  user_data.Merge(BuildSegmentUserData(transaction));
   user_data.Merge(BuildStudiesUserData());
   user_data.Merge(BuildVersionNumberUserData());
 
   std::move(callback).Run(std::move(user_data));
+}
+
+}  // namespace
+
+void BuildConfirmationUserData(const TransactionInfo& transaction,
+                               BuildUserDataCallback callback) {
+  CHECK(transaction.IsValid());
+
+  BuildConversionUserData(
+      transaction.creative_instance_id, transaction.confirmation_type,
+      base::BindOnce(&BuildCallback, transaction, std::move(callback)));
 }
 
 }  // namespace brave_ads

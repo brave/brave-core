@@ -56,15 +56,15 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Act
 
   // Assert
-  const ConfirmationUserDataBuilder user_data_builder(transaction);
-  user_data_builder.Build(base::BindOnce([](base::Value::Dict user_data) {
-    std::string json;
-    ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
+  BuildConfirmationUserData(
+      transaction, base::BindOnce([](base::Value::Dict user_data) {
+        std::string json;
+        ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
-    const std::string pattern =
-        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
-    EXPECT_TRUE(RE2::FullMatch(json, pattern));
-  }));
+        const std::string pattern =
+            R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
+        EXPECT_TRUE(RE2::FullMatch(json, pattern));
+      }));
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -94,15 +94,15 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Act
 
   // Assert
-  const ConfirmationUserDataBuilder user_data_builder(transaction);
-  user_data_builder.Build(base::BindOnce([](base::Value::Dict user_data) {
-    std::string json;
-    ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
+  BuildConfirmationUserData(
+      transaction, base::BindOnce([](base::Value::Dict user_data) {
+        std::string json;
+        ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
-    const std::string pattern =
-        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
-    EXPECT_TRUE(RE2::FullMatch(json, pattern));
-  }));
+        const std::string pattern =
+            R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
+        EXPECT_TRUE(RE2::FullMatch(json, pattern));
+      }));
 }
 
 }  // namespace brave_ads
