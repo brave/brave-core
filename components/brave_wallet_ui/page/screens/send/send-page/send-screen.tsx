@@ -13,7 +13,6 @@ import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 
 // Components
 import { Send } from '../send/send'
-import { FeatureRequestButton } from '../../../../components/shared/feature-request-button/feature-request-button'
 
 export const SendScreen = () => {
   // State
@@ -41,7 +40,6 @@ export const SendScreen = () => {
         showSelectTokenModal={showSelectTokenModal}
         selectTokenModalRef={selectTokenModalRef}
       />
-      <FeatureRequestButton />
     </>
   )
 }
