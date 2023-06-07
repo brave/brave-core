@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//components/vector_icons/vector_icons.gni")
@@ -25,7 +26,6 @@ aggregate_vector_icons("brave_vector_icons") {
     "open_in_tor.icon",
     "sidebar_toolbar_button.icon",
     "sidebar_toolbar_button_right.icon",
-    "vpn_indicator.icon",
     "web_discovery_infobar_close_button.icon",
   ]
 
@@ -69,6 +69,14 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_settings.icon",
       "sidebar_trash.icon",
       "vertical_tab_strip_toggle_button.icon",
+    ]
+  }
+
+  if (enable_brave_vpn_panel) {
+    sources += [
+      "vpn_indicator_error.icon",
+      "vpn_indicator_off.icon",
+      "vpn_indicator_on.icon",
     ]
   }
 
