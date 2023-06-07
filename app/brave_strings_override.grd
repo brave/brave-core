@@ -359,6 +359,11 @@ Permissions you've already given to websites and apps may apply to this account.
         <if expr="not use_titlecase">
           </if>
       </if>
+
+      <if expr="is_macosx">
+        </if>
+      <if expr="is_win">
+        </if>
     </messages>
   </release>
 </grit>
