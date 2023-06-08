@@ -170,7 +170,6 @@ public class NetworkStore: ObservableObject {
     }
     return allChains.filter {
       $0.coin == network.coin
-      && $0.symbol == network.symbol
       && !isCustomChain($0)
       && isPrimaryOrTestnetChainId($0.chainId)
     }
