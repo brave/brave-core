@@ -20,12 +20,10 @@ import * as leo from '@brave/leo/tokens/css'
 export const root = styled.div`
   flex: 0 0 auto;
   width: 100%;
-  height: calc(100% + 29px);
   padding: 32px;
   font-family: var(--brave-font-heading);
   text-align: center;
   background-color: ${leo.color.container.background};
-  border-radius: 16px;
 `
 
 export const optInIcon = styled.div`

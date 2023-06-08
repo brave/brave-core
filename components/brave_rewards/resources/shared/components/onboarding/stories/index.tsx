@@ -8,7 +8,7 @@ import * as React from 'react'
 import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
 
-import { RewardsOptInModal } from '../rewards_opt_in_modal'
+import { RewardsOptIn } from '../rewards_opt_in'
 import { SettingsOptInForm } from '../settings_opt_in_form'
 
 import { localeStrings } from './locale_strings'
@@ -42,10 +42,10 @@ export default {
   title: 'Rewards/Onboarding'
 }
 
-export function OptInModal() {
+export function OptIn() {
   return (
     <StoryWrapper>
-      <RewardsOptInModal
+      <RewardsOptIn
         initialView='default'
         availableCountries={['US']}
         defaultCountry={'US'}
@@ -57,10 +57,10 @@ export function OptInModal() {
   )
 }
 
-export function OptInModalDeclareCountry() {
+export function OptInDeclareCountry() {
   return (
     <StoryWrapper>
-      <RewardsOptInModal
+      <RewardsOptIn
         initialView='declare-country'
         availableCountries={['US']}
         defaultCountry={'US'}
@@ -72,12 +72,12 @@ export function OptInModalDeclareCountry() {
   )
 }
 
-OptInModalDeclareCountry.storyName = 'Opt In Modal (declare country)'
+OptInDeclareCountry.storyName = 'Opt In (declare country)'
 
-export function OptInModalSuccess () {
+export function OptInSuccess () {
   return (
     <StoryWrapper>
-      <RewardsOptInModal
+      <RewardsOptIn
         initialView='declare-country'
         availableCountries={['US']}
         defaultCountry={'US'}
@@ -89,12 +89,12 @@ export function OptInModalSuccess () {
   )
 }
 
-OptInModalSuccess.storyName = 'Opt In Modal (success)'
+OptInSuccess.storyName = 'Opt In (success)'
 
-export function OptInModalError1() {
+export function OptInError1() {
   return (
     <StoryWrapper>
-      <RewardsOptInModal
+      <RewardsOptIn
         initialView='declare-country'
         availableCountries={['US']}
         defaultCountry={'US'}
@@ -106,12 +106,12 @@ export function OptInModalError1() {
   )
 }
 
-OptInModalError1.storyName = 'Opt In Modal (Error: wallet generation disabled)'
+OptInError1.storyName = 'Opt In (Error: wallet generation disabled)'
 
-export function OptInModalError2() {
+export function OptInError2() {
   return (
     <StoryWrapper>
-      <RewardsOptInModal
+      <RewardsOptIn
         initialView='declare-country'
         availableCountries={['US']}
         defaultCountry={'US'}
@@ -123,12 +123,12 @@ export function OptInModalError2() {
   )
 }
 
-OptInModalError2.storyName = 'Opt In Modal (Error: country already declared)'
+OptInError2.storyName = 'Opt In (Error: country already declared)'
 
-export function OptInModalError3() {
+export function OptInError3() {
   return (
     <StoryWrapper>
-      <RewardsOptInModal
+      <RewardsOptIn
         initialView='declare-country'
         availableCountries={['US']}
         defaultCountry={'US'}
@@ -140,7 +140,7 @@ export function OptInModalError3() {
   )
 }
 
-OptInModalError3.storyName = 'Opt In Modal (Error: unexpected error)'
+OptInError3.storyName = 'Opt In (Error: unexpected error)'
 
 export function SettingsOptIn () {
   return (

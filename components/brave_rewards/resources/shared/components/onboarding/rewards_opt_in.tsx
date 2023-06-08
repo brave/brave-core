@@ -6,7 +6,6 @@
 import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
-import { Modal } from '../modal'
 import { NewTabLink } from '../new_tab_link'
 import { LoadingIcon } from '../icons/loading_icon'
 import { ErrorIcon } from './icons/error_icon'
@@ -14,7 +13,7 @@ import { CountrySelect } from './country_select'
 
 import * as urls from '../../lib/rewards_urls'
 
-import * as style from './rewards_opt_in_modal.style'
+import * as style from './rewards_opt_in.style'
 
 export type OnboardingResult =
   'success' |
@@ -33,7 +32,7 @@ interface Props {
   onHideResult: () => void
 }
 
-export function RewardsOptInModal (props: Props) {
+export function RewardsOptIn (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const [countryCode, setCountryCode] = React.useState('')
   const [processing, setProcessing] = React.useState(false)
@@ -89,27 +88,25 @@ export function RewardsOptInModal (props: Props) {
     }
 
     return (
-      <Modal hideSpacers={true}>
-        <style.root>
-          <style.header className='onboarding-error'>
+      <style.root>
+        <style.header className='onboarding-error'>
+          {props.result === 'success'
+            ? <style.successIcon /> : <ErrorIcon />}
+          {messages.header}
+        </style.header>
+        <style.text>
+          {messages.text}
+        </style.text>
+        <style.mainAction>
+          <button onClick={props.onHideResult}>
             {props.result === 'success'
-              ? <style.successIcon /> : <ErrorIcon />}
-            {messages.header}
-          </style.header>
-          <style.text>
-            {messages.text}
-          </style.text>
-          <style.mainAction>
-            <button onClick={props.onHideResult}>
-              {props.result === 'success'
-                ? getString('onboardingDone') : getString('onboardingClose')}
-            </button>
-          </style.mainAction>
-          <style.errorCode>
-            {props.result !== 'success' && props.result}
-          </style.errorCode>
-        </style.root>
-      </Modal>
+              ? getString('onboardingDone') : getString('onboardingClose')}
+          </button>
+        </style.mainAction>
+        <style.errorCode>
+          {props.result !== 'success' && props.result}
+        </style.errorCode>
+      </style.root>
     )
   }
 
@@ -120,35 +117,33 @@ export function RewardsOptInModal (props: Props) {
     }
 
     return (
-      <Modal hideSpacers={true}>
-        <style.root>
-          <style.geoPinIcon />
-          <style.header className='country-select'>
-            {getString('onboardingGeoHeader')}
-          </style.header>
-          <style.text>
-            {getString('onboardingGeoText')}
-          </style.text>
-          <style.selectCountry>
-            <CountrySelect
-              countries={props.availableCountries}
-              defaultCountry={props.defaultCountry}
-              placeholderText={getString('onboardingSelectCountry')}
-              value={countryCode}
-              onChange={setCountryCode}
-            />
-          </style.selectCountry>
-          <style.mainAction>
-            <button
-              onClick={onContinueClick}
-              disabled={!countryCode || processing}
-              data-test-id='select-country-button'
-            >
-              {processing ? <LoadingIcon /> : getString('onboardingContinue')}
-            </button>
-          </style.mainAction>
-        </style.root>
-      </Modal>
+      <style.root>
+        <style.geoPinIcon />
+        <style.header className='country-select'>
+          {getString('onboardingGeoHeader')}
+        </style.header>
+        <style.text>
+          {getString('onboardingGeoText')}
+        </style.text>
+        <style.selectCountry>
+          <CountrySelect
+            countries={props.availableCountries}
+            defaultCountry={props.defaultCountry}
+            placeholderText={getString('onboardingSelectCountry')}
+            value={countryCode}
+            onChange={setCountryCode}
+          />
+        </style.selectCountry>
+        <style.mainAction>
+          <button
+            onClick={onContinueClick}
+            disabled={!countryCode || processing}
+            data-test-id='select-country-button'
+          >
+            {processing ? <LoadingIcon /> : getString('onboardingContinue')}
+          </button>
+        </style.mainAction>
+      </style.root>
     )
   }
 
@@ -157,30 +152,28 @@ export function RewardsOptInModal (props: Props) {
   }
 
   return (
-    <Modal hideSpacers={true}>
-      <style.root>
-        <style.optInIcon />
-        <style.optInHeader>
-          {getString('onboardingEarnHeader')}
-        </style.optInHeader>
-        <style.optInText>
-          {getString('onboardingEarnText')}
-        </style.optInText>
-        <style.mainAction>
-          <button
-            onClick={onEnableClick}
-            data-test-id='opt-in-button'
-            autoFocus
-          >
-            {getString('onboardingStartUsingRewards')}
-          </button>
-        </style.mainAction>
-        <style.learnMore>
-          <NewTabLink href={urls.rewardsTourURL}>
-            {getString('rewardsLearnMore')}
-          </NewTabLink>
-        </style.learnMore>
-      </style.root>
-    </Modal>
+    <style.root>
+      <style.optInIcon />
+      <style.optInHeader>
+        {getString('onboardingEarnHeader')}
+      </style.optInHeader>
+      <style.optInText>
+        {getString('onboardingEarnText')}
+      </style.optInText>
+      <style.mainAction>
+        <button
+          onClick={onEnableClick}
+          data-test-id='opt-in-button'
+          autoFocus
+        >
+          {getString('onboardingStartUsingRewards')}
+        </button>
+      </style.mainAction>
+      <style.learnMore>
+        <NewTabLink href={urls.rewardsTourURL}>
+          {getString('rewardsLearnMore')}
+        </NewTabLink>
+      </style.learnMore>
+    </style.root>
   )
 }

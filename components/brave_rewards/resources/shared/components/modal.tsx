@@ -55,13 +55,7 @@ const style = {
 }
 
 interface ModalProps {
-  children: React.ReactNode,
-  hideSpacers?: boolean
-}
-
-const defaultProps: ModalProps = {
-  children: null,
-  hideSpacers: false
+  children: React.ReactNode
 }
 
 export function Modal(props: ModalProps) {
@@ -92,16 +86,14 @@ export function Modal(props: ModalProps) {
 
   return (
     <style.root>
-      {!props.hideSpacers && <style.topSpacer />}
+      <style.topSpacer />
       <style.content ref={onMountUnmount}>
         {props.children}
       </style.content>
-      {!props.hideSpacers && <style.bottomSpacer />}
+      <style.bottomSpacer />
     </style.root>
   )
 }
-
-Modal.defaultProps = defaultProps
 
 interface ModalCloseButtonProps {
   onClick: () => void
