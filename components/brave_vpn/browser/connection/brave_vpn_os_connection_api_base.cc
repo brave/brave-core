@@ -299,7 +299,10 @@ void BraveVPNOSConnectionAPIBase::OnNetworkChanged(
     VLOG(2) << "Network is live, reconnecting";
     return;
   }
-  BraveVPNOSConnectionAPI::OnNetworkChanged(type);
+  // It's rare but sometimes Brave doesn't get vpn status update from OS.
+  // Checking here will make vpn status update properly in that situation.
+  VLOG(2) << __func__ << " : " << type;
+  CheckConnection();
 }
 
 void BraveVPNOSConnectionAPIBase::OnDisconnected() {
@@ -320,14 +323,6 @@ void BraveVPNOSConnectionAPIBase::SetLastConnectionError(
     const std::string& error) {
   VLOG(2) << __func__ << " : " << error;
   last_connection_error_ = error;
-}
-
-void BraveVPNOSConnectionAPIBase::OnNetworkChanged(
-    net::NetworkChangeNotifier::ConnectionType type) {
-  // It's rare but sometimes Brave doesn't get vpn status update from OS.
-  // Checking here will make vpn status update properly in that situation.
-  VLOG(2) << __func__ << " : " << type;
-  CheckConnection();
 }
 
 void BraveVPNOSConnectionAPIBase::UpdateAndNotifyConnectionStateChange(

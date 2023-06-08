@@ -110,10 +110,6 @@ class BraveVPNOSConnectionAPIBase
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            ClearLastConnectionErrorWhenNewConnectionStart);
 
-  // net::NetworkChangeNotifier::NetworkChangeObserver
-  void OnNetworkChanged(
-      net::NetworkChangeNotifier::ConnectionType type) override;
-
   void CreateVPNConnection();
   std::string GetCurrentEnvironment() const;
   void FetchHostnamesForRegion(const std::string& name);
