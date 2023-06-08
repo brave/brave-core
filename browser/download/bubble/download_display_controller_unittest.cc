@@ -103,6 +103,8 @@ class FakeDownloadDisplay : public DownloadDisplay {
 
   void Disable() override { enabled_ = false; }
 
+  bool ShouldShowExclusiveAccessBubble() override { return true; }
+
   void UpdateDownloadIcon(bool show_animation) override {
     icon_state_ = controller_->GetIconInfo().icon_state;
     is_active_ = controller_->GetIconInfo().is_active;
