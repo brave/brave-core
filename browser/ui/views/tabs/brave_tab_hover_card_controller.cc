@@ -42,7 +42,7 @@ void BraveTabHoverCardController::CreateHoverCard(Tab* tab) {
           tab->controller()->GetBrowser()->profile()->GetPrefs())) {
     thumbnail_observer_ = std::make_unique<TabHoverCardThumbnailObserver>();
     thumbnail_subscription_ = thumbnail_observer_->AddCallback(
-        base::BindRepeating(&TabHoverCardController::OnPreviewImageAvaialble,
+        base::BindRepeating(&TabHoverCardController::OnPreviewImageAvailable,
                             weak_ptr_factory_.GetWeakPtr()));
   }
 
