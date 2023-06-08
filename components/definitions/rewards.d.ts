@@ -225,7 +225,7 @@ declare namespace Rewards {
 
   export interface Subdivision {
     name: string
-    code: string
+    subdivision: string
   }
 
   export interface AdsData {
