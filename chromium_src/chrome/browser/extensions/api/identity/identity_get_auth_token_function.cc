@@ -56,7 +56,7 @@
         CompleteMintTokenFlow();                                               \
         /* Forcing interactive mode to try WebAuthFlow interactively. */       \
         interactivity_status_for_consent_ =                                    \
-            InteractivityStatus::kAllowedNoIdleCheck;                          \
+            InteractivityStatus::kAllowedWithActivity;                         \
         StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_INTERACTIVE);   \
         return;                                                                \
       }                                                                        \
