@@ -30,7 +30,6 @@
 - (void)dealloc {
   [[_copyMenuItem menu] setDelegate:nil];
   [[_copyCleanLinkMenuItem menu] setDelegate:nil];
-  [super dealloc];
 }
 
 - (Browser*)getBrowser {
