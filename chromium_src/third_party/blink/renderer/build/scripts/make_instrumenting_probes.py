@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import re
-
 import override_utils
 
 # pylint: disable=line-too-long
@@ -18,8 +16,7 @@ _IS_PG_WEBAPI_PROBES_ENABLED = override_utils.get_gn_arg(
 
 def _add_page_graph_to_config(config):
     config["observers"]["PageGraph"] = {
-        "include_path":
-        "brave/third_party/blink/renderer/core/brave_page_graph",
+        "include_path": "brave/third_party/blink/renderer/core/brave_page_graph",
         "probes": [
             "NodeCreated",
             "DidCommitLoad",
@@ -41,6 +38,7 @@ def _add_page_graph_to_config(config):
             "RegisterPageGraphScriptCompilationFromAttr",
             "RegisterPageGraphEventListenerAdd",
             "RegisterPageGraphEventListenerRemove",
+            "RegisterPageGraphJavaScriptUrl",
         ]
     }
 
@@ -74,6 +72,7 @@ def _add_page_graph_events_to_pidl_source(source):
         void RegisterPageGraphModuleCompilation([Keep] ExecutionContext*, const ReferrerScriptInfo& referrer_info, const ModuleScriptCreationParams& params, v8::Local<v8::Module> script);
         void RegisterPageGraphEventListenerAdd([Keep] EventTarget*, const String& event_type, RegisteredEventListener* registered_listener);
         void RegisterPageGraphEventListenerRemove([Keep] EventTarget*, const String& event_type, RegisteredEventListener* registered_listener);
+        void RegisterPageGraphJavaScriptUrl([Keep] Document*, const KURL& url);
     """
 
     if _IS_PG_WEBAPI_PROBES_ENABLED:
