@@ -176,6 +176,7 @@ var package = Package(
         "SnapKit",
         "Then",
         "Shared",
+        "BraveStrings",
         .product(name: "BigNumber", package: "Swift-BigInt"),
         .product(name: "Algorithms", package: "swift-algorithms"),
         .product(name: "Collections", package: "swift-collections"),
@@ -294,8 +295,6 @@ var package = Package(
       dependencies: [
         "BraveWallet",
         "TestHelpers",
-        "Favicon",
-        "BraveStrings",
         .product(name: "CustomDump", package: "swift-custom-dump")
       ]
     ),
