@@ -221,7 +221,7 @@ bool DebounceRule::ValidateAndParsePatternRegex(
   std::for_each(std::begin(match_results) + 1, std::end(match_results),
                 [parsed_value](re2::StringPiece matched_string) {
                   if (!matched_string.empty()) {
-                    matched_string.AppendToString(parsed_value);
+                    parsed_value->append(matched_string);
                   }
                 });
 
