@@ -48,6 +48,10 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
       'private-search-engines-changed', updatePrivateSearchEngines)
   }
 
+  shouldShowSearchSuggestToggle_() {
+    return !loadTimeData.getBoolean('isGuest')
+  }
+
   shouldShowPrivateSearchProvider_(prefs) {
     // When default search engine is enforced, configured provider is not used.
     // If we install search provider extension, that extension will be used on normal and
