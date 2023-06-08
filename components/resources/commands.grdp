@@ -149,7 +149,7 @@
     Offers and rewards for page
   </message>
   <message name="IDS_IDC_WEBAUTHN">
-    Web authn
+    WebAuthn
   </message>
   <message name="IDS_IDC_SHARING_HUB">
     Sharing hub
@@ -251,7 +251,7 @@
     Dev tools inspect
   </message>
   <message name="IDS_IDC_UPGRADE_DIALOG">
-    Upgrade brave
+    Upgrade Brave
   </message>
   <message name="IDS_IDC_SHOW_AVATAR_MENU">
     Show avatar menu
@@ -401,31 +401,31 @@
     Hide sidebar
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_WALLET_PANEL">
-    Show brave wallet panel
+    Show Brave Wallet panel
   </message>
   <message name="IDS_IDC_CLOSE_BRAVE_WALLET_PANEL">
-    Close brave wallet panel
+    Close Brave Wallet panel
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_VPN_PANEL">
-    Show brave VPN panel
+    Show Brave VPN panel
   </message>
   <message name="IDS_IDC_BRAVE_VPN_MENU">
     Brave VPN menu
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON">
-    Toggle brave VPN toolbar button
+    Toggle Brave VPN toolbar button
   </message>
   <message name="IDS_IDC_SEND_BRAVE_VPN_FEEDBACK">
-    Send brave VPN feedback
+    Send Brave VPN feedback
   </message>
   <message name="IDS_IDC_ABOUT_BRAVE_VPN">
-    About brave VPN
+    About Brave VPN
   </message>
   <message name="IDS_IDC_MANAGE_BRAVE_VPN_PLAN">
-    Manage brave VPN plan
+    Manage Brave VPN plan
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN">
-    Toggle brave VPN
+    Toggle Brave VPN
   </message>
   <message name="IDS_IDC_TOGGLE_TAB_MUTE">
     Toggle tab mute
@@ -443,13 +443,13 @@
     Toggle vertical tabs window title
   </message>
   <message name="IDS_IDC_CONFIGURE_BRAVE_NEWS">
-    Configure brave news
+    Configure Brave News
   </message>
   <message name="IDS_IDC_CONFIGURE_SHORTCUTS">
     Configure shortcuts
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_TALK">
-    Show brave talk
+    Show Brave Talk
   </message>
   <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_ALWAYS">
     Always show bookmark bar
