@@ -60,7 +60,8 @@ public struct WalletConstants {
     BraveWallet.LocalhostChainId,
     BraveWallet.SolanaDevnet,
     BraveWallet.SolanaTestnet,
-    BraveWallet.FilecoinTestnet
+    BraveWallet.FilecoinTestnet,
+    BraveWallet.FilecoinEthereumTestnetChainId
   ]
   
   /// Primary network chain ids
