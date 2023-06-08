@@ -5,6 +5,7 @@
 
 #include "base/android/jni_android.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/build/android/jni_headers/PrivacyHubMetricsFactory_jni.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 
@@ -12,7 +13,7 @@ namespace chrome {
 namespace android {
 static jlong JNI_PrivacyHubMetricsFactory_GetInterfaceToPrivacyHubMetrics(
     JNIEnv* env) {
-  auto pending = g_brave_browser_process->privacy_hub_metrics()->MakeRemote();
+  auto pending = g_brave_browser_process->process_misc_metrics()->privacy_hub_metrics()->MakeRemote();
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }
