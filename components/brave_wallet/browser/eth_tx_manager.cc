@@ -655,15 +655,16 @@ void EthTxManager::OnPublishTransaction(const std::string& chain_id,
 void EthTxManager::MakeFilForwarderTransferData(
     const std::vector<uint8_t>& destination,
     MakeFilForwarderDataCallback callback) {
-  std::string data;
-  if (!filforwarder::Forward(destination, &data)) {
+  absl::optional<std::string> data = filforwarder::Forward(destination);
+
+  if (!data) {
     LOG(ERROR) << "Could not make transfer data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   std::vector<uint8_t> data_decoded;
-  if (!PrefixedHexStringToBytes(data, &data_decoded)) {
+  if (!PrefixedHexStringToBytes(data.value(), &data_decoded)) {
     LOG(ERROR) << "Could not decode data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;

@@ -49,7 +49,8 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
-  groupId: undefined
+  groupId: undefined,
+  finalRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef'
 }
 
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
@@ -94,7 +95,8 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
-  groupId: undefined
+  groupId: undefined,
+  finalRecipient: undefined
 }
 
 export const mockFilSendTransaction: FileCoinTransactionInfo = {
@@ -125,7 +127,8 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   txHash: 'fil-send-tx',
   txParams: [],
   txStatus: BraveWallet.TransactionStatus.Confirmed,
-  txType: BraveWallet.TransactionType.Other
+  txType: BraveWallet.TransactionType.Other,
+  finalRecipient: mockAccount.address
 }
 
 export const mockedErc20ApprovalTransaction = {

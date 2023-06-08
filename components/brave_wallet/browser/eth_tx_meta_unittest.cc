@@ -5,11 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 
+#include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
+#include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -183,6 +186,156 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
                 ->gas_estimation->base_fee_per_gas,
             Uint256ValueToHex(tx1559->gas_estimation().base_fee_per_gas));
+}
+
+TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
+  // FilForwarder final recipient
+  {
+    std::vector<uint8_t> data;
+    PrefixedHexStringToBytes(
+        filforwarder::Forward(
+            FilAddress::FromAddress("f12fopnvzwjwfu3k45sdofngoru6gpokobsbjyl2a")
+                .GetBytes())
+            .value(),
+        &data);
+
+    std::unique_ptr<Eip1559Transaction> tx =
+        std::make_unique<Eip1559Transaction>(
+            *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+                mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                                   "0x3535353535353535353535353535353535353535",
+                                   "0x0de0b6b3a7640000", data, false,
+                                   absl::nullopt),
+                mojom::kFilecoinEthereumMainnetChainId, "0x1E", "0x32",
+                mojom::GasEstimation1559::New(
+                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
+                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
+                    "0x77359400" /* Hex of 2 * 1e9 */,
+                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
+                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
+                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+                    "0xad8075b7a" /* Hex of 46574033786 */))));
+
+    EthTxMeta meta(std::move(tx));
+    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
+              "f12fopnvzwjwfu3k45sdofngoru6gpokobsbjyl2a");
+  }
+
+  // ERC20 transfer final recipient
+  {
+    std::vector<uint8_t> encoded_data;
+    std::string data;
+    EXPECT_TRUE(erc20::Transfer("0x35353535353535353535353535353535353535bb",
+                                10, &data));
+    EXPECT_TRUE(PrefixedHexStringToBytes(data, &encoded_data));
+
+    std::unique_ptr<Eip1559Transaction> tx =
+        std::make_unique<Eip1559Transaction>(
+            *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+                mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                                   "0x3535353535353535353535353535353535353535",
+                                   "0x0de0b6b3a7640000", encoded_data, false,
+                                   absl::nullopt),
+                mojom::kGoerliChainId, "0x1E", "0x32",
+                mojom::GasEstimation1559::New(
+                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
+                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
+                    "0x77359400" /* Hex of 2 * 1e9 */,
+                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
+                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
+                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+                    "0xad8075b7a" /* Hex of 46574033786 */))));
+
+    EthTxMeta meta(std::move(tx));
+    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
+              "0x35353535353535353535353535353535353535bb");
+  }
+
+  // ERC721 safe transfer final recipient
+  {
+    std::vector<uint8_t> encoded_data;
+    std::string data;
+    EXPECT_TRUE(erc721::TransferFromOrSafeTransferFrom(
+        true, "0x3535353535353535353535353535353535353535",
+        "0x35353535353535353535353535353535353535bb", 10, &data));
+    EXPECT_TRUE(PrefixedHexStringToBytes(data, &encoded_data));
+
+    std::unique_ptr<Eip1559Transaction> tx =
+        std::make_unique<Eip1559Transaction>(
+            *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+                mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                                   "0x3535353535353535353535353535353535353535",
+                                   "0x0de0b6b3a7640000", encoded_data, false,
+                                   absl::nullopt),
+                mojom::kGoerliChainId, "0x1E", "0x32",
+                mojom::GasEstimation1559::New(
+                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
+                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
+                    "0x77359400" /* Hex of 2 * 1e9 */,
+                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
+                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
+                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+                    "0xad8075b7a" /* Hex of 46574033786 */))));
+
+    EthTxMeta meta(std::move(tx));
+    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
+              "0x35353535353535353535353535353535353535bb");
+  }
+
+  // ERC721 unsafe transfer final recipient
+  {
+    std::vector<uint8_t> encoded_data;
+    std::string data;
+    EXPECT_TRUE(erc721::TransferFromOrSafeTransferFrom(
+        false, "0x3535353535353535353535353535353535353535",
+        "0x35353535353535353535353535353535353535bb", 10, &data));
+    EXPECT_TRUE(PrefixedHexStringToBytes(data, &encoded_data));
+
+    std::unique_ptr<Eip1559Transaction> tx =
+        std::make_unique<Eip1559Transaction>(
+            *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+                mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                                   "0x3535353535353535353535353535353535353535",
+                                   "0x0de0b6b3a7640000", encoded_data, false,
+                                   absl::nullopt),
+                mojom::kGoerliChainId, "0x1E", "0x32",
+                mojom::GasEstimation1559::New(
+                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
+                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
+                    "0x77359400" /* Hex of 2 * 1e9 */,
+                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
+                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
+                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+                    "0xad8075b7a" /* Hex of 46574033786 */))));
+
+    EthTxMeta meta(std::move(tx));
+    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
+              "0x35353535353535353535353535353535353535bb");
+  }
+
+  // Just ETH transfer
+  {
+    std::unique_ptr<Eip1559Transaction> tx =
+        std::make_unique<Eip1559Transaction>(
+            *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+                mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                                   "0x3535353535353535353535353535353535353535",
+                                   "0x0de0b6b3a7640000", std::vector<uint8_t>(),
+                                   false, absl::nullopt),
+                mojom::kGoerliChainId, "0x1E", "0x32",
+                mojom::GasEstimation1559::New(
+                    "0x3b9aca00" /* Hex of 1 * 1e9 */,
+                    "0xaf16b1600" /* Hex of 47 * 1e9 */,
+                    "0x77359400" /* Hex of 2 * 1e9 */,
+                    "0xb2d05e000" /* Hex of 48 * 1e9 */,
+                    "0xb2d05e00" /* Hex of 3 * 1e9 */,
+                    "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+                    "0xad8075b7a" /* Hex of 46574033786 */))));
+
+    EthTxMeta meta(std::move(tx));
+    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
+              "0x35353535353535353535353535353535353535bb");
+  }
 }
 
 }  // namespace brave_wallet

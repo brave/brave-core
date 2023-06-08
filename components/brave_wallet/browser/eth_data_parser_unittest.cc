@@ -930,4 +930,30 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
   EXPECT_EQ(tx_args[2], "0x1c6bad5");
 }
 
+TEST(EthDataParser, GetTransactionInfoFromFilForward) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+
+  std::vector<uint8_t> data;
+  ASSERT_TRUE(
+      PrefixedHexStringToBytes("0xd948d468"  // forward(bytes)
+                               "00000000000000000000000000000000000000000000000"
+                               "00000000000000020"  // bytes offset
+                               "00000000000000000000000000000000000000000000000"
+                               "00000000000000015"  // bytes length
+                               "01d15cf6d7364d8b4dab9d90dc5699d1a78cf729c100000"
+                               "00000000000000000",  // bytes content
+                               &data));
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, absl::nullopt);
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHFilForwarderTransfer);
+  ASSERT_EQ(tx_params.size(), 1UL);
+  ASSERT_EQ(tx_args.size(), 1UL);
+  ASSERT_EQ(tx_params[0], "bytes");
+  ASSERT_EQ(tx_args[0], "0x01d15cf6d7364d8b4dab9d90dc5699d1a78cf729c1");
+}
+
 }  // namespace brave_wallet

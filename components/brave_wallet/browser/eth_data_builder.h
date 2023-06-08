@@ -20,7 +20,7 @@ namespace filforwarder {
 
 // Allows to forward funds from FEVM account fo FVM account
 // https://github.com/lotus-web3/FilForwarder/blob/main/contracts/FilForwarder.sol
-bool Forward(const std::vector<uint8_t>& destination, std::string* data);
+absl::optional<std::string> Forward(const std::vector<uint8_t>& destination);
 
 }  // namespace filforwarder
 
