@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.suggestions.tile;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.chromium.base.Log;
@@ -41,6 +42,13 @@ public class BraveTileView extends TileView {
                         getResources().getColor(R.color.brave_state_time_count_color));
                 mTitleView.setShadowLayer(
                         18, 0, 0, getResources().getColor(R.color.onboarding_black));
+                if (mTitleView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                    ViewGroup.MarginLayoutParams params =
+                            (ViewGroup.MarginLayoutParams) mTitleView.getLayoutParams();
+                    params.bottomMargin = getResources().getDimensionPixelSize(
+                            R.dimen.tile_view_icon_background_margin_top_modern);
+                    mTitleView.setLayoutParams(params);
+                }
             }
         } else {
             Log.w(TAG, "Attempt to access profile before native initialization");
