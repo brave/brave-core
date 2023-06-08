@@ -8,6 +8,15 @@
  * features - it basically exists to mount our React page inside, and to not
  * let it be affected by any of the conditional templating upstairs.
  */
+
+import { loadTimeData } from "chrome://resources/js/load_time_data.js"
+
+// Unfortunately, our current WebPack build does not support ESModule output and
+// it expects loadTimeData to be on the globalThis. The settings page has been
+// migrated to use the ESModule version of loadTimeData and strings.m.js. For
+// now, this provides a shim between the old and the new system.
+(window as any).loadTimeData = loadTimeData
+
 class ShortcutsPage extends HTMLElement {
   connectedCallback() {
     this.attachShadow({ mode: 'open' })

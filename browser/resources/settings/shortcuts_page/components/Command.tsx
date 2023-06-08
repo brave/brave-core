@@ -13,6 +13,7 @@ import { stringToKeys } from '../utils/accelerator'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { color, spacing } from '@brave/leo/tokens/css'
+import { getLocale } from '$web-common/locale'
 
 const Grid = styled.div`
   display: grid;
@@ -91,7 +92,7 @@ export default function Command({
           kind="plain-faint"
           onClick={() => commandsCache.reset(command.id)}
         >
-          Reset
+          {getLocale('shortcutsPageResetCommand')}
         </Button>
       )}
       <Button
@@ -100,7 +101,7 @@ export default function Command({
         disabled={adding}
         onClick={() => setAdding(true)}
       >
-        Add
+        {getLocale('shortcutsPageAddShortcut')}
       </Button>
       {adding && (
         <ConfigureShortcut
