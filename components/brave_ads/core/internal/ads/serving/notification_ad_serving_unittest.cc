@@ -28,6 +28,9 @@ class BraveAdsNotificationAdServingTest : public NotificationAdServingDelegate,
   void SetUp() override {
     UnitTestBase::SetUp();
 
+    NotifyBrowserDidBecomeActive();
+    NotifyBrowserDidEnterForeground();
+
     ForceNotificationAdServingVersion(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
