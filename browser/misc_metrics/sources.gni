@@ -12,6 +12,13 @@ brave_browser_misc_metrics_sources = [
   "//brave/browser/misc_metrics/process_misc_metrics.h",
 ]
 
+if (!is_android) {
+  brave_browser_misc_metrics_sources += [
+    "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
+    "//brave/browser/misc_metrics/vertical_tab_metrics.h",
+  ]
+}
+
 brave_browser_misc_metrics_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/profiles:util",

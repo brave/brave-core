@@ -5,19 +5,22 @@
 
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
+
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/misc_metrics/vertical_tab_metrics.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #else
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #endif
-#include "components/prefs/pref_registry_simple.h"
-#include "components/prefs/pref_service.h"
 
 namespace misc_metrics {
 
 ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
 #if !BUILDFLAG(IS_ANDROID)
   menu_metrics_ = std::make_unique<MenuMetrics>(local_state);
+  vertical_tab_metrics_ = std::make_unique<VerticalTabMetrics>(local_state);
 #else
   privacy_hub_metrics_ =
       std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state());
@@ -30,6 +33,10 @@ ProcessMiscMetrics::~ProcessMiscMetrics() = default;
 MenuMetrics* ProcessMiscMetrics::menu_metrics() {
   return menu_metrics_.get();
 }
+
+VerticalTabMetrics* ProcessMiscMetrics::vertical_tab_metrics() {
+  return vertical_tab_metrics_.get();
+}
 #else
 PrivacyHubMetrics* ProcessMiscMetrics::privacy_hub_metrics() {
   return privacy_hub_metrics_.get();
@@ -37,7 +44,12 @@ PrivacyHubMetrics* ProcessMiscMetrics::privacy_hub_metrics() {
 #endif
 
 void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
+#if !BUILDFLAG(IS_ANDROID)
   MenuMetrics::RegisterPrefs(registry);
+  VerticalTabMetrics::RegisterPrefs(registry);
+#else
+  PrivacyHubMetrics::RegisterPrefs(registry);
+#endif
 }
 
 }  // namespace misc_metrics
