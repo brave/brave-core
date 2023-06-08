@@ -301,11 +301,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2 },
         { "boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON },
 
-        // Brave Talk prompt
-        { "braveTalkPromptTitle", IDS_BRAVE_TALK_PROMPT_TITLE },
-        { "braveTalkPromptDescription", IDS_BRAVE_TALK_PROMPT_DESCRIPTION },
-        { "braveTalkPromptAction", IDS_BRAVE_TALK_PROMPT_ACTION },
-
         // Rewards widget
         { "rewardsAboutRewards", IDS_REWARDS_WIDGET_ABOUT_REWARDS },
         { "rewardsAdGrantAmount", IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT },
