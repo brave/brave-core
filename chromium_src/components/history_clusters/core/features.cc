@@ -10,7 +10,6 @@
 namespace history_clusters::internal {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kHideVisits, base::FEATURE_DISABLED_BY_DEFAULT},
     {kHistoryClustersInternalsPage, base::FEATURE_DISABLED_BY_DEFAULT},
     {kHistoryClustersNavigationContextClustering,
      base::FEATURE_DISABLED_BY_DEFAULT},

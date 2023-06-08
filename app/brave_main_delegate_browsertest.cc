@@ -183,7 +183,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &history_clusters::kSidePanelJourneys,
     &history_clusters::features::kOnDeviceClustering,
     &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
-    &history_clusters::internal::kHideVisits,
     &history_clusters::internal::kHistoryClustersInternalsPage,
     &history_clusters::internal::kHistoryClustersNavigationContextClustering,
     &history_clusters::internal::kJourneys,
