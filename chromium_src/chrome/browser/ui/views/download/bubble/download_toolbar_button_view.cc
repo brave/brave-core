@@ -57,7 +57,7 @@ SkColor DownloadToolbarButtonView::GetIconColor() const {
 
 void DownloadToolbarButtonView::PaintButtonContents(gfx::Canvas* canvas) {
   // Don't draw anything but alert icon when insecure download is in-progress.
-  if (HasInsecureDownloads(bubble_controller()->GetMainView())) {
+  if (HasInsecureDownloads()) {
     return;
   }
 
@@ -72,7 +72,7 @@ void DownloadToolbarButtonView::UpdateIcon() {
   DownloadToolbarButtonViewChromium::UpdateIcon();
 
   // Replace Icon when insecure download is in-progress.
-  if (HasInsecureDownloads(bubble_controller()->GetMainView())) {
+  if (HasInsecureDownloads()) {
     const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
     SkColor icon_color =
         GetColorProvider()->GetColor(ui::kColorAlertMediumSeverityIcon);
@@ -95,9 +95,17 @@ void DownloadToolbarButtonView::UpdateIcon() {
   }
 }
 
-bool DownloadToolbarButtonView::HasInsecureDownloads(
-    const std::vector<DownloadUIModel::DownloadUIModelPtr>& models) const {
-  return base::ranges::any_of(models, [](const auto& model) {
+bool DownloadToolbarButtonView::HasInsecureDownloads() {
+  auto* update_service = bubble_controller()->update_service();
+  if (!update_service || !update_service->IsInitialized()) {
+    return false;
+  }
+
+  std::vector<DownloadUIModel::DownloadUIModelPtr> all_models;
+  update_service->GetAllModelsToDisplay(all_models,
+                                        /*force_backfill_download_items=*/true);
+
+  return base::ranges::any_of(all_models, [](const auto& model) {
     return (model->GetInsecureDownloadStatus() ==
                 download::DownloadItem::InsecureDownloadStatus::BLOCK ||
             model->GetInsecureDownloadStatus() ==
