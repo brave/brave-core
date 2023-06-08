@@ -1889,11 +1889,17 @@ void AdsServiceImpl::Log(const std::string& file,
 void AdsServiceImpl::OnBrowserDidEnterForeground() {
   if (bat_ads_client_notifier_.is_bound()) {
     bat_ads_client_notifier_->NotifyBrowserDidEnterForeground();
+#if BUILDFLAG(IS_ANDROID)
+    bat_ads_client_notifier_->NotifyBrowserDidBecomeActive();
+#endif  // BUILDFLAG(IS_ANDROID)
   }
 }
 
 void AdsServiceImpl::OnBrowserDidEnterBackground() {
   if (bat_ads_client_notifier_.is_bound()) {
+#if BUILDFLAG(IS_ANDROID)
+    bat_ads_client_notifier_->NotifyBrowserDidResignActive();
+#endif  // BUILDFLAG(IS_ANDROID)
     bat_ads_client_notifier_->NotifyBrowserDidEnterBackground();
   }
 }

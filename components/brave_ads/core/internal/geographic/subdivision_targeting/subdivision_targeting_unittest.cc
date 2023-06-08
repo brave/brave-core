@@ -38,11 +38,6 @@ class BraveAdsSubdivisionTargetingTest : public UnitTestBase {
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
-  void MaybeFetch() {
-    NotifyDidInitializeAds();
-    task_environment_.RunUntilIdle();
-  }
-
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
 };
 
@@ -112,7 +107,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
 
@@ -130,7 +125,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
 
@@ -148,7 +143,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
 
@@ -165,7 +160,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "CA");
 
   // Act
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
@@ -182,7 +177,7 @@ TEST_F(
   MockHttpOkUrlResponse(/*country*/ "US", /*region*/ "NO REGION");
 
   // Act
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
@@ -196,7 +191,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   MockHttpOkUrlResponse(/*country*/ "XX", /*region*/ "XX");
 
   // Act
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
@@ -209,7 +204,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest, ShouldAutoDetectForUnsupportedLocale) {
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"xx_XX"};
 
   // Act
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
@@ -223,7 +218,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   SetDefaultStringPref(prefs::kSubdivisionTargetingSubdivision, "DISABLED");
 
   // Act
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
@@ -238,7 +233,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
                        "US-CA");
 
   // Act
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
@@ -253,7 +248,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest, ShouldNotAllowIfCountryIsUnsupported) {
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"xx_XX"};
 
   // Act
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
@@ -267,7 +262,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   SetDefaultStringPref(prefs::kSubdivisionTargetingSubdivision, "CA-QC");
 
   // Act
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
@@ -280,7 +275,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   // Arrange
 
   // Act
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
@@ -300,7 +295,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
                            /*country*/ "US", /*region*/ "CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Act
   FastForwardClockToNextPendingTask();
@@ -326,7 +321,7 @@ TEST_P(BraveAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest,
                            /*country*/ "US", /*region*/ "CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   // Act
   FastForwardClockToNextPendingTask();

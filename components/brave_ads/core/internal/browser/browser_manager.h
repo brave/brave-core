@@ -29,21 +29,11 @@ class BrowserManager final : public AdsClientNotifierObserver {
   void AddObserver(BrowserManagerObserver* observer);
   void RemoveObserver(BrowserManagerObserver* observer);
 
-  void SetBrowserIsActive(const bool is_active) { is_active_ = is_active; }
-  bool IsBrowserActive() const { return is_active_ && is_in_foreground_; }
+  bool IsBrowserActive() const { return is_active_; }
 
-  void SetBrowserIsInForeground(const bool is_in_foreground) {
-    is_in_foreground_ = is_in_foreground;
-  }
   bool IsBrowserInForeground() const { return is_in_foreground_; }
 
  private:
-  // AdsClientNotifierObserver:
-  void OnNotifyBrowserDidBecomeActive() override;
-  void OnNotifyBrowserDidResignActive() override;
-  void OnNotifyBrowserDidEnterForeground() override;
-  void OnNotifyBrowserDidEnterBackground() override;
-
   void NotifyBrowserDidBecomeActive() const;
   void NotifyBrowserDidResignActive() const;
   void LogBrowserActiveState() const;
@@ -51,6 +41,13 @@ class BrowserManager final : public AdsClientNotifierObserver {
   void NotifyBrowserDidEnterForeground() const;
   void NotifyBrowserDidEnterBackground() const;
   void LogBrowserForegroundState() const;
+
+  // AdsClientNotifierObserver:
+  void OnNotifyDidInitializeAds() override;
+  void OnNotifyBrowserDidBecomeActive() override;
+  void OnNotifyBrowserDidResignActive() override;
+  void OnNotifyBrowserDidEnterForeground() override;
+  void OnNotifyBrowserDidEnterBackground() override;
 
   base::ObserverList<BrowserManagerObserver> observers_;
 

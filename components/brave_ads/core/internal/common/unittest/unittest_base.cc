@@ -269,6 +269,7 @@ void UnitTestBase::MockDefaultAdsClient() {
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
   MockIsBrowserActive(ads_client_mock_, true);
+
   MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
   MockCanShowNotificationAds(ads_client_mock_, true);

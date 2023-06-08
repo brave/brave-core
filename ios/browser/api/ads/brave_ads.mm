@@ -475,12 +475,14 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return;
   }
   adsClientNotifier->NotifyBrowserDidEnterForeground();
+  adsClientNotifier->NotifyBrowserDidBecomeActive();
 }
 
 - (void)applicationDidBackground {
   if (![self isAdsServiceRunning]) {
     return;
   }
+  adsClientNotifier->NotifyBrowserDidResignActive();
   adsClientNotifier->NotifyBrowserDidEnterBackground();
 }
 
