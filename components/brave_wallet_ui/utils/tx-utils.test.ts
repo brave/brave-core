@@ -2,9 +2,22 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+import { mockAccount, mockNetwork } from '../common/constants/mocks'
+import { SwapExchangeProxy } from '../common/constants/registry'
+import { BraveWallet } from '../constants/types'
+import { makeNetworkAsset } from '../options/asset-options'
+import {
+  mockBasicAttentionToken,
+  mockBitcoinErc20Token,
+  mockErc20TokensList
+} from '../stories/mock-data/mock-asset-options'
 import { mockFilSendTransaction, mockTransactionInfo } from '../stories/mock-data/mock-transaction-info'
 import Amount from './amount'
-import { getTransactionGas, getTransactionStatusString } from './tx-utils'
+import {
+  getETHSwapTransactionBuyAndSellTokens,
+  getTransactionGas,
+  getTransactionStatusString
+} from './tx-utils'
 
 describe('Check Transaction Status Strings Value', () => {
   test('Transaction ID 0 should return Unapproved', () => {
@@ -68,5 +81,75 @@ describe('getTransactionGas()', () => {
       ethTxData1559?.maxPriorityFeePerGas || ''
     )
     expect(txGas.gasPrice).toBe(ethTxData1559?.baseData.gasPrice || '')
+  })
+})
+
+describe('getETHSwapTransactionBuyAndSellTokens', () => {
+  it('should detect the correct but/swap tokens of a transaction', () => {
+
+    const fillPath = `${
+      mockBasicAttentionToken.contractAddress //
+    }${
+      // only the first token has the "0x" prefix
+      mockBitcoinErc20Token.contractAddress.replace('0x', '') //
+    }`
+
+    const sellAmountArg = '1'
+    const minBuyAmountArg = '2'
+
+    const {
+      buyAmountWei,
+      sellAmountWei,
+      buyToken,
+      sellToken
+    } = getETHSwapTransactionBuyAndSellTokens({
+      tokensList: mockErc20TokensList,
+      tx: {
+        chainId: BraveWallet.MAINNET_CHAIN_ID,
+        confirmedTime: { microseconds: Date.now() },
+        createdTime: { microseconds: Date.now() },
+        fromAddress: mockAccount.address,
+        groupId: undefined,
+        id: 'swap',
+        originInfo: undefined,
+        submittedTime: { microseconds: Date.now() },
+        // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
+        txArgs: [fillPath, sellAmountArg, minBuyAmountArg],
+        txDataUnion: {
+          ethTxData1559: {
+            baseData: {
+              data: [],
+              gasLimit: '',
+              gasPrice: '',
+              nonce: '',
+              signedTransaction: '',
+              signOnly: false,
+              to: SwapExchangeProxy,
+              value: ''
+            },
+            chainId: BraveWallet.MAINNET_CHAIN_ID,
+            gasEstimation: undefined,
+            maxFeePerGas: '1',
+            maxPriorityFeePerGas: '1'
+          }
+        },
+        txHash: '123',
+        txParams: [],
+        txStatus: BraveWallet.TransactionStatus.Unapproved,
+        txType: BraveWallet.TransactionType.ETHSwap
+      },
+      nativeAsset: makeNetworkAsset(mockNetwork)
+    })
+
+    expect(buyToken).toBeDefined()
+    expect(sellToken).toBeDefined()
+    expect(sellToken?.contractAddress).toBe(
+      mockBasicAttentionToken.contractAddress
+    )
+    expect(buyToken?.contractAddress).toBe(
+      mockBitcoinErc20Token.contractAddress
+    )
+    expect(buyAmountWei.value?.toString()).toEqual(minBuyAmountArg)
+    expect(sellAmountWei.value?.toString()).toEqual(sellAmountArg)
   })
 })

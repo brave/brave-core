@@ -21,7 +21,11 @@ import {
   TransactionInfo
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
-import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
+import {
+  MAX_UINT256,
+  NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+  UNKNOWN_TOKEN_COINGECKO_ID
+} from '../common/constants/magics'
 import { SwapExchangeProxy } from '../common/constants/registry'
 
 // utils
@@ -430,7 +434,24 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
     .map(address =>
       address === NATIVE_ASSET_CONTRACT_ADDRESS_0X
         ? nativeAsset
-        : findTokenByContractAddress(address, tokensList) || nativeAsset
+        : findTokenByContractAddress(address, tokensList) ||
+        // token not found
+        // return a "faked" coin (will need to "discover" it later)
+        {
+          chainId: tx.chainId,
+          coin: getCoinFromTxDataUnion(tx.txDataUnion),
+          contractAddress: address,
+          symbol: '???',
+          isErc20: true,
+          coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
+          name: address,
+          logo: 'chrome://erc-token-images/',
+          tokenId: '',
+          isErc1155: false,
+          isErc721: false,
+          isNft: false,
+          visible: true
+        } as BraveWallet.BlockchainToken
     ).filter((t): t is BraveWallet.BlockchainToken => Boolean(t))
 
   const sellToken = fillTokens.length === 1

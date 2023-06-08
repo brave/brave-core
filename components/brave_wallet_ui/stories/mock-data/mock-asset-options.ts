@@ -64,7 +64,7 @@ export const mockBinanceCoinErc20Token = {
 }
 
 export const mockBitcoinErc20Token = {
-  contractAddress: '4',
+  contractAddress: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
   name: 'Bitcoin',
   symbol: 'BTC',
   logo: BTCIconUrl,
@@ -133,6 +133,14 @@ export const mockMoonCatNFT = {
 
 export const mockAccountAssetOptions: BraveWallet.BlockchainToken[] = [
   mockEthToken,
+  mockBasicAttentionToken,
+  mockBinanceCoinErc20Token,
+  mockBitcoinErc20Token,
+  mockAlgorandErc20Token,
+  mockZrxErc20Token
+]
+
+export const mockErc20TokensList = [
   mockBasicAttentionToken,
   mockBinanceCoinErc20Token,
   mockBitcoinErc20Token,
