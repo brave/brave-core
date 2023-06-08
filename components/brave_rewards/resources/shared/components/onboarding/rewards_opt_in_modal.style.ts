@@ -6,6 +6,12 @@
 import styled from 'styled-components'
 
 import selectCaret from './assets/select_caret.svg'
+import optInIconLight from './assets/optin_icon.svg'
+import optInIconDark from './assets/optin_icon_dark.svg'
+import geoPinIconLight from './assets/geo_pin_icon.svg'
+import geoPinIconDark from './assets/geo_pin_icon_dark.svg'
+import successIconLight from './assets/success_icon.svg'
+import successIconDark from './assets/success_icon_dark.svg'
 
 import { enableRewardsButton } from './css_mixins'
 
@@ -18,19 +24,27 @@ export const root = styled.div`
   padding: 32px;
   font-family: var(--brave-font-heading);
   text-align: center;
-  background-color: var(--brave-palette-white);
+  background-color: ${leo.color.container.background};
   border-radius: 16px;
 `
 
 export const optInIcon = styled.div`
-  .icon {
-    width: 150px;
-    height: 144px;
+  width: 150px;
+  height: 144px;
+  margin-left: auto;
+  margin-right: auto;
+  background-image: url('${optInIconLight}');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .brave-theme-dark & {
+    background-image: url('${optInIconDark}');
   }
 `
 export const optInHeader = styled.div`
   margin-top: 36px;
-  color: ${leo.color.light.text.primary};
+  color: ${leo.color.text.primary};
   font-weight: 500;
   font-size: 22px;
   line-height: 32px;
@@ -38,7 +52,7 @@ export const optInHeader = styled.div`
 
 export const optInText = styled.div`
   margin-top: 8px;
-  color: ${leo.color.light.text.secondary};
+  color: ${leo.color.text.secondary};
   font-size: 14px;
   line-height: 24px;
 `
@@ -59,26 +73,26 @@ export const learnMore = styled.div`
 
 export const geoPinIcon = styled.div`
   margin-top: 11px;
+  width: 276px;
+  height: 145px;
+  margin-left: auto;
+  margin-right: auto;
+  background-image: url('${geoPinIconLight}');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
-  .icon {
-    width: 276px;
-    height: 145px;
+  .brave-theme-dark & {
+    background-image: url('${geoPinIconDark}');
   }
 `
 
 export const header = styled.div`
   margin-top: 48px;
-  color: ${leo.color.light.text.primary};
+  color: ${leo.color.text.primary};
   font-weight: 500;
   font-size: 22px;
   line-height: 32px;
-
-  &.onboarding-success .icon {
-    display: block;
-    margin:  13px auto 90px auto;
-    height: 96px;
-    width: auto;
-  }
 
   &.onboarding-error .icon {
     display: block;
@@ -90,13 +104,28 @@ export const header = styled.div`
 
 export const text = styled.div`
   margin-top: 8px;
-  color: ${leo.color.light.text.secondary};
+  color: ${leo.color.text.secondary};
   font-size: 14px;
   line-height: 24px;
 
   a {
     padding-left: 4px;
     text-decoration: underline;
+  }
+`
+
+export const successIcon = styled.div`
+  display: block;
+  margin:  13px auto 90px auto;
+  height: 90px;
+  width: 315px;
+  background-image: url('${successIconLight}');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  .brave-theme-dark & {
+    background-image: url('${successIconDark}');
   }
 `
 
@@ -111,17 +140,17 @@ export const selectCountry = styled.div`
     background-size: 12px;
     width: 100%;
     border-radius: 8px;
-    color: ${leo.color.light.text.primary};
+    color: ${leo.color.text.primary};
     font-size: 14px;
     line-height: 24px;
     padding: 10px 44px 10px 16px;
 
     &.empty {
-      color: ${leo.color.light.text.secondary};
+      color: ${leo.color.text.secondary};
     }
 
     > option {
-      color: ${leo.color.light.text.primary};
+      color: ${leo.color.text.primary};
       background: ${leo.color.container.background};
     }
   }
@@ -145,7 +174,7 @@ export const mainAction = styled.div`
 `
 
 export const errorCode = styled.div`
-  color: var(--brave-palette-neutral600);
+  color: ${leo.color.text.secondary};
   font-size: 10px;
   line-height: 15px;
   margin-top: 12px;

@@ -8,11 +8,8 @@ import * as React from 'react'
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { Modal } from '../modal'
 import { NewTabLink } from '../new_tab_link'
-import { OptInIcon } from './icons/optin_icon'
 import { LoadingIcon } from '../icons/loading_icon'
 import { ErrorIcon } from './icons/error_icon'
-import { SuccessIcon } from './icons/success_icon'
-import { GeoPinIcon } from './icons/geo_pin_icon'
 import { CountrySelect } from './country_select'
 
 import * as urls from '../../lib/rewards_urls'
@@ -94,10 +91,9 @@ export function RewardsOptInModal (props: Props) {
     return (
       <Modal hideSpacers={true}>
         <style.root>
-          <style.header className={props.result === 'success'
-            ? 'onboarding-success' : 'onboarding-error'}>
+          <style.header className='onboarding-error'>
             {props.result === 'success'
-              ? <div><SuccessIcon /></div> : <ErrorIcon />}
+              ? <style.successIcon /> : <ErrorIcon />}
             {messages.header}
           </style.header>
           <style.text>
@@ -126,9 +122,7 @@ export function RewardsOptInModal (props: Props) {
     return (
       <Modal hideSpacers={true}>
         <style.root>
-          <style.geoPinIcon>
-            <GeoPinIcon />
-          </style.geoPinIcon>
+          <style.geoPinIcon />
           <style.header className='country-select'>
             {getString('onboardingGeoHeader')}
           </style.header>
@@ -165,9 +159,7 @@ export function RewardsOptInModal (props: Props) {
   return (
     <Modal hideSpacers={true}>
       <style.root>
-        <style.optInIcon>
-          <OptInIcon />
-        </style.optInIcon>
+        <style.optInIcon />
         <style.optInHeader>
           {getString('onboardingEarnHeader')}
         </style.optInHeader>

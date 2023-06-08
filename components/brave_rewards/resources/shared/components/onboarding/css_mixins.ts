@@ -20,7 +20,11 @@ export const enableRewardsButton = `
   }
 
   &[disabled] {
-    background: var(--brave-palette-grey200);
+    background: ${leo.color.light.gray[30]};
     cursor: default;
+
+    .brave-theme-dark & {
+      background: ${leo.color.dark.gray[30]};
+    }
   }
 `
