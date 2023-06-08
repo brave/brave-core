@@ -10,7 +10,7 @@ import { ToolbarWrapperStyles } from './style'
 
 import { loadTimeData } from '../../../common/loadTimeData'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
-import Container from './container'
+import Toolbar from './components/toolbar'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
 
@@ -20,7 +20,7 @@ function App () {
   return (
     <BraveCoreThemeProvider>
       <ToolbarWrapperStyles>
-        <Container />
+        <Toolbar />
       </ToolbarWrapperStyles>
     </BraveCoreThemeProvider>
   )

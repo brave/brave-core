@@ -20,13 +20,12 @@ function ReaderModeControl (props: ReaderModeControlProps) {
     <S.Box>
       <span></span>
       <S.Caption>
-        {!props.siteSettings.speedreaderEnabled && <Icon name='product-readermode' />}
-        {props.siteSettings.speedreaderEnabled && <Icon name='product-speedreader' />}
+        <Icon name='product-readermode' />
         {getLocale('braveReaderModeCaption')}
       </S.Caption>
       <S.Button onClick={() => { dataHandler.viewOriginal() }}>
         <Icon name='close' />
-      </S.Button> 
+      </S.Button>
     </S.Box>
   )
 }

@@ -536,17 +536,17 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   };
 
   EXPECT_EQ(speedreader::mojom::Theme::kNone,
-            speedreader_service()->GetContentViewSettings().theme);
+            speedreader_service()->GetAppearanceSettings().theme);
   EXPECT_EQ(speedreader::mojom::FontFamily::kSans,
-            speedreader_service()->GetContentViewSettings().fontFamily);
+            speedreader_service()->GetAppearanceSettings().fontFamily);
   EXPECT_EQ(speedreader::mojom::FontSize::k100,
-            speedreader_service()->GetContentViewSettings().fontSize);
+            speedreader_service()->GetAppearanceSettings().fontSize);
 
   EXPECT_EQ(nullptr, content::EvalJs(contents, GetDataAttribute("data-theme"),
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                      ISOLATED_WORLD_ID_BRAVE_INTERNAL));
-  speedreader_service()->SetContentViewSettings(
-      speedreader::mojom::ContentViewSettings(
+  speedreader_service()->SetAppearanceSettings(
+      speedreader::mojom::AppearanceSettings(
           speedreader::mojom::Theme::kDark, speedreader::mojom::FontSize::k130,
           speedreader::mojom::FontFamily::kDyslexic));
 
@@ -567,11 +567,11 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   EXPECT_EQ("130", EvalAttr(ActiveWebContents(), "data-font-size"));
 
   EXPECT_EQ(speedreader::mojom::Theme::kDark,
-            speedreader_service()->GetContentViewSettings().theme);
+            speedreader_service()->GetAppearanceSettings().theme);
   EXPECT_EQ(speedreader::mojom::FontFamily::kDyslexic,
-            speedreader_service()->GetContentViewSettings().fontFamily);
+            speedreader_service()->GetAppearanceSettings().fontFamily);
   EXPECT_EQ(speedreader::mojom::FontSize::k130,
-            speedreader_service()->GetContentViewSettings().fontSize);
+            speedreader_service()->GetAppearanceSettings().fontSize);
 
   // New page
   NavigateToPageSynchronously(kTestPageReadable);

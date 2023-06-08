@@ -6,5 +6,6 @@
     <message name="IDS_READER_MODE_NOTE_LABEL" desc="Used for note label">Not all sites provide reader mode capabilities.</message>
     <message name="IDS_READER_MODE_CAPTION" desc="Used for toolbar label">Reader mode</message>
     <message name="IDS_READER_MODE_CLOSE" desc="Used for close button in toolbar">Close</message>
+    <message name="IDS_READER_MODE_VOICE" desc="Used for label of the voice dropdown">Voice</message>
   </if>
 </grit-part>

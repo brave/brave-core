@@ -82,24 +82,24 @@ void SpeedreaderToolbarDataHandlerImpl::GetSiteSettings(
 void SpeedreaderToolbarDataHandlerImpl::SetSiteSettings(
     speedreader::mojom::SiteSettingsPtr settings) {
   if (active_tab_helper_) {
-    active_tab_helper_->MaybeToggleEnabledForSite(
-        settings->speedreader_enabled);
+    active_tab_helper_->MaybeToggleEnabledForSite(false);
+    ViewOriginal();
   }
 }
 
-void SpeedreaderToolbarDataHandlerImpl::GetContentViewSettings(
-    GetContentViewSettingsCallback callback) {
+void SpeedreaderToolbarDataHandlerImpl::GetAppearanceSettings(
+    GetAppearanceSettingsCallback callback) {
   if (auto* service = GetSpeedreaderService()) {
-    std::move(callback).Run(service->GetContentViewSettings().Clone());
+    std::move(callback).Run(service->GetAppearanceSettings().Clone());
   } else {
-    std::move(callback).Run(speedreader::mojom::ContentViewSettings::New());
+    std::move(callback).Run(speedreader::mojom::AppearanceSettings::New());
   }
 }
 
-void SpeedreaderToolbarDataHandlerImpl::SetContentViewSettings(
-    speedreader::mojom::ContentViewSettingsPtr view_settings) {
+void SpeedreaderToolbarDataHandlerImpl::SetAppearanceSettings(
+    speedreader::mojom::AppearanceSettingsPtr appearance_settings) {
   if (auto* service = GetSpeedreaderService()) {
-    service->SetContentViewSettings(*view_settings);
+    service->SetAppearanceSettings(*appearance_settings);
   }
 }
 
@@ -211,9 +211,9 @@ SpeedreaderToolbarDataHandlerImpl::GetTabPlaybackState() {
   return speedreader::mojom::PlaybackState::kStopped;
 }
 
-void SpeedreaderToolbarDataHandlerImpl::OnContentViewSettingsChanged(
-    const speedreader::mojom::ContentViewSettings& view_settings) {
-  events_->OnContentViewSettingsChanged(view_settings.Clone());
+void SpeedreaderToolbarDataHandlerImpl::OnAppearanceSettingsChanged(
+    const speedreader::mojom::AppearanceSettings& appearance_settings) {
+  events_->OnAppearanceSettingsChanged(appearance_settings.Clone());
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnTtsSettingsChanged(

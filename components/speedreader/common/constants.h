@@ -14,6 +14,7 @@ namespace speedreader {
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveReaderModeCaption", IDS_READER_MODE_CAPTION},
     {"braveReaderModeClose", IDS_READER_MODE_CLOSE},
+    {"braveReaderModeVoice", IDS_READER_MODE_VOICE},
 };
 
 }  // namespace speedreader

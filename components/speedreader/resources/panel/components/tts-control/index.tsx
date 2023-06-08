@@ -63,7 +63,7 @@ function TtsControl(props: TtsControlProps) {
       />
       <S.VDelemiter />
       <S.Voice>
-        <span>Voice</span>
+        <span>{getLocale('braveReaderModeVoice')}</span>
         <span>
           <select
             value={props.ttsSettings.voice}

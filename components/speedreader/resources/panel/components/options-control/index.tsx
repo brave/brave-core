@@ -8,33 +8,33 @@ import * as React from 'react'
 import * as S from './style'
 import ThemeControl from '../theme-control'
 
-import { ContentViewSettings, Theme, FontSize, FontFamily } from '../../api/browser'
+import { AppearanceSettings, Theme, FontSize, FontFamily } from '../../api/browser'
 import { FontStyleList, FontSizeList } from '../lists'
 import { getLocale } from '$web-common/locale'
 
-interface OptionsControlProps {
-  contentViewSettings: ContentViewSettings
+interface AppearanceControlProps {
+  appearanceSettings: AppearanceSettings
   onThemeChange: (theme: Theme) => void
   onFontFamilyChange: (fontFamily: FontFamily) => void
   onFontSizeChange: (fontSize: FontSize) => void
   onClose: () => void
 }
 
-function OptionsControl(props: OptionsControlProps) {
+function AppearanceControl (props: AppearanceControlProps) {
   return (
     <S.Box>
       <ThemeControl
-        activeTheme={props.contentViewSettings.theme}
+        activeTheme={props.appearanceSettings.theme}
         onClick={props.onThemeChange}
       />
       <S.VDelemiter />
       <FontStyleList
-        activeFontFamily={props.contentViewSettings.fontFamily}
+        activeFontFamily={props.appearanceSettings.fontFamily}
         onClick={props.onFontFamilyChange}
       />
       <S.VDelemiter />
       <FontSizeList
-        currentSize={props.contentViewSettings.fontSize}
+        currentSize={props.appearanceSettings.fontSize}
         onClick={props.onFontSizeChange}
       />
       <S.VDelemiter />
@@ -45,4 +45,4 @@ function OptionsControl(props: OptionsControlProps) {
   )
 }
 
-export default OptionsControl
+export default AppearanceControl

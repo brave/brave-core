@@ -28,7 +28,7 @@ const mainButtonsOptions = [
     id: 'tts',
     type: MainButtonType.TextToSpeech,
     iconName: 'headphones',
-    hidden: false  // TODO(boocmp): Enable in future PR.
+    hidden: true  // TODO(boocmp): Enable in future PR.
   },
   {
     id: 'speedreader',
@@ -83,24 +83,24 @@ function ListBox(props: React.PropsWithChildren<{}>) {
   )
 }
 
-function Option(props: OptionType) {
+function ControlButton(props: OptionType) {
   const handleClick = () => {
     props.onClick?.()
   }
 
-  const optionClass = classnames({
+  const buttonClass = classnames({
     'is-active': props.isSelected,
-    'group': props?.inGroup
   })
 
   return (
     <S.Button
       id={props?.id}
       role="option"
-      className={optionClass}
+      className={buttonClass}
       aria-selected={props.isSelected}
       aria-label={props?.ariaLabel}
       onClick={handleClick}
+      inGroup={props?.inGroup}
     >
       {props.children}
     </S.Button>
@@ -121,14 +121,14 @@ export function MainButtonsList(props: MainButtonsListProps) {
     <ListBox>
       {mainButtonsOptions.filter(entry => { return !entry?.hidden }).map(entry => {
         return (
-          <Option
+          <ControlButton
             id={entry.id}
             key={entry.type}
             isSelected={props.activeButton === entry.type}
             onClick={handleClick.bind(this, entry.type)}
           >
             <Icon name={entry.iconName} />
-          </Option>
+          </ControlButton>
         )
       })}
     </ListBox>
@@ -149,7 +149,7 @@ export function FontStyleList(props: FontStyleListProps) {
     <ListBox>
       {fontStyleOptions.map(entry => {
         return (
-          <Option
+          <ControlButton
             id={entry?.id}
             key={entry.family}
             isSelected={props.activeFontFamily === entry.family}
@@ -157,7 +157,7 @@ export function FontStyleList(props: FontStyleListProps) {
             onClick={handleClick.bind(this, entry.family)}
           >
             <Icon name={entry.iconName} />
-          </Option>
+          </ControlButton>
         )
       })}
     </ListBox>
@@ -188,26 +188,26 @@ export function FontSizeList(props: FontSizeListProps) {
 
   return (
     <ListBox>
-      <Option
+      <ControlButton
         id='font-size-decrease'
         inGroup={true}
         isSelected={false}
         onClick={() => updateSize(ActionType.Dec)}
       >
         <Icon name='minus' />
-      </Option>
-      <S.CurrentState className='group' disabled={true}>
+      </ControlButton>
+      <S.CurrentStateIndicator className='group'>
         <Icon name='font-size' />
         <span>{props.currentSize}% </span>
-      </S.CurrentState>
-      <Option
+      </S.CurrentStateIndicator>
+      <ControlButton
         id='font-size-increase'
         inGroup={true}
         isSelected={false}
         onClick={() => updateSize(ActionType.Inc)}
       >
         <Icon name='plus-add' />
-      </Option>
+      </ControlButton>
     </ListBox>
   )
 }
@@ -228,14 +228,14 @@ interface PlaybackControlProps {
 export function PlaybackControl(props: PlaybackControlProps) {
   return (
     <ListBox>
-      <Option
+      <ControlButton
         inGroup={true}
         isSelected={false}
         onClick={() => { props.onClick?.(Playback.Rewind) }}
       >
         <Icon name='rewind-outline' />
-      </Option>
-      <Option
+      </ControlButton>
+      <ControlButton
         inGroup={true}
         isSelected={false}
         onClick={() => {
@@ -257,14 +257,14 @@ export function PlaybackControl(props: PlaybackControlProps) {
           {props.playbackState === PlaybackState.kPlayingThisPage && <Icon name='pause-outline' />}
           {props.playbackState === PlaybackState.kPlayingAnotherPage && <Icon name='pause-outline' />}
         </div>
-      </Option>
-      <Option
+      </ControlButton>
+      <ControlButton
         inGroup={true}
         isSelected={false}
         onClick={() => { props.onClick?.(Playback.Forward) }}
       >
         <Icon name='forward-outline' />
-      </Option>
+      </ControlButton>
     </ListBox>
   )
 }
@@ -293,24 +293,24 @@ export function PlaybackSpeedControl(props: PlaybackSpeedControlProps) {
 
   return (
     <ListBox>
-      <Option
+      <ControlButton
         inGroup={true}
         isSelected={false}
         onClick={() => updateSpeed(ActionType.Dec)}
       >
         <Icon name='minus' />
-      </Option>
-      <S.CurrentState className='group' disabled={true}>
+      </ControlButton>
+      <S.CurrentStateIndicator className='group'>
         <Icon name='speed' />
         {props.speed}%
-      </S.CurrentState>
-      <Option
+      </S.CurrentStateIndicator>
+      <ControlButton
         inGroup={true}
         isSelected={false}
         onClick={() => updateSpeed(ActionType.Inc)}
       >
         <Icon name='plus-add' />
-      </Option>
+      </ControlButton>
     </ListBox>
   )
 }

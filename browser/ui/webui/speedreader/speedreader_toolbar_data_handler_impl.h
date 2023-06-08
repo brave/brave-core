@@ -57,9 +57,9 @@ class SpeedreaderToolbarDataHandlerImpl
   void GetSiteSettings(GetSiteSettingsCallback callback) override;
   void SetSiteSettings(speedreader::mojom::SiteSettingsPtr settings) override;
 
-  void GetContentViewSettings(GetContentViewSettingsCallback callback) override;
-  void SetContentViewSettings(
-      speedreader::mojom::ContentViewSettingsPtr view_settings) override;
+  void GetAppearanceSettings(GetAppearanceSettingsCallback callback) override;
+  void SetAppearanceSettings(
+      speedreader::mojom::AppearanceSettingsPtr appearance_settings) override;
 
   void GetTtsSettings(GetTtsSettingsCallback callback) override;
   void SetTtsSettings(speedreader::mojom::TtsSettingsPtr settings) override;
@@ -85,8 +85,8 @@ class SpeedreaderToolbarDataHandlerImpl
   speedreader::mojom::PlaybackState GetTabPlaybackState();
 
   // speedreader::SpeedreaderService::Observer:
-  void OnContentViewSettingsChanged(
-      const speedreader::mojom::ContentViewSettings& view_settings) override;
+  void OnAppearanceSettingsChanged(const speedreader::mojom::AppearanceSettings&
+                                       appearance_settings) override;
   void OnTtsSettingsChanged(
       const speedreader::mojom::TtsSettings& tts_settings) override;
 

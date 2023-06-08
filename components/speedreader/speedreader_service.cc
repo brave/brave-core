@@ -166,31 +166,31 @@ void SpeedreaderService::IncrementPromptCount() {
   prefs_->SetInteger(kSpeedreaderPrefPromptCount, count + 1);
 }
 
-void SpeedreaderService::SetContentViewSettings(
-    const mojom::ContentViewSettings& view_settings) {
+void SpeedreaderService::SetAppearanceSettings(
+    const mojom::AppearanceSettings& appearance_settings) {
   prefs_->SetInteger(kSpeedreaderPrefTheme,
-                     static_cast<int>(view_settings.theme));
+                     static_cast<int>(appearance_settings.theme));
   prefs_->SetInteger(kSpeedreaderPrefFontSize,
-                     static_cast<int>(view_settings.fontSize));
+                     static_cast<int>(appearance_settings.fontSize));
   prefs_->SetInteger(kSpeedreaderPrefFontFamily,
-                     static_cast<int>(view_settings.fontFamily));
+                     static_cast<int>(appearance_settings.fontFamily));
 
   for (auto& o : observers_) {
-    o.OnContentViewSettingsChanged(view_settings);
+    o.OnAppearanceSettingsChanged(appearance_settings);
   }
 }
 
-mojom::ContentViewSettings SpeedreaderService::GetContentViewSettings() const {
-  mojom::ContentViewSettings view_settings;
+mojom::AppearanceSettings SpeedreaderService::GetAppearanceSettings() const {
+  mojom::AppearanceSettings appearance_settings;
 
-  view_settings.theme =
+  appearance_settings.theme =
       static_cast<mojom::Theme>(prefs_->GetInteger(kSpeedreaderPrefTheme));
-  view_settings.fontSize =
+  appearance_settings.fontSize =
       static_cast<FontSize>(prefs_->GetInteger(kSpeedreaderPrefFontSize));
-  view_settings.fontFamily =
+  appearance_settings.fontFamily =
       static_cast<FontFamily>(prefs_->GetInteger(kSpeedreaderPrefFontFamily));
 
-  return view_settings;
+  return appearance_settings;
 }
 
 void SpeedreaderService::SetTtsSettings(
@@ -214,7 +214,7 @@ mojom::TtsSettings SpeedreaderService::GetTtsSettings() const {
 }
 
 std::string SpeedreaderService::GetThemeName() const {
-  const auto settings = GetContentViewSettings();
+  const auto settings = GetAppearanceSettings();
   switch (settings.theme) {
     default:
       return {};
@@ -231,11 +231,11 @@ std::string SpeedreaderService::GetThemeName() const {
 
 std::string SpeedreaderService::GetFontSizeName() const {
   return base::NumberToString(
-      static_cast<int>(GetContentViewSettings().fontSize));
+      static_cast<int>(GetAppearanceSettings().fontSize));
 }
 
 std::string SpeedreaderService::GetFontFamilyName() const {
-  switch (GetContentViewSettings().fontFamily) {
+  switch (GetAppearanceSettings().fontFamily) {
     case FontFamily::kSans:
       return "sans";
     case FontFamily::kSerif:

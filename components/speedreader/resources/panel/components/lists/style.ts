@@ -13,7 +13,47 @@ export const Box = styled.div`
   background-color: transparent;
 `
 
-export const Button = styled.button`
+export const Group = `
+  width: 32px;
+
+  border-radius: 0;
+  border-style: solid;
+  border-color: var(--color-border);
+
+  border-left-width: 0;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+
+  &:first-child {
+    border-left-width: 1px;
+    border-radius: 4px 0 0 4px;
+  }
+
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+  }
+`
+
+export const CurrentStateIndicator = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  gap: 8px;
+  min-width: 78px;
+  height: 28px;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 14px;
+  letter-spacing: -0.289412px;
+
+  ${() => true && Group}
+`
+
+export const Button = styled.button<{inGroup?: boolean}>`
   display: flex;
   width: 28px;
   height: 28px;
@@ -25,28 +65,6 @@ export const Button = styled.button`
   align-items: center;
   background-color: transparent;
 
-  &.group {
-    width: 32px;
-
-    border-radius: 0;
-    border-style: solid;
-    border-color: var(--color-border);
-
-    border-left-width: 0;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-    border-right-width: 1px;
-  }
-
-  &.group:first-of-type {
-    border-left-width: 1px;
-    border-radius: 4px 0 0 4px;
-  }
-
-  &.group:last-of-type {
-    border-radius: 0 4px 4px 0;
-  }
-
   &.is-active {
     background-color: rgba(19, 22, 32, 0.08);
   }
@@ -56,14 +74,6 @@ export const Button = styled.button`
       background-color: rgba(19, 22, 32, 0.05);
     }
   }
-`
 
-export const CurrentState = styled(Button)`
-  gap: 8px;
-  width: 78px !important;
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: -0.289412px;
+  ${props => props?.inGroup && Group}
 `
