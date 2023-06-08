@@ -344,6 +344,14 @@ public class BytecodeTest {
                 classExists("org/chromium/components/external_intents/ExternalNavigationHandler"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider"));
     }
 
     @Test
@@ -505,6 +513,12 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/preferences/ChromePreferenceKeyChecker",
                         "getInstance", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                "setWidgetEnabled", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                "setWidgetComponentEnabled", false, null));
     }
 
     @Test

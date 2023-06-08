@@ -308,6 +308,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSource.java",
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSourcePreview.java",
   "../../brave/android/java/org/chromium/chrome/browser/query_tiles/BraveQueryTileSection.java",
+  "../../brave/android/java/org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/BraveRateDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/BraveRateThanksFeedbackDialog.java",
