@@ -512,20 +512,24 @@ export class MockedWalletApiProxy {
     }
   }
 
-  solanaTxManagerProxy: Partial<InstanceType<typeof BraveWallet.SolanaTxManagerProxyInterface>> = {
+  solanaTxManagerProxy: Partial<
+    InstanceType<typeof BraveWallet.SolanaTxManagerProxyInterface>
+  > = {
     getEstimatedTxFee: async (chainId, txMetaId) => {
       return {
         error: 0,
         errorMessage: '',
         fee: BigInt(100)
       }
-    },
+    }
   }
 
   walletHandler: Partial<
     InstanceType<typeof BraveWallet.WalletHandlerInterface>
   > = {
-    getWalletInfo: async (): Promise<{ walletInfo: BraveWallet.WalletInfo }> => {
+    getWalletInfo: async (): Promise<{
+      walletInfo: BraveWallet.WalletInfo
+    }> => {
       return {
         walletInfo: {
           isSolanaEnabled: true,
@@ -567,6 +571,72 @@ export class MockedWalletApiProxy {
             chainId !== null ? tx.chainId === chainId : true
           )
         })
+      }
+    }
+  }
+
+  simulationService: Partial<
+    InstanceType<typeof BraveWallet.SimulationServiceInterface>
+  > = {
+    hasMessageScanSupport: async (chainId, coin) => ({ result: false }),
+    scanEVMTransaction: async (txInfo, language) => {
+      return {
+        errorResponse: 'error',
+        errorString: 'not supported in test environments',
+        response: {
+          action: '',
+          warnings: [{ kind: '', message: 'warning', severity: 'bad' }],
+          simulationResults: {
+            error: { humanReadableError: 'error happened', kind: 'any' },
+            expectedStateChanges: [
+              {
+                humanReadableDiff: '',
+                rawInfo: {
+                  kind: '',
+                  data: {
+                    erc1155TransferData: undefined,
+                    erc1155ApprovalForAllData: undefined,
+                    erc20ApprovalData: undefined,
+                    erc20TransferData: undefined,
+                    erc721ApprovalData: undefined,
+                    erc721ApprovalForAllData: undefined,
+                    erc721TransferData: undefined,
+                    nativeAssetTransferData: undefined
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    scanSolanaTransaction: async (request, language) => {
+      return {
+        errorResponse: 'error',
+        errorString: 'not supported in test environments',
+        response: {
+          action: '',
+          warnings: [{ kind: '', message: 'warning', severity: 'bad' }],
+          simulationResults: {
+            error: { humanReadableError: 'error happened', kind: 'any' },
+            isRecentBlockhashExpired: false,
+            expectedStateChanges: [
+              {
+                humanReadableDiff: '',
+                rawInfo: {
+                  kind: '',
+                  data: {
+                    solStakeAuthorityChangeData: undefined,
+                    solTransferData: undefined,
+                    splApprovalData: undefined,
+                    splTransferData: undefined
+                  }
+                },
+                suggestedColor: 'yellow'
+              }
+            ]
+          }
+        }
       }
     }
   }

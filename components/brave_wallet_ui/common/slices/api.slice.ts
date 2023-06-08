@@ -60,6 +60,13 @@ import {
 } from './entities/blockchain-token.entity'
 import { TokenBalancesForChainId } from './entities/token-balance.entity'
 
+// api
+import { apiProxyFetcher } from '../async/base-query-cache'
+import { createWalletApiBase } from './api-base.slice'
+import {
+  transactionSimulationEndpoints
+} from './endpoints/tx-simulation.endpoints'
+
 // utils
 import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
 import type WalletApiProxy from '../wallet_api_proxy'
@@ -88,8 +95,6 @@ import {
   signLedgerSolanaTransaction,
   signTrezorTransaction
 } from '../async/hardware'
-import { apiProxyFetcher } from '../async/base-query-cache'
-import { createWalletApiBase } from './api-base.slice'
 
 export type AssetPriceById = BraveWallet.AssetPrice & {
   id: EntityId
@@ -2638,6 +2643,8 @@ export function createWalletApi () {
         })
       })
     })
+    // tx simulation
+    .injectEndpoints({ endpoints: transactionSimulationEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -2660,12 +2667,15 @@ export const {
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetERC721MetadataQuery,
+  useGetEVMTransactionSimulationQuery,
   useGetGasEstimation1559Query,
+  useGetIsTxSimulationEnabledQuery,
   useGetNetworksRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSelectedAccountAddressQuery,
   useGetSelectedChainQuery,
   useGetSolanaEstimatedFeeQuery,
+  useGetSolanaTransactionSimulationQuery,
   useGetSwapSupportedNetworkIdsQuery,
   useGetTokenBalancesForChainIdQuery,
   useGetTokenSpotPriceQuery,
@@ -2680,11 +2690,14 @@ export const {
   useLazyGetCombinedTokenBalanceForAllAccountsQuery,
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC721MetadataQuery,
+  useLazyGetEVMTransactionSimulationQuery,
   useLazyGetGasEstimation1559Query,
+  useLazyGetIsTxSimulationEnabledQuery,
   useLazyGetNetworksRegistryQuery,
   useLazyGetSelectedAccountAddressQuery,
   useLazyGetSelectedChainQuery,
   useLazyGetSolanaEstimatedFeeQuery,
+  useLazyGetSolanaTransactionSimulationQuery,
   useLazyGetSwapSupportedNetworkIdsQuery,
   useLazyGetTokenBalancesForChainIdQuery,
   useLazyGetTokenSpotPriceQuery,
