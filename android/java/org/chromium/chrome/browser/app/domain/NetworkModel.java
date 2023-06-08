@@ -374,8 +374,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         List<NetworkInfo> list = new ArrayList<>();
         for (NetworkInfo info : cryptoNws) {
             if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(info.chainId)
-                    && networkInfo.coin == info.coin && networkInfo.symbol.equals(info.symbol)
-                    && !isCustomChain(info.chainId)) {
+                    && networkInfo.coin == info.coin && !isCustomChain(info.chainId)) {
                 list.add(info);
             }
         }
