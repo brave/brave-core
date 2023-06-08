@@ -69,6 +69,7 @@ import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;

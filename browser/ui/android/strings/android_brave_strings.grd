@@ -1145,7 +1145,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         There was an error resetting Brave Rewards. Please relaunch Brave and try again.
       </message>
       <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE_TITLE" desc="Title for Show Ads when Brave is not in use option in Brave rewards settings.">
-        Brave Notification Ads
+        Brave Ads
       </message>
       <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE_SUMMARY" desc="Summary for Show Ads when Brave is not in use option in Brave rewards settings.">
         Show notification ads when Brave is not in use

@@ -255,16 +255,14 @@ export function Settings () {
             <style.title>
               <BatIcon />{getString('braveRewards')}
             </style.title>
-            {
-                <style.manageAction>
-                  <button
-                    onClick={onManageClick}
-                    data-test-id='manage-wallet-button'
-                  >
-                    <SettingsIcon />{getString('reset')}
-                  </button>
-                </style.manageAction>
-            }
+            <style.manageAction>
+              <button
+                onClick={onManageClick}
+                data-test-id='manage-wallet-button'
+              >
+                <SettingsIcon />{getString('reset')}
+              </button>
+            </style.manageAction>
           </style.header>
           {renderVBATNotice()}
           <style.settingGroup>
