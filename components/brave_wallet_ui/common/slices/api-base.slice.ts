@@ -36,6 +36,9 @@ export function createWalletApiBase() {
       'UserBlockchainTokens',
       'WalletInfo',
       'NftDiscoveryEnabledStatus',
+      'BraveRewards-Enabled',
+      'BraveRewards-RewardsBalance',
+      'BraveRewards-ExternalWallet',
     ],
     endpoints: ({ mutation, query }) => ({})
   })

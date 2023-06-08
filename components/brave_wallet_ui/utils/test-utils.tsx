@@ -40,6 +40,13 @@ import {
 import { mockUiState } from '../stories/mock-data/mock-ui-state'
 import { mockPanelState } from '../stories/mock-data/mock-panel-state'
 import { setApiProxyFetcher } from '../common/async/base-query-cache'
+import {
+  setRewardsProxyFetcher
+} from '../common/slices/endpoints/rewards.endpoints'
+import {
+  BraveRewardsProxyOverrides,
+  getMockedBraveRewardsProxy
+} from '../common/async/__mocks__/brave_rewards_api_proxy'
 
 export interface RootStateOverrides {
   accountTabStateOverride?: Partial<AccountsTabState>
@@ -57,13 +64,17 @@ export const createMockStore = (
     uiStateOverride,
     walletStateOverride
   }: RootStateOverrides,
-  apiOverrides?: WalletApiDataOverrides
+  apiOverrides?: WalletApiDataOverrides,
+  rewardsApiOverrides?: BraveRewardsProxyOverrides
 ) => {
   // api
   const mockedApiProxy = getMockedAPIProxy()
+  const mockedRewardsApiProxy = getMockedBraveRewardsProxy()
   mockedApiProxy.applyOverrides(apiOverrides)
-  getMockedAPIProxy().applyOverrides(apiOverrides)
+  mockedRewardsApiProxy.applyOverrides(rewardsApiOverrides)
+
   setApiProxyFetcher(getMockedAPIProxy)
+  setRewardsProxyFetcher(getMockedBraveRewardsProxy)
   const api = createWalletApi()
   // redux
   const store = configureStore({

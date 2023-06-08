@@ -66,6 +66,7 @@ import { createWalletApiBase } from './api-base.slice'
 import {
   transactionSimulationEndpoints
 } from './endpoints/tx-simulation.endpoints'
+import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
 
 // utils
 import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
@@ -2643,6 +2644,8 @@ export function createWalletApi () {
         })
       })
     })
+    // brave rewards endpoints
+    .injectEndpoints({ endpoints: braveRewardsApiEndpoints })
     // tx simulation
     .injectEndpoints({ endpoints: transactionSimulationEndpoints })
 }
@@ -2668,10 +2671,13 @@ export const {
   useGetDefaultFiatCurrencyQuery,
   useGetERC721MetadataQuery,
   useGetEVMTransactionSimulationQuery,
+  useGetExternalRewardsWalletQuery,
   useGetGasEstimation1559Query,
   useGetIsTxSimulationEnabledQuery,
   useGetNetworksRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
+  useGetRewardsBalanceQuery,
+  useGetRewardsEnabledQuery,
   useGetSelectedAccountAddressQuery,
   useGetSelectedChainQuery,
   useGetSolanaEstimatedFeeQuery,
@@ -2691,9 +2697,13 @@ export const {
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC721MetadataQuery,
   useLazyGetEVMTransactionSimulationQuery,
+  useLazyGetExternalRewardsWalletQuery,
   useLazyGetGasEstimation1559Query,
   useLazyGetIsTxSimulationEnabledQuery,
   useLazyGetNetworksRegistryQuery,
+  useLazyGetNftDiscoveryEnabledStatusQuery,
+  useLazyGetRewardsBalanceQuery,
+  useLazyGetRewardsEnabledQuery,
   useLazyGetSelectedAccountAddressQuery,
   useLazyGetSelectedChainQuery,
   useLazyGetSolanaEstimatedFeeQuery,
