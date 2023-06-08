@@ -20,6 +20,7 @@ const char kAdBlockMobileNotificationsListSettingTouched[] =
     "brave.ad_block.mobile_notifications_list_setting_touched";
 
 const char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
+const char kAdBlockLocalhostFilters[] = "brave.ad_block.localhost_filters";
 const char kAdBlockRegionalFilters[] = "brave.ad_block.regional_filters";
 const char kAdBlockListSubscriptions[] = "brave.ad_block.list_subscriptions";
 const char kFBEmbedControlType[] = "brave.fb_embed_default";

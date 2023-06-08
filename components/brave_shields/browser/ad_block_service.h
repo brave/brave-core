@@ -45,6 +45,7 @@ class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
 class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersProvider;
+class AdBlockLocalhostFiltersProvider;
 class AdBlockFilterListCatalogProvider;
 class AdBlockSubscriptionServiceManager;
 
@@ -116,6 +117,7 @@ class AdBlockService {
   AdBlockRegionalServiceManager* regional_service_manager();
   AdBlockSubscriptionServiceManager* subscription_service_manager();
   AdBlockCustomFiltersProvider* custom_filters_provider();
+  AdBlockLocalhostFiltersProvider* localhost_filters_provider();
 
   void EnableTag(const std::string& tag, bool enabled);
 
@@ -168,6 +170,8 @@ class AdBlockService {
   std::unique_ptr<AdBlockDefaultResourceProvider> resource_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockCustomFiltersProvider> custom_filters_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockLocalhostFiltersProvider> localhost_filters_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockComponentFiltersProvider> default_filters_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);

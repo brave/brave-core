@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
+#include "brave/components/brave_shields/browser/ad_block_default_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -32,6 +33,7 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
         base::BindRepeating(&AdBlockComponentFiltersProvider::OnComponentReady,
                             weak_factory_.GetWeakPtr()));
   }
+  AdBlockDefaultFiltersProviderManager::GetInstance()->AddProvider(this);
 }
 
 AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
@@ -42,7 +44,9 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                                       catalog_entry.base64_public_key,
                                       catalog_entry.title) {}
 
-AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() = default;
+AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {
+  AdBlockDefaultFiltersProviderManager::GetInstance()->RemoveProvider(this);
+}
 
 void AdBlockComponentFiltersProvider::UnregisterComponent() {
   // Can be nullptr in unit tests

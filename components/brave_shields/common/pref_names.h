@@ -16,6 +16,7 @@ extern const char kAdBlockCookieListSettingTouched[];
 extern const char kAdBlockMobileNotificationsListSettingTouched[];
 
 extern const char kAdBlockCustomFilters[];
+extern const char kAdBlockLocalhostFilters[];
 extern const char kAdBlockRegionalFilters[];
 extern const char kAdBlockListSubscriptions[];
 extern const char kFBEmbedControlType[];

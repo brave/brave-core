@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -15,9 +16,11 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_default_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_localhost_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -246,6 +249,11 @@ AdBlockCustomFiltersProvider* AdBlockService::custom_filters_provider() {
   return custom_filters_provider_.get();
 }
 
+AdBlockLocalhostFiltersProvider* AdBlockService::localhost_filters_provider() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return localhost_filters_provider_.get();
+}
+
 AdBlockSubscriptionServiceManager*
 AdBlockService::subscription_service_manager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -313,10 +321,14 @@ AdBlockService::AdBlockService(
           profile_dir_);
   custom_filters_provider_ =
       std::make_unique<AdBlockCustomFiltersProvider>(local_state_);
+  localhost_filters_provider_ =
+      std::make_unique<AdBlockLocalhostFiltersProvider>();
 
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
-      default_engine_.get(), default_filters_provider_.get(),
+      default_engine_.get(),
+      AdBlockDefaultFiltersProviderManager::GetInstance(),
       resource_provider_.get(), GetTaskRunner());
+
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
           additional_filters_engine_.get(),
@@ -384,6 +396,7 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(
       prefs::kAdBlockMobileNotificationsListSettingTouched, false);
   registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
+  registry->RegisterStringPref(prefs::kAdBlockLocalhostFilters, std::string());
   registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
