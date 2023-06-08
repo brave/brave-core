@@ -19,6 +19,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -756,7 +757,7 @@ void VerticalTabStripRegionView::Layout() {
                                       header_view_->height()});
     contents_view_->SetPosition({contents_bounds.origin().x(),
                                  header_view_->y() + header_view_->height()});
-    UpdateTabSearchButtonVisibility();
+    UpdateOriginalTabSearchButtonVisibility();
 
     // Put resize area on the right side, overlapped with contents.
     constexpr int kResizeAreaWidth = 4;
@@ -794,7 +795,7 @@ void VerticalTabStripRegionView::Layout() {
                   contents_view_->GetPreferredSize().height())});
   }
 
-  UpdateTabSearchButtonVisibility();
+  UpdateOriginalTabSearchButtonVisibility();
 
   // Put resize area on the right side, overlapped with contents.
   constexpr int kResizeAreaWidth = 4;
@@ -1029,10 +1030,12 @@ void VerticalTabStripRegionView::ResetExpandedWidth() {
   PreferredSizeChanged();
 }
 
-void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {
+void VerticalTabStripRegionView::UpdateOriginalTabSearchButtonVisibility() {
   const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
+  const bool use_search_button =
+      browser_->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
   if (auto* tab_search_button = original_region_view_->tab_search_button()) {
-    tab_search_button->SetVisible(!is_vertical_tabs);
+    tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
   }
 }
 
