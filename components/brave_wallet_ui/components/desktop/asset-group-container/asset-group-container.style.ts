@@ -48,14 +48,3 @@ export const CollapseIcon = styled(Icon) <
   };
   margin-left: 16px;
 `
-
-export const AccountSquare = styled.div<{
-  orb: string
-}>`
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  background-image: url(${(p) => p.orb});
-  background-size: cover;
-  margin-right: 16px;
-`

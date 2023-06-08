@@ -37,17 +37,6 @@ export const SelectAllButton = styled(WalletButton)`
   color: ${leo.color.text.interactive};
 `
 
-export const AccountCircle = styled.div<{
-  orb: string
-}>`
-  width: 32px;
-  min-width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  background-image: url(${(p) => p.orb});
-  background-size: cover;
-`
-
 export const Title = styled(Text)`
   color: ${leo.color.text.primary};
   line-height: 28px;

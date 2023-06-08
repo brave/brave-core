@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 
 // Selectors
 import {
@@ -23,13 +22,15 @@ import {
   CreateNetworkIcon,
   LoadingSkeleton
 } from '../../shared'
+import {
+  CreateAccountIcon
+} from '../../shared/create-account-icon/create-account-icon'
 
 // Styled Components
 import {
   StyledWrapper,
   CollapseButton,
-  CollapseIcon,
-  AccountSquare
+  CollapseIcon
 } from './asset-group-container.style'
 import {
   Row,
@@ -63,17 +64,6 @@ export const AssetGroupContainer = (props: Props) => {
   // State
   const [isCollapsed, setIsCollapsed] = React.useState<boolean>(false)
 
-  // Memos
-  const orb = React.useMemo(() => {
-    return create(
-      {
-        seed: account?.address.toLowerCase(),
-        size: 8,
-        scale: 16
-      }
-    ).toDataURL()
-  }, [account?.address])
-
   return (
     <StyledWrapper
       fullWidth={true}
@@ -105,7 +95,12 @@ export const AssetGroupContainer = (props: Props) => {
           <Row
             width='unset'
           >
-            <AccountSquare orb={orb} />
+            <CreateAccountIcon
+              size='small'
+              address={account.address}
+              accountKind={account.accountId.kind}
+              marginRight={16}
+            />
             <Text
               textSize='14px'
               isBold={true}

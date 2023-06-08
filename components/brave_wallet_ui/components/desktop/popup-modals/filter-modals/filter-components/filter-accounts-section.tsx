@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { create } from 'ethereum-blockies'
 import Checkbox from '@brave/leo/react/checkbox'
 
 // Utils
@@ -20,9 +19,13 @@ import {
   selectAllAccountInfosFromQuery
 } from '../../../../../common/slices/entities/account-info.entity'
 
+// Components
+import {
+  CreateAccountIcon
+} from '../../../../shared/create-account-icon/create-account-icon'
+
 // Styled Components
 import {
-  AccountCircle,
   SelectAllButton,
   Title,
   CheckboxText,
@@ -51,16 +54,6 @@ export const FilterAccountsSection = (props: Props) => {
       })
 
   // Methods
-  const orb = React.useCallback((address: string) => {
-    return create(
-      {
-        seed: address.toLowerCase(),
-        size: 8,
-        scale: 16
-      }
-    ).toDataURL()
-  }, [])
-
   const isAccountFilteredOut = React.useCallback(
     (address: string) => {
       return filteredOutAccountAddresses.includes(address)
@@ -139,7 +132,11 @@ export const FilterAccountsSection = (props: Props) => {
                 () => onCheckAccount(account.address)
               }
             >
-              <AccountCircle orb={orb(account.address)} />
+              <CreateAccountIcon
+                size='medium'
+                address={account.address}
+                accountKind={account.accountId.kind}
+              />
               <Column
                 alignItems='flex-start'
               >
