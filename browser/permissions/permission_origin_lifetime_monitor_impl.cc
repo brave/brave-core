@@ -1,15 +1,15 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/permissions/permission_origin_lifetime_monitor_impl.h"
+#include "brave/browser/permissions/permission_origin_lifetime_monitor_impl.h"
 
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "content/public/browser/tld_ephemeral_lifetime.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
 
@@ -46,8 +46,8 @@ PermissionOriginLifetimeMonitorImpl::SubscribeToPermissionOriginDestruction(
   }
   std::string storage_domain = net::URLToEphemeralStorageDomain(
       is_sub_request_origin ? sub_request_origin.GetURL() : requesting_origin);
-  auto* tld_ephemeral_lifetime =
-      content::TLDEphemeralLifetime::Get(browser_context_, storage_domain);
+  auto* tld_ephemeral_lifetime = ephemeral_storage::TLDEphemeralLifetime::Get(
+      browser_context_, storage_domain);
   if (!tld_ephemeral_lifetime) {
     DCHECK(!base::Contains(active_subscriptions_, storage_domain));
     // If an ephemeral lifetime object doesn't exist, treat a permission origin

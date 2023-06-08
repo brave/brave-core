@@ -8,10 +8,13 @@
 #include <memory>
 
 #include "base/feature_list.h"
+#include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "net/base/features.h"
@@ -34,6 +37,7 @@ EphemeralStorageServiceFactory::EphemeralStorageServiceFactory()
           "EphemeralStorageService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(HostContentSettingsMapFactory::GetInstance());
+  DependsOn(CookieSettingsFactory::GetInstance());
 }
 
 EphemeralStorageServiceFactory::~EphemeralStorageServiceFactory() = default;
@@ -46,7 +50,8 @@ void EphemeralStorageServiceFactory::RegisterProfilePrefs(
 
 KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
+      !base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage) &&
       !base::FeatureList::IsEnabled(
           net::features::kBraveForgetFirstPartyStorage)) {
@@ -59,8 +64,11 @@ KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(
   if (!host_content_settings_map) {
     return nullptr;
   }
+  Profile* profile = Profile::FromBrowserContext(context);
   return new ephemeral_storage::EphemeralStorageService(
-      context, host_content_settings_map);
+      context, host_content_settings_map,
+      std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
+          context, CookieSettingsFactory::GetForProfile(profile)));
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(

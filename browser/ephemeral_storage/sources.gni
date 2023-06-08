@@ -4,12 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_ephemeral_storage_sources = [
+  "//brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.cc",
+  "//brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h",
   "//brave/browser/ephemeral_storage/ephemeral_storage_service_factory.cc",
   "//brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h",
   "//brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.cc",
   "//brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h",
-  "//brave/browser/ephemeral_storage/first_party_storage_lifetime.cc",
-  "//brave/browser/ephemeral_storage/first_party_storage_lifetime.h",
+  "//brave/browser/ephemeral_storage/tld_ephemeral_lifetime.cc",
+  "//brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h",
 ]
 
 brave_browser_ephemeral_storage_deps = [

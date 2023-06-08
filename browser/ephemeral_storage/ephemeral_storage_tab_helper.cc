@@ -11,15 +11,7 @@
 
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
-#include "base/strings/strcat.h"
-#include "base/task/sequenced_task_runner.h"
-#include "brave/browser/ephemeral_storage/first_party_storage_lifetime.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "chrome/browser/content_settings/cookie_settings_factory.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/content_settings/core/browser/cookie_settings.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
@@ -40,8 +32,6 @@ namespace {
 // TODO(bridiver) - share these constants with DOMWindowStorage
 constexpr char kSessionStorageSuffix[] = "/ephemeral-session-storage";
 
-base::TimeDelta g_storage_keep_alive_for_testing = base::TimeDelta::Min();
-
 // Session storage ids are expected to be 36 character long GUID strings. Since
 // we are constructing our own ids, we convert our string into a 32 character
 // hash and then use that make up our own GUID-like string. Because of the way
@@ -53,24 +43,6 @@ std::string StringToSessionStorageId(const std::string& string,
   DCHECK_EQ(hash.size(), 36u);
   return hash;
 }
-
-// Helper to access additional info required to cleanup ephemeral parts.
-class BraveTLDEphemeralLifetimeDelegate
-    : public content::TLDEphemeralLifetime::Delegate {
- public:
-  explicit BraveTLDEphemeralLifetimeDelegate(
-      scoped_refptr<content_settings::CookieSettings> cookie_settings)
-      : cookie_settings_(std::move(cookie_settings)) {}
-
-  std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(
-      const std::string& ephemeral_storage_domain) override {
-    return cookie_settings_->TakeEphemeralStorageOpaqueOrigins(
-        ephemeral_storage_domain);
-  }
-
- private:
-  scoped_refptr<content_settings::CookieSettings> cookie_settings_;
-};
 
 }  // namespace
 
@@ -89,22 +61,20 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
   const std::string ephemeral_storage_domain =
       net::URLToEphemeralStorageDomain(url);
   CreateEphemeralStorageAreasForDomainAndURL(ephemeral_storage_domain, url);
-  CreateFirstPartyStorageLifetime(ephemeral_storage_domain, url);
 }
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() = default;
 
-void EphemeralStorageTabHelper::WebContentsDestroyed() {
-  keep_alive_tld_ephemeral_lifetime_list_.clear();
-  first_party_storage_lifetime_.reset();
-}
+void EphemeralStorageTabHelper::WebContentsDestroyed() {}
 
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     NavigationHandle* navigation_handle) {
-  if (!navigation_handle->IsInMainFrame())
+  if (!navigation_handle->IsInMainFrame()) {
     return;
-  if (navigation_handle->IsSameDocument())
+  }
+  if (navigation_handle->IsSameDocument()) {
     return;
+  }
 
   const GURL& new_url = navigation_handle->GetURL();
   const GURL& last_committed_url = web_contents()->GetLastCommittedURL();
@@ -115,50 +85,19 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
   if (new_domain != previous_domain) {
     // Create new storage areas for new ephemeral storage domain.
     CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
-    CreateFirstPartyStorageLifetime(new_domain, new_url);
   }
-}
-
-void EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive(
-    const content::TLDEphemeralLifetimeKey& key) {
-  auto it = base::ranges::find_if(keep_alive_tld_ephemeral_lifetime_list_,
-                                  [&key](const auto& tld_ephermal_liftime) {
-                                    return tld_ephermal_liftime->key() == key;
-                                  });
-  if (it != keep_alive_tld_ephemeral_lifetime_list_.end())
-    keep_alive_tld_ephemeral_lifetime_list_.erase(it);
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
     const std::string& new_domain,
     const GURL& new_url) {
-  if (new_url.is_empty())
+  if (new_url.is_empty()) {
     return;
+  }
 
   auto* browser_context = web_contents()->GetBrowserContext();
-  auto site_instance =
-      content::SiteInstance::CreateForURL(browser_context, new_url);
-  auto* partition = browser_context->GetStoragePartition(site_instance.get());
-
-  if (base::FeatureList::IsEnabled(
-          net::features::kBraveEphemeralStorageKeepAlive) &&
-      tld_ephemeral_lifetime_) {
-    keep_alive_tld_ephemeral_lifetime_list_.push_back(tld_ephemeral_lifetime_);
-
-    // keep the ephemeral storage alive for some time to handle redirects
-    // including meta refresh or other page driven "redirects" that end up back
-    // at the original origin
-    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce(
-            &EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive,
-            weak_factory_.GetWeakPtr(), tld_ephemeral_lifetime_->key()),
-        g_storage_keep_alive_for_testing.is_min()
-            ? base::Seconds(
-                  net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds
-                      .Get())
-            : g_storage_keep_alive_for_testing);
-  }
+  auto* site_instance = web_contents()->GetSiteInstance();
+  auto* storage_partition = browser_context->GetStoragePartition(site_instance);
 
   // Session storage is always per-tab and never per-TLD, so we always delete
   // and recreate the session storage when switching domains.
@@ -172,48 +111,19 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
       content::GetSessionStorageNamespaceId(web_contents()),
       kSessionStorageSuffix);
 
-  auto* rfh = web_contents()->GetOpener();
+  auto* opener_rfh = web_contents()->GetOpener();
   session_storage_namespace_ = content::CreateSessionStorageNamespace(
-      partition, session_partition_id,
+      storage_partition, session_partition_id,
       // clone the namespace if there is an opener
       // https://html.spec.whatwg.org/multipage/browsers.html#copy-session-storage
-      rfh ? absl::make_optional<std::string>(StringToSessionStorageId(
-                content::GetSessionStorageNamespaceId(
-                    WebContents::FromRenderFrameHost(rfh)),
-                kSessionStorageSuffix))
-          : absl::nullopt);
+      opener_rfh ? absl::make_optional<std::string>(StringToSessionStorageId(
+                       content::GetSessionStorageNamespaceId(
+                           WebContents::FromRenderFrameHost(opener_rfh)),
+                       kSessionStorageSuffix))
+                 : absl::nullopt);
 
-  tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
-      browser_context, partition, new_domain,
-      std::make_unique<BraveTLDEphemeralLifetimeDelegate>(
-          CookieSettingsFactory::GetForProfile(
-              Profile::FromBrowserContext(browser_context))));
-}
-
-void EphemeralStorageTabHelper::CreateFirstPartyStorageLifetime(
-    const std::string& new_domain,
-    const GURL& new_url) {
-  if (!base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage)) {
-    return;
-  }
-
-  if (new_url.is_valid() && brave_shields::GetBraveShieldsEnabled(
-                                HostContentSettingsMapFactory::GetForProfile(
-                                    GetWebContents().GetBrowserContext()),
-                                new_url)) {
-    const GURL key_url(base::StrCat({"https://", new_domain, "/"}));
-    first_party_storage_lifetime_ = FirstPartyStorageLifetime::GetOrCreate(
-        web_contents()->GetBrowserContext(), url::Origin::Create(key_url));
-  } else {
-    first_party_storage_lifetime_.reset();
-  }
-}
-
-// static
-void EphemeralStorageTabHelper::SetKeepAliveTimeDelayForTesting(
-    const base::TimeDelta& time) {
-  g_storage_keep_alive_for_testing = time;
+  tld_ephemeral_lifetime_ = TLDEphemeralLifetime::GetOrCreate(
+      browser_context, new_domain, site_instance->GetStoragePartitionConfig());
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper);

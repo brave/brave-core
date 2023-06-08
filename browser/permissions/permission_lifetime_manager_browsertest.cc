@@ -8,19 +8,17 @@
 #include "brave/components/permissions/permission_lifetime_manager.h"
 
 #include "base/command_line.h"
-#include "base/functional/bind.h"
 #include "base/json/json_file_value_serializer.h"
-#include "base/metrics/field_trial.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_mock_time_message_loop_task_runner.h"
 #include "base/test/test_mock_time_task_runner.h"
 #include "base/time/time.h"
-#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/permissions/mock_permission_lifetime_prompt_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -28,13 +26,11 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/permissions/features.h"
 #include "components/permissions/permission_manager.h"
 #include "components/permissions/request_type.h"
@@ -57,7 +53,6 @@ using testing::_;
 namespace permissions {
 
 namespace {
-const int kKeepAliveInterval = 2;
 const char kPreTestDataFileName[] = "pre_test_data";
 
 std::string GetContentSettingTypeString(ContentSettingsType type) {
@@ -176,6 +171,12 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   const base::Value::Dict& GetExpirationsPrefValue() {
     return browser()->profile()->GetPrefs()->GetDict(
         prefs::kPermissionLifetimeExpirations);
+  }
+
+  size_t WaitForCleanupAfterKeepAlive() {
+    return EphemeralStorageServiceFactory::GetInstance()
+        ->GetForContext(browser()->profile())
+        ->FireCleanupTimersForTesting();
   }
 
  protected:
@@ -440,16 +441,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
   }
 }
 
-class PermissionLifetimeManagerWithOriginMonitorBrowserTest
-    : public PermissionLifetimeManagerBrowserTest {
- public:
-  PermissionLifetimeManagerWithOriginMonitorBrowserTest() {
-    ephemeral_storage::EphemeralStorageTabHelper::
-        SetKeepAliveTimeDelayForTesting(base::Seconds(kKeepAliveInterval));
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        DomainPermissionReset) {
   const struct {
     absl::optional<std::string> address;
@@ -515,10 +507,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
               ContentSetting::CONTENT_SETTING_ALLOW);
 
     // Permission Should be reset after the timeout
-    base::RunLoop run_loop;
-    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
-    run_loop.Run();
+    WaitForCleanupAfterKeepAlive();
 
     EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                   target_url, target_url, entry.type),
@@ -527,7 +516,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        FriendlyDomainPermissionKept) {
   const struct {
     absl::optional<std::string> address;
@@ -604,10 +593,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
     EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
     // Permission Should be reset after the timeout
-    base::RunLoop run_loop;
-    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
-    run_loop.Run();
+    WaitForCleanupAfterKeepAlive();
 
     EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                   target_url, target_url, entry.type),
@@ -616,7 +602,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        PublicSuffixListDomainPermissionReset) {
   const struct {
     absl::optional<std::string> address;
@@ -693,10 +679,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
     EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
     // Permission Should be reset after the timeout
-    base::RunLoop run_loop;
-    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
-    run_loop.Run();
+    WaitForCleanupAfterKeepAlive();
 
     EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                   target_url, target_url, entry.type),
@@ -705,7 +688,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        PRE_DomainPermissionResetAfterRestart) {
   const struct {
     absl::optional<std::string> address;
@@ -770,7 +753,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   WritePreTestData();
 }
 
-IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        DomainPermissionResetAfterRestart) {
   ReadPreTestData();
   for (auto type :
