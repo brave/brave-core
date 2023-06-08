@@ -56,6 +56,8 @@ export const onRampCurrencies = ({ wallet }: State) => wallet.onRampCurrencies
 export const portfolioPriceHistory = ({ wallet }: State) => wallet.portfolioPriceHistory
 export const selectedAccount = ({ wallet }: State) => wallet.selectedAccount
 export const selectedAssetFilter = ({ wallet }: State) => wallet.selectedAssetFilter
+export const selectedGroupAssetsByItem = ({ wallet }: State) =>
+  wallet.selectedGroupAssetsByItem
 export const selectedCurrency = ({ wallet }: State) => wallet.selectedCurrency
 export const selectedNetworkFilter = ({ wallet }: State) => wallet.selectedNetworkFilter
 export const solFeeEstimates = ({ wallet }: State) => wallet.solFeeEstimates

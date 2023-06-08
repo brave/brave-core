@@ -297,7 +297,6 @@ export const DepositFundsScreen = (props: Props) => {
                 maxListHeight={'38vh'}
                 userAssetList={assetsForFilteredNetwork}
                 networks={mainnetsList}
-                hideAutoDiscovery
                 estimatedItemSize={100}
                 renderToken={({
                   item: { asset }

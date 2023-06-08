@@ -29,6 +29,7 @@ export const ButtonArea = styled(WalletButton) <{ disabled: boolean, rightMargin
   background: none;
   border: none;
   margin-right: ${(p) => p.rightMargin ? p.rightMargin : 0}px;
+  padding: 0px;
 `
 
 export const NameAndIcon = styled.div`
@@ -76,7 +77,7 @@ export const AssetBalanceText = styled.span`
 //
 // Ref: https://styled-components.com/docs/advanced#style-objects
 const assetIconProps = {
-  width: '40px',
+  width: '32px',
   height: 'auto'
 }
 export const AssetIcon = AssetIconFactory<AssetIconProps>(assetIconProps)
