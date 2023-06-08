@@ -19,7 +19,6 @@
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_result.h"
-#include "components/omnibox/browser/omnibox_edit_model_delegate.h"
 #include "components/omnibox/browser/omnibox_log.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -55,10 +54,10 @@ void RecordSearchEventP3A(uint64_t number_of_searches) {
 
 }  // namespace
 
-BraveOmniboxClientImpl::BraveOmniboxClientImpl(
-    ChromeOmniboxEditModelDelegate* edit_model_delegate,
-    Profile* profile)
-    : ChromeOmniboxClient(edit_model_delegate, profile),
+BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
+                                               Browser* browser,
+                                               Profile* profile)
+    : ChromeOmniboxClient(location_bar, browser, profile),
       profile_(profile),
       scheme_classifier_(profile) {
   // Record initial search count p3a value.
