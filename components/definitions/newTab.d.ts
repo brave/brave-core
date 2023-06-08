@@ -102,9 +102,7 @@ declare namespace NewTab {
 
   export interface PersistentState {
     braveRewardsSupported: boolean
-    braveTalkPromptDismissed: boolean
     braveTalkSupported: boolean
-    braveTalkPromptAutoDismissed: boolean
     bitcoinDotComSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
@@ -151,7 +149,6 @@ declare namespace NewTab {
     customLinksNum: number
     showBitcoinDotCom: boolean
     stats: Stats,
-    braveTalkPromptAllowed: boolean
     brandedWallpaper?: BrandedWallpaper
     backgroundWallpaper?: BackgroundWallpaper
     customImageBackgrounds: ImageBackground[]
