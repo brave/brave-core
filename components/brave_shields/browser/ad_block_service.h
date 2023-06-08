@@ -171,6 +171,8 @@ class AdBlockService {
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockComponentFiltersProvider> default_filters_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockComponentFiltersProvider>
+      default_exception_filters_provider_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockFilterListCatalogProvider>
       filter_list_catalog_provider_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockSubscriptionServiceManager>
