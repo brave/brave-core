@@ -18,6 +18,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
+#include "brave/browser/misc_metrics/vertical_tab_metrics.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
@@ -142,6 +143,9 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
   // early initialize menu metrics
   menu_metrics();
+
+  // early initialize vertical tab metrics
+  vertical_tab_metrics();
 }
 
 void BraveBrowserProcessImpl::Init() {
@@ -532,4 +536,13 @@ misc_metrics::MenuMetrics* BraveBrowserProcessImpl::menu_metrics() {
   }
 #endif
   return menu_metrics_.get();
+}
+
+misc_metrics::VerticalTabMetrics* BraveBrowserProcessImpl::vertical_tab_metrics() {
+#if !BUILDFLAG(IS_ANDROID)
+  if (!vertical_tab_metrics_) {
+    vertical_tab_metrics_ = std::make_unique<misc_metrics::VerticalTabMetrics>(local_state());
+  }
+#endif
+  return vertical_tab_metrics_.get();
 }

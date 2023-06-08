@@ -186,6 +186,11 @@ misc_metrics::MenuMetrics* TestingBraveBrowserProcess::menu_metrics() {
   return nullptr;
 }
 
+misc_metrics::VerticalTabMetrics* TestingBraveBrowserProcess::vertical_tab_metrics() {
+  NOTREACHED();
+  return nullptr;
+}
+
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {
   ad_block_service_ = std::move(service);
