@@ -37,7 +37,8 @@ const HintText = styled.div`
 `
 
 const InUseAlert = styled(Alert)`
-  margin: ${spacing[24]};
+  margin-top: ${spacing[24]};
+  display: block;
 `
 
 const modifiers = ['Control', 'Alt', 'Shift', 'Meta']
