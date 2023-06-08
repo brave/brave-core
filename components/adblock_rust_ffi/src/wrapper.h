@@ -56,6 +56,7 @@ typedef ADBLOCK_EXPORT struct FilterListMetadata {
 
   absl::optional<std::string> homepage;
   absl::optional<std::string> title;
+  uint16_t expires;
 
   FilterListMetadata(FilterListMetadata&&);
 

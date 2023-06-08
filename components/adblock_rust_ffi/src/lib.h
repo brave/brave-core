@@ -164,6 +164,13 @@ bool filter_list_metadata_homepage(const struct C_FilterListMetadata* metadata,
 bool filter_list_metadata_title(const struct C_FilterListMetadata* metadata,
                                 char** title);
 
+/**
+ * Returns the amount of time this filter list should be considered valid for,
+ * in hours. Defaults to 168 (i.e. 7 days) if unspecified by the
+ * `FilterListMetadata`.
+ */
+uint16_t filter_list_metadata_expires(
+    const struct C_FilterListMetadata* metadata);
 
 /**
  * Destroy a `FilterListMetadata` once you are done with it.
