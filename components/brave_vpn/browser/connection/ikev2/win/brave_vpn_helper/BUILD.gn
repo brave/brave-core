@@ -24,12 +24,11 @@ source_set("common") {
     "brave_vpn_helper_state.h",
   ]
 
-  public_deps = [ "//brave/components/brave_vpn/common/buildflags" ]
-
   deps = [
     "//base",
     "//brave/components/brave_vpn/browser/connection/common/win",
     "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/buildflags",
     "//chrome/install_static:install_static_util",
   ]
 }

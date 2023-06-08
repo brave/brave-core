@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index 088d1778f317c4df323f741622583b463baf5bdf..ae3b8dd08a6f8a282c58e7f02299b52ec005116a 100644
+index 088d1778f317c4df323f741622583b463baf5bdf..47ed2e382bfde4bb69eb7b9642851a3f4e9b3612 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@
@@ -11,12 +11,15 @@ index 088d1778f317c4df323f741622583b463baf5bdf..ae3b8dd08a6f8a282c58e7f02299b52e
  chrome_proxy.exe: %(ChromeDir)s\
  #
  # Chrome version dir assembly manifest.
-@@ -18,9 +18,15 @@ chrome_proxy.exe: %(ChromeDir)s\
+@@ -18,9 +18,18 @@ chrome_proxy.exe: %(ChromeDir)s\
  #
  # Chrome version dir entries, sorted alphabetically.
  #
 +brave.exe.sig: %(VersionDir)s\
 +brave_vpn_helper.exe: %(VersionDir)s\
++brave_vpn_wireguard_service.exe: %(VersionDir)s\BraveVpnWireguardService\
++tunnel.dll: %(VersionDir)s\BraveVpnWireguardService\
++wireguard.dll: %(VersionDir)s\BraveVpnWireguardService\
  chrome.dll: %(VersionDir)s\
 +chrome.dll.sig: %(VersionDir)s\
 +brave_resources.pak: %(VersionDir)s\
@@ -27,7 +30,7 @@ index 088d1778f317c4df323f741622583b463baf5bdf..ae3b8dd08a6f8a282c58e7f02299b52e
  chrome_elf.dll: %(VersionDir)s\
  chrome_pwa_launcher.exe: %(VersionDir)s\
  chrome_wer.dll: %(VersionDir)s\
-@@ -63,6 +69,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
+@@ -63,6 +72,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
  
  [HIDPI]
  chrome_200_percent.pak: %(VersionDir)s\

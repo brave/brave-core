@@ -10,6 +10,14 @@ import("//chrome/process_version_rc_template.gni")
 
 assert(is_win)
 
+copy("brave_vpn_wireguard_binaries") {
+  sources = [
+    "//brave/third_party/brave-vpn-wireguard-nt-dlls/${target_cpu}/wireguard.dll",
+    "//brave/third_party/brave-vpn-wireguard-tunnel-dlls/${target_cpu}/tunnel.dll",
+  ]
+  outputs = [ "$root_out_dir/{{source_file_part}}" ]
+}
+
 midl("brave_wireguard_manager_idl") {
   sources = [ "brave_wireguard_manager_idl.idl" ]
 
@@ -21,7 +29,7 @@ source_set("common") {
     "service_constants.cc",
     "service_constants.h",
   ]
-
+  public_deps = [ "//brave/components/brave_vpn/common/buildflags" ]
   deps = [
     "//base",
     "//chrome/install_static:install_static_util",
@@ -45,6 +53,7 @@ executable("brave_vpn_wireguard_service") {
   ]
 
   deps = [
+    ":brave_vpn_wireguard_binaries",
     ":common",
     ":version_resources",
     "//base",

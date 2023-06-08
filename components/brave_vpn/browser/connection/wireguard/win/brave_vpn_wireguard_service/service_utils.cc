@@ -26,7 +26,7 @@ bool InstallBraveWireguardService() {
       brave_vpn::GetBraveVpnWireguardServiceName(),
       brave_vpn::GetBraveVpnWireguardServiceDisplayName(), SERVICE_AUTO_START,
       service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
-      brave_vpn::kBraveVpnWireguardServiceRegistryStoragePath,
+      brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath(),
       {brave_vpn::GetBraveVpnWireguardServiceClsid()},
       {brave_vpn::GetBraveVpnWireguardServiceIid()});
   install_service_work_item.set_best_effort(true);
