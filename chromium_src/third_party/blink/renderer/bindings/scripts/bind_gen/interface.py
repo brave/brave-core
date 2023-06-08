@@ -156,7 +156,7 @@ def _bind_page_graph_local_vars(code_node, cg_context):
         event_name = "{}.{}".format(event_name, "get")
     elif cg_context.attribute_set:
         event_name = "{}.{}".format(event_name, "set")
-    elif cg_context.constructor_group and not cg_context.is_named_constructor:
+    elif cg_context.constructor_group and not cg_context.is_legacy_factory_function:
         event_name = "{}.{}".format(cg_context.class_like.identifier,
                                     "constructor")
 
