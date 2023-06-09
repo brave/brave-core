@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
@@ -56,12 +55,10 @@ class GetAdaptiveCaptchaChallengeTest : public testing::Test {
     SignalUrlLoadCompleted();
   }
 
-  std::unique_ptr<GetAdaptiveCaptchaChallenge> GetChallenge() {
-    return std::move(get_challenge_);
-  }
-
  protected:
   network::TestURLLoaderFactory test_url_loader_factory_;
+  api_request_helper::APIRequestHelper api_request_helper_;
+  std::unique_ptr<GetAdaptiveCaptchaChallenge> get_challenge_;
 
   void WaitForUrlLoadToComplete() {
     if (url_loaded_) {
@@ -74,11 +71,7 @@ class GetAdaptiveCaptchaChallengeTest : public testing::Test {
 
  private:
   base::test::TaskEnvironment scoped_task_environment_;
-  // To prevent crashes, initialize DataDecoder before APIRequestHelper since
-  // the latter relies on the former's instance.
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
-  api_request_helper::APIRequestHelper api_request_helper_;
-  std::unique_ptr<GetAdaptiveCaptchaChallenge> get_challenge_;
   std::unique_ptr<base::RunLoop> run_loop_;
   bool url_loaded_ = false;
 
@@ -95,7 +88,7 @@ TEST_F(GetAdaptiveCaptchaChallengeTest, ServerOK) {
       "https://grants.rewards.brave.com/v3/captcha/challenge/payment_id",
       "{ \"captchaID\": \"ae07288c-d078-11eb-b8bc-0242ac130003\" }",
       net::HTTP_OK);
-  GetChallenge()->Request(
+  get_challenge_->Request(
       "payment_id",
       base::BindOnce(&GetAdaptiveCaptchaChallengeTest::OnGetChallengeServerOK,
                      base::Unretained(this)));
@@ -106,7 +99,7 @@ TEST_F(GetAdaptiveCaptchaChallengeTest, ServerError404) {
   test_url_loader_factory_.AddResponse(
       "https://grants.rewards.brave.com/v3/captcha/challenge/payment_id", "",
       net::HTTP_NOT_FOUND);
-  GetChallenge()->Request(
+  get_challenge_->Request(
       "payment_id",
       base::BindOnce(
           &GetAdaptiveCaptchaChallengeTest::OnGetChallengeServerError404,
@@ -118,7 +111,7 @@ TEST_F(GetAdaptiveCaptchaChallengeTest, ServerError500) {
   test_url_loader_factory_.AddResponse(
       "https://grants.rewards.brave.com/v3/captcha/challenge/payment_id", "",
       net::HTTP_INTERNAL_SERVER_ERROR);
-  GetChallenge()->Request(
+  get_challenge_->Request(
       "payment_id",
       base::BindOnce(
           &GetAdaptiveCaptchaChallengeTest::OnGetChallengeServerError500,
@@ -130,7 +123,7 @@ TEST_F(GetAdaptiveCaptchaChallengeTest, ServerErrorRandom) {
   test_url_loader_factory_.AddResponse(
       "https://grants.rewards.brave.com/v3/captcha/challenge/payment_id", "",
       net::HTTP_TOO_MANY_REQUESTS);
-  GetChallenge()->Request(
+  get_challenge_->Request(
       "payment_id",
       base::BindOnce(
           &GetAdaptiveCaptchaChallengeTest::OnGetChallengeServerErrorRandom,

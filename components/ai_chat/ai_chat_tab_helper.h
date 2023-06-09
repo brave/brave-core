@@ -65,8 +65,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void CleanUp();
   void OnAPIStreamDataReceived(data_decoder::DataDecoder::ValueOrError result);
   void OnAPIStreamDataComplete(bool is_summarize_prompt,
-                               api_request_helper::APIRequestResult result,
-                               bool success);
+                               api_request_helper::APIRequestResult result);
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;

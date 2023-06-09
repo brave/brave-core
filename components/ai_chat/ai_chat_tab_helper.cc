@@ -369,8 +369,8 @@ void AIChatTabHelper::OnAPIStreamDataReceived(
 
 void AIChatTabHelper::OnAPIStreamDataComplete(
     bool is_summarize_prompt,
-    api_request_helper::APIRequestResult result,
-    bool success) {
+    api_request_helper::APIRequestResult result) {
+  const bool success = result.Is2XXResponseCode();
   if (success) {
     // TODO(nullhook): Remove this as we don't cache summaries anymore
     if (is_summarize_prompt && !chat_history_.empty()) {
@@ -391,7 +391,7 @@ void AIChatTabHelper::OnAPIStreamDataComplete(
     }
   }
 
-  if (!success || !result.Is2XXResponseCode()) {
+  if (!success) {
     // TODO(petemill): show error state separate from assistant message
     AddToConversationHistory(ConversationTurn{
         CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,
