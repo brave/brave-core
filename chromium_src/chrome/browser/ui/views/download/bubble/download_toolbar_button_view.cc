@@ -102,7 +102,7 @@ bool DownloadToolbarButtonView::HasInsecureDownloads() {
   }
 
   std::vector<DownloadUIModel::DownloadUIModelPtr> all_models;
-  update_service->GetAllModelsToDisplay(all_models,
+  update_service->GetAllModelsToDisplay(all_models, /*web_app_id=*/nullptr,
                                         /*force_backfill_download_items=*/true);
 
   return base::ranges::any_of(all_models, [](const auto& model) {
