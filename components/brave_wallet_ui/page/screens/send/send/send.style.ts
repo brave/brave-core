@@ -14,18 +14,10 @@ import { StyledDiv, StyledInput, Row } from '../shared.styles'
 export const sendContainerWidth = 512
 
 export const SendContainer = styled(StyledDiv)`
-  background-color: ${(p) => p.theme.color.background02};
-  border-radius: 24px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   justify-content: flex-start;
-  padding: 16px 16px 24px 16px;
-  width: ${sendContainerWidth}px;
+  width: 100%;
   position: relative;
-  z-index: 9;
-  @media screen and (max-width: 570px) {
-    width: 90%;
-  }
 `
 
 export const SectionBox = styled(StyledDiv) <{

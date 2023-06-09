@@ -378,7 +378,6 @@ export const Send = (props: Props) => {
       <WalletPageWrapper
         wrapContentInBox={true}
         cardWidth={sendContainerWidth}
-        noCardPadding={true}
         noMinCardHeight={true}
         cardHeader={
           <PageTitleHeader title={getLocale('braveWalletSend')}/>
