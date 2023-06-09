@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 
-#include <string>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
@@ -201,6 +200,14 @@ BraveVPNButton::~BraveVPNButton() = default;
 
 void BraveVPNButton::OnConnectionStateChanged(ConnectionState state) {
   UpdateColorsAndInsets();
+}
+
+void BraveVPNButton::OnPurchasedStateChanged(
+    brave_vpn::mojom::PurchasedState state,
+    const absl::optional<std::string>& description) {
+  if (IsPurchased()) {
+    UpdateColorsAndInsets();
+  }
 }
 
 std::unique_ptr<views::Border> BraveVPNButton::GetBorder(

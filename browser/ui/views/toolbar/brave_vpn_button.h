@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
@@ -38,11 +39,14 @@ class BraveVPNButton : public ToolbarButton,
   // BraveVPNServiceObserver overrides:
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
-  std::u16string GetTooltipText(const gfx::Point& p) const override;
+  void OnPurchasedStateChanged(
+      brave_vpn::mojom::PurchasedState state,
+      const absl::optional<std::string>& description) override;
 
  private:
   // ToolbarButton overrides:
   void UpdateColorsAndInsets() override;
+  std::u16string GetTooltipText(const gfx::Point& p) const override;
 
   bool IsConnected() const;
   bool IsConnectError() const;
