@@ -143,7 +143,9 @@ handler.on(
   if (!payload.skipBalancesRefresh) {
     await store.dispatch(refreshBalances())
   }
-  await store.dispatch(refreshPrices())
+  if (!payload.skipPricesRefresh) {
+    await store.dispatch(refreshPrices())
+  }
   await store.dispatch(refreshPortfolioFilterOptions())
 })
 

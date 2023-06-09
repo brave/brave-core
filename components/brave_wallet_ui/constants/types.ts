@@ -18,6 +18,7 @@ export { TimeDelta }
 
 export type RefreshOpts = {
   skipBalancesRefresh?: boolean
+  skipPricesRefresh?: boolean
 }
 
 interface TokenBalanceRegistry {
