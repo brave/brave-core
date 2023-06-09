@@ -2518,6 +2518,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_MARKET" desc="Brave crypto wallet section Market">
       Market
     </message>
+    <message name="IDS_INFORMATION" desc="Brave crypto wallet information label">
+      INFORMATION
+    </message>
+    <message name="IDS_RANK" desc="Brave crypto wallet rank label">
+      Rank
+    </message>
+    <message name="IDS_VOLUME_24_H" desc="Brave crypto wallet 24-hour volume label">
+      24h Volume
+    </message>
+    <message name="IDS_MARKET_CAP" desc="Brave crypto wallet market cap label">
+      Market Cap
+    </message>       
     <!-- <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
       Apps
     </message> -->
