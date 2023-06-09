@@ -139,7 +139,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_brave_vpn, menu);
         MenuItem item = menu.findItem(R.id.restore);
-        item.setVisible(true);
         if (mShouldShowRestoreMenu) {
             mShouldShowRestoreMenu = false;
             item.setVisible(true);
