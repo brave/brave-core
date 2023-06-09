@@ -15,6 +15,7 @@
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -28,6 +29,7 @@
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
+#include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -549,6 +551,44 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
 #endif
     }));
   }
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, OriginalTabSearchButton) {
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+
+  auto* original_tab_search_button =
+      region_view->original_region_view_->tab_search_button();
+  if (!original_tab_search_button) {
+    // On Windows 10, the button is on the window frame and vertical tab strip
+    // does nothing to it.
+    return;
+  }
+
+  ASSERT_TRUE(original_tab_search_button->GetVisible());
+
+  // The button should be hidden when using vertical tab strip
+  ToggleVerticalTabStrip();
+  EXPECT_FALSE(original_tab_search_button->GetVisible());
+
+  // The button should reappear when getting back to horizontal tab strip.
+  ToggleVerticalTabStrip();
+  EXPECT_TRUE(original_tab_search_button->GetVisible());
+
+  // Turn off the button with a preference.
+  browser()->profile()->GetPrefs()->SetBoolean(kTabsSearchShow, false);
+  EXPECT_FALSE(original_tab_search_button->GetVisible());
+
+  // Turn on and off vertical tab strip
+  ToggleVerticalTabStrip();
+  ToggleVerticalTabStrip();
+
+  // the original tab search button should stay hidden
+  EXPECT_FALSE(original_tab_search_button->GetVisible());
 }
 
 class VerticalTabStripDragAndDropBrowserTest
