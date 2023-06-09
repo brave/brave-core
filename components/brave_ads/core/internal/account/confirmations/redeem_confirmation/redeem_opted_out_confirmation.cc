@@ -53,7 +53,6 @@ void RedeemOptedOutConfirmation::Redeem(
     RedeemOptedOutConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
-  CHECK(!ShouldRewardUser());
   CHECK(!confirmation.opted_in);
 
   BLOG(1, "Redeem opted-out confirmation");

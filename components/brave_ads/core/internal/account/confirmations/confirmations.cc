@@ -115,7 +115,10 @@ void Confirmations::Retry() {
 void Confirmations::RetryCallback() {
   const ConfirmationList& failed_confirmations =
       ConfirmationStateManager::GetInstance().GetFailedConfirmations();
-  CHECK(!failed_confirmations.empty());
+  if (failed_confirmations.empty()) {
+    BLOG(1, "No failed confirmations to retry");
+    return;
+  }
 
   BLOG(1, "Retry sending failed confirmations");
 
