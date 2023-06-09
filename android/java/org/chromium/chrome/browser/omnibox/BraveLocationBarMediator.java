@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
