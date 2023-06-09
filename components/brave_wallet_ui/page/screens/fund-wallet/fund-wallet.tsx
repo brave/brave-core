@@ -229,11 +229,12 @@ export const FundWalletScreen = (props: Props) => {
   // sync default selected account with selected asset
   React.useEffect(() => {
     if (
-      selectedAccount &&
       selectedAsset &&
       selectedAssetNetwork &&
-      accountsForSelectedAssetNetwork.length && // asset is selected & account is available
-      selectedAccount.accountId.coin !== selectedAsset.coin // needs to change accounts to one with correct network
+      // asset is selected & account is available
+      accountsForSelectedAssetNetwork.length &&
+      // needs to change accounts to one with correct network
+      selectedAccount?.accountId?.coin !== selectedAsset.coin
     ) {
       setSelectedAccount(accountsForSelectedAssetNetwork[0])
     }
@@ -241,7 +242,7 @@ export const FundWalletScreen = (props: Props) => {
     selectedAsset,
     selectedAssetNetwork,
     accountsForSelectedAssetNetwork,
-    selectedAccount
+    selectedAccount?.accountId?.coin
   ])
 
   React.useEffect(() => {
