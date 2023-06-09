@@ -32,6 +32,7 @@ export function createWalletApiBase() {
       'Network',
       'TokenSpotPrice',
       'Transactions',
+      'TransactionSimulationsEnabled',
       'UserBlockchainTokens',
       'WalletInfo',
       'NftDiscoveryEnabledStatus',
@@ -46,3 +47,6 @@ export const walletApiBase: WalletApiBase = createWalletApiBase()
 export type WalletApiEndpointBuilder = Parameters<
   WalletApiBase['injectEndpoints']
 >[0]['endpoints']
+
+export type WalletApiEndpointBuilderParams =
+  Parameters<WalletApiEndpointBuilder>[0]
