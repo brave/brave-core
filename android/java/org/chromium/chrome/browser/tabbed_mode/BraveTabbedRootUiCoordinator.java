@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.tabbed_mode;
 
 import android.os.Bundle;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

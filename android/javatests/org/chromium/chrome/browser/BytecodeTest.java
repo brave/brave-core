@@ -122,7 +122,6 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectableListT
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.favicon.LargeIconBridge;
-import org.chromium.components.image_fetcher.ImageFetcher;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.content_public.browser.BrowserContextHandle;

@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.sync.settings.ManageSyncSettings;
 import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
 
 // See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
