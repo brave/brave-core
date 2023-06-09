@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.h b/components/content_settings/core/common/cookie_settings_base.h
-index b5623da8c1ea26ff1fa6afd1c9df203ccfe95d46..86acd8b6f6bdab13bf80f5fae366902a9d7c8f09 100644
+index 9ca9b25d4a45a97da79149460b2f1f1749376754..e6ad7aad16ec4103ac051845b9f60e67e8630554 100644
 --- a/components/content_settings/core/common/cookie_settings_base.h
 +++ b/components/content_settings/core/common/cookie_settings_base.h
 @@ -73,7 +73,7 @@ class CookieSettingsBase {
@@ -9,5 +9,5 @@ index b5623da8c1ea26ff1fa6afd1c9df203ccfe95d46..86acd8b6f6bdab13bf80f5fae366902a
 -  virtual ~CookieSettingsBase() = default;
 +  virtual ~CookieSettingsBase();
  
-   // Returns true if the cookie associated with |domain| should be deleted
-   // on exit.
+   // An enum that represents the scope of cookies to which the user's
+   // third-party-cookie-blocking setting applies, in a given context.

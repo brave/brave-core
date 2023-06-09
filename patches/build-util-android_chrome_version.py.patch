@@ -1,21 +1,21 @@
 diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
-index f00cd99d2bfa5793d6ed5d96025885ad83af412f..4e49484e6bdb3648739521c6125fbacb8516c33c 100755
+index 41b22a0de9fbd135b50d9cfadd4fa78c52cc1ec7..56e9da9a35c7471acb73d1ca9a96335f7ffeb63d 100755
 --- a/build/util/android_chrome_version.py
 +++ b/build/util/android_chrome_version.py
-@@ -199,6 +199,7 @@ def _GetAbisToDigitMask(build_number):
+@@ -199,6 +199,7 @@ def _GetAbisToDigitMask(build_number, patch_number):
      mapped to version code suffix.
    """
- 
+   # Scheme change was made directly to M113 and M114 branches.
 +  from brave_version_utils import remap_build_number; build_number = remap_build_number(build_number)
-   if build_number < 5750:
-     return {
-         'arm': {
-@@ -327,7 +328,7 @@ def GenerateVersionCodes(version_values, arch, is_next_build):
-   """
+   use_new_scheme = (build_number >= 5750
+                     or (build_number == 5672 and patch_number >= 176)
+                     or (build_number == 5735 and patch_number >= 53))
+@@ -332,7 +333,7 @@ def GenerateVersionCodes(version_values, arch, is_next_build):
  
-   base_version_code = int(
--      '%s%03d00' % (version_values['BUILD'], int(version_values['PATCH'])))
-+      '%02d%02d%03d00' % (int(version_values['MINOR']) + 41, int(version_values['BUILD']), int(version_values['PATCH'])))
+   build_number = int(version_values['BUILD'])
+   patch_number = int(version_values['PATCH'])
+-  base_version_code = (build_number * 1000 + patch_number) * 100
++  base_version_code = int('%02d%02d%03d00' % (int(version_values['MINOR']) + 41, int(version_values['BUILD']), int(version_values['PATCH'])))
  
    if is_next_build:
      base_version_code += _NEXT_BUILD_VERSION_CODE_DIFF

@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b1631a6c1b9f 100644
+index 1940c81f4acb9fdaee605abe64adf424bd6e3632..6bc0703fb1d2c7513c64e799c0ebe9f6fa1081de 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -201,6 +201,7 @@ if (!is_android && !is_mac) {
@@ -10,7 +10,7 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
  
          deps += [
            ":chrome_dll",
-@@ -523,11 +524,12 @@ if (is_win) {
+@@ -519,11 +520,12 @@ if (is_win) {
        args += [ "--keystone=0" ]
      }
    }
@@ -24,7 +24,7 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
      extra_substitutions = [
        "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
        "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -547,6 +549,7 @@ if (is_win) {
+@@ -543,6 +545,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
@@ -32,7 +32,7 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
  
      if (enable_updater) {
        deps += [ ":chromium_updater_privileged_helper" ]
-@@ -623,7 +626,7 @@ if (is_win) {
+@@ -619,7 +622,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -41,7 +41,7 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
            "-v",
            chrome_version_full,
            "-g",
-@@ -697,6 +700,7 @@ if (is_win) {
+@@ -693,6 +696,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -49,7 +49,7 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
      }
    }
  
-@@ -740,9 +744,11 @@ if (is_win) {
+@@ -736,9 +740,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -61,7 +61,7 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
      if (is_chrome_branded && include_branded_entitlements) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -767,6 +773,7 @@ if (is_win) {
+@@ -763,6 +769,7 @@ if (is_win) {
          info_plist_target = invoker.info_plist_target
        } else {
          info_plist_target = ":chrome_helper_plist"
@@ -69,7 +69,7 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
        }
  
        extra_substitutions = [
-@@ -945,6 +952,7 @@ if (is_win) {
+@@ -941,6 +948,7 @@ if (is_win) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/${updater_product_full_name}.app" ]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
@@ -77,15 +77,15 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
  
          public_deps += [
            "//chrome/updater/mac:browser_install_script",
-@@ -1259,6 +1267,7 @@ if (is_win) {
+@@ -1277,6 +1285,7 @@ if (is_win) {
+       "-current_version",
        chrome_dylib_version,
-       "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
      ]
 +    import("//brave/browser/sources.gni") public_deps += brave_chrome_framework_public_deps bundle_deps += brave_chrome_framework_bundle_deps framework_contents += brave_chrome_framework_contents configs += brave_chrome_framework_configs
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1439,6 +1448,7 @@ if (is_win) {
+@@ -1457,6 +1466,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -93,7 +93,7 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1505,7 +1515,7 @@ group("dependencies") {
+@@ -1523,7 +1533,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -102,7 +102,7 @@ index a0db274a53134fb1f1085185fc1030f6bc78917b..b9bb51e48160cc9fabd833959359b163
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1559,6 +1569,7 @@ group("resources") {
+@@ -1577,6 +1587,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",

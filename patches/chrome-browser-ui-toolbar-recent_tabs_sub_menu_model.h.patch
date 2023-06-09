@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
-index c39400b0dfcad06a4061da7bb3933691667dbf1e..5d24f32c7e4a65a758aae9e6236c01f25a4962e5 100644
+index 61f72eca877ab26214186806160be82b6f7525fb..791f0754f30b6b28ee4913703776b08cb4292710 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
-@@ -89,7 +89,7 @@ class RecentTabsSubMenuModel : public ui::SimpleMenuModel,
+@@ -93,7 +93,7 @@ class RecentTabsSubMenuModel : public ui::SimpleMenuModel,
  
    // Index of the separator that follows the history menu item. Used as a
    // reference position for inserting local entries.

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 6f3722cd64029848c1737ced63889cf7cb41c5aa..7195ef1e5fc2c67861001a44e7070dea584fae62 100644
+index b49033acd217fda9cdc7e2a28ad63e56015abcd0..4adc5d5a84a2f3fad4075ed33e21805ec6e7b3dc 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -75,9 +75,9 @@ index 6f3722cd64029848c1737ced63889cf7cb41c5aa..7195ef1e5fc2c67861001a44e7070dea
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1202,6 +1216,7 @@ by a child template that "extends" this file.
-         <property android:name="android.adservices.AD_SERVICES_CONFIG"
-             android:resource="@xml/ad_services_config" />
+@@ -1231,6 +1245,7 @@ by a child template that "extends" this file.
+           </activity>
+         {% endif %}
  
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}

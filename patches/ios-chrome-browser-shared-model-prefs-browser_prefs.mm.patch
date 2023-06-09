@@ -1,26 +1,26 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index e8f26ff23d5a4235b04a41492c5dbedd88ec7c03..b79a24ac865b276a5213e8544cbcd002b5ff8319 100644
+index 26f733f234738ee11d61ad37cd9ea0c77f6a8a88..47cd03e764866f130db819fc29db290f99816e40 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -260,6 +260,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // since a freshness signal of the Most Visited Sites.
-   registry->RegisterIntegerPref(
-       prefs::kIosMagicStackSegmentationMVTImpressionsSinceFreshness, -1);
+@@ -299,6 +299,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+       prefs::kIosSafetyCheckManagerSafeBrowsingCheckResult,
+       NameForSafetyCheckState(SafeBrowsingSafetyCheckState::kDefault),
+       PrefRegistry::LOSSY_PREF);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -429,6 +430,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   ntp_snippets::prefs::RegisterProfilePrefsForMigrationApril2023(registry);
- 
-   registry->RegisterBooleanPref(kDeprecatedReadingListHasUnseenEntries, false);
+@@ -477,6 +478,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // Register pref used to detect addresses in web page
+   registry->RegisterBooleanPref(prefs::kDetectAddressesEnabled, true);
+   registry->RegisterBooleanPref(prefs::kDetectAddressesAccepted, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -503,4 +505,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
- 
-   // Added 04/2023.
-   ntp_snippets::prefs::MigrateObsoleteProfilePrefsApril2023(prefs);
+@@ -565,4 +567,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+   invalidation::InvalidatorRegistrarWithMemory::ClearDeprecatedPrefs(prefs);
+   invalidation::PerUserTopicSubscriptionManager::ClearDeprecatedPrefs(prefs);
+   invalidation::FCMInvalidationService::ClearDeprecatedPrefs(prefs);
 +  BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
  }

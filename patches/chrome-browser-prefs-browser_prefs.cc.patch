@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index af2d036f0b354af7b9e018325c2ec2d1a9da8fdb..45c59a927201e5ae166dc7a3b6018e31d0588a32 100644
+index 2fc5abfb9e9f0782b5ac03095c03a836d37c0376..ea935c7a76413daf835fd6642b7c8c877488b848 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1528,6 +1528,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1612,6 +1612,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,10 +11,10 @@ index af2d036f0b354af7b9e018325c2ec2d1a9da8fdb..45c59a927201e5ae166dc7a3b6018e31
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1929,6 +1931,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
-       prefs::kAccessibilityPdfOcrAlwaysActive, false,
-       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
- #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
+@@ -2021,6 +2023,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #if BUILDFLAG(IS_CHROMEOS_ASH)
+   registry->RegisterBooleanPref(kClearUserDataDir1Pref, false);
+ #endif
 +  brave::RegisterProfilePrefs(registry);
  }
  
