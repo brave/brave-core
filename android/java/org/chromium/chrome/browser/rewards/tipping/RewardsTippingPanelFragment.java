@@ -103,6 +103,7 @@ public class RewardsTippingPanelFragment
 
     private TextView mUsdSymbol1;
     private TextView mUsdSymbol2;
+    private boolean mEnoughFundWarningShown;
 
     public static RewardsTippingPanelFragment newInstance(int tabId, String web3Url) {
         RewardsTippingPanelFragment fragment = new RewardsTippingPanelFragment();
@@ -329,6 +330,7 @@ public class RewardsTippingPanelFragment
     }
 
     private void showNotEnoughTokens() {
+        mEnoughFundWarningShown = true;
         showWarningMessage(mContentView, R.drawable.tipping_error_alert_message_background,
                 getString(R.string.not_enough_tokens),
                 String.format(getString(R.string.not_enough_tokens_description), mBalance));
@@ -529,7 +531,7 @@ public class RewardsTippingPanelFragment
     }
 
     private void checkEnoughFund() {
-        if (mAmountSelected <= AMOUNT_STEP_BY) { // if it's below range
+        if (mAmountSelected < AMOUNT_STEP_BY) { // if it's below range
             mSendButton.setEnabled(false);
             return;
         }
@@ -539,6 +541,12 @@ public class RewardsTippingPanelFragment
             mSendButton.setEnabled(false);
         } else { // if selected amount is with in range then enable it
             mSendButton.setEnabled(true);
+            if (mEnoughFundWarningShown) {
+                mEnoughFundWarningShown = false;
+                View warningLayout = mContentView.findViewById(R.id.tipping_warning_message_layout);
+                warningLayout.setVisibility(View.GONE);
+                setAlreadyMonthlyContributionSetMessage();
+            }
         }
     }
 
@@ -617,15 +625,20 @@ public class RewardsTippingPanelFragment
             mCurrency1ValueEditTextView.setVisibility(View.INVISIBLE);
             mCurrency1ValueTextView.setInputType(InputType.TYPE_NULL);
             String s = ((TextView) view).getText().toString();
-            mCurrency1ValueTextView.setText(s);
-            mCurrency1ValueEditTextView.setText(s);
-            Double batValue = getBatValue(s, mIsBatCurrency);
 
+            Double batValue = getBatValue(s, true);
             Double usdValue = mRate * batValue;
-            if (mIsBatCurrency)
-                mCurrency2ValueTextView.setText(String.valueOf(roundExchangeUp(usdValue)));
-            else
-                mCurrency2ValueTextView.setText(String.valueOf(roundExchangeUp(batValue)));
+            String usdValueString = String.valueOf(roundExchangeUp(usdValue));
+
+            if (mIsBatCurrency) {
+                mCurrency1ValueTextView.setText(s);
+                mCurrency1ValueEditTextView.setText(s);
+                mCurrency2ValueTextView.setText(usdValueString);
+            } else {
+                mCurrency1ValueTextView.setText(usdValueString);
+                mCurrency1ValueEditTextView.setText(usdValueString);
+                mCurrency2ValueTextView.setText(s);
+            }
         }
         for (TextView tb : mRadioTipAmount) {
             if (tb.getId() == id) {
