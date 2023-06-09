@@ -104,8 +104,7 @@ public class MarketModel {
             return String.format(Locale.ENGLISH, "$%d", rounded);
         }
         final int exp = Math.min(3, (int) (Math.log(value) / Math.log(1000)));
-        return String.format(Locale.ENGLISH, "$%.2f%c",
-                value / Math.pow(1000, exp),
-                "KMB".charAt(exp - 1));
+        return String.format(
+                Locale.ENGLISH, "$%.2f%c", value / Math.pow(1000, exp), "KMB".charAt(exp - 1));
     }
 }
