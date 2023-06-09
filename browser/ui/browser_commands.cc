@@ -101,7 +101,7 @@ void NewTorConnectionForSite(Browser* browser) {
 
 void AddNewProfile() {
   ProfilePicker::Show(ProfilePicker::Params::FromEntryPoint(
-      ProfilePicker::EntryPoint::kProfileMenuAddNewProfile));
+      ProfilePicker::EntryPoint::kProfileMenuManageProfiles));
 }
 
 void OpenGuestProfile() {
