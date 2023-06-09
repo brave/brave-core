@@ -68,7 +68,7 @@ extern const char kPlaylistPlayerHost[];
 extern const char kPlaylistPlayerURL[];
 extern const char kSpeedreaderPanelURL[];
 extern const char kSpeedreaderPanelHost[];
-extern const char kCommandsHost[];
+extern const char kShortcutsURL[];
 extern const char kChatUIURL[];
 extern const char kChatUIHost[];
 

@@ -45,8 +45,8 @@ void ShowBraveNewsConfigure(Browser* browser) {
 }
 
 void ShowShortcutsPage(Browser* browser) {
-  NavigateParams params(GetSingletonTabNavigateParams(
-      browser, GURL(base::StrCat({"brave://", kCommandsHost}))));
+  NavigateParams params(
+      GetSingletonTabNavigateParams(browser, GURL(kShortcutsURL)));
   ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
