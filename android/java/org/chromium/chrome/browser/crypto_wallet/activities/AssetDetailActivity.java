@@ -32,17 +32,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Callback;
+import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -53,6 +53,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.BuyModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
@@ -68,7 +69,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.chrome.browser.app.helpers.ImageLoader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -153,13 +153,18 @@ public class AssetDetailActivity
         mBtnSwap = findViewById(R.id.btn_swap);
 
         if (mCoinMarket) {
+            TextView informationLabel = findViewById(R.id.information);
+            CardView coinMarketInfo = findViewById(R.id.card_view_coin_market_info);
+            AndroidUtils.show(informationLabel, coinMarketInfo);
+
             DisplayMetrics displayMetrics =
                     ContextUtils.getApplicationContext().getResources().getDisplayMetrics();
             final int sizePx = dpToPx(displayMetrics, ASSET_LOGO_SIZE_DP);
-            ImageLoader.downloadImage(
-                    mAssetLogo, Glide.with(this), true, 0, new CustomTarget<Drawable>(sizePx, sizePx) {
+            ImageLoader.downloadImage(mAssetLogo, Glide.with(this), true,
+                    0, new CustomTarget<Drawable>(sizePx, sizePx) {
                         @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        public void onResourceReady(@NonNull Drawable resource,
+                                @Nullable Transition<? super Drawable> transition) {
                             assetTitleText.setCompoundDrawablesRelativeWithIntrinsicBounds(
                                     resource, null, null, null);
                         }
@@ -262,18 +267,18 @@ public class AssetDetailActivity
         if (!mCoinMarket) {
             mBtnSwap.setOnClickListener(v
                     -> Utils.openBuySendSwapActivity(
-                    this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
+                            this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
             mBtnBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utils.openBuySendSwapActivity(
-                            AssetDetailActivity.this, BuySendSwapActivity.ActivityType.BUY, mChainId);
+                    Utils.openBuySendSwapActivity(AssetDetailActivity.this,
+                            BuySendSwapActivity.ActivityType.BUY, mChainId);
                 }
             });
 
             btnSend.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(
-                    AssetDetailActivity.this, BuySendSwapActivity.ActivityType.SEND, mChainId));
+                    -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
+                            BuySendSwapActivity.ActivityType.SEND, mChainId));
         }
         adjustButtonsVisibilities();
 
