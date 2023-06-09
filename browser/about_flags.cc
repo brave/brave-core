@@ -313,14 +313,14 @@
               kPlaylistFeatureInternalName,                            \
               "Playlist",                                              \
               "Enables Playlist",                                      \
-              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+              kOsMac | kOsWin | kOsLinux,                              \
               FEATURE_VALUE_TYPE(playlist::features::kPlaylist),       \
           },                                                           \
           {                                                            \
               kPlaylistFakeUAFeatureInternalName,                      \
               "PlaylistFakeUA",                                        \
               "Use fake UA for playlist",                              \
-              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+              kOsMac | kOsWin | kOsLinux,                              \
               FEATURE_VALUE_TYPE(playlist::features::kPlaylistFakeUA), \
           }))
 
