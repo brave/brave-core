@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_opted_in_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder_unittest_constants.h"
@@ -19,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
@@ -450,35 +450,35 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_2 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo transaction_4 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_4 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
-  const TransactionInfo transaction_6 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_6 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_7);
 
   SaveTransactions(transactions);
@@ -490,7 +490,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.01;
     expected_statement->min_earnings_this_month =
-        0.05 * kMinEstimatedEarningsMultiplier;
+        0.05 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.05;
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);

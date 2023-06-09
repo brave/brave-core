@@ -385,13 +385,14 @@ void Account::OnNotifyDidSolveAdaptiveCaptcha() {
   MaybeTopUpUnblindedTokens();
 }
 
-void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
+void Account::OnDidRedeemConfirmation(const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
 
   MaybeTopUpUnblindedTokens();
 }
 
-void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
+void Account::OnFailedToRedeemConfirmation(
+    const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
 
   MaybeTopUpUnblindedTokens();

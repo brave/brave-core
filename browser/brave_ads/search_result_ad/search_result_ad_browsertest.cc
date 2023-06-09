@@ -12,7 +12,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/mock_ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/constants/brave_paths.h"
@@ -138,13 +138,13 @@ class SearchResultAdTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  MockAdsService* ads_service() { return &ads_service_; }
+  AdsServiceMock* ads_service() { return &ads_service_mock_; }
 
  private:
   base::test::ScopedFeatureList feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  MockAdsService ads_service_;
+  AdsServiceMock ads_service_mock_;
 };
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AdsDisabled) {
@@ -236,21 +236,21 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
               base::StrCat({"data-description", index}));
     EXPECT_DOUBLE_EQ(search_result_ad->value, 0.5 + ad_index);
 
+    EXPECT_TRUE(search_result_ad->conversion);
+    EXPECT_EQ(search_result_ad->conversion->type,
+              base::StrCat({"data-conversion-type-value", index}));
+    EXPECT_EQ(search_result_ad->conversion->url_pattern,
+              base::StrCat({"data-conversion-url-pattern-value", index}));
     if (ad_index == 2) {
-      EXPECT_FALSE(search_result_ad->conversion);
+      EXPECT_TRUE(search_result_ad->conversion->advertiser_public_key.empty());
     } else {
-      EXPECT_TRUE(search_result_ad->conversion);
-      EXPECT_EQ(search_result_ad->conversion->type,
-                base::StrCat({"data-conversion-type-value", index}));
-      EXPECT_EQ(search_result_ad->conversion->url_pattern,
-                base::StrCat({"data-conversion-url-pattern-value", index}));
       EXPECT_EQ(
           search_result_ad->conversion->advertiser_public_key,
           base::StrCat({"data-conversion-advertiser-public-key-value", index}));
-      EXPECT_EQ(
-          static_cast<size_t>(search_result_ad->conversion->observation_window),
-          ad_index);
     }
+    EXPECT_EQ(
+        static_cast<size_t>(search_result_ad->conversion->observation_window),
+        ad_index);
 
     return true;
   }

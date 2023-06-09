@@ -101,11 +101,8 @@ class AdsServiceImpl : public AdsService,
 
   void InitializeNotificationsForCurrentProfile() const;
 
-  void MigrateConfirmationState();
-  void MigrateConfirmationStateCallback(bool success);
-
-  void GetDeviceId();
-  void GetDeviceIdCallback(std::string device_id);
+  void GetDeviceIdAndMaybeStartBatAdsService();
+  void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
 
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
@@ -113,13 +110,11 @@ class AdsServiceImpl : public AdsService,
   void RestartBatAdsServiceAfterDelay();
   void CancelRestartBatAdsService();
   bool ShouldProceedInitialization(size_t current_start_number) const;
-
   void BatAdsServiceCreatedCallback(size_t current_start_number);
   void InitializeBasePathDirectoryCallback(size_t current_start_number,
                                            bool success);
   void Initialize(size_t current_start_number);
   void InitializeDatabase();
-
   void InitializeRewardsWallet(size_t current_start_number);
   void InitializeRewardsWalletCallback(
       size_t current_start_number,
@@ -182,7 +177,6 @@ class AdsServiceImpl : public AdsService,
   void OpenNewTabWithAd(const std::string& placement_id);
   void OpenNewTabWithAdCallback(absl::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
-
   void OpenNewTabWithUrl(const GURL& url);
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
@@ -196,32 +190,13 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/14673) Decouple
   // migration business logic.
-  bool IsUpgradingFromPreBraveAdsBuild();
-  void MigratePrefs();
-  bool MigratePrefs(int source_version,
-                    int dest_version,
-                    bool is_dry_run = false);
-
-  void DisableAdsIfUpgradingFromPreBraveAdsBuild();
   void DisableAdsIfUnsupportedRegion();
-  void MigratePrefsVersion1To2();
-  void MigratePrefsVersion2To3();
-  void MigratePrefsVersion3To4();
-  void MigratePrefsVersion4To5();
-  void MigratePrefsVersion5To6();
-  void MigratePrefsVersion6To7();
-  void MigratePrefsVersion7To8();
-  void MigratePrefsVersion8To9();
-  void MigratePrefsVersion9To10();
-  void MigratePrefsVersion10To11();
-  void MigratePrefsVersion11To12();
 
   // KeyedService:
   void Shutdown() override;
 
   // AdsService:
   bool IsEnabled() const override;
-  void SetEnabled(bool is_enabled) override;
 
   int64_t GetMaximumNotificationAdsPerHour() const override;
   void SetMaximumNotificationAdsPerHour(int64_t ads_per_hour) override;
@@ -444,7 +419,7 @@ class AdsServiceImpl : public AdsService,
   bool is_bat_ads_initialized_ = false;
   bool did_cleanup_on_first_run_ = false;
   bool needs_browser_upgrade_to_serve_ads_ = false;
-  bool is_upgrading_from_pre_brave_ads_build_ = false;
+
   // Brave Ads Service starts count is needed to avoid possible double Brave
   // Ads initialization.
   // TODO(https://github.com/brave/brave-browser/issues/30247): Refactor Brave

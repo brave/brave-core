@@ -27,9 +27,13 @@ class ConfirmationsDelegateMock : public ConfirmationsDelegate {
 
   ~ConfirmationsDelegateMock() override;
 
-  MOCK_METHOD(void, OnDidConfirm, (const ConfirmationInfo& confirmation));
+  MOCK_METHOD(void,
+              OnDidRedeemConfirmation,
+              (const ConfirmationInfo& confirmation));
 
-  MOCK_METHOD(void, OnFailedToConfirm, (const ConfirmationInfo& confirmation));
+  MOCK_METHOD(void,
+              OnFailedToRedeemConfirmation,
+              (const ConfirmationInfo& confirmation));
 };
 
 }  // namespace brave_ads

@@ -57,7 +57,6 @@ void Migrate(InitializeCallback callback) {
 
             const std::string migrated_json =
                 ConfirmationStateManager::GetInstance().ToJson();
-            SetHashForJson(migrated_json);
 
             AdsClientHelper::GetInstance()->Save(
                 kConfirmationStateFilename, migrated_json,

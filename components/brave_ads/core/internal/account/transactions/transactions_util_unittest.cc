@@ -22,21 +22,18 @@ TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
-
-  const base::Time from_time = Now();
-  const base::Time to_time = DistantFuture();
 
   // Act
   const TransactionList transactions_for_date_range =
-      GetTransactionsForDateRange(transactions, from_time, to_time);
+      GetTransactionsForDateRange(transactions, Now(), DistantFuture());
 
   // Assert
   const TransactionList expected_transactions_for_date_range = {transaction_2};
@@ -50,21 +47,18 @@ TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
-  const base::Time from_time = Now();
-  const base::Time to_time = DistantFuture();
-
   // Act
   const TransactionList transactions_for_date_range =
-      GetTransactionsForDateRange(transactions, from_time, to_time);
+      GetTransactionsForDateRange(transactions, Now(), DistantFuture());
 
   // Assert
   EXPECT_TRUE(transactions_for_date_range.empty());

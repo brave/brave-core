@@ -15,12 +15,7 @@
 namespace brave_ads::confirmations {
 
 namespace {
-
-constexpr uint64_t kConfirmationJsonHash = 1891112954;
-constexpr uint64_t kMigratedConfirmationJsonHash = 3830595452;
-
 constexpr char kInvalidJsonFilename[] = "invalid.json";
-
 }  // namespace
 
 class BraveAdsLegacyConfirmationMigrationTest : public UnitTestBase {
@@ -34,13 +29,11 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   // Arrange
   CopyFileFromTestPathToTempPath(kConfirmationStateFilename);
 
-  SetHash(kConfirmationJsonHash);
-
   // Act
   Migrate(/*should_migrate*/ true);
 
   // Assert
-  EXPECT_EQ(kMigratedConfirmationJsonHash, GetHash());
+  EXPECT_TRUE(HasMigrated());
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
@@ -53,22 +46,6 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
 
   // Assert
   EXPECT_FALSE(HasMigrated());
-}
-
-TEST_F(BraveAdsLegacyConfirmationMigrationTest, AlreadyMigrated) {
-  // Arrange
-  CopyFileFromTestPathToTempPath(kConfirmationStateFilename);
-
-  SetHash(kConfirmationJsonHash);
-
-  Migrate(/*should_migrate*/ true);
-  ASSERT_EQ(kMigratedConfirmationJsonHash, GetHash());
-
-  // Act
-  Migrate(/*should_migrate*/ true);
-
-  // Assert
-  EXPECT_EQ(kMigratedConfirmationJsonHash, GetHash());
 }
 
 }  // namespace brave_ads::confirmations

@@ -70,12 +70,6 @@ extern const char kHasMigratedNotificationState[];
 extern const char kHasMigratedRewardsState[];
 extern const char kShouldMigrateVerifiedRewardsUser[];
 
-// Confirmations prefs
-extern const char kConfirmationsHash[];
-
-// Client prefs
-extern const char kClientHash[];
-
 }  // namespace brave_ads::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_COMMON_PREF_NAMES_H_

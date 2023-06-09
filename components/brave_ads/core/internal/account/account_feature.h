@@ -18,6 +18,9 @@ bool IsAccountFeatureEnabled();
 constexpr base::FeatureParam<int> kNextPaymentDay{&kAccountFeature,
                                                   "next_payment_day", 7};
 
+constexpr base::FeatureParam<double> kMinEstimatedEarningsMultiplier{
+    &kAccountFeature, "min_estimated_earnings_multiplier", 0.8};
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_FEATURE_H_

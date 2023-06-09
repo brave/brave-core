@@ -73,8 +73,6 @@ class ConfirmationStateManager final {
     return unblinded_payment_tokens_;
   }
 
-  bool is_mutated() const { return is_mutated_; }
-
  private:
   void LoadCallback(InitializeCallback callback,
                     const absl::optional<std::string>& json);
@@ -84,8 +82,6 @@ class ConfirmationStateManager final {
   bool ParseUnblindedTokensFromDictionary(const base::Value::Dict& dict);
 
   bool ParseUnblindedPaymentTokensFromDictionary(const base::Value::Dict& dict);
-
-  bool is_mutated_ = false;
 
   bool is_initialized_ = false;
 

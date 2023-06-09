@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_MOCK_ADS_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_MOCK_ADS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
 
 #include <string>
 #include <vector>
@@ -15,20 +15,19 @@
 
 namespace brave_ads {
 
-class MockAdsService : public AdsService {
+class AdsServiceMock : public AdsService {
  public:
-  MockAdsService();
+  AdsServiceMock();
 
-  MockAdsService(const MockAdsService&) = delete;
-  MockAdsService& operator=(const MockAdsService&) = delete;
+  AdsServiceMock(const AdsServiceMock&) = delete;
+  AdsServiceMock& operator=(const AdsServiceMock&) = delete;
 
-  MockAdsService(MockAdsService&&) noexcept = delete;
-  MockAdsService& operator=(MockAdsService&&) noexcept = delete;
+  AdsServiceMock(AdsServiceMock&&) noexcept = delete;
+  AdsServiceMock& operator=(AdsServiceMock&&) noexcept = delete;
 
-  ~MockAdsService() override;
+  ~AdsServiceMock() override;
 
   MOCK_CONST_METHOD0(IsEnabled, bool());
-  MOCK_METHOD1(SetEnabled, void(bool));
 
   MOCK_CONST_METHOD0(GetMaximumNotificationAdsPerHour, int64_t());
   MOCK_METHOD1(SetMaximumNotificationAdsPerHour, void(int64_t));
@@ -132,4 +131,4 @@ class MockAdsService : public AdsService {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_MOCK_ADS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_

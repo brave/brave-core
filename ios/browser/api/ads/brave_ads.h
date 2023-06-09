@@ -179,12 +179,14 @@ OBJC_EXPORT
 /// Toggle that the user liked the given ad and advertiser and more like it
 /// should be shown
 - (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId
-               advertiserId:(NSString*)advertiserId;
+               advertiserId:(NSString*)advertiserId
+                    segment:(NSString*)segment;
 
 /// Toggle that the user disliked the given ad and advertiser and it shouldn't
 /// be shown again
 - (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
-                 advertiserId:(NSString*)advertiserId;
+                 advertiserId:(NSString*)advertiserId
+                      segment:(NSString*)segment;
 
 #pragma mark -
 

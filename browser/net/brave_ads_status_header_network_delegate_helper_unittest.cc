@@ -10,7 +10,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/net/brave_ads_status_header_network_delegate_helper.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/components/brave_ads/browser/mock_ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -52,7 +52,7 @@ class AdsStatusHeaderDelegateHelperTest : public testing::Test {
         {});
   }
 
-  brave_ads::MockAdsService* SetUpAdsService(TestingProfile* profile) {
+  brave_ads::AdsServiceMock* SetUpAdsService(TestingProfile* profile) {
     KeyedService* ads_service =
         brave_ads::AdsServiceFactory::GetInstance()->SetTestingFactoryAndUse(
             profile, base::BindRepeating([](content::BrowserContext* context)
@@ -60,9 +60,9 @@ class AdsStatusHeaderDelegateHelperTest : public testing::Test {
               if (context->IsOffTheRecord()) {
                 return {};
               }
-              return std::make_unique<brave_ads::MockAdsService>();
+              return std::make_unique<brave_ads::AdsServiceMock>();
             }));
-    return static_cast<brave_ads::MockAdsService*>(ads_service);
+    return static_cast<brave_ads::AdsServiceMock*>(ads_service);
   }
 
  private:
@@ -73,7 +73,7 @@ class AdsStatusHeaderDelegateHelperTest : public testing::Test {
 
 TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchTabAdsEnabled) {
   TestingProfile profile;
-  brave_ads::MockAdsService* ads_service = SetUpAdsService(&profile);
+  brave_ads::AdsServiceMock* ads_service = SetUpAdsService(&profile);
   ASSERT_TRUE(ads_service);
   EXPECT_CALL(*ads_service, IsEnabled()).WillRepeatedly(Return(true));
 
@@ -142,7 +142,7 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchTabAdsEnabled) {
 
 TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchTabAdsEnabled) {
   TestingProfile profile;
-  brave_ads::MockAdsService* ads_service = SetUpAdsService(&profile);
+  brave_ads::AdsServiceMock* ads_service = SetUpAdsService(&profile);
   ASSERT_TRUE(ads_service);
   EXPECT_CALL(*ads_service, IsEnabled()).WillRepeatedly(Return(true));
 
@@ -178,7 +178,7 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchTabAdsEnabled) {
 
 TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchRequestAdsEnabled) {
   TestingProfile profile;
-  brave_ads::MockAdsService* ads_service = SetUpAdsService(&profile);
+  brave_ads::AdsServiceMock* ads_service = SetUpAdsService(&profile);
   ASSERT_TRUE(ads_service);
   EXPECT_CALL(*ads_service, IsEnabled()).WillOnce(Return(true));
 
@@ -199,7 +199,7 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchRequestAdsEnabled) {
 
 TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchHostAdsDisabled) {
   TestingProfile profile;
-  brave_ads::MockAdsService* ads_service = SetUpAdsService(&profile);
+  brave_ads::AdsServiceMock* ads_service = SetUpAdsService(&profile);
   ASSERT_TRUE(ads_service);
   EXPECT_CALL(*ads_service, IsEnabled()).WillRepeatedly(Return(false));
 
@@ -236,7 +236,7 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchHostIncognitoProfile) {
   TestingProfile profile;
   TestingProfile* incognito_profile =
       TestingProfile::Builder().BuildIncognito(&profile);
-  brave_ads::MockAdsService* ads_service = SetUpAdsService(incognito_profile);
+  brave_ads::AdsServiceMock* ads_service = SetUpAdsService(incognito_profile);
   EXPECT_FALSE(ads_service);
 
   auto request_info =

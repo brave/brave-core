@@ -74,9 +74,6 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
                                 false);
 
-  registry->RegisterUint64Pref(prefs::kConfirmationsHash, 0);
-  registry->RegisterUint64Pref(prefs::kClientHash, 0);
-
   registry->RegisterStringPref(prefs::kBrowserVersionNumber, "");
 }
 

@@ -49,9 +49,6 @@ class AdsService : public KeyedService {
   // Returns |true| if ads are enabled.
   virtual bool IsEnabled() const = 0;
 
-  // Called to enable or disable ads.
-  virtual void SetEnabled(bool is_enabled) = 0;
-
   // Returns the maximum number of notification ads that can be served per hour.
   virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;
 

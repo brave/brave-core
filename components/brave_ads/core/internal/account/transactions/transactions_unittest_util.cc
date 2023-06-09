@@ -41,9 +41,10 @@ TransactionInfo BuildTransaction(const double value,
   return transaction;
 }
 
-TransactionInfo BuildTransaction(const double value,
-                                 const ConfirmationType& confirmation_type) {
-  return BuildTransaction(value, confirmation_type, DistantPast());
+TransactionInfo BuildUnreconciledTransaction(
+    const double value,
+    const ConfirmationType& confirmation_type) {
+  return BuildTransaction(value, confirmation_type, /*reconciled_at*/ {});
 }
 
 size_t GetTransactionCount() {

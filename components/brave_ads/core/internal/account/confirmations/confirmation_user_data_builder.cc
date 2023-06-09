@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/created_at_timestamp_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/locale_user_data.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/mutated_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/platform_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/rotating_hash_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/segment_user_data.h"
@@ -34,7 +33,6 @@ void BuildCallback(const TransactionInfo& transaction,
   user_data.Merge(BuildCatalogUserData());
   user_data.Merge(BuildCreatedAtTimestampUserData(transaction));
   user_data.Merge(BuildLocaleUserData());
-  user_data.Merge(BuildMutatedUserData());
   user_data.Merge(BuildPlatformUserData());
   user_data.Merge(BuildRotatingHashUserData(transaction));
   user_data.Merge(BuildSegmentUserData(transaction));

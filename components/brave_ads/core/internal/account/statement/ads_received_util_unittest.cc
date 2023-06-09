@@ -22,33 +22,32 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
-  const base::Time from_time = Now();
-
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
+
+  const base::Time from_time = Now();
 
   AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
-
-  const base::Time to_time = DistantFuture();
 
   // Act
 
   // Assert
-  EXPECT_EQ(2U, GetAdsReceivedForDateRange(transactions, from_time, to_time));
+  EXPECT_EQ(
+      2U, GetAdsReceivedForDateRange(transactions, from_time, DistantFuture()));
 }
 
 TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
@@ -58,35 +57,31 @@ TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
-  const base::Time from_time = Now();
-  const base::Time to_time = DistantFuture();
-
   // Act
 
   // Assert
-  EXPECT_EQ(0U, GetAdsReceivedForDateRange(transactions, from_time, to_time));
+  EXPECT_EQ(0U,
+            GetAdsReceivedForDateRange(transactions, Now(), DistantFuture()));
 }
 
 TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
   // Arrange
   const TransactionList transactions;
 
-  const base::Time from_time = DistantPast();
-  const base::Time to_time = DistantFuture();
-
   // Act
 
   // Assert
-  EXPECT_EQ(0U, GetAdsReceivedForDateRange(transactions, from_time, to_time));
+  EXPECT_EQ(0U, GetAdsReceivedForDateRange(transactions, DistantPast(),
+                                           DistantFuture()));
 }
 
 }  // namespace brave_ads

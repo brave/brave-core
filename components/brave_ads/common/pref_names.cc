@@ -8,7 +8,7 @@
 namespace brave_ads::prefs {
 
 // Stores the preferences version number
-const char kVersion[] = "brave.brave_ads.prefs.version";
+const char kVersion[] = "brave.brave_ads.prefs.current_version";
 
 // Prefix for preference names pertaining to p2a weekly metrics
 const char kP2AStoragePrefNamePrefix[] = "brave.weekly_storage.";
@@ -104,8 +104,5 @@ const char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
 const char kShouldMigrateVerifiedRewardsUser[] =
     "brave.brave_ads.rewards.verified_user.should_migrate";
-
-const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash";
-const char kClientHash[] = "brave.brave_ads.client.hash";
 
 }  // namespace brave_ads::prefs

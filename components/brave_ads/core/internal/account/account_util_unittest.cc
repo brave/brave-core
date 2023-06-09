@@ -109,7 +109,7 @@ TEST_F(BraveAdsAccountUtilTest, ResetRewards) {
   // Arrange
   TransactionList transactions;
   const TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction);
   SaveTransactions(transactions);
 

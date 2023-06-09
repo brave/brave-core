@@ -274,7 +274,7 @@ void Confirmations::OnDidRedeemOptedInConfirmation(
                       << FriendlyDateAndTime(next_token_redemption_at));
 
   if (delegate_) {
-    delegate_->OnDidConfirm(confirmation);
+    delegate_->OnDidRedeemConfirmation(confirmation);
   }
 
   StopRetrying();
@@ -287,7 +287,7 @@ void Confirmations::OnDidRedeemOptedOutConfirmation(
   CHECK(IsValid(confirmation));
 
   if (delegate_) {
-    delegate_->OnDidConfirm(confirmation);
+    delegate_->OnDidRedeemConfirmation(confirmation);
   }
 
   StopRetrying();
@@ -306,7 +306,7 @@ void Confirmations::OnFailedToRedeemConfirmation(
   }
 
   if (delegate_) {
-    delegate_->OnFailedToConfirm(confirmation);
+    delegate_->OnFailedToRedeemConfirmation(confirmation);
   }
 
   if (!should_backoff) {

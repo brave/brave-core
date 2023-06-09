@@ -22,8 +22,9 @@ TransactionInfo BuildTransaction(double value,
                                  const ConfirmationType& confirmation_type,
                                  base::Time reconciled_at);
 
-TransactionInfo BuildTransaction(double value,
-                                 const ConfirmationType& confirmation_type);
+TransactionInfo BuildUnreconciledTransaction(
+    double value,
+    const ConfirmationType& confirmation_type);
 
 size_t GetTransactionCount();
 

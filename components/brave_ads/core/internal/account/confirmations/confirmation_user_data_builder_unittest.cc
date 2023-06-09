@@ -45,7 +45,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
   TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
   transaction.creative_instance_id = kCreativeInstanceId;
 
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
@@ -62,7 +62,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
         ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
         const std::string pattern =
-            R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
+            R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
         EXPECT_TRUE(RE2::FullMatch(json, pattern));
       }));
 }
@@ -82,8 +82,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   AdvanceClockTo(
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
-  TransactionInfo transaction =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kConversion);
+  TransactionInfo transaction = BuildUnreconciledTransaction(
+      /*value*/ 0.0, ConfirmationType::kConversion);
   transaction.creative_instance_id = kCreativeInstanceId;
 
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
@@ -100,7 +100,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
         ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
         const std::string pattern =
-            R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
+            R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
         EXPECT_TRUE(RE2::FullMatch(json, pattern));
       }));
 }

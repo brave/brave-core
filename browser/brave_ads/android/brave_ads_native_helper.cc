@@ -10,8 +10,10 @@
 #include "base/android/jni_string.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ads_util.h"
 #include "chrome/browser/profiles/profile_android.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_ads {
 
@@ -34,12 +36,8 @@ void JNI_BraveAdsNativeHelper_SetAdsEnabled(
     const base::android::JavaParamRef<jobject>& j_profile_android,
     jboolean should_enable_ads) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service) {
-    return;
-  }
-
-  ads_service->SetEnabled(should_enable_ads);
+  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kEnabled,
+                                  should_enable_ads);
 }
 
 // static

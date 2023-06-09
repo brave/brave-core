@@ -16,9 +16,7 @@
 #include "base/files/important_file_writer.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/hash/hash.h"
 #include "base/logging.h"
-#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
@@ -40,7 +38,6 @@
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/reminder_util.h"
 #include "brave/components/brave_ads/common/brave_ads_feature.h"
-#include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -57,7 +54,6 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
@@ -74,7 +70,6 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
-#include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/network_change_notifier.h"
@@ -89,6 +84,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/android/service_tab_launcher.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
@@ -189,51 +185,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
-  const base::FilePath rewards_service_base_path =
-      path.AppendASCII("rewards_service");
-
-  const base::FilePath legacy_confirmations_state_path =
-      rewards_service_base_path.AppendASCII("confirmations.json");
-
-  if (base::PathExists(legacy_confirmations_state_path)) {
-    const base::FilePath ads_service_base_path =
-        path.AppendASCII("ads_service");
-
-    if (!base::DirectoryExists(ads_service_base_path)) {
-      if (!base::CreateDirectory(ads_service_base_path)) {
-        VLOG(1) << "Failed to create " << ads_service_base_path.value();
-        return false;
-      }
-
-      VLOG(6) << "Created " << ads_service_base_path.value();
-    }
-
-    const base::FilePath confirmations_state_path =
-        ads_service_base_path.AppendASCII("confirmations.json");
-
-    VLOG(6) << "Migrating " << legacy_confirmations_state_path.value() << " to "
-            << confirmations_state_path.value();
-
-    if (!base::Move(legacy_confirmations_state_path,
-                    confirmations_state_path)) {
-      return false;
-    }
-
-    VLOG(6) << "Successfully migrated confirmation state";
-  }
-
-  if (base::PathExists(rewards_service_base_path)) {
-    VLOG(6) << "Deleting " << rewards_service_base_path.value();
-
-    if (!base::DeleteFile(rewards_service_base_path)) {
-      VLOG(1) << "Failed to delete " << rewards_service_base_path.value();
-    }
-  }
-
-  return true;
-}
-
 mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
     mojom::DBTransactionInfoPtr transaction,
     Database* database) {
@@ -309,11 +260,9 @@ AdsServiceImpl::AdsServiceImpl(
 
   InitializeNotificationsForCurrentProfile();
 
-  MigratePrefs();
-
   DisableAdsIfUnsupportedRegion();
 
-  MigrateConfirmationState();
+  GetDeviceIdAndMaybeStartBatAdsService();
 
   g_brave_browser_process->resource_component()->AddObserver(this);
 
@@ -345,30 +294,14 @@ void AdsServiceImpl::InitializeNotificationsForCurrentProfile() const {
   NotificationHelper::GetInstance()->InitForProfile(profile_);
 }
 
-void AdsServiceImpl::MigrateConfirmationState() {
-  const base::FilePath path = profile_->GetPath();
-
-  file_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&MigrateConfirmationStateOnFileTaskRunner, path),
-      base::BindOnce(&AdsServiceImpl::MigrateConfirmationStateCallback,
-                     AsWeakPtr()));
+void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsService() {
+  device_id_->GetDeviceId(base::BindOnce(
+      &AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback,
+      AsWeakPtr()));
 }
 
-void AdsServiceImpl::MigrateConfirmationStateCallback(const bool success) {
-  if (!success) {
-    return VLOG(1) << "Failed to migrate confirmation state";
-  }
-
-  GetDeviceId();
-}
-
-void AdsServiceImpl::GetDeviceId() {
-  device_id_->GetDeviceId(
-      base::BindOnce(&AdsServiceImpl::GetDeviceIdCallback, AsWeakPtr()));
-}
-
-void AdsServiceImpl::GetDeviceIdCallback(std::string device_id) {
+void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
+    std::string device_id) {
   sys_info_.device_id = std::move(device_id);
 
   InitializePrefChangeRegistrar();
@@ -1083,213 +1016,9 @@ const PrefService* AdsServiceImpl::GetPrefService() const {
   return profile_->GetPrefs();
 }
 
-bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
-  // Brave ads was hidden in 0.62.x however due to a bug |prefs::kEnabled| was
-  // set to true causing "https://github.com/brave/brave-browser/issues/5434"
-
-  // |prefs::kIdleTimeThreshold| was not serialized in 0.62.x
-
-  // |prefs::kVersion| was introduced in 0.63.x
-
-  // We can detect if we are upgrading from a pre Brave ads build by checking
-  // |prefs::kEnabled| is set to true, |prefs::kIdleTimeThreshold| does not
-  // exist, |prefs::kVersion| does not exist and it is not the first time the
-  // browser has run for this user
-#if !BUILDFLAG(IS_ANDROID)
-  return GetPrefService()->GetBoolean(prefs::kEnabled) &&
-         !GetPrefService()->HasPrefPath(prefs::kIdleTimeThreshold) &&
-         !GetPrefService()->HasPrefPath(prefs::kVersion) &&
-         !first_run::IsChromeFirstRun();
-#else
-  return false;
-#endif
-}
-
-void AdsServiceImpl::MigratePrefs() {
-  is_upgrading_from_pre_brave_ads_build_ = IsUpgradingFromPreBraveAdsBuild();
-  if (is_upgrading_from_pre_brave_ads_build_) {
-    // Force migration of preferences from version 1 if
-    // |is_upgrading_from_pre_brave_ads_build_| is set to true to fix
-    // "https://github.com/brave/brave-browser/issues/5434"
-    SetIntegerPref(prefs::kVersion, 1);
-  }
-  const int source_version = GetPrefService()->GetInteger(prefs::kVersion);
-  const int dest_version = kCurrentPrefVersion;
-
-  if (!MigratePrefs(source_version, dest_version, true)) {
-    // Migration dry-run failed, so do not migrate preferences
-    VLOG(1) << "Failed to migrate ads preferences from version "
-            << source_version << " to " << dest_version;
-
-    return;
-  }
-
-  MigratePrefs(source_version, dest_version);
-}
-
-bool AdsServiceImpl::MigratePrefs(const int source_version,
-                                  const int dest_version,
-                                  const bool is_dry_run) {
-  CHECK(source_version >= 1) << "Invalid migration path";
-  CHECK(source_version <= dest_version) << "Invalid migration path";
-
-  if (source_version == dest_version) {
-    SetIntegerPref(prefs::kVersion, dest_version);
-    return true;
-  }
-
-  VLOG(2) << "Migrating ads preferences";
-
-  // Migration paths should be added to the below map, i.e.
-  //
-  //   {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
-  //   {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
-  //   {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
-
-  static const base::NoDestructor<
-      base::flat_map<std::pair<int, int>, void (AdsServiceImpl::*)()>>
-      kMappings({// {{from version, to version}, function}
-                 {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
-                 {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
-                 {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
-                 {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
-                 {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
-                 {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
-                 {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
-                 {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9},
-                 {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10},
-                 {{10, 11}, &AdsServiceImpl::MigratePrefsVersion10To11},
-                 {{11, 12}, &AdsServiceImpl::MigratePrefsVersion11To12}});
-
-  // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
-  // should migrate version 2 to 3, then 3 to 4 and finally version 4 to 5
-
-  int from_version = source_version;
-  int to_version = from_version + 1;
-
-  do {
-    const auto mapping =
-        kMappings->find(std::make_pair(from_version, to_version));
-    if (mapping == kMappings->cend()) {
-      // Migration path does not exist. It is highly recommended to perform a
-      // dry-run before migrating preferences
-      return false;
-    }
-
-    if (!is_dry_run) {
-      VLOG(2) << "Migrating ads preferences from mapping version "
-              << from_version << " to " << to_version;
-
-      (this->*(mapping->second))();
-    }
-
-    from_version++;
-    if (to_version < dest_version) {
-      to_version++;
-    }
-  } while (from_version != to_version);
-
-  if (!is_dry_run) {
-    SetIntegerPref(prefs::kVersion, dest_version);
-
-    VLOG(2) << "Successfully migrated Ads preferences from version "
-            << source_version << " to " << dest_version;
-  }
-
-  return true;
-}
-
-void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
-  if (!is_upgrading_from_pre_brave_ads_build_) {
-    return;
-  }
-
-  SetEnabled(false);
-}
-
 void AdsServiceImpl::DisableAdsIfUnsupportedRegion() {
   if (!IsSupportedRegion() && IsEnabled()) {
-    SetEnabled(false);
-  }
-}
-
-void AdsServiceImpl::MigratePrefsVersion1To2() {
-  // Intentionally empty as migration is no longer required
-}
-
-void AdsServiceImpl::MigratePrefsVersion2To3() {
-  // Disable ads if upgrading from a pre brave ads build due to a bug where ads
-  // were always enabled
-  DisableAdsIfUpgradingFromPreBraveAdsBuild();
-}
-
-void AdsServiceImpl::MigratePrefsVersion3To4() {
-  // Intentionally empty as migration is no longer required
-}
-
-void AdsServiceImpl::MigratePrefsVersion4To5() {}
-
-void AdsServiceImpl::MigratePrefsVersion5To6() {
-  // Intentionally empty as migration is no longer required
-}
-
-void AdsServiceImpl::MigratePrefsVersion6To7() {
-  // Intentionally empty as migration is no longer required
-}
-
-void AdsServiceImpl::MigratePrefsVersion7To8() {
-  const bool rewards_enabled =
-      GetPrefService()->GetBoolean(brave_rewards::prefs::kEnabled);
-  if (!rewards_enabled) {
-    SetEnabled(false);
-  }
-}
-
-void AdsServiceImpl::MigratePrefsVersion8To9() {
-  // Intentionally empty as migration is no longer required
-}
-
-void AdsServiceImpl::MigratePrefsVersion9To10() {
-  if (!GetPrefService()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour)) {
-    return;
-  }
-
-  const int64_t ads_per_hour =
-      GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
-  if (ads_per_hour == -1 || ads_per_hour == 2) {
-    // The user did not change the ads per hour setting from the legacy default
-    // value of 2 so we should clear the preference to transition to
-    // |kDefaultBraveRewardsNotificationAdsPerHour|
-    GetPrefService()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
-  }
-}
-
-void AdsServiceImpl::MigratePrefsVersion10To11() {
-  if (!GetPrefService()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour)) {
-    return;
-  }
-
-  const int64_t ads_per_hour =
-      GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
-  if (ads_per_hour == 0 || ads_per_hour == -1) {
-    // Clear the ads per hour preference to transition to
-    // |kDefaultBraveRewardsNotificationAdsPerHour|
-    GetPrefService()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
-  }
-}
-
-void AdsServiceImpl::MigratePrefsVersion11To12() {
-  std::string value;
-
-  if (base::ReadFileToString(base_path_.AppendASCII("confirmations.json"),
-                             &value)) {
-    const auto hash = static_cast<uint64_t>(base::PersistentHash(value));
-    SetUint64Pref(prefs::kConfirmationsHash, hash);
-  }
-
-  if (base::ReadFileToString(base_path_.AppendASCII("client.json"), &value)) {
-    const auto hash = static_cast<uint64_t>(base::PersistentHash(value));
-    SetUint64Pref(prefs::kClientHash, hash);
+    SetBooleanPref(prefs::kEnabled, false);
   }
 }
 
@@ -1340,10 +1069,6 @@ void AdsServiceImpl::Shutdown() {
 
 bool AdsServiceImpl::IsEnabled() const {
   return GetPrefService()->GetBoolean(prefs::kEnabled);
-}
-
-void AdsServiceImpl::SetEnabled(const bool is_enabled) {
-  SetBooleanPref(prefs::kEnabled, is_enabled);
 }
 
 int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {

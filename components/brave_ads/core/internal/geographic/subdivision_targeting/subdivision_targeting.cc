@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
-#include "brave/components/brave_ads/core/internal/common/locale/subdivision_code_util.h"
+#include "brave/components/brave_ads/core/internal/common/locale/subdivision_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_url_request.h"
@@ -119,7 +119,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
 
   const std::string& subdivision = GetSubdivision();
 
-  std::string subdivision_country_code;
+  absl::optional<std::string> subdivision_country_code;
   if (!subdivision.empty()) {
     subdivision_country_code = GetCountryCode(subdivision);
   }

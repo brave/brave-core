@@ -31,10 +31,9 @@ namespace {
 
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
-constexpr base::TimeDelta kExpiredNextRedemptionAfter = base::Minutes(1);
-
 constexpr base::TimeDelta kNextRedemptionAfter = base::Days(1);
-constexpr base::TimeDelta kDebugNextRedemptionAfter = base::Minutes(25);
+constexpr base::TimeDelta kDebugNextRedemptionAfter = base::Minutes(2);
+constexpr base::TimeDelta kNextRedemptionWhenExpiredAfter = base::Minutes(1);
 
 base::TimeDelta CalculateRedemptionDelay() {
   const base::Time next_token_redemption_at =
@@ -45,16 +44,16 @@ base::TimeDelta CalculateRedemptionDelay() {
 
   if (now >= next_token_redemption_at) {
     // Browser was launched after the next token redemption date
-    return kExpiredNextRedemptionAfter;
+    return kNextRedemptionWhenExpiredAfter;
   }
 
   return next_token_redemption_at - now;
 }
 
 base::Time CalculateNextRedemptionDate() {
-  return base::Time::Now() + RandTimeDelta(ShouldDebug()
-                                               ? kDebugNextRedemptionAfter
-                                               : kNextRedemptionAfter);
+  return base::Time::Now() + (ShouldDebug()
+                                  ? kDebugNextRedemptionAfter
+                                  : RandTimeDelta(kNextRedemptionAfter));
 }
 
 }  // namespace

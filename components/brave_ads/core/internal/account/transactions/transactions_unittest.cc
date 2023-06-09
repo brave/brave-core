@@ -52,17 +52,17 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kDismissed);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kDismissed);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
   SaveTransactions(transactions);
@@ -88,11 +88,11 @@ TEST_F(BraveAdsTransactionsTest, RemoveAll) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kDismissed);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kDismissed);
   transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);

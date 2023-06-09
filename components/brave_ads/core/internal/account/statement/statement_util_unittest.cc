@@ -51,29 +51,29 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_2 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
   TransactionInfo transaction_6 =
-      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transaction_6.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_6);
 
@@ -81,7 +81,7 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
   const auto [min, max] = GetEstimatedEarningsForThisMonth(transactions);
 
   // Assert
-  EXPECT_DOUBLE_EQ(0.07 * kMinEstimatedEarningsMultiplier, min);
+  EXPECT_DOUBLE_EQ(0.07 * kMinEstimatedEarningsMultiplier.Get(), min);
   EXPECT_DOUBLE_EQ(0.09, max);
 }
 
@@ -91,26 +91,26 @@ TEST_F(BraveAdsStatementUtilTest, GetEarningsForLastMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_1 = BuildTransaction(
+      /*value*/ 0.02, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
   // Act
@@ -127,21 +127,21 @@ TEST_F(BraveAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
   // Act

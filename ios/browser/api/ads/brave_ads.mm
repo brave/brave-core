@@ -712,26 +712,30 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId
-               advertiserId:(NSString*)advertiserId {
+               advertiserId:(NSString*)advertiserId
+                    segment:(NSString*)segment {
   if (![self isAdsServiceRunning]) {
     return;
   }
   brave_ads::AdContentInfo ad_content;
+  ad_content.type = brave_ads::AdType::kNotificationAd;
   ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
   ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  ad_content.type = brave_ads::AdType::kNotificationAd;
+  ad_content.segment = base::SysNSStringToUTF8(segment);
   ads->ToggleLikeAd(brave_ads::AdContentToValue(ad_content));
 }
 
 - (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
-                 advertiserId:(NSString*)advertiserId {
+                 advertiserId:(NSString*)advertiserId
+                      segment:(NSString*)segment {
   if (![self isAdsServiceRunning]) {
     return;
   }
   brave_ads::AdContentInfo ad_content;
+  ad_content.type = brave_ads::AdType::kNotificationAd;
   ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
   ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  ad_content.type = brave_ads::AdType::kNotificationAd;
+  ad_content.segment = base::SysNSStringToUTF8(segment);
   ads->ToggleDislikeAd(brave_ads::AdContentToValue(ad_content));
 }
 

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
+#include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -24,12 +24,12 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_1 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
@@ -41,7 +41,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.0;
     expected_statement->min_earnings_this_month =
-        0.02 * kMinEstimatedEarningsMultiplier;
+        0.02 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.02;
     expected_statement->next_payment_date =
         TimeFromString("7 December 2020 23:59:59.999", /*is_local*/ false);
@@ -61,39 +61,39 @@ TEST_F(BraveAdsStatementTest,
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_2 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo transaction_4 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_4 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
-  const TransactionInfo transaction_6 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_6 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_7);
 
   const TransactionInfo transaction_8 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_8);
 
   SaveTransactions(transactions);
@@ -105,7 +105,7 @@ TEST_F(BraveAdsStatementTest,
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.01;
     expected_statement->min_earnings_this_month =
-        0.05 * kMinEstimatedEarningsMultiplier;
+        0.05 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.05;
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
@@ -124,29 +124,29 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   AdvanceClockTo(TimeFromString("31 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_2 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo transaction_4 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_4 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_6);
 
   SaveTransactions(transactions);
@@ -158,7 +158,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.01;
     expected_statement->min_earnings_this_month =
-        0.04 * kMinEstimatedEarningsMultiplier;
+        0.04 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.04;
     expected_statement->next_payment_date =
         TimeFromString("7 January 2021 23:59:59.999", /*is_local*/ false);
@@ -198,12 +198,12 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactionsForThisMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
+  const TransactionInfo transaction_1 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_1);
 
   TransactionInfo transaction_2 =
-      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transaction_2.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_2);
 
@@ -216,7 +216,7 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactionsForThisMonth) {
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
     expected_statement->earnings_last_month = 0.0;
     expected_statement->min_earnings_this_month =
-        0.01 * kMinEstimatedEarningsMultiplier;
+        0.01 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.02;
     expected_statement->next_payment_date =
         TimeFromString("7 December 2020 23:59:59.999", /*is_local*/ false);

@@ -14,12 +14,12 @@ namespace brave_ads {
 
 TEST(BraveAdsLocaleUtilTest, GetLocale) {
   // Arrange
-  brave_l10n::test::ScopedDefaultLocale default_locale("en_US");
+  brave_l10n::test::ScopedDefaultLocale default_locale("en_KY");
 
   // Act
 
   // Assert
-  EXPECT_EQ("en_US", GetLocale());
+  EXPECT_EQ("en_KY", GetLocale());
 }
 
 }  // namespace brave_ads

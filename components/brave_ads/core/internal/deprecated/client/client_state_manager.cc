@@ -10,10 +10,8 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/hash/hash.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
@@ -63,20 +61,6 @@ mojom::UserReactionType ToggleDislikeUserReactionType(
   return user_reaction_type == mojom::UserReactionType::kDislike
              ? mojom::UserReactionType::kNeutral
              : mojom::UserReactionType::kDislike;
-}
-
-uint64_t GenerateHash(const std::string& value) {
-  return uint64_t{base::PersistentHash(value)};
-}
-
-void SetHash(const std::string& value) {
-  AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kClientHash,
-                                                GenerateHash(value));
-}
-
-bool IsMutated(const std::string& value) {
-  return AdsClientHelper::GetInstance()->GetUint64Pref(prefs::kClientHash) !=
-         GenerateHash(value);
 }
 
 }  // namespace
@@ -491,14 +475,9 @@ void ClientStateManager::Save() {
 
   BLOG(9, "Saving client state");
 
-  const std::string json = client_.ToJson();
-
-  if (!is_mutated_) {
-    SetHash(json);
-  }
-
   AdsClientHelper::GetInstance()->Save(
-      kClientStateFilename, json, base::BindOnce([](const bool success) {
+      kClientStateFilename, client_.ToJson(),
+      base::BindOnce([](const bool success) {
         if (!success) {
           return BLOG(0, "Failed to save client state");
         }
@@ -527,12 +506,6 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     BLOG(3, "Successfully loaded client state");
 
     is_initialized_ = true;
-  }
-
-  is_mutated_ = IsMutated(client_.ToJson());
-
-  if (is_mutated_) {
-    BLOG(9, "Client state is mutated");
   }
 
   std::move(callback).Run(/*success */ true);

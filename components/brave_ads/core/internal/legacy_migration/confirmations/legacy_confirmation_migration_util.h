@@ -6,13 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CONFIRMATIONS_LEGACY_CONFIRMATION_MIGRATION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CONFIRMATIONS_LEGACY_CONFIRMATION_MIGRATION_UTIL_H_
 
-#include <string>
-
 namespace brave_ads::confirmations {
 
 bool HasMigrated();
-
-void SetHashForJson(const std::string& json);
 
 }  // namespace brave_ads::confirmations
 

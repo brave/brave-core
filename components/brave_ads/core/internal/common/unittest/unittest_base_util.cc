@@ -251,9 +251,6 @@ void MockDefaultPrefs() {
   SetDefaultBooleanPref(prefs::kHasMigratedRewardsState, true);
   SetDefaultBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, false);
 
-  SetDefaultUint64Pref(prefs::kConfirmationsHash, 0);
-  SetDefaultUint64Pref(prefs::kClientHash, 0);
-
   SetDefaultStringPref(prefs::kBrowserVersionNumber, "");
 }
 
