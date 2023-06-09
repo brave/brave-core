@@ -33,9 +33,9 @@ class LinearAlgebraUtil {
   static Matrix TransposeMatrix(Matrix mat);
 
  private:
-  static Vector MatrixXfToVector(Eigen::MatrixXf v);
+  static Vector MatrixXfToVector(const Eigen::MatrixXf& v);
 
-  static Matrix MatrixXfToMatrix(Eigen::MatrixXf mat);
+  static Matrix MatrixXfToMatrix(const Eigen::MatrixXf& mat);
 
   static Eigen::MatrixXf MatrixToMatrixXf(Matrix mat);
 };

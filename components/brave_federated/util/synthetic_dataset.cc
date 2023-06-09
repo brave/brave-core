@@ -18,10 +18,11 @@ namespace brave_federated {
 SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> data_points)
     : data_points_(std::move(data_points)) {}
 
-SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> weights,
-                                   std::vector<float> b,
-                                   int num_features,
-                                   size_t size) {
+SyntheticDataset::SyntheticDataset(
+    const std::vector<std::vector<float>>& weights,
+    const std::vector<float>& b,
+    int num_features,
+    size_t size) {
   // Generate time of day and day of week uniformly.
   const int max_day = 7;
   const int max_time = 144;
