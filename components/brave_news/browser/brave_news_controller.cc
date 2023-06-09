@@ -327,6 +327,12 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
   // be a direct image
   const auto file_name = padded_image_url.path();
   const std::string ending = ".pad";
+  if (file_name.length() >= file_name.max_size() - 1 ||
+      file_name.length() <= ending.length()) {
+    absl::optional<std::vector<uint8_t>> args;
+    std::move(callback).Run(std::move(args));
+    return;
+  }
   const bool is_padded =
       (file_name.compare(file_name.length() - ending.length(), ending.length(),
                          ending) == 0);
