@@ -1,12 +1,12 @@
 diff --git a/components/crash/core/app/crash_reporter_client.cc b/components/crash/core/app/crash_reporter_client.cc
-index 284dd099122df85d2cebf467cdb3a54b45a343eb..89d593d4d9f175d661eb0934aad40ca35b034975 100644
+index 3f3ed53d48fc4b19642cae847e69982782790e31..fa3edf874203d4d386bda4d862559cc645858dbb 100644
 --- a/components/crash/core/app/crash_reporter_client.cc
 +++ b/components/crash/core/app/crash_reporter_client.cc
-@@ -194,6 +194,7 @@ void CrashReporterClient::GetSanitizationInformation(
+@@ -190,6 +190,7 @@ void CrashReporterClient::GetSanitizationInformation(
  #endif
  
  std::string CrashReporterClient::GetUploadUrl() {
 +  BRAVE_CRASH_REPORTER_CLIENT_GET_UPLOAD_URL
- #if BUILDFLAG(GOOGLE_CHROME_BRANDING) && defined(OFFICIAL_BUILD)
-   // Only allow the possibility of report upload in official builds. This
-   // crash server won't have symbols for any other build types.
+   return kDefaultUploadUrl;
+ }
+ 

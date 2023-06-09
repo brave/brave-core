@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index e238be9d538dd257f74101c413cbb69cf04f39f5..fdede737f382949a667b56301edaf618af09f2db 100644
+index dcb4afbdf7074315a67f04e0a279aa01ba4c25c4..ef122d547f7703c791318407a9279f389293531c 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -331,6 +331,22 @@ enum class ContentSettingsType : int32_t {
-   // https://github.com/screen-share/capture-all-screens
-   ALL_SCREEN_CAPTURE,
+@@ -343,6 +343,22 @@ enum class ContentSettingsType : int32_t {
+   // Setting for supporting 3PCD.
+   TPCD_SUPPORT,
  
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,

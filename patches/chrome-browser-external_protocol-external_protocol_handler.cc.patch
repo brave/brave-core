@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/external_protocol/external_protocol_handler.cc b/chrome/browser/external_protocol/external_protocol_handler.cc
-index e0acf5eccef5aef764ca21245fd8065a552445c6..017b3769fed4c70f17bbbb7fe437d4c01ad3300d 100644
+index 5d0b30ab58c344e5a1c4220ea5b5de6b08104933..cf4bd77edf5cba3ff5e9a069c04c805053210414 100644
 --- a/chrome/browser/external_protocol/external_protocol_handler.cc
 +++ b/chrome/browser/external_protocol/external_protocol_handler.cc
-@@ -345,7 +345,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
-   // Always allow the hard-coded allowed schemes.
-   for (size_t i = 0; i < std::size(kAllowedSchemes); ++i) {
-     if (kAllowedSchemes[i] == scheme)
+@@ -371,7 +371,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
+     if (candidate == scheme) {
+       base::UmaHistogramEnumeration(kBlockStateMetric,
+                                     BlockStateMetric::kAllowedDefaultMail);
 -      return DONT_BLOCK;
 +      return UNKNOWN;
+     }
    }
- 
-   PrefService* profile_prefs = profile->GetPrefs();
+   for (const auto* candidate : kNewsSchemes) {

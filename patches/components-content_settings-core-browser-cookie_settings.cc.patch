@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/browser/cookie_settings.cc b/components/content_settings/core/browser/cookie_settings.cc
-index 5ae664478680d5f8537f1be4e71c89cb76791f7f..08978712fd1d4b070203e9d92b1e8c49b7497e19 100644
+index 9136dbdd065cc4d00673af1e1fbd1cff208a114a..a7ee0c41ef00219e0d8a64ff5c83ee6bda19e23b 100644
 --- a/components/content_settings/core/browser/cookie_settings.cc
 +++ b/components/content_settings/core/browser/cookie_settings.cc
-@@ -229,6 +229,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
+@@ -260,6 +260,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
                       !first_party_url.SchemeIs(extension_scheme_);
  
    bool block = block_third && is_third_party_request;
 +  BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL
- 
    if (!block) {
      FireStorageAccessHistogram(
+         net::cookie_util::StorageAccessResult::ACCESS_ALLOWED);

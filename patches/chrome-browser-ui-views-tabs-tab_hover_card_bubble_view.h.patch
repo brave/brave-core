@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
-index e32d2be55f20a5faf1d9a38e3b07366676f0859e..0ed46e747e4d10d87f5fc81a398dadd2aeebeb5e 100644
+index 05548c1fd9b4a89e2a6dae03880dcb5543525304..50181d02b66dc536fa9d258650a98a33d45f9625 100644
 --- a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
 +++ b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
 @@ -71,6 +71,7 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
@@ -9,4 +9,4 @@ index e32d2be55f20a5faf1d9a38e3b07366676f0859e..0ed46e747e4d10d87f5fc81a398dadd2
 +  BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_
   private:
    FRIEND_TEST_ALL_PREFIXES(TabHoverCardInteractiveUiTest,
-                            HoverCardFooterUpdates);
+                            HoverCardDoesNotHaveFooterView);

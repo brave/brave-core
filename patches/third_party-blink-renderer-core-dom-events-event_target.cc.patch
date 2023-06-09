@@ -1,20 +1,20 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
-index e9e9eab7e1e75419eea085a19733d3a68be117a3..5d1039e77b3962b7ae630629ad2e6a380a8fdad6 100644
+index 3616df647f19b94650e72314e91d46c5e0003809..3be29311ebdb5e420d44d4e8ac9492aa5d911a91 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_target.cc
-@@ -478,6 +478,7 @@ bool EventTarget::AddEventListenerInternal(
-   bool added = EnsureEventTargetData().event_listener_map.Add(
+@@ -479,6 +479,7 @@ bool EventTarget::AddEventListenerInternal(
        event_type, listener, options, &registered_listener);
    if (added) {
+     CHECK(registered_listener);
 +    BRAVE_EVENT_TARGET_ADD_EVENT_LISTENER_INTERNAL
      if (options->hasSignal()) {
        // Instead of passing the entire |options| here, which could create a
        // circular reference due to |options| holding a Member<AbortSignal>, just
 @@ -639,6 +640,7 @@ bool EventTarget::RemoveEventListenerInternal(
-                                     &index_of_removed_listener,
-                                     &registered_listener))
+                                     &registered_listener)) {
      return false;
+   }
 +  BRAVE_EVENT_TARGET_REMOVE_EVENT_LISTENER_INTERNAL
  
-   // Notify firing events planning to invoke the listener at 'index' that
-   // they have one less listener to invoke.
+   CHECK(registered_listener);
+   RemovedEventListener(event_type, *registered_listener);
