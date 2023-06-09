@@ -52,6 +52,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.BuyModel;
+import org.chromium.chrome.browser.app.domain.MarketModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
@@ -91,6 +92,8 @@ public class AssetDetailActivity
     private String mChainId;
     private boolean mCoinMarket;
     private int mMarketCapRank;
+    private double mVolume24Hour;
+    private double mMarketCap;
     private String mContractAddress;
     private String mAssetLogo;
     private int mAssetDecimals;
@@ -107,6 +110,7 @@ public class AssetDetailActivity
     private boolean mNativeInitialized;
     private boolean mShouldShowDialog;
     private WalletModel mWalletModel;
+    private MarketModel mMarketModel;
     private NetworkInfo mAssetNetwork;
 
     @Override
@@ -115,7 +119,8 @@ public class AssetDetailActivity
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-            if (mWalletModel == null) {
+            mMarketModel = mWalletModel.getMarketModel();
+            if (mWalletModel == null || mMarketModel == null) {
                 finish();
                 return;
             }
@@ -131,6 +136,8 @@ public class AssetDetailActivity
             mAssetId = getIntent().getStringExtra(Utils.ASSET_ID);
             mCoinMarket = getIntent().getBooleanExtra(Utils.COIN_MARKET, false);
             mMarketCapRank = getIntent().getIntExtra(Utils.MARKET_CAP_RANK, -1);
+            mVolume24Hour = getIntent().getDoubleExtra(Utils.TOTAL_VOLUME, -1);
+            mMarketCap = getIntent().getDoubleExtra(Utils.MARKET_CAP, -1);
             mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
             mAssetLogo = getIntent().getStringExtra(Utils.ASSET_LOGO);
             mAssetDecimals =
@@ -162,6 +169,16 @@ public class AssetDetailActivity
             if (mMarketCapRank != -1) {
                 TextView rank = findViewById(R.id.rank);
                 rank.setText(String.valueOf(mMarketCapRank));
+            }
+
+            if (mVolume24Hour != -1) {
+                TextView volume = findViewById(R.id.volume);
+                volume.setText(mMarketModel.getFormattedUsdBillions(mVolume24Hour));
+            }
+
+            if (mMarketCap != -1) {
+                TextView marketCap = findViewById(R.id.market_cap);
+                marketCap.setText(mMarketModel.getFormattedUsdBillions(mMarketCap));
             }
 
             DisplayMetrics displayMetrics =
