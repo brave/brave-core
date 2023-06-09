@@ -35,19 +35,20 @@ RegisterPolymerTemplateModifications({
       }
     }
     const preloadingLinkRowTemplate = templateContent.querySelector(
-      'template[is=dom-if][if="[[showPreloadingSubPage_]]"]')
+        'template[is=dom-if][if="[[showPreloadingSubPage_]]"]')
     if (!preloadingLinkRowTemplate) {
       console.error(
-        '[Brave Settings Overrides] Could not find preloading template')
+          '[Brave Settings Overrides] Could not find preloading template')
       return
     }
-    const networkPredictionLinkRow = preloadingLinkRowTemplate.content.
-      getElementById('preloadingLinkRow')
+    const networkPredictionLinkRow =
+        preloadingLinkRowTemplate.content.getElementById('preloadingLinkRow')
     if (!networkPredictionLinkRow) {
       console.error(
-        '[Brave Settings Overrides] Could not find preloadingLinkRow id ' +
-        'on cookies page.')
-    } else {
+          '[Brave Settings Overrides] Could not find preloadingLinkRow id ' +
+          'on cookies page.')
+    }
+    else {
       networkPredictionLinkRow.setAttribute('hidden', 'true')
     }
   }
