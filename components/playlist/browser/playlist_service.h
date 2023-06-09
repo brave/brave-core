@@ -182,7 +182,7 @@ class PlaylistService : public KeyedService,
   void ResetAll() override;
 
   // Please note that mojo-based observer mechanism is asynchronous, which means
-  // it could be notified pretty later than callback of each operation.
+  // it could be notified much later than callback from each operation.
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 

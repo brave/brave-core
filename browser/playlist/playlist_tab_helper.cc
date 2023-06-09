@@ -60,11 +60,11 @@ void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
   is_adding_items_ = true;
 
   auto* contents = web_contents();
-  DCHECK(contents);
+  CHECK(contents);
 
   auto* service = PlaylistServiceFactory::GetForBrowserContext(
       contents->GetBrowserContext());
-  DCHECK(service);
+  CHECK(service);
 
   service->AddMediaFiles(
       std::move(items), kDefaultPlaylistID,
