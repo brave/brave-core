@@ -82,7 +82,8 @@ function createHost (): Host {
     earningsInfo: {
       minEarningsThisMonth: 1.2,
       maxEarningsThisMonth: 2.1,
-      earningsLastMonth: 2.4,
+      minEarningsLastMonth: 2.0,
+      maxEarningsLastMonth: 2.4,
       nextPaymentDate: Date.now() + 1000 * 60 * 60 * 24 * 3
     },
     payoutStatus: {

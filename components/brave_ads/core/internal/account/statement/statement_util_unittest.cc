@@ -85,7 +85,7 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
   EXPECT_DOUBLE_EQ(0.09, max);
 }
 
-TEST_F(BraveAdsStatementUtilTest, GetEarningsForLastMonth) {
+TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -95,29 +95,31 @@ TEST_F(BraveAdsStatementUtilTest, GetEarningsForLastMonth) {
       /*value*/ 0.02, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+  TransactionInfo transaction_2 = BuildTransaction(
+      /*value*/ 0.02, ConfirmationType::kViewed, /*reconciled_at*/ Now());
+  transaction_2.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_2);
+
+  const TransactionInfo transaction_3 =
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+  transactions.push_back(transaction_3);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
-  const TransactionInfo transaction_3 =
-      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
-  transactions.push_back(transaction_3);
-
   const TransactionInfo transaction_4 =
-      BuildUnreconciledTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
+      BuildUnreconciledTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_4);
 
-  const TransactionInfo transaction_5 =
-      BuildUnreconciledTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
+  const TransactionInfo transaction_5 = BuildTransaction(
+      /*value*/ 0.03, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_5);
 
   // Act
-  const double earnings = GetEarningsForLastMonth(transactions);
+  const auto [min, max] = GetEstimatedEarningsForLastMonth(transactions);
 
   // Assert
-  EXPECT_DOUBLE_EQ(0.02, earnings);
+  EXPECT_DOUBLE_EQ(0.02 * kMinEstimatedEarningsMultiplier.Get(), min);
+  EXPECT_DOUBLE_EQ(0.04, max);
 }
 
 TEST_F(BraveAdsStatementUtilTest, GetAdsReceivedThisMonth) {

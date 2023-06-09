@@ -323,7 +323,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.adsReceivedThisMonth = data.adsReceivedThisMonth
       state.adsData.adsMinEarningsThisMonth = data.adsMinEarningsThisMonth
       state.adsData.adsMaxEarningsThisMonth = data.adsMaxEarningsThisMonth
-      state.adsData.adsEarningsLastMonth = data.adsEarningsLastMonth
+      state.adsData.adsMinEarningsLastMonth = data.adsMinEarningsLastMonth
+      state.adsData.adsMaxEarningsLastMonth = data.adsMaxEarningsLastMonth
       break
     }
     case types.GET_ENABLED_INLINE_TIPPING_PLATFORMS: {

@@ -65,7 +65,8 @@ export function Card () {
             nextPaymentDate={nextPaymentDate}
             minEarningsThisMonth={0.142}
             maxEarningsThisMonth={1.142}
-            earningsLastMonth={1.25}
+            minEarningsLastMonth={1.00}
+            maxEarningsLastMonth={1.25}
             contributionsThisMonth={10}
             publishersVisited={4}
             canConnectAccount={true}

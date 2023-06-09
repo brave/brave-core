@@ -152,7 +152,8 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       nextPaymentDate={adsInfo ? adsInfo.nextPaymentDate : 0}
       minEarningsThisMonth={adsInfo ? adsInfo.minEarningsThisMonth : 0}
       maxEarningsThisMonth={adsInfo ? adsInfo.maxEarningsThisMonth : 0}
-      earningsLastMonth={adsInfo ? adsInfo.earningsLastMonth : 0}
+      minEarningsLastMonth={adsInfo ? adsInfo.minEarningsLastMonth : 0}
+      maxEarningsLastMonth={adsInfo ? adsInfo.maxEarningsLastMonth : 0}
       contributionsThisMonth={props.totalContribution}
       canConnectAccount={canConnectAccount()}
       publishersVisited={props.publishersVisitedCount || 0}

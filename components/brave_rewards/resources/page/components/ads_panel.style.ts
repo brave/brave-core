@@ -46,12 +46,6 @@ export const paymentStatus = styled.div`
     font-weight: 500;
   }
 
-  .rewards-payment-amount {
-    .plus {
-      margin-right: 2px;
-    }
-  }
-
   .rewards-payment-pending {
     background: #E8F4FF;
 

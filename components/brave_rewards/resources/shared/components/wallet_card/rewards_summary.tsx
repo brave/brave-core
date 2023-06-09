@@ -29,7 +29,8 @@ interface Props {
   providerPayoutStatus: ProviderPayoutStatus
   autoContributeEnabled: boolean
   hideAdEarnings: boolean
-  earningsLastMonth: number
+  minEarningsLastMonth: number
+  maxEarningsLastMonth: number
   nextPaymentDate: number
   exchangeRate: number
   exchangeCurrency?: string
@@ -89,7 +90,8 @@ export function RewardsSummary (props: Props) {
           </table>
         </style.dataTable>
         <PendingRewardsView
-          earningsLastMonth={props.earningsLastMonth}
+          minEarnings={props.minEarningsLastMonth}
+          maxEarnings={props.maxEarningsLastMonth}
           nextPaymentDate={props.nextPaymentDate}
           providerPayoutStatus={props.providerPayoutStatus}
         />

@@ -62,7 +62,8 @@ export function Wallet () {
             providerPayoutStatus={'complete'}
             minEarningsThisMonth={0.25}
             maxEarningsThisMonth={0.75}
-            earningsLastMonth={1}
+            minEarningsLastMonth={1}
+            maxEarningsLastMonth={1.5}
             nextPaymentDate={nextPaymentDate.getTime()}
             exchangeRate={0.75}
             exchangeCurrency={'USD'}

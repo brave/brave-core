@@ -1452,7 +1452,8 @@ void RewardsDOMHandler::OnGetStatement(
   dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
   dict.Set("adsMinEarningsThisMonth", statement->min_earnings_this_month);
   dict.Set("adsMaxEarningsThisMonth", statement->max_earnings_this_month);
-  dict.Set("adsEarningsLastMonth", statement->earnings_last_month);
+  dict.Set("adsMinEarningsLastMonth", statement->min_earnings_last_month);
+  dict.Set("adsMaxEarningsLastMonth", statement->max_earnings_last_month);
 
   CallJavascriptFunction("brave_rewards.statement", dict);
 }

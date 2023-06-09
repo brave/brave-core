@@ -221,7 +221,8 @@ declare namespace NewTab {
     adsReceivedThisMonth: number
     minEarningsThisMonth: number
     maxEarningsThisMonth: number
-    earningsLastMonth: number
+    minEarningsLastMonth: number
+    maxEarningsLastMonth: number
   }
 
   export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'

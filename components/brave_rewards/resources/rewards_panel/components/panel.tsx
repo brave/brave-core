@@ -63,7 +63,8 @@ export function Panel () {
           providerPayoutStatus={providerPayoutStatus}
           minEarningsThisMonth={earningsInfo.minEarningsThisMonth}
           maxEarningsThisMonth={earningsInfo.maxEarningsThisMonth}
-          earningsLastMonth={earningsInfo.earningsLastMonth}
+          minEarningsLastMonth={earningsInfo.minEarningsLastMonth}
+          maxEarningsLastMonth={earningsInfo.maxEarningsLastMonth}
           nextPaymentDate={earningsInfo.nextPaymentDate}
           exchangeRate={exchangeInfo.rate}
           exchangeCurrency={exchangeInfo.currency}

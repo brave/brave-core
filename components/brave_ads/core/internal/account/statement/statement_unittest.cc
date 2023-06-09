@@ -39,7 +39,8 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.0;
+    expected_statement->min_earnings_last_month = 0.0;
+    expected_statement->max_earnings_last_month = 0.0;
     expected_statement->min_earnings_this_month =
         0.02 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.02;
@@ -103,7 +104,9 @@ TEST_F(BraveAdsStatementTest,
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.01;
+    expected_statement->min_earnings_last_month =
+        0.01 * kMinEstimatedEarningsMultiplier.Get();
+    expected_statement->max_earnings_last_month = 0.01;
     expected_statement->min_earnings_this_month =
         0.05 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.05;
@@ -156,7 +159,9 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.01;
+    expected_statement->min_earnings_last_month =
+        0.01 * kMinEstimatedEarningsMultiplier.Get();
+    expected_statement->max_earnings_last_month = 0.01;
     expected_statement->min_earnings_this_month =
         0.04 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.04;
@@ -179,7 +184,8 @@ TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.0;
+    expected_statement->min_earnings_last_month = 0.0;
+    expected_statement->max_earnings_last_month = 0.0;
     expected_statement->min_earnings_this_month = 0.0;
     expected_statement->max_earnings_this_month = 0.0;
     expected_statement->next_payment_date =
@@ -192,20 +198,30 @@ TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
   // Assert
 }
 
-TEST_F(BraveAdsStatementTest, GetWithFilteredTransactionsForThisMonth) {
+TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
   // Arrange
-  AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
-
+  AdvanceClockTo(TimeFromString("12 October 2020", /*is_local*/ true));
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = BuildTransaction(
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transactions.push_back(transaction_1);
 
-  TransactionInfo transaction_2 =
-      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+  TransactionInfo transaction_2 = BuildTransaction(
+      /*value*/ 0.02, ConfirmationType::kViewed, /*reconciled_at*/ Now());
   transaction_2.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_2);
+
+  AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
+
+  const TransactionInfo transaction_3 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now());
+  transactions.push_back(transaction_3);
+
+  TransactionInfo transaction_4 =
+      BuildUnreconciledTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
+  transaction_4.ad_type = AdType::kNewTabPageAd;
+  transactions.push_back(transaction_4);
 
   SaveTransactions(transactions);
 
@@ -214,7 +230,9 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactionsForThisMonth) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.0;
+    expected_statement->min_earnings_last_month =
+        0.01 * kMinEstimatedEarningsMultiplier.Get();
+    expected_statement->max_earnings_last_month = 0.03;
     expected_statement->min_earnings_this_month =
         0.01 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.02;
