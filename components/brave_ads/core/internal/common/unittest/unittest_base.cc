@@ -384,6 +384,7 @@ void UnitTestBase::InitializeCallback(const bool success) {
   ASSERT_TRUE(success);
 
   NotifyDidInitializeAds();
+
   task_environment_.RunUntilIdle();
 }
 

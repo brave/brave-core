@@ -14,7 +14,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr base::TimeDelta kServeFirstAdAfterDelay = base::Minutes(2);
+constexpr base::TimeDelta kServeFirstAdAfter = base::Minutes(2);
 constexpr base::TimeDelta kMinimumDelayBeforeServingAnAd = base::Minutes(1);
 
 bool HasPreviouslyServedAnAd() {
@@ -41,7 +41,7 @@ void SetServeAdAt(const base::Time serve_ad_at) {
 
 base::TimeDelta CalculateDelayBeforeServingAnAd() {
   if (!HasPreviouslyServedAnAd()) {
-    return kServeFirstAdAfterDelay;
+    return kServeFirstAdAfter;
   }
 
   if (ShouldServeAd()) {
@@ -50,7 +50,7 @@ base::TimeDelta CalculateDelayBeforeServingAnAd() {
 
   base::TimeDelta delay = ServeAdAt() - base::Time::Now();
   if (delay.is_negative()) {
-    delay = base::TimeDelta();
+    delay = base::Seconds(0);
   }
 
   return delay;

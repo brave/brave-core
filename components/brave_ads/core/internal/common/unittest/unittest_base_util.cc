@@ -77,7 +77,7 @@ void MockCloseNotificationAd(AdsClientMock& mock) {
 }
 
 void MockRecordAdEventForId(const AdsClientMock& mock) {
-  ON_CALL(mock, RecordAdEventForId(_, _, _, _))
+  ON_CALL(mock, RecordAdEventForId)
       .WillByDefault(Invoke(
           [](const std::string& id, const std::string& ad_type,
              const std::string& confirmation_type, const base::Time time) {

@@ -27,7 +27,7 @@ std::string FriendlyDateAndTime(const base::Time time,
                                 const bool use_sentence_style) {
   base::TimeDelta time_delta = time - base::Time::Now();
   if (time_delta.is_negative()) {
-    time_delta = base::TimeDelta();
+    time_delta = {};
   }
 
   if (time_delta.InDays() > 0) {

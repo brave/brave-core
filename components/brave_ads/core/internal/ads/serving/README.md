@@ -6,6 +6,6 @@ When an ad is served, it is delivered to a specific audience that has been targe
 |---|---|
 | inline content ad  | Displayed on the Brave News feed  |
 | new tab page ad  | Displayed on new tab pages   |
-| notification ad  | Displayed in system notifications  |
+| notification ad  | Displayed as system or custom push notifications  |
 
 Please add to it!

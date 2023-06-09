@@ -93,10 +93,8 @@ class BraveAdsTopSegmentsTest
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    // We always instantitate processors even if features are disabled
     epsilon_greedy_bandit_processor_ =
         std::make_unique<EpsilonGreedyBanditProcessor>();
-    NotifyDidInitializeAds();
 
     purchase_intent_resource_ = std::make_unique<PurchaseIntentResource>();
     NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
@@ -111,6 +109,8 @@ class BraveAdsTopSegmentsTest
     text_classification_processor_ =
         std::make_unique<TextClassificationProcessor>(
             *text_classification_resource_);
+
+    NotifyDidInitializeAds();
 
     task_environment_.RunUntilIdle();
   }
