@@ -66,8 +66,8 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #define BRAVE_VPN_COLOR_IDS                        \
     E_CPONLY(kColorBraveVpnButtonErrorBorder)      \
-    E_CPONLY(kColorBraveVpnButtonTextConnected)    \
-    E_CPONLY(kColorBraveVpnButtonTextDisconnected) \
+    E_CPONLY(kColorBraveVpnButtonBorder)           \
+    E_CPONLY(kColorBraveVpnButtonText)    \
     E_CPONLY(kColorBraveVpnButtonTextError)    \
     E_CPONLY(kColorBraveVpnButtonIconConnected)    \
     E_CPONLY(kColorBraveVpnButtonIconDisconnected) \
