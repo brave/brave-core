@@ -256,10 +256,12 @@ const util = {
     fileMap.add([path.join(braveBrowserResourcesDir, 'settings', 'images'), path.join(chromeBrowserResourcesDir, 'settings', 'images')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'signin', 'images'), path.join(chromeBrowserResourcesDir, 'signin', 'images')])
     fileMap.add([
-      path.join(braveBrowserResourcesDir,
-                'signin', 'profile_customization', 'images'),
-      path.join(chromeBrowserResourcesDir,
-                'signin', 'profile_customization', 'images')
+      path.join(
+          braveBrowserResourcesDir, 'signin', 'profile_customization',
+          'images'),
+      path.join(
+          chromeBrowserResourcesDir, 'signin', 'profile_customization',
+          'images')
     ])
     fileMap.add([path.join(braveBrowserResourcesDir, 'signin', 'profile_picker', 'images'), path.join(chromeBrowserResourcesDir, 'signin', 'profile_picker', 'images')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'side_panel', 'reading_list', 'images'), path.join(chromeBrowserResourcesDir, 'side_panel', 'reading_list', 'images')])
@@ -347,7 +349,8 @@ const util = {
       let androidIconSet = ''
       if (config.channel === 'development') {
         androidIconSet = 'res_brave_default'
-      } else if (config.channel === '') {
+      }
+      else if (config.channel === '') {
         androidIconSet = 'res_brave'
       } else if (config.channel === 'beta') {
         androidIconSet = 'res_brave_beta'
