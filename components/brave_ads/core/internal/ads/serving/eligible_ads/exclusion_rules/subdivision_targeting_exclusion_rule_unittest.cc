@@ -80,11 +80,6 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
         *subdivision_targeting_);
   }
 
-  void MaybeFetch() {
-    NotifyDidInitializeAds();
-    task_environment_.RunUntilIdle();
-  }
-
   static std::string BuildSubdivisionForTestParam() {
     return BuildSubdivision(GetParam().country, GetParam().region);
   }
@@ -159,7 +154,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -179,7 +174,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -200,7 +195,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -223,7 +218,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -246,7 +241,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -270,7 +265,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -289,7 +284,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -308,7 +303,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -332,7 +327,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
                            /*country*/ "XX", /*region*/ "NO REGION")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -353,7 +348,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -374,7 +369,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   MockUrlResponseForTestParam();
 
-  MaybeFetch();
+  NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

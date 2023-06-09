@@ -19,58 +19,58 @@ namespace brave_ads {
 namespace {
 
 struct ParamInfo final {
-  bool is_enabled;
-  bool is_browser_active;
+  bool should_enable;
+  bool should_browser_enter_foreground;
   bool can_show_while_browser_is_backgrounded;
   int ads_per_hour;
   bool should_serve_at_regular_intervals;
 } constexpr kTests[] = {
-    {/*is_enabled */ false, /* is_browser_active*/ false,
+    {/*should_enable */ false, /* should_browser_enter_foreground*/ false,
      /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 0,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ false, /* is_browser_active*/ false,
+    {/*should_enable */ false, /* should_browser_enter_foreground*/ false,
      /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 1,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ false, /* is_browser_active*/ false,
+    {/*should_enable */ false, /* should_browser_enter_foreground*/ false,
      /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 0,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ false, /* is_browser_active*/ false,
+    {/*should_enable */ false, /* should_browser_enter_foreground*/ false,
      /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 1,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ false, /* is_browser_active*/ true,
+    {/*should_enable */ false, /* should_browser_enter_foreground*/ true,
      /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 0,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ false, /* is_browser_active*/ true,
+    {/*should_enable */ false, /* should_browser_enter_foreground*/ true,
      /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 1,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ false, /* is_browser_active*/ true,
+    {/*should_enable */ false, /* should_browser_enter_foreground*/ true,
      /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 0,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ false, /* is_browser_active*/ true,
+    {/*should_enable */ false, /* should_browser_enter_foreground*/ true,
      /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 1,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ true, /* is_browser_active*/ false,
+    {/*should_enable */ true, /* should_browser_enter_foreground*/ false,
      /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 0,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ true, /* is_browser_active*/ false,
+    {/*should_enable */ true, /* should_browser_enter_foreground*/ false,
      /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 1,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ true, /* is_browser_active*/ false,
+    {/*should_enable */ true, /* should_browser_enter_foreground*/ false,
      /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 0,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ true, /* is_browser_active*/ false,
+    {/*should_enable */ true, /* should_browser_enter_foreground*/ false,
      /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 1,
      /*should_serve_at_regular_intervals*/ true},
-    {/*is_enabled */ true, /* is_browser_active*/ true,
+    {/*should_enable */ true, /* should_browser_enter_foreground*/ true,
      /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 0,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ true, /* is_browser_active*/ true,
+    {/*should_enable */ true, /* should_browser_enter_foreground*/ true,
      /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 1,
      /*should_serve_at_regular_intervals*/ true},
-    {/*is_enabled */ true, /* is_browser_active*/ true,
+    {/*should_enable */ true, /* should_browser_enter_foreground*/ true,
      /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 0,
      /*should_serve_at_regular_intervals*/ false},
-    {/*is_enabled */ true, /* is_browser_active*/ true,
+    {/*should_enable */ true, /* should_browser_enter_foreground*/ true,
      /*can_show_while_browser_is_backgrounded */ true, /* ads_per_hour*/ 1,
      /*should_serve_at_regular_intervals*/ true}};
 
@@ -83,9 +83,7 @@ class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    SetDefaultBooleanPref(prefs::kEnabled, param.is_enabled);
-
-    MockIsBrowserActive(ads_client_mock_, param.is_browser_active);
+    SetDefaultBooleanPref(prefs::kEnabled, param.should_enable);
 
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
@@ -100,6 +98,10 @@ TEST_P(BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest,
   // Arrange
   const ParamInfo param = GetParam();
 
+  if (param.should_browser_enter_foreground) {
+    NotifyBrowserDidEnterForeground();
+  }
+
   // Act
 
   // Assert
@@ -113,13 +115,14 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
           ? "ShouldServeAtRegularIntervals"
           : "ShouldNotServeAtRegularIntervals";
 
-  const std::string is_enabled = test_param.param.is_enabled
-                                     ? "BravePrivateAdsAreEnabled"
-                                     : "BravePrivateAdsAreDisabled";
+  const std::string should_enable = test_param.param.should_enable
+                                        ? "BravePrivateAdsAreEnabled"
+                                        : "BravePrivateAdsAreDisabled";
 
-  const std::string is_browser_active = test_param.param.is_browser_active
-                                            ? "BrowserIsActive"
-                                            : "BrowserIsInactive";
+  const std::string should_browser_enter_foreground =
+      test_param.param.should_browser_enter_foreground
+          ? "BrowserIsInForeground"
+          : "BrowserIsInBackground";
 
   const std::string can_show_while_browser_is_backgrounded =
       test_param.param.can_show_while_browser_is_backgrounded
@@ -131,8 +134,9 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
 
   return base::ReplaceStringPlaceholders(
       "$1If$2And$3And$4And$5",
-      {should_serve_at_regular_intervals, is_enabled, is_browser_active,
-       can_show_while_browser_is_backgrounded, ads_per_hour},
+      {should_serve_at_regular_intervals, should_enable,
+       should_browser_enter_foreground, can_show_while_browser_is_backgrounded,
+       ads_per_hour},
       nullptr);
 }
 
