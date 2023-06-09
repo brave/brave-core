@@ -24,7 +24,9 @@ import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
 import org.chromium.content_public.browser.test.util.TestThreadUtils;
 
-// Checks if changes have been made to the Chromium privacy settings
+/**
+ * Checks if changes have been made to the Chromium privacy settings
+ */
 @Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BravePrivacySettingsTest {
@@ -42,7 +44,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
 
-    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 26;
+    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 27;
 
     private int mItemsLeft;
 

@@ -43,6 +43,9 @@ import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
+/**
+ * Fragment to keep track of the all the brave privacy related preferences.
+ */
 public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
     // Chromium Prefs
     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
@@ -83,6 +86,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_SEND_CRASH_REPORTS = "send_crash_reports";
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
+    public static final String PREF_APP_LINKS = "app_links";
     private static final String PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR =
             "show_autocomplete_in_address_bar";
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
@@ -123,17 +127,17 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             PREF_YOUTUBE_SECTION, // Youtube section
             PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT, PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS,
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
-            PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_INCOGNITO_LOCK, PREF_CAN_MAKE_PAYMENT,
-            PREF_UNSTOPPABLE_DOMAINS, PREF_ENS, PREF_SNS, PREF_IPFS_GATEWAY, PREF_SECURE_DNS,
-            PREF_BLOCK_COOKIE_CONSENT_NOTICES, PREF_BLOCK_SWITCH_TO_APP_NOTICES, PREF_DO_NOT_TRACK,
-            PREF_PHONE_AS_A_SECURITY_KEY, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A,
+            PREF_APP_LINKS, PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_INCOGNITO_LOCK,
+            PREF_CAN_MAKE_PAYMENT, PREF_UNSTOPPABLE_DOMAINS, PREF_ENS, PREF_SNS, PREF_IPFS_GATEWAY,
+            PREF_SECURE_DNS, PREF_BLOCK_COOKIE_CONSENT_NOTICES, PREF_BLOCK_SWITCH_TO_APP_NOTICES,
+            PREF_DO_NOT_TRACK, PREF_PHONE_AS_A_SECURITY_KEY, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A,
             PREF_SEND_CRASH_REPORTS, PREF_BRAVE_STATS_USAGE_PING,
             PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR, PREF_SEARCH_SUGGESTIONS,
             PREF_AUTOCOMPLETE_TOP_SITES, PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX};
 
-    private final int STRICT = 0;
-    private final int STANDARD = 1;
-    private final int ALLOW = 2;
+    private static final int STRICT = 0;
+    private static final int STANDARD = 1;
+    private static final int ALLOW = 2;
 
     private final PrefService mPrefServiceBridge = UserPrefs.get(Profile.getLastUsedRegularProfile());
     private final PrivacyPreferencesManagerImpl mPrivacyPrefManager =
@@ -169,6 +173,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mSocialBlockingFacebook;
     private ChromeSwitchPreference mSocialBlockingTwitter;
     private ChromeSwitchPreference mSocialBlockingLinkedin;
+    private ChromeSwitchPreference mAppLinks;
     private ChromeBasePreference mWebrtcPolicy;
     private ChromeSwitchPreference mClearBrowsingDataOnExit;
     private Preference mUstoppableDomains;
@@ -349,6 +354,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         mSocialBlockingLinkedin = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_LINKEDIN);
         mSocialBlockingLinkedin.setOnPreferenceChangeListener(this);
+
+        mAppLinks = (ChromeSwitchPreference) findPreference(PREF_APP_LINKS);
+        mAppLinks.setOnPreferenceChangeListener(this);
 
         mWebrtcPolicy = (ChromeBasePreference) findPreference(PREF_WEBRTC_POLICY);
 
@@ -580,6 +588,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     .setBoolean(BravePref.LINKED_IN_EMBED_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_CLEAR_ON_EXIT.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_CLEAR_ON_EXIT, (boolean) newValue);
+        } else if (PREF_APP_LINKS.equals(key)) {
+            sharedPreferencesEditor.putBoolean(PREF_APP_LINKS, (boolean) newValue);
         } else if (PREF_BLOCK_TRACKERS_ADS.equals(key)) {
             if (newValue instanceof String) {
                 final String newStringValue = String.valueOf(newValue);
