@@ -29,6 +29,7 @@
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -221,19 +222,16 @@ void BraveVPNButton::UpdateColorsAndInsets() {
   const bool is_connected = IsConnected();
   const gfx::Insets paint_insets =
       gfx::Insets((height() - GetLayoutConstant(LOCATION_BAR_HEIGHT)) / 2);
+  const auto bg_color =
+      cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBackgroundNormal
+                                    : kColorBraveVpnButtonBackgroundNormal);
   SetBackground(views::CreateBackgroundFromPainter(
-      views::Painter::CreateSolidRoundRectPainter(
-          cp->GetColor(is_connect_error
-                           ? kColorBraveVpnButtonErrorBackgroundNormal
-                           : kColorBraveVpnButtonBackgroundNormal),
-          kButtonRadius, paint_insets)));
-  label()->SetBackgroundColor(
-      cp->GetColor(kColorBraveVpnButtonBackgroundNormal));
+      views::Painter::CreateSolidRoundRectPainter(bg_color, kButtonRadius,
+                                                  paint_insets)));
 
-  SetEnabledTextColors(
-      cp->GetColor(is_connected       ? kColorBraveVpnButtonTextConnected
-                   : is_connect_error ? kColorBraveVpnButtonTextError
-                                      : kColorBraveVpnButtonTextDisconnected));
+  SetEnabledTextColors(cp->GetColor(is_connect_error
+                                        ? kColorBraveVpnButtonTextError
+                                        : kColorBraveVpnButtonText));
 
   if (is_connect_error) {
     SetImage(
@@ -258,15 +256,19 @@ void BraveVPNButton::UpdateColorsAndInsets() {
         cp->GetColor(kColorBraveVpnButtonIconInner), 5 /*radi*/, 2 /*thick*/));
   }
 
+  // Compute highlight color and border in advance. If not, highlight color and
+  // border color are mixed as both have alpha value.
   // Use different ink drop hover color for each themes.
-  views::InkDrop::Get(this)->SetBaseColor(
+  views::InkDrop::Get(this)->SetBaseColor(color_utils::GetResultingPaintColor(
       cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBackgroundHover
-                                    : kColorBraveVpnButtonBackgroundHover));
+                                    : kColorBraveVpnButtonBorder),
+      bg_color));
 
   // Draw border only for error state.
-  SetBorder(GetBorder(is_connect_error
-                          ? cp->GetColor(kColorBraveVpnButtonErrorBorder)
-                          : SK_ColorTRANSPARENT));
+  SetBorder(GetBorder(color_utils::GetResultingPaintColor(
+      cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBorder
+                                    : kColorBraveVpnButtonBorder),
+      bg_color)));
 }
 
 std::u16string BraveVPNButton::GetTooltipText(const gfx::Point& p) const {
