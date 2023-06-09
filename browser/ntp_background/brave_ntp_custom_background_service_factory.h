@@ -6,8 +6,12 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_BRAVE_NTP_CUSTOM_BACKGROUND_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_BRAVE_NTP_CUSTOM_BACKGROUND_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace ntp_background_images {
 class BraveNTPCustomBackgroundService;
@@ -21,8 +25,7 @@ class BraveNTPCustomBackgroundServiceFactory
   static BraveNTPCustomBackgroundServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<
-      BraveNTPCustomBackgroundServiceFactory>;
+  friend base::NoDestructor<BraveNTPCustomBackgroundServiceFactory>;
 
   BraveNTPCustomBackgroundServiceFactory();
   ~BraveNTPCustomBackgroundServiceFactory() override;

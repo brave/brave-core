@@ -6,9 +6,13 @@
 #ifndef BRAVE_BROWSER_BRAVE_FEDERATED_BRAVE_FEDERATED_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_FEDERATED_BRAVE_FEDERATED_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace user_prefs {
 class PrefRegistrySyncable;
@@ -29,7 +33,7 @@ class BraveFederatedServiceFactory : public BrowserContextKeyedServiceFactory {
   static BraveFederatedServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<BraveFederatedServiceFactory>;
+  friend base::NoDestructor<BraveFederatedServiceFactory>;
 
   BraveFederatedServiceFactory();
   ~BraveFederatedServiceFactory() override;

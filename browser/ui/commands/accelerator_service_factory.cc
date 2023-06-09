@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/default_accelerators.h"
@@ -23,7 +23,8 @@ namespace commands {
 
 // static
 AcceleratorServiceFactory* AcceleratorServiceFactory::GetInstance() {
-  return base::Singleton<AcceleratorServiceFactory>::get();
+  static base::NoDestructor<AcceleratorServiceFactory> instance;
+  return instance.get();
 }
 
 // static

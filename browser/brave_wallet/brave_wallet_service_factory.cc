@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -24,7 +25,8 @@ namespace brave_wallet {
 
 // static
 BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
-  return base::Singleton<BraveWalletServiceFactory>::get();
+  static base::NoDestructor<BraveWalletServiceFactory> instance;
+  return instance.get();
 }
 
 // static

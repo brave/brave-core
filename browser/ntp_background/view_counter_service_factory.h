@@ -6,10 +6,14 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_VIEW_COUNTER_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_VIEW_COUNTER_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace content {
 class BrowserContext;
@@ -33,7 +37,7 @@ class ViewCounterServiceFactory : public BrowserContextKeyedServiceFactory {
   static ViewCounterServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<ViewCounterServiceFactory>;
+  friend base::NoDestructor<ViewCounterServiceFactory>;
 
   ViewCounterServiceFactory();
   ~ViewCounterServiceFactory() override;

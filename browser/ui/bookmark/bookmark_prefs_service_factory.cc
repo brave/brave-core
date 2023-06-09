@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -21,7 +22,8 @@ BookmarkPrefsService* BookmarkPrefsServiceFactory::GetForBrowserContext(
 
 // static
 BookmarkPrefsServiceFactory* BookmarkPrefsServiceFactory::GetInstance() {
-  return base::Singleton<BookmarkPrefsServiceFactory>::get();
+  static base::NoDestructor<BookmarkPrefsServiceFactory> instance;
+  return instance.get();
 }
 
 BookmarkPrefsServiceFactory::BookmarkPrefsServiceFactory()

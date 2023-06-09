@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
@@ -34,7 +35,8 @@ AssetRatioService* AssetRatioServiceFactory::GetServiceForState(
 
 // static
 AssetRatioServiceFactory* AssetRatioServiceFactory::GetInstance() {
-  return base::Singleton<AssetRatioServiceFactory>::get();
+  static base::NoDestructor<AssetRatioServiceFactory> instance;
+  return instance.get();
 }
 
 AssetRatioServiceFactory::AssetRatioServiceFactory()

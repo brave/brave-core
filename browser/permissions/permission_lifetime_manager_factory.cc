@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/permissions/permission_origin_lifetime_monitor_impl.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -28,7 +29,8 @@ PermissionLifetimeManagerFactory::GetForProfile(
 // static
 PermissionLifetimeManagerFactory*
 PermissionLifetimeManagerFactory::GetInstance() {
-  return base::Singleton<PermissionLifetimeManagerFactory>::get();
+  static base::NoDestructor<PermissionLifetimeManagerFactory> instance;
+  return instance.get();
 }
 
 PermissionLifetimeManagerFactory::PermissionLifetimeManagerFactory()

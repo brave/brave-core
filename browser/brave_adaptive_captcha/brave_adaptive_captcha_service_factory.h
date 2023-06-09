@@ -6,11 +6,15 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADAPTIVE_CAPTCHA_BRAVE_ADAPTIVE_CAPTCHA_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_ADAPTIVE_CAPTCHA_BRAVE_ADAPTIVE_CAPTCHA_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_adaptive_captcha {
 
@@ -23,8 +27,7 @@ class BraveAdaptiveCaptchaServiceFactory
   static BraveAdaptiveCaptchaServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<
-      BraveAdaptiveCaptchaServiceFactory>;
+  friend base::NoDestructor<BraveAdaptiveCaptchaServiceFactory>;
 
   BraveAdaptiveCaptchaServiceFactory();
   ~BraveAdaptiveCaptchaServiceFactory() override;

@@ -8,12 +8,16 @@
 
 #include <memory>
 
-#include "base/memory/singleton.h"
 #include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_ads {
 
@@ -31,7 +35,7 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   static AdsServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<AdsServiceFactory>;
+  friend base::NoDestructor<AdsServiceFactory>;
 
   AdsServiceFactory();
 

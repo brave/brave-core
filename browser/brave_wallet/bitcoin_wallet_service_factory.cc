@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
@@ -20,7 +21,8 @@ namespace brave_wallet {
 
 // static
 BitcoinWalletServiceFactory* BitcoinWalletServiceFactory::GetInstance() {
-  return base::Singleton<BitcoinWalletServiceFactory>::get();
+  static base::NoDestructor<BitcoinWalletServiceFactory> instance;
+  return instance.get();
 }
 
 // static

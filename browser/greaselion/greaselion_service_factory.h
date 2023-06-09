@@ -6,8 +6,13 @@
 #ifndef BRAVE_BROWSER_GREASELION_GREASELION_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_GREASELION_GREASELION_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
+#include "base/files/file_path.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 class Profile;
 
@@ -27,7 +32,7 @@ class GreaselionServiceFactory : public BrowserContextKeyedServiceFactory {
   static base::FilePath GetInstallDirectory();
 
  private:
-  friend struct base::DefaultSingletonTraits<GreaselionServiceFactory>;
+  friend base::NoDestructor<GreaselionServiceFactory>;
 
   GreaselionServiceFactory();
   ~GreaselionServiceFactory() override;

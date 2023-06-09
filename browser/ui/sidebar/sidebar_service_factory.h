@@ -6,11 +6,15 @@
 #ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class Profile;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace sidebar {
 
@@ -22,7 +26,7 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
   static SidebarService* GetForProfile(Profile* profile);
 
  private:
-  friend struct base::DefaultSingletonTraits<SidebarServiceFactory>;
+  friend base::NoDestructor<SidebarServiceFactory>;
 
   SidebarServiceFactory();
   ~SidebarServiceFactory() override;

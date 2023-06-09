@@ -33,7 +33,8 @@ JsonRpcService* JsonRpcServiceFactory::GetServiceForState(
 
 // static
 JsonRpcServiceFactory* JsonRpcServiceFactory::GetInstance() {
-  return base::Singleton<JsonRpcServiceFactory>::get();
+  static base::NoDestructor<JsonRpcServiceFactory> instance;
+  return instance.get();
 }
 
 JsonRpcServiceFactory::JsonRpcServiceFactory()

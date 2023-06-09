@@ -11,12 +11,16 @@
 
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
-#include "base/memory/singleton.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 
 using brave_component_updater::DATFileDataBuffer;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_shields {
 
@@ -43,7 +47,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   void RemoveProvider(AdBlockFiltersProvider* provider);
 
  private:
-  friend struct base::DefaultSingletonTraits<AdBlockFiltersProviderManager>;
+  friend base::NoDestructor<AdBlockFiltersProviderManager>;
 
   void FinishCombinating(
       base::OnceCallback<void(bool, const DATFileDataBuffer&)> cb,

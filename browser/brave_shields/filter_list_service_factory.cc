@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/filter_list_service.h"
 #include "chrome/browser/browser_process.h"
@@ -17,7 +18,8 @@ namespace brave_shields {
 
 // static
 FilterListServiceFactory* FilterListServiceFactory::GetInstance() {
-  return base::Singleton<FilterListServiceFactory>::get();
+  static base::NoDestructor<FilterListServiceFactory> instance;
+  return instance.get();
 }
 
 // static

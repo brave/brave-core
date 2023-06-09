@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -33,7 +34,8 @@ namespace brave_vpn {
 
 // static
 BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
-  return base::Singleton<BraveVpnServiceFactory>::get();
+  static base::NoDestructor<BraveVpnServiceFactory> instance;
+  return instance.get();
 }
 
 // static

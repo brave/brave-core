@@ -35,7 +35,8 @@ BraveWalletIpfsService* BraveWalletIpfsServiceFactory::GetServiceForState(
 
 // static
 BraveWalletIpfsServiceFactory* BraveWalletIpfsServiceFactory::GetInstance() {
-  return base::Singleton<BraveWalletIpfsServiceFactory>::get();
+  static base::NoDestructor<BraveWalletIpfsServiceFactory> instance;
+  return instance.get();
 }
 
 BraveWalletIpfsServiceFactory::BraveWalletIpfsServiceFactory()

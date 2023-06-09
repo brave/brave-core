@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/feature_list.h"
+#include "base/no_destructor.h"
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -21,7 +22,8 @@
 
 // static
 EphemeralStorageServiceFactory* EphemeralStorageServiceFactory::GetInstance() {
-  return base::Singleton<EphemeralStorageServiceFactory>::get();
+  static base::NoDestructor<EphemeralStorageServiceFactory> instance;
+  return instance.get();
 }
 
 // static

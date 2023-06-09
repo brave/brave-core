@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -27,7 +28,8 @@ namespace brave_wallet {
 // static
 BraveWalletAutoPinServiceFactory*
 BraveWalletAutoPinServiceFactory::GetInstance() {
-  return base::Singleton<BraveWalletAutoPinServiceFactory>::get();
+  static base::NoDestructor<BraveWalletAutoPinServiceFactory> instance;
+  return instance.get();
 }
 
 // static

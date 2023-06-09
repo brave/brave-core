@@ -6,11 +6,15 @@
 #ifndef BRAVE_BROWSER_UI_COMMANDER_COMMANDER_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_COMMANDER_COMMANDER_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "brave/browser/ui/commander/commander_service.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace commander {
 
@@ -26,7 +30,7 @@ class CommanderServiceFactory : public ProfileKeyedServiceFactory {
  private:
   CommanderServiceFactory();
   ~CommanderServiceFactory() override;
-  friend struct base::DefaultSingletonTraits<CommanderServiceFactory>;
+  friend base::NoDestructor<CommanderServiceFactory>;
 
   // ProfileKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(

@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 // TODO(cypt4) : Refactor brave/browser into separate component (#27486)
@@ -26,7 +27,8 @@ namespace brave_wallet {
 
 // static
 BraveWalletPinServiceFactory* BraveWalletPinServiceFactory::GetInstance() {
-  return base::Singleton<BraveWalletPinServiceFactory>::get();
+  static base::NoDestructor<BraveWalletPinServiceFactory> instance;
+  return instance.get();
 }
 
 // static

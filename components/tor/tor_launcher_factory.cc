@@ -10,6 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/no_destructor.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/tor/tor_file_watcher.h"
@@ -45,7 +46,8 @@ std::string GetMessageParam(const std::string& message,
 
 // static
 TorLauncherFactory* TorLauncherFactory::GetInstance() {
-  return base::Singleton<TorLauncherFactory>::get();
+  static base::NoDestructor<TorLauncherFactory> instance;
+  return instance.get();
 }
 
 TorLauncherFactory::TorLauncherFactory()

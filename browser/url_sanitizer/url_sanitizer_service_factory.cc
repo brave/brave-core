@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/feature_list.h"
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
@@ -21,7 +21,8 @@ namespace brave {
 
 // static
 URLSanitizerServiceFactory* URLSanitizerServiceFactory::GetInstance() {
-  return base::Singleton<URLSanitizerServiceFactory>::get();
+  static base::NoDestructor<URLSanitizerServiceFactory> instance;
+  return instance.get();
 }
 
 URLSanitizerService* URLSanitizerServiceFactory::GetForBrowserContext(

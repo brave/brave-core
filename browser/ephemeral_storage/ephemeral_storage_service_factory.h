@@ -6,8 +6,12 @@
 #ifndef BRAVE_BROWSER_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace ephemeral_storage {
 class EphemeralStorageService;
@@ -21,7 +25,7 @@ class EphemeralStorageServiceFactory
   static EphemeralStorageServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<EphemeralStorageServiceFactory>;
+  friend base::NoDestructor<EphemeralStorageServiceFactory>;
 
   EphemeralStorageServiceFactory();
   ~EphemeralStorageServiceFactory() override;

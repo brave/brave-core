@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_ads/background_helper/background_helper_holder.h"
 
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
 #include "build/build_config.h"
 
@@ -46,7 +46,8 @@ BackgroundHelperHolder::~BackgroundHelperHolder() = default;
 
 // static
 BackgroundHelperHolder* BackgroundHelperHolder::GetInstance() {
-  return base::Singleton<BackgroundHelperHolder>::get();
+  static base::NoDestructor<BackgroundHelperHolder> instance;
+  return instance.get();
 }
 
 BackgroundHelper* BackgroundHelperHolder::GetBackgroundHelper() {

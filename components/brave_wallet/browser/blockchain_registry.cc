@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/containers/flat_set.h"
+#include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -22,7 +23,8 @@ BlockchainRegistry::BlockchainRegistry() = default;
 BlockchainRegistry::~BlockchainRegistry() = default;
 
 BlockchainRegistry* BlockchainRegistry::GetInstance() {
-  return base::Singleton<BlockchainRegistry>::get();
+  static base::NoDestructor<BlockchainRegistry> instance;
+  return instance.get();
 }
 
 mojo::PendingRemote<mojom::BlockchainRegistry>

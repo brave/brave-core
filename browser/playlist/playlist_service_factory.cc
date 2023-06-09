@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -78,7 +79,8 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
 
 // static
 PlaylistServiceFactory* PlaylistServiceFactory::GetInstance() {
-  return base::Singleton<PlaylistServiceFactory>::get();
+  static base::NoDestructor<PlaylistServiceFactory> instance;
+  return instance.get();
 }
 
 // static

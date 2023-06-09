@@ -40,7 +40,8 @@ BraveWalletService* BraveWalletServiceFactory::GetServiceForState(
 
 // static
 BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
-  return base::Singleton<BraveWalletServiceFactory>::get();
+  static base::NoDestructor<BraveWalletServiceFactory> instance;
+  return instance.get();
 }
 
 BraveWalletServiceFactory::BraveWalletServiceFactory()

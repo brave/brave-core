@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/feature_list.h"
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/request_otr/browser/request_otr_service.h"
 #include "brave/components/request_otr/common/features.h"
@@ -22,7 +22,8 @@ namespace request_otr {
 
 // static
 RequestOTRServiceFactory* RequestOTRServiceFactory::GetInstance() {
-  return base::Singleton<RequestOTRServiceFactory>::get();
+  static base::NoDestructor<RequestOTRServiceFactory> instance;
+  return instance.get();
 }
 
 RequestOTRService* RequestOTRServiceFactory::GetForBrowserContext(

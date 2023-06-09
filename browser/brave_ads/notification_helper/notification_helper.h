@@ -13,8 +13,8 @@
 class Profile;
 
 namespace base {
-template <typename Type>
-struct DefaultSingletonTraits;
+template <typename T>
+class NoDestructor;
 }  // namespace base
 
 namespace brave_ads {
@@ -41,7 +41,7 @@ class NotificationHelper final {
   bool DoesSupportSystemNotifications() const;
 
  private:
-  friend struct base::DefaultSingletonTraits<NotificationHelper>;
+  friend base::NoDestructor<NotificationHelper>;
 
   NotificationHelper();
 

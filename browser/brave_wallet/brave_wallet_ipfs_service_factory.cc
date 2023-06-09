@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -18,7 +19,8 @@ namespace brave_wallet {
 
 // static
 BraveWalletIpfsServiceFactory* BraveWalletIpfsServiceFactory::GetInstance() {
-  return base::Singleton<BraveWalletIpfsServiceFactory>::get();
+  static base::NoDestructor<BraveWalletIpfsServiceFactory> instance;
+  return instance.get();
 }
 
 // static

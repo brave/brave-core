@@ -11,8 +11,10 @@
 #include "chrome/browser/ui/webui/chrome_web_ui_controller_factory.h"
 
 namespace base {
+template <typename T>
+class NoDestructor;
 class RefCountedMemory;
-}
+}  // namespace base
 
 class BraveWebUIControllerFactory : public ChromeWebUIControllerFactory {
  public:
@@ -29,7 +31,7 @@ class BraveWebUIControllerFactory : public ChromeWebUIControllerFactory {
   static BraveWebUIControllerFactory* GetInstance();
 
  protected:
-  friend struct base::DefaultSingletonTraits<BraveWebUIControllerFactory>;
+  friend base::NoDestructor<BraveWebUIControllerFactory>;
 
   BraveWebUIControllerFactory();
   ~BraveWebUIControllerFactory() override;
