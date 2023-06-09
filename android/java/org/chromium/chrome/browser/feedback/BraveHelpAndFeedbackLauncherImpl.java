@@ -21,7 +21,7 @@ import java.util.Map;
 public class BraveHelpAndFeedbackLauncherImpl implements HelpAndFeedbackLauncher {
     private static final String FALLBACK_SUPPORT_URL = "https://community.brave.com/";
     private static final String SAFE_BROWSING_URL =
-            "https://brave.com/privacy/browser/#safe-browsing";
+            "https://support.brave.com/hc/articles/15222663599629-Safe-Browsing-in-Brave";
 
     public BraveHelpAndFeedbackLauncherImpl(Profile profile) {}
 
