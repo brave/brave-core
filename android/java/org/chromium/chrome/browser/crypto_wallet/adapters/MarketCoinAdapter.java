@@ -53,9 +53,8 @@ public class MarketCoinAdapter extends RecyclerView.Adapter<MarketCoinAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CoinMarket coinMarket = mCoinMarkets.get(position);
-        holder.itemView.setOnClickListener(view -> {
-            Utils.openAssetDetailsActivity(mContext, coinMarket);
-        });
+        holder.itemView.setOnClickListener(
+                view -> { Utils.openAssetDetailsActivity(mContext, coinMarket); });
         holder.coinName.setText(coinMarket.name);
         holder.symbol.setText(coinMarket.symbol.toUpperCase(Locale.ENGLISH));
 

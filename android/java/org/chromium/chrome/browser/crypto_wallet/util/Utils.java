@@ -259,8 +259,8 @@ public class Utils {
         }
     }
 
-    public static void openAssetDetailsActivity(
-            @NonNull final Context context, @NonNull final String chainId, @NonNull final BlockchainToken asset) {
+    public static void openAssetDetailsActivity(@NonNull final Context context,
+            @NonNull final String chainId, @NonNull final BlockchainToken asset) {
         assert context != null;
         Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);
         assetDetailIntent.putExtra(CHAIN_ID, chainId);
@@ -274,7 +274,8 @@ public class Utils {
         context.startActivity(assetDetailIntent);
     }
 
-    public static void openAssetDetailsActivity(@NonNull final Context context, @NonNull final CoinMarket asset) {
+    public static void openAssetDetailsActivity(
+            @NonNull final Context context, @NonNull final CoinMarket asset) {
         assert context != null;
         Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);
         assetDetailIntent.putExtra(COIN_MARKET, true);

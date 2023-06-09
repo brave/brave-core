@@ -74,8 +74,8 @@ public class ImageLoader {
     private static final String DATA_IMAGE_SVG_UTF8_PREFIX = "data:image/svg+xml;utf8,";
 
     private static void downloadImage(String url, final RequestManager requestManager,
-                                      final boolean isCircular, final int roundedCorners, final ImageView imageView,
-                                      final CustomTarget<Drawable> customTarget, final Callback callback) {
+            final boolean isCircular, final int roundedCorners, final ImageView imageView,
+            final CustomTarget<Drawable> customTarget, final Callback callback) {
         if (!isValidImgUrl(url)) {
             if (callback != null) callback.onLoadFailed();
             return;
@@ -173,9 +173,10 @@ public class ImageLoader {
      *         null}.
      */
     public static void downloadImage(String url, final RequestManager requestManager,
-                                     final boolean isCircular, final int roundedCorners,
-                                     final CustomTarget<Drawable> customTarget, final Callback callback) {
-        downloadImage(url, requestManager, isCircular, roundedCorners, null, customTarget, callback);
+            final boolean isCircular, final int roundedCorners,
+            final CustomTarget<Drawable> customTarget, final Callback callback) {
+        downloadImage(
+                url, requestManager, isCircular, roundedCorners, null, customTarget, callback);
     }
 
     /**
@@ -190,8 +191,8 @@ public class ImageLoader {
      *         null}.
      */
     public static void downloadImage(String url, final RequestManager requestManager,
-                                     final boolean isCircular, final int roundedCorners, final ImageView imageView,
-                                     final Callback callback) {
+            final boolean isCircular, final int roundedCorners, final ImageView imageView,
+            final Callback callback) {
         downloadImage(url, requestManager, isCircular, roundedCorners, imageView, null, callback);
     }
 
@@ -302,33 +303,35 @@ public class ImageLoader {
     }
 
     private static void loadImage(ImageFetcherFacade imageFetcherFacade,
-                                  RequestManager requestManager, boolean isCircular, final int roundedCorners,
-                                  ImageView imageView, CustomTarget<Drawable> customTarget, Callback callback) {
+            RequestManager requestManager, boolean isCircular, final int roundedCorners,
+            ImageView imageView, CustomTarget<Drawable> customTarget, Callback callback) {
         if (imageFetcherFacade == null
                 || (imageFetcherFacade.data == null && imageFetcherFacade.drawable == null)) {
             if (callback != null) callback.onLoadFailed();
             return;
         }
-        RequestBuilder<Drawable> request = requestManager
-                .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
-                        : imageFetcherFacade.drawable)
-                .transform(getTransformations(isCircular, roundedCorners))
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .priority(Priority.IMMEDIATE)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(GlideException glideException, Object model,
-                                                Target<Drawable> target, boolean isFirstResource) {
-                        return callback != null && callback.onLoadFailed();
-                    }
+        RequestBuilder<Drawable> request =
+                requestManager
+                        .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
+                                                              : imageFetcherFacade.drawable)
+                        .transform(getTransformations(isCircular, roundedCorners))
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .priority(Priority.IMMEDIATE)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(GlideException glideException, Object model,
+                                    Target<Drawable> target, boolean isFirstResource) {
+                                return callback != null && callback.onLoadFailed();
+                            }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model,
-                                                   Target<Drawable> target, DataSource dataSource,
-                                                   boolean isFirstResource) {
-                        return callback != null && callback.onResourceReady(resource, target);
-                    }
-                });
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model,
+                                    Target<Drawable> target, DataSource dataSource,
+                                    boolean isFirstResource) {
+                                return callback != null
+                                        && callback.onResourceReady(resource, target);
+                            }
+                        });
 
         if (imageView != null) {
             request.into(imageView);
