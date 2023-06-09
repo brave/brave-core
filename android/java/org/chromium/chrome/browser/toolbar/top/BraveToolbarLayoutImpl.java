@@ -551,7 +551,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             BraveActivity.getBraveActivity().getSupportFragmentManager(),
                             RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
 
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException | IllegalStateException e) {
                     Log.e(TAG, "showNotificationNotEarningDialog " + e);
                 }
             }
