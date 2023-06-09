@@ -5,9 +5,12 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Spannable;
@@ -15,21 +18,30 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BulletSpan;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Callback;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
@@ -56,6 +68,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.chrome.browser.app.helpers.ImageLoader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -68,6 +81,7 @@ import java.util.concurrent.Executors;
 public class AssetDetailActivity
         extends BraveWalletBaseActivity implements OnWalletListItemClick, ApprovedTxObserver {
     private static final String TAG = "AssetDetailActivity";
+    private static final int ASSET_LOGO_SIZE_DP = 23;
 
     private SmoothLineChartEquallySpaced chartES;
     private int checkedTimeframeType;
@@ -75,6 +89,7 @@ public class AssetDetailActivity
     private String mAssetName;
     private String mAssetId;
     private String mChainId;
+    private boolean mCoinMarket;
     private String mContractAddress;
     private String mAssetLogo;
     private int mAssetDecimals;
@@ -113,6 +128,7 @@ public class AssetDetailActivity
             mAssetSymbol = getIntent().getStringExtra(Utils.ASSET_SYMBOL);
             mAssetName = getIntent().getStringExtra(Utils.ASSET_NAME);
             mAssetId = getIntent().getStringExtra(Utils.ASSET_ID);
+            mCoinMarket = getIntent().getBooleanExtra(Utils.COIN_MARKET, false);
             mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
             mAssetLogo = getIntent().getStringExtra(Utils.ASSET_LOGO);
             mAssetDecimals =
@@ -132,7 +148,31 @@ public class AssetDetailActivity
 
         TextView assetTitleText = findViewById(R.id.asset_title_text);
         assetTitleText.setText(mAssetName);
-        if (!mAssetLogo.isEmpty()) {
+        mBtnBuy = findViewById(R.id.btn_buy);
+        Button btnSend = findViewById(R.id.btn_send);
+        mBtnSwap = findViewById(R.id.btn_swap);
+
+        if (mCoinMarket) {
+            DisplayMetrics displayMetrics =
+                    ContextUtils.getApplicationContext().getResources().getDisplayMetrics();
+            final int sizePx = dpToPx(displayMetrics, ASSET_LOGO_SIZE_DP);
+            ImageLoader.downloadImage(
+                    mAssetLogo, Glide.with(this), true, 0, new CustomTarget<Drawable>(sizePx, sizePx) {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            assetTitleText.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                    resource, null, null, null);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            /* No-op. */
+                        }
+                    }, null);
+            TextView accountsLabel = findViewById(R.id.accounts);
+            TextView transactionsLabel = findViewById(R.id.transactions);
+            AndroidUtils.gone(accountsLabel, transactionsLabel, mBtnBuy, btnSend, mBtnSwap);
+        } else if (!mAssetLogo.isEmpty()) {
             String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
             String iconPath =
                     mAssetLogo.isEmpty() ? null : ("file://" + tokensPath + "/" + mAssetLogo);
@@ -148,22 +188,7 @@ public class AssetDetailActivity
         assetPriceText.setText(String.format(
                 getResources().getString(R.string.asset_price), mAssetName, mAssetSymbol));
 
-        mBtnBuy = findViewById(R.id.btn_buy);
-        mBtnBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.openBuySendSwapActivity(
-                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.BUY, mChainId);
-            }
-        });
-        Button btnSend = findViewById(R.id.btn_send);
-        btnSend.setOnClickListener(v
-                -> Utils.openBuySendSwapActivity(
-                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.SEND, mChainId));
-
-        mBtnSwap = findViewById(R.id.btn_swap);
-
-        if (AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
+        if (!mCoinMarket && AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
             mBtnSwap.setVisibility(View.GONE);
             mBtnBridgeToAurora = findViewById(R.id.btn_aurora_bridge);
             mBtnBridgeToAurora.setVisibility(View.VISIBLE);
@@ -234,9 +259,22 @@ public class AssetDetailActivity
                 }
             });
         }
-        mBtnSwap.setOnClickListener(v
-                -> Utils.openBuySendSwapActivity(
-                        this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
+        if (!mCoinMarket) {
+            mBtnSwap.setOnClickListener(v
+                    -> Utils.openBuySendSwapActivity(
+                    this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
+            mBtnBuy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.openBuySendSwapActivity(
+                            AssetDetailActivity.this, BuySendSwapActivity.ActivityType.BUY, mChainId);
+                }
+            });
+
+            btnSend.setOnClickListener(v
+                    -> Utils.openBuySendSwapActivity(
+                    AssetDetailActivity.this, BuySendSwapActivity.ActivityType.SEND, mChainId));
+        }
         adjustButtonsVisibilities();
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
@@ -279,7 +317,7 @@ public class AssetDetailActivity
     @Override
     public void onStart() {
         super.onStart();
-        if (mHasNewTx) {
+        if (!mCoinMarket && mHasNewTx) {
             setUpAccountList();
             mHasNewTx = false;
         }
@@ -375,6 +413,9 @@ public class AssetDetailActivity
 
     // Get back token from native. If cannot find then something is wrong
     private void getBlockchainToken(Runnable callback) {
+        if (mCoinMarket) {
+            return;
+        }
         if (mAsset != null || !mNativeInitialized || mAssetNetwork == null) {
             callback.run();
             return;
@@ -473,6 +514,9 @@ public class AssetDetailActivity
     }
 
     private void adjustButtonsVisibilities() {
+        if (mCoinMarket) {
+            return;
+        }
         showHideBuyUi();
         if (Utils.allowSwap(mChainId)) {
             mBtnSwap.setVisibility(View.VISIBLE);

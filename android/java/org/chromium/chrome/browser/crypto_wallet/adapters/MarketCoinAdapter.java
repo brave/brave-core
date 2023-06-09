@@ -23,6 +23,7 @@ import org.chromium.brave_wallet.mojom.CoinMarket;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.MarketModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,9 @@ public class MarketCoinAdapter extends RecyclerView.Adapter<MarketCoinAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CoinMarket coinMarket = mCoinMarkets.get(position);
+        holder.itemView.setOnClickListener(view -> {
+            Utils.openAssetDetailsActivity(mContext, coinMarket);
+        });
         holder.coinName.setText(coinMarket.name);
         holder.symbol.setText(coinMarket.symbol.toUpperCase(Locale.ENGLISH));
 

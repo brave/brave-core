@@ -291,6 +291,7 @@
             android:visibility="gone"/>
 
         <TextView
+            android:id="@+id/accounts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -308,6 +309,7 @@
             android:layout_marginBottom="24dp"/>
 
         <TextView
+            android:id="@+id/transactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

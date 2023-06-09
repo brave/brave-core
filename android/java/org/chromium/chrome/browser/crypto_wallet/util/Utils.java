@@ -66,6 +66,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinMarket;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -144,10 +145,14 @@ public class Utils {
     public static final String ASSET_LOGO = "assetLogo";
     public static final String ASSET_DECIMALS = "assetDecimals";
     public static final String CHAIN_ID = "chainId";
+    public static final String COIN_MARKET = "coinMarket";
     public static final String IS_FROM_DAPPS = "isFromDapps";
+    public static final String MARKET_CAP = "marketCap";
+    public static final String MARKET_CAP_RANK = "marketCapRank";
     public static final String RESTART_WALLET_ACTIVITY = "restartWalletActivity";
     public static final String RESTART_WALLET_ACTIVITY_SETUP = "restartWalletActivitySetup";
     public static final String RESTART_WALLET_ACTIVITY_RESTORE = "restartWalletActivityRestore";
+    public static final String TOTAL_VOLUME = "totalVolume";
     public static final String ETHEREUM_CONTRACT_FOR_SWAP =
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
     public static final BigInteger MAX_UINT256 =
@@ -255,9 +260,9 @@ public class Utils {
     }
 
     public static void openAssetDetailsActivity(
-            Activity activity, String chainId, BlockchainToken asset) {
-        assert activity != null;
-        Intent assetDetailIntent = new Intent(activity, AssetDetailActivity.class);
+            @NonNull final Context context, @NonNull final String chainId, @NonNull final BlockchainToken asset) {
+        assert context != null;
+        Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);
         assetDetailIntent.putExtra(CHAIN_ID, chainId);
         assetDetailIntent.putExtra(ASSET_SYMBOL, asset.symbol);
         assetDetailIntent.putExtra(ASSET_NAME, asset.name);
@@ -266,7 +271,21 @@ public class Utils {
         assetDetailIntent.putExtra(ASSET_CONTRACT_ADDRESS, asset.contractAddress);
         assetDetailIntent.putExtra(ASSET_DECIMALS, asset.decimals);
         assetDetailIntent.putExtra(COIN_TYPE, asset.coin);
-        activity.startActivity(assetDetailIntent);
+        context.startActivity(assetDetailIntent);
+    }
+
+    public static void openAssetDetailsActivity(@NonNull final Context context, @NonNull final CoinMarket asset) {
+        assert context != null;
+        Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);
+        assetDetailIntent.putExtra(COIN_MARKET, true);
+        assetDetailIntent.putExtra(MARKET_CAP, asset.marketCap);
+        assetDetailIntent.putExtra(MARKET_CAP_RANK, asset.marketCapRank);
+        assetDetailIntent.putExtra(TOTAL_VOLUME, asset.totalVolume);
+        assetDetailIntent.putExtra(ASSET_ID, asset.id);
+        assetDetailIntent.putExtra(ASSET_SYMBOL, asset.symbol);
+        assetDetailIntent.putExtra(ASSET_NAME, asset.name);
+        assetDetailIntent.putExtra(ASSET_LOGO, asset.image);
+        context.startActivity(assetDetailIntent);
     }
 
     /**
