@@ -62,6 +62,7 @@ source_set("brave_federated_tests") {
     "data_stores/data_store_unittest.cc",
     "features_unittest.cc",
     "operational_patterns_util_unittest.cc",
+    "task/model_unittest.cc",
     "task/model_util_unittest.cc",
     "util/linear_algebra_util_unittest.cc",
   ]

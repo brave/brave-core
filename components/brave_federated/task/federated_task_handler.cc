@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_federated/task/federated_task_runner.h"
+#include "brave/components/brave_federated/task/federated_task_handler.h"
 
 #include <list>
 #include <map>
@@ -17,15 +17,15 @@
 
 namespace brave_federated {
 
-FederatedTaskRunner::FederatedTaskRunner(const Task& task,
-                                         std::unique_ptr<Model> model)
+FederatedTaskHandler::FederatedTaskHandler(const Task& task,
+                                           std::unique_ptr<Model> model)
     : task_(task), model_(std::move(model)) {
   DCHECK(model_);
 }
 
-FederatedTaskRunner::~FederatedTaskRunner() = default;
+FederatedTaskHandler::~FederatedTaskHandler() = default;
 
-absl::optional<TaskResult> FederatedTaskRunner::Run() {
+absl::optional<TaskResult> FederatedTaskHandler::Run() {
   PerformanceReport report(0, 0, 0, {}, {});
   if (task_.GetType() == TaskType::Training) {
     if (training_data_.empty()) {
@@ -57,20 +57,20 @@ absl::optional<TaskResult> FederatedTaskRunner::Run() {
   return absl::optional<TaskResult>(result);
 }
 
-void FederatedTaskRunner::SetTrainingData(const DataSet& training_data) {
+void FederatedTaskHandler::SetTrainingData(const DataSet& training_data) {
   training_data_ = training_data;
 }
 
-void FederatedTaskRunner::SetTestData(const DataSet& test_data) {
+void FederatedTaskHandler::SetTestData(const DataSet& test_data) {
   test_data_ = test_data;
 }
 
-void FederatedTaskRunner::SetWeights(const ModelWeights& weights) {
+void FederatedTaskHandler::SetWeights(const ModelWeights& weights) {
   model_->SetWeights(std::get<0>(weights));
   model_->SetBias(std::get<1>(weights));
 }
 
-ModelWeights FederatedTaskRunner::GetWeights() const {
+ModelWeights FederatedTaskHandler::GetWeights() const {
   return std::make_tuple(model_->GetWeights(), model_->GetBias());
 }
 
