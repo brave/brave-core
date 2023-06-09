@@ -124,7 +124,7 @@ export function AdsPanel () {
     const optionList = subdivisions.map(val => ({ ...val }))
     if (optionList.length > 0) {
       optionList.unshift({
-        code: 'DISABLED',
+        subdivision: 'DISABLED',
         name: adsSubdivisionTargeting === 'DISABLED'
           ? getString('adsSubdivisionTargetingDisabled')
           : getString('adsSubdivisionTargetingDisable')
@@ -132,14 +132,14 @@ export function AdsPanel () {
 
       let automaticallyDetectedName = ''
       for (const item of subdivisions) {
-        if (item.code === automaticallyDetectedAdsSubdivisionTargeting) {
+        if (item.subdivision === automaticallyDetectedAdsSubdivisionTargeting) {
           automaticallyDetectedName = item.name
           break
         }
       }
 
       optionList.unshift({
-        code: 'AUTO',
+        subdivision: 'AUTO',
         name: automaticallyDetectedName && adsSubdivisionTargeting === 'AUTO'
           ? getString('adsSubdivisionTargetingAutoDetectedAs')
               .replace('$1', automaticallyDetectedName)
@@ -169,8 +169,8 @@ export function AdsPanel () {
         >
           <select value={adsData.adsSubdivisionTargeting} onChange={onChange}>
             {
-              optionList.map(({ code, name }) => (
-                <option key={code} value={code}>{name}</option>
+              optionList.map(({ subdivision, name }) => (
+                <option key={subdivision} value={subdivision}>{name}</option>
               ))
             }
           </select>

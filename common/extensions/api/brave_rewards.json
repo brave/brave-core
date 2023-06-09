@@ -1138,7 +1138,7 @@
                           "type": "string",
                           "description": "subdivision name"
                         },
-                        "value": {
+                        "subdivision": {
                           "type": "string",
                           "description": "subdivision code"
                         }
