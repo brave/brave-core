@@ -123,7 +123,8 @@ public final class WalletConstants {
     public static final List<String> KNOWN_TEST_CHAIN_IDS = Arrays.asList(
             BraveWalletConstants.GOERLI_CHAIN_ID, BraveWalletConstants.SEPOLIA_CHAIN_ID,
             BraveWalletConstants.LOCALHOST_CHAIN_ID, BraveWalletConstants.SOLANA_TESTNET,
-            BraveWalletConstants.SOLANA_DEVNET, BraveWalletConstants.FILECOIN_TESTNET);
+            BraveWalletConstants.SOLANA_DEVNET, BraveWalletConstants.FILECOIN_TESTNET,
+            BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID);
 
     public static final List<Integer> SEND_TRANSACTION_TYPES = Arrays.asList(
             TransactionType.ETH_SEND, TransactionType.ERC20_TRANSFER,
