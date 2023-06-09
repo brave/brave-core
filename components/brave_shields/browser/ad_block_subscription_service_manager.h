@@ -42,6 +42,8 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
+const uint16_t kSubscriptionDefaultExpiresHours = 7 * 24;
+
 struct SubscriptionInfo {
   SubscriptionInfo();
   ~SubscriptionInfo();
@@ -64,6 +66,7 @@ struct SubscriptionInfo {
 
   absl::optional<std::string> homepage;
   absl::optional<std::string> title;
+  uint16_t expires = kSubscriptionDefaultExpiresHours;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<SubscriptionInfo>*);

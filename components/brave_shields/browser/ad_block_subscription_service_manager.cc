@@ -60,7 +60,22 @@ bool ParseOptionalStringField(const base::Value* value,
   }
 }
 
-const base::TimeDelta kListUpdateInterval = base::Days(7);
+bool ParseExpiresWithFallback(const base::Value* value, uint16_t* field) {
+  if (value == nullptr) {
+    *field = kSubscriptionDefaultExpiresHours;
+    return true;
+  } else if (!value->is_int()) {
+    return false;
+  } else {
+    int64_t i = value->GetInt();
+    if (i < 0 || i > 14 * 24) {
+      return false;
+    }
+    *field = (uint16_t)i;
+    return true;
+  }
+}
+
 const base::TimeDelta kListRetryInterval = base::Hours(1);
 const base::TimeDelta kListCheckInitialDelay = base::Minutes(1);
 
@@ -101,6 +116,8 @@ void SubscriptionInfo::RegisterJSONConverter(
       "homepage", &SubscriptionInfo::homepage, &ParseOptionalStringField);
   converter->RegisterCustomValueField<absl::optional<std::string>>(
       "title", &SubscriptionInfo::title, &ParseOptionalStringField);
+  converter->RegisterCustomValueField<uint16_t>(
+      "expires", &SubscriptionInfo::expires, &ParseExpiresWithFallback);
 }
 
 AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
@@ -172,7 +189,8 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(
       info = BuildInfoFromDict(sub_url, *list_subscription_dict);
 
       base::TimeDelta until_next_refresh =
-          kListUpdateInterval - (base::Time::Now() - info.last_update_attempt);
+          base::Hours(info.expires) -
+          (base::Time::Now() - info.last_update_attempt);
 
       if (info.enabled &&
           ((info.last_update_attempt != info.last_successful_update_attempt) ||
@@ -357,6 +375,8 @@ void AdBlockSubscriptionServiceManager::OnListMetadata(
     info->homepage = absl::nullopt;
   }
 
+  info->expires = metadata.expires;
+
   UpdateSubscriptionPrefs(sub_url, *info);
 
   NotifyObserversOfServiceEvent();
@@ -447,6 +467,7 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
   if (info.title) {
     subscription_dict.Set("title", *info.title);
   }
+  subscription_dict.Set("expires", info.expires);
   subscriptions.Set(sub_url.spec(), std::move(subscription_dict));
 
   // TODO(bridiver) - change to pref registrar

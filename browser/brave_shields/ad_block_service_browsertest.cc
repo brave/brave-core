@@ -792,6 +792,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].enabled, true);
     ASSERT_EQ(subscriptions[0].homepage, absl::nullopt);
+    ASSERT_EQ(subscriptions[0].expires, 7 * 24);
     ASSERT_EQ(subscriptions[0].title, absl::nullopt);
   }
 
@@ -840,6 +841,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
               subscriptions[0].last_update_attempt);
     ASSERT_EQ(subscriptions[0].enabled, false);
     ASSERT_EQ(subscriptions[0].homepage, "https://example.com/list.txt");
+    ASSERT_EQ(subscriptions[0].expires, 3 * 24);
     ASSERT_EQ(subscriptions[0].title, "Test list");
   }
 
