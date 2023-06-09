@@ -358,7 +358,6 @@
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:lines="1"
-                    android:text="@string/rank"
                     android:textColor="@color/wallet_secondary_text_color"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/rank_label"

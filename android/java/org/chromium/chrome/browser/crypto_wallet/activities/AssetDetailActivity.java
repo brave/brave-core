@@ -90,6 +90,7 @@ public class AssetDetailActivity
     private String mAssetId;
     private String mChainId;
     private boolean mCoinMarket;
+    private int mMarketCapRank;
     private String mContractAddress;
     private String mAssetLogo;
     private int mAssetDecimals;
@@ -129,6 +130,7 @@ public class AssetDetailActivity
             mAssetName = getIntent().getStringExtra(Utils.ASSET_NAME);
             mAssetId = getIntent().getStringExtra(Utils.ASSET_ID);
             mCoinMarket = getIntent().getBooleanExtra(Utils.COIN_MARKET, false);
+            mMarketCapRank = getIntent().getIntExtra(Utils.MARKET_CAP_RANK, -1);
             mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
             mAssetLogo = getIntent().getStringExtra(Utils.ASSET_LOGO);
             mAssetDecimals =
@@ -156,6 +158,11 @@ public class AssetDetailActivity
             TextView informationLabel = findViewById(R.id.information);
             CardView coinMarketInfo = findViewById(R.id.card_view_coin_market_info);
             AndroidUtils.show(informationLabel, coinMarketInfo);
+
+            if (mMarketCapRank != -1) {
+                TextView rank = findViewById(R.id.rank);
+                rank.setText(String.valueOf(mMarketCapRank));
+            }
 
             DisplayMetrics displayMetrics =
                     ContextUtils.getApplicationContext().getResources().getDisplayMetrics();
