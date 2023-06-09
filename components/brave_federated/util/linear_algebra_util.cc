@@ -7,33 +7,6 @@
 
 namespace brave_federated {
 
-Vector LinearAlgebraUtil::MatrixXfToVector(Eigen::MatrixXf vector) {
-  Vector returned_vector = Vector(vector.rows());
-  Eigen::VectorXf::Map(returned_vector.data(), vector.rows()) = vector;
-
-  return returned_vector;
-}
-
-Matrix LinearAlgebraUtil::MatrixXfToMatrix(Eigen::MatrixXf matrix) {
-  Matrix returned_matrix = Matrix(matrix.rows(), Vector(matrix.cols(), 0.0f));
-  for (size_t i = 0; i < returned_matrix.size(); ++i) {
-    Eigen::VectorXf::Map(returned_matrix.at(i).data(), matrix.row(i).cols()) =
-        matrix.row(i);
-  }
-
-  return returned_matrix;
-}
-
-Eigen::MatrixXf LinearAlgebraUtil::MatrixToMatrixXf(Matrix matrix) {
-  Eigen::MatrixXf matrix_eigen(matrix.size(), matrix.at(0).size());
-  for (size_t i = 0; i < matrix.size(); ++i) {
-    matrix_eigen.row(i) =
-        Eigen::Map<Eigen::VectorXf>(matrix.at(i).data(), matrix.at(i).size());
-  }
-
-  return matrix_eigen;
-}
-
 Vector LinearAlgebraUtil::SubtractVector(Vector vector_1, Vector vector_2) {
   Eigen::Map<Eigen::VectorXf> vector_1_eigen(vector_1.data(), vector_1.size());
   Eigen::Map<Eigen::VectorXf> vector_2_eigen(vector_2.data(), vector_2.size());
@@ -81,6 +54,33 @@ Matrix LinearAlgebraUtil::TransposeMatrix(Matrix matrix) {
 
   matrix_eigen.transposeInPlace();
   return MatrixXfToMatrix(matrix_eigen);
+}
+
+Vector LinearAlgebraUtil::MatrixXfToVector(const Eigen::MatrixXf& vector) {
+  Vector returned_vector = Vector(vector.rows());
+  Eigen::VectorXf::Map(returned_vector.data(), vector.rows()) = vector;
+
+  return returned_vector;
+}
+
+Matrix LinearAlgebraUtil::MatrixXfToMatrix(const Eigen::MatrixXf& matrix) {
+  Matrix returned_matrix = Matrix(matrix.rows(), Vector(matrix.cols(), 0.0f));
+  for (size_t i = 0; i < returned_matrix.size(); ++i) {
+    Eigen::VectorXf::Map(returned_matrix.at(i).data(), matrix.row(i).cols()) =
+        matrix.row(i);
+  }
+
+  return returned_matrix;
+}
+
+Eigen::MatrixXf LinearAlgebraUtil::MatrixToMatrixXf(Matrix matrix) {
+  Eigen::MatrixXf matrix_eigen(matrix.size(), matrix.at(0).size());
+  for (size_t i = 0; i < matrix.size(); ++i) {
+    matrix_eigen.row(i) =
+        Eigen::Map<Eigen::VectorXf>(matrix.at(i).data(), matrix.at(i).size());
+  }
+
+  return matrix_eigen;
 }
 
 }  // namespace brave_federated

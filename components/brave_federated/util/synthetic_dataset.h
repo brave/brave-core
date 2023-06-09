@@ -21,8 +21,8 @@ class SyntheticDataset {
   SyntheticDataset(const SyntheticDataset& synthetic_dataset);
 
   explicit SyntheticDataset(DataSet data_points);
-  SyntheticDataset(std::vector<Weights> weights,
-                   std::vector<float> b,
+  SyntheticDataset(const std::vector<Weights>& weights,
+                   const std::vector<float>& b,
                    int num_features,
                    size_t size);
   ~SyntheticDataset();
