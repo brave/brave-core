@@ -15,6 +15,7 @@ export const localeStrings = {
   rewardsContinue: 'Continue',
   rewardsEarningsHeader: 'Estimated earnings',
   rewardsEarningInfoText: 'This reflects your estimated earnings range for Brave Ads this month.',
+  rewardsHowDoesItWork: 'How does it work?',
   rewardsEnableBraveAds: 'Enable Brave Ads',
   rewardsGrantDaysRemaining: 'You have $1 left to claim',
   rewardsLearnMore: 'Learn more',

@@ -315,6 +315,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsContinue", IDS_REWARDS_WIDGET_CONTINUE},
         { "rewardsEarningsTitle", IDS_REWARDS_WIDGET_EARNINGS_TITLE },
         { "rewardsEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT },
+        { "rewardsHowDoesItWork", IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK},
         { "rewardsEnableBraveAds", IDS_REWARDS_WIDGET_ENABLE_BRAVE_ADS },
         { "rewardsGrantDaysRemaining", IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING },  // NOLINT
         { "rewardsLearnMore", IDS_REWARDS_LEARN_MORE },

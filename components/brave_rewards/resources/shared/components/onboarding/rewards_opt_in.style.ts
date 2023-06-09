@@ -41,7 +41,7 @@ export const optInIcon = styled.div`
   }
 `
 export const optInHeader = styled.div`
-  margin-top: 36px;
+  margin: 32px 3px 0px 3px;
   color: ${leo.color.text.primary};
   font-weight: 500;
   font-size: 22px;
@@ -49,15 +49,21 @@ export const optInHeader = styled.div`
 `
 
 export const optInText = styled.div`
-  margin-top: 8px;
+  margin: 8px 3px;
   color: ${leo.color.text.secondary};
   font-size: 14px;
   line-height: 24px;
 `
 
 export const learnMore = styled.div`
-  margin-top: 12px;
+  margin-top: 8px;
+  margin-bottom: 29px;
   text-align: center;
+
+  &.learn-more-success {
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
 
   a {
     color: ${leo.color.text.interactive};
@@ -86,13 +92,13 @@ export const geoPinIcon = styled.div`
 `
 
 export const header = styled.div`
-  margin-top: 48px;
+  margin: 48px 3px 0px 3px;
   color: ${leo.color.text.primary};
   font-weight: 500;
   font-size: 22px;
   line-height: 32px;
 
-  &.onboarding-error .icon {
+  &.onboarding-result .icon {
     display: block;
     margin: 0 auto 16px;
     height: 24px;
@@ -101,7 +107,7 @@ export const header = styled.div`
 `
 
 export const text = styled.div`
-  margin-top: 8px;
+  margin: 8px 3px 0px 3px;
   color: ${leo.color.text.secondary};
   font-size: 14px;
   line-height: 24px;
@@ -155,7 +161,8 @@ export const selectCountry = styled.div`
 `
 
 export const mainAction = styled.div`
-  margin-top: 32px;
+  margin-top: 24px;
+  margin-bottom: 4px;
 
   button {
     ${enableRewardsButton}

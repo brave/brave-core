@@ -218,7 +218,7 @@ export function RewardsCard (props: Props) {
         </style.optInAction>
         <style.optInLearnMore>
           <NewTabLink href={urls.rewardsTourURL}>
-            {getString('rewardsLearnMore')}
+            {getString('rewardsHowDoesItWork')}
           </NewTabLink>
         </style.optInLearnMore>
       </style.root>

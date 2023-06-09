@@ -112,6 +112,9 @@
   <message name="IDS_REWARDS_WIDGET_EARNING_INFO_TEXT" desc="">
     This reflects your estimated earnings range for Brave Ads this month.
   </message>
+  <message name="IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK" desc="">
+    How does it work?
+  </message>
   <message name="IDS_REWARDS_WIDGET_ENABLE_BRAVE_ADS" desc="">
     Enable Brave Ads
   </message>
@@ -358,6 +361,9 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">
     Use tokens to buy gift cards, exchange for other currencies, support content creators, and more.
   </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_HOW_DOES_IT_WORK" desc="">
+    How does it work?
+  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER" desc="">
     Something went wrong
   </message>
@@ -381,6 +387,9 @@
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_TEXT" desc="">
     Now you can get rewarded for viewing ads. You're helping make the web a better place for everyone. And that's awesome!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_HOW_DOES_BRAVE_REWARDS_WORK" desc="">
+    How does Brave Rewards work?
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT" desc="">
     Select your country so we can show you the right options and ads for your region.

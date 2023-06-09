@@ -89,7 +89,7 @@ export function RewardsOptIn (props: Props) {
 
     return (
       <style.root>
-        <style.header className='onboarding-error'>
+        <style.header className='onboarding-result'>
           {props.result === 'success'
             ? <style.successIcon /> : <ErrorIcon />}
           {messages.header}
@@ -99,13 +99,24 @@ export function RewardsOptIn (props: Props) {
         </style.text>
         <style.mainAction>
           <button onClick={props.onHideResult}>
-            {props.result === 'success'
-              ? getString('onboardingDone') : getString('onboardingClose')}
+            {
+              props.result === 'success'
+                ? getString('onboardingDone')
+                : getString('onboardingClose')
+            }
           </button>
         </style.mainAction>
-        <style.errorCode>
-          {props.result !== 'success' && props.result}
-        </style.errorCode>
+        {
+          props.result === 'success'
+            ? <style.learnMore className='learn-more-success'>
+                <NewTabLink href={urls.rewardsTourURL}>
+                  {getString('onboardingHowDoesBraveRewardsWork')}
+                </NewTabLink>
+              </style.learnMore>
+            : <style.errorCode>
+                {props.result}
+              </style.errorCode>
+        }
       </style.root>
     )
   }
@@ -171,7 +182,7 @@ export function RewardsOptIn (props: Props) {
       </style.mainAction>
       <style.learnMore>
         <NewTabLink href={urls.rewardsTourURL}>
-          {getString('rewardsLearnMore')}
+          {getString('onboardingHowDoesItWork')}
         </NewTabLink>
       </style.learnMore>
     </style.root>
