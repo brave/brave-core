@@ -141,8 +141,7 @@ public class AssetDetailActivity
             mMarketCap = intent.getDoubleExtra(Utils.MARKET_CAP, -1);
             mContractAddress = intent.getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
             mAssetLogo = intent.getStringExtra(Utils.ASSET_LOGO);
-            mAssetDecimals =
-                    intent.getIntExtra(Utils.ASSET_DECIMALS, Utils.ETH_DEFAULT_DECIMALS);
+            mAssetDecimals = intent.getIntExtra(Utils.ASSET_DECIMALS, Utils.ETH_DEFAULT_DECIMALS);
             mCoinType = intent.getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
             if (mAssetSymbol.equals("ETH")) {
                 mAssetLogo = "eth.png";
