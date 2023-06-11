@@ -94,7 +94,7 @@ public class MarketModel {
      * M (millions), or B (billions).
      * E.g.{@code 1000000} becomes {@code "$1.00M"}.
      *
-     * @param value Give value to format.
+     * @param value Given value to format.
      * @return Formatted string.
      */
     @NonNull
