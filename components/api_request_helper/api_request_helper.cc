@@ -366,7 +366,15 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
 }
 
 void APIRequestHelper::URLLoaderHandler::OnRetry(
-    base::OnceClosure start_retry) {}
+    base::OnceClosure start_retry) {
+  std::move(start_retry).Run();
+  // We assume that a consumer of APIRequestHelper doesn't
+  // care about discarding partial responses received so far
+  // before a retry, especially if it's SSE. If this assumption
+  // becomes incorrect, perhaps that caller should make the request
+  // directly, or APIRequestHelper could accept a callback, or move
+  // to an observer model.
+}
 
 void APIRequestHelper::URLLoaderHandler::OnResponse(
     ResultCallback callback,
