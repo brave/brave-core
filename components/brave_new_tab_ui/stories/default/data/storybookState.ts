@@ -82,7 +82,6 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     customLinksEnabled: boolean('CustomLinks Enabled?', false),
     featureFlagBraveNTPSponsoredImagesWallpaper: true,
     featureCustomBackgroundEnabled: true,
-    featureFlagBraveNewsEnabled: true,
     featureFlagBraveNewsPromptEnabled: true,
     searchPromotionEnabled: false,
     forceSettingsTab: select('Open settings tab?', [undefined, ...Object.keys(SettingsTabType)], undefined),

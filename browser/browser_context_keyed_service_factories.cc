@@ -33,7 +33,6 @@
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/features.h"
@@ -126,10 +125,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
 
-  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
-    brave_news::BraveNewsControllerFactory::GetInstance();
-  }
-
+  brave_news::BraveNewsControllerFactory::GetInstance();
   brave_wallet::AssetRatioServiceFactory::GetInstance();
   brave_wallet::KeyringServiceFactory::GetInstance();
   brave_wallet::JsonRpcServiceFactory::GetInstance();

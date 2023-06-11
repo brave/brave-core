@@ -162,12 +162,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             }
         }
 
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            MenuItem braveNews =
-                    menu.add(Menu.NONE, R.id.brave_news_id, 0, R.string.brave_news_title);
-            if (shouldShowIconBeforeItem()) {
-                braveNews.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.ic_news));
-            }
+        MenuItem braveNews = menu.add(Menu.NONE, R.id.brave_news_id, 0, R.string.brave_news_title);
+        if (shouldShowIconBeforeItem()) {
+            braveNews.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.ic_news));
         }
 
         MenuItem braveSpeedReader = menu.findItem(R.id.brave_speedreader_id);

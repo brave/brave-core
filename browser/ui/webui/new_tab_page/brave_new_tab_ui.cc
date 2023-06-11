@@ -73,9 +73,6 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
                          prefs::kNtpCustomBackgroundDict));
 
   // Let frontend know about feature flags
-  source->AddBoolean(
-      "featureFlagBraveNewsEnabled",
-      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature));
   source->AddBoolean("featureFlagBraveNewsPromptEnabled",
                      base::FeatureList::IsEnabled(
                          brave_news::features::kBraveNewsCardPeekFeature));
@@ -103,13 +100,11 @@ void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
-  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
-    // Wire up JS mojom to service
-    auto* brave_news_controller =
-        brave_news::BraveNewsControllerFactory::GetForContext(profile);
-    if (brave_news_controller) {
-      brave_news_controller->Bind(std::move(receiver));
-    }
+  // Wire up JS mojom to service
+  auto* brave_news_controller =
+      brave_news::BraveNewsControllerFactory::GetForContext(profile);
+  if (brave_news_controller) {
+    brave_news_controller->Bind(std::move(receiver));
   }
 }
 
