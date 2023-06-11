@@ -6,9 +6,9 @@
 #include <memory>
 #include <utility>
 
-#include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -43,7 +43,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
   const std::string blinded_creds_json = GetBlindedCredsJSON(blinded_creds);
 
   auto creds_batch = mojom::CredsBatch::New();
-  creds_batch->creds_id = base::GenerateGUID();
+  creds_batch->creds_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   creds_batch->size = trigger.size;
   creds_batch->creds = creds_json;
   creds_batch->blinded_creds = blinded_creds_json;

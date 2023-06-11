@@ -13,8 +13,8 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/guid.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
@@ -485,7 +485,8 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
     return;
   }
 
-  const std::string contribution_id = base::GenerateGUID();
+  const std::string contribution_id =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   auto contribution = mojom::ContributionInfo::New();
   const uint64_t now = util::GetCurrentTimeStamp();

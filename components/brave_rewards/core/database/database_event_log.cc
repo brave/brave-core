@@ -6,8 +6,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/guid.h"
 #include "base/strings/stringprintf.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_event_log.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
@@ -47,7 +47,8 @@ void DatabaseEventLog::Insert(const std::string& key,
   command->type = mojom::DBCommand::Type::RUN;
   command->command = query;
 
-  BindString(command.get(), 0, base::GenerateGUID());
+  BindString(command.get(), 0,
+             base::Uuid::GenerateRandomV4().AsLowercaseString());
   BindString(command.get(), 1, key);
   BindString(command.get(), 2, value);
   BindInt64(command.get(), 3, util::GetCurrentTimeStamp());
@@ -75,10 +76,11 @@ void DatabaseEventLog::InsertRecords(
 
   std::string query = base_query;
   for (const auto& record : records) {
-    query +=
-        base::StringPrintf(R"(('%s','%s','%s',%u),)",
-                           base::GenerateGUID().c_str(), record.first.c_str(),
-                           record.second.c_str(), static_cast<uint32_t>(time));
+    query += base::StringPrintf(
+        R"(('%s','%s','%s',%u),)",
+        base::Uuid::GenerateRandomV4().AsLowercaseString().c_str(),
+        record.first.c_str(), record.second.c_str(),
+        static_cast<uint32_t>(time));
   }
 
   query.pop_back();

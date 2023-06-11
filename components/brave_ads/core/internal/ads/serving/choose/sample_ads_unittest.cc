@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -57,17 +57,17 @@ TEST(BraveAdsSampleAdsTest, CalculateNormalizingConstant) {
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_1;
   ad_predictor_1.score = 1.1;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_1;
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_2;
   ad_predictor_2.score = 2.2;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_2;
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_3;
   ad_predictor_3.score = 3.3;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_3;
 
   // Act
@@ -84,17 +84,17 @@ TEST(BraveAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_1;
   ad_predictor_1.score = 0;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_1;
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_2;
   ad_predictor_2.score = 0;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_2;
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor_3;
   ad_predictor_3.score = 0;
-  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+  creative_ad_predictors[base::Uuid::GenerateRandomV4().AsLowercaseString()] =
       ad_predictor_3;
 
   // Act

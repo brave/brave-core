@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 
 #include "base/check.h"
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
@@ -31,24 +31,24 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAd(
   mojom::SearchResultAdInfoPtr ad = mojom::SearchResultAdInfo::New();
 
   ad->placement_id = should_use_random_guids
-                         ? base::GUID::GenerateRandomV4().AsLowercaseString()
+                         ? base::Uuid::GenerateRandomV4().AsLowercaseString()
                          : kPlacementId;
 
   ad->creative_instance_id =
       should_use_random_guids
-          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeInstanceId;
 
   ad->creative_set_id = should_use_random_guids
-                            ? base::GUID::GenerateRandomV4().AsLowercaseString()
+                            ? base::Uuid::GenerateRandomV4().AsLowercaseString()
                             : kCreativeSetId;
 
   ad->campaign_id = should_use_random_guids
-                        ? base::GUID::GenerateRandomV4().AsLowercaseString()
+                        ? base::Uuid::GenerateRandomV4().AsLowercaseString()
                         : kCampaignId;
 
   ad->advertiser_id = should_use_random_guids
-                          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+                          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
                           : kAdvertiserId;
 
   ad->target_url = GURL("https://brave.com");

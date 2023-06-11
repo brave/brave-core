@@ -7,7 +7,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -34,22 +34,22 @@ ConversionQueueItemInfo BuildConversionQueueItem(
 
   conversion_queue_item.creative_instance_id =
       should_use_random_guids
-          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeInstanceId;
 
   conversion_queue_item.creative_set_id =
       should_use_random_guids
-          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeSetId;
 
   conversion_queue_item.campaign_id =
       should_use_random_guids
-          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCampaignId;
 
   conversion_queue_item.advertiser_id =
       should_use_random_guids
-          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kAdvertiserId;
 
   conversion_queue_item.segment = kSegment;

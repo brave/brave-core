@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/guid.h"
 #include "base/strings/stringprintf.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -227,7 +227,9 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
   if (is_verified && !fav_icon.empty()) {
     if (fav_icon.find(".invalid") == std::string::npos) {
       ledger_->client()->FetchFavIcon(
-          fav_icon, "https://" + base::GenerateGUID() + ".invalid",
+          fav_icon,
+          "https://" + base::Uuid::GenerateRandomV4().AsLowercaseString() +
+              ".invalid",
           base::BindOnce(&Publisher::onFetchFavIcon, base::Unretained(this),
                          publisher_info->id, window_id));
     } else {

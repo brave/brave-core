@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_util.h"
 
-#include "base/guid.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -41,10 +41,10 @@ TransactionList GetUnreconciledTransactionsForDateRange(
 TransactionInfo BuildTransaction(const base::Time time, const double value) {
   TransactionInfo transaction;
 
-  transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
+  transaction.id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   transaction.created_at = time;
   transaction.creative_instance_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
   transaction.value = value;
   transaction.ad_type = AdType::kNotificationAd;
   transaction.confirmation_type = ConfirmationType::kViewed;
@@ -67,7 +67,7 @@ TransactionList GetAllUnreconciledTransactions(
 
   for (auto& transaction : unreconciled_transactions) {
     // |created_at|, |value| and |confirmation_type| are set from legacy state
-    transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
+    transaction.id = base::Uuid::GenerateRandomV4().AsLowercaseString();
     transaction.creative_instance_id = kMigrationUnreconciledTransactionId;
     transaction.ad_type = AdType::kNotificationAd;
   }

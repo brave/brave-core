@@ -5,14 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
 
-#include "base/guid.h"
 #include "base/no_destructor.h"
+#include "base/uuid.h"
 
 namespace brave_ads {
 
 const std::string& GetInstanceId() {
   static const base::NoDestructor<std::string> kInstanceId(
-      base::GUID::GenerateRandomV4().AsLowercaseString());
+      base::Uuid::GenerateRandomV4().AsLowercaseString());
   return *kInstanceId;
 }
 
