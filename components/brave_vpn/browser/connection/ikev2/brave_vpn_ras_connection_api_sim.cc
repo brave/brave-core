@@ -150,4 +150,15 @@ void BraveVPNOSConnectionAPISim::OnIsDisconnecting(const std::string& name) {
   BraveVPNOSConnectionAPIBase::OnIsDisconnecting();
 }
 
+void BraveVPNOSConnectionAPISim::SetNetworkAvailableForTesting(bool value) {
+  network_available_ = value;
+}
+
+bool BraveVPNOSConnectionAPISim::IsPlatformNetworkAvailable() {
+  if (network_available_.has_value()) {
+    return network_available_.value();
+  }
+  return true;
+}
+
 }  // namespace brave_vpn

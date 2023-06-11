@@ -27,6 +27,7 @@
 namespace brave_vpn {
 
 namespace {
+
 const char kProfileCredentialData[] = R"(
         {
           "eap-username": "brave-user",
@@ -407,6 +408,21 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
   test_api->OnDisconnected();
+  EXPECT_FALSE(test_api->needs_connect_);
+  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
+
+  test_api->connection_state_ = mojom::ConnectionState::CONNECTED;
+  test_api->Connect();
+  EXPECT_TRUE(test_api->needs_connect_);
+  EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
+            test_api->GetConnectionState());
+  static_cast<BraveVPNOSConnectionAPISim*>(test_api)
+      ->SetNetworkAvailableForTesting(false);
+  test_api->OnDisconnected();
+  EXPECT_TRUE(test_api->needs_connect_);
+  static_cast<BraveVPNOSConnectionAPISim*>(test_api)
+      ->SetNetworkAvailableForTesting(true);
+  test_api->OnNetworkChanged(net::NetworkChangeNotifier::CONNECTION_ETHERNET);
   EXPECT_FALSE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
