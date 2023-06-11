@@ -18,7 +18,6 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -275,12 +274,43 @@ void BraveVPNOSConnectionAPIBase::OnConnectFailed() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
 }
 
-void BraveVPNOSConnectionAPIBase::OnDisconnected() {
-  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+bool BraveVPNOSConnectionAPIBase::MaybeReconnect() {
+  VLOG(2) << __func__;
 
-  if (needs_connect_) {
+  if (!needs_connect_) {
+    VLOG(2) << "Should be called only when reconnect expected";
+    return false;
+  }
+  if (GetConnectionState() != ConnectionState::DISCONNECTED) {
+    VLOG(2) << "For reconnection we expect DISCONNECTED status";
+    return false;
+  }
+  if (IsPlatformNetworkAvailable()) {
     needs_connect_ = false;
     Connect();
+    return true;
+  }
+  return false;
+}
+
+void BraveVPNOSConnectionAPIBase::OnNetworkChanged(
+    net::NetworkChangeNotifier::ConnectionType type) {
+  if (needs_connect_ && MaybeReconnect()) {
+    VLOG(2) << "Network is live, reconnecting";
+    return;
+  }
+  // It's rare but sometimes Brave doesn't get vpn status update from OS.
+  // Checking here will make vpn status update properly in that situation.
+  VLOG(2) << __func__ << " : " << type;
+  CheckConnection();
+}
+
+void BraveVPNOSConnectionAPIBase::OnDisconnected() {
+  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+  // Sometimes disconnected event happens before network state restored,
+  // we postpone reconnection in this cases.
+  if (needs_connect_ && !MaybeReconnect()) {
+    VLOG(2) << "Network is down, will be reconnected when connection restored";
   }
 }
 
@@ -293,14 +323,6 @@ void BraveVPNOSConnectionAPIBase::SetLastConnectionError(
     const std::string& error) {
   VLOG(2) << __func__ << " : " << error;
   last_connection_error_ = error;
-}
-
-void BraveVPNOSConnectionAPIBase::OnNetworkChanged(
-    net::NetworkChangeNotifier::ConnectionType type) {
-  // It's rare but sometimes Brave doesn't get vpn status update from OS.
-  // Checking here will make vpn status update properly in that situation.
-  VLOG(2) << __func__ << " : " << type;
-  CheckConnection();
 }
 
 void BraveVPNOSConnectionAPIBase::UpdateAndNotifyConnectionStateChange(

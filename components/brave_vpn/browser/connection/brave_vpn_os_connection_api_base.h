@@ -21,6 +21,7 @@
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -56,6 +57,8 @@ class BraveVPNOSConnectionAPIBase
   std::string GetLastConnectionError() const override;
   BraveVPNRegionDataManager& GetRegionDataManager() override;
   void SetSelectedRegion(const std::string& name) override;
+  void OnNetworkChanged(
+      net::NetworkChangeNotifier::ConnectionType type) override;
 
  protected:
   BraveVPNOSConnectionAPIBase(
@@ -70,6 +73,7 @@ class BraveVPNOSConnectionAPIBase
   virtual void DisconnectImpl(const std::string& name) = 0;
   virtual void RemoveVPNConnectionImpl(const std::string& name) = 0;
   virtual void CheckConnectionImpl(const std::string& name) = 0;
+  virtual bool IsPlatformNetworkAvailable() = 0;
 
   // Subclass should call below callbacks whenever corresponding event happens.
   void OnCreated();
@@ -79,6 +83,7 @@ class BraveVPNOSConnectionAPIBase
   void OnConnectFailed();
   void OnDisconnected();
   void OnIsDisconnecting();
+  bool MaybeReconnect();
 
   void SetLastConnectionError(const std::string& error);
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
@@ -104,10 +109,6 @@ class BraveVPNOSConnectionAPIBase
                            IgnoreDisconnectedStateWhileConnecting);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            ClearLastConnectionErrorWhenNewConnectionStart);
-
-  // net::NetworkChangeNotifier::NetworkChangeObserver
-  void OnNetworkChanged(
-      net::NetworkChangeNotifier::ConnectionType type) override;
 
   void CreateVPNConnection();
   std::string GetCurrentEnvironment() const;
