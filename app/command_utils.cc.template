@@ -10,7 +10,6 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/span.h"
 #include "base/feature_list.h"
-#include "base/strings/string_util.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
@@ -54,16 +53,7 @@ std::string GetCommandName(int command_id) {
          "commands (i.e. commands in |GetCommands()|). "
          "This command should probably be added.";
 
-  auto result = l10n_util::GetStringUTF8(it->second);
-  
-  // Note: A bunch of the Chromium strings have a &amp; in them, which denotes
-  // the shortcut key you can press to jump to it in a menu. We don't want to
-  // display this in the shortcuts page or in the command palette, so we remove
-  // them.
-  // Currently no commands have a '&amp;' in the translated name, so this is
-  // okay (for now).
-  base::ReplaceSubstringsAfterOffset(&result, 0, "&", "");
-  return result;
+  return l10n_util::GetStringUTF8(it->second);
 }
 
 }  // namespace commands

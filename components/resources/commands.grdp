@@ -25,14 +25,26 @@
   <message name="IDS_IDC_RELOAD_CLEARING_CACHE">
     Reload clearing cache
   </message>
+  <message name="IDS_IDC_NEW_INCOGNITO_WINDOW">
+    New private window
+  </message>
   <message name="IDS_IDC_CLOSE_WINDOW">
     Close window
   </message>
   <message name="IDS_IDC_ALWAYS_ON_TOP">
     Toggle always on top
   </message>
+  <message name="IDS_IDC_NEW_TAB">
+    New tab
+  </message>
   <message name="IDS_IDC_CLOSE_TAB">
     Close tab
+  </message>
+  <message name="IDS_IDC_RESTORE_TAB">
+    Reopen closed tab
+  </message>
+  <message name="IDS_IDC_SHOW_AS_TAB">
+    Show as tab
   </message>
   <message name="IDS_IDC_SELECT_NEXT_TAB">
     Next tab
@@ -82,6 +94,9 @@
   <message name="IDS_IDC_WINDOW_MENU">
     Window menu
   </message>
+  <message name="IDS_IDC_FULLSCREEN">
+    Toggle full screen
+  </message>
   <message name="IDS_IDC_MINIMIZE_WINDOW">
     Minimize window
   </message>
@@ -91,8 +106,23 @@
   <message name="IDS_IDC_ALL_WINDOWS_FRONT">
     Show all windows
   </message>
+  <message name="IDS_IDC_EXIT">
+    Exit
+  </message>
+  <message name="IDS_IDC_NAME_WINDOW">
+    Name window
+  </message>
   <message name="IDS_IDC_USE_SYSTEM_TITLE_BAR">
     Toggle system title bar
+  </message>
+  <message name="IDS_IDC_RESTORE_WINDOW">
+    Restore window
+  </message>
+  <message name="IDS_IDC_COPY_URL">
+    Copy URL
+  </message>
+  <message name="IDS_IDC_OPEN_IN_CHROME">
+    Open in Brave
   </message>
   <message name="IDS_IDC_OPEN_IN_PWA_WINDOW">
     Open in PWA window
@@ -114,6 +144,51 @@
   </message>
   <message name="IDS_IDC_BASIC_PRINT">
     Basic print
+  </message>
+  <message name="IDS_IDC_SAVE_PAGE">
+    Save page as
+  </message>
+  <message name="IDS_IDC_CUT">
+    Cut
+  </message>
+  <message name="IDS_IDC_COPY">
+    Copy
+  </message>
+  <message name="IDS_IDC_PASTE">
+    Paste
+  </message>
+  <message name="IDS_IDC_FIND">
+    Find
+  </message>
+  <message name="IDS_IDC_FIND_AND_EDIT_MENU">
+    Find and edit menu
+  </message>
+  <message name="IDS_IDC_DEV_TOOLS">
+    Developer tools
+  </message>
+  <message name="IDS_IDC_DEV_TOOLS_CONSOLE">
+    Javascript console
+  </message>
+  <message name="IDS_IDC_VIEW_SOURCE">
+    View source
+  </message>
+  <message name="IDS_IDC_TASK_MANAGER">
+    Task manager
+  </message>
+  <message name="IDS_IDC_DEV_TOOLS_DEVICES">
+    Inspect devices
+  </message>
+  <message name="IDS_IDC_OPTIONS">
+    Show settings
+  </message>
+  <message name="IDS_IDC_PROFILING_ENABLED">
+    Toggle profiling enabled
+  </message>
+  <message name="IDS_IDC_TAKE_SCREENSHOT">
+    Take screenshot
+  </message>
+  <message name="IDS_IDC_HISTORY_MENU">
+    History menu
   </message>
   <message name="IDS_IDC_SAVE_CREDIT_CARD_FOR_PAGE">
     Save credit card for page
