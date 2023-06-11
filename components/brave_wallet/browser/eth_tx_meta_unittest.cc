@@ -191,13 +191,10 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
 TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
   // FilForwarder final recipient
   {
-    std::vector<uint8_t> data;
-    PrefixedHexStringToBytes(
-        filforwarder::Forward(
-            FilAddress::FromAddress("f12fopnvzwjwfu3k45sdofngoru6gpokobsbjyl2a")
-                .GetBytes())
-            .value(),
-        &data);
+    std::vector<uint8_t> data =
+        filforwarder::Forward(FilAddress::FromAddress(
+                                  "f12fopnvzwjwfu3k45sdofngoru6gpokobsbjyl2a"))
+            .value();
 
     std::unique_ptr<Eip1559Transaction> tx =
         std::make_unique<Eip1559Transaction>(
@@ -217,7 +214,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                     "0xad8075b7a" /* Hex of 46574033786 */))));
 
     EthTxMeta meta(std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
+    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
               "f12fopnvzwjwfu3k45sdofngoru6gpokobsbjyl2a");
   }
 
@@ -247,7 +244,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                     "0xad8075b7a" /* Hex of 46574033786 */))));
 
     EthTxMeta meta(std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
+    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
               "0x35353535353535353535353535353535353535bb");
   }
 
@@ -278,7 +275,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                     "0xad8075b7a" /* Hex of 46574033786 */))));
 
     EthTxMeta meta(std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
+    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
               "0x35353535353535353535353535353535353535bb");
   }
 
@@ -309,7 +306,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                     "0xad8075b7a" /* Hex of 46574033786 */))));
 
     EthTxMeta meta(std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
+    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
               "0x35353535353535353535353535353535353535bb");
   }
 
@@ -333,8 +330,8 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                     "0xad8075b7a" /* Hex of 46574033786 */))));
 
     EthTxMeta meta(std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->final_recipient.value(),
-              "0x35353535353535353535353535353535353535bb");
+    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
+              "0x3535353535353535353535353535353535353535");
   }
 }
 

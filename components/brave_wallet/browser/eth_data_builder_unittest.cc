@@ -566,13 +566,14 @@ namespace filforwarder {
 
 TEST(EthCallDataBuilderTest, Forward) {
   auto data = Forward(
-      FilAddress::FromAddress("f12fopnvzwjwfu3k45sdofngoru6gpokobsbjyl2a")
-          .GetBytes());
-  EXPECT_EQ(data.value(),
-            "0xd948d468"
-            "0000000000000000000000000000000000000000000000000000000000000020"
-            "0000000000000000000000000000000000000000000000000000000000000015"
-            "01d15cf6d7364d8b4dab9d90dc5699d1a78cf729c10000000000000000000000");
+      FilAddress::FromAddress("f12fopnvzwjwfu3k45sdofngoru6gpokobsbjyl2a"));
+  EXPECT_EQ(
+      data.value(),
+      PrefixedHexStringToBytes(
+          "0xd948d468"
+          "0000000000000000000000000000000000000000000000000000000000000020"
+          "0000000000000000000000000000000000000000000000000000000000000015"
+          "01d15cf6d7364d8b4dab9d90dc5699d1a78cf729c10000000000000000000000"));
 }
 
 }  // namespace filforwarder

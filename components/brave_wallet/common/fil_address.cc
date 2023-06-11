@@ -130,7 +130,7 @@ FilAddress FilAddress::FromBytes(const std::string& chain_id,
   }
   mojom::FilecoinAddressProtocol protocol =
       static_cast<mojom::FilecoinAddressProtocol>(bytes.at(0));
-  std::vector<uint8_t> payload(std::next(bytes.begin(), 1), bytes.end());
+  std::vector<uint8_t> payload(bytes.begin() + 1, bytes.end());
 
   return FilAddress::FromPayload(payload, protocol, chain_id);
 }
@@ -223,9 +223,9 @@ std::string FilAddress::EncodeAsString() const {
          encoded_output;
 }
 
-std::vector<uint8_t> FilAddress::GetBytes() {
+std::vector<uint8_t> FilAddress::GetBytes() const {
   std::vector<uint8_t> result;
-  result.push_back(static_cast<int>(protocol_));
+  result.push_back(static_cast<uint8_t>(protocol_));
   result.insert(result.end(), bytes_.begin(), bytes_.end());
   return result;
 }

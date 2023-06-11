@@ -1354,8 +1354,13 @@ struct TransactionInfo {
   string? group_id;
   string chain_id;
   // Currently only available for ETH and FIL
+  // Represent effective recipient of the transaction
+  // For example, a transaction may be ERC20 transaction, so
+  // "To" field represents the address of some smart contract.
+  // In this case, the recipient field is resolved from params
+  // and represents the final beneficiary of the transaction.
   // TODO(cypt4): Add for SOL
-  string? final_recipient;
+  string? effective_recipient;
 };
 
 interface TxServiceObserver {

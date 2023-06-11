@@ -55,7 +55,7 @@ absl::optional<std::string> GetFinalRecipient(
 
   if (tx_type == mojom::TransactionType::ERC721TransferFrom ||
       tx_type == mojom::TransactionType::ERC721SafeTransferFrom) {
-    if (tx_args.size() < 1) {
+    if (tx_args.size() < 2) {
       return absl::nullopt;
     }
     // (address owner, address to, uint256 tokenId)

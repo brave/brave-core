@@ -69,7 +69,7 @@ export const getMockedTransactionInfo =
         eTldPlusOne: 'brave.com'
       },
       groupId: undefined,
-      finalRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f'
+      effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f'
     }
   }
 
@@ -514,7 +514,7 @@ export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionIn
     eTldPlusOne: 'csb.app'
   },
   groupId: undefined,
-  finalRecipient: undefined
+  effectiveRecipient: undefined
 }
 
 export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransactionsRequest = {

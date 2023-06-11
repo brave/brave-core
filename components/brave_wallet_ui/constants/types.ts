@@ -566,8 +566,7 @@ export type SerializableTransactionInfo = Omit<
   | 'createdTime'
   | 'submittedTime'
   | 'txDataUnion'
-  | 'originInfo'
-> & {
+  | 'originInfo'> & {
   confirmedTime: SerializableTimeDelta
   createdTime: SerializableTimeDelta
   submittedTime: SerializableTimeDelta

@@ -281,8 +281,8 @@ void TxService::Reset() {
 void TxService::MakeFilForwarderTransferData(
     const std::string& to_address,
     MakeFilForwarderTransferDataCallback callback) {
-  auto bytes = FilAddress::FromAddress(to_address).GetBytes();
-  GetEthTxManager()->MakeFilForwarderTransferData(bytes, std::move(callback));
+  GetEthTxManager()->MakeFilForwarderTransferData(
+      FilAddress::FromAddress(to_address), std::move(callback));
 }
 
 void TxService::MakeERC20TransferData(const std::string& to_address,

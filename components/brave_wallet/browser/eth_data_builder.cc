@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
@@ -61,36 +62,16 @@ absl::optional<std::string> ChainIdToVersion(const std::string& symbol,
 
 namespace filforwarder {
 
-absl::optional<std::string> Forward(const std::vector<uint8_t>& destination) {
-  auto function_hash = GetFunctionHash("forward(bytes)");
-  size_t destination_padding = 32;
-  size_t destination_size = destination.size();
-  std::string padded_padding;
-  std::string padded_dest_size;
+constexpr uint8_t kFilForwarderSelector[] = {0xd9, 0x48, 0xd4, 0x68};
 
-  if (!PadHexEncodedParameter(Uint256ValueToHex(destination_padding),
-                              &padded_padding)) {
+absl::optional<std::vector<uint8_t>> Forward(const FilAddress& fil_address) {
+  if (fil_address.IsEmpty()) {
     return absl::nullopt;
   }
 
-  if (!PadHexEncodedParameter(Uint256ValueToHex(destination_size),
-                              &padded_dest_size)) {
-    return absl::nullopt;
-  }
-
-  std::string padded_destination;
-  auto dest = brave_wallet::ToHex(destination);
-  if (!PadHexEncodedParameter(dest, &padded_destination, false)) {
-    return absl::nullopt;
-  }
-  std::vector<std::string> hex_strings = {function_hash, padded_padding,
-                                          padded_dest_size, padded_destination};
-  std::string data;
-  if (!ConcatHexStrings(hex_strings, &data)) {
-    return absl::nullopt;
-  }
-
-  return data;
+  return eth_abi::TupleEncoder()
+      .AddBytes(fil_address.GetBytes())
+      .EncodeWithSelector(base::make_span(kFilForwarderSelector));
 }
 
 }  // namespace filforwarder

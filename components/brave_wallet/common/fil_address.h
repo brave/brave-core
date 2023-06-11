@@ -40,7 +40,7 @@ class FilAddress {
   std::string network() const { return network_; }
   // Represents byte form of the Filecoin address
   // https://spec.filecoin.io/appendix/address/#section-appendix.address.bytes
-  std::vector<uint8_t> GetBytes();
+  std::vector<uint8_t> GetBytes() const;
 
  private:
   bool IsEqual(const FilAddress& other) const;

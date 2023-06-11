@@ -35,7 +35,8 @@ constexpr char kTransformERC20Selector[] = "0x415565b0";
 constexpr char kFillOtcOrderForEthSelector[] = "0xa578efaf";
 constexpr char kFillOtcOrderWithEthSelector[] = "0x706394d5";
 constexpr char kFillOtcOrderSelector[] = "0xdac748d4";
-constexpr char kFilForwarderTransferSelector[] = "0xd948d468";
+constexpr char kFilForwarderTransferSelector[] =
+    "0xd948d468";  // forward(bytes)
 
 }  // namespace
 

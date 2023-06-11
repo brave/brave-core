@@ -116,7 +116,8 @@ const transactionDummyData = {
       submittedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
       confirmedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
       originInfo: mockOriginInfo,
-      groupId: undefined
+      groupId: undefined,
+      effectiveRecipient: ''
     },
     {
       chainId: '',
@@ -152,7 +153,8 @@ const transactionDummyData = {
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined
+      groupId: undefined,
+      effectiveRecipient: ''
     },
     {
       chainId: '',
@@ -188,7 +190,8 @@ const transactionDummyData = {
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined
+      groupId: undefined,
+      effectiveRecipient: ''
     },
     {
       chainId: '',
@@ -224,7 +227,8 @@ const transactionDummyData = {
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined
+      groupId: undefined,
+      effectiveRecipient: ''
     },
     {
       chainId: '',
@@ -260,7 +264,8 @@ const transactionDummyData = {
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined
+      groupId: undefined,
+      effectiveRecipient: ''
     }
   ],
   [mockUserAccounts[1].id]: [
@@ -298,7 +303,8 @@ const transactionDummyData = {
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined
+      groupId: undefined,
+      effectiveRecipient: ''
     },
     {
       chainId: '',
@@ -334,7 +340,8 @@ const transactionDummyData = {
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined
+      groupId: undefined,
+      effectiveRecipient: ''
     }
   ]
 }

@@ -332,7 +332,7 @@ export const getTransactionToAddress = (
   }
 
   if (isEthereumTransaction(tx) || isFilecoinTransaction(tx)) {
-    return tx.finalRecipient || ''
+    return tx.effectiveRecipient || ''
   }
 
   if (isSolanaTransaction(tx)) {

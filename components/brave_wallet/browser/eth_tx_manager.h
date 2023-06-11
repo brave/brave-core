@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 
 class PrefService;
 
@@ -96,7 +97,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   using MakeFilForwarderDataCallback =
       mojom::EthTxManagerProxy::MakeFilForwarderTransferDataCallback;
 
-  void MakeFilForwarderTransferData(const std::vector<uint8_t>& destination,
+  void MakeFilForwarderTransferData(const FilAddress& fil_address,
                                     MakeFilForwarderDataCallback callback);
   void MakeERC20TransferData(const std::string& to_address,
                              const std::string& amount,
