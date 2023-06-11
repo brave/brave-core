@@ -129,20 +129,21 @@ public class AssetDetailActivity
             return;
         }
 
-        if (getIntent() != null) {
-            mChainId = getIntent().getStringExtra(Utils.CHAIN_ID);
-            mAssetSymbol = getIntent().getStringExtra(Utils.ASSET_SYMBOL);
-            mAssetName = getIntent().getStringExtra(Utils.ASSET_NAME);
-            mAssetId = getIntent().getStringExtra(Utils.ASSET_ID);
-            mCoinMarket = getIntent().getBooleanExtra(Utils.COIN_MARKET, false);
-            mMarketCapRank = getIntent().getIntExtra(Utils.MARKET_CAP_RANK, -1);
-            mVolume24Hour = getIntent().getDoubleExtra(Utils.TOTAL_VOLUME, -1);
-            mMarketCap = getIntent().getDoubleExtra(Utils.MARKET_CAP, -1);
-            mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
-            mAssetLogo = getIntent().getStringExtra(Utils.ASSET_LOGO);
+        final Intent intent = getIntent();
+        if (intent != null) {
+            mChainId = intent.getStringExtra(Utils.CHAIN_ID);
+            mAssetSymbol = intent.getStringExtra(Utils.ASSET_SYMBOL);
+            mAssetName = intent.getStringExtra(Utils.ASSET_NAME);
+            mAssetId = intent.getStringExtra(Utils.ASSET_ID);
+            mCoinMarket = intent.getBooleanExtra(Utils.COIN_MARKET, false);
+            mMarketCapRank = intent.getIntExtra(Utils.MARKET_CAP_RANK, -1);
+            mVolume24Hour = intent.getDoubleExtra(Utils.TOTAL_VOLUME, -1);
+            mMarketCap = intent.getDoubleExtra(Utils.MARKET_CAP, -1);
+            mContractAddress = intent.getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
+            mAssetLogo = intent.getStringExtra(Utils.ASSET_LOGO);
             mAssetDecimals =
-                    getIntent().getIntExtra(Utils.ASSET_DECIMALS, Utils.ETH_DEFAULT_DECIMALS);
-            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
+                    intent.getIntExtra(Utils.ASSET_DECIMALS, Utils.ETH_DEFAULT_DECIMALS);
+            mCoinType = intent.getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
             if (mAssetSymbol.equals("ETH")) {
                 mAssetLogo = "eth.png";
             }
