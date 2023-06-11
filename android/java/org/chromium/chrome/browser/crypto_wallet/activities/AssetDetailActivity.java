@@ -292,17 +292,13 @@ public class AssetDetailActivity
             mBtnSwap.setOnClickListener(v
                     -> Utils.openBuySendSwapActivity(
                             this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
-            mBtnBuy.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Utils.openBuySendSwapActivity(AssetDetailActivity.this,
-                            BuySendSwapActivity.ActivityType.BUY, mChainId);
-                }
-            });
+            mBtnBuy.setOnClickListener(v
+                    -> Utils.openBuySendSwapActivity(
+                            this, BuySendSwapActivity.ActivityType.BUY, mChainId));
 
             btnSend.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
-                            BuySendSwapActivity.ActivityType.SEND, mChainId));
+                    -> Utils.openBuySendSwapActivity(
+                            this, BuySendSwapActivity.ActivityType.SEND, mChainId));
         }
         adjustButtonsVisibilities();
 
