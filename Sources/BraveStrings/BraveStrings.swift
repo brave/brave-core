@@ -423,7 +423,7 @@ extension Strings {
 extension Strings {
   public static let tabToolbarStopButtonAccessibilityLabel = NSLocalizedString("TabToolbarStopButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Stop", comment: "Accessibility Label for the tab toolbar Stop button")
   public static let tabToolbarPlaylistButtonAccessibilityLabel = NSLocalizedString("TabToolbarPlaylistButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Playlist", comment: "Accessibility Label for the tab toolbar Playlist button")
-  public static let tabToolbarAddToPlaylistButtonAccessibilityLabel = NSLocalizedString("TabToolbarPlaylistButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Add to Playlist", comment: "Accessibility Label for the tab toolbar Add to Playlist button")
+  public static let tabToolbarAddToPlaylistButtonAccessibilityLabel = NSLocalizedString("tabToolbarAddToPlaylistButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Add to Playlist", comment: "Accessibility Label for the tab toolbar Add to Playlist button")
   public static let tabToolbarReloadButtonAccessibilityLabel = NSLocalizedString("TabToolbarReloadButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Reload", comment: "Accessibility Label for the tab toolbar Reload button")
   public static let tabToolbarSearchAddressPlaceholderText = NSLocalizedString("TabToolbarSearchAddressPlaceholderText", tableName: "BraveShared", bundle: .module, value: "Search or enter address", comment: "The text shown in the URL bar on about:home")
   public static let tabToolbarWarningImageAccessibilityLabel = NSLocalizedString("TabToolbarWarningImageAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Insecure connection", comment: "Accessibility label for the lock icon, which is only present if the connection is insecure")
@@ -3054,7 +3054,7 @@ extension Strings {
         comment: "The title displayed in alert when a user needs to set passcode")
     public static let syncSetPasscodeAlertDescription =
       NSLocalizedString(
-        "login.loginInfoSetPasscodeAlertDescription",
+        "login.syncSetPasscodeAlertDescription",
         tableName: "BraveShared",
         bundle: .module,
         value: "To setup sync chain or see settings, you must first set a passcode on your device..",
