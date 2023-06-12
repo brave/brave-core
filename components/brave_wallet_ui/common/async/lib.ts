@@ -1091,7 +1091,6 @@ export function refreshPortfolioFilterOptions () {
 
     if (!applySelectedAccountFilter(accounts, selectedAccountFilter).accounts) {
       dispatch(WalletActions.setSelectedAccountFilterItem(AllAccountsOptionUniqueKey))
-      window.localStorage.removeItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION)
     }
   }
 }

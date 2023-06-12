@@ -125,7 +125,7 @@ const defaultState: WalletState = {
         LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY
       ) ||
       AccountsGroupByOption.id,
-  selectedAccountFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION) || AllAccountsOptionUniqueKey,
+  selectedAccountFilter: AllAccountsOptionUniqueKey,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,

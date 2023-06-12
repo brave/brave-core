@@ -32,13 +32,13 @@ export const applySelectedAccountFilter = (
   selectedAccountFilter: string
 ): {
   accounts: WalletAccountType[],
-  allAcounts?: WalletAccountType[],
+  allAccounts?: WalletAccountType[],
   oneAccount?: WalletAccountType
 } => {
   if (selectedAccountFilter === AllAccountsOptionUniqueKey) {
     return {
       accounts: accounts,
-      allAcounts: accounts,
+      allAccounts: accounts,
       oneAccount: undefined
     }
   }
@@ -48,14 +48,14 @@ export const applySelectedAccountFilter = (
   if (account) {
     return {
       accounts: [account],
-      allAcounts: undefined,
+      allAccounts: undefined,
       oneAccount: account
     }
   }
 
   return {
     accounts: [],
-    allAcounts: undefined,
+    allAccounts: undefined,
     oneAccount: undefined
   }
 }

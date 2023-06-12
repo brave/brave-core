@@ -15,6 +15,7 @@ import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
 // utils
 import { loadTimeData } from '../../common/loadTimeData'
 import * as Lib from '../common/async/lib'
+import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
 
 // actions
 import * as WalletActions from '../common/actions/wallet_actions'
@@ -51,6 +52,10 @@ function App () {
       document.getElementsByTagName('head')[0].appendChild(link)
     }
     link.href = faveiconUrl
+  }, [])
+
+  React.useEffect(() => {
+    removeDeprecatedLocalStorageKeys()
   }, [])
 
   return (

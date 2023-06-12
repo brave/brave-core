@@ -9,13 +9,10 @@ import { create } from 'ethereum-blockies'
 // Redux
 import {
   useSelector,
-  useDispatch
 } from 'react-redux'
-import { WalletActions } from '../../../common/actions'
 
 // Types
 import { BraveWallet, WalletAccountType, WalletState } from '../../../constants/types'
-import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Options
 import { AllAccountsOption, isAllAccountsOptionFilter } from '../../../options/account-filter-options'
@@ -39,7 +36,7 @@ import {
 } from '../network-filter-selector/style'
 
 interface Props {
-  onSelectAccount?: (account: Pick<WalletAccountType, 'accountId' | 'address' | 'name'>) => void
+  onSelectAccount: (account: Pick<WalletAccountType, 'accountId' | 'address' | 'name'>) => void
   selectedAccount?: Pick<WalletAccountType, 'accountId' | 'address' | 'name'>
   selectedNetwork?: BraveWallet.NetworkInfo
 }
@@ -49,9 +46,6 @@ export const AccountFilterSelector = ({
   selectedAccount: accountProp,
   selectedNetwork: networkProp
 }: Props) => {
-  // Redux
-  const dispatch = useDispatch()
-
   // Wallet State
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
@@ -67,12 +61,7 @@ export const AccountFilterSelector = ({
 
   const onSelectAccountAndClose = React.useCallback((account: WalletAccountType) => {
     setIsOpen(false)
-    if (onSelectAccount) {
-      onSelectAccount(account)
-      return
-    }
-    window.localStorage.setItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION, account.accountId.uniqueKey)
-    dispatch(WalletActions.setSelectedAccountFilterItem(account.accountId.uniqueKey))
+    onSelectAccount(account)
   }, [onSelectAccount])
 
   // Memos
