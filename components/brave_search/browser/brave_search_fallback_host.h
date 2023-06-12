@@ -36,6 +36,7 @@ class BraveSearchFallbackHost final
                           const std::string& country,
                           const std::string& geo,
                           bool filter_explicit_results,
+                          int page_index,
                           FetchBackupResultsCallback callback) override;
 
   static GURL GetBackupResultURL(const GURL& baseURL,
@@ -43,7 +44,8 @@ class BraveSearchFallbackHost final
                                  const std::string& lang,
                                  const std::string& country,
                                  const std::string& geo,
-                                 bool filter_explicit_results);
+                                 bool filter_explicit_results,
+                                 int page_index);
   static void SetBackupProviderForTest(const GURL&);
 
  private:
