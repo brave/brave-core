@@ -147,6 +147,7 @@ void ViewCounterModel::Reset() {
   total_image_count_ = 0;
   always_show_branded_wallpaper_ = false;
   current_campaign_index_ = 0;
+  total_campaign_count_ = 0;
   campaigns_total_branded_image_count_.clear();
   campaigns_current_branded_image_index_.clear();
 }
