@@ -2,36 +2,19 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import styled from 'styled-components'
 import Keys from './Keys'
 import { keysToString, stringToKeys } from '../utils/accelerator'
-import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css'
+import { color, font, spacing } from '@brave/leo/tokens/css'
 import Button from '@brave/leo/react/button'
 import Alert from '@brave/leo/react/alert'
 import { useCommands } from '../commands'
+import Dialog from '@brave/leo/react/dialog'
 
-const Dialog = styled.dialog`
-  border: none;
-  border-radius: ${radius[16]};
-
-  ::backdrop {
-    backdrop-filter: blur(2px);
-  }
-`
-
-const Container = styled.div`
-  background: ${color.white};
-  width: 420px;
-  min-height: 252px;
-  margin: auto;
-
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-
-  box-shadow: ${effect.elevation[5]};
+const StyledDialog = styled(Dialog)`
+  --leo-dialog-width: 402px;
 `
 
 const KeysContainer = styled.div`
@@ -46,18 +29,6 @@ const KeysContainer = styled.div`
   margin-top: ${spacing[32]};
 `
 
-const ActionsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: stretch;
-  gap: ${spacing[8]};
-  margin: 0 ${spacing[24]} ${spacing[32]} ${spacing[24]};
-
-  > * {
-    flex: 1;
-  }
-`
-
 const HintText = styled.div`
   text-align: center;
   margin: ${spacing[40]};
@@ -66,7 +37,8 @@ const HintText = styled.div`
 `
 
 const InUseAlert = styled(Alert)`
-  margin: ${spacing[24]};
+  margin-top: ${spacing[24]};
+  display: block;
 `
 
 const modifiers = ['Control', 'Alt', 'Shift', 'Meta']
@@ -135,6 +107,24 @@ export default function ConfigureShortcut(props: {
 
   React.useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
+      const hasModifier = e.ctrlKey || e.metaKey || e.altKey || e.shiftKey
+
+      // Enter on it's own is used to accept the current combination, if the
+      // current keys are a valid shortcut.
+      if (e.code === "Enter" && !hasModifier && maxKeys.current.isValid()) {
+        props.onChange({
+          codes: keysToString(maxKeys.current.codes),
+          keys: keysToString(maxKeys.current.keys)
+        })
+        return;
+      }
+
+      // Escape on it's own cancels the change
+      if (e.code === "Escape" && !hasModifier) {
+        props.onCancel?.()
+        return;
+      }
+
       e.preventDefault()
       setCurrentKeys((keys) => {
         if (keys.length === 0) {
@@ -166,15 +156,9 @@ export default function ConfigureShortcut(props: {
     ? maxKeys.current.keys
     : stringToKeys(props.value ?? '')
 
-  const dialogRef = React.useRef<HTMLDialogElement>()
-  React.useEffect(() => {
-    dialogRef.current?.showModal()
-  }, [])
-
   const conflict = acceleratorLookup[maxKeys.current.codes.join('+')]
   return (
-    <Dialog ref={dialogRef as any}>
-      <Container>
+    <StyledDialog isOpen onClose={props.onCancel}>
         <KeysContainer>
           {keys.length ? (
             <Keys keys={keys} large />
@@ -192,7 +176,7 @@ export default function ConfigureShortcut(props: {
             shortcut.
           </InUseAlert>
         )}
-        <ActionsContainer>
+        <div slot='actions'>
           <Button
             size="large"
             kind="plain-faint"
@@ -217,8 +201,7 @@ export default function ConfigureShortcut(props: {
           >
             Save
           </Button>
-        </ActionsContainer>
-      </Container>
-    </Dialog>
+        </div>
+    </StyledDialog>
   )
 }
