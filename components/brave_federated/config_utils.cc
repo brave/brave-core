@@ -12,6 +12,12 @@
 
 namespace brave_federated {
 
+namespace {
+  const std::string kReconnectPolicy = "reconnect_policy";
+  const std::string kRequestTaskPolicy = "request_task_policy";
+  const std::string kPostResultsPolicy = "post_results_policy";
+}
+
 LearningServiceConfig::LearningServiceConfig() {
   reconnect_policy_ = {/*.num_errors_to_ignore = */ 0,
                        /*.initial_delay_ms = */ 10 * 1000,
@@ -81,23 +87,29 @@ void LearningServiceConfig::InitServiceConfigFromJSONString(
   CustomBackoffEntryPolicy custom_post_results_policy(post_results_policy_);
 
   bool result = false;
-  const std::string kReconnectPolicy = "reconnect_policy";
-  result = policy_converter.Convert(*(dict.Find(kReconnectPolicy)),
-                                    &custom_reconnect_policy);
+  const base::Value* reconnect_policy_ptr = dict.Find(kReconnectPolicy);
+  if (reconnect_policy_ptr != nullptr) {
+    result = policy_converter.Convert(*reconnect_policy_ptr,
+                                      &custom_reconnect_policy);
+  }
   if (!result) {
     VLOG(1) << "JSON conversion failed for reconnect policy, falling back to "
                "default values.";
   }
-  const std::string kRequestTaskPolicy = "request_task_policy";
-  result = policy_converter.Convert(*(dict.Find(kRequestTaskPolicy)),
-                                    &custom_request_task_policy);
+  const base::Value* request_task_policy_ptr = dict.Find(kRequestTaskPolicy);
+  if (request_task_policy_ptr != nullptr) {
+    result = policy_converter.Convert(*request_task_policy_ptr,
+                                      &custom_request_task_policy);
+  }
   if (!result) {
     VLOG(1) << "JSON conversion failed for request policy, falling back to "
                "default values.";
   }
-  const std::string kPostResultsPolicy = "post_results_policy";
-  result = policy_converter.Convert(*(dict.Find(kPostResultsPolicy)),
-                                    &custom_post_results_policy);
+  const base::Value* post_results_policy_ptr = dict.Find(kPostResultsPolicy);
+  if (post_results_policy_ptr != nullptr) {
+    result = policy_converter.Convert(*post_results_policy_ptr,
+                                      &custom_post_results_policy);
+  }
   if (!result) {
     VLOG(1) << "JSON conversion failed for post results policy, falling back "
                "to default values.";
