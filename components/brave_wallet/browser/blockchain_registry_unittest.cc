@@ -185,6 +185,24 @@ const char on_ramp_token_lists_json[] = R"({
         "token_id": "",
         "visible": true
       }
+    ],
+    "stripe": [
+      {
+        "chain_id": "0x1",
+        "coin": 60,
+        "coingecko_id": "",
+        "contract_address": "",
+        "decimals": 18,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "is_nft": false,
+        "logo": "",
+        "name": "Ethereum",
+        "symbol": "ETH",
+        "token_id": "",
+        "visible": true
+      }
     ]
   })";
 
@@ -240,7 +258,8 @@ const char off_ramp_token_lists_json[] = R"({
     }
   ],
   "sardine": [],
-  "transak": []
+  "transak": [],
+  "stripe": []
 })";
 
 const char on_ramp_currency_lists_json[] = R"({

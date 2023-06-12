@@ -84,11 +84,10 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   TokenListMap token_list_map_;
   ChainList chain_list_;
   DappListMap dapp_lists_;
-  friend base::NoDestructor<BlockchainRegistry>;
   OnRampTokensListMap on_ramp_token_lists_;
   OffRampTokensListMap off_ramp_token_lists_;
   std::vector<mojom::OnRampCurrency> on_ramp_currencies_list_;
-  friend struct base::DefaultSingletonTraits<BlockchainRegistry>;
+  friend base::NoDestructor<BlockchainRegistry>;
 
   BlockchainRegistry();
 

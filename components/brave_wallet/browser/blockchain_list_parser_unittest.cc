@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+ * This Source Code Form is subject to the terms of the Mozilla Public *
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file, You
+ * can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 #include <utility>
@@ -596,12 +596,30 @@ TEST(ParseOnRampTokensListMapUnitTest, ParseOnRampTokensListMap) {
         "token_id": "",
         "visible": true
       }
+    ],
+    "stripe": [
+      {
+        "chain_id": "0x1",
+        "coin": 60,
+        "coingecko_id": "",
+        "contract_address": "",
+        "decimals": 18,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "is_nft": false,
+        "logo": "",
+        "name": "Ethereum",
+        "symbol": "ETH",
+        "token_id": "",
+        "visible": true
+      }
     ]
   })";
 
   supported_tokens_list_map = ParseOnRampTokensListMap(supported_tokens_list);
   ASSERT_TRUE(supported_tokens_list_map);
-  EXPECT_EQ((*supported_tokens_list_map).size(), 3UL);
+  EXPECT_EQ((*supported_tokens_list_map).size(), 4UL);
 
   auto it = supported_tokens_list_map->find(mojom::OnRampProvider::kRamp);
   ASSERT_NE(it, supported_tokens_list_map->end());
@@ -727,7 +745,8 @@ TEST(ParseOffRampTokensListMapUnitTest, ParseOffRampTokensListMap) {
       }
     ],
     "sardine": [],
-    "transak": []
+    "transak": [],
+    "stripe": []
   })";
 
   supported_tokens_list_map = ParseOffRampTokensListMap(supported_tokens_list);
@@ -773,7 +792,8 @@ TEST(ParseOnRampCurrencyListTest, ParseOnRampCurrencyLists) {
         "currency_name": "US Dollar",
         "providers": [
           "ramp",
-          "transak"
+          "transak",
+          "stripe"
         ]
       }
     ]
@@ -796,11 +816,13 @@ TEST(ParseOnRampCurrencyListTest, ParseOnRampCurrencyLists) {
   // Check values for the second currency
   EXPECT_EQ((*supported_currencies_lists)[1].currency_code, "USD");
   EXPECT_EQ((*supported_currencies_lists)[1].currency_name, "US Dollar");
-  EXPECT_EQ((*supported_currencies_lists)[1].providers.size(), 2UL);
+  EXPECT_EQ((*supported_currencies_lists)[1].providers.size(), 3UL);
   EXPECT_EQ((*supported_currencies_lists)[1].providers[0],
             mojom::OnRampProvider::kRamp);
   EXPECT_EQ((*supported_currencies_lists)[1].providers[1],
             mojom::OnRampProvider::kTransak);
+  EXPECT_EQ((*supported_currencies_lists)[1].providers[2],
+            mojom::OnRampProvider::kStripe);
 }
 
 }  // namespace brave_wallet

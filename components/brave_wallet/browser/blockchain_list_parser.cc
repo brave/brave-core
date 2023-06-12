@@ -360,6 +360,24 @@ absl::optional<OnRampTokensListMap> ParseOnRampTokensListMap(
   //       "token_id": "",
   //       "visible": true
   //     }
+  //   ],
+  //   "stripe": [
+  //     {
+  //       "chain_id": "0x1",
+  //       "coin": 60,
+  //       "coingecko_id": "",
+  //       "contract_address": "",
+  //       "decimals": 18,
+  //       "is_erc1155": false,
+  //       "is_erc20": false,
+  //       "is_erc721": false,
+  //       "is_nft": false,
+  //       "logo": "",
+  //       "name": "Ethereum",
+  //       "symbol": "ETH",
+  //       "token_id": "",
+  //       "visible": true
+  //     }
   //   ]
   // }
 
@@ -387,6 +405,9 @@ absl::optional<OnRampTokensListMap> ParseOnRampTokensListMap(
   AddTokenListToMap(mojom::OnRampProvider::kTransak,
                     (*supported_tokens_list).transak,
                     &on_ramp_supported_tokens_lists);
+  AddTokenListToMap(mojom::OnRampProvider::kStripe,
+                    (*supported_tokens_list).stripe,
+                    &on_ramp_supported_tokens_lists);
   return on_ramp_supported_tokens_lists;
 }
 
@@ -412,7 +433,8 @@ absl::optional<OffRampTokensListMap> ParseOffRampTokensListMap(
   //     },
   //   ],
   //   "sardine": [ ],
-  //   "transak": [ ]
+  //   "transak": [ ],
+  //   "stripe" : [ ]
   // }
 
   absl::optional<base::Value> records_v =
