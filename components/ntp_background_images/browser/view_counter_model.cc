@@ -90,25 +90,14 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
     // Reset count and randomize image index for next time.
     count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
 
-    if (always_show_branded_wallpaper_) {
-      // Reset count and increse image index for next time.
-      campaigns_current_branded_image_index_[current_campaign_index_]++;
-      campaigns_current_branded_image_index_[current_campaign_index_] %=
-          campaigns_total_branded_image_count_[current_campaign_index_];
+    // Randomize SI campaign branded image index for next time.
+    campaigns_current_branded_image_index_[current_campaign_index_] =
+        base::RandInt(
+            0,
+            campaigns_total_branded_image_count_[current_campaign_index_] - 1);
 
-      // Increse campaign index for next time.
-      current_campaign_index_++;
-      current_campaign_index_ %= total_campaign_count_;
-    } else {
-      // Randomize SI campaign branded image index for next time.
-      campaigns_current_branded_image_index_[current_campaign_index_] =
-          base::RandInt(
-              0, campaigns_total_branded_image_count_[current_campaign_index_] -
-                     1);
-
-      // Randomize campaign index for next time.
-      current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
-    }
+    // Randomize campaign index for next time.
+    current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
   }
 
   prefs_->SetInteger(prefs::kCountToBrandedWallpaper,

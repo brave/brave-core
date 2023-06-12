@@ -252,29 +252,15 @@ void ViewCounterService::Shutdown() {
 }
 
 void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
-  DVLOG(2) << __func__ << ": Active data is updated.";
-
-  // Data is updated, reset any indexes.
   if (data) {
+    DVLOG(2) << __func__ << ": NTP BI component is updated.";
     ResetModel();
   }
 }
 
 void ViewCounterService::OnUpdated(NTPSponsoredImagesData* data) {
-  // We can get non effective component update because
-  // NTPBackgroundImagesService just notifies whenever any component is updated.
-  // When SR component is ended, |data| is for SR but
-  // GetCurrentBrandedWallpaperData() will return data for SI.
-  // When it happens, this callback can't update model_ properly because it
-  // returns early by below if clause. But, we have to reset |model_| because
-  // SR and SI uses different model_ policy. OnSuperReferralEnded() will handle
-  // it instead.
-  if (data != GetCurrentBrandedWallpaperData())
-    return;
-
-  DVLOG(2) << __func__ << ": Active data is updated.";
-
   if (data) {
+    DVLOG(2) << __func__ << ": NTP SI/SR component is updated.";
     ResetModel();
   }
 }
