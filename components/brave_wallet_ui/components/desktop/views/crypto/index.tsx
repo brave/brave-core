@@ -35,6 +35,7 @@ import { useBalanceUpdater } from '../../../../common/hooks/use-balance-updater'
 import { WalletBanner, EditVisibleAssetsModal } from '../../'
 import { PortfolioOverview } from '../portfolio/portfolio-overview'
 import { PortfolioAsset } from '../portfolio/portfolio-asset'
+import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
 import { MarketView } from '../market'
 import { Accounts } from '../accounts/accounts'
 import { Account } from '../accounts/account'
@@ -225,6 +226,10 @@ const CryptoView = (props: Props) => {
               />
             </StyledWrapper>
           </WalletPageWrapper>
+        </Route>
+        
+        <Route path={WalletRoutes.PortfolioNFTAsset} exact>
+          <PortfolioNftAsset />
         </Route>
 
         <Route path={WalletRoutes.PortfolioAsset} exact>
