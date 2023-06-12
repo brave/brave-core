@@ -673,6 +673,7 @@ class NewTabPage extends React.Component<Props, State> {
                   </Page.GridItemBrandedLogo>}
                 <FooterInfo
                   textDirection={newTabData.textDirection}
+                  supportsBraveTalk={newTabData.braveTalkSupported}
                   backgroundImageInfo={newTabData.backgroundWallpaper}
                   showPhotoInfo={!isShowingBrandedWallpaper && hasWallpaperInfo && newTabData.showBackgroundImage}
                   onClickSettings={this.openSettings}
