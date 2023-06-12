@@ -411,11 +411,14 @@ public class BraveVPN {
     let activeTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
     
     helper.configureFirstTimeUser(for: activeTunnelProtocol, with: region) { success, error in
+      let subcredentials = "Credentials \(GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) ?? "Empty")"
+      
       if success {
         Logger.module.debug("Changed VPN region to \(region?.regionName ?? "default selection")")
         completion(true)
       } else {
-        Logger.module.debug("connection failed: \(error ?? "nil")")
+        Logger.module.debug("Connection failed: \(error ?? "nil")")
+        Logger.module.debug("Region change connection failed for subcredentials \(subcredentials)")
         completion(false)
       }
     }

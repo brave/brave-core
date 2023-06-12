@@ -7,6 +7,7 @@ import UIKit
 import Shared
 import Lottie
 import BraveUI
+import GuardianConnect
 
 class InstallVPNViewController: VPNSetupLoadingController {
 
@@ -51,6 +52,10 @@ class InstallVPNViewController: VPNSetupLoadingController {
 
   @objc func installVPNAction() {
     isLoading = true
+    
+    // Used to set whether our current user is actively a paying customer
+    // This has to be set before adding the profile otherwise it might fail
+    GRDSubscriptionManager.setIsPayingUser(true)
     
     installProfileAndConnectVPNFirstTime { [weak self] status in
       guard let self else { return }
