@@ -2250,27 +2250,24 @@ export function createWalletApi () {
               payload.maxPriorityFeePerGas !== undefined &&
               payload.maxFeePerGas !== undefined
 
-            const { setGasFeeAndLimitForUnapprovedTransaction } =
-              ethTxManagerProxy
-
             if (isEIP1559) {
-              const result = await setGasFeeAndLimitForUnapprovedTransaction(
-                payload.chainId,
-                payload.txMetaId,
-                payload.maxPriorityFeePerGas || '',
-                payload.maxFeePerGas || '',
-                payload.gasLimit
-              )
+              const result = await ethTxManagerProxy //
+                .setGasFeeAndLimitForUnapprovedTransaction(
+                  payload.chainId,
+                  payload.txMetaId,
+                  payload.maxPriorityFeePerGas || '',
+                  payload.maxFeePerGas || '',
+                  payload.gasLimit
+                )
 
               if (!result.success) {
-                return {
-                  error:
-                    'Failed to update unapproved transaction: ' +
+                throw new Error(
+                  'Failed to update unapproved transaction: ' +
                     `id=${payload.txMetaId} ` +
                     `maxPriorityFeePerGas=${payload.maxPriorityFeePerGas}` +
                     `maxFeePerGas=${payload.maxFeePerGas}` +
                     `gasLimit=${payload.gasLimit}`
-                }
+                )
               }
 
               return {
@@ -2284,30 +2281,28 @@ export function createWalletApi () {
               }
             }
 
-            const { setGasPriceAndLimitForUnapprovedTransaction } =
-              ethTxManagerProxy
-
-            const result = await setGasPriceAndLimitForUnapprovedTransaction(
-              payload.chainId,
-              payload.txMetaId,
-              payload.gasPrice,
-              payload.gasLimit
-            )
+            const result = await ethTxManagerProxy //
+              .setGasPriceAndLimitForUnapprovedTransaction(
+                payload.chainId,
+                payload.txMetaId,
+                payload.gasPrice,
+                payload.gasLimit
+              )
 
             if (!result.success) {
-              return {
-                error:
-                  'Failed to update unapproved transaction: ' +
+              throw new Error(
+                'Failed to update unapproved transaction: ' +
                   `id=${payload.txMetaId} ` +
                   `gasPrice=${payload.gasPrice}` +
                   `gasLimit=${payload.gasLimit}`
-              }
+              )
             }
 
             return {
               data: result
             }
           } catch (error) {
+            console.error(error)
             return {
               error: `An error occurred while updating an transaction's gas: ${
                 error //
