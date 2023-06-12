@@ -42,17 +42,23 @@ class BraveAdsBrowserManagerTest : public BrowserManagerObserver,
     browser_did_enter_background_ = true;
   }
 
+  void ResetObserver() {
+    browser_did_become_active_ = false;
+    browser_did_resign_active_ = false;
+    browser_did_enter_foreground_ = false;
+    browser_did_enter_background_ = false;
+  }
+
   bool browser_did_become_active_ = false;
   bool browser_did_resign_active_ = false;
-
   bool browser_did_enter_foreground_ = false;
   bool browser_did_enter_background_ = false;
 };
 
-TEST_F(BraveAdsBrowserManagerTest, BrowserDidBecomeActive) {
+TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidBecomeActive) {
   // Arrange
-  BrowserManager::GetInstance().SetBrowserIsInForeground(true);
-  BrowserManager::GetInstance().SetBrowserIsActive(false);
+  NotifyBrowserDidResignActive();
+  ResetObserver();
 
   // Act
   NotifyBrowserDidBecomeActive();
@@ -63,9 +69,10 @@ TEST_F(BraveAdsBrowserManagerTest, BrowserDidBecomeActive) {
   EXPECT_FALSE(browser_did_resign_active_);
 }
 
-TEST_F(BraveAdsBrowserManagerTest, BrowserDidResignActive) {
+TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidResignActive) {
   // Arrange
-  BrowserManager::GetInstance().SetBrowserIsActive(true);
+  NotifyBrowserDidBecomeActive();
+  ResetObserver();
 
   // Act
   NotifyBrowserDidResignActive();
@@ -76,9 +83,10 @@ TEST_F(BraveAdsBrowserManagerTest, BrowserDidResignActive) {
   EXPECT_TRUE(browser_did_resign_active_);
 }
 
-TEST_F(BraveAdsBrowserManagerTest, BrowserDidEnterForeground) {
+TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterForeground) {
   // Arrange
-  BrowserManager::GetInstance().SetBrowserIsInForeground(false);
+  NotifyBrowserDidEnterBackground();
+  ResetObserver();
 
   // Act
   NotifyBrowserDidEnterForeground();
@@ -89,9 +97,10 @@ TEST_F(BraveAdsBrowserManagerTest, BrowserDidEnterForeground) {
   EXPECT_FALSE(browser_did_enter_background_);
 }
 
-TEST_F(BraveAdsBrowserManagerTest, BrowserDidEnterBackground) {
+TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterBackground) {
   // Arrange
-  BrowserManager::GetInstance().SetBrowserIsInForeground(true);
+  NotifyBrowserDidEnterForeground();
+  ResetObserver();
 
   // Act
   NotifyBrowserDidEnterBackground();
