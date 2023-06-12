@@ -14,6 +14,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom-test-utils.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
@@ -23,6 +25,30 @@
 #include "components/prefs/pref_service.h"
 
 namespace brave_rewards::test_util {
+
+namespace {
+
+class PublisherUpdatedWaiter : public RewardsServiceObserver {
+ public:
+  explicit PublisherUpdatedWaiter(RewardsService* rewards_service)
+      : rewards_service_(rewards_service) {
+    rewards_service_->AddObserver(this);
+  }
+
+  ~PublisherUpdatedWaiter() override { rewards_service_->RemoveObserver(this); }
+
+  void OnPublisherUpdated(const std::string& publisher_id) override {
+    run_loop_.Quit();
+  }
+
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  base::RunLoop run_loop_;
+  raw_ptr<RewardsService> rewards_service_;
+};
+
+}  // namespace
 
 void GetTestDataDir(base::FilePath* test_data_dir) {
   base::ScopedAllowBlockingForTesting allow_blocking;
@@ -96,6 +122,17 @@ void NavigateToPublisherPage(
       GetUrl(https_server, publisher_key, path),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+}
+
+void NavigateToPublisherAndWaitForUpdate(Browser* browser,
+                                         net::EmbeddedTestServer* https_server,
+                                         const std::string& publisher_key) {
+  DCHECK(browser);
+  auto* rewards_service =
+      RewardsServiceFactory::GetForProfile(browser->profile());
+  PublisherUpdatedWaiter waiter(rewards_service);
+  NavigateToPublisherPage(browser, https_server, publisher_key);
+  waiter.Wait();
 }
 
 void WaitForLedgerStop(RewardsServiceImpl* rewards_service) {
