@@ -66,12 +66,9 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     // [ViewHolder]
     @SuppressLint("ViewHolder")
     public View getView(int position, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.network_spinner_items, null);
+        view = inflater.inflate(R.layout.selected_network_item, viewGroup, false);
         TextView name = view.findViewById(R.id.network_name_text);
-        name.setText(Utils.getShortNameOfNetwork(mNetworkInfos.get(position).chainName));
-        ImageView networkPicture = view.findViewById(R.id.network_picture);
-        networkPicture.setVisibility(View.GONE);
-        name.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
+        name.setText(mNetworkInfos.get(position).chainName);
         return view;
     }
 
