@@ -40,7 +40,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
   const ConversionQueueItemList conversion_queue_items =
       BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
                                        kConversionAdvertiserPublicKey,
-                                       /*should_use_random_guids*/ false,
+                                       /*should_use_random_uuids*/ false,
                                        /*count*/ 2);
 
   // Assert
@@ -62,7 +62,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item);
 
   SaveConversionQueueItems(conversion_queue_items);
@@ -93,7 +93,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemList conversion_queue_items =
       BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
                                        kConversionAdvertiserPublicKey,
-                                       /*should_use_random_guids*/ true,
+                                       /*should_use_random_uuids*/ true,
                                        /*count*/ 3);
 
   // Assert
@@ -115,13 +115,13 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo conversion_queue_item_1 =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item_1);
 
   const ConversionQueueItemInfo conversion_queue_item_2 =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
@@ -151,7 +151,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
 
   ConversionQueueItemInfo conversion_queue_item_1 = BuildConversionQueueItem(
       AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
-      /*should_use_random_guids*/ true);
+      /*should_use_random_uuids*/ true);
   conversion_queue_item_1.process_at = DistantPast();
   conversion_queue_item_1.was_processed = true;
   conversion_queue_items.push_back(conversion_queue_item_1);
@@ -159,7 +159,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo conversion_queue_item_2 =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
@@ -187,19 +187,19 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
 
   ConversionQueueItemInfo conversion_queue_item_1 = BuildConversionQueueItem(
       AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
-      /*should_use_random_guids*/ true);
+      /*should_use_random_uuids*/ true);
   conversion_queue_item_1.process_at = DistantFuture();
   conversion_queue_items.push_back(conversion_queue_item_1);
 
   ConversionQueueItemInfo conversion_queue_item_2 = BuildConversionQueueItem(
       AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
-      /*should_use_random_guids*/ true);
+      /*should_use_random_uuids*/ true);
   conversion_queue_item_2.process_at = DistantPast();
   conversion_queue_items.push_back(conversion_queue_item_2);
 
   ConversionQueueItemInfo conversion_queue_item_3 = BuildConversionQueueItem(
       AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
-      /*should_use_random_guids*/ true);
+      /*should_use_random_uuids*/ true);
   conversion_queue_item_3.process_at = Now();
   conversion_queue_items.push_back(conversion_queue_item_3);
 
@@ -228,13 +228,13 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
 
   ConversionQueueItemInfo conversion_queue_item_1 = BuildConversionQueueItem(
       AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
-      /*should_use_random_guids*/ true);
+      /*should_use_random_uuids*/ true);
   conversion_queue_item_1.process_at = DistantPast();
   conversion_queue_items.push_back(conversion_queue_item_1);
 
   ConversionQueueItemInfo conversion_queue_item_2 = BuildConversionQueueItem(
       AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
-      /*should_use_random_guids*/ true);
+      /*should_use_random_uuids*/ true);
   conversion_queue_item_2.process_at = Now();
   conversion_queue_items.push_back(conversion_queue_item_2);
 
@@ -267,13 +267,13 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo conversion_queue_item_1 =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item_1);
 
   const ConversionQueueItemInfo conversion_queue_item_2 =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
@@ -282,7 +282,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo invalid_conversion_queue_item =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
 
   database_table_.Delete(
       invalid_conversion_queue_item,
@@ -306,13 +306,13 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
   const ConversionQueueItemInfo conversion_queue_item_1 =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item_1);
 
   const ConversionQueueItemInfo conversion_queue_item_2 =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
@@ -344,13 +344,13 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo conversion_queue_item_1 =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item_1);
 
   const ConversionQueueItemInfo conversion_queue_item_2 =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
   conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
@@ -359,7 +359,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo invalid_conversion_queue_item =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ true);
+                               /*should_use_random_uuids*/ true);
 
   database_table_.Update(
       invalid_conversion_queue_item,

@@ -20,7 +20,7 @@ TEST(BraveAdsConversionUserDataUtilTest, GetEnvelope) {
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ false);
+                               /*should_use_random_uuids*/ false);
 
   // Act
 
@@ -34,7 +34,7 @@ TEST(BraveAdsConversionUserDataUtilTest,
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(AdType::kNotificationAd, kEmptyConversionId,
                                kConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ false);
+                               /*should_use_random_uuids*/ false);
 
   // Act
   ;
@@ -49,7 +49,7 @@ TEST(BraveAdsConversionUserDataUtilTest,
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
                                kEmptyConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ false);
+                               /*should_use_random_uuids*/ false);
 
   // Act
 
@@ -63,7 +63,7 @@ TEST(BraveAdsConversionUserDataUtilTest,
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(AdType::kNotificationAd, kEmptyConversionId,
                                kEmptyConversionAdvertiserPublicKey,
-                               /*should_use_random_guids*/ false);
+                               /*should_use_random_uuids*/ false);
 
   // Act
 

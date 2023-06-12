@@ -47,7 +47,7 @@ class BraveAdsTransferTest : public TransferObserver, public UnitTestBase {
 TEST_F(BraveAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
   // Arrange
   const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -67,7 +67,7 @@ TEST_F(BraveAdsTransferTest,
        DoNotTransferAdIfTheUrlDoesNotMatchTheLastClickedAd) {
   // Arrange
   const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -86,7 +86,7 @@ TEST_F(BraveAdsTransferTest,
 TEST_F(BraveAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   // Arrange
   const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -108,7 +108,7 @@ TEST_F(BraveAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
 TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
   // Arrange
   const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -139,7 +139,7 @@ TEST_F(BraveAdsTransferTest,
        TransferAdIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHost) {
   // Arrange
   const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -159,7 +159,7 @@ TEST_F(BraveAdsTransferTest,
 TEST_F(BraveAdsTransferTest, FailToTransferAdIfNotVisible) {
   // Arrange
   const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -180,7 +180,7 @@ TEST_F(BraveAdsTransferTest,
        FailToTransferAdIfTheTabUrlIsNotTheSameAsTheDomainOrHost) {
   // Arrange
   const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 

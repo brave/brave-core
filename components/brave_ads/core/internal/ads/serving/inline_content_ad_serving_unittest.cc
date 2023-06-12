@@ -102,7 +102,7 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
@@ -128,7 +128,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
@@ -153,7 +153,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act

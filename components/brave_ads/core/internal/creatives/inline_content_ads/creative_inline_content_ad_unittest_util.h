@@ -12,7 +12,7 @@ namespace brave_ads {
 
 CreativeInlineContentAdList BuildCreativeInlineContentAds(int count);
 CreativeInlineContentAdInfo BuildCreativeInlineContentAd(
-    bool should_use_random_guids);
+    bool should_use_random_uuids);
 
 }  // namespace brave_ads
 

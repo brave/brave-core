@@ -13,26 +13,26 @@
 
 namespace brave_ads {
 
-CreativeAdInfo BuildCreativeAd(const bool should_use_random_guids) {
+CreativeAdInfo BuildCreativeAd(const bool should_use_random_uuids) {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id =
-      should_use_random_guids
+      should_use_random_uuids
           ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeInstanceId;
 
   creative_ad.creative_set_id =
-      should_use_random_guids
+      should_use_random_uuids
           ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeSetId;
 
   creative_ad.campaign_id =
-      should_use_random_guids
+      should_use_random_uuids
           ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCampaignId;
 
   creative_ad.advertiser_id =
-      should_use_random_guids
+      should_use_random_uuids
           ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kAdvertiserId;
 

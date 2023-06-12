@@ -29,7 +29,7 @@ namespace {
 
 CreativeInlineContentAdInfo BuildAndSaveCreativeAd() {
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+      BuildCreativeInlineContentAd(/*should_use_random_uuids*/ true);
 
   database::SaveCreativeInlineContentAds({creative_ad});
 

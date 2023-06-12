@@ -23,8 +23,8 @@ base::Value::Dict BuildDiagnosticIdUserData() {
   const std::string diagnostic_id =
       AdsClientHelper::GetInstance()->GetStringPref(prefs::kDiagnosticId);
 
-  const base::Uuid guid = base::Uuid::ParseCaseInsensitive(diagnostic_id);
-  if (guid.is_valid()) {
+  const base::Uuid uuid = base::Uuid::ParseCaseInsensitive(diagnostic_id);
+  if (uuid.is_valid()) {
     user_data.Set(kDiagnosticIdKey, diagnostic_id);
   }
 

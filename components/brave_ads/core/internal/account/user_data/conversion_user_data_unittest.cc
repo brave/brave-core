@@ -25,7 +25,7 @@ TEST_F(BraveAdsConversionUserDataTest, GetForConversionConfirmationType) {
   // Arrange
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
                                    kConversionAdvertiserPublicKey,
-                                   /*should_use_random_guids*/ false,
+                                   /*should_use_random_uuids*/ false,
                                    /*count*/ 1);
 
   // Act
@@ -43,7 +43,7 @@ TEST_F(BraveAdsConversionUserDataTest,
   // Arrange
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
                                    kConversionAdvertiserPublicKey,
-                                   /*should_use_random_guids*/ false,
+                                   /*should_use_random_uuids*/ false,
                                    /*count*/ 1);
 
   // Act

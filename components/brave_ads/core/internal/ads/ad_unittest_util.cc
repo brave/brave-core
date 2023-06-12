@@ -34,34 +34,34 @@ void DisableNewTabPageAds() {
                         false);
 }
 
-AdInfo BuildAd(const AdType& ad_type, const bool should_use_random_guids) {
+AdInfo BuildAd(const AdType& ad_type, const bool should_use_random_uuids) {
   AdInfo ad;
 
   ad.type = ad_type;
 
-  ad.placement_id = should_use_random_guids
+  ad.placement_id = should_use_random_uuids
                         ? base::Uuid::GenerateRandomV4().AsLowercaseString()
                         : kPlacementId;
 
   ad.creative_instance_id =
-      should_use_random_guids
+      should_use_random_uuids
           ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeInstanceId;
 
   ad.creative_instance_id =
-      should_use_random_guids
+      should_use_random_uuids
           ? base::Uuid::GenerateRandomV4().AsLowercaseString()
           : kCreativeInstanceId;
 
-  ad.creative_set_id = should_use_random_guids
+  ad.creative_set_id = should_use_random_uuids
                            ? base::Uuid::GenerateRandomV4().AsLowercaseString()
                            : kCreativeSetId;
 
-  ad.campaign_id = should_use_random_guids
+  ad.campaign_id = should_use_random_uuids
                        ? base::Uuid::GenerateRandomV4().AsLowercaseString()
                        : kCampaignId;
 
-  ad.advertiser_id = should_use_random_guids
+  ad.advertiser_id = should_use_random_uuids
                          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
                          : kAdvertiserId;
 
