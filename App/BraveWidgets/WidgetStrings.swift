@@ -76,7 +76,7 @@ extension Strings {
                                                               value: "Brave Wallet",
                                                               comment: "Description for the Brave Wallet option on the 'shortcuts' widget.")
     public static let bookmarksMenuItem = NSLocalizedString("widgets.BookmarksMenuItem", bundle: widgetBundle, value: "Bookmarks", comment: "Title for bookmarks menu item")
-    public static let historyMenuItem = NSLocalizedString("widgets.HistortMenuItem", bundle: widgetBundle, value: "History", comment: "Title for history menu item")
+    public static let historyMenuItem = NSLocalizedString("widgets.HistoryMenuItem", bundle: widgetBundle, value: "History", comment: "Title for history menu item")
     public static let downloadsMenuItem = NSLocalizedString("widgets.DownloadsMenuItem", bundle: widgetBundle, value: "Downloads", comment: "Title for downloads menu item")
     public static let QRCode = NSLocalizedString("widgets.QRCode", bundle: widgetBundle, value: "QR Code", comment: "QR Code section title")
     public static let newsClusteringWidgetTitle = NSLocalizedString(
