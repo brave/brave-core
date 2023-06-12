@@ -54,10 +54,14 @@ function checkSelector(selector, property, expected) {
 
 async function waitCSSSelector(selector, property, expected) {
   if (await checkSelector(selector, property, expected)) {
-    window.domAutomationController.send(true);
+    return true;
   } else {
     console.log('still waiting for css selector');
-    setTimeout(waitCSSSelector.bind(undefined, selector, property, expected), 200);
+    return new Promise(resolve => {
+      setTimeout(function () {
+        resolve(waitCSSSelector(selector, property, expected));
+      }, 200);
+    });
   }
 }
 
