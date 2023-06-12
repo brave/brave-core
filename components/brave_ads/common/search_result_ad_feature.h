@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kSearchResultAdFeature);
 
-bool IsSearchResultAdFeatureEnabled();
-
 constexpr base::FeatureParam<int> kMaximumSearchResultAdsPerHour{
     &kSearchResultAdFeature, "maximum_ads_per_hour", 10};
 

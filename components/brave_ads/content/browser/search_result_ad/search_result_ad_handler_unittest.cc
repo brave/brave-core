@@ -12,6 +12,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
+#include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/search_result_ad/test_web_page_util.h"
@@ -53,7 +54,7 @@ GURL GetSearchResultAdClickedUrl() {
 class SearchResultAdHandlerTest : public ::testing::Test {
  public:
   SearchResultAdHandlerTest() {
-    feature_list_.InitAndEnableFeature(kSearchResultAdFeature);
+    feature_list_.InitAndEnableFeature(kShouldSupportSearchResultAdsFeature);
   }
 
   static void SimulateOnRetrieveSearchResultAdEntities(

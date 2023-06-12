@@ -28,6 +28,12 @@ BASE_DECLARE_FEATURE(kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
 bool ShouldAlwaysTriggerNewTabPageAdEvents();
 
+// Set to |true| to support search result ads. |ShouldAlwaysRunService| must be
+// set to |true|, otherwise this feature param will be ignored.
+BASE_DECLARE_FEATURE(kShouldSupportSearchResultAdsFeature);
+
+bool ShouldSupportSearchResultAds();
+
 // Set to |true| to always trigger search result ad events even if Brave Private
 // Ads are disabled. |ShouldAlwaysRunService| must be set to |true|, otherwise
 // this feature param will be ignored.
