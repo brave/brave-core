@@ -7,10 +7,10 @@
 
 #include <utility>
 
-#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -29,7 +29,8 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code) {
   const std::string client_id = internal::gemini::GetClientId();
   const std::string client_secret = internal::gemini::GetClientSecret();
-  const std::string request_id = base::GenerateGUID();
+  const std::string request_id =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   base::Value::Dict dict;
   dict.Set("client_id", client_id);

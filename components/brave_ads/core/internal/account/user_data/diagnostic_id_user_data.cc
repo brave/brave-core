@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
@@ -23,7 +23,7 @@ base::Value::Dict BuildDiagnosticIdUserData() {
   const std::string diagnostic_id =
       AdsClientHelper::GetInstance()->GetStringPref(prefs::kDiagnosticId);
 
-  const base::GUID guid = base::GUID::ParseCaseInsensitive(diagnostic_id);
+  const base::Uuid guid = base::Uuid::ParseCaseInsensitive(diagnostic_id);
   if (guid.is_valid()) {
     user_data.Set(kDiagnosticIdKey, diagnostic_id);
   }

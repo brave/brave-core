@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_ac.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -73,7 +73,7 @@ void ContributionAC::PreparePublisherList(
   }
 
   auto queue = mojom::ContributionQueue::New();
-  queue->id = base::GenerateGUID();
+  queue->id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   queue->type = mojom::RewardsType::AUTO_CONTRIBUTE;
   queue->amount = ledger_->state()->GetAutoContributionAmount();
   queue->partial = true;

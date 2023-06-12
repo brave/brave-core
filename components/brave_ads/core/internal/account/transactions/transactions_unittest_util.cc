@@ -7,8 +7,8 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/guid.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
@@ -28,10 +28,10 @@ TransactionInfo BuildTransaction(const double value,
                                  const base::Time reconciled_at) {
   TransactionInfo transaction;
 
-  transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
+  transaction.id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   transaction.created_at = Now();
   transaction.creative_instance_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
   transaction.value = value;
   transaction.segment = "untargeted";
   transaction.ad_type = AdType::kNotificationAd;

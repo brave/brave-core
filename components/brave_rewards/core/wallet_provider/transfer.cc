@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/guid.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
@@ -107,7 +107,8 @@ void Transfer::CreateTransaction(
   DCHECK(transaction);
   DCHECK(transaction->transaction_id.empty());
 
-  transaction->transaction_id = base::GenerateGUID();
+  transaction->transaction_id =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(std::move(callback), std::move(transaction)));

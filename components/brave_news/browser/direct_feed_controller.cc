@@ -16,13 +16,13 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/guid.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/components/brave_news/browser/html_parsing.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
@@ -157,7 +157,7 @@ bool DirectFeedController::AddDirectFeedPref(
   // Feed is valid, we can add the url now
   // UUID for each entry as feed url might change via redirects etc
   auto entry_id =
-      id.value_or(base::GUID::GenerateRandomV4().AsLowercaseString());
+      id.value_or(base::Uuid::GenerateRandomV4().AsLowercaseString());
   std::string entry_title = title.empty() ? feed_url.spec() : title;
 
   // We use a dictionary pref, but that's to reserve space for more

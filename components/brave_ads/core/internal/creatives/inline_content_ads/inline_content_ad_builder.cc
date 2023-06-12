@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 
@@ -14,7 +14,7 @@ namespace brave_ads {
 InlineContentAdInfo BuildInlineContentAd(
     const CreativeInlineContentAdInfo& creative_ad) {
   const std::string placement_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
   return BuildInlineContentAd(creative_ad, placement_id);
 }
 

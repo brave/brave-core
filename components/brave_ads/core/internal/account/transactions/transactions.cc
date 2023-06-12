@@ -10,8 +10,8 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/guid.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
@@ -29,7 +29,7 @@ TransactionInfo BuildTransaction(const std::string& creative_instance_id,
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
   TransactionInfo transaction;
-  transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
+  transaction.id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   transaction.created_at = base::Time::Now();
   transaction.creative_instance_id = creative_instance_id;
   transaction.value = value;

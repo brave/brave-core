@@ -7,10 +7,10 @@
 
 #include <utility>
 
-#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
@@ -30,7 +30,8 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code_verifier) {
   const std::string client_id = internal::bitflyer::GetClientId();
   const std::string client_secret = internal::bitflyer::GetClientSecret();
-  const std::string request_id = base::GenerateGUID();
+  const std::string request_id =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   base::Value::Dict dict;
   dict.Set("grant_type", "code");

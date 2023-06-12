@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -55,9 +55,9 @@ TEST(BraveAdsSeenAdvertisersUtilTest,
 TEST(BraveAdsSeenAdvertisersUtilTest, GetLastSeenAdvertiserAt) {
   // Arrange
   const std::string advertiser_id_1 =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
   const std::string advertiser_id_2 =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);

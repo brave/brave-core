@@ -7,8 +7,8 @@
 
 #include <vector>
 
-#include "base/guid.h"
 #include "base/test/mock_callback.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
@@ -314,7 +314,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   FireAdEvents(ad_event, ads_per_hour - 1);
 
   const std::string placement_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   // Act
   FireEvent(placement_id, creative_ad.creative_instance_id,
@@ -341,7 +341,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   FireAdEvents(ad_event, ads_per_hour);
 
   const std::string placement_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   // Act
   FireEvent(placement_id, creative_ad.creative_instance_id,
@@ -370,7 +370,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   AdvanceClockBy(base::Hours(1));
 
   const std::string placement_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   // Act
   FireEvent(placement_id, creative_ad.creative_instance_id,
@@ -399,7 +399,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   AdvanceClockBy(base::Hours(1));
 
   const std::string placement_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   // Act
   FireEvent(placement_id, creative_ad.creative_instance_id,

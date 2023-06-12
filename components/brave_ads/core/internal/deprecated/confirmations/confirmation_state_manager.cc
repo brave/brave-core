@@ -10,12 +10,12 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
@@ -301,7 +301,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     } else {
       // Migrate legacy confirmations
       confirmation.transaction_id =
-          base::GUID::GenerateRandomV4().AsLowercaseString();
+          base::Uuid::GenerateRandomV4().AsLowercaseString();
     }
 
     // Creative instance id

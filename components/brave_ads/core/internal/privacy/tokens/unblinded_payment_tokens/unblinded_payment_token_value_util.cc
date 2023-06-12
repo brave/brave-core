@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -74,7 +74,7 @@ UnblindedPaymentTokenList UnblindedPaymentTokensFromValue(
     } else {
       // Migrate legacy confirmations
       unblinded_token.transaction_id =
-          base::GUID::GenerateRandomV4().AsLowercaseString();
+          base::Uuid::GenerateRandomV4().AsLowercaseString();
     }
 
     // Unblinded token

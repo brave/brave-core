@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/guid.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ad_type.h"

@@ -8,7 +8,7 @@
 
 #include "base/containers/cxx20_erase.h"
 #include "base/functional/bind.h"
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_monthly.h"
@@ -86,7 +86,7 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
     publisher->amount_percent = 100.0;
 
     auto queue = mojom::ContributionQueue::New();
-    queue->id = base::GenerateGUID();
+    queue->id = base::Uuid::GenerateRandomV4().AsLowercaseString();
     queue->type = mojom::RewardsType::RECURRING_TIP;
     queue->amount = item->weight;
     queue->partial = false;

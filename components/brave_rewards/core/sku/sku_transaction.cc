@@ -6,8 +6,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/guid.h"
 #include "base/json/json_writer.h"
+#include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -101,7 +101,8 @@ void SKUTransaction::OnGetSKUTransactionByOrderId(
   }
 
   auto transaction = mojom::SKUTransaction::New();
-  transaction->transaction_id = base::GenerateGUID();
+  transaction->transaction_id =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
   transaction->order_id = order_id;
   transaction->type = GetTransactionTypeFromWalletType(wallet_type);
   transaction->amount = total_amount;

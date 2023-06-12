@@ -8,11 +8,11 @@
 #include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
 #include "base/containers/stack.h"
-#include "base/guid.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/uuid.h"
 #include "brave/ios/browser/api/bookmarks/bookmark_model_listener_ios.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_node.h"
@@ -74,15 +74,15 @@
                  dateModified:(NSDate*)dateModified
                      children:(NSArray<IOSBookmarkNode*>*)children {
   if ((self = [super init])) {
-    base::GUID guid_ = base::GUID();
+    base::Uuid guid_ = base::Uuid();
     int64_t id_ = static_cast<int64_t>(id);
 
     if ([guid length] > 0) {
       std::u16string guid_string = base::SysNSStringToUTF16(guid);
-      guid_ = base::GUID::ParseCaseInsensitive(guid_string);
+      guid_ = base::Uuid::ParseCaseInsensitive(guid_string);
       DCHECK(guid_.is_valid());
     } else {
-      guid_ = base::GUID::GenerateRandomV4();
+      guid_ = base::Uuid::GenerateRandomV4();
     }
 
     GURL gurl_ = net::GURLWithNSURL(url);

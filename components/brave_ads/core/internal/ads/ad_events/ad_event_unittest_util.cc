@@ -10,8 +10,8 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/guid.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
@@ -34,7 +34,7 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   AdEventInfo ad_event;
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;
-  ad_event.placement_id = base::GUID::GenerateRandomV4().AsLowercaseString();
+  ad_event.placement_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   ad_event.campaign_id = creative_ad.campaign_id;
   ad_event.creative_set_id = creative_ad.creative_set_id;
   ad_event.creative_instance_id = creative_ad.creative_instance_id;
@@ -58,7 +58,7 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
   AdEventInfo ad_event;
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;
-  ad_event.placement_id = base::GUID::GenerateRandomV4().AsLowercaseString();
+  ad_event.placement_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   ad_event.campaign_id = ad.campaign_id;
   ad_event.creative_set_id = ad.creative_set_id;
   ad_event.creative_instance_id = ad.creative_instance_id;
@@ -96,7 +96,7 @@ AdEventInfo BuildAdEvent(const std::string& placement_id,
 AdEventInfo BuildAdEvent(const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type) {
   const std::string placement_id =
-      base::GUID::GenerateRandomV4().AsLowercaseString();
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
   return BuildAdEvent(placement_id, creative_set_id, confirmation_type);
 }
 

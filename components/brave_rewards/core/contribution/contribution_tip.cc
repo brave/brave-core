@@ -10,7 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/guid.h"
+#include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -49,7 +49,7 @@ void ContributionTip::OnPublisherDataRead(
     return;
   }
 
-  std::string queue_id = base::GenerateGUID();
+  std::string queue_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   std::vector<mojom::ContributionQueuePublisherPtr> queue_list;
   auto publisher = mojom::ContributionQueuePublisher::New();
