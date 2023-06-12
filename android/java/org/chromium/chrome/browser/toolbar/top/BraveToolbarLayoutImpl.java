@@ -739,8 +739,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mPlaylistService == null) {
             return;
         }
-        mPlaylistService.addMediaFiles(
-                items, ConstantUtils.DEFAULT_PLAYLIST, shouldCacheMediaFilesForPlaylist());
+        mPlaylistService.addMediaFiles(items, ConstantUtils.DEFAULT_PLAYLIST,
+                shouldCacheMediaFilesForPlaylist(), addedItems -> {});
         int mediaCount = SharedPreferencesManager.getInstance().readInt(
                 PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
         if (mediaCount < PLAYLIST_MEDIA_COUNT_LIMIT) {

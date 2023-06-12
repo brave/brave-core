@@ -151,7 +151,8 @@ class PlaylistService : public KeyedService,
       FindMediaFilesFromActiveTabCallback callback) override;
   void AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                      const std::string& playlist_id,
-                     bool can_cache) override;
+                     bool can_cache,
+                     AddMediaFilesCallback callback) override;
   void CopyItemToPlaylist(const std::vector<std::string>& item_ids,
                           const std::string& playlist_id) override;
   void RemoveItemFromPlaylist(const std::string& playlist_id,
@@ -180,6 +181,8 @@ class PlaylistService : public KeyedService,
 
   void ResetAll() override;
 
+  // Please note that mojo-based observer mechanism is asynchronous, which means
+  // it could be notified much later than callback from each operation.
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
@@ -222,6 +225,7 @@ class PlaylistService : public KeyedService,
 
   void AddMediaFilesFromItems(const std::string& playlist_id,
                               bool cache,
+                              AddMediaFilesCallback callback,
                               std::vector<mojom::PlaylistItemPtr> items);
 
   // Returns true when we should try getting media from a background web
@@ -299,11 +303,10 @@ class PlaylistService : public KeyedService,
                                    RecoverLocalDataForItemCallback callback);
   void RemoveLocalDataForItemImpl(const mojom::PlaylistItemPtr& item);
 
-  void OnPlaylistItemDirCreated(mojom::PlaylistItemPtr item,
-                                bool cache_media,
-                                bool update_media_src_and_retry_caching_on_fail,
-                                DownloadMediaFileCallback callback,
-                                bool directory_ready);
+  void OnPlaylistItemDirCreated(
+      mojom::PlaylistItemPtr item,
+      base::OnceCallback<void(mojom::PlaylistItemPtr, bool)> callback,
+      bool directory_ready);
 
   void OnMediaFileDownloadProgressed(const mojom::PlaylistItemPtr& item,
                                      int64_t total_bytes,

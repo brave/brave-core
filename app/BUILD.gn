@@ -5,6 +5,7 @@
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
@@ -52,10 +53,11 @@ source_set("command_ids") {
 
 brave_grit("brave_generated_resources_grit") {
   defines = [
-    "enable_speedreader=$enable_speedreader",
-    "enable_request_otr=$enable_request_otr",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_pin_shortcut=$enable_pin_shortcut",
+    "enable_playlist_webui=$enable_playlist_webui",
+    "enable_request_otr=$enable_request_otr",
+    "enable_speedreader=$enable_speedreader",
     "enable_text_recognition=$enable_text_recognition",
   ]
   source = "brave_generated_resources.grd"

@@ -10,9 +10,11 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
+#include "brave/browser/ui/color/leo/colors.h"
 #include "brave/browser/ui/tabs/brave_vertical_tab_color_mixer.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_id.h"
@@ -21,6 +23,10 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/native_theme/native_theme.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/components/playlist/common/features.h"
+#endif
 
 namespace {
 
@@ -349,6 +355,19 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
   }
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    mixer[kColorBravePlaylistAddedIcon] = {leo::GetColor(
+        leo::Color::kColorSystemfeedbackSuccessIcon, leo::Theme::kLight)};
+    mixer[kColorBravePlaylistCheckedIcon] = {
+        leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kLight)};
+    mixer[kColorBravePlaylistSelectedBackground] = {leo::GetColor(
+        leo::Color::kColorContainerInteractiveBackground, leo::Theme::kLight)};
+    mixer[kColorBravePlaylistListBorder] = {
+        leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
+  }
+#endif
 }
 
 void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -439,6 +458,19 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
   }
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    mixer[kColorBravePlaylistAddedIcon] = {leo::GetColor(
+        leo::Color::kColorSystemfeedbackSuccessIcon, leo::Theme::kDark)};
+    mixer[kColorBravePlaylistCheckedIcon] = {
+        leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kDark)};
+    mixer[kColorBravePlaylistSelectedBackground] = {leo::GetColor(
+        leo::Color::kColorContainerInteractiveBackground, leo::Theme::kDark)};
+    mixer[kColorBravePlaylistListBorder] = {
+        leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
+  }
+#endif
 }
 
 // Handling dark or light theme on normal profile.

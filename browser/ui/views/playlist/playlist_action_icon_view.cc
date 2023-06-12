@@ -5,9 +5,15 @@
 
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 
+#include <utility>
+
+#include "base/logging.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
+#include "brave/components/playlist/browser/playlist_constants.h"
+#include "brave/components/playlist/browser/playlist_service.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
 PlaylistActionIconView::PlaylistActionIconView(
@@ -31,13 +37,46 @@ views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
 }
 
 void PlaylistActionIconView::ShowPlaylistBubble() {
-  auto* current_contents = GetWebContents();
-  DCHECK_EQ(last_web_contents_, current_contents);
-
-  if (PlaylistActionBubbleView::IsShowingBubble() || !current_contents) {
+  DVLOG(2) << __FUNCTION__;
+  if (state_ == State::kNone) {
     return;
   }
-  PlaylistActionBubbleView::ShowBubble(this, current_contents);
+
+  if (PlaylistActionBubbleView::IsShowingBubble()) {
+    return;
+  }
+
+  auto* playlist_tab_helper = this->playlist_tab_helper();
+  if (!playlist_tab_helper || playlist_tab_helper->is_adding_items()) {
+    return;
+  }
+
+  const auto saved_item_count = playlist_tab_helper->saved_items().size();
+  const auto found_item_count = playlist_tab_helper->found_items().size();
+  if (!saved_item_count && !found_item_count) {
+    return;
+  }
+
+  if (!saved_item_count) {
+    if (found_item_count == 1u) {
+      // In this case, skip the selection bubble and add the item to the
+      // playlist first. When the addition is successfully finished, we'll show
+      // up a bubble for the result.
+      std::vector<playlist::mojom::PlaylistItemPtr> items_to_add;
+      items_to_add.push_back(
+          playlist_tab_helper->found_items().front()->Clone());
+      playlist_tab_helper->AddItems(std::move(items_to_add));
+      return;
+    }
+
+    DCHECK_GE(found_item_count, 1u);
+    PlaylistActionBubbleView::ShowBubble(this, playlist_tab_helper);
+    return;
+  }
+
+  DCHECK(saved_item_count);
+  DCHECK_EQ(last_web_contents_, GetWebContents());
+  PlaylistActionBubbleView::ShowBubble(this, playlist_tab_helper);
 }
 
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
@@ -97,6 +136,7 @@ void PlaylistActionIconView::UpdateState(bool has_saved, bool found_items) {
     return;
   }
 
+  DVLOG(2) << __FUNCTION__ << " " << static_cast<int>(target_state);
   UpdateIconImage();
   UpdateVisibilityPerState();
 }
@@ -109,6 +149,18 @@ void PlaylistActionIconView::UpdateVisibilityPerState() {
 
   SetVisible(should_be_visible);
   PreferredSizeChanged();
+}
+
+void PlaylistActionIconView::OnAddedItemFromTabHelper(
+    const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
+  DVLOG(2) << __FUNCTION__;
+  // When this callback is invoked to this by a tab helper, it means that this
+  // view is now bound to the tab helper. So we don't have to check it again.
+  if (!PlaylistActionBubbleView::IsShowingBubble()) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&PlaylistActionIconView::ShowPlaylistBubble,
+                                  weak_ptr_factory_.GetWeakPtr()));
+  }
 }
 
 BEGIN_METADATA(PlaylistActionIconView, PageActionIconView);

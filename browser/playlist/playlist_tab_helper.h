@@ -41,6 +41,12 @@ class PlaylistTabHelper
   void AddObserver(PlaylistTabHelperObserver* observer);
   void RemoveObserver(PlaylistTabHelperObserver* observer);
 
+  bool is_adding_items() const { return is_adding_items_; }
+
+  void AddItems(std::vector<mojom::PlaylistItemPtr> items);
+
+  base::WeakPtr<PlaylistTabHelper> GetWeakPtr();
+
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -75,11 +81,14 @@ class PlaylistTabHelper
   void FindMediaFromCurrentContents();
   void OnFoundMediaFromContents(const GURL& url,
                                 std::vector<mojom::PlaylistItemPtr> items);
+  void OnAddedItems(std::vector<mojom::PlaylistItemPtr> items);
 
   raw_ptr<PlaylistService> service_;
 
   GURL target_url;
   bool sent_find_media_request_ = false;
+
+  bool is_adding_items_ = false;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;
   std::vector<mojom::PlaylistItemPtr> found_items_;
