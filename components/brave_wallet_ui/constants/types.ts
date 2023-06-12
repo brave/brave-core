@@ -478,12 +478,20 @@ export interface ERC721TransferFromParams extends BaseEthTransactionParams {
   tokenId: string
 }
 
+export interface ETHFilForwarderTransferFromParams extends BaseEthTransactionParams {
+  contractAddress: string
+}
+
 export interface ApproveERC20Params {
   network: BraveWallet.NetworkInfo
   fromAccount: BaseEthTransactionParams['fromAccount']
   contractAddress: string
   spenderAddress: string
   allowance: string
+}
+
+export interface SendETHFilForwardTransactionParams extends BaseTransactionParams {
+  contractAddress: string
 }
 
 /**
@@ -564,8 +572,7 @@ export type SerializableTransactionInfo = Omit<
   | 'createdTime'
   | 'submittedTime'
   | 'txDataUnion'
-  | 'originInfo'
-> & {
+  | 'originInfo'> & {
   confirmedTime: SerializableTimeDelta
   createdTime: SerializableTimeDelta
   submittedTime: SerializableTimeDelta

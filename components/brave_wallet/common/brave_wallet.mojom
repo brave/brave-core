@@ -1324,7 +1324,8 @@ enum TransactionType {
   ETHSwap = 10,
   SolanaDappSignAndSendTransaction = 11,
   SolanaDappSignTransaction = 12,
-  SolanaSwap = 13
+  SolanaSwap = 13,
+  ETHFilForwarderTransfer = 14, // Used to send from FEVM to FVM
 };
 
 struct FilTxData {
@@ -1360,6 +1361,14 @@ struct TransactionInfo {
   OriginInfo? origin_info;
   string? group_id;
   string chain_id;
+  // Currently only available for ETH and FIL
+  // Represent effective recipient of the transaction
+  // For example, a transaction may be ERC20 transaction, so
+  // "To" field represents the address of some smart contract.
+  // In this case, the recipient field is resolved from params
+  // and represents the final beneficiary of the transaction.
+  // TODO(cypt4): Add for SOL
+  string? effective_recipient;
 };
 
 interface TxServiceObserver {
@@ -1447,6 +1456,7 @@ interface EthTxManagerProxy {
   MakeERC20ApproveData(string spender_address, string amount) => (bool success, array<uint8> data);
   MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
   MakeERC1155TransferFromData(string from, string to, string token_id, string value, string contract_address) => (bool success, array<uint8> data);
+  MakeFilForwarderTransferData(string to_address_fil) => (bool success, array<uint8> data);
 
   // Gas estimation API via eth_feeHistory API
   GetGasEstimation1559(string chain_id) => (GasEstimation1559? estimation);

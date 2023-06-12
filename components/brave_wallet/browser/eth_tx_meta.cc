@@ -15,9 +15,57 @@
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
+
+namespace {
+
+absl::optional<std::string> GetFinalRecipient(
+    const std::string& chain_id,
+    const std::string& base_to,
+    mojom::TransactionType tx_type,
+    const std::vector<std::string>& tx_args) {
+  if (tx_type == mojom::TransactionType::ETHFilForwarderTransfer) {
+    if (tx_args.empty()) {
+      return absl::nullopt;
+    }
+    std::vector<uint8_t> bytes;
+    if (!PrefixedHexStringToBytes(tx_args.at(0), &bytes)) {
+      return absl::nullopt;
+    }
+    std::string fil_chain_id =
+        chain_id == mojom::kFilecoinEthereumMainnetChainId
+            ? mojom::kFilecoinMainnet
+            : mojom::kFilecoinTestnet;
+    auto fil_address = FilAddress::FromBytes(fil_chain_id, bytes);
+    if (fil_address.IsEmpty()) {
+      return absl::nullopt;
+    }
+    return fil_address.EncodeAsString();
+  }
+
+  if (tx_type == mojom::TransactionType::ERC20Transfer) {
+    if (tx_args.empty()) {
+      return absl::nullopt;
+    }
+    return tx_args.at(0);
+  }
+
+  if (tx_type == mojom::TransactionType::ERC721TransferFrom ||
+      tx_type == mojom::TransactionType::ERC721SafeTransferFrom) {
+    if (tx_args.size() < 2) {
+      return absl::nullopt;
+    }
+    // (address owner, address to, uint256 tokenId)
+    return tx_args.at(1);
+  }
+
+  return base_to;
+}
+
+}  // namespace
 
 EthTxMeta::EthTxMeta() : tx_(std::make_unique<EthTransaction>()) {}
 EthTxMeta::EthTxMeta(std::unique_ptr<EthTransaction> tx) : tx_(std::move(tx)) {}
@@ -68,10 +116,13 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   }
 
   auto tx_info = GetTransactionInfoFromData(data);
+  absl::optional<std::string> final_recepient;
   if (!tx_info) {
     LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
   } else {
     std::tie(tx_type, tx_params, tx_args) = *tx_info;
+    final_recepient = GetFinalRecipient(chain_id, tx_->to().ToChecksumAddress(),
+                                        tx_type, tx_args);
   }
   absl::optional<std::string> signed_transaction;
   if (tx_->IsSigned()) {
@@ -94,7 +145,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.ToJavaTime()),
       base::Milliseconds(confirmed_time_.ToJavaTime()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_,
-      chain_id_);
+      chain_id_, final_recepient);
 }
 
 }  // namespace brave_wallet

@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
@@ -34,6 +35,8 @@ constexpr char kTransformERC20Selector[] = "0x415565b0";
 constexpr char kFillOtcOrderForEthSelector[] = "0xa578efaf";
 constexpr char kFillOtcOrderWithEthSelector[] = "0x706394d5";
 constexpr char kFillOtcOrderSelector[] = "0xdac748d4";
+constexpr char kFilForwarderTransferSelector[] =
+    "0xd948d468";  // forward(bytes)
 
 }  // namespace
 
@@ -55,7 +58,20 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
 
   std::string selector = "0x" + HexEncodeLower(data.data(), 4);
   std::vector<uint8_t> calldata(data.begin() + 4, data.end());
-  if (selector == kERC20TransferSelector) {
+  if (selector == kFilForwarderTransferSelector) {
+    auto decoded = ABIDecode({"bytes"}, calldata);
+    if (!decoded) {
+      return absl::nullopt;
+    }
+    const auto& tx_args = std::get<1>(*decoded);
+    if (tx_args.empty()) {
+      return absl::nullopt;
+    }
+    return std::make_tuple(mojom::TransactionType::ETHFilForwarderTransfer,
+                           std::vector<std::string>{"bytes"},  // recipient
+                           std::vector<std::string>{tx_args.at(0)});
+
+  } else if (selector == kERC20TransferSelector) {
     auto decoded = ABIDecode({"address", "uint256"}, calldata);
     if (!decoded) {
       return absl::nullopt;

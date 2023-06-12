@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -275,6 +276,13 @@ void TxService::Reset() {
   for (const auto& observer : observers_) {
     observer->OnTxServiceReset();
   }
+}
+
+void TxService::MakeFilForwarderTransferData(
+    const std::string& to_address,
+    MakeFilForwarderTransferDataCallback callback) {
+  GetEthTxManager()->MakeFilForwarderTransferData(
+      FilAddress::FromAddress(to_address), std::move(callback));
 }
 
 void TxService::MakeERC20TransferData(const std::string& to_address,

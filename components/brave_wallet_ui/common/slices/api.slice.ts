@@ -18,6 +18,7 @@ import {
   ER20TransferParams,
   ERC721Metadata,
   ERC721TransferFromParams,
+  ETHFilForwarderTransferFromParams,
   SendEthTransactionParams,
   SendFilTransactionParams,
   SendSolTransactionParams,
@@ -1766,6 +1767,55 @@ export function createWalletApi () {
             fromAddress: arg.fromAccount.accountId.address,
           })
       }),
+      sendETHFilForwarderTransfer: mutation<
+        { success: boolean },
+        ETHFilForwarderTransferFromParams
+      >({
+        queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+          try {
+            const { ethTxManagerProxy } = baseQuery(undefined).data
+            const { data, success } =
+              await ethTxManagerProxy.makeFilForwarderTransferData(
+                payload.to,
+              )
+
+            if (!success) {
+              const msg = `Failed making FilForwarder transferFrom data,
+            from: ${payload.fromAccount.address}
+            to: ${payload.to}`
+              console.log(msg)
+              return { error: msg }
+            }
+
+            const result: { success: boolean } = await dispatch(
+              walletApi.endpoints.sendTransaction.initiate({
+                network: payload.network,
+                fromAccount: payload.fromAccount,
+                to: payload.contractAddress,
+                value: payload.value,
+                gas: payload.gas,
+                gasPrice: payload.gasPrice,
+                maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
+                maxFeePerGas: payload.maxFeePerGas,
+                data
+              })
+            ).unwrap()
+
+            return {
+              data: result
+            }
+          } catch (error) {
+            return { error: '' }
+          }
+        },
+        invalidatesTags: (res, err, arg) =>
+          TX_CACHE_TAGS.LISTS({
+            chainId: null,
+            coin: arg.fromAccount.accountId.coin,
+            fromAddress: arg.fromAccount.address
+          })
+      }),
+
       approveERC20Allowance: mutation<{ success: boolean }, ApproveERC20Params>(
         {
           queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {

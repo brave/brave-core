@@ -273,7 +273,8 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
       // Try to use reasonable values when we can't get an estimation.
       // These are taken via looking through the different types of transactions
       // on etherscan and taking the next rounded up value for the largest found
-      if (tx_type == mojom::TransactionType::ETHSend) {
+      if (tx_type == mojom::TransactionType::ETHSend ||
+          tx_type == mojom::TransactionType::ETHFilForwarderTransfer) {
         gas_limit = kDefaultSendEthGasLimit;
       } else if (tx_type == mojom::TransactionType::ERC20Transfer) {
         gas_limit = kDefaultERC20TransferGasLimit;
@@ -649,6 +650,21 @@ void EthTxManager::OnPublishTransaction(const std::string& chain_id,
   std::move(callback).Run(error_message.empty(),
                           mojom::ProviderErrorUnion::NewProviderError(error),
                           error_message);
+}
+
+void EthTxManager::MakeFilForwarderTransferData(
+    const FilAddress& fil_address,
+    MakeFilForwarderDataCallback callback) {
+  absl::optional<std::vector<uint8_t>> data =
+      filforwarder::Forward(fil_address);
+
+  if (!data) {
+    LOG(ERROR) << "Could not make transfer data";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::move(callback).Run(true, data.value());
 }
 
 void EthTxManager::MakeERC20TransferData(

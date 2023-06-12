@@ -9,13 +9,13 @@ import {
   BraveWallet,
   GetEthAddrReturnInfo,
   GetUnstoppableDomainsWalletAddrReturnInfo,
-  GetChecksumEthAddressReturnInfo,
   IsBase58EncodedSolanaPubkeyReturnInfo,
   AmountValidationErrorType,
   WalletState,
   GetSolAddrReturnInfo,
   CoinTypesMap,
-  BaseTransactionParams
+  BaseTransactionParams,
+  GetChecksumEthAddressReturnInfo
 } from '../../constants/types'
 
 // Utils
@@ -35,6 +35,7 @@ import {
   supportedSNSExtensions,
   supportedUDExtensions
 } from '../constants/domain-extensions'
+import { getChecksumEthAddress } from '../async/lib'
 
 // ToDo: Remove isSendTab prop once we fully migrate to Send Tab
 export default function useSend (isSendTab?: boolean) {
@@ -54,7 +55,6 @@ export default function useSend (isSendTab?: boolean) {
     findENSAddress,
     findSNSAddress,
     findUnstoppableDomainAddress,
-    getChecksumEthAddress,
     isBase58EncodedSolanaPubkey
   } = useLib()
   const { sendAssetOptions } = useAssets()
@@ -159,6 +159,17 @@ export default function useSend (isSendTab?: boolean) {
       return
     }
 
+    if (selectedAccount && selectedSendAsset && 
+      selectedAccount.accountId.coin === BraveWallet.CoinType.ETH &&
+      (selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
+        selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
+      isValidFilAddress(addressOrUrl)) {
+        setToAddress(addressOrUrl);
+        setAddressWarning('')
+        setAddressError('')
+        return;
+    }
+
     // If value starts with 0x, will check if it's a valid address
     if (valueToLowerCase.startsWith('0x')) {
       setToAddress(addressOrUrl)
@@ -199,7 +210,11 @@ export default function useSend (isSendTab?: boolean) {
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
-  }, [selectedAccount?.address, handleUDAddressLookUp, handleDomainLookupResponse, setShowEnsOffchainWarning])
+  }, [selectedAccount,
+      selectedSendAsset,
+      handleUDAddressLookUp,
+      handleDomainLookupResponse,
+      setShowEnsOffchainWarning])
 
   const processFilecoinAddress = React.useCallback((addressOrUrl: string) => {
     const valueToLowerCase = addressOrUrl.toLowerCase()
@@ -432,6 +447,27 @@ export default function useSend (isSendTab?: boolean) {
       if (isSendTab) {
         resetSendFields()
       }
+      return
+    }
+
+    if (selectedAccount.accountId.coin === BraveWallet.CoinType.ETH &&
+      (selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
+        selectedSendAsset.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
+      isValidFilAddress(toAddress)) {
+
+        dispatch(
+          walletApi.endpoints.sendETHFilForwarderTransfer.initiate({
+            network: selectedNetwork,
+            fromAccount,
+            to: toAddress,
+            value: new Amount(sendAmount)
+              // ETH → Wei conversion
+              .multiplyByDecimals(selectedSendAsset.decimals)
+              .toHex(),
+            contractAddress: "0x2b3ef6906429b580b7b2080de5ca893bc282c225"
+          })
+        )
+      resetSendFields()
       return
     }
 

@@ -12,9 +12,18 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
+
+namespace filforwarder {
+
+// Allows to forward funds from FEVM account fo FVM account
+// https://github.com/lotus-web3/FilForwarder/blob/main/contracts/FilForwarder.sol
+absl::optional<std::vector<uint8_t>> Forward(const FilAddress& fil_address);
+
+}  // namespace filforwarder
 
 namespace erc20 {
 

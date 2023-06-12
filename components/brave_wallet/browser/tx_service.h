@@ -114,6 +114,9 @@ class TxService : public KeyedService,
   void Reset() override;
 
   // mojom::EthTxManagerProxy
+  void MakeFilForwarderTransferData(
+      const std::string& to_address,
+      MakeFilForwarderTransferDataCallback callback) override;
   void MakeERC20TransferData(const std::string& to_address,
                              const std::string& amount,
                              MakeERC20TransferDataCallback) override;

@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
@@ -58,6 +59,22 @@ absl::optional<std::string> ChainIdToVersion(const std::string& symbol,
 }
 
 }  // namespace
+
+namespace filforwarder {
+
+constexpr uint8_t kFilForwarderSelector[] = {0xd9, 0x48, 0xd4, 0x68};
+
+absl::optional<std::vector<uint8_t>> Forward(const FilAddress& fil_address) {
+  if (fil_address.IsEmpty()) {
+    return absl::nullopt;
+  }
+
+  return eth_abi::TupleEncoder()
+      .AddBytes(fil_address.GetBytes())
+      .EncodeWithSelector(base::make_span(kFilForwarderSelector));
+}
+
+}  // namespace filforwarder
 
 namespace erc20 {
 
