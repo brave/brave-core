@@ -21,14 +21,15 @@
 namespace brave {
 
 namespace {
-bool CreateURLPatternSetFromValue(const base::Value* value,
-                                  extensions::URLPatternSet* result) {
-  if (!value || !value->is_list())
+bool CreateURLPatternSetFromList(const base::Value::List* value,
+                                 extensions::URLPatternSet* result) {
+  if (!value) {
     return false;
+  }
   std::string error;
   bool valid = result->Populate(
-      value->GetList(), URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
-      false, &error);
+      *value, URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, false,
+      &error);
   if (!valid) {
     VLOG(1) << "Unable to create url pattern:" << error;
   }
@@ -36,11 +37,12 @@ bool CreateURLPatternSetFromValue(const base::Value* value,
 }
 
 absl::optional<base::flat_set<std::string>> CreateParamsList(
-    const base::Value* value) {
-  if (!value->is_list())
+    const base::Value::List* value) {
+  if (!value) {
     return absl::nullopt;
+  }
   base::flat_set<std::string> result;
-  for (const auto& param : value->GetList()) {
+  for (const auto& param : *value) {
     DCHECK(param.is_string());
     result.insert(param.GetString());
   }
@@ -63,13 +65,14 @@ base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> ParseFromJson(
     const base::Value::Dict* items = it.GetIfDict();
     if (!items)
       continue;
-    auto* include_list = items->Find("include");
+    auto* include_list = items->FindList("include");
     if (!include_list)
       continue;
     extensions::URLPatternSet include_matcher;
-    if (!CreateURLPatternSetFromValue(include_list, &include_matcher))
+    if (!CreateURLPatternSetFromList(include_list, &include_matcher)) {
       continue;
-    auto* params_list = items->Find("params");
+    }
+    auto* params_list = items->FindList("params");
     absl::optional<base::flat_set<std::string>> params =
         CreateParamsList(params_list);
     if (!params) {
@@ -77,7 +80,7 @@ base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> ParseFromJson(
     }
 
     extensions::URLPatternSet exclude_matcher;
-    CreateURLPatternSetFromValue(it.FindListPath("exclude"), &exclude_matcher);
+    CreateURLPatternSetFromList(items->FindList("exclude"), &exclude_matcher);
     auto item = std::make_unique<URLSanitizerService::MatchItem>(
         std::move(include_matcher), std::move(exclude_matcher),
         std::move(*params));
