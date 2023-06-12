@@ -31,7 +31,8 @@ class VerticalTabStripScrollContentsView;
 class VerticalTabStripRegionView : public views::View,
                                    public TabStripModelObserver,
                                    public views::ResizeAreaDelegate,
-                                   public views::AnimationDelegateViews {
+                                   public views::AnimationDelegateViews,
+                                   public views::WidgetObserver {
  public:
   METADATA_HEADER(VerticalTabStripRegionView);
 
@@ -109,6 +110,10 @@ class VerticalTabStripRegionView : public views::View,
   // views::AnimationDelegateViews:
   void AnimationProgressed(const gfx::Animation* animation) override;
   void AnimationEnded(const gfx::Animation* animation) override;
+
+  // views::WidgetObserver:
+  void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
+  void OnWidgetDestroying(views::Widget* widget) override;
 
  private:
   class HeaderView;
@@ -188,6 +193,9 @@ class VerticalTabStripRegionView : public views::View,
   gfx::Size last_size_;
 
   gfx::SlideAnimation width_animation_{this};
+
+  base::ScopedObservation<views::Widget, views::WidgetObserver>
+      widget_observation_{this};
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };

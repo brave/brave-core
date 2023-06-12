@@ -624,12 +624,35 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
           &VerticalTabStripRegionView::OnFloatingModePrefChanged,
           base::Unretained(this)));
   OnFloatingModePrefChanged();
+
+  widget_observation_.Observe(browser_view->GetWidget());
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
   UpdateLayout(true);
+}
+
+void VerticalTabStripRegionView::OnWidgetActivationChanged(
+    views::Widget* widget,
+    bool active) {
+  if (active) {
+    if (*floating_mode_pref_ && IsMouseHovered()) {
+      ScheduleFloatingModeTimer();
+    }
+    return;
+  }
+
+  // When parent widget is deactivated, we should collapse vertical tab
+  mouse_enter_timer_.Stop();
+  if (state_ == State::kFloating) {
+    SetState(State::kCollapsed);
+  }
+}
+
+void VerticalTabStripRegionView::OnWidgetDestroying(views::Widget* widget) {
+  widget_observation_.Reset();
 }
 
 bool VerticalTabStripRegionView::IsTabFullscreen() const {
@@ -1115,6 +1138,13 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
   }
 
   mouse_enter_timer_.Stop();
+
+  if (auto* widget = GetWidget();
+      !widget || !widget->GetTopLevelWidget()->IsActive()) {
+    // When the browser isn't active, don't schedule.
+    return;
+  }
+
   if (state_ == State::kCollapsed) {
     mouse_enter_timer_.Start(
         FROM_HERE, base::Milliseconds(400),
