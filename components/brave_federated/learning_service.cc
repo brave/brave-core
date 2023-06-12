@@ -18,7 +18,7 @@
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/resources/grit/brave_federated_resources.h"
-#include "brave/components/brave_federated/task/federated_task_runner.h"
+#include "brave/components/brave_federated/task/federated_task_handler.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
@@ -32,7 +32,7 @@ namespace brave_federated {
 namespace {
 
 absl::optional<TaskResult> LoadDatasetAndRunTask(
-    std::unique_ptr<FederatedTaskRunner> task_runner) {
+    std::unique_ptr<FederatedTaskHandler> task_runner) {
   auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
   SyntheticDataset test_dataset = synthetic_dataset->SeparateTestData(50);
 
@@ -173,7 +173,7 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
   model->SetWeights(task.GetParameters().at(0));
   model->SetBias(task.GetParameters().at(1).at(0));
   auto task_runner =
-      std::make_unique<FederatedTaskRunner>(task, std::move(model));
+      std::make_unique<FederatedTaskHandler>(task, std::move(model));
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
