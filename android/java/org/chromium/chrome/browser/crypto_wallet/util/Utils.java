@@ -145,7 +145,7 @@ public class Utils {
     public static final String ASSET_LOGO = "assetLogo";
     public static final String ASSET_DECIMALS = "assetDecimals";
     public static final String CHAIN_ID = "chainId";
-    public static final String COIN_MARKET = "coinMarket";
+    public static final String IS_MARKET_COIN = "isMarketCoin";
     public static final String IS_FROM_DAPPS = "isFromDapps";
     public static final String MARKET_CAP = "marketCap";
     public static final String MARKET_CAP_RANK = "marketCapRank";
@@ -259,11 +259,11 @@ public class Utils {
         }
     }
 
-    public static void openAssetDetailsActivity(@NonNull final Context context,
-            @NonNull final String chainId, @NonNull final BlockchainToken asset) {
+    public static void openAssetDetailsActivity(
+            @NonNull final Context context, @NonNull final BlockchainToken asset) {
         assert context != null;
         Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);
-        assetDetailIntent.putExtra(CHAIN_ID, chainId);
+        assetDetailIntent.putExtra(CHAIN_ID, asset.chainId);
         assetDetailIntent.putExtra(ASSET_SYMBOL, asset.symbol);
         assetDetailIntent.putExtra(ASSET_NAME, asset.name);
         assetDetailIntent.putExtra(ASSET_ID, asset.tokenId);
@@ -278,7 +278,7 @@ public class Utils {
             @NonNull final Context context, @NonNull final CoinMarket asset) {
         assert context != null;
         Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);
-        assetDetailIntent.putExtra(COIN_MARKET, true);
+        assetDetailIntent.putExtra(IS_MARKET_COIN, true);
         assetDetailIntent.putExtra(MARKET_CAP, asset.marketCap);
         assetDetailIntent.putExtra(MARKET_CAP_RANK, asset.marketCapRank);
         assetDetailIntent.putExtra(TOTAL_VOLUME, asset.totalVolume);

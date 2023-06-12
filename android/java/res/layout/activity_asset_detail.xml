@@ -336,7 +336,7 @@
             android:visibility="gone"/>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_view_coin_market_info"
+            android:id="@+id/card_view_market_coin_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

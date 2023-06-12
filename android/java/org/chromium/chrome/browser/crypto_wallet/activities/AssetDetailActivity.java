@@ -90,7 +90,7 @@ public class AssetDetailActivity
     private String mAssetName;
     private String mAssetId;
     private String mChainId;
-    private boolean mCoinMarket;
+    private boolean mIsMarketCoin;
     private int mMarketCapRank;
     private double mVolume24Hour;
     private double mMarketCap;
@@ -135,7 +135,7 @@ public class AssetDetailActivity
             mAssetSymbol = intent.getStringExtra(Utils.ASSET_SYMBOL);
             mAssetName = intent.getStringExtra(Utils.ASSET_NAME);
             mAssetId = intent.getStringExtra(Utils.ASSET_ID);
-            mCoinMarket = intent.getBooleanExtra(Utils.COIN_MARKET, false);
+            mIsMarketCoin = intent.getBooleanExtra(Utils.IS_MARKET_COIN, false);
             mMarketCapRank = intent.getIntExtra(Utils.MARKET_CAP_RANK, -1);
             mVolume24Hour = intent.getDoubleExtra(Utils.TOTAL_VOLUME, -1);
             mMarketCap = intent.getDoubleExtra(Utils.MARKET_CAP, -1);
@@ -161,10 +161,10 @@ public class AssetDetailActivity
         Button btnSend = findViewById(R.id.btn_send);
         mBtnSwap = findViewById(R.id.btn_swap);
 
-        if (mCoinMarket) {
+        if (mIsMarketCoin) {
             TextView informationLabel = findViewById(R.id.information);
-            CardView coinMarketInfo = findViewById(R.id.card_view_coin_market_info);
-            AndroidUtils.show(informationLabel, coinMarketInfo);
+            CardView marketCoinInfo = findViewById(R.id.card_view_market_coin_info);
+            AndroidUtils.show(informationLabel, marketCoinInfo);
 
             if (mMarketCapRank != -1) {
                 TextView rank = findViewById(R.id.rank);
@@ -217,7 +217,7 @@ public class AssetDetailActivity
         assetPriceText.setText(String.format(
                 getResources().getString(R.string.asset_price), mAssetName, mAssetSymbol));
 
-        if (!mCoinMarket && AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
+        if (!mIsMarketCoin && AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
             mBtnSwap.setVisibility(View.GONE);
             mBtnBridgeToAurora = findViewById(R.id.btn_aurora_bridge);
             mBtnBridgeToAurora.setVisibility(View.VISIBLE);
@@ -288,7 +288,7 @@ public class AssetDetailActivity
                 }
             });
         }
-        if (!mCoinMarket) {
+        if (!mIsMarketCoin) {
             mBtnSwap.setOnClickListener(v
                     -> Utils.openBuySendSwapActivity(
                             this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
@@ -342,7 +342,7 @@ public class AssetDetailActivity
     @Override
     public void onStart() {
         super.onStart();
-        if (!mCoinMarket && mHasNewTx) {
+        if (!mIsMarketCoin && mHasNewTx) {
             setUpAccountList();
             mHasNewTx = false;
         }
@@ -438,7 +438,7 @@ public class AssetDetailActivity
 
     // Get back token from native. If cannot find then something is wrong
     private void getBlockchainToken(Runnable callback) {
-        if (mCoinMarket) {
+        if (mIsMarketCoin) {
             return;
         }
         if (mAsset != null || !mNativeInitialized || mAssetNetwork == null) {
@@ -539,7 +539,7 @@ public class AssetDetailActivity
     }
 
     private void adjustButtonsVisibilities() {
-        if (mCoinMarket) {
+        if (mIsMarketCoin) {
             return;
         }
         showHideBuyUi();
