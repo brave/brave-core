@@ -81,19 +81,22 @@ void LearningServiceConfig::InitServiceConfigFromJSONString(
   CustomBackoffEntryPolicy custom_post_results_policy(post_results_policy_);
 
   bool result = false;
-  result = policy_converter.Convert(*(dict.Find("reconnect_policy")),
+  const std::string kReconnectPolicy = "reconnect_policy";
+  result = policy_converter.Convert(*(dict.Find(kReconnectPolicy)),
                                     &custom_reconnect_policy);
   if (!result) {
     VLOG(1) << "JSON conversion failed for reconnect policy, falling back to "
                "default values.";
   }
-  result = policy_converter.Convert(*(dict.Find("request_task_policy")),
+  const std::string kRequestTaskPolicy = "request_task_policy";
+  result = policy_converter.Convert(*(dict.Find(kRequestTaskPolicy)),
                                     &custom_request_task_policy);
   if (!result) {
     VLOG(1) << "JSON conversion failed for request policy, falling back to "
                "default values.";
   }
-  result = policy_converter.Convert(*(dict.Find("post_results_policy")),
+  const std::string kPostResultsPolicy = "post_results_policy";
+  result = policy_converter.Convert(*(dict.Find(kPostResultsPolicy)),
                                     &custom_post_results_policy);
   if (!result) {
     VLOG(1) << "JSON conversion failed for post results policy, falling back "
