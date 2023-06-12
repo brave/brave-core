@@ -51,7 +51,8 @@ class BraveSearchFallbackJSHandler {
                                             const std::string& lang,
                                             const std::string& country,
                                             const std::string& geo,
-                                            bool filter_explicit_results);
+                                            bool filter_explicit_results,
+                                            int page_index);
   void OnFetchBackupResults(
       std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
       const std::string& response);

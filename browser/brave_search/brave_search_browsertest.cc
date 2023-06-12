@@ -145,7 +145,7 @@ class BraveSearchTest : public InProcessBrowserTest {
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
     if (url.path() + "?" + url.query() ==
-        "/search?q=test&hl=en&gl=us&safe=active") {
+        "/search?q=test&start=10&hl=en&gl=us&safe=active") {
       http_response->set_code(net::HTTP_OK);
       http_response->set_content_type("text/html");
       http_response->set_content(kBackupSearchContent);
