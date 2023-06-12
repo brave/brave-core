@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
@@ -702,6 +703,15 @@
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_ads::kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature),  \
+      },                                                                       \
+      {                                                                        \
+          "brave-ads-enable-search-result-ads",                                \
+          "Enable Search Result Ads feature",                                  \
+          "Should be used in combination with "                                \
+          "#brave-ads-should-always-trigger-search-result-ad-events and "      \
+          "#brave-ads-should-always-run-brave-ads-service",                    \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(brave_ads::kSearchResultAdFeature),               \
       },                                                                       \
       {                                                                        \
           "brave-ads-should-always-trigger-search-result-ad-events",           \

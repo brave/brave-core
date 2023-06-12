@@ -45,7 +45,8 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     return {};
   }
 
-  const bool is_enabled = ads_service->IsEnabled() || ShouldAlwaysRunService();
+  const bool is_enabled =
+      ads_service->IsEnabled() || ShouldAlwaysTriggerSearchResultAdEvents();
 
   if (!IsSearchResultAdFeatureEnabled() || !is_enabled ||
       !brave_search::IsAllowedHost(url)) {
@@ -109,8 +110,8 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
 }
 
 bool SearchResultAdHandler::IsEnabled() {
-  return ads_service_ &&
-         (ads_service_->IsEnabled() || ShouldAlwaysRunService());
+  return ads_service_ && (ads_service_->IsEnabled() ||
+                          ShouldAlwaysTriggerSearchResultAdEvents());
 }
 
 void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
