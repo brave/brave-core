@@ -1,4 +1,4 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -6,14 +6,14 @@
 import XCTest
 @testable import Brave
 
-class DebouncingResourceDownloaderTests: XCTestCase {
-  private let downloader = DebouncingResourceDownloader()
+class DebouncingServiceTests: XCTestCase {
+  private let service = DebouncingService()
 
   override func setUpWithError() throws {
     let bundle = Bundle.module
     let resourceURL = bundle.url(forResource: "debouncing", withExtension: "json")
     let data = try Data(contentsOf: resourceURL!)
-    try downloader.setup(withRulesJSON: data)
+    try service.setup(withRulesJSON: data)
   }
 
   /// Test simple redirection by query parameter
@@ -27,8 +27,8 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: originalURL)
-    let redirectChain2 = downloader.redirectChain(for: originalURL2)
+    let redirectChain = service.redirectChain(for: originalURL)
+    let redirectChain2 = service.redirectChain(for: originalURL2)
 
     // Then
     XCTAssertEqual(redirectChain.last?.url, landingURL)
@@ -49,8 +49,8 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: originalURL)
-    let redirectChain2 = downloader.redirectChain(for: originalURL2)
+    let redirectChain = service.redirectChain(for: originalURL)
+    let redirectChain2 = service.redirectChain(for: originalURL2)
 
     // Then
     XCTAssertEqual(redirectChain.last?.url, landingURL)
@@ -72,7 +72,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: urlA)
+    let redirectChain = service.redirectChain(for: urlA)
 
     // Then
     XCTAssertEqual(redirectChain.last?.url, urlZ)
@@ -90,7 +90,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: urlA)
+    let redirectChain = service.redirectChain(for: urlA)
 
     // Then
     XCTAssertEqual(redirectChain.last?.url, urlZ)
@@ -107,7 +107,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: startURL)
+    let redirectChain = service.redirectChain(for: startURL)
 
     // Then
     // While we used to go to `finalURL`, we now stop at `intermediateURL`
@@ -129,7 +129,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: urlA)
+    let redirectChain = service.redirectChain(for: urlA)
 
     // Then
     XCTAssertEqual(redirectChain.last?.url, urlZ)
@@ -148,7 +148,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: startURL)
+    let redirectChain = service.redirectChain(for: startURL)
 
     // Then
     // TODO: @JS Should be going to intermediateURL
@@ -169,8 +169,8 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: startURL)
-    let redirectChain2 = downloader.redirectChain(for: startURL2)
+    let redirectChain = service.redirectChain(for: startURL)
+    let redirectChain2 = service.redirectChain(for: startURL2)
 
     // Then
     XCTAssertEqual(redirectChain.last?.url, landingURL)
@@ -190,7 +190,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: startURL)
+    let redirectChain = service.redirectChain(for: startURL)
 
     // Then
     XCTAssertNil(redirectChain.last)
@@ -208,8 +208,8 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain1 = downloader.redirectChain(for: startURL1)
-    let redirectChain2 = downloader.redirectChain(for: startURL2)
+    let redirectChain1 = service.redirectChain(for: startURL1)
+    let redirectChain2 = service.redirectChain(for: startURL2)
 
     // Then
     XCTAssertEqual(redirectChain1.last?.url, finalURL)
@@ -225,7 +225,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: startURL)
+    let redirectChain = service.redirectChain(for: startURL)
 
     // Then
     XCTAssertNil(redirectChain.last)
@@ -242,7 +242,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: originalURL)
+    let redirectChain = service.redirectChain(for: originalURL)
 
     // Then
     XCTAssertEqual(redirectChain.last?.url, landingURL)
@@ -259,8 +259,8 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain1 = downloader.redirectChain(for: originalURL1)
-    let redirectChain2 = downloader.redirectChain(for: originalURL2)
+    let redirectChain1 = service.redirectChain(for: originalURL1)
+    let redirectChain2 = service.redirectChain(for: originalURL2)
 
     // Then
     XCTAssertEqual(redirectChain1.last?.url, landingURL1)
@@ -283,12 +283,12 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain1 = downloader.redirectChain(for: startURL1)
-    let redirectChain2 = downloader.redirectChain(for: startURL2)
-    let redirectChain3 = downloader.redirectChain(for: startURL3)
-    let redirectChain4 = downloader.redirectChain(for: startURL4)
-    let redirectChain5 = downloader.redirectChain(for: startURL5)
-    let redirectChain6 = downloader.redirectChain(for: startURL6)
+    let redirectChain1 = service.redirectChain(for: startURL1)
+    let redirectChain2 = service.redirectChain(for: startURL2)
+    let redirectChain3 = service.redirectChain(for: startURL3)
+    let redirectChain4 = service.redirectChain(for: startURL4)
+    let redirectChain5 = service.redirectChain(for: startURL5)
+    let redirectChain6 = service.redirectChain(for: startURL6)
 
     // Then
     XCTAssertEqual(redirectChain1.last?.url, landingURL1)
@@ -333,16 +333,16 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain1 = downloader.redirectChain(for: startURL1)
-    let redirectChain2 = downloader.redirectChain(for: startURL2)
-    let redirectChain3 = downloader.redirectChain(for: startURL3)
-    let redirectChain4 = downloader.redirectChain(for: startURL4)
-    let redirectChain5 = downloader.redirectChain(for: startURL5)
-    let redirectChain6 = downloader.redirectChain(for: startURL6)
-    let redirectChain7 = downloader.redirectChain(for: startURL7)
-    let redirectChain8 = downloader.redirectChain(for: startURL8)
-    let redirectChain9 = downloader.redirectChain(for: startURL9)
-    let redirectChain10 = downloader.redirectChain(for: startURL10)
+    let redirectChain1 = service.redirectChain(for: startURL1)
+    let redirectChain2 = service.redirectChain(for: startURL2)
+    let redirectChain3 = service.redirectChain(for: startURL3)
+    let redirectChain4 = service.redirectChain(for: startURL4)
+    let redirectChain5 = service.redirectChain(for: startURL5)
+    let redirectChain6 = service.redirectChain(for: startURL6)
+    let redirectChain7 = service.redirectChain(for: startURL7)
+    let redirectChain8 = service.redirectChain(for: startURL8)
+    let redirectChain9 = service.redirectChain(for: startURL9)
+    let redirectChain10 = service.redirectChain(for: startURL10)
 
     // Then
     XCTAssertEqual(redirectChain1.last?.url, landingURL1And2)
@@ -387,9 +387,9 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain1 = downloader.redirectChain(for: startURL1)
-    let redirectChain2 = downloader.redirectChain(for: startURL2)
-    let redirectChain3 = downloader.redirectChain(for: startURL3)
+    let redirectChain1 = service.redirectChain(for: startURL1)
+    let redirectChain2 = service.redirectChain(for: startURL2)
+    let redirectChain3 = service.redirectChain(for: startURL3)
 
     // Then
     XCTAssertNil(
@@ -420,11 +420,11 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain1 = downloader.redirectChain(for: startURL1)
-    let redirectChain2 = downloader.redirectChain(for: startURL2)
-    let redirectChain3 = downloader.redirectChain(for: startURL3)
-    let redirectChain4 = downloader.redirectChain(for: startURL4)
-    let redirectChain5 = downloader.redirectChain(for: startURL5)
+    let redirectChain1 = service.redirectChain(for: startURL1)
+    let redirectChain2 = service.redirectChain(for: startURL2)
+    let redirectChain3 = service.redirectChain(for: startURL3)
+    let redirectChain4 = service.redirectChain(for: startURL4)
+    let redirectChain5 = service.redirectChain(for: startURL5)
 
     // Then
     XCTAssertEqual(redirectChain1.last?.url, landingURL1)
@@ -455,7 +455,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain1 = downloader.redirectChain(for: startURL1)
+    let redirectChain1 = service.redirectChain(for: startURL1)
 
     // Then
     XCTAssertNil(
@@ -473,7 +473,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain1 = downloader.redirectChain(for: startURL1)
+    let redirectChain1 = service.redirectChain(for: startURL1)
 
     // Then
     XCTAssertNil(
@@ -491,7 +491,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain1 = downloader.redirectChain(for: startURL1)
+    let redirectChain1 = service.redirectChain(for: startURL1)
 
     // Then
     XCTAssertNil(
@@ -508,7 +508,7 @@ class DebouncingResourceDownloaderTests: XCTestCase {
 
     // When
     // A redirect is returned
-    let redirectChain = downloader.redirectChain(for: baseURL)
+    let redirectChain = service.redirectChain(for: baseURL)
 
     // Then
     XCTAssertNil(redirectChain.last)
@@ -538,13 +538,13 @@ class DebouncingResourceDownloaderTests: XCTestCase {
     // Returns valid debounced links
     let extractURL = URL(string: "https://example.com")!
     for includedURL in includedURLs {
-      XCTAssertEqual(downloader.redirectChain(for: includedURL).last?.url, extractURL, "When handling '\(includedURL)'")
+      XCTAssertEqual(service.redirectChain(for: includedURL).last?.url, extractURL, "When handling '\(includedURL)'")
     }
 
     // Then
     // Returns nil for excluded items
     for excludedURL in excludedURLs {
-      XCTAssertNil(downloader.redirectChain(for: excludedURL).last?.url, "When handling '\(excludedURL)'")
+      XCTAssertNil(service.redirectChain(for: excludedURL).last?.url, "When handling '\(excludedURL)'")
     }
   }
 }

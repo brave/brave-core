@@ -278,7 +278,7 @@ extension BrowserViewController: WKNavigationDelegate {
         // Lets get the redirect chain.
         // Then we simply get all elements up until the user allows us to redirect
         // (i.e. appropriate settings are enabled for that redirect rule)
-        let redirectChain = DebouncingResourceDownloader.shared
+        let redirectChain = DebouncingService.shared
           .redirectChain(for: url)
           .contiguousUntil { _, rule in
             return rule.preferences.allSatisfy { pref in
