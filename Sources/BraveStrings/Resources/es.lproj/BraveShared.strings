@@ -100,12 +100,6 @@
 /* cookie settings option */
 "Block3rdPartyCookies" = "Bloquear cookies de terceros";
 
-/* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Bloquear los rastreadores en los sitios";
-
-/* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Impide que salten anuncios, ventanas emergentes y rastreadores.";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Bloquear todas las cookies";
 
@@ -138,9 +132,6 @@
 
 /* A title for setting which blocks 'switch to app' popups */
 "blockMobileAnnoyances" = "Bloquear avisos de cambiar a aplicación";
-
-/* Brave panel individual toggle title */
-"BlockPhishing" = "Bloquear suplantaciones de identidad";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Bloquear ventanas emergentes";
@@ -318,15 +309,6 @@
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Comparte opiniones totalmente anónimas y privadas sobre los productos.";
-
-/* Button title for Playlist Onboarding View */
-"callout.playlistOnboardingViewButtonTitle" = "Ver el vídeo";
-
-/* Description for Playlist Onboarding View */
-"callout.playlistOnboardingViewDescription" = "… reproduce donde y cuando quieras en segundo plano, con la imagen superpuesta o incluso sin conexión. Y, por supuesto, olvídate de los anuncios.";
-
-/* Title for Playlist Onboarding View */
-"callout.playlistOnboardingViewTitle" = "Añade el vídeo a Lista de reproducción…";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Disfruta de la privacidad de Brave en tu ordenador o tableta, y mantén los marcadores y extensiones sincronizados en todos los dispositivos.";
@@ -896,10 +878,10 @@
 "genericErrorTitle" = "Error";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "Bloquear sitios peligrosos";
+"GoogleSafeBrowsing" = "Bloquear sitios web peligrosos";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsingUsingWebKitDescription" = "Envía al servicio de navegación segura de Google URL confusas de algunas de las páginas que visitas cuando tu seguridad está en riesgo.";
+"GoogleSafeBrowsingUsingWebKitDescription" = "La navegación segura te protege frente a sitios web conocidos por ser peligrosos. [Más información](%@)";
 
 /* Grand camera access */
 "GrantCameraAccess" = "Activar cámara";
@@ -986,7 +968,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "Sitio web";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "Para ver las contraseñas, primero debes fijar una clave de acceso en tu dispositivo.";
+"login.loginInfoSetPasscodeAlertDescription" = "Para configurar una cadena de sincronización o ver la configuración, primero debes establecer una clave de acceso en tu dispositivo.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "Fija una clave de acceso";
@@ -1504,6 +1486,9 @@
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto de %@";
 
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "Se ha añadido a %@";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "¿Te gustaría añadir este vídeo a tu lista de reproducción?";
 
@@ -1530,6 +1515,9 @@
 
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Lista de reproducción de Brave";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "Cambiar lista de reproducción";
 
 /* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
 "playlist.deleteForOfflineButtonTitle" = "Eliminar caché sin conexión";
@@ -1566,6 +1554,9 @@
 
 /* Okay Alert button title */
 "playList.okayButtonTitle" = "Aceptar";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "Abrir lista de reproducción";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "Vaya, se ha producido un error al tratar de mostrar la imagen superpuesta.";
@@ -1614,6 +1605,9 @@
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Datos sin conexión de la lista de reproducción";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "Cambiar";
 
 /* The title for the alert that shows up when removing all videos and their offline mode storage. */
 "playList.playlistResetAlertTitle" = "Restablecer";
@@ -1672,6 +1666,9 @@
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Eliminar";
 
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "Se ha eliminado de %@";
+
 /* Message for the alert shown when the user tries to remove offline data of an item from playlist */
 "playlist.removePlaylistOfflineDataAlertMessage" = "Esto eliminará los contenidos audiovisuales del almacenamiento sin conexión. ¿Seguro que quieres continuar?";
 
@@ -1688,7 +1685,7 @@
 "playList.reopenButtonTitle" = "Volver a abrir";
 
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "Guardado para sin conexión";
+"playList.savedForOfflineLabelTitle" = "Se ha añadido al modo sin conexión";
 
 /* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
 "playlist.saveForOfflineButtonTitle" = "Guardar para sin conexión";
@@ -1732,11 +1729,23 @@
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Ver en Brave Playlist";
 
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "Deshacer";
+
 /* Footer for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionFooter" = "Añade un botón de lista de reproducción (formado por cuatro líneas y el signo +) junto a la barra de direcciones del navegador de Brave. Este botón te permite acceder rápidamente a la lista de reproducción que tengas abierta, así como añadir o eliminar contenidos multimedia.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Habilitar botón de acceso rápido";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "Mover a";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "Nombre de la lista de reproducción";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "Introduce el nombre de tu lista de reproducción";
 
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Crear";
@@ -1747,11 +1756,17 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "Editar carpeta";
 
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Editar lista de reproducción";
+
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "Lo sentimos, no hemos podido guardar los cambios que has hecho en esta carpeta";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "Mover";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Lista de reproducción actual";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Mover";
@@ -1768,14 +1783,35 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ y %2$lld elementos más";
 
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Nueva lista de reproducción";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Nueva lista de reproducción";
+
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "Pulsa los vídeos que quieras seleccionar";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Añade vídeos a esta lista de reproducción";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "Reproducir más tarde";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "Selecciona una lista de reproducción para mover %lld elementos";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Selecciona una lista de reproducción para mover 1 elemento";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld elementos";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1 elemento";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Lista de reproducción sin título";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Botón para añadir a Lista de reproducción de Brave";
@@ -2307,9 +2343,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Promoción antigua";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletInfoHeader" = "Información sobre la cartera heredada";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d registros mostrados";
@@ -2854,6 +2887,9 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Esta eliminación es permanente, y no se pueden recuperar los datos. Si decides volver a utilizar Sincronización, tendrás que crear una cuenta nueva y volver a añadir cada dispositivo uno por uno.";
 
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "Fija una clave de acceso";
+
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Ajustes de sincronización";
 
@@ -3049,7 +3085,8 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menú";
 
-/* Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Add to Playlist button
+   Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Lista de reproducción";
 
 /* Accessibility label for the Reader View button */

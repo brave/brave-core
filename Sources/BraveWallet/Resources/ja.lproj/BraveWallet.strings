@@ -32,10 +32,10 @@
 "wallet.activateToken" = "トークン %@ をアクティベートする";
 
 /* The description when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyDescription" = "初回のトランザクション後は、こちらで確認することができます。";
+"wallet.activityPageEmptyDescription" = "実行したトランザクションはこちらで確認できます。";
 
 /* The title when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyTitle" = "まだトランザクションがありません";
+"wallet.activityPageEmptyTitle" = "表示可能なトランザクションがまだありません";
 
 /* The title of the tab that will display user's transaction activity for all accounts. */
 "wallet.activityPageTitle" = "アクティビティ";
@@ -401,7 +401,7 @@
 "wallet.customTokenNetworkHeader" = "ネットワークを選択";
 
 /* The title displayed on the add custom token screen */
-"wallet.customTokenTitle" = "カスタム";
+"wallet.customTokenTitle" = "カスタムアセットを追加";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
 "wallet.dappsConnectionNotificationOriginTitle" = "%@がBraveウォレットとの接続を求めています";
@@ -515,7 +515,7 @@
 "wallet.editfCustomNetworkTitle" = "ネットワークを編集";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
-"wallet.editGasFeeButtonTitle" = "動画の管理";
+"wallet.editGasFeeButtonTitle" = "編集";
 
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "Gasを編集する";
@@ -891,6 +891,24 @@
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "トークン規格";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
+"wallet.nftDiscoveryCalloutDescription" = "Braveウォレットは、サードパーティーのサービスを利用してお客様のNFTを自動的に表示します。Braveはこのサービスを提供するために、お客様のウォレットアドレスをSimpleHashと共有します。詳細はこちらをご覧ください。";
+
+/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "詳細はこちら";
+
+/* The title of the button that user clicks to disable NFT discovery. */
+"wallet.nftDiscoveryCalloutDisable" = "いいえ、手動で設定します";
+
+/* The title of the button that user clicks to enable NFT discovery. */
+"wallet.nftDiscoveryCalloutEnable" = "はい、続行します";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. */
+"wallet.nftDiscoveryCalloutTitle" = "NFTを自動で表示しますか？";
+
+/* The title of the button that user clicks to add his/her first NFT */
+"wallet.nftEmptyImportNFT" = "NFTをインポート";
 
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "有効なIPFSゲートウェイを提供してください。提供されたゲートウェイについては、IPFSリソースの読み込みが可能かどうかの確認が行われます。";
@@ -1707,6 +1725,12 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Web3環境設定";
+
+/* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscovery" = "NFTディスカバリーを有効にする";
+
+/* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "サードパーティーのAPIを使用して、所有するNFTを自動的にウォレットに追加します。[詳細はこちら](%@)";
 
 /* Description of the wrong IPFS gateway alert */
 "wallet.wrongGatewayAlertDescription" = "無効なURLが渡されました。ゲートウェイはIPFSリソースを解決できるものでなければいけません。";

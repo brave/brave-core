@@ -32,10 +32,10 @@
 "wallet.activateToken" = "啟用代幣 %@";
 
 /* The description when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyDescription" = "第一筆交易完成後，您就可在此檢視交易。";
+"wallet.activityPageEmptyDescription" = "進行交易後，即可在此檢視交易。";
 
 /* The title when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyTitle" = "尚無交易";
+"wallet.activityPageEmptyTitle" = "尚無可供檢視的交易";
 
 /* The title of the tab that will display user's transaction activity for all accounts. */
 "wallet.activityPageTitle" = "活動";
@@ -401,7 +401,7 @@
 "wallet.customTokenNetworkHeader" = "選擇網路";
 
 /* The title displayed on the add custom token screen */
-"wallet.customTokenTitle" = "自訂";
+"wallet.customTokenTitle" = "新增自訂資產";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
 "wallet.dappsConnectionNotificationOriginTitle" = "%@ 想與 Brave 錢包互動";
@@ -891,6 +891,24 @@
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "代幣標準";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
+"wallet.nftDiscoveryCalloutDescription" = "Brave 錢包可使用第三方服務來自動顯示您的 NFT。Brave 將與 SimpleHash 分享您的錢包位址，以提供此服務。深入瞭解。";
+
+/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "深入了解";
+
+/* The title of the button that user clicks to disable NFT discovery. */
+"wallet.nftDiscoveryCalloutDisable" = "不用了，謝謝，我會手動執行";
+
+/* The title of the button that user clicks to enable NFT discovery. */
+"wallet.nftDiscoveryCalloutEnable" = "是，請繼續";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. */
+"wallet.nftDiscoveryCalloutTitle" = "想自動顯示您的 NFT 嗎？";
+
+/* The title of the button that user clicks to add his/her first NFT */
+"wallet.nftEmptyImportNFT" = "匯入 NFT";
 
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "應提供有效的 IPFS 閘道。系統會檢查提供的閘道是否可載入 IPFS 資源。";
@@ -1707,6 +1725,12 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Web3 偏好設定";
+
+/* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscovery" = "啟用 NFT 探索";
+
+/* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "使用第三方 API 將您擁有的 NFT 自動新增至「錢包」。[深入瞭解](%@)";
 
 /* Description of the wrong IPFS gateway alert */
 "wallet.wrongGatewayAlertDescription" = "提供的 URL 無效。閘道應可解析 IPFS 資源。";

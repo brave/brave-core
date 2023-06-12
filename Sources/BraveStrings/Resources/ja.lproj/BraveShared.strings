@@ -100,12 +100,6 @@
 /* cookie settings option */
 "Block3rdPartyCookies" = "サードパーティの Cookie をブロック";
 
-/* No comment provided by engineer. */
-"BlockAdsAndTracking" = "クロスサイトトラッキングをブロックする";
-
-/* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "広告、ポップアップ、トラッキングの読み込みをブロックします。";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "すべてのクッキーをブロック";
 
@@ -138,9 +132,6 @@
 
 /* A title for setting which blocks 'switch to app' popups */
 "blockMobileAnnoyances" = "「アプリに切り替える」通知をブロック";
-
-/* Brave panel individual toggle title */
-"BlockPhishing" = "フィッシングをブロック";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "ポップアップをブロック";
@@ -318,15 +309,6 @@
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "完全非公開、匿名で製品のインサイトを共有します。";
-
-/* Button title for Playlist Onboarding View */
-"callout.playlistOnboardingViewButtonTitle" = "説明を見る";
-
-/* Description for Playlist Onboarding View */
-"callout.playlistOnboardingViewDescription" = "どこでも、好きなときに動画を楽しめます。バックグラウンド再生、ピクチャーインピクチャー再生、オフライン再生も可能です。そしてもちろん、広告は表示されません。";
-
-/* Title for Playlist Onboarding View */
-"callout.playlistOnboardingViewTitle" = "動画をPlaylistに追加しよう";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Braveによるプライバシー保護を、パソコンやタブレットでも活用しよう。ブックマークや拡張機能をデバイス間で同期することもできます。";
@@ -710,7 +692,7 @@
 "Earlier" = "さらに前";
 
 /* No comment provided by engineer. */
-"Edit" = "動画の管理";
+"Edit" = "編集";
 
 /* Button to edit a bookmark */
 "EditBookmark" = "ブックマークを編集";
@@ -836,7 +818,7 @@
 "FilterListsDownloadPending" = "ダウンロード待ち";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "動画の管理";
+"FilterListsEdit" = "編集";
 
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "フィルターリストのURLを入力";
@@ -896,10 +878,10 @@
 "genericErrorTitle" = "エラー";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "危険なサイトをブロック";
+"GoogleSafeBrowsing" = "危険なウェブサイトをブロック";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsingUsingWebKitDescription" = "セキュリティ上の危険が存在する場合、訪問したページの難読化されたURLの一部をGoogle セーフ ブラウジング サービスに送信します";
+"GoogleSafeBrowsingUsingWebKitDescription" = "セーフ ブラウジングは、危険だと考えられるウェブサイトからブラウザを保護します。[詳細はこちら](%@)";
 
 /* Grand camera access */
 "GrantCameraAccess" = "カメラを有効にする";
@@ -986,7 +968,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "ウェブサイト";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "パスワードを見るには、まずあなたのデバイスにパスコードが設定されている必要があります。";
+"login.loginInfoSetPasscodeAlertDescription" = "シンクチェーンの設定や設定を見るには、まず端末にパスコードを設定する必要があります。";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "パスコードを設定する";
@@ -1504,6 +1486,9 @@
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Photo by %@";
 
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "%@に追加しました";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "この動画をPlaylistに追加しますか？";
 
@@ -1530,6 +1515,9 @@
 
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Brave Playlist";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "プレイリストを変更";
 
 /* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
 "playlist.deleteForOfflineButtonTitle" = "オフラインキャッシュを削除";
@@ -1566,6 +1554,9 @@
 
 /* Okay Alert button title */
 "playList.okayButtonTitle" = "OK";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "プレイリストで開く";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "すみません、エラーによりピクチャ・イン・ピクチャで表示できません。";
@@ -1614,6 +1605,9 @@
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Playlistオフラインデータ";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "変更";
 
 /* The title for the alert that shows up when removing all videos and their offline mode storage. */
 "playList.playlistResetAlertTitle" = "リセット";
@@ -1672,6 +1666,9 @@
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "削除";
 
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "%@から削除しました";
+
 /* Message for the alert shown when the user tries to remove offline data of an item from playlist */
 "playlist.removePlaylistOfflineDataAlertMessage" = "メディアをオフライン再生用のストレージから消去します。本当によろしいですか？";
 
@@ -1688,7 +1685,7 @@
 "playList.reopenButtonTitle" = "再度開く";
 
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "オフライン再生の準備中";
+"playList.savedForOfflineLabelTitle" = "オフラインに追加";
 
 /* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
 "playlist.saveForOfflineButtonTitle" = "オフライン再生可能にする";
@@ -1732,11 +1729,23 @@
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Brave Playlistで見る";
 
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "元に戻す";
+
 /* Footer for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionFooter" = "Braveブラウザのアドレスバーの横に、Playlistボタンを追加します。（4本の線と+が組み合わさったような見た目です。）このボタンにより、Playlistを開いたり、メディアを追加したり削除したりすることが素早く行えるようになります。";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "クイックアクセスボタンを有効にする";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "次に移動:";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "プレイリスト名";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "プレイリスト名を入力";
 
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "作成";
@@ -1747,11 +1756,17 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "フォルダを編集";
 
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "プレイリストを編集";
+
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "このフォルダへの変更を保存できませんでした";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "移動";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "現在のプレイリスト";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "移動";
@@ -1768,14 +1783,35 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ほか%2$lld件のアイテム";
 
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "新しいプレイリスト";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "新しいプレイリスト";
+
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "タップして動画を選択";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "このプレイリストに動画を追加";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "後で再生する";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "%lld件のアイテムを移動するプレイリストを選択";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "1件のアイテムを移動するプレイリストを選択";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld件のアイテム";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1件のアイテム";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "無題のプレイリスト";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "ボタンをクリックするとBrave Playlistに追加します";
@@ -2307,9 +2343,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "過去のプロモーション";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletInfoHeader" = "旧ウォレットの情報";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "ログが%d 件表示中";
@@ -2854,6 +2887,9 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。";
 
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "パスコードを設定する";
+
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Sync設定";
 
@@ -3049,7 +3085,8 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "メニュー";
 
-/* Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Add to Playlist button
+   Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
 /* Accessibility label for the Reader View button */

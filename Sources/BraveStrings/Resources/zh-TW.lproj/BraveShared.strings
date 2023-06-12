@@ -100,12 +100,6 @@
 /* cookie settings option */
 "Block3rdPartyCookies" = "拦截第三方 cookies";
 
-/* No comment provided by engineer. */
-"BlockAdsAndTracking" = "封鎖跨網站追蹤器";
-
-/* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "禁止載入廣告、彈出式視窗和追蹤器。";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "封鎖所有 Cookie";
 
@@ -138,9 +132,6 @@
 
 /* A title for setting which blocks 'switch to app' popups */
 "blockMobileAnnoyances" = "封鎖「切換至應用程式」通知";
-
-/* Brave panel individual toggle title */
-"BlockPhishing" = "封鎖網路釣魚";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "封鎖彈出式視窗";
@@ -318,15 +309,6 @@
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "分享完全不公開的匿名產品深入分析。";
-
-/* Button title for Playlist Onboarding View */
-"callout.playlistOnboardingViewButtonTitle" = "觀看影片";
-
-/* Description for Playlist Onboarding View */
-"callout.playlistOnboardingViewDescription" = "…隨時隨地播放。在背景播放、以子母畫面播放，甚至離線播放。當然，完全沒有廣告干擾。";
-
-/* Title for Playlist Onboarding View */
-"callout.playlistOnboardingViewTitle" = "將影片新增至播放清單…";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "在您的電腦或平板電腦上享有 Brave 隱私保護，並且讓各裝置上的書籤和擴充功能保持同步。";
@@ -899,7 +881,7 @@
 "GoogleSafeBrowsing" = "封鎖不安全的網站";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsingUsingWebKitDescription" = "當您有安全風險時，將您所造訪部分網頁的網址經模糊處理後傳送給 Google 安全瀏覽服務。";
+"GoogleSafeBrowsingUsingWebKitDescription" = "安全瀏覽可防止造訪已知不安全的網站。[深入瞭解](%@)";
 
 /* Grand camera access */
 "GrantCameraAccess" = "啟用相機";
@@ -986,7 +968,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "網站";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "若要查看密碼，您必須先在裝置上設定密碼。";
+"login.loginInfoSetPasscodeAlertDescription" = "若要設定同步鏈或查看密碼，您必須先在裝置上設定密碼。";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "設定密碼";
@@ -1504,6 +1486,9 @@
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "圖片由 %@ 提供";
 
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "已新增至「%@」";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "你想新增此影片至播放清單嗎？";
 
@@ -1530,6 +1515,9 @@
 
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Brave 播放清單";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "變更播放清單";
 
 /* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
 "playlist.deleteForOfflineButtonTitle" = "刪除離線快取";
@@ -1566,6 +1554,9 @@
 
 /* Okay Alert button title */
 "playList.okayButtonTitle" = "確定";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "在播放清單中開啟";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "抱歉，嘗試顯示子母畫面時發生錯誤。";
@@ -1614,6 +1605,9 @@
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "播放清單離線數據";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "變更";
 
 /* The title for the alert that shows up when removing all videos and their offline mode storage. */
 "playList.playlistResetAlertTitle" = "重設";
@@ -1672,6 +1666,9 @@
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "移除";
 
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "已從「%@」中移除";
+
 /* Message for the alert shown when the user tries to remove offline data of an item from playlist */
 "playlist.removePlaylistOfflineDataAlertMessage" = "這將刪除離線儲存的媒體。你確定要繼續嗎？";
 
@@ -1688,7 +1685,7 @@
 "playList.reopenButtonTitle" = "重新開啟";
 
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "已離線儲存";
+"playList.savedForOfflineLabelTitle" = "已新增至「離線」";
 
 /* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
 "playlist.saveForOfflineButtonTitle" = "儲存以供離線播放";
@@ -1732,11 +1729,23 @@
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "檢視 Brave Playlist";
 
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "復原";
+
 /* Footer for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionFooter" = "在 Brave 瀏覽器的網址列旁邊新增一個播放清單按鈕 (看起來像 4 行附 + 符號)。此按鈕可讓您快速存取，以開啟播放清單，或者新增或移除媒體。";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "啟用快速存取按鈕";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "移至";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "播放清單名稱";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "輸入您的播放清單名稱";
 
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "建立";
@@ -1747,11 +1756,17 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "編輯資料夾";
 
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "編輯播放清單";
+
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "抱歉，無法儲存您對此資料夾所做的變更";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "移動";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "目前的播放清單";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "移動";
@@ -1768,14 +1783,35 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ 和另外 %2$lld 個項目";
 
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "新增播放清單";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "新增播放清單";
+
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "輕觸以選取影片";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "將影片新增至此播放清單";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "稍後播放";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "選取要將 %lld 個項目移至其中的播放清單";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "選取要將 1 個項目移至其中的播放清單";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld 個項目";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1 個項目";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "未命名的播放清單";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "新增至 Brave 播放清單按鈕";
@@ -2307,9 +2343,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "舊行銷活動";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletInfoHeader" = "舊版錢包資訊";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "顯示 %d 筆記錄";
@@ -2854,6 +2887,9 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "一旦刪除即永久刪除，資料將無法復原。如果您決定再次使用 Sync，您將需要建立新帳戶，並逐一重新新增每部裝置。";
 
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "設定密碼";
+
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "同步設定";
 
@@ -3049,7 +3085,8 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "選單";
 
-/* Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Add to Playlist button
+   Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "播放清單";
 
 /* Accessibility label for the Reader View button */

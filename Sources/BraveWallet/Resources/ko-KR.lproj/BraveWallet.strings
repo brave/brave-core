@@ -32,10 +32,10 @@
 "wallet.activateToken" = "토큰 %@ 활성화";
 
 /* The description when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyDescription" = "첫 트랜잭션 이후 여기서 볼 수 있습니다.";
+"wallet.activityPageEmptyDescription" = "트랜잭션이 완료되면 여기서 볼 수 있습니다.";
 
 /* The title when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyTitle" = "아직 트랜잭션 없음";
+"wallet.activityPageEmptyTitle" = "아직 볼 수 있는 트랜잭션 없음";
 
 /* The title of the tab that will display user's transaction activity for all accounts. */
 "wallet.activityPageTitle" = "활동";
@@ -401,7 +401,7 @@
 "wallet.customTokenNetworkHeader" = "네트워크 선택";
 
 /* The title displayed on the add custom token screen */
-"wallet.customTokenTitle" = "맞춤";
+"wallet.customTokenTitle" = "맞춤 자산 추가";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
 "wallet.dappsConnectionNotificationOriginTitle" = "%@이(가) Brave 월렛과 상호작용하려고 함";
@@ -891,6 +891,24 @@
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "토큰 표준";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
+"wallet.nftDiscoveryCalloutDescription" = "Brave 월렛은 귀하의 NFT를 자동으로 표시하기 위해 제3자 서비스를 사용할 수 있습니다. Brave는 이 서비스를 제공하기 위한 목적으로 SimpleHash에 귀하의 월렛 주소를 공유합니다. 자세히 알아보세요.";
+
+/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "자세히 알아보기";
+
+/* The title of the button that user clicks to disable NFT discovery. */
+"wallet.nftDiscoveryCalloutDisable" = "아니요, 직접 하겠습니다";
+
+/* The title of the button that user clicks to enable NFT discovery. */
+"wallet.nftDiscoveryCalloutEnable" = "예, 진행합니다";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. */
+"wallet.nftDiscoveryCalloutTitle" = "NFT를 자동으로 표시하고 싶으십니까?";
+
+/* The title of the button that user clicks to add his/her first NFT */
+"wallet.nftEmptyImportNFT" = "NFT 가져오기";
 
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "유효한 IPFS 게이트웨이를 제공해야 합니다. 제공된 게이트웨이에 IPFS 리소스 로드 권한이 있는지 확인합니다.";
@@ -1707,6 +1725,12 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Web3 선호설정";
+
+/* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscovery" = "NFT 디스커버리 활성화";
+
+/* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "보유한 NFT를 제3자 API를 사용하여 자동으로 월렛에 추가합니다. [자세히 알아보기](%@)";
 
 /* Description of the wrong IPFS gateway alert */
 "wallet.wrongGatewayAlertDescription" = "유효하지 않은 URL이 제공되었습니다. 게이트웨이가 IPFS 리소스를 해석할 수 있어야 합니다.";

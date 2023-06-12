@@ -32,10 +32,10 @@
 "wallet.activateToken" = "Aktifkan Token %@";
 
 /* The description when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyDescription" = "Selepas transaksi pertama, anda akan boleh memaparkan transaksi di sini.";
+"wallet.activityPageEmptyDescription" = "Setelah anda membuat transaksi, anda akan dapat melihat transaksi ini di sini.";
 
 /* The title when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyTitle" = "Belum ada transaksi";
+"wallet.activityPageEmptyTitle" = "Tiada transaksi untuk dilihat lagi";
 
 /* The title of the tab that will display user's transaction activity for all accounts. */
 "wallet.activityPageTitle" = "Aktiviti";
@@ -401,7 +401,7 @@
 "wallet.customTokenNetworkHeader" = "Pilih rangkaian";
 
 /* The title displayed on the add custom token screen */
-"wallet.customTokenTitle" = "Tersuai";
+"wallet.customTokenTitle" = "Tambah Aset Tersuai";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
 "wallet.dappsConnectionNotificationOriginTitle" = "%@ mahu berinteraksi dengan Dompet Brave";
@@ -891,6 +891,24 @@
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "Standard token";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
+"wallet.nftDiscoveryCalloutDescription" = "Brave Wallet boleh menggunakan perkhidmatan pihak ketiga untuk memaparkan NFT anda secara automatik. Brave akan berkongsi alamat dompet anda dengan SimpleHash untuk menyediakan perkhidmatan ini. Ketahui lebih lanjut.";
+
+/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "Ketahui lebih lanjut";
+
+/* The title of the button that user clicks to disable NFT discovery. */
+"wallet.nftDiscoveryCalloutDisable" = "Tidak, terima kasih, saya akan membuat secara manual";
+
+/* The title of the button that user clicks to enable NFT discovery. */
+"wallet.nftDiscoveryCalloutEnable" = "Ya, teruskan";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. */
+"wallet.nftDiscoveryCalloutTitle" = "Mahu NFT anda dipaparkan secara automatik?";
+
+/* The title of the button that user clicks to add his/her first NFT */
+"wallet.nftEmptyImportNFT" = "Import NFT";
 
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "Get laluan IPFS sah patut disediakan. Get laluan yang disediakan akan diperiksa dari segi keupayaan untuk memuatkan sumber IPFS.";
@@ -1707,6 +1725,12 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Keutamaan Web3";
+
+/* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscovery" = "Dayakan Penemuan NFT";
+
+/* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "Tambah NFT yang anda miliki secara automatik kepada Wallet dengan menggunakan API pihak ketiga. [Ketahui lebih lanjut](%@)";
 
 /* Description of the wrong IPFS gateway alert */
 "wallet.wrongGatewayAlertDescription" = "Url tidak sah telah diberikan. Get laluan sepatutnya boleh menyelesaikan sumber IPFS.";
