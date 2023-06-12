@@ -20,7 +20,6 @@ import { groupAccountsById, sortAccountsByName } from '../../../../utils/account
 
 // Styled Components
 import {
-  StyledWrapper,
   SectionTitle,
   PrimaryListContainer,
   SecondaryListContainer,
@@ -33,7 +32,7 @@ import {
   WalletIcon
 } from './style'
 
-import { ScrollableColumn, Column } from '../../../shared/style'
+import { Column } from '../../../shared/style'
 
 // Components
 import {
@@ -85,8 +84,7 @@ export const Accounts = () => {
 
   // render
   return (
-    <StyledWrapper>
-      <ScrollableColumn>
+    <>
         <Column fullWidth={true} alignItems='flex-start'>
           <SectionTitle>{getLocale('braveWalletAccountsPrimary')}</SectionTitle>
           <DisclaimerText>
@@ -175,8 +173,7 @@ export const Accounts = () => {
             </ButtonText>
           </StyledButton>
         </ButtonRow>
-      </ScrollableColumn>
-    </StyledWrapper>
+    </>
   )
 }
 
