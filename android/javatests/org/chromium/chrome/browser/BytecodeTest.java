@@ -120,6 +120,7 @@ import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
+import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
@@ -811,7 +812,8 @@ public class BytecodeTest {
                         DragReorderableRecyclerViewAdapter.class, LargeIconBridge.class,
                         boolean.class, boolean.class, ObservableSupplierImpl.class, Profile.class,
                         BookmarkUndoController.class, ModelList.class, BookmarkUiPrefs.class,
-                        Runnable.class, BookmarkImageFetcher.class));
+                        Runnable.class, BookmarkImageFetcher.class, ShoppingService.class,
+                        SnackbarManager.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkModel",
