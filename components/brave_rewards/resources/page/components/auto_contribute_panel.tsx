@@ -25,6 +25,8 @@ import { TrashIcon } from './icons/trash_icon'
 import * as urls from '../../shared/lib/rewards_urls'
 import * as style from './auto_contribute_panel.style'
 
+import * as Rewards from '../lib/types'
+
 const maxTableSize = 5
 
 export function AutoContributePanel () {

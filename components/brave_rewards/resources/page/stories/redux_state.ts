@@ -5,6 +5,7 @@
 
 import { defaultState } from '../reducers/default_state'
 import { optional } from '../../shared/lib/optional'
+import * as Rewards from '../lib/types'
 
 export const reduxState: Rewards.ApplicationState = {
   rewardsData: {

@@ -9,6 +9,7 @@ import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { adsPerHourOptions } from '../../shared/lib/ads_options'
+import * as Rewards from '../lib/types'
 
 import {
   externalWalletFromExtensionData,

@@ -6,6 +6,7 @@
 import { action } from 'typesafe-actions'
 import { types } from './rewards_types'
 import * as mojom from '../../shared/lib/mojom'
+import * as Rewards from '../lib/types'
 
 export const isInitialized = () => action(types.IS_INITIALIZED)
 
