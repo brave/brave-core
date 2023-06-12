@@ -1,4 +1,4 @@
 include_rules = [
-  "+extensions/common",
   "+brave/browser/widevine/buildflags.h",
+  "+extensions/common",
 ]
