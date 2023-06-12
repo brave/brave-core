@@ -75,11 +75,11 @@ void ClearWidevinePrefs(Profile* profile) {
   prefs->ClearPref(kWidevineOptedIn);
 }
 
-}  // namespace
-
 void InstallWidevineOnceRegistered() {
   component_updater::BraveOnDemandUpdate(kWidevineComponentId);
 }
+
+}  // namespace
 
 void EnableWidevineCdmComponent() {
   if (IsWidevineOptedIn())
