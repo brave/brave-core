@@ -898,8 +898,6 @@ source_set("internal") {
     "legacy_migration/confirmations/legacy_confirmation_migration.h",
     "legacy_migration/confirmations/legacy_confirmation_migration_util.cc",
     "legacy_migration/confirmations/legacy_confirmation_migration_util.h",
-    "legacy_migration/conversions/legacy_conversions_migration.cc",
-    "legacy_migration/conversions/legacy_conversions_migration.h",
     "legacy_migration/database/database_constants.h",
     "legacy_migration/database/database_creation.cc",
     "legacy_migration/database/database_creation.h",
