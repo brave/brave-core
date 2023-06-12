@@ -230,6 +230,12 @@ extension URL {
 
     return self
   }
+  
+  public var withoutFragment: URL {
+    var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
+    components?.fragment = nil
+    return components?.url ?? self
+  }
 
   public var withoutWWW: URL {
     if let normalized = self.normalizedHost(stripWWWSubdomainOnly: true),
