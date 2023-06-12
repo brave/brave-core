@@ -44,12 +44,12 @@ final class ScriptExecutionTests: XCTestCase {
     // Load the sample htmls page and await the first page load result
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try! String(contentsOf: htmlURL, encoding: .utf8)
-    try await viewController.loadHTMLString(htmlString)
+    try await viewController.loadHTMLStringAndWait(htmlString)
     
     // Then
     // Await the script handler and checks it's contents
     var foundMessage: SiteStateListenerScriptHandler.MessageDTO?
-    for await message in stream {
+    for try await message in stream {
       do {
         let data = try JSONSerialization.data(withJSONObject: message.body)
         foundMessage = try JSONDecoder().decode(SiteStateListenerScriptHandler.MessageDTO.self, from: data)
@@ -102,14 +102,14 @@ final class ScriptExecutionTests: XCTestCase {
     // Load the sample htmls page and await the first page load result
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try! String(contentsOf: htmlURL, encoding: .utf8)
-    async let load1: Void = controlViewController.loadHTMLString(htmlString)
-    async let load2: Void = farbledViewController.loadHTMLString(htmlString)
+    async let load1: Void = controlViewController.loadHTMLStringAndWait(htmlString)
+    async let load2: Void = farbledViewController.loadHTMLStringAndWait(htmlString)
     _ = try await (load1, load2)
     
     // Then
     // Await the results
     var farblingResult: FarblingTestDTO?
-    for await message in stream {
+    for try await message in stream {
       do {
         let data = try JSONSerialization.data(withJSONObject: message.body)
         farblingResult = try JSONDecoder().decode(FarblingTestDTO.self, from: data)
@@ -121,7 +121,7 @@ final class ScriptExecutionTests: XCTestCase {
       break
     }
     var controlResult: FarblingTestDTO?
-    for await message in controlStream {
+    for try await message in controlStream {
       do {
         let data = try JSONSerialization.data(withJSONObject: message.body)
         controlResult = try JSONDecoder().decode(FarblingTestDTO.self, from: data)
@@ -179,12 +179,12 @@ final class ScriptExecutionTests: XCTestCase {
     // Load the sample htmls page and await the first page load result
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
-    try await viewController.loadHTMLString(htmlString)
+    try await viewController.loadHTMLStringAndWait(htmlString)
     
     // Then
     // Await the script handler and checks it's contents
     var foundMessage: RequestBlockingTestDTO?
-    for await message in blockingResultStream {
+    for try await message in blockingResultStream {
       do {
         let data = try JSONSerialization.data(withJSONObject: message.body)
         foundMessage = try JSONDecoder().decode(RequestBlockingTestDTO.self, from: data)
@@ -296,7 +296,7 @@ final class ScriptExecutionTests: XCTestCase {
     // Load the sample htmls page and await the first page load result
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
-    try await viewController.loadHTMLString(htmlString)
+    try await viewController.loadHTMLStringAndWait(htmlString)
     
     // Execute the selectors poller script
     let script = try ScriptFactory.shared.makeScript(for: .selectorsPoller(setup))
@@ -308,7 +308,7 @@ final class ScriptExecutionTests: XCTestCase {
     
     // Await the execution of the selectors message handler
     // (so we know we already hid our elements)
-    for await _ in selectorsMessageHandler.messagesStream() {
+    for try await _ in selectorsMessageHandler {
       // We only care about the first script handler result
       break
     }
@@ -329,7 +329,7 @@ final class ScriptExecutionTests: XCTestCase {
     
     // Await the results of the test script
     var resultsAfterPump: CosmeticFilteringTestDTO?
-    for await message in testResultMessageHandler.messagesStream() {
+    for try await message in testResultMessageHandler {
       do {
         let data = try JSONSerialization.data(withJSONObject: message.body)
         resultsAfterPump = try JSONDecoder().decode(CosmeticFilteringTestDTO.self, from: data)
