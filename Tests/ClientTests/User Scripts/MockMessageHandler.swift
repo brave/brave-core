@@ -6,53 +6,48 @@
 import Foundation
 import WebKit
 
-class MockMessageHandler: NSObject, WKScriptMessageHandlerWithReply {
-  typealias Callback = (WKScriptMessage) -> Any?
-  private let callback: Callback
-  private var streamCallback: ((WKScriptMessage) -> Void)?
-  private var streamTimer: Timer?
-  private var messages: [WKScriptMessage] = []
+class MockMessageHandler: NSObject, WKScriptMessageHandlerWithReply, AsyncSequence, AsyncIteratorProtocol {
+  enum LoadError: Error {
+    case timedOut
+  }
   
-  init(callback: @escaping Callback) {
+  typealias AsyncIterator = MockMessageHandler
+  typealias Element = WKScriptMessage
+  typealias Callback = (Element) -> Any?
+  
+  private let callback: Callback
+  private var messages: [WKScriptMessage] = []
+  private var timeout: TimeInterval
+  private var start: Date
+  
+  init(timeout: TimeInterval = 30, callback: @escaping Callback) {
     self.callback = callback
+    self.start = Date()
+    self.timeout = timeout
   }
   
   // MARK: - WKScriptMessageHandlerWithReply
   func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
     let reply = callback(message)
     replyHandler(reply, nil)
-    
-    if let callback = streamCallback {
-      callback(message)
-    } else {
-      messages.append(message)
-    }
+    messages.append(message)
   }
   
-  func messagesStream(timeout: TimeInterval = 10) -> AsyncStream<WKScriptMessage> {
-    return AsyncStream { continuation in
-      if messages.isEmpty {
-        // Add a timeout in case the script is bad and the handler never triggers
-        // (so we don't the test hang for ever)
-        streamTimer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false, block: { _ in
-          self.streamCallback = nil
-          continuation.finish()
-        })
+  func next() async throws -> Element? {
+    while Date().timeIntervalSince(start) < timeout {
+      guard !messages.isEmpty else {
+        try await Task.sleep(seconds: 0.5)
+        continue
       }
       
-      while !messages.isEmpty {
-        continuation.yield(messages.removeFirst())
-      }
-      
-      streamCallback = { message in
-        self.streamTimer?.invalidate()
-        continuation.yield(message)
-      }
-      
-      continuation.onTermination = { @Sendable _ in
-        self.streamTimer?.invalidate()
-        self.streamCallback = nil
-      }
+      return messages.removeFirst()
     }
+    
+    throw LoadError.timedOut
+  }
+  
+  func makeAsyncIterator() -> MockMessageHandler {
+    self.start = Date()
+    return self
   }
 }

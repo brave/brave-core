@@ -10,25 +10,18 @@ import CryptoKit
 @testable import Brave
 
 class MockScriptsViewController: UIViewController {
-  enum LoadError: Error {
-    case timedOut
-  }
-  
-  typealias LoadCallback = (Error?) -> Void?
-  
   let webView: WKWebView
   let scriptFactory: ScriptFactory
   
   private let userScriptManager = UserScriptManager()
-  private var loadCallback: LoadCallback?
+  private let delegateStream = ScriptsNavigationDelegateStream()
   
   init() {
     let configuration = WKWebViewConfiguration()
     self.webView = WKWebView(frame: CGRect(width: 10, height: 10), configuration: configuration)
     self.scriptFactory = ScriptFactory()
     super.init(nibName: nil, bundle: nil)
-    
-    webView.navigationDelegate = self
+    webView.navigationDelegate = delegateStream
   }
   
   required init?(coder: NSCoder) {
@@ -62,50 +55,19 @@ class MockScriptsViewController: UIViewController {
     webView.configuration.userContentController.addUserScript(userScript)
   }
   
-  func loadHTMLString(_ htmlString: String, timeout: TimeInterval = 10) async throws {
-    return try await withCheckedThrowingContinuation { continuation in
-      self.webView.loadHTMLString(htmlString, baseURL: URL(string: "https://example.com"))
-      // Add a timeout incase something is wrong (so we don't the test hang for ever)
-      let timer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false, block: { _ in
-        continuation.resume(throwing: LoadError.timedOut)
-        
-        Task { @MainActor in
-          self.loadCallback = nil
-        }
-      })
-      
-      self.loadCallback = { error in
-        self.loadCallback = nil
-        timer.invalidate()
-        continuation.resume()
-      }
-    }
+  func loadHTMLString(_ htmlString: String) -> ScriptsNavigationDelegateStream {
+    self.webView.loadHTMLString(htmlString, baseURL: URL(string: "https://example.com"))
+    return delegateStream
   }
   
-  // MARK: - MockMessageHandler
-  
-  func attachScriptHandler(contentWorld: WKContentWorld, name: String, timeout: TimeInterval = 10) -> AsyncStream<WKScriptMessage> {
-    return AsyncStream { continuation in
-      let userContentController = webView.configuration.userContentController
-      // Add a timeout in case the script is bad and the handler never triggers
-      // (so we don't the test hang for ever)
-      let timer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false, block: { _ in
-        continuation.finish()
-      })
-      
-      continuation.onTermination = { @Sendable _ in
-        userContentController.removeScriptMessageHandler(forName: name)
+  func loadHTMLStringAndWait(_ htmlString: String) async throws {
+    for try await result in loadHTMLString(htmlString) {
+      if let error = result.error {
+        throw error
+      } else {
+        // We only care about the first result because we know the page loaded
+        break
       }
-      
-      userContentController.addScriptMessageHandler(
-        MockMessageHandler { message in
-          timer.invalidate()
-          continuation.yield(message)
-          return nil
-        },
-        contentWorld: contentWorld,
-        name: name
-      )
     }
   }
   
@@ -119,16 +81,38 @@ class MockScriptsViewController: UIViewController {
     
     return messageHandler
   }
+  
+  func attachScriptHandler(contentWorld: WKContentWorld, name: String, timeout: TimeInterval = 30) -> MockMessageHandler {
+    return attachScriptHandler(
+      contentWorld: contentWorld, name: name,
+      messageHandler: MockMessageHandler(timeout: timeout) { _ in
+        return nil
+      }
+    )
+  }
 }
 
-// MARK: - WKNavigationDelegate
-
-extension MockScriptsViewController: WKNavigationDelegate {
+class ScriptsNavigationDelegateStream: NSObject, WKNavigationDelegate, AsyncSequence, AsyncIteratorProtocol {
+  typealias AsyncIterator = ScriptsNavigationDelegateStream
+  typealias Element = (navigation: WKNavigation, error: Error?)
+  private var messages: [Element] = []
+  private let timeout: TimeInterval
+  private var start: Date
+  
+  init(timeout: TimeInterval = 30) {
+    self.timeout = timeout
+    self.start = Date()
+  }
+  
+  enum LoadError: Error {
+    case timedOut
+  }
+  
   func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
   }
   
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    loadCallback?(nil)
+    messages.append((navigation, nil))
   }
   
   func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
@@ -136,6 +120,24 @@ extension MockScriptsViewController: WKNavigationDelegate {
   }
   
   func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-    loadCallback?(error)
+    messages.append((navigation, error))
+  }
+  
+  func next() async throws -> Element? {
+    while Date().timeIntervalSince(start) < timeout {
+      guard !messages.isEmpty else {
+        try await Task.sleep(seconds: 0.5)
+        continue
+      }
+      
+      return messages.removeFirst()
+    }
+    
+    throw LoadError.timedOut
+  }
+  
+  func makeAsyncIterator() -> ScriptsNavigationDelegateStream {
+    self.start = Date()
+    return self
   }
 }
