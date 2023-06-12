@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/rand_util.h"
+#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -88,7 +89,7 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
   count_to_branded_wallpaper_--;
   if (count_to_branded_wallpaper_ < 0) {
     // Reset count and randomize image index for next time.
-    count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
+    count_to_branded_wallpaper_ = features::kCountToBrandedWallpaper.Get();
 
     if (always_show_branded_wallpaper_) {
       // Reset count and increse image index for next time.

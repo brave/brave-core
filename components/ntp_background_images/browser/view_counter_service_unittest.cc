@@ -226,7 +226,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
   }
 
   int GetInitialCountToBrandedWallpaper() const {
-    return kInitialCountToBrandedWallpaper;
+    return features::kInitialCountToBrandedWallpaper.Get();
   }
 
   absl::optional<base::Value::Dict> TryGetFirstSponsoredImageWallpaper() {
@@ -354,7 +354,8 @@ TEST_F(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn) {
 TEST_F(NTPBackgroundImagesViewCounterTest, PrefsWithModelTest) {
   auto& model = view_counter_->model_;
 
-  EXPECT_EQ(kInitialCountToBrandedWallpaper, model.show_branded_wallpaper_);
+  EXPECT_EQ(features::kInitialCountToBrandedWallpaper.Get(),
+            model.show_branded_wallpaper_);
   EXPECT_TRUE(model.show_wallpaper_);
   EXPECT_TRUE(model.show_branded_wallpaper_);
   EXPECT_FALSE(model.always_show_branded_wallpaper_);
