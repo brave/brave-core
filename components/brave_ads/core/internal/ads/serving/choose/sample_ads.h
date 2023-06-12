@@ -49,14 +49,14 @@ absl::optional<T> SampleAdFromPredictors(
   }
 
   const double rand = base::RandDouble();
-  double sum = 0;
 
+  double sum = 0.0;
   for (const auto& [segment, ad_predictor] : creative_ad_predictors) {
     const double probability = ad_predictor.score / normalizing_constant;
     sum += probability;
 
-    if (rand < sum && !base::IsApproximatelyEqual(
-                          rand, sum, std::numeric_limits<double>::epsilon())) {
+    if (rand <= sum || base::IsApproximatelyEqual(
+                           rand, sum, std::numeric_limits<double>::epsilon())) {
       return ad_predictor.creative_ad;
     }
   }
