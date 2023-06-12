@@ -23,15 +23,16 @@ constexpr wchar_t kBraveVpnWireguardServiceRegistryStoragePath[] =
 constexpr wchar_t kBraveVpnWireguardServiceSubFolder[] =
     L"BraveVpnWireguardService";
 
+// 053057AB-CF06-4E6C-BBAD-F8DA6436D933
+constexpr IID kBraveWireguardServiceIID = {
+    0x053057ab,
+    0xcf06,
+    0x4e6c,
+    {0xbb, 0xad, 0xf8, 0xda, 0x64, 0x36, 0xd9, 0x33}};
+
 #if BUILDFLAG(CHANNEL_NIGHTLY)
 constexpr wchar_t kBraveWireguardTunnelServiceName[] =
     L"BraveVpnNightlyWireguardTunnelService";
-// 8C2EE50E-9130-4B30-84C1-34753BF26E1B
-constexpr IID kBraveWireguardServiceIID = {
-    0x8c2ee50e,
-    0x9130,
-    0x4b30,
-    {0x84, 0xc1, 0x34, 0x75, 0x3b, 0xf2, 0x6e, 0x18}};
 // A8D57D90-7A29-4405-91D7-A712F347E426
 constexpr CLSID kBraveWireguardServiceCLSID = {
     0xa8d57d90,
@@ -41,12 +42,6 @@ constexpr CLSID kBraveWireguardServiceCLSID = {
 #elif BUILDFLAG(CHANNEL_BETA)
 constexpr wchar_t kBraveWireguardTunnelServiceName[] =
     L"BraveVpnBetaWireguardTunnelService";
-// FB4C65B6-98B4-426B-8B11-5DB735526A84
-constexpr IID kBraveWireguardServiceIID = {
-    0xfb4c65b6,
-    0x98b4,
-    0x426b,
-    {0x8b, 0x11, 0x5d, 0xb7, 0x35, 0x52, 0x6a, 0x84}};
 // 93175676-5FAC-4D73-B1E1-5485003C9427
 constexpr CLSID kBraveWireguardServiceCLSID = {
     0x93175676,
@@ -56,12 +51,6 @@ constexpr CLSID kBraveWireguardServiceCLSID = {
 #elif BUILDFLAG(CHANNEL_DEV)
 constexpr wchar_t kBraveWireguardTunnelServiceName[] =
     L"BraveVpnDevWireguardTunnelService";
-// E278A30A-CA8C-4885-A468-67741705A518
-constexpr IID kBraveWireguardServiceIID = {
-    0xe278a30a,
-    0xca8c,
-    0x4885,
-    {0xa4, 0x68, 0x67, 0x74, 0x17, 0x05, 0xa5, 0x18}};
 // 52C95DE1-D7D9-4C03-A275-8A4517AFAE08
 constexpr CLSID kBraveWireguardServiceCLSID = {
     0x52c95de1,
@@ -71,12 +60,6 @@ constexpr CLSID kBraveWireguardServiceCLSID = {
 #elif BUILDFLAG(CHANNEL_DEVELOPMENT)
 constexpr wchar_t kBraveWireguardTunnelServiceName[] =
     L"BraveVpnDevelopmentWireguardTunnelService";
-// 048EC63C-E2F2-4288-BEA0-DB58AD9CC20E
-constexpr IID kBraveWireguardServiceIID = {
-    0x048ec63c,
-    0xe2f2,
-    0x4288,
-    {0xbe, 0xa0, 0xd8, 0x58, 0xad, 0x9c, 0xc2, 0x0e}};
 // 57B73EDD-CBE4-46CA-8ACB-11D90840AF6E
 constexpr CLSID kBraveWireguardServiceCLSID = {
     0x57b73edd,
@@ -87,12 +70,6 @@ constexpr CLSID kBraveWireguardServiceCLSID = {
 constexpr wchar_t kBraveWireguardTunnelServiceName[] =
     L"BraveVpnWireguardTunnelService";
 
-// 053057AB-CF06-4E6C-BBAD-F8DA6436D933
-constexpr IID kBraveWireguardServiceIID = {
-    0x053057ab,
-    0xcf06,
-    0x4e6c,
-    {0xbb, 0xad, 0xf8, 0xda, 0x64, 0x36, 0xd9, 0x33}};
 // 088C5F6E-B213-4A8E-98AD-9D64D8913968
 constexpr CLSID kBraveWireguardServiceCLSID = {
     0x088c5f6e,
