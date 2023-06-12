@@ -13,6 +13,7 @@ namespace brave_page_graph {
 
 class NodeExtensions;
 class NodeHTMLElement;
+class NodeActor;
 class NodeScript;
 
 class EdgeExecute : public GraphEdge {
@@ -25,7 +26,7 @@ class EdgeExecute : public GraphEdge {
               NodeScript* in_node);
   // Used by imported module scripts and eval
   EdgeExecute(GraphItemContext* context,
-              NodeScript* out_node,
+              NodeActor* out_node,
               NodeScript* in_node);
   ~EdgeExecute() override;
 
