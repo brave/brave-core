@@ -132,16 +132,14 @@ export function Panel () {
     )
   }
 
+  if (onboardingResult || !rewardsEnabled || needsCountry) {
+    return renderOnboaring()
+  }
+
   return (
-    onboardingResult || !rewardsEnabled || needsCountry
-      ? <div className='rewards-panel' data-test-id='rewards-panel'>
-          {renderOnboaring()}
-        </div>
-      : <style.panel>
-          <div className='rewards-panel' data-test-id='rewards-panel'>
-            {userType !== 'unconnected' ? renderFull() : <LimitedView />}
-          </div>
-          <PanelOverlays />
-        </style.panel>
+    <style.root>
+      {userType !== 'unconnected' ? renderFull() : <LimitedView />}
+      <PanelOverlays />
+    </style.root>
   )
 }

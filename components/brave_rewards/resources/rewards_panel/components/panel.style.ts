@@ -5,6 +5,6 @@
 
 import styled from 'styled-components'
 
-export const panel = styled.div`
+export const root = styled.div`
   padding: 13px;
 `
