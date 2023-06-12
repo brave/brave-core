@@ -43,21 +43,15 @@
 namespace {
 std::string NonWriteableScriptProperty(const std::string& property) {
   return base::StringPrintf(
-      R"(window.ethereum.%s = "brave"
-         if (window.ethereum.%s === "brave")
-           window.domAutomationController.send(false)
-         else
-           window.domAutomationController.send(true))",
+      R"(window.ethereum.%s = "brave";
+         !(window.ethereum.%s === "brave");)",
       property.c_str(), property.c_str());
 }
 std::string NonWriteableScriptMethod(const std::string& provider,
                                      const std::string& method) {
   return base::StringPrintf(
-      R"(window.%s.%s = "brave"
-         if (typeof window.%s.%s === "function")
-           window.domAutomationController.send(true)
-         else
-           window.domAutomationController.send(false))",
+      R"(window.%s.%s = "brave";
+         typeof window.%s.%s === "function";)",
       provider.c_str(), method.c_str(), provider.c_str(), method.c_str());
 }
 }  // namespace
@@ -281,8 +275,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
   for (const std::string& property : {"isBraveWallet", "_metamask", "chainId",
                                       "networkVersion", "selectedAddress"}) {
     SCOPED_TRACE(property);
-    auto result = EvalJs(web_contents(), NonWriteableScriptProperty(property),
-                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+    auto result = EvalJs(web_contents(), NonWriteableScriptProperty(property));
     EXPECT_EQ(base::Value(true), result.value) << result.error;
   }
   // window.ethereum.* (methods)
@@ -293,14 +286,12 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
         "isConnected", "enable", "sendAsync"}) {
     SCOPED_TRACE(method);
     auto result =
-        EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", method),
-               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+        EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", method));
     EXPECT_EQ(base::Value(true), result.value) << result.error;
   }
   {
     auto result =
-        EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", "send"),
-               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+        EvalJs(web_contents(), NonWriteableScriptMethod("ethereum", "send"));
     EXPECT_EQ(base::Value(false), result.value) << result.error;
   }
 
@@ -308,8 +299,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
   {
     auto result =
         EvalJs(web_contents(),
-               NonWriteableScriptMethod("ethereum._metamask", "isUnlocked"),
-               content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+               NonWriteableScriptMethod("ethereum._metamask", "isUnlocked"));
     EXPECT_EQ(base::Value(true), result.value) << result.error;
   }
 }

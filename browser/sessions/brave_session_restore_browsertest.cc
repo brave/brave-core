@@ -39,9 +39,8 @@ IN_PROC_BROWSER_TEST_F(BraveSesstionRestoreBrowserTest, Serialization) {
         document.body.append(input);
         var controls_ready = document.getElementsByTagName('textarea')[0].textContent === '__some_text__' &&
                              document.getElementsByTagName('input')[0].value === '__some_text__';
-        window.domAutomationController.send(controls_ready);
-      )",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+        controls_ready;
+      )")
                   .ExtractBool());
   session_service->MoveCurrentSessionToLastSession();
   base::RunLoop loop;
