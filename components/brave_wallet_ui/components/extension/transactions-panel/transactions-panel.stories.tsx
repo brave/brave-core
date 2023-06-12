@@ -25,6 +25,7 @@ export const _TransactionsPanel: React.FC = () => {
         <TransactionsPanel
           selectedAccountAddress={mockAccount.address}
           selectedNetwork={mockNetwork}
+          selectedAccountCoinType={mockAccount.accountId.coin}
         />
       </Column>
     </WalletPanelStory>
