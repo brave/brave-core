@@ -6,27 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_USER_DATA_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_USER_DATA_BUILDER_H_
 
-#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/user_data_builder_interface.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 
 namespace brave_ads {
 
-class ConfirmationUserDataBuilder final : public UserDataBuilderInterface {
- public:
-  explicit ConfirmationUserDataBuilder(TransactionInfo transaction);
-  ~ConfirmationUserDataBuilder() override;
-
-  void Build(UserDataBuilderCallback callback) const override;
-
- private:
-  void BuildCallback(UserDataBuilderCallback callback,
-                     base::Value::Dict user_data) const;
-
-  TransactionInfo transaction_;
-
-  base::WeakPtrFactory<ConfirmationUserDataBuilder> weak_factory_{this};
-};
+void BuildConfirmationUserData(const TransactionInfo& transaction,
+                               BuildUserDataCallback callback);
 
 }  // namespace brave_ads
 

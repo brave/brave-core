@@ -18,6 +18,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -381,10 +382,25 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
   return true;
 }
 
-const ConfirmationList& ConfirmationStateManager::GetFailedConfirmations()
-    const {
+ConfirmationList ConfirmationStateManager::GetFailedConfirmations() const {
   CHECK(is_initialized_);
-  return failed_confirmations_;
+
+  if (ShouldRewardUser()) {
+    return failed_confirmations_;
+  }
+
+  // User is not opted-in to Brave Private Ads so only return opted-out
+  // confirmations, opted-in confirmations will be redeemed if and when the user
+  // rejoins Brave Private Ads.
+  ConfirmationList opted_out_confirmations;
+
+  base::ranges::copy_if(failed_confirmations_,
+                        std::back_inserter(opted_out_confirmations),
+                        [](const ConfirmationInfo& confirmation) {
+                          return !confirmation.opted_in;
+                        });
+
+  return opted_out_confirmations;
 }
 
 void ConfirmationStateManager::AppendFailedConfirmation(

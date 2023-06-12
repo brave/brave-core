@@ -47,7 +47,7 @@ class ConfirmationStateManager final {
   bool GetFailedConfirmationsFromDictionary(
       const base::Value::Dict& dict,
       ConfirmationList* confirmations) const;
-  const ConfirmationList& GetFailedConfirmations() const;
+  ConfirmationList GetFailedConfirmations() const;
   void AppendFailedConfirmation(const ConfirmationInfo& confirmation);
   bool RemoveFailedConfirmation(const ConfirmationInfo& confirmation);
   void reset_failed_confirmations() { failed_confirmations_.clear(); }

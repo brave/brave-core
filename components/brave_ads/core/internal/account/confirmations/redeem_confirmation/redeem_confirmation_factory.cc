@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_ads/core/internal/account/account_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_opted_in_confirmation.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/redeem_opted_out_confirmation.h"
 
@@ -17,7 +17,7 @@ namespace brave_ads {
 void RedeemConfirmationFactory::BuildAndRedeemConfirmation(
     base::WeakPtr<RedeemConfirmationDelegate> delegate,
     const ConfirmationInfo& confirmation) {
-  if (!ShouldRewardUser()) {
+  if (!confirmation.opted_in) {
     return RedeemOptedOutConfirmation::CreateAndRedeem(std::move(delegate),
                                                        confirmation);
   }

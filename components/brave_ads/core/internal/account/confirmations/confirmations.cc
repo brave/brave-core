@@ -115,7 +115,10 @@ void Confirmations::Retry() {
 void Confirmations::RetryCallback() {
   const ConfirmationList& failed_confirmations =
       ConfirmationStateManager::GetInstance().GetFailedConfirmations();
-  CHECK(!failed_confirmations.empty());
+  if (failed_confirmations.empty()) {
+    BLOG(1, "No failed confirmations to retry");
+    return;
+  }
 
   BLOG(1, "Retry sending failed confirmations");
 
@@ -152,10 +155,10 @@ void Confirmations::BuildDynamicUserData(const TransactionInfo& transaction) {
 void Confirmations::BuildFixedUserData(
     const TransactionInfo& transaction,
     base::Value::Dict dynamic_opted_in_user_data) {
-  const ConfirmationUserDataBuilder user_data_builder(transaction);
-  user_data_builder.Build(base::BindOnce(
-      &Confirmations::CreateAndRedeem, weak_factory_.GetWeakPtr(), transaction,
-      std::move(dynamic_opted_in_user_data)));
+  BuildConfirmationUserData(
+      transaction, base::BindOnce(&Confirmations::CreateAndRedeem,
+                                  weak_factory_.GetWeakPtr(), transaction,
+                                  std::move(dynamic_opted_in_user_data)));
 }
 
 void Confirmations::CreateAndRedeem(
