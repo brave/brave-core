@@ -25,6 +25,7 @@
 #include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/wireguard_utils.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/process_utils.h"
 
 namespace brave_vpn {
 
@@ -250,7 +251,11 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
       !UpdateLastUsedConfigPath(config_file_path.value())) {
     VLOG(1) << "Failed to save last used config path";
   }
-
+  // Run interactive process each time we establish connection. System tray icon
+  // manages self state to be visible/hidden due to settings. Next we will add
+  // a desktop nitification popup with established connection information which
+  // will be shown on each time.
+  brave_vpn::RunInteractiveProcess();
   return DeleteService(service.Get()) != 0;
 }
 

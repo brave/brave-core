@@ -1,0 +1,38 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("interactive") {
+  sources = [
+    "brave_vpn_interactive_strings_en.h",
+    "brave_vpn_menu_model.cc",
+    "brave_vpn_menu_model.h",
+    "brave_vpn_tray_command_ids.h",
+    "interactive_main.cc",
+    "interactive_main.h",
+    "interactive_utils.cc",
+    "interactive_utils.h",
+    "native_popup_menu_win.cc",
+    "native_popup_menu_win.h",
+    "status_icon_win.cc",
+    "status_icon_win.h",
+    "status_tray_win.cc",
+    "status_tray_win.h",
+  ]
+
+  public_deps = [ "//skia" ]
+
+  deps = [
+    "common",
+    "resources",
+    "//base",
+    "//brave/components/brave_vpn/browser/connection/common/win",
+    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common",
+    "//ui/base",
+    "//ui/display",
+    "//ui/gfx",
+  ]
+
+  libs = [ "Shell32.lib" ]
+}

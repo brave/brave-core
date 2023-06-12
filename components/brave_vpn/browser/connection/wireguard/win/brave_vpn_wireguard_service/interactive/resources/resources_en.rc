@@ -1,0 +1,5 @@
+#include "resource.h"
+
+IDR_BRAVE_VPN_TRAY_DARK        ICON                        "interactive\\resources\\tray_dark.ico"
+IDR_BRAVE_VPN_TRAY_LIGHT        ICON                        "interactive\\resources\\tray_light.ico"
+IDR_BRAVE_VPN_TOGGLER_ON       ICON                        "interactive\\resources\\toggler_on.ico"
