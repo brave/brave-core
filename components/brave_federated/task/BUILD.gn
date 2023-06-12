@@ -8,8 +8,8 @@ import("//testing/test.gni")
 
 static_library("task") {
   sources = [
-    "federated_task_runner.cc",
-    "federated_task_runner.h",
+    "federated_task_handler.cc",
+    "federated_task_handler.h",
     "model.cc",
     "model.h",
     "model_util.cc",

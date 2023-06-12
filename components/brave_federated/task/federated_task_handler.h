@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_FEDERATED_TASK_RUNNER_H_
-#define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_FEDERATED_TASK_RUNNER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_FEDERATED_TASK_HANDLER_H_
+#define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_FEDERATED_TASK_HANDLER_H_
 
 #include <memory>
 #include <string>
@@ -23,10 +23,10 @@ class Model;
 class Task;
 using ModelWeights = std::tuple<Weights, float>;
 
-class FederatedTaskRunner final {
+class FederatedTaskHandler final {
  public:
-  FederatedTaskRunner(const Task& task, std::unique_ptr<Model> model);
-  ~FederatedTaskRunner();
+  FederatedTaskHandler(const Task& task, std::unique_ptr<Model> model);
+  ~FederatedTaskHandler();
 
   absl::optional<TaskResult> Run();
 
@@ -48,4 +48,4 @@ class FederatedTaskRunner final {
 
 }  // namespace brave_federated
 
-#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_FEDERATED_TASK_RUNNER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_FEDERATED_TASK_HANDLER_H_
