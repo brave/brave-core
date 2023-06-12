@@ -21,7 +21,6 @@ import com.brave.playlist.fragment.PlaylistFragment;
 import com.brave.playlist.listener.PlaylistOptionsListener;
 import com.brave.playlist.model.DownloadProgressModel;
 import com.brave.playlist.model.MoveOrCopyModel;
-import com.brave.playlist.model.PlaylistEventModel;
 import com.brave.playlist.model.PlaylistItemEventModel;
 import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.model.PlaylistModel;

@@ -42,7 +42,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.ImageViewCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.brave.playlist.PlaylistDownloadUtils;
 import com.brave.playlist.enums.PlaylistOptionsEnum;
@@ -55,7 +54,6 @@ import com.brave.playlist.util.ConnectionUtils;
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistViewUtils;
-import com.brave.playlist.view.PlaylistOnboardingPanel;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.BraveFeatureList;
