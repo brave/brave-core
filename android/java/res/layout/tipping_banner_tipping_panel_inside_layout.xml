@@ -38,11 +38,9 @@
         android:drawablePadding="8dp"
         android:fontFamily="sans-serif-medium"
         android:padding="4dp"
-        android:text="@string/uphold"
         android:textAllCaps="true"
         android:textColor="@color/custodian_name_color"
         android:textSize="11sp"
-        app:drawableLeftCompat="@drawable/upload_icon"
         app:layout_constraintBottom_toBottomOf="@id/brave_rewards_balance_text"
         app:layout_constraintStart_toEndOf="@id/brave_rewards_balance_text"
         app:layout_constraintTop_toTopOf="@id/brave_rewards_balance_text" />
