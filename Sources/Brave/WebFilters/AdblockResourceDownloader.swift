@@ -171,7 +171,7 @@ public actor AdblockResourceDownloader: Sendable {
       
     case .debounceRules:
       // We don't want to setup the debounce rules more than once for the same cached file
-      guard downloadResult.isModified || DebouncingResourceDownloader.shared.matcher == nil else {
+      guard downloadResult.isModified || DebouncingService.shared.matcher == nil else {
         return
       }
       
@@ -181,7 +181,7 @@ public actor AdblockResourceDownloader: Sendable {
           return
         }
         
-        try DebouncingResourceDownloader.shared.setup(withRulesJSON: data)
+        try DebouncingService.shared.setup(withRulesJSON: data)
       } catch {
         ContentBlockerManager.log.error("Failed to setup debounce rules: \(error.localizedDescription)")
       }
