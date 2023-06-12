@@ -299,7 +299,7 @@ public class PortfolioFragment
             return;
         }
 
-        Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
+        Utils.openAssetDetailsActivity(getActivity(), asset);
     }
 
     private void openNetworkSelection() {

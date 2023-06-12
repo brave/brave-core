@@ -5,9 +5,12 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Spannable;
@@ -15,6 +18,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BulletSpan;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,14 +27,21 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.chromium.base.Callback;
+import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -40,7 +51,9 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.BuyModel;
+import org.chromium.chrome.browser.app.domain.MarketModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
@@ -68,6 +81,7 @@ import java.util.concurrent.Executors;
 public class AssetDetailActivity
         extends BraveWalletBaseActivity implements OnWalletListItemClick, ApprovedTxObserver {
     private static final String TAG = "AssetDetailActivity";
+    private static final int ASSET_LOGO_SIZE_DP = 23;
 
     private SmoothLineChartEquallySpaced chartES;
     private int checkedTimeframeType;
@@ -75,6 +89,10 @@ public class AssetDetailActivity
     private String mAssetName;
     private String mAssetId;
     private String mChainId;
+    private boolean mIsMarketCoin;
+    private int mMarketCapRank;
+    private double mVolume24Hour;
+    private double mMarketCap;
     private String mContractAddress;
     private String mAssetLogo;
     private int mAssetDecimals;
@@ -91,6 +109,7 @@ public class AssetDetailActivity
     private boolean mNativeInitialized;
     private boolean mShouldShowDialog;
     private WalletModel mWalletModel;
+    private MarketModel mMarketModel;
     private NetworkInfo mAssetNetwork;
 
     @Override
@@ -99,7 +118,8 @@ public class AssetDetailActivity
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-            if (mWalletModel == null) {
+            mMarketModel = mWalletModel.getMarketModel();
+            if (mWalletModel == null || mMarketModel == null) {
                 finish();
                 return;
             }
@@ -108,16 +128,20 @@ public class AssetDetailActivity
             return;
         }
 
-        if (getIntent() != null) {
-            mChainId = getIntent().getStringExtra(Utils.CHAIN_ID);
-            mAssetSymbol = getIntent().getStringExtra(Utils.ASSET_SYMBOL);
-            mAssetName = getIntent().getStringExtra(Utils.ASSET_NAME);
-            mAssetId = getIntent().getStringExtra(Utils.ASSET_ID);
-            mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
-            mAssetLogo = getIntent().getStringExtra(Utils.ASSET_LOGO);
-            mAssetDecimals =
-                    getIntent().getIntExtra(Utils.ASSET_DECIMALS, Utils.ETH_DEFAULT_DECIMALS);
-            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
+        final Intent intent = getIntent();
+        if (intent != null) {
+            mChainId = intent.getStringExtra(Utils.CHAIN_ID);
+            mAssetSymbol = intent.getStringExtra(Utils.ASSET_SYMBOL);
+            mAssetName = intent.getStringExtra(Utils.ASSET_NAME);
+            mAssetId = intent.getStringExtra(Utils.ASSET_ID);
+            mIsMarketCoin = intent.getBooleanExtra(Utils.IS_MARKET_COIN, false);
+            mMarketCapRank = intent.getIntExtra(Utils.MARKET_CAP_RANK, -1);
+            mVolume24Hour = intent.getDoubleExtra(Utils.TOTAL_VOLUME, -1);
+            mMarketCap = intent.getDoubleExtra(Utils.MARKET_CAP, -1);
+            mContractAddress = intent.getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
+            mAssetLogo = intent.getStringExtra(Utils.ASSET_LOGO);
+            mAssetDecimals = intent.getIntExtra(Utils.ASSET_DECIMALS, Utils.ETH_DEFAULT_DECIMALS);
+            mCoinType = intent.getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
             if (mAssetSymbol.equals("ETH")) {
                 mAssetLogo = "eth.png";
             }
@@ -132,7 +156,51 @@ public class AssetDetailActivity
 
         TextView assetTitleText = findViewById(R.id.asset_title_text);
         assetTitleText.setText(mAssetName);
-        if (!mAssetLogo.isEmpty()) {
+        mBtnBuy = findViewById(R.id.btn_buy);
+        Button btnSend = findViewById(R.id.btn_send);
+        mBtnSwap = findViewById(R.id.btn_swap);
+
+        if (mIsMarketCoin) {
+            TextView informationLabel = findViewById(R.id.information);
+            CardView marketCoinInfo = findViewById(R.id.card_view_market_coin_info);
+            AndroidUtils.show(informationLabel, marketCoinInfo);
+
+            if (mMarketCapRank != -1) {
+                TextView rank = findViewById(R.id.rank);
+                rank.setText(String.valueOf(mMarketCapRank));
+            }
+
+            if (mVolume24Hour != -1) {
+                TextView volume = findViewById(R.id.volume);
+                volume.setText(mMarketModel.getFormattedUsdBillions(mVolume24Hour));
+            }
+
+            if (mMarketCap != -1) {
+                TextView marketCap = findViewById(R.id.market_cap);
+                marketCap.setText(mMarketModel.getFormattedUsdBillions(mMarketCap));
+            }
+
+            DisplayMetrics displayMetrics =
+                    ContextUtils.getApplicationContext().getResources().getDisplayMetrics();
+            final int sizePx = dpToPx(displayMetrics, ASSET_LOGO_SIZE_DP);
+            ImageLoader.downloadImage(mAssetLogo, Glide.with(this), true,
+                    0, new CustomTarget<Drawable>(sizePx, sizePx) {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource,
+                                @Nullable Transition<? super Drawable> transition) {
+                            assetTitleText.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                    resource, null, null, null);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            /* No-op. */
+                        }
+                    }, null);
+            TextView accountsLabel = findViewById(R.id.accounts);
+            TextView transactionsLabel = findViewById(R.id.transactions);
+            AndroidUtils.gone(accountsLabel, transactionsLabel, mBtnBuy, btnSend, mBtnSwap);
+        } else if (!mAssetLogo.isEmpty()) {
             String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
             String iconPath =
                     mAssetLogo.isEmpty() ? null : ("file://" + tokensPath + "/" + mAssetLogo);
@@ -148,22 +216,7 @@ public class AssetDetailActivity
         assetPriceText.setText(String.format(
                 getResources().getString(R.string.asset_price), mAssetName, mAssetSymbol));
 
-        mBtnBuy = findViewById(R.id.btn_buy);
-        mBtnBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.openBuySendSwapActivity(
-                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.BUY, mChainId);
-            }
-        });
-        Button btnSend = findViewById(R.id.btn_send);
-        btnSend.setOnClickListener(v
-                -> Utils.openBuySendSwapActivity(
-                        AssetDetailActivity.this, BuySendSwapActivity.ActivityType.SEND, mChainId));
-
-        mBtnSwap = findViewById(R.id.btn_swap);
-
-        if (AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
+        if (!mIsMarketCoin && AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
             mBtnSwap.setVisibility(View.GONE);
             mBtnBridgeToAurora = findViewById(R.id.btn_aurora_bridge);
             mBtnBridgeToAurora.setVisibility(View.VISIBLE);
@@ -234,9 +287,18 @@ public class AssetDetailActivity
                 }
             });
         }
-        mBtnSwap.setOnClickListener(v
-                -> Utils.openBuySendSwapActivity(
-                        this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
+        if (!mIsMarketCoin) {
+            mBtnSwap.setOnClickListener(v
+                    -> Utils.openBuySendSwapActivity(
+                            this, BuySendSwapActivity.ActivityType.SWAP_V2, mChainId));
+            mBtnBuy.setOnClickListener(v
+                    -> Utils.openBuySendSwapActivity(
+                            this, BuySendSwapActivity.ActivityType.BUY, mChainId));
+
+            btnSend.setOnClickListener(v
+                    -> Utils.openBuySendSwapActivity(
+                            this, BuySendSwapActivity.ActivityType.SEND, mChainId));
+        }
         adjustButtonsVisibilities();
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
@@ -279,7 +341,7 @@ public class AssetDetailActivity
     @Override
     public void onStart() {
         super.onStart();
-        if (mHasNewTx) {
+        if (!mIsMarketCoin && mHasNewTx) {
             setUpAccountList();
             mHasNewTx = false;
         }
@@ -375,6 +437,9 @@ public class AssetDetailActivity
 
     // Get back token from native. If cannot find then something is wrong
     private void getBlockchainToken(Runnable callback) {
+        if (mIsMarketCoin) {
+            return;
+        }
         if (mAsset != null || !mNativeInitialized || mAssetNetwork == null) {
             callback.run();
             return;
@@ -473,6 +538,9 @@ public class AssetDetailActivity
     }
 
     private void adjustButtonsVisibilities() {
+        if (mIsMarketCoin) {
+            return;
+        }
         showHideBuyUi();
         if (Utils.allowSwap(mChainId)) {
             mBtnSwap.setVisibility(View.VISIBLE);
