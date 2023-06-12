@@ -428,6 +428,7 @@ public class BrowserViewController: UIViewController {
     Preferences.General.alwaysRequestDesktopSite.observe(from: self)
     Preferences.General.enablePullToRefresh.observe(from: self)
     Preferences.General.mediaAutoBackgrounding.observe(from: self)
+    Preferences.General.youtubeHighQuality.observe(from: self)
     Preferences.General.defaultPageZoomLevel.observe(from: self)
     Preferences.Shields.allShields.forEach { $0.observe(from: self) }
     Preferences.Privacy.blockAllCookies.observe(from: self)
@@ -2464,6 +2465,7 @@ extension BrowserViewController: TabDelegate {
       FaviconScriptHandler(tab: tab),
       Web3NameServiceScriptHandler(tab: tab),
       Web3IPFSScriptHandler(tab: tab),
+      YoutubeQualityScriptHandler(tab: tab),
       
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
@@ -2989,6 +2991,10 @@ extension BrowserViewController: PreferencesObserver {
       tabManager.allTabs.forEach {
         $0.setScript(script: .mediaBackgroundPlay, enabled: Preferences.General.mediaAutoBackgrounding.value)
         $0.webView?.reload()
+      }
+    case Preferences.General.youtubeHighQuality.key:
+      tabManager.allTabs.forEach {
+        YoutubeQualityScriptHandler.setEnabled(option: Preferences.General.youtubeHighQuality, for: $0)
       }
     case Preferences.Playlist.enablePlaylistMenuBadge.key,
       Preferences.Playlist.enablePlaylistURLBarButton.key:

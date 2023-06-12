@@ -24,7 +24,8 @@ class UserScriptManager {
     .playlist,
     .resourceDownloader,
     .windowRenderHelper,
-    .readyStateHelper
+    .readyStateHelper,
+    .youtubeQuality
   ]
   
   /// Scripts that are loaded after `staticScripts`
@@ -103,6 +104,7 @@ class UserScriptManager {
     case readyStateHelper
     case ethereumProvider
     case solanaProvider
+    case youtubeQuality
     
     fileprivate var script: WKUserScript? {
       switch self {
@@ -124,6 +126,7 @@ class UserScriptManager {
       case .resourceDownloader: return ResourceDownloadScriptHandler.userScript
       case .windowRenderHelper: return WindowRenderScriptHandler.userScript
       case .readyStateHelper: return ReadyStateScriptHandler.userScript
+      case .youtubeQuality: return YoutubeQualityScriptHandler.userScript
       }
     }
     

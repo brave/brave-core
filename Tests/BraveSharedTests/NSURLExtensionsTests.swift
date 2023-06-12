@@ -543,6 +543,15 @@ class NSURLExtensionsTests: XCTestCase {
     ]
     urls.forEach { XCTAssertEqual(URL(string: $0.0)!.withoutWWW.absoluteString, $0.1) }
   }
+  
+  func testdomainWithoutFragment() {
+    let urls = [
+      ("https://www.example.com/index.html#Fragment", "https://www.example.com/index.html"),
+      ("https://mail.example.com/index.html?Key=Value#Fragment", "https://mail.example.com/index.html?Key=Value"),
+      ("https://mail.example.co.uk/index.html?Key=Value&Key2=Value2#Fragment", "https://mail.example.co.uk/index.html?Key=Value&Key2=Value2"),
+    ]
+    urls.forEach { XCTAssertEqual(URL(string: $0.0)!.withoutFragment.absoluteString, $0.1) }
+  }
 
   func testdomainUrl() {
     let urls = [
