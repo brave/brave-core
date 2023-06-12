@@ -100,12 +100,6 @@
 /* cookie settings option */
 "Block3rdPartyCookies" = "Блокування додаткових файлів cookie";
 
-/* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Заблокувати міжсайтові трекери";
-
-/* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Блокує завантаження реклами, спливаючих вікон і трекерів.";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Блокувати всі файли cookie";
 
@@ -138,9 +132,6 @@
 
 /* A title for setting which blocks 'switch to app' popups */
 "blockMobileAnnoyances" = "Блокувати сповіщення «Перемкнути програму»";
-
-/* Brave panel individual toggle title */
-"BlockPhishing" = "Блокування фішингу";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Блокування спливаючих вікон";
@@ -318,15 +309,6 @@
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Ділитися повністю конфіденційною й анонімною статистикою продукта.";
-
-/* Button title for Playlist Onboarding View */
-"callout.playlistOnboardingViewButtonTitle" = "Переглянути відео";
-
-/* Description for Playlist Onboarding View */
-"callout.playlistOnboardingViewDescription" = "…грайте будь-де й будь-коли. У фоновому режимі, у режимі «картинка в картинці» й навіть в автономному режимі. І, звичайно ж, без реклами.";
-
-/* Title for Playlist Onboarding View */
-"callout.playlistOnboardingViewTitle" = "Додавайте відео в список відтворення…";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Отримуйте конфіденційність Brave на своєму комп’ютері або планшеті й синхронізуйте закладки й розширення на різних пристроях.";
@@ -896,10 +878,10 @@
 "genericErrorTitle" = "Помилка";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "Заблокувати небезпечні вебсайти";
+"GoogleSafeBrowsing" = "Блокуйте небезпечні вебсайти";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsingUsingWebKitDescription" = "Надсилає приховані URL-адреси деяких сторінок, що ви відвідуєте, до сервісу Google Safe Browsing, коли ваша безпека під загрозою.";
+"GoogleSafeBrowsingUsingWebKitDescription" = "Safe Browsing захищає від вебсайтів, які можуть бути небезпечними. [Докладніше](%@)";
 
 /* Grand camera access */
 "GrantCameraAccess" = "Увімкнути камеру";
@@ -986,7 +968,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "Вебсайт";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "Щоб переглядати паролі, вам спершу слід установити код доступу на пристрої.";
+"login.loginInfoSetPasscodeAlertDescription" = "Щоб налаштувати ланцюжок синхронізації або переглядати налаштування, вам спершу слід установити код доступу на пристрої.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "Установити код доступу";
@@ -1504,6 +1486,9 @@
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Фото від %@";
 
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "Додано до %@";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "Хочете додати це відео до списку відтворення?";
 
@@ -1530,6 +1515,9 @@
 
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Список відтворення Brave";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "Змінити список відтворення";
 
 /* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
 "playlist.deleteForOfflineButtonTitle" = "Видалити офлайн-кеш";
@@ -1566,6 +1554,9 @@
 
 /* Okay Alert button title */
 "playList.okayButtonTitle" = "Добре";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "Відкрити в списку відтворення";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "На жаль, під час спроби відобразити картинку в картинці сталася помилка.";
@@ -1614,6 +1605,9 @@
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Дані списків відтворення офлайн";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "Змінити";
 
 /* The title for the alert that shows up when removing all videos and their offline mode storage. */
 "playList.playlistResetAlertTitle" = "Скинути";
@@ -1672,6 +1666,9 @@
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Видалити";
 
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "Видалено з %@";
+
 /* Message for the alert shown when the user tries to remove offline data of an item from playlist */
 "playlist.removePlaylistOfflineDataAlertMessage" = "Це призведе до видалення медіафайлу з офлайн-сховища. Ви впевнені, що хочете продовжити?";
 
@@ -1688,7 +1685,7 @@
 "playList.reopenButtonTitle" = "Відкрити заново";
 
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "збережено для доступу офлайн";
+"playList.savedForOfflineLabelTitle" = "Додано для доступу офлайн";
 
 /* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
 "playlist.saveForOfflineButtonTitle" = "Зберегти для доступу офлайн";
@@ -1732,11 +1729,23 @@
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Подивитися у Brave Playlist";
 
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "Скасувати";
+
 /* Footer for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionFooter" = "Поруч із панеллю адреси в браузері Brave з’явиться кнопка списку відтворення. Кнопка має вигляд 4 ліній із символом +. За допомогою неї ви зможете отримати швидкий доступ до списку відтворення, а також видалити/додати медіафайли.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Додати кнопку швидкого доступу";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "Перенести до";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "Назва списку відтворення";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "Уведіть назву списку відтворення";
 
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Створити";
@@ -1747,11 +1756,17 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "Редагування папки";
 
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Редагувати список відтворення";
+
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "На жаль, не вдалося зберегти зміни, зроблені в цій папці";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "Перемістити";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Поточний список відтворення";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Перемістити";
@@ -1768,14 +1783,35 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ та ще кілька об’єктів (%2$lld)";
 
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Новий список відтворення";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Новий список відтворення";
+
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "Торкніться, щоб вибрати відео";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Додати відео до цього списку відторення";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "Відтворити пізніше";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "Виберіть список відтворення, щоб перемістити ці об’єкти (%lld)";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Виберіть список відтворення, щоб перемістити 1 об’єкт";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "Об’єкти: %lld";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1 об’єкт";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Список відтворення без назви";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Кнопка «Додати до списку відтворення Brave»";
@@ -2307,9 +2343,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Застаріла промоакція";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletInfoHeader" = "Інформація про застарілий гаманець";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "Показано журналів: %d";
@@ -2854,6 +2887,9 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Дані буде видалено остаточно. Їх неможливо буде відновити. Якщо ви вирішите знову користуватися синхронізацією, вам потрібно буде створити новий обліковий запис і ще раз додати свої пристрої.";
 
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "Установити код доступу";
+
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Налаштування синхронізації";
 
@@ -3049,7 +3085,8 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Меню";
 
-/* Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Add to Playlist button
+   Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Список відтворення";
 
 /* Accessibility label for the Reader View button */

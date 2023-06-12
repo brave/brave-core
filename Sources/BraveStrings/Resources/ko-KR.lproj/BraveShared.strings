@@ -100,12 +100,6 @@
 /* cookie settings option */
 "Block3rdPartyCookies" = "제3자 쿠키 차단";
 
-/* No comment provided by engineer. */
-"BlockAdsAndTracking" = "크로스사이트 트래커 차단";
-
-/* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "광고, 팝업, 트래커가 로드되지 않도록 차단합니다.";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "모든 쿠키 차단";
 
@@ -138,9 +132,6 @@
 
 /* A title for setting which blocks 'switch to app' popups */
 "blockMobileAnnoyances" = "'앱으로 전환' 요청 차단";
-
-/* Brave panel individual toggle title */
-"BlockPhishing" = "피싱 차단";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "팝업 차단";
@@ -318,15 +309,6 @@
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "프라이버시가 완전 보장되는 익명 제품 인사이트를 공유합니다.";
-
-/* Button title for Playlist Onboarding View */
-"callout.playlistOnboardingViewButtonTitle" = "동영상 보기";
-
-/* Description for Playlist Onboarding View */
-"callout.playlistOnboardingViewDescription" = "…언제 어디서든 재생. 백그라운드, PIP(Picture-In-Picture), 오프라인도 가능. 당연히 광고 없음.";
-
-/* Title for Playlist Onboarding View */
-"callout.playlistOnboardingViewTitle" = "재생목록에 동영상 추가...";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "프라이버시가 뛰어난 Brave를 컴퓨터/태블릿에서 이용하고 기기 간 북마크와 확장 프로그램을 동기화하세요.";
@@ -896,10 +878,10 @@
 "genericErrorTitle" = "오류";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "위험한 사이트 차단";
+"GoogleSafeBrowsing" = "위험한 웹사이트 차단";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsingUsingWebKitDescription" = "사용자의 보안이 위험할 때, 방문하는 일부 페이지의 난독화된 URL을 Google 세이프 브라우징 서비스로 보냅니다.";
+"GoogleSafeBrowsingUsingWebKitDescription" = "세이프 브라우징은 위험한 것으로 알려진 웹사이트로부터 보호합니다. [자세히 알아보기](%@)";
 
 /* Grand camera access */
 "GrantCameraAccess" = "카메라 활성화";
@@ -986,7 +968,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "웹사이트";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "비밀번호를 보려면 먼저 기기에서 패스코드를 설정해야 합니다.";
+"login.loginInfoSetPasscodeAlertDescription" = "동기화 체인을 설정하거나 기존 설정을 확인하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "패스코드 설정";
@@ -1504,6 +1486,9 @@
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "사진 제공: %@";
 
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "%@에 추가됨";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "이 동영상을 재생목록에 추가하시겠습니까?";
 
@@ -1530,6 +1515,9 @@
 
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Brave 재생목록";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "재생목록 변경";
 
 /* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
 "playlist.deleteForOfflineButtonTitle" = "오프라인 캐시 삭제";
@@ -1566,6 +1554,9 @@
 
 /* Okay Alert button title */
 "playList.okayButtonTitle" = "확인";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "재생목록에서 열기";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "PIP(Picture-In-Picture)를 표시하려는 중에 오류가 발생했습니다.";
@@ -1614,6 +1605,9 @@
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "재생목록 오프라인 데이터";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "변경";
 
 /* The title for the alert that shows up when removing all videos and their offline mode storage. */
 "playList.playlistResetAlertTitle" = "재설정";
@@ -1672,6 +1666,9 @@
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "제거";
 
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "%@에서 제거됨";
+
 /* Message for the alert shown when the user tries to remove offline data of an item from playlist */
 "playlist.removePlaylistOfflineDataAlertMessage" = "오프라인 저장소에서 미디어가 삭제됩니다. 계속하시겠습니까?";
 
@@ -1688,7 +1685,7 @@
 "playList.reopenButtonTitle" = "다시 열기";
 
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "오프라인용으로 저장됨";
+"playList.savedForOfflineLabelTitle" = "오프라인에 추가됨";
 
 /* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
 "playlist.saveForOfflineButtonTitle" = "오프라인용으로 저장";
@@ -1732,11 +1729,23 @@
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Brave Playlist에서 보기";
 
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "실행 취소";
+
 /* Footer for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionFooter" = "Brave 브라우저 주소창 옆에 재생목록 버튼(줄 4개에 + 기호가 더해진 모양)을 추가합니다. 이 빠른 액세스 버튼을 이용하면 신속하게 재생목록을 열거나 미디어를 추가 또는 제거할 수 있습니다.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "빠른 액세스 버튼 활성화";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "다음으로 이동";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "재생목록 이름";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "재생목록 이름 입력";
 
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "만들기";
@@ -1747,11 +1756,17 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "폴더 편집";
 
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "재생목록 편집";
+
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "이 폴더에서 변경한 내용을 저장할 수 없음";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "이동";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "현재 재생목록";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "이동";
@@ -1768,14 +1783,35 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ 외 %2$lld개 항목";
 
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "새 재생목록";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "새 재생목록";
+
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "동영상을 선택하려면 탭";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "이 재생목록에 동영상 추가";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "나중에 재생";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "%lld개 항목을 이동할 재생목록 선택";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "1개 항목을 이동할 재생목록 선택";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld개 항목";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1개 항목";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "무제 재생목록";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Brave 재생목록에 추가 버튼";
@@ -2307,9 +2343,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "레거시 프로모션";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletInfoHeader" = "레거시 월렛 정보";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "로그 %d개 표시됨 ";
@@ -2854,6 +2887,9 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.";
 
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "패스코드 설정";
+
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "동기화 설정";
 
@@ -3049,7 +3085,8 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "메뉴";
 
-/* Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Add to Playlist button
+   Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "재생목록";
 
 /* Accessibility label for the Reader View button */

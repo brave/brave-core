@@ -32,10 +32,10 @@
 "wallet.activateToken" = "Token %@ aktivieren";
 
 /* The description when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyDescription" = "Nach Ihrer ersten Transaktion können Sie sie hier einsehen.";
+"wallet.activityPageEmptyDescription" = "Sobald Sie eine Transaktion durchgeführt haben, können Sie sie hier einsehen.";
 
 /* The title when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyTitle" = "Noch keine Transaktionen";
+"wallet.activityPageEmptyTitle" = "Noch keine Transaktionen zum Anzeigen";
 
 /* The title of the tab that will display user's transaction activity for all accounts. */
 "wallet.activityPageTitle" = "Aktivität";
@@ -401,7 +401,7 @@
 "wallet.customTokenNetworkHeader" = "Netzwerk auswählen";
 
 /* The title displayed on the add custom token screen */
-"wallet.customTokenTitle" = "Benutzerdefiniert";
+"wallet.customTokenTitle" = "Benutzerdefiniertes Asset hinzufügen";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
 "wallet.dappsConnectionNotificationOriginTitle" = "%@ möchte mit der Brave-Wallet interagieren";
@@ -891,6 +891,24 @@
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "Token-Standard";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
+"wallet.nftDiscoveryCalloutDescription" = "Die Brave-Wallet kann mithilfe eines Drittanbieters automatisch Ihre NFTs anzeigen. Um diesen Dienst zu erbringen, wird Brave Ihre Wallet-Adressen mit SimpleHash teilen. Erfahren Sie mehr.";
+
+/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "Mehr erfahren";
+
+/* The title of the button that user clicks to disable NFT discovery. */
+"wallet.nftDiscoveryCalloutDisable" = "Nein, danke, ich mache das manuell";
+
+/* The title of the button that user clicks to enable NFT discovery. */
+"wallet.nftDiscoveryCalloutEnable" = "Ja, fortfahren";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. */
+"wallet.nftDiscoveryCalloutTitle" = "Sie möchten, dass Ihre NFTs automatisch angezeigt werden?";
+
+/* The title of the button that user clicks to add his/her first NFT */
+"wallet.nftEmptyImportNFT" = "NFT importieren";
 
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "Ein gültiges IPFS-Gateway sollte bereitgestellt werden. Das bereitgestellte Gateway wird auf die Fähigkeit zum Laden von IPFS-Ressourcen überprüft.";
@@ -1707,6 +1725,12 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Web3-Einstellungen";
+
+/* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscovery" = "NFT Discovery aktivieren";
+
+/* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "Fügen Sie NFTs, die Sie besitzen, mithilfe von Drittanbieter-APS automatisch zu Ihrer Wallet hinzu. [Mehr erfahren](%@)";
 
 /* Description of the wrong IPFS gateway alert */
 "wallet.wrongGatewayAlertDescription" = "Es wurde eine ungültige URL angegeben. Gateway sollte in der Lage sein, IPFS-Ressourcen aufzulösen.";

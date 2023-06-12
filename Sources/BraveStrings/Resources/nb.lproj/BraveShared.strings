@@ -100,12 +100,6 @@
 /* cookie settings option */
 "Block3rdPartyCookies" = "Blokker tredjeparts informasjonskapsler";
 
-/* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Blokker sporere på tvers av nettsteder";
-
-/* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Forhindrer at annonser, popup-vinduer og sporere lastes inn.";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokker alle informasjonskapsler";
 
@@ -138,9 +132,6 @@
 
 /* A title for setting which blocks 'switch to app' popups */
 "blockMobileAnnoyances" = "Blokker varsler om å bytte til app";
-
-/* Brave panel individual toggle title */
-"BlockPhishing" = "Blokker nettfiske";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokker sprettoppvinduer";
@@ -318,15 +309,6 @@
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Del helt anonyme og private produktinnsikter.";
-
-/* Button title for Playlist Onboarding View */
-"callout.playlistOnboardingViewButtonTitle" = "Se på videoen";
-
-/* Description for Playlist Onboarding View */
-"callout.playlistOnboardingViewDescription" = "… spill av spillelisten hvor som helst – i bakgrunnen, som bilde-i-bilde eller offline – og selvsagt uten annonser.";
-
-/* Title for Playlist Onboarding View */
-"callout.playlistOnboardingViewTitle" = "Legg til video i Spillelisten …";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Få Brave-personvernfunksjonalitet på datamaskinen eller nettbrettet, og synkroniser bokmerker og utvidelser mellom enheter.";
@@ -899,7 +881,7 @@
 "GoogleSafeBrowsing" = "Blokker farlige nettsteder";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsingUsingWebKitDescription" = "Sender tilslørte nettadresser til enkelte sider du besøker til Googles Safe Browsing-tjeneste når sikkerheten din er i fare.";
+"GoogleSafeBrowsingUsingWebKitDescription" = "Trygg surfing beskytter deg mot nettsteder som er kjent for å være farlige. [Finn ut mer](%@)";
 
 /* Grand camera access */
 "GrantCameraAccess" = "Aktiver kamera";
@@ -986,7 +968,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "Nettsted";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "For å se passord må du først angi en passkode på enheten din.";
+"login.loginInfoSetPasscodeAlertDescription" = "For å konfigurere synkroniseringskjeden eller se innstillingene, må du først angi et passord på enheten din.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "Angi en passkode";
@@ -1504,6 +1486,9 @@
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Bilde av %@";
 
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "Lagt til i %@";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "Vil du legge til denne videoen i spillelisten din?";
 
@@ -1530,6 +1515,9 @@
 
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Brave-spilleliste";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "Endre spilleliste";
 
 /* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
 "playlist.deleteForOfflineButtonTitle" = "Slett offline-bufferdata";
@@ -1566,6 +1554,9 @@
 
 /* Okay Alert button title */
 "playList.okayButtonTitle" = "OK";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "Åpne i spilleliste";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "Beklager, det oppsto en feil under forsøk på å vise et bilde-i-bilde.";
@@ -1614,6 +1605,9 @@
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Data om spilleliste i frakoblet modus";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "Endre";
 
 /* The title for the alert that shows up when removing all videos and their offline mode storage. */
 "playList.playlistResetAlertTitle" = "Tilbakestill";
@@ -1672,6 +1666,9 @@
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Fjern";
 
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "Fjernet fra %@";
+
 /* Message for the alert shown when the user tries to remove offline data of an item from playlist */
 "playlist.removePlaylistOfflineDataAlertMessage" = "Dette sletter media fra den frakoblede lagringsplassen. Er du sikker på at du vil fortsette?";
 
@@ -1688,7 +1685,7 @@
 "playList.reopenButtonTitle" = "Åpne på nytt";
 
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "Lagret for frakoblet modus";
+"playList.savedForOfflineLabelTitle" = "Lagt til i frakoblet";
 
 /* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
 "playlist.saveForOfflineButtonTitle" = "Lagre for offline avspilling";
@@ -1732,11 +1729,23 @@
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Vis i Brave Playlist";
 
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "Angre";
+
 /* Footer for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionFooter" = "Legger til en spilleliste-knapp (den ser ut som 4 linjer med et +-symbol) ved siden av adresselinjen i Brave-nettleseren. Denne knappen gir deg rask tilgang til å åpne spillelisten, eller legge til eller fjerne medier.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Aktiver hurtigtilgangsknapp";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "Flytt til";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "Navn på spilleliste";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "Angi navnet på spillelisten din";
 
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Opprett";
@@ -1747,11 +1756,17 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "Rediger mappe";
 
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Rediger spilleliste";
+
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "Beklager - vi kunne ikke lagre endringene i mappen";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "Flytt";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Gjeldende spilleliste";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Flytt";
@@ -1768,14 +1783,35 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ og %2$lld flere enheter";
 
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Ny spilleliste";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Ny spilleliste";
+
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "Trykk for å velge videoer";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Legg til videoer i denne spillelisten";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "Spill av senere";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "Velg en spilleliste du vil flytte %lld elementer til";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Velg en spilleliste du vil flytte ett element til";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld elementer";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1 element";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Spilleliste uten navn";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Legg til i Brave Playlist-knapp";
@@ -2307,9 +2343,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Legacy-kampanje";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletInfoHeader" = "Informasjon om Legacy-lommebok";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d logger vist";
@@ -2854,6 +2887,9 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Denne slettingen er permanent, og det finnes ingen måte å gjenopprette dataene på. Hvis du bestemmer deg for å bruke Synkronisering igjen, må du opprette en ny konto og legge til hver enkelt enhet på nytt.";
 
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "Angi en passkode";
+
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Synkroniser innstillinger";
 
@@ -3049,7 +3085,8 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Meny";
 
-/* Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Add to Playlist button
+   Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Spilleliste";
 
 /* Accessibility label for the Reader View button */

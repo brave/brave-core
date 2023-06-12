@@ -100,12 +100,6 @@
 /* cookie settings option */
 "Block3rdPartyCookies" = "Blokir cookie pihak ke-3";
 
-/* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Blokir Pelacak Lintas Situs";
-
-/* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Mencegah dimuatnya iklan, popup, dan pelacak.";
-
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokir semua Kuki";
 
@@ -138,9 +132,6 @@
 
 /* A title for setting which blocks 'switch to app' popups */
 "blockMobileAnnoyances" = "Pemberitahuan Blokir 'Beralih ke Aplikasi'";
-
-/* Brave panel individual toggle title */
-"BlockPhishing" = "Blokir Phishing";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokir Pop-up";
@@ -318,15 +309,6 @@
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Bagikan Pandangan Produk Paling Rahasia dan Anonim.";
-
-/* Button title for Playlist Onboarding View */
-"callout.playlistOnboardingViewButtonTitle" = "Tonton video";
-
-/* Description for Playlist Onboarding View */
-"callout.playlistOnboardingViewDescription" = "...putar di mana saja, kapan saja. Pada latar belakang, gambar-ke-gambar, atau bahkan luring. Dan tentu saja, bebas iklan.";
-
-/* Title for Playlist Onboarding View */
-"callout.playlistOnboardingViewTitle" = "Tambahkan video ke Daftar Putar...";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Dapatkan privasi Brave pada komputer atau tablet Anda, dan sinkronisasikan markah & ekstensi antar perangkat.";
@@ -896,10 +878,10 @@
 "genericErrorTitle" = "Kesalahan";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "Memblokir Situs Berbahaya";
+"GoogleSafeBrowsing" = "Memblokir Situs Web Berbahaya";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsingUsingWebKitDescription" = "Mengirimkan URL yang membingungkan dari beberapa halaman yang Anda kunjungi ke layanan Google Safe Browsing, ketika keamanan Anda berisiko.";
+"GoogleSafeBrowsingUsingWebKitDescription" = "Perambanan Aman melindungi terhadap situs web yang dikenal berbahaya. [Pelajari Lebih Lanjut](%@)";
 
 /* Grand camera access */
 "GrantCameraAccess" = "Aktifkan Kamera";
@@ -986,7 +968,7 @@
 "login.loginInfoDetailsWebsiteFieldTitle" = "Situs Web";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"login.loginInfoSetPasscodeAlertDescription" = "Untuk melihat kata sandi, Anda harus terlebih dahulu mengatur kode masuk ke perangkat Anda.";
+"login.loginInfoSetPasscodeAlertDescription" = "Untuk menyiapkan rantai sinkronisasi atau melihat pengaturan, Anda pertama-tama harus menetapkan kode pas pada perangkat Anda.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "login.loginInfoSetPasscodeAlertTitle" = "Atur Kode Masuk";
@@ -1504,6 +1486,9 @@
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto oleh %@";
 
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "Ditambahkan ke %@";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "Apakah Anda ingin menambahkan video ini ke daftar putar Anda?";
 
@@ -1530,6 +1515,9 @@
 
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Daftar Putar Brave";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "Ubah Daftar Putar";
 
 /* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
 "playlist.deleteForOfflineButtonTitle" = "Hapus Cache Luring";
@@ -1566,6 +1554,9 @@
 
 /* Okay Alert button title */
 "playList.okayButtonTitle" = "Oke";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "Buka di Daftar Putar";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "Maaf, telah terjadi kesalahan saat mencoba menampilkan gambar-dalam-gambar.";
@@ -1614,6 +1605,9 @@
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Data Luring Daftar Putar";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "Ubah";
 
 /* The title for the alert that shows up when removing all videos and their offline mode storage. */
 "playList.playlistResetAlertTitle" = "Atur ulang";
@@ -1672,6 +1666,9 @@
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Hapus";
 
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "Hapus dari %@";
+
 /* Message for the alert shown when the user tries to remove offline data of an item from playlist */
 "playlist.removePlaylistOfflineDataAlertMessage" = "Ini akan menghapus media dari penyimpanan luring. Anda yakin ingin melanjutkan?";
 
@@ -1688,7 +1685,7 @@
 "playList.reopenButtonTitle" = "Buka Ulang";
 
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "Disimpan untuk Luring";
+"playList.savedForOfflineLabelTitle" = "Ditambahkan ke Luring";
 
 /* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
 "playlist.saveForOfflineButtonTitle" = "Simpan untuk Luring";
@@ -1732,11 +1729,23 @@
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Lihat di Brave Playlist";
 
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "Urungkan";
+
 /* Footer for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionFooter" = "Tambahkan tombol daftar putar (seperti 4 garis dengan simbol +) di samping bilah alamat pada peramban Brave. Tombol ini memberikan Anda akses cepat untuk membuka Daftar Putar, atau menambahkan atau menyingkirkan media.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Aktifkan tombol akses cepat";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "Berpindah Ke";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "Nama Daftar Putar";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "Masukkan nama daftar putar Anda";
 
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Buat";
@@ -1747,11 +1756,17 @@
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "Sunting Folder";
 
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Edit Daftar Putar";
+
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "Maaf, kami tidak dapat menyimpan perubahan yang Anda buat di folder ini";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderButtonTitle" = "Pindahkan";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Daftar Putar Saat Ini";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Pindahkan";
@@ -1768,14 +1783,35 @@
 /* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ dan %2$lld hal lagi";
 
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Daftar Putar Baru";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Daftar Putar Baru";
+
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "Tap untuk memilih video";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Tambahkan video ke daftar putar ini";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "Putar Nanti";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "Pilih daftar putar untuk memindahkan %lld hal ke";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Pilih daftar putar untuk memindahkan 1 hal ke";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld hal";
 
 /* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
 "playlistFolders.subtitleItemSingleCount" = "1 hal";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Daftar Putar Tanpa Judul";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Tambahkan ke Tombol Daftar Putar Brave";
@@ -2307,9 +2343,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Promosi Dasar";
-
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletInfoHeader" = "Info Dompet Legacy";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d log ditampilkan";
@@ -2854,6 +2887,9 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika Anda memutuskan untuk kembali menggunakan Sinkronisasi, Anda perlu membuat akun baru dan menambahkan ulang setiap perangkat satu per satu.";
 
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "Atur Kode Masuk";
+
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Pengaturan Sinkronisasi";
 
@@ -3049,7 +3085,8 @@
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
-/* Accessibility Label for the tab toolbar Playlist button */
+/* Accessibility Label for the tab toolbar Add to Playlist button
+   Accessibility Label for the tab toolbar Playlist button */
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Daftar Putar";
 
 /* Accessibility label for the Reader View button */
