@@ -98,6 +98,8 @@ class VerticalTabStripRegionView : public views::View,
   class ScrollHeaderView;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           OriginalTabSearchButton);
 
   bool IsTabFullscreen() const;
 
@@ -109,7 +111,7 @@ class VerticalTabStripRegionView : public views::View,
 
   void UpdateLayout(bool in_destruction = false);
 
-  void UpdateTabSearchButtonVisibility();
+  void UpdateOriginalTabSearchButtonVisibility();
 
   void OnCollapsedPrefChanged();
   void OnFloatingModePrefChanged();
