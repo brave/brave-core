@@ -176,8 +176,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
   test_util::CreateRewardsWallet(rewards_service_);
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(),
-                                     "3zsistemi.si");
+  test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
+                                                 "3zsistemi.si");
 
   base::WeakPtr<content::WebContents> site_banner =
       context_helper_->OpenSiteBanner();
@@ -187,8 +187,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
   test_util::CreateRewardsWallet(rewards_service_);
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(),
-                                     "laurenwags.github.io");
+  test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
+                                                 "laurenwags.github.io");
 
   base::WeakPtr<content::WebContents> site_banner =
       context_helper_->OpenSiteBanner();

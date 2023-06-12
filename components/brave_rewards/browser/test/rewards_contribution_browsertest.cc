@@ -167,8 +167,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   // Switch to original tab to trigger saving publisher activity
   browser()->tab_strip_model()->ActivateTabAt(0);
 
-  rewards_service_->StartContributionsForTesting();
-
   // Switch back to publisher tab and verify that we see correct visited count
   // in Rewards panel
   browser()->tab_strip_model()->ActivateTabAt(1);
@@ -197,8 +195,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Switch to original tab to trigger saving publisher activity
   browser()->tab_strip_model()->ActivateTabAt(0);
-
-  rewards_service_->StartContributionsForTesting();
 
   // Switch back to publisher tab and verify that we see correct visited count
   // in Rewards panel
@@ -627,8 +623,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipAmount) {
   context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(),
-                                     "3zsistemi.si");
+  test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
+                                                 "3zsistemi.si");
 
   // Add a recurring tip of 10 BAT.
   contribution_->TipViaCode("3zsistemi.si", 10.0,

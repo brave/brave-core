@@ -46,6 +46,10 @@ void NavigateToPublisherPage(
     const std::string& publisher_key,
     const std::string& path = "");
 
+void NavigateToPublisherAndWaitForUpdate(Browser* browser,
+                                         net::EmbeddedTestServer* https_server,
+                                         const std::string& publisher_key);
+
 void WaitForLedgerStop(RewardsServiceImpl* rewards_service);
 
 void WaitForAutoContributeVisitTime();
