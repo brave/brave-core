@@ -69,17 +69,17 @@ void RegisterWidevineCdmComponent(ComponentUpdateService* cus,
 
 namespace {
 
-const char kArm64DllUrl[] =
+constexpr char kArm64DllUrl[] =
     "https://dl.google.com/widevine-cdm/4.10.2557.0-win-arm64.zip";
 
 // This timeout should be chosen so that downloading the above URL does not
 // exceed it. The download is 7.4 MB, which in 60s equates to 1 Mbps. Netflix
 // needs 3 Mbps at a minimum and recommends 25 Mbps for high-quality streams.
 // So 1 Mbps seems like a conservative number.
-const int kDownloadRequestTimeoutSecs = 60;
-const int kOverallDownloadTimeoutSecs = kDownloadRequestTimeoutSecs + 1;
+constexpr int kDownloadRequestTimeoutSecs = 60;
+constexpr int kOverallDownloadTimeoutSecs = kDownloadRequestTimeoutSecs + 1;
 
-const net::NetworkTrafficAnnotationTag traffic_annotation =
+constexpr net::NetworkTrafficAnnotationTag traffic_annotation =
     net::DefineNetworkTrafficAnnotation("widevine_updater", R"(
         semantics {
           sender: "Widevine Component Updater"
