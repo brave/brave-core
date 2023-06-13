@@ -8,10 +8,10 @@
     Congrats! Your <ph name="MONTH">$1<ex>October</ex></ph> rewards have arrived!
   </message>
   <message name="IDS_REWARDS_PAYMENT_PENDING" desc="">
-    Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards will arrive in <ph name="DAYS">$3<ex>4 days</ex></ph>
+    Your <ph name="MONTH">$1<ex>October</ex></ph> earnings of <ph name="AMOUNT">$2<ex>1.5 - 1.6 BAT</ex></ph> will arrive in <ph name="DAYS">$3<ex>4 days</ex></ph>.
   </message>
   <message name="IDS_REWARDS_PAYMENT_PROCESSING" desc="">
-    Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards are on the way. Keep an eye out!
+    Your <ph name="MONTH">$1<ex>October</ex></ph> earnings of <ph name="AMOUNT">$2<ex>1.5 - 1.6 BAT</ex></ph> are on the way. Keep an eye out!
   </message>
 
   <!-- Rewards "card-and-summary" -->

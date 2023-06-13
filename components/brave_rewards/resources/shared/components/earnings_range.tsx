@@ -23,7 +23,7 @@ export function EarningsRange (props: Props) {
         amount={props.minimum}
         minimumFractionDigits={3}
         hideCurrency
-      />&nbsp;-&nbsp;
+      />{' - '}
       <TokenAmount amount={props.maximum} minimumFractionDigits={3} />
     </>
   )

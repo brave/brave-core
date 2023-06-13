@@ -40,7 +40,8 @@ interface Props {
   providerPayoutStatus: ProviderPayoutStatus
   minEarningsThisMonth: number
   maxEarningsThisMonth: number
-  earningsLastMonth: number
+  minEarningsLastMonth: number
+  maxEarningsLastMonth: number
   nextPaymentDate: number
   exchangeRate: number
   exchangeCurrency: string
@@ -169,7 +170,8 @@ export function WalletCard (props: Props) {
                 providerPayoutStatus={props.providerPayoutStatus}
                 autoContributeEnabled={props.autoContributeEnabled}
                 hideAdEarnings={Boolean(props.externalWallet)}
-                earningsLastMonth={props.earningsLastMonth}
+                minEarningsLastMonth={props.minEarningsLastMonth}
+                maxEarningsLastMonth={props.maxEarningsLastMonth}
                 nextPaymentDate={props.nextPaymentDate}
                 exchangeRate={props.exchangeRate}
                 exchangeCurrency={props.exchangeCurrency}
@@ -188,7 +190,8 @@ export function WalletCard (props: Props) {
             </style.summaryBox>
           : <style.pendingBox>
               <PendingRewardsView
-                earningsLastMonth={props.earningsLastMonth}
+                minEarnings={props.minEarningsLastMonth}
+                maxEarnings={props.maxEarningsLastMonth}
                 nextPaymentDate={props.nextPaymentDate}
                 providerPayoutStatus={props.providerPayoutStatus}
               />

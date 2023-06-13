@@ -22,7 +22,8 @@ base::Time GetNextPaymentDate(const TransactionList& transactions);
 std::pair</*range_low*/ double, /*range_high*/ double>
 GetEstimatedEarningsForThisMonth(const TransactionList& transactions);
 
-double GetEarningsForLastMonth(const TransactionList& transactions);
+std::pair</*range_low*/ double, /*range_high*/ double>
+GetEstimatedEarningsForLastMonth(const TransactionList& transactions);
 
 int32_t GetAdsReceivedThisMonth(const TransactionList& transactions);
 

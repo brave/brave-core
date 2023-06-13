@@ -33,8 +33,10 @@ void BuildStatement(BuildStatementCallback callback) {
             }
 
             mojom::StatementInfoPtr statement = mojom::StatementInfo::New();
-            statement->earnings_last_month =
-                GetEarningsForLastMonth(transactions);
+            const auto [min_last_month, max_last_month] =
+                GetEstimatedEarningsForLastMonth(transactions);
+            statement->min_earnings_last_month = min_last_month;
+            statement->max_earnings_last_month = max_last_month;
             const auto [min_this_month, max_this_month] =
                 GetEstimatedEarningsForThisMonth(transactions);
             statement->min_earnings_this_month = min_this_month;

@@ -1450,7 +1450,10 @@
                   "maxEarningsThisMonth": {
                     "type": "number"
                   },
-                  "earningsLastMonth": {
+                  "minEarningsLastMonth": {
+                    "type": "number"
+                  },
+                  "maxEarningsLastMonth": {
                     "type": "number"
                   }
                 }

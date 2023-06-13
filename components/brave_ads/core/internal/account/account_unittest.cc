@@ -488,7 +488,9 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
     ASSERT_TRUE(statement);
 
     mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
-    expected_statement->earnings_last_month = 0.01;
+    expected_statement->min_earnings_last_month =
+        0.01 * kMinEstimatedEarningsMultiplier.Get();
+    expected_statement->max_earnings_last_month = 0.01;
     expected_statement->min_earnings_this_month =
         0.05 * kMinEstimatedEarningsMultiplier.Get();
     expected_statement->max_earnings_this_month = 0.05;

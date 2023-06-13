@@ -186,10 +186,6 @@ export const pendingRewards = styled.div`
 
   .rewards-payment-amount {
     font-weight: 600;
-
-    .plus {
-      margin-right: 2px;
-    }
   }
 
   .rewards-payment-completed {

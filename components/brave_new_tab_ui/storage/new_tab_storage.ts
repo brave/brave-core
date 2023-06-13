@@ -56,7 +56,8 @@ export const defaultState: NewTab.State = {
       adsReceivedThisMonth: 0,
       minEarningsThisMonth: 0,
       maxEarningsThisMonth: 0,
-      earningsLastMonth: 0
+      minEarningsLastMonth: 0,
+      maxEarningsLastMonth: 0
     },
     balance: undefined,
     externalWallet: undefined,
@@ -151,6 +152,11 @@ const cleanData = (state: NewTab.State) => {
     if (typeof (adsAccountStatement.minEarningsThisMonth as any) !== 'number') {
       adsAccountStatement.minEarningsThisMonth = 0
       adsAccountStatement.maxEarningsThisMonth = 0
+    }
+    // earningsLastMonth replaced with range
+    if (typeof (adsAccountStatement.minEarningsLastMonth as any) !== 'number') {
+      adsAccountStatement.minEarningsLastMonth = 0
+      adsAccountStatement.maxEarningsLastMonth = 0
     }
   }
 

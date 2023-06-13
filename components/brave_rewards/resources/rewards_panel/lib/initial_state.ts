@@ -35,7 +35,8 @@ export function getInitialState (): HostState {
       nextPaymentDate: 0,
       minEarningsThisMonth: 0,
       maxEarningsThisMonth: 0,
-      earningsLastMonth: 0
+      minEarningsLastMonth: 0,
+      maxEarningsLastMonth: 0
     },
     payoutStatus: {},
     publisherInfo: null,

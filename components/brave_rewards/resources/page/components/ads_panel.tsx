@@ -369,7 +369,8 @@ export function AdsPanel () {
         {renderDescription()}
         <style.paymentStatus>
             <PaymentStatusView
-              earningsLastMonth={adsData.adsEarningsLastMonth}
+              minEarnings={adsData.adsMinEarningsLastMonth}
+              maxEarnings={adsData.adsMaxEarningsLastMonth}
               nextPaymentDate={adsData.adsNextPaymentDate}
               providerPayoutStatus={providerPayoutStatus}
             />

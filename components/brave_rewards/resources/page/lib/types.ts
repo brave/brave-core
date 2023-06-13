@@ -237,7 +237,8 @@ export interface AdsData {
   adsReceivedThisMonth: number
   adsMinEarningsThisMonth: number
   adsMaxEarningsThisMonth: number
-  adsEarningsLastMonth: number
+  adsMinEarningsLastMonth: number
+  adsMaxEarningsLastMonth: number
 }
 
 export enum RewardsType {

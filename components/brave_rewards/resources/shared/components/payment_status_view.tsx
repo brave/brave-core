@@ -8,7 +8,7 @@ import { LocaleContext, formatMessage } from '../lib/locale_context'
 import { ProviderPayoutStatus } from '../lib/provider_payout_status'
 
 import { NewTabLink } from './new_tab_link'
-import { TokenAmount } from './token_amount'
+import { EarningsRange } from './earnings_range'
 import { MoneyBagIcon } from './icons/money_bag_icon'
 import { PaymentCompleteIcon } from './icons/payment_complete_icon'
 
@@ -59,23 +59,25 @@ function getPaymentMonth () {
 }
 
 interface RewardAmountProps {
-  amount: number
+  min: number
+  max: number
 }
 
 function RewardAmount (props: RewardAmountProps) {
   return (
     <span className='rewards-payment-amount'>
-      <span className='plus'>+</span>
-      <TokenAmount
-        minimumFractionDigits={1}
-        amount={props.amount}
+      <EarningsRange
+        minimum={props.min}
+        maximum={props.max}
+        minimumFractionDigits={3}
       />
     </span>
   )
 }
 
 interface Props {
-  earningsLastMonth: number
+  minEarnings: number
+  maxEarnings: number
   nextPaymentDate: number
   providerPayoutStatus: ProviderPayoutStatus
 }
@@ -83,7 +85,7 @@ interface Props {
 export function PaymentStatusView (props: Props) {
   const { getString } = React.useContext(LocaleContext)
 
-  if (props.earningsLastMonth <= 0) {
+  if (props.minEarnings <= 0) {
     return null
   }
 
@@ -95,8 +97,12 @@ export function PaymentStatusView (props: Props) {
         <div>
           {
             formatMessage(getString('rewardsPaymentPending'), [
-              <RewardAmount key='amount' amount={props.earningsLastMonth} />,
               getPaymentMonth(),
+              <RewardAmount
+                key='amount'
+                min={props.minEarnings}
+                max={props.maxEarnings}
+              />,
               estimatedPendingDays
             ])
           }
@@ -126,8 +132,12 @@ export function PaymentStatusView (props: Props) {
         <div>
           {
             formatMessage(getString('rewardsPaymentProcessing'), [
-              <RewardAmount key='amount' amount={props.earningsLastMonth} />,
-              getPaymentMonth()
+              getPaymentMonth(),
+              <RewardAmount
+                key='amount'
+                min={props.minEarnings}
+                max={props.maxEarnings}
+              />
             ])
           }&nbsp;
           <span className='rewards-payment-check-status'>

@@ -27,7 +27,8 @@ export interface EarningsInfo {
   nextPaymentDate: number
   minEarningsThisMonth: number
   maxEarningsThisMonth: number
-  earningsLastMonth: number
+  minEarningsLastMonth: number
+  maxEarningsLastMonth: number
 }
 
 export interface PublisherInfo {

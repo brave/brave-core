@@ -19,6 +19,20 @@
 
 namespace brave_ads {
 
+namespace {
+
+TransactionList FilterTransactionsForEstimatedEarnings(
+    const TransactionList& transactions) {
+  TransactionList filtered_transactions;
+  base::ranges::copy_if(transactions, std::back_inserter(filtered_transactions),
+                        [](const TransactionInfo& transaction) {
+                          return transaction.ad_type != AdType::kNewTabPageAd;
+                        });
+  return filtered_transactions;
+}
+
+}  // namespace
+
 base::Time GetNextPaymentDate(const TransactionList& transactions) {
   const base::Time next_token_redemption_at =
       AdsClientHelper::GetInstance()->GetTimePref(
@@ -32,11 +46,8 @@ base::Time GetNextPaymentDate(const TransactionList& transactions) {
 
 std::pair<double, double> GetEstimatedEarningsForThisMonth(
     const TransactionList& transactions) {
-  TransactionList filtered_transactions;
-  base::ranges::copy_if(transactions, std::back_inserter(filtered_transactions),
-                        [](const TransactionInfo& transaction) {
-                          return transaction.ad_type != AdType::kNewTabPageAd;
-                        });
+  TransactionList filtered_transactions =
+      FilterTransactionsForEstimatedEarnings(transactions);
 
   const double range_low =
       GetUnreconciledEarnings(filtered_transactions) +
@@ -48,8 +59,13 @@ std::pair<double, double> GetEstimatedEarningsForThisMonth(
   return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
-double GetEarningsForLastMonth(const TransactionList& transactions) {
-  return GetReconciledEarningsForLastMonth(transactions);
+std::pair<double, double> GetEstimatedEarningsForLastMonth(
+    const TransactionList& transactions) {
+  const double range_low = GetReconciledEarningsForLastMonth(
+      FilterTransactionsForEstimatedEarnings(transactions));
+  const double range_high = GetReconciledEarningsForLastMonth(transactions);
+
+  return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
 int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {

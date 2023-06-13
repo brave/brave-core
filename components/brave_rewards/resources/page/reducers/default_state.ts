@@ -45,7 +45,8 @@ export function defaultState (): Rewards.State {
       adsReceivedThisMonth: 0,
       adsMinEarningsThisMonth: 0,
       adsMaxEarningsThisMonth: 0,
-      adsEarningsLastMonth: 0
+      adsMinEarningsLastMonth: 0,
+      adsMaxEarningsLastMonth: 0
     },
     adsHistory: [],
     promotions: [],
