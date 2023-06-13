@@ -1722,17 +1722,45 @@ public class BrowserViewController: UIViewController {
         break
       }
       
-      let host = tab.webView?.url?.host
+      guard let scheme = tab.webView?.url?.scheme,
+            let host = tab.webView?.url?.host else {
+        tab.secureContentState = .insecure
+        self.updateURLBar()
+        return
+      }
       
-      Task {
+      let port: Int
+      if let urlPort = tab.webView?.url?.port {
+        port = urlPort
+      } else if scheme == "https" {
+        port = 443
+      } else {
+        port = 80
+      }
+      
+      Task.detached {
         do {
-          try await BraveCertificateUtils.evaluateTrust(serverTrust, for: host)
-          tab.secureContentState = .secure
+          let result = BraveCertificateUtility.verifyTrust(serverTrust,
+                                                           host: host,
+                                                           port: port)
+          // Cert is valid!
+          if result == 0 {
+            tab.secureContentState = .secure
+          } else if result == Int32.min {
+            // Cert is valid but should be validated by the system
+            // Let the system handle it and we'll show an error if the system cannot validate it
+            try await BraveCertificateUtils.evaluateTrust(serverTrust, for: host)
+            tab.secureContentState = .secure
+          } else {
+            tab.secureContentState = .insecure
+          }
         } catch {
           tab.secureContentState = .insecure
         }
         
-        self.updateURLBar()
+        Task { @MainActor in
+          self.updateURLBar()
+        }
       }
     case ._sampledPageTopColor:
       updateStatusBarOverlayColor()
