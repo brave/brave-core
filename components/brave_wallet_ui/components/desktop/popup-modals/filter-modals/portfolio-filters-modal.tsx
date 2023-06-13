@@ -38,9 +38,6 @@ import {
 } from '../../../../common/constants/magics'
 
 // Hooks
-import {
-  useOnClickOutside
-} from '../../../../common/hooks/useOnClickOutside'
 import { useLib } from '../../../../common/hooks/useLib'
 
 // Utils
@@ -113,17 +110,7 @@ export const PortfolioFiltersModal = (props: Props) => {
   const [selectedGroupAssetsByOption, setSelectedGroupAssetsByOption] =
     React.useState<string>(selectedGroupAssetsByItem)
 
-  // refs
-  const portfolioFiltersRef =
-    React.useRef<HTMLDivElement>(null)
-
   // Hooks
-  useOnClickOutside(
-    portfolioFiltersRef,
-    () => onClose(),
-    true
-  )
-
   const { refreshTokenPriceHistory } = useLib()
 
   const onUpdateSelectedGroupAssetsByOption = React.useCallback(() => {
@@ -235,7 +222,6 @@ export const PortfolioFiltersModal = (props: Props) => {
       title={getLocale('braveWalletPortfolioFiltersTitle')}
       width='500px'
       borderRadius={16}
-      ref={portfolioFiltersRef}
     >
       <ScrollableColumn>
         <Column
