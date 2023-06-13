@@ -12,6 +12,6 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 
 public class ChromeBaseCheckBoxPreference extends ChromeSwitchPreference {
     public ChromeBaseCheckBoxPreference(Context context, AttributeSet attrs) {
-        super(context);
+        super(context, attrs);
     }
 }
