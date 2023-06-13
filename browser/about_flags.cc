@@ -857,6 +857,15 @@
           "back to HTTP.",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
+      },                                                                       \
+      {                                                                        \
+          "brave-override-download-danger-level",                              \
+          "Override download danger level",                                    \
+          "Disables download warnings for files which are considered "         \
+          "dangerous when Safe Browsing is disabled. Use at your own risks. "  \
+          "Not recommended.",                                                  \
+          kOsWin | kOsLinux | kOsMac,                                          \
+          FEATURE_VALUE_TYPE(features::kBraveOverrideDownloadDangerLevel),     \
       })                                                                       \
   BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
