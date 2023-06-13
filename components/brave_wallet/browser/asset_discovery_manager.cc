@@ -92,8 +92,17 @@ void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
   AddTask(account_addresses);
 }
 
+const std::map<mojom::CoinType, std::vector<std::string>>
+AssetDiscoveryManager::GetNonFungibleSupportedChains() {
+  auto fungible_supported_chains = GetFungibleSupportedChains();
+  auto non_fungible_supported_chains = fungible_supported_chains;
+  non_fungible_supported_chains[mojom::CoinType::ETH].push_back("0x99");
+
+  return non_fungible_supported_chains;
+}
+
 const std::map<mojom::CoinType, std::vector<std::string>>&
-AssetDiscoveryManager::GetAssetDiscoverySupportedChains() {
+AssetDiscoveryManager::GetFungibleSupportedChains() {
   static const base::NoDestructor<
       std::map<mojom::CoinType, std::vector<std::string>>>
       asset_discovery_supported_chains([] {
@@ -118,13 +127,18 @@ AssetDiscoveryManager::GetAssetDiscoverySupportedChains() {
 void AssetDiscoveryManager::AddTask(
     const std::map<mojom::CoinType, std::vector<std::string>>&
         account_addresses) {
+  auto fungible_supported_chains = GetFungibleSupportedChains();
+  auto non_fungible_supported_chains = GetNonFungibleSupportedChains();
+
   auto task = std::make_unique<AssetDiscoveryTask>(
       api_request_helper_.get(), wallet_service_, json_rpc_service_, prefs_);
   auto callback = base::BindOnce(&AssetDiscoveryManager::FinishTask,
                                  weak_ptr_factory_.GetWeakPtr());
   auto* task_ptr = task.get();
   queue_.push(std::move(task));
-  task_ptr->ScheduleTask(GetAssetDiscoverySupportedChains(), account_addresses,
+
+  task_ptr->ScheduleTask(fungible_supported_chains,
+                         non_fungible_supported_chains, account_addresses,
                          std::move(callback));
 }
 

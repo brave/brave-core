@@ -41,11 +41,13 @@ class AssetDiscoveryTask {
   AssetDiscoveryTask& operator=(AssetDiscoveryTask&) = delete;
   ~AssetDiscoveryTask();
 
-  void ScheduleTask(
-      const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
-      const std::map<mojom::CoinType, std::vector<std::string>>&
-          account_addresses,
-      base::OnceClosure callback);
+  void ScheduleTask(const std::map<mojom::CoinType, std::vector<std::string>>&
+                        fungible_chain_ids,
+                    const std::map<mojom::CoinType, std::vector<std::string>>&
+                        non_fungible_chain_ids,
+                    const std::map<mojom::CoinType, std::vector<std::string>>&
+                        account_addresses,
+                    base::OnceClosure callback);
 
  private:
   friend class AssetDiscoveryTaskUnitTest;
@@ -54,11 +56,13 @@ class AssetDiscoveryTask {
                            GetSimpleHashNftsByWalletUrl);
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryTaskUnitTest, ParseNFTsFromSimpleHash);
 
-  void DiscoverAssets(
-      const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
-      const std::map<mojom::CoinType, std::vector<std::string>>&
-          account_addresses,
-      base::OnceClosure callback);
+  void DiscoverAssets(const std::map<mojom::CoinType, std::vector<std::string>>&
+                          fungible_chain_ids,
+                      const std::map<mojom::CoinType, std::vector<std::string>>&
+                          non_fungible_chain_ids,
+                      const std::map<mojom::CoinType, std::vector<std::string>>&
+                          account_addresses,
+                      base::OnceClosure callback);
 
   void MergeDiscoveredAssets(
       base::OnceClosure callback,

@@ -65,10 +65,13 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
  private:
   friend class AssetDiscoveryManagerUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
-                           GetAssetDiscoverySupportedChains);
+                           GetFungibleSupportedChains);
 
   const std::map<mojom::CoinType, std::vector<std::string>>&
-  GetAssetDiscoverySupportedChains();
+  GetFungibleSupportedChains();
+
+  const std::map<mojom::CoinType, std::vector<std::string>>
+  GetNonFungibleSupportedChains();
 
   void AddTask(const std::map<mojom::CoinType, std::vector<std::string>>&
                    account_addresses);

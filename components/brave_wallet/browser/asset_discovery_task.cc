@@ -107,18 +107,25 @@ AssetDiscoveryTask::AssetDiscoveryTask(APIRequestHelper* api_request_helper,
 AssetDiscoveryTask::~AssetDiscoveryTask() = default;
 
 void AssetDiscoveryTask::ScheduleTask(
-    const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
+    const std::map<mojom::CoinType, std::vector<std::string>>&
+        fungible_chain_ids,
+    const std::map<mojom::CoinType, std::vector<std::string>>&
+        non_fungible_chain_ids,
     const std::map<mojom::CoinType, std::vector<std::string>>&
         account_addresses,
     base::OnceClosure callback) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&AssetDiscoveryTask::DiscoverAssets,
-                                weak_ptr_factory_.GetWeakPtr(), chain_ids,
+                                weak_ptr_factory_.GetWeakPtr(),
+                                fungible_chain_ids, non_fungible_chain_ids,
                                 account_addresses, std::move(callback)));
 }
 
 void AssetDiscoveryTask::DiscoverAssets(
-    const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
+    const std::map<mojom::CoinType, std::vector<std::string>>&
+        fungible_chain_ids,
+    const std::map<mojom::CoinType, std::vector<std::string>>&
+        non_fungible_chain_ids,
     const std::map<mojom::CoinType, std::vector<std::string>>&
         account_addresses,
     base::OnceClosure callback) {
@@ -134,9 +141,10 @@ void AssetDiscoveryTask::DiscoverAssets(
   const auto& eth_account_addresses = eth_it != account_addresses.end()
                                           ? eth_it->second
                                           : std::vector<std::string>();
-  eth_it = chain_ids.find(mojom::CoinType::ETH);
-  const auto& eth_chain_ids =
-      eth_it != chain_ids.end() ? eth_it->second : std::vector<std::string>();
+  eth_it = fungible_chain_ids.find(mojom::CoinType::ETH);
+  const auto& eth_chain_ids = eth_it != fungible_chain_ids.end()
+                                  ? eth_it->second
+                                  : std::vector<std::string>();
 
   // Concurrently discover ETH ERC20s on our registry, Solana tokens on our
   // Registry and NFTs on both platforms, then merge the results
@@ -149,7 +157,7 @@ void AssetDiscoveryTask::DiscoverAssets(
   DiscoverSPLTokensFromRegistry(sol_account_addresses, barrier_callback);
   DiscoverERC20sFromRegistry(eth_chain_ids, eth_account_addresses,
                              barrier_callback);
-  DiscoverNFTs(chain_ids, account_addresses, barrier_callback);
+  DiscoverNFTs(non_fungible_chain_ids, account_addresses, barrier_callback);
 }
 
 void AssetDiscoveryTask::MergeDiscoveredAssets(
