@@ -158,6 +158,8 @@ class APIRequestHelper {
     // so that we can know if any are still in-progress when the request
     // completes.
     int current_decoding_operation_count_ = 0;
+    int current_chunk_decoding_operation_count_ = 0;
+    base::OnceClosure resume_chunks_ = base::NullCallback();
     bool request_is_finished_ = false;
 
     base::WeakPtrFactory<URLLoaderHandler> weak_ptr_factory_{this};

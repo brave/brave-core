@@ -11,7 +11,10 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/cxx20_erase_vector.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/json/json_writer.h"
+#include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
@@ -329,9 +332,12 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
   DVLOG(2) << "\n[[" << __func__ << "]]"
            << " Chunk received";
   if (is_sse_) {
+    resume_chunks_ = std::move(resume);
+    current_chunk_decoding_operation_count_ = 0;
     ParseSSE(string_piece);
   } else {
     data_received_callback_.Run(base::Value(string_piece));
+    std::move(resume).Run();
   }
   // Get next chunk
   // TODO(petemill): Consider waiting until Parsing finishes to resume,
@@ -339,7 +345,7 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
   // operations. Perhaps also provide the |resume| closure to the consumer
   // so that we can be notified when ready for the next chunk and not overwhelm
   // e.g. the UI.
-  std::move(resume).Run();
+
 }
 
 void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
@@ -458,7 +464,7 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
   // only identifies JSON values.
   static constexpr char kDataPrefix[] = "data: {";
   base::EraseIf(stream_data, [](base::StringPiece item) {
-    DVLOG(3) << "Received chunk: " << item;
+    DVLOG(3) << "Received SSE event: " << item;
     if (!base::StartsWith(item, kDataPrefix)) {
       // This is useful to log in case an API starts
       // coming back with unknown data type in some
@@ -469,23 +475,53 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
     return false;
   });
 
+  if (!stream_data.size()) {
+    std::move(resume_chunks_).Run();
+    return;
+  }
+
+  // experiment only take the last item
+  if (stream_data.size() > 1u) {
+    VLOG(2) << "Discarding " << stream_data.size() - 1 << " SSE events";
+    stream_data.erase(stream_data.begin(),
+                      stream_data.begin() + stream_data.size() - 1);
+  }
+
   // Keep track of number of in-progress data decoding operations
   // so that we can know if any are still in-progress when the request
   // completes.
   current_decoding_operation_count_ += stream_data.size();
+  current_chunk_decoding_operation_count_ = stream_data.size();
+  VLOG(2) << "Processing SSE response chunk with "
+          << current_chunk_decoding_operation_count_ << " events";
 
   for (const auto& data : stream_data) {
     auto json = data.substr(strlen(kDataPrefix) - 1);
     auto on_json_parsed =
         [](base::WeakPtr<APIRequestHelper::URLLoaderHandler> handler,
            data_decoder::DataDecoder::ValueOrError result) {
-          DVLOG(2) << "Chunk parsed";
+          DVLOG(1) << "on_json_parsed";
           if (!handler) {
+            DVLOG(1) << "Handler was destroyed before parsing result sent";
             return;
           }
+          DVLOG(2) << "Chunk parsed: "
+                   << (result.has_value()
+                      ? result->DebugString()
+                      : "[invalid]");
           handler->current_decoding_operation_count_--;
           DCHECK(handler->data_received_callback_);
+          // Give the chunk to the consumer
           handler->data_received_callback_.Run(std::move(result));
+          // Get the next chunk if we're done with this one
+          handler->current_chunk_decoding_operation_count_--;
+          VLOG(3) << "Pending operations for this chunk: "
+                  << handler->current_chunk_decoding_operation_count_;
+          if (handler->current_chunk_decoding_operation_count_ == 0 &&
+              !handler->request_is_finished_) {
+            VLOG(3) << "Asking for next chunk";
+            std::move(handler->resume_chunks_).Run();
+          }
           // Parsing is potentially the last operation for |URLLoaderHandler|.
           handler->MaybeSendResult();
         };
