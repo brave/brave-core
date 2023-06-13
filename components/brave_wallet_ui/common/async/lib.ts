@@ -29,6 +29,7 @@ import {
   getNetworksByCoinType,
   hasEIP1559Support
 } from '../../utils/network-utils'
+import { getAccountType } from '../../utils/account-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { getAssetIdKey, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
@@ -45,7 +46,7 @@ import { GetAccountsHardwareOperationResult, SolDerivationPaths } from '../hardw
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import { AllNetworksOption, AllNetworksOptionDefault } from '../../options/network-filter-options'
-import { AllAccountsOption } from '../../options/account-filter-options'
+import { AllAccountsOptionUniqueKey, applySelectedAccountFilter } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
 import {
@@ -934,7 +935,7 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
 
     // Check if network and keyring support EIP-1559.
     default:
-      isEIP1559 = hasEIP1559Support(payload.fromAccount.accountType, payload.network)
+      isEIP1559 = hasEIP1559Support(getAccountType(payload.fromAccount), payload.network)
   }
 
   const { chainId } =
@@ -1088,12 +1089,8 @@ export function refreshPortfolioFilterOptions () {
       )
     }
 
-    if (
-      selectedAccountFilter !== AllAccountsOption.id &&
-      !accounts.some(account => account.id === selectedAccountFilter)
-    ) {
-      dispatch(WalletActions.setSelectedAccountFilterItem(AllAccountsOption.id))
-      window.localStorage.removeItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION)
+    if (!applySelectedAccountFilter(accounts, selectedAccountFilter).accounts) {
+      dispatch(WalletActions.setSelectedAccountFilterItem(AllAccountsOptionUniqueKey))
     }
   }
 }

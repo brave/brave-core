@@ -70,6 +70,7 @@ import {
 import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
 
 // utils
+import { getAccountType } from '../../utils/account-utils'
 import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
 import type WalletApiProxy from '../wallet_api_proxy'
 import {
@@ -1361,7 +1362,7 @@ export function createWalletApi () {
               payload.gasPrice === undefined ||
               // Check if network and keyring support EIP-1559.
               hasEIP1559Support(
-                payload.fromAccount.accountType,
+                getAccountType(payload.fromAccount),
                 payload.network
               )
 

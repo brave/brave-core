@@ -180,7 +180,7 @@ export const ConnectWithSite = (props: Props) => {
               </Row>
               {accountsToConnect.map((account) => (
                 <SelectAccountItem
-                  key={account.id}
+                  key={account.accountId.uniqueKey}
                   onSelectAccount={onSelectAccount(account)}
                   account={account}
                   isSelected={addressToConnect === account.address}

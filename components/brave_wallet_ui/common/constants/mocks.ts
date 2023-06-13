@@ -185,7 +185,6 @@ export const mockNftPinningStatus: NftsPinningStatusType = {
 }
 
 export const mockAccount: WalletAccountType = {
-  id: 'mockId',
   name: 'mockAccountName',
   address: 'mockAddress',
   nativeBalanceRegistry: {
@@ -196,11 +195,10 @@ export const mockAccount: WalletAccountType = {
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'mockAddress',
+    uniqueKey: 'mockId',
   },
-  accountType: 'Primary',
   tokenBalanceRegistry: {},
   hardware: undefined,
-  deviceId: ''
 }
 
 export const mockEthAccountInfo: BraveWallet.AccountInfo = {
@@ -212,11 +210,11 @@ export const mockEthAccountInfo: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'mockEthAddress',
+    uniqueKey: 'mockEthAddress',
   },
 }
 
 export const mockSolanaAccount: WalletAccountType = {
-  id: 'mockId-2',
   name: 'MockSolanaAccount',
   address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
   nativeBalanceRegistry: {
@@ -229,11 +227,10 @@ export const mockSolanaAccount: WalletAccountType = {
     keyringId: BraveWallet.KeyringId.kSolana,
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+    uniqueKey: 'mockId-2',
   },
-  accountType: 'Primary',
   tokenBalanceRegistry: {},
   hardware: undefined,
-  deviceId: ''
 }
 
 export const mockSolanaAccountInfo: BraveWallet.AccountInfo = {
@@ -244,12 +241,12 @@ export const mockSolanaAccountInfo: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kSolana,
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
+    uniqueKey: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
   },
   hardware: undefined
 }
 
 export const mockFilecoinAccount: WalletAccountType = {
-  id: 'mockId-3',
   name: 'MockFilecoinAccount',
   address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
   nativeBalanceRegistry: {
@@ -260,11 +257,10 @@ export const mockFilecoinAccount: WalletAccountType = {
     keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
+    uniqueKey: 'mockId-3',
   },
-  accountType: 'Primary',
   tokenBalanceRegistry: {},
   hardware: undefined,
-  deviceId: ''
 }
 
 export const mockFilecoinAccountInfo: BraveWallet.AccountInfo = {
@@ -275,6 +271,7 @@ export const mockFilecoinAccountInfo: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
+    uniqueKey: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
   },
   hardware: undefined
 }

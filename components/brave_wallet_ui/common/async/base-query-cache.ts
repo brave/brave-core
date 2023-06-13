@@ -22,7 +22,6 @@ import {
 // entities
 import {
   AccountInfoEntityState,
-  AccountInfoEntity,
   accountInfoEntityAdaptor,
   accountInfoEntityAdaptorInitialState
 } from '../slices/entities/account-info.entity'
@@ -39,7 +38,6 @@ import {
 
 // utils
 import getAPIProxy from './bridge'
-import { getAccountType } from '../../utils/account-utils'
 import { addChainIdToToken, getAssetIdKey } from '../../utils/asset-utils'
 import { addLogoToToken } from './lib'
 import { makeNetworkAsset } from '../../options/asset-options'
@@ -61,16 +59,6 @@ export let apiProxyFetcher = () =>
  */
 export const setApiProxyFetcher = (fetcher: () => WalletApiProxy) => {
   apiProxyFetcher = fetcher
-}
-
-const accountInfoToAccountInfoEntity = (
-  info: BraveWallet.AccountInfo
-): AccountInfoEntity => {
-  return {
-    ...info,
-    accountType: getAccountType(info),
-    deviceId: info.hardware ? info.hardware.deviceId : ''
-  }
 }
 
 /**
@@ -105,13 +93,10 @@ export class BaseQueryCache {
   getAccountsRegistry = async () => {
     if (!this._accountsRegistry) {
       const allAccounts = await this.getAllAccountsInfo()
-      const accountInfos = allAccounts.accounts.map<AccountInfoEntity>(
-        accountInfoToAccountInfoEntity
-      )
 
       this._accountsRegistry = accountInfoEntityAdaptor.setAll(
         accountInfoEntityAdaptorInitialState,
-        accountInfos
+        allAccounts.accounts
       )
     }
     return this._accountsRegistry

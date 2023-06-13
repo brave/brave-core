@@ -183,26 +183,18 @@ export const Account = () => {
     [accountsTokensList]
   )
 
-  const isHardwareWallet: boolean = React.useMemo(() => {
-    if (!selectedAccount) {
-      return false
-    }
-
-    return selectedAccount.accountId.kind === BraveWallet.AccountKind.kHardware
-  }, [selectedAccount])
-
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
     const filteredButtonOptions = AccountButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'details')
-    // We are not able to remove a Primary account so we filter out this option.
-    if (selectedAccount?.accountType === 'Primary') {
+    // We are not able to remove a Derviced account so we filter out this option.
+    if (selectedAccount?.accountId.kind === BraveWallet.AccountKind.kDerived) {
       return filteredButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'remove')
     }
     // We are not able to fetch Private Keys for a Hardware account so we filter out this option.
-    if (isHardwareWallet) {
+    if (selectedAccount?.accountId.kind === BraveWallet.AccountKind.kHardware) {
       return filteredButtonOptions.filter((option: AccountButtonOptionsObjectType) => option.id !== 'privateKey')
     }
     return filteredButtonOptions
-  }, [selectedAccount, isHardwareWallet])
+  }, [selectedAccount])
 
   // methods
   const onRemoveAccount = React.useCallback(() => {
@@ -214,7 +206,7 @@ export const Account = () => {
         })
       )
     }
-  }, [selectedAccount, isHardwareWallet, dispatch])
+  }, [selectedAccount, dispatch])
 
   const onClickButtonOption = React.useCallback((option: AccountButtonOptionsObjectType) => () => {
     if (option.id === 'remove') {

@@ -6,18 +6,56 @@
 import { BraveWallet, WalletAccountType } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
+export const AllAccountsOptionUniqueKey = 'all'
+
 export const AllAccountsOption: WalletAccountType = {
-  accountType: 'Primary',
-  address: 'all',
+  address: AllAccountsOptionUniqueKey,
   accountId: {
     coin: 0,
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
-    address: 'all'
+    address: AllAccountsOptionUniqueKey,
+    uniqueKey: AllAccountsOptionUniqueKey
   },
-  id: 'all',
   name: getLocale('braveWalletAccountFilterAllAccounts'),
   nativeBalanceRegistry: {},
   tokenBalanceRegistry: {},
   hardware: undefined
+}
+
+export const isAllAccountsOptionFilter = (selectedAccountFilter: string) => {
+  return selectedAccountFilter === AllAccountsOptionUniqueKey
+}
+
+export const applySelectedAccountFilter = (
+  accounts: WalletAccountType[],
+  selectedAccountFilter: string
+): {
+  accounts: WalletAccountType[],
+  allAccounts?: WalletAccountType[],
+  oneAccount?: WalletAccountType
+} => {
+  if (selectedAccountFilter === AllAccountsOptionUniqueKey) {
+    return {
+      accounts: accounts,
+      allAccounts: accounts,
+      oneAccount: undefined
+    }
+  }
+
+  const account = accounts.find(
+    (account) => account.accountId.uniqueKey === selectedAccountFilter)
+  if (account) {
+    return {
+      accounts: [account],
+      allAccounts: undefined,
+      oneAccount: account
+    }
+  }
+
+  return {
+    accounts: [],
+    allAccounts: undefined,
+    oneAccount: undefined
+  }
 }

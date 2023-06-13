@@ -16,7 +16,7 @@ import {
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-import { groupAccountsById, sortAccountsByName } from '../../../../utils/account-utils'
+import { getAccountType, groupAccountsById, sortAccountsByName } from '../../../../utils/account-utils'
 
 // Styled Components
 import {
@@ -65,20 +65,20 @@ export const Accounts = () => {
 
   // memos
   const primaryAccounts = React.useMemo(() => {
-    return accounts.filter((account) => account.accountType === 'Primary')
+    return accounts.filter((account) => getAccountType(account) === 'Primary')
   }, [accounts])
 
   const secondaryAccounts = React.useMemo(() => {
-    return accounts.filter((account) => account.accountType === 'Secondary')
+    return accounts.filter((account) => getAccountType(account) === 'Secondary')
   }, [accounts])
 
   const trezorAccounts = React.useMemo(() => {
-    const foundTrezorAccounts = accounts.filter((account) => account.accountType === 'Trezor')
+    const foundTrezorAccounts = accounts.filter((account) => getAccountType(account) === 'Trezor')
     return groupAccountsById(foundTrezorAccounts, 'deviceId')
   }, [accounts])
 
   const ledgerAccounts = React.useMemo(() => {
-    const foundLedgerAccounts = accounts.filter((account) => account.accountType === 'Ledger')
+    const foundLedgerAccounts = accounts.filter((account) => getAccountType(account) === 'Ledger')
     return groupAccountsById(foundLedgerAccounts, 'deviceId')
   }, [accounts])
 
@@ -96,8 +96,7 @@ export const Accounts = () => {
         <PrimaryListContainer>
           {primaryAccounts.map((account) =>
             <AccountListItem
-              key={account.id}
-              isHardwareWallet={false}
+              key={account.accountId.uniqueKey}
               onClick={onSelectAccount}
               account={account}
             />
@@ -125,8 +124,7 @@ export const Accounts = () => {
         <SecondaryListContainer isHardwareWallet={false}>
           {secondaryAccounts.map((account) =>
             <AccountListItem
-              key={account.id}
-              isHardwareWallet={false}
+              key={account.accountId.uniqueKey}
               onClick={onSelectAccount}
               account={account}
             />
@@ -138,8 +136,7 @@ export const Accounts = () => {
             {sortAccountsByName(trezorAccounts[key])
               .map((account: WalletAccountType) =>
                 <AccountListItem
-                  key={account.id}
-                  isHardwareWallet={true}
+                  key={account.accountId.uniqueKey}
                   onClick={onSelectAccount}
                   account={account}
                 />
@@ -152,8 +149,7 @@ export const Accounts = () => {
             {sortAccountsByName(ledgerAccounts[key])
               .map((account: WalletAccountType) =>
                 <AccountListItem
-                  key={account.id}
-                  isHardwareWallet={true}
+                  key={account.accountId.uniqueKey}
                   onClick={onSelectAccount}
                   account={account}
                 />

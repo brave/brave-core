@@ -16,8 +16,6 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { isHardwareAccount } from '../../../utils/address-utils'
-import { findAccountName } from '../../../utils/account-utils'
 import { useUnsafePanelSelector, useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 import { PanelSelectors } from '../../../panel/selectors'
@@ -126,6 +124,10 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     ).filter((data): data is BraveWallet.SolanaTxData => !!data)
   }, [selectedQueueData])
 
+  const account = React.useMemo(() => {
+    return accounts.find(acc => acc.address === selectedQueueData?.fromAddress)
+  }, [accounts, selectedQueueData?.fromAddress])
+
   // methods
   const onCancel = React.useCallback(() => {
     if (!selectedQueueData) {
@@ -151,8 +153,11 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     if (!selectedQueueData) {
       return
     }
+    if (!account) {
+      return
+    }
 
-    const isHwAccount = isHardwareAccount(accounts, selectedQueueData.fromAddress)
+    const isHwAccount = account.accountId.kind === BraveWallet.AccountKind.kHardware
     if (signMode === 'signTx') {
       if (isHwAccount) {
         dispatch(PanelActions.signTransactionHardware(selectedQueueData as BraveWallet.SignTransactionRequest))
@@ -230,7 +235,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
         isAddress
       >
         <AccountNameText>
-          {findAccountName(accounts, selectedQueueData?.fromAddress || '') ?? ''}
+          {account?.name ?? ''}
         </AccountNameText>
       </Tooltip>
 

@@ -46,7 +46,6 @@ import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import Amount from '../../utils/amount'
 import {
   createTokenBalanceRegistryKey,
-  getAccountType,
   findAccountInList
 } from '../../utils/account-utils'
 import {
@@ -60,7 +59,7 @@ import {
   AccountsGroupByOption
 } from '../../options/group-assets-by-options'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
-import { AllAccountsOption } from '../../options/account-filter-options'
+import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const defaultState: WalletState = {
@@ -126,7 +125,7 @@ const defaultState: WalletState = {
         LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY
       ) ||
       AccountsGroupByOption.id,
-  selectedAccountFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION) || AllAccountsOption.id,
+  selectedAccountFilter: AllAccountsOptionUniqueKey,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,
@@ -291,9 +290,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           (info: BraveWallet.AccountInfo, idx: number): WalletAccountType => {
             return {
               ...info,
-              id: `${idx + 1}`,
-              accountType: getAccountType(info),
-              deviceId: info.hardware ? info.hardware.deviceId : '',
               tokenBalanceRegistry: {},
               nativeBalanceRegistry: {},
             }
@@ -613,8 +609,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           state.selectedNetworkFilter = payload
         }
       )
-
-
     }
   })
 }

@@ -33,10 +33,6 @@ export function isValidAddress (value: string, length: number): boolean {
   return true
 }
 
-export function isHardwareAccount (accounts: WalletAccountType[], address: string) {
-  return accounts.some(account => account.deviceId && account.address === address)
-}
-
 export const suggestNewAccountName = (
   accounts: WalletAccountType[],
   network: BraveWallet.NetworkInfo

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { UserAccountType, WalletAccountType } from '../../../constants/types'
+import { WalletAccountType } from '../../../constants/types'
 import { SearchBar, SelectAccount } from '../../shared'
 import Header from '../../buy-send-swap/select-header'
 import { getLocale } from '../../../../common/locale'
@@ -15,8 +15,8 @@ import {
 
 export interface Props {
   accounts: WalletAccountType[]
-  selectedAccount?: UserAccountType
-  onSelectAccount: (account: UserAccountType) => () => void
+  selectedAccount?: WalletAccountType
+  onSelectAccount: (account: WalletAccountType) => void
   onAddAccount?: () => void
   hasAddButton?: boolean
   onBack?: () => void

@@ -65,7 +65,6 @@ import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet
 import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { mockNewAssetOptions } from './mock-data/mock-asset-options'
-import { mockUserAccounts } from './mock-data/user-accounts'
 import { createMockStore } from '../utils/test-utils'
 import { deserializeTransaction } from '../utils/model-serialization-utils'
 import { WalletApiDataOverrides } from '../common/async/__mocks__/bridge'
@@ -80,8 +79,8 @@ export default {
   }
 }
 
-const transactionDummyData = {
-  [mockUserAccounts[0].id]: [
+const transactionDummyData = [
+  [
     {
       chainId: '',
       fromAddress: 'ETHEREUM ACCOUNT 1',
@@ -268,7 +267,7 @@ const transactionDummyData = {
       effectiveRecipient: ''
     }
   ],
-  [mockUserAccounts[1].id]: [
+  [
     {
       chainId: '',
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
@@ -344,7 +343,7 @@ const transactionDummyData = {
       effectiveRecipient: ''
     }
   ]
-}
+]
 
 const originInfo = mockOriginInfo
 
@@ -355,15 +354,15 @@ const store = createMockStore({
   }
 }, {
   transactionInfos: [
+    ...transactionDummyData[0].map(tx => deserializeTransaction(tx)),
     ...transactionDummyData[1].map(tx => deserializeTransaction(tx)),
-    ...transactionDummyData[2].map(tx => deserializeTransaction(tx)),
   ]
 })
 
 const transactionList = [
   mockTransactionInfo,
-  ...transactionDummyData[1],
-  ...transactionDummyData[2]
+  ...transactionDummyData[0],
+  ...transactionDummyData[1]
 ]
 
 const mockCustomStoreState: Partial<WalletState> = {

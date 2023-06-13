@@ -75,12 +75,14 @@ export const createTokenBalanceRegistryKey = (
 }
 
 export const getAccountType = (
-  info: BraveWallet.AccountInfo
+  info: Pick<BraveWallet.AccountInfo, 'accountId' | 'hardware'>
 ): WalletAccountTypeName => {
   if (info.accountId.kind === BraveWallet.AccountKind.kHardware) {
     return info.hardware!.vendor as 'Ledger' | 'Trezor'
   }
-  return info.accountId.kind === BraveWallet.AccountKind.kImported ? 'Secondary' : 'Primary'
+  return info.accountId.kind === BraveWallet.AccountKind.kImported
+    ? 'Secondary'
+    : 'Primary'
 }
 
 export const getAddressLabel = <

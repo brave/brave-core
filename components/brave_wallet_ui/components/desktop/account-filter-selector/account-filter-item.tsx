@@ -6,9 +6,6 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
-// Options
-import { AllAccountsOption } from '../../../options/account-filter-options'
-
 // Types
 import { WalletAccountType } from '../../../constants/types'
 
@@ -27,12 +24,13 @@ import {
 
 export interface Props {
   selected: boolean
+  showCircle: boolean
   account: WalletAccountType
   onSelectAccount: (account?: WalletAccountType) => void
 }
 
 export const AccountFilterItem = (props: Props) => {
-  const { account, selected, onSelectAccount } = props
+  const { account, selected, showCircle, onSelectAccount } = props
 
   // Methods
   const onClickSelectAccount = React.useCallback(() => {
@@ -48,15 +46,10 @@ export const AccountFilterItem = (props: Props) => {
     <NetworkItemWrapper>
       <NetworkItemButton onClick={onClickSelectAccount}>
         <LeftSide>
-          {account.address !== AllAccountsOption.address && (
-            <AccountCircle orb={orb} />
-          )}
-          <NetworkName>
-            {account.name}
-          </NetworkName>
+          {showCircle && <AccountCircle orb={orb} />}
+          <NetworkName>{account.name}</NetworkName>
         </LeftSide>
-        {selected &&
-          <BigCheckMark />}
+        {selected && <BigCheckMark />}
       </NetworkItemButton>
     </NetworkItemWrapper>
   )

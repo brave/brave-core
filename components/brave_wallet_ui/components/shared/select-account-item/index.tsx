@@ -6,7 +6,7 @@ import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
 // types
-import { BraveWallet, UserAccountType } from '../../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -36,8 +36,8 @@ import {
 } from './style'
 
 export interface Props {
-  account?: UserAccountType
-  selectedAccount?: UserAccountType
+  account?: WalletAccountType
+  isSelected?: boolean
   selectedNetwork?: BraveWallet.NetworkInfo
   onSelectAccount?: () => void
   showTooltips?: boolean
@@ -48,7 +48,7 @@ export interface Props {
 
 export function SelectAccountItem ({
   account,
-  selectedAccount,
+  isSelected,
   onSelectAccount,
   showTooltips,
   fullAddress,
@@ -122,7 +122,7 @@ export function SelectAccountItem ({
 
         </AccountAndAddress>
       </LeftSide>
-      {accountAddress.toLowerCase() === selectedAccount?.address.toLowerCase() &&
+      {isSelected &&
         <BigCheckMark />
       }
     </StyledWrapper>
