@@ -3,6 +3,4 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-brave_components_browser_ui_settings_android_java_sources = [
-    "//brave/components/browser_ui/settings/android/widget/java/src/org/chromium/components/browser_ui/settings/brave_tricks/checkbox_to_switch/ChromeBaseCheckBoxPreference.java",
-]
+brave_components_browser_ui_settings_android_java_sources = [ "//brave/components/browser_ui/settings/android/widget/java/src/org/chromium/components/browser_ui/settings/brave_tricks/checkbox_to_switch/ChromeBaseCheckBoxPreference.java" ]
