@@ -5,20 +5,43 @@
 
 import * as React from 'react'
 import styles from './style.module.scss'
+import ConversationTile from '../conversation_tile'
+import Icon from '@brave/leo/react/icon'
 
 interface MainProps {
-  conversationList: React.ReactNode
+  activeConversation: React.ReactNode
   inputBox: React.ReactNode
 }
+
 
 function Main (props: MainProps) {
   return (
     <main className={styles.main}>
-      <div className={styles.scroller}>
-        {props.conversationList}
-      </div>
-      <div className={styles.inputBox}>
-        {props.inputBox}
+      <aside className={styles.aside}>
+        <header className={styles.header}>
+          <button className={styles.buttonSettings}>
+            <Icon name='settings' />
+          </button>
+        </header>
+        <div className={styles.scroller}>
+          {Array(15).fill(1).map((value, idx) => {
+            return (
+              <ConversationTile
+                title="marvel movie"
+                date={new Date().toLocaleDateString()}
+                isSelected={idx === 0}
+              />
+            )
+          })}
+        </div>
+      </aside>
+      <div className={styles.conversationBox}>
+        <div className={styles.scroller}>
+          {props.activeConversation}
+        </div>
+        <div className={styles.inputBox}>
+          {props.inputBox}
+        </div>
       </div>
     </main>
   )

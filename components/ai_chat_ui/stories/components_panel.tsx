@@ -13,7 +13,7 @@ import '@brave/leo/tokens/css/variables.css'
 
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
-import ConversationList from '../components/conversation_list'
+import Conversation from '../components/conversation'
 import InputBox from '../components/input_box'
 import { useInput } from '../state/hooks'
 import { CharacterType, ConversationTurnVisibility  } from '../api/page_handler'
@@ -57,13 +57,19 @@ export const _Main = () => {
     setValue(target.value)
   }
 
-  let conversationList = <PrivacyMessage />
+  let activeConversationOrPrivacyMessage = <PrivacyMessage />
 
   if (hasSeenAgreement) {
-    conversationList = (
-      <ConversationList
+    activeConversationOrPrivacyMessage = (
+      <Conversation
         list={DATA}
         isLoading={false}
+        suggestedQuestions={[]}
+        canGenerateQuestions={false}
+        userAllowsAutoGenerating={false}
+        onSetUserAllowsAutoGenerating={() => {}}
+        onGenerateSuggestedQuestions={() => {}}
+        onQuestionSubmit={() => {}}
       />
     )
   }
@@ -81,7 +87,7 @@ export const _Main = () => {
   return (
     <div className={styles.container}>
       <Main
-        conversationList={conversationList}
+        activeConversation={activeConversationOrPrivacyMessage}
         inputBox={inputBox}
       />
     </div>

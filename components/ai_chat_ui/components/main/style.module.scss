@@ -5,6 +5,29 @@
 
 .main {
   display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.inputBox {
+  width: 100%;
+}
+
+.aside {
+  width: 360px;
+  height: 100%;
+  border-right: 1px solid var(--leo-color-divider-subtle);
+}
+
+.header {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: end;
+}
+
+.conversationBox {
+  display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
@@ -12,11 +35,15 @@
   overflow: hidden;
 }
 
-.inputBox {
-  width: 100%;
-}
-
 .scroller {
   overflow: auto;
   height: 100%;
+}
+
+.buttonSettings {
+  background-color: transparent;
+  border: 0;
+  padding: 14px;
+  color: var(--leo-color-text-primary);
+  cursor: pointer;
 }
