@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.brave.playlist.PlaylistDownloadUtils;
 import com.brave.playlist.PlaylistViewModel;
-import com.brave.playlist.enums.PlaylistEventEnum;
 import com.brave.playlist.enums.PlaylistItemEventEnum;
 import com.brave.playlist.enums.PlaylistOptionsEnum;
 import com.brave.playlist.fragment.AllPlaylistFragment;
@@ -45,7 +44,6 @@ import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
@@ -100,15 +98,15 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     playlist.name = createPlaylistModel.getNewPlaylistId();
                     playlist.items = new PlaylistItem[0];
                     mPlaylistService.createPlaylist(playlist, createdPlaylist -> {
-                        if (createPlaylistModel.isMoveOrCopy()) {
+                        if (createPlaylistModel.isMoveOrCopy()
+                                && PlaylistUtils.moveOrCopyModel != null) {
                             MoveOrCopyModel tempMoveOrCopyModel = PlaylistUtils.moveOrCopyModel;
                             PlaylistUtils.moveOrCopyModel = new MoveOrCopyModel(
                                     tempMoveOrCopyModel.getPlaylistOptionsEnum(),
-                                    createdPlaylist.id, tempMoveOrCopyModel.getItems());
+                                    createdPlaylist.id, tempMoveOrCopyModel.getPlaylistItems());
                             mPlaylistViewModel.performMoveOrCopy(PlaylistUtils.moveOrCopyModel);
                         }
                     });
-                    loadAllPlaylists();
                 });
 
         mPlaylistViewModel.getRenamePlaylistOption().observe(
@@ -173,17 +171,15 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                     == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM
                             || moveOrCopyModel.getPlaylistOptionsEnum()
                                     == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
-                        for (PlaylistItemModel playlistItem : moveOrCopyModel.getItems()) {
+                        for (PlaylistItemModel playlistItem : moveOrCopyModel.getPlaylistItems()) {
                             mPlaylistService.moveItem(playlistItem.getPlaylistId(),
                                     moveOrCopyModel.getToPlaylistId(), playlistItem.getId());
                         }
-                        if (moveOrCopyModel.getItems().size() > 0) {
-                            loadPlaylist(moveOrCopyModel.getItems().get(0).getPlaylistId());
-                        }
                     } else {
-                        String[] playlistIds = new String[moveOrCopyModel.getItems().size()];
-                        for (int i = 0; i < moveOrCopyModel.getItems().size(); i++) {
-                            playlistIds[i] = moveOrCopyModel.getItems().get(i).getId();
+                        String[] playlistIds =
+                                new String[moveOrCopyModel.getPlaylistItems().size()];
+                        for (int i = 0; i < moveOrCopyModel.getPlaylistItems().size(); i++) {
+                            playlistIds[i] = moveOrCopyModel.getPlaylistItems().get(i).getId();
                         }
                         mPlaylistService.copyItemToPlaylist(
                                 playlistIds, moveOrCopyModel.getToPlaylistId());
@@ -221,7 +217,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 PlaylistDownloadUtils.removeDownloadRequest(
                                         PlaylistHostActivity.this, playlistItem);
                             }
-                            loadAllPlaylists();
                         }
                     } else if (option == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
                         showMoveOrCopyPlaylistBottomSheet();
@@ -374,7 +369,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         playlistItem.lastPlayedPosition, playlistItem.cached, false, 0);
                 playlistItems.add(playlistItemModel);
             }
-            Collections.reverse(playlistItems); // To have latest item on top
             PlaylistModel playlistModel =
                     new PlaylistModel(playlist.id, playlist.name, playlistItems);
             if (mPlaylistViewModel != null) {
@@ -443,11 +437,20 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onEvent(int eventType, String playlistItemId) {
+    public void onEvent(int eventType, String id) {
         if (mPlaylistService == null || mPlaylistViewModel == null) {
             return;
         }
-        PlaylistEventEnum playlistEvent = PlaylistEventEnum.NONE;
+        if (eventType == PlaylistEvent.LIST_CREATED || eventType == PlaylistEvent.LIST_REMOVED) {
+            loadAllPlaylists();
+        } else if (eventType == PlaylistEvent.ITEM_MOVED) {
+            loadPlaylist(id);
+        } else {
+            updatePlaylistItemEvent(eventType, id);
+        }
+    }
+
+    private void updatePlaylistItemEvent(int eventType, String playlistItemId) {
         PlaylistItemEventEnum playlistItemEvent = PlaylistItemEventEnum.NONE;
         switch (eventType) {
             case PlaylistEvent.ITEM_ADDED:
@@ -468,35 +471,23 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
             case PlaylistEvent.ITEM_UPDATED:
                 playlistItemEvent = PlaylistItemEventEnum.ITEM_UPDATED;
                 break;
-            case PlaylistEvent.ITEM_MOVED:
-                playlistItemEvent = PlaylistItemEventEnum.ITEM_MOVED;
-                break;
             case PlaylistEvent.ITEM_ABORTED:
                 playlistItemEvent = PlaylistItemEventEnum.ITEM_ABORTED;
                 break;
             case PlaylistEvent.ITEM_LOCAL_DATA_REMOVED:
                 playlistItemEvent = PlaylistItemEventEnum.ITEM_LOCAL_DATA_REMOVED;
                 break;
-            case PlaylistEvent.LIST_CREATED:
-                playlistEvent = PlaylistEventEnum.LIST_CREATED;
-                break;
-            case PlaylistEvent.ALL_DELETED:
-                playlistEvent = PlaylistEventEnum.ALL_DELETED;
-                break;
         }
-        if (playlistItemEvent != PlaylistItemEventEnum.NONE) {
-            final PlaylistItemEventEnum localPlaylistItemEvent = playlistItemEvent;
-            mPlaylistService.getPlaylistItem(playlistItemId, playlistItem -> {
-                PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
-                        ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name,
-                        playlistItem.pageSource.url, playlistItem.mediaPath.url,
-                        playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
-                        playlistItem.author, playlistItem.duration, playlistItem.lastPlayedPosition,
-                        playlistItem.cached, false, 0);
-                mPlaylistViewModel.updatePlaylistItemEvent(
-                        new PlaylistItemEventModel(localPlaylistItemEvent, playlistItemModel));
-            });
-        }
+        final PlaylistItemEventEnum localPlaylistItemEvent = playlistItemEvent;
+        mPlaylistService.getPlaylistItem(playlistItemId, playlistItem -> {
+            PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
+                    ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name, playlistItem.pageSource.url,
+                    playlistItem.mediaPath.url, playlistItem.mediaSource.url,
+                    playlistItem.thumbnailPath.url, playlistItem.author, playlistItem.duration,
+                    playlistItem.lastPlayedPosition, playlistItem.cached, false, 0);
+            mPlaylistViewModel.updatePlaylistItemEvent(
+                    new PlaylistItemEventModel(localPlaylistItemEvent, playlistItemModel));
+        });
     }
 
     @Override
