@@ -29,6 +29,9 @@ import {
   useGetNetworksRegistryQuery,
   useGetSelectedChainQuery
 } from '../../../common/slices/api.slice'
+import {
+  useGetCombinedTokensListQuery
+} from '../../../common/slices/api.slice.extra'
 
 // components
 import { SelectNetworkDropdown } from '../../desktop'
@@ -86,19 +89,20 @@ export const AddCustomTokenForm = (props: Props) => {
   const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<BraveWallet.NetworkInfo>()
 
   // redux
-  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
   const addUserAssetError = useSelector(({ wallet }: { wallet: WalletState }) => wallet.addUserAssetError)
 
   // more state
   const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
+
+  // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
   // custom hooks
   const { getBlockchainTokenInfo } = useLib()
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, customAssetsNetwork || selectedNetwork)
+  } = useTokenInfo(getBlockchainTokenInfo, combinedTokensList, customAssetsNetwork || selectedNetwork)
   const {
     onAddCustomAsset
   } = useAssetManagement()
@@ -237,14 +241,16 @@ export const AddCustomTokenForm = (props: Props) => {
   ])
 
   const tokenAlreadyExists = React.useMemo(() => {
-    if (tokenContractAddress !== '' && customAssetsNetwork?.chainId !== undefined) {
-      return userVisibleTokensInfo.some((t) =>
+    if (tokenContractAddress !== '' && customAssetsNetwork) {
+      return combinedTokensList.some(t =>
         t.contractAddress.toLocaleLowerCase() === tokenContractAddress.toLowerCase() &&
-        t.chainId === customAssetsNetwork?.chainId
+        t.chainId === customAssetsNetwork.chainId &&
+        t.coin === customAssetsNetwork.coin &&
+        t.visible
       )
     }
     return false
-  }, [tokenContractAddress, userVisibleTokensInfo, customAssetsNetwork?.chainId])
+  }, [tokenContractAddress, combinedTokensList, customAssetsNetwork])
 
   // effects
   React.useEffect(() => {

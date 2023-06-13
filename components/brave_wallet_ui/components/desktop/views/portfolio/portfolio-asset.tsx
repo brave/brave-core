@@ -66,6 +66,9 @@ import {
   useGetSelectedChainQuery,
   useGetTransactionsQuery
 } from '../../../../common/slices/api.slice'
+import {
+  useGetCombinedTokensListQuery
+} from '../../../../common/slices/api.slice.extra'
 
 // Styled Components
 import {
@@ -117,7 +120,6 @@ export const PortfolioAsset = (props: Props) => {
   const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const selectedNetworkFilter = useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
   const coinMarketData = useUnsafeWalletSelector(WalletSelectors.coinMarketData)
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
 
   const isLoading = useSafePageSelector(PageSelectors.isFetchingPriceHistory)
   const selectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
@@ -126,6 +128,7 @@ export const PortfolioAsset = (props: Props) => {
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { data: assetsNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken //
   )
@@ -362,8 +365,13 @@ export const PortfolioAsset = (props: Props) => {
   const isNftAsset = selectedAssetFromParams?.isErc721 || selectedAssetFromParams?.isNft
 
   const isSelectedAssetDepositSupported = React.useMemo(() => {
-    return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
-  }, [fullTokenList, selectedAsset?.symbol])
+    if (!selectedAsset) {
+      return false
+    }
+
+    return combinedTokensList.some(token =>
+      token.symbol.toLowerCase() === selectedAsset.symbol.toLowerCase())
+  }, [combinedTokensList, selectedAsset?.symbol])
 
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {

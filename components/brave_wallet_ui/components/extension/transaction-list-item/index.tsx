@@ -34,6 +34,9 @@ import {
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery
 } from '../../../common/slices/api.slice'
+import {
+  useGetCombinedTokensListQuery
+} from '../../../common/slices/api.slice.extra'
 
 // Components
 import { TransactionIntentDescription } from './transaction-intent-description'
@@ -55,7 +58,7 @@ import {
 } from './style'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 
-export interface Props {
+interface Props {
   transaction: SerializableTransactionInfo
   onSelectTransaction: (transaction: SerializableTransactionInfo) => void
 }
@@ -73,16 +76,14 @@ export const TransactionsListItem = ({
   const defaultFiatCurrency = useSafeWalletSelector(
     WalletSelectors.defaultFiatCurrency
   )
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
-  const userVisibleTokens = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
+
   const spotPrices = useUnsafeWalletSelector(
     WalletSelectors.transactionSpotPrices
   )
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { data: transactionsNetwork } = useGetNetworkQuery({
     chainId: transaction.chainId,
     coin: txCoinType
@@ -109,20 +110,18 @@ export const TransactionsListItem = ({
     return parseTransactionWithPrices({
       tx: transaction,
       accounts,
-      fullTokenList,
       gasFee,
       spotPrices,
-      userVisibleTokensList: userVisibleTokens,
-      transactionNetwork: transactionsNetwork
+      transactionNetwork: transactionsNetwork,
+      tokensList: combinedTokensList
     })
   }, [
     accounts,
-    fullTokenList,
     gasFee,
     spotPrices,
     transaction,
     transactionsNetwork,
-    userVisibleTokens,
+    combinedTokensList
   ])
 
   const fromOrb = React.useMemo(() => {

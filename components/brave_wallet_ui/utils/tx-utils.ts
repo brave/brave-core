@@ -869,30 +869,33 @@ export const getTransactionErc721TokenId = (
  * @param address - The address to check
  * @returns false if case no error, true otherwise
  */
-function isKnownTokenContractAddress (
+function isKnownTokenContractAddress(
   address: string,
-  fullTokenList: BraveWallet.BlockchainToken[]
+  tokenList: BraveWallet.BlockchainToken[]
 ) {
-  return fullTokenList?.some(token =>
-    token.contractAddress.toLowerCase() === address.toLowerCase()
+  return tokenList?.some(
+    (token) => token.contractAddress.toLowerCase() === address.toLowerCase()
   )
 }
 
 /**
  * Checks if a given transaction is sending funds to a known contract address from our token registry.
  *
- * @param fullTokenList - A list of Erc & SPL tokens to check against
+ * @param tokenList - A list of Erc & SPL tokens to check against
  * @param tx - The transaction to check
  * @returns `true` if the to address is a known erc & SPL token contract address, `false` otherwise
 */
 export const isSendingToKnownTokenContractAddress = (
   tx: Pick<TransactionInfo, 'txType' | 'txArgs' | 'txDataUnion'>,
-  fullTokenList: BraveWallet.BlockchainToken[]
+  tokenList: BraveWallet.BlockchainToken[]
 ): boolean => {
   // ERC20Transfer
   if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
     const [recipient] = tx.txArgs // [address recipient, uint256 amount]
-    const contractAddressError = isKnownTokenContractAddress(recipient, fullTokenList)
+    const contractAddressError = isKnownTokenContractAddress(
+      recipient,
+      tokenList
+    )
     return contractAddressError
   }
 
@@ -904,7 +907,10 @@ export const isSendingToKnownTokenContractAddress = (
   ) {
     // The owner of the ERC721 must not be confused with the caller (fromAddress).
     const [, toAddress] = tx.txArgs // address owner, address to, uint256 tokenId]
-    const contractAddressError = isKnownTokenContractAddress(toAddress, fullTokenList)
+    const contractAddressError = isKnownTokenContractAddress(
+      toAddress,
+      tokenList
+    )
     return contractAddressError
   }
 
@@ -920,7 +926,7 @@ export const isSendingToKnownTokenContractAddress = (
   ) {
     const contractAddressError = isKnownTokenContractAddress(
       getTransactionInteractionAddress(tx) ?? '',
-      fullTokenList
+      tokenList
     )
     return contractAddressError
   }
@@ -1505,20 +1511,17 @@ export const getTransactionFiatValues = ({
 
 export const parseTransactionWithoutPrices = ({
   accounts,
-  fullTokenList,
   tx,
   transactionNetwork,
-  userVisibleTokensList,
+  tokensList
 }: {
   accounts: WalletAccountType[]
-  fullTokenList: BraveWallet.BlockchainToken[]
   tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
-  userVisibleTokensList: BraveWallet.BlockchainToken[]
+  tokensList: BraveWallet.BlockchainToken[]
 }): ParsedTransactionWithoutFiatValues => {
   const to = getTransactionToAddress(tx)
-  const combinedTokensList = userVisibleTokensList.concat(fullTokenList)
-  const token = findTransactionToken(tx, combinedTokensList)
+  const token = findTransactionToken(tx, tokensList)
   const nativeAsset = makeNetworkAsset(transactionNetwork)
   const account = findTransactionAccount(accounts, tx)
 
@@ -1531,7 +1534,7 @@ export const parseTransactionWithoutPrices = ({
     buyAmountWei
   } = getETHSwapTransactionBuyAndSellTokens({
     nativeAsset,
-    tokensList: combinedTokensList,
+    tokensList,
     tx
   })
 
@@ -1549,7 +1552,9 @@ export const parseTransactionWithoutPrices = ({
   const erc721BlockchainToken = [
     BraveWallet.TransactionType.ERC721TransferFrom,
     BraveWallet.TransactionType.ERC721SafeTransferFrom
-  ].includes(tx.txType) ? token : undefined
+  ].includes(tx.txType)
+    ? token
+    : undefined
 
   const approvalTarget = getTransactionApprovalTargetAddress(tx)
 
@@ -1576,7 +1581,7 @@ export const parseTransactionWithoutPrices = ({
 
   const contractAddressError = isSendingToKnownTokenContractAddress(
     tx,
-    combinedTokensList
+    tokensList
   )
     ? getLocale('braveWalletContractAddressError')
     : undefined
@@ -1682,18 +1687,16 @@ export const parseTransactionWithoutPrices = ({
 
 export const parseTransactionWithPrices = ({
   accounts,
-  fullTokenList,
   tx,
   transactionNetwork,
-  userVisibleTokensList,
   spotPrices,
-  gasFee
+  gasFee,
+  tokensList
 }: {
   accounts: WalletAccountType[]
-  fullTokenList: BraveWallet.BlockchainToken[]
   tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
-  userVisibleTokensList: BraveWallet.BlockchainToken[]
+  tokensList: BraveWallet.BlockchainToken[]
   spotPrices: AssetPriceWithContractAndChainId[]
   gasFee: string
 }): ParsedTransaction => {
@@ -1715,10 +1718,9 @@ export const parseTransactionWithPrices = ({
     ...txBase
   } = parseTransactionWithoutPrices({
     accounts,
-    fullTokenList,
     transactionNetwork,
     tx,
-    userVisibleTokensList,
+    tokensList
   })
 
   return {

@@ -47,7 +47,8 @@ import {
 } from '../slices/api.slice'
 import {
   useAccountQuery,
-  usePendingTransactionsQuery
+  usePendingTransactionsQuery,
+  useGetCombinedTokensListQuery
 } from '../slices/api.slice.extra'
 
 // Constants
@@ -65,13 +66,9 @@ export const usePendingTransactions = () => {
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
-  const visibleTokens = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
   const transactionSpotPrices = useUnsafeWalletSelector(
     WalletSelectors.transactionSpotPrices
   )
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
   const spotPrices = useUnsafeWalletSelector(
     WalletSelectors.transactionSpotPrices
   )
@@ -80,6 +77,7 @@ export const usePendingTransactions = () => {
   )
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { pendingTransactions } = usePendingTransactionsQuery({
     address: null,
     chainId: null,
@@ -151,10 +149,12 @@ export const usePendingTransactions = () => {
   // custom hooks
   const { getBlockchainTokenInfo, getERC20Allowance } = useLib()
   const { findAssetPrice } = usePricing(transactionSpotPrices)
-  const {
-    onFindTokenInfoByContractAddress,
-    foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, visibleTokens, fullTokenList, transactionsNetwork)
+  const { onFindTokenInfoByContractAddress, foundTokenInfoByContractAddress } =
+    useTokenInfo(
+      getBlockchainTokenInfo,
+      combinedTokensList,
+      transactionsNetwork
+    )
 
   // state
   const [erc20AllowanceResult, setERC20AllowanceResult] = React.useState<
@@ -177,22 +177,20 @@ export const usePendingTransactions = () => {
       ? parseTransactionWithPrices({
           tx: transactionInfo,
           accounts,
-          fullTokenList,
           gasFee,
           spotPrices,
-          userVisibleTokensList: visibleTokens,
+          tokensList: combinedTokensList,
           transactionNetwork: transactionsNetwork
         })
       : undefined
   }, [
     transactionInfo,
     accounts,
-    fullTokenList,
     solFeeEstimate,
     spotPrices,
-    visibleTokens,
     transactionsNetwork,
-    gasFee
+    gasFee,
+    combinedTokensList
   ])
 
   // balance queries

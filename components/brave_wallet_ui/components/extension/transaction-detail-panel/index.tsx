@@ -19,7 +19,10 @@ import {
   useUnsafeUISelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
-import { useTransactionQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useGetCombinedTokensListQuery,
+  useTransactionQuery
+} from '../../../common/slices/api.slice.extra'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -93,10 +96,6 @@ const TransactionDetailPanel = (props: Props) => {
   // redux
   const dispatch = useDispatch()
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
-  const visibleTokens = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
   const spotPrices = useUnsafeWalletSelector(
     WalletSelectors.transactionSpotPrices
   )
@@ -105,6 +104,7 @@ const TransactionDetailPanel = (props: Props) => {
   )
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { transaction } = useTransactionQuery(transactionId || skipToken)
   const txCoinType = transaction
     ? getCoinFromTxDataUnion(transaction.txDataUnion)
@@ -151,18 +151,15 @@ const TransactionDetailPanel = (props: Props) => {
     return parseTransactionWithPrices({
       tx: transaction,
       accounts,
-      fullTokenList,
       gasFee,
       spotPrices,
-      userVisibleTokensList: visibleTokens,
+      tokensList: combinedTokensList,
       transactionNetwork: transactionsNetwork
     })
   }, [
     transaction,
     transactionsNetwork,
     accounts,
-    visibleTokens,
-    fullTokenList,
     spotPrices,
     gasFee
   ])

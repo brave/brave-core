@@ -4,10 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  useDispatch,
-  useSelector
-} from 'react-redux'
+import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
@@ -23,9 +20,6 @@ import {
   WalletState
 } from '../../../constants/types'
 
-// actions
-import { WalletActions } from '../../../common/actions'
-
 // options
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
@@ -37,6 +31,9 @@ import {
   useGetMainnetsQuery,
   useGetNetworkQuery
 } from '../../../common/slices/api.slice'
+import {
+  useGetCombinedTokensListQuery
+} from '../../../common/slices/api.slice.extra'
 
 // style
 import { Column, CopyButton, HorizontalSpace, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
@@ -79,10 +76,8 @@ export const DepositFundsScreen = (props: Props) => {
   const { showDepositAddress, onShowDepositAddress } = props
 
   // redux
-  const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
 
   // custom hooks
   const { prevNetwork } = usePrevNetwork()
@@ -99,6 +94,7 @@ export const DepositFundsScreen = (props: Props) => {
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { data: mainnetsList = [] } = useGetMainnetsQuery()
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken
@@ -113,9 +109,14 @@ export const DepositFundsScreen = (props: Props) => {
 
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     // separate BAT from other tokens in the list so they can be placed higher in the list
-    const { bat, nonBat } = getBatTokensFromList(fullTokenList)
-    return [...mainnetNetworkAssetsList, ...bat, ...nonBat]
-  }, [mainnetNetworkAssetsList, fullTokenList])
+    const { bat, nonBat } = getBatTokensFromList(combinedTokensList)
+    return [
+      ...mainnetNetworkAssetsList,
+      ...bat,
+      ...nonBat
+        .filter(token => token.contractAddress)
+    ]
+  }, [mainnetNetworkAssetsList, combinedTokensList])
 
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
@@ -261,13 +262,6 @@ export const DepositFundsScreen = (props: Props) => {
   ])
 
   React.useEffect(() => {
-    // load tokens on mount
-    if (!fullTokenList.length) {
-      dispatch(WalletActions.getAllTokensList())
-    }
-  }, [fullTokenList])
-
-  React.useEffect(() => {
     if (!showDepositAddress) {
       if (isCopied) {
         resetCopyState()
@@ -292,7 +286,7 @@ export const DepositFundsScreen = (props: Props) => {
               {getLocale('braveWalletDepositFundsTitle')}
             </DepositTitle>
 
-            {fullTokenList.length
+            {fullAssetsList.length
               ? <TokenLists
                 enableScroll
                 maxListHeight={'38vh'}

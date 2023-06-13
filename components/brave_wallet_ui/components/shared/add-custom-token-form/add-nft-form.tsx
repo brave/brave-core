@@ -28,8 +28,10 @@ import {
   useGetSelectedChainQuery
 } from '../../../common/slices/api.slice'
 import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
+  useGetCombinedTokensListQuery
+} from '../../../common/slices/api.slice.extra'
+import {
+  useSafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 
@@ -69,15 +71,12 @@ export const AddNftForm = (props: Props) => {
 
   // redux
   const dispatch = useDispatch()
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
   const addUserAssetError = useSafeWalletSelector(
     WalletSelectors.addUserAssetError
   )
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: networksRegistry = emptyNetworksRegistry } =
     useGetNetworksRegistryQuery()
@@ -105,7 +104,7 @@ export const AddNftForm = (props: Props) => {
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, customAssetsNetwork || selectedNetwork)
+  } = useTokenInfo(getBlockchainTokenInfo, combinedTokensList, customAssetsNetwork || selectedNetwork)
   const {
     onAddCustomAsset
   } = useAssetManagement()

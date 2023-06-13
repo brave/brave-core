@@ -14,10 +14,12 @@ import { mockNetworks } from './mock-networks'
 
 export const mockParsedTransactionInfo = parseTransactionWithPrices({
   accounts: mockWalletState.accounts,
-  fullTokenList: mockWalletState.fullTokenList,
+  tokensList: [
+    ...mockWalletState.userVisibleTokensInfo,
+    ...mockWalletState.fullTokenList
+  ],
   spotPrices: mockWalletState.transactionSpotPrices,
   tx: mockTransactionInfo,
-  userVisibleTokensList: mockWalletState.userVisibleTokensInfo,
   gasFee: mockWalletState.solFeeEstimates?.fee.toString() ?? '',
   transactionNetwork: mockNetworks.find(
     (n) =>
@@ -28,10 +30,12 @@ export const mockParsedTransactionInfo = parseTransactionWithPrices({
 
 export const mockedParsedErc20ApprovalTransaction = parseTransactionWithPrices({
   accounts: mockWalletState.accounts,
-  fullTokenList: mockWalletState.fullTokenList,
+  tokensList: [
+    ...mockWalletState.userVisibleTokensInfo,
+    ...mockWalletState.fullTokenList
+  ],
   spotPrices: mockWalletState.transactionSpotPrices,
   tx: mockedErc20ApprovalTransaction,
-  userVisibleTokensList: mockWalletState.userVisibleTokensInfo,
   gasFee: mockWalletState.solFeeEstimates?.fee.toString() ?? '',
   transactionNetwork: mockNetworks.find(
     (n) =>
