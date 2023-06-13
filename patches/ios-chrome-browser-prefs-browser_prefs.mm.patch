@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index dec58a72bdbed2a725c3ffa1465f34f146d06863..cb2c2f14921f088541393bd1c897654f002f0ce0 100644
+index 190826b4848d1ddf94c9040e2dc340a26fb8e3ed..66ab7689177ad608e8c75f3a3a73eaadea177f08 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
 @@ -239,6 +239,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
