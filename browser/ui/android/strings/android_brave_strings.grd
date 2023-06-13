@@ -3690,6 +3690,25 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION" desc="Portfolio asset item network description">
       <ph name="SYMBOL"><ex>BAT</ex>%1$s</ph> on <ph name="NETWORK"><ex>Ethereum Mainnet</ex>%2$s</ph>
     </message>
+    <!-- Start of Playlist strings -->
+    <message name="IDS_REMEMBER_FILE_PLAYBACK_POSITION" desc="Remember file playback position title for playlist settings">
+      Remember file playback position
+    </message>
+    <message name="IDS_REMEMBER_FILE_PLAYBACK_POSITION_SUMMARY" desc="Remember file playback position summary for playlist settings">
+      For individual files, resume playing from the point of last pause
+    </message>
+    <message name="IDS_REMEMBER_LIST_PLAYBACK_POSITION" desc="Remember list playback position title for playlist settings">
+      Remember list playback position
+    </message>
+    <message name="IDS_REMEMBER_LIST_PLAYBACK_POSITION_SUMMARY" desc="Remember list playback position summary for playlist settings">
+      For a playlist, resume playing from the point of last pause
+    </message>
+    <message name="IDS_CONTINUOUS_LISTENING" desc="Continuous Listening for playlist settings">
+      Continuous Listening
+    </message>
+    <message name="IDS_CONTINUOUS_LISTENING_SUMMARY" desc="Continuous Listening summary for playlist settings">
+      Automatically plays the next items in your playlist
+    </message>
     <message name="IDS_BRAVE_PLAYLIST" desc="Playlist menu item text">
       Brave Playlist
     </message>
@@ -3912,6 +3931,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PLAYLIST_EMPTY_PLAYLIST_NAME" desc="Empty playlist name message">
       Please enter valid playlist name
     </message>
+    <message name="IDS_PLAYLIST_SHARE_WITH" desc="Share with message">
+      Share with :
+    </message>
+    <message name="IDS_ALREADY_ADDED_IN_PLAYLIST" desc="Already added in playlist message">
+      Media content is already added to the default playlist
+    </message>
+    <!-- End of Playlist strings -->
     <message name="IDS_NO_NFTS" desc="Message shown when there no NFTs in the NFT grid.">
       No NFTs here yet.
     </message>
@@ -3935,24 +3961,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX" desc="Label for Solana Address Lookup Table Index section">
       Address Lookup Table Index:
-    </message>
-    <message name="IDS_REMEMBER_FILE_PLAYBACK_POSITION" desc="Remember file playback position title for playlist settings">
-      Remember file playback position
-    </message>
-    <message name="IDS_REMEMBER_FILE_PLAYBACK_POSITION_SUMMARY" desc="Remember file playback position summary for playlist settings">
-      For individual files, resume playing from the point of last pause
-    </message>
-    <message name="IDS_REMEMBER_LIST_PLAYBACK_POSITION" desc="Remember list playback position title for playlist settings">
-      Remember list playback position
-    </message>
-    <message name="IDS_REMEMBER_LIST_PLAYBACK_POSITION_SUMMARY" desc="Remember list playback position summary for playlist settings">
-      For a playlist, resume playing from the point of last pause
-    </message>
-    <message name="IDS_CONTINUOUS_LISTENING" desc="Continuous Listening for playlist settings">
-      Continuous Listening
-    </message>
-    <message name="IDS_CONTINUOUS_LISTENING_SUMMARY" desc="Continuous Listening summary for playlist settings">
-      Automatically plays the next items in your playlist
     </message>
     <message name="IDS_BRAVE_WALLET_ACTIVITY" desc="Wallet activity and transactions">
       Activity
