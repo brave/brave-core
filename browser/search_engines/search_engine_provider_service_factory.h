@@ -6,11 +6,15 @@
 #ifndef BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
 class SearchEngineProviderService;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 // The purpose of this factory is to configure proper search engine provider to
 // private/tor profile before it is referenced.
@@ -27,8 +31,7 @@ class SearchEngineProviderServiceFactory
   static SearchEngineProviderServiceFactory* GetInstance();
 
  private:
-  friend
-      struct base::DefaultSingletonTraits<SearchEngineProviderServiceFactory>;
+  friend base::NoDestructor<SearchEngineProviderServiceFactory>;
   SearchEngineProviderServiceFactory();
   ~SearchEngineProviderServiceFactory() override;
 

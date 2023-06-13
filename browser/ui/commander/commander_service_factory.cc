@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/commander/commander_service_factory.h"
 
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "brave/browser/ui/commander/commander_service.h"
 #include "brave/components/commander/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -18,7 +18,8 @@ namespace commander {
 
 // static
 CommanderServiceFactory* CommanderServiceFactory::GetInstance() {
-  return base::Singleton<CommanderServiceFactory>::get();
+  static base::NoDestructor<CommanderServiceFactory> instance;
+  return instance.get();
 }
 
 // static

@@ -6,8 +6,12 @@
 #ifndef BRAVE_BROWSER_URL_SANITIZER_URL_SANITIZER_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_URL_SANITIZER_URL_SANITIZER_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave {
 
@@ -20,7 +24,7 @@ class URLSanitizerServiceFactory : public BrowserContextKeyedServiceFactory {
   static URLSanitizerServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<URLSanitizerServiceFactory>;
+  friend base::NoDestructor<URLSanitizerServiceFactory>;
 
   URLSanitizerServiceFactory();
   ~URLSanitizerServiceFactory() override;

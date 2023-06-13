@@ -6,11 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_NAMED_THIRD_PARTY_REGISTRY_FACTORY_H_
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_NAMED_THIRD_PARTY_REGISTRY_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class Profile;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_perf_predictor {
 
@@ -24,7 +28,7 @@ class NamedThirdPartyRegistryFactory
       content::BrowserContext* context);
 
  private:
-  friend struct base::DefaultSingletonTraits<NamedThirdPartyRegistryFactory>;
+  friend base::NoDestructor<NamedThirdPartyRegistryFactory>;
   NamedThirdPartyRegistryFactory();
   ~NamedThirdPartyRegistryFactory() override;
 

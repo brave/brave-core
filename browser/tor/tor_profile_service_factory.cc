@@ -5,6 +5,7 @@
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
@@ -32,7 +33,8 @@ tor::TorProfileService* TorProfileServiceFactory::GetForContext(
 
 // static
 TorProfileServiceFactory* TorProfileServiceFactory::GetInstance() {
-  return base::Singleton<TorProfileServiceFactory>::get();
+  static base::NoDestructor<TorProfileServiceFactory> instance;
+  return instance.get();
 }
 
 // static

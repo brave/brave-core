@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -27,7 +28,8 @@ namespace brave_wallet {
 
 // static
 TxServiceFactory* TxServiceFactory::GetInstance() {
-  return base::Singleton<TxServiceFactory>::get();
+  static base::NoDestructor<TxServiceFactory> instance;
+  return instance.get();
 }
 
 // static

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
@@ -19,7 +20,8 @@ namespace brave_wallet {
 
 // static
 SwapServiceFactory* SwapServiceFactory::GetInstance() {
-  return base::Singleton<SwapServiceFactory>::get();
+  static base::NoDestructor<SwapServiceFactory> instance;
+  return instance.get();
 }
 
 // static

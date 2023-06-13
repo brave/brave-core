@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_TRACKER_H_
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/singleton.h"
 #include "base/scoped_observation.h"
 #include "brave/components/time_period_storage/weekly_event_storage.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
@@ -18,6 +17,11 @@
 #include "components/search_engines/template_url_service_observer.h"
 #include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 // Exposed for tests.
 constexpr char kDefaultSearchEngineMetric[] = "Brave.Search.DefaultEngine.4";
@@ -61,7 +65,7 @@ class SearchEngineTrackerFactory : public BrowserContextKeyedServiceFactory {
   static SearchEngineTrackerFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<SearchEngineTrackerFactory>;
+  friend base::NoDestructor<SearchEngineTrackerFactory>;
   SearchEngineTrackerFactory();
   ~SearchEngineTrackerFactory() override;
 

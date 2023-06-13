@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/constants/pref_names.h"
@@ -97,7 +98,8 @@ SearchEngineSwitchP3A SearchEngineSwitchP3AMapAnswer(const GURL& to,
 
 // static
 SearchEngineTrackerFactory* SearchEngineTrackerFactory::GetInstance() {
-  return base::Singleton<SearchEngineTrackerFactory>::get();
+  static base::NoDestructor<SearchEngineTrackerFactory> instance;
+  return instance.get();
 }
 
 SearchEngineTrackerFactory::SearchEngineTrackerFactory()

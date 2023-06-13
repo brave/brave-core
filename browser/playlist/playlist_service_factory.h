@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -17,6 +16,11 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 class PrefRegistrySimple;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace playlist {
 class PlaylistService;
@@ -44,7 +48,7 @@ class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
       user_prefs::PrefRegistrySyncable* registry) override;
 
  private:
-  friend struct base::DefaultSingletonTraits<PlaylistServiceFactory>;
+  friend base::NoDestructor<PlaylistServiceFactory>;
 
   PlaylistServiceFactory();
   ~PlaylistServiceFactory() override;

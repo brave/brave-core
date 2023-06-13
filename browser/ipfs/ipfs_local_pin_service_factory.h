@@ -6,10 +6,14 @@
 #ifndef BRAVE_BROWSER_IPFS_IPFS_LOCAL_PIN_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_IPFS_IPFS_LOCAL_PIN_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace ipfs {
 
@@ -22,7 +26,7 @@ class IpfsLocalPinServiceFactory : public BrowserContextKeyedServiceFactory {
   static IpfsLocalPinServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<IpfsLocalPinServiceFactory>;
+  friend base::NoDestructor<IpfsLocalPinServiceFactory>;
 
   IpfsLocalPinServiceFactory();
   ~IpfsLocalPinServiceFactory() override;

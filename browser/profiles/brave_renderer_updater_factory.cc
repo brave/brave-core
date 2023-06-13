@@ -5,6 +5,7 @@
 
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -19,7 +20,8 @@ BraveRendererUpdaterFactory::~BraveRendererUpdaterFactory() = default;
 
 // static
 BraveRendererUpdaterFactory* BraveRendererUpdaterFactory::GetInstance() {
-  return base::Singleton<BraveRendererUpdaterFactory>::get();
+  static base::NoDestructor<BraveRendererUpdaterFactory> instance;
+  return instance.get();
 }
 
 // static

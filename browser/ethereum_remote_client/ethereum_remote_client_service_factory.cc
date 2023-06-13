@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/no_destructor.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_delegate_impl.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -19,7 +20,8 @@
 // static
 EthereumRemoteClientServiceFactory*
 EthereumRemoteClientServiceFactory::GetInstance() {
-  return base::Singleton<EthereumRemoteClientServiceFactory>::get();
+  static base::NoDestructor<EthereumRemoteClientServiceFactory> instance;
+  return instance.get();
 }
 
 // static

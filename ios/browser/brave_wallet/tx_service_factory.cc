@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
@@ -53,7 +54,8 @@ TxService* TxServiceFactory::GetServiceForState(
 
 // static
 TxServiceFactory* TxServiceFactory::GetInstance() {
-  return base::Singleton<TxServiceFactory>::get();
+  static base::NoDestructor<TxServiceFactory> instance;
+  return instance.get();
 }
 
 TxServiceFactory::TxServiceFactory()

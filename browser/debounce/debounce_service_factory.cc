@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/feature_list.h"
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/debounce/common/features.h"
@@ -22,7 +22,8 @@ namespace debounce {
 
 // static
 DebounceServiceFactory* DebounceServiceFactory::GetInstance() {
-  return base::Singleton<DebounceServiceFactory>::get();
+  static base::NoDestructor<DebounceServiceFactory> instance;
+  return instance.get();
 }
 
 DebounceService* DebounceServiceFactory::GetForBrowserContext(

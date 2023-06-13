@@ -6,8 +6,12 @@
 #ifndef BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 class SharedPinnedTabService;
 
@@ -18,7 +22,7 @@ class SharedPinnedTabServiceFactory : public ProfileKeyedServiceFactory {
   static SharedPinnedTabServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<SharedPinnedTabServiceFactory>;
+  friend base::NoDestructor<SharedPinnedTabServiceFactory>;
 
   SharedPinnedTabServiceFactory();
   ~SharedPinnedTabServiceFactory() override;

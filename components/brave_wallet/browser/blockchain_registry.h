@@ -9,13 +9,17 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "build/build_config.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_wallet {
 
@@ -78,7 +82,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   TokenListMap token_list_map_;
   ChainList chain_list_;
   DappListMap dapp_lists_;
-  friend struct base::DefaultSingletonTraits<BlockchainRegistry>;
+  friend base::NoDestructor<BlockchainRegistry>;
 
   BlockchainRegistry();
 

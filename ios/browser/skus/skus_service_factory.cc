@@ -6,6 +6,7 @@
 #include "brave/ios/browser/skus/skus_service_factory.h"
 
 #include "base/feature_list.h"
+#include "base/no_destructor.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
@@ -31,7 +32,8 @@ mojo::PendingRemote<mojom::SkusService> SkusServiceFactory::GetForBrowserState(
 
 // static
 SkusServiceFactory* SkusServiceFactory::GetInstance() {
-  return base::Singleton<SkusServiceFactory>::get();
+  static base::NoDestructor<SkusServiceFactory> instance;
+  return instance.get();
 }
 
 SkusServiceFactory::SkusServiceFactory()

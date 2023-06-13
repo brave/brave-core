@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
+#include "base/no_destructor.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
@@ -305,7 +306,8 @@ BraveWebUIControllerFactory::CreateWebUIControllerForURL(WebUI* web_ui,
 
 // static
 BraveWebUIControllerFactory* BraveWebUIControllerFactory::GetInstance() {
-  return base::Singleton<BraveWebUIControllerFactory>::get();
+  static base::NoDestructor<BraveWebUIControllerFactory> instance;
+  return instance.get();
 }
 
 BraveWebUIControllerFactory::BraveWebUIControllerFactory() = default;

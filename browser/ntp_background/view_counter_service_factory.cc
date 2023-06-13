@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
@@ -43,7 +44,8 @@ ViewCounterService* ViewCounterServiceFactory::GetForProfile(Profile* profile) {
 
 // static
 ViewCounterServiceFactory* ViewCounterServiceFactory::GetInstance() {
-  return base::Singleton<ViewCounterServiceFactory>::get();
+  static base::NoDestructor<ViewCounterServiceFactory> instance;
+  return instance.get();
 }
 
 ViewCounterServiceFactory::ViewCounterServiceFactory()

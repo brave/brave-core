@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/no_destructor.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "build/build_config.h"
@@ -61,7 +62,8 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
 // static
 SearchEngineProviderServiceFactory*
 SearchEngineProviderServiceFactory::GetInstance() {
-  return base::Singleton<SearchEngineProviderServiceFactory>::get();
+  static base::NoDestructor<SearchEngineProviderServiceFactory> instance;
+  return instance.get();
 }
 
 SearchEngineProviderServiceFactory::SearchEngineProviderServiceFactory()

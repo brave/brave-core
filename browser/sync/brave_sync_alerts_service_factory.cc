@@ -5,6 +5,7 @@
 
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/browser/sync/brave_sync_alerts_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,7 +22,8 @@ BraveSyncAlertsService* BraveSyncAlertsServiceFactory::GetForBrowserContext(
 
 // static
 BraveSyncAlertsServiceFactory* BraveSyncAlertsServiceFactory::GetInstance() {
-  return base::Singleton<BraveSyncAlertsServiceFactory>::get();
+  static base::NoDestructor<BraveSyncAlertsServiceFactory> instance;
+  return instance.get();
 }
 
 BraveSyncAlertsServiceFactory::BraveSyncAlertsServiceFactory()

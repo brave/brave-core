@@ -6,11 +6,15 @@
 #ifndef BRAVE_BROWSER_PROFILES_BRAVE_RENDERER_UPDATER_FACTORY_H_
 #define BRAVE_BROWSER_PROFILES_BRAVE_RENDERER_UPDATER_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
 class BraveRendererUpdater;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 // Singleton that creates/deletes BraveRendererUpdater as new Profiles are
 // created/shutdown.
@@ -33,7 +37,7 @@ class BraveRendererUpdaterFactory : public BrowserContextKeyedServiceFactory {
   bool ServiceIsCreatedWithBrowserContext() const override;
 
  private:
-  friend struct base::DefaultSingletonTraits<BraveRendererUpdaterFactory>;
+  friend base::NoDestructor<BraveRendererUpdaterFactory>;
 
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;

@@ -34,7 +34,8 @@ KeyringService* KeyringServiceFactory::GetServiceForState(
 
 // static
 KeyringServiceFactory* KeyringServiceFactory::GetInstance() {
-  return base::Singleton<KeyringServiceFactory>::get();
+  static base::NoDestructor<KeyringServiceFactory> instance;
+  return instance.get();
 }
 
 KeyringServiceFactory::KeyringServiceFactory()

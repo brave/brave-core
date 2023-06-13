@@ -5,6 +5,7 @@
 
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -14,7 +15,8 @@ namespace speedreader {
 
 // static
 SpeedreaderServiceFactory* SpeedreaderServiceFactory::GetInstance() {
-  return base::Singleton<SpeedreaderServiceFactory>::get();
+  static base::NoDestructor<SpeedreaderServiceFactory> instance;
+  return instance.get();
 }
 
 SpeedreaderService* SpeedreaderServiceFactory::GetForProfile(Profile* profile) {

@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -25,7 +26,8 @@ mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForBrowserState(
 
 // static
 SwapServiceFactory* SwapServiceFactory::GetInstance() {
-  return base::Singleton<SwapServiceFactory>::get();
+  static base::NoDestructor<SwapServiceFactory> instance;
+  return instance.get();
 }
 
 SwapServiceFactory::SwapServiceFactory()

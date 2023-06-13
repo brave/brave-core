@@ -10,7 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/memory/singleton.h"
+#include "base/no_destructor.h"
 #include "base/scoped_observation.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
@@ -36,7 +36,9 @@ class AdBlockSubscriptionDownloadManagerFactory
       const AdBlockSubscriptionDownloadManagerFactory&) = delete;
 
   static AdBlockSubscriptionDownloadManagerFactory* GetInstance() {
-    return base::Singleton<AdBlockSubscriptionDownloadManagerFactory>::get();
+    static base::NoDestructor<AdBlockSubscriptionDownloadManagerFactory>
+        instance;
+    return instance.get();
   }
 
   static AdBlockSubscriptionDownloadManager* GetForKey(SimpleFactoryKey* key) {
@@ -45,8 +47,7 @@ class AdBlockSubscriptionDownloadManagerFactory
   }
 
  private:
-  friend struct base::DefaultSingletonTraits<
-      AdBlockSubscriptionDownloadManagerFactory>;
+  friend base::NoDestructor<AdBlockSubscriptionDownloadManagerFactory>;
 
   AdBlockSubscriptionDownloadManagerFactory()
       : SimpleKeyedServiceFactory("AdBlockSubscriptionDownloadManagerFactory",

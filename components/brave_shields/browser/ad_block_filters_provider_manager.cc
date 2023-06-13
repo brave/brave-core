@@ -12,6 +12,7 @@
 #include "base/barrier_callback.h"
 #include "base/location.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/task/sequenced_task_runner.h"
 
 namespace brave_shields {
@@ -34,7 +35,8 @@ static void OnDATLoaded(
 
 // static
 AdBlockFiltersProviderManager* AdBlockFiltersProviderManager::GetInstance() {
-  return base::Singleton<AdBlockFiltersProviderManager>::get();
+  static base::NoDestructor<AdBlockFiltersProviderManager> instance;
+  return instance.get();
 }
 
 AdBlockFiltersProviderManager::AdBlockFiltersProviderManager() = default;

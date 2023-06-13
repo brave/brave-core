@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -19,7 +20,8 @@ namespace ipfs {
 
 // static
 IpfsLocalPinServiceFactory* IpfsLocalPinServiceFactory::GetInstance() {
-  return base::Singleton<IpfsLocalPinServiceFactory>::get();
+  static base::NoDestructor<IpfsLocalPinServiceFactory> instance;
+  return instance.get();
 }
 
 // static

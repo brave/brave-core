@@ -12,7 +12,7 @@
 
 namespace base {
 template <typename T>
-struct DefaultSingletonTraits;
+class NoDestructor;
 }  // namespace base
 
 namespace brave_component_updater {
@@ -30,7 +30,7 @@ class BraveOnDemandUpdater {
   void RegisterOnDemandUpdateCallback(Callback callback);
 
  private:
-  friend struct base::DefaultSingletonTraits<BraveOnDemandUpdater>;
+  friend base::NoDestructor<BraveOnDemandUpdater>;
   BraveOnDemandUpdater();
 
   Callback on_demand_update_callback_;

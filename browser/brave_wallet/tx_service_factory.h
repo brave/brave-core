@@ -6,13 +6,17 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_TX_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_TX_SERVICE_FACTORY_H_
 
-#include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_wallet {
 
@@ -46,7 +50,7 @@ class TxServiceFactory : public BrowserContextKeyedServiceFactory {
       mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver);
 
  private:
-  friend struct base::DefaultSingletonTraits<TxServiceFactory>;
+  friend base::NoDestructor<TxServiceFactory>;
 
   TxServiceFactory();
   ~TxServiceFactory() override;
