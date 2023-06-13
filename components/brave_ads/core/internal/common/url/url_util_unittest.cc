@@ -24,6 +24,15 @@ TEST(BraveAdsUrlUtilTest, GetUrlWithEmptyQuery) {
             GetUrlWithEmptyQuery(GURL("https://foo.com/bar?baz=qux")));
 }
 
+TEST(BraveAdsUrlUtilTest, DoesNotSupportInvalidUrl) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(DoesSupportUrl(GURL("INVALID")));
+}
+
 TEST(BraveAdsUrlUtilTest, DoesSupportUrlWithHttpsScheme) {
   // Arrange
 

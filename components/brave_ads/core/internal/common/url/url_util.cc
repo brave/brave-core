@@ -54,7 +54,9 @@ GURL GetUrlWithEmptyQuery(const GURL& url) {
 }
 
 bool DoesSupportUrl(const GURL& url) {
-  CHECK(url.is_valid());
+  if (!url.is_valid()) {
+    return false;
+  }
 
   if (url.SchemeIs(url::kHttpsScheme)) {
     // Always support https:// scheme.
