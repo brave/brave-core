@@ -86,7 +86,7 @@ AIChatAPI::~AIChatAPI() = default;
 
 void AIChatAPI::QueryPrompt(
     const std::string& prompt,
-    api_request_helper::APIRequestHelper::DataCompletedCallback
+    api_request_helper::APIRequestHelper::ResultCallback
         data_completed_callback,
     api_request_helper::APIRequestHelper::DataReceivedCallback
         data_received_callback) {
@@ -105,17 +105,19 @@ void AIChatAPI::QueryPrompt(
   const bool is_sse_enabled = ai_chat::features::kAIChatSSE.Get();
 
   if (is_sse_enabled) {
+    VLOG(2) << "Making streaming AI Chat API Request";
     api_request_helper_.RequestSSE(
         "POST", api_url, CreateJSONRequestBody(dict), "application/json",
         std::move(data_received_callback), std::move(data_completed_callback),
         headers, {});
   } else {
+    VLOG(2) << "Making non-streaming AI Chat API Request";
     auto on_result_cb = base::BindOnce(
-        [](api_request_helper::APIRequestHelper::DataCompletedCallback
+        [](api_request_helper::APIRequestHelper::ResultCallback
                data_completed_callback,
            api_request_helper::APIRequestResult result) {
-          std::move(data_completed_callback)
-              .Run(std::move(result), result.Is2XXResponseCode());
+          VLOG(2) << "Non-streaming response code: " << result.response_code();
+          std::move(data_completed_callback).Run(std::move(result));
         },
         std::move(data_completed_callback));
 

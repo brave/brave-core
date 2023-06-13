@@ -38,7 +38,6 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
-#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -249,8 +248,6 @@ class PlaylistServiceUnitTest : public testing::Test {
 
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<content::TestHostResolver> host_resolver_;
-
-  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

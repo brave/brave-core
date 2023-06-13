@@ -23,14 +23,10 @@ class AIChatAPI {
   AIChatAPI& operator=(const AIChatAPI&) = delete;
   ~AIChatAPI();
 
-  using ResponseCallback = base::RepeatingCallback<void(const std::string&)>;
-  using CompletionCallback =
-      base::OnceCallback<void(bool success, int response_code)>;
-
   // This function queries both types of APIs: SSE and non-SSE.
   // In non-SSE cases, only the data_completed_callback will be triggered.
   void QueryPrompt(const std::string& prompt,
-                   api_request_helper::APIRequestHelper::DataCompletedCallback
+                   api_request_helper::APIRequestHelper::ResultCallback
                        data_completed_callback,
                    api_request_helper::APIRequestHelper::DataReceivedCallback
                        data_received_callback = base::NullCallback());
