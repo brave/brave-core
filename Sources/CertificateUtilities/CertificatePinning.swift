@@ -49,32 +49,34 @@ public class PinningCertificateEvaluator: NSObject, URLSessionDelegate {
 
   public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 
-    // Certificate pinning
-    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-      if let serverTrust = challenge.protectionSpace.serverTrust {
-        do {
-          let host = challenge.protectionSpace.host
-          if ExcludedPinningHostUrls.urls.contains(host) {
-            return completionHandler(.performDefaultHandling, nil)
+    DispatchQueue.global(qos: .userInitiated).async {
+      // Certificate pinning
+      if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+        if let serverTrust = challenge.protectionSpace.serverTrust {
+          do {
+            let host = challenge.protectionSpace.host
+            if ExcludedPinningHostUrls.urls.contains(host) {
+              return completionHandler(.performDefaultHandling, nil)
+            }
+            
+            if !self.canPinHost(host) {
+              self.fatalErrorInDebugModeIfPinningFailed()
+              throw self.error(reason: "Host not specified for pinning: \(host)")
+            }
+            
+            try self.evaluate(serverTrust, forHost: host)
+            return completionHandler(.useCredential, URLCredential(trust: serverTrust))
+          } catch {
+            Logger.module.error("\(error.localizedDescription)")
+            self.fatalErrorInDebugModeIfPinningFailed()
+            return completionHandler(.cancelAuthenticationChallenge, nil)
           }
-
-          if !canPinHost(host) {
-            fatalErrorInDebugModeIfPinningFailed()
-            throw error(reason: "Host not specified for pinning: \(host)")
-          }
-
-          try evaluate(serverTrust, forHost: host)
-          return completionHandler(.useCredential, URLCredential(trust: serverTrust))
-        } catch {
-          Logger.module.error("\(error.localizedDescription)")
-          fatalErrorInDebugModeIfPinningFailed()
-          return completionHandler(.cancelAuthenticationChallenge, nil)
         }
+        self.fatalErrorInDebugModeIfPinningFailed()
+        return completionHandler(.cancelAuthenticationChallenge, nil)
       }
-      fatalErrorInDebugModeIfPinningFailed()
-      return completionHandler(.cancelAuthenticationChallenge, nil)
+      return completionHandler(.performDefaultHandling, nil)
     }
-    return completionHandler(.performDefaultHandling, nil)
   }
 
   private func canPinHost(_ host: String) -> Bool {
@@ -85,7 +87,7 @@ public class PinningCertificateEvaluator: NSObject, URLSessionDelegate {
     return NSError(domain: "com.brave.pinning-certificate-evaluator", code: -1, userInfo: [NSLocalizedDescriptionKey: reason])
   }
 
-  public func evaluate(_ trust: SecTrust, forHost host: String) throws {
+  func evaluate(_ trust: SecTrust, forHost host: String) throws {
     // Certificate validation
     guard !certificates.isEmpty else {
       throw error(reason: "Empty Certificates")
