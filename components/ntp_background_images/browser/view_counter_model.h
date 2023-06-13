@@ -16,8 +16,6 @@ class PrefService;
 
 namespace ntp_background_images {
 
-constexpr int kInitialCountToBrandedWallpaper = 1;
-
 class ViewCounterModel {
  public:
   explicit ViewCounterModel(PrefService* prefs);
@@ -52,8 +50,6 @@ class ViewCounterModel {
   void IncreaseBackgroundWallpaperImageIndex();
 
  private:
-  static constexpr int kRegularCountToBrandedWallpaper = 3;
-
   friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
@@ -72,7 +68,7 @@ class ViewCounterModel {
 
   // For NTP SI.
   raw_ptr<PrefService> prefs_ = nullptr;
-  int count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
+  int count_to_branded_wallpaper_ = 1;
   bool always_show_branded_wallpaper_ = false;
   bool show_branded_wallpaper_ = true;
   size_t current_campaign_index_ = 0;
