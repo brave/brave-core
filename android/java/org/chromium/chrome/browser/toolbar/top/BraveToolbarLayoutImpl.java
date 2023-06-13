@@ -1735,16 +1735,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (eventType == PlaylistEvent.ITEM_ADDED) {
             showAddedToPlaylistSnackBar();
             if (mPlaylistService != null) {
+                mPlaylistService.getPlaylistItem(id, playlistItem -> {
+                    PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
+                            ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name,
+                            playlistItem.pageSource.url, playlistItem.mediaPath.url,
+                            playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
+                            playlistItem.author, playlistItem.duration,
+                            playlistItem.lastPlayedPosition, playlistItem.cached, false, 0);
+                    PlaylistDownloadUtils.startDownloadRequest(getContext(), playlistItemModel);
+                });
             }
-            mPlaylistService.getPlaylistItem(id, playlistItem -> {
-                PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
-                        ConstantUtils.DEFAULT_PLAYLIST, playlistItem.name,
-                        playlistItem.pageSource.url, playlistItem.mediaPath.url,
-                        playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
-                        playlistItem.author, playlistItem.duration, playlistItem.lastPlayedPosition,
-                        playlistItem.cached, false, 0);
-                PlaylistDownloadUtils.startDownloadRequest(getContext(), playlistItemModel);
-            });
         }
     }
 
