@@ -231,13 +231,12 @@ export const TokenLists = ({
       // Return an empty string to display a loading
       // skeleton while assets are populated.
       if (sortedFungibleTokensList.length === 0) {
-        return ''
+        return Amount.empty()
       }
       // Return a 0 balance if the network has no
       // assets to display.
       if (getAssetsByNetwork(network).length === 0) {
         return new Amount(0)
-          .formatAsFiat(defaultCurrencies.fiat)
       }
 
       const amounts = getAssetsByNetwork(network)
@@ -256,13 +255,11 @@ export const TokenLists = ({
 
       return !reducedAmounts.isUndefined()
         ? reducedAmounts
-          .formatAsFiat(defaultCurrencies.fiat)
-        : ''
+        : Amount.empty()
     }, [
     computeFiatAmount,
     getAssetsByNetwork,
-    sortedFungibleTokensList,
-    defaultCurrencies.fiat
+    sortedFungibleTokensList
   ])
 
   // Returns a list of assets based on provided account
@@ -306,7 +303,7 @@ export const TokenLists = ({
       // Return an empty string to display a loading
       // skeleton while assets are populated.
       if (sortedFungibleTokensList.length === 0) {
-        return ''
+        return Amount.empty()
       }
       // Return a 0 balance if the account has no
       // assets to display.
@@ -315,7 +312,6 @@ export const TokenLists = ({
           .length === 0
       ) {
         return new Amount(0)
-          .formatAsFiat(defaultCurrencies.fiat)
       }
 
       const amounts =
@@ -339,21 +335,27 @@ export const TokenLists = ({
 
       return !reducedAmounts.isUndefined()
         ? reducedAmounts
-          .formatAsFiat(defaultCurrencies.fiat)
-        : ''
+        : Amount.empty()
     }, [
     getFilteredOutAssetsByAccount,
-    defaultCurrencies.fiat,
     sortedFungibleTokensList
   ])
 
   const listUiByNetworks = React.useMemo(() => {
-    return networks?.map((network) =>
+    return networks?.sort((a, b) => {
+      const aBalance = getNetworkFiatValue(a)
+      const bBalance = getNetworkFiatValue(b)
+      return bBalance.minus(aBalance).toNumber()
+    })?.map((network) =>
       <AssetGroupContainer
         key={networkEntityAdapter
           .selectId(network).toString()}
         balance={
           getNetworkFiatValue(network)
+            .isUndefined()
+            ? ''
+            : getNetworkFiatValue(network)
+              .formatAsFiat(defaultCurrencies.fiat)
         }
         network={network}
         isDisabled={getAssetsByNetwork(network).length === 0}
@@ -376,14 +378,25 @@ export const TokenLists = ({
     getNetworkFiatValue,
     renderToken,
     networks,
+    defaultCurrencies.fiat,
     assetAutoDiscoveryCompleted
   ])
 
   const listUiByAccounts = React.useMemo(() => {
-    return accounts?.map((account) =>
+    return accounts?.sort((a, b) => {
+      const aBalance = getAccountFiatValue(a)
+      const bBalance = getAccountFiatValue(b)
+      return bBalance.minus(aBalance).toNumber()
+    })?.map((account) =>
       <AssetGroupContainer
         key={account.address}
-        balance={getAccountFiatValue(account)}
+        balance={
+          getAccountFiatValue(account)
+            .isUndefined()
+            ? ''
+            : getAccountFiatValue(account)
+              .formatAsFiat(defaultCurrencies.fiat)
+        }
         account={account}
         isDisabled={
           getFilteredOutAssetsByAccount(account).length
@@ -408,6 +421,7 @@ export const TokenLists = ({
     getAccountFiatValue,
     renderToken,
     accounts,
+    defaultCurrencies.fiat,
     assetAutoDiscoveryCompleted
   ])
 
