@@ -24,13 +24,25 @@
       base::OnceCallback<void()> callback = base::DoNothing()); \
   void RegisterWidevineCdmComponent_Unused
 
+#ifdef RegisterWidevineCdmComponent
+  #pragma push_macro("RegisterWidevineCdmComponent")
+  #undef RegisterWidevineCdmComponent
+  #define RegisterWidevineCdmComponent_WasDefined
+#endif
+
 #define RegisterWidevineCdmComponent                                    \
   RegisterWidevineCdmComponent_Prefix RegisterWidevineCdmComponent_Body \
       RegisterWidevineCdmComponent_Suffix
 
 #include "src/chrome/browser/component_updater/widevine_cdm_component_installer.h"  // IWYU pragma: export
 
-#undef RegisterWidevineCdmComponent
+#ifdef RegisterWidevineCdmComponent_WasDefined
+  #pragma pop_macro("RegisterWidevineCdmComponent")
+  #undef RegisterWidevineCdmComponent_WasDefined
+#else
+  #undef RegisterWidevineCdmComponent
+#endif
+
 #undef RegisterWidevineCdmComponent_Prefix
 #undef RegisterWidevineCdmComponent_Body
 #undef RegisterWidevineCdmComponent_Suffix
