@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/catalog/catalog_json_reader.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
@@ -433,9 +433,10 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
 
 }  // namespace
 
-class BraveAdsCatalogJsonReaderTest : public UnitTestBase {};
+class BraveAdsCatalogUrlRequestJsonReaderTest : public UnitTestBase {};
 
-TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
+       ParseCatalogWithSingleCampaign) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithSingleCampaign);
@@ -455,7 +456,8 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
   EXPECT_EQ(expected_catalog, catalog);
 }
 
-TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
+       ParseCatalogWithMultipleCampaigns) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
@@ -476,7 +478,7 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
   EXPECT_EQ(expected_catalog, catalog);
 }
 
-TEST_F(BraveAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kEmptyCatalog);
@@ -495,7 +497,7 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
   EXPECT_EQ(expected_catalog, catalog);
 }
 
-TEST_F(BraveAdsCatalogJsonReaderTest, InvalidCatalog) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, InvalidCatalog) {
   // Arrange
 
   // Act
