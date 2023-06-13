@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
+import { TabOpenerContext } from '../../shared/components/new_tab_link'
 import { OnboardingResult, RewardsOptIn } from '../../shared/components/onboarding'
 import { WalletCard } from '../../shared/components/wallet_card'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
@@ -14,12 +15,15 @@ import { NavBar } from './navbar'
 import { PanelOverlays } from './panel_overlays'
 import { PublisherCard } from './publisher_card'
 
+import * as urls from '../../shared/lib/rewards_urls'
+
 import * as style from './panel.style'
 
 type ActiveView = 'tip' | 'summary'
 
 export function Panel () {
   const host = React.useContext(HostContext)
+  const tabOpener = React.useContext(TabOpenerContext)
 
   const [userType, setUserType] = React.useState(host.state.userType)
   const [balance, setBalance] = React.useState(host.state.balance)
@@ -74,6 +78,9 @@ export function Panel () {
 
   function renderOnboaring () {
     const onHideResult = () => {
+      if (onboardingResult === 'success') {
+        tabOpener.openTab(urls.rewardsTourURL)
+      }
       setOnboardingResult(null)
       host.closePanel()
     }
