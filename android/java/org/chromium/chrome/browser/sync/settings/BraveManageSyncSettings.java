@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
-import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 
-// See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
+/**
+ * See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
+ */
 public class BraveManageSyncSettings extends ManageSyncSettings {
     private static final String PREF_ADVANCED_CATEGORY = "advanced_category";
     private static final String PREF_SYNC_REVIEW_DATA = "sync_review_data";
@@ -24,7 +26,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private Preference mGoogleActivityControls;
     private Preference mSyncEncryption;
 
-    private ChromeBaseCheckBoxPreference mSyncPaymentsIntegration;
+    private ChromeSwitchPreference mSyncPaymentsIntegration;
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {

@@ -1,7 +1,30 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 3b229431fc69c56bcbd4163ae46285a489882bf2..ee4d68cbdf2f0b83a02bb11e0429cf03462fb046 100644
+index 3b229431fc69c56bcbd4163ae46285a489882bf2..0aeb8aa6a00f6512b989b2aaf36def569aa05393 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
+@@ -138,11 +138,11 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
+     private PreferenceCategory mSyncingCategory;
+ 
+     private ChromeSwitchPreference mSyncEverything;
+-    private ChromeBaseCheckBoxPreference mSyncPaymentsIntegration;
++    private ChromeSwitchPreference mSyncPaymentsIntegration;
+     // Maps {@link UserSelectableType} to the corresponding preference. There is no entry
+     // for {@code mSyncPaymentsIntegration} because it does not correspond to a {@link
+     // UserSelectableType}
+-    private Map<Integer, ChromeBaseCheckBoxPreference> mSyncTypePreferencesMap = new HashMap<>();
++    private Map<Integer, ChromeSwitchPreference> mSyncTypePreferencesMap = new HashMap<>();
+ 
+     private Preference mGoogleActivityControls;
+     private Preference mSyncEncryption;
+@@ -230,7 +230,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
+         mSyncTypePreferencesMap.values().forEach(pref -> pref.setOnPreferenceChangeListener(this));
+ 
+         mSyncPaymentsIntegration =
+-                (ChromeBaseCheckBoxPreference) findPreference(PREF_SYNC_PAYMENTS_INTEGRATION);
++                (ChromeSwitchPreference) findPreference(PREF_SYNC_PAYMENTS_INTEGRATION);
+         mSyncPaymentsIntegration.setOnPreferenceChangeListener(this);
+ 
+         // Prevent sync settings changes from taking effect until the user leaves this screen.
 @@ -356,7 +356,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
                          .getIdentityManager(Profile.getLastUsedRegularProfile())
                          .getPrimaryAccountInfo(ConsentLevel.SYNC));
@@ -11,3 +34,17 @@ index 3b229431fc69c56bcbd4163ae46285a489882bf2..ee4d68cbdf2f0b83a02bb11e0429cf03
              if (getActivity() != null) getActivity().finish();
              return;
          }
+@@ -588,11 +588,11 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
+         Set<Integer> selectedSyncTypes = mSyncService.getSelectedTypes();
+         ChromeManagedPreferenceDelegate autofillChromeManagedPreferenceDelegate = null;
+ 
+-        for (Map.Entry<Integer, ChromeBaseCheckBoxPreference> entry :
++        for (Map.Entry<Integer, ChromeSwitchPreference> entry :
+                 mSyncTypePreferencesMap.entrySet()) {
+             @UserSelectableType
+             int type = entry.getKey();
+-            ChromeBaseCheckBoxPreference pref = entry.getValue();
++            ChromeSwitchPreference pref = entry.getValue();
+             boolean managed = mSyncService.isTypeManagedByPolicy(type);
+             pref.setEnabled(!syncEverything);
+             pref.setChecked(selectedSyncTypes.contains(type));
