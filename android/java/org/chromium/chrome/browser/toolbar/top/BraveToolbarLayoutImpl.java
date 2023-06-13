@@ -1635,8 +1635,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         } else if (!mIsNotificationPosted) {
             if (mIsPublisherVerified) {
                 mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
-                mBraveRewardsNotificationsCount.setBackground(ResourcesCompat.getDrawable(
-                        getContext().getResources(), R.drawable.bat_verified, /* theme= */ null));
+                mBraveRewardsNotificationsCount.setBackground(
+                        ResourcesCompat.getDrawable(getContext().getResources(),
+                                R.drawable.rewards_verified_tick_icon, /* theme= */ null));
             } else {
                 mBraveRewardsNotificationsCount.setBackgroundResource(0);
                 mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);

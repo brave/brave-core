@@ -2126,12 +2126,12 @@ public class BraveRewardsPanel
             verifiedText =
                     mPopupView.getResources().getString(R.string.brave_ui_verified_publisher);
             publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.bat_verified, 0, 0, 0);
+                    R.drawable.rewards_verified_tick_icon, 0, 0, 0);
         } else {
             verifiedText =
                     mPopupView.getResources().getString(R.string.brave_ui_not_verified_publisher);
             publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.bat_unverified, 0, 0, 0);
+                    R.drawable.rewards_unverified_tick_icon, 0, 0, 0);
             TextView btnSendTip = mPopupView.findViewById(R.id.btn_send_tip);
             btnSendTip.setEnabled(false);
             btnSendTip.setClickable(false);
