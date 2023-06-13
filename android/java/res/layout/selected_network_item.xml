@@ -4,12 +4,10 @@
     android:layout_height="wrap_content">
 
     <TextView
+        style="@style/BraveWalletTextView"
         android:id="@+id/network_name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:maxLines="2"
-        android:textColor="@color/wallet_text_color"
         android:textSize="16sp" />
 
 </FrameLayout>

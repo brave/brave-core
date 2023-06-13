@@ -39,7 +39,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:textColor="@color/wallet_text_color"
+                    android:textColor="@color/brave_wallet_day_night_text_color"
                     android:layout_gravity="center_vertical"
                     android:paddingEnd="32dp"
                     />
