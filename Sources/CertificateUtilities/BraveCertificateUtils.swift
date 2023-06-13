@@ -206,7 +206,6 @@ public extension BraveCertificateUtils {
   
   static func evaluateTrust(_ trust: SecTrust, for host: String?) async throws {
     let policies = [
-      SecPolicyCreateBasicX509(),
       SecPolicyCreateSSL(true, host as CFString?),
     ]
 
