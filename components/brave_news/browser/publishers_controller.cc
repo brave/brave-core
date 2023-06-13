@@ -187,9 +187,10 @@ void PublishersController::EnsurePublishersIsUpdating() {
     return;
   }
   is_update_in_progress_ = true;
-  GURL sources_url("https://" + brave_news::GetHostname() + "/sources." +
-                   brave_news::kRegionUrlPart + "json");
 
+  GURL sources_url(
+      base::StrCat({"https://", brave_news::GetHostname(), "/sources.",
+                    brave_news::kRegionUrlPart, "json"}));
   auto on_request = base::BindOnce(
       [](PublishersController* controller,
          api_request_helper::APIRequestResult api_request_result) {
