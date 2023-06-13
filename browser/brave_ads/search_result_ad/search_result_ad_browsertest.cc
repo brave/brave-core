@@ -13,8 +13,8 @@
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
+#include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -72,7 +72,7 @@ class ScopedTestingAdsServiceSetter {
 class SearchResultAdTest : public InProcessBrowserTest {
  public:
   SearchResultAdTest() {
-    feature_list_.InitAndEnableFeature(kSearchResultAdFeature);
+    feature_list_.InitAndEnableFeature(kShouldSupportSearchResultAdsFeature);
   }
 
   void SetUpOnMainThread() override {

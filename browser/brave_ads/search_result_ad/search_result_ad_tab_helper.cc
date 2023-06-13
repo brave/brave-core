@@ -12,7 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
+#include "brave/components/brave_ads/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -52,7 +52,7 @@ SearchResultAdTabHelper::~SearchResultAdTabHelper() = default;
 void SearchResultAdTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
   CHECK(web_contents);
-  if (!IsSearchResultAdFeatureEnabled() || !web_contents->GetBrowserContext() ||
+  if (!ShouldSupportSearchResultAds() || !web_contents->GetBrowserContext() ||
       web_contents->GetBrowserContext()->IsOffTheRecord()) {
     return;
   }

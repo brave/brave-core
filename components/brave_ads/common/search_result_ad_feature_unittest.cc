@@ -14,33 +14,6 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsSearchResultAdFeatureTest, IsEnabled) {
-  // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsSearchResultAdFeatureEnabled());
-}
-
-TEST(BraveAdsSearchResultAdFeatureTest, IsDisabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsSearchResultAdFeatureEnabled());
-}
-
 TEST(BraveAdsSearchResultAdFeatureTest, GetMaximumAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;

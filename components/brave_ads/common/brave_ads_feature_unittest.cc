@@ -97,6 +97,33 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysTriggerNewTabPageAdEvents) {
   EXPECT_FALSE(ShouldAlwaysTriggerNewTabPageAdEvents());
 }
 
+TEST(BraveAdsBraveAdsFeatureTest, ShouldSupportSearchResultAds) {
+  // Arrange
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  enabled_features.emplace_back(kShouldSupportSearchResultAdsFeature, params);
+
+  const std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(ShouldSupportSearchResultAds());
+}
+
+TEST(BraveAdsBraveAdsFeatureTest, ShouldNotSupportSearchResultAds) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(ShouldSupportSearchResultAds());
+}
+
 TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysTriggerSearchResultAdEvents) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
