@@ -8,24 +8,24 @@ package org.chromium.chrome.browser.sync.settings;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 
 import org.chromium.chrome.R;
-import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
+import org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference;
 
-// See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
+/**
+ * See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
+ */
 public class BraveManageSyncSettings extends ManageSyncSettings {
     private static final String PREF_ADVANCED_CATEGORY = "advanced_category";
-    private static final String PREF_SYNC_REVIEW_DATA = "sync_review_data";
-    private static final String PREF_TURN_OFF_SYNC = "turn_off_sync";
-    private static final String PREF_SYNC_READING_LIST = "sync_reading_list";
-    private static final String PREF_SYNC_AUTOFILL = "sync_autofill";
 
     private Preference mGoogleActivityControls;
     private Preference mSyncEncryption;
 
     private ChromeBaseCheckBoxPreference mSyncPaymentsIntegration;
 
+    @VisibleForTesting
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
