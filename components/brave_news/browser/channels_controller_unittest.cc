@@ -100,7 +100,7 @@ class ChannelsControllerTest : public testing::Test {
 
   std::string GetPublishersURL() {
     return "https://" + brave_news::GetHostname() + "/sources." +
-           brave_news::GetRegionUrlPart() + "json";
+           brave_news::kRegionUrlPart + "json";
   }
 
   brave_news::Channels GetAllChannels() {

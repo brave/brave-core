@@ -8,21 +8,9 @@
 #include <string>
 
 #include "base/command_line.h"
-#include "base/containers/contains.h"
-#include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
-#include "base/feature_list.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/switches.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_news {
-namespace {
-// TODO(petemill): Have a remotely-updatable list of supported language
-// variations.
-const base::flat_set<std::string> kSupportedLocales = {"en_US", "ja_JP",
-                                                       "en_ES", "en_MX"};
-}  // namespace
 
 std::string GetHostname() {
   std::string from_switch =
@@ -33,22 +21,6 @@ std::string GetHostname() {
   } else {
     return from_switch;
   }
-}
-
-std::string GetV1RegionUrlPart() {
-  if (brave_l10n::GetDefaultISOLanguageCodeString() == "ja") {
-    return "ja";
-  }
-  return "";
-}
-
-std::string GetRegionUrlPart() {
-  if (!base::FeatureList::IsEnabled(
-          brave_news::features::kBraveNewsV2Feature)) {
-    return GetV1RegionUrlPart();
-  }
-
-  return "global.";
 }
 
 }  // namespace brave_news

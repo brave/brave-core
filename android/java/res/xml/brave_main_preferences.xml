@@ -28,12 +28,6 @@
         android:icon="@drawable/ic_crypto_wallets"
         android:order="3"
         android:title="@string/brave_ui_brave_wallet"/>
-     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveNewsPreferences"
-        android:key="brave_news"
-        android:icon="@drawable/ic_news"
-        android:order="3"
-        android:title="@string/brave_news_title"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveNewsPreferencesV2"
         android:key="brave_news_v2"

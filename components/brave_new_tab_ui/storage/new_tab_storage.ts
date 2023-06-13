@@ -13,7 +13,6 @@ export const defaultState: NewTab.State = {
   initialDataLoaded: false,
   textDirection: loadTimeData.getString('textdirection'),
   featureFlagBraveNTPSponsoredImagesWallpaper: loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
-  featureFlagBraveNewsV2Enabled: loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled'),
   featureFlagBraveNewsPromptEnabled: loadTimeData.getBoolean('featureFlagBraveNewsPromptEnabled'),
   featureCustomBackgroundEnabled: loadTimeData.getBoolean('featureCustomBackgroundEnabled'),
   searchPromotionEnabled: false,

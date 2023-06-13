@@ -41,7 +41,6 @@ const CardsSettings = React.lazy(() => import('./settings/cards'))
 
 // Types
 import { NewTabActions } from '../../constants/new_tab_types'
-import { loadTimeData } from '../../../common/loadTimeData'
 
 export interface Props {
   newTabData: NewTab.State
@@ -178,7 +177,7 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   setActiveTab (activeTab: TabType) {
-    if (loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled') && activeTab === TabType.BraveNews) {
+    if (activeTab === TabType.BraveNews) {
       this.context.setCustomizePage('news')
       return
     }

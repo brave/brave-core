@@ -10,14 +10,9 @@
 
 namespace brave_news {
 
+constexpr char kRegionUrlPart[] = "global.";
+
 std::string GetHostname();
-
-// Gets the version one region URL part string. This only includes the language.
-std::string GetV1RegionUrlPart();
-
-// Gets the region URL part string. In V2 this is 'global' and in V1, just the
-// lang (i.e. 'en' or 'ja').
-std::string GetRegionUrlPart();
 
 }  // namespace brave_news
 

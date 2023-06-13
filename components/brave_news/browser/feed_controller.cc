@@ -31,7 +31,6 @@
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
@@ -44,12 +43,8 @@ namespace {
 const char kEtagHeaderKey[] = "etag";
 
 GURL GetFeedUrl(const std::string& default_locale) {
-  auto locale =
-      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsV2Feature)
-          ? default_locale
-          : brave_news::GetV1RegionUrlPart();
   GURL feed_url("https://" + brave_news::GetHostname() + "/brave-today/feed." +
-                locale + "json");
+                default_locale + "json");
   return feed_url;
 }
 

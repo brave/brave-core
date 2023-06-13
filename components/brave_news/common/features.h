@@ -10,7 +10,6 @@
 
 namespace brave_news::features {
 
-BASE_DECLARE_FEATURE(kBraveNewsV2Feature);
 BASE_DECLARE_FEATURE(kBraveNewsCardPeekFeature);
 
 }  // namespace brave_news::features

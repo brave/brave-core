@@ -142,7 +142,6 @@ import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
-import org.chromium.chrome.browser.settings.BraveNewsPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
@@ -1100,8 +1099,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             return;
         }
 
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)
-                && BravePrefServiceBridge.getInstance().getShowNews()
+        if (BravePrefServiceBridge.getInstance().getShowNews()
                 && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
             mBraveNewsController =
                     BraveNewsControllerFactory.getInstance().getBraveNewsController(this);
@@ -1277,11 +1275,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     public void openBraveNewsSettings() {
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)) {
-            settingsLauncher.launchSettingsActivity(this, BraveNewsPreferencesV2.class);
-        } else {
-            settingsLauncher.launchSettingsActivity(this, BraveNewsPreferences.class);
-        }
+        settingsLauncher.launchSettingsActivity(this, BraveNewsPreferencesV2.class);
     }
 
     public void openBraveWalletSettings() {

@@ -31,11 +31,7 @@
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
-#include "brave/components/brave_news/browser/urls.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
@@ -682,8 +678,7 @@ void BraveNewsController::HandleSubscriptionsChanged() {
 }
 
 void BraveNewsController::MaybeInitPrefs() {
-  if (GetIsEnabled(prefs_) &&
-      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsV2Feature)) {
+  if (GetIsEnabled(prefs_)) {
     // We had a bug where you could be subscribed to a channel in the empty
     // locale in earlier versions of Brave News. If so, we should remove it.
     // After this has been out for a bit we can remove it.

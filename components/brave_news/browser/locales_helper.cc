@@ -87,11 +87,6 @@ base::flat_set<std::string> GetPublisherLocales(const Publishers& publishers) {
 base::flat_set<std::string> GetMinimalLocalesSet(
     const base::flat_set<std::string>& channel_locales,
     const Publishers& publishers) {
-  if (!base::FeatureList::IsEnabled(
-          brave_news::features::kBraveNewsV2Feature)) {
-    return {brave_news::GetV1RegionUrlPart()};
-  }
-
   // All channel locales are part of the minimal set - we need to include all of
   // them.
   base::flat_set<std::string> result = channel_locales;

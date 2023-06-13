@@ -279,36 +279,27 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
 
   if (publisher->user_enabled_status ==
       brave_news::mojom::UserEnabled::NOT_MODIFIED) {
-    if (base::FeatureList::IsEnabled(
-            brave_news::features::kBraveNewsV2Feature)) {
-      // If the publisher is NOT_MODIFIED then display it if any of the channels
-      // it belongs to are subscribed to.
-      for (const auto& locale_info : publisher->locales) {
-        for (const auto& channel_id : locale_info->channels) {
-          if (channels.contains(channel_id)) {
-            const auto& channel = channels.at(channel_id);
-            if (base::Contains(channel->subscribed_locales,
-                               locale_info->locale)) {
-              VLOG(2) << "Showing article because publisher "
-                      << data->publisher_id << ": " << publisher->publisher_name
-                      << " is in channel " << locale_info->locale << "."
-                      << channel_id << " which is subscribed to.";
-              return true;
-            }
+    // If the publisher is NOT_MODIFIED then display it if any of the channels
+    // it belongs to are subscribed to.
+    for (const auto& locale_info : publisher->locales) {
+      for (const auto& channel_id : locale_info->channels) {
+        if (channels.contains(channel_id)) {
+          const auto& channel = channels.at(channel_id);
+          if (base::Contains(channel->subscribed_locales,
+                             locale_info->locale)) {
+            VLOG(2) << "Showing article because publisher "
+                    << data->publisher_id << ": " << publisher->publisher_name
+                    << " is in channel " << locale_info->locale << "."
+                    << channel_id << " which is subscribed to.";
+            return true;
           }
         }
       }
-
-      // The publisher isn't in a subscribed channel, and the user hasn't
-      // enabled it, so it must be hidden.
-      return false;
     }
 
-    if (!publisher->is_enabled) {
-      VLOG(2) << "Hiding article for disabled-by-default publisher "
-              << data->publisher_id << ": " << publisher->publisher_name;
-      return false;
-    }
+    // The publisher isn't in a subscribed channel, and the user hasn't
+    // enabled it, so it must be hidden.
+    return false;
   }
 
   // None of the filters match, we can display
@@ -359,17 +350,16 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
     if (history_hosts.find(metadata->url.host()) != history_hosts.end()) {
       metadata->score -= 5;
     }
-    if (base::FeatureList::IsEnabled(
-            brave_news::features::kBraveNewsV2Feature)) {
-      // Adjust score to consider an explicit follow of the source, vs a
-      // channel-based follow
-      if (publisher->user_enabled_status ==
-          brave_news::mojom::UserEnabled::ENABLED) {
-        VLOG(1) << "Found explicit enable, adding score for: "
-                << publisher->publisher_name;
-        metadata->score -= 10;
-      }
+
+    // Adjust score to consider an explicit follow of the source, vs a
+    // channel-based follow
+    if (publisher->user_enabled_status ==
+        brave_news::mojom::UserEnabled::ENABLED) {
+      VLOG(1) << "Found explicit enable, adding score for: "
+              << publisher->publisher_name;
+      metadata->score -= 10;
     }
+
     // Get hash at this point since we have a flat list, and our algorithm
     // will only change sorting which can be re-applied on the next
     // feed update.
