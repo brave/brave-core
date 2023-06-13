@@ -48,9 +48,9 @@
 
 using update_client::CrxInstaller;
 
-namespace component_updater {
-
 #if !BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+
+namespace component_updater {
 
 void RegisterWidevineCdmComponent(ComponentUpdateService* cus,
                                   base::OnceCallback<void()> callback) {
@@ -63,7 +63,11 @@ void RegisterWidevineCdmComponent(ComponentUpdateService* cus,
   installer->Register(cus, std::move(callback));
 }
 
+}  // namespace component_updater
+
 #else  // !BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+
+namespace {
 
 const char kArm64DllUrl[] =
     "https://dl.google.com/widevine-cdm/4.10.2557.0-win-arm64.zip";
@@ -99,6 +103,10 @@ const net::NetworkTrafficAnnotationTag traffic_annotation =
             "No policy provided because the user is asked for consent before "
             "the feature is enabled."
         })");
+
+}  // namespace
+
+namespace component_updater {
 
 void RegisterWidevineCdmComponent(
     ComponentUpdateService* cus,
