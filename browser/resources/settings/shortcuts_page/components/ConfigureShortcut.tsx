@@ -12,6 +12,7 @@ import Button from '@brave/leo/react/button'
 import Alert from '@brave/leo/react/alert'
 import { useCommands } from '../commands'
 import Dialog from '@brave/leo/react/dialog'
+import { getLocale } from '$web-common/locale'
 
 const StyledDialog = styled(Dialog)`
   --leo-dialog-width: 402px;
@@ -157,6 +158,16 @@ export default function ConfigureShortcut(props: {
     : stringToKeys(props.value ?? '')
 
   const conflict = acceleratorLookup[maxKeys.current.codes.join('+')]
+  const conflictMessage = React.useMemo(() => {
+    if (!conflict) return null
+    const messageParts = getLocale('shortcutsPageShortcutInUse').split('$1')
+    return <>
+      {messageParts[0]}
+      <b>"{commands[conflict].name}"</b>
+      {messageParts[1]}
+    </>
+  }, [conflict, commands])
+
   return (
     <StyledDialog isOpen onClose={props.onCancel}>
         <KeysContainer>
@@ -164,16 +175,13 @@ export default function ConfigureShortcut(props: {
             <Keys keys={keys} large />
           ) : (
             <HintText>
-              Create a new shortcut. Press the desired keys to create a new
-              binding
+              {getLocale('shortcutsPageShortcutHint')}
             </HintText>
           )}
         </KeysContainer>
         {conflict && (
           <InUseAlert>
-            This combination is being used for{' '}
-            <b>"{commands[conflict].name}"</b>. Saving will override that
-            shortcut.
+            {conflictMessage}
           </InUseAlert>
         )}
         <div slot='actions'>
@@ -186,7 +194,7 @@ export default function ConfigureShortcut(props: {
               props.onCancel?.()
             }}
           >
-            Cancel
+            {getLocale('shortcutsPageCancelAddShortcut')}
           </Button>
           <Button
             size="large"
@@ -199,7 +207,7 @@ export default function ConfigureShortcut(props: {
               })
             }}
           >
-            Save
+            {getLocale('shortcutsPageSaveAddShortcut')}
           </Button>
         </div>
     </StyledDialog>

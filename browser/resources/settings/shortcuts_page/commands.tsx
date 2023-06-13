@@ -10,6 +10,7 @@ import styled, { StyleSheetManager } from 'styled-components'
 import Command from './components/Command'
 import { CommandsCache } from './utils/commandsCache'
 import { match } from './utils/match'
+import { getLocale } from '$web-common/locale'
 
 import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 import { color, font, radius, spacing } from '@brave/leo/tokens/css'
@@ -94,7 +95,7 @@ function App() {
         <SearchContainer>
           <SearchIcon name="search" />
           <SearchBox
-            placeholder="Search for a command or shortcut"
+            placeholder={getLocale('shortcutsPageSearchPlaceholder')}
             value={filter}
             onChange={(e) => {
               setFilter(e.target.value)
@@ -106,7 +107,7 @@ function App() {
         ))}
       </CommandsContainer>
       <Button kind="plain-faint" onClick={() => commandsCache.resetAll()}>
-        Reset all to defaults
+        {getLocale('shortcutsPageResetAll')}
       </Button>
     </Container>
   )

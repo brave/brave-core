@@ -544,4 +544,30 @@
   <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
     Show playlist bubble
   </message>
+
+  <!-- Shortcuts Page UI Strings -->
+  <message name="IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER" desc="Placeholder text in the search box">
+    Search for a command or shortcut
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_RESET_ALL" desc="Text for the button which resets all shortcuts to their defaults">
+    Reset all to defaults
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_RESET_COMMAND" desc="Text for the button which resets the shortcuts for a command to their defaults">
+    Reset
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_HINT" desc="Hint text for prompting a user to enter a shortcut">
+    Create a new shortcut. Press the desired keys to create a new binding
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_IN_USE" desc="Message explaining that a shortcut is already in use by another command">
+    This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph>. Saving will override that shortcut.
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT" desc="Text for the button to cancel adding a new shortcut">
+    Cancel
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT" desc="Text for the button to save a new shortcut">
+    Save
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_ADD_SHORTCUT" desc="Text for the button to add a new shortcut">
+    Add
+  </message>
 </grit-part>
