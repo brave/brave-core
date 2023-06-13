@@ -168,6 +168,8 @@ source_set("internal") {
     "account/user_data/platform_user_data.h",
     "account/user_data/rotating_hash_user_data.cc",
     "account/user_data/rotating_hash_user_data.h",
+    "account/user_data/rotating_hash_user_data_util.cc",
+    "account/user_data/rotating_hash_user_data_util.h",
     "account/user_data/segment_user_data.cc",
     "account/user_data/segment_user_data.h",
     "account/user_data/studies_user_data.cc",
