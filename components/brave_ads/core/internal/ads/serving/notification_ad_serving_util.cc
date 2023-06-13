@@ -21,6 +21,14 @@ bool HasPreviouslyServedAnAd() {
   return AdsClientHelper::GetInstance()->HasPrefPath(prefs::kServeAdAt);
 }
 
+base::TimeDelta DelayBeforeServingAnAd() {
+  return ServeAdAt() - base::Time::Now();
+}
+
+bool ShouldHaveServedAdInThePast() {
+  return DelayBeforeServingAnAd().is_negative();
+}
+
 bool ShouldServeAd() {
   return base::Time::Now() >= ServeAdAt();
 }
@@ -31,12 +39,12 @@ bool ShouldServeAdsAtRegularIntervals() {
   return PlatformHelper::GetInstance().IsMobile();
 }
 
-base::Time ServeAdAt() {
-  return AdsClientHelper::GetInstance()->GetTimePref(prefs::kServeAdAt);
-}
-
 void SetServeAdAt(const base::Time serve_ad_at) {
   AdsClientHelper::GetInstance()->SetTimePref(prefs::kServeAdAt, serve_ad_at);
+}
+
+base::Time ServeAdAt() {
+  return AdsClientHelper::GetInstance()->GetTimePref(prefs::kServeAdAt);
 }
 
 base::TimeDelta CalculateDelayBeforeServingAnAd() {
@@ -44,13 +52,13 @@ base::TimeDelta CalculateDelayBeforeServingAnAd() {
     return kServeFirstAdAfter;
   }
 
-  if (ShouldServeAd()) {
+  if (ShouldHaveServedAdInThePast() || ShouldServeAd()) {
     return kMinimumDelayBeforeServingAnAd;
   }
 
-  base::TimeDelta delay = ServeAdAt() - base::Time::Now();
-  if (delay.is_negative()) {
-    delay = base::Seconds(0);
+  const base::TimeDelta delay = DelayBeforeServingAnAd();
+  if (delay < kMinimumDelayBeforeServingAnAd) {
+    return kMinimumDelayBeforeServingAnAd;
   }
 
   return delay;

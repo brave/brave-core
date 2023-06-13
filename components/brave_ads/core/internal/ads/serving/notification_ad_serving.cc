@@ -172,8 +172,7 @@ void NotificationAdServing::RetryServingAdAtNextInterval() {
 
 base::Time NotificationAdServing::MaybeServeAdAfter(
     const base::TimeDelta delay) {
-  const base::Time serve_ad_at = base::Time::Now() + delay;
-  SetServeAdAt(serve_ad_at);
+  SetServeAdAt(base::Time::Now() + delay);
 
   return timer_.Start(FROM_HERE, delay,
                       base::BindOnce(&NotificationAdServing::MaybeServeAd,
