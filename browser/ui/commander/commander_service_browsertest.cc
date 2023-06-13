@@ -142,7 +142,11 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
 
   auto items = commander()->GetItems();
   ASSERT_EQ(1u, items.size());
-  EXPECT_EQ(u"New Tab To Right", items[0].title);
+#if BUILDFLAG(IS_MAC)
+  EXPECT_EQ(u"New Tab to the Right", items[0].title);
+#else
+  EXPECT_EQ(u"New tab to the right", items[0].title);
+#endif
 }
 
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CommandsCanBeSelected) {
@@ -153,8 +157,12 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CommandsCanBeSelected) {
 
   auto items = commander()->GetItems();
   ASSERT_EQ(2u, items.size());
-  EXPECT_EQ(u"New Tab", items[0].title);
-  EXPECT_EQ(u"New Tab To Right", items[1].title);
+  EXPECT_EQ(u"New tab", items[0].title);
+#if BUILDFLAG(IS_MAC)
+  EXPECT_EQ(u"New Tab to the Right", items[1].title);
+#else
+  EXPECT_EQ(u"New tab to the right", items[1].title);
+#endif
 
   EXPECT_EQ(1, browser()->tab_strip_model()->count());
   commander()->SelectCommand(0, commander()->GetResultSetId());
@@ -170,11 +178,11 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
 
   auto items = commander()->GetItems();
   ASSERT_EQ(3u, items.size());
-  EXPECT_EQ(u"Pin tab...", items[0].title);
-  EXPECT_EQ(u"Window Pin Tab", items[1].title);
+  EXPECT_EQ(u"Pin tab", items[0].title);
+  EXPECT_EQ(u"Pin tab...", items[1].title);
   EXPECT_EQ(u"Close unpinned tabs", items[2].title);
 
-  commander()->SelectCommand(0, 1);
+  commander()->SelectCommand(1, 1);
   EXPECT_LE(2, commander()->GetResultSetId());
 
   // This is retriggered on a different thread normally, but we want to force it

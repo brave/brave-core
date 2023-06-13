@@ -40,8 +40,12 @@ source_set("command_ids") {
 
   deps = [
     "//base",
+    "//brave/components/resources:strings",
     "//chrome/app:command_ids",
+    "//chrome/app:generated_resources",
     "//components/services/screen_ai/buildflags",
+    "//components/strings:components_strings",
+    "//ui/strings:ui_strings",
   ]
 
   if (!is_android) {
