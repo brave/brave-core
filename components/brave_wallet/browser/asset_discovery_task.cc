@@ -33,6 +33,12 @@ constexpr char kBsc[] = "bsc";
 constexpr char kEthereumGoerli[] = "ethereum-goerli";
 constexpr char kSolanaTestnet[] = "solana-testnet";
 constexpr char kSolanaDevnet[] = "solana-devnet";
+constexpr char kArbitrumNova[] = "arbitrum-nova";
+constexpr char kGnosis[] = "gnosis";
+constexpr char kGodwoken[] = "godwoken";
+constexpr char kPalm[] = "palm";
+constexpr char kPolygonZkEvm[] = "polygon-zkevm";
+constexpr char kZkSyncEra[] = "zksync-era";
 
 absl::optional<std::string> ChainIdToSimpleHashChainId(
     const std::string& chain_id) {
@@ -48,6 +54,12 @@ absl::optional<std::string> ChainIdToSimpleHashChainId(
           {brave_wallet::mojom::kGoerliChainId, kEthereumGoerli},
           {brave_wallet::mojom::kSolanaTestnet, kSolanaTestnet},
           {brave_wallet::mojom::kSolanaDevnet, kSolanaDevnet},
+          {brave_wallet::mojom::kArbitrumNovaChainId, kArbitrumNova},
+          {brave_wallet::mojom::kGnosisChainId, kGnosis},
+          {brave_wallet::mojom::kGodwokenChainId, kGodwoken},
+          {brave_wallet::mojom::kPalmChainId, kPalm},
+          {brave_wallet::mojom::kPolygonZKEVMChainId, kPolygonZkEvm},
+          {brave_wallet::mojom::kZkSyncEraChainId, kZkSyncEra},
       });
   if (!chain_id_lookup->contains(chain_id)) {
     return absl::nullopt;
@@ -70,6 +82,12 @@ absl::optional<std::string> SimpleHashChainIdToChainId(
           {kEthereumGoerli, brave_wallet::mojom::kGoerliChainId},
           {kSolanaTestnet, brave_wallet::mojom::kSolanaTestnet},
           {kSolanaDevnet, brave_wallet::mojom::kSolanaDevnet},
+          {kArbitrumNova, brave_wallet::mojom::kArbitrumNovaChainId},
+          {kGnosis, brave_wallet::mojom::kGnosisChainId},
+          {kGodwoken, brave_wallet::mojom::kGodwokenChainId},
+          {kPalm, brave_wallet::mojom::kPalmChainId},
+          {kPolygonZkEvm, brave_wallet::mojom::kPolygonZKEVMChainId},
+          {kZkSyncEra, brave_wallet::mojom::kZkSyncEraChainId},
       });
   if (!simple_hash_chain_id_lookup->contains(simple_hash_chain_id)) {
     return absl::nullopt;

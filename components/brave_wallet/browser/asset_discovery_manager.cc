@@ -8,6 +8,7 @@
 #include <map>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -92,15 +93,6 @@ void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
   AddTask(account_addresses);
 }
 
-const std::map<mojom::CoinType, std::vector<std::string>>
-AssetDiscoveryManager::GetNonFungibleSupportedChains() {
-  auto fungible_supported_chains = GetFungibleSupportedChains();
-  auto non_fungible_supported_chains = fungible_supported_chains;
-  non_fungible_supported_chains[mojom::CoinType::ETH].push_back("0x99");
-
-  return non_fungible_supported_chains;
-}
-
 const std::map<mojom::CoinType, std::vector<std::string>>&
 AssetDiscoveryManager::GetFungibleSupportedChains() {
   static const base::NoDestructor<
@@ -122,6 +114,40 @@ AssetDiscoveryManager::GetFungibleSupportedChains() {
         return supported_chains;
       }());
   return *asset_discovery_supported_chains;
+}
+
+const std::map<mojom::CoinType, std::vector<std::string>>
+AssetDiscoveryManager::GetNonFungibleSupportedChains() {
+  // Use non fungible chains as a base
+  auto non_fungible_supported_chains = GetFungibleSupportedChains();
+
+  // Create a set from the base chains for quick lookups
+  base::flat_set<std::string> base_set(
+      non_fungible_supported_chains[mojom::CoinType::ETH].begin(),
+      non_fungible_supported_chains[mojom::CoinType::ETH].end());
+
+  // Add in all the user networks that are supported by SimpleHash
+  auto custom_non_fungible_eth_chains =
+      CustomChainsExist(prefs_,
+                        {
+                            mojom::kArbitrumNovaChainId,
+                            mojom::kGnosisChainId,
+                            mojom::kGodwokenChainId,
+                            mojom::kPalmChainId,
+                            mojom::kPolygonZKEVMChainId,
+                            mojom::kZkSyncEraChainId,
+                        },
+                        mojom::CoinType::ETH);
+
+  for (auto custom_chain : custom_non_fungible_eth_chains) {
+    // Only insert the chain if it does not exist in the set
+    if (base_set.find(custom_chain) == base_set.end()) {
+      non_fungible_supported_chains[mojom::CoinType::ETH].push_back(
+          custom_chain);
+    }
+  }
+
+  return non_fungible_supported_chains;
 }
 
 void AssetDiscoveryManager::AddTask(

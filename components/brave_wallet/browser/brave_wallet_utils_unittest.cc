@@ -587,6 +587,36 @@ TEST(BraveWalletUtilsUnitTest, CustomChainExists) {
       CustomChainExists(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL));
 }
 
+TEST(BraveWalletUtilsUnitTest, CustomChainsExist) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+
+  std::vector<base::Value::Dict> values;
+  mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
+  values.push_back(NetworkInfoToValue(chain1));
+
+  mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
+  values.push_back(NetworkInfoToValue(chain2));
+
+  std::vector<std::string> chains{chain1.chain_id, chain2.chain_id,
+                                  "unexpected_chain"};
+  // Before updating custom networks, none of the chains should be returned
+  EXPECT_EQ(CustomChainsExist(&prefs, chains, mojom::CoinType::ETH).size(), 0u);
+  UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
+
+  // After updating custom networks the, only the added chains should be
+  // returned
+  std::vector<std::string> existing_chains =
+      CustomChainsExist(&prefs, chains, mojom::CoinType::ETH);
+  EXPECT_EQ(existing_chains.size(), 2u);
+  EXPECT_EQ(existing_chains[0], chain1.chain_id);
+  EXPECT_EQ(existing_chains[1], chain2.chain_id);
+  EXPECT_EQ(std::find(existing_chains.begin(), existing_chains.end(),
+                      "unexpected_chain"),
+            existing_chains.end());
+}
+
 TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);

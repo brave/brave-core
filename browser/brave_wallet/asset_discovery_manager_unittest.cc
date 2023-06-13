@@ -204,6 +204,34 @@ TEST_F(AssetDiscoveryManagerUnitTest, GetFungibleSupportedChains) {
             chains1.at(mojom::CoinType::SOL).size());
 }
 
+TEST_F(AssetDiscoveryManagerUnitTest, GetNonFungibleSupportedChains) {
+  // Gnosis chain ID should not be included if it's not a custom network
+  std::map<mojom::CoinType, std::vector<std::string>> chains =
+      asset_discovery_manager_->GetNonFungibleSupportedChains();
+  EXPECT_EQ(chains.at(mojom::CoinType::ETH).size(), 6UL);
+  EXPECT_EQ(chains.at(mojom::CoinType::SOL).size(), 1UL);
+
+  // Verify none of the chain IDs == mojom::kGnosisChainId
+  EXPECT_EQ(
+      std::find(chains.at(mojom::CoinType::ETH).begin(),
+                chains.at(mojom::CoinType::ETH).end(), mojom::kGnosisChainId),
+      chains.at(mojom::CoinType::ETH).end());
+
+  // Add a custom network (Gnosis) and verify it is included
+  auto gnosis_network = GetTestNetworkInfo1(mojom::kGnosisChainId);
+  AddCustomNetwork(GetPrefs(), gnosis_network);
+
+  chains = asset_discovery_manager_->GetNonFungibleSupportedChains();
+  EXPECT_EQ(chains.at(mojom::CoinType::ETH).size(), 7UL);
+  EXPECT_EQ(chains.at(mojom::CoinType::SOL).size(), 1UL);
+
+  // Verify one of the chain IDs is mojom::kGnosisChainId
+  EXPECT_NE(
+      std::find(chains.at(mojom::CoinType::ETH).begin(),
+                chains.at(mojom::CoinType::ETH).end(), mojom::kGnosisChainId),
+      chains.at(mojom::CoinType::ETH).end());
+}
+
 TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssetsOnAllSupportedChains) {
   // Verify OnDiscoverAssetsStarted and OnDiscoverAssetsCompleted both fire and
   // kBraveWalletLastDiscoveredAssetsAt does not update if accounts_added set
