@@ -10,14 +10,16 @@
 
 namespace brave_ads {
 
-// Types of transitions between pages.
+// Should match PageTransition in ui/base/page_transition_types.h; replicated
+// here to avoid requiring ui/base dependencies with this file.
 //
-// WARNING: don't change these numbers. They should match
-// |ui/base/page_transition_types.h| and are provided by the variations service,
-// so will need the same values to match the enums.
+// Types of transitions between pages. These are provided by the variations
+// service kUserActivityTriggers feature and are reported by the renderer for
+// page navigations.
 //
-// A type is made of a core value and a set of qualifiers. A type has one core
-// value and 0 or or more qualifiers.
+// WARNING: don't change these numbers. They must match the variations service
+// kUserActivityTriggers feature, so future versions will need the same values
+// to match the enums.
 
 enum PageTransitionType : uint32_t {
   // User got to this page by clicking a link on another page.
