@@ -109,9 +109,9 @@ const CryptoView = (props: Props) => {
 
   const onShowVisibleAssetsModal = React.useCallback((showModal: boolean) => {
     if (showModal) {
-      history.push(`${WalletRoutes.AddAssetModal}`)
+      history.push(WalletRoutes.AddAssetModal)
     } else {
-      history.push(`${WalletRoutes.PortfolioAsset}`)
+      history.push(WalletRoutes.PortfolioAssets)
     }
   }, [])
 
