@@ -112,12 +112,6 @@
   <message name="IDS_IDC_NAME_WINDOW">
     Name window
   </message>
-  <message name="IDS_IDC_USE_SYSTEM_TITLE_BAR">
-    Toggle system title bar
-  </message>
-  <message name="IDS_IDC_RESTORE_WINDOW">
-    Restore window
-  </message>
   <message name="IDS_IDC_COPY_URL">
     Copy URL
   </message>
@@ -181,17 +175,11 @@
   <message name="IDS_IDC_OPTIONS">
     Show settings
   </message>
-  <message name="IDS_IDC_PROFILING_ENABLED">
-    Toggle profiling enabled
-  </message>
   <message name="IDS_IDC_TAKE_SCREENSHOT">
     Take screenshot
   </message>
   <message name="IDS_IDC_HISTORY_MENU">
     History menu
-  </message>
-  <message name="IDS_IDC_SAVE_CREDIT_CARD_FOR_PAGE">
-    Save credit card for page
   </message>
   <message name="IDS_IDC_TRANSLATE_PAGE">
     Translate page
@@ -208,23 +196,14 @@
   <message name="IDS_IDC_WINDOW_GROUP_TAB">
     Group tab
   </message>
-  <message name="IDS_IDC_MIGRATE_LOCAL_CREDIT_CARD_FOR_PAGE">
-    Migrate local credit card for page
-  </message>
   <message name="IDS_IDC_FOCUS_THIS_TAB">
     Focus tab
   </message>
   <message name="IDS_IDC_QRCODE_GENERATOR">
     QR code generator
   </message>
-  <message name="IDS_IDC_SAVE_AUTOFILL_ADDRESS">
-    Save autofill address
-  </message>
   <message name="IDS_IDC_OFFERS_AND_REWARDS_FOR_PAGE">
     Offers and rewards for page
-  </message>
-  <message name="IDS_IDC_WEBAUTHN">
-    WebAuthn
   </message>
   <message name="IDS_IDC_SHARING_HUB">
     Sharing hub
@@ -234,9 +213,6 @@
   </message>
   <message name="IDS_IDC_SHARING_HUB_SCREENSHOT">
     Sharing hub screenshot
-  </message>
-  <message name="IDS_IDC_SAVE_IBAN_FOR_PAGE">
-    Save IBAN for page
   </message>
   <message name="IDS_IDC_SHOW_PASSWORD_MANAGER">
     Show password manager
@@ -346,9 +322,6 @@
   <message name="IDS_IDC_CUSTOMIZE_TOUCH_BAR">
     Customize touch bar
   </message>
-  <message name="IDS_IDC_SHOW_BETA_FORUM">
-    Show beta forum
-  </message>
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT_APPLE_EVENTS">
     Toggle javascript apple events
   </message>
@@ -421,9 +394,6 @@
   <message name="IDS_IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT">
     Bookmark bar show apps shortcut
   </message>
-  <message name="IDS_IDC_BOOKMARK_BAR_SHOW_READING_LIST">
-    Bookmark bar show reading list
-  </message>
   <message name="IDS_IDC_BOOKMARK_BAR_SHOW_MANAGED_BOOKMARKS">
     Bookmark bar show managed bookmarks
   </message>
@@ -439,12 +409,6 @@
   <message name="IDS_IDC_MEDIA_ROUTER_SHOW_IN_TOOLBAR">
     Show media router in toolbar
   </message>
-  <message name="IDS_IDC_MEDIA_STREAM_DEVICE_STATUS_TRAY">
-    Media stream device status tray
-  </message>
-  <message name="IDS_IDC_MEDIA_STREAM_DEVICE_ALWAYS_ALLOW">
-    Media stream device always allow
-  </message>
   <message name="IDS_IDC_TAB_SEARCH">
     Tab search
   </message>
@@ -457,14 +421,8 @@
   <message name="IDS_IDC_DEBUG_PRINT_VIEW_TREE">
     Debug print view tree
   </message>
-  <message name="IDS_IDC_DEBUG_PRINT_VIEW_TREE_DETAILS">
-    Debug print view tree details
-  </message>
   <message name="IDS_IDC_LIVE_CAPTION">
     Toggle live captions
-  </message>
-  <message name="IDS_IDC_RUN_SCREEN_AI_VISUAL_ANNOTATIONS">
-    Run screen AI visual annotations
   </message>
   <message name="IDS_IDC_SIDEBAR_SHOW_OPTION_ALWAYS">
     Show sidebar
