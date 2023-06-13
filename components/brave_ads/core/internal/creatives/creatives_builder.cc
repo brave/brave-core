@@ -77,7 +77,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       // Notification ad creatives
       for (const auto& creative : creative_set.creative_notification_ads) {
         CreativeNotificationAdInfo creative_ad;
-        creative_ad.creative_instance_id = creative.creative_instance_id;
+        creative_ad.creative_instance_id = creative.instance_id;
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
@@ -144,7 +144,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       // inline content ad creatives
       for (const auto& creative : creative_set.creative_inline_content_ads) {
         CreativeInlineContentAdInfo creative_ad;
-        creative_ad.creative_instance_id = creative.creative_instance_id;
+        creative_ad.creative_instance_id = creative.instance_id;
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
@@ -211,7 +211,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       // New tab page ad creatives
       for (const auto& creative : creative_set.creative_new_tab_page_ads) {
         CreativeNewTabPageAdInfo info;
-        info.creative_instance_id = creative.creative_instance_id;
+        info.creative_instance_id = creative.instance_id;
         info.creative_set_id = creative_set.id;
         info.campaign_id = campaign.id;
         info.advertiser_id = campaign.advertiser_id;
@@ -290,7 +290,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       // Promoted content ad creatives
       for (const auto& creative : creative_set.creative_promoted_content_ads) {
         CreativePromotedContentAdInfo info;
-        info.creative_instance_id = creative.creative_instance_id;
+        info.creative_instance_id = creative.instance_id;
         info.creative_set_id = creative_set.id;
         info.campaign_id = campaign.id;
         info.advertiser_id = campaign.advertiser_id;

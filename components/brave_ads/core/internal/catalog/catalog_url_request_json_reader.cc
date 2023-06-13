@@ -162,7 +162,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
         const std::string code = type["code"].GetString();
         if (code == "notification_all_v1") {
           CatalogCreativeNotificationAdInfo creative;
-          creative.creative_instance_id = creative_instance_id;
+          creative.instance_id = creative_instance_id;
 
           // Type
           creative.type.code = code;
@@ -185,7 +185,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_notification_ads.push_back(creative);
         } else if (code == "inline_content_all_v1") {
           CatalogCreativeInlineContentAdInfo creative;
-          creative.creative_instance_id = creative_instance_id;
+          creative.instance_id = creative_instance_id;
 
           // Type
           creative.type.code = code;
@@ -217,7 +217,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_inline_content_ads.push_back(creative);
         } else if (code == "new_tab_page_all_v1") {
           CatalogCreativeNewTabPageAdInfo creative;
-          creative.creative_instance_id = creative_instance_id;
+          creative.instance_id = creative_instance_id;
 
           // Type
           creative.type.code = code;
@@ -261,7 +261,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_new_tab_page_ads.push_back(creative);
         } else if (code == "promoted_content_all_v1") {
           CatalogCreativePromotedContentAdInfo creative;
-          creative.creative_instance_id = creative_instance_id;
+          creative.instance_id = creative_instance_id;
 
           // Type
           creative.type.code = code;

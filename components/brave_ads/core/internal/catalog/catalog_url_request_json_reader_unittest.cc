@@ -71,7 +71,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativeNotificationAdList catalog_creative_notification_ads;
 
   CatalogCreativeNotificationAdInfo catalog_creative_notification_ad;
-  catalog_creative_notification_ad.creative_instance_id =
+  catalog_creative_notification_ad.instance_id =
       "87c775ca-919b-4a87-8547-94cf0c3161a2";
   CatalogTypeInfo catalog_notification_ad_type;
   catalog_notification_ad_type.code = "notification_all_v1";
@@ -91,7 +91,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativeNewTabPageAdList catalog_creative_new_tab_page_ads;
 
   CatalogCreativeNewTabPageAdInfo catalog_creative_new_tab_page_ad;
-  catalog_creative_new_tab_page_ad.creative_instance_id =
+  catalog_creative_new_tab_page_ad.instance_id =
       "7ff400b9-7f8a-46a8-89f1-cb386612edcf";
   CatalogTypeInfo catalog_type_new_tab_page_ad;
   catalog_type_new_tab_page_ad.code = "new_tab_page_all_v1";
@@ -127,7 +127,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
 
   CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
-  catalog_creative_promoted_content_ad.creative_instance_id =
+  catalog_creative_promoted_content_ad.instance_id =
       "60001aa5-9368-45d2-81fc-e69887d278c5";
   CatalogTypeInfo catalog_type_promoted_content_ad_type;
   catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
@@ -148,7 +148,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
 
   CatalogCreativeInlineContentAdInfo catalog_creative_inline_content_ad;
-  catalog_creative_inline_content_ad.creative_instance_id =
+  catalog_creative_inline_content_ad.instance_id =
       "b0615969-6ee0-4559-b50c-f84be23302e4";
   CatalogTypeInfo catalog_type_inline_content_ad_type;
   catalog_type_inline_content_ad_type.code = "inline_content_all_v1";
@@ -269,7 +269,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativeNotificationAdList catalog_creative_notification_ads;
 
   CatalogCreativeNotificationAdInfo catalog_creative_notification_ad;
-  catalog_creative_notification_ad.creative_instance_id =
+  catalog_creative_notification_ad.instance_id =
       "17206fbd-0282-4759-ad28-d5e040ee1ff7";
   CatalogTypeInfo catalog_notification_ad_type;
   catalog_notification_ad_type.code = "notification_all_v1";
@@ -289,7 +289,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativeNewTabPageAdList catalog_creative_new_tab_page_ads;
 
   CatalogCreativeNewTabPageAdInfo catalog_creative_new_tab_page_ad;
-  catalog_creative_new_tab_page_ad.creative_instance_id =
+  catalog_creative_new_tab_page_ad.instance_id =
       "3dfe54d0-80b7-48d7-9bcc-3c77a912f583";
   CatalogTypeInfo catalog_type_new_tab_page_ad;
   catalog_type_new_tab_page_ad.code = "new_tab_page_all_v1";
@@ -325,7 +325,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
 
   CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
-  catalog_creative_promoted_content_ad.creative_instance_id =
+  catalog_creative_promoted_content_ad.instance_id =
       "9f2f49ab-77d7-4e99-9428-472dc8e04f90";
   CatalogTypeInfo catalog_type_promoted_content_ad_type;
   catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
@@ -346,7 +346,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
 
   CatalogCreativeInlineContentAdInfo catalog_creative_inline_content_ad;
-  catalog_creative_inline_content_ad.creative_instance_id =
+  catalog_creative_inline_content_ad.instance_id =
       "de54add5-ba76-469d-891f-b4d9f8e09b3d";
   CatalogTypeInfo catalog_type_inline_content_ad_type;
   catalog_type_inline_content_ad_type.code = "inline_content_all_v1";
