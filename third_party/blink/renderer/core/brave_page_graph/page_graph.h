@@ -72,6 +72,7 @@ class LocalFrame;
 class Node;
 class CharacterData;
 class Element;
+class Document;
 class DocumentLoader;
 class ExceptionState;
 class ConsoleMessage;
@@ -207,6 +208,9 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       blink::EventTarget* event_target,
       const String& event_type,
       blink::RegisteredEventListener* registered_listener);
+  void RegisterPageGraphJavaScriptUrl(blink::Document* document,
+                                      const KURL& url);
+
   // Console message tracking:
   void ConsoleMessageAdded(blink::ConsoleMessage* console_message);
   // *** CoreProbe handlers end ***
@@ -278,6 +282,11 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   struct ExecutionContextNodes {
     NodeParser* parser_node;
     NodeExtensions* extensions_node;
+  };
+
+  struct ProcessedJavascriptURL {
+    String script_code;
+    ScriptId parent_script_id = 0;
   };
 
   NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
@@ -368,10 +377,6 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       blink::ExecutionContext* execution_context,
       const ScriptId script_id,
       const ScriptData& script_data);
-  void RegisterScriptCompilationFromEval(
-      blink::ExecutionContext* execution_context,
-      const ScriptId script_id,
-      const ScriptData& script_data);
 
   void RegisterStorageRead(blink::ExecutionContext* execution_context,
                            const String& key,
@@ -458,6 +463,12 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   // bool=true is set when a node has been speculatively registered.
   base::flat_map<blink::UntracedMember<blink::Node>, bool>
       currently_constructed_nodes_;
+
+  // Holds JavascriptURL parent script id to use during the script compilation
+  // event.
+  blink::HeapHashMap<blink::Member<ExecutionContext>,
+                     Vector<ProcessedJavascriptURL>>
+      processed_js_urls_;
 
   // Index structure for looking up HTML nodes.
   // This map does not own the references.

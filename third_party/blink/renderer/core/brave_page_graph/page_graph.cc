@@ -342,6 +342,7 @@ PageGraph::~PageGraph() = default;
 void PageGraph::Trace(blink::Visitor* visitor) const {
   Supplement<LocalFrame>::Trace(visitor);
   visitor->Trace(execution_context_nodes_);
+  visitor->Trace(processed_js_urls_);
 }
 
 void PageGraph::NodeCreated(blink::Node* node) {
@@ -651,13 +652,31 @@ void PageGraph::RegisterPageGraphScriptCompilation(
           .location_type = classic_script.SourceLocationType(),
       }};
 
+  // Lookup parent script id for kJavascriptUrl scripts.
   if (script_data.source.location_type ==
-      blink::ScriptSourceLocationType::kEvalForScheduledAction) {
-    RegisterScriptCompilationFromEval(execution_context, script_id,
-                                      script_data);
-  } else {
-    RegisterScriptCompilation(execution_context, script_id, script_data);
+          blink::ScriptSourceLocationType::kJavascriptUrl &&
+      script_data.source.parent_script_id == 0) {
+    auto processed_js_urls_it = processed_js_urls_.find(execution_context);
+
+    if (processed_js_urls_it != processed_js_urls_.end()) {
+      auto& processed_js_urls = processed_js_urls_it->value;
+      auto* processed_js_url_it =
+          base::ranges::find(processed_js_urls, script_data.code,
+                             &ProcessedJavascriptURL::script_code);
+
+      if (processed_js_url_it != processed_js_urls.end()) {
+        script_data.source.parent_script_id =
+            processed_js_url_it->parent_script_id;
+        processed_js_urls.erase(processed_js_url_it);
+      }
+
+      if (processed_js_urls.empty()) {
+        processed_js_urls_.erase(processed_js_urls_it);
+      }
+    }
   }
+
+  RegisterScriptCompilation(execution_context, script_id, script_data);
 }
 
 void PageGraph::RegisterPageGraphModuleCompilation(
@@ -807,6 +826,21 @@ void PageGraph::RegisterPageGraphEventListenerRemove(
                               listener_script_id);
 }
 
+void PageGraph::RegisterPageGraphJavaScriptUrl(blink::Document* document,
+                                               const KURL& url) {
+  constexpr size_t kJavascriptSchemeLength = sizeof("javascript:") - 1;
+  auto* execution_context = document->GetExecutionContext();
+
+  processed_js_urls_.insert(execution_context, Vector<ProcessedJavascriptURL>())
+      .stored_value->value.push_back(ProcessedJavascriptURL{
+          .script_code =
+              blink::DecodeURLEscapeSequences(
+                  url.GetString(), blink::DecodeURLMode::kUTF8OrIsomorphic)
+                  .Substring(kJavascriptSchemeLength),
+          .parent_script_id = GetExecutingScriptId(execution_context),
+      });
+}
+
 void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
   constexpr const blink::mojom::ConsoleMessageSource kValidSources[] = {
       blink::mojom::ConsoleMessageSource::kJavaScript,
@@ -857,7 +891,7 @@ void PageGraph::RegisterV8ScriptCompilationFromEval(
           .is_eval = true,
       }};
 
-  RegisterScriptCompilationFromEval(
+  RegisterScriptCompilation(
       blink::ToExecutionContext(isolate->GetCurrentContext()), script_id,
       script_data);
 }
@@ -1573,7 +1607,9 @@ void PageGraph::RegisterScriptCompilation(
     const ScriptId script_id,
     const ScriptData& script_data) {
   VLOG(1) << "RegisterScriptCompilation) script id: " << script_id
-          << " script: "
+          << ", location: "
+          << static_cast<int>(script_data.source.location_type)
+          << ", script: \n"
           << (VLOG_IS_ON(2) ? script_data.code : String("<VLOG(2)>"));
 
   NodeScript* const code_node = script_tracker_.AddScriptNode(
@@ -1594,7 +1630,11 @@ void PageGraph::RegisterScriptCompilation(
     return;
   }
 
-  if (script_data.source.dom_node_id != blink::kInvalidDOMNodeId) {
+  if (script_data.source.parent_script_id) {
+    NodeScript* const parent_node = script_tracker_.GetScriptNode(
+        execution_context->GetIsolate(), script_data.source.parent_script_id);
+    AddEdge<EdgeExecute>(parent_node, code_node);
+  } else if (script_data.source.dom_node_id != blink::kInvalidDOMNodeId) {
     NodeHTMLElement* const script_elm_node =
         GetHTMLElementNode(script_data.source.dom_node_id);
     AddEdge<EdgeExecute>(script_elm_node, code_node);
@@ -1617,21 +1657,6 @@ void PageGraph::RegisterScriptCompilationFromAttr(
   NodeHTMLElement* const html_node =
       GetHTMLElementNode(script_data.source.dom_node_id);
   AddEdge<EdgeExecuteAttr>(html_node, code_node, attr_name);
-}
-
-void PageGraph::RegisterScriptCompilationFromEval(
-    blink::ExecutionContext* execution_context,
-    const ScriptId script_id,
-    const ScriptData& script_data) {
-  VLOG(1) << "RegisterScriptCompilationFromEval) script id: " << script_id
-          << ", parent script id: " << script_data.source.parent_script_id;
-  NodeScript* const code_node = script_tracker_.AddScriptNode(
-      execution_context->GetIsolate(), script_id, script_data);
-  if (script_data.source.parent_script_id) {
-    NodeScript* const parent_node = script_tracker_.GetScriptNode(
-        execution_context->GetIsolate(), script_data.source.parent_script_id);
-    AddEdge<EdgeExecute>(parent_node, code_node);
-  }
 }
 
 // Functions for handling storage read, write, and deletion
