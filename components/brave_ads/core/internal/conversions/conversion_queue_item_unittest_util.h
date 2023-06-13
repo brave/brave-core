@@ -21,13 +21,13 @@ ConversionQueueItemInfo BuildConversionQueueItem(
     const AdType& ad_type,
     const std::string& conversion_id,
     const std::string& advertiser_public_key,
-    bool should_use_random_guids);
+    bool should_use_random_uuids);
 
 ConversionQueueItemList BuildAndSaveConversionQueueItems(
     const AdType& ad_type,
     const std::string& conversion_id,
     const std::string& advertiser_public_key,
-    bool should_use_random_guids,
+    bool should_use_random_uuids,
     size_t count);
 
 }  // namespace brave_ads

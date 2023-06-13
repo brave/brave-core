@@ -98,7 +98,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
@@ -120,7 +120,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   ForcePermissionRulesForTesting();
 
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
   creative_ad.wallpapers.clear();
   database::SaveCreativeNewTabPageAds({creative_ad});
 
@@ -158,7 +158,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act

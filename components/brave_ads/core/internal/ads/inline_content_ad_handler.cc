@@ -56,7 +56,6 @@ InlineContentAdHandler::InlineContentAdHandler(
       transfer_(transfer),
       serving_(subdivision_targeting, anti_targeting_resource) {
   event_handler_.SetDelegate(this);
-
   serving_.SetDelegate(this);
 }
 

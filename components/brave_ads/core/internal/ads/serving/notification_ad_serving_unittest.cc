@@ -80,7 +80,7 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
@@ -110,7 +110,7 @@ TEST_F(BraveAdsNotificationAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act

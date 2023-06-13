@@ -29,7 +29,7 @@ struct CatalogCampaignInfo final {
   bool operator==(const CatalogCampaignInfo&) const;
   bool operator!=(const CatalogCampaignInfo&) const;
 
-  std::string campaign_id;
+  std::string id;
   int priority = 0;
   double pass_through_rate = 0.0;
   std::string start_at;

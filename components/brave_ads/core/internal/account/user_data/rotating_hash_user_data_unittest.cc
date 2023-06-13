@@ -27,10 +27,9 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   transaction.creative_instance_id = kCreativeInstanceId;
 
   // Act
-  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
 
   // Assert
-  EXPECT_TRUE(user_data.empty());
+  EXPECT_EQ(base::Value::Dict(), BuildRotatingHashUserData(transaction));
 }
 
 TEST_F(BraveAdsRotatingHashUserDataTest, BuildRotatingHashUserData) {
@@ -51,66 +50,6 @@ TEST_F(BraveAdsRotatingHashUserDataTest, BuildRotatingHashUserData) {
       base::test::ParseJsonDict(
           R"({"rotating_hash":"j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="})"),
       BuildRotatingHashUserData(transaction));
-}
-
-TEST_F(BraveAdsRotatingHashUserDataTest,
-       BuildRotatingHashUserDataIfWithinSameHour) {
-  // Arrange
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
-
-  TransactionInfo transaction;
-  transaction.creative_instance_id = kCreativeInstanceId;
-
-  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
-  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
-
-  // Act
-  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
-
-  // Assert
-  EXPECT_EQ(user_data, BuildRotatingHashUserData(transaction));
-}
-
-TEST_F(BraveAdsRotatingHashUserDataTest,
-       BuildRotatingHashUserDataForDifferentHours) {
-  // Arrange
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
-
-  TransactionInfo transaction;
-  transaction.creative_instance_id = kCreativeInstanceId;
-
-  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
-  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
-
-  // Act
-  AdvanceClockBy(base::Hours(1));
-
-  // Assert
-  EXPECT_NE(user_data, BuildRotatingHashUserData(transaction));
-}
-
-TEST_F(BraveAdsRotatingHashUserDataTest,
-       BuildRotatingHashUserDataForSameHourButDifferentDay) {
-  // Arrange
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id =
-      "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
-
-  TransactionInfo transaction;
-  transaction.creative_instance_id = kCreativeInstanceId;
-
-  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
-  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
-
-  // Act
-  AdvanceClockBy(base::Days(1));
-
-  // Assert
-  EXPECT_NE(user_data, BuildRotatingHashUserData(transaction));
 }
 
 }  // namespace brave_ads

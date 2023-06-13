@@ -23,8 +23,6 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/conversions/legacy_conversions_migration.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/notifications/legacy_notification_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
@@ -324,18 +322,6 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
 
   RebuildAdEventHistoryFromDatabase();
 
-  conversions::Migrate(base::BindOnce(&AdsImpl::MigrateConversionStateCallback,
-                                      weak_factory_.GetWeakPtr(),
-                                      std::move(wallet), std::move(callback)));
-}
-
-void AdsImpl::MigrateConversionStateCallback(mojom::WalletInfoPtr wallet,
-                                             InitializeCallback callback,
-                                             const bool success) {
-  if (!success) {
-    return FailedToInitialize(std::move(callback));
-  }
-
   rewards::Migrate(base::BindOnce(&AdsImpl::MigrateRewardsStateCallback,
                                   weak_factory_.GetWeakPtr(), std::move(wallet),
                                   std::move(callback)));
@@ -402,18 +388,6 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
 void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
                                             InitializeCallback callback,
                                             const bool success) {
-  if (!success) {
-    return FailedToInitialize(std::move(callback));
-  }
-
-  notifications::Migrate(base::BindOnce(
-      &AdsImpl::MigrateNotificationStateCallback, weak_factory_.GetWeakPtr(),
-      std::move(wallet), std::move(callback)));
-}
-
-void AdsImpl::MigrateNotificationStateCallback(mojom::WalletInfoPtr wallet,
-                                               InitializeCallback callback,
-                                               const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }

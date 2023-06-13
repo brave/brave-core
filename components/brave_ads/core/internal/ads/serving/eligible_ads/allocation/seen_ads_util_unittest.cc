@@ -18,7 +18,7 @@ namespace brave_ads {
 TEST(BraveAdsAdEventUtilTest, DoNotGetLastSeenAdAtForEmptyAdEvents) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   // Act
 
@@ -31,7 +31,7 @@ TEST(BraveAdsAdEventUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
   AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   const base::Time event_time = Now() - base::Hours(12);
   const AdEventInfo ad_event =
@@ -40,7 +40,7 @@ TEST(BraveAdsAdEventUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
   ad_events.push_back(ad_event);
 
   const CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   // Act
 
@@ -53,10 +53,10 @@ TEST(BraveAdsAdEventUtilTest, GetLastSeenAdAt) {
   AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   const CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   const base::Time now = Now();
 

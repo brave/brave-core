@@ -30,7 +30,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr base::TimeDelta kRetryServingAdAfterDelay = base::Minutes(2);
+constexpr base::TimeDelta kRetryServingAdAfter = base::Minutes(2);
 }  // namespace
 
 NotificationAdServing::NotificationAdServing(
@@ -166,14 +166,13 @@ void NotificationAdServing::RetryServingAdAtNextInterval() {
     return;
   }
 
-  const base::Time serve_ad_at = MaybeServeAdAfter(kRetryServingAdAfterDelay);
+  const base::Time serve_ad_at = MaybeServeAdAfter(kRetryServingAdAfter);
   BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }
 
 base::Time NotificationAdServing::MaybeServeAdAfter(
     const base::TimeDelta delay) {
-  const base::Time serve_ad_at = base::Time::Now() + delay;
-  SetServeAdAt(serve_ad_at);
+  SetServeAdAt(base::Time::Now() + delay);
 
   return timer_.Start(FROM_HERE, delay,
                       base::BindOnce(&NotificationAdServing::MaybeServeAd,

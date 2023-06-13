@@ -133,9 +133,9 @@ TEST_F(BraveAdsUserActivityUtilTest,
   // Act
 
   // Assert
-  EXPECT_EQ(base::TimeDelta(),
-            GetTimeSinceLastUserActivityEvent(
-                events, UserActivityEventType::kTabStartedPlayingMedia));
+  EXPECT_TRUE(GetTimeSinceLastUserActivityEvent(
+                  events, UserActivityEventType::kTabStartedPlayingMedia)
+                  .is_zero());
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -148,9 +148,9 @@ TEST_F(BraveAdsUserActivityUtilTest,
   // Act
 
   // Assert
-  EXPECT_EQ(base::TimeDelta(),
-            GetTimeSinceLastUserActivityEvent(
-                events, UserActivityEventType::kTabStartedPlayingMedia));
+  EXPECT_TRUE(GetTimeSinceLastUserActivityEvent(
+                  events, UserActivityEventType::kTabStartedPlayingMedia)
+                  .is_zero());
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggers) {

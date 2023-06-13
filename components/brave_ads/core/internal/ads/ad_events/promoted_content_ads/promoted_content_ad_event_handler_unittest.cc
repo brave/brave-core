@@ -32,7 +32,7 @@ namespace {
 
 CreativePromotedContentAdInfo BuildAndSaveCreativeAd() {
   CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAd(/*should_use_random_guids*/ true);
+      BuildCreativePromotedContentAd(/*should_use_random_uuids*/ true);
 
   database::SaveCreativePromotedContentAds({creative_ad});
 

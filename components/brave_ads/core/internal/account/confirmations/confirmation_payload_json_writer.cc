@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -23,6 +24,27 @@ constexpr char kTypeKey[] = "type";
 constexpr char kBlindedTokensKey[] = "blindedPaymentTokens";
 constexpr char kPublicKeyKey[] = "publicKey";
 
+void WriteOptedInConfirmationPayload(const ConfirmationInfo& confirmation,
+                                     base::Value::Dict& dict) {
+  CHECK(confirmation.opted_in);
+
+  base::Value::List list;
+  if (const absl::optional<std::string> value =
+          confirmation.opted_in->blinded_token.EncodeBase64()) {
+    list.Append(*value);
+  }
+  dict.Set(kBlindedTokensKey, std::move(list));
+
+  if (const absl::optional<std::string> value =
+          confirmation.opted_in->unblinded_token.public_key.EncodeBase64()) {
+    dict.Set(kPublicKeyKey, *value);
+  }
+
+  dict.Merge(confirmation.opted_in->user_data.dynamic.Clone());
+
+  dict.Merge(confirmation.opted_in->user_data.fixed.Clone());
+}
+
 }  // namespace
 
 std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
@@ -35,21 +57,7 @@ std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
   dict.Set(kTypeKey, confirmation.type.ToString());
 
   if (confirmation.opted_in) {
-    base::Value::List list;
-    if (const absl::optional<std::string> value =
-            confirmation.opted_in->blinded_token.EncodeBase64()) {
-      list.Append(*value);
-    }
-    dict.Set(kBlindedTokensKey, std::move(list));
-
-    if (const absl::optional<std::string> value =
-            confirmation.opted_in->unblinded_token.public_key.EncodeBase64()) {
-      dict.Set(kPublicKeyKey, *value);
-    }
-
-    dict.Merge(confirmation.opted_in->user_data.dynamic.Clone());
-
-    dict.Merge(confirmation.opted_in->user_data.fixed.Clone());
+    WriteOptedInConfirmationPayload(confirmation, dict);
   }
 
   std::string json;

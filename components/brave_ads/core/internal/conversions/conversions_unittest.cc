@@ -56,7 +56,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -93,7 +93,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -139,7 +139,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -179,7 +179,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -228,7 +228,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
                                             ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -271,7 +271,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
                                             ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -317,7 +317,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -363,7 +363,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -412,7 +412,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
@@ -451,7 +451,7 @@ TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
@@ -492,7 +492,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
@@ -541,7 +541,7 @@ TEST_F(BraveAdsConversionsTest,
        ConvertClickedPromotedContentAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
@@ -592,7 +592,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -630,7 +630,7 @@ TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedInlineContentAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -670,7 +670,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -717,7 +717,7 @@ TEST_F(BraveAdsConversionsTest,
        ConvertClickedInlineContentAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -766,7 +766,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -809,7 +809,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -855,7 +855,7 @@ TEST_F(BraveAdsConversionsTest,
   DisableBravePrivateAds();
 
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -901,7 +901,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      BuildCreativeAd(/*should_use_random_guids*/ true);
+      BuildCreativeAd(/*should_use_random_uuids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);

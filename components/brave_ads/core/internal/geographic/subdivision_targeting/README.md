@@ -2,9 +2,9 @@
 
 Target ads to an area within a country.
 
-See [ISO_3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) for a list of assigned subdivision codes.
+See [ISO_3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) for a list of assigned subdivisions.
 
-## Supported subdivision codes
+## Supported subdivisions
 
 ### United States of America
 

@@ -8,8 +8,7 @@
 namespace brave_ads {
 
 bool CatalogCreativeInfo::operator==(const CatalogCreativeInfo& other) const {
-  return creative_instance_id == other.creative_instance_id &&
-         type == other.type;
+  return instance_id == other.instance_id && type == other.type;
 }
 
 bool CatalogCreativeInfo::operator!=(const CatalogCreativeInfo& other) const {

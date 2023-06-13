@@ -50,7 +50,7 @@ class BraveAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   }
 
   void ServeAd() {
-    NotifyUserDidBecomeActive(base::TimeDelta::Min(),
+    NotifyUserDidBecomeActive(/*idle_time*/ base::TimeDelta::Min(),
                               /*screen_was_locked*/ false);
   }
 };

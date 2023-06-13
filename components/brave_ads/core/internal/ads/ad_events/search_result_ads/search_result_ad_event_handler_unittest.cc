@@ -127,7 +127,7 @@ class BraveAdsSearchResultAdEventHandlerTest
 TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireServedEvent) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   // Act
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed,
@@ -146,7 +146,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireServedEvent) {
 TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed,
             /*should_fire_event*/ true);
@@ -172,7 +172,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
 TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdWithConversion(/*should_use_random_guids*/ false);
+      BuildSearchResultAdWithConversion(/*should_use_random_uuids*/ false);
 
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed,
             /*should_fire_event*/ true);
@@ -199,7 +199,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   FireEvents(ad_mojom->Clone(),
              {mojom::SearchResultAdEventType::kServed,
@@ -223,7 +223,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasNotServed) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   // Act
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed,
@@ -237,7 +237,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   FireEvents(ad_mojom->Clone(),
              {mojom::SearchResultAdEventType::kServed,
@@ -267,7 +267,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   FireEvents(ad_mojom->Clone(),
              {mojom::SearchResultAdEventType::kServed,
@@ -293,7 +293,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfMissingAdPlacement) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
   ad_mojom->placement_id = kMissingPlacementId;
 
   // Act
@@ -314,7 +314,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
   ad_mojom->placement_id = kInvalidPlacementId;
 
   // Act
@@ -335,7 +335,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
   ad_mojom->creative_instance_id = kInvalidCreativeInstanceId;
 
   // Act
@@ -356,7 +356,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   const size_t ads_per_hour = kMaximumSearchResultAdsPerHour.Get();
 
@@ -388,7 +388,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
@@ -412,7 +412,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   const size_t ads_per_day = kMaximumSearchResultAdsPerDay.Get();
 
@@ -446,7 +446,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAd(/*should_use_random_guids*/ false);
+      BuildSearchResultAd(/*should_use_random_uuids*/ false);
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,

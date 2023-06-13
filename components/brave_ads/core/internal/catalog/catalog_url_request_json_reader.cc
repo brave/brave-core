@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/catalog/catalog_json_reader.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
 #include <cstdint>
 
@@ -47,7 +47,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   // Campaigns
   for (const auto& campaign_node : document["campaigns"].GetArray()) {
     CatalogCampaignInfo campaign;
-    campaign.campaign_id = campaign_node["campaignId"].GetString();
+    campaign.id = campaign_node["campaignId"].GetString();
     campaign.priority = campaign_node["priority"].GetInt();
     campaign.pass_through_rate = campaign_node["ptr"].GetDouble();
     campaign.start_at = campaign_node["startAt"].GetString();
@@ -81,8 +81,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
     for (const auto& creative_set_node :
          campaign_node["creativeSets"].GetArray()) {
       CatalogCreativeSetInfo creative_set;
-      creative_set.creative_set_id =
-          creative_set_node["creativeSetId"].GetString();
+      creative_set.id = creative_set_node["creativeSetId"].GetString();
       creative_set.per_day = creative_set_node["perDay"].GetInt();
       creative_set.per_week = creative_set_node["perWeek"].GetInt();
       creative_set.per_month = creative_set_node["perMonth"].GetInt();
@@ -130,7 +129,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       const auto conversions = creative_set_node["conversions"].GetArray();
       for (const auto& conversion_node : conversions) {
         ConversionInfo conversion;
-        conversion.creative_set_id = creative_set.creative_set_id;
+        conversion.creative_set_id = creative_set.id;
         conversion.type = conversion_node["type"].GetString();
         conversion.url_pattern = conversion_node["urlPattern"].GetString();
         conversion.observation_window =
@@ -163,7 +162,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
         const std::string code = type["code"].GetString();
         if (code == "notification_all_v1") {
           CatalogCreativeNotificationAdInfo creative;
-          creative.creative_instance_id = creative_instance_id;
+          creative.instance_id = creative_instance_id;
 
           // Type
           creative.type.code = code;
@@ -186,7 +185,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_notification_ads.push_back(creative);
         } else if (code == "inline_content_all_v1") {
           CatalogCreativeInlineContentAdInfo creative;
-          creative.creative_instance_id = creative_instance_id;
+          creative.instance_id = creative_instance_id;
 
           // Type
           creative.type.code = code;
@@ -218,7 +217,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_inline_content_ads.push_back(creative);
         } else if (code == "new_tab_page_all_v1") {
           CatalogCreativeNewTabPageAdInfo creative;
-          creative.creative_instance_id = creative_instance_id;
+          creative.instance_id = creative_instance_id;
 
           // Type
           creative.type.code = code;
@@ -262,7 +261,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_new_tab_page_ads.push_back(creative);
         } else if (code == "promoted_content_all_v1") {
           CatalogCreativePromotedContentAdInfo creative;
-          creative.creative_instance_id = creative_instance_id;
+          creative.instance_id = creative_instance_id;
 
           // Type
           creative.type.code = code;

@@ -74,7 +74,7 @@ class ADS_EXPORT Ads {
 
   // Called when a user views or interacts with an inline content ad to trigger
   // an |event_type| event for the specified |placement_id| and
-  // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
+  // |creative_instance_id|. |placement_id| should be a 128-bit random UUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
   // same ad placement. The callback takes one argument - |bool| is set to
@@ -92,7 +92,7 @@ class ADS_EXPORT Ads {
 
   // Called when a user views or interacts with a new tab page ad to trigger an
   // |event_type| event for the specified |placement_id| and
-  // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
+  // |creative_instance_id|. |placement_id| should be a 128-bit random UUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
   // same ad placement. The callback takes one argument - |bool| is set to
@@ -109,7 +109,7 @@ class ADS_EXPORT Ads {
 
   // Called when a user views or interacts with a notification ad or the ad
   // notification times out to trigger an |event_type| event for the specified
-  // |placement_id|. |placement_id| should be a 128-bit random GUID in the form
+  // |placement_id|. |placement_id| should be a 128-bit random UUID in the form
   // of version 4. See RFC 4122, section 4.4. The same |placement_id| generated
   // for the viewed event should be used for all other events for the same ad
   // placement. The callback takes one argument - |bool| is set to |true| if
@@ -121,7 +121,7 @@ class ADS_EXPORT Ads {
 
   // Called when a user views or interacts with a promoted content ad to trigger
   // an |event_type| event for the specified |placement_id| and
-  // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
+  // |creative_instance_id|. |placement_id| should be a 128-bit random UUID in
   // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
   // generated for the viewed event should be used for all other events for the
   // same ad placement. The callback takes one argument - |bool| is set to

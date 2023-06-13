@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/catalog/catalog_json_reader.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
@@ -71,7 +71,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativeNotificationAdList catalog_creative_notification_ads;
 
   CatalogCreativeNotificationAdInfo catalog_creative_notification_ad;
-  catalog_creative_notification_ad.creative_instance_id =
+  catalog_creative_notification_ad.instance_id =
       "87c775ca-919b-4a87-8547-94cf0c3161a2";
   CatalogTypeInfo catalog_notification_ad_type;
   catalog_notification_ad_type.code = "notification_all_v1";
@@ -91,7 +91,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativeNewTabPageAdList catalog_creative_new_tab_page_ads;
 
   CatalogCreativeNewTabPageAdInfo catalog_creative_new_tab_page_ad;
-  catalog_creative_new_tab_page_ad.creative_instance_id =
+  catalog_creative_new_tab_page_ad.instance_id =
       "7ff400b9-7f8a-46a8-89f1-cb386612edcf";
   CatalogTypeInfo catalog_type_new_tab_page_ad;
   catalog_type_new_tab_page_ad.code = "new_tab_page_all_v1";
@@ -127,7 +127,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
 
   CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
-  catalog_creative_promoted_content_ad.creative_instance_id =
+  catalog_creative_promoted_content_ad.instance_id =
       "60001aa5-9368-45d2-81fc-e69887d278c5";
   CatalogTypeInfo catalog_type_promoted_content_ad_type;
   catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
@@ -148,7 +148,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
 
   CatalogCreativeInlineContentAdInfo catalog_creative_inline_content_ad;
-  catalog_creative_inline_content_ad.creative_instance_id =
+  catalog_creative_inline_content_ad.instance_id =
       "b0615969-6ee0-4559-b50c-f84be23302e4";
   CatalogTypeInfo catalog_type_inline_content_ad_type;
   catalog_type_inline_content_ad_type.code = "inline_content_all_v1";
@@ -183,7 +183,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativeSetList catalog_creative_sets;
 
   CatalogCreativeSetInfo catalog_creative_set;
-  catalog_creative_set.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  catalog_creative_set.id = "340c927f-696e-4060-9933-3eafc56c3f31";
   catalog_creative_set.per_day = 5;
   catalog_creative_set.per_week = 6;
   catalog_creative_set.per_month = 7;
@@ -229,7 +229,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   // Campaign
   CatalogCampaignInfo catalog_campaign;
 
-  catalog_campaign.campaign_id = "27a624a1-9c80-494a-bf1b-af327b563f85";
+  catalog_campaign.id = "27a624a1-9c80-494a-bf1b-af327b563f85";
   catalog_campaign.priority = 1;
   catalog_campaign.pass_through_rate = 1.0;
   catalog_campaign.start_at = DistantPastAsISO8601();
@@ -269,7 +269,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativeNotificationAdList catalog_creative_notification_ads;
 
   CatalogCreativeNotificationAdInfo catalog_creative_notification_ad;
-  catalog_creative_notification_ad.creative_instance_id =
+  catalog_creative_notification_ad.instance_id =
       "17206fbd-0282-4759-ad28-d5e040ee1ff7";
   CatalogTypeInfo catalog_notification_ad_type;
   catalog_notification_ad_type.code = "notification_all_v1";
@@ -289,7 +289,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativeNewTabPageAdList catalog_creative_new_tab_page_ads;
 
   CatalogCreativeNewTabPageAdInfo catalog_creative_new_tab_page_ad;
-  catalog_creative_new_tab_page_ad.creative_instance_id =
+  catalog_creative_new_tab_page_ad.instance_id =
       "3dfe54d0-80b7-48d7-9bcc-3c77a912f583";
   CatalogTypeInfo catalog_type_new_tab_page_ad;
   catalog_type_new_tab_page_ad.code = "new_tab_page_all_v1";
@@ -325,7 +325,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
 
   CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
-  catalog_creative_promoted_content_ad.creative_instance_id =
+  catalog_creative_promoted_content_ad.instance_id =
       "9f2f49ab-77d7-4e99-9428-472dc8e04f90";
   CatalogTypeInfo catalog_type_promoted_content_ad_type;
   catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
@@ -346,7 +346,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
 
   CatalogCreativeInlineContentAdInfo catalog_creative_inline_content_ad;
-  catalog_creative_inline_content_ad.creative_instance_id =
+  catalog_creative_inline_content_ad.instance_id =
       "de54add5-ba76-469d-891f-b4d9f8e09b3d";
   CatalogTypeInfo catalog_type_inline_content_ad_type;
   catalog_type_inline_content_ad_type.code = "inline_content_all_v1";
@@ -381,7 +381,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativeSetList catalog_creative_sets;
 
   CatalogCreativeSetInfo catalog_creative_set;
-  catalog_creative_set.creative_set_id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
+  catalog_creative_set.id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
   catalog_creative_set.per_day = 10;
   catalog_creative_set.per_week = 11;
   catalog_creative_set.per_month = 12;
@@ -417,7 +417,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
 
   // Campaign
   CatalogCampaignInfo catalog_campaign;
-  catalog_campaign.campaign_id = "856fc4bc-a21b-4582-bab7-a20d412359aa";
+  catalog_campaign.id = "856fc4bc-a21b-4582-bab7-a20d412359aa";
   catalog_campaign.priority = 2;
   catalog_campaign.pass_through_rate = 0.5;
   catalog_campaign.start_at = DistantPastAsISO8601();
@@ -433,9 +433,10 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
 
 }  // namespace
 
-class BraveAdsCatalogJsonReaderTest : public UnitTestBase {};
+class BraveAdsCatalogUrlRequestJsonReaderTest : public UnitTestBase {};
 
-TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
+       ParseCatalogWithSingleCampaign) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithSingleCampaign);
@@ -455,7 +456,8 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
   EXPECT_EQ(expected_catalog, catalog);
 }
 
-TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
+       ParseCatalogWithMultipleCampaigns) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
@@ -476,7 +478,7 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
   EXPECT_EQ(expected_catalog, catalog);
 }
 
-TEST_F(BraveAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kEmptyCatalog);
@@ -495,7 +497,7 @@ TEST_F(BraveAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
   EXPECT_EQ(expected_catalog, catalog);
 }
 
-TEST_F(BraveAdsCatalogJsonReaderTest, InvalidCatalog) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, InvalidCatalog) {
   // Arrange
 
   // Act

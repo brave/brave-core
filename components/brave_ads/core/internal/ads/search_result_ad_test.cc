@@ -71,12 +71,12 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
 
   // Act
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_guids*/ true),
+      BuildSearchResultAd(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_guids*/ true),
+      BuildSearchResultAd(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
@@ -107,14 +107,14 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   // Act
   TriggerSearchResultAdEvent(
       // This ad viewed event triggering will be deferred.
-      BuildSearchResultAd(/*should_use_random_guids*/ true),
+      BuildSearchResultAd(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   TriggerSearchResultAdEvent(
       // This ad viewed event will be queued as the previous ad viewed event has
       // not completed.
-      BuildSearchResultAd(/*should_use_random_guids*/ true),
+      BuildSearchResultAd(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
@@ -150,7 +150,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
                                                     disabled_features);
 
   const mojom::SearchResultAdInfoPtr search_result_ad =
-      BuildSearchResultAd(/*should_use_random_guids*/ true);
+      BuildSearchResultAd(/*should_use_random_uuids*/ true);
 
   TriggerSearchResultAdEvent(search_result_ad.Clone(),
                              mojom::SearchResultAdEventType::kViewed,
@@ -190,12 +190,12 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
   // Act
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_guids*/ true),
+      BuildSearchResultAd(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_guids*/ true),
+      BuildSearchResultAd(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
@@ -216,7 +216,7 @@ TEST_F(
 
   // Act
   TriggerSearchResultAdEvent(
-      BuildSearchResultAd(/*should_use_random_guids*/ true),
+      BuildSearchResultAd(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ false);
 
@@ -250,14 +250,14 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
   // Act
   TriggerSearchResultAdEvent(
       // This ad viewed event triggering will be deferred.
-      BuildSearchResultAd(/*should_use_random_guids*/ true),
+      BuildSearchResultAd(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
   TriggerSearchResultAdEvent(
       // This ad viewed event will be queued as the previous ad viewed event has
       // not completed.
-      BuildSearchResultAd(/*should_use_random_guids*/ true),
+      BuildSearchResultAd(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
@@ -296,7 +296,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
                                                     disabled_features);
 
   const mojom::SearchResultAdInfoPtr search_result_ad =
-      BuildSearchResultAd(/*should_use_random_guids*/ true);
+      BuildSearchResultAd(/*should_use_random_uuids*/ true);
 
   TriggerSearchResultAdEvent(search_result_ad.Clone(),
                              mojom::SearchResultAdEventType::kViewed,
@@ -325,7 +325,7 @@ TEST_F(
   DisableBravePrivateAds();
 
   const mojom::SearchResultAdInfoPtr search_result_ad =
-      BuildSearchResultAd(/*should_use_random_guids*/ true);
+      BuildSearchResultAd(/*should_use_random_uuids*/ true);
 
   TriggerSearchResultAdEvent(search_result_ad.Clone(),
                              mojom::SearchResultAdEventType::kViewed,

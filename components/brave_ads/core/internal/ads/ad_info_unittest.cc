@@ -17,7 +17,7 @@ class BraveAdsAdInfoTest : public UnitTestBase {};
 TEST_F(BraveAdsAdInfoTest, IsValid) {
   // Arrange
   const AdInfo ad =
-      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
+      BuildAd(AdType::kNotificationAd, /*should_use_random_uuids*/ false);
 
   // Act
 

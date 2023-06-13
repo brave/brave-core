@@ -25,7 +25,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
   AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
@@ -45,7 +45,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, HasNotFiredAdEvent) {
   AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());

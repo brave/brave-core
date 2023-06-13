@@ -22,7 +22,7 @@ TEST(BraveAdsSeenAdvertisersUtilTest,
      DoNotGetLastSeenAdvertiserAtForEmptyAdEvents) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   // Act
 
@@ -36,7 +36,7 @@ TEST(BraveAdsSeenAdvertisersUtilTest,
   AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad_1, AdType::kNotificationAd,
@@ -44,7 +44,7 @@ TEST(BraveAdsSeenAdvertisersUtilTest,
   ad_events.push_back(ad_event);
 
   const CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
 
   // Act
 
@@ -60,15 +60,15 @@ TEST(BraveAdsSeenAdvertisersUtilTest, GetLastSeenAdvertiserAt) {
       base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   creative_ad_1.advertiser_id = advertiser_id_1;
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   creative_ad_2.advertiser_id = advertiser_id_2;
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+      BuildCreativeNotificationAd(/*should_use_random_uuids*/ true);
   creative_ad_3.advertiser_id = advertiser_id_1;
 
   AdEventList ad_events;

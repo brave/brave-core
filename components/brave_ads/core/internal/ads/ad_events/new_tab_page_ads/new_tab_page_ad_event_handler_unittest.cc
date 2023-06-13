@@ -29,7 +29,7 @@ namespace {
 
 CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+      BuildCreativeNewTabPageAd(/*should_use_random_uuids*/ true);
 
   database::SaveCreativeNewTabPageAds({creative_ad});
 

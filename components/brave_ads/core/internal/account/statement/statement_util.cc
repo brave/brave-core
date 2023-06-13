@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 
-#include <utility>
-
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -68,11 +66,11 @@ std::pair<double, double> GetEstimatedEarningsForLastMonth(
   return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
-int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {
+int GetAdsReceivedThisMonth(const TransactionList& transactions) {
   const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
-  return static_cast<int32_t>(
+  return static_cast<int>(
       GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
