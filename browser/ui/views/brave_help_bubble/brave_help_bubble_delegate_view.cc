@@ -36,10 +36,8 @@ class BorderWithArrow : public views::BubbleBorder {
   enum BubbleArrowPart { kFill, kBorder };
 
   explicit BorderWithArrow(Arrow arrow, ui::ColorId color_id)
-      // Set shadow to NO_SHADOW_LEGACY to avoid a crash in the parent class.
-      // NO_SHADOW requires valid insets in the base class BubbleBorder
       : views::BubbleBorder(arrow,
-                            BubbleBorder::Shadow::NO_SHADOW_LEGACY,
+                            BubbleBorder::Shadow::STANDARD_SHADOW,
                             color_id) {
     set_visible_arrow(true);
   }
@@ -149,7 +147,7 @@ BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(
     const std::string& text)
     : BubbleDialogDelegateView(anchor_view, BubbleBorder::Arrow::TOP_CENTER) {
   SetButtons(ui::DIALOG_BUTTON_NONE);
-  set_shadow(BubbleBorder::Shadow::NO_SHADOW_LEGACY);
+  set_shadow(BubbleBorder::Shadow::STANDARD_SHADOW);
   set_corner_radius(10);
   set_color(kBgColor);
   SetLayoutManager(std::make_unique<views::BoxLayout>(
