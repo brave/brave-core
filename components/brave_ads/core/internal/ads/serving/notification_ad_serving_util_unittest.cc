@@ -18,7 +18,18 @@ namespace brave_ads {
 class BraveAdsNotificationAdServingUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNotificationAdServingUtilTest,
-       ShouldServeAdsAtRegularIntervals) {
+       ShouldServeAdsAtRegularIntervalsOnIOS) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
+}
+
+TEST_F(BraveAdsNotificationAdServingUtilTest,
+       ShouldServeAdsAtRegularIntervalsOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -29,9 +40,31 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 }
 
 TEST_F(BraveAdsNotificationAdServingUtilTest,
-       ShouldNotServeAdsAtRegularIntervals) {
+       ShouldNotServeAdsAtRegularIntervalsOnMacOS) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
+}
+
+TEST_F(BraveAdsNotificationAdServingUtilTest,
+       ShouldNotServeAdsAtRegularIntervalsOnWindows) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
+}
+
+TEST_F(BraveAdsNotificationAdServingUtilTest,
+       ShouldNotServeAdsAtRegularIntervalsOnLinux) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
 
   // Act
 
@@ -79,6 +112,19 @@ TEST_F(BraveAdsNotificationAdServingUtilTest, CalculateDelayBeforeServingAnAd) {
 
   // Assert
   EXPECT_EQ(DistantFuture() - Now(), CalculateDelayBeforeServingAnAd());
+}
+
+TEST_F(BraveAdsNotificationAdServingUtilTest,
+       CalculateMinimumDelayBeforeServingAnAd) {
+  // Arrange
+  SetServeAdAt(Now());
+
+  AdvanceClockBy(base::Seconds(1));
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(base::Minutes(1), CalculateDelayBeforeServingAnAd());
 }
 
 }  // namespace brave_ads
