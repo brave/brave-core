@@ -10,6 +10,14 @@ import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 import {BraveSiteDetailsElement} from '../brave_site_details/brave_site_details.js'
+import { BraveSiteDetailsPermissionElement } from '../brave_site_details/brave_site_details_permission.js'
+
+import 'chrome://resources/brave/leo.bundle.js'
+
+RegisterPolymerComponentReplacement(
+  'site-details-permission',
+  BraveSiteDetailsPermissionElement
+)
 
 RegisterPolymerComponentReplacement(
   'site-details',
@@ -17,6 +25,12 @@ RegisterPolymerComponentReplacement(
 )
 
 RegisterPolymerTemplateModifications({
+  'site-details-permission': templateContent => {
+    const ironIcon = templateContent.querySelector('iron-icon')
+    const leoIcon = document.createElement('leo-icon')
+    leoIcon.setAttribute('name', '[[leoIcon]]');
+    ironIcon?.replaceWith(leoIcon)
+  },
   'site-details': (templateContent) => {
     if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
       const idleDetectionItem = templateContent.querySelector('[category="[[contentSettingsTypesEnum_.IDLE_DETECTION]]"]')
@@ -41,7 +55,7 @@ RegisterPolymerTemplateModifications({
         getTrustedHTML`
           <site-details-permission
             category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
-            icon="cr:extension">
+            icon="autoplay-on">
           </site-details-permission>
         `)
       let curChild = 1
@@ -65,7 +79,7 @@ RegisterPolymerTemplateModifications({
           getTrustedHTML`
             <site-details-permission
               category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
-              icon="cr:person">
+              icon="user">
             </site-details-permission>
           `)
         const googleSignInSettings = templateContent.
@@ -110,7 +124,7 @@ RegisterPolymerTemplateModifications({
           getTrustedHTML`
             <site-details-permission
               category="[[contentSettingsTypesEnum_.ETHEREUM]]"
-              icon="cr:extension">
+              icon="ethereum-on">
             </site-details-permission>
           `)
         const ethereumSettings = templateContent.
@@ -128,7 +142,7 @@ RegisterPolymerTemplateModifications({
           getTrustedHTML`
             <site-details-permission
               category="[[contentSettingsTypesEnum_.SOLANA]]"
-              icon="cr:extension">
+              icon="solana-on">
             </site-details-permission>
           `)
         const solanaSettings = templateContent.
@@ -142,6 +156,10 @@ RegisterPolymerTemplateModifications({
         }
       }
     }
+
+    // In Chromium, the VR and AR icons are the same but we want to have separate ones.
+    templateContent.querySelector('site-details-permission[icon="settings:vr-headset"]')?.setAttribute('icon', 'smartphone-hand')
+
     const usageSection = templateContent.querySelector('div#usage')
     if (!usageSection) {
       console.error(`[Brave Settings Overrides] Couldn't find usageSection item`)
