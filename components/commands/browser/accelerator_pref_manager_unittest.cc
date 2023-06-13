@@ -11,9 +11,11 @@
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+constexpr int kCommandIds[] = {1, 99, 100};
+
 class AcceleratorPrefManagerTest : public testing::Test {
  public:
-  AcceleratorPrefManagerTest() : manager_(&prefs_) {
+  AcceleratorPrefManagerTest() : manager_(&prefs_, kCommandIds) {
     commands::AcceleratorPrefManager::RegisterProfilePrefs(prefs_.registry());
   }
 

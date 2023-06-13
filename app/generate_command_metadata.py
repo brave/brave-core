@@ -35,6 +35,9 @@ EXCLUDE_COMMANDS = [
     # These commands target a selected tab (i.e. via Ctrl+Click)
     "_TARGET_",
 
+    # These commands are in a submenu, which we can't trigger
+    "_SUBMENU",
+
     # Requires a current url
     "IDC_OPEN_CURRENT_URL",
 
@@ -49,6 +52,14 @@ EXCLUDE_COMMANDS = [
     "IDC_VIRTUAL_CARD_MANUAL_FALLBACK",
     "IDC_BOOKMARK_BAR_TRACK_PRICE_FOR_SHOPPING_BOOKMARK",
     "IDC_BOOKMARK_BAR_UNTRACK_PRICE_FOR_SHOPPING_BOOKMARK",
+    "IDC_CHROME_MENU",
+    "IDC_MEDIA_TOOLBAR_CONTEXT_REPORT_CAST_ISSUE",
+
+    # ChromeOS only
+    "IDC_TOGGLE_REQUEST_TABLET_SITE",
+    "IDC_LACROS_DATA_MIGRATION",
+    "IDC_TOGGLE_MULTITASK_MENU",
+    "_LRU_USER_",
 
     # Crashes if speedreader doesn't work on page.
     "IDC_SPEEDREADER_ICON_ONCLICK",
@@ -71,6 +82,30 @@ EXCLUDE_COMMANDS = [
     "IDC_BRAVE_BOOKMARK_BAR_SUBMENU",
     "IDC_DEBUG_FRAME_TOGGLE",
     "IDC_SEND_TAB_TO_SELF",
+    "IDC_HELP_PAGE_VIA_MENU",  # There's a keyboard command for this
+    "IDC_MORE_TOOLS_MENU",
+    "IDC_READING_LIST_MENU",
+    "IDC_SHARING_HUB_MENU",
+    "IDC_MORE_TOOLS_MENU",
+    "IDC_BOOKMARKS_LIST_TITLE",
+    "IDC_FILE_MENU",
+    "IDC_HIDE_APP",
+    "IDC_TAB_MENU",
+    "IDC_VIEW_MENU",
+    "IDC_PROFILE_MAIN_MENU",
+    "IDC_INPUT_METHODS_MENU",
+    "IDC_MEDIA_ROUTER_ABOUT",
+    "IDC_MEDIA_ROUTER_HELP",
+    "IDC_MEDIA_ROUTER_LEARN_MORE",
+    "IDC_MEDIA_ROUTER_SHOWN_BY_POLICY",
+    "IDC_MEDIA_ROUTER_ALWAYS_SHOW_TOOLBAR_ACTION",
+    "IDC_MEDIA_ROUTER_TOGGLE_MEDIA_REMOTING",
+    "IDC_CLOSE_SIGN_IN_PROMO",
+    "IDC_SHOW_SAVE_LOCAL_CARD_SIGN_IN_PROMO_IF_APPLICABLE",
+    "IDC_ELEVATED_RECOVERY_DIALOG",
+    "IDC_SHOW_SYNC_ERROR",
+    "IDC_EXTENSION_ERRORS",
+    "IDC_WINDOW_MENU",
 
     # Not actually commands
     "IDC_BRAVE_COMMANDS_START",
@@ -80,14 +115,60 @@ EXCLUDE_COMMANDS = [
     "IDC_MANAGE_HID_DEVICES_LAST",
     "IDC_OPEN_LINK_IN_PROFILE_FIRST",
     "IDC_OPEN_LINK_IN_PROFILE_LAST",
+    "IDC_SHOW_SETTINGS_CHANGE_FIRST",
+    "IDC_SHOW_SETTINGS_CHANGE_LAST",
+    "IDC_EXTENSION_INSTALL_ERROR_FIRST",
+    "IDC_EXTENSION_INSTALL_ERROR_LAST",
+    "IDC_DEVICE_SYSTEM_TRAY_ICON_FIRST",
+    "IDC_DEVICE_SYSTEM_TRAY_ICON_LAST"
 ]
 
-
-def get_cmd_name(command):
-    def capitalize(word):
-        return word[0] + word[1:].lower()
-
-    return ' '.join(map(capitalize, command[4:].split('_')))
+# A number of commands have existing good translations which we can reuse.
+# Unfortunately, we can't just do a direct lookup of the command names, as some
+# of these expect some existing context to be present, which it won't be for
+# commands and shortcuts.
+# For example IDC_SIDEBAR_SHOW_OPTION_ALWAYS is the string 'Always' because it
+# expects to be show in the context of
+# Show Sidebar:
+#   - Always
+#   - Never
+#   - On Hover
+# but a command for 'Always' doesn't make a lot of sense.
+EXISTING_TRANSLATIONS = {
+    "IDC_RELOAD": "IDS_RELOAD",
+    "IDC_NEW_WINDOW": "IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW",
+    "IDC_PIN_TO_START_SCREEN": "IDS_PIN_TO_START_SCREEN",
+    "IDC_MOVE_TAB_TO_NEW_WINDOW": "IDS_MOVE_TAB_TO_NEW_WINDOW",
+    "IDC_FEEDBACK": "IDS_REPORT_AN_ISSUE",
+    "IDC_SHOW_DOWNLOADS": "IDS_DOWNLOAD_TITLE",
+    "IDC_CLEAR_BROWSING_DATA": "IDS_SETTINGS_CLEAR_BROWSING_DATA",
+    "IDC_PRINT": "IDS_PRINT_PREVIEW_PRINT_BUTTON",
+    "IDC_AUTOFILL_MENU": "IDS_AUTOFILL_MENU",
+    "IDC_OPEN_FILE": "IDS_OPEN_FILE_DIALOG_TITLE",
+    "IDC_CREATE_SHORTCUT": "IDS_APP_HOME_CREATE_SHORTCUT",
+    "IDC_WINDOW_CLOSE_OTHER_TABS": "IDS_TAB_CXMENU_CLOSEOTHERTABS",
+    "IDC_WINDOW_CLOSE_TABS_TO_RIGHT": "IDS_TAB_CXMENU_CLOSETABSTORIGHT",
+    "IDC_NEW_TAB_TO_RIGHT": "IDS_TAB_CXMENU_NEWTABTORIGHT",
+    "IDC_VIEW_PASSWORDS": "IDS_VIEW_PASSWORDS",
+    "IDC_ABOUT": "IDS_SETTINGS_ABOUT_PROGRAM",
+    "IDC_MANAGE_EXTENSIONS": "IDS_MANAGE_EXTENSIONS",
+    "IDC_RECENT_TABS_NO_DEVICE_TABS": "IDS_RECENT_TABS_NO_DEVICE_TABS",
+    "IDC_DISTILL_PAGE": "IDS_DISTILL_PAGE",
+    "IDC_TOGGLE_QUICK_COMMANDS": "IDS_TOGGLE_QUICK_COMMANDS",
+    "IDC_CHROME_TIPS": "IDS_CHROME_TIPS",
+    "IDC_CHROME_WHATS_NEW": "IDS_CHROME_WHATS_NEW",
+    "IDC_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND": \
+        "IDS_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND",
+    "IDC_SHOW_BRAVE_REWARDS": "IDS_SHOW_BRAVE_REWARDS",
+    "IDC_NEW_TOR_CONNECTION_FOR_SITE": "IDS_NEW_TOR_CONNECTION_FOR_SITE",
+    "IDC_NEW_OFFTHERECORD_WINDOW_TOR": "IDS_NEW_OFFTHERECORD_WINDOW_TOR",
+    "IDC_SHOW_BRAVE_SYNC": "IDS_SHOW_BRAVE_SYNC",
+    "IDC_SHOW_BRAVE_WALLET": "IDS_SHOW_BRAVE_WALLET",
+    "IDC_ADD_NEW_PROFILE": "IDS_ADD_NEW_PROFILE",
+    "IDC_OPEN_GUEST_PROFILE": "IDS_OPEN_GUEST_PROFILE",
+    "IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER": "IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER",
+    "IDC_COPY_CLEAN_LINK": "IDS_COPY_CLEAN_LINK",
+}
 
 
 def extract_relevant_lines(filename):
@@ -120,9 +201,15 @@ def generate_command_info(command_definition_files, template_file):
     def get_command(line):
         return line.split(' ')[1]
 
+    def get_command_l10n(line):
+        command = get_command(line)
+        if command in EXISTING_TRANSLATIONS:
+            return EXISTING_TRANSLATIONS[command]
+        return 'IDS_' + command
+
     def get_line(line):
         if line.startswith(COMMAND_PREFIX):
-            return f'  {{{get_id(line)}, "{get_cmd_name(get_command(line))}"}},'
+            return f'  {{{get_id(line)}, {get_command_l10n(line)}}},'
 
         return line
 
