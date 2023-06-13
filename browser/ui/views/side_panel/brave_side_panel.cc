@@ -132,5 +132,9 @@ void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
   side_panel_width_.SetValue(proposed_width);
 }
 
+void BraveSidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
+  // Do nothing.
+}
+
 BEGIN_METADATA(BraveSidePanel, views::View)
 END_METADATA
