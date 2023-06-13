@@ -1690,11 +1690,20 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
   for (const auto& network :
        brave_wallet::GetAllKnownChains(prefs(), mojom::CoinType::ETH)) {
     SCOPED_TRACE(network->chain_id);
-    EXPECT_TRUE(
-        SetNetwork(network->chain_id, mojom::CoinType::ETH, absl::nullopt));
+
     EXPECT_TRUE(
         SetNetwork(mojom::kGoerliChainId, mojom::CoinType::ETH, origin_a));
+    // goerly now is a default chain and specific to origin_a.
+    EXPECT_EQ(mojom::kGoerliChainId,
+              GetCurrentChainId(prefs(), mojom::CoinType::ETH, absl::nullopt));
+    EXPECT_EQ(mojom::kGoerliChainId,
+              GetCurrentChainId(prefs(), mojom::CoinType::ETH, origin_a));
+    EXPECT_EQ(mojom::kGoerliChainId,
+              GetCurrentChainId(prefs(), mojom::CoinType::ETH, origin_b));
 
+    EXPECT_TRUE(
+        SetNetwork(network->chain_id, mojom::CoinType::ETH, absl::nullopt));
+    // origin_a is left with goerly, but default now is chain_idd.
     EXPECT_EQ(network->chain_id,
               GetCurrentChainId(prefs(), mojom::CoinType::ETH, absl::nullopt));
     EXPECT_EQ(mojom::kGoerliChainId,
@@ -1720,12 +1729,19 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
   }
 
   // Solana
-  EXPECT_TRUE(
-      SetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL, absl::nullopt));
   EXPECT_FALSE(SetNetwork("0x1234", mojom::CoinType::SOL, absl::nullopt));
+
   EXPECT_TRUE(
       SetNetwork(mojom::kSolanaTestnet, mojom::CoinType::SOL, origin_a));
+  EXPECT_EQ(mojom::kSolanaTestnet,
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL, absl::nullopt));
+  EXPECT_EQ(mojom::kSolanaTestnet,
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL, origin_a));
+  EXPECT_EQ(mojom::kSolanaTestnet,
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL, origin_b));
 
+  EXPECT_TRUE(
+      SetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL, absl::nullopt));
   EXPECT_EQ(mojom::kSolanaMainnet,
             GetCurrentChainId(prefs(), mojom::CoinType::SOL, absl::nullopt));
   EXPECT_EQ(mojom::kSolanaTestnet,
@@ -1761,8 +1777,13 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
   values.push_back(NetworkInfoToValue(chain2));
   UpdateCustomNetworks(prefs(), &values);
 
-  EXPECT_TRUE(SetNetwork(chain1.chain_id, mojom::CoinType::ETH, absl::nullopt));
   EXPECT_TRUE(SetNetwork(chain2.chain_id, mojom::CoinType::ETH, origin_a));
+
+  EXPECT_EQ(GetChainId(mojom::CoinType::ETH, absl::nullopt), chain2.chain_id);
+  EXPECT_EQ(GetChainId(mojom::CoinType::ETH, origin_a), chain2.chain_id);
+  EXPECT_EQ(GetChainId(mojom::CoinType::ETH, origin_b), chain2.chain_id);
+
+  EXPECT_TRUE(SetNetwork(chain1.chain_id, mojom::CoinType::ETH, absl::nullopt));
 
   EXPECT_EQ(GetChainId(mojom::CoinType::ETH, absl::nullopt), chain1.chain_id);
   EXPECT_EQ(GetChainId(mojom::CoinType::ETH, origin_a), chain2.chain_id);

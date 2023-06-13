@@ -98,7 +98,7 @@ public class SwapBottomSheetDialogFragment
 
         if (!JavaUtils.anyNull(mWalletModel, mNetworkInfo)) {
             BuySendSwapActivity.ActivityType finalActivityType = activityType;
-            mWalletModel.getNetworkModel().setNetwork(
+            mWalletModel.getNetworkModel().setNetworkForSelectedAccountOnActiveOrigin(
                     mNetworkInfo, isSelected -> { openBssAndDismiss(finalActivityType); });
             return;
         }

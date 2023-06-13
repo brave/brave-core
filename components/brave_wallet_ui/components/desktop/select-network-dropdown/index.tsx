@@ -29,7 +29,7 @@ interface Props {
   selectedNetwork: BraveWallet.NetworkInfo | undefined
   showNetworkDropDown: boolean
   onClick: () => void
-  onSelectCustomNetwork?: (network: BraveWallet.NetworkInfo) => void
+  onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
   useWithSearch?: boolean
   customNetwork?: BraveWallet.NetworkInfo | undefined
 }

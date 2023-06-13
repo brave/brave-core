@@ -21,7 +21,6 @@ import {
   SolanaSerializedTransactionParams,
   SupportedOnRampNetworks,
   SupportedOffRampNetworks,
-  RefreshOpts,
   GetFlattenedAccountBalancesReturnInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
@@ -63,13 +62,11 @@ import { toTxDataUnion } from '../../utils/tx-utils'
 export const getERC20Allowance = (
   contractAddress: string,
   ownerAddress: string,
-  spenderAddress: string
+  spenderAddress: string,
+  chainId: string,
 ): Promise<string> => {
   return new Promise(async (resolve, reject) => {
-    const { braveWalletService, jsonRpcService } = getAPIProxy()
-    const { chainId }
-      = await braveWalletService.getChainIdForActiveOrigin(
-        BraveWallet.CoinType.ETH)
+    const { jsonRpcService } = getAPIProxy()
     const result = await jsonRpcService.getERC20TokenAllowance(
       contractAddress,
       ownerAddress,
@@ -124,12 +121,6 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
         .catch(reject)
     }
   })
-}
-
-export const getBalance = async (address: string, coin: BraveWallet.CoinType): Promise<string> => {
-  const { braveWalletService } = getAPIProxy()
-  const { chainId } = await braveWalletService.getChainIdForActiveOrigin(coin)
-  return await getBalanceForChainId(address, coin, chainId)
 }
 
 export function getBalanceForChainId (address: string, coin: BraveWallet.CoinType, chainId: string): Promise<string> {
@@ -868,66 +859,6 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
   }
 }
 
-export function refreshKeyringInfo (opts: RefreshOpts) {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
-    const { keyringService, walletHandler, jsonRpcService } = apiProxy
-    const walletInfoBase = (await walletHandler.getWalletInfo()).walletInfo
-    const { allAccounts } = (await apiProxy.keyringService.getAllAccounts())
-    const walletInfo = { ...walletInfoBase, accountInfos: allAccounts.accounts, selectedAccount: '' }
-
-    // Get/Set selectedAccount
-    if (!walletInfo.isWalletCreated) {
-      dispatch(WalletActions.initialized(walletInfo))
-      dispatch(WalletActions.refreshAll(opts))
-      return
-    }
-
-    const { coin: selectedCoin } =
-      await apiProxy.braveWalletService.getSelectedCoin()
-
-    let selectedAccount = { address: null } as { address: string | null }
-
-    if (selectedCoin === BraveWallet.CoinType.FIL) {
-      const { chainId } = await jsonRpcService.getDefaultChainId(selectedCoin)
-      selectedAccount = await keyringService.getFilecoinSelectedAccount(
-        chainId
-      )
-    }
-
-    if (selectedCoin && selectedCoin !== BraveWallet.CoinType.FIL) {
-      selectedAccount = await keyringService.getSelectedAccount(selectedCoin)
-    }
-
-    // Get selectedAccountAddress
-    const selectedAddress = selectedAccount.address
-
-    // Fallback account address if selectedAccount returns null
-    const fallbackAccount = walletInfo.accountInfos[0]
-
-    // If selectedAccount is null will setSelectedAccount to fallback address
-    if (!selectedAddress) {
-      await keyringService.setSelectedAccount(fallbackAccount.accountId)
-      walletInfo.selectedAccount = fallbackAccount.address
-    } else {
-      // If a user has already created an wallet but then chooses to restore
-      // a different wallet, getSelectedAccount still returns the previous wallets
-      // selected account.
-      // This check looks to see if the returned selectedAccount exist in the accountInfos
-      // payload, if not it will setSelectedAccount to the fallback address
-      if (!walletInfo.accountInfos.find((account) => account.address.toLowerCase() === selectedAddress?.toLowerCase())) {
-        walletInfo.selectedAccount = fallbackAccount.address
-        await keyringService.setSelectedAccount(fallbackAccount.accountId)
-      } else {
-        walletInfo.selectedAccount = selectedAddress
-      }
-    }
-
-    dispatch(WalletActions.initialized(walletInfo))
-    dispatch(WalletActions.refreshAll(opts))
-  }
-}
-
 export function refreshSitePermissions () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
@@ -987,10 +918,6 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
       isEIP1559 = hasEIP1559Support(getAccountType(payload.fromAccount), payload.network)
   }
 
-  const { chainId } =
-    await apiProxy.braveWalletService.getChainIdForActiveOrigin(
-      BraveWallet.CoinType.ETH)
-
   const txData: BraveWallet.TxData = {
     nonce: '',
     // Estimated by eth_tx_service if value is '' for legacy transactions
@@ -1007,7 +934,7 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
   if (isEIP1559) {
     const txData1559: BraveWallet.TxData1559 = {
       baseData: txData,
-      chainId,
+      chainId: payload.network.chainId,
       // Estimated by eth_tx_service if value is ''
       maxPriorityFeePerGas: payload.maxPriorityFeePerGas || '',
       // Estimated by eth_tx_service if value is ''

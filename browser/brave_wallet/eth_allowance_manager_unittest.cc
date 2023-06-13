@@ -258,19 +258,6 @@ class EthAllowanceManagerUnitTest : public testing::Test {
     }
   }
 
-  absl::optional<std::string> GetSelectedAccount(mojom::CoinType coin) {
-    absl::optional<std::string> account;
-    base::RunLoop run_loop;
-    keyring_service_->GetSelectedAccount(
-        coin,
-        base::BindLambdaForTesting([&](const absl::optional<std::string>& v) {
-          account = v;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return account;
-  }
-
   void AddEthAccount(const std::string& account_name) {
     keyring_service_->AddAccountSync(mojom::CoinType::ETH,
                                      mojom::kDefaultKeyringId, account_name);

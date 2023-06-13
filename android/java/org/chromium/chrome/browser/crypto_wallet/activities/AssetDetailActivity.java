@@ -375,10 +375,11 @@ public class AssetDetailActivity
         mWalletTxCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         if (JavaUtils.anyNull(mWalletModel, mAssetNetwork)) return;
-        mWalletModel.getKeyringModel().getKeyringPerId(
-                AssetUtils.getKeyring(mAssetNetwork.coin, mChainId), keyringInfo -> {
-                    if (keyringInfo == null) return;
-                    mAccountInfos = keyringInfo.accountInfos;
+        LiveDataUtil.observeOnce(
+                mWalletModel.getKeyringModel().mAccountInfos, accounts -> {
+                    mAccountInfos = AssetUtils.filterAccountsByNetwork(
+                            accounts, mAssetNetwork.coin, mChainId);
+
                     WalletListItemModel thisAssetItemModel = new WalletListItemModel(
                             R.drawable.ic_eth, mAsset.name, mAsset.symbol, mAsset.tokenId, "", "");
                     LiveDataUtil.observeOnce(

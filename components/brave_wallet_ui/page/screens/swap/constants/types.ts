@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { BraveWallet, SpotPriceRegistry } from '../../../../constants/types'
-import { AccountInfoEntity } from '../../../../common/slices/entities/account-info.entity'
 
 import Amount from '../../../../utils/amount'
 
@@ -48,7 +47,7 @@ export type SwapAndSend = {
 
 export type RefreshBlockchainStateParams = {
   network: BraveWallet.NetworkInfo
-  account: AccountInfoEntity
+  accountId: BraveWallet.AccountId
 }
 
 export type GasFeeOption = {

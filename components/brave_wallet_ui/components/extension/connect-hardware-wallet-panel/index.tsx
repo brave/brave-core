@@ -49,10 +49,8 @@ import {
 } from './style'
 
 export interface Props {
-  onCancel: (accountAddress: string, coinType: BraveWallet.CoinType) => void
-  walletName: string
-  accountAddress: string
-  coinType: BraveWallet.CoinType
+  onCancel: (account: BraveWallet.AccountInfo) => void
+  account: BraveWallet.AccountInfo
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
   onClickInstructions: () => void
 }
@@ -70,9 +68,7 @@ function getAppName (coinType: BraveWallet.CoinType): string {
 
 export const ConnectHardwareWalletPanel = ({
   onCancel,
-  walletName,
-  accountAddress,
-  coinType,
+  account,
   hardwareWalletCode,
   onClickInstructions
 }: Props) => {
@@ -91,6 +87,7 @@ export const ConnectHardwareWalletPanel = ({
   const isSigning = signMessageData?.length && signMessageData[0].id !== -1
 
   const isConfirming = !!selectedPendingTransactionId
+  const coinType = account.accountId.coin
 
   // queries
   const { messageAccount } = useGetAccountInfosRegistryQuery(
@@ -128,20 +125,20 @@ export const ConnectHardwareWalletPanel = ({
     ) {
       return getLocale('braveWalletConnectHardwarePanelConnect').replace(
         '$1',
-        walletName
+        account.name
       )
     }
 
     const network = getAppName(coinType)
     return getLocale('braveWalletConnectHardwarePanelOpenApp')
       .replace('$1', network)
-      .replace('$2', walletName)
+      .replace('$2', account.name)
   }, [hardwareWalletCode])
 
   // methods
   const onCancelConnect = React.useCallback(() => {
-    onCancel(accountAddress, coinType)
-  }, [onCancel, accountAddress, coinType])
+    onCancel(account)
+  }, [onCancel, account])
 
   const onSignData = React.useCallback(() => {
     if (!messageAccount) {
@@ -186,8 +183,8 @@ export const ConnectHardwareWalletPanel = ({
         <Description>
           {
             isConnected
-              ? getLocale('braveWalletConnectHardwarePanelConnected').replace('$1', walletName)
-              : getLocale('braveWalletConnectHardwarePanelDisconnected').replace('$1', walletName)
+              ? getLocale('braveWalletConnectHardwarePanelConnected').replace('$1', account.name)
+              : getLocale('braveWalletConnectHardwarePanelDisconnected').replace('$1', account.name)
           }
         </Description>
       </ConnectionRow>

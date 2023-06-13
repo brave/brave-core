@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -193,6 +192,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
                 getViewLifecycleOwner(), networkInfo -> {
                     if (networkInfo == null) return;
+
                     MaterialAlertDialogBuilder builder =
                             new MaterialAlertDialogBuilder(
                                     requireContext(), R.style.BraveWalletAlertDialogTheme)
@@ -201,11 +201,15 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
-                                                setPositiveButtonAccountCreation(networkInfo);
+                                                mWalletModel.createAccountAndSetNetwork(
+                                                        networkInfo);
                                             })
                                     .setNegativeButton(
                                             R.string.brave_action_no, (dialog, which) -> {
-                                                setNegativeButtonAccountCreation(dialog);
+                                                mWalletModel.getCryptoModel()
+                                                        .getNetworkModel()
+                                                        .clearCreateAccountState();
+                                                dialog.dismiss();
                                             });
                     builder.show();
                 });
@@ -265,24 +269,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         Intent intent = NetworkSelectorActivity.createIntent(
                 getContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
         startActivity(intent);
-    }
-
-    private void setPositiveButtonAccountCreation(NetworkInfo networkInfo) {
-        mWalletModel.getCryptoModel().getNetworkModel().setNetwork(
-                networkInfo, success -> { setRetrievedNetwork(networkInfo, success); });
-    }
-
-    private void setNegativeButtonAccountCreation(DialogInterface dialog) {
-        mWalletModel.getCryptoModel().getNetworkModel().clearCreateAccountState();
-        dialog.dismiss();
-    }
-
-    private void setRetrievedNetwork(NetworkInfo networkInfo, boolean success) {
-        if (success) {
-            mWalletModel.getKeyringModel().addAccount(
-                    networkInfo.coin, networkInfo.chainId, null, isAccountAdded -> {});
-        }
-        mWalletModel.getCryptoModel().getNetworkModel().clearCreateAccountState();
     }
 
     private void setUpNftList(List<PortfolioModel.NftDataModel> nftDataModels,

@@ -25,6 +25,7 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,7 +37,7 @@ import java.util.concurrent.Executors;
 public class BravePermissionAccountsListAdapter
         extends RecyclerView.Adapter<BravePermissionAccountsListAdapter.ViewHolder> {
     private Context mContext;
-    private AccountInfo[] accountInfos;
+    private AccountInfo[] mAccountInfos;
     private ExecutorService mExecutor;
     private Handler mHandler;
     private List<Integer> mCheckedPositions = new ArrayList<>();
@@ -61,7 +62,7 @@ public class BravePermissionAccountsListAdapter
     public BravePermissionAccountsListAdapter(
             AccountInfo[] accountInfo, boolean checkBoxStyle, BravePermissionDelegate delegate) {
         assert accountInfo != null;
-        accountInfos = accountInfo;
+        mAccountInfos = accountInfo;
         mCheckBoxStyle = checkBoxStyle;
         mDelegate = delegate;
         mExecutor = Executors.newSingleThreadExecutor();
@@ -82,7 +83,7 @@ public class BravePermissionAccountsListAdapter
     }
 
     public void setAccounts(AccountInfo[] accountInfo) {
-        accountInfos = accountInfo;
+        mAccountInfos = accountInfo;
     }
 
     public void setAccountsWithPermissions(HashSet<AccountInfo> accountsWithPermissions) {
@@ -91,9 +92,9 @@ public class BravePermissionAccountsListAdapter
 
     public void setSelectedAccount(AccountInfo selectedAccount) {
         mSelectedAccount = selectedAccount;
-        if (accountInfos == null || !mCheckBoxStyle) return;
-        for (int i = 0; i < accountInfos.length; i++) {
-            if (mSelectedAccount.address.equals(accountInfos[i].address)) {
+        if (mAccountInfos == null || !mCheckBoxStyle) return;
+        for (int i = 0; i < mAccountInfos.length; i++) {
+            if (WalletUtils.accountIdsEqual(mSelectedAccount, mAccountInfos[i])) {
                 mCheckedPositions.add(i);
                 break;
             }
@@ -103,7 +104,7 @@ public class BravePermissionAccountsListAdapter
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final int arrayPosition = position;
-        AccountInfo accountInfo = accountInfos[position];
+        AccountInfo accountInfo = mAccountInfos[position];
         holder.titleText.setText(accountInfo.name);
         holder.subTitleText.setText(Utils.stripAccountAddress(accountInfo.address));
         setBlockiesBitmapResource(holder.iconImg, accountInfo.address);
@@ -173,7 +174,7 @@ public class BravePermissionAccountsListAdapter
 
     @Override
     public int getItemCount() {
-        return accountInfos.length;
+        return mAccountInfos.length;
     }
 
     private boolean hasPermission(String address) {
@@ -191,7 +192,7 @@ public class BravePermissionAccountsListAdapter
     public AccountInfo[] getCheckedAccounts() {
         AccountInfo[] checkedAccounts = new AccountInfo[mCheckedPositions.size()];
         for (int i = 0; i < mCheckedPositions.size(); i++) {
-            checkedAccounts[i] = accountInfos[mCheckedPositions.get(i)];
+            checkedAccounts[i] = mAccountInfos[mCheckedPositions.get(i)];
         }
 
         return checkedAccounts;

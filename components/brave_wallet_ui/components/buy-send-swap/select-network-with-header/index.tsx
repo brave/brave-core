@@ -28,13 +28,15 @@ import {
 export interface Props {
   hasAddButton?: boolean
   onBack: () => void
-  onAddNetwork?: () => void
+  onAddNetwork: () => void
+  onNoAccountForNetwork: (network: BraveWallet.NetworkInfo) => void
 }
 
 export const SelectNetworkWithHeader = ({
   onBack,
   hasAddButton,
-  onAddNetwork
+  onAddNetwork,
+  onNoAccountForNetwork
 }: Props) => {
   // queries & mutations
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -43,13 +45,17 @@ export const SelectNetworkWithHeader = ({
   // methods
   const onSelectCustomNetwork = React.useCallback(
     async (network: BraveWallet.NetworkInfo) => {
-      await setNetwork({
+      const { needsAccountForNetwork } = await setNetwork({
         chainId: network.chainId,
         coin: network.coin
-      })
-      onBack()
+      }).unwrap()
+      if (needsAccountForNetwork) {
+        onNoAccountForNetwork(network)
+      } else {
+        onBack()
+      }
     },
-    [onBack, setNetwork]
+    [onBack, setNetwork, onNoAccountForNetwork]
   )
 
   // render

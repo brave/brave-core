@@ -86,12 +86,12 @@ export const Header = (props: Props) => {
     async (
       network: BraveWallet.NetworkInfo
     ) => {
-      const { selectedAccount: account } = await setNetwork({
+      const { selectedAccountId: accountId } = await setNetwork({
         chainId: network.chainId,
         coin: network.coin
       }).unwrap()
       setShowNetworkSelector(false)
-      await refreshBlockchainState({ network, account })
+      await refreshBlockchainState({ network, accountId })
     }, [setNetwork, refreshBlockchainState])
 
   // Hooks

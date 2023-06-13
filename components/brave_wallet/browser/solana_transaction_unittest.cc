@@ -94,9 +94,8 @@ class SolanaTransactionUnitTest : public testing::Test {
         }));
     run_loop.Run();
     ASSERT_TRUE(success);
-    ASSERT_EQ(
-        keyring_service()->GetSelectedAccount(mojom::CoinType::SOL).value(),
-        account_id->address);
+    ASSERT_EQ(keyring_service()->GetSelectedSolanaDappAccount()->account_id,
+              account_id);
   }
 
  private:
@@ -116,10 +115,10 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
 
   ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
-  auto acc2 = AddAccount(keyring_service(), "Account 2");
-  ASSERT_TRUE(acc2);
-  ASSERT_EQ(acc2->address, kFromAccount);
-  SetSelectedAccount(acc2->account_id);
+  auto from_account = AddAccount(keyring_service(), "Account 2");
+  ASSERT_TRUE(from_account);
+  ASSERT_EQ(from_account->address, kFromAccount);
+  SetSelectedAccount(from_account->account_id);
 
   uint64_t last_valid_block_height = 3090;
 
@@ -226,7 +225,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   ASSERT_TRUE(Base58Decode(sign_tx_param->encoded_serialized_msg,
                            &message_bytes, kSolanaMaxTxSize, false));
   std::vector<uint8_t> signature =
-      keyring_service()->SignMessageBySolanaKeyring(kFromAccount,
+      keyring_service()->SignMessageBySolanaKeyring(*from_account->account_id,
                                                     message_bytes);
   expected_bytes.insert(expected_bytes.end(), signature.begin(),
                         signature.end());
@@ -788,10 +787,10 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
 
   ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
-  auto acc2 = AddAccount(keyring_service(), "Account 2");
-  ASSERT_TRUE(acc2);
-  ASSERT_EQ(acc2->address, kFromAccount);
-  SetSelectedAccount(acc2->account_id);
+  auto from_account = AddAccount(keyring_service(), "Account 2");
+  ASSERT_TRUE(from_account);
+  ASSERT_EQ(from_account->address, kFromAccount);
+  SetSelectedAccount(from_account->account_id);
 
   // Empty message is invalid
   std::vector<uint8_t> signature_bytes;
@@ -901,7 +900,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
 
   expect_signed_tx_bytes = {2};  // 2 signatures
   std::vector<uint8_t> selected_account_sig =
-      keyring_service()->SignMessageBySolanaKeyring(kFromAccount,
+      keyring_service()->SignMessageBySolanaKeyring(*from_account->account_id,
                                                     *seriazlied_msg);
   expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
                                 passed_sig_bytes.begin(),

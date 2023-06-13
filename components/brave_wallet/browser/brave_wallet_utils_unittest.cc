@@ -1219,19 +1219,21 @@ TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
     EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
                                 url::Origin::Create(GURL("https://a.com"))),
               mojom::kLocalhostChainId);
-    // other origin still use default
+    // default origin also changes
     EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
                                 url::Origin::Create(GURL("https://b.com"))),
-              default_chain_ids.at(coin_type));
+              mojom::kLocalhostChainId);
 
-    // opaque cannot change the default
-    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type, url::Origin(),
-                                   mojom::kLocalhostChainId));
-    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type,
-                                   url::Origin::Create(GURL("about:blank")),
-                                   mojom::kLocalhostChainId));
+    // opaque changes only default
+    EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type, url::Origin(),
+                                  new_default_chain_ids.at(coin_type)));
     EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
-              default_chain_ids.at(coin_type));
+              new_default_chain_ids.at(coin_type));
+    EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type,
+                                  url::Origin::Create(GURL("about:blank")),
+                                  mojom::kLocalhostChainId));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+              mojom::kLocalhostChainId);
 
     // now we change the default
     EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type, absl::nullopt,
@@ -1490,6 +1492,22 @@ TEST(BraveWalletUtilsUnitTest, MakeAccountId) {
   EXPECT_NE(id1->unique_key,
             MakeAccountId(id1->coin, id1->keyring_id, id1->kind, "0x123")
                 ->unique_key);
+}
+
+TEST(BraveWalletUtilsUnitTest, CoinSupportsDapps) {
+  for (auto i = int32_t(mojom::CoinType::kMinValue);
+       i <= int32_t(mojom::CoinType::kMaxValue); ++i) {
+    mojom::CoinType coin{i};
+    if (!mojom::IsKnownEnumValue(coin)) {
+      continue;
+    }
+
+    if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL) {
+      EXPECT_TRUE(CoinSupportsDapps(coin));
+    } else {
+      EXPECT_FALSE(CoinSupportsDapps(coin));
+    }
+  }
 }
 
 }  // namespace brave_wallet

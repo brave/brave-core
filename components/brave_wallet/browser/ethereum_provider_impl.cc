@@ -49,7 +49,7 @@ base::Value::Dict GetJsonRpcRequest(const std::string& method,
 // Common logic for filtering the list of accounts based on the selected account
 std::vector<std::string> FilterAccounts(
     const std::vector<std::string>& accounts,
-    const absl::optional<std::string>& selected_account) {
+    const brave_wallet::mojom::AccountInfoPtr& selected_account) {
   // If one of the accounts matches the selected account, then only
   // return that account.  This is for webcompat reasons.
   // Some Dapps select the first account in the list, and some the
@@ -58,7 +58,7 @@ std::vector<std::string> FilterAccounts(
   std::vector<std::string> filtered_accounts;
   for (const auto& account : accounts) {
     if (selected_account &&
-        base::CompareCaseInsensitiveASCII(account, *selected_account) == 0) {
+        base::EqualsCaseInsensitiveASCII(account, selected_account->address)) {
       filtered_accounts.clear();
       filtered_accounts.push_back(account);
       break;
@@ -1141,8 +1141,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
   std::vector<std::string> accounts;
   if (success && allowed_accounts) {
     accounts = FilterAccounts(
-        *allowed_accounts,
-        keyring_service_->GetSelectedAccount(mojom::CoinType::ETH));
+        *allowed_accounts, keyring_service_->GetSelectedEthereumDappAccount());
   }
 
   std::string first_allowed_account;
@@ -1196,7 +1195,7 @@ EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
   }
 
   const auto selected_account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::ETH);
+      keyring_service_->GetSelectedEthereumDappAccount();
 
   DCHECK(delegate_);
   const auto allowed_accounts =
@@ -1357,7 +1356,9 @@ void EthereumProviderImpl::OnTransactionStatusChanged(
   add_tx_ids_.erase(tx_meta_id);
 }
 
-void EthereumProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {
+void EthereumProviderImpl::SelectedDappAccountChanged(
+    mojom::CoinType coin,
+    mojom::AccountInfoPtr account) {
   if (coin != mojom::CoinType::ETH) {
     return;
   }

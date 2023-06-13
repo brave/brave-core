@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assert } from 'chrome://resources/js/assert_ts.js'
+
 // redux
 import { createStore, combineReducers } from 'redux'
 import { createWalletReducer } from '../../slices/wallet.slice'
@@ -39,6 +41,7 @@ import {
   mockedErc20ApprovalTransaction
 } from '../../../stories/mock-data/mock-transaction-info'
 import { blockchainTokenEntityAdaptor } from '../../slices/entities/blockchain-token.entity'
+import { findAccountByAccountId } from '../../../utils/account-utils'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(combineReducers({
@@ -78,7 +81,7 @@ type TokenBalanceRegistry = Record<
 
 export interface WalletApiDataOverrides {
   selectedCoin?: BraveWallet.CoinType
-  selectedAccountAddress?: string
+  selectedAccountId?: BraveWallet.AccountId
   chainIdsForCoins?: Record<BraveWallet.CoinType, string>
   networks?: BraveWallet.NetworkInfo[]
   defaultBaseCurrency?: string
@@ -94,13 +97,15 @@ export class MockedWalletApiProxy {
   store = makeMockedStoreWithSpy().store
 
   defaultBaseCurrency: string = 'usd'
-  selectedCoin: BraveWallet.CoinType = BraveWallet.CoinType.ETH
-  selectedAccountAddress: string = mockAccount.address
+  selectedAccountId: BraveWallet.AccountId = mockAccount.accountId
   accountInfos: BraveWallet.AccountInfo[] = [
+    mockAccount,
     mockEthAccountInfo,
     mockSolanaAccountInfo,
     mockFilecoinAccountInfo
   ]
+
+  selectedNetwork: BraveWallet.NetworkInfo = mockEthMainnet
 
   chainIdsForCoins: Record<BraveWallet.CoinType, string> = {
     [BraveWallet.CoinType.ETH]: BraveWallet.MAINNET_CHAIN_ID,
@@ -197,9 +202,8 @@ export class MockedWalletApiProxy {
       return
     }
 
-    this.selectedAccountAddress =
-      overrides.selectedAccountAddress ?? this.selectedAccountAddress
-    this.selectedCoin = overrides.selectedCoin ?? this.selectedCoin
+    this.selectedAccountId =
+      overrides.selectedAccountId ?? this.selectedAccountId
     this.chainIdsForCoins = overrides.chainIdsForCoins ?? this.chainIdsForCoins
     this.networks = overrides.networks ?? this.networks
     this.defaultBaseCurrency =
@@ -236,12 +240,6 @@ export class MockedWalletApiProxy {
         )
       }
     },
-    getSelectedCoin: async () => {
-      return { coin: this.selectedCoin }
-    },
-    setSelectedCoin: (coin) => {
-      this.selectedCoin = coin
-    },
     getDefaultBaseCurrency: async () => ({
       currency: this.defaultBaseCurrency
     }),
@@ -262,6 +260,9 @@ export class MockedWalletApiProxy {
         }
       }
     },
+    getNetworkForSelectedAccountOnActiveOrigin: async () => {
+      return { network: this.selectedNetwork }
+    }
   }
 
   swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> =
@@ -301,16 +302,24 @@ export class MockedWalletApiProxy {
 
   keyringService: Partial<
     InstanceType<typeof BraveWallet.KeyringServiceInterface>
-  > = {
-    getSelectedAccount: async () => {
-      return { address: this.selectedAccountAddress }
-    },
-    getAllAccounts: async () => {
-      return {
-        allAccounts: {
-          accounts: this.accountInfos,
-        }
+    > = {
+    getAllAccounts: async (): Promise<{
+      allAccounts: BraveWallet.AllAccountsInfo
+    }> => {
+      const allAccounts: BraveWallet.AllAccountsInfo = {
+        accounts: this.accountInfos,
+        selectedAccount: findAccountByAccountId(
+          this.accountInfos,
+          this.selectedAccountId
+        )!,
+        ethDappSelectedAccount: findAccountByAccountId(
+          this.accountInfos,
+          this.selectedAccountId
+        ),
+        solDappSelectedAccount: mockSolanaAccountInfo
       }
+      assert(allAccounts.selectedAccount)
+      return { allAccounts }
     },
     validatePassword: async (password: string) => ({
       result: password === 'password'
@@ -392,7 +401,6 @@ export class MockedWalletApiProxy {
       return { network: this.chainsForCoins[coin] }
     },
     setNetwork: async (chainId, coin) => {
-      this.selectedCoin = coin
       this.chainIdsForCoins[coin] = chainId
       const foundNetwork = this.networks.find(
         (net) => net.chainId === chainId && net.coin === coin

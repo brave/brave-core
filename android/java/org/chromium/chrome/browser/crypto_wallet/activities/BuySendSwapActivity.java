@@ -90,6 +90,7 @@ import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -888,11 +889,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (maybeResolveWalletAddress()) return;
 
-            String fromAccountAddress = mCustomAccountAdapter.getAccountAddressAtPosition(
+            AccountInfo fromAccount = mCustomAccountAdapter.getSelectedAccountAt(
                     mAccountSpinner.getSelectedItemPosition());
 
             mValidator.validate(mSelectedNetwork, getKeyringService(), getBlockchainRegistry(),
-                    getBraveWalletService(), fromAccountAddress, s.toString(),
+                    getBraveWalletService(), fromAccount, s.toString(),
                     (String validationResult, Boolean disableButton) -> {
                         setSendToFromValueValidationResult(validationResult, disableButton, true);
                     });
@@ -917,12 +918,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             if (hasFocus) {
                 if (maybeResolveWalletAddress()) return;
 
-                String fromAccountAddress = mCustomAccountAdapter.getAccountAddressAtPosition(
+                AccountInfo fromAccount = mCustomAccountAdapter.getSelectedAccountAt(
                         mAccountSpinner.getSelectedItemPosition());
                 String receiverAccountAddress = ((EditText) v).getText().toString();
 
                 mValidator.validate(mSelectedNetwork, getKeyringService(), getBlockchainRegistry(),
-                        getBraveWalletService(), fromAccountAddress, receiverAccountAddress,
+                        getBraveWalletService(), fromAccount, receiverAccountAddress,
                         (String validationResult, Boolean disableButton) -> {
                             setSendToFromValueValidationResult(
                                     validationResult, disableButton, true);
@@ -1151,20 +1152,17 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     }
                     initAccountsUI();
                 });
-        mWalletModel.getKeyringModel().mAccountAllAccountsPair.observe(
-                this, accountInfoListPair -> {
-                    mAllAccountInfos = accountInfoListPair.second;
-                    mSelectedAccount = accountInfoListPair.first;
-                    mAccountInfos = accountInfoListPair.second;
+        mWalletModel.getKeyringModel().mAllAccountsInfo.observe(this, allAccounts -> {
+            mAllAccountInfos = Arrays.asList(allAccounts.accounts);
+            mSelectedAccount = allAccounts.selectedAccount;
+            mAccountInfos = Arrays.asList(allAccounts.accounts);
 
-                    initAccountsUI();
-                });
+            initAccountsUI();
+        });
 
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
                 this, networkInfo -> {
-                    if (networkInfo == null) {
-                        return;
-                    }
+                    if (networkInfo == null) return;
 
                     MaterialAlertDialogBuilder builder =
                             new MaterialAlertDialogBuilder(
@@ -1174,22 +1172,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
-                                                mWalletModel.getCryptoModel()
-                                                        .getNetworkModel()
-                                                        .setNetwork(networkInfo, success -> {
-                                                            if (success) {
-                                                                mWalletModel.getKeyringModel()
-                                                                        .addAccount(
-                                                                                networkInfo.coin,
-                                                                                networkInfo.chainId,
-                                                                                null,
-                                                                                isAccountAdded
-                                                                                -> {});
-                                                            }
-                                                            mWalletModel.getCryptoModel()
-                                                                    .getNetworkModel()
-                                                                    .clearCreateAccountState();
-                                                        });
+                                                mWalletModel.createAccountAndSetNetwork(
+                                                        networkInfo);
                                             })
                                     .setNegativeButton(
                                             R.string.brave_action_no, (dialog, which) -> {

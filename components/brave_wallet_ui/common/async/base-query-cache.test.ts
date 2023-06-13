@@ -10,7 +10,6 @@ import {
 } from './base-query-cache'
 
 // mocks
-import { mockAccount } from '../constants/mocks'
 import { getMockedAPIProxy } from './__mocks__/bridge'
 
 describe('BaseQueryCache', () => {
@@ -91,48 +90,6 @@ describe('BaseQueryCache', () => {
     // reset spy
     getAllAcountsSpy.mockReset();
     getAllAcountsSpy.mockRestore();
-  })
-
-  it('should cache selected account address after fetching', async () => {
-    const getSelectedCoinSpy = jest.spyOn(
-      getMockedAPIProxy().braveWalletService,
-      'getSelectedCoin'
-    )
-    const getSelectedAccountSpy = jest.spyOn(
-      getMockedAPIProxy().keyringService,
-      'getSelectedAccount'
-    )
-    expect(getSelectedCoinSpy).toHaveBeenCalledTimes(0)
-    expect(getSelectedAccountSpy).toHaveBeenCalledTimes(0)
-
-    const cache = new BaseQueryCache()
-
-    // access the uncached address
-    const selectedAccountAddress = await cache.getSelectedAccountAddress()
-    expect(selectedAccountAddress).toBe(mockAccount.address)
-    expect(getSelectedCoinSpy).toHaveBeenCalledTimes(1)
-
-    // re-access the address, this time from cache
-    const cachedAccountAddress = await cache.getSelectedAccountAddress()
-    expect(cachedAccountAddress).toBe(mockAccount.address)
-    // no additional calls made
-    expect(getSelectedCoinSpy).toHaveBeenCalledTimes(1)
-    expect(getSelectedAccountSpy).toHaveBeenCalledTimes(1)
-
-    // clear the cache manually
-    cache.clearSelectedAccount()
-
-    // access again, repopulating cache with fresh value
-    const reCachedAccountAddress = await cache.getSelectedAccountAddress()
-    expect(reCachedAccountAddress).toBeDefined()
-    expect(getSelectedCoinSpy).toHaveBeenCalledTimes(2)
-    expect(getSelectedAccountSpy).toHaveBeenCalledTimes(2)
-
-    // reset spies
-    getSelectedCoinSpy.mockReset();
-    getSelectedCoinSpy.mockRestore();
-    getSelectedAccountSpy.mockReset();
-    getSelectedAccountSpy.mockRestore();
   })
 
   it('should cache networks after fetching', async () => {

@@ -14,7 +14,6 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -354,24 +353,6 @@ public class AsyncUtils {
             this.fee = fee;
             this.error = error;
             this.errorMessage = errorMessage;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
-    public static class GetSelectedAccountResponseContext extends SingleResponseBaseContext
-            implements KeyringService.GetSelectedAccount_Response,
-                       KeyringService.GetFilecoinSelectedAccount_Response {
-        public String selectedAccount;
-        public int coin;
-
-        public GetSelectedAccountResponseContext(Runnable responseCompleteCallback, int coin) {
-            super(responseCompleteCallback);
-            this.coin = coin;
-        }
-
-        @Override
-        public void call(String selectedAccount) {
-            this.selectedAccount = selectedAccount;
             super.fireResponseCompleteCallback();
         }
     }

@@ -213,6 +213,7 @@ public class PortfolioFragment
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
                 getViewLifecycleOwner(), networkInfo -> {
                     if (networkInfo == null) return;
+
                     MaterialAlertDialogBuilder builder =
                             new MaterialAlertDialogBuilder(
                                     requireContext(), R.style.BraveWalletAlertDialogTheme)
@@ -221,22 +222,8 @@ public class PortfolioFragment
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
-                                                mWalletModel.getCryptoModel()
-                                                        .getNetworkModel()
-                                                        .setNetwork(networkInfo, success -> {
-                                                            if (success) {
-                                                                mWalletModel.getKeyringModel()
-                                                                        .addAccount(
-                                                                                networkInfo.coin,
-                                                                                networkInfo.chainId,
-                                                                                null,
-                                                                                isAccountAdded
-                                                                                -> {});
-                                                            }
-                                                            mWalletModel.getCryptoModel()
-                                                                    .getNetworkModel()
-                                                                    .clearCreateAccountState();
-                                                        });
+                                                mWalletModel.createAccountAndSetNetwork(
+                                                        networkInfo);
                                             })
                                     .setNegativeButton(
                                             R.string.brave_action_no, (dialog, which) -> {

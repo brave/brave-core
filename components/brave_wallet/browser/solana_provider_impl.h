@@ -76,7 +76,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest,
                            ConnectWithNoSolanaAccount);
 
-  bool IsAccountConnected(const std::string& account);
+  bool IsAccountConnected(const mojom::AccountInfo& account);
   void OnConnect(
       const std::string& requested_account,
       ConnectCallback callback,
@@ -84,7 +84,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       const absl::optional<std::vector<std::string>>& allowed_accounts);
 
   void OnSignMessageRequestProcessed(const std::vector<uint8_t>& blob_msg,
-                                     const std::string& account,
+                                     const mojom::AccountInfoPtr& account,
                                      SignMessageCallback callback,
                                      bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,
@@ -109,13 +109,13 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       std::vector<mojom::TxDataUnionPtr> tx_datas,
       std::vector<std::unique_ptr<SolanaTransaction>> txs,
       std::vector<mojom::ByteArrayStringUnionPtr> raw_messages,
-      const std::string& account,
+      mojom::AccountInfoPtr account,
       const std::string& chain_id,
       SignAllTransactionsCallback callback,
       const std::vector<bool>& is_valids);
   void OnSignAllTransactionsRequestProcessed(
       const std::vector<std::unique_ptr<SolanaTransaction>>& txs,
-      const std::string& account,
+      mojom::AccountInfoPtr account,
       SignAllTransactionsCallback callback,
       bool approved,
       absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
@@ -127,8 +127,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
 
   // Returns a pair of SolanaMessage and a raw message byte array.
   absl::optional<std::pair<SolanaMessage, std::vector<uint8_t>>>
-  GetDeserializedMessage(const std::string& encoded_serialized_msg,
-                         const std::string& account);
+  GetDeserializedMessage(const std::string& encoded_serialized_msg);
 
   void OnRequestConnect(RequestCallback callback,
                         mojom::SolanaProviderError error,
@@ -148,7 +147,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
 
   // mojom::KeyringServiceObserverBase:
   void Unlocked() override;
-  void SelectedAccountChanged(mojom::CoinType coin) override;
+  void SelectedDappAccountChanged(mojom::CoinType coin,
+                                  mojom::AccountInfoPtr account) override;
 
   // mojom::TxServiceObserver
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override {}

@@ -60,8 +60,8 @@ void BraveWalletServiceDelegate::IsPermissionDenied(
   std::move(callback).Run(false);
 }
 
-mojom::OriginInfoPtr BraveWalletServiceDelegate::GetActiveOrigin() {
-  return MakeOriginInfo(url::Origin());
+absl::optional<url::Origin> BraveWalletServiceDelegate::GetActiveOrigin() {
+  return absl::nullopt;
 }
 
 void BraveWalletServiceDelegate::ClearWalletUIStoragePartition() {}

@@ -271,7 +271,8 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   // KeyringServiceObserverBase:
   void Locked() override;
   void Unlocked() override;
-  void SelectedAccountChanged(mojom::CoinType coin) override;
+  void SelectedDappAccountChanged(mojom::CoinType coin,
+                                  mojom::AccountInfoPtr account) override;
 
   void CommonRequestOrSendAsync(base::ValueView input_value,
                                 RequestCallback request_callback,

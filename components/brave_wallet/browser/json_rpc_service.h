@@ -234,6 +234,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetNetwork(mojom::CoinType coin,
                   const absl::optional<::url::Origin>& origin,
                   GetNetworkCallback callback) override;
+  mojom::NetworkInfoPtr GetNetworkSync(
+      mojom::CoinType coin,
+      const absl::optional<::url::Origin>& origin);
   void AddChain(mojom::NetworkInfoPtr chain,
                 AddChainCallback callback) override;
   void AddEthereumChainForOrigin(

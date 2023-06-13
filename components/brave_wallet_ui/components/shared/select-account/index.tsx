@@ -6,15 +6,15 @@
 import * as React from 'react'
 
 // types
-import { WalletAccountType } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // components
 import { SelectAccountItem } from '../select-account-item/index'
 
 export interface Props {
-  accounts: WalletAccountType[]
-  selectedAccount?: WalletAccountType
-  onSelectAccount: (account: WalletAccountType) => void
+  accounts: BraveWallet.AccountInfo[]
+  selectedAccount?: BraveWallet.AccountInfo
+  onSelectAccount: (account: BraveWallet.AccountInfo) => void
   showTooltips?: boolean
 }
 

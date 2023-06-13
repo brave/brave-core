@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -159,17 +160,17 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                                 mPortfolioHelper.fetchAssetsAndDetails(type, callback);
                             });
                         } else {
-                            mKeyringService.getKeyringInfo(
-                                    AssetUtils.getKeyring(
-                                            selectedNetwork.coin, selectedNetwork.chainId),
-                                    keyringInfo -> {
-                                        mPortfolioHelper =
-                                                new PortfolioHelper(braveWalletBaseActivity,
-                                                        mAllNetworkInfos, keyringInfo.accountInfos);
-                                        mPortfolioHelper.setSelectedNetworks(
-                                                Arrays.asList(selectedNetwork));
-                                        mPortfolioHelper.fetchAssetsAndDetails(type, callback);
-                                    });
+                            mKeyringService.getAllAccounts(allAccounts -> {
+                                AccountInfo[] filteredAccounts =
+                                        AssetUtils.filterAccountsByNetwork(allAccounts.accounts,
+                                                selectedNetwork.coin, selectedNetwork.chainId);
+
+                                mPortfolioHelper = new PortfolioHelper(braveWalletBaseActivity,
+                                        mAllNetworkInfos, filteredAccounts);
+                                mPortfolioHelper.setSelectedNetworks(
+                                        Arrays.asList(selectedNetwork));
+                                mPortfolioHelper.fetchAssetsAndDetails(type, callback);
+                            });
                         }
                     });
         }

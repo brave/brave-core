@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.observers;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.mojo.system.MojoException;
@@ -23,7 +24,9 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
         default void accountsChanged() {}
         default void accountsAdded(AccountInfo[] addedAccounts) {}
         default void autoLockMinutesChanged() {}
-        default void selectedAccountChanged(int coin) {}
+        default void selectedWalletAccountChanged(AccountInfo accountInfo) {}
+        default void selectedDappAccountChanged(
+                @CoinType.EnumType int coinType, AccountInfo accountInfo) {}
     }
 
     private WeakReference<KeyringServiceObserverImplDelegate> mDelegate;
@@ -78,8 +81,14 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     }
 
     @Override
-    public void selectedAccountChanged(int coin) {
-        if (isActive()) getRef().selectedAccountChanged(coin);
+    public void selectedWalletAccountChanged(AccountInfo accountInfo) {
+        if (isActive()) getRef().selectedWalletAccountChanged(accountInfo);
+    }
+
+    @Override
+    public void selectedDappAccountChanged(
+            @CoinType.EnumType int coinType, AccountInfo accountInfo) {
+        if (isActive()) getRef().selectedDappAccountChanged(coinType, accountInfo);
     }
 
     @Override

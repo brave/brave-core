@@ -632,8 +632,13 @@ void JsonRpcService::SetNetwork(const std::string& chain_id,
 void JsonRpcService::GetNetwork(mojom::CoinType coin,
                                 const absl::optional<::url::Origin>& origin,
                                 GetNetworkCallback callback) {
-  const auto& chain_id = GetChainIdSync(coin, origin);
-  std::move(callback).Run(GetChain(prefs_, chain_id, coin));
+  std::move(callback).Run(GetNetworkSync(coin, origin));
+}
+
+mojom::NetworkInfoPtr JsonRpcService::GetNetworkSync(
+    mojom::CoinType coin,
+    const absl::optional<::url::Origin>& origin) {
+  return GetChain(prefs_, GetChainIdSync(coin, origin), coin);
 }
 
 void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {

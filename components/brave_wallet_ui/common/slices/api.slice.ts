@@ -52,8 +52,6 @@ import {
 } from './entities/network.entity'
 import {
   AccountInfoEntityState,
-  accountInfoEntityAdaptor,
-  AccountInfoEntity
 } from './entities/account-info.entity'
 import {
   blockchainTokenEntityAdaptor,
@@ -161,7 +159,6 @@ interface GetTokenSpotPricesArg {
 }
 
 const NETWORK_TAG_IDS = {
-  DEFAULTS: 'DEFAULTS',
   HIDDEN: 'HIDDEN',
   LIST: 'LIST',
   MAINNETS: 'MAINNETS',
@@ -201,6 +198,36 @@ export function createWalletApi () {
             ? ['UNKNOWN_ERROR']
             : [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }]
       }),
+      invalidateAccountInfos: mutation<boolean, void>({
+        queryFn: (
+          arg,
+          api,
+          extraOptions,
+          baseQuery
+        ) => {
+          baseQuery(undefined).cache.clearAccountsRegistry()
+          return { data: true }
+        },
+        invalidatesTags: [
+          { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
+          { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }
+        ]
+      }),
+      invalidateSelectedAccount: mutation<boolean, void>({
+        queryFn: (
+          arg,
+          api,
+          extraOptions,
+          baseQuery
+        ) => {
+          baseQuery(undefined).cache.clearSelectedAccount()
+          return { data: true }
+        },
+        invalidatesTags: [
+          { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
+          { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
+        ]
+      }),
       setSelectedAccount: mutation<
         BraveWallet.AccountId,
         BraveWallet.AccountId
@@ -224,41 +251,15 @@ export function createWalletApi () {
           { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
         ]
       }),
-      getSelectedAccountAddress: query<string, void>({
+      getSelectedAccountId: query<BraveWallet.AccountId | undefined, void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           const { cache } = baseQuery(undefined)
 
-          let selectedAddress: string | null =
-            await cache.getSelectedAccountAddress()
-
-          const accountsRegistry = await cache.getAccountsRegistry()
-
-          if (
-            // If the selected address is null, set the selected account address to the fallback address
-            selectedAddress === null ||
-            selectedAddress === '' ||
-            // If a user has already created an wallet but then chooses to restore
-            // a different wallet, getSelectedAccount still returns the previous wallets
-            // selected account.
-            // This check looks to see if the returned selectedAccount exist in the accountInfos
-            // payload, if not it will setSelectedAccount to the fallback address
-            !accountsRegistry.ids.find(
-              (accountId) =>
-                String(accountId).toLowerCase() ===
-                selectedAddress?.toLowerCase()
-            )
-          ) {
-            const fallbackAccount = accountsRegistry[accountsRegistry.ids[0]]
-            await dispatch(
-              walletApi.endpoints.setSelectedAccount.initiate(fallbackAccount)
-            )
-            return {
-              data: fallbackAccount.address
-            }
-          }
+          const selectedAccountId =
+            (await cache.getAllAccounts()).selectedAccount?.accountId
 
           return {
-            data: selectedAddress
+            data: selectedAccountId
           }
         },
         providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
@@ -364,7 +365,15 @@ export function createWalletApi () {
         },
         providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SWAP_SUPPORTED }]
       }),
-      getSelectedChain: query<BraveWallet.NetworkInfo, void>({
+      invalidateSelectedChain: mutation<boolean, void>({
+        queryFn: () => {
+          return { data: true }
+        },
+        invalidatesTags: [
+          { type: 'Network', id: NETWORK_TAG_IDS.SELECTED }
+        ]
+      }),
+      getSelectedChain: query<BraveWallet.NetworkInfo | undefined, void>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           try {
             return {
@@ -382,26 +391,10 @@ export function createWalletApi () {
             ? ['UNKNOWN_ERROR']
             : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
       }),
-      setSelectedCoin: mutation<BraveWallet.CoinType, BraveWallet.CoinType>({
-        queryFn: (coinTypeArg, api, extraOptions, baseQuery) => {
-          try {
-            const { braveWalletService } = baseQuery(undefined).data
-            braveWalletService.setSelectedCoin(coinTypeArg)
-            return { data: coinTypeArg }
-          } catch (error) {
-            return {
-              error: `Unable to mutate selectedCoin: ${error}`
-            }
-          }
-        },
-        invalidatesTags: [
-          { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-          { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
-        ]
-      }),
       setNetwork: mutation<
-        Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'> & {
-          selectedAccount?: AccountInfoEntity
+        {
+          needsAccountForNetwork?: boolean
+          selectedAccountId?: BraveWallet.AccountId
         },
         Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
       >({
@@ -417,36 +410,25 @@ export function createWalletApi () {
               cache
             } = baseQuery(undefined)
 
-            await dispatch(
-              walletApi.endpoints.setSelectedCoin.initiate(coin)
-            ).unwrap()
+            cache.clearSelectedAccount()
+            const { accountId: selectedAccountId } =
+              await braveWalletService.ensureSelectedAccountForChain(coin, chainId)
+            if (!selectedAccountId) {
+              return {
+                data: { needsAccountForNetwork: true }
+              }
+            }
 
             const { success } =
-              await braveWalletService.setChainIdForActiveOrigin(coin, chainId)
+              await braveWalletService.setNetworkForSelectedAccountOnActiveOrigin(chainId)
             if (!success) {
               throw new Error(
-                'braveWalletService.SetChainIdForActiveOrigin failed'
+                'braveWalletService.SetNetworkForSelectedAccountOnActiveOrigin failed'
               )
             }
 
-            // FIXME(josheleonard): could be written in a more efficient way.
-            // Clients setting networks must be aware of the selected account
-            // corresponding to the new network.
-            const accountsRegistry = await cache.getAccountsRegistry()
-            cache.clearSelectedAccount()
-            const selectedAccountAddress =
-              await cache.getSelectedAccountAddress()
-
-            const selectedAccount = selectedAccountAddress
-              ? accountsRegistry.entities[
-                  accountInfoEntityAdaptor.selectId({
-                    address: selectedAccountAddress
-                  })
-                ]
-              : undefined
-
             return {
-              data: { chainId, coin, selectedAccount }
+              data: { selectedAccountId }
             }
           } catch (error) {
             console.error(error)
@@ -461,7 +443,6 @@ export function createWalletApi () {
         },
         invalidatesTags: (result, error, { coin }) => [
           { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-          { type: 'Network', id: NETWORK_TAG_IDS.DEFAULTS },
           { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
         ]
       }),
@@ -1046,7 +1027,7 @@ export function createWalletApi () {
       >({
         queryFn: async (asset, { dispatch }, extraOptions, baseQuery) => {
           const { cache } = baseQuery(undefined)
-          const { accounts } = await cache.getAllAccountsInfo()
+          const { accounts } = await cache.getAllAccounts()
 
           const accountsForAssetCoinType = accounts.filter(
             (account) => account.accountId.coin === asset.coin
@@ -1329,7 +1310,7 @@ export function createWalletApi () {
                 : (
                     await mapLimit(
                       (
-                        await cache.getAllAccountsInfo()
+                        await cache.getAllAccounts()
                       ).accounts,
                       10,
                       async (account: BraveWallet.AccountInfo) => {
@@ -1384,7 +1365,7 @@ export function createWalletApi () {
       >({
         queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
           try {
-            const { braveWalletService, txService } = baseQuery(undefined).data
+            const { txService } = baseQuery(undefined).data
             /***
              * Determine whether to create a legacy or EIP-1559 transaction.
              *
@@ -1409,11 +1390,6 @@ export function createWalletApi () {
                 payload.network
               )
 
-            const { chainId } =
-              await braveWalletService.getChainIdForActiveOrigin(
-                BraveWallet.CoinType.ETH
-              )
-
             const txData: BraveWallet.TxData = {
               nonce: '',
               // Estimated by eth_tx_service
@@ -1430,7 +1406,7 @@ export function createWalletApi () {
 
             const txData1559: BraveWallet.TxData1559 = {
               baseData: txData,
-              chainId,
+              chainId: payload.network.chainId,
               // Estimated by eth_tx_service if value is ''
               maxPriorityFeePerGas: payload.maxPriorityFeePerGas || '',
               // Estimated by eth_tx_service if value is ''
@@ -2756,7 +2732,7 @@ export const {
   useGetNftDiscoveryEnabledStatusQuery,
   useGetRewardsBalanceQuery,
   useGetRewardsEnabledQuery,
-  useGetSelectedAccountAddressQuery,
+  useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetSolanaTransactionSimulationQuery,
@@ -2782,7 +2758,7 @@ export const {
   useLazyGetNftDiscoveryEnabledStatusQuery,
   useLazyGetRewardsBalanceQuery,
   useLazyGetRewardsEnabledQuery,
-  useLazyGetSelectedAccountAddressQuery,
+  useLazyGetSelectedAccountIdQuery,
   useLazyGetSelectedChainQuery,
   useLazyGetSolanaEstimatedFeeQuery,
   useLazyGetSolanaTransactionSimulationQuery,
@@ -2811,7 +2787,6 @@ export const {
   useSetNetworkMutation,
   useSetNftDiscoveryEnabledMutation,
   useSetSelectedAccountMutation,
-  useSetSelectedCoinMutation,
   useSpeedupTransactionMutation,
   useTransactionStatusChangedMutation,
   useUnapprovedTxUpdatedMutation,
@@ -2961,34 +2936,15 @@ export const useGetNetworkQuery = (
   )
 }
 
-export const useSelectedCoinQuery = (
-  arg?: undefined,
-  opts?: { skip?: boolean }
-) => {
-  const queryResults = useGetSelectedChainQuery(arg, {
-    selectFromResult: (res) => ({ selectedCoin: res.data?.coin }),
-    skip: opts?.skip
-  })
-  return queryResults
-}
-
 export type WalletApiSliceState = ReturnType<typeof walletApi['reducer']>
 export type WalletApiSliceStateFromRoot = { walletApi: WalletApiSliceState }
 
-export async function getSelectedNetwork(api: WalletApiProxy) {
-  const { jsonRpcService, braveWalletService } = api
-
-  const { coin: selectedCoin } = await braveWalletService.getSelectedCoin()
-
-  if (selectedCoin === undefined) {
-    throw new Error('selected coin was undefined')
-  }
-
-  const { originInfo } = await braveWalletService.getActiveOrigin()
-  const { network } = await jsonRpcService.getNetwork(selectedCoin,
-                                                      originInfo.origin)
-
-  return network
+async function getSelectedNetwork(
+  api: WalletApiProxy
+): Promise<BraveWallet.NetworkInfo | undefined> {
+  const { braveWalletService } = api
+  return (await braveWalletService.getNetworkForSelectedAccountOnActiveOrigin())
+    .network ?? undefined
 }
 
 //
