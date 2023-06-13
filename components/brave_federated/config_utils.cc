@@ -13,10 +13,10 @@
 namespace brave_federated {
 
 namespace {
-  const std::string kReconnectPolicy = "reconnect_policy";
-  const std::string kRequestTaskPolicy = "request_task_policy";
-  const std::string kPostResultsPolicy = "post_results_policy";
-}
+const char kReconnectPolicy[] = "reconnect_policy";
+const char kRequestTaskPolicy[] = "request_task_policy";
+const char kPostResultsPolicy[] = "post_results_policy";
+}  // namespace
 
 LearningServiceConfig::LearningServiceConfig() {
   reconnect_policy_ = {/*.num_errors_to_ignore = */ 0,
