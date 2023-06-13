@@ -15,10 +15,6 @@
   IsEnabled(network::mojom::WebClientHintsType type) const;               \
   void SetIsEnabled_ChromiumImpl(network::mojom::WebClientHintsType type, \
                                  bool should_send);                       \
-  void SetIsEnabled_ChromiumImpl(                                         \
-      const GURL& url, const absl::optional<GURL>& third_party_url,       \
-      const net::HttpResponseHeaders* response_headers,                   \
-      network::mojom::WebClientHintsType type, bool should_send);         \
   bool IsEnabled_Unused
 
 #include "src/third_party/blink/public/common/client_hints/enabled_client_hints.h"  // IWYU pragma: export
