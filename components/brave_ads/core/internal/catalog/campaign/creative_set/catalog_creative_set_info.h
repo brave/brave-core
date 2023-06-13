@@ -35,7 +35,7 @@ struct CatalogCreativeSetInfo final {
 
   bool DoesSupportOS() const;
 
-  std::string creative_set_id;
+  std::string id;
   int per_day = 0;
   int per_week = 0;
   int per_month = 0;

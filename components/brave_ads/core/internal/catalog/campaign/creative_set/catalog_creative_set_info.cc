@@ -31,7 +31,7 @@ CatalogCreativeSetInfo::~CatalogCreativeSetInfo() = default;
 
 bool CatalogCreativeSetInfo::operator==(
     const CatalogCreativeSetInfo& other) const {
-  return creative_set_id == other.creative_set_id && per_day == other.per_day &&
+  return id == other.id && per_day == other.per_day &&
          per_week == other.per_week && per_month == other.per_month &&
          total_max == other.total_max &&
          base::IsApproximatelyEqual(value, other.value,

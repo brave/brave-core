@@ -183,7 +183,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogCreativeSetList catalog_creative_sets;
 
   CatalogCreativeSetInfo catalog_creative_set;
-  catalog_creative_set.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  catalog_creative_set.id = "340c927f-696e-4060-9933-3eafc56c3f31";
   catalog_creative_set.per_day = 5;
   catalog_creative_set.per_week = 6;
   catalog_creative_set.per_month = 7;
@@ -381,7 +381,7 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   CatalogCreativeSetList catalog_creative_sets;
 
   CatalogCreativeSetInfo catalog_creative_set;
-  catalog_creative_set.creative_set_id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
+  catalog_creative_set.id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
   catalog_creative_set.per_day = 10;
   catalog_creative_set.per_week = 11;
   catalog_creative_set.per_month = 12;

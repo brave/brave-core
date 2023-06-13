@@ -81,8 +81,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
     for (const auto& creative_set_node :
          campaign_node["creativeSets"].GetArray()) {
       CatalogCreativeSetInfo creative_set;
-      creative_set.creative_set_id =
-          creative_set_node["creativeSetId"].GetString();
+      creative_set.id = creative_set_node["creativeSetId"].GetString();
       creative_set.per_day = creative_set_node["perDay"].GetInt();
       creative_set.per_week = creative_set_node["perWeek"].GetInt();
       creative_set.per_month = creative_set_node["perMonth"].GetInt();
@@ -130,7 +129,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       const auto conversions = creative_set_node["conversions"].GetArray();
       for (const auto& conversion_node : conversions) {
         ConversionInfo conversion;
-        conversion.creative_set_id = creative_set.creative_set_id;
+        conversion.creative_set_id = creative_set.id;
         conversion.type = conversion_node["type"].GetString();
         conversion.url_pattern = conversion_node["urlPattern"].GetString();
         conversion.observation_window =

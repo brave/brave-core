@@ -68,8 +68,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         const std::string platform_name =
             PlatformHelper::GetInstance().GetName();
 
-        BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                   << " does not support " << platform_name);
+        BLOG(1, "Creative set id " << creative_set.id << " does not support "
+                                   << platform_name);
 
         continue;
       }
@@ -78,7 +78,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       for (const auto& creative : creative_set.creative_notification_ads) {
         CreativeNotificationAdInfo creative_ad;
         creative_ad.creative_instance_id = creative.creative_instance_id;
-        creative_ad.creative_set_id = creative_set.creative_set_id;
+        creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.campaign_id;
         creative_ad.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
@@ -119,7 +119,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
                                 base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
-            BLOG(1, "creative set id " << creative_set.creative_set_id
+            BLOG(1, "creative set id " << creative_set.id
                                        << " segment name should not be empty");
 
             continue;
@@ -145,7 +145,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       for (const auto& creative : creative_set.creative_inline_content_ads) {
         CreativeInlineContentAdInfo creative_ad;
         creative_ad.creative_instance_id = creative.creative_instance_id;
-        creative_ad.creative_set_id = creative_set.creative_set_id;
+        creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.campaign_id;
         creative_ad.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
@@ -186,7 +186,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
                                 base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
-            BLOG(1, "creative set id " << creative_set.creative_set_id
+            BLOG(1, "creative set id " << creative_set.id
                                        << " segment name should not be empty");
 
             continue;
@@ -212,7 +212,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       for (const auto& creative : creative_set.creative_new_tab_page_ads) {
         CreativeNewTabPageAdInfo info;
         info.creative_instance_id = creative.creative_instance_id;
-        info.creative_set_id = creative_set.creative_set_id;
+        info.creative_set_id = creative_set.id;
         info.campaign_id = campaign.campaign_id;
         info.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
@@ -265,7 +265,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
                                 base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
-            BLOG(1, "creative set id " << creative_set.creative_set_id
+            BLOG(1, "creative set id " << creative_set.id
                                        << " segment name should not be empty");
 
             continue;
@@ -291,7 +291,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       for (const auto& creative : creative_set.creative_promoted_content_ads) {
         CreativePromotedContentAdInfo info;
         info.creative_instance_id = creative.creative_instance_id;
-        info.creative_set_id = creative_set.creative_set_id;
+        info.creative_set_id = creative_set.id;
         info.campaign_id = campaign.campaign_id;
         info.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
@@ -328,7 +328,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
                                 base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
-            BLOG(1, "creative set id " << creative_set.creative_set_id
+            BLOG(1, "creative set id " << creative_set.id
                                        << " segment name should not be empty");
 
             continue;
@@ -351,8 +351,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       }
 
       if (entries == 0) {
-        BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                   << " has no entries");
+        BLOG(1, "Creative set id " << creative_set.id << " has no entries");
 
         continue;
       }
