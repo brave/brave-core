@@ -28,7 +28,7 @@ CatalogCampaignInfo& CatalogCampaignInfo::operator=(
 CatalogCampaignInfo::~CatalogCampaignInfo() = default;
 
 bool CatalogCampaignInfo::operator==(const CatalogCampaignInfo& other) const {
-  return campaign_id == other.campaign_id && priority == other.priority &&
+  return id == other.id && priority == other.priority &&
          base::IsApproximatelyEqual(pass_through_rate, other.pass_through_rate,
                                     std::numeric_limits<double>::epsilon()) &&
          start_at == other.start_at && end_at == other.end_at &&

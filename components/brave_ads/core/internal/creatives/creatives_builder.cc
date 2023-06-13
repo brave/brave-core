@@ -79,17 +79,17 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         CreativeNotificationAdInfo creative_ad;
         creative_ad.creative_instance_id = creative.creative_instance_id;
         creative_ad.creative_set_id = creative_set.id;
-        creative_ad.campaign_id = campaign.campaign_id;
+        creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
                                        &creative_ad.start_at)) {
-          BLOG(1, "Campaign id " << campaign.campaign_id
+          BLOG(1, "Campaign id " << campaign.id
                                  << " has an invalid start at time");
         }
         if (!base::Time::FromUTCString(campaign.end_at.c_str(),
                                        &creative_ad.end_at)) {
-          BLOG(1, "Campaign id " << campaign.campaign_id
-                                 << " has an invalid end at time");
+          BLOG(1,
+               "Campaign id " << campaign.id << " has an invalid end at time");
         }
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
@@ -146,7 +146,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         CreativeInlineContentAdInfo creative_ad;
         creative_ad.creative_instance_id = creative.creative_instance_id;
         creative_ad.creative_set_id = creative_set.id;
-        creative_ad.campaign_id = campaign.campaign_id;
+        creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
                                        &creative_ad.start_at)) {
@@ -213,7 +213,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         CreativeNewTabPageAdInfo info;
         info.creative_instance_id = creative.creative_instance_id;
         info.creative_set_id = creative_set.id;
-        info.campaign_id = campaign.campaign_id;
+        info.campaign_id = campaign.id;
         info.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
                                        &info.start_at)) {
@@ -292,7 +292,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         CreativePromotedContentAdInfo info;
         info.creative_instance_id = creative.creative_instance_id;
         info.creative_set_id = creative_set.id;
-        info.campaign_id = campaign.campaign_id;
+        info.campaign_id = campaign.id;
         info.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
                                        &info.start_at)) {

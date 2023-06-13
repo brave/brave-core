@@ -47,7 +47,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   // Campaigns
   for (const auto& campaign_node : document["campaigns"].GetArray()) {
     CatalogCampaignInfo campaign;
-    campaign.campaign_id = campaign_node["campaignId"].GetString();
+    campaign.id = campaign_node["campaignId"].GetString();
     campaign.priority = campaign_node["priority"].GetInt();
     campaign.pass_through_rate = campaign_node["ptr"].GetDouble();
     campaign.start_at = campaign_node["startAt"].GetString();
