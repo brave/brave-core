@@ -21,7 +21,7 @@ std::string GetChannelName(WithExtendedStable with_extended_stable) {
   static const base::NoDestructor<std::string> channel([] {
     // Use the main Chrome application bundle and not the framework bundle.
     // Keystone keys don't live in the framework.
-    NSBundle* bundle = base::mac::OuterBundle();
+    NSBundle* bundle = base::apple::OuterBundle();
 
     NSString* channel = [bundle objectForInfoDictionaryKey:@"KSChannelID"];
 
