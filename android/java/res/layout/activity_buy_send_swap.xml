@@ -40,14 +40,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:textSize="12sp"
-                    android:textColor="@color/wallet_text_color"
+                    android:textColor="@color/brave_wallet_day_night_text_color"
                     android:layout_gravity="center_vertical"
-                    android:prompt="@string/mainnet"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp" />
+                    android:paddingEnd="32dp"
+                    />
 
             </LinearLayout>
 
