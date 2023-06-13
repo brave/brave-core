@@ -383,8 +383,18 @@ export const PortfolioAsset = (props: Props) => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
     dispatch(WalletPageActions.updateNftMetadataError(undefined))
     setfilteredAssetList(userAssetList)
-    history.goBack()
+    if (isShowingMarketData) {
+      history.push(WalletRoutes.Market)
+      return
+    }
+    if (isNftAsset) {
+      history.push(WalletRoutes.PortfolioNFTs)
+      return
+    }
+    history.push(WalletRoutes.PortfolioAssets)
   }, [
+    isShowingMarketData,
+    isNftAsset,
     userAssetList,
     selectedTimeline
   ])
