@@ -11,6 +11,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define C_SUBSCRIPTION_DEFAULT_EXPIRES_HOURS (7 * 24)
+
 /**
  * Main adblocking engine that allows efficient querying of resources to block.
  */

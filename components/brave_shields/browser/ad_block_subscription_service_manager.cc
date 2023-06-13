@@ -18,6 +18,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
@@ -33,6 +34,8 @@ namespace brave_shields {
 base::TimeDelta* g_testing_subscription_retry_interval;
 
 namespace {
+
+const uint16_t kSubscriptionMaxExpiresHours = 14 * 24;
 
 bool SkipGURLField(base::StringPiece value, GURL* field) {
   return true;
@@ -62,13 +65,13 @@ bool ParseOptionalStringField(const base::Value* value,
 
 bool ParseExpiresWithFallback(const base::Value* value, uint16_t* field) {
   if (value == nullptr) {
-    *field = kSubscriptionDefaultExpiresHours;
+    *field = adblock::kSubscriptionDefaultExpiresHours;
     return true;
   } else if (!value->is_int()) {
     return false;
   } else {
     int64_t i = value->GetInt();
-    if (i < 0 || i > 14 * 24) {
+    if (i < 0 || i > kSubscriptionMaxExpiresHours) {
       return false;
     }
     *field = (uint16_t)i;

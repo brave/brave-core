@@ -343,6 +343,9 @@ pub unsafe extern "C" fn filter_list_metadata_title(
     }
 }
 
+#[no_mangle]
+pub const SUBSCRIPTION_DEFAULT_EXPIRES_HOURS: u16 = 7 * 24;
+
 /// Returns the amount of time this filter list should be considered valid for,
 /// in hours. Defaults to 168 (i.e. 7 days) if unspecified by the
 /// `FilterListMetadata`.
@@ -350,12 +353,10 @@ pub unsafe extern "C" fn filter_list_metadata_title(
 pub unsafe extern "C" fn filter_list_metadata_expires(metadata: *const FilterListMetadata) -> u16 {
     use adblock::lists::ExpiresInterval;
 
-    const DEFAULT_EXPIRES_HOURS: u16 = 7 * 24;
-
     match (*metadata).expires.as_ref() {
         Some(ExpiresInterval::Days(d)) => 24 * *d as u16,
         Some(ExpiresInterval::Hours(h)) => *h,
-        None => DEFAULT_EXPIRES_HOURS,
+        None => SUBSCRIPTION_DEFAULT_EXPIRES_HOURS,
     }
 }
 
