@@ -1422,7 +1422,8 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
   } else if (key == kAdsSubdivisionTargeting) {
     ads_service_->SetSubdivisionTargetingCode(value);
   } else if (key == kAutoDetectedSubdivisionTargeting) {
-    ads_service_->SetAutoDetectedSubdivisionTargetingCode(value);
+    prefs->SetString(
+        brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision, value);
   }
 
   GetAdsData(base::Value::List());

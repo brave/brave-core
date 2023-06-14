@@ -596,6 +596,12 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
+      prefs::kSubdivisionTargetingAutoDetectedSubdivision,
+      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
+                          base::Unretained(this),
+                          prefs::kSubdivisionTargetingAutoDetectedSubdivision));
+
+  pref_change_registrar_.Add(
       brave_news::prefs::kBraveNewsOptedIn,
       base::BindRepeating(&AdsServiceImpl::OnBraveNewsOptedInPrefChanged,
                           base::Unretained(this)));

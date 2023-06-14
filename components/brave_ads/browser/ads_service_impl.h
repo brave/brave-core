@@ -199,8 +199,6 @@ class AdsServiceImpl : public AdsService,
 
   void SetSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
-  void SetAutoDetectedSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) override;
 
   bool NeedsBrowserUpgradeToServeAds() const override;
 
