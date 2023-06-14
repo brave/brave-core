@@ -9,7 +9,7 @@ const config = require('./config')
 const fs = require('fs-extra')
 const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
-const Log = require('./sync/logging')
+const Log = require('./logging')
 const assert = require('assert')
 
 const mergeWithDefault = (options) => {
