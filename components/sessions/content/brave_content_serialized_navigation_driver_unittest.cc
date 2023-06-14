@@ -8,6 +8,8 @@
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "components/sessions/core/serialized_navigation_entry_test_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/page_state/page_state.h"
+#include "third_party/blink/public/common/page_state/page_state_serialization.h"
 
 namespace sessions {
 
@@ -24,7 +26,10 @@ TEST(BraveContentSerializedNavigationDriverTest,
   EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
 
   navigation.set_virtual_url(GURL("chrome://wallet"));
-  EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
+  // Check encoded data is not empty but clean state only with url info.
+  EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
+                .ToEncodedData(),
+            driver->GetSanitizedPageStateForPickle(&navigation));
 }
 
 // Tests that PageState data is left unsanitized when post data is absent.
@@ -39,7 +44,10 @@ TEST(BraveContentSerializedNavigationDriverTest,
   EXPECT_EQ(test_data::kEncodedPageState,
             driver->GetSanitizedPageStateForPickle(&navigation));
   navigation.set_virtual_url(GURL("chrome://wallet"));
-  EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
+  // Check encoded data is not empty but clean state only with url info.
+  EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
+                .ToEncodedData(),
+            driver->GetSanitizedPageStateForPickle(&navigation));
 }
 
 }  // namespace sessions

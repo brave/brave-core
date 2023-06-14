@@ -17,8 +17,18 @@
 namespace sessions {
 std::string ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
     const sessions::SerializedNavigationEntry* navigation) const {
-  if (navigation->virtual_url().SchemeIs(content::kChromeUIScheme))
-    return std::string();
+  if (navigation->virtual_url().SchemeIs(content::kChromeUIScheme)) {
+    // chrome url can be re-written when it's restored during the tab but
+    // re-written url is ignored when encoded page state is empty.
+    // In ContentSerializedNavigationBuilder::ToNavigationEntry(), re-written
+    // url created by NavigationEntry's ctor is ignored by creating new page
+    // state with navigation's virtual_url. Sanitize all but make url info
+    // persisted. Use original_request_url as it's used when NavigationEntry is
+    // created.
+    return blink::PageState::CreateFromURL(navigation->original_request_url())
+        .ToEncodedData();
+  }
+
   return GetSanitizedPageStateForPickle_ChromiumImpl(navigation);
 }
 

@@ -18,10 +18,12 @@
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/page_state/page_state.h"
+#include "third_party/blink/public/common/page_state/page_state_serialization.h"
 
-using BraveSesstionRestoreBrowserTest = InProcessBrowserTest;
+using BraveSessionRestoreBrowserTest = InProcessBrowserTest;
 
-IN_PROC_BROWSER_TEST_F(BraveSesstionRestoreBrowserTest, Serialization) {
+IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest, Serialization) {
   auto* tab_model = browser()->tab_strip_model();
   auto* web_contents = tab_model->GetActiveWebContents();
   SessionService* const session_service =
@@ -53,7 +55,12 @@ IN_PROC_BROWSER_TEST_F(BraveSesstionRestoreBrowserTest, Serialization) {
         const auto& serialized_navigation = windows[0]->tabs[0]->navigations[1];
         EXPECT_EQ(serialized_navigation.virtual_url(),
                   GURL("chrome://newtab/"));
-        EXPECT_TRUE(serialized_navigation.encoded_page_state().empty());
+
+        // Check encoded data is not empty but clean state only with url info.
+        EXPECT_EQ(blink::PageState::CreateFromURL(GURL("chrome://newtab/"))
+                      .ToEncodedData(),
+                  serialized_navigation.encoded_page_state());
+        EXPECT_FALSE(serialized_navigation.encoded_page_state().empty());
         loop.Quit();
       }));
   loop.Run();
