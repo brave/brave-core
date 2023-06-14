@@ -92,9 +92,8 @@ repack("resources") {
   }
 
   if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat_ui:generated_resources" ]
-    sources +=
-        [ "$root_gen_dir/brave/components/ai_chat_ui/ai_chat_ui_generated.pak" ]
+    deps += [ "//brave/components/ai_chat/resources/page:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/ai_chat/resources/page/ai_chat_ui_generated.pak" ]
   }
 
   if (enable_ipfs_internals_webui) {

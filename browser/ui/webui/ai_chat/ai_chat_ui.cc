@@ -12,7 +12,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/pref_names.h"
-#include "brave/components/ai_chat_ui/grit/ai_chat_ui_generated_map.h"
+#include "brave/components/ai_chat/resources/page/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
