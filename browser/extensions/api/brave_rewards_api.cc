@@ -1383,8 +1383,10 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
     ads_data.Set("adsSubdivisionTargeting",
                  profile->GetPrefs()->GetBoolean(
                      brave_ads::prefs::kSubdivisionTargetingSubdivision));
-    ads_data.Set("automaticallyDetectedAdsSubdivisionTargeting",
-                 ads_service->GetAutoDetectedSubdivisionTargetingCode());
+    ads_data.Set(
+        "automaticallyDetectedAdsSubdivisionTargeting",
+        profile->GetPrefs()->GetBoolean(
+            brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision));
     ads_data.Set("shouldAllowAdsSubdivisionTargeting",
                  profile->GetPrefs()->GetBoolean(
                      brave_ads::prefs::kShouldAllowSubdivisionTargeting));

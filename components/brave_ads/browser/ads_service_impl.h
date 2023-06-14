@@ -199,7 +199,6 @@ class AdsServiceImpl : public AdsService,
 
   void SetSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
-  std::string GetAutoDetectedSubdivisionTargetingCode() const override;
   void SetAutoDetectedSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
 

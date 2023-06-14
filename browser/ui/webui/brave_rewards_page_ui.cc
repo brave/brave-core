@@ -1178,8 +1178,10 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   ads_data.Set(
       kAdsSubdivisionTargeting,
       prefs->GetBoolean(brave_ads::prefs::kSubdivisionTargetingSubdivision));
-  ads_data.Set(kAutoDetectedSubdivisionTargeting,
-               ads_service_->GetAutoDetectedSubdivisionTargetingCode());
+  ads_data.Set(
+      kAutoDetectedSubdivisionTargeting,
+      prefs->GetBoolean(
+          brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision));
   ads_data.Set(
       "shouldAllowAdsSubdivisionTargeting",
       prefs->GetBoolean(brave_ads::prefs::kShouldAllowSubdivisionTargeting));
