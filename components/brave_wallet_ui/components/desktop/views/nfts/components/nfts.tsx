@@ -43,6 +43,7 @@ import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-gr
 import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-discovery-empty-state'
 import { TabOption, Tabs } from '../../../../shared/tabs/tabs'
+import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 
 // styles
 import {
@@ -65,7 +66,6 @@ interface Props {
   networks: BraveWallet.NetworkInfo[]
   nftList: BraveWallet.BlockchainToken[],
   accounts: WalletAccountType[]
-  onToggleShowIpfsBanner: () => void
   onShowPortfolioSettings?: () => void
 }
 
@@ -74,7 +74,6 @@ export const Nfts = (props: Props) => {
     nftList,
     accounts,
     networks,
-    onToggleShowIpfsBanner,
     onShowPortfolioSettings
   } = props
 
@@ -95,7 +94,7 @@ export const Nfts = (props: Props) => {
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
-  const { nonFungibleTokens } = useNftPin()
+  const { nonFungibleTokens, isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
 
   // queries
   const { data: isNftAutoDiscoveryEnabled } = useGetNftDiscoveryEnabledStatusQuery()
@@ -315,6 +314,16 @@ export const Nfts = (props: Props) => {
 
   return (
     <>
+      {isNftPinningFeatureEnabled && isIpfsBannerVisible && nonFungibleTokens.length > 0 &&
+        <Row
+          justifyContent='center'
+          alignItems='center'
+          padding='0px 32px'
+          marginBottom={16}
+        >
+          <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
+        </Row>
+      }
       <ControlBarWrapper
         justifyContent='space-between'
         alignItems='center'

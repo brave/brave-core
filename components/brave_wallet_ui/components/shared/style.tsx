@@ -521,13 +521,6 @@ export const InputLabelText = styled.label`
   width: 100%;
 `
 
-export const BannerWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 24px;
-  width: 100%;
-`
-
 export const VerticalDivider = styled.div`
   height: 1px;
   width: 100%;

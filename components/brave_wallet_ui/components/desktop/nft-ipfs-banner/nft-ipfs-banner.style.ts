@@ -78,8 +78,8 @@ export const CloseButton = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background-color: #6B7084;
   @media (prefers-color-scheme: dark) {
     background-color: #8C90A1; /* Leo theme value: Icon/Default */

@@ -18,11 +18,10 @@ import { Nfts } from './components/nfts'
 interface Props {
   nftsList: BraveWallet.BlockchainToken[]
   accounts: WalletAccountType[]
-  onToggleShowIpfsBanner: () => void
   onShowPortfolioSettings?: () => void
 }
 
-export const NftView = ({ nftsList, accounts, onToggleShowIpfsBanner, onShowPortfolioSettings }: Props) => {
+export const NftView = ({ nftsList, accounts, onShowPortfolioSettings }: Props) => {
   // queries
   const { data: networks = [] } = useGetVisibleNetworksQuery()
 
@@ -31,7 +30,6 @@ export const NftView = ({ nftsList, accounts, onToggleShowIpfsBanner, onShowPort
       networks={networks}
       nftList={nftsList}
       accounts={accounts}
-      onToggleShowIpfsBanner={onToggleShowIpfsBanner}
       onShowPortfolioSettings={onShowPortfolioSettings}
     />
   )
