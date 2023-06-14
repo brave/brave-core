@@ -277,7 +277,8 @@ export interface WalletState {
   removedNonFungibleTokens: BraveWallet.BlockchainToken[]
   filteredOutPortfolioNetworkKeys: string[]
   filteredOutPortfolioAccountAddresses: string[]
-  hidePortfolioSmallBalances: boolean
+  hidePortfolioSmallBalances: boolean,
+  showNetworkLogoOnNfts: boolean
 }
 
 export interface PanelState {

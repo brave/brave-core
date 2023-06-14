@@ -573,6 +573,7 @@
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_GROUP_BY_TITLE" desc="Group assets by dropdown title">Group by</message>
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_GROUP_BY_DESCRIPTION" desc="Group assets by dropdown description">Group assets by</message>
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_FILTERS_TITLE" desc="Portfolio Filters and Display settings modal">Filters and display settings</message>
+  <message name="IDS_BRAVE_WALLET_PORTFOLIO_NFTS_FILTERS_TITLE" desc="Portfolio Filters and Display settings modal title for NFT tab">NFT display settings</message>
   <message name="IDS_BRAVE_WALLET_SORT_ASSETS" desc="Portfolio settings sort assets dropdown title">Sort assets</message>
   <message name="IDS_BRAVE_WALLET_SORT_ASSETS_DESCRIPTION" desc="Portfolio settings sort assets dropdown description">Sort by fiat value or name</message>
   <message name="IDS_BRAVE_WALLET_SMALL_BALANCES" desc="Portfolio settings hide small balances toggle title">Hide small balances</message>
@@ -586,6 +587,10 @@
   <message name="IDS_BRAVE_WALLET_SOL_ACCOUNT_DESCRIPTION" desc="Solana account description">Solana + SVM Chains</message>
   <message name="IDS_BRAVE_WALLET_FIL_ACCOUNT_DESCRIPTION" desc="Filecoin account description">Filecoin</message>
   <message name="IDS_BRAVE_WALLET_BTC_ACCOUNT_DESCRIPTION" desc="Bitcoin account description">Bitcoin</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE" desc="Show network logo filter title">Network Logo</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_DESCRIPTION" desc="Show network logo filter description">Show network logo on NFTs</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_SPAM_NFTS_TITLE" desc="Show spam NFTs filter title">Spam NFTs</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_SPAM_NFTS_DESCRIPTION" desc="Show spam NFTs filter description">Show spam NFTs</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All accounts</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>

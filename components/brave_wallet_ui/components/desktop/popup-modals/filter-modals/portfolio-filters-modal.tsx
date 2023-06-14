@@ -68,6 +68,8 @@ import {
   ScrollableColumn,
   HorizontalSpace
 } from '../../../shared/style'
+import { useLocation } from 'react-router'
+import { WalletRoutes } from '../../../../constants/types'
 
 
 interface Props {
@@ -76,6 +78,9 @@ interface Props {
 
 export const PortfolioFiltersModal = (props: Props) => {
   const { onClose } = props
+
+  // routing
+  const { pathname: currentRoute } = useLocation()
 
   // Redux
   const dispatch = useDispatch()
@@ -97,6 +102,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const selectedPortfolioTimeline =
     useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
+  const showNetworkLogoOnNfts = useSafeWalletSelector(WalletSelectors.showNetworkLogoOnNfts)
 
   // State
   const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] =
@@ -109,6 +115,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     React.useState<string>(selectedAssetFilter)
   const [selectedGroupAssetsByOption, setSelectedGroupAssetsByOption] =
     React.useState<string>(selectedGroupAssetsByItem)
+  const [showNetworkLogo, setShowNetworkLogo] = React.useState(showNetworkLogoOnNfts)
 
   // Hooks
   const { refreshTokenPriceHistory } = useLib()
@@ -195,6 +202,25 @@ export const PortfolioFiltersModal = (props: Props) => {
       .replace('$1', minAmount)
   }, [defaultCurrencies.fiat])
 
+  const showNftFilters = React.useMemo(() => {
+    return currentRoute === WalletRoutes.PortfolioNFTs
+  }, [currentRoute])
+
+  const onUpdateShowNetworkLogoOnNfts = React.useCallback(() => {
+    // Update Show Network Logo on NFTs in Local Storage
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS,
+      JSON.stringify(showNetworkLogo)
+    )
+
+    // Update Show Network Logo on NFTs in Redux
+    dispatch(
+      WalletActions
+        .setShowNetworkLogoOnNfts(
+          showNetworkLogo
+        ))
+  }, [showNetworkLogo])
+
   // Methods
   const onSaveChanges = React.useCallback(() => {
     onUpdateSelectedGroupAssetsByOption()
@@ -202,6 +228,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     onUpdateFilteredOutNetworkKeys()
     onUpdateFilteredOutAccountAddresses()
     onUpdateHidePortfolioSmallBalances()
+    onUpdateShowNetworkLogoOnNfts()
     dispatch(WalletActions.setIsFetchingPortfolioPriceHistory(true))
     dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
     onClose()
@@ -211,6 +238,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     onUpdateFilteredOutNetworkKeys,
     onUpdateFilteredOutAccountAddresses,
     onUpdateHidePortfolioSmallBalances,
+    onUpdateShowNetworkLogoOnNfts,
     refreshTokenPriceHistory,
     selectedPortfolioTimeline,
     onClose
@@ -219,7 +247,7 @@ export const PortfolioFiltersModal = (props: Props) => {
   return (
     <PopupModal
       onClose={onClose}
-      title={getLocale('braveWalletPortfolioFiltersTitle')}
+      title={showNftFilters ? getLocale('braveWalletPortfolioNftsFiltersTitle') : getLocale('braveWalletPortfolioFiltersTitle')}
       width='500px'
       borderRadius={16}
     >
@@ -229,34 +257,61 @@ export const PortfolioFiltersModal = (props: Props) => {
           fullWidth={true}
           alignItems='flex-start'
         >
+          {showNftFilters && 
+            <>
+              <FilterToggleSection
+                title={getLocale('braveWalletShowNetworkLogoOnNftsTitle')}
+                description={getLocale('braveWalletShowNetworkLogoOnNftsDescription')}
+                icon='web3'
+                isSelected={showNetworkLogo}
+                setIsSelected={
+                  () => setShowNetworkLogo(prev => !prev)
+                }
+              />
 
-          <FilterDropdownSection
-            title={getLocale('braveWalletPortfolioGroupByTitle')}
-            description={getLocale('braveWalletPortfolioGroupByDescription')}
-            icon='stack'
-            dropdownOptions={GroupAssetsByOptions}
-            selectedOptionId={selectedGroupAssetsByOption}
-            onSelectOption={setSelectedGroupAssetsByOption}
-          />
+              {/* This is commented out until Spam NFTs feature is implemented in core */}
+              {/* <FilterToggleSection
+                title={getLocale('braveWalletShowSpamNftsTitle')}
+                description={getLocale('braveWalletShowSpamNftsDescription')}
+                icon='shield-star'
+                isSelected={true}
+                setIsSelected={
+                  () => {}
+                }
+              /> */}
+            </>
+          }
+          {!showNftFilters &&
+            <>
+              <FilterDropdownSection
+                title={getLocale('braveWalletPortfolioGroupByTitle')}
+                description={getLocale('braveWalletPortfolioGroupByDescription')}
+                icon='stack'
+                dropdownOptions={GroupAssetsByOptions}
+                selectedOptionId={selectedGroupAssetsByOption}
+                onSelectOption={setSelectedGroupAssetsByOption}
+              />
 
-          <FilterDropdownSection
-            title={getLocale('braveWalletSortAssets')}
-            description={getLocale('braveWalletSortAssetsDescription')}
-            icon='sort-desc'
-            dropdownOptions={AssetFilterOptions}
-            selectedOptionId={selectedAssetFilterOption}
-            onSelectOption={setSelectedAssetFilterOption}
-          />
+              <FilterDropdownSection
+                title={getLocale('braveWalletSortAssets')}
+                description={getLocale('braveWalletSortAssetsDescription')}
+                icon='sort-desc'
+                dropdownOptions={AssetFilterOptions}
+                selectedOptionId={selectedAssetFilterOption}
+                onSelectOption={setSelectedAssetFilterOption}
+              />
 
-          <FilterToggleSection
-            title={getLocale('braveWalletHideSmallBalances')}
-            description={hideSmallBalancesDescription}
-            icon='eye-on'
-            isSelected={hideSmallBalances}
-            setIsSelected={
-              () => setHideSmallBalances(prev => !prev)
-            }
-          />
+              <FilterToggleSection
+                title={getLocale('braveWalletHideSmallBalances')}
+                description={hideSmallBalancesDescription}
+                icon='eye-on'
+                isSelected={hideSmallBalances}
+                setIsSelected={
+                  () => setHideSmallBalances(prev => !prev)
+                }
+              />
+            </>
+          }
 
           <VerticalDivider />
           <VerticalSpacer space={16} />

@@ -15,6 +15,10 @@ import { useAssetManagement } from '../../../../../../common/hooks'
 // actions
 import { WalletActions } from '../../../../../../common/actions'
 
+// selectors
+import { useSafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../../common/selectors'
+
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
 import Amount from '../../../../../../utils/amount'
@@ -44,6 +48,9 @@ interface Props {
 
 export const NFTGridViewItem = (props: Props) => {
   const { token, isHidden, onSelectAsset } = props
+
+  // redux
+  const showNetworkLogoOnNfts = useSafeWalletSelector(WalletSelectors.showNetworkLogoOnNfts)
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
@@ -114,6 +121,7 @@ export const NFTGridViewItem = (props: Props) => {
             responsive={true}
             chainId={token?.chainId}
             coinType={token?.coin}
+            hideNetworkIcon={!showNetworkLogoOnNfts}
           />
         </IconWrapper>
         <NFTText>

@@ -8,8 +8,8 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { Column, WalletButton } from '../../shared/style'
 
-export const StyledWrapper = styled(Column)`
-  border: 1px solid ${leo.color.divider.subtle};
+export const StyledWrapper = styled(Column)<{ hasBorder: boolean}>`
+  border: ${p => p.hasBorder ? `1px solid ${leo.color.divider.subtle}` : 'none'};
   border-radius: 12px;
   margin-bottom: 16px;
   &:last-child {

@@ -45,16 +45,20 @@ interface Props {
   account?: BraveWallet.AccountInfo | undefined
   isDisabled?: boolean
   balance: string
-  children?: React.ReactNode
+  hideBalance?: boolean
+  children?: React.ReactNode,
+  hasBorder?: boolean
 }
 
 export const AssetGroupContainer = (props: Props) => {
   const {
     balance,
+    hideBalance,
     account,
     isDisabled,
     network,
-    children
+    children,
+    hasBorder = true
   } = props
 
   // Selectors
@@ -67,6 +71,7 @@ export const AssetGroupContainer = (props: Props) => {
   return (
     <StyledWrapper
       fullWidth={true}
+      hasBorder={hasBorder}
     >
       <CollapseButton
         onClick={() => setIsCollapsed(prev => !prev)}
@@ -122,7 +127,7 @@ export const AssetGroupContainer = (props: Props) => {
         <Row
           width='unset'
         >
-          {balance !== '' ? (
+          {balance !== '' && !hideBalance ? (
             <Text
               textSize='12px'
               isBold={false}
@@ -131,7 +136,9 @@ export const AssetGroupContainer = (props: Props) => {
               {hidePortfolioBalances ? '******' : balance}
             </Text>
           ) : (
-            <LoadingSkeleton width={60} height={14} />
+            <>
+              {!hideBalance && <LoadingSkeleton width={60} height={14} />}
+            </>
           )}
 
           {!isDisabled &&

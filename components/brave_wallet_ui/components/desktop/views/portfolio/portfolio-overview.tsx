@@ -203,6 +203,10 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     userVisibleTokensInfo
   ])
 
+  const userVisibleNfts = React.useMemo(() => {
+    return visibleTokensForFilteredChains.filter(token => token.isErc721 || token.isNft)
+  }, [visibleTokensForFilteredChains])
+
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList: UserAssetInfoType[] = React.useMemo(() => {
     return visibleTokensForFilteredChains.map((asset) => ({
@@ -536,7 +540,10 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
 
         <Route path={WalletRoutes.PortfolioNFTs} exact>
           <NftView
+            nftsList={userVisibleNfts}
+            accounts={usersFilteredAccounts}
             onToggleShowIpfsBanner={onToggleShowIpfsBanner}
+            onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
           />
         </Route>
 

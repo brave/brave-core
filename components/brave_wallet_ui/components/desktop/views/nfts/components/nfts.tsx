@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 // types
 import {
   BraveWallet,
+  WalletAccountType,
   WalletRoutes
 } from '../../../../../constants/types'
 
@@ -33,10 +34,10 @@ import {
   useGetNftDiscoveryEnabledStatusQuery,
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
+import { getBalance } from '../../../../../utils/balance-utils'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
-import NetworkFilterSelector from '../../../network-filter-selector'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-discovery-empty-state'
@@ -44,28 +45,28 @@ import { TabOption, Tabs } from '../../../../shared/tabs/tabs'
 
 // styles
 import {
-  FilterTokenRow,
-  IpfsButton,
-  IpfsIcon,
-  NftGrid,
-  AddIcon,
-  AddButton
+  NftGrid
 } from './nfts.styles'
 import { Row, ScrollableColumn } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
+import { ButtonIcon, CircleButton } from '../../portfolio/style'
+import { AssetGroupContainer } from '../../../asset-group-container/asset-group-container'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
-  nftList: BraveWallet.BlockchainToken[]
+  nftList: BraveWallet.BlockchainToken[],
+  accounts: WalletAccountType[]
   onToggleShowIpfsBanner: () => void
+  onShowPortfolioSettings?: () => void
 }
 
 export const Nfts = (props: Props) => {
   const {
-    networks,
     nftList,
-    onToggleShowIpfsBanner
+    accounts,
+    onToggleShowIpfsBanner,
+    onShowPortfolioSettings
   } = props
 
   // redux
@@ -188,32 +189,84 @@ export const Nfts = (props: Props) => {
     return selectedTab === 'nfts' ? sortedNfts : sortedHiddenNfts
   }, [selectedTab, sortedNfts, sortedHiddenNfts])
 
+  // Returns a list of assets based on provided account
+  const getFilteredNftsByAccount = React.useCallback(
+    (account: WalletAccountType) => {
+      return renderedList.filter(
+        (nft) =>
+          nft.coin === account.accountId.coin &&
+          new Amount(getBalance(account, nft)).gte('1')
+      )
+    }, [renderedList])
+
+  const listUiByAccounts = React.useMemo(() => {
+    return accounts.map((account) => (
+      <>
+        {getFilteredNftsByAccount(account).length !== 0 && (
+          <AssetGroupContainer
+            key={account.address}
+            balance=''
+            hideBalance={true}
+            account={account}
+            isDisabled={getFilteredNftsByAccount(account).length === 0}
+            hasBorder={false}
+          >
+            <NftGrid>
+              {getFilteredNftsByAccount(account).map((nft) => (
+                <NFTGridViewItem
+                  isHidden={selectedTab === 'hidden'}
+                  key={`${nft.tokenId}-${nft.contractAddress}`}
+                  token={nft}
+                  onSelectAsset={() => onSelectAsset(nft)}
+                />
+              ))}
+            </NftGrid>
+          </AssetGroupContainer>
+        )}
+      </>
+    ))
+  }, [renderedList, accounts, getFilteredNftsByAccount, onSelectAsset])
+
   return (
     <>
-      <FilterTokenRow>
-        <SearchBar
-          placeholder={getLocale('braveWalletSearchText')}
-          action={onSearchValueChange}
-          value={searchValue}
-        />
-        <NetworkFilterSelector networkListSubset={networks} />
-        {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 && (
-          <IpfsButton onClick={onClickIpfsButton}>
-            <IpfsIcon />
-          </IpfsButton>
-        )}
-        <AddButton onClick={toggleShowAddNftModal}>
-          <AddIcon />
-        </AddButton>
-      </FilterTokenRow>
-      <Row justifyContent='flex-start' padding='23px 0 23px 23px'>
-        <Tabs
-          options={tabOptions}
-          onSelect={onSelectTab}
-        />
+      <Row
+        justifyContent='space-between'
+        alignItems='center'
+        padding='0px 32px'
+        marginBottom={12}
+      >
+        <Tabs options={tabOptions} onSelect={onSelectTab} />
+        <Row  width='unset'>
+          <Row style={{ width: 230 }} margin='0px 12px 0px 0px'>
+            <SearchBar
+              placeholder={getLocale('braveWalletSearchText')}
+              action={onSearchValueChange}
+              value={searchValue}
+              isV2={true}
+            />
+          </Row>
+          {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 && (
+            <CircleButton
+              onClick={onClickIpfsButton}
+              marginRight={12}
+            >
+              <ButtonIcon name='product-ipfs-outline' />
+            </CircleButton>
+          )}
+          <CircleButton
+            onClick={toggleShowAddNftModal}
+            marginRight={12}
+          >
+            <ButtonIcon name='plus-add' />
+          </CircleButton>
+          <CircleButton onClick={onShowPortfolioSettings}>
+            <ButtonIcon name='filter-settings' />
+          </CircleButton>
+        </Row>
       </Row>
+
       <ScrollableColumn padding='10px 20px 20px 20px'>
-        {(nftList.length === 0 && hiddenNfts.length === 0) ? (
+        {nftList.length === 0 && hiddenNfts.length === 0 ? (
           isNftAutoDiscoveryEnabled ? (
             <AutoDiscoveryEmptyState
               onImportNft={toggleShowAddNftModal}
@@ -222,18 +275,7 @@ export const Nfts = (props: Props) => {
           ) : (
             <NftsEmptyState onImportNft={toggleShowAddNftModal} />
           )
-        ) : (
-          <NftGrid>
-            {renderedList.map((nft) => (
-              <NFTGridViewItem
-                isHidden={selectedTab === 'hidden'}
-                key={`${nft.tokenId}-${nft.contractAddress}`}
-                token={nft}
-                onSelectAsset={() => onSelectAsset(nft)}
-              />
-            ))}
-          </NftGrid>
-        )}
+        ) : listUiByAccounts}
       </ScrollableColumn>
       {showAddNftModal && (
         <AddOrEditNftModal
