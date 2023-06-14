@@ -88,12 +88,7 @@ public class KeyringStore: ObservableObject {
       else {
         return
       }
-      keyringService.setSelectedAccount(
-        selectedAccount.coin,
-        keyringId: selectedAccount.keyringId,
-        address: selectedAccount.address,
-        completion: { _ in }
-      )
+      setSelectedAccount(to: selectedAccount)
     }
   }
   /// All available `KeyringInfo` for all supported coin type
@@ -178,6 +173,36 @@ public class KeyringStore: ObservableObject {
           } // else selected account address does not exist in keyring (should not occur...)
         } // else `self.selectedAccount` is already the currently selected account
       } // else keyring for selected coin is unavailable (should not occur...)
+    }
+  }
+  
+  private func setSelectedAccount(to account: BraveWallet.AccountInfo) {
+    Task { @MainActor in
+      var selectedCoin = await walletService.selectedCoin()
+      if selectedCoin != account.coin {
+        walletService.setSelectedCoin(account.coin)
+        selectedCoin = account.coin
+        // Update selected network so `NetworkStore` updates it's network(s).
+        // `selectedAccountChanged` doesn't fire when switching coin types,
+        // only when selected account for a coin type changes
+        let network = await rpcService.network(selectedCoin, origin: nil)
+        _ = await rpcService.setNetwork(network.chainId, coin: network.coin, origin: nil)
+      }
+      let coreSelectedAccount = await keyringService.selectedAccount(selectedCoin)
+
+      if coreSelectedAccount != account.address {
+        // Update the selected account in core
+        let success = await keyringService.setSelectedAccount(
+          account.coin,
+          keyringId: account.keyringId,
+          address: account.address
+        )
+        if success {
+          self.selectedAccount = account
+        }
+      } else {
+        self.selectedAccount = account
+      }
     }
   }
 
@@ -384,16 +409,8 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
   }
 
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
-    Task { @MainActor in
-      let previouslySelectedCoin = await walletService.selectedCoin()
-      walletService.setSelectedCoin(coinType)
-      if previouslySelectedCoin != coinType || selectedAccount.coin != coinType {
-        // update network here in case NetworkStore is closed.
-        let network = await rpcService.network(coinType, origin: origin)
-        await rpcService.setNetwork(network.chainId, coin: coinType, origin: origin)
-      }
-      updateKeyringInfo()
-    }
+    walletService.setSelectedCoin(coinType)
+    updateKeyringInfo()
   }
 
   public func keyringCreated(_ keyringId: String) {
@@ -439,13 +456,8 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
 
 extension KeyringStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
-    Task { @MainActor in // This observer will take care of selected account update caused by network switching
-      let accountAddress = await keyringService.selectedAccount(coin)
-      let keyring = await keyringService.keyringInfo(coin.keyringId)
-      if let account = keyring.accountInfos.first(where: { $0.address == accountAddress }) {
-        selectedAccount = account
-      }
-    }
+    walletService.setSelectedCoin(coin)
+    updateKeyringInfo()
   }
   
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {

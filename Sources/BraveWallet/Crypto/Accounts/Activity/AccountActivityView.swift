@@ -86,7 +86,7 @@ struct AccountActivityView: View {
         Section(content: {
           Group {
             ForEach(activityStore.userVisibleNFTs) { nftAsset in
-              PortfolioNFTAssetView(
+              NFTAssetView(
                 image: NFTIconView(
                   token: nftAsset.token,
                   network: nftAsset.network,

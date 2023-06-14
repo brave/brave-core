@@ -4072,5 +4072,33 @@ extension Strings {
       value: "Import NFT",
       comment: "The title of the button that user clicks to add his/her first NFT"
     )
+    public static let selectTokenToSendTitle = NSLocalizedString(
+      "wallet.selectTokenToSendTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Select a Token to Send",
+      comment: "The title of the view that lets the user select a token & account at the same time in the Send crypto view."
+    )
+    public static let selectTokenToSendNoTokens = NSLocalizedString(
+      "wallet.selectTokenToSendNoTokens",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "No available tokens",
+      comment: "The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens."
+    )
+    public static let showZeroBalances = NSLocalizedString(
+      "wallet.showZeroBalances",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Show Zero Balances",
+      comment: "The title of a button that updates the filter to show tokens with zero balances."
+    )
+    public static let hideZeroBalances = NSLocalizedString(
+      "wallet.hideZeroBalances",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Hide Zero Balances",
+      comment: "The title of a button that updates the filter to hide tokens with zero balances."
+    )
   }
 }
