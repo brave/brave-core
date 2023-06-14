@@ -596,6 +596,12 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
+      prefs::kSubdivisionTargetingSubdivision,
+      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
+                          base::Unretained(this),
+                          prefs::kSubdivisionTargetingSubdivision));
+
+  pref_change_registrar_.Add(
       prefs::kSubdivisionTargetingAutoDetectedSubdivision,
       base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
                           base::Unretained(this),

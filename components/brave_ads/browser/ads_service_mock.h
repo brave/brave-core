@@ -31,8 +31,6 @@ class AdsServiceMock : public AdsService {
 
   MOCK_CONST_METHOD0(GetMaximumNotificationAdsPerHour, int64_t());
 
-  MOCK_METHOD1(SetSubdivisionTargetingCode, void(const std::string&));
-
   MOCK_CONST_METHOD0(NeedsBrowserUpgradeToServeAds, bool());
 
   MOCK_METHOD2(ShowScheduledCaptcha,

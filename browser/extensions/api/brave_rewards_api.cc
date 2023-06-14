@@ -1381,11 +1381,11 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
         "adsPerHour",
         static_cast<int>(ads_service->GetMaximumNotificationAdsPerHour()));
     ads_data.Set("adsSubdivisionTargeting",
-                 profile->GetPrefs()->GetBoolean(
+                 profile->GetPrefs()->GetString(
                      brave_ads::prefs::kSubdivisionTargetingSubdivision));
     ads_data.Set(
         "automaticallyDetectedAdsSubdivisionTargeting",
-        profile->GetPrefs()->GetBoolean(
+        profile->GetPrefs()->GetString(
             brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision));
     ads_data.Set("shouldAllowAdsSubdivisionTargeting",
                  profile->GetPrefs()->GetBoolean(

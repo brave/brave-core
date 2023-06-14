@@ -197,9 +197,6 @@ class AdsServiceImpl : public AdsService,
 
   int64_t GetMaximumNotificationAdsPerHour() const override;
 
-  void SetSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) override;
-
   bool NeedsBrowserUpgradeToServeAds() const override;
 
   void ShowScheduledCaptcha(const std::string& payment_id,
