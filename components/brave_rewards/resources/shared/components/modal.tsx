@@ -58,7 +58,7 @@ interface ModalProps {
   children: React.ReactNode
 }
 
-export function Modal (props: ModalProps) {
+export function Modal(props: ModalProps) {
   // Attach a ResizeObserver for the modal content container. When the content
   // size changes, set a CSS variable "--modal-content-size" on the document
   // body. This is primarily used by browser "bubbles" in order to automatically

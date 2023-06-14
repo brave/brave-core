@@ -22,8 +22,6 @@ function getBackgroundImage (key: PromotionKey) {
   }
 }
 
-export const rewardsTourPromo = styled.div``
-
 export const promotion = styled.div`
   color: #000;
   background: #fff;

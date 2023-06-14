@@ -4,97 +4,74 @@
 
 import styled from 'styled-components'
 
-import modalBackground from './assets/opt_in_modal_bg.svg'
+import * as leo from '@brave/leo/tokens/css'
 
 export const root = styled.div`
   height: 100%;
   width: 100%;
-  background-color: var(--brave-palette-white);
-  background-image: url('${modalBackground}');
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  background-size: auto 220px;
+  background-color: ${leo.color.white};
   border-radius: 4px;
   font-family: var(--brave-font-heading);
   text-align: center;
-  padding: 90px 16px;
+  padding: 44px 128px;
+`
 
-  a {
-    color: var(--brave-color-brandBat);
-    font-weight: 600;
-    text-decoration: none;
+export const icon = styled.div`
+  .icon {
+    height: 190px;
+    width: 198px;
   }
 `
 
 export const heading = styled.div`
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 60px;
-
-  .icon {
-    height: 45px;
-    vertical-align: middle;
-    margin-bottom: 6px;
-    margin-right: 12px;
-  }
-
-  @media (max-width: 500px) {
-    font-size: 32px;
-
-    .icon {
-      margin-right: 8px;
-    }
-  }
-`
-
-export const subHeading = styled.div`
-  font-size: 18px;
-  line-height: 24px;
-  color: var(--brave-palette-neutral600);
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 339px;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 32px;
+  color: ${leo.color.light.text.primary};
 `
 
 export const text = styled.div`
-  margin: 19px auto 0;
-  color: var(--brave-palette-neutral700);
+  margin-top: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 339px;
+  color: ${leo.color.light.text.secondary};
+  font-weight: 500;
   font-size: 14px;
-  line-height: 22px;
-  max-width: 325px;
-`
-
-export const takeTour = styled.div`
-  margin-top: 20px;
-  color: var(--brave-color-brandBat);
-
-  button {
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 21px;
-    border: 0;
-    background: 0;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-  }
+  line-height: 24px;
 `
 
 export const enable = styled.div`
-  margin-top: 62px;
+  margin-top: 32px;
 
   button {
-    width: 100%;
-    max-width: 330px;
+    max-width: 339px;
+    color: ${leo.color.white};
+    background: ${leo.color.light.interaction.buttonPrimaryBackground};
+    border-radius: 48px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 0.03em;
   }
 `
 
-export const footer = styled.div`
-  max-width: 320px;
-  margin: 10px auto;
-  font-size: 11px;
-  line-height: 16px;
-  color: var(--brave-palette-neutral600);
+export const learnMore = styled.div`
+  margin-top: 20px;
+  margin-bottom: 8px;
+  text-align: center;
 
   a {
+    color: ${leo.color.light.text.interactive};
     font-weight: 600;
-    color: var(--brave-color-brandBat);
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 0.03em;
+    text-decoration: none;
   }
 `

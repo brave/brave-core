@@ -164,7 +164,7 @@ declare namespace chrome.braveRewards {
 
   const openRewardsPanel: () => void
 
-  const showRewardsTour: () => void
+  const showRewardsSetup: () => void
 
   const showGrantCaptcha: (grantId: string) => void
 

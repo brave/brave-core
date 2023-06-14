@@ -71,9 +71,9 @@ TEST_F(RewardsPanelCoordinatorTest, OpenRewardsPanel) {
   EXPECT_EQ(last_args().data, "");
 }
 
-TEST_F(RewardsPanelCoordinatorTest, ShowRewardsTour) {
-  EXPECT_TRUE(coordinator().ShowRewardsTour());
-  EXPECT_EQ(last_args().view, mojom::RewardsPanelView::kRewardsTour);
+TEST_F(RewardsPanelCoordinatorTest, ShowRewardsSetup) {
+  EXPECT_TRUE(coordinator().ShowRewardsSetup());
+  EXPECT_EQ(last_args().view, mojom::RewardsPanelView::kRewardsSetup);
   EXPECT_EQ(last_args().data, "");
 }
 

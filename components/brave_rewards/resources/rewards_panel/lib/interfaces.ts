@@ -80,7 +80,7 @@ export interface Options {
   vbatExpired: boolean
 }
 
-type RequestedView = 'rewards-tour' | 'inline-tip'
+type RequestedView = 'rewards-setup' | 'inline-tip'
 
 export interface HostState {
   openTime: number
@@ -128,5 +128,6 @@ export interface Host {
   clearGrantCaptcha: () => void
   clearAdaptiveCaptcha: () => void
   handleAdaptiveCaptchaResult: (result: AdaptiveCaptchaResult) => void
+  closePanel: () => void
   onAppRendered: () => void
 }

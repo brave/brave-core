@@ -10,8 +10,8 @@ import * as leo from '@brave/leo/tokens/css'
 import { buttonReset } from '../../lib/css_mixins'
 
 export const root = styled.div`
-  background: rgba(15, 28, 45, 0.7);
-  backdrop-filter: blur(27.1828px);
+  background: rgba(24, 25, 30, 0.6);
+  backdrop-filter: blur(27.5px);
   border-radius: 6px;
   color: ${leo.color.dark.text.primary};
   font-family: Poppins;
@@ -49,40 +49,71 @@ export const unsupportedRegionCard = styled.div`
   margin-top: 24px;
 `
 
-export const rewardsOptIn = styled.div`
-  margin-top: 11px;
-  margin-bottom: 16px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 12px;
-  line-height: 18px;
-  text-align: center;
-  letter-spacing: 0.01em;
+export const optInIcon = styled.div`
+  margin-top: 14px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  .icon {
+    margin-left: auto;
+    margin-right: auto;
+    height: 126px;
+    width: 130px;
+  }
 `
 
-export const rewardsOptInHeader = styled.div`
-  margin-bottom: 12px;
+export const optInHeaderText = styled.div`
+  color: ${leo.color.white};
+  text-align: center;
   font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 28px;
+`
+
+export const optInText = styled.div`
+  margin-top: 10px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 18px;
+`
+
+export const optInAction = styled.div`
+  margin-top: 10px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+  button {
+    ${buttonReset}
+    color: ${leo.color.white};
+    background: ${leo.color.interaction.buttonPrimaryBackground};
+    border-radius: 48px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+  }
+`
+
+export const optInLearnMore = styled.div`
+  margin-top: 12px;
+  margin-bottom: 8px;
+  text-align: center;
+
+  a {
+    color: ${leo.color.dark.text.interactive};
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+  }
 `
 
 export const selectCountry = styled.div`
   margin: 16px -12px 0;
-`
-
-export const terms = styled.div`
-  margin-top: 14px;
-  padding-bottom: 10px;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: center;
-  letter-spacing: 0.01em;
-  color: rgba(255, 255, 255, 0.8);
-
-  a {
-    color: inherit;
-    text-decoration: underline;
-  }
 `
 
 export const disconnected = styled.div`

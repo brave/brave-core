@@ -370,6 +370,12 @@
         "parameters": []
       },
       {
+        "name": "showRewardsSetup",
+        "type": "function",
+        "description": "Opens the Rewards panel in the active window and shows setup.",
+        "parameters": []
+      },
+      {
         "name": "showGrantCaptcha",
         "type": "function",
         "description": "Displays a grant captcha in the Rewards panel.",

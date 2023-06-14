@@ -185,8 +185,8 @@ export function createHost (): Host {
 
   function handleRewardsPanelArgs (args: mojom.RewardsPanelArgs) {
     switch (args.view) {
-      case mojom.RewardsPanelView.kRewardsTour:
-        stateManager.update({ requestedView: 'rewards-tour' })
+      case mojom.RewardsPanelView.kRewardsSetup:
+        stateManager.update({ requestedView: 'rewards-setup' })
         break
       case mojom.RewardsPanelView.kGrantCaptcha:
         loadGrantCaptcha(args.data, 'pending')
@@ -572,6 +572,8 @@ export function createHost (): Host {
           break
       }
     },
+
+    closePanel,
 
     onAppRendered () {
       proxy.handler.showUI()
