@@ -69,7 +69,7 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
   auto* headers = navigation_handle()->GetResponseHeaders();
   std::string onion_location;
   // The webpage defining the Onion-Location header must not be an onionsite.
-  // https://gitweb.torproject.org/tor-browser-spec.git/plain/proposals/100-onion-location-header.txt
+  // https://gitlab.torproject.org/tpo/applications/tor-browser-spec/-/raw/HEAD/proposals/100-onion-location-header.txt
   if (headers && GetOnionLocation(headers, &onion_location) &&
       !navigation_handle()->GetURL().DomainIs("onion") &&
       // The webpage defining the Onion-Location header must be served over
