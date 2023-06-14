@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!-- Accept-Language HTTP header test from service worker -->
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <script>
+      navigator.serviceWorker.register('service-workers-accept-language.js')
+      navigator.serviceWorker.onmessage = function (e) {
+        document.title = e.data; // 'LOADED' or 'FAILED'
+      };
+      navigator.serviceWorker.ready.then(function(registration) {
+        if (!navigator.serviceWorker.controller)
+          window.location.reload();
+        navigator.serviceWorker.controller.postMessage("fetch");
+      });
+    </script>
+  </body>
+</html>
