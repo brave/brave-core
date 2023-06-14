@@ -384,10 +384,11 @@ void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
 
   ClearAllContentSettingsRules(ContentSettingsType::BRAVE_COOKIES);
   for (auto&& rule : new_rules) {
-    SetWebsiteSettingInternal(
-        rule->primary_pattern, rule->secondary_pattern,
-        ContentSettingsType::BRAVE_COOKIES, rule->TakeValue(),
-        {rule->metadata.expiration, rule->metadata.session_model});
+    ContentSettingConstraints constraints;
+    constraints.set_session_model(rule->metadata.session_model);
+    SetWebsiteSettingInternal(rule->primary_pattern, rule->secondary_pattern,
+                              ContentSettingsType::BRAVE_COOKIES,
+                              rule->TakeValue(), std::move(constraints));
   }
 
   // Mark migration as done.
@@ -440,12 +441,14 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
         old_rules[i].first, old_rules[i].second, content_type,
         ContentSettingToValue(CONTENT_SETTING_DEFAULT), {});
     // Add new setting.
+    ContentSettingConstraints constraints;
+    constraints.set_session_model(new_rules[i]->metadata.session_model);
+
     SetWebsiteSettingInternal(
         new_rules[i]->primary_pattern, new_rules[i]->secondary_pattern,
         content_type,
         ContentSettingToValue(ValueToContentSetting(new_rules[i]->value())),
-        {new_rules[i]->metadata.expiration,
-         new_rules[i]->metadata.session_model});
+        std::move(constraints));
   }
 }
 
@@ -468,11 +471,12 @@ void BravePrefProvider::MigrateFingerprintingSettings() {
     if (fp_rule->secondary_pattern == ContentSettingsPattern::Wildcard() &&
         fp_rule->value() == CONTENT_SETTING_BLOCK) {
 #if BUILDFLAG(IS_ANDROID)
+      ContentSettingConstraints constraints;
+      constraints.set_session_model(fp_rule->metadata.session_model);
       SetWebsiteSettingInternal(
           fp_rule->primary_pattern, fp_rule->secondary_pattern,
           ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-          ContentSettingToValue(CONTENT_SETTING_ASK),
-          {fp_rule->metadata.expiration, fp_rule->metadata.session_model});
+          ContentSettingToValue(CONTENT_SETTING_ASK), std::move(constraints));
 #endif  // BUILDFLAG(IS_ANDROID)
     }
   }
@@ -584,7 +588,7 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
     base::Time modified_time =
         store_last_modified_ ? base::Time::Now() : base::Time();
 
-    base::Time last_visited = constraints.track_last_visit_for_autoexpiration
+    base::Time last_visited = constraints.track_last_visit_for_autoexpiration()
                                   ? GetCoarseVisitedTime(base::Time::Now())
                                   : base::Time();
 
@@ -593,8 +597,8 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
                             std::move(in_value),
                             {.last_modified = modified_time,
                              .last_visited = last_visited,
-                             .expiration = constraints.expiration,
-                             .session_model = constraints.session_model});
+                             .expiration = constraints.expiration(),
+                             .session_model = constraints.session_model()});
     return true;
   }
 
