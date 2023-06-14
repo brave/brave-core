@@ -9,13 +9,15 @@ class SyncViewController: UIViewController {
 
   let windowProtection: WindowProtection?
   private let requiresAuthentication: Bool
+  private let isModallyPresented: Bool
 
   // MARK: Lifecycle
 
-  init(windowProtection: WindowProtection? = nil, requiresAuthentication: Bool = false) {
+  init(windowProtection: WindowProtection? = nil, requiresAuthentication: Bool = false, isModallyPresented: Bool = false) {
     self.windowProtection = windowProtection
     self.requiresAuthentication = requiresAuthentication
-    
+    self.isModallyPresented = isModallyPresented
+
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -25,9 +27,21 @@ class SyncViewController: UIViewController {
   
   override func viewDidLoad() {
     view.backgroundColor = .secondaryBraveBackground
-
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
     if requiresAuthentication {
-      askForAuthentication()
+      askForAuthentication() { [weak self] status in
+        guard let self else { return }
+        
+        if isModallyPresented {
+          self.dismiss(animated: true)
+        } else {
+          self.navigationController?.popViewController(animated: true)
+        }
+      }
     }
   }
 

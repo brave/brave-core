@@ -91,7 +91,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
     self.syncProfileService = syncProfileService
     self.tabManager = tabManager
     
-    super.init(windowProtection: windowProtection, requiresAuthentication: requiresAuthentication)
+    super.init(windowProtection: windowProtection, requiresAuthentication: requiresAuthentication, isModallyPresented: isModallyPresented)
   }
 
   required init?(coder: NSCoder) {
