@@ -299,7 +299,7 @@ extension NetworkStore: BraveWalletJsonRpcServiceObserver {
       } else {
         defaultSelectedChainId = chainId
         isSwapSupported = await swapService.isSwapSupported(chainId)
-        if self.origin != nil {
+        if let origin = self.origin {
           // The default network may be used for this origin if no
           // other network was assigned for this origin. If so, we
           // need to make sure the `selectedChainIdForOrigin` is updated
@@ -314,13 +314,20 @@ extension NetworkStore: BraveWalletJsonRpcServiceObserver {
 
 extension NetworkStore: BraveWalletKeyringServiceObserver {
   public func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
-    Task { @MainActor in
-      // coin type of selected account might have changed
-      let chain = await rpcService.network(coin, origin: nil)
-      await setSelectedChain(chain, isForOrigin: false)
-      if let origin {
-        let chainForOrigin = await rpcService.network(coin, origin: origin)
-        await setSelectedChain(chainForOrigin, isForOrigin: true)
+    walletService.setSelectedCoin(coin)
+    if defaultSelectedChain.coin != coin {
+      // selected coin updated, `NetworkStore` selected network(s) needs updated
+      Task { @MainActor in
+        let selectedNetwork = await rpcService.network(coin, origin: nil)
+        defaultSelectedChainId = selectedNetwork.chainId
+        if let origin = self.origin {
+          // The default network may be used for this origin if no
+          // other network was assigned for this origin. If so, we
+          // need to make sure the `selectedChainIdForOrigin` is updated
+          // to reflect the correct network.
+          let networkForOrigin = await rpcService.network(coin, origin: origin)
+          selectedChainIdForOrigin = networkForOrigin.chainId
+        }
       }
     }
   }

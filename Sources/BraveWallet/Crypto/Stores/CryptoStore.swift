@@ -197,6 +197,7 @@ public class CryptoStore: ObservableObject {
       walletService: walletService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
+      assetRatioService: assetRatioService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: prefilledToken,

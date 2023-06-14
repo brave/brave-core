@@ -136,13 +136,23 @@ struct NFTIconView: View {
   var shouldShowNetworkIcon: Bool = false
   
   @ScaledMetric var length: CGFloat = 40
+  var maxLength: CGFloat?
   @ScaledMetric var tokenLogoLength: CGFloat = 15
+  var maxTokenLogoLength: CGFloat?
   
   @ViewBuilder private var tokenLogo: some View {
     if shouldShowNetworkIcon, let image = network.nativeTokenLogoImage {
       Image(uiImage: image)
         .resizable()
-        .frame(width: 15, height: 15)
+        .overlay(
+          Circle()
+            .stroke(lineWidth: 2)
+            .foregroundColor(.white)
+        )
+        .frame(
+          width: min(tokenLogoLength, maxTokenLogoLength ?? tokenLogoLength),
+          height: min(tokenLogoLength, maxTokenLogoLength ?? tokenLogoLength)
+        )
     }
   }
   
@@ -156,7 +166,10 @@ struct NFTIconView: View {
       )
     }
     .cornerRadius(5)
-    .frame(width: length, height: length)
+    .frame(
+      width: min(length, maxLength ?? length),
+      height: min(length, maxLength ?? length)
+    )
     .overlay(tokenLogo, alignment: .bottomTrailing)
     .allowsHitTesting(false)
     .accessibilityHidden(true)

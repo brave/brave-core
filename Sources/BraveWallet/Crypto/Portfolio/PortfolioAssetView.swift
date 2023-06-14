@@ -14,28 +14,20 @@ struct PortfolioAssetView: View {
   var quantity: String
 
   var body: some View {
-    HStack {
-      image
-      VStack(alignment: .leading) {
-        Text(title)
-          .font(.footnote)
-          .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
-        Text(String.localizedStringWithFormat(Strings.Wallet.userAssetSymbolNetworkDesc, symbol, networkName))
-          .font(.caption)
-          .foregroundColor(Color(.braveLabel))
+    AssetView(
+      image: { image },
+      title: title,
+      symbol: symbol,
+      networkName: networkName,
+      accessoryContent: {
+        VStack(alignment: .trailing) {
+          Text(amount.isEmpty ? "0.0" : amount)
+          Text(verbatim: "\(quantity) \(symbol)")
+        }
+        .font(.footnote)
+        .foregroundColor(Color(.braveLabel))
       }
-      Spacer()
-      VStack(alignment: .trailing) {
-        Text(amount.isEmpty ? "0.0" : amount)
-        Text(verbatim: "\(quantity) \(symbol)")
-      }
-      .font(.footnote)
-      .foregroundColor(Color(.braveLabel))
-    }
-    .frame(maxWidth: .infinity)
-    .padding(.vertical, 6)
-    .accessibilityElement()
+    )
     .accessibilityLabel("\(title), \(quantity) \(symbol), \(amount)")
   }
 }
@@ -57,7 +49,7 @@ struct PortfolioAssetView_Previews: PreviewProvider {
 }
 #endif
 
-struct PortfolioNFTAssetView: View {
+struct NFTAssetView: View {
   
   let image: NFTIconView
   let title: String
@@ -66,33 +58,25 @@ struct PortfolioNFTAssetView: View {
   let quantity: String
   
   var body: some View {
-    HStack {
-      image
-      VStack(alignment: .leading) {
-        Text(title)
+    AssetView(
+      image: { image },
+      title: title,
+      symbol: symbol,
+      networkName: networkName,
+      accessoryContent: {
+        Text(quantity)
           .font(.footnote)
-          .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
-        Text(String.localizedStringWithFormat(Strings.Wallet.userAssetSymbolNetworkDesc, symbol, networkName))
-          .font(.caption)
           .foregroundColor(Color(.braveLabel))
       }
-      Spacer()
-      Text(quantity)
-        .font(.footnote)
-        .foregroundColor(Color(.braveLabel))
-    }
-    .frame(maxWidth: .infinity)
-    .padding(.vertical, 6)
-    .accessibilityElement()
+    )
     .accessibilityLabel("\(title), \(quantity) \(symbol)")
   }
 }
 
 #if DEBUG
-struct PortfolioNFTAssetView_Previews: PreviewProvider {
+struct NFTAssetView_Previews: PreviewProvider {
   static var previews: some View {
-    PortfolioNFTAssetView(
+    NFTAssetView(
       image: NFTIconView(token: .previewToken, network: .mockMainnet),
       title: "Invisible Friends #3965",
       symbol: "INVSBLE",
@@ -104,3 +88,32 @@ struct PortfolioNFTAssetView_Previews: PreviewProvider {
   }
 }
 #endif
+
+/// AssetView is used to display an asset image, title, symbol and network with an optional accessory view on the right.
+struct AssetView<ImageView: View, AccessoryContent: View>: View {
+  let image: () -> ImageView
+  let title: String
+  let symbol: String
+  let networkName: String
+  let accessoryContent: () -> AccessoryContent
+
+  var body: some View {
+    HStack {
+      image()
+      VStack(alignment: .leading) {
+        Text(title)
+          .font(.footnote)
+          .fontWeight(.semibold)
+          .foregroundColor(Color(.bravePrimary))
+        Text(String.localizedStringWithFormat(Strings.Wallet.userAssetSymbolNetworkDesc, symbol, networkName))
+          .font(.caption)
+          .foregroundColor(Color(.braveLabel))
+      }
+      Spacer()
+      accessoryContent()
+    }
+    .frame(maxWidth: .infinity)
+    .padding(.vertical, 6)
+    .accessibilityElement()
+  }
+}

@@ -61,12 +61,14 @@ struct NetworkFilterView: View {
   }
   
   private func selectNetwork(_ network: NetworkPresentation.Network) {
-    switch network {
-    case .allNetworks:
-      networkFilter = .allNetworks
-    case let .network(network):
-      networkFilter = .network(network)
+    DispatchQueue.main.async {
+      switch network {
+      case .allNetworks:
+        networkFilter = .allNetworks
+      case let .network(network):
+        networkFilter = .network(network)
+      }
+      presentationMode.dismiss()
     }
-    presentationMode.dismiss()
   }
 }

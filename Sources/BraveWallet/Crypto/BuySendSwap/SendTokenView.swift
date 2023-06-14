@@ -16,6 +16,7 @@ struct SendTokenView: View {
 
   @State private var isShowingScanner = false
   @State private var isShowingError = false
+  @State private var isShowingSelectAccountTokenView: Bool = false
 
   @ScaledMetric private var length: CGFloat = 16.0
   
@@ -66,24 +67,30 @@ struct SendTokenView: View {
   var body: some View {
     NavigationView {
       Form {
-        Section {
-          AccountPicker(
-            keyringStore: keyringStore,
-            networkStore: networkStore
-          )
-          .listRowBackground(Color(UIColor.braveGroupedBackground))
-          .resetListHeaderStyle()
-        }
         Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.sendCryptoFromTitle))
-        ) {
-          NavigationLink(
-            destination:
-              SendTokenSearchView(
-                sendTokenStore: sendTokenStore,
-                network: networkStore.defaultSelectedChain
+          header: WalletListHeaderView {
+            HStack {
+              Text("\(Strings.Wallet.sendCryptoFromTitle): \(keyringStore.selectedAccount.name) (\(keyringStore.selectedAccount.address.truncatedAddress))")
+              Spacer()
+              Menu(
+                content: {
+                  Text(keyringStore.selectedAccount.address.zwspOutput)
+                  Button(action: {
+                    UIPasteboard.general.string = keyringStore.selectedAccount.address
+                  }) {
+                    Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
+                  }
+                },
+                label: {
+                  Image(braveSystemName: "leo.more.horizontal")
+                    .padding(6)
+                    .clipShape(Rectangle())
+                }
               )
-          ) {
+            }
+          }
+        ) {
+          Button(action: { self.isShowingSelectAccountTokenView = true }) {
             HStack {
               if let token = sendTokenStore.selectedSendToken {
                 if token.isErc721 || token.isNft {
@@ -101,11 +108,16 @@ struct SendTokenView: View {
                   )
                 }
               }
-              Text(sendTokenStore.selectedSendToken?.symbol ?? "")
-                .font(.title3.weight(.semibold))
-                .foregroundColor(Color(.braveLabel))
+              VStack(alignment: .leading) {
+                Text(sendTokenStore.selectedSendToken?.symbol ?? "")
+                  .font(.title3.weight(.semibold))
+                  .foregroundColor(Color(.braveLabel))
+                Text(networkStore.defaultSelectedChain.chainName)
+                  .font(.caption)
+                  .foregroundColor(Color(.secondaryBraveLabel))
+              }
               Spacer()
-              Text(sendTokenStore.selectedSendTokenBalance?.decimalDescription ?? "0.0000")
+              Text("\(sendTokenStore.selectedSendTokenBalance?.decimalDescription.trimmingTrailingZeros ?? "0") \(sendTokenStore.selectedSendToken?.symbol ?? "")")
                 .font(.title3.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))
             }
@@ -258,6 +270,16 @@ struct SendTokenView: View {
           address: $sendTokenStore.sendAddress
         )
       }
+      .sheet(isPresented: $isShowingSelectAccountTokenView) {
+        NavigationView {
+          SelectAccountTokenView(
+            store: sendTokenStore.selectTokenStore,
+            networkStore: networkStore
+          )
+          .navigationTitle(Strings.Wallet.selectTokenToSendTitle)
+          .navigationBarTitleDisplayMode(.inline)
+        }
+      }
       .navigationTitle(Strings.Wallet.send)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -269,8 +291,9 @@ struct SendTokenView: View {
         }
       }
     }
-    .onAppear {
+    .task {
       sendTokenStore.update()
+      await sendTokenStore.selectTokenStore.update()
     }
     .navigationViewStyle(.stack)
   }
