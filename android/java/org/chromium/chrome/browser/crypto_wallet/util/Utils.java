@@ -424,8 +424,20 @@ public class Utils {
         return 0;
     }
 
-    // Supposedly toWei shall always end up with an integer
-    private static BigInteger toWeiInternal(String number, int decimals) throws ParseException {
+    /**
+     * Converts a given string to a big integer and multiplies the value of the object by
+     * ten raised to the power of decimals.
+     *
+     * @param number Number to be multiplied, represented as a string.
+     * @param decimals Number of decimal to multiply by
+     * @return The result of multiplying the number by ten raised to the power of decimals,
+     * expressed as a BigInteger.
+     * @throws ParseException If the input string cannot be parsed as a BigDecimal.
+     *
+     * <b>Note:</b>: Supposedly, when converting to Wei the result shall always end up with an
+     * integer.
+     */
+    public static BigInteger multiplyByDecimals(String number, int decimals) throws ParseException {
         NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
         ParsePosition parsePosition = new ParsePosition(0);
         BigDecimal parsed = null;
@@ -466,7 +478,7 @@ public class Utils {
         }
 
         try {
-            return "0x" + toWeiInternal(number, decimals).toString(16);
+            return "0x" + multiplyByDecimals(number, decimals).toString(16);
         } catch (ParseException ex) {
             return "0x0";
         }
