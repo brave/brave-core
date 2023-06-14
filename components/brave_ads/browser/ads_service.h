@@ -52,10 +52,6 @@ class AdsService : public KeyedService {
   // Returns the maximum number of notification ads that can be served per hour.
   virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;
 
-  // Called to set the maximum number of notification ads that can be served per
-  // hour.
-  virtual void SetMaximumNotificationAdsPerHour(int64_t ads_per_hour) = 0;
-
   // Returns |true| if subdivision targeting is supported.
   virtual bool ShouldAllowSubdivisionTargeting() const = 0;
 
