@@ -37,9 +37,19 @@ import {
 } from './style'
 
 // hooks
-import { useAssetManagement, useTokenRegistry } from '../../../../common/hooks'
+import { useAssetManagement } from '../../../../common/hooks'
 import { useSelector } from 'react-redux'
-import { useGetSelectedChainQuery } from '../../../../common/slices/api.slice'
+import {
+  useGetSelectedChainQuery,
+  useGetTokensRegistryQuery
+} from '../../../../common/slices/api.slice'
+import {
+  getEntitiesListFromEntityState
+} from '../../../../utils/entities.utils'
+import {
+  blockchainTokenEntityAdaptorInitialState
+} from '../../../../common/slices/entities/blockchain-token.entity'
+
 
 export interface Props {
   onClose: () => void
@@ -51,12 +61,16 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const {
+    data: tokenEntityState =
+    blockchainTokenEntityAdaptorInitialState,
+    isLoading
+  } = useGetTokensRegistryQuery()
 
   // custom hooks
   const {
     onUpdateVisibleAssets
   } = useAssetManagement()
-  const { tokenRegistry, fullTokenListAllChains, isLoading } = useTokenRegistry()
 
   // Token List States
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -109,13 +123,32 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     }
   }, [selectedNetwork])
 
+  const fullTokenListAllChains = React.useMemo(() => {
+    return getEntitiesListFromEntityState(
+      tokenEntityState,
+      tokenEntityState.ids
+    )
+  }, [tokenEntityState])
+
   // Token list based on selectedNetworkFilter
-  const selectedNetworkList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return fullTokenListAllChains
-    }
-    return Object.keys(tokenRegistry).length === 0 ? [] : tokenRegistry[selectedNetworkFilter.chainId]
-  }, [tokenRegistry, selectedNetworkFilter.chainId, fullTokenListAllChains, Object.keys(tokenRegistry).length])
+  const tokenListForSelectedNetworks: BraveWallet.BlockchainToken[] =
+    React.useMemo(() => {
+      if (
+        selectedNetworkFilter.chainId ===
+        AllNetworksOption.chainId
+      ) {
+        return fullTokenListAllChains
+      }
+
+      const tokenIds =
+        tokenEntityState
+          .idsByChainId[selectedNetworkFilter.chainId]
+      return getEntitiesListFromEntityState(tokenEntityState, tokenIds)
+    }, [
+      selectedNetworkFilter.chainId,
+      tokenEntityState,
+      fullTokenListAllChains
+    ])
 
   // User tokens sorted by visibility
   const usersTokensSortedByVisibility
@@ -145,8 +178,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
         )
     }, [
       usersTokensSortedByVisibility,
-      selectedNetworkFilter.chainId,
-      tokenRegistry
+      selectedNetworkFilter.chainId
     ])
 
   // Constructed list based on Users Visible Tokens and Full Token List
@@ -156,8 +188,8 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       : userVisibleTokensBySelectedNetwork.map((token) => token.contractAddress.toLowerCase())
 
     const fullAssetsListPlusNativeToken = userVisibleContracts.includes('') || !nativeAsset
-      ? selectedNetworkList
-      : [nativeAsset, ...selectedNetworkList]
+      ? tokenListForSelectedNetworks
+      : [nativeAsset, ...tokenListForSelectedNetworks]
 
     const filteredTokenRegistry = fullAssetsListPlusNativeToken
       .filter((token) => !userVisibleContracts.includes(token?.contractAddress?.toLowerCase()))
@@ -167,7 +199,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       : [...userVisibleTokensBySelectedNetwork, ...filteredTokenRegistry]
   }, [
     isUserVisibleTokensInfoEmpty,
-    selectedNetworkList,
+    tokenListForSelectedNetworks,
     userVisibleTokensInfo,
     nativeAsset,
     userVisibleTokensBySelectedNetwork

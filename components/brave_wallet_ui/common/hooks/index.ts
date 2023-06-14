@@ -13,7 +13,6 @@ import useAssetManagement from './assets-management'
 import useHasAccount from './has-account'
 import usePrevNetwork from './previous-network'
 import useIsMounted from './useIsMounted'
-import useTokenRegistry from './useTokenRegistry'
 import { useMultiChainBuyAssets } from './use-multi-chain-buy-assets'
 import useBalanceUpdater from './use-balance-updater'
 import { useLib } from './useLib'
@@ -30,7 +29,6 @@ export {
   usePricing,
   useSend,
   useTokenInfo,
-  useTokenRegistry,
   useMultiChainBuyAssets,
   useBalanceUpdater
 }
