@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 5a5a48ef70c66b8314abde3d50a03208465f2d66..782166722ea75cb59fa467edd75c549a89bad078 100644
+index 3ca631127d7424c5b0fecdfd828b323338c98438..3aab05dfc5d745a29b1005365dcc2e746e37beeb 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3569,6 +3569,7 @@ const FeatureEntry::FeatureVariation kVcSegmentationModelVariations[] = {
+@@ -3787,6 +3787,7 @@ const FeatureEntry::FeatureVariation kPasswordGenerationExperimentVariations[] =
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

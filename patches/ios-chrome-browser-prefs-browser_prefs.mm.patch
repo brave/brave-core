@@ -10,7 +10,7 @@ index 190826b4848d1ddf94c9040e2dc340a26fb8e3ed..66ab7689177ad608e8c75f3a3a73eaad
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -392,6 +393,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -401,6 +402,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    ntp_snippets::prefs::RegisterProfilePrefsForMigrationApril2023(registry);
  
    registry->RegisterBooleanPref(kDeprecatedReadingListHasUnseenEntries, false);
