@@ -20,10 +20,7 @@
 
 BraveVPNMenuModel::BraveVPNMenuModel(Browser* browser,
                                      PrefService* profile_prefs)
-    : SimpleMenuModel(nullptr),
-      profile_prefs_(profile_prefs),
-      browser_(browser) {
-  set_delegate(this);
+    : SimpleMenuModel(this), profile_prefs_(profile_prefs), browser_(browser) {
   Build();
 }
 
