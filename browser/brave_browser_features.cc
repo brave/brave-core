@@ -23,4 +23,10 @@ BASE_FEATURE(kBraveCopyCleanLinkByDefault,
 #endif
 );
 
+// Disable download warnings for dangerous files when Safe Browsing is
+// disabled.
+BASE_FEATURE(kBraveOverrideDownloadDangerLevel,
+             "brave-override-download-danger-level",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
