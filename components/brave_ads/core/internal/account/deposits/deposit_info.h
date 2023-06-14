@@ -13,7 +13,7 @@
 namespace brave_ads {
 
 struct DepositInfo final {
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string creative_instance_id;
   double value = 0.0;

@@ -30,10 +30,10 @@ struct ClientInfo final {
   ~ClientInfo();
 
   base::Value::Dict ToValue() const;
-  bool FromValue(const base::Value::Dict& dict);
+  [[nodiscard]] bool FromValue(const base::Value::Dict& dict);
 
   std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  [[nodiscard]] bool FromJson(const std::string& json);
 
   AdPreferencesInfo ad_preferences;
   HistoryItemList history_items;

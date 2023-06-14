@@ -31,7 +31,7 @@ struct AdPreferencesInfo final {
   void FromValue(const base::Value::Dict& dict);
 
   std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  [[nodiscard]] bool FromJson(const std::string& json);
 
   FilteredAdvertiserList filtered_advertisers;
   FilteredCategoryList filtered_categories;

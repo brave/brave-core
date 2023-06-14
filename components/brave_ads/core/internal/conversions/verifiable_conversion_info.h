@@ -14,7 +14,7 @@ struct VerifiableConversionInfo final {
   bool operator==(const VerifiableConversionInfo&) const;
   bool operator!=(const VerifiableConversionInfo&) const;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string id;
   std::string public_key;

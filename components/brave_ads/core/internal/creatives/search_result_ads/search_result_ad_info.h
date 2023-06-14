@@ -13,7 +13,7 @@
 namespace brave_ads {
 
 struct SearchResultAdInfo final : AdInfo {
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string headline_text;
   std::string description;

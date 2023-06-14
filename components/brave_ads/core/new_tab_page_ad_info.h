@@ -29,7 +29,7 @@ struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   bool operator==(const NewTabPageAdInfo&) const;
   bool operator!=(const NewTabPageAdInfo&) const;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   bool HasValidCreativeInstanceIdAndCampaignId() const;
 

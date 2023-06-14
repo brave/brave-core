@@ -28,7 +28,7 @@ struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
   bool operator==(const InlineContentAdInfo&) const;
   bool operator!=(const InlineContentAdInfo&) const;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string title;
   std::string description;

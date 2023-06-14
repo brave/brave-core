@@ -57,9 +57,9 @@ class DLEQProof {
   static DLEQProof DecodeBase64(const std::string& dleq_proof_base64);
   absl::optional<std::string> EncodeBase64() const;
 
-  bool Verify(const BlindedToken& blinded_token,
-              const SignedToken& signed_token,
-              const PublicKey& public_key);
+  [[nodiscard]] bool Verify(const BlindedToken& blinded_token,
+                            const SignedToken& signed_token,
+                            const PublicKey& public_key);
 
  private:
   absl::optional<challenge_bypass_ristretto::DLEQProof> dleq_proof_;

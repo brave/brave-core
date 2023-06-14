@@ -26,7 +26,7 @@ struct VerifiableConversionEnvelopeInfo final {
   bool operator==(const VerifiableConversionEnvelopeInfo&) const;
   bool operator!=(const VerifiableConversionEnvelopeInfo&) const;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string algorithm;
   std::string ciphertext;

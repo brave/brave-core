@@ -30,7 +30,7 @@ absl::optional<ConfirmationInfo> CreateOptedInConfirmation(
 absl::optional<ConfirmationInfo> CreateOptedOutConfirmation(
     const TransactionInfo& transaction);
 
-bool IsValid(const ConfirmationInfo& confirmation);
+[[nodiscard]] bool IsValid(const ConfirmationInfo& confirmation);
 
 void ResetConfirmations();
 

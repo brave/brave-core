@@ -96,7 +96,7 @@ class ClientStateManager final {
   void LoadCallback(InitializeCallback callback,
                     const absl::optional<std::string>& json);
 
-  bool FromJson(const std::string& json);
+  [[nodiscard]] bool FromJson(const std::string& json);
 
   ClientInfo client_;
 

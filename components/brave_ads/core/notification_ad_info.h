@@ -14,7 +14,7 @@
 namespace brave_ads {
 
 struct ADS_EXPORT NotificationAdInfo final : AdInfo {
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string title;
   std::string body;

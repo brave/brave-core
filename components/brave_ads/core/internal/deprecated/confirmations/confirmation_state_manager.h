@@ -42,7 +42,7 @@ class ConfirmationStateManager final {
   void Save();
 
   std::string ToJson();
-  bool FromJson(const std::string& json);
+  [[nodiscard]] bool FromJson(const std::string& json);
 
   absl::optional<OptedInInfo> GetOptedIn(const base::Value::Dict& dict) const;
   bool GetFailedConfirmationsFromDictionary(

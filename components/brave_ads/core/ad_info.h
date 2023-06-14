@@ -28,7 +28,7 @@ struct ADS_EXPORT AdInfo {
   bool operator==(const AdInfo&) const;
   bool operator!=(const AdInfo&) const;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   AdType type = AdType::kUndefined;
   std::string placement_id;
