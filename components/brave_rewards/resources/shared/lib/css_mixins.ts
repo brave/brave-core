@@ -10,3 +10,31 @@ export const buttonReset = `
   font-size: inherit;
   line-height: inherit;
 `
+
+export const tooltipAnchor = `
+  position: relative;
+
+  .tooltip {
+    position: absolute;
+    z-index: 1;
+    visibility: hidden;
+    transition: visibility 0s linear 300ms;
+  }
+
+  &:hover .tooltip {
+    visibility: initial;
+  }
+`
+
+export const tooltipContainer = `
+  position: relative;
+
+  &:before {
+    content: ' ';
+    position: absolute;
+    background: inherit;
+    height: 15px;
+    width: 15px;
+    transform: rotate(45deg);
+  }
+`

@@ -199,8 +199,6 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                   checked={showBackgroundImage && brandedWallpaperOptIn}
                   disabled={!showBackgroundImage /* This option can only be enabled if users opt in for background images */}
                   rewardsEnabled={this.props.newTabData.rewardsState.rewardsEnabled}
-                  adsEnabled={this.props.newTabData.rewardsState.enabledAds}
-                  canSupportAds={!!this.props.newTabData.rewardsState.adsSupported}
                   isExternalWalletConnected={
                     this.props.newTabData.rewardsState.externalWallet?.status !==
                     mojom.WalletStatus.kNotConnected} />

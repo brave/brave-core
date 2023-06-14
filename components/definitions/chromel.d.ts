@@ -113,15 +113,9 @@ declare namespace chrome.braveRewards {
   const fetchPromotions: (callback: (promotions: RewardsExtension.Promotion[]) => void) => {}
   const claimPromotion: (promotionId: string, callback: (properties: RewardsExtension.Captcha) => void) => {}
   const attestPromotion: (promotionId: string, solution: string, callback: (result: number, promotion?: RewardsExtension.Promotion) => void) => {}
-  const onAdsEnabled: {
-    addListener: (callback: (enabled: boolean) => void) => void
-  }
   const getRewardsEnabled: (callback: (enabled: boolean) => void) => {}
-  const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
-  const getAdsSupported: (callback: (supported: boolean) => void) => {}
   const getAdsAccountStatement: (callback: (success: boolean, adsAccountStatement: NewTab.AdsAccountStatement) => void) => {}
   const getWalletExists: (callback: (exists: boolean) => void) => {}
-  const saveAdsSetting: (key: string, value: string) => {}
   const setAutoContributeEnabled: (enabled: boolean) => {}
   const getACEnabled: (callback: (enabled: boolean) => void) => {}
   const onPublisherListNormalized: {
@@ -190,17 +184,12 @@ declare namespace chrome.braveRewards {
 
   const updateScheduledCaptchaResult: (result: boolean) => void
 
-  const enableAds: () => void
-
   interface RewardsPrefs {
-    adsEnabled: boolean
-    adsPerHour: number
     autoContributeEnabled: boolean
     autoContributeAmount: number
   }
 
   const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
-  const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
 }
 
 declare namespace chrome.braveTalk {

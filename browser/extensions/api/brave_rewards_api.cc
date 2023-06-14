@@ -28,7 +28,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -139,12 +138,6 @@ ExtensionFunction::ResponseAction
 BraveRewardsIsUnsupportedRegionFunction::Run() {
   bool is_unsupported_region = ::brave_rewards::IsUnsupportedRegion();
   return RespondNow(WithArguments(is_unsupported_region));
-}
-
-BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetLocaleFunction::Run() {
-  return RespondNow(WithArguments(brave_l10n::GetDefaultLocaleString()));
 }
 
 BraveRewardsRecordNTPPanelTriggerFunction::
@@ -1290,21 +1283,6 @@ ExtensionFunction::ResponseAction BraveRewardsGetRewardsEnabledFunction::Run() {
   return RespondNow(WithArguments(enabled));
 }
 
-BraveRewardsGetAdsEnabledFunction::~BraveRewardsGetAdsEnabledFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetAdsEnabledFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-
-  if (!ads_service) {
-    return RespondNow(WithArguments(false));
-  }
-
-  const bool enabled = ads_service->IsEnabled();
-  return RespondNow(WithArguments(enabled));
-}
-
 BraveRewardsGetAdsAccountStatementFunction::
     ~BraveRewardsGetAdsAccountStatementFunction() = default;
 
@@ -1343,60 +1321,6 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
   }
 
   Release();  // Balanced in Run()
-}
-
-BraveRewardsGetAdsSupportedFunction::~BraveRewardsGetAdsSupportedFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetAdsSupportedFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-
-  if (!ads_service) {
-    return RespondNow(WithArguments(false));
-  }
-
-  return RespondNow(WithArguments(brave_ads::IsSupportedRegion()));
-}
-
-BraveRewardsGetAdsDataFunction::~BraveRewardsGetAdsDataFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-
-  base::Value::Dict ads_data;
-  if (!ads_service) {
-    ads_data.Set("adsIsSupported", false);
-    ads_data.Set("adsEnabled", false);
-    ads_data.Set("adsPerHour", 0);
-    ads_data.Set("adsSubdivisionTargeting", std::string());
-    ads_data.Set("automaticallyDetectedAdsSubdivisionTargeting", std::string());
-    ads_data.Set("shouldAllowAdsSubdivisionTargeting", false);
-    ads_data.Set("adsUIEnabled", false);
-  } else {
-    ads_data.Set("adsIsSupported", brave_ads::IsSupportedRegion());
-    ads_data.Set("adsEnabled", ads_service->IsEnabled());
-    ads_data.Set(
-        "adsPerHour",
-        static_cast<int>(ads_service->GetMaximumNotificationAdsPerHour()));
-    ads_data.Set("adsSubdivisionTargeting",
-                 profile->GetPrefs()->GetString(
-                     brave_ads::prefs::kSubdivisionTargetingSubdivision));
-    ads_data.Set(
-        "automaticallyDetectedAdsSubdivisionTargeting",
-        profile->GetPrefs()->GetString(
-            brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision));
-    ads_data.Set("shouldAllowAdsSubdivisionTargeting",
-                 profile->GetPrefs()->GetBoolean(
-                     brave_ads::prefs::kShouldAllowSubdivisionTargeting));
-    ads_data.Set("adsUIEnabled", true);
-  }
-
-  ads_data.Set("subdivisions",
-               brave_ads::GetSupportedSubdivisionsAsValueList());
-
-  return RespondNow(WithArguments(std::move(ads_data)));
 }
 
 BraveRewardsIsInitializedFunction::~BraveRewardsIsInitializedFunction() =
@@ -1464,14 +1388,6 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsEnableAdsFunction::~BraveRewardsEnableAdsFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsEnableAdsFunction::Run() {
-  auto* profile = Profile::FromBrowserContext(browser_context());
-  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kEnabled, true);
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsGetPrefsFunction::~BraveRewardsGetPrefsFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetPrefsFunction::Run() {
@@ -1494,20 +1410,6 @@ void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
   prefs.Set("autoContributeEnabled",
             properties ? properties->enabled_contribute : false);
   prefs.Set("autoContributeAmount", properties ? properties->amount : 0.0);
-
-  auto* ads_service = AdsServiceFactory::GetForProfile(
-      Profile::FromBrowserContext(browser_context()));
-
-  if (ads_service) {
-    prefs.Set("adsEnabled", ads_service->IsEnabled());
-    prefs.Set(
-        "adsPerHour",
-        static_cast<double>(ads_service->GetMaximumNotificationAdsPerHour()));
-  } else {
-    prefs.Set("adsEnabled", false);
-    prefs.Set("adsPerHour", 0.0);
-  }
-
   Respond(WithArguments(std::move(prefs)));
 }
 

@@ -33,7 +33,6 @@ namespace brave_rewards {
 namespace {
 
 static constexpr webui::LocalizedString kStrings[] = {
-    {"aboutRewardsText", IDS_REWARDS_PANEL_ABOUT_REWARDS_TEXT},
     {"attention", IDS_REWARDS_PANEL_ATTENTION},
     {"cancel", IDS_REWARDS_PANEL_CANCEL},
     {"captchaContactSupport", IDS_REWARDS_CAPTCHA_CONTACT_SUPPORT},
@@ -63,9 +62,8 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"grantCaptchaPassedTitleAds", IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_ADS},
     {"grantCaptchaPassedTitleUGP", IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_UGP},
     {"grantCaptchaTitle", IDS_REWARDS_GRANT_CAPTCHA_TITLE},
-    {"headerTextAdsDisabled", IDS_REWARDS_PANEL_HEADER_TEXT_ADS_DISABLED},
-    {"headerTextAdsEnabled", IDS_REWARDS_PANEL_HEADER_TEXT_ADS_ENABLED},
     {"headerTitle", IDS_REWARDS_PANEL_HEADER_TITLE},
+    {"headerText", IDS_REWARDS_PANEL_HEADER_TEXT},
     {"includeInAutoContribute", IDS_REWARDS_PANEL_INCLUDE_IN_AUTO_CONTRIBUTE},
     {"learnMore", IDS_REWARDS_LEARN_MORE},
     {"learnMoreAboutBAT", IDS_REWARDS_PANEL_LEARN_MORE_ABOUT_BAT},
@@ -159,6 +157,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"walletEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT},
     {"walletEstimatedEarnings", IDS_REWARDS_WALLET_ESTIMATED_EARNINGS},
     {"walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT},
+    {"walletManageAds", IDS_REWARDS_WALLET_MANAGE_ADS},
     {"walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS},
     {"walletOneTimeTips", IDS_REWARDS_WALLET_ONE_TIME_TIPS},
     {"walletRewardsFromAds", IDS_REWARDS_WALLET_REWARDS_FROM_ADS},

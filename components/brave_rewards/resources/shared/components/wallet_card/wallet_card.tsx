@@ -10,6 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
+import { Optional } from '../../../shared/lib/optional'
 
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
@@ -22,7 +23,7 @@ import { PendingRewardsView } from './pending_rewards_view'
 import { WalletInfoIcon } from './icons/wallet_info_icon'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
-import { Optional } from '../../../shared/lib/optional'
+import { CaretIcon } from '../icons/caret_icon'
 
 import * as urls from '../../lib/rewards_urls'
 
@@ -50,6 +51,7 @@ interface Props {
   autoContributeEnabled: boolean
   onExternalWalletAction: (action: ExternalWalletAction) => void
   onViewStatement?: () => void
+  onManageAds?: () => void
 }
 
 export function WalletCard (props: Props) {
@@ -131,7 +133,16 @@ export function WalletCard (props: Props) {
               <Icon name='info-outline' />
               <div className='tooltip'>
                 <style.earningsTooltip>
-                  {getString('walletEarningInfoText')}
+                  <div>{getString('walletEarningInfoText')}</div>
+                  {
+                    props.onManageAds &&
+                      <style.manageAds>
+                        <button onClick={props.onManageAds}>
+                          <span>{getString('walletManageAds')}</span>
+                          <CaretIcon direction='right' />
+                        </button>
+                      </style.manageAds>
+                  }
                 </style.earningsTooltip>
               </div>
             </style.earningsInfo>

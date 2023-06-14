@@ -40,16 +40,6 @@ class BraveRewardsIsUnsupportedRegionFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetLocaleFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getLocale", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetLocaleFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsRecordNTPPanelTriggerFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.recordNTPPanelTrigger", UNKNOWN)
@@ -526,16 +516,6 @@ class BraveRewardsGetRewardsEnabledFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetAdsEnabledFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsEnabled", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetAdsEnabledFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsGetAdsAccountStatementFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsAccountStatement", UNKNOWN)
@@ -547,26 +527,6 @@ class BraveRewardsGetAdsAccountStatementFunction : public ExtensionFunction {
 
  private:
   void OnGetAdsAccountStatement(brave_ads::mojom::StatementInfoPtr statement);
-};
-
-class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsSupported", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetAdsSupportedFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveRewardsGetAdsDataFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsData", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetAdsDataFunction() override;
-
-  ResponseAction Run() override;
 };
 
 class BraveRewardsIsInitializedFunction : public ExtensionFunction {
@@ -597,16 +557,6 @@ class BraveRewardsUpdateScheduledCaptchaResultFunction
 
  protected:
   ~BraveRewardsUpdateScheduledCaptchaResultFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveRewardsEnableAdsFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.enableAds", UNKNOWN)
-
- protected:
-  ~BraveRewardsEnableAdsFunction() override;
 
   ResponseAction Run() override;
 };

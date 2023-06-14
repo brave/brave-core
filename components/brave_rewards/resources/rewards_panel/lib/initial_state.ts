@@ -14,8 +14,6 @@ export function getInitialState (): HostState {
     rewardsEnabled: false,
     balance: optional<number>(),
     settings: {
-      adsEnabled: false,
-      adsPerHour: 0,
       autoContributeEnabled: false,
       autoContributeAmount: 0
     },

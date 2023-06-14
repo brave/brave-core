@@ -78,8 +78,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
       const brave_rewards::mojom::Result result,
       brave_rewards::mojom::PromotionPtr promotion) override;
 
-  void OnAdsEnabled(RewardsService* rewards_service, bool ads_enabled) override;
-
   void OnCompleteReset(const bool success) override;
 
   void OnPanelPublisherInfo(RewardsService* rewards_service,

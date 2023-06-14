@@ -96,6 +96,7 @@ class AdsServiceImpl : public AdsService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
+  bool UserHasOptedInToNewTabSponsoredImages() const;
   bool UserHasOptedInToBravePrivateAds() const;
   bool UserHasOptedInToBraveNews() const;
 
@@ -138,8 +139,7 @@ class AdsServiceImpl : public AdsService,
   void OnEnabledPrefChanged();
   void OnEnabledPrefChangedCallback(
       brave_rewards::mojom::RewardsWalletPtr wallet);
-  void OnBraveNewsOptedInPrefChanged();
-  void OnNewTabPageShowTodayPrefChanged();
+  void OnAdUnitEnabledPrefChange(const std::string& path);
   void NotifyPrefChanged(const std::string& path) const;
 
   void NotifyRewardsWalletDidUpdate(

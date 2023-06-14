@@ -13,6 +13,11 @@ export const description = styled.div`
   color: var(--brave-palette-neutral600);
   margin: 16px 0;
   line-height: 24px;
+
+  a {
+    padding-left: 4px;
+    text-decoration: none;
+  }
 `
 
 export const terms = styled.div`
@@ -91,6 +96,10 @@ export const hiddenEarnings = styled.div`
     line-height: 18px;
     text-decoration: none;
   }
+`
+
+export const totalAdsCount = styled.span`
+  font-weight: 600;
 `
 
 export const showHistory = styled.div`
@@ -172,6 +181,7 @@ export const notSupportedIcon = styled.div`
 `
 
 export const connect = styled.div`
+  margin-bottom: 8px;
   background: rgba(93, 181, 252, 0.2);
   border-radius: 8px;
   padding: 16px;
@@ -212,6 +222,7 @@ export const connectAction = styled.div`
 `
 
 export const connectUnavailable = styled.div`
+  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
   gap: 10px;

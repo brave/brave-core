@@ -50,9 +50,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const mojom::RewardsType type,
       const mojom::ContributionProcessor processor) {}
 
-  virtual void OnAdsEnabled(RewardsService* rewards_service, bool ads_enabled) {
-  }
-
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
       std::vector<mojom::PublisherInfoPtr> list) {}

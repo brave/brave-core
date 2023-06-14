@@ -3,7 +3,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export const localeStrings = {
-  rewardsAboutRewards: 'Using Brave Rewards helps support content creators, and lets you earn BAT.',
   rewardsAdGrantAmount: '$1 Rewards: $2',
   rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
   rewardsBraveRewards: 'Brave Rewards',
@@ -16,10 +15,10 @@ export const localeStrings = {
   rewardsEarningsHeader: 'Estimated earnings',
   rewardsEarningInfoText: 'This reflects your estimated earnings range for Brave Ads this month.',
   rewardsHowDoesItWork: 'How does it work?',
-  rewardsEnableBraveAds: 'Enable Brave Ads',
   rewardsGrantDaysRemaining: 'You have $1 left to claim',
   rewardsLearnMore: 'Learn more',
   rewardsLogInToSeeBalance: '$1Log in to $2$3 to see your balance',
+  rewardsManageAds: 'Manage ads',
   rewardsOptInHeader: 'Earn tokens for private ads you see in Brave',
   rewardsOptInTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   rewardsOptInText: 'Support content creators and use your tokens to buy gift cards, exchange for other currencies, and more.',

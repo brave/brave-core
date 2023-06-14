@@ -285,6 +285,14 @@ bool AdsServiceImpl::UserHasOptedInToBravePrivateAds() const {
   return IsEnabled();
 }
 
+bool AdsServiceImpl::UserHasOptedInToNewTabSponsoredImages() const {
+  return GetPrefService()->GetBoolean(
+             ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
+         GetPrefService()->GetBoolean(
+             ntp_background_images::prefs::
+                 kNewTabPageShowSponsoredImagesBackgroundImage);
+}
+
 bool AdsServiceImpl::UserHasOptedInToBraveNews() const {
   return GetPrefService()->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
          GetPrefService()->GetBoolean(brave_news::prefs::kNewTabPageShowToday);
@@ -312,7 +320,7 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 bool AdsServiceImpl::CanStartBatAdsService() const {
   return IsSupportedRegion() &&
          (UserHasOptedInToBravePrivateAds() || UserHasOptedInToBraveNews() ||
-          ShouldAlwaysRunService());
+          UserHasOptedInToNewTabSponsoredImages() || ShouldAlwaysRunService());
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
@@ -605,24 +613,26 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
 
   pref_change_registrar_.Add(
       brave_news::prefs::kBraveNewsOptedIn,
-      base::BindRepeating(&AdsServiceImpl::OnBraveNewsOptedInPrefChanged,
-                          base::Unretained(this)));
+      base::BindRepeating(&AdsServiceImpl::OnAdUnitEnabledPrefChange,
+                          base::Unretained(this),
+                          brave_news::prefs::kBraveNewsOptedIn));
 
   pref_change_registrar_.Add(
       brave_news::prefs::kNewTabPageShowToday,
-      base::BindRepeating(&AdsServiceImpl::OnNewTabPageShowTodayPrefChanged,
-                          base::Unretained(this)));
+      base::BindRepeating(&AdsServiceImpl::OnAdUnitEnabledPrefChange,
+                          base::Unretained(this),
+                          brave_news::prefs::kNewTabPageShowToday));
 
   pref_change_registrar_.Add(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
       base::BindRepeating(
-          &AdsServiceImpl::NotifyPrefChanged, base::Unretained(this),
+          &AdsServiceImpl::OnAdUnitEnabledPrefChange, base::Unretained(this),
           ntp_background_images::prefs::kNewTabPageShowBackgroundImage));
 
   pref_change_registrar_.Add(
       ntp_background_images::prefs::
           kNewTabPageShowSponsoredImagesBackgroundImage,
-      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
+      base::BindRepeating(&AdsServiceImpl::OnAdUnitEnabledPrefChange,
                           base::Unretained(this),
                           ntp_background_images::prefs::
                               kNewTabPageShowSponsoredImagesBackgroundImage));
@@ -650,24 +660,14 @@ void AdsServiceImpl::OnEnabledPrefChangedCallback(
   NotifyPrefChanged(prefs::kEnabled);
 }
 
-void AdsServiceImpl::OnBraveNewsOptedInPrefChanged() {
+void AdsServiceImpl::OnAdUnitEnabledPrefChange(const std::string& path) {
   if (!CanStartBatAdsService()) {
     return Shutdown();
   }
 
   MaybeStartBatAdsService();
 
-  NotifyPrefChanged(brave_news::prefs::kBraveNewsOptedIn);
-}
-
-void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
-  if (!CanStartBatAdsService()) {
-    return Shutdown();
-  }
-
-  MaybeStartBatAdsService();
-
-  NotifyPrefChanged(brave_news::prefs::kNewTabPageShowToday);
+  NotifyPrefChanged(path);
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {

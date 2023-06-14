@@ -309,15 +309,6 @@ export function createHost (): Host {
       loadPanelData().catch(console.error)
     })
 
-    chrome.braveRewards.onAdsEnabled.addListener((adsEnabled: boolean) => {
-      stateManager.update({
-        settings: {
-          ...stateManager.getState().settings,
-          adsEnabled
-        }
-      })
-    })
-
     apiAdapter.onGrantsUpdated(updateGrants)
 
     // Update the balance when a grant has been processed, when tips have been
@@ -456,21 +447,6 @@ export function createHost (): Host {
         publisherInfo: {
           ...publisherInfo,
           autoContributeEnabled: include
-        }
-      })
-    },
-
-    setAdsEnabled (adsEnabled) {
-      chrome.braveRewards.updatePrefs({ adsEnabled })
-    },
-
-    setAdsPerHour (adsPerHour) {
-      chrome.braveRewards.updatePrefs({ adsPerHour })
-
-      stateManager.update({
-        settings: {
-          ...stateManager.getState().settings,
-          adsPerHour
         }
       })
     },

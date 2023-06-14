@@ -58,7 +58,6 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
                     mojom::Result,
                     const mojom::PublisherInfo*,
                     uint64_t));
-  MOCK_METHOD2(OnAdsEnabled, void(RewardsService*, bool));
 };
 
 class RewardsServiceTest : public testing::Test {

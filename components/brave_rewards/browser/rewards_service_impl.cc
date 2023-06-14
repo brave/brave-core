@@ -409,10 +409,6 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
       greaselion_service_->SetFeatureEnabled(greaselion::ADS, ads_enabled);
     }
 #endif
-
-    for (auto& observer : observers_) {
-      observer.OnAdsEnabled(this, ads_enabled);
-    }
   }
 }
 

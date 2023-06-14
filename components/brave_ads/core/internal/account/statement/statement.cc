@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
 
+#include <numeric>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -42,8 +43,13 @@ void BuildStatement(BuildStatementCallback callback) {
             statement->min_earnings_this_month = min_this_month;
             statement->max_earnings_this_month = max_this_month;
             statement->next_payment_date = GetNextPaymentDate(transactions);
-            statement->ads_received_this_month =
-                GetAdsReceivedThisMonth(transactions);
+            statement->ad_types_received_this_month =
+                GetAdTypesReceivedThisMonth(transactions);
+            statement->ads_received_this_month = std::reduce(
+                statement->ad_types_received_this_month.begin(),
+                statement->ad_types_received_this_month.end(),
+                static_cast<int32_t>(0),
+                [](int32_t sum, auto& entry) { return sum + entry.second; });
 
             std::move(callback).Run(std::move(statement));
           },

@@ -157,14 +157,12 @@ declare namespace NewTab {
     userType: string
     isUnsupportedRegion: boolean
     declaredCountry: string
-    adsSupported?: boolean
     balance?: number
     externalWallet?: RewardsExtension.ExternalWallet
     externalWalletProviders?: string[]
     report?: RewardsBalanceReport
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]
-    enabledAds: boolean
     needsBrowserUpgradeToServeAds: boolean
     promotions: Promotion[]
     parameters: RewardsParameters

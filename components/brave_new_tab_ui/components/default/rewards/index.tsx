@@ -45,7 +45,6 @@ export interface RewardsProps {
   userType: string
   isUnsupportedRegion: boolean
   declaredCountry: string
-  enabledAds: boolean
   needsBrowserUpgradeToServeAds: boolean
   balance?: number
   externalWallet?: RewardsExtension.ExternalWallet
@@ -56,7 +55,6 @@ export interface RewardsProps {
   promotions?: NewTab.Promotion[]
   totalContribution: number
   publishersVisitedCount: number
-  adsSupported?: boolean
   showContent: boolean
   stackPosition: number
   onShowContent: () => void
@@ -129,10 +127,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     chrome.braveRewards.showRewardsSetup()
   }
 
-  const enableAds = () => {
-    chrome.braveRewards.enableAds()
-  }
-
   return (
     <RewardsCard
       rewardsEnabled={props.rewardsEnabled}
@@ -140,8 +134,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       vbatDeadline={props.parameters.vbatDeadline}
       isUnsupportedRegion={props.isUnsupportedRegion}
       declaredCountry={props.declaredCountry}
-      adsEnabled={props.enabledAds}
-      adsSupported={Boolean(props.adsSupported)}
       needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
       rewardsBalance={optional(props.balance)}
       exchangeCurrency='USD'
@@ -158,7 +150,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       canConnectAccount={canConnectAccount()}
       publishersVisited={props.publishersVisitedCount || 0}
       onEnableRewards={openRewardsPanel}
-      onEnableAds={enableAds}
       onSelectCountry={openRewardsPanel}
       onClaimGrant={onClaimGrant}
     />

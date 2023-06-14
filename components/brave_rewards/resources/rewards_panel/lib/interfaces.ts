@@ -67,8 +67,6 @@ export interface AdaptiveCaptchaInfo {
 }
 
 export interface Settings {
-  adsEnabled: boolean
-  adsPerHour: number
   autoContributeEnabled: boolean
   autoContributeAmount: number
 }
@@ -118,8 +116,6 @@ export interface Host {
   openRewardsSettings: () => void
   refreshPublisherStatus: () => void
   setIncludeInAutoContribute: (include: boolean) => void
-  setAdsEnabled: (adsEnabled: boolean) => void
-  setAdsPerHour: (adsPerHour: number) => void
   sendTip: () => void
   handleExternalWalletAction: (action: ExternalWalletAction) => void
   handleNotificationAction: (action: NotificationAction) => void

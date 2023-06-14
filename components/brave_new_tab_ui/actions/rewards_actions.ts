@@ -7,10 +7,6 @@ import { action } from 'typesafe-actions'
 import { types } from '../constants/rewards_types'
 import { InitialRewardsData, PreInitialRewardsData } from '../api/initialData'
 
-export const onAdsEnabled = (enabled: boolean) => action(types.ON_ADS_ENABLED, {
-  enabled
-})
-
 export const onBalanceReport = (properties: { month: number, year: number, report: NewTab.RewardsBalanceReport }) => action(types.ON_BALANCE_REPORT, {
   month: properties.month,
   year: properties.year,

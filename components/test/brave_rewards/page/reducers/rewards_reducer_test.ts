@@ -88,14 +88,12 @@ describe('rewards reducer', () => {
       it('updates existing properties', () => {
         const initState: Rewards.State = defaultState()
         initState.adsData = {
-          adsEnabled: false,
           adsPerHour: 2,
           adsSubdivisionTargeting: 'US-CA',
           automaticallyDetectedAdsSubdivisionTargeting: 'US-FL',
           shouldAllowAdsSubdivisionTargeting: true,
           subdivisions: [],
           isAdsSubdivisionTargetingRegion: true,
-          adsUIEnabled: false,
           adsIsSupported: false,
           adsEstimatedPendingRewards: 0,
           adsNextPaymentDate: 0,
@@ -104,14 +102,12 @@ describe('rewards reducer', () => {
 
         const expectedState: Rewards.State = defaultState()
         expectedState.adsData = {
-          adsEnabled: true,
           adsPerHour: 5,
           adsSubdivisionTargeting: 'US-CA',
           automaticallyDetectedAdsSubdivisionTargeting: 'US-FL',
           shouldAllowAdsSubdivisionTargeting: true,
           subdivisions: [],
           isAdsSubdivisionTargetingRegion: true,
-          adsUIEnabled: true,
           adsIsSupported: true,
           adsEstimatedPendingRewards: 0,
           adsNextPaymentDate: 0,
@@ -124,7 +120,6 @@ describe('rewards reducer', () => {
           type: types.ON_ADS_DATA,
           payload: {
             adsData: {
-              adsEnabled: true,
               adsPerHour: 5,
               adsSubdivisionTargeting: 'US-CA',
               automaticallyDetectedAdsSubdivisionTargeting: 'US-FL',
