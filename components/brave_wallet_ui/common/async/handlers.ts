@@ -360,6 +360,15 @@ handler.on(WalletActions.setUserAssetVisible.type, async (store: Store, payload:
   await braveWalletService.setUserAssetVisible(payload.token, payload.isVisible)
 })
 
+handler.on(
+  WalletActions.refreshBalancesAndPriceHistory.type,
+  async (store: Store) => {
+    store.dispatch(
+      WalletActions.setIsFetchingPortfolioPriceHistory(true)
+    )
+    await refreshBalancesPricesAndHistory(store)
+  })
+
 handler.on(WalletActions.selectPortfolioTimeline.type, async (store: Store, payload: BraveWallet.AssetPriceTimeframe) => {
   store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
   await store.dispatch(refreshTokenPriceHistory(payload))
