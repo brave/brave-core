@@ -23,10 +23,15 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
 import { deserializeOrigin } from '../../../utils/model-serialization-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
+import { getPriceIdForToken } from '../../../utils/api-utils'
+import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 
 // Hooks
-import { useExplorer, usePricing } from '../../../common/hooks'
-import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
+import { useExplorer } from '../../../common/hooks'
+import { useGetSelectedChainQuery, useGetTokenSpotPricesQuery } from '../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 import {
   useScopedBalanceUpdater
@@ -68,7 +73,7 @@ import {
 
 import { VerticalSpacer } from '../../shared/style'
 
-export interface Props {
+interface Props {
   navAction: (path: PanelTypes) => void
 }
 
@@ -79,7 +84,6 @@ export const ConnectedPanel = (props: Props) => {
 
   const {
     defaultCurrencies,
-    transactionSpotPrices: spotPrices,
     activeOrigin: originInfo,
     selectedAccount,
     connectedAccounts
@@ -108,6 +112,19 @@ export const ConnectedPanel = (props: Props) => {
       : skipToken
   )
 
+  const {
+    data: spotPriceRegistry,
+    isLoading: isLoadingSpotPrices,
+    isFetching: isFetchingSpotPrices
+  } = useGetTokenSpotPricesQuery(
+    networkAsset
+      ? {
+        ids: [getPriceIdForToken(networkAsset)]
+      }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
+
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [isSolanaConnected, setIsSolanaConnected] = React.useState<boolean>(false)
@@ -119,7 +136,6 @@ export const ConnectedPanel = (props: Props) => {
 
   // custom hooks
   const { braveWalletService } = useApiProxy()
-  const { computeFiatAmount } = usePricing(spotPrices)
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   // methods
@@ -204,23 +220,22 @@ export const ConnectedPanel = (props: Props) => {
   }, [selectedAccountAddress])
 
   const selectedAccountFiatBalance = React.useMemo(() => {
-    if (!balances || !networkAsset || isLoadingBalances || isFetchingBalances) {
+    if (!balances ||
+      !networkAsset || isLoadingBalances || isFetchingBalances || !spotPriceRegistry || isLoadingSpotPrices || isFetchingSpotPrices) {
       return Amount.empty()
     }
 
-    return computeFiatAmount(
-      balances[networkAsset.contractAddress],
-      networkAsset.symbol,
-      networkAsset.decimals,
-      '',
-      networkAsset.chainId
-    )
+    return new Amount(balances[networkAsset.contractAddress] ?? '0')
+      .divideByDecimals(networkAsset.decimals)
+      .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
   }, [
-    computeFiatAmount,
     networkAsset,
     balances,
     isLoadingBalances,
-    isFetchingBalances
+    isFetchingBalances,
+    spotPriceRegistry,
+    isLoadingSpotPrices,
+    isFetchingSpotPrices
   ])
 
   const isConnected = React.useMemo((): boolean => {

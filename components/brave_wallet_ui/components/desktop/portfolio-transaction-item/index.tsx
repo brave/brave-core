@@ -19,6 +19,7 @@ import {
 // Utils
 import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import Amount from '../../../utils/amount'
+import { getPriceIdForToken } from '../../../utils/api-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { getLocale } from '../../../../common/locale'
 import {
@@ -55,7 +56,7 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
-  useGetTokenSpotPriceQuery,
+  useGetTokenSpotPricesQuery,
   walletApi
 } from '../../../common/slices/api.slice'
 import {
@@ -248,56 +249,67 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   // price queries
   const {
-    fiatValue,
-    isLoading: isLoadingTokenSpotPrice
-  } = useGetTokenSpotPriceQuery({
-    chainId: txToken?.chainId || '',
-    contractAddress: txToken?.contractAddress || '',
-    isErc721: txToken?.isErc721 || false,
-    symbol: txToken?.symbol || '',
-    tokenId: txToken?.tokenId || ''
-  }, {
-    skip: !txToken || !normalizedTransferredValue,
-    // TODO: selector
-    selectFromResult: (result) => {
-      const price = result.data?.price || '0'
-      const fiatValue = new Amount(normalizedTransferredValue)
-        .times(price)
-        .value?.toString() || '0'
+    fiatValue: txTokenFiatValue,
+    isLoading: isLoadingTxTokenSpotPrice
+  } = useGetTokenSpotPricesQuery(
+    txToken
+      ? {
+        ids: [
+          getPriceIdForToken(txToken)
+        ]
+      }
+      : skipToken,
+    {
+      skip: !txToken || !normalizedTransferredValue,
+      // TODO: selector
+      selectFromResult: (result) => {
+        if (!result.data?.registry || !txToken) {
+          return {
+            fiatValue: '0',
+            isLoading: false
+          }
+        }
 
-      return {
-        ...result,
-        fiatValue
+        const price = result.data.registry[getPriceIdForToken(txToken)] || '0'
+        const fiatValue = new Amount(normalizedTransferredValue)
+          .times(price)
+          .value?.toString() || '0'
+
+        return {
+          fiatValue,
+          isLoading: result.isLoading || result.isFetching
+        }
       }
     }
-  })
+  )
 
   const {
     gasFeeFiat,
     isLoading: isLoadingGasAssetPrice
-  } = useGetTokenSpotPriceQuery({
-    chainId: networkAsset?.chainId || '',
-    contractAddress: networkAsset?.contractAddress || '',
-    isErc721: networkAsset?.isErc721 || false,
-    symbol: networkAsset?.symbol || '',
-    tokenId: networkAsset?.tokenId || ''
-  },
-  {
-    skip: !networkAsset || !gasFee || !txNetwork,
-    // TODO: selector
-    selectFromResult: (res) => {
-      const price = res.data?.price ?? '0'
-      const gasFeeFiat = getGasFeeFiatValue({
-        gasFee,
-        networkSpotPrice: price,
-        txNetwork
-      })
-      return ({
-        ...res,
-        gasFeeFiat
-      })
-    }
-  })
+  } = useGetTokenSpotPricesQuery(
+    networkAsset
+      ? {
+        ids: [getPriceIdForToken(networkAsset)]
+      }
+      : skipToken,
+    {
+      skip: !networkAsset || !gasFee || !txNetwork,
+      // TODO: selector
+      selectFromResult: (res) => {
+        const price = res.data?.registry && networkAsset
+          ? res.data.registry[getPriceIdForToken(networkAsset)] || '0'
+          : '0'
+        const gasFeeFiat = getGasFeeFiatValue({
+          gasFee,
+          networkSpotPrice: price,
+          txNetwork
+        })
+        return ({
+          gasFeeFiat,
+          isLoading: res.isLoading || res.isFetching
+        })
+      }
+    })
 
   // state
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
@@ -648,8 +660,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   }, [gasFeeFiat, defaultFiatCurrency])
 
   const formattedTransactionFiatValue = React.useMemo(() => {
-    return new Amount(fiatValue).formatAsFiat(defaultFiatCurrency)
-  }, [fiatValue, defaultFiatCurrency])
+    return new Amount(txTokenFiatValue).formatAsFiat(defaultFiatCurrency)
+  }, [txTokenFiatValue, defaultFiatCurrency])
 
   // render
   return (
@@ -720,7 +732,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                     We need to return a Transaction Time Stamp
                     to calculate Fiat value here
                   */}
-                  {isLoadingTokenSpotPrice || isLoadingDefaultFiatCurrency ? (
+                  {isLoadingTxTokenSpotPrice || isLoadingDefaultFiatCurrency ? (
                     <Skeleton {...skeletonProps} />
                   ) : (
                     formattedTransactionFiatValue || 'NOT FOUND!'

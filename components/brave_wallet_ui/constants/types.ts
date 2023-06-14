@@ -17,7 +17,13 @@ export { TimeDelta }
 
 export type RefreshOpts = {
   skipBalancesRefresh?: boolean
-  skipPricesRefresh?: boolean
+}
+
+// SpotPriceRegistry represents a mapping of a unique ID for a token to its
+// current spot price in default fiat currency terms. Use getPricingIdForToken
+// for computing this unique ID.
+export type SpotPriceRegistry = {
+  [id: string]: BraveWallet.AssetPrice
 }
 
 interface TokenBalanceRegistry {
@@ -217,11 +223,6 @@ export interface TokenRegistry {
   [chainID: string]: BraveWallet.BlockchainToken[]
 }
 
-export interface AssetPriceWithContractAndChainId extends BraveWallet.AssetPrice {
-  contractAddress: string
-  chainId: string
-}
-
 export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
@@ -244,7 +245,6 @@ export interface WalletState {
   portfolioPriceHistory: PriceDataObjectType[]
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
-  transactionSpotPrices: AssetPriceWithContractAndChainId[]
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
@@ -309,8 +309,6 @@ export interface PageState {
   enablingAutoPin: boolean
   isAutoPinEnabled: boolean
   pinStatusOverview: BraveWallet.TokenPinOverview | undefined
-  selectedAssetFiatPrice: AssetPriceWithContractAndChainId | undefined
-  selectedAssetCryptoPrice: AssetPriceWithContractAndChainId | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
@@ -358,11 +356,6 @@ export type SwapValidationErrorType =
   | 'insufficientAllowance'
   | 'insufficientLiquidity'
   | 'unknownError'
-
-export interface GetPriceReturnInfo {
-  success: boolean
-  values: AssetPriceWithContractAndChainId[]
-}
 
 export interface GetPriceHistoryReturnInfo {
   price: string

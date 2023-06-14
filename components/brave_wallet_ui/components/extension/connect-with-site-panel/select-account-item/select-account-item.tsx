@@ -35,10 +35,17 @@ import { reduceAddress } from '../../../../utils/reduce-address'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import Amount from '../../../../utils/amount'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
+
+// Queries
 import {
   useGetNetworksQuery,
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery,
+  useGetTokenSpotPricesQuery
 } from '../../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../../common/slices/constants'
 
 interface Props {
   account: WalletAccountType
@@ -51,9 +58,6 @@ export const SelectAccountItem = (props: Props) => {
   // Wallet Selectors
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
-  )
-  const spotPrices = useUnsafeWalletSelector(
-    WalletSelectors.transactionSpotPrices
   )
   const defaultFiatCurrency = useSafeWalletSelector(
     WalletSelectors.defaultFiatCurrency
@@ -82,6 +86,7 @@ export const SelectAccountItem = (props: Props) => {
         (token) =>
           token.visible &&
           !token.isErc721 &&
+          !token.isErc1155 &&
           !token.isNft &&
           token.chainId === selectedNetwork.chainId &&
           token.coin === selectedNetwork.coin
@@ -99,20 +104,27 @@ export const SelectAccountItem = (props: Props) => {
       (token) =>
         token.visible &&
         !token.isErc721 &&
+        !token.isErc1155 &&
         !token.isNft &&
         chainList.includes(token.chainId)
     )
   }, [userVisibleTokensInfo, networks, account, selectedNetwork?.coin, selectedNetwork?.chainId])
 
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    {
+      ids: tokenListByAccount.map(getPriceIdForToken)
+    },
+    querySubscriptionOptions60s
+  )
+
   const accountFiatValue = React.useMemo(() => {
     const amounts = tokenListByAccount.map((token) => {
       const balance = getBalance(account, token)
-      return computeFiatAmount(spotPrices, {
-        decimals: token.decimals,
-        symbol: token.symbol,
+
+      return computeFiatAmount({
+        spotPriceRegistry,
         value: balance,
-        contractAddress: token.contractAddress,
-        chainId: token.chainId
+        token
       }).format()
     })
 
@@ -124,7 +136,7 @@ export const SelectAccountItem = (props: Props) => {
       return a !== '' && b !== '' ? new Amount(a).plus(b).format() : ''
     })
     return new Amount(reducedAmounts).formatAsFiat(defaultFiatCurrency)
-  }, [tokenListByAccount, spotPrices, defaultFiatCurrency])
+  }, [tokenListByAccount, spotPriceRegistry, defaultFiatCurrency])
 
   return (
     <ConnectPanelButton border="top" onClick={onSelectAccount}>

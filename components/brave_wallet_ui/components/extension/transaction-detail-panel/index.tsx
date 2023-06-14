@@ -13,6 +13,7 @@ import { useExplorer } from '../../../common/hooks'
 import {
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
+  useGetTokenSpotPricesQuery,
   walletApi
 } from '../../../common/slices/api.slice'
 import {
@@ -23,8 +24,12 @@ import {
   useGetCombinedTokensListQuery,
   useTransactionQuery
 } from '../../../common/slices/api.slice.extra'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
 
 // Utils
+import { makeNetworkAsset } from '../../../options/asset-options'
 import { reduceAddress } from '../../../utils/reduce-address'
 import {
   getTransactionGasFee,
@@ -33,8 +38,10 @@ import {
   isFilecoinTransaction,
   isSolanaTransaction,
   isSwapTransaction,
-  parseTransactionWithPrices
+  parseTransactionWithPrices,
+  findTransactionToken
 } from '../../../utils/tx-utils'
+import { getPriceIdForToken } from '../../../utils/api-utils'
 import { toProperCase } from '../../../utils/string-utils'
 import Amount from '../../../utils/amount'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
@@ -77,10 +84,9 @@ import { TransactionStatusTooltip } from '../transaction-status-tooltip'
 import { Tooltip } from '../../shared'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 
-export interface Props {
+interface Props {
   transactionId: string
   visibleTokens: BraveWallet.BlockchainToken[]
-  transactionSpotPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
   onBack: () => void
 }
@@ -96,9 +102,6 @@ const TransactionDetailPanel = (props: Props) => {
   // redux
   const dispatch = useDispatch()
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const spotPrices = useUnsafeWalletSelector(
-    WalletSelectors.transactionSpotPrices
-  )
   const transactionProviderErrorRegistry = useUnsafeUISelector(
     UISelectors.transactionProviderErrorRegistry
   )
@@ -143,8 +146,28 @@ const TransactionDetailPanel = (props: Props) => {
       : getTransactionGasFee(transaction)
   }, [transaction, txCoinType, solFeeEstimate])
 
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(transactionsNetwork)
+  }, [transactionsNetwork])
+
+  const txToken = findTransactionToken(transaction, combinedTokensList)
+
+  const {
+    data: spotPriceRegistry
+  } = useGetTokenSpotPricesQuery(
+    txToken && networkAsset //
+      ? {
+        ids: [
+          getPriceIdForToken(txToken),
+          getPriceIdForToken(networkAsset)
+        ]
+      }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
+
   const transactionDetails = React.useMemo(() => {
-    if (!transaction) {
+    if (!transaction || !spotPriceRegistry) {
       return undefined
     }
 
@@ -152,7 +175,7 @@ const TransactionDetailPanel = (props: Props) => {
       tx: transaction,
       accounts,
       gasFee,
-      spotPrices,
+      spotPriceRegistry,
       tokensList: combinedTokensList,
       transactionNetwork: transactionsNetwork
     })
@@ -160,7 +183,7 @@ const TransactionDetailPanel = (props: Props) => {
     transaction,
     transactionsNetwork,
     accounts,
-    spotPrices,
+    spotPriceRegistry,
     gasFee
   ])
 

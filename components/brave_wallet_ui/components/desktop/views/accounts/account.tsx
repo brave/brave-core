@@ -29,6 +29,9 @@ import { getBalance } from '../../../../utils/balance-utils'
 import {
   getFilecoinKeyringIdFromNetwork
 } from '../../../../utils/network-utils'
+import Amount from '../../../../utils/amount'
+import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   selectAllUserAssetsFromQueryResult
 } from '../../../../common/slices/entities/blockchain-token.entity'
@@ -65,8 +68,12 @@ import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view
 import {
   useGetVisibleNetworksQuery,
   useGetUserTokensRegistryQuery,
-  useGetTransactionsQuery
+  useGetTransactionsQuery,
+  useGetTokenSpotPricesQuery
 } from '../../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../../common/slices/constants'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
 
 // Actions
@@ -179,8 +186,22 @@ export const Account = () => {
   )
 
   const fungibleTokens = React.useMemo(
-    () => accountsTokensList.filter(({ isErc721, isNft }) => !(isErc721 || isNft)),
+    () => accountsTokensList.filter(({ isErc721, isErc1155, isNft }) =>
+      !(isErc721 || isErc1155 || isNft)),
     [accountsTokensList]
+  )
+
+  const {
+    data: spotPriceRegistry,
+    isLoading: isLoadingSpotPrices,
+    isFetching: isFetchingSpotPrices
+  } = useGetTokenSpotPricesQuery(
+    {
+      ids: fungibleTokens
+        .filter(token => new Amount(getBalance(selectedAccount, token)).gt(0))
+        .map(token => getPriceIdForToken(token)),
+    },
+    querySubscriptionOptions60s
   )
 
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
@@ -297,6 +318,11 @@ export const Account = () => {
             isAccountDetails={true}
             showSellModal={() => onClickShowSellModal(item)}
             isSellSupported={checkIsAssetSellSupported(item)}
+            spotPrice={
+              spotPriceRegistry && !isLoadingSpotPrices && !isFetchingSpotPrices
+                ? getTokenPriceAmountFromRegistry(spotPriceRegistry, item)
+                : Amount.empty()
+            }
           />
         )}
 
@@ -326,6 +352,7 @@ export const Account = () => {
                 }
                 assetBalance={getBalance(selectedAccount, item)}
                 token={item}
+                spotPrice={Amount.empty()}
               />
             )}
             <Spacer />

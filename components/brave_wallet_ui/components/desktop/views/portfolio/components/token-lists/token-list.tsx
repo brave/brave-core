@@ -38,6 +38,8 @@ import {
   networkEntityAdapter
 } from '../../../../../../common/slices/entities/network.entity'
 import { getBalance } from '../../../../../../utils/balance-utils'
+import { getPriceIdForToken } from '../../../../../../utils/api-utils'
+import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
 
 // Components
 import SearchBar from '../../../../../shared/search-bar/index'
@@ -47,8 +49,13 @@ import {
   AssetGroupContainer
 } from '../../../../asset-group-container/asset-group-container'
 
-// Hooks
-import usePricing from '../../../../../../common/hooks/pricing'
+// Queries
+import {
+  useGetTokenSpotPricesQuery
+} from '../../../../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../../../../common/slices/constants'
 
 // Styled Components
 import {
@@ -94,7 +101,6 @@ export const TokenLists = ({
   const { tokenId } = useParams<{ tokenId?: string }>()
 
   // unsafe selectors
-  const tokenSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const selectedAssetFilter = useSafeWalletSelector(WalletSelectors.selectedAssetFilter)
   const defaultCurrencies =
     useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
@@ -103,9 +109,6 @@ export const TokenLists = ({
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
   const selectedGroupAssetsByItem =
     useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
-
-  // hooks
-  const { computeFiatAmount } = usePricing(tokenSpotPrices)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>(tokenId ?? '')
@@ -126,21 +129,29 @@ export const TokenLists = ({
     return userAssetList.filter((asset) => asset.asset.visible)
   }, [userAssetList])
 
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    {
+      ids: visibleTokens
+        .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
+        .filter(({ asset }) => !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
+        .map(token => getPriceIdForToken(token.asset))
+    },
+    querySubscriptionOptions60s
+  )
+
   const filteredOutSmallBalanceTokens = React.useMemo(() => {
     if (hideSmallBalances) {
       return visibleTokens.filter(
         (token) =>
-          computeFiatAmount(
-            token.assetBalance,
-            token.asset.symbol,
-            token.asset.decimals,
-            token.asset.contractAddress,
-            token.asset.chainId)
-            .gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
+          computeFiatAmount({
+            spotPriceRegistry,
+            value: token.assetBalance,
+            token: token.asset
+          }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
       )
     }
     return visibleTokens
-  }, [visibleTokens, hideSmallBalances, computeFiatAmount])
+  }, [visibleTokens, hideSmallBalances, spotPriceRegistry])
 
   const filteredAssetList = React.useMemo(() => {
     if (searchValue === '') {
@@ -182,11 +193,22 @@ export const TokenLists = ({
       return [...fungibleTokens].sort(function (a, b) {
         const aBalance = a.assetBalance
         const bBalance = b.assetBalance
-        const bFiatBalance = computeFiatAmount(bBalance, b.asset.symbol, b.asset.decimals, b.asset.contractAddress, b.asset.chainId)
-        const aFiatBalance = computeFiatAmount(aBalance, a.asset.symbol, a.asset.decimals, a.asset.contractAddress, a.asset.chainId)
+
+        const bFiatBalance = computeFiatAmount({
+          spotPriceRegistry,
+          value: bBalance,
+          token: b.asset
+        })
+
+        const aFiatBalance = computeFiatAmount({
+          spotPriceRegistry,
+          value: aBalance,
+          token: a.asset
+        })
+
         return assetFilterItemInfo.id === 'highToLow'
-          ? bFiatBalance.toNumber() - aFiatBalance.toNumber()
-          : aFiatBalance.toNumber() - bFiatBalance.toNumber()
+          ? bFiatBalance.minus(aFiatBalance).toNumber()
+          : aFiatBalance.minus(bFiatBalance).toNumber()
       })
     }
     if (
@@ -205,7 +227,7 @@ export const TokenLists = ({
   }, [
     assetFilterItemInfo.id,
     fungibleTokens,
-    computeFiatAmount
+    spotPriceRegistry
   ])
 
   // Returns a list of assets based on provided network
@@ -240,13 +262,11 @@ export const TokenLists = ({
       }
 
       const amounts = getAssetsByNetwork(network)
-        .map((asset) => computeFiatAmount(
-          asset.assetBalance,
-          asset.asset.symbol,
-          asset.asset.decimals,
-          asset.asset.contractAddress,
-          asset.asset.chainId
-        ))
+        .map((asset) => computeFiatAmount({
+          spotPriceRegistry,
+          value: asset.assetBalance,
+          token: asset.asset
+        }))
 
       const reducedAmounts =
         amounts.reduce(function (a, b) {
@@ -259,7 +279,9 @@ export const TokenLists = ({
     }, [
     computeFiatAmount,
     getAssetsByNetwork,
-    sortedFungibleTokensList
+    sortedFungibleTokensList,
+    defaultCurrencies.fiat,
+    spotPriceRegistry
   ])
 
   // Returns a list of assets based on provided account
@@ -280,13 +302,11 @@ export const TokenLists = ({
       if (hideSmallBalances) {
         return getAssetsByAccount(account).filter(
           (token) =>
-            computeFiatAmount(
-              getBalance(account, token.asset),
-              token.asset.symbol,
-              token.asset.decimals,
-              token.asset.contractAddress,
-              token.asset.chainId)
-              .gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
+            computeFiatAmount({
+              spotPriceRegistry,
+              value: getBalance(account, token.asset),
+              token: token.asset
+            }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
         )
       }
 
@@ -294,7 +314,7 @@ export const TokenLists = ({
     }, [
     getAssetsByAccount,
     hideSmallBalances,
-    computeFiatAmount
+    spotPriceRegistry
   ])
 
   // Returns the full fiat value of provided account
@@ -319,13 +339,11 @@ export const TokenLists = ({
           .map((asset) => {
             const balance =
               getBalance(account, asset.asset)
-            return computeFiatAmount(
-              balance,
-              asset.asset.symbol,
-              asset.asset.decimals,
-              asset.asset.contractAddress,
-              asset.asset.chainId
-            )
+            return computeFiatAmount({
+              spotPriceRegistry,
+              value: balance,
+              token: asset.asset
+            })
           })
 
       const reducedAmounts =

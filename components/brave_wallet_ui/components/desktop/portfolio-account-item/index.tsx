@@ -7,20 +7,30 @@ import { create } from 'ethereum-blockies'
 import { useHistory } from 'react-router'
 
 // Types
-import { BraveWallet, DefaultCurrencies, WalletRoutes, AssetPriceWithContractAndChainId } from '../../../constants/types'
+import { BraveWallet, DefaultCurrencies, WalletRoutes } from '../../../constants/types'
 
 // Hooks
-import { useExplorer, usePricing } from '../../../common/hooks'
+import { useExplorer } from '../../../common/hooks'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
+import { getPriceIdForToken } from '../../../utils/api-utils'
+import { computeFiatAmount } from '../../../utils/pricing-utils'
 
 // Components
 import { TransactionPopup, WithHideBalancePlaceholder } from '../'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 import { TransactionPopupItem } from '../transaction-popup'
+
+// Queries
+import {
+  useGetTokenSpotPricesQuery
+} from '../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
 
 // Styled Components
 import {
@@ -42,14 +52,10 @@ import {
 import { SellButtonRow, SellButton } from '../../shared/style'
 
 interface Props {
-  spotPrices: AssetPriceWithContractAndChainId[]
   address: string
   defaultCurrencies: DefaultCurrencies
-  assetContractAddress: string
-  assetChainId: string
+  asset: BraveWallet.BlockchainToken
   assetBalance: string
-  assetTicker: string
-  assetDecimals: number
   selectedNetwork?: BraveWallet.NetworkInfo
   name: string
   hideBalances?: boolean
@@ -60,17 +66,13 @@ interface Props {
 
 export const PortfolioAccountItem = (props: Props) => {
   const {
-    assetContractAddress,
-    assetChainId,
+    asset,
     assetBalance,
     address,
-    assetTicker,
-    assetDecimals,
     selectedNetwork,
     defaultCurrencies,
     hideBalances,
     name,
-    spotPrices,
     isNft,
     isSellSupported,
     showSellModal
@@ -81,7 +83,6 @@ export const PortfolioAccountItem = (props: Props) => {
 
   // Hooks
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
-  const { computeFiatAmount } = usePricing(spotPrices)
 
   // State
   const [showAccountPopup, setShowAccountPopup] = React.useState<boolean>(false)
@@ -93,13 +94,24 @@ export const PortfolioAccountItem = (props: Props) => {
 
   const formattedAssetBalance: string = React.useMemo(() => {
     return new Amount(assetBalance)
-      .divideByDecimals(assetDecimals)
+      .divideByDecimals(asset.decimals)
       .format(6, true)
-  }, [assetBalance, assetDecimals])
+  }, [assetBalance, asset.decimals])
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    {
+      ids: [getPriceIdForToken(asset)]
+    },
+    querySubscriptionOptions60s
+  )
 
   const fiatBalance: Amount = React.useMemo(() => {
-    return computeFiatAmount(assetBalance, assetTicker, assetDecimals, assetContractAddress, assetChainId)
-  }, [computeFiatAmount, assetDecimals, assetBalance, assetTicker, assetContractAddress, assetChainId])
+    return computeFiatAmount({
+      spotPriceRegistry,
+      value: assetBalance,
+      token: asset
+    })
+  }, [spotPriceRegistry, assetBalance, asset])
 
   const isAssetsBalanceZero = React.useMemo(() => {
     return new Amount(assetBalance).isZero()
@@ -142,7 +154,7 @@ export const PortfolioAccountItem = (props: Props) => {
                 {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
               </FiatBalanceText>
             }
-            <AssetBalanceText>{`${formattedAssetBalance} ${assetTicker}`}</AssetBalanceText>
+            <AssetBalanceText>{`${formattedAssetBalance} ${asset.symbol}`}</AssetBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>
         <SellButtonRow>

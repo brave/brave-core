@@ -9,6 +9,7 @@ import * as React from 'react'
 import {
   getLocale
 } from '../../../../../../../common/locale'
+import { getTokenPriceAmountFromRegistry } from '../../../../../../utils/pricing-utils'
 
 // Selectors
 import {
@@ -20,9 +21,11 @@ import {
 
 // Types
 import {
-  QuoteOption,
-  SpotPrices
+  QuoteOption
 } from '../../../constants/types'
+import {
+  SpotPriceRegistry
+} from '../../../../../../constants/types'
 
 // Styled Components
 import {
@@ -36,7 +39,7 @@ interface Props {
   option: QuoteOption
   isSelected: boolean
   isBest: boolean
-  spotPrices: SpotPrices
+  spotPrices?: SpotPriceRegistry
 }
 
 export const SelectQuoteOptionButton = (props: Props) => {
@@ -52,11 +55,15 @@ export const SelectQuoteOptionButton = (props: Props) => {
   }, [option, onClick])
 
   const quoteFiatValue = React.useMemo(() => {
+    if (!spotPrices) {
+      return ''
+    }
+
     return option
       .toAmount
-      .times(spotPrices.toAsset || '0')
+      .times(getTokenPriceAmountFromRegistry(spotPrices, option.toToken))
       .formatAsFiat(defaultFiatCurrency)
-  }, [spotPrices.toAsset, option, defaultFiatCurrency])
+  }, [spotPrices, option, defaultFiatCurrency])
 
   return (
     <Button onClick={onSelectToken} isSelected={isSelected}>

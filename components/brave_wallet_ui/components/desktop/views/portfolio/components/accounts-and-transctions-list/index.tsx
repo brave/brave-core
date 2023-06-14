@@ -72,7 +72,6 @@ export const AccountsAndTransactionsList = ({
 }: Props) => {
   // redux
   // unsafe selectors
-  const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
@@ -173,13 +172,9 @@ export const AccountsAndTransactionsList = ({
           </Column>
           {accountsList.map((account) =>
             <PortfolioAccountItem
-              spotPrices={transactionSpotPrices}
               defaultCurrencies={defaultCurrencies}
               key={account.address}
-              assetContractAddress={selectedAsset.contractAddress}
-              assetChainId={selectedAsset.chainId}
-              assetTicker={selectedAsset.symbol}
-              assetDecimals={selectedAsset.decimals}
+              asset={selectedAsset}
               name={account.name}
               address={account.address}
               assetBalance={getBalance(account, selectedAsset)}

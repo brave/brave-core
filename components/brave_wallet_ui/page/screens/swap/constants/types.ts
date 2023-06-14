@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet } from '../../../../constants/types'
+import { BraveWallet, SpotPriceRegistry } from '../../../../constants/types'
 import { AccountInfoEntity } from '../../../../common/slices/entities/account-info.entity'
 
 import Amount from '../../../../utils/amount'
@@ -41,12 +41,6 @@ export type QuoteOption = {
 
 export type Registry = Record<string, string>
 
-export type SpotPrices = {
-  nativeAsset: string
-  fromAsset: string
-  toAsset: string
-}
-
 export type SwapAndSend = {
   label: string
   name: string
@@ -55,12 +49,6 @@ export type SwapAndSend = {
 export type RefreshBlockchainStateParams = {
   network: BraveWallet.NetworkInfo
   account: AccountInfoEntity
-}
-
-export type RefreshPricesParams = {
-  nativeAsset: BraveWallet.BlockchainToken | undefined
-  fromAsset: BraveWallet.BlockchainToken | undefined
-  toAsset: BraveWallet.BlockchainToken | undefined
 }
 
 export type GasFeeOption = {
@@ -108,5 +96,5 @@ export type SwapParams = {
    */
   slippageTolerance: string
   fromAddress?: string
-  spotPrices: SpotPrices
+  spotPrices?: SpotPriceRegistry
 }

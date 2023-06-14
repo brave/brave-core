@@ -16,7 +16,6 @@ import { BraveWallet } from '../../../../../constants/types'
 // Utils
 import { getLocale } from '../../../../../../common/locale'
 import Amount from '../../../../../utils/amount'
-import { computeFiatAmount } from '../../../../../utils/pricing-utils'
 import { formatTokenBalanceWithSymbol } from '../../../../../utils/balance-utils'
 import { checkIfTokenNeedsNetworkIcon } from '../../../../../utils/asset-utils'
 import { useGetNetworkQuery } from '../../../../../common/slices/api.slice'
@@ -44,13 +43,13 @@ interface Props {
   onClick: () => void
   token: BraveWallet.BlockchainToken
   balance: string
+  spotPrice: Amount
 }
 
 export const TokenListItem = (props: Props) => {
-  const { onClick, token, balance } = props
+  const { onClick, token, balance, spotPrice } = props
 
   // Wallet Selectors
-  const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
   // Queries
@@ -66,15 +65,11 @@ export const TokenListItem = (props: Props) => {
   }, [token?.isErc721])
 
   const fiatBalance = React.useMemo(() => {
-    return computeFiatAmount(spotPrices, {
-      decimals: token.decimals,
-      symbol: token.symbol,
-      value: balance,
-      contractAddress: token.contractAddress,
-      chainId: token.chainId
-    })
+    return new Amount(balance)
+      .divideByDecimals(token.decimals)
+      .times(spotPrice)
   }, [
-    spotPrices,
+    spotPrice,
     balance,
     token.symbol,
     token.decimals,

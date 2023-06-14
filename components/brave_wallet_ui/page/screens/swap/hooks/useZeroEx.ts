@@ -14,6 +14,8 @@ import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../constants/magi
 // Utils
 import Amount from '../../../../utils/amount'
 import { hexStrToNumberArray } from '../../../../utils/hex-utils'
+import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
+import { makeNetworkAsset } from '../../../../options/asset-options'
 
 // Query hooks
 import {
@@ -29,6 +31,7 @@ export function useZeroEx (params: SwapParams) {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
+  const nativeAsset = useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
 
   // State
   const [quote, setQuote] = useState<BraveWallet.SwapResponse | undefined>(undefined)
@@ -356,7 +359,7 @@ export function useZeroEx (params: SwapParams) {
   }, [quote, selectedNetwork?.decimals])
 
   const quoteOptions: QuoteOption[] = useMemo(() => {
-    if (!params.fromToken || !params.toToken) {
+    if (!params.fromToken || !params.toToken || !params.spotPrices || !nativeAsset) {
       return []
     }
 
@@ -367,25 +370,35 @@ export function useZeroEx (params: SwapParams) {
     return [
       {
         label: '',
-        fromAmount: new Amount(quote.sellAmount).divideByDecimals(params.fromToken.decimals),
-        toAmount: new Amount(quote.buyAmount).divideByDecimals(params.toToken.decimals),
+        fromAmount: new Amount(quote.sellAmount).divideByDecimals(
+          params.fromToken.decimals
+        ),
+        toAmount: new Amount(quote.buyAmount).divideByDecimals(
+          params.toToken.decimals
+        ),
         minimumToAmount: undefined,
         fromToken: params.fromToken,
         toToken: params.toToken,
         rate: new Amount(quote.buyAmount)
           .divideByDecimals(params.toToken.decimals)
-          .div(new Amount(quote.sellAmount).divideByDecimals(params.fromToken.decimals)),
+          .div(
+            new Amount(quote.sellAmount).divideByDecimals(
+              params.fromToken.decimals
+            )
+          ),
         impact: new Amount(quote.estimatedPriceImpact),
         sources: quote.sources
-          .map(source => ({
+          .map((source) => ({
             name: source.name,
             proportion: new Amount(source.proportion)
           }))
-          .filter(source => source.proportion.gt(0)),
+          .filter((source) => source.proportion.gt(0)),
         routing: 'split', // 0x supports split routing only
         networkFee: networkFee.isUndefined()
           ? ''
-          : networkFee.times(params.spotPrices.nativeAsset).formatAsFiat(defaultFiatCurrency),
+          : networkFee
+            .times(getTokenPriceAmountFromRegistry(params.spotPrices, nativeAsset))
+            .formatAsFiat(defaultFiatCurrency),
         braveFee
       }
     ]
@@ -395,8 +408,9 @@ export function useZeroEx (params: SwapParams) {
     quote,
     defaultFiatCurrency,
     networkFee,
-    params.spotPrices.nativeAsset,
-    braveFee
+    params.spotPrices,
+    braveFee,
+    nativeAsset
   ])
 
   return {

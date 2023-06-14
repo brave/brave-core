@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-
 import {
   Route,
   Switch,
@@ -40,9 +39,13 @@ import { WalletPageActions } from '../../../../page/actions'
 // Utils
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getTokenPriceAmountFromRegistry
+} from '../../../../utils/pricing-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { formatAsDouble } from '../../../../utils/string-utils'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   networkEntityAdapter
 } from '../../../../common/slices/entities/network.entity'
@@ -90,7 +93,13 @@ import {
   Row,
   HorizontalSpace
 } from '../../../shared/style'
-import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
+import {
+  useGetVisibleNetworksQuery,
+  useGetTokenSpotPricesQuery
+} from '../../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../../common/slices/constants'
 
 interface Props {
   onToggleShowIpfsBanner: () => void
@@ -111,8 +120,6 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
   const accounts =
     useUnsafeWalletSelector(WalletSelectors.accounts)
-  const transactionSpotPrices =
-    useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const selectedTimeline =
     useSafePageSelector(PageSelectors.selectedTimeline)
   const nftMetadata =
@@ -223,28 +230,41 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
       )
   }, [networks, filteredOutPortfolioNetworkKeys])
 
+  const {
+    data: spotPriceRegistry,
+    isLoading: isLoadingSpotPrices,
+    isFetching: isFetchingSpotPrices
+  } = useGetTokenSpotPricesQuery(
+    {
+      ids: visibleAssetOptions
+        .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
+        .filter(({ asset }) => !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
+        .map(({ asset }) => getPriceIdForToken(asset))
+    },
+    querySubscriptionOptions60s
+  )
+
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioFiatBalance = React.useMemo((): Amount => {
     if (allNetworksAreHidden) {
-      return new Amount(0)
+      return Amount.zero()
     }
 
     if (visibleAssetOptions.length === 0) {
-      return new Amount('')
+      return Amount.empty()
+    }
+
+    if (isLoadingSpotPrices || isFetchingSpotPrices) {
+      return Amount.empty()
     }
 
     const visibleAssetFiatBalances = visibleAssetOptions
       .map((item) => {
-        return computeFiatAmount(
-          transactionSpotPrices,
-          {
-            value: item.assetBalance,
-            decimals: item.asset.decimals,
-            symbol: item.asset.symbol,
-            contractAddress: item.asset.contractAddress,
-            chainId: item.asset.chainId
-          }
-        )
+        return computeFiatAmount({
+          spotPriceRegistry,
+          value: item.assetBalance,
+          token: item.asset
+        })
       })
 
     const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
@@ -254,7 +274,9 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
   },
     [
       visibleAssetOptions,
-      transactionSpotPrices,
+      spotPriceRegistry,
+      isLoadingSpotPrices,
+      isFetchingSpotPrices,
       allNetworksAreHidden
     ])
 
@@ -475,6 +497,11 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
                 }
                 token={item.asset}
                 hideBalances={hidePortfolioBalances}
+                spotPrice={
+                  spotPriceRegistry && !isLoadingSpotPrices && !isFetchingSpotPrices
+                    ? getTokenPriceAmountFromRegistry(spotPriceRegistry, item.asset)
+                    : Amount.empty()
+                }
               />
             }
           />

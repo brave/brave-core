@@ -14,6 +14,8 @@ import { WRAPPED_SOL_CONTRACT_ADDRESS } from '../constants/magics'
 
 // Utils
 import Amount from '../../../../utils/amount'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { makeNetworkAsset } from '../../../../options/asset-options'
 
 // Hooks
 import { useLib } from '../../../../common/hooks'
@@ -33,6 +35,7 @@ export function useJupiter (params: SwapParams) {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
+  const nativeAsset = useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
 
   // State
   const [quote, setQuote] = useState<BraveWallet.JupiterQuote | undefined>(undefined)
@@ -263,7 +266,7 @@ export function useJupiter (params: SwapParams) {
   )
 
   const quoteOptions: QuoteOption[] = useMemo(() => {
-    if (!params.fromToken || !params.toToken) {
+    if (!params.fromToken || !params.toToken || !params.spotPrices) {
       return []
     }
 
@@ -321,7 +324,8 @@ export function useJupiter (params: SwapParams) {
           ),
           routing: route.marketInfos.length > 1 ? 'flow' : 'split',
           networkFee: networkFee
-            .times(params.spotPrices.nativeAsset)
+            // @ts-expect-error
+            .times(params.spotPrices[getPriceIdForToken(nativeAsset)] ?? 0)
             .formatAsFiat(defaultFiatCurrency),
           braveFee
         } as QuoteOption)
@@ -331,7 +335,7 @@ export function useJupiter (params: SwapParams) {
     params.fromToken,
     params.toToken,
     defaultFiatCurrency,
-    params.spotPrices.nativeAsset,
+    params.spotPrices,
     braveFee
   ])
 

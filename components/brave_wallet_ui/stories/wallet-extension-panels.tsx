@@ -60,7 +60,6 @@ import {
   mockedErc20ApprovalTransaction,
 } from './mock-data/mock-transaction-info'
 import { mockDefaultCurrencies } from './mock-data/mock-default-currencies'
-import { mockTransactionSpotPrices } from './mock-data/current-price-data'
 import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet-accounts'
 import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
@@ -367,7 +366,6 @@ const transactionList = [
 
 const mockCustomStoreState: Partial<WalletState> = {
   accounts: mockAccounts,
-  transactionSpotPrices: mockTransactionSpotPrices,
   defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
   fullTokenList: mockNewAssetOptions,
   activeOrigin: originInfo,
@@ -423,7 +421,6 @@ export const _ConfirmErcApproveTransaction = () => {
           {
             walletStateOverride: {
               accounts: mockAccounts,
-              transactionSpotPrices: mockTransactionSpotPrices,
               defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
               fullTokenList: mockNewAssetOptions
             },
@@ -717,7 +714,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         onBack={onBackToTransactions}
                         defaultCurrencies={mockDefaultCurrencies}
                         visibleTokens={mockNewAssetOptions}
-                        transactionSpotPrices={[]}
                       />
                     </SelectContainer>
                   )}
@@ -877,7 +873,6 @@ export const _TransactionDetail = () => {
               onBack={mockedFunction}
               defaultCurrencies={mockDefaultCurrencies}
               visibleTokens={mockNewAssetOptions}
-              transactionSpotPrices={[]}
               transactionId={tx.id}
             />
           </ScrollContainer>

@@ -2,7 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { AssetPriceWithContractAndChainId } from '../../constants/types'
+
+import { SpotPriceRegistry } from '../../constants/types'
 
 export const mockedCurrentPriceData = [
   {
@@ -40,21 +41,17 @@ export const mockedCurrentPriceData = [
   }
 ]
 
-export const mockTransactionSpotPrices: AssetPriceWithContractAndChainId[] = [
-  {
+export const mockTransactionSpotPrices: SpotPriceRegistry = {
+  eth: {
     fromAsset: 'ETH',
     toAsset: 'USD',
     price: '3300',
-    assetTimeframeChange: '',
-    contractAddress: '',
-    chainId: '0x1'
+    assetTimeframeChange: ''
   },
-  {
+  "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
     fromAsset: 'BAT',
     toAsset: 'USD',
     price: '0.85',
-    assetTimeframeChange: '',
-    contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
-    chainId: '0x1'
+    assetTimeframeChange: ''
   }
-]
+}

@@ -18,16 +18,24 @@ import { BraveWallet, WalletAccountType, CoinTypesMap, SendOptionTypes } from '.
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
+import { getPriceIdForToken } from '../../../../../utils/api-utils'
 import {
   getFilecoinKeyringIdFromNetwork //
 } from '../../../../../utils/network-utils'
 import { getBalance } from '../../../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getTokenPriceAmountFromRegistry
+} from '../../../../../utils/pricing-utils'
 import Amount from '../../../../../utils/amount'
 import {
   useGetVisibleNetworksQuery,
-  useSetNetworkMutation
+  useSetNetworkMutation,
+  useGetTokenSpotPricesQuery
 } from '../../../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../../../common/slices/constants'
 
 // Options
 import { AllNetworksOption } from '../../../../../options/network-filter-options'
@@ -59,7 +67,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     // Wallet Selectors
     const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
     const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
-    const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
     const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
     // State
@@ -70,6 +77,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     // Queries & Mutations
     const [setNetwork] = useSetNetworkMutation()
     const { data: networks } = useGetVisibleNetworksQuery()
+
 
     // Methods
     const getTokenListByAccount = React.useCallback((account: WalletAccountType) => {
@@ -112,10 +120,24 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const getTokensBySelectedSendOption = React.useCallback((account: WalletAccountType) => {
       if (selectedSendOption === 'nft') {
-        return getTokenListWithBalances(account).filter(token => token.isErc721 || token.isNft)
+        return getTokenListWithBalances(account).filter(token =>
+          token.isErc721 || token.isNft || token.isErc1155)
       }
-      return getTokenListWithBalances(account).filter(token => !token.isErc721 && !token.isNft)
+      return getTokenListWithBalances(account).filter(token =>
+        !token.isErc721 && !token.isErc1155 && !token.isNft)
     }, [getTokenListWithBalances, selectedSendOption])
+
+    const {
+      data: spotPriceRegistry
+    } = useGetTokenSpotPricesQuery(
+      {
+        ids: accounts
+          .flatMap(getTokensBySelectedSendOption)
+          .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
+          .map(getPriceIdForToken)
+      },
+      querySubscriptionOptions60s
+    )
 
     const getTokensByNetwork = React.useCallback((account: WalletAccountType) => {
       if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
@@ -143,21 +165,21 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const getAccountFiatValue = React.useCallback((account: WalletAccountType) => {
       const amounts = getTokensBySearchValue(account).map((token) => {
         const balance = getBalance(account, token)
-        return computeFiatAmount(spotPrices, {
-          decimals: token.decimals,
-          symbol: token.symbol,
+
+        return computeFiatAmount({
+          spotPriceRegistry,
           value: balance,
-          contractAddress: token.contractAddress,
-          chainId: token.chainId
+          token
         }).format()
       })
+
       const reducedAmounts = amounts.reduce(function (a, b) {
         return a !== '' && b !== ''
           ? new Amount(a).plus(b).format()
           : ''
       })
       return new Amount(reducedAmounts).formatAsFiat(defaultCurrencies.fiat)
-    }, [getTokensBySearchValue, spotPrices, defaultCurrencies.fiat])
+    }, [getTokensBySearchValue, spotPriceRegistry, defaultCurrencies.fiat])
 
     const onSelectSendAsset = React.useCallback(
       async (
@@ -239,6 +261,11 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                 onClick={() => onSelectSendAsset(token, account)}
                 key={`${token.contractAddress}-${token.chainId}-${token.tokenId}`}
                 balance={getBalance(account, token)}
+                spotPrice={
+                  spotPriceRegistry
+                    ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)
+                    : Amount.empty()
+                }
               />
             )}
           </Column>

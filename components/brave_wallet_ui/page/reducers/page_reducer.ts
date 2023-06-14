@@ -45,8 +45,6 @@ const defaultState: PageState = {
   enablingAutoPin: false,
   isAutoPinEnabled: false,
   pinStatusOverview: undefined,
-  selectedAssetFiatPrice: undefined,
-  selectedAssetCryptoPrice: undefined,
   selectedAssetPriceHistory: [],
   portfolioPriceHistory: [],
   isFetchingPriceHistory: false,
@@ -168,8 +166,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
       },
 
       updatePriceInfo (state, { payload }: PayloadAction<SelectAssetPayloadType>) {
-        state.selectedAssetFiatPrice = payload.defaultFiatPrice
-        state.selectedAssetCryptoPrice = payload.defaultCryptoPrice
         state.selectedAssetPriceHistory = payload.priceHistory?.values || []
         state.selectedTimeline = payload.timeFrame
         state.isFetchingPriceHistory = false

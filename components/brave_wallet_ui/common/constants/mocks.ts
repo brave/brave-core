@@ -9,13 +9,14 @@ import {
   BraveWallet,
   SerializableTransactionInfo,
   WalletAccountType,
-  AssetPriceWithContractAndChainId
+  SpotPriceRegistry
 } from '../../constants/types'
 import { NftsPinningStatusType } from '../../page/constants/action_types'
 
 // mocks
 import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-options'
 import { getAssetIdKey } from '../../utils/asset-utils'
+import { getPriceIdForToken } from '../../utils/api-utils'
 
 
 type EIP1559SerializableTransactionInfo = SerializableTransactionInfo & {
@@ -276,32 +277,26 @@ export const mockFilecoinAccountInfo: BraveWallet.AccountInfo = {
   hardware: undefined
 }
 
-export const mockAssetPrices: AssetPriceWithContractAndChainId[] = [
-  {
+export const mockSpotPriceRegistry: SpotPriceRegistry = {
+  eth: {
     fromAsset: 'ETH',
     price: '4000',
     toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue',
-    contractAddress: '0x1',
-    chainId: 'ETH'
+    assetTimeframeChange: 'mockValue'
   },
-  {
+  dog: {
     fromAsset: 'DOG',
     price: '100',
     toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue',
-    contractAddress: '0xdog',
-    chainId: '0x1'
+    assetTimeframeChange: 'mockValue'
   },
-  {
+  [getPriceIdForToken(mockBasicAttentionToken)]: {
     fromAsset: mockBasicAttentionToken.symbol,
     price: '0.88',
     toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue',
-    contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
-    chainId: '0x1'
+    assetTimeframeChange: 'mockValue'
   }
-]
+}
 
 export const mockAddresses: string[] = [
   '0xea674fdde714fd979de3edf0f56aa9716b898ec8',

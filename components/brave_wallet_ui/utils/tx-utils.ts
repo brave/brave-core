@@ -16,8 +16,8 @@ import {
   SerializableTimeDelta,
   SerializableOriginInfo,
   SortingOrder,
-  AssetPriceWithContractAndChainId,
-  TransactionInfo
+  TransactionInfo,
+  SpotPriceRegistry
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import {
@@ -40,7 +40,7 @@ import { findTokenByContractAddress } from './asset-utils'
 import Amount from './amount'
 import { getCoinFromTxDataUnion, TxDataPresence } from './network-utils'
 import { toProperCase } from './string-utils'
-import { computeFiatAmount, findAssetPrice } from './pricing-utils'
+import { computeFiatAmount, getTokenPriceAmountFromRegistry } from './pricing-utils'
 import { makeNetworkAsset } from '../options/asset-options'
 import { getAddressLabel } from './account-utils'
 import {
@@ -990,7 +990,7 @@ export function getGasFeeFiatValue ({
   txNetwork
 }: {
   gasFee: string
-  networkSpotPrice?: string
+  networkSpotPrice: Amount
   txNetwork?: Pick<BraveWallet.NetworkInfo, 'decimals'>
 }) {
   if (!txNetwork || !networkSpotPrice) {
@@ -1358,18 +1358,18 @@ export const getTransactionFiatValues = ({
   normalizedTransferredValue,
   sellAmountWei,
   sellToken,
-  spotPrices,
+  spotPriceRegistry,
   token,
   transferredValueWei,
   tx,
   txNetwork
 }: {
   gasFee: string
-  networkSpotPrice: string
+  networkSpotPrice: Amount
   normalizedTransferredValue: string
   sellAmountWei?: string
   sellToken?: BraveWallet.BlockchainToken
-  spotPrices: AssetPriceWithContractAndChainId[]
+  spotPriceRegistry: SpotPriceRegistry
   token?: BraveWallet.BlockchainToken
   transferredValueWei?: string
   tx: TransactionInfo
@@ -1388,12 +1388,17 @@ export const getTransactionFiatValues = ({
   // Solana Dapps
   if (isSolanaDappTransaction(tx)) {
     const transferredAmountFiat = txNetwork
-      ? computeFiatAmount(spotPrices, {
-          decimals: txNetwork.decimals,
-          symbol: txNetwork.symbol,
+      ? computeFiatAmount({
+          spotPriceRegistry,
           value: transferredValueWei || '',
-          contractAddress: '',
-          chainId: txNetwork.chainId
+          token: {
+            decimals: txNetwork.decimals,
+            symbol: txNetwork.symbol,
+            contractAddress: '',
+            chainId: txNetwork.chainId,
+            coin: txNetwork.coin,
+            coingeckoId: ''
+          }
         })
       : Amount.empty()
 
@@ -1410,7 +1415,9 @@ export const getTransactionFiatValues = ({
   if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
     const [, amount] = tx.txArgs // (address recipient, uint256 amount) → bool
 
-    const price = findAssetPrice(spotPrices, token?.symbol ?? '', token?.contractAddress ?? '', token?.chainId ?? '')
+    const price = token
+      ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)
+      : Amount.empty()
 
     const sendAmountFiat = new Amount(amount)
       .divideByDecimals(token?.decimals ?? 18)
@@ -1453,7 +1460,9 @@ export const getTransactionFiatValues = ({
 
   // SPL
   if (isSolanaSplTransaction(tx)) {
-    const price = findAssetPrice(spotPrices, token?.symbol ?? '', token?.contractAddress ?? '', token?.chainId ?? '')
+    const price = token
+      ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)
+      : Amount.empty()
     const sendAmountFiat = new Amount(normalizedTransferredValue).times(price)
 
     return {
@@ -1470,12 +1479,10 @@ export const getTransactionFiatValues = ({
   if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
     const sellAmountFiat =
       sellToken && sellAmountWei
-        ? computeFiatAmount(spotPrices, {
-            decimals: sellToken.decimals,
-            symbol: sellToken.symbol,
+        ? computeFiatAmount({
+            spotPriceRegistry,
             value: sellAmountWei,
-            contractAddress: sellToken.contractAddress,
-            chainId: sellToken.chainId
+            token: sellToken
           })
         : Amount.empty()
 
@@ -1490,22 +1497,24 @@ export const getTransactionFiatValues = ({
 
   // DEFAULT
   const sendAmountFiat = txNetwork
-    ? computeFiatAmount(spotPrices, {
-        decimals: txNetwork.decimals,
-        symbol: txNetwork.symbol,
+    ? computeFiatAmount({
+        spotPriceRegistry,
         value: getTransactionBaseValue(tx) || '',
-        contractAddress: '',
-        chainId: txNetwork.chainId
+        token: {
+          decimals: txNetwork.decimals,
+          symbol: txNetwork.symbol,
+          contractAddress: '',
+          chainId: txNetwork.chainId,
+          coin: txNetwork.coin,
+          coingeckoId: ''
+        }
       })
     : Amount.empty()
 
   return {
     gasFeeFiat,
     fiatValue: sendAmountFiat.toNumber().toString(),
-    fiatTotal: new Amount(gasFeeFiat)
-      .plus(sendAmountFiat)
-      .toNumber()
-      .toString()
+    fiatTotal: new Amount(gasFeeFiat).plus(sendAmountFiat).toNumber().toString()
   }
 }
 
@@ -1689,7 +1698,7 @@ export const parseTransactionWithPrices = ({
   accounts,
   tx,
   transactionNetwork,
-  spotPrices,
+  spotPriceRegistry,
   gasFee,
   tokensList
 }: {
@@ -1697,17 +1706,17 @@ export const parseTransactionWithPrices = ({
   tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
   tokensList: BraveWallet.BlockchainToken[]
-  spotPrices: AssetPriceWithContractAndChainId[]
+  spotPriceRegistry: SpotPriceRegistry
   gasFee: string
 }): ParsedTransaction => {
   const networkSpotPrice = transactionNetwork
-    ? findAssetPrice(
-        spotPrices,
-        transactionNetwork.symbol,
-        '',
-        transactionNetwork.chainId
-      )
-    : ''
+    ? getTokenPriceAmountFromRegistry(spotPriceRegistry, {
+        symbol: transactionNetwork.symbol,
+        contractAddress: '',
+        chainId: transactionNetwork.chainId,
+        coingeckoId: ''
+      })
+    : Amount.empty()
 
   const {
     token,
@@ -1734,7 +1743,7 @@ export const parseTransactionWithPrices = ({
       sellAmountWei: sellAmountWei?.value?.toString(),
       networkSpotPrice,
       normalizedTransferredValue,
-      spotPrices,
+      spotPriceRegistry,
       tx,
       sellToken,
       token,

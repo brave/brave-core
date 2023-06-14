@@ -7,11 +7,11 @@ import * as React from 'react'
 
 // Types
 import {
-  BraveWallet
+  BraveWallet,
+  SpotPriceRegistry
 } from '../../../../../../constants/types'
 import {
-  QuoteOption,
-  SpotPrices
+  QuoteOption
 } from '../../../constants/types'
 
 // Constants
@@ -22,6 +22,7 @@ import Amount from '../../../../../../utils/amount'
 import {
   getLocale
 } from '../../../../../../../common/locale'
+import { getTokenPriceAmountFromRegistry } from '../../../../../../utils/pricing-utils'
 
 // Styled Components
 import {
@@ -49,7 +50,7 @@ interface Props {
   fromToken: BraveWallet.BlockchainToken | undefined
   toToken: BraveWallet.BlockchainToken | undefined
   toAmount: string
-  spotPrices: SpotPrices
+  spotPrices?: SpotPriceRegistry
 }
 
 export const QuoteInfo = (props: Props) => {
@@ -79,8 +80,9 @@ export const QuoteInfo = (props: Props) => {
     if (
       fromToken !== undefined &&
       toToken !== undefined &&
-      spotPrices.fromAsset &&
-      spotPrices.toAsset &&
+      spotPrices &&
+      !getTokenPriceAmountFromRegistry(spotPrices, fromToken).isUndefined() &&
+      !getTokenPriceAmountFromRegistry(spotPrices, toToken).isUndefined() &&
       selectedQuoteOption !== undefined
     ) {
       // Exchange rate is the value <R> in the following equation:
@@ -90,8 +92,8 @@ export const QuoteInfo = (props: Props) => {
       //   1 FROM = <R> TO
       //   1 FROM/USD = <R> TO/USD
       //   => <R> = (FROM/USD) / (TO/USD)
-      const coinGeckoRate =
-        new Amount(spotPrices.fromAsset).div(spotPrices.toAsset)
+      const coinGeckoRate = getTokenPriceAmountFromRegistry(spotPrices, fromToken)
+        .div(getTokenPriceAmountFromRegistry(spotPrices, toToken))
 
       // Quote rate computation:
       //   <X> FROM = <Y> TO
