@@ -637,6 +637,7 @@ void AdsServiceImpl::OnEnabledPrefChangedCallback(
 }
 
 void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
+  NotifyPrefChanged(prefs::kIdleTimeThreshold);
   CheckIdleStateAfterDelay();
 }
 
