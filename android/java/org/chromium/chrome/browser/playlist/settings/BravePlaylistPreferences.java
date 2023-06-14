@@ -29,6 +29,7 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
     private static final String PREF_PLAYLIST_PREFERENCE_SCREEN = "playlist_preference_screen";
     public static final String PREF_ENABLE_PLAYLIST = "enable_playlist";
+    public static final String PREF_ADD_TO_PLAYLIST_BUTTON = "add_to_playlist_button";
     public static final String PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE = "auto_save_media_for_offline";
     private static final String PREF_REMEMBER_FILE_PLAYBACK_POSITION =
             "remember_file_playback_position";
@@ -38,6 +39,7 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     private static final String PREF_RESET_PLAYLIST = "reset_playlist";
 
     private ChromeSwitchPreference mEnablePlaylistSwitch;
+    private ChromeSwitchPreference mAddToPlaylistButtonSwitch;
     private Preference mAutoSaveMediaForOfflinePreference;
     private ChromeSwitchPreference mRememberFilePlaybackPositionSwitch;
     private ChromeSwitchPreference mRememberListPlaybackPositionSwitch;
@@ -51,6 +53,10 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         super.onActivityCreated(savedInstanceState);
         mEnablePlaylistSwitch = (ChromeSwitchPreference) findPreference(PREF_ENABLE_PLAYLIST);
         mEnablePlaylistSwitch.setOnPreferenceChangeListener(this);
+
+        mAddToPlaylistButtonSwitch =
+                (ChromeSwitchPreference) findPreference(PREF_ADD_TO_PLAYLIST_BUTTON);
+        mAddToPlaylistButtonSwitch.setOnPreferenceChangeListener(this);
 
         mAutoSaveMediaForOfflinePreference =
                 (Preference) findPreference(PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
@@ -148,6 +154,9 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
 
     private void updatePlaylistSettingsState(boolean isPlaylistEnabled) {
         if (isPlaylistEnabled) {
+            if (mAddToPlaylistButtonSwitch != null) {
+                getPreferenceScreen().addPreference(mAddToPlaylistButtonSwitch);
+            }
             if (mAutoSaveMediaForOfflinePreference != null) {
                 getPreferenceScreen().addPreference(mAutoSaveMediaForOfflinePreference);
             }
@@ -164,6 +173,9 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                 getPreferenceScreen().addPreference(mResetPlaylist);
             }
         } else {
+            if (mAddToPlaylistButtonSwitch != null) {
+                getPreferenceScreen().removePreference(mAddToPlaylistButtonSwitch);
+            }
             if (mAutoSaveMediaForOfflinePreference != null) {
                 getPreferenceScreen().removePreference(mAutoSaveMediaForOfflinePreference);
             }
