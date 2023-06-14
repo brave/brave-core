@@ -129,9 +129,6 @@ class AdsServiceImpl : public AdsService,
   void SetBuildChannel();
   void SetFlags();
 
-  void CleanUpOnFirstRun();
-  void RemoveDeprecatedFiles() const;
-
   bool ShouldShowOnboardingNotification();
   void MaybeShowOnboardingNotification();
 
@@ -417,7 +414,6 @@ class AdsServiceImpl : public AdsService,
   void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
-  bool did_cleanup_on_first_run_ = false;
   bool needs_browser_upgrade_to_serve_ads_ = false;
 
   // Brave Ads Service starts count is needed to avoid possible double Brave

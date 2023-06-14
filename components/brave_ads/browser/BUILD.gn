@@ -12,8 +12,6 @@ static_library("browser") {
     "ads_service.cc",
     "ads_service.h",
     "ads_service_observer.h",
-    "ads_storage_cleanup.cc",
-    "ads_storage_cleanup.h",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
