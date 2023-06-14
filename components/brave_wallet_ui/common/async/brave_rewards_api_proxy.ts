@@ -123,7 +123,7 @@ export class BraveRewardsProxy {
     chrome.braveRewards.onUnblindedTokensReady.addListener
 
   openRewardsPanel = chrome.braveRewards.openRewardsPanel
-  showRewardsTour = chrome.braveRewards.showRewardsTour
+  showRewardsSetup = chrome.braveRewards.showRewardsSetup
 
   onInitialized = (callback: () => any) =>
     chrome.braveRewards.initialized.addListener((error) => {
