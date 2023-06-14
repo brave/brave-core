@@ -337,6 +337,23 @@
             ]
           }
         ]
+      }, {
+        "name": "getSettings",
+        "type": "function",
+        "description": "Returns list of ipfs settings",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with settings list",
+            "parameters": [
+              {
+                "name": "settings",
+                "type": "string"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

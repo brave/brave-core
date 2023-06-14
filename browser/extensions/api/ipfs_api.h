@@ -193,6 +193,15 @@ class IpfsValidateGatewayUrlFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class IpfsGetSettingsFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.getSettings", UNKNOWN)
+
+ protected:
+  ~IpfsGetSettingsFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

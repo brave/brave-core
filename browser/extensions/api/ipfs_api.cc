@@ -21,6 +21,7 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/channel_info.h"
@@ -465,6 +466,49 @@ ExtensionFunction::ResponseAction IpfsValidateGatewayUrlFunction::Run() {
 
 void IpfsValidateGatewayUrlFunction::OnGatewayValidated(bool success) {
   return Respond(WithArguments(success));
+}
+
+ExtensionFunction::ResponseAction IpfsGetSettingsFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  base::Value::Dict response;
+  response.Set("gateway_auto_fallback_enabled",
+               prefs->GetBoolean(kIPFSAutoFallbackToGateway));
+  response.Set("auto_redirect_dns_link",
+               prefs->GetBoolean(kIPFSAutoRedirectDNSLink));
+  response.Set("auto_redirect_gateway",
+               prefs->GetBoolean(kIPFSAutoRedirectGateway));
+  response.Set("storage_max", prefs->GetInteger(kIpfsStorageMax));
+  response.Set("gateway_url", prefs->GetString(kIPFSPublicGatewayAddress));
+  response.Set("nft_gateway_url",
+               prefs->GetString(kIPFSPublicNFTGatewayAddress));
+
+  std::string resolve_method_str;
+  IPFSResolveMethodTypes resolve_method = static_cast<IPFSResolveMethodTypes>(
+      prefs->GetInteger(kIPFSResolveMethod));
+  switch (resolve_method) {
+    case IPFSResolveMethodTypes::IPFS_LOCAL:
+      resolve_method_str = "local";
+      break;
+    case IPFSResolveMethodTypes::IPFS_GATEWAY:
+      resolve_method_str = "remote";
+      break;
+    case IPFSResolveMethodTypes::IPFS_ASK:
+      resolve_method_str = "ask";
+      break;
+    case IPFSResolveMethodTypes::IPFS_DISABLED:
+      resolve_method_str = "disabled";
+      break;
+  }
+  response.Set("ipfs_resolve_method", resolve_method_str);
+
+  std::string json_string;
+  base::JSONWriter::Write(response, &json_string);
+
+  return RespondNow(WithArguments(json_string));
 }
 
 }  // namespace api

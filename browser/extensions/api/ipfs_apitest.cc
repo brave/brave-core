@@ -210,5 +210,39 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, IpfsPermissionAPIAccess) {
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 
+IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, GetSettings) {
+  ResultCatcher catcher;
+  const Extension* extension =
+      LoadExtension(extension_dir_.AppendASCII("ipfsCompanion"));
+  ASSERT_TRUE(extension);
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetInstance()->GetForContext(
+          browser()->profile());
+  ASSERT_TRUE(service);
+
+  service->SetAllowIpfsLaunchForTest(true);
+  GetPrefs()->SetBoolean(kIPFSAutoFallbackToGateway, true);
+  GetPrefs()->SetBoolean(kIPFSAutoRedirectDNSLink, false);
+  GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  GetPrefs()->SetInteger(kIpfsStorageMax, 2);
+
+  GetPrefs()->SetString(kIPFSPublicGatewayAddress, "https://a.b");
+  GetPrefs()->SetString(kIPFSPublicNFTGatewayAddress, "https://a.b.c");
+  GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+
+  std::string expected_json =
+      "{\"gateway_auto_fallback_enabled\": true, \"auto_redirect_dns_link\": "
+      "false, \"auto_redirect_gateway\": true, \"storage_max\": 2, "
+      "\"gateway_url\": \"https://a.b\", \"nft_gateway_url\": "
+      "\"https://a.b.c\", \"resolve_method\": \"ask\"}";
+
+  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+      browser()->profile(), ipfs_companion_extension_id,
+      base::StringPrintf("getSettings('%s')", expected_json.c_str())));
+  ASSERT_TRUE(catcher.GetNextResult()) << message_;
+}
+
 }  // namespace
 }  // namespace extensions
