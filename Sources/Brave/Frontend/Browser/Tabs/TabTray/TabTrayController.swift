@@ -643,7 +643,8 @@ class TabTrayController: LoadingViewController {
             syncAPI: braveCore.syncAPI,
             syncProfileServices: braveCore.syncProfileService,
             tabManager: tabManager,
-            windowProtection: windowProtection))
+            windowProtection: windowProtection,
+            isModallyPresented: true))
       case .openTabsDisabled, .noSyncedSessions:
         if !DeviceInfo.hasConnectivity() {
           present(SyncAlerts.noConnection, animated: true)

@@ -25,15 +25,15 @@ class LoginAuthViewController: UITableViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func viewDidLoad() {
-    if requiresAuthentication, Preferences.Privacy.lockWithPasscode.value {
-      askForAuthentication()
-    }
-  }
-
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+    if requiresAuthentication, Preferences.Privacy.lockWithPasscode.value {
+      askForAuthentication() { [weak self] status in
+        self?.navigationController?.popViewController(animated: true)
+      }
+    }
+    
     NotificationCenter.default.do {
       $0.addObserver(
         self, selector: #selector(removeBackgroundedBlur),

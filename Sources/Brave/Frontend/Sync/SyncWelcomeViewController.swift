@@ -142,12 +142,13 @@ class SyncWelcomeViewController: SyncViewController {
   init(syncAPI: BraveSyncAPI,
        syncProfileServices: BraveSyncProfileServiceIOS,
        tabManager: TabManager,
-       windowProtection: WindowProtection?) {
+       windowProtection: WindowProtection?,
+       isModallyPresented: Bool = false) {
     self.syncAPI = syncAPI
     self.syncProfileServices = syncProfileServices
     self.tabManager = tabManager
     
-    super.init(windowProtection: windowProtection)
+    super.init(windowProtection: windowProtection, isModallyPresented: isModallyPresented)
   }
 
   @available(*, unavailable)
