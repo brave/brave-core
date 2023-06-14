@@ -14,10 +14,7 @@ import("//build/config/features.gni")
 import("//build/config/locales.gni")
 
 action("generate_command_metadata") {
-  command_files = [
-    "//chrome/app/chrome_command_ids.h",
-    "//brave/app/brave_command_ids.h",
-  ]
+  command_files = [ "//brave/app/brave_command_ids.h" ]
   cc_template = "command_utils.cc.template"
 
   sources = command_files + [ cc_template ]
