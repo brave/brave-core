@@ -5,12 +5,18 @@
 
 #include "brave/components/brave_ads/core/category_content_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool operator==(const CategoryContentInfo& lhs,
                 const CategoryContentInfo& rhs) {
-  return lhs.category == rhs.category &&
-         lhs.user_reaction_type == rhs.user_reaction_type;
+  const auto tie = [](const CategoryContentInfo& category_content) {
+    return std::tie(category_content.category,
+                    category_content.user_reaction_type);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const CategoryContentInfo& lhs,

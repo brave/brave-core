@@ -5,12 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_notification_ad_payload_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool CatalogNotificationAdPayloadInfo::operator==(
     const CatalogNotificationAdPayloadInfo& other) const {
-  return body == other.body && title == other.title &&
-         target_url == other.target_url;
+  const auto tie = [](const CatalogNotificationAdPayloadInfo& payload) {
+    return std::tie(payload.body, payload.title, payload.target_url);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool CatalogNotificationAdPayloadInfo::operator!=(

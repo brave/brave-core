@@ -24,15 +24,11 @@ NewTabPageAdInfo& NewTabPageAdInfo::operator=(
 NewTabPageAdInfo::~NewTabPageAdInfo() = default;
 
 bool NewTabPageAdInfo::operator==(const NewTabPageAdInfo& other) const {
-  if (!AdInfo::operator==(other)) {
-    return false;
-  }
-
-  auto tie = [](const NewTabPageAdInfo& ad) {
+  const auto tie = [](const NewTabPageAdInfo& ad) {
     return std::tie(ad.company_name, ad.image_url, ad.alt, ad.wallpapers);
   };
 
-  return tie(*this) == tie(other);
+  return AdInfo::operator==(other) && tie(*this) == tie(other);
 }
 
 bool NewTabPageAdInfo::operator!=(const NewTabPageAdInfo& other) const {

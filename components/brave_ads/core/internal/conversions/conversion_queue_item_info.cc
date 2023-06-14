@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
@@ -25,14 +27,18 @@ ConversionQueueItemInfo::~ConversionQueueItemInfo() = default;
 
 bool ConversionQueueItemInfo::operator==(
     const ConversionQueueItemInfo& other) const {
-  return ad_type == other.ad_type &&
-         creative_instance_id == other.creative_instance_id &&
-         creative_set_id == other.creative_set_id &&
-         campaign_id == other.campaign_id &&
-         advertiser_id == other.advertiser_id && segment == other.segment &&
-         conversion_id == other.conversion_id &&
-         advertiser_public_key == other.advertiser_public_key &&
-         process_at == other.process_at && was_processed == other.was_processed;
+  const auto tie = [](const ConversionQueueItemInfo& conversion_queue_item) {
+    return std::tie(
+        conversion_queue_item.ad_type,
+        conversion_queue_item.creative_instance_id,
+        conversion_queue_item.creative_set_id,
+        conversion_queue_item.campaign_id, conversion_queue_item.advertiser_id,
+        conversion_queue_item.segment, conversion_queue_item.conversion_id,
+        conversion_queue_item.advertiser_public_key,
+        conversion_queue_item.process_at, conversion_queue_item.was_processed);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool ConversionQueueItemInfo::operator!=(

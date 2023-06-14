@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo() = default;
@@ -25,9 +27,15 @@ VerifiableConversionEnvelopeInfo::~VerifiableConversionEnvelopeInfo() = default;
 
 bool VerifiableConversionEnvelopeInfo::operator==(
     const VerifiableConversionEnvelopeInfo& other) const {
-  return algorithm == other.algorithm && ciphertext == other.ciphertext &&
-         ephemeral_public_key == other.ephemeral_public_key &&
-         nonce == other.nonce;
+  const auto tie = [](const VerifiableConversionEnvelopeInfo&
+                          verifiable_conversion_envelope) {
+    return std::tie(verifiable_conversion_envelope.algorithm,
+                    verifiable_conversion_envelope.ciphertext,
+                    verifiable_conversion_envelope.ephemeral_public_key,
+                    verifiable_conversion_envelope.nonce);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool VerifiableConversionEnvelopeInfo::operator!=(

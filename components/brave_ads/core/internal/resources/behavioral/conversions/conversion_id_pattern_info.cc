@@ -5,12 +5,19 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool operator==(const ConversionIdPatternInfo& lhs,
                 const ConversionIdPatternInfo& rhs) {
-  return lhs.id_pattern == rhs.id_pattern &&
-         lhs.url_pattern == rhs.url_pattern && lhs.search_in == rhs.search_in;
+  const auto tie = [](const ConversionIdPatternInfo& conversion_id_pattern) {
+    return std::tie(conversion_id_pattern.id_pattern,
+                    conversion_id_pattern.url_pattern,
+                    conversion_id_pattern.search_in);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const ConversionIdPatternInfo& lhs,

@@ -5,11 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
+#include <tuple>
+
 namespace brave_ads::privacy {
 
 bool UnblindedTokenInfo::operator==(const UnblindedTokenInfo& other) const {
-  return public_key == other.public_key && value == other.value &&
-         signature == other.signature;
+  const auto tie = [](const UnblindedTokenInfo& unblinded_token) {
+    return std::tie(unblinded_token.public_key, unblinded_token.value,
+                    unblinded_token.signature);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool UnblindedTokenInfo::operator!=(const UnblindedTokenInfo& other) const {

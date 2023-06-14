@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 ConversionInfo::ConversionInfo() = default;
@@ -22,11 +24,13 @@ ConversionInfo& ConversionInfo::operator=(ConversionInfo&& other) noexcept =
 ConversionInfo::~ConversionInfo() = default;
 
 bool ConversionInfo::operator==(const ConversionInfo& other) const {
-  return creative_set_id == other.creative_set_id && type == other.type &&
-         url_pattern == other.url_pattern &&
-         observation_window == other.observation_window &&
-         advertiser_public_key == other.advertiser_public_key &&
-         expire_at == other.expire_at;
+  const auto tie = [](const ConversionInfo& conversion) {
+    return std::tie(conversion.creative_set_id, conversion.type,
+                    conversion.url_pattern, conversion.observation_window,
+                    conversion.advertiser_public_key, conversion.expire_at);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool ConversionInfo::operator!=(const ConversionInfo& other) const {

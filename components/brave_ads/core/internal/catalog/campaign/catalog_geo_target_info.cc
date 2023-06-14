@@ -5,11 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_geo_target_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool operator==(const CatalogGeoTargetInfo& lhs,
                 const CatalogGeoTargetInfo& rhs) {
-  return lhs.code == rhs.code && lhs.name == rhs.name;
+  const auto tie = [](const CatalogGeoTargetInfo& geo_target) {
+    return std::tie(geo_target.code, geo_target.name);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const CatalogGeoTargetInfo& lhs,

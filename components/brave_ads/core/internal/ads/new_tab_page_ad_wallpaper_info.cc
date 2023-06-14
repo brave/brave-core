@@ -5,11 +5,17 @@
 
 #include "brave/components/brave_ads/core/new_tab_page_ad_wallpaper_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool operator==(const NewTabPageAdWallpaperInfo& lhs,
                 const NewTabPageAdWallpaperInfo& rhs) {
-  return lhs.image_url == rhs.image_url && lhs.focal_point == rhs.focal_point;
+  const auto tie = [](const NewTabPageAdWallpaperInfo& wallpaper) {
+    return std::tie(wallpaper.focal_point, wallpaper.image_url);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const NewTabPageAdWallpaperInfo& lhs,
