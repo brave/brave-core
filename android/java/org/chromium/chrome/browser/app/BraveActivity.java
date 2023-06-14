@@ -368,6 +368,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             } else {
                 openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
             }
+        } else if (id == R.id.add_to_playlist_id) {
+            BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+            if (layout != null) {
+                layout.addMediaToPlaylist();
+            }
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
