@@ -6,7 +6,9 @@
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 
 #include <utility>
+#include <vector>
 
+#include "base/base64.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
@@ -122,7 +124,18 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
 
 void AdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
                                        const std::string& recovery_seed) {
-  account_.SetWallet(payment_id, recovery_seed);
+  // Temporary fix until we have a more robust solution in 1.54.x.
+  if (is_initialized_) {
+    account_.SetWallet(payment_id, recovery_seed);
+  } else {
+    const absl::optional<std::vector<uint8_t>> raw_recovery_seed =
+        base::Base64Decode(recovery_seed);
+    if (!raw_recovery_seed) {
+      return BLOG(0, "Failed to set wallet");
+    }
+
+    initial_wallet_.Set(payment_id, *raw_recovery_seed);
+  }
 }
 
 absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
@@ -412,7 +425,7 @@ void AdsImpl::MigrateConfirmationStateCallback(InitializeCallback callback,
   }
 
   ConfirmationStateManager::GetInstance().Load(
-      account_.GetWallet(),
+      initial_wallet_.Get(),
       base::BindOnce(&AdsImpl::LoadConfirmationStateCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -450,6 +463,9 @@ void AdsImpl::MigrateNotificationStateCallback(InitializeCallback callback,
 
 void AdsImpl::Start() {
   LogActiveStudies();
+
+  // Temporary fix until we have a more robust solution in 1.54.x.
+  account_.SetWalletFrom(initial_wallet_.Get());
 
   account_.Process();
 
