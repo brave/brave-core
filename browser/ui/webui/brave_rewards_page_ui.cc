@@ -1175,8 +1175,9 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   ads_data.Set(
       "adsPerHour",
       static_cast<int>(ads_service_->GetMaximumNotificationAdsPerHour()));
-  ads_data.Set(kAdsSubdivisionTargeting,
-               ads_service_->GetSubdivisionTargetingCode());
+  ads_data.Set(
+      kAdsSubdivisionTargeting,
+      prefs->GetBoolean(brave_ads::prefs::kSubdivisionTargetingSubdivision));
   ads_data.Set(kAutoDetectedSubdivisionTargeting,
                ads_service_->GetAutoDetectedSubdivisionTargetingCode());
   ads_data.Set(

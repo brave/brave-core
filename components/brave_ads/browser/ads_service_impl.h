@@ -197,7 +197,6 @@ class AdsServiceImpl : public AdsService,
 
   int64_t GetMaximumNotificationAdsPerHour() const override;
 
-  std::string GetSubdivisionTargetingCode() const override;
   void SetSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
   std::string GetAutoDetectedSubdivisionTargetingCode() const override;
