@@ -50,6 +50,7 @@ using ::testing::_;
 namespace {
 
 const char kTestDataDirectory[] = "request-otr-data";
+const char kRequestOTRResponseHeader[] = "Request-OTR";
 
 class TestObserver : public infobars::InfoBarManager::Observer {
  public:
@@ -64,7 +65,13 @@ std::unique_ptr<net::test_server::HttpResponse> RespondWithCustomHeader(
   http_response->set_code(net::HTTP_OK);
   http_response->set_content_type("text/plain");
   http_response->set_content("Well OK I guess");
-  http_response->AddCustomHeader("Request-OTR", "1");
+  if (request.relative_url.find("include-response-header-with-1") !=
+      std::string::npos) {
+    http_response->AddCustomHeader(kRequestOTRResponseHeader, "1");
+  } else if (request.relative_url.find("include-response-header-with-0") !=
+             std::string::npos) {
+    http_response->AddCustomHeader(kRequestOTRResponseHeader, "0");
+  }
   return http_response;
 }
 
@@ -534,9 +541,23 @@ class RequestOTRCustomHeaderBrowserTest : public RequestOTRBrowserTest {
 IN_PROC_BROWSER_TEST_F(RequestOTRCustomHeaderBrowserTest,
                        CustomHeaderShowsInterstitial) {
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+
+  // No Request-OTR header -> do not show interstitial
   GURL url = embedded_test_server()->GetURL("z.com", "/simple.html");
   NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // 'Request-OTR: 1' header -> show interstitial
+  url = embedded_test_server()->GetURL(
+      "z.com", "/simple.html?test=include-response-header-with-1");
+  NavigateTo(url);
   ASSERT_TRUE(IsShowingInterstitial());
+
+  // 'Request-OTR: 0' header -> do not show interstitial
+  url = embedded_test_server()->GetURL(
+      "z.com", "/simple.html?test=include-response-header-with-0");
+  NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
 }
 
 }  // namespace request_otr
