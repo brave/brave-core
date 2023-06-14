@@ -40,6 +40,19 @@ def _ProcessXML(root):
     idx = list(parent).index(child)
     parent.insert(idx + 1, playlist_node)
 
+    add_playlist_node_str = '<item xmlns:android='\
+    '"http://schemas.android.com/apk/res/android" '\
+      'android:id="@+id/add_to_playlist_id" ' \
+      'android:title="@string/add_to_playlist" />'
+    add_to_playlist_node = ET.fromstring(add_playlist_node_str,
+                                         parser=ET.XMLParser(encoding="utf-8"))
+
+    parent = root.find('group/[@android:id="@+id/PAGE_MENU"]', namespaces=ns)
+    child = parent.find('item/[@android:id="@+id/brave_playlist_id"]',
+                        namespaces=ns)
+    idx = list(parent).index(child)
+    parent.insert(idx + 1, add_to_playlist_node)
+
     set_as_default_node_str = '<item xmlns:android='\
     '"http://schemas.android.com/apk/res/android" '\
       'android:id="@+id/set_default_browser" ' \

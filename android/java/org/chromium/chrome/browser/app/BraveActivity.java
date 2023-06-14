@@ -368,6 +368,11 @@ public abstract class BraveActivity extends ChromeActivity
             openBraveWallet(false, false, false);
         } else if (id == R.id.brave_playlist_id) {
             openPlaylist(true);
+        } else if (id == R.id.add_to_playlist_id) {
+            BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+            if (layout != null) {
+                layout.addMediaToPlaylist();
+            }
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {

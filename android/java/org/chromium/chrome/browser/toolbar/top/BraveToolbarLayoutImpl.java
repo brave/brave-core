@@ -171,6 +171,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private static final int PLAYLIST_MEDIA_COUNT_LIMIT = 3;
 
+    public static boolean mShouldShowPlaylistMenu = false;
+
     private PlaylistServiceObserverImpl mPlaylistServiceObserver;
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
@@ -625,6 +627,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void hidePlaylistButton() {
+        mShouldShowPlaylistMenu = false;
         try {
             ViewGroup viewGroup =
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
@@ -659,6 +662,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showPlaylistButton(PlaylistItem[] items) {
+        mShouldShowPlaylistMenu = true;
         try {
             ViewGroup viewGroup =
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
@@ -762,7 +766,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         });
     }
 
-    private void addMediaToPlaylist() {
+    public void addMediaToPlaylist() {
         Tab currentTab = getToolbarDataProvider().getTab();
         if (mPlaylistService == null || currentTab == null) {
             return;
