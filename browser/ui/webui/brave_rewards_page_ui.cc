@@ -1167,6 +1167,8 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
 
   AllowJavascript();
 
+  auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+
   base::Value::Dict ads_data;
   ads_data.Set("adsIsSupported", brave_ads::IsSupportedRegion());
   ads_data.Set("adsEnabled", ads_service_->IsEnabled());
@@ -1177,8 +1179,9 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
                ads_service_->GetSubdivisionTargetingCode());
   ads_data.Set(kAutoDetectedSubdivisionTargeting,
                ads_service_->GetAutoDetectedSubdivisionTargetingCode());
-  ads_data.Set("shouldAllowAdsSubdivisionTargeting",
-               ads_service_->ShouldAllowSubdivisionTargeting());
+  ads_data.Set(
+      "shouldAllowAdsSubdivisionTargeting",
+      prefs->GetBoolean(brave_ads::prefs::kShouldAllowSubdivisionTargeting));
   ads_data.Set("adsUIEnabled", true);
   ads_data.Set("needsBrowserUpgradeToServeAds",
                ads_service_->NeedsBrowserUpgradeToServeAds());

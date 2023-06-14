@@ -31,7 +31,6 @@ class AdsServiceMock : public AdsService {
 
   MOCK_CONST_METHOD0(GetMaximumNotificationAdsPerHour, int64_t());
 
-  MOCK_CONST_METHOD0(ShouldAllowSubdivisionTargeting, bool());
   MOCK_CONST_METHOD0(GetSubdivisionTargetingCode, std::string());
   MOCK_METHOD1(SetSubdivisionTargetingCode, void(const std::string&));
   MOCK_CONST_METHOD0(GetAutoDetectedSubdivisionTargetingCode, std::string());

@@ -1385,7 +1385,8 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
     ads_data.Set("automaticallyDetectedAdsSubdivisionTargeting",
                  ads_service->GetAutoDetectedSubdivisionTargetingCode());
     ads_data.Set("shouldAllowAdsSubdivisionTargeting",
-                 ads_service->ShouldAllowSubdivisionTargeting());
+                 profile->GetPrefs()->GetBoolean(
+                     brave_ads::prefs::kShouldAllowSubdivisionTargeting));
     ads_data.Set("adsUIEnabled", true);
   }
 

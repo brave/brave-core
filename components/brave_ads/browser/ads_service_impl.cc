@@ -1070,31 +1070,6 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   return ads_per_hour;
 }
 
-bool AdsServiceImpl::ShouldAllowSubdivisionTargeting() const {
-  return GetPrefService()->GetBoolean(prefs::kShouldAllowSubdivisionTargeting);
-}
-
-std::string AdsServiceImpl::GetSubdivisionTargetingCode() const {
-  return GetPrefService()->GetString(prefs::kSubdivisionTargetingSubdivision);
-}
-
-void AdsServiceImpl::SetSubdivisionTargetingCode(
-    const std::string& subdivision_targeting_code) {
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision,
-                subdivision_targeting_code);
-}
-
-std::string AdsServiceImpl::GetAutoDetectedSubdivisionTargetingCode() const {
-  return GetPrefService()->GetString(
-      prefs::kSubdivisionTargetingAutoDetectedSubdivision);
-}
-
-void AdsServiceImpl::SetAutoDetectedSubdivisionTargetingCode(
-    const std::string& subdivision_targeting_code) {
-  SetStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
-                subdivision_targeting_code);
-}
-
 bool AdsServiceImpl::NeedsBrowserUpgradeToServeAds() const {
   return needs_browser_upgrade_to_serve_ads_;
 }
