@@ -136,6 +136,12 @@ public class SendModel {
             Log.e(TAG, "Error while parsing Filecoin amount to send.", parseException);
             return;
         }
+        filTxData.nonce = "";
+        filTxData.gasPremium = "";
+        filTxData.gasFeeCap = "";
+        filTxData.gasLimit = "";
+        filTxData.maxFee = "0";
+
         final TxDataUnion txDataUnion = new TxDataUnion();
         txDataUnion.setFilTxData(filTxData);
 
