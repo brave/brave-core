@@ -549,8 +549,15 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 setSendToFromValueValidationResult(errorMessage, false, true);
                             });
                 } else if (mSelectedAccount.accountId.coin == CoinType.FIL) {
-                    // TODO: implement Filecoin send action.
-                    // https://github.com/brave/brave-browser/issues/30402
+                    mSendModel.sendFilecoinToken(mSelectedNetwork.chainId, mCurrentBlockchainToken,
+                            mSelectedAccount.address, to, amount,
+                            (success, txMetaId, errorMessage) -> {
+                                // Do nothing here when success as we will receive an
+                                // unapproved transaction in TxServiceObserver.
+                                // When we have error, let the user know,
+                                // error_message is localized, do not disable send button
+                                setSendToFromValueValidationResult(errorMessage, false, true);
+                            });
                 }
             } else if (mActivityType == ActivityType.BUY) {
                 Intent selectPurchaseMethodIntent = SelectPurchaseMethodActivity.getIntent(this,
