@@ -114,7 +114,7 @@ public class SendModel {
             Log.e(TAG, "Token cannot be null.");
             return;
         }
-        if (TextUtils.isEmpty(token.contractAddress)) {
+        if (TextUtils.isEmpty(fromAddress)) {
             Log.e(TAG, "Contract address cannot be null or empty.");
             return;
         }
