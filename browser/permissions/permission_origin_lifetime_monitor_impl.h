@@ -11,17 +11,24 @@
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service_observer.h"
 #include "brave/components/permissions/permission_origin_lifetime_monitor.h"
 
 namespace content {
 class BrowserContext;
 }  // namespace content
 
+namespace ephemeral_storage {
+class EphemeralStorageService;
+}  // namespace ephemeral_storage
+
 namespace permissions {
 
 // Uses TLDEphemeralLifetime to observe a permission origin destruction.
 class PermissionOriginLifetimeMonitorImpl
-    : public PermissionOriginLifetimeMonitor {
+    : public PermissionOriginLifetimeMonitor,
+      public ephemeral_storage::EphemeralStorageServiceObserver {
  public:
   explicit PermissionOriginLifetimeMonitorImpl(
       content::BrowserContext* browser_context);
@@ -37,10 +44,15 @@ class PermissionOriginLifetimeMonitorImpl
       const GURL& requesting_origin) override;
 
  private:
-  void OnEphemeralTLDDestroyed(const std::string& storage_domain);
+  // ephemeral_storage::EphemeralStorageServiceObserver:
+  void OnCleanupTLDEphemeralArea(
+      const ephemeral_storage::TLDEphemeralAreaKey& key) override;
 
   const raw_ptr<content::BrowserContext> browser_context_;
 
+  base::ScopedObservation<ephemeral_storage::EphemeralStorageService,
+                          ephemeral_storage::EphemeralStorageServiceObserver>
+      ephemeral_storage_observation_{this};
   base::RepeatingCallback<void(const std::string&)>
       permission_destroyed_callback_;
   base::flat_set<std::string> active_subscriptions_;

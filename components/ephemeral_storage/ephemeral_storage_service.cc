@@ -67,6 +67,7 @@ void EphemeralStorageService::Shutdown() {
         pattern, ContentSettingsPattern::Wildcard(),
         ContentSettingsType::COOKIES, CONTENT_SETTING_DEFAULT);
   }
+  observer_list_.Clear();
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
@@ -157,8 +158,7 @@ void EphemeralStorageService::TLDEphemeralLifetimeCreated(
 
 void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
     const std::string& ephemeral_domain,
-    const content::StoragePartitionConfig& storage_partition_config,
-    TLDEphemeralAreaOnDestroyCallbacks on_destroy_callbacks) {
+    const content::StoragePartitionConfig& storage_partition_config) {
   DVLOG(1) << __func__ << " " << ephemeral_domain << " "
            << storage_partition_config;
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
@@ -172,13 +172,21 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
         FROM_HERE, tld_ephemeral_area_keep_alive_,
         base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralAreaByTimer,
                        weak_ptr_factory_.GetWeakPtr(), key,
-                       cleanup_first_party_storage_area,
-                       std::move(on_destroy_callbacks)));
+                       cleanup_first_party_storage_area));
     tld_ephemeral_areas_to_cleanup_.emplace(key, std::move(cleanup_timer));
   } else {
-    CleanupTLDEphemeralArea(key, cleanup_first_party_storage_area,
-                            std::move(on_destroy_callbacks));
+    CleanupTLDEphemeralArea(key, cleanup_first_party_storage_area);
   }
+}
+
+void EphemeralStorageService::AddObserver(
+    EphemeralStorageServiceObserver* observer) {
+  observer_list_.AddObserver(observer);
+}
+
+void EphemeralStorageService::RemoveObserver(
+    EphemeralStorageServiceObserver* observer) {
+  observer_list_.RemoveObserver(observer);
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(
@@ -231,25 +239,22 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
 
 void EphemeralStorageService::CleanupTLDEphemeralAreaByTimer(
     const TLDEphemeralAreaKey& key,
-    bool cleanup_first_party_storage_area,
-    TLDEphemeralAreaOnDestroyCallbacks on_destroy_callbacks) {
+    bool cleanup_first_party_storage_area) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   tld_ephemeral_areas_to_cleanup_.erase(key);
-  CleanupTLDEphemeralArea(key, cleanup_first_party_storage_area,
-                          std::move(on_destroy_callbacks));
+  CleanupTLDEphemeralArea(key, cleanup_first_party_storage_area);
 }
 
 void EphemeralStorageService::CleanupTLDEphemeralArea(
     const TLDEphemeralAreaKey& key,
-    bool cleanup_first_party_storage_area,
-    TLDEphemeralAreaOnDestroyCallbacks on_destroy_callbacks) {
+    bool cleanup_first_party_storage_area) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   delegate_->CleanupTLDEphemeralArea(key);
   if (cleanup_first_party_storage_area) {
     CleanupFirstPartyStorageArea(key.first);
   }
-  for (auto& callback : on_destroy_callbacks) {
-    std::move(callback).Run(key.first);
+  for (auto& observer : observer_list_) {
+    observer.OnCleanupTLDEphemeralArea(key);
   }
 }
 
