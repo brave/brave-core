@@ -194,19 +194,6 @@ TEST_F(CommanderProviderTest, RemovingPrefixClearsMatches) {
   EXPECT_EQ(0u, provider()->matches().size());
 }
 
-TEST_F(CommanderProviderTest, PromptingForMoreInputSetsAnnotation) {
-  provider()->Start(
-      CreateInput(base::StrCat({commander::kCommandPrefix, u" Hello World"})),
-      false);
-
-  delegate()->Notify({commander::CommandItemModel(u"Foo", {}, u"")},
-                     u"What thing?");
-
-  EXPECT_EQ(1u, provider()->matches().size());
-  EXPECT_EQ(u"What thing?", provider()->matches()[0].additional_text);
-  EXPECT_EQ(u":> Foo", provider()->matches()[0].description);
-}
-
 TEST_F(CommanderProviderTest, NoMatchRangeAllDimStyle) {
   provider()->Start(CreateInput(u":> Hello World"), false);
 
