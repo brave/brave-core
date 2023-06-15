@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -7,27 +7,25 @@
 
 #include <sstream>
 
-#include "brave/third_party/flower/src/proto/flwr/proto/transport.pb.h"
-
 flower::Scalar ScalarToProto(ScalarValue scalar_msg) {
   flower::Scalar s;
-  if (scalar_msg.GetBool() != std::nullopt) {
+  if (scalar_msg.GetBool() != absl::nullopt) {
     s.set_bool_(scalar_msg.GetBool().value());
     return s;
   }
-  if (scalar_msg.GetBytes() != std::nullopt) {
+  if (scalar_msg.GetBytes() != absl::nullopt) {
     s.set_bytes(scalar_msg.GetBytes().value());
     return s;
   }
-  if (scalar_msg.GetDouble() != std::nullopt) {
+  if (scalar_msg.GetDouble() != absl::nullopt) {
     s.set_double_(scalar_msg.GetDouble().value());
     return s;
   }
-  if (scalar_msg.GetInt() != std::nullopt) {
+  if (scalar_msg.GetInt() != absl::nullopt) {
     s.set_int64(scalar_msg.GetInt().value());
     return s;
   }
-  if (scalar_msg.GetString() != std::nullopt) {
+  if (scalar_msg.GetString() != absl::nullopt) {
     s.set_string(scalar_msg.GetString().value());
     return s;
   }
@@ -82,7 +80,7 @@ Configs ConfigsFromProto(
 }
 
 std::vector<std::vector<float>> GetVectorsFromParameters(
-    flower::Parameters parameters_msg) {
+    const flower::Parameters& parameters_msg) {
   std::vector<std::vector<float>> tensors;
   for (int i = 0; i < parameters_msg.tensors_size(); i++) {
     std::string parameters_string = parameters_msg.tensors(i);
@@ -95,7 +93,7 @@ std::vector<std::vector<float>> GetVectorsFromParameters(
 }
 
 flower::Parameters GetParametersFromVectors(
-    std::vector<std::vector<float>> parameters_vector) {
+    const std::vector<std::vector<float>>& parameters_vector) {
   flower::Parameters flower_parameters;
   flower_parameters.set_tensor_type("cpp_double");
 
@@ -107,7 +105,7 @@ flower::Parameters GetParametersFromVectors(
   return flower_parameters;
 }
 
-std::vector<float> GetVectorFromString(std::string string) {
+std::vector<float> GetVectorFromString(const std::string& string) {
   const int k_vector_size = string.size() / sizeof(double);
   std::vector<float> parameters_vector;
 
@@ -120,7 +118,7 @@ std::vector<float> GetVectorFromString(std::string string) {
   return parameters_vector;
 }
 
-std::string GetStringFromVector(std::vector<float> vector) {
+std::string GetStringFromVector(const std::vector<float>& vector) {
   std::string string;
   for (double const value : vector) {
     string.append(reinterpret_cast<const char*>(&value), sizeof(double));

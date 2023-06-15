@@ -27,7 +27,7 @@ FederatedTaskHandler::~FederatedTaskHandler() = default;
 
 absl::optional<TaskResult> FederatedTaskHandler::Run() {
   PerformanceReport report(0, 0, 0, {}, {});
-  if (task_.GetType() == TaskType::Training) {
+  if (task_.GetType() == TaskType::kTraining) {
     if (training_data_.empty()) {
       VLOG(1) << "Training data empty";
       return absl::nullopt;
@@ -39,7 +39,7 @@ absl::optional<TaskResult> FederatedTaskHandler::Run() {
     }
 
     report = model_->Train(training_data_);
-  } else if (task_.GetType() == TaskType::Evaluation) {
+  } else if (task_.GetType() == TaskType::kEvaluation) {
     if (test_data_.empty()) {
       VLOG(1) << "Test data empty";
       return absl::nullopt;

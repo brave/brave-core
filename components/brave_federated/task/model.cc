@@ -17,11 +17,12 @@
 
 namespace brave_federated {
 
-PerformanceReport::PerformanceReport(size_t dataset_size,
-                                     float loss,
-                                     float accuracy,
-                                     std::vector<Weights> parameters,
-                                     std::map<std::string, double> metrics)
+PerformanceReport::PerformanceReport(
+    size_t dataset_size,
+    float loss,
+    float accuracy,
+    const std::vector<Weights>& parameters,
+    const std::map<std::string, double>& metrics)
     : dataset_size(dataset_size),
       loss(loss),
       accuracy(accuracy),
@@ -31,11 +32,14 @@ PerformanceReport::PerformanceReport(size_t dataset_size,
 PerformanceReport::PerformanceReport(const PerformanceReport& other) = default;
 PerformanceReport::~PerformanceReport() = default;
 
-Model::Model(ModelSpec model_spec)
+Model::Model(const ModelSpec& model_spec)
     : num_iterations_(model_spec.num_iterations),
       batch_size_(model_spec.batch_size),
       learning_rate_(model_spec.learning_rate),
       threshold_(model_spec.threshold) {
+  CHECK_GT(model_spec.num_iterations, 0);
+  CHECK_GT(model_spec.batch_size, 0);
+
   const double max_weight = 10.0;
   const double min_weight = -10.0;
 
@@ -72,33 +76,46 @@ size_t Model::GetBatchSize() const {
 }
 
 std::vector<float> Model::Predict(const DataSet& dataset) {
+  if (dataset.empty()) {
+    return std::vector<float>();
+  }
+
   std::vector<float> prediction(dataset.size(), 0.0);
   for (size_t i = 0; i < dataset.size(); i++) {
+    CHECK_EQ(dataset.at(i).size(), weights_.size());
+
     float z = 0.0;
-    for (size_t j = 0; j < dataset[i].size(); j++) {
-      z += weights_[j] * dataset[i][j];
+    for (size_t j = 0; j < dataset.at(i).size(); j++) {
+      z += weights_.at(j) * dataset.at(i).at(j);
     }
+    CHECK_EQ(dataset.at(i).size(), weights_.size());
     z += bias_;
 
-    prediction[i] = SigmoidActivation(z);
+    prediction.at(i) = SigmoidActivation(z);
   }
 
   return prediction;
 }
 
 PerformanceReport Model::Train(const DataSet& train_dataset) {
+  if (train_dataset.empty()) {
+    std::vector<Weights> reported_model;
+    reported_model.push_back(weights_);
+    reported_model.push_back({bias_});
+    return PerformanceReport(0, 0.0, 0.0, reported_model, {});
+  }
+  CHECK_LE(GetBatchSize(), train_dataset.size());
+
   auto data_prep_cumulative_duration = base::TimeDelta();
   auto training_cumulative_duration = base::TimeDelta();
 
   auto data_start_ts = base::ThreadTicks::Now();
 
-  int features = train_dataset[0].size() - 1;
+  int features = train_dataset.at(0).size() - 1;
   std::vector<float> data_indices(train_dataset.size());
   for (size_t i = 0; i < train_dataset.size(); i++) {
     data_indices.push_back(i);
   }
-
-  DCHECK_LE(GetBatchSize(), train_dataset.size());
 
   Weights d_w(features);
   std::vector<float> err(batch_size_, 10000);
@@ -118,10 +135,10 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
 
     auto exec_start_ts = base::ThreadTicks::Now();
     for (int i = 0; i < batch_size_; i++) {
-      std::vector<float> point = train_dataset[data_indices[i]];
-      y[i] = point.back();
+      std::vector<float> point = train_dataset[data_indices.at(i)];
+      y.at(i) = point.back();
       point.pop_back();
-      x[i] = point;
+      x.at(i) = point;
     }
 
     p_w = weights_;
@@ -143,7 +160,7 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     bias_ = p_b - learning_rate_ * d_b;
 
     if (iteration % 250 == 0) {
-      training_loss = ComputeNLL(y, Predict(x));
+      training_loss = ComputeNegativeLogLikelihood(y, Predict(x));
     }
     auto exec_end_ts = base::ThreadTicks::Now();
 
@@ -173,19 +190,21 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
 }
 
 PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
-  DCHECK(!test_dataset.empty());
+  if (test_dataset.empty()) {
+    return PerformanceReport(0, 0.0, 0.0, {}, {});
+  }
 
   auto data_start_ts = base::ThreadTicks::Now();
 
-  int num_features = test_dataset[0].size();
+  int num_features = test_dataset.at(0).size();
   DataSet features(test_dataset.size(), std::vector<float>(num_features));
   std::vector<float> ground_truth(test_dataset.size());
 
   for (size_t i = 0; i < test_dataset.size(); i++) {
-    std::vector<float> point = test_dataset[i];
-    ground_truth[i] = point.back();
+    std::vector<float> point = test_dataset.at(i);
+    ground_truth.at(i) = point.back();
     point.pop_back();
-    features[i] = point;
+    features.at(i) = point;
   }
 
   auto exec_start_ts = base::ThreadTicks::Now();
@@ -193,18 +212,19 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
   std::vector<float> predicted_value = Predict(features);
   int total_correct = 0;
   for (size_t i = 0; i < test_dataset.size(); i++) {
-    if (predicted_value[i] >= threshold_) {
-      predicted_value[i] = 1.0;
+    if (predicted_value.at(i) >= threshold_) {
+      predicted_value.at(i) = 1.0;
     } else {
-      predicted_value[i] = 0.0;
+      predicted_value.at(i) = 0.0;
     }
 
-    if (predicted_value[i] == ground_truth[i]) {
+    if (predicted_value.at(i) == ground_truth.at(i)) {
       total_correct++;
     }
   }
   float accuracy = total_correct * 1.0 / test_dataset.size();
-  float test_loss = ComputeNLL(ground_truth, Predict(features));
+  float test_loss =
+      ComputeNegativeLogLikelihood(ground_truth, Predict(features));
 
   auto exec_end_ts = base::ThreadTicks::Now();
 

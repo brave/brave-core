@@ -64,15 +64,15 @@ struct PerformanceReport {
   PerformanceReport(size_t dataset_size,
                     float loss,
                     float accuracy,
-                    std::vector<Weights> parameters,
-                    std::map<std::string, double> metrics);
+                    const std::vector<Weights>& parameters,
+                    const std::map<std::string, double>& metrics);
   PerformanceReport(const PerformanceReport& other);
   ~PerformanceReport();
 };
 
 class Model {
  public:
-  explicit Model(ModelSpec model_spec);
+  explicit Model(const ModelSpec& model_spec);
   ~Model();
 
   std::vector<float> Predict(const DataSet& dataset);
@@ -89,10 +89,10 @@ class Model {
   size_t GetBatchSize() const;
 
  private:
-  int num_iterations_;
-  int batch_size_;
-  float learning_rate_;
-  float threshold_;
+  const int num_iterations_;
+  const int batch_size_;
+  const float learning_rate_;
+  const float threshold_;
 
   Weights weights_;
   float bias_;

@@ -42,7 +42,8 @@ class CommunicationAdapter {
   void GetTasks(GetTaskCallback callback);
   void OnGetTasks(GetTaskCallback callback,
                   const std::unique_ptr<std::string> response_body);
-  void UploadTaskResult(TaskResult result, UploadResultCallback callback);
+  void UploadTaskResult(const TaskResult& result,
+                        UploadResultCallback callback);
   void OnUploadTaskResult(UploadResultCallback callback,
                           const std::unique_ptr<std::string> response_body);
 

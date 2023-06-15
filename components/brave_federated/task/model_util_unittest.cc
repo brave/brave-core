@@ -17,7 +17,7 @@ TEST(BraveFederatedLearningModelUtilTest, ComputeNLL) {
   std::vector<float> predictions = {0.1, 0.9, 0.2, 0.8};
 
   // Act
-  float nll = ComputeNLL(true_labels, predictions);
+  float nll = ComputeNegativeLogLikelihood(true_labels, predictions);
 
   // Assert
   EXPECT_NEAR(0.65700f / true_labels.size(), nll, 0.001f);

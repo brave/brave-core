@@ -21,6 +21,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_federated {
@@ -121,26 +122,29 @@ void CommunicationAdapter::OnGetTasks(
   int response_code = headers->response_code();
   if (response_code == net::HTTP_OK &&
       headers->HasHeaderValue("Content-Type", "application/protobuf")) {
-    TaskList task_list = ParseTaskListFromResponseBody(*response_body);
-    bool empty_task_list = task_list.empty();
-    VLOG(2) << "Received " << task_list.size() << " tasks from FL service";
+    absl::optional<TaskList> task_list =
+        ParseTaskListFromResponseBody(*response_body);
 
-    request_task_backoff_entry_->InformOfRequest(!empty_task_list);
+    request_task_backoff_entry_->InformOfRequest(task_list.has_value());
     int64_t request_task_delay_in_seconds =
         request_task_backoff_entry_->GetTimeUntilRelease().InSeconds();
-    if (empty_task_list) {
+    if (!task_list.has_value()) {
       VLOG(1) << "No tasks received from FL service, retrying in "
               << request_task_delay_in_seconds << "s";
       return std::move(callback).Run({}, request_task_delay_in_seconds);
     }
 
-    return std::move(callback).Run(task_list, request_task_delay_in_seconds);
+    VLOG(2) << "Received " << task_list.value().size()
+            << " tasks from FL service";
+
+    return std::move(callback).Run(task_list.value(),
+                                   request_task_delay_in_seconds);
   }
 
   VLOG(1) << "Failed to request tasks. Response code: " << response_code;
 }
 
-void CommunicationAdapter::UploadTaskResult(TaskResult result,
+void CommunicationAdapter::UploadTaskResult(const TaskResult& result,
                                             UploadResultCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(features::GetFederatedLearningResultsEndpoint());
