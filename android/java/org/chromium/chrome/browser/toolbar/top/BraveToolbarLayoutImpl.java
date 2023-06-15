@@ -648,7 +648,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showPlaylistButton(PlaylistItem[] items) {
-        mShouldShowPlaylistMenu = true;
         try {
             ViewGroup viewGroup =
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
@@ -697,6 +696,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         } else if (playlistOptionsModel.getOptionType()
                                 == PlaylistOptionsEnum.PLAYLIST_SETTINGS) {
                             BraveActivity.getBraveActivity().openBravePlaylistSettings();
+                        } else if (playlistOptionsModel.getOptionType()
+                                == PlaylistOptionsEnum.PLAYLIST_HIDE) {
+                            hidePlaylistButton();
+                            SharedPreferencesManager.getInstance().writeBoolean(
+                                    BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, false);
                         }
                     } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "showPlaylistButton onOptionClicked " + e);
@@ -1797,6 +1801,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (currentTab == null || !pageUrl.url.equals(currentTab.getUrl().getSpec())) {
             return;
         }
-        showPlaylistButton(items);
+        mShouldShowPlaylistMenu = true;
+        if (SharedPreferencesManager.getInstance().readBoolean(
+                    BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
+            showPlaylistButton(items);
+        }
     }
 }

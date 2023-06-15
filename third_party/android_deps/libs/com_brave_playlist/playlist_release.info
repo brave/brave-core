@@ -51,6 +51,7 @@ resources = [
   "res/drawable/ic_playlist_graphic_1.xml",
   "res/drawable/ic_playlist_graphic_2.xml",
   "res/drawable/ic_playlist_graphic_3.xml",
+  "res/drawable/ic_playlist_hide.xml",
   "res/drawable/ic_playlist_icon_emptyplaylist.xml",
   "res/drawable/ic_playlist_item_placeholder.xml",
   "res/drawable/ic_playlist_next_media.xml",

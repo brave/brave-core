@@ -14,6 +14,12 @@
         android:summary="@string/enable_playlist_summary"
         android:defaultValue="true" />
 
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="add_to_playlist_button"
+        android:title="@string/add_to_playlist_button"
+        android:summary="@string/add_to_playlist_button_summary"
+        android:defaultValue="true" />
+
     <Preference
         android:fragment="org.chromium.chrome.browser.playlist.settings.BravePlaylistSaveMediaFragment"
         android:key="auto_save_media_for_offline"

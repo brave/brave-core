@@ -3683,6 +3683,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ENABLE_PLAYLIST_SUMMARY" desc="Enable playlist settings summary">
       Make playlists of your favorite audio and videos, and play anytime, anywhere.
     </message>
+    <message name="IDS_ADD_TO_PLAYLIST_BUTTON" desc="Add to playlist button settings title">
+      Add to Playlist button
+    </message>
+    <message name="IDS_ADD_TO_PLAYLIST_BUTTON_SUMMARY" desc="Add to playlist button settings summary">
+      Show or hide "Add to Playlist" button for quick access to add or remove media.
+    </message>
     <message name="IDS_AUTO_SAVE_MEDIA_FOR_OFFLINE" desc="Auto save media for offline settings title">
       Auto-Save for Offline
     </message>
