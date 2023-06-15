@@ -110,6 +110,13 @@ public class FeedDataSource: ObservableObject {
 
   private let todayQueue = DispatchQueue(label: "com.brave.today")
   private let reloadQueue = DispatchQueue(label: "com.brave.today.reload")
+  
+  struct FeedDecodingError: Identifiable {
+    var id: UUID = .init()
+    var resourceName: String
+    var error: String
+  }
+  private(set) var decodingErrors: [FeedDecodingError] = []
 
   // MARK: - Initialization
 
@@ -380,29 +387,44 @@ public class FeedDataSource: ObservableObject {
     }
   }
   
+  private func unwrappedResource<T>(
+    resource: NewsResource,
+    localeIdentifier: String? = nil,
+    data: [FailableDecodable<T>]
+  ) -> [T] {
+    if AppConstants.buildChannel.isPublic {
+      return data.compactMap(\.wrappedValue)
+    }
+    var values: [T] = []
+    for item in data {
+      if let error = item.decodingError {
+        decodingErrors.append(.init(
+          resourceName: resourceFilename(for: resource, localeIdentifier: localeIdentifier),
+          error: String(describing: error))
+        )
+      } else {
+        if let value = item.wrappedValue {
+          values.append(value)
+        }
+      }
+    }
+    return values
+  }
+  
   private func loadGlobalSources() async throws -> [FeedItem.Source] {
     let sources = try await loadResource(.globalSources, decodedTo: [FailableDecodable<FeedItem.Source>].self)
-    if sources.isEmpty {
-      throw BraveNewsError.resourceEmpty(resource: NewsResource.globalSources.name)
-    }
-    return sources.compactMap(\.wrappedValue)
+    return unwrappedResource(resource: .globalSources, data: sources)
   }
 
   private func loadLegacySources(for localeIdentifier: String) async throws -> [FeedItem.LegacySource] {
     let sources = try await loadResource(.sources, localeIdentifier: localeIdentifier, decodedTo: [FailableDecodable<FeedItem.LegacySource>].self)
-    if sources.isEmpty {
-      throw BraveNewsError.resourceEmpty(resource: "\(NewsResource.sources.name)-\(localeIdentifier)")
-    }
-    return sources.compactMap(\.wrappedValue)
+    return unwrappedResource(resource: .sources, localeIdentifier: localeIdentifier, data: sources)
   }
 
   private func loadFeed(for localeIdentifier: String) async -> [FeedItem.Content] {
     do {
       let items = try await loadResource(.feed, localeIdentifier: localeIdentifier, decodedTo: [FailableDecodable<FeedItem.Content>].self)
-      if items.isEmpty {
-        throw BraveNewsError.resourceEmpty(resource: "\(NewsResource.feed.name)-\(localeIdentifier)")
-      }
-      return items.compactMap(\.wrappedValue)
+      return unwrappedResource(resource: .feed, localeIdentifier: localeIdentifier, data: items)
     } catch {
       Logger.module.error("Failed to load feed (\(localeIdentifier)): \(error.localizedDescription)")
       return []
@@ -412,9 +434,6 @@ public class FeedDataSource: ObservableObject {
   private func loadSourceSuggestions(for localeIdentifier: String) async -> [String: [FeedItem.SourceSimilarity]] {
     do {
       let items = try await loadResource(.sourceSuggestions, localeIdentifier: localeIdentifier, decodedTo: [String: [FailableDecodable<FeedItem.SourceSimilarity>]].self)
-      if items.isEmpty {
-        throw BraveNewsError.resourceEmpty(resource: "\(NewsResource.sourceSuggestions.name)-\(localeIdentifier)")
-      }
       return items.mapValues { $0.compactMap(\.wrappedValue) }
     } catch {
       Logger.module.error("Failed to load source suggestions (\(localeIdentifier)): \(error.localizedDescription)")
@@ -538,7 +557,9 @@ public class FeedDataSource: ObservableObject {
   }
   
   /// A set of locales that the user is following
-  private var followedLocales: Set<String> {
+  var followedLocales: Set<String> {
+    assert(Thread.isMainThread)
+    
     var locales: Set<String> = []
     // Followed channels
     locales.formUnion(followedChannels.map(\.localeIdentifier))
@@ -583,6 +604,7 @@ public class FeedDataSource: ObservableObject {
   /// `loading` initially.
   public func load(_ completion: (() -> Void)? = nil) {
     state = .loading(state)
+    decodingErrors = []
     Task { @MainActor in
       do {
         self.sources = try await loadGlobalSources()
