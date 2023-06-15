@@ -96,7 +96,11 @@ public class WalletUtils {
 
     public static void addAccountInfoToIntent(
             @NonNull Intent intent, @NonNull AccountInfo accountInfo) {
-        intent.putExtra(ACCOUNT_INFO, accountInfo.serialize().array());
+        ByteBuffer bb = accountInfo.serialize();
+        byte[] bytes = new byte[bb.remaining()];
+        bb.get(bytes);
+
+        intent.putExtra(ACCOUNT_INFO, bytes);
     }
 
     public static AccountInfo getAccountInfoFromIntent(@NonNull Intent intent) {
