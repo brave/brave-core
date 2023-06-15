@@ -203,41 +203,36 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       (url.host_piece() == kIPFSWebUIHost &&
        ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-#if !BUILDFLAG(IS_ANDROID)
-      ((url.host_piece() == kWalletPanelHost ||
-        url.host_piece() == kWalletPageHost) &&
-       brave_wallet::IsAllowedForContext(profile)) ||
-#endif
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() &&
        (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
                                          kWalletSwapPagePath) ||
         url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
                                          kWalletSwapPagePath))) ||
-#endif  // BUILDFLAG(IS_ANDROID)
+#else
+      ((url.host_piece() == kWalletPanelHost ||
+        url.host_piece() == kWalletPageHost) &&
+       brave_wallet::IsAllowedForContext(profile)) ||
+      url.host_piece() == kBraveRewardsPanelHost ||
+      url.host_piece() == kBraveTipPanelHost ||
+      url.host_piece() == kSpeedreaderPanelHost ||
+      // On Android New Tab is a native page implemented in Java, so no need in
+      // WebUI.
+      url.host_piece() == chrome::kChromeUINewTabHost ||
+      url.host_piece() == chrome::kChromeUISettingsHost ||
+      ((url.host_piece() == kWelcomeHost ||
+        url.host_piece() == chrome::kChromeUIWelcomeURL) &&
+       !profile->IsGuestSession()) ||
       url.host_piece() == kShieldsPanelHost ||
       (url.host_piece() == kCookieListOptInHost &&
        base::FeatureList::IsEnabled(
            brave_shields::features::kBraveAdblockCookieListOptIn)) ||
-      url.host_piece() == kRewardsPageHost ||
-      url.host_piece() == kRewardsInternalsHost ||
-#if !BUILDFLAG(IS_ANDROID)
-      url.host_piece() == kBraveRewardsPanelHost ||
-      url.host_piece() == kBraveTipPanelHost ||
-      url.host_piece() == kSpeedreaderPanelHost ||
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
 #endif
-      ((url.host_piece() == kWelcomeHost ||
-        url.host_piece() == chrome::kChromeUIWelcomeURL) &&
-       !profile->IsGuestSession()) ||
-#if !BUILDFLAG(IS_ANDROID)
-      // On Android New Tab is a native page implemented in Java, so no need in
-      // WebUI.
-      url.host_piece() == chrome::kChromeUINewTabHost ||
-#endif  // !BUILDFLAG(IS_ANDROID)
-      url.host_piece() == chrome::kChromeUISettingsHost) {
+      url.host_piece() == kRewardsPageHost ||
+      url.host_piece() == kRewardsInternalsHost) {
     return &NewWebUI;
   }
 
