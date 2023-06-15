@@ -448,6 +448,9 @@
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON">
     Toggle Brave VPN toolbar button
   </message>
+  <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TRAY_ICON">
+    Toggle Brave VPN tray icon
+  </message>
   <message name="IDS_IDC_SEND_BRAVE_VPN_FEEDBACK">
     Send Brave VPN feedback
   </message>

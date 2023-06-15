@@ -15,7 +15,7 @@ constexpr char16_t kBraveVpnConnectItemName[] = u"Connect";
 constexpr char16_t kBraveVpnDisconnectItemName[] = u"Disconnect";
 constexpr char16_t kBraveVpnManageAccountItemName[] = u"Manage Account";
 constexpr char16_t kBraveVpnAboutItemName[] = u"About Brave VPN";
-constexpr char16_t kBraveVpnRemoveItemName[] = u"Exit";
+constexpr char16_t kBraveVpnRemoveItemName[] = u"Remove icon";
 constexpr char16_t kBraveVpnActiveText[] = u"Active";
 constexpr char16_t kBraveVpnInactiveText[] = u"Inactive";
 }  // namespace brave

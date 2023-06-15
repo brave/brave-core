@@ -30,7 +30,6 @@ void LaunchInteractiveProcessAsUser(base::UserTokenHandle token) {
       brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
   base::LaunchOptions options;
   options.as_user = token;
-  options.empty_desktop_name = true;
   if (!base::LaunchProcess(interactive_cmd, options).IsValid()) {
     VLOG(1) << "Interactive process launch failed";
   }
@@ -44,7 +43,8 @@ void RunInteractiveProcess() {
   VLOG(1) << __func__;
   base::NamedProcessIterator iter(kWindowsExplorerExecutableName, nullptr);
   while (const base::ProcessEntry* process_entry = iter.NextProcessEntry()) {
-    base::win::ScopedHandle process(::OpenProcess(PROCESS_QUERY_INFORMATION, false, process_entry->pid()));
+    base::win::ScopedHandle process(
+        ::OpenProcess(PROCESS_QUERY_INFORMATION, false, process_entry->pid()));
     if (!process.is_valid()) {
       continue;
     }

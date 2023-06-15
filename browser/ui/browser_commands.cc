@@ -7,7 +7,10 @@
 
 #include <string>
 
+#include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "base/path_service.h"
+#include "base/process/launch.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/net/brave_query_filter.h"
@@ -36,6 +39,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/pref_names.h"
+#include "components/version_info/version_info.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
@@ -60,6 +64,8 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/wireguard_utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -73,7 +79,25 @@
 using content::WebContents;
 
 namespace brave {
-
+namespace {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void LaunchBraveVpnWireguardInInteractiveMode() {
+  base::FilePath exe_dir;
+  base::PathService::Get(base::DIR_EXE, &exe_dir);
+  auto executable_path =
+      version_info::IsOfficialBuild()
+          ? brave_vpn::GetBraveVPNWireguardServiceInstallationPath(
+                exe_dir, version_info::GetVersion())
+          : exe_dir.Append(brave_vpn::kBraveVpnWireguardServiceExecutable);
+  base::CommandLine interactive_cmd(executable_path);
+  interactive_cmd.AppendSwitch(
+      brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
+  if (!base::LaunchProcess(interactive_cmd, base::LaunchOptions()).IsValid()) {
+    VLOG(1) << "Interactive process launch failed";
+  }
+}
+#endif
+}  // namespace
 void NewOffTheRecordWindowTor(Browser* browser) {
   CHECK(browser);
   if (browser->profile()->IsTor()) {
@@ -127,6 +151,16 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 void ShowBraveVPNBubble(Browser* browser) {
   // Ask to browser view.
   static_cast<BraveBrowserWindow*>(browser->window())->ShowBraveVPNBubble();
+}
+
+void ToggleBraveVPNTrayIcon() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn::wireguard::AllowVPNTrayIcon(
+      !brave_vpn::wireguard::IsVPNTrayIconAllowed());
+  if (brave_vpn::wireguard::IsVPNTrayIconAllowed()) {
+    LaunchBraveVpnWireguardInInteractiveMode();
+  }
+#endif
 }
 
 void ToggleBraveVPNButton(Browser* browser) {

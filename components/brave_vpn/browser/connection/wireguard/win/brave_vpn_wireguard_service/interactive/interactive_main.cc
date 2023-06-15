@@ -56,6 +56,7 @@ void InteractiveMain::SetupStatusIcon() {
 void InteractiveMain::ExecuteCommand(int command_id, int event_flags) {
   switch (command_id) {
     case IDC_BRAVE_VPN_TRAY_EXIT_ICON:
+      wireguard::AllowVPNTrayIcon(false);
       SignalExit();
       break;
     case IDC_BRAVE_VPN_TRAY_CONNECT_VPN_ITEM:
@@ -84,6 +85,13 @@ void InteractiveMain::OnDisconnect(bool success) {
   VLOG(1) << __func__ << ":" << success;
 }
 
+void InteractiveMain::OnStorageUpdated() {
+  VLOG(1) << __func__;
+  if (!wireguard::IsVPNTrayIconAllowed()) {
+    SignalExit();
+  }
+}
+
 HRESULT InteractiveMain::Run() {
   if (!wireguard::IsVPNTrayIconAllowed() ||
       !wireguard::GetLastUsedConfigPath().has_value() ||
@@ -91,9 +99,19 @@ HRESULT InteractiveMain::Run() {
     VLOG(1) << "No config available to connect.";
     return S_OK;
   }
+
   base::SingleThreadTaskExecutor task_executor(base::MessagePumpType::UI);
   base::ThreadPoolInstance::CreateAndStartWithDefaultParams(
-      "Braver VPN interactive process");
+      "Brave VPN interactive process");
+
+  if (storage_.Create(
+          HKEY_CURRENT_USER,
+          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+          KEY_QUERY_VALUE | KEY_NOTIFY) != ERROR_SUCCESS) {
+    return S_OK;
+  }
+  storage_.StartWatching(base::BindRepeating(&InteractiveMain::OnStorageUpdated,
+                                             weak_factory_.GetWeakPtr()));
 
   base::RunLoop loop;
   quit_ = loop.QuitClosure();
@@ -104,6 +122,7 @@ HRESULT InteractiveMain::Run() {
 }
 
 void InteractiveMain::SignalExit() {
+  status_tray_.reset();
   std::move(quit_).Run();
 }
 

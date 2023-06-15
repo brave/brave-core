@@ -6,6 +6,7 @@
 #include "brave/browser/ui/toolbar/brave_vpn_menu_model.h"
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/wireguard_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
@@ -29,6 +30,10 @@ void BraveVPNMenuModel::Build() {
                       IsBraveVPNButtonVisible()
                           ? IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM
                           : IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM);
+  AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
+                      brave_vpn::wireguard::IsVPNTrayIconAllowed()
+                          ? IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM
+                          : IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM);
   AddItemWithStringId(IDC_SEND_BRAVE_VPN_FEEDBACK,
                       IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM);
   AddItemWithStringId(IDC_ABOUT_BRAVE_VPN, IDS_BRAVE_VPN_ABOUT_VPN_MENU_ITEM);

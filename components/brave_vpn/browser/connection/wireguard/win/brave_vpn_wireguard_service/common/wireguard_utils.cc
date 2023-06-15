@@ -45,6 +45,35 @@ constexpr char kWireguardConfigTemplate[] = R"(
 
 namespace wireguard {
 
+bool IsVPNTrayIconAllowed() {
+  base::win::RegKey storage;
+  if (storage.Open(
+          HKEY_CURRENT_USER,
+          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+          KEY_QUERY_VALUE) != ERROR_SUCCESS) {
+    return true;
+  }
+  DWORD value = 1;
+  if (storage.ReadValueDW(L"show_tray_icon", &value) != ERROR_SUCCESS) {
+    return true;
+  }
+  return value == 1;
+}
+
+void AllowVPNTrayIcon(bool value) {
+  base::win::RegKey storage;
+  if (storage.Create(
+          HKEY_CURRENT_USER,
+          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+          KEY_SET_VALUE) != ERROR_SUCCESS) {
+    return;
+  }
+
+  if (storage.WriteValue(L"show_tray_icon", DWORD(value)) != ERROR_SUCCESS) {
+    VLOG(1) << "False to write registry value";
+  }
+}
+
 bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
   base::win::RegKey storage;
   if (storage.Create(

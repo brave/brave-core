@@ -79,6 +79,6 @@ void BraveVpnMenuModel::RebuildMenu() {
   AddItem(IDC_BRAVE_VPN_TRAY_MANAGE_ACCOUNT_ITEM,
           brave::kBraveVpnManageAccountItemName);
   AddItem(IDC_BRAVE_VPN_TRAY_ABOUT_ITEM, brave::kBraveVpnAboutItemName);
-  //AddSeparator(ui::NORMAL_SEPARATOR);
-  // AddItem(IDC_BRAVE_VPN_TRAY_EXIT_ICON, brave::kBraveVpnRemoveItemName);
+  AddSeparator(ui::NORMAL_SEPARATOR);
+  AddItem(IDC_BRAVE_VPN_TRAY_EXIT_ICON, brave::kBraveVpnRemoveItemName);
 }

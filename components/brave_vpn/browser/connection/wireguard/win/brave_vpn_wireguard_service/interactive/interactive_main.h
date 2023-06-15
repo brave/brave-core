@@ -9,8 +9,8 @@
 #include <memory>
 
 #include "base/no_destructor.h"
+#include "base/win/registry.h"
 #include "base/win/windows_types.h"
-
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/brave_vpn_menu_model.h"
 
 class StatusIconWin;
@@ -40,11 +40,11 @@ class InteractiveMain : public BraveVpnMenuModel::Delegate {
 
   void OnConnect(bool success);
   void OnDisconnect(bool success);
-
+  void OnStorageUpdated();
   std::unique_ptr<StatusTrayWin> status_tray_;
   // Reference to our status icon (if any) - owned by the StatusTray.
   raw_ptr<StatusIconWin, DanglingUntriaged> status_icon_ = nullptr;
-
+  base::win::RegKey storage_;
   base::OnceClosure quit_;
   base::WeakPtrFactory<InteractiveMain> weak_factory_{this};
 };

@@ -993,6 +993,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM" desc="The menu item for hiding vpn button in toolbar">
             Hide VPN Button in Toolbar
           </message>
+          <message name="IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for showing vpn tray icon in windows">
+            Show VPN Tray Icon
+          </message>
+          <message name="IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for hiding  vpn tray icon in windows">
+            Hide VPN Tray Icon
+          </message>
           <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
             Send Feedback
           </message>
@@ -1006,6 +1012,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
           <message name="IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM" desc="The menu item for hiding vpn button in toolbar">
             Hide VPN button in toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for showing vpn tray icon in windows">
+            Show VPN tray icon
+          </message>
+          <message name="IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for hiding  vpn tray icon in windows">
+            Hide VPN tray icon
           </message>
           <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
             Send feedback

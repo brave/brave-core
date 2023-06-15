@@ -556,6 +556,7 @@ source_set("ui") {
   if (enable_brave_vpn) {
     deps += [
       "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common",
       "//brave/components/brave_vpn/common",
     ]
   }

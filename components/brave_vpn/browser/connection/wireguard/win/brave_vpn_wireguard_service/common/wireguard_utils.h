@@ -10,14 +10,20 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
+#include "base/process/process_handle.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/common/constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
 namespace wireguard {
+
+bool IsVPNTrayIconAllowed();
+void AllowVPNTrayIcon(bool value);
+
 bool UpdateLastUsedConfigPath(const base::FilePath& config_path);
 absl::optional<base::FilePath> GetLastUsedConfigPath();
+
 void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback);
 absl::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,
