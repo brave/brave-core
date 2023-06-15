@@ -38,6 +38,11 @@ constexpr char kUsageDailyHistogramName[] = "Brave.Today.UsageDaily";
 
 namespace {
 
+bool IsNewsEnabled(PrefService* prefs) {
+  return prefs->GetBoolean(prefs::kBraveNewsOptedIn) &&
+         prefs->GetBoolean(prefs::kNewTabPageShowToday);
+}
+
 uint64_t AddToWeeklyStorageAndGetSum(PrefService* prefs,
                                      const char* pref_name,
                                      int change) {
@@ -131,8 +136,14 @@ void RecordTotalCardViews(PrefService* prefs, uint64_t count_delta) {
 }
 
 void RecordFeatureEnabledChange(PrefService* prefs) {
-  bool enabled = prefs->GetBoolean(prefs::kBraveNewsOptedIn) &&
-                 prefs->GetBoolean(prefs::kNewTabPageShowToday);
+  bool enabled = IsNewsEnabled(prefs);
+  bool was_ever_enabled = prefs->GetBoolean(prefs::kBraveNewsWasEverEnabled);
+  if (!enabled && !was_ever_enabled) {
+    // If the user clicked "no thanks" on the NTP, then we don't want to record
+    // this as an opt-out, since they were never opted in.
+    return;
+  }
+  prefs->SetBoolean(prefs::kBraveNewsWasEverEnabled, true);
   UMA_HISTOGRAM_BOOLEAN(kIsEnabledHistogramName, enabled);
 }
 
@@ -145,6 +156,10 @@ void RecordAtInit(PrefService* prefs) {
   RecordWeeklySessionCount(prefs, false);
   RecordWeeklyDisplayAdsViewedCount(prefs, false);
   RecordTotalCardViews(prefs, 0);
+
+  if (IsNewsEnabled(prefs)) {
+    prefs->SetBoolean(prefs::kBraveNewsWasEverEnabled, true);
+  }
 }
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
@@ -156,6 +171,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
       registry, prefs::kBraveNewsFirstSessionTime,
       prefs::kBraveNewsLastSessionTime, prefs::kBraveNewsUsedSecondDay, nullptr,
       nullptr);
+  registry->RegisterBooleanPref(prefs::kBraveNewsWasEverEnabled, false);
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {

@@ -326,6 +326,10 @@ TEST_F(BraveNewsP3ATest, TestNewUserReturningNotFollowingDay) {
 TEST_F(BraveNewsP3ATest, TestIsEnabled) {
   PrefService* prefs = GetPrefs();
 
+  // should not record "disabled" if never opted in
+  prefs->SetBoolean(prefs::kNewTabPageShowToday, false);
+  histogram_tester_.ExpectTotalCount(kIsEnabledHistogramName, 0);
+
   prefs->SetBoolean(prefs::kBraveNewsOptedIn, true);
   prefs->SetBoolean(prefs::kNewTabPageShowToday, true);
   RecordFeatureEnabledChange(prefs);
