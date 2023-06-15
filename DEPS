@@ -6,7 +6,7 @@ gclient_gn_args = [
 ]
 
 vars = {
-  'brave_rust_version': Str('1.69.0'),
+  'brave_rust_version': Str('1.70.0'),
   'download_prebuilt_sparkle': True,
 }
 
