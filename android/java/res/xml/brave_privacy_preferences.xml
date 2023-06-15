@@ -139,6 +139,13 @@
             defaultValue="false"
             android:title="@string/close_tabs_on_exit_title"
             android:summary="@string/close_tabs_on_exit_summary" />
+        <org.chromium.chrome.browser.settings.BraveDialogPreference
+            android:key="request_otr"
+            android:title="@string/request_otr"
+            android:summary="@string/request_otr_summary"
+            app:dialog_subtitle="@string/request_otr_text"
+            app:dialog_entries="@array/requestOTRTexts"
+            app:dialog_default_index="1" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="ipfs_gateway"
             android:order="25"

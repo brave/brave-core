@@ -1456,6 +1456,26 @@ Are you sure you want to do this?
       <message name="IDS_BLOCK_COOKIES_OPTION_3" desc="Title for shields option.">
         Allow all cookies
       </message>
+      <if expr="enable_request_otr">
+        <message name="IDS_REQUEST_OTR" desc="Title for shields option.">
+          Request Off-The-Record
+        </message>
+        <message name="IDS_REQUEST_OTR_TEXT" desc="Text for shields option.">
+          Go Off-The-Record when visiting sensitive sites
+        </message>
+        <message name="IDS_REQUEST_OTR_SUMMARY" desc="Summary for Request Off-The-Record option.">
+          Disables browser history and local storage when sites request it
+        </message>
+        <message name="IDS_REQUEST_OTR_OPTION_1" desc="Title for shields option.">
+          Always go off-the-record
+        </message>
+        <message name="IDS_REQUEST_OTR_OPTION_2" desc="Title for shields option.">
+          Ask before going off-the-record (standard)
+        </message>
+        <message name="IDS_REQUEST_OTR_OPTION_3" desc="Title for shields option.">
+          Never go off-the-record
+        </message>
+      </if>
       <message name="IDS_BLOCK_FINGERPRINTING" desc="Title for shields option.">
         Block Fingerprinting
       </message>
@@ -2182,7 +2202,7 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BRAVE_WALLET_INSTANT_BUY" desc="Brave Wallet text buying cryptocurrencies instantly with lower fees">
       Instant buy with your bank account. Lower fees.
-    </message>  
+    </message>
     <message name="IDS_BRAVE_WALLET_RAMP_NETWORK_TITLE" desc="Brave Wallet title for Ramp.Network" translateable="false">
       Ramp.Network
     </message>
@@ -2514,7 +2534,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_MARKET_CAP" desc="Brave crypto wallet market cap label">
       Market Cap
-    </message>       
+    </message>
     <!-- <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
       Apps
     </message> -->
