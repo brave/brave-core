@@ -270,7 +270,7 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
   auto colors = speedreader::mojom::ToolbarColors::New();
   colors->background = color_provider->GetColor(kColorToolbar);
   colors->foreground = color_provider->GetColor(kColorSidebarButtonBase);
-  colors->border = color_provider->GetColor(ui::kColorFrameActive);
+  colors->border = color_provider->GetColor(kColorToolbarContentAreaSeparator);
   events_->OnBrowserThemeChanged(std::move(colors));
 }
 

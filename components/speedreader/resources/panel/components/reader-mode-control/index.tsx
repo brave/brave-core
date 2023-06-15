@@ -6,12 +6,10 @@
 import * as React from 'react'
 
 import * as S from './style'
-import { SiteSettings, dataHandler } from '../../api/browser'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 
 interface ReaderModeControlProps {
-  siteSettings: SiteSettings
   onClick?: Function
 }
 
@@ -23,7 +21,7 @@ function ReaderModeControl (props: ReaderModeControlProps) {
         <Icon name='product-readermode' />
         {getLocale('braveReaderModeCaption')}
       </S.Caption>
-      <S.Button onClick={() => { dataHandler.viewOriginal() }}>
+      <S.Button onClick={() => { props.onClick?.() }}>
         <Icon name='close' />
       </S.Button>
     </S.Box>

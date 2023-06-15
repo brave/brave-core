@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import * as S from './style'
 
-import { TtsSettings, dataHandler, PlaybackSpeed, eventsHandler, PlaybackState } from '../../api/browser'
+import getToolbarAPI, { TtsSettings, PlaybackSpeed, PlaybackState } from '../../api/browser'
 import { Playback, PlaybackControl, PlaybackSpeedControl } from '../lists'
 import { getLocale } from '$web-common/locale'
 
@@ -25,8 +25,8 @@ function TtsControl(props: TtsControlProps) {
   }
 
   const [playbackState, setPlaybackState] = React.useState<PlaybackState>(PlaybackState.kStopped)
-  dataHandler.getPlaybackState().then(res => setPlaybackState(res.playbackState))
-  eventsHandler.setPlaybackState.addListener((state: PlaybackState) => {
+  getToolbarAPI().dataHandler.getPlaybackState().then(res => setPlaybackState(res.playbackState))
+  getToolbarAPI().eventsRouter.setPlaybackState.addListener((state: PlaybackState) => {
     setPlaybackState(state)
   })
 
@@ -37,19 +37,19 @@ function TtsControl(props: TtsControlProps) {
         onClick={(command: Playback) => {
           switch (command) {
             case Playback.Play:
-              dataHandler.play()
+              getToolbarAPI().dataHandler.play()
               break
             case Playback.Pause:
-              dataHandler.pause()
+              getToolbarAPI().dataHandler.pause()
               break
             case Playback.Stop:
-              dataHandler.stop()
+              getToolbarAPI().dataHandler.stop()
               break
             case Playback.Forward:
-              dataHandler.forward()
+              getToolbarAPI().dataHandler.forward()
               break
             case Playback.Rewind:
-              dataHandler.rewind()
+              getToolbarAPI().dataHandler.rewind()
               break
           }
         }}

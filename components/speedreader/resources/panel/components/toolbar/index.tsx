@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import * as S from './style'
-import { dataHandler, SiteSettings, AppearanceSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed, eventsHandler } from '../../api/browser'
+import getToolbarAPI, { SiteSettings, AppearanceSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed } from '../../api/browser'
 import { MainButtonType, MainButtonsList } from '../lists'
 import ReaderModeControl from "../reader-mode-control"
 import OptionsControl from "../options-control"
@@ -25,17 +25,17 @@ function Toolbar() {
   const [activeButton, setActiveButton] = React.useState(MainButtonType.None)
 
   React.useEffect(() => {
-    dataHandler.getSiteSettings().then((res: any) => setSiteSettings(res.siteSettings))
-    dataHandler.getAppearanceSettings().then((res: any) => setAppearanceSettings(res.appearanceSettings))
-    dataHandler.getTtsSettings().then((res: any) => setTtsSettings(res.ttsSettings))
-    dataHandler.observeThemeChange()
-    eventsHandler.onSiteSettingsChanged.addListener((settings: SiteSettings) => {
+    getToolbarAPI().dataHandler.getSiteSettings().then((res: any) => setSiteSettings(res.siteSettings))
+    getToolbarAPI().dataHandler.getAppearanceSettings().then((res: any) => setAppearanceSettings(res.appearanceSettings))
+    getToolbarAPI().dataHandler.getTtsSettings().then((res: any) => setTtsSettings(res.ttsSettings))
+    getToolbarAPI().dataHandler.observeThemeChange()
+    getToolbarAPI().eventsRouter.onSiteSettingsChanged.addListener((settings: SiteSettings) => {
       setSiteSettings(settings)
     })
-    eventsHandler.onAppearanceSettingsChanged.addListener((settings: AppearanceSettings) => {
+    getToolbarAPI().eventsRouter.onAppearanceSettingsChanged.addListener((settings: AppearanceSettings) => {
       setAppearanceSettings(settings)
     })
-    eventsHandler.onBrowserThemeChanged.addListener((colors: ToolbarColors) => {
+    getToolbarAPI().eventsRouter.onBrowserThemeChanged.addListener((colors: ToolbarColors) => {
       const style = document.documentElement.style
       style.setProperty('--color-background', toColor(colors.background))
       style.setProperty('--color-foreground', toColor(colors.foreground))
@@ -47,40 +47,44 @@ function Toolbar() {
     return null
   }
 
+  const handleClose = () => {
+    getToolbarAPI().dataHandler.viewOriginal()
+  }
+
   const handleSpeedreaderChange = (speedreaderEnabled: boolean) => {
     const settings = { ...siteSettings, speedreaderEnabled }
-    dataHandler.setSiteSettings(settings)
+    getToolbarAPI().dataHandler.setSiteSettings(settings)
   }
 
   const handleThemeChange = (theme: Theme) => {
     const settings = { ...appearanceSettings, theme }
-    dataHandler.setAppearanceSettings(settings)
+    getToolbarAPI().dataHandler.setAppearanceSettings(settings)
   }
 
   const handleFontSizeChange = (fontSize: FontSize) => {
     const settings = { ...appearanceSettings, fontSize }
-    dataHandler.setAppearanceSettings(settings)
+    getToolbarAPI().dataHandler.setAppearanceSettings(settings)
   }
 
   const handleFontFamilyChange = (fontFamily: FontFamily) => {
     const settings = { ...appearanceSettings, fontFamily }
-    dataHandler.setAppearanceSettings(settings)
+    getToolbarAPI().dataHandler.setAppearanceSettings(settings)
   }
 
   const handleTtsVoiceChange = (voice: string) => {
     const settings = { ...ttsSettings, voice }
     setTtsSettings(settings)
-    dataHandler.setTtsSettings(settings)
+    getToolbarAPI().dataHandler.setTtsSettings(settings)
   }
 
   const handleTtsSpeedChange = (speed: PlaybackSpeed) => {
     const settings = { ...ttsSettings, speed }
     setTtsSettings(settings)
-    dataHandler.setTtsSettings(settings)
+    getToolbarAPI().dataHandler.setTtsSettings(settings)
   }
 
   const handleAiChat = () => {
-    dataHandler.aiChat()
+    getToolbarAPI().dataHandler.aiChat()
   }
 
   const handleMainButtonClick = (button: MainButtonType) => {
@@ -104,7 +108,7 @@ function Toolbar() {
         onClick={handleMainButtonClick.bind(this)}
       />
       {activeButton === MainButtonType.None && (
-        <ReaderModeControl siteSettings={siteSettings} />)
+        <ReaderModeControl onClick={handleClose.bind(this)} />)
       }
       {activeButton === MainButtonType.Options && (
         <OptionsControl

@@ -8,11 +8,31 @@ import * as mojom from 'gen/brave/components/speedreader/common/speedreader_tool
 // Provide access to all the generated types
 export * from 'gen/brave/components/speedreader/common/speedreader_toolbar.mojom.m.js'
 
-const factory = mojom.ToolbarFactory.getRemote()
+interface API {
+  dataHandler: mojom.ToolbarDataHandlerRemote
+  eventsRouter: mojom.ToolbarEventsHandlerCallbackRouter
+}
 
-export const dataHandler = new mojom.ToolbarDataHandlerRemote()
-export const eventsHandler = new mojom.ToolbarEventsHandlerCallbackRouter()
+class ToolbarHandlerAPI implements API {
+  dataHandler: mojom.ToolbarDataHandlerRemote
+  eventsRouter: mojom.ToolbarEventsHandlerCallbackRouter
 
-factory.createInterfaces(
-  dataHandler.$.bindNewPipeAndPassReceiver(),
-  eventsHandler.$.bindNewPipeAndPassRemote())
+  constructor() {
+    this.dataHandler = new mojom.ToolbarDataHandlerRemote()
+    this.eventsRouter = new mojom.ToolbarEventsHandlerCallbackRouter()
+
+    const factory = mojom.ToolbarFactory.getRemote()
+    factory.createInterfaces(
+      this.dataHandler.$.bindNewPipeAndPassReceiver(),
+      this.eventsRouter.$.bindNewPipeAndPassRemote())
+  }
+}
+
+let apiInstance: API
+
+export default function getToolbarAPI() {
+  if (!apiInstance) {
+    apiInstance = new ToolbarHandlerAPI()
+  }
+  return apiInstance
+}

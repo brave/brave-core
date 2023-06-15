@@ -13,7 +13,7 @@ export const Box = styled.div`
   background-color: transparent;
 `
 
-export const Group = `
+const GroupStyles = `
   width: 32px;
 
   border-radius: 0;
@@ -50,7 +50,7 @@ export const CurrentStateIndicator = styled.div`
   line-height: 14px;
   letter-spacing: -0.289412px;
 
-  ${() => true && Group}
+  ${GroupStyles}
 `
 
 export const Button = styled.button<{inGroup?: boolean}>`
@@ -75,5 +75,5 @@ export const Button = styled.button<{inGroup?: boolean}>`
     }
   }
 
-  ${props => props?.inGroup && Group}
+  ${props => props?.inGroup && GroupStyles}
 `

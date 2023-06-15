@@ -46,8 +46,8 @@ class Toolbar : public views::WebView {
 ReaderModeToolbarView::ReaderModeToolbarView(
     content::BrowserContext* browser_context) {
   SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
-  SetBorder(views::CreateThemedSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
-                                                ui::kColorFrameActive));
+  SetBorder(views::CreateThemedSolidSidedBorder(
+      gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
 
   toolbar_ = std::make_unique<Toolbar>(browser_context);
   AddChildView(toolbar_.get());
