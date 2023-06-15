@@ -332,8 +332,10 @@ export function createWalletApi () {
 
             const networksRegistry = await cache.getNetworksRegistry()
 
-            const chainIdsWithSupportFlags = await Promise.all(
-              networksRegistry.ids.map(async (chainId) => {
+            const chainIdsWithSupportFlags = await mapLimit(
+              networksRegistry.ids,
+              10,
+              async (chainId: string) => {
                 const { result } = await swapService.isSwapSupported(
                   chainId.toString()
                 )
@@ -341,7 +343,7 @@ export function createWalletApi () {
                   chainId,
                   supported: result
                 }
-              })
+              }
             )
 
             const swapChainIds = chainIdsWithSupportFlags
@@ -597,8 +599,10 @@ export function createWalletApi () {
               {}
 
             const getTokensList = async () => {
-              const tokenListsForNetworks = await Promise.all(
-                networksList.map(async (network) => {
+              const tokenListsForNetworks = await mapLimit(
+                networksList,
+                10,
+                async (network: BraveWallet.NetworkInfo) => {
                   const networkId = networkEntityAdapter.selectId(network)
 
                   const { tokens } = await blockchainRegistry.getAllTokens(
@@ -607,13 +611,15 @@ export function createWalletApi () {
                   )
 
                   const fullTokensListForChain: BraveWallet.BlockchainToken[] =
-                    await Promise.all(
-                      tokens.map(async (token) => {
+                    await mapLimit(
+                      tokens,
+                      10,
+                      async (token: BraveWallet.BlockchainToken) => {
                         return addChainIdToToken(
                           await addLogoToToken(token),
                           network.chainId
                         )
-                      })
+                      }
                     )
 
                   tokenIdsByChainId[networkId] =
@@ -624,7 +630,7 @@ export function createWalletApi () {
                   ).concat(tokenIdsByChainId[networkId] || [])
 
                   return fullTokensListForChain
-                })
+                }
               )
 
               const flattenedTokensList = tokenListsForNetworks.flat(1)
@@ -1044,8 +1050,10 @@ export function createWalletApi () {
             (account) => account.accountId.coin === asset.coin
           )
 
-          const accountTokenBalancesForChainId: string[] = await Promise.all(
-            accountsForAssetCoinType.map(async (account) => {
+          const accountTokenBalancesForChainId: string[] = await mapLimit(
+            accountsForAssetCoinType,
+            10,
+            async (account: BraveWallet.AccountInfo) => {
               const balance = await dispatch(
                 walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
                   coin: account.accountId.coin,
@@ -1062,7 +1070,7 @@ export function createWalletApi () {
               ).unwrap()
 
               return balance ?? ''
-            })
+            }
           )
 
           // return a '0' balance until user has created a FIL or SOL account
@@ -1317,10 +1325,12 @@ export function createWalletApi () {
                     )
                   ).transactionInfos
                 : (
-                    await Promise.all(
+                    await mapLimit(
                       (
                         await cache.getAllAccountsInfo()
-                      ).accounts.map(async (account) => {
+                      ).accounts,
+                      10,
+                      async (account: BraveWallet.AccountInfo) => {
                         const { transactionInfos } =
                           await txService.getAllTransactionInfo(
                             account.accountId.coin,
@@ -1328,7 +1338,7 @@ export function createWalletApi () {
                             account.address
                           )
                         return transactionInfos
-                      })
+                      }
                     )
                   ).flat(1)
 
@@ -2244,8 +2254,10 @@ export function createWalletApi () {
               (tx) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved
             )
 
-            await Promise.all(
-              pendingTxs.map(async (tx) => {
+            await mapLimit(
+              pendingTxs,
+              10,
+              async (tx: SerializableTransactionInfo) => {
                 const { success } = await dispatch(
                   walletApi.endpoints.rejectTransaction.initiate({
                     coinType: getCoinFromTxDataUnion(tx.txDataUnion),
@@ -2254,7 +2266,7 @@ export function createWalletApi () {
                   })
                 ).unwrap()
                 return success
-              })
+              }
             )
 
             return {
@@ -3024,8 +3036,8 @@ async function getAllNetworksList(
 
   // Get All Networks
   const networks = (
-    await Promise.all(
-      enabledCoinTypes.map(async (coin) => {
+    await mapLimit(
+      enabledCoinTypes, 10, (async (coin: number) => {
         const { networks } = await jsonRpcService.getAllNetworks(coin)
         return networks
       })
@@ -3054,15 +3066,14 @@ export async function getVisibleNetworksList(
   const enabledCoinTypes = await getEnabledCoinTypes(api)
 
   const networks = (
-    await Promise.all(
-      enabledCoinTypes.map(async (coin) => {
-        const { networks } = await jsonRpcService.getAllNetworks(coin)
-        const { chainIds: hiddenChainIds } =
-          await jsonRpcService.getHiddenNetworks(coin)
-        return networks.filter((n) => !hiddenChainIds.includes(n.chainId))
-      })
-    )
+    await mapLimit(enabledCoinTypes, 10, async (coin: number) => {
+      const { networks } = await jsonRpcService.getAllNetworks(coin)
+      const { chainIds: hiddenChainIds } =
+        await jsonRpcService.getHiddenNetworks(coin)
+      return networks.filter((n) => !hiddenChainIds.includes(n.chainId))
+    })
   ).flat(1)
+
   return networks
 }
 

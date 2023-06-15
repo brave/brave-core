@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { mapLimit } from 'async'
+
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -19,7 +21,8 @@ import {
   SolanaSerializedTransactionParams,
   SupportedOnRampNetworks,
   SupportedOffRampNetworks,
-  RefreshOpts
+  RefreshOpts,
+  GetFlattenedAccountBalancesReturnInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -299,32 +302,45 @@ export const getAllBuyAssets = async (): Promise<{
   const { blockchainRegistry } = getAPIProxy()
   const { kRamp, kSardine, kTransak } = BraveWallet.OnRampProvider
 
-  const rampAssetsPromises = await Promise.all(
-    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kRamp, chainId))
-  )
-  const sardineAssetsPromises = await Promise.all(
-    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kSardine, chainId))
+  const rampAssets = await mapLimit(
+    SupportedOnRampNetworks,
+    10,
+    async (chainId: string) =>
+      await blockchainRegistry.getBuyTokens(kRamp, chainId)
   )
 
-  const transakAssetsPromises = await Promise.all(
-    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kTransak, chainId))
+  const sardineAssets = await mapLimit(
+    SupportedOnRampNetworks,
+    10,
+    async (chainId: string) =>
+      await blockchainRegistry.getBuyTokens(kSardine, chainId)
+  )
+
+  const transakAssets = await mapLimit(
+    SupportedOnRampNetworks,
+    10,
+    async (chainId: string) =>
+      await blockchainRegistry.getBuyTokens(kTransak, chainId)
   )
 
   // add token logos
-  const rampAssetOptions: BraveWallet.BlockchainToken[] =
-    await Promise.all(rampAssetsPromises
-      .flatMap(p => p.tokens)
-      .map(await addLogoToToken))
+  const rampAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
+    rampAssets.flatMap((p) => p.tokens),
+    10,
+    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
+  )
 
-  const sardineAssetOptions: BraveWallet.BlockchainToken[] =
-    await Promise.all(sardineAssetsPromises
-      .flatMap(p => p.tokens)
-      .map(await addLogoToToken))
+  const sardineAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
+    sardineAssets.flatMap((p) => p.tokens),
+    10,
+    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
+  )
 
-  const transakAssetOptions: BraveWallet.BlockchainToken[] =
-    await Promise.all(transakAssetsPromises
-      .flatMap(p => p.tokens)
-      .map(await addLogoToToken))
+  const transakAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
+    transakAssets.flatMap((p) => p.tokens),
+    10,
+    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
+  )
 
   // separate native assets from tokens
   const {
@@ -385,15 +401,19 @@ export const getAllSellAssets = async (): Promise<{
   const { blockchainRegistry } = getAPIProxy()
   const { kRamp } = BraveWallet.OffRampProvider
 
-  const rampAssetsPromises = await Promise.all(
-    SupportedOffRampNetworks.map(chainId => blockchainRegistry.getSellTokens(kRamp, chainId))
+  const rampAssets = await mapLimit(
+    SupportedOffRampNetworks,
+    10,
+    async (chainId: string) =>
+      await blockchainRegistry.getSellTokens(kRamp, chainId)
   )
 
   // add token logos
-  const rampAssetOptions: BraveWallet.BlockchainToken[] =
-    await Promise.all(rampAssetsPromises
-      .flatMap(p => p.tokens)
-      .map(await addLogoToToken))
+  const rampAssetOptions: BraveWallet.BlockchainToken[] = await mapLimit(
+    rampAssets.flatMap((p) => p.tokens),
+    10,
+    async (token: BraveWallet.BlockchainToken) => await addLogoToToken(token)
+  )
 
   // separate native assets from tokens
   const {
@@ -468,7 +488,12 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
 
     const visibleAssets = targetNetwork
       ? await inner(targetNetwork)
-      : await Promise.all(networkList.map(async (item) => await inner(item)))
+      : await mapLimit(
+          networkList,
+          10,
+          async (item: BraveWallet.NetworkInfo) => await inner(item)
+        )
+
     const removedAssetIds =
       [
         ...getState().wallet.removedFungibleTokenIds,
@@ -549,62 +574,98 @@ export function refreshBalances () {
       errorMessage: ''
     }
 
-    const getNativeAssetsBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
-      const networks = getNetworksByCoinType(networkList, account.accountId.coin)
+    const getNativeAssetsBalanceReturnInfos = await mapLimit(
+      accounts,
+      10,
+      async (account: WalletAccountType) => {
+        const networks = getNetworksByCoinType(
+          networkList,
+          account.accountId.coin
+        )
 
-      return Promise.all(networks.map(async (network) => {
-        // Get CoinType SOL balances
-        if (network.coin === BraveWallet.CoinType.SOL) {
-          const getSolBalanceInfo = await jsonRpcService.getSolanaBalance(account.address, network.chainId)
-          const solBalanceInfo = {
-            ...getSolBalanceInfo,
-            balance: getSolBalanceInfo.balance.toString(),
-            chainId: network.chainId
-          }
-          return network.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
-            getSolBalanceInfo.error !== 0
-            ? { ...emptyBalance, chainId: network.chainId }
-            : solBalanceInfo
-        }
+        return mapLimit(
+          networks,
+          10,
+          async (network: BraveWallet.NetworkInfo) => {
+            // Get CoinType SOL balances
+            if (network.coin === BraveWallet.CoinType.SOL) {
+              const getSolBalanceInfo = await jsonRpcService.getSolanaBalance(
+                account.address,
+                network.chainId
+              )
+              const solBalanceInfo = {
+                ...getSolBalanceInfo,
+                balance: getSolBalanceInfo.balance.toString(),
+                chainId: network.chainId
+              }
+              return network.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
+                getSolBalanceInfo.error !== 0
+                ? { ...emptyBalance, chainId: network.chainId }
+                : solBalanceInfo
+            }
 
-        // Get CoinType FIL balances
-        if (account.accountId.coin === BraveWallet.CoinType.FIL) {
-          if (networkList.some(n => n.chainId === network.chainId)) {
             // Get CoinType FIL balances
-            if (network.coin === BraveWallet.CoinType.FIL && account.accountId.keyringId === getFilecoinKeyringIdFromNetwork(network)) {
-              const balanceInfo = await jsonRpcService.getBalance(account.address, account.accountId.coin, network.chainId)
+            if (account.accountId.coin === BraveWallet.CoinType.FIL) {
+              if (networkList.some((n) => n.chainId === network.chainId)) {
+                // Get CoinType FIL balances
+                if (
+                  network.coin === BraveWallet.CoinType.FIL &&
+                  account.accountId.keyringId ===
+                    getFilecoinKeyringIdFromNetwork(network)
+                ) {
+                  const balanceInfo = await jsonRpcService.getBalance(
+                    account.address,
+                    account.accountId.coin,
+                    network.chainId
+                  )
+                  return {
+                    ...balanceInfo,
+                    chainId: network.chainId
+                  }
+                }
+              }
+
               return {
-                ...balanceInfo,
+                ...emptyBalance,
                 chainId: network.chainId
               }
             }
-          }
 
-          return {
-            ...emptyBalance,
-            chainId: network.chainId
-          }
-        }
+            // LOCALHOST will return an error until a local instance is
+            // detected, we now will return a 0 balance until it's detected.
+            if (
+              network.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
+              network.coin !== BraveWallet.CoinType.SOL
+            ) {
+              const localhostBalanceInfo = await jsonRpcService.getBalance(
+                account.address,
+                account.accountId.coin,
+                network.chainId
+              )
+              const info =
+                localhostBalanceInfo.error === 0
+                  ? localhostBalanceInfo
+                  : emptyBalance
+              return {
+                ...info,
+                chainId: network.chainId
+              }
+            }
 
-        // LOCALHOST will return an error until a local instance is
-        // detected, we now will will return a 0 balance until it's detected.
-        if (network.chainId === BraveWallet.LOCALHOST_CHAIN_ID && network.coin !== BraveWallet.CoinType.SOL) {
-          const localhostBalanceInfo = await jsonRpcService.getBalance(account.address, account.accountId.coin, network.chainId)
-          const info = localhostBalanceInfo.error === 0 ? localhostBalanceInfo : emptyBalance
-          return {
-            ...info,
-            chainId: network.chainId
+            // Get CoinType ETH balances
+            const balanceInfo = await jsonRpcService.getBalance(
+              account.address,
+              account.accountId.coin,
+              network.chainId
+            )
+            return {
+              ...balanceInfo,
+              chainId: network.chainId
+            }
           }
-        }
-
-        // Get CoinType ETH balances
-        const balanceInfo = await jsonRpcService.getBalance(account.address, account.accountId.coin, network.chainId)
-        return {
-          ...balanceInfo,
-          chainId: network.chainId
-        }
-      }))
-    }))
+        )
+      }
+    )
 
     await dispatch(WalletActions.nativeAssetBalancesUpdated({
       balances: getNativeAssetsBalanceReturnInfos
@@ -612,53 +673,77 @@ export function refreshBalances () {
 
     const visibleTokens = userVisibleTokensInfo.filter(asset => asset.contractAddress !== '')
 
-    const getBlockchainTokensBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
-      const networks = getNetworksByCoinType(networkList, account.accountId.coin)
-      if (account.accountId.coin === BraveWallet.CoinType.ETH) {
-        return Promise.all(visibleTokens.map(async (token) => {
-          let balanceInfo = emptyBalance
-          if (networks.some(n => n.chainId === token.chainId)) {
-            if (token.isErc721) {
-              balanceInfo =
-                await jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address, token?.chainId ?? '')
-            } else {
-              balanceInfo =
-                await jsonRpcService
-                  .getERC20TokenBalance(
+    const getBlockchainTokensBalanceReturnInfos = await mapLimit(
+      accounts,
+      10,
+      async (account: WalletAccountType) => {
+        const networks = getNetworksByCoinType(
+          networkList,
+          account.accountId.coin
+        )
+        if (account.accountId.coin === BraveWallet.CoinType.ETH) {
+          return mapLimit(
+            visibleTokens,
+            10,
+            async (token: BraveWallet.BlockchainToken) => {
+              let balanceInfo = emptyBalance
+              if (networks.some((n) => n.chainId === token.chainId)) {
+                if (token.isErc721) {
+                  balanceInfo = await jsonRpcService.getERC721TokenBalance(
+                    token.contractAddress,
+                    token.tokenId ?? '',
+                    account.address,
+                    token?.chainId ?? ''
+                  )
+                } else {
+                  balanceInfo = await jsonRpcService.getERC20TokenBalance(
                     token.contractAddress,
                     account.address,
                     token?.chainId ?? ''
                   )
+                }
+              }
+              return {
+                ...balanceInfo,
+                chainId: token?.chainId ?? ''
+              }
             }
-          }
-          return {
-            ...balanceInfo,
-            chainId: token?.chainId ?? ''
-          }
-        }))
-      } else if (account.accountId.coin === BraveWallet.CoinType.SOL) {
-        return Promise.all(visibleTokens.map(async (token) => {
-          if (networks.some(n => n.chainId === token.chainId)) {
-            const getSolTokenBalance = await jsonRpcService.getSPLTokenAccountBalance(account.address, token.contractAddress, token.chainId)
-            return {
-              balance: token.isNft ? getSolTokenBalance.uiAmountString : getSolTokenBalance.amount,
-              error: getSolTokenBalance.error,
-              errorMessage: getSolTokenBalance.errorMessage,
-              chainId: token.chainId
+          )
+        } else if (account.accountId.coin === BraveWallet.CoinType.SOL) {
+          return mapLimit(
+            visibleTokens,
+            10,
+            async (token: BraveWallet.BlockchainToken) => {
+              if (networks.some((n) => n.chainId === token.chainId)) {
+                const getSolTokenBalance =
+                  await jsonRpcService.getSPLTokenAccountBalance(
+                    account.address,
+                    token.contractAddress,
+                    token.chainId
+                  )
+                return {
+                  balance: token.isNft
+                    ? getSolTokenBalance.uiAmountString
+                    : getSolTokenBalance.amount,
+                  error: getSolTokenBalance.error,
+                  errorMessage: getSolTokenBalance.errorMessage,
+                  chainId: token.chainId
+                }
+              }
+              return {
+                ...emptyBalance,
+                chainId: token?.chainId ?? ''
+              }
             }
-          }
-          return {
-            ...emptyBalance,
-            chainId: token?.chainId ?? ''
-          }
-        }))
-      } else {
-        // MULTICHAIN: We do not yet support getting
-        // token balances for FIL
-        // Will be implemented here https://github.com/brave/brave-browser/issues/21695
-        return []
+          )
+        } else {
+          // MULTICHAIN: We do not yet support getting
+          // token balances for FIL
+          // Will be implemented here https://github.com/brave/brave-browser/issues/21695
+          return []
+        }
       }
-    }))
+    )
 
     await dispatch(WalletActions.tokenBalancesUpdated({
       balances: getBlockchainTokensBalanceReturnInfos
@@ -713,17 +798,25 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
         )
 
     // Get all Price History
-    const priceHistory = await Promise.all(getFlattenedAccountBalances(accountsList, filteredTokenInfo)
-      // If a tokens balance is 0 we do not make an unnecessary api call for price history of that token
-      .filter(({ token, balance }) => !token.isErc721 && balance > 0)
-      .map(async ({ token }) => ({
+    const priceHistory = await mapLimit(
+      getFlattenedAccountBalances(accountsList, filteredTokenInfo)
+        // If a tokens balance is 0
+        // we do not make an unnecessary api call
+        // for price history of that token
+        .filter(({ token, balance }) => !token.isErc721 && balance > 0),
+      10,
+      async ({ token }: GetFlattenedAccountBalancesReturnInfo) => ({
         // If a visible asset has a contractAddress of ''
         // it is a native asset so we use a symbol instead.
-        contractAddress: token.contractAddress ? token.contractAddress : token.symbol,
+        contractAddress: token.contractAddress
+          ? token.contractAddress
+          : token.symbol,
         history: await assetRatioService.getPriceHistory(
-          getTokenParam(token), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
+          getTokenParam(token),
+          defaultCurrencies.fiat.toLowerCase(),
+          selectedPortfolioTimeline
         )
-      }))
+      })
     )
 
     // Combine Price History and Balances
@@ -814,14 +907,22 @@ export function refreshSitePermissions () {
     const { wallet: { accounts, activeOrigin } } = getState()
 
     // Get a list of accounts with permissions of the active origin
-    const getAllPermissions = await Promise.all(accounts.map(async (account) => {
-      const result = await braveWalletService.hasPermission(account.accountId, deserializeOrigin(activeOrigin.origin))
-      if (result.success && result.hasPermission) {
-        return account
-      }
+    const getAllPermissions = await mapLimit(
+      accounts,
+      10,
+      async (account: WalletAccountType) => {
+        const result = await braveWalletService.hasPermission(
+          account.accountId,
+          deserializeOrigin(activeOrigin.origin)
+        )
+        if (result.success && result.hasPermission) {
+          return account
+        }
 
-      return undefined
-    }))
+        return undefined
+      }
+    )
+
     const accountsWithPermission: WalletAccountType[] = getAllPermissions.filter((account): account is WalletAccountType => account !== undefined)
     dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
   }
@@ -1016,9 +1117,14 @@ export function refreshPortfolioFilterOptions () {
 
 // Checks whether set of urls have ipfs:// scheme or are gateway-like urls
 export const areSupportedForPinning = async (urls: string[]) => {
-  const results =
-    await Promise.all(
-      urls.flatMap((v) => extractIpfsUrl(stripERC20TokenImageURL(v))))
+  const results = (
+    await mapLimit(
+      urls,
+      10,
+      async (v: string) => await extractIpfsUrl(stripERC20TokenImageURL(v))
+    )
+  ).flat(1)
+
   return results.every(result => result?.startsWith(IPFS_PROTOCOL))
 }
 
