@@ -8,10 +8,11 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.mojo.bindings.Callbacks;
+import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,24 +21,24 @@ import java.util.List;
 
 public class SelectedAccountResponsesCollector {
     private KeyringService mKeyringService;
-    private BraveWalletService mBraveWalletService;
     private List<Integer> mCoinTypes;
     private HashSet<AccountInfo> mSelectedAccountsPerCoin;
     private List<AccountInfo> mAllAccountInfos;
+    private JsonRpcService mJsonRpcService;
 
     public SelectedAccountResponsesCollector(KeyringService keyringService,
-            BraveWalletService braveWalletService, List<Integer> coinTypes,
+            JsonRpcService jsonRpcService, List<Integer> coinTypes,
             List<AccountInfo> allAccountInfos) {
         assert keyringService != null;
-        assert braveWalletService != null;
+        assert jsonRpcService != null;
+        mJsonRpcService = jsonRpcService;
         mKeyringService = keyringService;
-        mBraveWalletService = braveWalletService;
         mCoinTypes = coinTypes;
         mAllAccountInfos = allAccountInfos;
         mSelectedAccountsPerCoin = new LinkedHashSet<>();
     }
 
-    public void getAccounts(Callbacks.Callback1<HashSet<AccountInfo>> runWhenDone) {
+    public void getAccounts(Origin origin, Callbacks.Callback1<HashSet<AccountInfo>> runWhenDone) {
         AsyncUtils.MultiResponseHandler selectedAccountInfosPerCoinMultiResponse =
                 new AsyncUtils.MultiResponseHandler(mCoinTypes.size());
         ArrayList<AsyncUtils.GetSelectedAccountResponseContext> accountsPermissionsContexts =
@@ -49,7 +50,7 @@ public class SelectedAccountResponsesCollector {
 
             accountsPermissionsContexts.add(accountContext);
             if (CoinType.FIL == coin) {
-                mBraveWalletService.getChainIdForActiveOrigin(CoinType.FIL, chainId -> {
+                mJsonRpcService.getChainIdForOrigin(CoinType.FIL, origin, chainId -> {
                     mKeyringService.getFilecoinSelectedAccount(chainId, accountContext);
                 });
             } else {

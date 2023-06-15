@@ -132,6 +132,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+            // Set origin to null, to use default network in domain layer.
+            mWalletModel.setOriginInfo(null);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation " + e);
         }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,21 @@ public class JavaUtils {
     public static <T> T safeVal(T object, T defValue) {
         if (object == null) return defValue;
         return object;
+    }
+
+    /**
+     * Return either the mapped value or null, without throwing any exception. Useful to get nested
+     * value.
+     * @param val primary object to fetch value from
+     * @param mapper function to get the value
+     * @return either mapped value or null
+     */
+    public static <T, U> U safeVal(T val, Function<T, U> mapper) {
+        try {
+            return mapper.apply(val);
+        } catch (Exception ignored) {
+        }
+        return null;
     }
 
     public static <T> List<T> filter(List<T> list, Predicate<T> filter) {

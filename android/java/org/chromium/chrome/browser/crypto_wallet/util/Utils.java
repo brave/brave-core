@@ -1043,8 +1043,8 @@ public class Utils {
         return null;
     }
 
-    public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
-            AppCompatActivity activity, String accountName, int coinType) {
+    public static void openTransaction(TransactionInfo txInfo, AppCompatActivity activity,
+            String accountName, int coinType, NetworkInfo networkInfo) {
         assert txInfo != null;
         if (txInfo.txStatus == TransactionStatus.UNAPPROVED) {
             if (activity instanceof ApprovedTxObserver) {
@@ -1062,42 +1062,40 @@ public class Utils {
                     || TextUtils.equals(txInfo.chainId,
                             BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID);
             if (isFileCoinEvmNet) {
-                openAddress("/" + txInfo.txHash, jsonRpcService, activity, coinType);
+                openAddress("/" + txInfo.txHash, activity, coinType, networkInfo);
             } else {
-                openAddress("/tx/" + txInfo.txHash, jsonRpcService, activity, coinType);
+                openAddress("/tx/" + txInfo.txHash, activity, coinType, networkInfo);
             }
         }
     }
 
-    public static void openAddress(String toAppend, JsonRpcService jsonRpcService,
-            AppCompatActivity activity, int coinType) {
-        assert jsonRpcService != null;
-        jsonRpcService.getNetwork(coinType, null, network -> {
-            String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
-            if (blockExplorerUrl.length() > 2) {
-                blockExplorerUrl = blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1);
-            }
-            if (coinType == CoinType.ETH) {
+    public static void openAddress(
+            String toAppend, AppCompatActivity activity, int coinType, NetworkInfo networkInfo) {
+        String blockExplorerUrl = Arrays.toString(networkInfo.blockExplorerUrls);
+        if (blockExplorerUrl.length() > 2) {
+            blockExplorerUrl = blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1);
+        }
+        if (coinType == CoinType.ETH) {
+            blockExplorerUrl += toAppend;
+        } else if (coinType == CoinType.SOL) {
+            int iPos = blockExplorerUrl.indexOf("?cluster=");
+            if (iPos != -1) {
+                blockExplorerUrl = blockExplorerUrl.substring(0, iPos - 1) + toAppend
+                        + blockExplorerUrl.substring(iPos);
+            } else {
                 blockExplorerUrl += toAppend;
-            } else if (coinType == CoinType.SOL) {
-                int iPos = blockExplorerUrl.indexOf("?cluster=");
-                if (iPos != -1) {
-                    blockExplorerUrl = blockExplorerUrl.substring(0, iPos - 1) + toAppend
-                            + blockExplorerUrl.substring(iPos);
-                } else {
-                    blockExplorerUrl += toAppend;
-                }
             }
-            TabUtils.openUrlInCustomTab(activity, blockExplorerUrl);
-        });
+        }
+        TabUtils.openUrlInCustomTab(activity, blockExplorerUrl);
     }
 
-    public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
-            AppCompatActivity activity, AccountInfo[] accountInfos, int coinType) {
+    public static void openTransaction(TransactionInfo txInfo, AppCompatActivity activity,
+            AccountInfo[] accountInfos, int coinType, NetworkInfo networkInfo) {
         assert txInfo != null;
         AccountInfo account = findAccount(accountInfos, txInfo.fromAddress);
-        openTransaction(txInfo, jsonRpcService, activity,
-                account != null ? account.name : stripAccountAddress(txInfo.fromAddress), coinType);
+        openTransaction(txInfo, activity,
+                account != null ? account.name : stripAccountAddress(txInfo.fromAddress), coinType,
+                networkInfo);
     }
 
     public static void setUpTransactionList(BraveWalletBaseActivity activity,

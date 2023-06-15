@@ -186,24 +186,25 @@ public class AccountDetailActivity
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "finishNativeInitialization " + e);
         }
-        assert mJsonRpcService != null;
-        mJsonRpcService.getNetwork(mAccountInfo.accountId.coin, null, selectedNetwork -> {
-            setUpAssetList(selectedNetwork);
-            fetchAccountInfo(selectedNetwork);
-        });
+        assert mJsonRpcService != null && mWalletModel != null;
+        mJsonRpcService.getNetwork(
+                mAccountInfo.accountId.coin, mWalletModel.getActiveOrigin(), selectedNetwork -> {
+                    setUpAssetList(selectedNetwork);
+                    fetchAccountInfo(selectedNetwork);
+                });
     }
 
     @Override
     public void onAssetClick(BlockchainToken asset) {
-        assert mJsonRpcService != null;
-        mJsonRpcService.getDefaultChainId(mAccountInfo.accountId.coin,
-                chainId -> { Utils.openAssetDetailsActivity(this, asset); });
+        Utils.openAssetDetailsActivity(
+                AccountDetailActivity.this, asset.chainId, asset);
     }
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(
-                txInfo, mJsonRpcService, this, mAccountInfo.name, mAccountInfo.accountId.coin);
+        if (mWalletModel == null) return;
+        NetworkInfo txNetwork = mWalletModel.getNetworkModel().getNetwork(txInfo.chainId);
+        Utils.openTransaction(txInfo, this, mAccountInfo.name, txNetwork.coin, txNetwork);
     }
 
     @Override

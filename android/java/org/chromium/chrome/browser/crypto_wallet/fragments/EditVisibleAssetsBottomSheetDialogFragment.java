@@ -609,15 +609,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
         JsonRpcService jsonRpcService = getJsonRpcService();
         if (jsonRpcService == null) return;
-        jsonRpcService.getNetwork(
-                walletListItemModel.getBlockchainToken().coin, null, selectedNetwork -> {
-                    TokenUtils.isCustomToken(getBlockchainRegistry(), selectedNetwork,
-                            selectedNetwork.coin, walletListItemModel.getBlockchainToken(),
-                            isCustom -> {
-                                if (!isCustom) return;
+        TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),
+                walletListItemModel.getAssetNetwork().coin,
+                walletListItemModel.getBlockchainToken(), isCustom -> {
+                    if (!isCustom) return;
 
-                                trashButton.setVisibility(View.VISIBLE);
-                            });
+                    trashButton.setVisibility(View.VISIBLE);
                 });
     }
 

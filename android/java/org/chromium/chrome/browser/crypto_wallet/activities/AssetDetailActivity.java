@@ -479,7 +479,9 @@ public class AssetDetailActivity
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(txInfo, mJsonRpcService, this, mAccountInfos, mCoinType);
+        if (mWalletModel == null) return;
+        NetworkInfo txNetwork = mWalletModel.getNetworkModel().getNetwork(txInfo.chainId);
+        Utils.openTransaction(txInfo, this, mAccountInfos, mCoinType, txNetwork);
     }
 
     @Override

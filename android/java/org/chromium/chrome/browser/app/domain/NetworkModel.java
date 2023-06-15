@@ -24,7 +24,9 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
+import org.chromium.chrome.browser.crypto_wallet.observers.BraveWalletServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
@@ -61,6 +63,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<List<NetworkInfo>> _mPrimaryNetworks;
     private final MediatorLiveData<List<NetworkInfo>> _mSecondaryNetworks;
     private Map<String, NetworkSelectorModel> mNetworkSelectorMap;
+    private OriginInfo mOriginInfo;
     public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
     public final LiveData<Triple<String, NetworkInfo, List<NetworkInfo>>> mChainNetworkAllNetwork;
@@ -71,6 +74,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<NetworkInfo> mDefaultNetwork;
     public final LiveData<List<NetworkInfo>> mPrimaryNetworks;
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
+    private Origin mOrigin;
 
     public NetworkModel(JsonRpcService jsonRpcService, CryptoSharedData sharedData,
             CryptoSharedActions cryptoSharedActions, Context context) {
@@ -122,11 +126,12 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
         });
         _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> {
-            mJsonRpcService.getDefaultChainId(coinType, chainId -> {
+            mJsonRpcService.getNetwork(coinType, mOrigin, networkInfo -> {
+                String chainId = networkInfo.chainId;
                 String id = BraveWalletConstants.MAINNET_CHAIN_ID;
                 if (TextUtils.isEmpty(chainId)) {
                     mJsonRpcService.setNetwork(
-                            id, mSharedData.getCoinType(), null, hasSetNetwork -> {});
+                            id, mSharedData.getCoinType(), mOrigin, hasSetNetwork -> {});
                 } else {
                     id = chainId;
                 }
@@ -293,7 +298,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         boolean hasAccountOfNetworkType = hasAccountOfNetworkType(networkToBeSetAsSelected);
         if (hasAccountOfNetworkType) {
             mJsonRpcService.setNetwork(networkToBeSetAsSelected.chainId,
-                    networkToBeSetAsSelected.coin, null, isSelected -> {
+                    networkToBeSetAsSelected.coin, mOrigin, isSelected -> {
                         callback.call(isSelected);
                         mCryptoActions.updateCoinType();
                         init();
@@ -312,7 +317,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public void setNetwork(
             NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
         mJsonRpcService.setNetwork(networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin,
-                null, isSelected -> {
+                mOrigin, isSelected -> {
                     callback.call(isSelected);
                     mCryptoActions.updateCoinType();
                     init();
@@ -320,7 +325,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     public void getNetwork(@CoinType.EnumType int coin, Callbacks.Callback1<NetworkInfo> callback) {
-        mJsonRpcService.getNetwork(coin, null, networkInfo -> { callback.call(networkInfo); });
+        mJsonRpcService.getNetwork(coin, mOrigin, networkInfo -> { callback.call(networkInfo); });
     }
 
     public void clearCreateAccountState() {
@@ -349,6 +354,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
         }
         return null;
+    }
+
+    void setOrigin(Origin origin) {
+        mOrigin = origin;
     }
 
     private List<NetworkInfo> stripDebugNetwork(Context context, List<NetworkInfo> networkInfos) {
