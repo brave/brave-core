@@ -12,67 +12,21 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
-#include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_ads {
 
 namespace {
-
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
-
-constexpr base::TimeDelta kNextTokenRedemptionAfter = base::Days(1);
-constexpr base::TimeDelta kDebugNextTokenRedemptionAfter = base::Minutes(2);
-constexpr base::TimeDelta kMinimumDelayBeforeRedeemingTokens = base::Minutes(1);
-
-void SetNextTokenRedemptionAt(const base::Time next_token_redemption_at) {
-  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
-                                              next_token_redemption_at);
-}
-
-base::Time NextTokenRedemptionAt() {
-  return AdsClientHelper::GetInstance()->GetTimePref(
-      prefs::kNextTokenRedemptionAt);
-}
-
-bool HasPreviouslyRedeemedTokens() {
-  return !NextTokenRedemptionAt().is_null();
-}
-
-bool ShouldHaveRedeemedTokensInThePast() {
-  return NextTokenRedemptionAt() < base::Time::Now();
-}
-
-base::Time CalculateNextTokenRedemptionAt() {
-  return base::Time::Now() +
-         (ShouldDebug() ? kDebugNextTokenRedemptionAfter
-                        : privacy::RandTimeDelta(kNextTokenRedemptionAfter));
-}
-
-base::TimeDelta CalculateNextTokenRedemptionDelay() {
-  const base::Time now = base::Time::Now();
-
-  if (!HasPreviouslyRedeemedTokens()) {
-    return CalculateNextTokenRedemptionAt() - now;
-  }
-
-  if (ShouldHaveRedeemedTokensInThePast()) {
-    return kMinimumDelayBeforeRedeemingTokens;
-  }
-
-  return NextTokenRedemptionAt() - now;
-}
-
 }  // namespace
 
 RedeemUnblindedPaymentTokens::RedeemUnblindedPaymentTokens() = default;
@@ -92,7 +46,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
   wallet_ = wallet;
 
   const base::Time redeem_at =
-      timer_.Start(FROM_HERE, CalculateNextTokenRedemptionDelay(),
+      timer_.Start(FROM_HERE, CalculateDelayBeforeRedeemingTokens(),
                    base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
                                   base::Unretained(this)));
 

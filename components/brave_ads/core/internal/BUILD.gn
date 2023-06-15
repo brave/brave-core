@@ -73,6 +73,8 @@ source_set("internal") {
     "account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder_util.h",
     "account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.cc",
     "account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h",
+    "account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_util.cc",
+    "account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_util.h",
     "account/confirmations/refill_unblinded_tokens/get_signed_tokens_url_request_builder.cc",
     "account/confirmations/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h",
     "account/confirmations/refill_unblinded_tokens/get_signed_tokens_url_request_builder_util.cc",
