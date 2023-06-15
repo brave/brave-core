@@ -6,16 +6,14 @@
 #include "brave/components/brave_federated/config_utils.h"
 
 #include "base/json/json_reader.h"
-#include "base/json/json_value_converter.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_federated/task/model.h"
 
 namespace brave_federated {
 
 namespace {
-const char kReconnectPolicy[] = "reconnect_policy";
-const char kRequestTaskPolicy[] = "request_task_policy";
-const char kPostResultsPolicy[] = "post_results_policy";
+constexpr char kReconnectPolicy[] = "reconnect_policy";
+constexpr char kRequestTaskPolicy[] = "request_task_policy";
+constexpr char kPostResultsPolicy[] = "post_results_policy";
 }  // namespace
 
 LearningServiceConfig::LearningServiceConfig() {

@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 #include "sql/database.h"

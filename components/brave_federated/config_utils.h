@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/files/file_util.h"
+#include "base/json/json_value_converter.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "net/base/backoff_entry.h"
@@ -65,9 +66,9 @@ class LearningServiceConfig {
   ModelSpec GetModelSpec();
 
  private:
-  net::BackoffEntry::Policy reconnect_policy_;
-  net::BackoffEntry::Policy request_task_policy_;
-  net::BackoffEntry::Policy post_results_policy_;
+  net::BackoffEntry::Policy reconnect_policy_ = {};
+  net::BackoffEntry::Policy request_task_policy_ = {};
+  net::BackoffEntry::Policy post_results_policy_ = {};
   ModelSpec model_spec_;
 };
 

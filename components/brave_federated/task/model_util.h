@@ -10,8 +10,8 @@
 
 namespace brave_federated {
 
-float ComputeNLL(std::vector<float> true_labels,
-                 std::vector<float> predictions);
+float ComputeNegativeLogLikelihood(const std::vector<float>& true_labels,
+                                   const std::vector<float>& predictions);
 float SigmoidActivation(float z);
 
 }  // namespace brave_federated

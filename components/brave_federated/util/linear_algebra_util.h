@@ -20,23 +20,18 @@ using Matrix = std::vector<Vector>;
 
 class LinearAlgebraUtil {
  public:
+  static Vector AddVectorScalar(Vector v, float a);
+  static Vector AddVectors(Vector v1, Vector v2);
   static Vector SubtractVector(Vector v1, Vector v2);
 
-  static Vector MultiplyMatrixVector(Matrix mat, Vector v);
-
-  static Vector AddVectorScalar(Vector v, float a);
-
-  static Vector AddVectors(Vector v1, Vector v2);
-
   static Vector MultiplyVectorScalar(Vector v, float a);
+  static Vector MultiplyMatrixVector(Matrix mat, Vector v);
 
   static Matrix TransposeMatrix(Matrix mat);
 
  private:
   static Vector MatrixXfToVector(const Eigen::MatrixXf& v);
-
   static Matrix MatrixXfToMatrix(const Eigen::MatrixXf& mat);
-
   static Eigen::MatrixXf MatrixToMatrixXf(Matrix mat);
 };
 

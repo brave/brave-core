@@ -12,15 +12,12 @@
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "base/timer/timer.h"
 #include "brave/components/brave_federated/communication_adapter.h"
-#include "brave/components/brave_federated/config_utils.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/resources/grit/brave_federated_resources.h"
 #include "brave/components/brave_federated/task/federated_task_handler.h"
 #include "brave/components/brave_federated/task/model.h"
-#include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -142,7 +139,7 @@ void LearningService::GetTasks() {
 }
 
 void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
-  if (tasks.size() == 0) {
+  if (tasks.empty()) {
     reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
     reconnect_timer_->Start(FROM_HERE, base::Seconds(reconnect), this,
                             &LearningService::GetTasks);
@@ -158,7 +155,6 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
     lr = cursor->second;
     VLOG(2) << "Learning rate applied from server: " << lr;
   }
-
   model_spec_->learning_rate = lr;
 
   if (static_cast<int>(task.GetParameters().at(0).size()) !=

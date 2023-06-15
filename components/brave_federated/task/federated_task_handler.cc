@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_federated/task/federated_task_handler.h"
 
-#include <list>
 #include <map>
 #include <utility>
 
@@ -13,7 +12,6 @@
 #include "base/logging.h"
 
 #include "brave/components/brave_federated/task/model.h"
-#include "brave/components/brave_federated/task/typing.h"
 
 namespace brave_federated {
 
@@ -27,7 +25,7 @@ FederatedTaskHandler::~FederatedTaskHandler() = default;
 
 absl::optional<TaskResult> FederatedTaskHandler::Run() {
   PerformanceReport report(0, 0, 0, {}, {});
-  if (task_.GetType() == TaskType::Training) {
+  if (task_.GetType() == TaskType::kTraining) {
     if (training_data_.empty()) {
       VLOG(1) << "Training data empty";
       return absl::nullopt;
@@ -39,7 +37,7 @@ absl::optional<TaskResult> FederatedTaskHandler::Run() {
     }
 
     report = model_->Train(training_data_);
-  } else if (task_.GetType() == TaskType::Evaluation) {
+  } else if (task_.GetType() == TaskType::kEvaluation) {
     if (test_data_.empty()) {
       VLOG(1) << "Test data empty";
       return absl::nullopt;
@@ -63,15 +61,6 @@ void FederatedTaskHandler::SetTrainingData(const DataSet& training_data) {
 
 void FederatedTaskHandler::SetTestData(const DataSet& test_data) {
   test_data_ = test_data;
-}
-
-void FederatedTaskHandler::SetWeights(const ModelWeights& weights) {
-  model_->SetWeights(std::get<0>(weights));
-  model_->SetBias(std::get<1>(weights));
-}
-
-ModelWeights FederatedTaskHandler::GetWeights() const {
-  return std::make_tuple(model_->GetWeights(), model_->GetBias());
 }
 
 }  // namespace brave_federated
