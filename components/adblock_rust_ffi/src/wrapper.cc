@@ -41,6 +41,8 @@ FilterListMetadata::FilterListMetadata(C_FilterListMetadata* metadata) {
     title = absl::make_optional(std::string(str_buffer));
     c_char_buffer_destroy(str_buffer);
   }
+
+  expires = filter_list_metadata_expires(metadata);
 }
 
 FilterListMetadata::FilterListMetadata(const std::string& list)

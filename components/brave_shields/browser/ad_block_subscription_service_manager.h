@@ -27,6 +27,10 @@
 
 class PrefService;
 
+namespace adblock {
+extern const uint16_t kSubscriptionDefaultExpiresHours;
+}  // namespace adblock
+
 namespace base {
 template <typename StructType>
 class JSONValueConverter;
@@ -64,6 +68,7 @@ struct SubscriptionInfo {
 
   absl::optional<std::string> homepage;
   absl::optional<std::string> title;
+  uint16_t expires = adblock::kSubscriptionDefaultExpiresHours;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<SubscriptionInfo>*);

@@ -47,6 +47,9 @@ const std::string ADBLOCK_EXPORT
 ConvertRulesToContentBlockingRules(const std::string& rules, bool* truncated);
 #endif
 
+const ADBLOCK_EXPORT uint16_t kSubscriptionDefaultExpiresHours =
+    C_SUBSCRIPTION_DEFAULT_EXPIRES_HOURS;
+
 typedef ADBLOCK_EXPORT struct FilterListMetadata {
   FilterListMetadata();
   explicit FilterListMetadata(C_FilterListMetadata* metadata);
@@ -56,6 +59,8 @@ typedef ADBLOCK_EXPORT struct FilterListMetadata {
 
   absl::optional<std::string> homepage;
   absl::optional<std::string> title;
+  // Normalized to a value in hours
+  uint16_t expires = kSubscriptionDefaultExpiresHours;
 
   FilterListMetadata(FilterListMetadata&&);
 

@@ -343,6 +343,23 @@ pub unsafe extern "C" fn filter_list_metadata_title(
     }
 }
 
+#[no_mangle]
+pub const SUBSCRIPTION_DEFAULT_EXPIRES_HOURS: u16 = 7 * 24;
+
+/// Returns the amount of time this filter list should be considered valid for,
+/// in hours. Defaults to 168 (i.e. 7 days) if unspecified by the
+/// `FilterListMetadata`.
+#[no_mangle]
+pub unsafe extern "C" fn filter_list_metadata_expires(metadata: *const FilterListMetadata) -> u16 {
+    use adblock::lists::ExpiresInterval;
+
+    match (*metadata).expires.as_ref() {
+        Some(ExpiresInterval::Days(d)) => 24 * *d as u16,
+        Some(ExpiresInterval::Hours(h)) => *h,
+        None => SUBSCRIPTION_DEFAULT_EXPIRES_HOURS,
+    }
+}
+
 /// Destroy a `FilterListMetadata` once you are done with it.
 #[no_mangle]
 pub unsafe extern "C" fn filter_list_metadata_destroy(metadata: *mut FilterListMetadata) {
@@ -351,6 +368,8 @@ pub unsafe extern "C" fn filter_list_metadata_destroy(metadata: *mut FilterListM
     }
 }
 
+/// Get EngineDebugInfo from the engine. Should be destoyed later by calling
+/// engine_debug_info_destroy(..).
 #[no_mangle]
 pub unsafe extern "C" fn get_engine_debug_info(engine: *mut Engine) -> *mut EngineDebugInfo {
     assert!(!engine.is_null());
@@ -358,6 +377,7 @@ pub unsafe extern "C" fn get_engine_debug_info(engine: *mut Engine) -> *mut Engi
     Box::into_raw(Box::new(engine.get_debug_info()))
 }
 
+/// Returns the field of EngineDebugInfo structure.
 #[no_mangle]
 pub unsafe extern "C" fn engine_debug_info_get_attr(
     debug_info: *mut EngineDebugInfo,
@@ -371,6 +391,11 @@ pub unsafe extern "C" fn engine_debug_info_get_attr(
     *regex_data_size = info.blocker_debug_info.regex_data.len();
 }
 
+/// Returns the fields of EngineDebugInfo->regex_data[index].
+///
+/// |regex| stay untouched if it ==None in the original structure.
+///
+/// |index| must be in range [0, regex_data.len() - 1].
 #[no_mangle]
 pub unsafe extern "C" fn engine_debug_info_get_regex_entry(
     debug_info: *mut EngineDebugInfo,
@@ -394,6 +419,7 @@ pub unsafe extern "C" fn engine_debug_info_get_regex_entry(
     *usage_count = entry.usage_count;
 }
 
+/// Destroy a `EngineDebugInfo` once you are done with it.
 #[no_mangle]
 pub unsafe extern "C" fn engine_debug_info_destroy(debug_info: *mut EngineDebugInfo) {
     if !debug_info.is_null() {
@@ -408,6 +434,12 @@ pub unsafe extern "C" fn discard_regex(engine: *mut Engine, regex_id: u64) {
     engine.discard_regex(regex_id);
 }
 
+/// Setup discard policy for adblock regexps.
+///
+/// |cleanup_interval_sec| how ofter the engine should check the policy.
+///
+/// |discard_unused_sec| time in sec after unused regex will be discarded. Zero
+/// means disable discarding completely.
 #[no_mangle]
 pub unsafe extern "C" fn setup_discard_policy(
     engine: *mut Engine,

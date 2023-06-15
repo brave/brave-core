@@ -11,10 +11,14 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define C_SUBSCRIPTION_DEFAULT_EXPIRES_HOURS (7 * 24)
+
 /**
  * Main adblocking engine that allows efficient querying of resources to block.
  */
 typedef struct C_Engine C_Engine;
+
+typedef struct C_EngineDebugInfo C_EngineDebugInfo;
 
 /**
  * Includes information about any "special comments" as described by
@@ -56,15 +60,15 @@ struct C_Engine* engine_create_from_buffer_with_metadata(
     struct C_FilterListMetadata** metadata);
 
 /**
- * Create a new `Engine`, interpreting `rules` as a null-terminated C string and
- * then parsing as a filter list in ABP syntax.
+ * Create a new `Engine`, interpreting `rules` as a null-terminated C string
+ * and then parsing as a filter list in ABP syntax.
  */
 struct C_Engine* engine_create(const char* rules);
 
 /**
- * Create a new `Engine`, interpreting `rules` as a null-terminated C string and
- * then parsing as a filter list in ABP syntax. Also populates metadata from the
- * filter list into `metadata`.
+ * Create a new `Engine`, interpreting `rules` as a null-terminated C string
+ * and then parsing as a filter list in ABP syntax. Also populates metadata
+ * from the filter list into `metadata`.
  */
 struct C_Engine* engine_create_with_metadata(
     const char* rules,
@@ -156,11 +160,19 @@ bool filter_list_metadata_homepage(const struct C_FilterListMetadata* metadata,
                                    char** homepage);
 
 /**
- * Puts a pointer to the title of the `FilterListMetadata` into `title`. Returns
- * `true` if a title was returned.
+ * Puts a pointer to the title of the `FilterListMetadata` into `title`.
+ * Returns `true` if a title was returned.
  */
 bool filter_list_metadata_title(const struct C_FilterListMetadata* metadata,
                                 char** title);
+
+/**
+ * Returns the amount of time this filter list should be considered valid for,
+ * in hours. Defaults to 168 (i.e. 7 days) if unspecified by the
+ * `FilterListMetadata`.
+ */
+uint16_t filter_list_metadata_expires(
+    const struct C_FilterListMetadata* metadata);
 
 /**
  * Destroy a `FilterListMetadata` once you are done with it.
@@ -168,53 +180,55 @@ bool filter_list_metadata_title(const struct C_FilterListMetadata* metadata,
 void filter_list_metadata_destroy(struct C_FilterListMetadata* metadata);
 
 /**
- * Destroy a `*c_char` once you are done with it.
- */
-void c_char_buffer_destroy(char* s);
-
-/**
- * A structure to hold debug information of engine. Matches to rust
- * EngineDebugInfo.
- */
-typedef struct C_Engine_Debug_Info C_Engine_Debug_Info;
-
-/**
  * Get EngineDebugInfo from the engine. Should be destoyed later by calling
  * engine_debug_info_destroy(..).
  */
-C_Engine_Debug_Info* get_engine_debug_info(struct C_Engine* engine);
+struct C_EngineDebugInfo* get_engine_debug_info(struct C_Engine* engine);
 
-// Returns the field of EngineDebugInfo structure.
-void engine_debug_info_get_attr(struct C_Engine_Debug_Info* debug_info,
+/**
+ * Returns the field of EngineDebugInfo structure.
+ */
+void engine_debug_info_get_attr(struct C_EngineDebugInfo* debug_info,
                                 size_t* compiled_regex_count,
                                 size_t* regex_data_size);
 
-// Returns the fields of EngineDebugInfo->regex_data[index].
-// |regex| stay untouched if it ==None in the original structure.
-// |index| must be in range [0, regex_data.len() - 1].
-void engine_debug_info_get_regex_entry(struct C_Engine_Debug_Info* debug_info,
+/**
+ * Returns the fields of EngineDebugInfo->regex_data[index].
+ *
+ * |regex| stay untouched if it ==None in the original structure.
+ *
+ * |index| must be in range [0, regex_data.len() - 1].
+ */
+void engine_debug_info_get_regex_entry(struct C_EngineDebugInfo* debug_info,
                                        size_t index,
                                        uint64_t* id,
                                        char** regex,
                                        uint64_t* unused_sec,
-                                       size_t* usage_count);
+                                       uintptr_t* usage_count);
 
 /**
  * Destroy a `EngineDebugInfo` once you are done with it.
  */
-void engine_debug_info_destroy(struct C_Engine_Debug_Info* debug_info);
+void engine_debug_info_destroy(struct C_EngineDebugInfo* debug_info);
 
 void discard_regex(struct C_Engine* engine, uint64_t regex_id);
 
 /**
  * Setup discard policy for adblock regexps.
+ *
  * |cleanup_interval_sec| how ofter the engine should check the policy.
+ *
  * |discard_unused_sec| time in sec after unused regex will be discarded. Zero
  * means disable discarding completely.
  */
 void setup_discard_policy(struct C_Engine* engine,
                           uint64_t cleanup_interval_sec,
                           uint64_t discard_unused_sec);
+
+/**
+ * Destroy a `*c_char` once you are done with it.
+ */
+void c_char_buffer_destroy(char* s);
 
 /**
  * Returns a set of cosmetic filtering resources specific to the given url, in
@@ -237,6 +251,11 @@ char* engine_hidden_class_id_selectors(struct C_Engine* engine,
                                        size_t exceptions_size);
 
 #if BUILDFLAG(IS_IOS)
+/**
+ * Converts a list in adblock syntax to its corresponding iOS content-blocking
+ * syntax. `truncated` will be set to indicate whether or not some rules had to
+ * be removed to avoid iOS's maximum rule count limit.
+ */
 char* convert_rules_to_content_blocking(const char* rules, bool* truncated);
 #endif
 
