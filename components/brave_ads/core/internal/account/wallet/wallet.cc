@@ -33,6 +33,16 @@ bool Wallet::Set(const std::string& payment_id,
   return true;
 }
 
+bool Wallet::SetFrom(const WalletInfo& wallet) {
+  if (!wallet.IsValid()) {
+    return false;
+  }
+
+  wallet_ = wallet;
+
+  return true;
+}
+
 const WalletInfo& Wallet::Get() const {
   return wallet_;
 }

@@ -59,6 +59,8 @@ class Account final : public AdsClientNotifierObserver,
 
   void SetWallet(const std::string& payment_id,
                  const std::string& recovery_seed);
+  // Temporary fix until we have a more robust solution in 1.54.x.
+  void SetWalletFrom(const WalletInfo& wallet_info);
   const WalletInfo& GetWallet() const;
 
   void Process();
@@ -71,6 +73,8 @@ class Account final : public AdsClientNotifierObserver,
   static void GetStatement(GetStatementOfAccountsCallback callback);
 
  private:
+  void NotifyWalletWasSet(const WalletInfo& last_wallet_copy);
+
   void Initialize();
 
   void MaybeGetIssuers() const;

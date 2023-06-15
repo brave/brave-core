@@ -83,25 +83,18 @@ void Account::SetWallet(const std::string& payment_id,
     return NotifyInvalidWallet();
   }
 
-  const WalletInfo& wallet = GetWallet();
+  NotifyWalletWasSet(last_wallet_copy);
+}
 
-  if (wallet.WasUpdated(last_wallet_copy)) {
-    WalletDidUpdate(wallet);
+void Account::SetWalletFrom(const WalletInfo& wallet_info) {
+  const WalletInfo last_wallet_copy = GetWallet();
+
+  if (!wallet_.SetFrom(wallet_info)) {
+    BLOG(0, "Failed to set wallet");
+    return NotifyInvalidWallet();
   }
 
-  if (wallet.HasChanged(last_wallet_copy)) {
-    return WalletDidChange(wallet);
-  }
-
-  if (wallet.WasCreated(last_wallet_copy)) {
-    WalletWasCreated(wallet);
-
-    if (!HasIssuers()) {
-      return MaybeGetIssuers();
-    }
-  }
-
-  TopUpUnblindedTokens();
+  NotifyWalletWasSet(last_wallet_copy);
 }
 
 const WalletInfo& Account::GetWallet() const {
@@ -149,6 +142,28 @@ void Account::GetStatement(GetStatementOfAccountsCallback callback) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Account::NotifyWalletWasSet(const WalletInfo& last_wallet_copy) {
+  const WalletInfo& wallet = GetWallet();
+
+  if (wallet.WasUpdated(last_wallet_copy)) {
+    WalletDidUpdate(wallet);
+  }
+
+  if (wallet.HasChanged(last_wallet_copy)) {
+    return WalletDidChange(wallet);
+  }
+
+  if (wallet.WasCreated(last_wallet_copy)) {
+    WalletWasCreated(wallet);
+
+    if (!HasIssuers()) {
+      return MaybeGetIssuers();
+    }
+  }
+
+  TopUpUnblindedTokens();
+}
 
 void Account::Initialize() {
   confirmations_ = std::make_unique<Confirmations>(token_generator_);

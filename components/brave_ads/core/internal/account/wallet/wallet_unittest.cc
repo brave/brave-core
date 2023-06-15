@@ -35,4 +35,26 @@ TEST(BraveAdsWalletTest, SetWallet) {
   EXPECT_EQ(expected_wallet, wallet.Get());
 }
 
+TEST(BraveAdsWalletTest, SetFromAnotherWallet) {
+  // Arrange
+  Wallet another_wallet;
+  const absl::optional<std::vector<uint8_t>> raw_recovery_seed =
+      base::Base64Decode(kWalletRecoverySeed);
+  ASSERT_TRUE(raw_recovery_seed);
+  const bool success = another_wallet.Set(kWalletPaymentId, *raw_recovery_seed);
+  ASSERT_TRUE(success);
+
+  // Act
+  Wallet wallet;
+  wallet.SetFrom(another_wallet.Get());
+
+  // Assert
+  WalletInfo expected_wallet;
+  expected_wallet.payment_id = kWalletPaymentId;
+  expected_wallet.public_key = kWalletPublicKey;
+  expected_wallet.secret_key = kWalletSecretKey;
+
+  EXPECT_EQ(expected_wallet, wallet.Get());
+}
+
 }  // namespace brave_ads

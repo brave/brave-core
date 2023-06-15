@@ -17,6 +17,8 @@
 #include "brave/components/brave_ads/core/history_sort_types.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
@@ -201,6 +203,9 @@ class AdsImpl final : public Ads,
   Reminder reminder_;
 
   UserReactions user_reactions_;
+
+  // Temporary fix until we have a more robust solution in 1.54.x.
+  Wallet initial_wallet_;
 
   base::WeakPtrFactory<AdsImpl> weak_factory_{this};
 };

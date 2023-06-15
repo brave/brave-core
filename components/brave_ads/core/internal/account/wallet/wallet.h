@@ -18,6 +18,10 @@ class Wallet final {
  public:
   bool Set(const std::string& payment_id,
            const std::vector<uint8_t>& recovery_seed);
+
+  // Temporary fix until we have a more robust solution in 1.54.x.
+  bool SetFrom(const WalletInfo& wallet);
+
   const WalletInfo& Get() const;
 
  private:
