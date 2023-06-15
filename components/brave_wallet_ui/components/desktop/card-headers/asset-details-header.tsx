@@ -9,11 +9,9 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // Selectors
 import {
   useUnsafePageSelector,
-  useSafePageSelector,
-  useUnsafeWalletSelector
+  useSafePageSelector
 } from '../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../page/selectors'
-import { WalletSelectors } from '../../../common/selectors'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -23,6 +21,7 @@ import { getTokenPriceFromRegistry } from '../../../utils/pricing-utils'
 
 // Queries
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery
@@ -87,12 +86,12 @@ export const AssetDetailsHeader = (props: Props) => {
   const selectedAsset =
     useUnsafePageSelector(PageSelectors.selectedAsset)
   const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
-  const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
   // queries
   const { data: assetsNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken
   )
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { data: selectedNetwork } = useGetSelectedChainQuery(undefined, {
     skip: !!assetsNetwork
@@ -207,7 +206,7 @@ export const AssetDetailsHeader = (props: Props) => {
             {
               selectedAssetFiatPrice
                 ? new Amount(selectedAssetFiatPrice.price)
-                  .formatAsFiat(defaultCurrencies.fiat)
+                  .formatAsFiat(defaultFiatCurrency)
                 : '0.00'
             }
           </PriceText>

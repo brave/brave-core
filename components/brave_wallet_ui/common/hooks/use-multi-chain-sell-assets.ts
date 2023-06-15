@@ -15,20 +15,19 @@ import Amount from '../../utils/amount'
 
 // Types
 import { BraveWallet } from '../../constants/types'
-import { WalletSelectors } from '../selectors'
 
 // Hooks
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
-import { useUnsafeWalletSelector } from './use-safe-selector'
-import { useGetOffRampNetworksQuery } from '../slices/api.slice'
+import {
+  useGetDefaultFiatCurrencyQuery,
+  useGetOffRampNetworksQuery
+} from '../slices/api.slice'
 
 export const useMultiChainSellAssets = () => {
-  // Redux
-  const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
-
   // Queries
   const { data: offRampNetworks = [] } = useGetOffRampNetworksQuery()
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   // Hooks
   const isMounted = useIsMounted()
@@ -78,42 +77,52 @@ export const useMultiChainSellAssets = () => {
       }).catch(e => console.error(e))
   }, [getAllSellAssets, offRampNetworks, isMounted])
 
-  const openSellAssetLink = React.useCallback(({ sellAddress, sellAsset }: {
-    sellAddress: string
-    sellAsset: BraveWallet.BlockchainToken | undefined
-  }) => {
-    if (!sellAsset) {
-      return
-    }
+  const openSellAssetLink = React.useCallback(
+    ({
+      sellAddress,
+      sellAsset
+    }: {
+      sellAddress: string
+      sellAsset: BraveWallet.BlockchainToken | undefined
+    }) => {
+      if (!sellAsset || !defaultFiatCurrency) {
+        return
+      }
 
-    const asset = {
-      ...sellAsset,
-      symbol: getRampAssetSymbol(sellAsset, true)
-    }
+      const asset = {
+        ...sellAsset,
+        symbol: getRampAssetSymbol(sellAsset, true)
+      }
 
-    getSellAssetUrl({
-      asset: asset,
-      offRampProvider: BraveWallet.OffRampProvider.kRamp,
-      chainId: sellAsset.chainId,
-      address: sellAddress,
-      amount: sellAsset.coin === BraveWallet.CoinType.SOL
-        ? new Amount(sellAmount).multiplyByDecimals(sellAsset?.decimals ?? 18).toNumber().toString()
-        : new Amount(sellAmount).multiplyByDecimals(sellAsset?.decimals ?? 18).toHex(),
-      currencyCode: defaultCurrencies.fiat
-    })
-      .then(url => {
-        chrome.tabs.create({ url }, () => {
-          if (chrome.runtime.lastError) {
-            console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-          }
-        })
+      getSellAssetUrl({
+        asset: asset,
+        offRampProvider: BraveWallet.OffRampProvider.kRamp,
+        chainId: sellAsset.chainId,
+        address: sellAddress,
+        amount:
+          sellAsset.coin === BraveWallet.CoinType.SOL
+            ? new Amount(sellAmount)
+                .multiplyByDecimals(sellAsset?.decimals ?? 18)
+                .toNumber()
+                .toString()
+            : new Amount(sellAmount)
+                .multiplyByDecimals(sellAsset?.decimals ?? 18)
+                .toHex(),
+        currencyCode: defaultFiatCurrency
       })
-      .catch(e => console.error(e))
-  }, [
-    getSellAssetUrl,
-    defaultCurrencies.fiat,
-    sellAmount
-  ])
+        .then((url) => {
+          chrome.tabs.create({ url }, () => {
+            if (chrome.runtime.lastError) {
+              console.error(
+                'tabs.create failed: ' + chrome.runtime.lastError.message
+              )
+            }
+          })
+        })
+        .catch((e) => console.error(e))
+    },
+    [getSellAssetUrl, defaultFiatCurrency, sellAmount]
+  )
 
   const checkIsAssetSellSupported = React.useCallback((token: BraveWallet.BlockchainToken) => {
     return options.allAssetOptions.some(

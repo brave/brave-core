@@ -7,7 +7,11 @@ import { create } from 'ethereum-blockies'
 import { useHistory } from 'react-router'
 
 // Types
-import { BraveWallet, DefaultCurrencies, WalletRoutes } from '../../../constants/types'
+import {
+  BraveWallet,
+  DefaultCurrencies,
+  WalletRoutes
+} from '../../../constants/types'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
@@ -154,7 +158,9 @@ export const PortfolioAccountItem = (props: Props) => {
                 {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
               </FiatBalanceText>
             }
-            <AssetBalanceText>{`${formattedAssetBalance} ${asset.symbol}`}</AssetBalanceText>
+            <AssetBalanceText>
+              {`${formattedAssetBalance} ${asset.symbol}`}
+            </AssetBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>
         <SellButtonRow>

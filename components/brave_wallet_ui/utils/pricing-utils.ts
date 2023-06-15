@@ -64,7 +64,8 @@ export const computeFiatAmount = ({ spotPriceRegistry, value, token }: {
     .times(price.price)
 }
 
-export const computeFiatAmountToAssetValue = ({ spotPriceRegistry, value, token }: {
+export const computeFiatAmountToAssetValue = (
+  { spotPriceRegistry, value, token }: {
   spotPriceRegistry?: SpotPriceRegistry,
   value: string,
   token: Pick<

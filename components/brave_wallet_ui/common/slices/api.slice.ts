@@ -537,11 +537,12 @@ export function createWalletApi () {
                   params,
                   maxConcurrentPriceRequests,
                   async function (param: string) {
-                    const { success, values } = await assetRatioService.getPrice(
-                      [param],
-                      [defaultFiatCurrency],
-                      timeframe ?? BraveWallet.AssetPriceTimeframe.Live
-                    )
+                    const { success, values } =
+                      await assetRatioService.getPrice(
+                        [param],
+                        [defaultFiatCurrency],
+                        timeframe ?? BraveWallet.AssetPriceTimeframe.Live
+                      )
 
                     if (success) {
                       return values

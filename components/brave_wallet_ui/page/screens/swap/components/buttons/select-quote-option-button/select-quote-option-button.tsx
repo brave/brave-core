@@ -9,7 +9,9 @@ import * as React from 'react'
 import {
   getLocale
 } from '../../../../../../../common/locale'
-import { getTokenPriceAmountFromRegistry } from '../../../../../../utils/pricing-utils'
+import {
+  getTokenPriceAmountFromRegistry
+} from '../../../../../../utils/pricing-utils'
 
 // Selectors
 import {

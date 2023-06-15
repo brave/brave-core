@@ -31,7 +31,10 @@ export function useZeroEx (params: SwapParams) {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
-  const nativeAsset = useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
+  const nativeAsset = useMemo(() =>
+    makeNetworkAsset(selectedNetwork),
+    [selectedNetwork]
+  )
 
   // State
   const [quote, setQuote] = useState<BraveWallet.SwapResponse | undefined>(undefined)
@@ -359,7 +362,12 @@ export function useZeroEx (params: SwapParams) {
   }, [quote, selectedNetwork?.decimals])
 
   const quoteOptions: QuoteOption[] = useMemo(() => {
-    if (!params.fromToken || !params.toToken || !params.spotPrices || !nativeAsset) {
+    if (
+      !params.fromToken ||
+      !params.toToken ||
+      !params.spotPrices ||
+      !nativeAsset
+    ) {
       return []
     }
 
@@ -397,7 +405,9 @@ export function useZeroEx (params: SwapParams) {
         networkFee: networkFee.isUndefined()
           ? ''
           : networkFee
-            .times(getTokenPriceAmountFromRegistry(params.spotPrices, nativeAsset))
+            .times(
+              getTokenPriceAmountFromRegistry(params.spotPrices, nativeAsset)
+            )
             .formatAsFiat(defaultFiatCurrency),
         braveFee
       }

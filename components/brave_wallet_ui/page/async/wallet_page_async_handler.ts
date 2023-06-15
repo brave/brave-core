@@ -154,7 +154,10 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
       }
     }
   } else {
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, timeFrame: payload.timeFrame }))
+    store.dispatch(WalletPageActions.updatePriceInfo({
+      priceHistory: undefined,
+      timeFrame: payload.timeFrame
+    }))
   }
 })
 

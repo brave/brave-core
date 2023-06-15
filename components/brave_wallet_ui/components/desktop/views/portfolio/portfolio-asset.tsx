@@ -245,7 +245,8 @@ export const PortfolioAsset = (props: Props) => {
     {
       ids: userAssetList
         .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
-        .filter(({ asset }) => !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
+        .filter(({ asset }) =>
+          !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
         .map(({ asset }) => getPriceIdForToken(asset))
         .concat(
           selectedAssetFromParams

@@ -9,7 +9,7 @@ import { TextEncoder, TextDecoder } from 'util'
 global.TextDecoder = TextDecoder
 global.TextEncoder = TextEncoder
 import { renderHook } from '@testing-library/react-hooks'
-import { mockAccount, mockSpotPriceRegistry } from '../constants/mocks'
+import { mockAccount } from '../constants/mocks'
 import useAssets from './assets'
 import { WalletAccountType } from '../../constants/types'
 import * as MockedLib from '../async/__mocks__/lib'

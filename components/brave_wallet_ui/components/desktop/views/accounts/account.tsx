@@ -30,7 +30,9 @@ import {
   getFilecoinKeyringIdFromNetwork
 } from '../../../../utils/network-utils'
 import Amount from '../../../../utils/amount'
-import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
+import {
+  getTokenPriceAmountFromRegistry
+} from '../../../../utils/pricing-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   selectAllUserAssetsFromQueryResult

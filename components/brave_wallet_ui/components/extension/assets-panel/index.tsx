@@ -31,10 +31,14 @@ import {
 import {
   querySubscriptionOptions60s
 } from '../../../common/slices/constants'
-import { makeSelectAllUserAssetsForChainFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
+import {
+  makeSelectAllUserAssetsForChainFromQueryResult
+} from '../../../common/slices/entities/blockchain-token.entity'
 
 // Hooks
-import { useScopedBalanceUpdater } from '../../../common/hooks/use-scoped-balance-updater'
+import {
+  useScopedBalanceUpdater
+} from '../../../common/hooks/use-scoped-balance-updater'
 
 import { PortfolioAssetItem } from '../../desktop'
 

@@ -133,7 +133,8 @@ export const TokenLists = ({
     {
       ids: visibleTokens
         .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
-        .filter(({ asset }) => !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
+        .filter(({ asset }) =>
+          !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
         .map(token => getPriceIdForToken(token.asset))
     },
     querySubscriptionOptions60s

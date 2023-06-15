@@ -29,7 +29,8 @@ export default function useTokenInfo (
     }
 
     const checkedLists = tokensList
-      .find(token => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
+      .find(token =>
+        token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
 
     if (checkedLists) {
       setFoundTokenInfoByContractAddress(checkedLists)

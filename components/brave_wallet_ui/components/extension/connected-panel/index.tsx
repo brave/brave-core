@@ -28,7 +28,10 @@ import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
-import { useGetSelectedChainQuery, useGetTokenSpotPricesQuery } from '../../../common/slices/api.slice'
+import {
+  useGetSelectedChainQuery,
+  useGetTokenSpotPricesQuery
+} from '../../../common/slices/api.slice'
 import {
   querySubscriptionOptions60s
 } from '../../../common/slices/constants'
@@ -220,8 +223,15 @@ export const ConnectedPanel = (props: Props) => {
   }, [selectedAccountAddress])
 
   const selectedAccountFiatBalance = React.useMemo(() => {
-    if (!balances ||
-      !networkAsset || isLoadingBalances || isFetchingBalances || !spotPriceRegistry || isLoadingSpotPrices || isFetchingSpotPrices) {
+    if (
+      !balances ||
+      !networkAsset ||
+      isLoadingBalances ||
+      isFetchingBalances ||
+      !spotPriceRegistry ||
+      isLoadingSpotPrices ||
+      isFetchingSpotPrices
+    ) {
       return Amount.empty()
     }
 

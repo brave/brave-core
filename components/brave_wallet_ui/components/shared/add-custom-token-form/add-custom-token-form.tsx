@@ -102,7 +102,11 @@ export const AddCustomTokenForm = (props: Props) => {
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, combinedTokensList, customAssetsNetwork || selectedNetwork)
+  } = useTokenInfo(
+    getBlockchainTokenInfo,
+    combinedTokensList,
+    customAssetsNetwork || selectedNetwork
+  )
   const {
     onAddCustomAsset
   } = useAssetManagement()

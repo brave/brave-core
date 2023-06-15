@@ -22,7 +22,9 @@ import Amount from '../../../../../../utils/amount'
 import {
   getLocale
 } from '../../../../../../../common/locale'
-import { getTokenPriceAmountFromRegistry } from '../../../../../../utils/pricing-utils'
+import {
+  getTokenPriceAmountFromRegistry
+} from '../../../../../../utils/pricing-utils'
 
 // Styled Components
 import {
@@ -92,8 +94,10 @@ export const QuoteInfo = (props: Props) => {
       //   1 FROM = <R> TO
       //   1 FROM/USD = <R> TO/USD
       //   => <R> = (FROM/USD) / (TO/USD)
-      const coinGeckoRate = getTokenPriceAmountFromRegistry(spotPrices, fromToken)
-        .div(getTokenPriceAmountFromRegistry(spotPrices, toToken))
+      const coinGeckoRate = getTokenPriceAmountFromRegistry(
+        spotPrices,
+        fromToken
+      ).div(getTokenPriceAmountFromRegistry(spotPrices, toToken))
 
       // Quote rate computation:
       //   <X> FROM = <Y> TO

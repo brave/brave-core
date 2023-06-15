@@ -35,7 +35,10 @@ export function useJupiter (params: SwapParams) {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
-  const nativeAsset = useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
+  const nativeAsset = useMemo(() =>
+    makeNetworkAsset(selectedNetwork),
+    [selectedNetwork]
+  )
 
   // State
   const [quote, setQuote] = useState<BraveWallet.JupiterQuote | undefined>(undefined)

@@ -25,10 +25,12 @@ describe('getTokenPriceFromRegistry', () => {
 })
 
 describe('getTokenPriceAmountFromRegistry', () => {
-  it('should get the price (in Amount) of a coin from the spot prices registry', () => {
+  it('should get the price amount from spot prices registry', () => {
     expect(
-      getTokenPriceAmountFromRegistry(mockSpotPriceRegistry, mockBasicAttentionToken)
-        .formatAsFiat()
+      getTokenPriceAmountFromRegistry(
+        mockSpotPriceRegistry,
+        mockBasicAttentionToken
+      ).formatAsFiat()
     ).toBe('0.88')
   })
 })

@@ -127,7 +127,8 @@ export const useSwap = () => {
     {
       ids: [nativeAsset, fromToken, toToken]
         .filter((token) => token !== undefined)
-        .map((token) => getPriceIdForToken(token!))
+        // @ts-expect-error
+        .map(getPriceIdForToken)
     },
     querySubscriptionOptions60s
   )

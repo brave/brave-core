@@ -238,7 +238,8 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
     {
       ids: visibleAssetOptions
         .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
-        .filter(({ asset }) => !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
+        .filter(({ asset }) =>
+          !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
         .map(({ asset }) => getPriceIdForToken(asset))
     },
     querySubscriptionOptions60s
@@ -498,9 +499,14 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
                 token={item.asset}
                 hideBalances={hidePortfolioBalances}
                 spotPrice={
-                  spotPriceRegistry && !isLoadingSpotPrices && !isFetchingSpotPrices
-                    ? getTokenPriceAmountFromRegistry(spotPriceRegistry, item.asset)
-                    : Amount.empty()
+                  spotPriceRegistry &&
+                    !isLoadingSpotPrices &&
+                    !isFetchingSpotPrices
+                      ? getTokenPriceAmountFromRegistry(
+                          spotPriceRegistry,
+                          item.asset
+                        )
+                      : Amount.empty()
                 }
               />
             }
