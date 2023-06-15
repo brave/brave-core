@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
@@ -12,10 +14,15 @@ PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const int weight)
     : created_at(created_at), weight(weight) {}
 
-// TODO(https://github.com/brave/brave-browser/issues/27893):
 bool operator==(const PurchaseIntentSignalHistoryInfo& lhs,
                 const PurchaseIntentSignalHistoryInfo& rhs) {
-  return lhs.created_at == rhs.created_at && lhs.weight == rhs.weight;
+  const auto tie = [](const PurchaseIntentSignalHistoryInfo&
+                          purchase_intent_signal_history) {
+    return std::tie(purchase_intent_signal_history.created_at,
+                    purchase_intent_signal_history.weight);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const PurchaseIntentSignalHistoryInfo& lhs,

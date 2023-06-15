@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 OptedInInfo::OptedInInfo() = default;
@@ -32,10 +34,13 @@ OptedInInfo& OptedInInfo::operator=(OptedInInfo&& other) noexcept = default;
 OptedInInfo::~OptedInInfo() = default;
 
 bool operator==(const OptedInInfo& lhs, const OptedInInfo& rhs) {
-  return lhs.token == rhs.token && lhs.blinded_token == rhs.blinded_token &&
-         lhs.unblinded_token == rhs.unblinded_token &&
-         lhs.user_data == rhs.user_data &&
-         lhs.credential_base64url == rhs.credential_base64url;
+  const auto tie = [](const OptedInInfo& opted_in) {
+    return std::tie(opted_in.token, opted_in.blinded_token,
+                    opted_in.unblinded_token, opted_in.user_data,
+                    opted_in.credential_base64url);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const OptedInInfo& lhs, const OptedInInfo& rhs) {

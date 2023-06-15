@@ -5,11 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_focal_point_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool operator==(const CatalogNewTabPageAdWallpaperFocalPointInfo& lhs,
                 const CatalogNewTabPageAdWallpaperFocalPointInfo& rhs) {
-  return lhs.x == rhs.x && lhs.y == rhs.y;
+  const auto tie = [](const CatalogNewTabPageAdWallpaperFocalPointInfo&
+                          wallpaper_focal_point) {
+    return std::tie(wallpaper_focal_point.x, wallpaper_focal_point.y);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const CatalogNewTabPageAdWallpaperFocalPointInfo& lhs,

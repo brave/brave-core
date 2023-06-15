@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
+#include <tuple>
+
 namespace brave_ads::privacy {
 
 UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo() = default;
@@ -25,10 +27,16 @@ UnblindedPaymentTokenInfo::~UnblindedPaymentTokenInfo() = default;
 
 bool UnblindedPaymentTokenInfo::operator==(
     const UnblindedPaymentTokenInfo& other) const {
-  return transaction_id == other.transaction_id &&
-         public_key == other.public_key && value == other.value &&
-         confirmation_type == other.confirmation_type &&
-         ad_type == other.ad_type;
+  const auto tie =
+      [](const UnblindedPaymentTokenInfo& unblinded_payment_token) {
+        return std::tie(unblinded_payment_token.transaction_id,
+                        unblinded_payment_token.public_key,
+                        unblinded_payment_token.value,
+                        unblinded_payment_token.confirmation_type,
+                        unblinded_payment_token.ad_type);
+      };
+
+  return tie(*this) == tie(other);
 }
 
 bool UnblindedPaymentTokenInfo::operator!=(

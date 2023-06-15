@@ -5,11 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool VerifiableConversionInfo::operator==(
     const VerifiableConversionInfo& other) const {
-  return id == other.id && public_key == other.public_key;
+  const auto tie = [](const VerifiableConversionInfo& verifiable_conversion) {
+    return std::tie(verifiable_conversion.id, verifiable_conversion.public_key);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool VerifiableConversionInfo::operator!=(

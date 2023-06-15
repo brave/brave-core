@@ -5,12 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_promoted_content_ad_payload_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 bool operator==(const CatalogPromotedContentAdPayloadInfo& lhs,
                 const CatalogPromotedContentAdPayloadInfo& rhs) {
-  return lhs.title == rhs.title && lhs.description == rhs.description &&
-         lhs.target_url == rhs.target_url;
+  const auto tie = [](const CatalogPromotedContentAdPayloadInfo& payload) {
+    return std::tie(payload.title, payload.description, payload.target_url);
+  };
+
+  return tie(lhs) == tie(rhs);
 }
 
 bool operator!=(const CatalogPromotedContentAdPayloadInfo& lhs,

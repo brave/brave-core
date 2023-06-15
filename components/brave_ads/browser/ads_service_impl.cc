@@ -31,7 +31,6 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
-#include "brave/components/brave_ads/browser/ads_storage_cleanup.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id.h"
@@ -486,8 +485,6 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
 
   BackgroundHelper::GetInstance()->AddObserver(this);
 
-  CleanUpOnFirstRun();
-
   MaybeShowOnboardingNotification();
 
   MaybeOpenNewTabWithAd();
@@ -551,21 +548,6 @@ void AdsServiceImpl::SetFlags() {
 #endif  // BUILDFLAG(IS_ANDROID)
 
   bat_ads_->SetFlags(std::move(flags));
-}
-
-void AdsServiceImpl::CleanUpOnFirstRun() {
-  if (did_cleanup_on_first_run_) {
-    return;
-  }
-
-  did_cleanup_on_first_run_ = true;
-
-  RemoveDeprecatedFiles();
-}
-
-void AdsServiceImpl::RemoveDeprecatedFiles() const {
-  file_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&RemoveDeprecatedAdsDataFiles, base_path_));
 }
 
 bool AdsServiceImpl::ShouldShowOnboardingNotification() {

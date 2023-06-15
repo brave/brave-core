@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 CreativePromotedContentAdInfo::CreativePromotedContentAdInfo() = default;
@@ -15,8 +17,11 @@ CreativePromotedContentAdInfo::CreativePromotedContentAdInfo(
 
 bool CreativePromotedContentAdInfo::operator==(
     const CreativePromotedContentAdInfo& other) const {
-  return CreativeAdInfo::operator==(other) && title == other.title &&
-         description == other.description;
+  const auto tie = [](const CreativePromotedContentAdInfo& ad) {
+    return std::tie(ad.title, ad.description);
+  };
+
+  return CreativeAdInfo::operator==(other) && tie(*this) == tie(other);
 }
 
 bool CreativePromotedContentAdInfo::operator!=(

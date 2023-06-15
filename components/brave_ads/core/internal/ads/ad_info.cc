@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/ad_info.h"
 
+#include <tuple>
+
 namespace brave_ads {
 
 AdInfo::AdInfo() = default;
@@ -20,12 +22,13 @@ AdInfo& AdInfo::operator=(AdInfo&& other) noexcept = default;
 AdInfo::~AdInfo() = default;
 
 bool AdInfo::operator==(const AdInfo& other) const {
-  return type == other.type && placement_id == other.placement_id &&
-         creative_instance_id == other.creative_instance_id &&
-         creative_set_id == other.creative_set_id &&
-         campaign_id == other.campaign_id &&
-         advertiser_id == other.advertiser_id && segment == other.segment &&
-         target_url == other.target_url;
+  const auto tie = [](const AdInfo& ad) {
+    return std::tie(ad.type, ad.placement_id, ad.creative_instance_id,
+                    ad.creative_set_id, ad.campaign_id, ad.advertiser_id,
+                    ad.segment, ad.target_url);
+  };
+
+  return tie(*this) == tie(other);
 }
 
 bool AdInfo::operator!=(const AdInfo& other) const {
