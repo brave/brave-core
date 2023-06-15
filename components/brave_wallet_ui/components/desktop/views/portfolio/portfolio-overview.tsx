@@ -294,7 +294,7 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
         new Amount(portfolioPriceHistory[0].close)
       return fullPortfolioFiatBalance
         .minus(oldestValue)
-        .formatAsFiat(defaultCurrencies.fiat)
+        .formatAsFiat(defaultCurrencies.fiat, 2)
     }
     return new Amount(0).formatAsFiat(defaultCurrencies.fiat)
   }, [
