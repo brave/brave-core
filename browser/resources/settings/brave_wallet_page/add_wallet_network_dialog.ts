@@ -223,13 +223,12 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
       if (!payload)
         return
 
+      this.prepopulatedNetworks_ = []
       payload.forEach(item => {
         this.prepopulatedNetworks_.push(
           {...item, searchString: `${item.chainId}(${BigInt(item.chainId)}) ${item.chainName}`}
         )
       })
-      // this.prepopulatedNetworks_ = payload
-      // this.prepopulatedNetworks_.forEach(item => item.searchString = `${item.chainId}(${BigInt(item.chainId)}) ${item.chainName}`)
       this.searchItems_ = this.prepopulatedNetworks_.map(item => item.searchString)
     })
   }
