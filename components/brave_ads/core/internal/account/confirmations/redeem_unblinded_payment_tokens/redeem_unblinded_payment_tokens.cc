@@ -31,29 +31,46 @@ namespace {
 
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
-constexpr base::TimeDelta kNextRedemptionAfter = base::Days(1);
-constexpr base::TimeDelta kDebugNextRedemptionAfter = base::Minutes(2);
-constexpr base::TimeDelta kNextRedemptionWhenExpiredAfter = base::Minutes(1);
+constexpr base::TimeDelta kNextTokenRedemptionAfter = base::Days(1);
+constexpr base::TimeDelta kDebugNextTokenRedemptionAfter = base::Minutes(2);
+constexpr base::TimeDelta kMinimumDelayBeforeRedeemingTokens = base::Minutes(1);
 
-base::TimeDelta CalculateRedemptionDelay() {
-  const base::Time next_token_redemption_at =
-      AdsClientHelper::GetInstance()->GetTimePref(
-          prefs::kNextTokenRedemptionAt);
-
-  const base::Time now = base::Time::Now();
-
-  if (now >= next_token_redemption_at) {
-    // Browser was launched after the next token redemption date
-    return kNextRedemptionWhenExpiredAfter;
-  }
-
-  return next_token_redemption_at - now;
+void SetNextTokenRedemptionAt(const base::Time next_token_redemption_at) {
+  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                              next_token_redemption_at);
 }
 
-base::Time CalculateNextRedemptionDate() {
+base::Time NextTokenRedemptionAt() {
+  return AdsClientHelper::GetInstance()->GetTimePref(
+      prefs::kNextTokenRedemptionAt);
+}
+
+bool HasPreviouslyRedeemedTokens() {
+  return !NextTokenRedemptionAt().is_null();
+}
+
+bool ShouldHaveRedeemedTokensInThePast() {
+  return NextTokenRedemptionAt() < base::Time::Now();
+}
+
+base::Time CalculateNextTokenRedemptionAt() {
   return base::Time::Now() + (ShouldDebug()
-                                  ? kDebugNextRedemptionAfter
-                                  : RandTimeDelta(kNextRedemptionAfter));
+                                  ? kDebugNextTokenRedemptionAfter
+                                  : RandTimeDelta(kNextTokenRedemptionAfter));
+}
+
+base::TimeDelta CalculateNextTokenRedemptionDelay() {
+  const base::Time now = base::Time::Now();
+
+  if (!HasPreviouslyRedeemedTokens()) {
+    return CalculateNextTokenRedemptionAt() - now;
+  }
+
+  if (ShouldHaveRedeemedTokensInThePast()) {
+    return kMinimumDelayBeforeRedeemingTokens;
+  }
+
+  return NextTokenRedemptionAt() - now;
 }
 
 }  // namespace
@@ -75,7 +92,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
   wallet_ = wallet;
 
   const base::Time redeem_at =
-      timer_.Start(FROM_HERE, CalculateRedemptionDelay(),
+      timer_.Start(FROM_HERE, CalculateNextTokenRedemptionDelay(),
                    base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
                                   base::Unretained(this)));
 
@@ -169,10 +186,9 @@ void RedeemUnblindedPaymentTokens::FailedToRedeem(const bool should_retry) {
 }
 
 void RedeemUnblindedPaymentTokens::ScheduleNextRedemption() {
-  const base::Time redeem_at = CalculateNextRedemptionDate();
+  const base::Time redeem_at = CalculateNextTokenRedemptionAt();
 
-  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
-                                              redeem_at);
+  SetNextTokenRedemptionAt(redeem_at);
 
   if (delegate_) {
     delegate_->OnDidScheduleNextUnblindedPaymentTokenRedemption(redeem_at);
