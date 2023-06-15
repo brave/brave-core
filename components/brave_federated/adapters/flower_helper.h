@@ -16,8 +16,9 @@ namespace brave_federated {
 
 std::string BuildGetTasksPayload();
 
-absl::optional<Task> ParseTask(flower::TaskIns task_instruction);
-TaskList ParseTaskListFromResponseBody(const std::string& response_body);
+absl::optional<Task> ParseTask(const flower::TaskIns& task_instruction);
+absl::optional<TaskList> ParseTaskListFromResponseBody(
+    const std::string& response_body);
 
 std::string BuildUploadTaskResultsPayload(const TaskResult& result);
 

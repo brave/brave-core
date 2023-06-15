@@ -49,7 +49,7 @@ class EligibilityService
 
   base::ObserverList<EligibilityObserver> observers_;
   bool is_eligible_ = false;
-  bool is_on_battery_power_;
+  bool is_on_battery_power_ = false;
   net::NetworkChangeNotifier::ConnectionType connection_type_;
 };
 

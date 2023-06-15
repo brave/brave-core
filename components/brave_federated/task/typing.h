@@ -15,9 +15,9 @@
 
 namespace brave_federated {
 
-enum TaskType {
-  Evaluation,
-  Training,
+enum class TaskType {
+  kEvaluation,
+  kTraining,
 };
 
 struct TaskId {
@@ -28,11 +28,11 @@ struct TaskId {
 
 class Task {
  public:
-  Task(TaskId task_id,
-       TaskType type,
-       std::string token,
-       std::vector<Weights> parameters,
-       std::map<std::string, float> config);
+  Task(const TaskId& task_id,
+       const TaskType& type,
+       const std::string& token,
+       const std::vector<Weights>& parameters,
+       const std::map<std::string, float>& config);
   Task(const Task& other);
   ~Task();
 
@@ -52,7 +52,7 @@ class Task {
 
 class TaskResult {
  public:
-  TaskResult(Task task, PerformanceReport report);
+  TaskResult(const Task& task, const PerformanceReport& report);
   TaskResult(const TaskResult& other);
   ~TaskResult();
 
@@ -72,7 +72,7 @@ class TaskResultResponse {
   bool IsSuccessful();
 
  private:
-  bool success_;
+  const bool success_;
 };
 
 using TaskList = std::vector<Task>;

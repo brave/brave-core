@@ -65,9 +65,9 @@ class LearningServiceConfig {
   ModelSpec GetModelSpec();
 
  private:
-  net::BackoffEntry::Policy reconnect_policy_;
-  net::BackoffEntry::Policy request_task_policy_;
-  net::BackoffEntry::Policy post_results_policy_;
+  net::BackoffEntry::Policy reconnect_policy_ = {};
+  net::BackoffEntry::Policy request_task_policy_ = {};
+  net::BackoffEntry::Policy post_results_policy_ = {};
   ModelSpec model_spec_;
 };
 

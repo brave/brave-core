@@ -5,6 +5,7 @@ static_library("brave_flwr") {
   ]
   deps = [
     "//brave/third_party/flower/src/proto/flwr/proto:transport_proto",
+    "//third_party/abseil-cpp:absl",
     "//third_party/protobuf:protobuf_lite",
   ]
 }

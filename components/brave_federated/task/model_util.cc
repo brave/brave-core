@@ -6,17 +6,20 @@
 #include "brave/components/brave_federated/task/model_util.h"
 
 #include <cmath>
+#include "base/check_op.h"
 
 namespace brave_federated {
 
-float ComputeNLL(std::vector<float> true_labels,
-                 std::vector<float> predictions) {
+float ComputeNegativeLogLikelihood(const std::vector<float>& true_labels,
+                                   const std::vector<float>& predictions) {
+  CHECK_EQ(true_labels.size(), predictions.size());
   float error = 0.0;
-  size_t batch_size = true_labels.size();
+  const size_t batch_size = true_labels.size();
 
   for (size_t i = 0; i < batch_size; i++) {
-    error += (true_labels[i] * log(predictions[i]) +
-              (1.0 - true_labels[i]) * log(1 - predictions[i]));
+    DCHECK_GT(predictions.at(i), 0.0);
+    error += (true_labels.at(i) * log(predictions.at(i)) +
+              (1.0 - true_labels.at(i)) * log(1 - predictions.at(i)));
   }
 
   return -error / batch_size;

@@ -74,6 +74,10 @@ Matrix LinearAlgebraUtil::MatrixXfToMatrix(const Eigen::MatrixXf& matrix) {
 }
 
 Eigen::MatrixXf LinearAlgebraUtil::MatrixToMatrixXf(Matrix matrix) {
+  if (matrix.empty()) {
+    return Eigen::MatrixXf();
+  }
+
   Eigen::MatrixXf matrix_eigen(matrix.size(), matrix.at(0).size());
   for (size_t i = 0; i < matrix.size(); ++i) {
     matrix_eigen.row(i) =
