@@ -94,7 +94,7 @@ public class AddTokenFragment extends BaseDAppsFragment {
                 return;
             }
             mCurrentAddSuggestTokenRequest = requests[0];
-            var selectedNetwork = mWalletModel.getNetworkModel().getNetwork(
+            NetworkInfo selectedNetwork = mWalletModel.getNetworkModel().getNetwork(
                     mCurrentAddSuggestTokenRequest.token.chainId);
             if (init) {
                 mBtCancel.setOnClickListener(

@@ -196,8 +196,7 @@ public class AccountDetailActivity
 
     @Override
     public void onAssetClick(BlockchainToken asset) {
-        Utils.openAssetDetailsActivity(
-                AccountDetailActivity.this, asset.chainId, asset);
+        Utils.openAssetDetailsActivity(AccountDetailActivity.this, asset);
     }
 
     @Override
