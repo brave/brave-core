@@ -11,7 +11,7 @@
 
 namespace ephemeral_storage {
 
-// Handles Ephemeral Storage cleanup/queuing and other events.
+// Observer to monitor Ephemeral Storage events.
 class EphemeralStorageServiceObserver : public base::CheckedObserver {
  public:
   virtual void OnCleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) {}
