@@ -1773,7 +1773,7 @@ interface BraveWalletService {
 // For reporting wallet related P3A metrics.
 interface BraveWalletP3A {
   // Called when the wallet provider type is evaluated after page load.
-  ReportJSProvider(JSProviderType provider_type, CoinType coin_type, bool use_native_wallet_enabled, bool allow_provider_overwrite);
+  ReportJSProvider(JSProviderType provider_type, CoinType coin_type, bool allow_provider_overwrite);
 
   // Called when a Wallet onboarding action is performed.
   ReportOnboardingAction(OnboardingAction onboarding_action);

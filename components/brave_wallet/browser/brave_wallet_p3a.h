@@ -72,7 +72,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void ReportUsage(bool unlocked);
   void ReportJSProvider(mojom::JSProviderType provider_type,
                         mojom::CoinType coin_type,
-                        bool use_native_wallet_enabled,
                         bool allow_provider_overwrite) override;
   void ReportOnboardingAction(mojom::OnboardingAction action) override;
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
