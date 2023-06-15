@@ -70,6 +70,7 @@ public class MarketFragment extends Fragment {
             mMarketModel = mWalletModel.getMarketModel();
         } catch (BraveActivity.BraveActivityNotFoundException exception) {
             Log.e(TAG, "onCreate", exception);
+            return;
         }
         mMarketCoinAdapter = new MarketCoinAdapter(getContext(), mMarketModel);
     }
@@ -100,16 +101,17 @@ public class MarketFragment extends Fragment {
             inflater.inflate(R.layout.market_coin_shimmer_item, mShimmerListContainer, true);
         }
 
-        mMarketModel.mCoinMarkets.observe(getViewLifecycleOwner(), coinMarkets -> {
-            if (coinMarkets == null) {
-                Log.e(TAG, "Failed to load coin market list.");
-            } else {
-                mMarketCoinAdapter.setCoinMarkets(Arrays.asList(coinMarkets));
-            }
-            disableShimmerEffect();
-        });
-        mMarketModel.getCoinMarkets();
-
+        if (mMarketModel != null) {
+            mMarketModel.mCoinMarkets.observe(getViewLifecycleOwner(), coinMarkets -> {
+                if (coinMarkets == null) {
+                    Log.e(TAG, "Failed to load coin market list.");
+                } else {
+                    mMarketCoinAdapter.setCoinMarkets(Arrays.asList(coinMarkets));
+                }
+                disableShimmerEffect();
+            });
+            mMarketModel.getCoinMarkets();
+        }
         return mRootView;
     }
 
