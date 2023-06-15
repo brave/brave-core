@@ -29,7 +29,7 @@ struct TransactionInfo final {
   bool operator==(const TransactionInfo&) const;
   bool operator!=(const TransactionInfo&) const;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string id;
   base::Time created_at;

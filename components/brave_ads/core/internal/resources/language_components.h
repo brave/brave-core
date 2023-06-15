@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-bool IsValidLanguageComponentId(const std::string& id);
+[[nodiscard]] bool IsValidLanguageComponentId(const std::string& id);
 
 }  // namespace brave_ads
 

@@ -24,7 +24,7 @@ struct ConversionInfo final {
 
   ~ConversionInfo();
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   bool operator==(const ConversionInfo&) const;
   bool operator!=(const ConversionInfo&) const;

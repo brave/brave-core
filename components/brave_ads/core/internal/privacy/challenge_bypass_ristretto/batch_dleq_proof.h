@@ -63,11 +63,11 @@ class BatchDLEQProof {
       const std::string& batch_dleq_proof_base64);
   absl::optional<std::string> EncodeBase64() const;
 
-  bool Verify(const std::vector<BlindedToken>& blinded_tokens,
-              const std::vector<SignedToken>& signed_tokens,
-              const PublicKey& public_key);
+  [[nodiscard]] bool Verify(const std::vector<BlindedToken>& blinded_tokens,
+                            const std::vector<SignedToken>& signed_tokens,
+                            const PublicKey& public_key);
 
-  absl::optional<std::vector<UnblindedToken>> VerifyAndUnblind(
+  [[nodiscard]] absl::optional<std::vector<UnblindedToken>> VerifyAndUnblind(
       const std::vector<Token>& tokens,
       const std::vector<BlindedToken>& blinded_tokens,
       const std::vector<SignedToken>& signed_tokens,

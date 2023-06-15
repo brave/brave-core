@@ -18,7 +18,8 @@
 
 namespace brave_ads::helper::json {
 
-bool Validate(rapidjson::Document* document, const std::string& json_schema);
+[[nodiscard]] bool Validate(rapidjson::Document* document,
+                            const std::string& json_schema);
 
 std::string GetLastError(rapidjson::Document* document);
 

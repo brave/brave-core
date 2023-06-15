@@ -11,7 +11,7 @@
 namespace brave_ads {
 
 struct WalletInfo final {
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   bool operator==(const WalletInfo&) const;
   bool operator!=(const WalletInfo&) const;

@@ -39,7 +39,7 @@ struct ConversionQueueItemInfo final {
   base::Time process_at;
   bool was_processed = false;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 };
 
 using ConversionQueueItemList = std::vector<ConversionQueueItemInfo>;

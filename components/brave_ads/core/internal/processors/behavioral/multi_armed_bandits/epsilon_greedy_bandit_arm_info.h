@@ -15,7 +15,7 @@ struct EpsilonGreedyBanditArmInfo final {
   bool operator==(const EpsilonGreedyBanditArmInfo&) const;
   bool operator!=(const EpsilonGreedyBanditArmInfo&) const;
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
   std::string segment;
   double value = 0.0;

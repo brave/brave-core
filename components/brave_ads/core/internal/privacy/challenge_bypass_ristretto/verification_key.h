@@ -33,8 +33,8 @@ class VerificationKey {
 
   absl::optional<VerificationSignature> Sign(const std::string& message);
 
-  bool Verify(const VerificationSignature& verification_signature,
-              const std::string& message);
+  [[nodiscard]] bool Verify(const VerificationSignature& verification_signature,
+                            const std::string& message);
 
  private:
   challenge_bypass_ristretto::VerificationKey verification_key_;

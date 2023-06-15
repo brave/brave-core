@@ -27,7 +27,7 @@ bool UnblindedTokensIsEmpty();
 
 size_t UnblindedTokenCount();
 
-bool IsValid(const UnblindedTokenInfo& unblinded_token);
+[[nodiscard]] bool IsValid(const UnblindedTokenInfo& unblinded_token);
 
 }  // namespace brave_ads::privacy
 
