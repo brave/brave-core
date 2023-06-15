@@ -12,50 +12,21 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
-#include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_ads {
 
 namespace {
-
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
-
-constexpr base::TimeDelta kNextRedemptionAfter = base::Days(1);
-constexpr base::TimeDelta kDebugNextRedemptionAfter = base::Minutes(2);
-constexpr base::TimeDelta kNextRedemptionWhenExpiredAfter = base::Minutes(1);
-
-base::TimeDelta CalculateRedemptionDelay() {
-  const base::Time next_token_redemption_at =
-      AdsClientHelper::GetInstance()->GetTimePref(
-          prefs::kNextTokenRedemptionAt);
-
-  const base::Time now = base::Time::Now();
-
-  if (now >= next_token_redemption_at) {
-    // Browser was launched after the next token redemption date
-    return kNextRedemptionWhenExpiredAfter;
-  }
-
-  return next_token_redemption_at - now;
-}
-
-base::Time CalculateNextRedemptionDate() {
-  return base::Time::Now() + (ShouldDebug()
-                                  ? kDebugNextRedemptionAfter
-                                  : RandTimeDelta(kNextRedemptionAfter));
-}
-
 }  // namespace
 
 RedeemUnblindedPaymentTokens::RedeemUnblindedPaymentTokens() = default;
@@ -75,7 +46,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
   wallet_ = wallet;
 
   const base::Time redeem_at =
-      timer_.Start(FROM_HERE, CalculateRedemptionDelay(),
+      timer_.Start(FROM_HERE, CalculateDelayBeforeRedeemingTokens(),
                    base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
                                   base::Unretained(this)));
 
@@ -169,10 +140,9 @@ void RedeemUnblindedPaymentTokens::FailedToRedeem(const bool should_retry) {
 }
 
 void RedeemUnblindedPaymentTokens::ScheduleNextRedemption() {
-  const base::Time redeem_at = CalculateNextRedemptionDate();
+  const base::Time redeem_at = CalculateNextTokenRedemptionAt();
 
-  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
-                                              redeem_at);
+  SetNextTokenRedemptionAt(redeem_at);
 
   if (delegate_) {
     delegate_->OnDidScheduleNextUnblindedPaymentTokenRedemption(redeem_at);

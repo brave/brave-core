@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
@@ -26,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
+#include "brave/components/brave_ads/core/internal/privacy/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -406,8 +406,9 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.ad_type = ad_event.type;
 
   conversion_queue_item.process_at =
-      base::Time::Now() +
-      (ShouldDebug() ? kDebugConvertAfter : RandTimeDelta(kConvertAfter));
+      base::Time::Now() + (ShouldDebug()
+                               ? kDebugConvertAfter
+                               : privacy::RandTimeDelta(kConvertAfter));
 
   database::table::ConversionQueue database_table;
   database_table.Save({conversion_queue_item},
@@ -535,9 +536,9 @@ void Conversions::StartTimer(
 
   const base::Time now = base::Time::Now();
 
-  const base::TimeDelta delay = now < process_at
-                                    ? process_at - now
-                                    : RandTimeDelta(kConvertWhenExpiredAfter);
+  const base::TimeDelta delay =
+      now < process_at ? process_at - now
+                       : privacy::RandTimeDelta(kConvertWhenExpiredAfter);
 
   const base::Time process_queue_at = timer_.Start(
       FROM_HERE, delay,
