@@ -142,23 +142,8 @@ export const TokenLists = ({
     return visibleTokens
   }, [visibleTokens, hideSmallBalances, computeFiatAmount])
 
-  const filteredAssetList = React.useMemo(() => {
-    if (searchValue === '') {
-      return filteredOutSmallBalanceTokens
-        .filter((asset) => asset.asset.visible)
-    }
-    return filteredOutSmallBalanceTokens.filter((item) => {
-      return (
-        item.asset.name.toLowerCase() === searchValue.toLowerCase() ||
-        item.asset.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
-        item.asset.symbol.toLocaleLowerCase() === searchValue.toLowerCase() ||
-        item.asset.symbol.toLowerCase().startsWith(searchValue.toLowerCase())
-      )
-    })
-  }, [searchValue, filteredOutSmallBalanceTokens])
-
   const fungibleTokens = React.useMemo(() => {
-    return filteredAssetList
+    return filteredOutSmallBalanceTokens
       .filter(
         (token) => !(
           token.asset.isErc721 ||
@@ -167,7 +152,7 @@ export const TokenLists = ({
         )
       )
   },
-    [filteredAssetList]
+    [filteredOutSmallBalanceTokens]
   )
 
   const assetFilterItemInfo = React.useMemo(() => {
@@ -208,10 +193,33 @@ export const TokenLists = ({
     computeFiatAmount
   ])
 
+  const filteredAssetList = React.useMemo(() => {
+    const listToUse = isPortfolio
+      ? sortedFungibleTokensList
+      : userAssetList
+    if (searchValue === '') {
+      return listToUse
+        .filter((asset) => asset.asset.visible)
+    }
+    return listToUse.filter((item) => {
+      return (
+        item.asset.name.toLowerCase() === searchValue.toLowerCase() ||
+        item.asset.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
+        item.asset.symbol.toLocaleLowerCase() === searchValue.toLowerCase() ||
+        item.asset.symbol.toLowerCase().startsWith(searchValue.toLowerCase())
+      )
+    })
+  }, [
+    searchValue,
+    sortedFungibleTokensList,
+    isPortfolio,
+    userAssetList
+  ])
+
   // Returns a list of assets based on provided network
   const getAssetsByNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
-      return sortedFungibleTokensList
+      return filteredAssetList
         .filter(
           (asset) =>
             networkEntityAdapter
@@ -223,7 +231,7 @@ export const TokenLists = ({
             networkEntityAdapter
               .selectId(network).toString()
         )
-    }, [sortedFungibleTokensList])
+    }, [filteredAssetList])
 
   // Returns the full fiat value of provided network
   const getNetworkFiatValue = React.useCallback(
@@ -265,12 +273,12 @@ export const TokenLists = ({
   // Returns a list of assets based on provided account
   const getAssetsByAccount = React.useCallback(
     (account: WalletAccountType) => {
-      return sortedFungibleTokensList
+      return filteredAssetList
         .filter(
           (asset) => asset.asset.coin ===
             account.accountId.coin
         )
-    }, [sortedFungibleTokensList])
+    }, [filteredAssetList])
 
   // Returns a list of assets based on provided account
   // and filters out small balances if hideSmallBalances
@@ -433,7 +441,7 @@ export const TokenLists = ({
           ? listUiByAccounts
           : <>
             {
-              sortedFungibleTokensList
+              filteredAssetList
                 .map((token, index) =>
                   renderToken(
                     { index, item: token, viewMode: 'list' }
@@ -447,7 +455,7 @@ export const TokenLists = ({
     }
     return <>
       {
-        sortedFungibleTokensList
+        filteredAssetList
           .map(
             (token, index) =>
               renderToken(
@@ -458,7 +466,7 @@ export const TokenLists = ({
     </>
   }, [
     selectedGroupAssetsByItem,
-    sortedFungibleTokensList,
+    filteredAssetList,
     listUiByNetworks,
     listUiByAccounts,
     renderToken,
