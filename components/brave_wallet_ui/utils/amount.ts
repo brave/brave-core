@@ -229,7 +229,7 @@ export default class Amount {
     return result === '' ? '' : `${result} ${symbol}`
   }
 
-  formatAsFiat (currency?: string): string {
+  formatAsFiat (currency?: string, maxDecimals?: number): string {
     let decimals
     let value
 
@@ -250,8 +250,8 @@ export default class Amount {
 
     const options: Intl.NumberFormatOptions = {
       style: 'decimal',
-      minimumFractionDigits: decimals || 0,
-      maximumFractionDigits: decimals || 20
+      minimumFractionDigits: decimals ?? 0,
+      maximumFractionDigits: maxDecimals ?? decimals ?? 20
     }
 
     if (currency && CurrencySymbols[currency.toUpperCase()]) {
