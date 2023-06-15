@@ -17,11 +17,11 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
+#include "brave/components/brave_ads/core/internal/privacy/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "net/http/http_status_code.h"
 
@@ -54,9 +54,9 @@ bool ShouldHaveRedeemedTokensInThePast() {
 }
 
 base::Time CalculateNextTokenRedemptionAt() {
-  return base::Time::Now() + (ShouldDebug()
-                                  ? kDebugNextTokenRedemptionAfter
-                                  : RandTimeDelta(kNextTokenRedemptionAfter));
+  return base::Time::Now() +
+         (ShouldDebug() ? kDebugNextTokenRedemptionAfter
+                        : privacy::RandTimeDelta(kNextTokenRedemptionAfter));
 }
 
 base::TimeDelta CalculateNextTokenRedemptionDelay() {
