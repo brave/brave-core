@@ -85,6 +85,13 @@ public struct BraveNewsDebugSettingsView: View {
           Text(feedDataSource.description(of: feedDataSource.state))
             .foregroundColor(.secondary)
         }
+        HStack {
+          Text("Following Locales")
+          Spacer()
+          Text(feedDataSource.followedLocales.joined(separator: ", "))
+            .foregroundColor(.secondary)
+            .multilineTextAlignment(.trailing)
+        }
         switch feedDataSource.state {
         case .initial:
           EmptyView()
@@ -116,6 +123,27 @@ public struct BraveNewsDebugSettingsView: View {
         case .failure(let error):
           Text(error.localizedDescription)
             .foregroundColor(.secondary)
+        }
+        if !feedDataSource.decodingErrors.isEmpty {
+          NavigationLink {
+            List(feedDataSource.decodingErrors) { error in
+              VStack(alignment: .leading) {
+                Text(error.resourceName)
+                  .font(.headline)
+                Text(error.error)
+                  .font(.subheadline)
+                  .multilineTextAlignment(.leading)
+              }
+              .frame(maxWidth: .infinity)
+            }
+          } label: {
+            HStack {
+              Text("Decoding Errors")
+              Spacer()
+              Text(feedDataSource.decodingErrors.count, format: .number)
+                .foregroundColor(.secondary)
+            }
+          }
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))

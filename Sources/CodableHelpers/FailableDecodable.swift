@@ -35,19 +35,19 @@ import Foundation
 /// where `Bar` is some complex type
 @propertyWrapper public struct FailableDecodable<T: Decodable>: Decodable {
   public var wrappedValue: T?
+  public var decodingError: Error?
   public init(from decoder: Decoder) throws {
     let container = try decoder.singleValueContainer()
-    #if DEBUG
-    // In debug builds we print out failed decodes to console so we can fix the issue or notify the
-    // appropriate team about some malformed JSON
     do {
       wrappedValue = try container.decode(T.self)
     } catch {
-      print("FailableDecodable failed to decode to type \(T.self): \(error.localizedDescription)")
       wrappedValue = nil
+#if DEBUG
+      // In debug builds we print out failed decodes to console so we can fix the issue or notify the
+      // appropriate team about some malformed JSON
+      print("FailableDecodable failed to decode to type \(T.self): \(error.localizedDescription)")
+#endif
+      decodingError = error
     }
-    #else
-    wrappedValue = try? container.decode(T.self)
-    #endif
   }
 }
