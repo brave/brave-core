@@ -7,10 +7,11 @@ import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import { DefaultBrowserBrowserProxyImpl } from './default_browser_browser_proxy'
 import { ImportDataBrowserProxyImpl, BrowserProfile as _BrowserProfile } from './import_data_browser_proxy'
 
-interface P3APayload {
-  currentScreen: number
-  isFinished: boolean
-  isSkipped: boolean
+export enum P3APhase {
+  Welcome = 0,
+  Import = 1,
+  Consent = 2,
+  Finished = 3
 }
 
 export interface BrowserProfile extends _BrowserProfile {
@@ -28,7 +29,7 @@ export const defaultImportTypes = {
 }
 
 export interface WelcomeBrowserProxy {
-  recordP3A: (payload: P3APayload) => void
+  recordP3A: (phase: P3APhase) => void
   setP3AEnabled: (enabled: boolean) => void
   setMetricsReportingEnabled: (enabled: boolean) => void
   openSettingsPage: () => void
@@ -38,8 +39,8 @@ export interface WelcomeBrowserProxy {
 export { DefaultBrowserBrowserProxyImpl, ImportDataBrowserProxyImpl }
 
 export class WelcomeBrowserProxyImpl implements WelcomeBrowserProxy {
-  recordP3A (payload: P3APayload) {
-    chrome.send('recordP3A', [payload.currentScreen, payload.isFinished, payload.isSkipped])
+  recordP3A (phase: P3APhase) {
+    chrome.send('recordP3A', [phase])
   }
 
   setP3AEnabled (enabled: boolean) {

@@ -11,7 +11,7 @@ import classnames from '$web-common/classnames'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
 import { getUniqueBrowserTypes } from '../../state/utils'
-import { WelcomeBrowserProxyImpl, ImportDataBrowserProxyImpl, defaultImportTypes } from '../../api/welcome_browser_proxy'
+import { WelcomeBrowserProxyImpl, ImportDataBrowserProxyImpl, defaultImportTypes, P3APhase } from '../../api/welcome_browser_proxy'
 import { getLocale } from '$web-common/locale'
 
 import ChromeCanarySVG from '../svg/browser-icons/chrome-canary'
@@ -93,21 +93,23 @@ function SelectBrowser () {
 
   const handleImport = () => {
     if (!currentSelectedBrowser || !filteredProfiles) return
+    let phase = P3APhase.Consent;
     if (filteredProfiles.length > 1) {
       // If there are multiple profiles, we handle it in a different view
       setViewType(ViewType.ImportSelectProfile)
+      phase = P3APhase.Import
     } else {
       ImportDataBrowserProxyImpl.getInstance().importData(filteredProfiles[0].index, defaultImportTypes)
       incrementCount()
     }
 
-    WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.ImportSelectBrowser, isFinished: false, isSkipped: false })
+    WelcomeBrowserProxyImpl.getInstance().recordP3A(phase)
   }
 
   const handleSkip = () => {
     scenes?.s2.play() // play the final animation on skip
     setViewType(ViewType.HelpImprove)
-    WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.ImportSelectBrowser, isFinished: false, isSkipped: true })
+    WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Consent)
   }
 
   React.useEffect(() => {
