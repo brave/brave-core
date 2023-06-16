@@ -330,7 +330,8 @@ void RedeemOptedInConfirmation::FetchPaymentTokenCallback(
   const absl::optional<std::vector<privacy::cbr::UnblindedToken>>
       batch_dleq_proof_unblinded_tokens = batch_dleq_proof.VerifyAndUnblind(
           tokens, blinded_tokens, signed_tokens, public_key);
-  if (!batch_dleq_proof_unblinded_tokens) {
+  if (!batch_dleq_proof_unblinded_tokens ||
+      batch_dleq_proof_unblinded_tokens->empty()) {
     BLOG(1, "Failed to verify and unblind tokens");
     BLOG(1, "  Batch DLEQ proof: " << *batch_dleq_proof_base64);
     BLOG(1, "  Public key: " << *public_key_base64);
