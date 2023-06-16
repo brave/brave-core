@@ -23,7 +23,8 @@
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service_constants.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/wireguard_utils.h"
 
 namespace brave_vpn {
 
@@ -31,14 +32,18 @@ namespace {
 
 constexpr wchar_t kBraveWireguardConfig[] = L"wireguard.brave.conf";
 
+struct SidAccessDescriptor {
+  const base::win::Sid& sid;
+  DWORD access_mask;
+  base::win::SecurityAccessMode access_mode;
+};
+
 bool AddACEToPath(const base::FilePath& path,
-                  const std::vector<base::win::Sid>& sids,
-                  DWORD access_mask,
+                  const std::vector<SidAccessDescriptor>& descriptors,
                   DWORD inheritance,
-                  bool recursive,
-                  base::win::SecurityAccessMode access_mode) {
+                  bool recursive) {
   DCHECK(!path.empty());
-  if (sids.empty()) {
+  if (descriptors.empty()) {
     return true;
   }
 
@@ -46,9 +51,11 @@ bool AddACEToPath(const base::FilePath& path,
   base::win::SecurityDescriptor sd;
 
   std::vector<base::win::ExplicitAccessEntry> entries;
-  for (const base::win::Sid& sid : sids) {
-    entries.emplace_back(sid, access_mode, access_mask, inheritance);
+  for (const auto& descriptor : descriptors) {
+    entries.emplace_back(descriptor.sid, descriptor.access_mode,
+                         descriptor.access_mask, inheritance);
   }
+
   if (!sd.SetDaclEntries(entries)) {
     return false;
   }
@@ -87,12 +94,26 @@ absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
     VLOG(1) << "Failed to write config to file:" << temp_file_path;
     return absl::nullopt;
   }
+  const absl::optional<base::win::Sid> service_sid =
+      base::win::Sid::FromKnownSid(base::win::WellKnownSid::kService);
+  const absl::optional<base::win::Sid> administrators_sid =
+      base::win::Sid::FromKnownSid(
+          base::win::WellKnownSid::kBuiltinAdministrators);
+  if (!service_sid.has_value() || !administrators_sid.has_value()) {
+    VLOG(1) << "Failed to get Sids for service(" << service_sid.has_value()
+            << ") or administrators(" << administrators_sid.has_value() << ")";
+    return absl::nullopt;
+  }
+
   if (!AddACEToPath(temp_file_path,
-                    base::win::Sid::FromKnownSidVector(
-                        {base::win::WellKnownSid::kService}),
-                    GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE, 0,
-                    /*recursive=*/false,
-                    base::win::SecurityAccessMode::kGrant)) {
+                    // Let only windows services to read the config.
+                    {{service_sid.value(),
+                      GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
+                      base::win::SecurityAccessMode::kGrant},
+                     // Let windows administrators only to remove the config.
+                     {administrators_sid.value(), GENERIC_EXECUTE | DELETE,
+                      base::win::SecurityAccessMode::kGrant}},
+                    0, /*recursive=*/false)) {
     VLOG(1) << "Failed to set config file permissions:" << temp_file_path;
   }
   // Release temp directory to send path to the WireguardTunnelService.
@@ -106,6 +127,21 @@ bool IsServiceRunning(SC_HANDLE service) {
     return false;
   }
   return service_status.dwCurrentState == SERVICE_RUNNING;
+}
+
+absl::optional<base::FilePath> GetConfigFilePath(
+    const std::wstring& encoded_config) {
+  if (encoded_config.empty()) {
+    return wireguard::GetLastUsedConfigPath();
+  }
+
+  std::string decoded_config;
+  if (!base::Base64Decode(base::WideToUTF8(encoded_config), &decoded_config) ||
+      decoded_config.empty()) {
+    VLOG(1) << "Unable to decode wireguard config";
+    return absl::nullopt;
+  }
+  return WriteConfigToFile(decoded_config);
 }
 
 }  // namespace
@@ -154,18 +190,11 @@ bool RemoveExistingWireguardService() {
 
 // Creates and launches a new Wireguard service with specific config.
 bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
-  std::string config;
-  if (!base::Base64Decode(base::WideToUTF8(encoded_config), &config) ||
-      config.empty()) {
-    VLOG(1) << "Unable to decode wireguard config";
-    return S_FALSE;
-  }
-  auto config_file_path = WriteConfigToFile(config);
+  auto config_file_path = GetConfigFilePath(encoded_config);
   if (!config_file_path.has_value()) {
-    VLOG(1) << "Unable to save config file";
+    VLOG(1) << "Unable to get wireguard config";
     return false;
   }
-
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS));
   if (!scm.IsValid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: "
@@ -217,13 +246,16 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
             << HRESULTFromLastError();
     return false;
   }
+  if (!encoded_config.empty() &&
+      !UpdateLastUsedConfigPath(config_file_path.value())) {
+    VLOG(1) << "Failed to save last used config path";
+  }
 
   return DeleteService(service.Get()) != 0;
 }
 
 int RunWireguardTunnelService(const base::FilePath& config_file_path) {
-  base::ScopedTempDir config_dir;
-  if (config_file_path.empty() || !config_dir.Set(config_file_path.DirName())) {
+  if (config_file_path.empty()) {
     VLOG(1) << "Wrong path to config file:" << config_file_path;
     return S_FALSE;
   }

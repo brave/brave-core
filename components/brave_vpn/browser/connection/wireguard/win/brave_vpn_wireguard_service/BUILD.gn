@@ -24,18 +24,6 @@ midl("brave_wireguard_manager_idl") {
   writes_tlb = true
 }
 
-source_set("common") {
-  sources = [
-    "service_constants.cc",
-    "service_constants.h",
-  ]
-  public_deps = [ "//brave/components/brave_vpn/common/buildflags" ]
-  deps = [
-    "//base",
-    "//chrome/install_static:install_static_util",
-  ]
-}
-
 executable("brave_vpn_wireguard_service") {
   sources = [
     "brave_vpn_wireguard_service.rc",
@@ -43,19 +31,19 @@ executable("brave_vpn_wireguard_service") {
     "brave_wireguard_manager.h",
     "brave_wireguard_service_crash_reporter_client.cc",
     "brave_wireguard_service_crash_reporter_client.h",
+    "install_utils.cc",
+    "install_utils.h",
     "main.cc",
     "service_main.cc",
     "service_main.h",
-    "service_utils.cc",
-    "service_utils.h",
     "wireguard_tunnel_service.cc",
     "wireguard_tunnel_service.h",
   ]
 
   deps = [
     ":brave_vpn_wireguard_binaries",
-    ":common",
     ":version_resources",
+    "common",
     "//base",
     "//base:base_static",
     "//brave/components/brave_vpn/browser/connection/common/win",
@@ -67,7 +55,13 @@ executable("brave_vpn_wireguard_service") {
     "//components/crash/core/app:run_as_crashpad_handler",
     "//components/version_info:channel",
   ]
-  public_deps = [ ":brave_wireguard_manager_idl" ]
+
+  public_configs = [ "//build/config/win:windowed" ]
+  public_deps = [
+    ":brave_wireguard_manager_idl",
+    "//build/win:default_exe_manifest",
+  ]
+
   libs = [
     "userenv.lib",  # For GetUserProfileDirectoryW()
     "runtimeobject.lib",
@@ -76,5 +70,6 @@ executable("brave_vpn_wireguard_service") {
 
 process_version_rc_template("version_resources") {
   sources = [ "brave_vpn_wireguard_service.ver" ]
+
   output = "$target_gen_dir/brave_vpn_wireguard_service.rc"
 }

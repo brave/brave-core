@@ -17,7 +17,6 @@ source_set("win") {
   ]
 
   deps = [
-    ":utils",
     "brave_vpn_wireguard_service",
     "//base",
     "//brave/components/brave_vpn/browser/api",
@@ -26,25 +25,9 @@ source_set("win") {
     "//brave/components/brave_vpn/browser/connection/common/win",
     "//brave/components/brave_vpn/browser/connection/wireguard",
     "//brave/components/brave_vpn/browser/connection/wireguard/common",
-    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service:common",
+    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common",
     "//brave/components/brave_vpn/common",
     "//net",
     "//services/network/public/cpp",
-  ]
-}
-
-source_set("utils") {
-  sources = [
-    "wireguard_utils.cc",
-    "wireguard_utils.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/components/brave_vpn/browser/connection:common",
-    "//brave/components/brave_vpn/browser/connection/wireguard/common",
-    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service:brave_wireguard_manager_idl",
-    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service:common",
-    "//brave/components/brave_vpn/common",
   ]
 }
