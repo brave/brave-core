@@ -91,6 +91,8 @@ test("brave_unit_tests") {
     "//chrome/test:disable_thinlto_cache_flags",
   ]
 
+  defines = [ "ALLOW_IMPLICIT_ATOMIC_STRING_CONVERSIONS" ]
+
   sources = [
     "//brave/browser/brave_content_browser_client_unittest.cc",
     "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
