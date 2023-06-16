@@ -56,9 +56,6 @@ class TransactionsActivityStoreTests: XCTestCase {
     
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
-    walletService._userAssets = { chainId, coin, completion in
-      completion(self.visibleAssetsForCoins[coin] ?? [])
-    }
     
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
@@ -97,6 +94,15 @@ class TransactionsActivityStoreTests: XCTestCase {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._estimatedTxFee = { $2(UInt64(1), .success, "") }
     
+    let mockUserManager = TestableWalletUserAssetManager()
+    mockUserManager._getAllVisibleAssetsInNetworkAssets = { [weak self] networks in
+      var networkAssets: [NetworkAssets] = []
+      for network in networks {
+        networkAssets.append(NetworkAssets(network: network, tokens: self?.visibleAssetsForCoins[network.coin] ?? [], sortOrder: 0))
+      }
+      return networkAssets
+    }
+    
     let store = TransactionsActivityStore(
       keyringService: keyringService,
       rpcService: rpcService,
@@ -104,7 +110,8 @@ class TransactionsActivityStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
       txService: txService,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: mockUserManager
     )
    
     let transactionsExpectation = expectation(description: "transactionsExpectation")

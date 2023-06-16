@@ -7,6 +7,7 @@ import Foundation
 import BraveCore
 import SwiftUI
 import Combine
+import Data
 
 public struct AssetViewModel: Identifiable, Equatable {
   var token: BraveWallet.BlockchainToken
@@ -95,12 +96,12 @@ public class PortfolioStore: ObservableObject {
   @Published private(set) var isLoadingDiscoverAssets: Bool = false
 
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
-    walletService: self.walletService,
     blockchainRegistry: self.blockchainRegistry,
     rpcService: self.rpcService,
     keyringService: self.keyringService,
     assetRatioService: self.assetRatioService,
-    ipfsApi: self.ipfsApi
+    ipfsApi: self.ipfsApi,
+    userAssetManager: self.assetManager
   )
   
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
@@ -120,6 +121,7 @@ public class PortfolioStore: ObservableObject {
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let ipfsApi: IpfsAPI
+  private let assetManager: WalletUserAssetManagerType
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -127,7 +129,8 @@ public class PortfolioStore: ObservableObject {
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
-    ipfsApi: IpfsAPI
+    ipfsApi: IpfsAPI,
+    userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -135,6 +138,7 @@ public class PortfolioStore: ObservableObject {
     self.assetRatioService = assetRatioService
     self.blockchainRegistry = blockchainRegistry
     self.ipfsApi = ipfsApi
+    self.assetManager = userAssetManager
 
     self.rpcService.add(self)
     self.keyringService.add(self)
@@ -167,7 +171,7 @@ public class PortfolioStore: ObservableObject {
         let tokens: [BraveWallet.BlockchainToken]
         let sortOrder: Int
       }
-      let allVisibleUserAssets = await self.walletService.allVisibleUserAssets(in: networks)
+      let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: networks)
       var updatedUserVisibleAssets = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
       // update userVisibleAssets on display immediately with empty values. Issue #5567
       self.userVisibleAssets = updatedUserVisibleAssets
@@ -259,9 +263,7 @@ public class PortfolioStore: ObservableObject {
   }
   
   /// Builds the `AssetViewModel`s and `NFTAssetViewModel`s using the balances, price and metadata stored in their respective caches.
-  private func buildAssetViewModels(
-    allVisibleUserAssets: [NetworkAssets]
-  ) -> [AssetViewModel] {
+  private func buildAssetViewModels(allVisibleUserAssets: [NetworkAssets]) -> [AssetViewModel] {
     allVisibleUserAssets.flatMap { networkAssets in
       networkAssets.tokens.filter { (!$0.isErc721 && !$0.isNft) }.map { token in
         AssetViewModel(
@@ -379,9 +381,7 @@ extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
   
   public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
     isLoadingDiscoverAssets = false
-    if !discoveredAssets.isEmpty {
-      update()
-    }
+    // assets update will be called via `CryptoStore`
   }
   
   public func onResetWallet() {

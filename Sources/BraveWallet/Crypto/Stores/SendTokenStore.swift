@@ -130,7 +130,8 @@ public class SendTokenStore: ObservableObject {
     rpcService: rpcService,
     walletService: walletService,
     assetRatioService: assetRatioService,
-    ipfsApi: ipfsApi
+    ipfsApi: ipfsApi,
+    userAssetManager: assetManager
   )
 
   private let keyringService: BraveWalletKeyringService
@@ -147,6 +148,7 @@ public class SendTokenStore: ObservableObject {
   private var prefilledToken: BraveWallet.BlockchainToken?
   private var metadataCache: [String: NFTMetadata] = [:]
   private let ipfsApi: IpfsAPI
+  private let assetManager: WalletUserAssetManagerType
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -158,7 +160,8 @@ public class SendTokenStore: ObservableObject {
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     prefilledToken: BraveWallet.BlockchainToken?,
-    ipfsApi: IpfsAPI
+    ipfsApi: IpfsAPI,
+    userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -170,6 +173,7 @@ public class SendTokenStore: ObservableObject {
     self.solTxManagerProxy = solTxManagerProxy
     self.prefilledToken = prefilledToken
     self.ipfsApi = ipfsApi
+    self.assetManager = userAssetManager
 
     self.keyringService.add(self)
     self.rpcService.add(self)
@@ -239,7 +243,7 @@ public class SendTokenStore: ObservableObject {
       await validatePrefilledToken(on: &network) // network may change
       coin = network.coin // in case network changed
       // fetch user assets
-      let userAssets = await self.walletService.userAssets(network.chainId, coin: network.coin)
+      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
       let allTokens = await self.blockchainRegistry.allTokens(network.chainId, coin: network.coin)
       guard !Task.isCancelled else { return }
       if selectedSendToken == nil {

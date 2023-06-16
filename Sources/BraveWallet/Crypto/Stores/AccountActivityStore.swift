@@ -33,6 +33,7 @@ class AccountActivityStore: ObservableObject {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
+  private let assetManager: WalletUserAssetManagerType
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
@@ -47,7 +48,8 @@ class AccountActivityStore: ObservableObject {
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI
+    ipfsApi: IpfsAPI,
+    userAssetManager: WalletUserAssetManagerType
   ) {
     self.account = account
     self.observeAccountUpdates = observeAccountUpdates
@@ -59,6 +61,7 @@ class AccountActivityStore: ObservableObject {
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
+    self.assetManager = userAssetManager
     
     self.keyringService.add(self)
     self.rpcService.add(self)
@@ -81,7 +84,7 @@ class AccountActivityStore: ObservableObject {
         let tokens: [BraveWallet.BlockchainToken]
         let sortOrder: Int
       }
-      let allVisibleUserAssets = await walletService.allVisibleUserAssets(in: networksForAccountCoin)
+      let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: networksForAccountCoin)
       let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(\.tokens)
       var updatedUserVisibleAssets: [AssetViewModel] = []
       var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
@@ -254,7 +257,8 @@ class AccountActivityStore: ObservableObject {
       rpcService: rpcService,
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
-      solanaTxManagerProxy: solTxManagerProxy
+      solanaTxManagerProxy: solTxManagerProxy,
+      userAssetManager: assetManager
     )
   }
   

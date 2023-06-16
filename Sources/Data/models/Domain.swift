@@ -215,6 +215,8 @@ public final class Domain: NSManagedObject, CRUD {
       return domain.wallet_solanaPermittedAcccounts?.split(separator: ",").map(String.init)
     case .fil:
       return nil
+    case .btc:
+      return nil
     @unknown default:
       return nil
     }
@@ -232,6 +234,8 @@ public final class Domain: NSManagedObject, CRUD {
       }
     case .fil:
       break
+    case .btc:
+      break
     @unknown default:
       break
     }
@@ -247,6 +251,8 @@ public final class Domain: NSManagedObject, CRUD {
       let predicate = Domain.containsSolanaPermissionsPredicate
       return all(where: predicate, context: context ?? DataController.viewContext) ?? []
     case .fil:
+      break
+    case .btc:
       break
     @unknown default:
       break
@@ -270,6 +276,8 @@ public final class Domain: NSManagedObject, CRUD {
           case .sol:
             $0.wallet_solanaPermittedAcccounts = nil
           case .fil:
+            break
+          case .btc:
             break
           @unknown default:
             break
@@ -480,6 +488,8 @@ extension Domain {
         }
       case .fil:
         break
+      case .btc:
+        break
       @unknown default:
         break
       }
@@ -498,6 +508,8 @@ extension Domain {
           wallet_solanaPermittedAcccounts = accounts.joined(separator: ",")
         }
       case .fil:
+        break
+      case .btc:
         break
       @unknown default:
         break

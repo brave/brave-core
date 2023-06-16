@@ -74,22 +74,16 @@ class NFTStoreTests: XCTestCase {
       completion("", metadata, .success, "")
     }
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { _, coin, completion in
-      switch coin {
-      case .eth:
-        completion(mockEthUserAssets)
-      case .sol:
-        completion(mockSolUserAssets)
-      case .fil:
-        XCTFail("Should not fetch filecoin assets")
-      case .btc:
-        XCTFail("Should not fetch btc assets")
-      @unknown default:
-        XCTFail("Should not fetch unknown assets")
-      }
-    }
     walletService._addObserver = { _ in }
     let assetRatioService = BraveWallet.TestAssetRatioService()
+    
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { _ in
+      [
+        NetworkAssets(network: .mockMainnet, tokens: [.previewToken.copy(asVisibleAsset: true), .mockERC721NFTToken.copy(asVisibleAsset: true)], sortOrder: 0),
+        NetworkAssets(network: .mockSolana, tokens: [BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true), .mockSolanaNFTToken.copy(asVisibleAsset: true)], sortOrder: 1)
+      ]
+    }
     
     // setup store
     let store = NFTStore(
@@ -98,7 +92,8 @@ class NFTStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: mockAssetManager
     )
     
     // test that `update()` will assign new value to `userVisibleNFTs` publisher
@@ -115,15 +110,15 @@ class NFTStoreTests: XCTestCase {
           return
         }
         XCTAssertEqual(lastUpdatedVisibleNFTs.count, 2)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[0].token.symbol, mockSolUserAssets.last?.symbol)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[0].token.symbol, mockEthUserAssets.last?.symbol)
         
-        XCTAssertEqual(lastUpdatedVisibleNFTs[1].token.symbol, mockEthUserAssets.last?.symbol)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.imageURLString, mockSolMetadata.imageURLString)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.name, mockSolMetadata.name)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockSolMetadata.description)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.nftMetadata?.imageURLString, mockERC721Metadata.imageURLString)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.nftMetadata?.name, mockERC721Metadata.name)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.nftMetadata?.description, mockERC721Metadata.description)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[1].token.symbol, mockSolUserAssets.last?.symbol)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.imageURLString, mockERC721Metadata.imageURLString)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.name, mockERC721Metadata.name)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockERC721Metadata.description)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.nftMetadata?.imageURLString, mockSolMetadata.imageURLString)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.nftMetadata?.name, mockSolMetadata.name)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.nftMetadata?.description, mockSolMetadata.description)
       }.store(in: &cancellables)
     
     store.update()
@@ -134,12 +129,6 @@ class NFTStoreTests: XCTestCase {
   
   func testUpdateAfterNetworkFilter() {
     let ethNetwork: BraveWallet.NetworkInfo = .mockMainnet
-    let mockEthUserAssets: [BraveWallet.BlockchainToken] = [
-      .previewToken.then { $0.visible = true },
-      .mockUSDCToken.then { $0.visible = false }, // Verify non-visible assets not displayed #6386
-      .mockERC721NFTToken
-    ]
-    
     let solNetwork: BraveWallet.NetworkInfo = .mockSolana
     let mockSolUserAssets: [BraveWallet.BlockchainToken] = [
       BraveWallet.NetworkInfo.mockSolana.nativeToken.then { $0.visible = true },
@@ -193,22 +182,15 @@ class NFTStoreTests: XCTestCase {
       completion("", metadata, .success, "")
     }
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { _, coin, completion in
-      switch coin {
-      case .eth:
-        completion(mockEthUserAssets)
-      case .sol:
-        completion(mockSolUserAssets)
-      case .fil:
-        XCTFail("Should not fetch filecoin assets")
-      case .btc:
-        XCTFail("Should not fetch btc assets")
-      @unknown default:
-        XCTFail("Should not fetch unknown assets")
-      }
-    }
     walletService._addObserver = { _ in }
     let assetRatioService = BraveWallet.TestAssetRatioService()
+    
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { _ in
+      [
+        NetworkAssets(network: .mockSolana, tokens: [BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true), .mockSolanaNFTToken.copy(asVisibleAsset: true)], sortOrder: 1)
+      ]
+    }
     
     // setup store
     let store = NFTStore(
@@ -217,7 +199,8 @@ class NFTStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: mockAssetManager
     )
     
     // test that `update()` will assign new value to `userVisibleNFTs` publisher

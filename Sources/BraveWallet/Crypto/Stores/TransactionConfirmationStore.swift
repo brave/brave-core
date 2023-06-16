@@ -132,6 +132,7 @@ public class TransactionConfirmationStore: ObservableObject {
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let keyringService: BraveWalletKeyringService
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let assetManager: WalletUserAssetManagerType
   private var selectedChain: BraveWallet.NetworkInfo = .init()
 
   init(
@@ -142,7 +143,8 @@ public class TransactionConfirmationStore: ObservableObject {
     walletService: BraveWalletBraveWalletService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     keyringService: BraveWalletKeyringService,
-    solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    userAssetManager: WalletUserAssetManagerType
   ) {
     self.assetRatioService = assetRatioService
     self.rpcService = rpcService
@@ -152,6 +154,7 @@ public class TransactionConfirmationStore: ObservableObject {
     self.ethTxManagerProxy = ethTxManagerProxy
     self.keyringService = keyringService
     self.solTxManagerProxy = solTxManagerProxy
+    self.assetManager = userAssetManager
 
     self.txService.add(self)
     self.walletService.add(self)
@@ -199,7 +202,7 @@ public class TransactionConfirmationStore: ObservableObject {
     let transactionNetworks: [BraveWallet.NetworkInfo] = Set(allTxs.map(\.chainId))
       .compactMap { chainId in allNetworks.first(where: { $0.chainId == chainId }) }
     for network in transactionNetworks {
-      let userVisibleTokens = await walletService.userAssets(network.chainId, coin: network.coin)
+      let userVisibleTokens = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
       await fetchAssetRatios(for: userVisibleTokens)
     }
     await fetchUnknownTokens(for: unapprovedTxs)
@@ -228,7 +231,7 @@ public class TransactionConfirmationStore: ObservableObject {
         return
       }
       let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin) + tokenInfoCache.map(\.value)
-      let userVisibleTokens = await walletService.userAssets(network.chainId, coin: coin)
+      let userVisibleTokens = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
       let solEstimatedTxFee: UInt64? = solEstimatedTxFeeCache[transaction.id]
       
       if transaction.isEIP1559Transaction {
@@ -267,7 +270,8 @@ public class TransactionConfirmationStore: ObservableObject {
       rpcService: rpcService,
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
-      solanaTxManagerProxy: solTxManagerProxy
+      solanaTxManagerProxy: solTxManagerProxy,
+      userAssetManager: assetManager
     )
   }
   
@@ -347,7 +351,7 @@ public class TransactionConfirmationStore: ObservableObject {
     guard let network = allNetworks.first(where: { $0.chainId == BraveWallet.MainnetChainId }) else {
       return
     }
-    let userVisibleTokens = await walletService.userAssets(network.chainId, coin: network.coin)
+    let userVisibleTokens = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
     let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
     let unknownTokenContractAddresses = mainnetTransactions.flatMap(\.tokenContractAddresses)
       .filter { contractAddress in

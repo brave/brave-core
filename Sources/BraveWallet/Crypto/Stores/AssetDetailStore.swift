@@ -77,6 +77,7 @@ class AssetDetailStore: ObservableObject {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let swapService: BraveWalletSwapService
+  private let assetManager: WalletUserAssetManagerType
   /// A list of tokens that are supported with the current selected network for all supported
   /// on-ramp providers.
   private var allBuyTokensAllOptions: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] = [:]
@@ -112,6 +113,7 @@ class AssetDetailStore: ObservableObject {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     swapService: BraveWalletSwapService,
+    userAssetManager: WalletUserAssetManagerType,
     assetDetailType: AssetDetailType
   ) {
     self.assetRatioService = assetRatioService
@@ -122,6 +124,7 @@ class AssetDetailStore: ObservableObject {
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
     self.swapService = swapService
+    self.assetManager = userAssetManager
     self.assetDetailType = assetDetailType
 
     self.keyringService.add(self)
@@ -285,7 +288,7 @@ class AssetDetailStore: ObservableObject {
   ) async -> [TransactionSummary] {
     guard case let .blockchainToken(token) = assetDetailType
     else { return [] }
-    let userVisibleAssets = await walletService.userAssets(network.chainId, coin: network.coin)
+    let userVisibleAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
     let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
     let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { @MainActor group -> [BraveWallet.TransactionInfo] in
       for account in keyring.accountInfos {
@@ -354,7 +357,8 @@ class AssetDetailStore: ObservableObject {
       rpcService: rpcService,
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
-      solanaTxManagerProxy: solTxManagerProxy
+      solanaTxManagerProxy: solTxManagerProxy,
+      userAssetManager: assetManager
     )
   }
 }

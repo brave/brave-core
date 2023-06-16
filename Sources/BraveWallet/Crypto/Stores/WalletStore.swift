@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import Combine
+import Preferences
 
 /// The main wallet store
 public class WalletStore {

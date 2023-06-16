@@ -159,20 +159,6 @@ class PortfolioStoreTests: XCTestCase {
       completion("", metaData, .success, "")
     }
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { _, coin, completion in
-      switch coin {
-      case .eth:
-        completion(mockEthUserAssets)
-      case .sol:
-        completion(mockSolUserAssets)
-      case .fil:
-        XCTFail("Should not fetch filecoin assets")
-      case .btc:
-        XCTFail("Should not fetch bitcoin network")
-      @unknown default:
-        XCTFail("Should not fetch unknown assets")
-      }
-    }
     walletService._addObserver = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     walletService._selectedCoin = { $0(BraveWallet.CoinType.eth) }
@@ -193,6 +179,13 @@ class PortfolioStoreTests: XCTestCase {
       }
     }
     
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { _ in
+      [NetworkAssets(network: .mockMainnet, tokens: mockEthUserAssets.filter({ $0.visible == true }), sortOrder: 0),
+       NetworkAssets(network: .mockSolana, tokens: mockSolUserAssets.filter({ $0.visible == true }), sortOrder: 1)
+      ]
+    }
+    
     // setup store
     let store = PortfolioStore(
       keyringService: keyringService,
@@ -200,7 +193,8 @@ class PortfolioStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: mockAssetManager
     )
     // test that `update()` will assign new value to `userVisibleAssets` publisher
     let userVisibleAssetsException = expectation(description: "update-userVisibleAssets")

@@ -70,12 +70,13 @@ import BraveCore
       completion(allTokens)
     }
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { _, _, completion in
-      completion([])
-    }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     walletService._addObserver = { _ in }
     walletService._selectedCoin = { $0(BraveWallet.CoinType.eth) }
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
+      []
+    }
     let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
     ethTxManagerProxy._gasEstimation1559 = { _, completion in
       completion(gasEstimation)
@@ -113,7 +114,8 @@ import BraveCore
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
       keyringService: keyringService,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: mockAssetManager
     )
   }
   
