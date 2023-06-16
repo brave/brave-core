@@ -17,7 +17,6 @@
 #include "base/scoped_native_library.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/access_control_list.h"
-#include "base/win/registry.h"
 #include "base/win/scoped_handle.h"
 #include "base/win/security_descriptor.h"
 #include "base/win/sid.h"
@@ -134,21 +133,6 @@ absl::optional<base::FilePath> GetConfigFilePath(
     return absl::nullopt;
   }
   return WriteConfigToFile(decoded_config);
-}
-
-bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
-  base::win::RegKey storage;
-  if (storage.Create(
-          HKEY_LOCAL_MACHINE,
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-          KEY_SET_VALUE) != ERROR_SUCCESS) {
-    return false;
-  }
-  if (storage.WriteValue(L"ConfigPath", config_path.value().c_str()) !=
-      ERROR_SUCCESS) {
-    return false;
-  }
-  return true;
 }
 
 }  // namespace

@@ -26,6 +26,9 @@
 namespace brave_vpn {
 
 namespace {
+
+constexpr wchar_t kBraveWireguardConfigValueName[] = L"ConfigPath";
+
 // Template for wireguard config generation.
 constexpr char kWireguardConfigTemplate[] = R"(
   [Interface]
@@ -41,6 +44,21 @@ constexpr char kWireguardConfigTemplate[] = R"(
 }  // namespace
 
 namespace wireguard {
+
+bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
+  base::win::RegKey storage;
+  if (storage.Create(
+          HKEY_LOCAL_MACHINE,
+          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
+          KEY_SET_VALUE) != ERROR_SUCCESS) {
+    return false;
+  }
+  if (storage.WriteValue(kBraveWireguardConfigValueName,
+                         config_path.value().c_str()) != ERROR_SUCCESS) {
+    return false;
+  }
+  return true;
+}
 
 // Returns last used config path.
 // We keep config file between launches to be able to reuse it outside of Brave.

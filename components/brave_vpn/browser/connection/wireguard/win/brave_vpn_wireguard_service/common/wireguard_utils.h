@@ -16,6 +16,7 @@
 namespace brave_vpn {
 
 namespace wireguard {
+bool UpdateLastUsedConfigPath(const base::FilePath& config_path);
 absl::optional<base::FilePath> GetLastUsedConfigPath();
 void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback);
 absl::optional<std::string> CreateWireguardConfig(

@@ -89,9 +89,13 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
                    << brave_vpn::GetBraveVpnHelperServiceName();
     }
 
-    UninstallBraveVPNWireguardService(
-        brave_vpn::GetBraveVPNWireguardServiceInstallationPath(
-            installer_state->target_path(), *modify_params.current_version));
+    if (!UninstallBraveVPNWireguardService(
+            brave_vpn::GetBraveVPNWireguardServiceInstallationPath(
+                installer_state->target_path(),
+                *modify_params.current_version))) {
+      LOG(WARNING) << "Failed to delete "
+                   << brave_vpn::GetBraveVpnWireguardServiceName();
+    }
   }
   brave_vpn::ras::RemoveEntry(brave_vpn::GetBraveVPNConnectionName());
 #endif
