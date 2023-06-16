@@ -5,6 +5,8 @@
 
 import BraveCore
 import Combine
+import Preferences
+import Data
 
 enum PendingRequest: Equatable {
   case transactions([BraveWallet.TransactionInfo])
@@ -100,6 +102,7 @@ public class CryptoStore: ObservableObject {
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
+  private let userAssetManager: WalletUserAssetManager
   
   public init(
     keyringService: BraveWalletKeyringService,
@@ -124,6 +127,7 @@ public class CryptoStore: ObservableObject {
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
+    self.userAssetManager = WalletUserAssetManager(rpcService: rpcService, walletService: walletService)
     self.origin = origin
     
     self.networkStore = .init(
@@ -139,7 +143,8 @@ public class CryptoStore: ObservableObject {
       walletService: walletService,
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
-      ipfsApi: ipfsApi
+      ipfsApi: ipfsApi,
+      userAssetManager: userAssetManager
     )
     self.nftStore = .init(
       keyringService: keyringService,
@@ -147,7 +152,8 @@ public class CryptoStore: ObservableObject {
       walletService: walletService,
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
-      ipfsApi: ipfsApi
+      ipfsApi: ipfsApi,
+      userAssetManager: userAssetManager
     )
     self.transactionsActivityStore = .init(
       keyringService: keyringService,
@@ -156,7 +162,8 @@ public class CryptoStore: ObservableObject {
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
       txService: txService,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: userAssetManager
     )
     self.marketStore = .init(
       assetRatioService: assetRatioService,
@@ -168,6 +175,11 @@ public class CryptoStore: ObservableObject {
     self.keyringService.add(self)
     self.txService.add(self)
     self.rpcService.add(self)
+    self.walletService.add(self)
+    
+    userAssetManager.migrateUserAssets { [weak self] in
+      self?.updateAssets()
+    }
   }
   
   private var buyTokenStore: BuyTokenStore?
@@ -201,7 +213,8 @@ public class CryptoStore: ObservableObject {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: prefilledToken,
-      ipfsApi: self.ipfsApi
+      ipfsApi: ipfsApi,
+      userAssetManager: userAssetManager
     )
     sendTokenStore = store
     return store
@@ -221,6 +234,7 @@ public class CryptoStore: ObservableObject {
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: userAssetManager,
       prefilledToken: prefilledToken
     )
     swapTokenStore = store
@@ -241,6 +255,7 @@ public class CryptoStore: ObservableObject {
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       swapService: swapService,
+      userAssetManager: userAssetManager,
       assetDetailType: assetDetailType
     )
     assetDetailStore = store
@@ -273,7 +288,8 @@ public class CryptoStore: ObservableObject {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi
+      ipfsApi: ipfsApi,
+      userAssetManager: userAssetManager
     )
     accountActivityStore = store
     return store
@@ -304,7 +320,8 @@ public class CryptoStore: ObservableObject {
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
       keyringService: keyringService,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: userAssetManager
     )
     confirmationStore = store
     return store
@@ -529,8 +546,22 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
     rejectAllPendingWebpageRequests()
   }
   public func keyringCreated(_ keyringId: String) {
+    Task { @MainActor [weak self] in
+      if let newCoin = WalletConstants.supportedCoinTypes.first(where: { $0.keyringId == keyringId }) {
+        self?.userAssetManager.migrateUserAssets(for: newCoin, completion: {
+          self?.updateAssets()
+        })
+      }
+    }
   }
   public func keyringRestored(_ keyringId: String) {
+    // if a keyring is restored, we want to reset user assets local storage
+    // and migrate with for new keyring
+    WalletUserAssetGroup.removeAllGroup() { [weak self] in
+      self?.userAssetManager.migrateUserAssets(completion: {
+        self?.updateAssets()
+      })
+    }
   }
   public func locked() {
     isPresentingPendingRequest = false
@@ -567,5 +598,40 @@ extension CryptoStore: BraveWalletJsonRpcServiceObserver {
   }
   
   public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
+  }
+}
+
+extension CryptoStore: BraveWalletBraveWalletServiceObserver {
+  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
+  }
+  
+  public func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDefaultBaseCurrencyChanged(_ currency: String) {
+  }
+  
+  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
+  }
+  
+  public func onNetworkListChanged() {
+  }
+  
+  public func onDiscoverAssetsStarted() {
+  }
+  
+  public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
+    for asset in discoveredAssets where userAssetManager.getUserAsset(asset) == nil {
+      userAssetManager.addUserAsset(asset, completion: nil)
+    }
+    if !discoveredAssets.isEmpty {
+      updateAssets()
+    }
+  }
+  
+  public func onResetWallet() {
   }
 }

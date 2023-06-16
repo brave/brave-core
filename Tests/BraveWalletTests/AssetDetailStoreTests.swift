@@ -51,10 +51,12 @@ class AssetDetailStoreTests: XCTestCase {
     walletService._defaultBaseCurrency = {
       $0("usd")
     }
-    walletService._userAssets = {
-      $2([.previewToken])
-    }
     walletService._addObserver = { _ in }
+    
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
+      [NetworkAssets(network: .mockMainnet, tokens: [.previewToken], sortOrder: 0)]
+    }
     
     let txService = BraveWallet.TestTxService()
     txService._allTransactionInfo = {
@@ -90,6 +92,7 @@ class AssetDetailStoreTests: XCTestCase {
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       swapService: swapService,
+      userAssetManager: mockAssetManager,
       assetDetailType: .blockchainToken(.previewToken)
     )
     
@@ -257,6 +260,11 @@ class AssetDetailStoreTests: XCTestCase {
       $0(.eth)
     }
     
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
+      [NetworkAssets(network: .mockMainnet, tokens: [.previewToken], sortOrder: 0)]
+    }
+    
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
     
@@ -281,6 +289,7 @@ class AssetDetailStoreTests: XCTestCase {
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       swapService: swapService,
+      userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketBitcoin)
     )
     
@@ -397,6 +406,7 @@ class AssetDetailStoreTests: XCTestCase {
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       swapService: swapService,
+      userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketEth)
     )
     let assetDetailNonBitcoinException = expectation(description: "update-coinMarket-non-bitcoin")

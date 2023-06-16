@@ -119,12 +119,17 @@ public class SettingsStore: ObservableObject {
 
   func reset() {
     walletService.reset()
+    
     keychain.resetPasswordInKeychain(key: KeyringStore.passwordKeychainKey)
     for coin in WalletConstants.supportedCoinTypes {
       Domain.clearAllWalletPermissions(for: coin)
       Preferences.Wallet.reset(for: coin)
     }
+    
     Preferences.Wallet.displayWeb3Notifications.reset()
+    Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
+    
+    WalletUserAssetGroup.removeAllGroup()
   }
 
   func resetTransaction() {

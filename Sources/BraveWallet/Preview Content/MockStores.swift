@@ -112,7 +112,8 @@ extension SendTokenStore {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
       prefilledToken: .previewToken,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: TestableWalletUserAssetManager()
     )
   }
 }
@@ -128,6 +129,7 @@ extension AssetDetailStore {
       blockchainRegistry: MockBlockchainRegistry(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
       swapService: MockSwapService(),
+      userAssetManager: TestableWalletUserAssetManager(),
       assetDetailType: .blockchainToken(.previewToken)
     )
   }
@@ -144,6 +146,7 @@ extension SwapTokenStore {
       walletService: MockBraveWalletService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      userAssetManager: TestableWalletUserAssetManager(),
       prefilledToken: nil
     )
   }
@@ -152,12 +155,12 @@ extension SwapTokenStore {
 extension UserAssetsStore {
   static var previewStore: UserAssetsStore {
     .init(
-      walletService: MockBraveWalletService(),
       blockchainRegistry: MockBlockchainRegistry(),
       rpcService: MockJsonRpcService(),
       keyringService: MockKeyringService(),
       assetRatioService: MockAssetRatioService(),
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: TestableWalletUserAssetManager()
     )
   }
 }
@@ -174,7 +177,8 @@ extension AccountActivityStore {
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: TestableWalletUserAssetManager()
     )
   }
 }
@@ -193,7 +197,8 @@ extension TransactionConfirmationStore {
         service.createWallet("password") { _  in }
         return service
       }(),
-      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy
+      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      userAssetManager: TestableWalletUserAssetManager()
     )
   }
 }
@@ -225,7 +230,8 @@ extension TransactionsActivityStore {
     assetRatioService: MockAssetRatioService(),
     blockchainRegistry: MockBlockchainRegistry(),
     txService: MockTxService(),
-    solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy
+    solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+    userAssetManager: TestableWalletUserAssetManager()
   )
 }
 

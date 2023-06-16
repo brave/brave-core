@@ -17,20 +17,12 @@ class UserAssetsStoreTests: XCTestCase {
     .eth: [.mockMainnet],
     .sol: [.mockSolana]
   ]
-  let visibleAssetsForCoins: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [
-    .eth: [
-      BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
-      .mockERC721NFTToken.copy(asVisibleAsset: true)],
-    .sol: [
-      BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
-      .mockSolanaNFTToken.copy(asVisibleAsset: true)]
-  ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [
     .eth: [.mockUSDCToken],
     .sol: [.mockSpdToken]
   ]
   
-  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService) {
+  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     
@@ -42,10 +34,6 @@ class UserAssetsStoreTests: XCTestCase {
     rpcService._erc721Metadata = { _, _, _, completion in
       completion("", "", .internalError, "")
     }
-    let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { chainId, coin, completion in
-      completion(self.visibleAssetsForCoins[coin] ?? [])
-    }
     
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._allTokens = { chainId, coin, completion in
@@ -54,19 +42,49 @@ class UserAssetsStoreTests: XCTestCase {
     
     let assetRatioService = BraveWallet.TestAssetRatioService()
 
-    return (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService)
+    return (keyringService, rpcService, blockchainRegistry, assetRatioService)
   }
   
   func testUpdate() {
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService) = setupServices()
+    let (keyringService, rpcService, blockchainRegistry, assetRatioService) = setupServices()
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { networks in
+      var result: [NetworkAssets] = []
+      for network in networks {
+        if network.chainId == BraveWallet.MainnetChainId {
+          result.append(
+            NetworkAssets(
+              network: .mockMainnet,
+              tokens: [
+                BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
+                .mockERC721NFTToken.copy(asVisibleAsset: true),
+                .mockUSDCToken
+              ],
+              sortOrder: 0)
+          )
+        } else if network.chainId == BraveWallet.SolanaMainnet {
+          result.append(
+            NetworkAssets(
+              network: .mockSolana,
+              tokens: [
+                BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
+                .mockSolanaNFTToken.copy(asVisibleAsset: true),
+                .mockSpdToken
+              ],
+              sortOrder: 1)
+          )
+        }
+      }
+      return result
+    }
     
     let userAssetsStore = UserAssetsStore(
-      walletService: walletService,
       blockchainRegistry: blockchainRegistry,
       rpcService: rpcService,
       keyringService: keyringService,
       assetRatioService: assetRatioService,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: mockAssetManager
     )
     
     let assetStoresException = expectation(description: "userAssetsStore-assetStores")
@@ -84,17 +102,17 @@ class UserAssetsStoreTests: XCTestCase {
         XCTAssertTrue(assetStores[1].token.visible)
         XCTAssertEqual(assetStores[1].network, BraveWallet.NetworkInfo.mockSolana)
         
-        XCTAssertEqual(assetStores[2].token.symbol, BraveWallet.NetworkInfo.mockMainnet.nativeToken.symbol)
-        XCTAssertTrue(assetStores[2].token.visible)
-        XCTAssertEqual(assetStores[2].network, BraveWallet.NetworkInfo.mockMainnet)
+        XCTAssertEqual(assetStores[2].token.symbol, BraveWallet.BlockchainToken.mockSpdToken.symbol)
+        XCTAssertFalse(assetStores[2].token.visible)
+        XCTAssertEqual(assetStores[2].network, BraveWallet.NetworkInfo.mockSolana)
         
-        XCTAssertEqual(assetStores[3].token.symbol, BraveWallet.BlockchainToken.mockERC721NFTToken.symbol)
+        XCTAssertEqual(assetStores[3].token.symbol, BraveWallet.NetworkInfo.mockMainnet.nativeToken.symbol)
         XCTAssertTrue(assetStores[3].token.visible)
         XCTAssertEqual(assetStores[3].network, BraveWallet.NetworkInfo.mockMainnet)
         
-        XCTAssertEqual(assetStores[4].token.symbol, BraveWallet.BlockchainToken.mockSpdToken.symbol)
-        XCTAssertFalse(assetStores[4].token.visible)
-        XCTAssertEqual(assetStores[4].network, BraveWallet.NetworkInfo.mockSolana)
+        XCTAssertEqual(assetStores[4].token.symbol, BraveWallet.BlockchainToken.mockERC721NFTToken.symbol)
+        XCTAssertTrue(assetStores[4].token.visible)
+        XCTAssertEqual(assetStores[4].network, BraveWallet.NetworkInfo.mockMainnet)
         
         XCTAssertEqual(assetStores[5].token.symbol, BraveWallet.BlockchainToken.mockUSDCToken.symbol)
         XCTAssertFalse(assetStores[5].token.visible)
@@ -110,15 +128,46 @@ class UserAssetsStoreTests: XCTestCase {
   }
   
   func testUpdateWithNetworkFilter() {
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService) = setupServices()
+    let (keyringService, rpcService, blockchainRegistry, assetRatioService) = setupServices()
+    
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { networks in
+      var result: [NetworkAssets] = []
+      for network in networks {
+        if network.chainId == BraveWallet.MainnetChainId {
+          result.append(
+            NetworkAssets(
+            network: .mockMainnet,
+            tokens: [
+              BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
+              .mockERC721NFTToken.copy(asVisibleAsset: true),
+              .mockUSDCToken
+            ],
+            sortOrder: 0)
+          )
+        } else if network.chainId == BraveWallet.SolanaMainnet {
+          result.append(
+            NetworkAssets(
+              network: .mockSolana,
+              tokens: [
+                BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
+                .mockSolanaNFTToken.copy(asVisibleAsset: true),
+                .mockSpdToken
+              ],
+              sortOrder: 1)
+          )
+        }
+      }
+      return result
+    }
     
     let userAssetsStore = UserAssetsStore(
-      walletService: walletService,
       blockchainRegistry: blockchainRegistry,
       rpcService: rpcService,
       keyringService: keyringService,
       assetRatioService: assetRatioService,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: mockAssetManager
     )
     
     let assetStoresException = expectation(description: "userAssetsStore-assetStores")

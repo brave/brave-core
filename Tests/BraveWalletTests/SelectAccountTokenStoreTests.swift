@@ -19,6 +19,13 @@ import BraveCore
     .mockSpdToken.copy(asVisibleAsset: false), // not visible
     .mockSolanaNFTToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.SolanaTestnet }
   ]
+  private var allUserAssetsInNetworkAssets: [NetworkAssets] {
+    [NetworkAssets(network: .mockMainnet, tokens: [.previewToken.copy(asVisibleAsset: true)], sortOrder: 0),
+     NetworkAssets(network: .mockGoerli, tokens: [.mockUSDCToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.GoerliChainId }], sortOrder: 1),
+     NetworkAssets(network: .mockSolana, tokens: [.mockSolToken.copy(asVisibleAsset: true), .mockSpdToken.copy(asVisibleAsset: false)], sortOrder: 2),
+     NetworkAssets(network: .mockSolanaTestnet, tokens: [.mockSolanaNFTToken.copy(asVisibleAsset: true).then { $0.chainId = BraveWallet.SolanaTestnet }], sortOrder: 3)
+    ]
+  }
   
   private let allNetworks: [BraveWallet.NetworkInfo] = [
     .mockMainnet,
@@ -100,7 +107,7 @@ import BraveCore
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = { coin, completion in
-      completion(self.allNetworks)
+      completion(self.allNetworks.filter { $0.coin == coin })
     }
     rpcService._balance = { accountAddress, _, _, completion in
       if accountAddress == BraveWallet.AccountInfo.mockEthAccount.address {
@@ -140,8 +147,21 @@ import BraveCore
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
-    walletService._allUserAssets = { completion in
-      completion(self.allUserAssets)
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
+      self.allUserAssetsInNetworkAssets
+    }
+    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { networks in
+      var result: [NetworkAssets] = []
+      for network in networks {
+        let visibleTokens = self.allUserAssets.filter {
+          $0.chainId.caseInsensitiveCompare(network.chainId) == .orderedSame && $0.visible
+        }
+        if !visibleTokens.isEmpty {
+          result.append(NetworkAssets(network: network, tokens: visibleTokens, sortOrder: 0))
+        }
+      }
+      return result
     }
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { priceIds, _, _, completion in
@@ -154,7 +174,8 @@ import BraveCore
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: mockAssetManager
     )
 
     XCTAssertTrue(store.accountSections.isEmpty)
@@ -254,7 +275,8 @@ import BraveCore
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: TestableWalletUserAssetManager()
     )
     store.setupForTesting()
     XCTAssertTrue(store.accountSections.isEmpty)

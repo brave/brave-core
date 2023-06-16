@@ -109,6 +109,7 @@ public class SwapTokenStore: ObservableObject {
   private let walletService: BraveWalletBraveWalletService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let assetManager: WalletUserAssetManagerType
   private var accountInfo: BraveWallet.AccountInfo?
   private var slippage = 0.005 {
     didSet {
@@ -158,6 +159,7 @@ public class SwapTokenStore: ObservableObject {
     walletService: BraveWalletBraveWalletService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    userAssetManager: WalletUserAssetManagerType,
     prefilledToken: BraveWallet.BlockchainToken?
   ) {
     self.keyringService = keyringService
@@ -168,6 +170,7 @@ public class SwapTokenStore: ObservableObject {
     self.walletService = walletService
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
+    self.assetManager = userAssetManager
     self.prefilledToken = prefilledToken
 
     self.keyringService.add(self)
@@ -794,25 +797,24 @@ public class SwapTokenStore: ObservableObject {
             // Native token on the current selected network
             let nativeAsset = network.nativeToken
             // Custom tokens added by users
-            self.walletService.userAssets(network.chainId, coin: network.coin) { userAssets in
-              let customTokens = userAssets.filter { asset in
-                !tokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
-              }
-              let sortedCustomTokens = customTokens.sorted {
-                if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress) == .orderedSame {
-                  return true
-                } else {
-                  return $0.symbol < $1.symbol
-                }
-              }
-              self.allTokens = (sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })).filter { !$0.isNft }
-              // Seems like user assets always include the selected network's native asset
-              // But let's make sure all token list includes the native asset
-              if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {
-                self.allTokens.insert(nativeAsset, at: 0)
-              }
-              updateSelectedTokens(in: network)
+            let userAssets = self.assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
+            let customTokens = userAssets.filter { asset in
+              !tokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
             }
+            let sortedCustomTokens = customTokens.sorted {
+              if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress) == .orderedSame {
+                return true
+              } else {
+                return $0.symbol < $1.symbol
+              }
+            }
+            self.allTokens = (sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })).filter { !$0.isNft }
+            // Seems like user assets always include the selected network's native asset
+            // But let's make sure all token list includes the native asset
+            if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {
+              self.allTokens.insert(nativeAsset, at: 0)
+            }
+            updateSelectedTokens(in: network)
           }
         }
         

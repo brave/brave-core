@@ -35,6 +35,7 @@ class TransactionDetailsStore: ObservableObject {
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solanaTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let assetManager: WalletUserAssetManagerType
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
@@ -46,7 +47,8 @@ class TransactionDetailsStore: ObservableObject {
     rpcService: BraveWalletJsonRpcService,
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
-    solanaTxManagerProxy: BraveWalletSolanaTxManagerProxy
+    solanaTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    userAssetManager: WalletUserAssetManagerType
   ) {
     self.transaction = transaction
     self.keyringService = keyringService
@@ -55,6 +57,7 @@ class TransactionDetailsStore: ObservableObject {
     self.assetRatioService = assetRatioService
     self.blockchainRegistry = blockchainRegistry
     self.solanaTxManagerProxy = solanaTxManagerProxy
+    self.assetManager = userAssetManager
     
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
@@ -74,7 +77,7 @@ class TransactionDetailsStore: ObservableObject {
       self.network = network
       let keyring = await keyringService.keyringInfo(coin.keyringId)
       var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin) + tokenInfoCache.map(\.value)
-      let userVisibleTokens: [BraveWallet.BlockchainToken] = await walletService.userAssets(network.chainId, coin: network.coin)
+      let userVisibleTokens: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
       let unknownTokenContractAddresses = transaction.tokenContractAddresses
         .filter { contractAddress in
           !userVisibleTokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })

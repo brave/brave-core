@@ -16,20 +16,6 @@ class AccountActivityStoreTests: XCTestCase {
     .eth: [.mockMainnet, .mockGoerli],
     .sol: [.mockSolana, .mockSolanaTestnet]
   ]
-  let visibleAssetsForCoins: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [
-    .eth: [
-      BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
-      .mockERC721NFTToken.copy(asVisibleAsset: true),
-      .mockUSDCToken.copy(asVisibleAsset: true),
-      BraveWallet.NetworkInfo.mockGoerli.nativeToken.copy(asVisibleAsset: true)
-    ],
-    .sol: [
-      BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
-      .mockSolanaNFTToken.copy(asVisibleAsset: true),
-      .mockSpdToken.copy(asVisibleAsset: true),
-      BraveWallet.NetworkInfo.mockSolanaTestnet.nativeToken.copy(asVisibleAsset: true)
-    ]
-  ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
     .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),
@@ -99,10 +85,6 @@ class AccountActivityStoreTests: XCTestCase {
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
-    walletService._userAssets = { chainId, coin, completion in
-      let assets = self.visibleAssetsForCoins[coin] ?? []
-      completion(assets.filter({ $0.chainId == chainId }))
-    }
 
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._allTokens = { chainId, coin, completion in
@@ -152,6 +134,23 @@ class AccountActivityStoreTests: XCTestCase {
       transactions: [ethSendTxCopy, goerliSwapTxCopy]
     )
     
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { _ in
+      [NetworkAssets(
+        network: .mockMainnet,
+        tokens: [
+          BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
+          .mockERC721NFTToken.copy(asVisibleAsset: true),
+          .mockUSDCToken.copy(asVisibleAsset: true)
+        ],
+        sortOrder: 0),
+       NetworkAssets(
+        network: .mockGoerli,
+        tokens: [BraveWallet.NetworkInfo.mockGoerli.nativeToken.copy(asVisibleAsset: true)],
+        sortOrder: 1)
+      ]
+    }
+    
     let accountActivityStore = AccountActivityStore(
       account: account,
       observeAccountUpdates: false,
@@ -162,7 +161,8 @@ class AccountActivityStoreTests: XCTestCase {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi
+      ipfsApi: ipfsApi,
+      userAssetManager: mockAssetManager
     )
     
     let userVisibleAssetsException = expectation(description: "accountActivityStore-assetStores")
@@ -256,6 +256,26 @@ class AccountActivityStoreTests: XCTestCase {
       transactions: [solSendTxCopy, solTestnetSendTxCopy]
     )
     
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { _ in
+      [
+        NetworkAssets(
+        network: .mockSolana,
+        tokens: [
+          BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
+          .mockSolanaNFTToken.copy(asVisibleAsset: true),
+          .mockSpdToken.copy(asVisibleAsset: true)
+        ],
+        sortOrder: 0),
+       NetworkAssets(
+        network: .mockSolanaTestnet,
+        tokens: [
+          BraveWallet.NetworkInfo.mockSolanaTestnet.nativeToken.copy(asVisibleAsset: true)
+        ],
+        sortOrder: 1)
+      ]
+    }
+    
     let accountActivityStore = AccountActivityStore(
       account: account,
       observeAccountUpdates: false,
@@ -266,7 +286,8 @@ class AccountActivityStoreTests: XCTestCase {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi
+      ipfsApi: ipfsApi,
+      userAssetManager: mockAssetManager
     )
     
     let userVisibleAssetsExpectation = expectation(description: "accountActivityStore-assetStores")

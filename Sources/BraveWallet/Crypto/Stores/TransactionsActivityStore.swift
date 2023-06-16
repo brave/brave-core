@@ -34,6 +34,7 @@ class TransactionsActivityStore: ObservableObject {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let txService: BraveWalletTxService
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let assetManager: WalletUserAssetManagerType
   
   init(
     keyringService: BraveWalletKeyringService,
@@ -42,7 +43,8 @@ class TransactionsActivityStore: ObservableObject {
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     txService: BraveWalletTxService,
-    solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -51,6 +53,7 @@ class TransactionsActivityStore: ObservableObject {
     self.blockchainRegistry = blockchainRegistry
     self.txService = txService
     self.solTxManagerProxy = solTxManagerProxy
+    self.assetManager = userAssetManager
     
     keyringService.add(self)
     txService.add(self)
@@ -87,9 +90,7 @@ class TransactionsActivityStore: ObservableObject {
       let allTransactions = await txService.allTransactions(
         chainIdsForCoin: chainIdsForCoin, for: allKeyrings
       ).filter { $0.txStatus != .rejected }
-      let userVisibleTokens = await walletService.allVisibleUserAssets(
-        in: allNetworksAllCoins
-      ).flatMap(\.tokens)
+      let userVisibleTokens = assetManager.getAllVisibleAssetsInNetworkAssets(networks: allNetworksAllCoins).flatMap(\.tokens)
       let allTokens = await blockchainRegistry.allTokens(
         in: allNetworksAllCoins
       ).flatMap(\.tokens)
@@ -182,7 +183,8 @@ class TransactionsActivityStore: ObservableObject {
       rpcService: rpcService,
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
-      solanaTxManagerProxy: solTxManagerProxy
+      solanaTxManagerProxy: solTxManagerProxy,
+      userAssetManager: assetManager
     )
   }
 }

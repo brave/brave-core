@@ -111,6 +111,7 @@ class SelectAccountTokenStore: ObservableObject {
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
   private let ipfsApi: IpfsAPI
+  private let assetManager: WalletUserAssetManagerType
   
   init(
     didSelect: @escaping (BraveWallet.AccountInfo, BraveWallet.BlockchainToken) -> Void,
@@ -118,7 +119,8 @@ class SelectAccountTokenStore: ObservableObject {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
-    ipfsApi: IpfsAPI
+    ipfsApi: IpfsAPI,
+    userAssetManager: WalletUserAssetManagerType
   ) {
     self.didSelect = didSelect
     self.keyringService = keyringService
@@ -126,6 +128,7 @@ class SelectAccountTokenStore: ObservableObject {
     self.walletService = walletService
     self.assetRatioService = assetRatioService
     self.ipfsApi = ipfsApi
+    self.assetManager = userAssetManager
     walletService.add(self)
   }
   
@@ -138,7 +141,7 @@ class SelectAccountTokenStore: ObservableObject {
     let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
     let allNetworks = await rpcService.allNetworksForSupportedCoins()
     self.allNetworks = allNetworks
-    let allVisibleUserAssets = await walletService.allUserAssets().filter(\.visible)
+    let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: allNetworks).flatMap { $0.tokens }
     guard !Task.isCancelled else { return }
     self.accountSections = allKeyrings.flatMap { keyring in
       let tokensForCoin = allVisibleUserAssets.filter { $0.coin == keyring.coin }
