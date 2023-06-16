@@ -79,7 +79,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const [setNetwork] = useSetNetworkMutation()
     const { data: networks } = useGetVisibleNetworksQuery()
 
-
     // Methods
     const getTokenListByAccount = React.useCallback((account: WalletAccountType) => {
       if (!account || !networks) {

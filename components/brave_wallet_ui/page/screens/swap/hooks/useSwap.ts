@@ -38,7 +38,6 @@ import { getEntitiesListFromEntityState } from '../../../../utils/entities.utils
 import { getBalanceRegistryKey } from '../utils/assets'
 import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
 
-
 // Queries
 import {
   useGetAccountInfosRegistryQuery,
@@ -52,7 +51,9 @@ import {
   useGetCombinedTokensListQuery,
   useSelectedAccountQuery
 } from '../../../../common/slices/api.slice.extra'
-import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
+import {
+  querySubscriptionOptions60s
+} from '../../../../common/slices/constants'
 import {
   AccountInfoEntity,
   accountInfoEntityAdaptorInitialState

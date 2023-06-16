@@ -82,10 +82,10 @@ export const computeFiatAmountToAssetValue = (
     return Amount.empty()
   }
 
-  const price = getTokenPriceFromRegistry(spotPriceRegistry, token)
-  if (!price) {
+  const priceInfo = getTokenPriceFromRegistry(spotPriceRegistry, token)
+  if (!priceInfo) {
     return Amount.zero()
   }
 
-  return new Amount(value).div(price.price).times(1)
+  return new Amount(value).div(priceInfo.price).times(1)
 }

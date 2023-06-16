@@ -19,9 +19,11 @@ export type RefreshOpts = {
   skipBalancesRefresh?: boolean
 }
 
-// SpotPriceRegistry represents a mapping of a unique ID for a token to its
-// current spot price in default fiat currency terms. Use getPricingIdForToken
-// for computing this unique ID.
+/**
+ * SpotPriceRegistry represents a mapping of a unique ID for a token to its
+ * current spot price in default fiat currency terms. Use getPricingIdForToken
+ * for computing this unique ID.
+ */
 export type SpotPriceRegistry = {
   [id: string]: BraveWallet.AssetPrice
 }
