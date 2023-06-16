@@ -25,6 +25,7 @@ import {
   SerializableTransactionInfo,
   SPLTransferFromParams,
   SupportedCoinTypes,
+  SpotPriceRegistry
 } from '../../constants/types'
 import {
   CancelTransactionPayload,
@@ -80,7 +81,6 @@ import {
   isNativeAsset
 } from '../../utils/asset-utils'
 import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
-import { getTokenParam, GetTokenParamArg } from '../../utils/api-utils'
 import {
   getCoinFromTxDataUnion,
   hasEIP1559Support
@@ -99,11 +99,10 @@ import {
   signTrezorTransaction
 } from '../async/hardware'
 
-export type AssetPriceById = BraveWallet.AssetPrice & {
-  id: EntityId
-  fromAssetId: EntityId
-}
-
+import {
+  maxBatchSizePrice,
+  maxConcurrentPriceRequests
+} from './constants'
 
 type GetAccountTokenCurrentBalanceArg = {
   coin: BraveWallet.CoinType,
@@ -156,6 +155,11 @@ interface GetTransactionsQueryArg {
   chainId: string | null
 }
 
+interface GetTokenSpotPricesArg {
+  ids: string[]
+  timeframe?: BraveWallet.AssetPriceTimeframe
+}
+
 const NETWORK_TAG_IDS = {
   DEFAULTS: 'DEFAULTS',
   HIDDEN: 'HIDDEN',
@@ -201,12 +205,7 @@ export function createWalletApi () {
         BraveWallet.AccountId,
         BraveWallet.AccountId
       >({
-        queryFn: async (
-          accountId,
-          api,
-          extraOptions,
-          baseQuery
-        ) => {
+        queryFn: async (accountId, api, extraOptions, baseQuery) => {
           const {
             cache,
             // apiProxy
@@ -411,7 +410,10 @@ export function createWalletApi () {
           baseQuery
         ) => {
           try {
-            const { data: { braveWalletService }, cache } = baseQuery(undefined)
+            const {
+              data: { braveWalletService },
+              cache
+            } = baseQuery(undefined)
 
             await dispatch(
               walletApi.endpoints.setSelectedCoin.initiate(coin)
@@ -490,51 +492,87 @@ export function createWalletApi () {
       //
       // Prices
       //
-      getTokenSpotPrice: query<
-        AssetPriceById,
-        GetTokenParamArg & { isErc721: boolean; tokenId: string }
-      >({
-        queryFn: async (tokenArg, { dispatch }, extraOptions, baseQuery) => {
+      getTokenSpotPrices: query<SpotPriceRegistry, GetTokenSpotPricesArg>({
+        queryFn: async (
+          { ids, timeframe },
+          { dispatch },
+          extraOptions,
+          baseQuery
+        ) => {
           try {
-            const { assetRatioService } = baseQuery(undefined).data
+            const {
+              data: { assetRatioService }
+            } = baseQuery(undefined)
 
-            const defaultFiatCurrency = await dispatch(
+            const defaultFiatCurrency: string = await dispatch(
               walletApi.endpoints.getDefaultFiatCurrency.initiate(undefined)
             ).unwrap()
 
-            // send the correct token identifier to the ratio service
-            const getPriceTokenParam = getTokenParam(tokenArg)
+            // dedupe ids to prevent duplicate price requests
+            const uniqueIds = [...new Set(ids)]
 
-            // create a cache id using the provided args
-            const tokenPriceCacheId = `${getPriceTokenParam}-${defaultFiatCurrency}`
+            const chunkedParams = []
+            for (let i = 0; i < uniqueIds.length; i += maxBatchSizePrice) {
+              chunkedParams.push(uniqueIds.slice(i, i + maxBatchSizePrice))
+            }
 
-            const { success, values } = await assetRatioService.getPrice(
-              [getPriceTokenParam],
-              [defaultFiatCurrency],
-              0
+            // Use maxConcurrentPriceRequests concurrent HTTP requests to
+            // fetch prices, in batch of maxBatchSizePrice.
+            const results = await mapLimit(
+              chunkedParams,
+              maxConcurrentPriceRequests,
+              async function (params: string[]) {
+                const { success, values } = await assetRatioService.getPrice(
+                  params,
+                  [defaultFiatCurrency],
+                  timeframe ?? BraveWallet.AssetPriceTimeframe.Live
+                )
+
+                if (success && values) {
+                  return values
+                }
+
+                console.log('Unable to fetch prices for batch:', params)
+                const fallbackResults = await mapLimit(
+                  params,
+                  maxConcurrentPriceRequests,
+                  async function (param: string) {
+                    const { success, values } =
+                      await assetRatioService.getPrice(
+                        [param],
+                        [defaultFiatCurrency],
+                        timeframe ?? BraveWallet.AssetPriceTimeframe.Live
+                      )
+
+                    if (success) {
+                      return values
+                    }
+
+                    return []
+                  }
+                )
+
+                return fallbackResults.flat()
+              }
             )
 
-            if (!success || !values[0]) {
-              throw new Error()
-            }
-
-            const tokenPrice: AssetPriceById = {
-              id: tokenPriceCacheId,
-              ...values[0],
-              fromAsset: tokenArg.symbol.toLowerCase(),
-              fromAssetId: getAssetIdKey(tokenArg)
-            }
-
             return {
-              data: tokenPrice
+              data: results.flat().reduce((acc, assetPrice) => {
+                acc[assetPrice.fromAsset.toLowerCase()] = assetPrice
+                return acc
+              }, {})
             }
           } catch (error) {
             return {
-              error: `Unable to find price for token ${tokenArg.symbol}`
+              error: `Unable to fetch prices`
             }
           }
         },
-        providesTags: cacher.cacheByIdResultProperty('TokenSpotPrice')
+        providesTags: (result, error, { ids, timeframe }) =>
+          ids.map((id) => ({
+            type: 'TokenSpotPrices',
+            id: `${id}-${timeframe ?? BraveWallet.AssetPriceTimeframe.Live}`
+          }))
       }),
       //
       // Tokens
@@ -884,11 +922,7 @@ export function createWalletApi () {
               coin !== BraveWallet.CoinType.SOL
             ) {
               const { balance, error, errorMessage } =
-                await jsonRpcService.getBalance(
-                  address,
-                  coin,
-                  token.chainId
-                )
+                await jsonRpcService.getBalance(address, coin, token.chainId)
 
               // LOCALHOST will error until a local instance is detected
               // return a '0' balance until it's detected.
@@ -907,10 +941,7 @@ export function createWalletApi () {
             switch (coin) {
               case BraveWallet.CoinType.SOL: {
                 const { balance, error } =
-                  await jsonRpcService.getSolanaBalance(
-                    address,
-                    token.chainId
-                  )
+                  await jsonRpcService.getSolanaBalance(address, token.chainId)
 
                 if (
                   token.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
@@ -928,11 +959,7 @@ export function createWalletApi () {
               case BraveWallet.CoinType.ETH:
               default: {
                 const { balance, error, errorMessage } =
-                  await jsonRpcService.getBalance(
-                    address,
-                    coin,
-                    token.chainId
-                  )
+                  await jsonRpcService.getBalance(address, coin, token.chainId)
 
                 if (error && errorMessage) {
                   return {
@@ -986,9 +1013,7 @@ export function createWalletApi () {
               }
 
               return {
-                data: token.isNft
-                  ? uiAmountString
-                  : amount
+                data: token.isNft ? uiAmountString : amount
               }
             }
 
@@ -1021,21 +1046,20 @@ export function createWalletApi () {
 
           const accountTokenBalancesForChainId: string[] = await Promise.all(
             accountsForAssetCoinType.map(async (account) => {
-              const balance =
-                await dispatch(
-                  walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
-                    coin: account.accountId.coin,
-                    address: account.address,
-                    token: {
-                      chainId: asset.chainId,
-                      coin: asset.coin,
-                      contractAddress: asset.contractAddress,
-                      isErc721: asset.isErc721,
-                      isNft: asset.isNft,
-                      tokenId: asset.tokenId
-                    }
-                  })
-                ).unwrap()
+              const balance = await dispatch(
+                walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
+                  coin: account.accountId.coin,
+                  address: account.address,
+                  token: {
+                    chainId: asset.chainId,
+                    coin: asset.coin,
+                    contractAddress: asset.contractAddress,
+                    isErc721: asset.isErc721,
+                    isNft: asset.isNft,
+                    tokenId: asset.tokenId
+                  }
+                })
+              ).unwrap()
 
               return balance ?? ''
             })
@@ -1072,31 +1096,34 @@ export function createWalletApi () {
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           // Construct arg to query native token for use in case the optimised
           // balance fetcher kicks in.
-          const nativeTokenArg = arg.coin === CoinTypes.ETH
-            ? arg.tokens.find(isNativeAsset)
-            : arg.tokens // arg.coin is SOL
+          const nativeTokenArg =
+            arg.coin === CoinTypes.ETH
+              ? arg.tokens.find(isNativeAsset)
+              : arg.tokens // arg.coin is SOL
               ? arg.tokens.find(isNativeAsset)
               : {
-                coin: arg.coin,
-                chainId: arg.chainId,
-                contractAddress: '',
-                isErc721: false,
-                isNft: false,
-                tokenId: ''
-              }
+                  coin: arg.coin,
+                  chainId: arg.chainId,
+                  contractAddress: '',
+                  isErc721: false,
+                  isNft: false,
+                  tokenId: ''
+                }
 
           const baseTokenBalances: TokenBalancesForChainId = {}
           if (nativeTokenArg) {
             const balance = await dispatch(
-              walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
-                coin: arg.coin,
-                address: arg.coin === CoinTypes.SOL
-                  ? arg.pubkey
-                  : arg.address,
-                token: nativeTokenArg
-              }, {
-                forceRefetch: true
-              })
+              walletApi.endpoints.getAccountTokenCurrentBalance.initiate(
+                {
+                  coin: arg.coin,
+                  address:
+                    arg.coin === CoinTypes.SOL ? arg.pubkey : arg.address,
+                  token: nativeTokenArg
+                },
+                {
+                  forceRefetch: true
+                }
+              )
             ).unwrap()
             baseTokenBalances[nativeTokenArg.contractAddress] = balance
           }
@@ -1109,8 +1136,8 @@ export function createWalletApi () {
               // jsonRpcService.getERC20TokenBalances cannot handle native
               // assets
               const contracts = arg.tokens
-                .filter(token => !isNativeAsset(token))
-                .map(token => token.contractAddress)
+                .filter((token) => !isNativeAsset(token))
+                .map((token) => token.contractAddress)
               if (contracts.length === 0) {
                 return {
                   data: baseTokenBalances
@@ -1130,31 +1157,34 @@ export function createWalletApi () {
                 )
                 if (result.error === BraveWallet.ProviderError.kSuccess) {
                   return {
-                    data: result.balances
-                      .reduce((acc, { balance, contractAddress }) => {
-                      const token = arg.tokens
-                        .find(token =>
-                          token.contractAddress === contractAddress)
+                    data: result.balances.reduce(
+                      (acc, { balance, contractAddress }) => {
+                        const token = arg.tokens.find(
+                          (token) => token.contractAddress === contractAddress
+                        )
 
-                      const balanceAmount = balance
-                        ? new Amount(balance)
-                        : undefined
+                        const balanceAmount = balance
+                          ? new Amount(balance)
+                          : undefined
 
-                      if (balanceAmount && token) {
-                        return {
-                          ...acc,
-                          [contractAddress]: balanceAmount.format()
+                        if (balanceAmount && token) {
+                          return {
+                            ...acc,
+                            [contractAddress]: balanceAmount.format()
+                          }
                         }
-                      }
 
-                      return acc
-                    }, baseTokenBalances)
+                        return acc
+                      },
+                      baseTokenBalances
+                    )
                   }
                 } else {
                   console.error(
                     `Error calling jsonRpcService.getERC20TokenBalances:
                     error=${result.errorMessage}
-                    arg=`, arg
+                    arg=`,
+                    arg
                   )
                 }
               }
@@ -1185,29 +1215,33 @@ export function createWalletApi () {
                 console.error(
                   `Error calling jsonRpcService.getSPLTokenBalances:
                   error=${result.errorMessage}
-                  arg=`, arg
+                  arg=`,
+                  arg
                 )
               }
             }
 
             // Fallback to fetching individual balances
-            const tokens = (arg.tokens ?? [])
-              .filter(token => !isNativeAsset(token))
+            const tokens = (arg.tokens ?? []).filter(
+              (token) => !isNativeAsset(token)
+            )
 
             const combinedBalancesResult = await mapLimit(
               tokens,
               10,
               async (token: BraveWallet.BlockchainToken) => {
                 const result: string = await dispatch(
-                  walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
-                    coin: arg.coin,
-                    address: arg.coin === CoinTypes.ETH
-                      ? arg.address
-                      : arg.pubkey,
-                    token
-                  }, {
-                    forceRefetch: true
-                  })
+                  walletApi.endpoints.getAccountTokenCurrentBalance.initiate(
+                    {
+                      coin: arg.coin,
+                      address:
+                        arg.coin === CoinTypes.ETH ? arg.address : arg.pubkey,
+                      token
+                    },
+                    {
+                      forceRefetch: true
+                    }
+                  )
                 ).unwrap()
 
                 return {
@@ -1219,14 +1253,11 @@ export function createWalletApi () {
 
             return {
               data: combinedBalancesResult
-                .filter(item => new Amount(item.value).gt(0))
-                .reduce(
-                  (obj, item) => {
-                    obj[item.key] = item.value
-                    return obj
-                  },
-                  baseTokenBalances
-                )
+                .filter((item) => new Amount(item.value).gt(0))
+                .reduce((obj, item) => {
+                  obj[item.key] = item.value
+                  return obj
+                }, baseTokenBalances)
             }
           } catch (error) {
             console.error(error)
@@ -1640,7 +1671,7 @@ export function createWalletApi () {
                 gasPrice: payload.gasPrice,
                 maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
                 maxFeePerGas: payload.maxFeePerGas,
-                data,
+                data
               })
             ).unwrap()
 
@@ -1714,7 +1745,7 @@ export function createWalletApi () {
           TX_CACHE_TAGS.LISTS({
             chainId: null,
             coin: arg.fromAccount.accountId.coin,
-            fromAddress: arg.fromAccount.accountId.address,
+            fromAddress: arg.fromAccount.accountId.address
           })
       }),
       sendERC721TransferFrom: mutation<
@@ -1751,7 +1782,7 @@ export function createWalletApi () {
                 gasPrice: payload.gasPrice,
                 maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
                 maxFeePerGas: payload.maxFeePerGas,
-                data,
+                data
               })
             ).unwrap()
 
@@ -1766,7 +1797,7 @@ export function createWalletApi () {
           TX_CACHE_TAGS.LISTS({
             chainId: null,
             coin: arg.fromAccount.accountId.coin,
-            fromAddress: arg.fromAccount.accountId.address,
+            fromAddress: arg.fromAccount.accountId.address
           })
       }),
       sendETHFilForwarderTransfer: mutation<
@@ -1777,9 +1808,7 @@ export function createWalletApi () {
           try {
             const { ethTxManagerProxy } = baseQuery(undefined).data
             const { data, success } =
-              await ethTxManagerProxy.makeFilForwarderTransferData(
-                payload.to,
-              )
+              await ethTxManagerProxy.makeFilForwarderTransferData(payload.to)
 
             if (!success) {
               const msg = `Failed making FilForwarder transferFrom data,
@@ -1847,7 +1876,7 @@ export function createWalletApi () {
                   fromAccount: payload.fromAccount,
                   to: payload.contractAddress,
                   value: '0x0',
-                  data,
+                  data
                 })
               ).unwrap()
 
@@ -1891,7 +1920,7 @@ export function createWalletApi () {
                   ? ([
                       'UserBlockchainTokens', // refresh all user tokens
                       'AccountTokenCurrentBalance',
-                      'TokenSpotPrice'
+                      'TokenSpotPrices'
                     ] as const)
                   : [])
               ],
@@ -2730,7 +2759,7 @@ export const {
   useGetSolanaTransactionSimulationQuery,
   useGetSwapSupportedNetworkIdsQuery,
   useGetTokenBalancesForChainIdQuery,
-  useGetTokenSpotPriceQuery,
+  useGetTokenSpotPricesQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
@@ -2756,7 +2785,7 @@ export const {
   useLazyGetSolanaTransactionSimulationQuery,
   useLazyGetSwapSupportedNetworkIdsQuery,
   useLazyGetTokenBalancesForChainIdQuery,
-  useLazyGetTokenSpotPriceQuery,
+  useLazyGetTokenSpotPricesQuery,
   useLazyGetTokensRegistryQuery,
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,

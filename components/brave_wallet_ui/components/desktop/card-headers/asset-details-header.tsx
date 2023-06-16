@@ -9,20 +9,26 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // Selectors
 import {
   useUnsafePageSelector,
-  useUnsafeWalletSelector
+  useSafePageSelector
 } from '../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../page/selectors'
-import { WalletSelectors } from '../../../common/selectors'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
+import { getPriceIdForToken } from '../../../utils/api-utils'
+import { getTokenPriceFromRegistry } from '../../../utils/pricing-utils'
 
 // Queries
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery,
+  useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
 
 // Hooks
 import {
@@ -79,20 +85,13 @@ export const AssetDetailsHeader = (props: Props) => {
   // selectors
   const selectedAsset =
     useUnsafePageSelector(PageSelectors.selectedAsset)
-  const selectedAssetFiatPrice =
-    useUnsafePageSelector(PageSelectors.selectedAssetFiatPrice)
-
-  // Keeping this around for BTC value incase we need it.
-  // const selectedAssetCryptoPrice =
-  //   useUnsafePageSelector(PageSelectors.selectedAssetCryptoPrice)
-
-  const defaultCurrencies =
-    useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+  const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
 
   // queries
   const { data: assetsNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken
   )
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { data: selectedNetwork } = useGetSelectedChainQuery(undefined, {
     skip: !!assetsNetwork
@@ -133,6 +132,24 @@ export const AssetDetailsHeader = (props: Props) => {
     }
   }, [selectedAsset])
 
+  const tokenPriceIds = React.useMemo(() =>
+    selectedAsset
+      ? [getPriceIdForToken(selectedAsset)]
+      : [],
+    [selectedAsset]
+  )
+
+  // queries
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length
+      ? {
+          ids: tokenPriceIds,
+          timeframe: selectedTimeline
+        }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
+
   // computed
   const networkDescription =
     isShowingMarketData
@@ -141,9 +158,12 @@ export const AssetDetailsHeader = (props: Props) => {
         .replace('$1', selectedAsset?.symbol ?? '')
         .replace('$2', selectedAssetsNetwork?.chainName ?? '')
 
+  const selectedAssetFiatPrice = selectedAsset &&
+    spotPriceRegistry &&
+    getTokenPriceFromRegistry(spotPriceRegistry, selectedAsset)
+
   const isSelectedAssetPriceDown =
-    selectedAsset &&
-      selectedAssetFiatPrice
+    selectedAssetFiatPrice
       ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0
       : false
 
@@ -193,7 +213,7 @@ export const AssetDetailsHeader = (props: Props) => {
             {
               selectedAssetFiatPrice
                 ? new Amount(selectedAssetFiatPrice.price)
-                  .formatAsFiat(defaultCurrencies.fiat)
+                  .formatAsFiat(defaultFiatCurrency)
                 : '0.00'
             }
           </PriceText>

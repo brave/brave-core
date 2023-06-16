@@ -15,6 +15,7 @@ import { PanelActions } from '../../panel/actions'
 
 // utils
 import Amount from '../../utils/amount'
+import { getPriceIdForToken } from '../../utils/api-utils'
 import { findAccountName, isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
@@ -26,11 +27,12 @@ import {
   getTransactionGasFee,
   isSolanaTransaction,
   parseTransactionWithPrices,
-  sortTransactionByDate
+  sortTransactionByDate,
+  findTransactionToken
 } from '../../utils/tx-utils'
+import { makeNetworkAsset } from '../../options/asset-options'
 
 // Custom Hooks
-import usePricing from './pricing'
 import useTokenInfo from './token'
 import { useLib } from './useLib'
 import {
@@ -43,12 +45,18 @@ import {
   useGetGasEstimation1559Query,
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
+  useGetTokenSpotPricesQuery,
   walletApi
 } from '../slices/api.slice'
 import {
   useAccountQuery,
-  usePendingTransactionsQuery
+  usePendingTransactionsQuery,
+  useGetCombinedTokensListQuery
 } from '../slices/api.slice.extra'
+import {
+  defaultQuerySubscriptionOptions,
+  querySubscriptionOptions60s
+} from '../slices/constants'
 
 // Constants
 import { BraveWallet } from '../../constants/types'
@@ -65,21 +73,12 @@ export const usePendingTransactions = () => {
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
-  const visibleTokens = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
-  const transactionSpotPrices = useUnsafeWalletSelector(
-    WalletSelectors.transactionSpotPrices
-  )
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
-  const spotPrices = useUnsafeWalletSelector(
-    WalletSelectors.transactionSpotPrices
-  )
   const hasFeeEstimatesError = useSafeWalletSelector(
     WalletSelectors.hasFeeEstimatesError
   )
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { pendingTransactions } = usePendingTransactionsQuery({
     address: null,
     chainId: null,
@@ -95,7 +94,9 @@ export const usePendingTransactions = () => {
         (tx) => tx.id === selectedPendingTransactionId
       ) ?? pendingTransactions[0]
     )
-    }, [pendingTransactions, selectedPendingTransactionId])
+  }, [pendingTransactions, selectedPendingTransactionId])
+
+  const txToken = findTransactionToken(transactionInfo, combinedTokensList)
 
   const txCoinType = transactionInfo
     ? getCoinFromTxDataUnion(transactionInfo.txDataUnion)
@@ -110,17 +111,29 @@ export const usePendingTransactions = () => {
       : skipToken
   )
 
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(transactionsNetwork)
+  }, [transactionsNetwork])
+
+  const tokenPriceIds = React.useMemo(
+    () =>
+      txToken && networkAsset
+        ? [getPriceIdForToken(txToken), getPriceIdForToken(networkAsset)]
+        : [],
+    [txToken, networkAsset]
+  )
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    tokenPriceIds ? { ids: tokenPriceIds } : skipToken,
+    querySubscriptionOptions60s
+  )
+
   const { data: gasEstimates, isLoading: isLoadingGasEstimates } =
     useGetGasEstimation1559Query(
       transactionInfo && txCoinType !== BraveWallet.CoinType.SOL
         ? transactionInfo.chainId
         : skipToken,
-      {
-        refetchOnFocus: true,
-        pollingInterval: 15000,
-        refetchOnMountOrArgChange: 15000,
-        refetchOnReconnect: true
-      }
+      defaultQuerySubscriptionOptions
     )
 
   const {
@@ -136,12 +149,7 @@ export const usePendingTransactions = () => {
           txId: transactionInfo.id
         }
       : skipToken,
-    {
-      refetchOnFocus: true,
-      pollingInterval: 15000,
-      refetchOnMountOrArgChange: 15000,
-      refetchOnReconnect: true,
-    }
+    defaultQuerySubscriptionOptions
   )
 
   const { account: txAccount } = useAccountQuery(
@@ -150,11 +158,12 @@ export const usePendingTransactions = () => {
 
   // custom hooks
   const { getBlockchainTokenInfo, getERC20Allowance } = useLib()
-  const { findAssetPrice } = usePricing(transactionSpotPrices)
-  const {
-    onFindTokenInfoByContractAddress,
-    foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, visibleTokens, fullTokenList, transactionsNetwork)
+  const { onFindTokenInfoByContractAddress, foundTokenInfoByContractAddress } =
+    useTokenInfo(
+      getBlockchainTokenInfo,
+      combinedTokensList,
+      transactionsNetwork
+    )
 
   // state
   const [erc20AllowanceResult, setERC20AllowanceResult] = React.useState<
@@ -173,26 +182,24 @@ export const usePendingTransactions = () => {
   }, [transactionInfo, txCoinType, solFeeEstimate])
 
   const transactionDetails = React.useMemo(() => {
-    return transactionInfo
+    return transactionInfo && spotPriceRegistry
       ? parseTransactionWithPrices({
           tx: transactionInfo,
           accounts,
-          fullTokenList,
           gasFee,
-          spotPrices,
-          userVisibleTokensList: visibleTokens,
+          spotPriceRegistry,
+          tokensList: combinedTokensList,
           transactionNetwork: transactionsNetwork
         })
       : undefined
   }, [
     transactionInfo,
     accounts,
-    fullTokenList,
     solFeeEstimate,
-    spotPrices,
-    visibleTokens,
+    spotPriceRegistry,
     transactionsNetwork,
-    gasFee
+    gasFee,
+    combinedTokensList
   ])
 
   // balance queries
@@ -606,7 +613,6 @@ export const usePendingTransactions = () => {
     baseFeePerGas,
     currentTokenAllowance,
     isCurrentAllowanceUnlimited,
-    findAssetPrice,
     foundTokenInfoByContractAddress,
     fromAccountName,
     fromAddress: transactionInfo?.fromAddress ?? '',

@@ -7,9 +7,11 @@ import * as React from 'react'
 
 // Types
 import {
-  QuoteOption,
-  SpotPrices
+  QuoteOption
 } from '../../../constants/types'
+import {
+  SpotPriceRegistry
+} from '../../../../../../constants/types'
 
 // Components
 import {
@@ -30,7 +32,7 @@ interface Props {
   options: QuoteOption[]
   selectedQuoteOptionIndex: number
   onSelectQuoteOption: (index: number) => void
-  spotPrices: SpotPrices
+  spotPrices?: SpotPriceRegistry
 }
 
 export const QuoteOptions = (props: Props) => {

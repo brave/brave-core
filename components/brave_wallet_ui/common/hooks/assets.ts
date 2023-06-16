@@ -5,32 +5,34 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Constants
 import {
   WalletState
 } from '../../constants/types'
 
-// Hooks
-import usePricing from './pricing'
-
 // utils
 import { getBalance } from '../../utils/balance-utils'
-import { useGetSelectedChainQuery } from '../slices/api.slice'
+import Amount from '../../utils/amount'
+import { getPriceIdForToken } from '../../utils/api-utils'
+import { computeFiatAmount } from '../../utils/pricing-utils'
+
+import {
+  useGetSelectedChainQuery,
+  useGetTokenSpotPricesQuery
+} from '../slices/api.slice'
+import { querySubscriptionOptions60s } from '../slices/constants'
 
 export function useAssets () {
   // redux
   const {
     selectedAccount,
     userVisibleTokensInfo,
-    transactionSpotPrices: spotPrices
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
-
-  // custom hooks
-  const { computeFiatAmount } = usePricing(spotPrices)
 
   // memos
   const assetsByNetwork = React.useMemo(() => {
@@ -45,6 +47,20 @@ export function useAssets () {
     )
   }, [userVisibleTokensInfo, selectedNetwork])
 
+  const tokenPriceIds = React.useMemo(
+    () =>
+      assetsByNetwork
+        .filter(token => new Amount(getBalance(selectedAccount, token)).gt(0))
+        .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
+        .map(getPriceIdForToken),
+    []
+  )
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    tokenPriceIds ? { ids: tokenPriceIds } : skipToken,
+    querySubscriptionOptions60s
+  )
+
   const assetsByValueAndNetwork = React.useMemo(() => {
     if (!assetsByNetwork?.length) {
       return []
@@ -58,12 +74,20 @@ export function useAssets () {
       const aBalance = getBalance(selectedAccount, a)
       const bBalance = getBalance(selectedAccount, b)
 
-      const bFiatBalance = computeFiatAmount(bBalance, b.symbol, b.decimals, b.contractAddress, b.chainId)
-      const aFiatBalance = computeFiatAmount(aBalance, a.symbol, a.decimals, a.contractAddress, a.chainId)
+      const bFiatBalance = computeFiatAmount({
+        spotPriceRegistry,
+        value: bBalance,
+        token: b
+      })
+      const aFiatBalance = computeFiatAmount({
+        spotPriceRegistry,
+        value: aBalance,
+        token: a
+      })
 
-      return bFiatBalance.toNumber() - aFiatBalance.toNumber()
+      return bFiatBalance.minus(aFiatBalance).toNumber()
     })
-  }, [selectedAccount, assetsByNetwork, getBalance, computeFiatAmount])
+  }, [selectedAccount, assetsByNetwork, getBalance, spotPriceRegistry])
 
   return {
     sendAssetOptions: assetsByNetwork,

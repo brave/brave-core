@@ -5,7 +5,6 @@
 
 import useAssets from './assets'
 import useSend from './send'
-import usePricing from './pricing'
 import usePreset from './select-preset'
 import useTokenInfo from './token'
 import useExplorer from './explorer'
@@ -26,7 +25,6 @@ export {
   useLib,
   usePreset,
   usePrevNetwork,
-  usePricing,
   useSend,
   useTokenInfo,
   useMultiChainBuyAssets,

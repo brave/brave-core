@@ -14,18 +14,23 @@ import {
 
 // utils
 import { getLocale } from '../../../../common/locale'
+import { getAssetIdKey } from '../../../utils/asset-utils'
+import { getPriceIdForToken } from '../../../utils/api-utils'
+import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
+import Amount from '../../../utils/amount'
 
 // Styled Components
-import {
-  StyledWrapper,
-  AddAssetButton
-} from './style'
+import { StyledWrapper, AddAssetButton } from './style'
 
 // RTK
 import {
   useGetSelectedChainQuery,
+  useGetTokenSpotPricesQuery,
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
 import {
   makeSelectAllUserAssetsForChainFromQueryResult
 } from '../../../common/slices/entities/blockchain-token.entity'
@@ -36,17 +41,14 @@ import {
 } from '../../../common/hooks/use-scoped-balance-updater'
 
 import { PortfolioAssetItem } from '../../desktop'
-import { getAssetIdKey } from '../../../utils/asset-utils'
-export interface Props {
+
+interface Props {
   selectedAccount?: WalletAccountType
   onAddAsset: () => void
 }
 
 const AssetsPanel = (props: Props) => {
-  const {
-    selectedAccount,
-    onAddAsset
-  } = props
+  const { selectedAccount, onAddAsset } = props
 
   const routeToAssetDetails = (url: string) => {
     chrome.tabs.create({ url: url }, () => {
@@ -62,18 +64,16 @@ const AssetsPanel = (props: Props) => {
     return makeSelectAllUserAssetsForChainFromQueryResult()
   }, [])
 
-  const { data: userTokens } = useGetUserTokensRegistryQuery(
-    undefined,
-    {
-      selectFromResult: (res) => ({
-        ...res,
-        data: selectedNetwork !== undefined
+  const { data: userTokens } = useGetUserTokensRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      ...res,
+      data:
+        selectedNetwork !== undefined
           ? userTokensByChainIdSelector(res, selectedNetwork.chainId)
           : undefined
-      }),
-      skip: selectedNetwork === undefined
-    }
-  )
+    }),
+    skip: selectedNetwork === undefined
+  })
 
   const {
     data: balances,
@@ -82,60 +82,89 @@ const AssetsPanel = (props: Props) => {
   } = useScopedBalanceUpdater(
     selectedNetwork && selectedAccount
       ? {
-        network: selectedNetwork,
-        account: selectedAccount,
-        tokens: selectedNetwork.coin === BraveWallet.CoinType.SOL
-          // Use optimised balance scanner for SOL, which doesn't need a
-          // reference tokens list.
-          ? undefined
-
-          // ETH needs a reference tokens list to scan for balances.
-          // If this is undefined, for example while userTokens is being
-          // fetched, then the hook will skip the query.
-          : userTokens
-      }
+          network: selectedNetwork,
+          account: selectedAccount,
+          tokens:
+            selectedNetwork.coin === BraveWallet.CoinType.SOL
+              ? // Use optimised balance scanner for SOL, which doesn't need a
+                // reference tokens list.
+                undefined
+              : // ETH needs a reference tokens list to scan for balances.
+                // If this is undefined, for example while userTokens is being
+                // fetched, then the hook will skip the query.
+                userTokens
+        }
       : skipToken
   )
 
   const onClickAsset = React.useCallback(
     (
-      contractAddress: string,
-      symbol: string,
-      tokenId: string,
-      chainId: string
-    ) => () => {
-      if (contractAddress === '') {
+        contractAddress: string,
+        symbol: string,
+        tokenId: string,
+        chainId: string
+      ) =>
+      () => {
+        if (contractAddress === '') {
+          routeToAssetDetails(
+            `brave://wallet${
+              WalletRoutes.PortfolioAssets //
+            }/${
+              chainId //
+            }/${symbol}`
+          )
+          return
+        }
+        if (tokenId !== '') {
+          routeToAssetDetails(
+            `brave://wallet${
+              WalletRoutes.PortfolioNFTs //
+            }/${
+              chainId //
+            }/${
+              contractAddress //
+            }/${tokenId}`
+          )
+          return
+        }
         routeToAssetDetails(
-          `brave://wallet${WalletRoutes.PortfolioAssets //
-          }/${chainId //
-          }/${symbol}`
+          `brave://wallet${
+            WalletRoutes.PortfolioAssets //
+          }/${
+            chainId //
+          }/${contractAddress}`
         )
-        return
-      }
-      if (tokenId !== '') {
-        routeToAssetDetails(
-          `brave://wallet${WalletRoutes.PortfolioNFTs //
-          }/${chainId //
-          }/${contractAddress //
-          }/${tokenId}`
-        )
-        return
-      }
-      routeToAssetDetails(
-        `brave://wallet${WalletRoutes.PortfolioAssets //
-        }/${chainId //
-        }/${contractAddress}`
-      )
-    }, [routeToAssetDetails])
+      },
+    [routeToAssetDetails]
+  )
+
+  const tokenPriceIds = React.useMemo(() =>
+    userTokens && balances
+      ? userTokens
+          .filter(token => new Amount(balances[token.contractAddress]).gt(0))
+          .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
+          .map(getPriceIdForToken)
+      : [],
+    [userTokens, balances]
+  )
+
+  const {
+    data: spotPriceRegistry,
+    isLoading: isLoadingSpotPrices,
+    isFetching: isFetchingSpotPrices
+  } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length && !isLoadingBalances && !isFetchingBalances
+      ? { ids: tokenPriceIds }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
 
   return (
     <StyledWrapper>
-      <AddAssetButton
-        onClick={onAddAsset}
-      >
+      <AddAssetButton onClick={onAddAsset}>
         {getLocale('braveWalletAddAsset')}
       </AddAssetButton>
-      {userTokens?.map((token) =>
+      {userTokens?.map((token) => (
         <PortfolioAssetItem
           action={onClickAsset(
             token.contractAddress,
@@ -150,9 +179,15 @@ const AssetsPanel = (props: Props) => {
               : ''
           }
           token={token}
+          spotPrice={
+            spotPriceRegistry && !isLoadingSpotPrices && !isFetchingSpotPrices
+              ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)
+                  .format()
+              : ''
+          }
           isPanel={true}
         />
-      )}
+      ))}
     </StyledWrapper>
   )
 }

@@ -34,7 +34,6 @@ import {
   refreshSitePermissions,
   refreshBalances,
   refreshVisibleTokenInfo,
-  refreshPrices,
   refreshPortfolioFilterOptions,
   getNFTMetadata
 } from './lib'
@@ -58,7 +57,6 @@ async function refreshBalancesPricesAndHistory(store: Store) {
   const state = getWalletState(store)
   await store.dispatch(refreshVisibleTokenInfo())
   await store.dispatch(refreshBalances())
-  await store.dispatch(refreshPrices())
   await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
 }
 
@@ -142,9 +140,6 @@ handler.on(
 
   if (!payload.skipBalancesRefresh) {
     await store.dispatch(refreshBalances())
-  }
-  if (!payload.skipPricesRefresh) {
-    await store.dispatch(refreshPrices())
   }
   await store.dispatch(refreshPortfolioFilterOptions())
 })
@@ -280,7 +275,6 @@ handler.on(
     }
 
     await store.dispatch(refreshPortfolioFilterOptions())
-    await store.dispatch(refreshPrices())
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
     await braveWalletService.discoverAssetsOnAllSupportedChains()
   }

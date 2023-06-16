@@ -13,15 +13,23 @@ import { useExplorer } from '../../../common/hooks'
 import {
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
+  useGetTokenSpotPricesQuery,
   walletApi
 } from '../../../common/slices/api.slice'
 import {
   useUnsafeUISelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
-import { useTransactionQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useGetCombinedTokensListQuery,
+  useTransactionQuery
+} from '../../../common/slices/api.slice.extra'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
 
 // Utils
+import { makeNetworkAsset } from '../../../options/asset-options'
 import { reduceAddress } from '../../../utils/reduce-address'
 import {
   getTransactionGasFee,
@@ -30,8 +38,10 @@ import {
   isFilecoinTransaction,
   isSolanaTransaction,
   isSwapTransaction,
-  parseTransactionWithPrices
+  parseTransactionWithPrices,
+  findTransactionToken
 } from '../../../utils/tx-utils'
+import { getPriceIdForToken } from '../../../utils/api-utils'
 import { toProperCase } from '../../../utils/string-utils'
 import Amount from '../../../utils/amount'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
@@ -74,10 +84,9 @@ import { TransactionStatusTooltip } from '../transaction-status-tooltip'
 import { Tooltip } from '../../shared'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 
-export interface Props {
+interface Props {
   transactionId: string
   visibleTokens: BraveWallet.BlockchainToken[]
-  transactionSpotPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
   onBack: () => void
 }
@@ -93,18 +102,12 @@ const TransactionDetailPanel = (props: Props) => {
   // redux
   const dispatch = useDispatch()
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
-  const visibleTokens = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
-  const spotPrices = useUnsafeWalletSelector(
-    WalletSelectors.transactionSpotPrices
-  )
   const transactionProviderErrorRegistry = useUnsafeUISelector(
     UISelectors.transactionProviderErrorRegistry
   )
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { transaction } = useTransactionQuery(transactionId || skipToken)
   const txCoinType = transaction
     ? getCoinFromTxDataUnion(transaction.txDataUnion)
@@ -143,27 +146,44 @@ const TransactionDetailPanel = (props: Props) => {
       : getTransactionGasFee(transaction)
   }, [transaction, txCoinType, solFeeEstimate])
 
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(transactionsNetwork)
+  }, [transactionsNetwork])
+
+  const txToken = findTransactionToken(transaction, combinedTokensList)
+
+  const tokenPriceIds = React.useMemo(() =>
+    txToken && networkAsset
+      ? [getPriceIdForToken(txToken), getPriceIdForToken(networkAsset)]
+      : [],
+    [txToken, networkAsset]
+  )
+
+  const {
+    data: spotPriceRegistry
+  } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    querySubscriptionOptions60s
+  )
+
   const transactionDetails = React.useMemo(() => {
-    if (!transaction) {
+    if (!transaction || !spotPriceRegistry) {
       return undefined
     }
 
     return parseTransactionWithPrices({
       tx: transaction,
       accounts,
-      fullTokenList,
       gasFee,
-      spotPrices,
-      userVisibleTokensList: visibleTokens,
+      spotPriceRegistry,
+      tokensList: combinedTokensList,
       transactionNetwork: transactionsNetwork
     })
   }, [
     transaction,
     transactionsNetwork,
     accounts,
-    visibleTokens,
-    fullTokenList,
-    spotPrices,
+    spotPriceRegistry,
     gasFee
   ])
 

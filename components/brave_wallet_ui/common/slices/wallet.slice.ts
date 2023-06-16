@@ -12,7 +12,6 @@ import {
   WalletState,
   WalletInfo,
   DefaultCurrencies,
-  GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
   SolFeeEstimates,
   SerializableOriginInfo,
@@ -93,7 +92,6 @@ const defaultState: WalletState = {
         )
     )
     : BraveWallet.AssetPriceTimeframe.OneDay,
-  transactionSpotPrices: [],
   addUserAssetError: false,
   defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
@@ -383,12 +381,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       portfolioTimelineUpdated (state: WalletState, { payload }: PayloadAction<BraveWallet.AssetPriceTimeframe>) {
         state.isFetchingPortfolioPriceHistory = true
         state.selectedPortfolioTimeline = payload
-      },
-
-      pricesUpdated (state: WalletState, { payload }: PayloadAction<GetPriceReturnInfo>) {
-        if (payload.success) {
-          state.transactionSpotPrices = payload.values
-        }
       },
 
       setAllTokensList: (

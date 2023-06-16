@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useParams } from 'react-router'
 import { useDispatch } from 'react-redux'
 
@@ -29,11 +30,18 @@ import Amount from '../../../../utils/amount'
 import { getBalance, formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { endsWithAny } from '../../../../utils/string-utils'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
 
 // Hooks
 import { usePreset, useBalanceUpdater, useSend } from '../../../../common/hooks'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
-import { useSetNetworkMutation } from '../../../../common/slices/api.slice'
+import {
+  useSetNetworkMutation,
+  useGetTokenSpotPricesQuery
+} from '../../../../common/slices/api.slice'
+import {
+  querySubscriptionOptions60s
+} from '../../../../common/slices/constants'
 
 // Styled Components
 import {
@@ -82,7 +90,6 @@ export const Send = (props: Props) => {
 
   // Wallet Selectors
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
-  const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
@@ -228,20 +235,44 @@ export const Send = (props: Props) => {
     return amountWei.gt(sendAssetBalance)
   }, [sendAssetBalance, sendAmount, selectedSendAsset])
 
+  const tokenPriceIds = React.useMemo(() =>
+    selectedSendAsset
+      ? [getPriceIdForToken(selectedSendAsset)]
+      : [],
+    [selectedSendAsset]
+  )
+
+  const {
+    data: spotPriceRegistry
+  } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    querySubscriptionOptions60s
+  )
+
   const sendAmountFiatValue = React.useMemo(() => {
-    if (!selectedSendAsset || sendAssetBalance === '' || selectedSendOption === 'nft') {
+    if (
+      !selectedSendAsset ||
+      sendAssetBalance === '' ||
+      selectedSendOption === 'nft'
+    ) {
       return ''
     }
-    return computeFiatAmount(spotPrices, {
-      decimals: selectedSendAsset.decimals,
-      symbol: selectedSendAsset.symbol,
+
+    return computeFiatAmount({
+      spotPriceRegistry,
       value: new Amount(sendAmount !== '' ? sendAmount : '0')
         .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
         .toHex(),
-      contractAddress: selectedSendAsset.contractAddress,
-      chainId: selectedSendAsset.chainId
+      token: selectedSendAsset,
     }).formatAsFiat(defaultCurrencies.fiat)
-  }, [spotPrices, selectedSendAsset, sendAmount, defaultCurrencies.fiat, sendAssetBalance, selectedSendOption])
+  }, [
+    spotPriceRegistry,
+    selectedSendAsset,
+    sendAmount,
+    defaultCurrencies.fiat,
+    sendAssetBalance,
+    selectedSendOption
+  ])
 
   const reviewButtonText = React.useMemo(() => {
     return showEnsOffchainWarning

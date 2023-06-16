@@ -14,12 +14,15 @@ import {
   getTransactionGasFee,
   getTransactionStatusString,
   isSolanaTransaction,
-  parseTransactionWithPrices
+  parseTransactionWithPrices,
+  findTransactionToken
 } from '../../../utils/tx-utils'
+import { getPriceIdForToken } from '../../../utils/api-utils'
 import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { WalletSelectors } from '../../../common/selectors'
 import Amount from '../../../utils/amount'
+import { makeNetworkAsset } from '../../../options/asset-options'
 
 // Types
 import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
@@ -32,8 +35,15 @@ import {
 } from '../../../common/hooks/use-safe-selector'
 import {
   useGetNetworkQuery,
-  useGetSolanaEstimatedFeeQuery
+  useGetSolanaEstimatedFeeQuery,
+  useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
+import {
+  useGetCombinedTokensListQuery
+} from '../../../common/slices/api.slice.extra'
+import {
+  querySubscriptionOptions60s
+} from '../../../common/slices/constants'
 
 // Components
 import { TransactionIntentDescription } from './transaction-intent-description'
@@ -55,7 +65,7 @@ import {
 } from './style'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 
-export interface Props {
+interface Props {
   transaction: SerializableTransactionInfo
   onSelectTransaction: (transaction: SerializableTransactionInfo) => void
 }
@@ -73,20 +83,34 @@ export const TransactionsListItem = ({
   const defaultFiatCurrency = useSafeWalletSelector(
     WalletSelectors.defaultFiatCurrency
   )
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
-  const userVisibleTokens = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
-  const spotPrices = useUnsafeWalletSelector(
-    WalletSelectors.transactionSpotPrices
-  )
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { data: transactionsNetwork } = useGetNetworkQuery({
     chainId: transaction.chainId,
     coin: txCoinType
   })
+
+  const txToken = findTransactionToken(transaction, combinedTokensList)
+
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(transactionsNetwork)
+  }, [transactionsNetwork])
+
+  const tokenPriceIds = React.useMemo(() =>
+    txToken && networkAsset
+      ? [getPriceIdForToken(txToken), getPriceIdForToken(networkAsset)]
+      : [],
+    [txToken, networkAsset]
+  )
+
+  const {
+    data: spotPriceRegistry
+  } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    querySubscriptionOptions60s
+  )
 
   const { data: solEstimatedFee = '' } = useGetSolanaEstimatedFeeQuery(
     isSolTx && transaction.id && transaction.chainId
@@ -106,23 +130,23 @@ export const TransactionsListItem = ({
   const gasFee = isSolTx ? solEstimatedFee : getTransactionGasFee(transaction)
 
   const transactionDetails = React.useMemo(() => {
-    return parseTransactionWithPrices({
-      tx: transaction,
-      accounts,
-      fullTokenList,
-      gasFee,
-      spotPrices,
-      userVisibleTokensList: userVisibleTokens,
-      transactionNetwork: transactionsNetwork
-    })
+    return spotPriceRegistry
+      ? parseTransactionWithPrices({
+        tx: transaction,
+        accounts,
+        gasFee,
+        spotPriceRegistry,
+        transactionNetwork: transactionsNetwork,
+        tokensList: combinedTokensList
+      })
+      : undefined
   }, [
     accounts,
-    fullTokenList,
     gasFee,
-    spotPrices,
+    spotPriceRegistry,
     transaction,
     transactionsNetwork,
-    userVisibleTokens,
+    combinedTokensList
   ])
 
   const fromOrb = React.useMemo(() => {
@@ -134,10 +158,18 @@ export const TransactionsListItem = ({
   }, [transaction.fromAddress])
 
   const toOrb = React.useMemo(() => {
+    if (!transactionDetails) {
+      return undefined
+    }
+
     return EthereumBlockies.create({ seed: transactionDetails.recipient.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transactionDetails.recipient])
+  }, [transactionDetails?.recipient])
 
   const transactionIntentLocale = React.useMemo((): React.ReactNode => {
+    if (!transactionDetails) {
+      return ''
+    }
+
     // approval
     if (transaction.txType === ERC20Approve) {
       return toProperCase(getLocale('braveWalletApprovalTransactionIntent'))
@@ -171,6 +203,10 @@ export const TransactionsListItem = ({
   }, [transaction.txType, transactionDetails, defaultFiatCurrency])
 
   const transactionIntentDescription = React.useMemo(() => {
+    if (!transactionDetails) {
+      return ''
+    }
+
     // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
     let from = `${reduceAddress(transaction.fromAddress)} `
     let to = reduceAddress(transactionDetails.recipient)
@@ -201,7 +237,7 @@ export const TransactionsListItem = ({
         <TransactionDetailRow>
           <DetailColumn>
             <FromCircle orb={fromOrb} />
-            <ToCircle orb={toOrb} />
+            {toOrb && <ToCircle orb={toOrb} />}
           </DetailColumn>
 
           <DetailColumn>

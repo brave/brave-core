@@ -11,8 +11,7 @@ import {
 
 export default function useTokenInfo (
   getBlockchainTokenInfo: (address: string) => Promise<GetBlockchainTokenInfoReturnInfo>,
-  visibleTokens: BraveWallet.BlockchainToken[],
-  fullTokenList: BraveWallet.BlockchainToken[],
+  tokensList: BraveWallet.BlockchainToken[],
   selectedNetwork?: BraveWallet.NetworkInfo
 ) {
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
@@ -29,8 +28,9 @@ export default function useTokenInfo (
       return
     }
 
-    const checkVisibleList = visibleTokens.find((token) => token.contractAddress.toLowerCase() === contractAddress)
-    const checkedLists = checkVisibleList ?? (fullTokenList.find((token) => token.contractAddress.toLowerCase() === contractAddress))
+    const checkedLists = tokensList
+      .find(token =>
+        token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
 
     if (checkedLists) {
       setFoundTokenInfoByContractAddress(checkedLists)
@@ -47,7 +47,7 @@ export default function useTokenInfo (
       }).catch(e => console.log(e))
     }
     setFoundTokenInfoByContractAddress(undefined)
-  }, [tokenContractAddress, visibleTokens, fullTokenList, selectedNetwork?.chainId])
+  }, [tokenContractAddress, tokensList, selectedNetwork?.chainId])
   return {
     onFindTokenInfoByContractAddress: setTokenContractAddress,
     foundTokenInfoByContractAddress

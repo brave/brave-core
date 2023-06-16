@@ -23,8 +23,6 @@ export const mockPageState: PageState = {
   portfolioPriceHistory: [],
   selectedAsset: undefined,
   pinStatusOverview: undefined,
-  selectedAssetCryptoPrice: undefined,
-  selectedAssetFiatPrice: undefined,
   selectedAssetPriceHistory: [],
   selectedCoinMarket: undefined,
   selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,

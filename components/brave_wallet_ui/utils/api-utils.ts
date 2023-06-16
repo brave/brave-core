@@ -19,16 +19,28 @@ export const getTokenParam = (token: GetTokenParamArg): string => {
   }
 
   const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
-
-  if (
-    !isEthereumNetwork ||
-    token.contractAddress === ''
-  ) {
-    return token.symbol.toLowerCase()
+  if (isEthereumNetwork && token.contractAddress) {
+    return token.contractAddress
   }
 
-  return token.contractAddress
+  return token.symbol.toLowerCase()
 }
+
+export const getPriceIdForToken = (
+  token: Pick<
+    BraveWallet.BlockchainToken,
+    | 'contractAddress'
+    | 'symbol'
+    | 'coingeckoId'
+    | 'chainId'
+    >
+) =>
+  getTokenParam({
+    contractAddress: token.contractAddress,
+    symbol: token.symbol,
+    coingeckoId: token.coingeckoId,
+    chainId: token.chainId
+  }).toLowerCase()
 
 // This will get the sum balance for each token between all accounts
 export const getFlattenedAccountBalances = (accounts: WalletAccountType[], userVisibleTokensInfo: BraveWallet.BlockchainToken[]): GetFlattenedAccountBalancesReturnInfo[] => {

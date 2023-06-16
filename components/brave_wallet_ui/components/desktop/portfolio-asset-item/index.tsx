@@ -13,7 +13,6 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
 import { isDataURL } from '../../../utils/string-utils'
 import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
@@ -51,6 +50,7 @@ interface Props {
   isAccountDetails?: boolean
   isSellSupported?: boolean
   showSellModal?: () => void
+  spotPrice: string
 }
 
 export const PortfolioAssetItem = ({
@@ -61,11 +61,11 @@ export const PortfolioAssetItem = ({
   isPanel,
   isAccountDetails,
   isSellSupported,
-  showSellModal
+  showSellModal,
+  spotPrice
 }: Props) => {
   // redux
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
-  const spotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
 
   // queries
   const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
@@ -95,14 +95,14 @@ export const PortfolioAssetItem = ({
       .formatAsAsset(6, token.symbol)
 
   const fiatBalance = React.useMemo(() => {
-    return computeFiatAmount(spotPrices, {
-      decimals: token.decimals,
-      symbol: token.symbol,
-      value: assetBalance,
-      contractAddress: token.contractAddress,
-      chainId: token.chainId
-    })
-  }, [spotPrices, assetBalance, token.symbol, token.decimals, token.chainId])
+    if (!spotPrice) {
+      return Amount.empty()
+    }
+
+    return new Amount(assetBalance)
+      .divideByDecimals(token.decimals)
+      .times(spotPrice)
+  }, [spotPrice, assetBalance, token.chainId])
 
   const formattedFiatBalance = React.useMemo(() => {
     return fiatBalance.formatAsFiat(defaultCurrencies.fiat)

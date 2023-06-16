@@ -6,7 +6,6 @@
 import {
   BraveWallet,
   GetPriceHistoryReturnObjectInfo,
-  AssetPriceWithContractAndChainId,
   BitcoinNetwork,
 } from '../../constants/types'
 
@@ -79,8 +78,6 @@ export type UpdateSelectedAssetType = {
 
 export type SelectAssetPayloadType = {
   priceHistory: GetPriceHistoryReturnObjectInfo | undefined
-  defaultFiatPrice?: AssetPriceWithContractAndChainId
-  defaultCryptoPrice?: AssetPriceWithContractAndChainId
   timeFrame: BraveWallet.AssetPriceTimeframe
 }
 

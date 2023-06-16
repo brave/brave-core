@@ -136,24 +136,12 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
   const assetRatioService = getWalletPageApiProxy().assetRatioService
   const walletState = getWalletState(store)
   const defaultFiat = walletState.defaultCurrencies.fiat.toLowerCase()
-  const defaultCrypto = walletState.defaultCurrencies.crypto.toLowerCase()
   if (payload.asset) {
     const selectedAsset = payload.asset
-    const defaultPrices = await assetRatioService.getPrice([getTokenParam(selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
     const priceHistory = await assetRatioService.getPriceHistory(getTokenParam(selectedAsset), defaultFiat, payload.timeFrame)
     store.dispatch(WalletPageActions.updatePriceInfo(
       {
         priceHistory: priceHistory,
-        defaultFiatPrice: {
-          ...defaultPrices.values[0],
-          contractAddress: payload.asset.contractAddress,
-          chainId: payload.asset.chainId
-        },
-        defaultCryptoPrice: {
-          ...defaultPrices.values[1],
-          contractAddress: payload.asset.contractAddress,
-          chainId: payload.asset.chainId
-        },
         timeFrame: payload.timeFrame
       }
     ))
@@ -166,7 +154,10 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
       }
     }
   } else {
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, defaultFiatPrice: undefined, defaultCryptoPrice: undefined, timeFrame: payload.timeFrame }))
+    store.dispatch(WalletPageActions.updatePriceInfo({
+      priceHistory: undefined,
+      timeFrame: payload.timeFrame
+    }))
   }
 })
 

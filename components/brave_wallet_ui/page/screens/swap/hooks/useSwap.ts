@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { mapLimit } from 'async'
 
 // Options
@@ -23,19 +24,19 @@ import {
   SwapParams,
   SwapValidationErrorType,
   RefreshBlockchainStateParams,
-  RefreshPricesParams,
-  Registry,
-  SpotPrices
+  Registry
 } from '../constants/types'
 import { BraveWallet, CoinTypes } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../utils/amount'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
 // FIXME(onyb): move makeNetworkAsset to utils/assets-utils
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { getEntitiesListFromEntityState } from '../../../../utils/entities.utils'
 import { getBalanceRegistryKey } from '../utils/assets'
+import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
 
 // Queries
 import {
@@ -44,12 +45,15 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useLazyGetTokenBalancesForChainIdQuery,
   useLazyGetAccountTokenCurrentBalanceQuery,
-  useLazyGetTokenSpotPriceQuery
+  useGetTokenSpotPricesQuery
 } from '../../../../common/slices/api.slice'
 import {
   useGetCombinedTokensListQuery,
   useSelectedAccountQuery
 } from '../../../../common/slices/api.slice.extra'
+import {
+  querySubscriptionOptions60s
+} from '../../../../common/slices/constants'
 import {
   AccountInfoEntity,
   accountInfoEntityAdaptorInitialState
@@ -93,23 +97,6 @@ export const useSwap = () => {
     },
     [getAccountTokenCurrentBalanceLazy]
   )
-  const [getTokenSpotPriceLazy] = useLazyGetTokenSpotPriceQuery()
-  const getTokenPrice = useCallback(
-    async (token: BraveWallet.BlockchainToken) => {
-      const result = await getTokenSpotPriceLazy({
-        chainId: token.chainId,
-        contractAddress: token.contractAddress,
-        isErc721: token.isErc721,
-        symbol: token.symbol,
-        tokenId: token.tokenId
-      }).unwrap()
-
-      console.log(token, result)
-
-      return result.price
-    },
-    [getTokenSpotPriceLazy]
-  )
 
   // State
   const [fromToken, setFromToken] = useState<BraveWallet.BlockchainToken | undefined>(undefined)
@@ -131,14 +118,25 @@ export const useSwap = () => {
   const [slippageTolerance, setSlippageTolerance] = useState<string>('0.5')
   const [selectedGasFeeOption, setSelectedGasFeeOption] = useState<GasFeeOption>(gasFeeOptions[1])
   const [initialized, setInitialized] = useState<boolean>(false)
-  const [spotPrices, setSpotPrices] = useState<SpotPrices>({
-    fromAsset: '',
-    toAsset: '',
-    nativeAsset: ''
-  })
-  // FIXME(onyb): use global store
   const [tokenBalances, dispatchBalancesUpdate] = useReducer(balancesReducer, {})
   const [abortController, setAbortController] = useState<AbortController | undefined>(undefined)
+
+  const tokenPriceIds = useMemo(
+    () =>
+      [nativeAsset, fromToken, toToken]
+        .filter(
+          (token): token is BraveWallet.BlockchainToken => token !== undefined
+        )
+        .map(getPriceIdForToken),
+    [nativeAsset, fromToken, toToken]
+  )
+
+  const {
+    data: spotPriceRegistry
+  } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    querySubscriptionOptions60s
+  )
 
   const resetSelectedAssets = useCallback(() => {
     setFromToken(nativeAsset)
@@ -157,7 +155,7 @@ export const useSwap = () => {
     toAmount: '',
     slippageTolerance,
     fromAddress: selectedAccount?.address,
-    spotPrices
+    spotPrices: spotPriceRegistry
   })
   const zeroEx = useZeroEx({
     fromAmount,
@@ -166,7 +164,7 @@ export const useSwap = () => {
     toToken,
     slippageTolerance,
     fromAddress: selectedAccount?.address,
-    spotPrices
+    spotPrices: spotPriceRegistry
   })
 
   const quoteOptions: QuoteOption[] = useMemo(() => {
@@ -195,45 +193,6 @@ export const useSwap = () => {
       setSelectedQuoteOptionIndex(index)
     },
     [quoteOptions, selectedNetwork?.coin, jupiter, toToken, zeroEx.quote]
-  )
-
-  const refreshSpotPrices = useCallback(
-    async (overrides: Partial<RefreshPricesParams>) => {
-      const overriddenParams: RefreshPricesParams = {
-        nativeAsset,
-        fromAsset: fromToken,
-        toAsset: toToken,
-        ...overrides
-      }
-
-      const fromAssetPrice =
-        overriddenParams.fromAsset && (await getTokenPrice(overriddenParams.fromAsset))
-      const toAssetPrice =
-        overriddenParams.toAsset && (await getTokenPrice(overriddenParams.toAsset))
-
-      const nativeAssetPrice =
-        overriddenParams.fromAsset?.contractAddress && overriddenParams.nativeAsset
-          ? await getTokenPrice(overriddenParams.nativeAsset)
-          : fromAssetPrice
-
-      setSpotPrices({
-        nativeAsset: Amount.normalize(nativeAssetPrice || ''),
-        fromAsset: Amount.normalize(fromAssetPrice || ''),
-        toAsset: Amount.normalize(toAssetPrice || '')
-      })
-    },
-    [nativeAsset, fromToken, toToken, getTokenPrice]
-  )
-
-  // This function is a debounced variant of refreshSpotPrices. It prevents
-  // unnecessary triggers of the wrapped function on first load of the app.
-  //
-  // The 0ms wait time seems to do the trick, although it's not clear why.
-  const refreshSpotPricesDebounced = useDebouncedCallback(
-    async (overrides: Partial<RefreshPricesParams>) => {
-      await refreshSpotPrices(overrides)
-    },
-    0
   )
 
   // Methods
@@ -470,11 +429,10 @@ export const useSwap = () => {
 
       if (!initialized) {
         await refreshBlockchainStateDebounced({})
-        await refreshSpotPricesDebounced({})
         setInitialized(true)
       }
     })()
-  }, [refreshBlockchainStateDebounced, refreshSpotPricesDebounced, initialized, assetsList])
+  }, [refreshBlockchainStateDebounced, initialized, assetsList])
 
   const handleJupiterQuoteRefreshInternal = useCallback(
     async (overrides: Partial<SwapParams>) => {
@@ -623,17 +581,11 @@ export const useSwap = () => {
         }
       })
     }
-
-    await refreshSpotPrices({
-      fromAsset: toToken,
-      toAsset: fromToken
-    })
   }, [
     toToken,
     fromToken,
     handleOnSetFromAmount,
     selectedAccount,
-    refreshSpotPrices,
     getAssetBalanceFactory,
     selectedNetwork,
     dispatchBalancesUpdate
@@ -665,12 +617,9 @@ export const useSwap = () => {
           toAmount: ''
         })
       }
-
-      await refreshSpotPrices({ toAsset: token })
     },
     [
       selectedNetwork?.coin,
-      refreshSpotPrices,
       jupiter,
       handleJupiterQuoteRefreshInternal,
       zeroEx,
@@ -704,12 +653,9 @@ export const useSwap = () => {
           }
         })
       }
-
-      await refreshSpotPrices({ fromAsset: token })
     },
     [
       dispatchBalancesUpdate,
-      refreshSpotPrices,
       getAssetBalanceFactory,
       selectedAccount,
       selectedNetwork,
@@ -735,10 +681,13 @@ export const useSwap = () => {
 
   // Memos
   const fiatValue = useMemo(() => {
-    return fromAmount && spotPrices.fromAsset
-      ? new Amount(fromAmount).times(spotPrices.fromAsset).formatAsFiat(defaultFiatCurrency)
-      : undefined
-  }, [spotPrices.fromAsset, fromAmount, defaultFiatCurrency])
+    if (!fromAmount || !fromToken || !spotPriceRegistry) {
+      return
+    }
+
+    const price = getTokenPriceAmountFromRegistry(spotPriceRegistry, fromToken)
+    return new Amount(fromAmount).times(price).formatAsFiat(defaultFiatCurrency)
+  }, [spotPriceRegistry, fromAmount, defaultFiatCurrency])
 
   const gasEstimates: GasEstimate = useMemo(() => {
     // TODO(onyb): Setup getGasEstimate Methods
@@ -1006,7 +955,7 @@ export const useSwap = () => {
     swapValidationError,
     refreshBlockchainState,
     getNetworkAssetsList,
-    spotPrices
+    spotPrices: spotPriceRegistry
   }
 }
 export default useSwap

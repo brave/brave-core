@@ -61,7 +61,6 @@ export const selectedGroupAssetsByItem = ({ wallet }: State) =>
 export const selectedCurrency = ({ wallet }: State) => wallet.selectedCurrency
 export const selectedNetworkFilter = ({ wallet }: State) => wallet.selectedNetworkFilter
 export const solFeeEstimates = ({ wallet }: State) => wallet.solFeeEstimates
-export const transactionSpotPrices = ({ wallet }: State) => wallet.transactionSpotPrices
 export const userVisibleTokensInfo = ({ wallet }: State) => wallet.userVisibleTokensInfo
 export const selectedAccountFilter = ({ wallet }: State) => wallet.selectedAccountFilter
 export const removedFungibleTokenIds = ({ wallet }: State) =>

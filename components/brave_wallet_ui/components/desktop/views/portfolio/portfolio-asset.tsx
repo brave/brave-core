@@ -26,7 +26,8 @@ import {
   sortTransactionByDate
 } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
-
+import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   auroraSupportedContractAddresses,
   getAssetIdKey
@@ -54,7 +55,7 @@ import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/b
 import { NftScreen } from '../../../../nft/components/nft-details/nft-screen'
 
 // Hooks
-import { usePricing, useMultiChainBuyAssets } from '../../../../common/hooks'
+import { useMultiChainBuyAssets } from '../../../../common/hooks'
 import {
   useSafePageSelector,
   useSafeWalletSelector,
@@ -64,8 +65,15 @@ import {
 import {
   useGetNetworkQuery,
   useGetSelectedChainQuery,
-  useGetTransactionsQuery
+  useGetTransactionsQuery,
+  useGetTokenSpotPricesQuery
 } from '../../../../common/slices/api.slice'
+import {
+  useGetCombinedTokensListQuery
+} from '../../../../common/slices/api.slice.extra'
+import {
+  querySubscriptionOptions60s
+} from '../../../../common/slices/constants'
 
 // Styled Components
 import {
@@ -114,10 +122,8 @@ export const PortfolioAsset = (props: Props) => {
   const portfolioPriceHistory = useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const isFetchingPortfolioPriceHistory = useSafeWalletSelector(WalletSelectors.isFetchingPortfolioPriceHistory)
-  const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const selectedNetworkFilter = useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
   const coinMarketData = useUnsafeWalletSelector(WalletSelectors.coinMarketData)
-  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
 
   const isLoading = useSafePageSelector(PageSelectors.isFetchingPriceHistory)
   const selectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
@@ -126,6 +132,7 @@ export const PortfolioAsset = (props: Props) => {
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
 
   // queries
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const { data: assetsNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken //
   )
@@ -204,9 +211,6 @@ export const PortfolioAsset = (props: Props) => {
   // state
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
 
-  // more custom hooks
-  const { computeFiatAmount } = usePricing(transactionSpotPrices)
-
   // memos / computed
   const selectedAssetFromParams = React.useMemo(() => {
     if (!chainIdOrMarketSymbol) {
@@ -237,6 +241,25 @@ export const PortfolioAsset = (props: Props) => {
     return userToken
   }, [userVisibleTokensInfo, selectedTimeline, chainIdOrMarketSymbol, contractOrSymbol, tokenId, isShowingMarketData])
 
+  const tokenPriceIds = React.useMemo(() =>
+    userAssetList
+      .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
+      .filter(({ asset }) =>
+        !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
+      .map(({ asset }) => getPriceIdForToken(asset))
+      .concat(
+        selectedAssetFromParams
+          ? [getPriceIdForToken(selectedAssetFromParams)]
+          : []
+    ),
+    [userAssetList, selectedAssetFromParams]
+  )
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
+    querySubscriptionOptions60s
+  )
+
   const isSelectedAssetBridgeSupported = React.useMemo(() => {
     if (!selectedAssetFromParams) return false
     const isBridgeAddress = auroraSupportedContractAddresses.includes(selectedAssetFromParams.contractAddress.toLowerCase())
@@ -259,20 +282,18 @@ export const PortfolioAsset = (props: Props) => {
 
     const visibleAssetFiatBalances = visibleAssetOptions
       .map((item) => {
-        return computeFiatAmount(
-          item.assetBalance,
-          item.asset.symbol,
-          item.asset.decimals,
-          item.asset.contractAddress,
-          item.asset.chainId
-        )
+        return computeFiatAmount({
+          spotPriceRegistry,
+          value: item.assetBalance,
+          token: item.asset
+        })
       })
 
     const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
       return a.plus(b)
     })
     return grandTotal.formatAsFiat()
-  }, [userAssetList, computeFiatAmount])
+  }, [userAssetList, spotPriceRegistry])
 
   const formattedPriceHistory = React.useMemo(() => {
     return selectedAssetPriceHistory.map((obj) => {
@@ -334,15 +355,13 @@ export const PortfolioAsset = (props: Props) => {
   }, [filteredAssetList, selectedAsset])
 
   const fullAssetFiatBalance = React.useMemo(() => fullAssetBalances?.assetBalance
-    ? computeFiatAmount(
-      fullAssetBalances.assetBalance,
-      fullAssetBalances.asset.symbol,
-      fullAssetBalances.asset.decimals,
-      fullAssetBalances.asset.contractAddress,
-      fullAssetBalances.asset.chainId
-    )
+    ? computeFiatAmount({
+      spotPriceRegistry,
+      value: fullAssetBalances.assetBalance,
+      token: fullAssetBalances.asset
+    })
     : Amount.empty(),
-    [fullAssetBalances]
+    [fullAssetBalances, spotPriceRegistry]
   )
 
   const formattedFullAssetBalance = fullAssetBalances?.assetBalance
@@ -362,8 +381,13 @@ export const PortfolioAsset = (props: Props) => {
   const isNftAsset = selectedAssetFromParams?.isErc721 || selectedAssetFromParams?.isNft
 
   const isSelectedAssetDepositSupported = React.useMemo(() => {
-    return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
-  }, [fullTokenList, selectedAsset?.symbol])
+    if (!selectedAsset) {
+      return false
+    }
+
+    return combinedTokensList.some(token =>
+      token.symbol.toLowerCase() === selectedAsset.symbol.toLowerCase())
+  }, [combinedTokensList, selectedAsset?.symbol])
 
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {

@@ -41,7 +41,6 @@ export const {
   nativeAssetBalancesUpdated,
   portfolioPriceHistoryUpdated,
   portfolioTimelineUpdated,
-  pricesUpdated,
   refreshAll,
   refreshAccountInfo,
   refreshBalancesAndPriceHistory,

@@ -30,7 +30,7 @@ export function createWalletApiBase() {
       'GasEstimation1559',
       'KnownBlockchainTokens',
       'Network',
-      'TokenSpotPrice',
+      'TokenSpotPrices',
       'Transactions',
       'TransactionSimulationsEnabled',
       'UserBlockchainTokens',

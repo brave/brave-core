@@ -7,6 +7,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // hooks
 import { useSafeWalletSelector } from './use-safe-selector'
 import { useGetTokenBalancesForChainIdQuery } from '../slices/api.slice'
+import { defaultQuerySubscriptionOptions } from '../slices/constants'
 
 // Types / constants
 import { BraveWallet, CoinTypes } from '../../constants/types'
@@ -50,12 +51,7 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
           }
         : skipToken
       : skipToken,
-    {
-      refetchOnFocus: true,
-      pollingInterval: 15000,
-      refetchOnMountOrArgChange: 15000,
-      refetchOnReconnect: true
-    }
+    defaultQuerySubscriptionOptions
   )
 }
 

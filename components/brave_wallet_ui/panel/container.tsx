@@ -87,7 +87,6 @@ function Container () {
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const favoriteApps = useUnsafeWalletSelector(WalletSelectors.favoriteApps)
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
-  const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
 
   // panel selectors (safe)
@@ -549,7 +548,6 @@ function Container () {
             onBack={onGoBackToTransactions}
             defaultCurrencies={defaultCurrencies}
             transactionId={selectedTransactionId}
-            transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokensInfo}
           />
         </SelectContainer>

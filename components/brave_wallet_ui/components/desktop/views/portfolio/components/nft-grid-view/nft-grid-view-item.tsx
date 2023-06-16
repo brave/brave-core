@@ -71,17 +71,13 @@ export const NFTGridViewItem = (props: Props) => {
   const onHideNft = React.useCallback(() => {
     setShowMore(false)
     addOrRemoveTokenInLocalStorage(token, 'remove')
-    dispatch(WalletActions.refreshNetworksAndTokens({
-      skipPricesRefresh: true
-    }))
+    dispatch(WalletActions.refreshNetworksAndTokens({}))
   }, [token, addOrRemoveTokenInLocalStorage])
 
   const onUnHideNft = React.useCallback(() => {
     setShowMore(false)
     addOrRemoveTokenInLocalStorage(token, 'add')
-    dispatch(WalletActions.refreshNetworksAndTokens({
-      skipPricesRefresh: true
-    }))
+    dispatch(WalletActions.refreshNetworksAndTokens({}))
   }, [token, addOrRemoveTokenInLocalStorage])
 
   const [remoteImage, setRemoteImage] = React.useState<string>()

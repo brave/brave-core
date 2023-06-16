@@ -28,7 +28,7 @@ import {
   isSendingToKnownTokenContractAddress
 } from './tx-utils'
 
-const fullTokenList = [
+const tokenList = [
   ...mockWalletState.fullTokenList,
   { ...mockERC20Token, contractAddress: '0xdeadbeef' },
   mockERC20Token
@@ -184,7 +184,7 @@ describe('Transaction Parsing utils', () => {
 
         const contractAddressError = isSendingToKnownTokenContractAddress(
           mockTransaction,
-          fullTokenList
+          tokenList
         )
 
         expect(contractAddressError).toBeFalsy()
@@ -211,7 +211,7 @@ describe('Transaction Parsing utils', () => {
 
         const contractAddressError = isSendingToKnownTokenContractAddress(
           mockTransaction,
-          fullTokenList
+          tokenList
         )
 
         expect(contractAddressError).toBeTruthy()
@@ -231,7 +231,7 @@ describe('Transaction Parsing utils', () => {
 
           const contractAddressError = isSendingToKnownTokenContractAddress(
             mockTransaction,
-            fullTokenList
+            tokenList
           )
 
           expect(contractAddressError).toBeFalsy()
@@ -270,7 +270,7 @@ describe('Transaction Parsing utils', () => {
           txArgs: ['mockRecipient', '0xde0b6b3a7640000']
         }
 
-        const token = findTransactionToken(mockTransaction, fullTokenList)
+        const token = findTransactionToken(mockTransaction, tokenList)
 
         const txSymbol = getTransactionTokenSymbol({
           tx: mockTransaction,
@@ -302,7 +302,7 @@ describe('Transaction Parsing utils', () => {
           txArgs: ['mockRecipient', '0xde0b6b3a7640000']
         }
 
-        const token = findTransactionToken(mockTransaction, fullTokenList)
+        const token = findTransactionToken(mockTransaction, tokenList)
 
         const txSymbol = getTransactionTokenSymbol({
           tx: mockTransaction,
