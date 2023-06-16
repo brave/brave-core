@@ -111,7 +111,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
                   ->GetFilePath(kIPFSBinaryPath)
                   .empty());
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      kIPFSAutoRedirectGateway));
+      kIPFSAutoRedirectToConfiguredGateway));
 #endif
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kIPFSCompanionEnabled));

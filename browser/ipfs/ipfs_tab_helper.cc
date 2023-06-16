@@ -104,8 +104,7 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs, bool is_gateway_url) {
   DCHECK(!ipfs.is_valid() || ipfs.SchemeIs(kIPNSScheme));
   ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
   bool should_redirect =
-      (is_gateway_url && pref_service_->GetBoolean(kIPFSAutoRedirectGateway)) ||
-      (!is_gateway_url && pref_service_->GetBoolean(kIPFSAutoRedirectDNSLink));
+      pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
   if (ipfs.is_valid() && should_redirect) {
     LoadUrl(GetIPFSResolvedURL());
     return;
@@ -207,7 +206,7 @@ bool IPFSTabHelper::IsAutoRedirectIPFSResourcesEnabled() const {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       pref_service_->GetInteger(kIPFSResolveMethod));
   auto autoredirect_ipfs_resources_enabled =
-      pref_service_->GetBoolean(kIPFSAutoRedirectGateway);
+      pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
 
   return (resolve_method != ipfs::IPFSResolveMethodTypes::IPFS_DISABLED) &&
          autoredirect_ipfs_resources_enabled;

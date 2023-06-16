@@ -49,6 +49,7 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #endif  // BUILDFLAG(ENABLE_IPFS)
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -94,6 +95,9 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
   perf::MaybeEnableBraveFeatureForPerfTesting(profile);
   brave::MigrateHttpsUpgradeSettings(profile);
+#if BUILDFLAG(ENABLE_IPFS)
+  ipfs::IpfsService::MigrateProfilePrefs(profile->GetPrefs());
+#endif
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,

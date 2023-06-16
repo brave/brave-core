@@ -77,11 +77,10 @@ class IpfsTabHelperUnitTest : public testing::Test {
     profile_->GetPrefs()->SetInteger(kIPFSResolveMethod,
                                      static_cast<int>(type));
   }
-  void SetAutoRedirectDNSLink(bool value) {
-    profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectDNSLink, value);
-  }
-  void SetAutoRedirecIPFSResources(bool value) {
-    profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, value);
+
+  void SetAutoRedirectToConfiguredGateway(bool value) {
+    profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectToConfiguredGateway,
+                                     value);
   }
 
   ipfs::IPFSTabHelper* ipfs_tab_helper() {
@@ -349,7 +348,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayLikeUrlParsed_AutoRedirectEnabled) {
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
 
-  SetAutoRedirecIPFSResources(true);
+  SetAutoRedirectToConfiguredGateway(true);
 
   {
     ResetRedirectUrl();
@@ -422,7 +421,7 @@ TEST_F(IpfsTabHelperUnitTest,
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
 
-  SetAutoRedirecIPFSResources(true);
+  SetAutoRedirectToConfiguredGateway(true);
 
   {
     ResetRedirectUrl();
@@ -457,7 +456,7 @@ TEST_F(IpfsTabHelperUnitTest,
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
 
-  SetAutoRedirecIPFSResources(true);
+  SetAutoRedirectToConfiguredGateway(true);
 
   {
     ResetRedirectUrl();
@@ -478,7 +477,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayLikeUrlParsed_AutoRedirectDisabled) {
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
 
-  SetAutoRedirecIPFSResources(false);
+  SetAutoRedirectToConfiguredGateway(false);
 
   {
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
@@ -513,8 +512,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_ResolveUrl) {
 }
 
 TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect) {
-  SetAutoRedirecIPFSResources(true);
-  SetAutoRedirectDNSLink(false);
+  SetAutoRedirectToConfiguredGateway(true);
 
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
@@ -533,8 +531,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect) {
 }
 
 TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_No_Redirect_WhenNoDnsLink) {
-  SetAutoRedirecIPFSResources(true);
-  SetAutoRedirectDNSLink(false);
+  SetAutoRedirectToConfiguredGateway(true);
 
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
@@ -553,8 +550,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_No_Redirect_WhenNoDnsLink) {
 }
 
 TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect_LibP2PKey) {
-  SetAutoRedirecIPFSResources(true);
-  SetAutoRedirectDNSLink(false);
+  SetAutoRedirectToConfiguredGateway(true);
 
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
@@ -576,8 +572,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect_LibP2PKey) {
 }
 
 TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect_LibP2PKey_NoAutoRedirect) {
-  SetAutoRedirecIPFSResources(false);
-  SetAutoRedirectDNSLink(false);
+  SetAutoRedirectToConfiguredGateway(false);
 
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);

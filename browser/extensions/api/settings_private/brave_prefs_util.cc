@@ -259,9 +259,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[kIPFSPublicNFTGatewayAddress] =
       settings_api::PrefType::PREF_TYPE_STRING;
-  (*s_brave_allowlist)[kIPFSAutoRedirectGateway] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kIPFSAutoRedirectDNSLink] =
+  (*s_brave_allowlist)[kIPFSAutoRedirectToConfiguredGateway] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kIpfsStorageMax] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
