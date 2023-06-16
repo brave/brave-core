@@ -392,7 +392,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
       const std::vector<std::string>& expected_token_contract_addresses) {
     base::RunLoop run_loop;
     asset_discovery_task_->DiscoverAssets(
-        {}, account_addresses, base::BindLambdaForTesting([&]() {
+        {}, {}, account_addresses, base::BindLambdaForTesting([&]() {
           wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
               expected_token_contract_addresses);
           EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsStartedFired());

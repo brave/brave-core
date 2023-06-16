@@ -77,6 +77,10 @@ bool KnownChainExists(const std::string& chain_id, mojom::CoinType coin);
 bool CustomChainExists(PrefService* prefs,
                        const std::string& custom_chain_id,
                        mojom::CoinType coin);
+std::vector<std::string> CustomChainsExist(
+    PrefService* prefs,
+    const std::vector<std::string>& custom_chain_ids,
+    mojom::CoinType coin);
 std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
                                                 mojom::CoinType coin);
 GURL GetNetworkURL(PrefService* prefs,

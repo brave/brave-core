@@ -8,6 +8,7 @@
 #include <map>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -93,7 +94,7 @@ void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
 }
 
 const std::map<mojom::CoinType, std::vector<std::string>>&
-AssetDiscoveryManager::GetAssetDiscoverySupportedChains() {
+AssetDiscoveryManager::GetFungibleSupportedChains() {
   static const base::NoDestructor<
       std::map<mojom::CoinType, std::vector<std::string>>>
       asset_discovery_supported_chains([] {
@@ -115,16 +116,55 @@ AssetDiscoveryManager::GetAssetDiscoverySupportedChains() {
   return *asset_discovery_supported_chains;
 }
 
+const std::map<mojom::CoinType, std::vector<std::string>>
+AssetDiscoveryManager::GetNonFungibleSupportedChains() {
+  // Use non fungible chains as a base
+  auto non_fungible_supported_chains = GetFungibleSupportedChains();
+
+  // Create a set from the base chains for quick lookups
+  base::flat_set<std::string> base_set(
+      non_fungible_supported_chains[mojom::CoinType::ETH].begin(),
+      non_fungible_supported_chains[mojom::CoinType::ETH].end());
+
+  // Add in all the user networks that are supported by SimpleHash
+  auto custom_non_fungible_eth_chains =
+      CustomChainsExist(prefs_,
+                        {
+                            mojom::kArbitrumNovaChainId,
+                            mojom::kGnosisChainId,
+                            mojom::kGodwokenChainId,
+                            mojom::kPalmChainId,
+                            mojom::kPolygonZKEVMChainId,
+                            mojom::kZkSyncEraChainId,
+                        },
+                        mojom::CoinType::ETH);
+
+  for (auto custom_chain : custom_non_fungible_eth_chains) {
+    // Only insert the chain if it does not exist in the set
+    if (base_set.find(custom_chain) == base_set.end()) {
+      non_fungible_supported_chains[mojom::CoinType::ETH].push_back(
+          custom_chain);
+    }
+  }
+
+  return non_fungible_supported_chains;
+}
+
 void AssetDiscoveryManager::AddTask(
     const std::map<mojom::CoinType, std::vector<std::string>>&
         account_addresses) {
+  auto fungible_supported_chains = GetFungibleSupportedChains();
+  auto non_fungible_supported_chains = GetNonFungibleSupportedChains();
+
   auto task = std::make_unique<AssetDiscoveryTask>(
       api_request_helper_.get(), wallet_service_, json_rpc_service_, prefs_);
   auto callback = base::BindOnce(&AssetDiscoveryManager::FinishTask,
                                  weak_ptr_factory_.GetWeakPtr());
   auto* task_ptr = task.get();
   queue_.push(std::move(task));
-  task_ptr->ScheduleTask(GetAssetDiscoverySupportedChains(), account_addresses,
+
+  task_ptr->ScheduleTask(fungible_supported_chains,
+                         non_fungible_supported_chains, account_addresses,
                          std::move(callback));
 }
 

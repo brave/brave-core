@@ -722,6 +722,32 @@ bool CustomChainExists(PrefService* prefs,
   return false;
 }
 
+// Returns the subset of custom_chain_ids that are custom chains
+std::vector<std::string> CustomChainsExist(
+    PrefService* prefs,
+    const std::vector<std::string>& custom_chain_ids,
+    mojom::CoinType coin) {
+  const base::Value::List* custom_list = GetCustomNetworksList(prefs, coin);
+  std::vector<std::string> existing_chain_ids;
+
+  if (!custom_list) {
+    return existing_chain_ids;
+  }
+
+  for (const auto& it : *custom_list) {
+    if (auto chain_id = ExtractChainIdFromValue(it.GetIfDict())) {
+      for (const auto& custom_chain_id : custom_chain_ids) {
+        if (base::CompareCaseInsensitiveASCII(*chain_id, custom_chain_id) ==
+            0) {
+          existing_chain_ids.push_back(custom_chain_id);
+          break;
+        }
+      }
+    }
+  }
+  return existing_chain_ids;
+}
+
 bool IsNativeWalletEnabled() {
   return base::FeatureList::IsEnabled(
       brave_wallet::features::kNativeBraveWalletFeature);
