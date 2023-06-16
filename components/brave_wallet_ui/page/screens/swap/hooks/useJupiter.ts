@@ -331,7 +331,9 @@ export function useJupiter (params: SwapParams) {
           networkFee: networkFee
             .times(
               nativeAsset && params.spotPrices
-                ? getTokenPriceAmountFromRegistry(params.spotPrices, nativeAsset)
+                ? getTokenPriceAmountFromRegistry(
+                    params.spotPrices, nativeAsset
+                  )
                 : Amount.zero()
             )
             .formatAsFiat(defaultFiatCurrency),
