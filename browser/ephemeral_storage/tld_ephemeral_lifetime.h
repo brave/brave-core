@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
@@ -50,9 +49,6 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
       const std::string& storage_domain,
       const content::StoragePartitionConfig& storage_partition_config);
 
-  // Add a callback to a callback list to be called on destruction.
-  void RegisterOnDestroyCallback(OnDestroyCallback callback);
-
   const TLDEphemeralLifetimeKey& key() const { return key_; }
   const content::StoragePartitionConfig& storage_partition_config() const {
     return storage_partition_config_;
@@ -67,7 +63,6 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
   TLDEphemeralLifetimeKey key_;
   base::WeakPtr<EphemeralStorageService> ephemeral_storage_service_;
   const content::StoragePartitionConfig storage_partition_config_;
-  std::vector<OnDestroyCallback> on_destroy_callbacks_;
 
   base::WeakPtrFactory<TLDEphemeralLifetime> weak_factory_{this};
 };

@@ -9,15 +9,10 @@
 #include <string>
 #include <utility>
 
-#include "content/public/browser/storage_partition_config.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 #include "url/origin.h"
 
 namespace ephemeral_storage {
-
-// TLD ephemeral area is keyed by the TLD-specific security domain and
-// StoragePartitionConfig.
-using TLDEphemeralAreaKey =
-    std::pair<std::string, content::StoragePartitionConfig>;
 
 // Delegate performs cleanup for all required parts (chrome, content, etc.).
 class EphemeralStorageServiceDelegate {

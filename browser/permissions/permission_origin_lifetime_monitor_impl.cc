@@ -8,8 +8,9 @@
 #include <utility>
 
 #include "base/containers/contains.h"
-#include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
 
@@ -34,6 +35,13 @@ std::string
 PermissionOriginLifetimeMonitorImpl::SubscribeToPermissionOriginDestruction(
     const GURL& requesting_origin) {
   DCHECK(permission_destroyed_callback_);
+  if (!ephemeral_storage_observation_.IsObserving()) {
+    auto* ephemeral_storage_service =
+        EphemeralStorageServiceFactory::GetForContext(browser_context_);
+    CHECK(ephemeral_storage_service);
+    ephemeral_storage_observation_.Observe(ephemeral_storage_service);
+  }
+
   url::Origin sub_request_origin;
   bool is_sub_request_origin = false;
   for (auto type : {RequestType::kBraveEthereum, RequestType::kBraveSolana}) {
@@ -46,28 +54,20 @@ PermissionOriginLifetimeMonitorImpl::SubscribeToPermissionOriginDestruction(
   }
   std::string storage_domain = net::URLToEphemeralStorageDomain(
       is_sub_request_origin ? sub_request_origin.GetURL() : requesting_origin);
-  auto* tld_ephemeral_lifetime = ephemeral_storage::TLDEphemeralLifetime::Get(
-      browser_context_, storage_domain);
-  if (!tld_ephemeral_lifetime) {
-    DCHECK(!base::Contains(active_subscriptions_, storage_domain));
-    // If an ephemeral lifetime object doesn't exist, treat a permission origin
-    // as an already destroyed one.
-    return std::string();
-  }
-
   if (!base::Contains(active_subscriptions_, storage_domain)) {
-    tld_ephemeral_lifetime->RegisterOnDestroyCallback(base::BindOnce(
-        &PermissionOriginLifetimeMonitorImpl::OnEphemeralTLDDestroyed,
-        weak_ptr_factory_.GetWeakPtr()));
     active_subscriptions_.insert(storage_domain);
   }
   return storage_domain;
 }
 
-void PermissionOriginLifetimeMonitorImpl::OnEphemeralTLDDestroyed(
-    const std::string& storage_domain) {
-  DCHECK(base::Contains(active_subscriptions_, storage_domain));
-  active_subscriptions_.erase(storage_domain);
+void PermissionOriginLifetimeMonitorImpl::OnCleanupTLDEphemeralArea(
+    const ephemeral_storage::TLDEphemeralAreaKey& key) {
+  const auto& storage_domain = key.first;
+  auto subscription_it = active_subscriptions_.find(storage_domain);
+  if (subscription_it == active_subscriptions_.end()) {
+    return;
+  }
+  active_subscriptions_.erase(subscription_it);
   if (permission_destroyed_callback_) {
     permission_destroyed_callback_.Run(storage_domain);
   }

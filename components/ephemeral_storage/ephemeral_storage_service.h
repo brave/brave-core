@@ -15,9 +15,11 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service_observer.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/storage_partition_config.h"
@@ -42,9 +44,6 @@ namespace ephemeral_storage {
 // Handles Ephemeral Storage cleanup/queuing and other events.
 class EphemeralStorageService : public KeyedService {
  public:
-  using TLDEphemeralAreaOnDestroyCallbacks =
-      std::vector<base::OnceCallback<void(const std::string&)>>;
-
   EphemeralStorageService(
       content::BrowserContext* context,
       HostContentSettingsMap* host_content_settings_map,
@@ -73,8 +72,10 @@ class EphemeralStorageService : public KeyedService {
       const content::StoragePartitionConfig& storage_partition_config);
   void TLDEphemeralLifetimeDestroyed(
       const std::string& ephemeral_domain,
-      const content::StoragePartitionConfig& storage_partition_config,
-      TLDEphemeralAreaOnDestroyCallbacks on_destroy_callbacks);
+      const content::StoragePartitionConfig& storage_partition_config);
+
+  void AddObserver(EphemeralStorageServiceObserver* observer);
+  void RemoveObserver(EphemeralStorageServiceObserver* observer);
 
  private:
   friend EphemeralStorageBrowserTest;
@@ -89,14 +90,10 @@ class EphemeralStorageService : public KeyedService {
                              bool can_enable_1pes);
   bool IsDefaultCookieSetting(const GURL& url) const;
 
-  void CleanupTLDEphemeralAreaByTimer(
-      const TLDEphemeralAreaKey& key,
-      bool cleanup_first_party_storage_area,
-      TLDEphemeralAreaOnDestroyCallbacks on_destroy_callbacks);
-  void CleanupTLDEphemeralArea(
-      const TLDEphemeralAreaKey& key,
-      bool cleanup_first_party_storage_area,
-      TLDEphemeralAreaOnDestroyCallbacks on_destroy_callbacks);
+  void CleanupTLDEphemeralAreaByTimer(const TLDEphemeralAreaKey& key,
+                                      bool cleanup_first_party_storage_area);
+  void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key,
+                               bool cleanup_first_party_storage_area);
 
   // If a website was closed, but not yet cleaned-up because of storage lifetime
   // keepalive, we store the origin into a pref to perform a cleanup on browser
@@ -106,7 +103,6 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageAreasOnStartup();
   void CleanupFirstPartyStorageArea(const std::string& ephemeral_domain);
 
-  size_t FireTLDEphemeralAreaCleanupTimersForTesting();
   size_t FireCleanupTimersForTesting();
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
@@ -115,6 +111,8 @@ class EphemeralStorageService : public KeyedService {
   raw_ptr<PrefService> prefs_ = nullptr;
   // These patterns are removed on service Shutdown.
   base::flat_set<ContentSettingsPattern> patterns_to_cleanup_on_shutdown_;
+
+  base::ObserverList<EphemeralStorageServiceObserver> observer_list_;
 
   base::TimeDelta tld_ephemeral_area_keep_alive_;
   base::TimeDelta first_party_storage_startup_cleanup_delay_;

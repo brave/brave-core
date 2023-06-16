@@ -44,8 +44,7 @@ TLDEphemeralLifetime::TLDEphemeralLifetime(
 TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   if (ephemeral_storage_service_) {
     ephemeral_storage_service_->TLDEphemeralLifetimeDestroyed(
-        key_.second, storage_partition_config_,
-        std::move(on_destroy_callbacks_));
+        key_.second, storage_partition_config_);
   }
 
   ActiveTLDStorageAreas().erase(key_);
@@ -80,11 +79,6 @@ TLDEphemeralLifetime* TLDEphemeralLifetime::Get(
   auto it = ActiveTLDStorageAreas().find(key);
   DCHECK(it == ActiveTLDStorageAreas().end() || it->second.get());
   return it != ActiveTLDStorageAreas().end() ? it->second.get() : nullptr;
-}
-
-void TLDEphemeralLifetime::RegisterOnDestroyCallback(
-    OnDestroyCallback callback) {
-  on_destroy_callbacks_.push_back(std::move(callback));
 }
 
 }  // namespace ephemeral_storage
