@@ -54,11 +54,11 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
   DVLOG(2) << __FUNCTION__ << item.tag << " > "
            << base::SysNSStringToUTF16(keyEquivalent);
 
-  unsigned short keyCode = [keyEquivalent characterAtIndex:0];
-  if ([keyEquivalent isEqualToString:@"\t"]) {
-    // characterAtIndex returns 'v' for \t. So we should set keyCode manually.
-    keyCode = 0x30;
-  }
+  const unsigned short charCode = [keyEquivalent characterAtIndex:0];
+  const int keyCode = ui::MacKeyCodeForWindowsKeyCode(
+      static_cast<ui::KeyboardCode>(charCode), /*flags=*/0,
+      /*us_keyboard_shifted_character=*/nullptr,
+      /*keyboard_character=*/nullptr);
 
   NSEvent* keyEvent = [NSEvent keyEventWithType:NSEventTypeKeyDown
                                        location:NSZeroPoint
