@@ -94,17 +94,26 @@ absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
     VLOG(1) << "Failed to write config to file:" << temp_file_path;
     return absl::nullopt;
   }
-  if (!AddACEToPath(
-          temp_file_path,
-          // Let only windows services to read the config.
-          {{base::win::Sid::FromKnownSid(base::win::WellKnownSid::kService),
-            GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
-            base::win::SecurityAccessMode::kGrant},
-           // Let windows administrators only to remove the config.
-           {base::win::Sid::FromKnownSid(
-                base::win::WellKnownSid::kBuiltinAdministrators),
-            GENERIC_EXECUTE | DELETE, base::win::SecurityAccessMode::kGrant}},
-          0, /*recursive=*/false)) {
+  const absl::optional<base::win::Sid> service_sid =
+      base::win::Sid::FromKnownSid(base::win::WellKnownSid::kService);
+  const absl::optional<base::win::Sid> administrators_sid =
+      base::win::Sid::FromKnownSid(
+          base::win::WellKnownSid::kBuiltinAdministrators);
+  if (!service_sid.has_value() || !administrators_sid.has_value()) {
+    VLOG(1) << "Failed to get Sids for service(" << service_sid.has_value()
+            << ") or administrators(" << administrators_sid.has_value() << ")";
+    return absl::nullopt;
+  }
+
+  if (!AddACEToPath(temp_file_path,
+                    // Let only windows services to read the config.
+                    {{service_sid.value(),
+                      GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
+                      base::win::SecurityAccessMode::kGrant},
+                     // Let windows administrators only to remove the config.
+                     {administrators_sid.value(), GENERIC_EXECUTE | DELETE,
+                      base::win::SecurityAccessMode::kGrant}},
+                    0, /*recursive=*/false)) {
     VLOG(1) << "Failed to set config file permissions:" << temp_file_path;
   }
   // Release temp directory to send path to the WireguardTunnelService.
