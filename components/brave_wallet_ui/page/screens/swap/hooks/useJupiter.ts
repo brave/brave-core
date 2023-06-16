@@ -14,8 +14,10 @@ import { WRAPPED_SOL_CONTRACT_ADDRESS } from '../constants/magics'
 
 // Utils
 import Amount from '../../../../utils/amount'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
+import {
+  getTokenPriceAmountFromRegistry
+} from '../../../../utils/pricing-utils'
 
 // Hooks
 import { useLib } from '../../../../common/hooks'
@@ -327,8 +329,11 @@ export function useJupiter (params: SwapParams) {
           ),
           routing: route.marketInfos.length > 1 ? 'flow' : 'split',
           networkFee: networkFee
-            // @ts-expect-error
-            .times(params.spotPrices[getPriceIdForToken(nativeAsset)] ?? 0)
+            .times(
+              nativeAsset && params.spotPrices
+                ? getTokenPriceAmountFromRegistry(params.spotPrices, nativeAsset)
+                : Amount.zero()
+            )
             .formatAsFiat(defaultFiatCurrency),
           braveFee
         } as QuoteOption)
@@ -338,6 +343,7 @@ export function useJupiter (params: SwapParams) {
     params.fromToken,
     params.toToken,
     defaultFiatCurrency,
+    nativeAsset,
     params.spotPrices,
     braveFee
   ])

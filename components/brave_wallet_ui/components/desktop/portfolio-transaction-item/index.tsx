@@ -267,7 +267,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         if (!result.data?.registry || !txToken) {
           return {
             fiatValue: '0',
-            isLoading: false
+            isLoading: result.isLoading
           }
         }
 
@@ -295,7 +295,6 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   } = useGetTokenSpotPricesQuery(
     networkTokenPriceIds.length ? { ids: networkTokenPriceIds } : skipToken,
     {
-      skip: !networkAsset || !gasFee || !txNetwork,
       // TODO: selector
       selectFromResult: (res) => {
         const price = res.data?.registry && networkAsset
