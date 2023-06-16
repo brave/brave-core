@@ -32,9 +32,9 @@
 
 namespace {
 
-const char kAdBlockComponentName[] = "Brave Ad Block Updater";
-const char kAdBlockComponentId[] = "iodkpdagapdfkphljnddpjlldadblomo";
-const char kAdBlockComponentBase64PublicKey[] =
+const char kAdBlockDefaultComponentName[] = "Brave Ad Block Updater";
+const char kAdBlockDefaultComponentId[] = "iodkpdagapdfkphljnddpjlldadblomo";
+const char kAdBlockDefaultComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsD/B/MGdz0gh7WkcFARn"
     "ZTBX9KAw2fuGeogijoI+fET38IK0L+P/trCT2NshqhRNmrDpLzV2+Dmes6PvkA+O"
     "dQkUV6VbChJG+baTfr3Oo5PdE0WxmP9Xh8XD7p85DQrk0jJilKuElxpK7Yq0JhcT"
@@ -43,9 +43,21 @@ const char kAdBlockComponentBase64PublicKey[] =
     "q+SDNXROG554RnU4BnDJaNETTkDTZ0Pn+rmLmp1qY5Si0yGsfHkrv3FS3vdxVozO"
     "PQIDAQAB";
 
-std::string g_ad_block_component_id_(kAdBlockComponentId);
-std::string g_ad_block_component_base64_public_key_(
-    kAdBlockComponentBase64PublicKey);
+const char kAdBlockExceptionComponentName[] =
+    "Brave Ad Block First Party Filters";
+const char kAdBlockExceptionComponentId[] = "adcocjohghhfpidemphmcmlmhnfgikei";
+const char kAdBlockExceptionComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtvmLp4MOseThuH/vFSc7"
+    "kjr+CDCzR/ieGI8TJZyFQhzA1SKWRl4y0wB+HGkmoq0KPOzKNZq6hxK7jdm/r/nx"
+    "xOjqutPoUEL+ysxePErMTse2XeWu3psGSTEjPFdQTPEwH8MF2SwXXneOraD0V/GS"
+    "iCCvlx8yKIXNX7V9ujMo+QoD6hPGslKUZQJAg+OaZ7pAfq5cOuWXNN6jv12UL0eM"
+    "t6Dhl31yEu4kZWeTkiccHqdlB/KvPiqXTrV+qd3Tjvsk6kmUlexu3/zlOwVDz5H/"
+    "kPuOGvW7kYaW22NWQ9TH6fjffgVcSgHDbZETDiP8fHd76kyi1SZ5YJ09XHTE+i9i"
+    "kQIDAQAB";
+
+std::string g_ad_block_default_component_id_(kAdBlockDefaultComponentId);
+std::string g_ad_block_default_component_base64_public_key_(
+    kAdBlockDefaultComponentBase64PublicKey);
 
 }  // namespace
 
@@ -282,8 +294,16 @@ AdBlockService::AdBlockService(
           component_update_service_);
 
   default_filters_provider_ = std::make_unique<AdBlockComponentFiltersProvider>(
-      component_update_service_, g_ad_block_component_id_,
-      g_ad_block_component_base64_public_key_, kAdBlockComponentName);
+      component_update_service_, g_ad_block_default_component_id_,
+      g_ad_block_default_component_base64_public_key_,
+      kAdBlockDefaultComponentName);
+  default_exception_filters_provider_ =
+      std::make_unique<AdBlockComponentFiltersProvider>(
+          component_update_service_, kAdBlockExceptionComponentId,
+          kAdBlockExceptionComponentBase64PublicKey,
+          kAdBlockExceptionComponentName);
+  AdBlockFiltersProviderManager::GetInstance()->AddProvider(
+      default_exception_filters_provider_.get());
   regional_service_manager_ = std::make_unique<AdBlockRegionalServiceManager>(
       local_state_, locale_, component_update_service_,
       filter_list_catalog_provider_.get());
@@ -420,8 +440,8 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
 void SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
     const std::string& component_id,
     const std::string& component_base64_public_key) {
-  g_ad_block_component_id_ = component_id;
-  g_ad_block_component_base64_public_key_ = component_base64_public_key;
+  g_ad_block_default_component_id_ = component_id;
+  g_ad_block_default_component_base64_public_key_ = component_base64_public_key;
 }
 
 }  // namespace brave_shields
