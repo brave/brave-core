@@ -266,7 +266,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                 spotPrice={
                   spotPriceRegistry
                     ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)
-                    : Amount.empty()
+                        .format()
+                    : ''
                 }
               />
             )}

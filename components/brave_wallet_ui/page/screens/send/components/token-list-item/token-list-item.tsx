@@ -43,7 +43,7 @@ interface Props {
   onClick: () => void
   token: BraveWallet.BlockchainToken
   balance: string
-  spotPrice: Amount
+  spotPrice: string
 }
 
 export const TokenListItem = (props: Props) => {
