@@ -158,6 +158,7 @@ export const Container = () => {
     // so that we can return to that page after unlock
     if (
       walletLocation.includes(WalletRoutes.Accounts) ||
+      walletLocation.includes(WalletRoutes.Activity) ||
       walletLocation.includes(WalletRoutes.Backup) ||
       walletLocation.includes(WalletRoutes.DepositFundsPageStart) ||
       walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
