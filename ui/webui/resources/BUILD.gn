@@ -294,7 +294,6 @@ if (enable_brave_vpn_panel) {
 if (enable_speedreader) {
   leo_icons += [
     "characters.svg",
-    "font-size.svg",
     "forward-outline.svg",
     "headphones.svg",
     "minus.svg",
