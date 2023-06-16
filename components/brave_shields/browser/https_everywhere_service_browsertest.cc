@@ -41,10 +41,15 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
  public:
   HTTPSEverywhereServiceTest() = default;
 
-  void SetUp() override {
+  void SetUpCommon() {
     InitEmbeddedTestServer();
     InitService();
     ExtensionBrowserTest::SetUp();
+  }
+
+  void SetUp() override {
+    feature_list_.InitAndDisableFeature(net::features::kBraveHttpsByDefault);
+    SetUpCommon();
   }
 
   void SetUpOnMainThread() override {
@@ -124,6 +129,9 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
 
     WaitForAdBlockServiceThreads();
   }
+
+ protected:
+  base::test::ScopedFeatureList feature_list_;
 };
 
 // Load a URL which has an HTTPSE rule and verify we rewrote it.
@@ -228,11 +236,8 @@ class HTTPSEverywhereServiceTest_HttpsByDefaultEnabled
 
   void SetUp() override {
     feature_list_.InitAndEnableFeature(net::features::kBraveHttpsByDefault);
-    HTTPSEverywhereServiceTest::SetUp();
+    HTTPSEverywhereServiceTest::SetUpCommon();
   }
-
- protected:
-  base::test::ScopedFeatureList feature_list_;
 };
 
 // Verify that HTTPE rules are disabled when HTTPS by Default is enabled

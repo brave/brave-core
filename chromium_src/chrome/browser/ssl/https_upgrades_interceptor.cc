@@ -16,7 +16,8 @@
     if (brave_shields::IsHttpsByDefaultFeatureEnabled()) {                    \
       HostContentSettingsMap* map =                                           \
           HostContentSettingsMapFactory::GetForProfile(browser_context);      \
-      if (!brave_shields::ShouldUpgradeToHttps(                               \
+      if (!map ||                                                             \
+          !brave_shields::ShouldUpgradeToHttps(                               \
               map, tentative_resource_request.url,                            \
               g_brave_browser_process->https_upgrade_exceptions_service())) { \
         std::move(callback).Run({});                                          \
