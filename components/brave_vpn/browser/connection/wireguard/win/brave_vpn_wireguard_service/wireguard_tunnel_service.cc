@@ -17,7 +17,6 @@
 #include "base/scoped_native_library.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/access_control_list.h"
-#include "base/win/registry.h"
 #include "base/win/scoped_handle.h"
 #include "base/win/security_descriptor.h"
 #include "base/win/sid.h"
