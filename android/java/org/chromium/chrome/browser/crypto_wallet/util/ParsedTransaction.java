@@ -159,7 +159,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         final String value = isSPLTransaction
                 ? solTxData != null ? String.valueOf(solTxData.amount) : ""
                 : isSolTransaction ? solTxData != null ? String.valueOf(solTxData.lamports) : ""
-                : isFilTransaction ? filTxData.value != null ? filTxData.value : ""
+                : isFilTransaction ? filTxData.value != null ? Utils.toHex(filTxData.value) : ""
                 : txData != null   ? txData.baseData.value
                                    : "";
 
