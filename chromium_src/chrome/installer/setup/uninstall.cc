@@ -33,7 +33,7 @@ bool UninstallBraveVPNWireguardService(const base::FilePath& exe_path) {
   cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceUnnstallSwitchName);
   base::LaunchOptions options = base::LaunchOptions();
   options.wait = true;
-  return base::LaunchProcess(cmd, base::LaunchOptions()).IsValid();
+  return base::LaunchProcess(cmd, options).IsValid();
 }
 
 void DeleteBraveFileKeys(HKEY root) {
