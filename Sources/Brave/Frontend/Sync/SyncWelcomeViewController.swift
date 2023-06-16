@@ -185,8 +185,8 @@ class SyncWelcomeViewController: SyncViewController {
     textStackView.addArrangedSubview(descriptionStackView)
     mainStackView.addArrangedSubview(textStackView)
 
-    buttonsStackView.addArrangedSubview(newToSyncButton)
     buttonsStackView.addArrangedSubview(existingUserButton)
+    buttonsStackView.addArrangedSubview(newToSyncButton)
     mainStackView.addArrangedSubview(buttonsStackView)
 
     navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSyncInternalsAction))
