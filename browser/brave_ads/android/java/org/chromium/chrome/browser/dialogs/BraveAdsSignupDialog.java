@@ -29,7 +29,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
+import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.util.PackageUtils;
 
 public class BraveAdsSignupDialog {
@@ -89,7 +89,7 @@ public class BraveAdsSignupDialog {
 
     @CalledByNative
     public static boolean showAdsInBackground() {
-        return BraveRewardsPreferences.getPrefAdsInBackgroundEnabled();
+        return AppearancePreferences.getPrefAdsInBackgroundEnabled();
     }
 
     private static void enqueueOnboardingNotification(Context context, boolean useCustomNotification) {

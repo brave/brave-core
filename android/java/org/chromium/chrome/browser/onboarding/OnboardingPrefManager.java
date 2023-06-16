@@ -16,7 +16,6 @@ import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -159,10 +158,6 @@ public class OnboardingPrefManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING_V2, isShown);
         sharedPreferencesEditor.apply();
-    }
-
-    public boolean isBraveAdsEnabled() {
-        return mSharedPreferences.getBoolean(BraveRewardsPreferences.PREF_ADS_SWITCH, false);
     }
 
     public boolean isBraveStatsEnabled() {

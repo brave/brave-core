@@ -8,8 +8,12 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
       android:key="show_brave_rewards_icon"
       android:title="@string/show_brave_rewards_icon_title"
-      android:summaryOn="@string/text_on"
-      android:summaryOff="@string/text_off" />
+      android:summary="@string/show_brave_rewards_icon_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="ads_switch"
+        android:title="@string/show_ads_when_brave_is_not_in_use_title"
+        android:summary="@string/show_ads_when_brave_is_not_in_use_summary" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_bottom_toolbar_enabled_key"

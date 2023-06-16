@@ -181,6 +181,8 @@ class BraveRewardsNativeWorker
   void OnCreateRewardsWallet(
       brave_rewards::mojom::CreateRewardsWalletResult result);
 
+  void OnCompleteReset(const bool success) override;
+
   void OnResetTheWholeState(const bool success);
 
   void OnGetGetReconcileStamp(uint64_t timestamp);
