@@ -124,7 +124,10 @@ export const useSwap = () => {
   const tokenPriceIds = useMemo(
     () =>
       [nativeAsset, fromToken, toToken]
-        .flatMap(token => (token ? [getPriceIdForToken(token)] : [])),
+        .filter(
+          (token): token is BraveWallet.BlockchainToken => token !== undefined
+        )
+        .map(getPriceIdForToken),
     [nativeAsset, fromToken, toToken]
   )
 
