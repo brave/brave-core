@@ -326,7 +326,8 @@ export const Account = () => {
             spotPrice={
               spotPriceRegistry && !isLoadingSpotPrices && !isFetchingSpotPrices
                 ? getTokenPriceAmountFromRegistry(spotPriceRegistry, item)
-                : Amount.empty()
+                    .format()
+                : ''
             }
           />
         )}
@@ -357,7 +358,7 @@ export const Account = () => {
                 }
                 assetBalance={getBalance(selectedAccount, item)}
                 token={item}
-                spotPrice={Amount.empty()}
+                spotPrice={''}
               />
             )}
             <Spacer />

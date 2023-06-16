@@ -509,8 +509,8 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
                       ? getTokenPriceAmountFromRegistry(
                           spotPriceRegistry,
                           item.asset
-                        )
-                      : Amount.empty()
+                        ).format()
+                      : ''
                 }
               />
             }

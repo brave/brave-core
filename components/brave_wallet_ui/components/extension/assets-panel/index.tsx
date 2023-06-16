@@ -182,7 +182,8 @@ const AssetsPanel = (props: Props) => {
           spotPrice={
             spotPriceRegistry && !isLoadingSpotPrices && !isFetchingSpotPrices
               ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)
-              : Amount.empty()
+                  .format()
+              : ''
           }
           isPanel={true}
         />

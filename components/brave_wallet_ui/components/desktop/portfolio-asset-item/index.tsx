@@ -50,7 +50,7 @@ interface Props {
   isAccountDetails?: boolean
   isSellSupported?: boolean
   showSellModal?: () => void
-  spotPrice: Amount
+  spotPrice: string
 }
 
 export const PortfolioAssetItem = ({
@@ -95,7 +95,7 @@ export const PortfolioAssetItem = ({
       .formatAsAsset(6, token.symbol)
 
   const fiatBalance = React.useMemo(() => {
-    if (spotPrice.isUndefined()) {
+    if (!spotPrice) {
       return Amount.empty()
     }
 
