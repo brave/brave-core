@@ -43,8 +43,11 @@ class BraveTab : public Tab {
       const views::ViewHierarchyChangedDetails& details) override;
   void OnLayerBoundsChanged(const gfx::Rect& old_bounds,
                             ui::PropertyChangeReason reason) override;
+  gfx::Insets GetInsets() const override;
 
  private:
+  friend class BraveTabTest;
+
   bool IsAtMinWidthForVerticalTabStrip() const;
 
   void UpdateShadowForActiveTab();
@@ -59,6 +62,8 @@ class BraveTab : public Tab {
   std::unique_ptr<ui::Layer> shadow_layer_;
   gfx::FontList normal_font_;
   gfx::FontList active_tab_font_;
+
+  static constexpr int kExtraLeftPadding = 4;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_
