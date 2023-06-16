@@ -990,7 +990,7 @@ export function getGasFeeFiatValue ({
   txNetwork
 }: {
   gasFee: string
-  networkSpotPrice: Amount
+  networkSpotPrice: string
   txNetwork?: Pick<BraveWallet.NetworkInfo, 'decimals'>
 }) {
   if (!txNetwork || !networkSpotPrice) {
@@ -1365,7 +1365,7 @@ export const getTransactionFiatValues = ({
   txNetwork
 }: {
   gasFee: string
-  networkSpotPrice: Amount
+  networkSpotPrice: string
   normalizedTransferredValue: string
   sellAmountWei?: string
   sellToken?: BraveWallet.BlockchainToken
@@ -1715,8 +1715,8 @@ export const parseTransactionWithPrices = ({
         contractAddress: '',
         chainId: transactionNetwork.chainId,
         coingeckoId: ''
-      })
-    : Amount.empty()
+      }).format()
+    : ''
 
   const {
     token,
