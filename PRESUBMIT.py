@@ -391,15 +391,11 @@ def CheckJavaStyle(_original_check, input_api, output_api):
     if warnings:
         ret.append(output_api.PresubmitPromptWarning('\n'.join(warnings)))
     if errors:
-        remove_unused_imports_path = input_api.os_path.join(
-            input_api.PresubmitLocalPath(), 'tools', 'android', 'checkstyle',
-            'remove_unused_imports.py')
         msg = '\n'.join(errors)
         if 'Unused import:' in msg or 'Duplicate import' in msg:
             msg += """
 
-To remove unused imports: """ + input_api.os_path.relpath(
-                remove_unused_imports_path, local_path)
+To remove unused imports: ./tools/android/checkstyle/remove_unused_imports.sh"""
         ret.append(output_api.PresubmitError(msg))
     return ret
 
