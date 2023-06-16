@@ -16,7 +16,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 
 namespace ai_chat {
 
@@ -29,7 +31,9 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     TabStripModel* tab_strip_model,
     Profile* profile,
     mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver)
-    : profile_(profile), receiver_(this, std::move(receiver)) {
+    : content::WebContentsObserver(owner_web_contents),
+      profile_(profile),
+      receiver_(this, std::move(receiver)) {
   DCHECK(tab_strip_model);
   // Detect if we are in target-tab mode, or standalone mode. Standalone mode
   // means Chat is opened as its own tab in the tab strip and not a side panel.
@@ -44,6 +48,10 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(web_contents);
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
+    bool is_visible =
+        (web_contents->GetVisibility() == content::Visibility::VISIBLE) ? true
+                                                                        : false;
+    active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
   } else {
     // TODO(petemill): Enable conversation without the TabHelper. Conversation
     // logic should be extracted from the TabHelper to a new virtual class, e.g.
@@ -163,10 +171,24 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
     if (selection.new_contents) {
       active_chat_tab_helper_ =
           AIChatTabHelper::FromWebContents(selection.new_contents);
+      // Let the tab helper know if the UI is visible
+      active_chat_tab_helper_->OnConversationActiveChanged(
+          (web_contents()->GetVisibility() == content::Visibility::VISIBLE)
+              ? true
+              : false);
       chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
     }
     // Reset state
     page_->OnTargetTabChanged();
+  }
+}
+
+void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
+  // WebUI visibility changed (not target tab)
+  if (active_chat_tab_helper_) {
+    bool is_visible =
+        (visibility == content::Visibility::VISIBLE) ? true : false;
+    active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
   }
 }
 

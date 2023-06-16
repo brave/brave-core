@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -30,7 +31,8 @@ class WebContents;
 namespace ai_chat {
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                             public TabStripModelObserver,
-                            public AIChatTabHelper::Observer {
+                            public AIChatTabHelper::Observer,
+                            public content::WebContentsObserver {
  public:
   AIChatUIPageHandler(
       content::WebContents* owner_web_contents,
@@ -52,6 +54,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
   void GenerateQuestions() override;
   void SetAutoGenerateQuestions(bool can_auto_generate_questions) override;
+
+  // content::WebContentsObserver:
+  void OnVisibilityChanged(content::Visibility visibility) override;
 
  private:
   // ChatTabHelper::Observer

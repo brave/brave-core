@@ -52,6 +52,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
   ~AIChatTabHelper() override;
 
   const std::vector<mojom::ConversationTurn>& GetConversationHistory();
+  // Whether the UI for this conversation is open or not. Determines
+  // whether content is retrieved and queries are sent for the conversation
+  // when the page changes.
+  void OnConversationActiveChanged(bool is_conversation_active);
   void AddToConversationHistory(const mojom::ConversationTurn& turn);
   void UpdateOrCreateLastAssistantEntry(const std::string& text);
   void MakeAPIRequestWithConversationHistoryUpdate(
@@ -75,9 +79,16 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string GetConversationHistoryString();
   void GeneratePageText();
   void CleanUp();
-  void OnTabContentRetrieved(std::string contents_text, bool is_video = false);
-  void OnAPIStreamDataReceived(data_decoder::DataDecoder::ValueOrError result);
-  void OnAPIStreamDataComplete(api_request_helper::APIRequestResult result);
+  void OnTabContentRetrieved(int64_t for_navigation_id,
+                             std::string contents_text,
+                             bool is_video = false);
+  void OnAPIStreamDataReceived(int64_t for_navigation_id,
+                               data_decoder::DataDecoder::ValueOrError result);
+  void OnAPIStreamDataComplete(int64_t for_navigation_id,
+                               api_request_helper::APIRequestResult result);
+  void OnAPISuggestedQuestionsResponse(
+      int64_t for_navigation_id,
+      api_request_helper::APIRequestResult result);
   void OnSuggestedQuestionsChanged();
 
   // content::WebContentsObserver:
@@ -87,7 +98,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  raw_ref<PrefService> pref_service_;
+  raw_ptr<PrefService> pref_service_;
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
 
   base::ObserverList<Observer> observers_;
@@ -95,6 +106,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // TODO(nullhook): Abstract the data model
   std::vector<mojom::ConversationTurn> chat_history_;
   std::string article_text_;
+  bool is_conversation_active_ = false;
   bool is_request_in_progress_ = false;
   std::vector<std::string> suggested_questions_;
   bool has_generated_questions_ = false;
