@@ -53,6 +53,13 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
   NSString* keyEquivalent = item.keyEquivalent;
   DVLOG(2) << __FUNCTION__ << item.tag << " > "
            << base::SysNSStringToUTF16(keyEquivalent);
+
+  unsigned short keyCode = [keyEquivalent characterAtIndex:0];
+  if ([keyEquivalent isEqualToString:@"\t"]) {
+    // characterAtIndex returns 'v' for \t. So we should set keyCode manually.
+    keyCode = 0x30;
+  }
+
   NSEvent* keyEvent = [NSEvent keyEventWithType:NSEventTypeKeyDown
                                        location:NSZeroPoint
                                   modifierFlags:0
@@ -62,7 +69,7 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
                                      characters:keyEquivalent
                     charactersIgnoringModifiers:keyEquivalent
                                       isARepeat:NO
-                                        keyCode:0];
+                                        keyCode:keyCode];
 
   auto modifiers = ui::EventFlagsFromModifiers(item.keyEquivalentModifierMask);
   if (item.keyEquivalentModifierMask & NSEventModifierFlagFunction) {
