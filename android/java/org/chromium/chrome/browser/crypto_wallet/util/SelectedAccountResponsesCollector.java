@@ -50,8 +50,8 @@ public class SelectedAccountResponsesCollector {
 
             accountsPermissionsContexts.add(accountContext);
             if (CoinType.FIL == coin) {
-                mJsonRpcService.getChainIdForOrigin(CoinType.FIL, origin, chainId -> {
-                    mKeyringService.getFilecoinSelectedAccount(chainId, accountContext);
+                mJsonRpcService.getNetwork(CoinType.FIL, origin, networkInfo -> {
+                    mKeyringService.getFilecoinSelectedAccount(networkInfo.chainId, accountContext);
                 });
             } else {
                 mKeyringService.getSelectedAccount(coin, accountContext);
