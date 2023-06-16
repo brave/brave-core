@@ -11,7 +11,6 @@
 #include <string>
 
 #include "base/mac/foundation_util.h"
-#include "base/mac/scoped_nsobject.h"
 #include "base/mac/scoped_objc_class_swizzler.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
@@ -89,17 +88,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
-  base::scoped_nsobject<NSMenu> edit_submenu(
-      [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu],
-      base::scoped_policy::RETAIN);
-
-  base::scoped_nsobject<NSMenuItem> copy_item(
-      [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY],
-      base::scoped_policy::RETAIN);
-
-  base::scoped_nsobject<NSMenuItem> clean_link_menu_item(
-      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK],
-      base::scoped_policy::RETAIN);
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenuItem* copy_item = [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
+  NSMenuItem* clean_link_menu_item =
+      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
 
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
   base::RunLoop().RunUntilIdle();
@@ -128,17 +120,11 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
-  base::scoped_nsobject<NSMenu> edit_submenu(
-      [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu],
-      base::scoped_policy::RETAIN);
 
-  base::scoped_nsobject<NSMenuItem> copy_item(
-      [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY],
-      base::scoped_policy::RETAIN);
-
-  base::scoped_nsobject<NSMenuItem> clean_link_menu_item(
-      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK],
-      base::scoped_policy::RETAIN);
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenuItem* copy_item = [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
+  NSMenuItem* clean_link_menu_item =
+      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
 
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
   base::RunLoop().RunUntilIdle();
@@ -162,17 +148,11 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
   AppController* ac = base::mac::ObjCCastStrict<AppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
-  base::scoped_nsobject<NSMenu> edit_submenu(
-      [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu],
-      base::scoped_policy::RETAIN);
 
-  base::scoped_nsobject<NSMenuItem> copy_item(
-      [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY],
-      base::scoped_policy::RETAIN);
-
-  base::scoped_nsobject<NSMenuItem> clean_link_menu_item(
-      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK],
-      base::scoped_policy::RETAIN);
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenuItem* copy_item = [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
+  NSMenuItem* clean_link_menu_item =
+      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
 
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
 
@@ -201,13 +181,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
-  base::scoped_nsobject<NSMenu> edit_submenu(
-      [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu],
-      base::scoped_policy::RETAIN);
 
-  base::scoped_nsobject<NSMenuItem> clean_link_menu_item(
-      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK],
-      base::scoped_policy::RETAIN);
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenuItem* clean_link_menu_item =
+      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
 
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
   base::RunLoop().RunUntilIdle();
