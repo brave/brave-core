@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory, useParams } from 'react-router'
 
 // Constants
@@ -129,14 +130,17 @@ export const TokenLists = ({
     return userAssetList.filter((asset) => asset.asset.visible)
   }, [userAssetList])
 
+  const tokenPriceIds = React.useMemo(() =>
+    visibleTokens
+      .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
+      .filter(({ asset }) =>
+        !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
+      .map(token => getPriceIdForToken(token.asset)),
+    [visibleTokens]
+  )
+
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    {
-      ids: visibleTokens
-        .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
-        .filter(({ asset }) =>
-          !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
-        .map(token => getPriceIdForToken(token.asset))
-    },
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 

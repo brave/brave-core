@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import {
@@ -230,18 +231,21 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
       )
   }, [networks, filteredOutPortfolioNetworkKeys])
 
+  const tokenPriceIds = React.useMemo(() =>
+    visibleAssetOptions
+      .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
+      .filter(({ asset }) =>
+        !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
+      .map(({ asset }) => getPriceIdForToken(asset)),
+    [visibleAssetOptions]
+  )
+
   const {
     data: spotPriceRegistry,
     isLoading: isLoadingSpotPrices,
     isFetching: isFetchingSpotPrices
   } = useGetTokenSpotPricesQuery(
-    {
-      ids: visibleAssetOptions
-        .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
-        .filter(({ asset }) =>
-          !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
-        .map(({ asset }) => getPriceIdForToken(asset))
-    },
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 

@@ -138,18 +138,23 @@ const AssetsPanel = (props: Props) => {
     [routeToAssetDetails]
   )
 
+  const tokenPriceIds = React.useMemo(() =>
+    userTokens && balances
+      ? userTokens
+          .filter(token => new Amount(balances[token.contractAddress]).gt(0))
+          .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
+          .map(getPriceIdForToken)
+      : [],
+    [userTokens, balances]
+  )
+
   const {
     data: spotPriceRegistry,
     isLoading: isLoadingSpotPrices,
     isFetching: isFetchingSpotPrices
   } = useGetTokenSpotPricesQuery(
-    userTokens && balances && !isLoadingBalances && !isFetchingBalances
-      ? {
-        ids: userTokens
-          .filter(token => new Amount(balances[token.contractAddress]).gt(0))
-          .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
-          .map(getPriceIdForToken)
-      }
+    tokenPriceIds.length && !isLoadingBalances && !isFetchingBalances
+      ? { ids: tokenPriceIds }
       : skipToken,
     querySubscriptionOptions60s
   )

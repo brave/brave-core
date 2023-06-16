@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useDispatch } from 'react-redux'
 
 // Selectors
@@ -127,15 +128,17 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         !token.isErc721 && !token.isErc1155 && !token.isNft)
     }, [getTokenListWithBalances, selectedSendOption])
 
+    const tokenPriceIds = React.useMemo(() =>
+      accounts
+        .flatMap(getTokensBySelectedSendOption)
+        .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
+        .map(getPriceIdForToken),
+      [accounts, getTokensBySelectedSendOption]
+    )
     const {
       data: spotPriceRegistry
     } = useGetTokenSpotPricesQuery(
-      {
-        ids: accounts
-          .flatMap(getTokensBySelectedSendOption)
-          .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
-          .map(getPriceIdForToken)
-      },
+      tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
       querySubscriptionOptions60s
     )
 

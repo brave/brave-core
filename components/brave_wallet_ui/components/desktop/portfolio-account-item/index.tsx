@@ -102,10 +102,13 @@ export const PortfolioAccountItem = (props: Props) => {
       .format(6, true)
   }, [assetBalance, asset.decimals])
 
+  const tokenPriceIds = React.useMemo(
+    () => [getPriceIdForToken(asset)],
+    [asset]
+  )
+
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    {
-      ids: [getPriceIdForToken(asset)]
-    },
+    { ids: tokenPriceIds },
     querySubscriptionOptions60s
   )
 

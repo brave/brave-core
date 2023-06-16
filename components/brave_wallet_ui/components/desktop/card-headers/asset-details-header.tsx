@@ -132,14 +132,16 @@ export const AssetDetailsHeader = (props: Props) => {
     }
   }, [selectedAsset])
 
+  const tokenPriceIds = React.useMemo(() =>
+    selectedAsset
+      ? [getPriceIdForToken(selectedAsset)]
+      : [],
+    [selectedAsset]
+  )
+
   // queries
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    selectedAsset
-      ? {
-        ids: [getPriceIdForToken(selectedAsset)],
-        timeframe: selectedTimeline
-      }
-      : skipToken,
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 

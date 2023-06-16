@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Constants
 import {
@@ -46,13 +47,17 @@ export function useAssets () {
     )
   }, [userVisibleTokensInfo, selectedNetwork])
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    {
-      ids: assetsByNetwork
+  const tokenPriceIds = React.useMemo(
+    () =>
+      assetsByNetwork
         .filter(token => new Amount(getBalance(selectedAccount, token)).gt(0))
         .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
-        .map(token => getPriceIdForToken(token))
-    },
+        .map(getPriceIdForToken),
+    []
+  )
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    tokenPriceIds ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 

@@ -110,14 +110,15 @@ export const EditGas = ({
     return makeNetworkAsset(selectedNetwork)
   }, [selectedNetwork])
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+  const networkTokenPriceIds = React.useMemo(() =>
     networkAsset
-      ? {
-          ids: [
-            getPriceIdForToken(networkAsset)
-          ]
-        }
-      : skipToken,
+      ? [getPriceIdForToken(networkAsset)]
+      : [],
+    [networkAsset]
+  )
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    networkTokenPriceIds.length ? { ids: networkTokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 

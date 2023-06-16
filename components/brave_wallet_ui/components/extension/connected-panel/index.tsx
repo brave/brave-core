@@ -113,6 +113,13 @@ export const ConnectedPanel = (props: Props) => {
         tokens: [networkAsset]
       }
       : skipToken
+    )
+  
+  const networkTokenPriceIds = React.useMemo(() =>
+    networkAsset
+      ? [getPriceIdForToken(networkAsset)]
+      : [],
+    [networkAsset]
   )
 
   const {
@@ -120,11 +127,7 @@ export const ConnectedPanel = (props: Props) => {
     isLoading: isLoadingSpotPrices,
     isFetching: isFetchingSpotPrices
   } = useGetTokenSpotPricesQuery(
-    networkAsset
-      ? {
-        ids: [getPriceIdForToken(networkAsset)]
-      }
-      : skipToken,
+    networkTokenPriceIds.length ? { ids: networkTokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 

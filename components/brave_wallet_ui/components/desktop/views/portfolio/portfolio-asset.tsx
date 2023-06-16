@@ -241,19 +241,22 @@ export const PortfolioAsset = (props: Props) => {
     return userToken
   }, [userVisibleTokensInfo, selectedTimeline, chainIdOrMarketSymbol, contractOrSymbol, tokenId, isShowingMarketData])
 
+  const tokenPriceIds = React.useMemo(() =>
+    userAssetList
+      .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
+      .filter(({ asset }) =>
+        !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
+      .map(({ asset }) => getPriceIdForToken(asset))
+      .concat(
+        selectedAssetFromParams
+          ? [getPriceIdForToken(selectedAssetFromParams)]
+          : []
+    ),
+    [userAssetList, selectedAssetFromParams]
+  )
+
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    {
-      ids: userAssetList
-        .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
-        .filter(({ asset }) =>
-          !asset.isErc721 && !asset.isErc1155 && !asset.isNft)
-        .map(({ asset }) => getPriceIdForToken(asset))
-        .concat(
-          selectedAssetFromParams
-            ? [getPriceIdForToken(selectedAssetFromParams)]
-            : []
-        )
-    },
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 

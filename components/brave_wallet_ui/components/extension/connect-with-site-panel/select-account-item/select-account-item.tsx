@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { create } from 'ethereum-blockies'
 
 // Types
@@ -110,10 +111,13 @@ export const SelectAccountItem = (props: Props) => {
     )
   }, [userVisibleTokensInfo, networks, account, selectedNetwork?.coin, selectedNetwork?.chainId])
 
+  const tokenPriceIds = React.useMemo(() =>
+    tokenListByAccount.map(getPriceIdForToken),
+    [tokenListByAccount]
+  )
+
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    {
-      ids: tokenListByAccount.map(getPriceIdForToken)
-    },
+    tokenPriceIds.length ? { ids: tokenPriceIds }: skipToken,
     querySubscriptionOptions60s
   )
 

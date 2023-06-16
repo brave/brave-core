@@ -247,17 +247,18 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     txNetwork
   })
 
+  const txTokenPriceIds = React.useMemo(
+    () => txToken ? [getPriceIdForToken(txToken)]: [],
+    [txToken]
+  )
+
   // price queries
   const {
     fiatValue: txTokenFiatValue,
     isLoading: isLoadingTxTokenSpotPrice
   } = useGetTokenSpotPricesQuery(
-    txToken
-      ? {
-        ids: [
-          getPriceIdForToken(txToken)
-        ]
-      }
+    txTokenPriceIds.length
+      ? { ids: txTokenPriceIds }
       : skipToken,
     {
       skip: !txToken || !normalizedTransferredValue,
@@ -281,17 +282,18 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         }
       }
     }
+    )
+  
+  const networkTokenPriceIds = React.useMemo(
+    () => networkAsset ? [getPriceIdForToken(networkAsset)] : [],
+    [networkAsset]
   )
 
   const {
     gasFeeFiat,
     isLoading: isLoadingGasAssetPrice
   } = useGetTokenSpotPricesQuery(
-    networkAsset
-      ? {
-        ids: [getPriceIdForToken(networkAsset)]
-      }
-      : skipToken,
+    networkTokenPriceIds.length ? { ids: networkTokenPriceIds } : skipToken,
     {
       skip: !networkAsset || !gasFee || !txNetwork,
       // TODO: selector

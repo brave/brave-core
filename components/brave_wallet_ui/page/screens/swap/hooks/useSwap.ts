@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { mapLimit } from 'async'
 
 // Options
@@ -119,17 +120,17 @@ export const useSwap = () => {
   const [tokenBalances, dispatchBalancesUpdate] = useReducer(balancesReducer, {})
   const [abortController, setAbortController] = useState<AbortController | undefined>(undefined)
 
+  const tokenPriceIds = useMemo(
+    () =>
+      [nativeAsset, fromToken, toToken]
+        .flatMap(token => (token ? [getPriceIdForToken(token)] : [])),
+    [nativeAsset, fromToken, toToken]
+  )
+
   const {
     data: spotPriceRegistry
-    // isLoading: isSpotPricesLoading,
-    // isFetching: isSpotPricesFetching
   } = useGetTokenSpotPricesQuery(
-    {
-      ids: [nativeAsset, fromToken, toToken]
-        .filter((token) => token !== undefined)
-        // @ts-expect-error
-        .map(getPriceIdForToken)
-    },
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 

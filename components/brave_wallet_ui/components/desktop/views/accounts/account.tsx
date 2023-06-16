@@ -193,16 +193,19 @@ export const Account = () => {
     [accountsTokensList]
   )
 
+  const tokenPriceIds = React.useMemo(() =>
+    fungibleTokens
+      .filter(token => new Amount(getBalance(selectedAccount, token)).gt(0))
+      .map(getPriceIdForToken),
+    [fungibleTokens, selectedAccount]
+  )
+
   const {
     data: spotPriceRegistry,
     isLoading: isLoadingSpotPrices,
     isFetching: isFetchingSpotPrices
   } = useGetTokenSpotPricesQuery(
-    {
-      ids: fungibleTokens
-        .filter(token => new Amount(getBalance(selectedAccount, token)).gt(0))
-        .map(token => getPriceIdForToken(token)),
-    },
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 

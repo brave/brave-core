@@ -152,17 +152,17 @@ const TransactionDetailPanel = (props: Props) => {
 
   const txToken = findTransactionToken(transaction, combinedTokensList)
 
+  const tokenPriceIds = React.useMemo(() =>
+    txToken && networkAsset
+      ? [getPriceIdForToken(txToken), getPriceIdForToken(networkAsset)]
+      : [],
+    [txToken, networkAsset]
+  )
+
   const {
     data: spotPriceRegistry
   } = useGetTokenSpotPricesQuery(
-    txToken && networkAsset //
-      ? {
-        ids: [
-          getPriceIdForToken(txToken),
-          getPriceIdForToken(networkAsset)
-        ]
-      }
-      : skipToken,
+    tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
   )
 
