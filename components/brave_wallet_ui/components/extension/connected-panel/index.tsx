@@ -108,13 +108,13 @@ export const ConnectedPanel = (props: Props) => {
   } = useScopedBalanceUpdater(
     selectedNetwork && selectedAccount && networkAsset
       ? {
-        network: selectedNetwork,
-        account: selectedAccount,
-        tokens: [networkAsset]
-      }
+          network: selectedNetwork,
+          account: selectedAccount,
+          tokens: [networkAsset]
+        }
       : skipToken
     )
-  
+
   const networkTokenPriceIds = React.useMemo(() =>
     networkAsset
       ? [getPriceIdForToken(networkAsset)]

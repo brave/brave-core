@@ -68,7 +68,6 @@ import { CopyAddress } from '../components/copy-address/copy-address'
 import { ChecksumInfoModal } from '../components/checksum-info-modal/checksum-info-modal'
 import WalletPageWrapper from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { PageTitleHeader } from '../../../../components/desktop/card-headers/page-title-header'
-import { sk } from 'date-fns/locale'
 
 interface Props {
   onShowSelectTokenModal: () => void

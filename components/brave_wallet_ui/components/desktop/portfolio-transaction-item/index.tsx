@@ -283,7 +283,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       }
     }
     )
-  
+
   const networkTokenPriceIds = React.useMemo(
     () => networkAsset ? [getPriceIdForToken(networkAsset)] : [],
     [networkAsset]
