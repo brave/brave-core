@@ -1184,14 +1184,11 @@ if (is_android) {
     ]
   }
 
-  chrome_public_common_apk_or_module_tmpl("brave_public_test_apk") {
-    testonly = true
-    target_type = "instrumentation_test_apk"
+  chrome_public_test_apk_tmpl("brave_public_test_apk") {
     apk_name = "BravePublicTest"
     android_manifest = brave_public_test_apk_manifest
     android_manifest_dep = ":brave_public_test_apk_manifest"
     manifest_package = brave_public_test_manifest_package
-    shared_libraries = [ "//chrome/android:libchromefortest" ]
     if (!is_java_debug) {
       proguard_enabled = true
       proguard_configs = [
@@ -1249,6 +1246,7 @@ if (is_android) {
       "//components/browser_ui/settings/android:java",
       "//components/browser_ui/site_settings/android:java",
       "//components/browser_ui/widget/android:java",
+      "//components/commerce/core/android:core_java",
       "//components/embedder_support/android:browser_context_java",
       "//components/external_intents/android:java",
       "//components/favicon/android:java",
