@@ -23,7 +23,7 @@ namespace brave_vpn {
 namespace {
 bool RemoveWireguardConfigDirectory(const base::FilePath& last_used_config) {
   auto wireguard_config_folder = last_used_config.DirName();
-  if (wireguard_config_folder.value().empty() ||
+  if (wireguard_config_folder.empty() ||
       !base::PathExists(wireguard_config_folder)) {
     return true;
   }
