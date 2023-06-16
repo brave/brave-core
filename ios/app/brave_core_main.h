@@ -23,6 +23,7 @@
 @class AdblockService;
 @class BraveTabGeneratorAPI;
 @class WebImageDownloader;
+@class NTPBackgroundImagesService;
 @protocol IpfsAPI;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -90,6 +91,8 @@ OBJC_EXPORT
                          weekOfInstall:(NSString*)weekOfInstall;
 
 @property(readonly) BraveP3AUtils* p3aUtils;
+
+@property(readonly) NTPBackgroundImagesService* backgroundImagesService;
 
 /// Sets up bundle path overrides and initializes ICU from the BraveCore bundle
 /// without setting up a BraveCoreMain instance.

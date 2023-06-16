@@ -8,6 +8,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
@@ -35,6 +36,8 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   p3a::P3AService::RegisterPrefs(registry, false);
 #endif
+  ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
+      registry);
 }
 
 void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
