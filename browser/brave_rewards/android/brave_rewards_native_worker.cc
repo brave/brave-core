@@ -24,10 +24,12 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/url_data_source.h"
 
 #define DEFAULT_ADS_PER_HOUR 2
@@ -786,12 +788,11 @@ int BraveRewardsNativeWorker::GetAdsPerHour(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::SetAdsPerHour(JNIEnv* env, jint value) {
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
-  if (!ads_service_) {
-    return;
-  }
-  ads_service_->SetMaximumNotificationAdsPerHour(value);
+  ProfileManager::GetActiveUserProfile()
+      ->GetOriginalProfile()
+      ->GetPrefs()
+      ->SetInt64(brave_ads::prefs::kMaximumNotificationAdsPerHour,
+                 static_cast<int64_t>(value));
 }
 
 void BraveRewardsNativeWorker::SetAutoContributionAmount(JNIEnv* env,

@@ -585,6 +585,12 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
+      prefs::kMaximumNotificationAdsPerHour,
+      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
+                          base::Unretained(this),
+                          prefs::kMaximumNotificationAdsPerHour));
+
+  pref_change_registrar_.Add(
       prefs::kIdleTimeThreshold,
       base::BindRepeating(&AdsServiceImpl::OnIdleTimeThresholdPrefChanged,
                           base::Unretained(this)));
@@ -637,6 +643,7 @@ void AdsServiceImpl::OnEnabledPrefChangedCallback(
 }
 
 void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
+  NotifyPrefChanged(prefs::kIdleTimeThreshold);
   CheckIdleStateAfterDelay();
 }
 
@@ -1061,11 +1068,6 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   }
 
   return ads_per_hour;
-}
-
-void AdsServiceImpl::SetMaximumNotificationAdsPerHour(
-    const int64_t ads_per_hour) {
-  SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 }
 
 bool AdsServiceImpl::ShouldAllowSubdivisionTargeting() const {

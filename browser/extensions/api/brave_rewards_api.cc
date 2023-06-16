@@ -1515,7 +1515,6 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
 
   auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  auto* ads_service = AdsServiceFactory::GetForProfile(profile);
 
   if (rewards_service) {
     auto& ac_enabled = params->prefs.auto_contribute_enabled;
@@ -1527,15 +1526,15 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
       rewards_service->SetAutoContributionAmount(*ac_amount);
   }
 
-  if (ads_service) {
-    auto& ads_enabled = params->prefs.ads_enabled;
-    if (ads_enabled) {
-      profile->GetPrefs()->SetBoolean(brave_ads::prefs::kEnabled, *ads_enabled);
-    }
+  auto& ads_enabled = params->prefs.ads_enabled;
+  if (ads_enabled) {
+    profile->GetPrefs()->SetBoolean(brave_ads::prefs::kEnabled, *ads_enabled);
+  }
 
-    auto& ads_per_hour = params->prefs.ads_per_hour;
-    if (ads_per_hour)
-      ads_service->SetMaximumNotificationAdsPerHour(*ads_per_hour);
+  auto& ads_per_hour = params->prefs.ads_per_hour;
+  if (ads_per_hour) {
+    profile->GetPrefs()->SetInt64(
+        brave_ads::prefs::kMaximumNotificationAdsPerHour, *ads_per_hour);
   }
 
   return RespondNow(NoArguments());

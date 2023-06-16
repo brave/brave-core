@@ -1396,11 +1396,12 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
 
   AllowJavascript();
 
+  auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+
   const std::string key = args[0].GetString();
   const std::string value = args[1].GetString();
 
   if (key == "adsEnabled") {
-    auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
     prefs->SetBoolean(brave_ads::prefs::kEnabled,
                       value == "true" && brave_ads::IsSupportedRegion());
   } else if (key == "adsPerHour") {
@@ -1410,7 +1411,8 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
       return;
     }
 
-    ads_service_->SetMaximumNotificationAdsPerHour(int64_value);
+    prefs->SetInt64(brave_ads::prefs::kMaximumNotificationAdsPerHour,
+                    int64_value);
   } else if (key == kAdsSubdivisionTargeting) {
     ads_service_->SetSubdivisionTargetingCode(value);
   } else if (key == kAutoDetectedSubdivisionTargeting) {
