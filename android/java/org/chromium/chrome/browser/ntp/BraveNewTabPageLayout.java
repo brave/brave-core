@@ -315,14 +315,14 @@ public class BraveNewTabPageLayout
                     Log.e(TAG, "onAttachedToWindow " + e);
                 }
             });
+        }
 
-            mIsDisplayNewsOptin = shouldDisplayNewsOptin();
-            mIsDisplayNews = BraveNewsUtils.shouldDisplayNews();
+        mIsDisplayNewsOptin = shouldDisplayNewsOptin();
+        mIsDisplayNews = BraveNewsUtils.shouldDisplayNews();
 
-            initPreferenceObserver();
-            if (mPreferenceObserver != null) {
-                SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
-            }
+        initPreferenceObserver();
+        if (mPreferenceObserver != null) {
+            SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
         }
         setNtpViews();
     }
@@ -768,7 +768,9 @@ public class BraveNewTabPageLayout
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(BraveNewsPreferencesV2.PREF_SHOW_OPTIN, false);
         sharedPreferencesEditor.apply();
-        BravePrefServiceBridge.getInstance().setNewsOptIn(true);
+        if (isOptin) {
+            BravePrefServiceBridge.getInstance().setNewsOptIn(true);
+        }
         BravePrefServiceBridge.getInstance().setShowNews(isOptin);
 
         mIsDisplayNewsOptin = false;
