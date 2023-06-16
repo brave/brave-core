@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SelectedAccountResponsesCollector;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.mojo.bindings.Callbacks.Callback1;
+import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,6 +77,7 @@ public class CryptoModel {
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
     public LiveData<Boolean> mIsSwapEnabled;
     private TransactionsModel mTransactionsModel;
+    private Origin mOrigin;
 
     public CryptoModel(Context context, TxService txService, KeyringService keyringService,
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
@@ -206,9 +208,9 @@ public class CryptoModel {
             }
 
             mKeyringService.getAllAccounts(allAccounts -> {
-                new SelectedAccountResponsesCollector(mKeyringService, mBraveWalletService, coins,
+                new SelectedAccountResponsesCollector(mKeyringService, mJsonRpcService, coins,
                         Arrays.asList(allAccounts.accounts))
-                        .getAccounts(defaultAccountPerCoin -> {
+                        .getAccounts(mOrigin, defaultAccountPerCoin -> {
                             mPendingTxHelper.setAccountInfos(
                                     new ArrayList<>(defaultAccountPerCoin));
                         });
@@ -360,6 +362,10 @@ public class CryptoModel {
     public void clearBSS() {
         mSendModel = null;
         mBuyModel = null;
+    }
+
+    void setOrigin(Origin origin) {
+        this.mOrigin = origin;
     }
 
     /*

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AddSuggestTokenRequest;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -83,6 +84,7 @@ public class AddTokenFragment extends BaseDAppsFragment {
     }
 
     private void fillAddSuggestTokenRequest(boolean init) {
+        if (mWalletModel == null) return;
         getBraveWalletService().getPendingAddSuggestTokenRequests(requests -> {
             if (requests == null || requests.length == 0) {
                 Intent intent = new Intent();
@@ -92,23 +94,25 @@ public class AddTokenFragment extends BaseDAppsFragment {
                 return;
             }
             mCurrentAddSuggestTokenRequest = requests[0];
+            NetworkInfo selectedNetwork = mWalletModel.getNetworkModel().getNetwork(
+                    mCurrentAddSuggestTokenRequest.token.chainId);
             if (init) {
                 mBtCancel.setOnClickListener(
                         v -> { notifyAddSuggestTokenRequestProcessed(false); });
                 mBtAdd.setOnClickListener(v -> { notifyAddSuggestTokenRequestProcessed(true); });
                 mTokenAddress.setOnClickListener(v -> {
                     Activity activity = getActivity();
-                    if (activity instanceof BraveWalletBaseActivity) {
+                    if (activity instanceof BraveWalletBaseActivity && selectedNetwork != null) {
                         Utils.openAddress(
                                 "/token/" + mCurrentAddSuggestTokenRequest.token.contractAddress,
-                                getJsonRpcService(), (BraveWalletBaseActivity) activity,
-                                mCurrentAddSuggestTokenRequest.token.coin);
+                                (BraveWalletBaseActivity) activity,
+                                mCurrentAddSuggestTokenRequest.token.coin, selectedNetwork);
                     }
                 });
             }
             fillOriginInfo(mCurrentAddSuggestTokenRequest.origin);
             initToken();
-            updateNetwork(mCurrentAddSuggestTokenRequest.token.chainId);
+            updateNetwork(selectedNetwork);
         });
     }
 
@@ -119,10 +123,9 @@ public class AddTokenFragment extends BaseDAppsFragment {
         }
     }
 
-    private void updateNetwork(String chainId) {
-        if (JavaUtils.anyNull(mWalletModel, chainId)) return;
-        var selectedNetwork = mWalletModel.getNetworkModel().getNetwork(chainId);
-        mNetworkName.setText(selectedNetwork.chainName);
+    private void updateNetwork(NetworkInfo networkInfo) {
+        if (JavaUtils.anyNull(mWalletModel, networkInfo)) return;
+        mNetworkName.setText(networkInfo.chainName);
     }
 
     private void initToken() {

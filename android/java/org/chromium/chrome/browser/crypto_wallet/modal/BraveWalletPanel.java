@@ -163,6 +163,8 @@ public class BraveWalletPanel implements DialogInterface {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+            // Update the origin in domain layer to use the network per origin
+            mWalletModel.getActiveOrigin(originInfo -> { mWalletModel.setOriginInfo(originInfo); });
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "BraveWalletPanel Constructor " + e);
         }
@@ -218,8 +220,8 @@ public class BraveWalletPanel implements DialogInterface {
             try {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 // TODO(apaymyshev): address might be null for bitcoin?
-                activity.viewOnBlockExplorer(
-                        mSelectedAccount.address, mSelectedAccount.accountId.coin);
+                activity.viewOnBlockExplorer(mSelectedAccount.address,
+                        mSelectedAccount.accountId.coin, mSelectedNetwork);
                 dismiss();
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "handleMenuItemClick action_view_on_block_explorer " + e);
@@ -377,8 +379,8 @@ public class BraveWalletPanel implements DialogInterface {
         if (selectedAccount == null) {
             return;
         }
-        mBraveWalletPanelServices.getJsonRpcService().getNetwork(
-                selectedAccount.accountId.coin, null, selectedNetwork -> {
+        mWalletModel.getCryptoModel().getNetworkModel().getNetwork(
+                selectedAccount.accountId.coin, selectedNetwork -> {
                     BlockchainToken asset = Utils.makeNetworkAsset(selectedNetwork);
                     AssetsPricesHelper.fetchPrices(mBraveWalletPanelServices.getAssetRatioService(),
                             new BlockchainToken[] {asset}, assetPrices -> {

@@ -62,6 +62,7 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
@@ -1297,8 +1298,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         startActivity(braveWalletIntent);
     }
 
-    public void viewOnBlockExplorer(String address, @CoinType.EnumType int coinType) {
-        Utils.openAddress("/address/" + address, mJsonRpcService, this, coinType);
+    public void viewOnBlockExplorer(
+            String address, @CoinType.EnumType int coinType, NetworkInfo networkInfo) {
+        Utils.openAddress("/address/" + address, this, coinType, networkInfo);
     }
 
     public void openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType activityType) {
