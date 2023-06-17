@@ -328,8 +328,6 @@ AdBlockService::AdBlockService(
           component_update_service_, kAdBlockExceptionComponentId,
           kAdBlockExceptionComponentBase64PublicKey,
           kAdBlockExceptionComponentName);
-  AdBlockFiltersProviderManager::GetInstance()->AddProvider(
-      default_exception_filters_provider_.get());
   regional_service_manager_ = std::make_unique<AdBlockRegionalServiceManager>(
       local_state_, locale_, component_update_service_,
       filter_list_catalog_provider_.get());
