@@ -324,7 +324,10 @@ AdBlockService::AdBlockService(
           resource_provider_.get(), GetTaskRunner());
 }
 
-AdBlockService::~AdBlockService() = default;
+AdBlockService::~AdBlockService() {
+  AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
+      default_exception_filters_provider_.get());
+}
 
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
