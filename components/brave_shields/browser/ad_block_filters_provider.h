@@ -25,7 +25,7 @@ class AdBlockFiltersProvider {
     virtual void OnChanged() = 0;
   };
 
-  AdBlockFiltersProvider();
+  explicit AdBlockFiltersProvider(bool engine_is_default);
   AdBlockFiltersProvider(const AdBlockFiltersProvider&) = delete;
   AdBlockFiltersProvider& operator=(const AdBlockFiltersProvider&) = delete;
   virtual ~AdBlockFiltersProvider();
@@ -39,10 +39,14 @@ class AdBlockFiltersProvider {
   base::WeakPtr<AdBlockFiltersProvider> AsWeakPtr();
 
  protected:
+  bool engine_is_default_;
+
   virtual void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) = 0;
-
+  void AddProviderToFilterProviderManager(AdBlockFiltersProvider* provider);
+  void RemoveProviderFromFilterProviderManager(
+      AdBlockFiltersProvider* provider);
   void NotifyObservers();
 
  private:

@@ -9,19 +9,18 @@
 #include <vector>
 
 #include "base/task/single_thread_task_runner.h"
-#include "brave/components/brave_shields/browser/ad_block_default_filters_provider_manager.h"
-#include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_shields {
 
-AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider() {
-  AdBlockDefaultFiltersProviderManager::GetInstance()->AddProvider(this);
+AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider()
+    : AdBlockFiltersProvider(true) {
+  AddProviderToFilterProviderManager(this);
 }
 
 AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() {
-  AdBlockDefaultFiltersProviderManager::GetInstance()->RemoveProvider(this);
+  RemoveProviderFromFilterProviderManager(this);
 }
 
 void AdBlockLocalhostFiltersProvider::LoadDATBuffer(
@@ -29,21 +28,16 @@ void AdBlockLocalhostFiltersProvider::LoadDATBuffer(
         cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  std::string badfilters_for_localhost;
-  // Check if localhost permission feature flag is enabled
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
-    badfilters_for_localhost =
-        R"(
-    ||0.0.0.0^$third-party,domain=~[::]|~[::ffff:0:0],badfilter
-    ||[::]^$third-party,domain=~0.0.0.0|~[::ffff:0:0],badfilter
-    ||[::ffff:0:0]^$third-party,domain=~0.0.0.0|~[::],badfilter
-    ||localhost^$third-party,domain=~127.0.0.1|~[::1]|~[::ffff:7f00:1],badfilter
-    ||127.0.0.1^$third-party,domain=~localhost|~[::1]|~[::ffff:7f00:1],badfilter
-    ||[::1]^$third-party,domain=~localhost|~127.0.0.1|~[::ffff:7f00:1],badfilter
-    ||[::ffff:7f00:1]^$third-party,domain=~localhost|~127.0.0.1|~[::1],badfilter
-    )";
-  }
+  const std::string& badfilters_for_localhost =
+      R"(
+   ||0.0.0.0^$third-party,domain=~[::]|~[::ffff:0:0],badfilter
+   ||[::]^$third-party,domain=~0.0.0.0|~[::ffff:0:0],badfilter
+   ||[::ffff:0:0]^$third-party,domain=~0.0.0.0|~[::],badfilter
+   ||localhost^$third-party,domain=~127.0.0.1|~[::1]|~[::ffff:7f00:1],badfilter
+   ||127.0.0.1^$third-party,domain=~localhost|~[::1]|~[::ffff:7f00:1],badfilter
+   ||[::1]^$third-party,domain=~localhost|~127.0.0.1|~[::ffff:7f00:1],badfilter
+   ||[::ffff:7f00:1]^$third-party,domain=~localhost|~127.0.0.1|~[::1],badfilter
+  )";
 
   auto buffer = std::vector<unsigned char>(badfilters_for_localhost.begin(),
                                            badfilters_for_localhost.end());

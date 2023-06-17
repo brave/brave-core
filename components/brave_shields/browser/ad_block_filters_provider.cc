@@ -7,9 +7,12 @@
 
 #include <utility>
 
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
+
 namespace brave_shields {
 
-AdBlockFiltersProvider::AdBlockFiltersProvider() = default;
+AdBlockFiltersProvider::AdBlockFiltersProvider(bool engine_is_default)
+    : engine_is_default_(engine_is_default) {}
 
 AdBlockFiltersProvider::~AdBlockFiltersProvider() = default;
 
@@ -39,6 +42,18 @@ void AdBlockFiltersProvider::LoadDAT(
 
 base::WeakPtr<AdBlockFiltersProvider> AdBlockFiltersProvider::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
+}
+
+void AdBlockFiltersProvider::AddProviderToFilterProviderManager(
+    AdBlockFiltersProvider* provider) {
+  AdBlockFiltersProviderManager::GetInstance()->AddProvider(provider,
+                                                            engine_is_default_);
+}
+
+void AdBlockFiltersProvider::RemoveProviderFromFilterProviderManager(
+    AdBlockFiltersProvider* provider) {
+  AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
+      provider, engine_is_default_);
 }
 
 }  // namespace brave_shields

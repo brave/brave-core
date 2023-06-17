@@ -13,6 +13,7 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "base/task/sequenced_task_runner.h"
 
 namespace brave_shields {
@@ -39,23 +40,30 @@ AdBlockFiltersProviderManager* AdBlockFiltersProviderManager::GetInstance() {
   return instance.get();
 }
 
-AdBlockFiltersProviderManager::AdBlockFiltersProviderManager() = default;
+AdBlockFiltersProviderManager::AdBlockFiltersProviderManager()
+    : AdBlockFiltersProvider(false) {}
 
 AdBlockFiltersProviderManager::~AdBlockFiltersProviderManager() = default;
 
 void AdBlockFiltersProviderManager::AddProvider(
-    AdBlockFiltersProvider* provider) {
-  auto rv = filters_providers_.insert(provider);
+    AdBlockFiltersProvider* provider,
+    bool is_for_default_engine) {
+  auto rv = is_for_default_engine
+                ? default_engine_filters_providers_.insert(provider)
+                : additional_engine_filters_providers_.insert(provider);
   DCHECK(rv.second);
   provider->AddObserver(this);
 }
 
 void AdBlockFiltersProviderManager::RemoveProvider(
-    AdBlockFiltersProvider* provider) {
-  auto it = filters_providers_.find(provider);
-  DCHECK(it != filters_providers_.end());
-  (*it)->RemoveObserver(this);
-  filters_providers_.erase(it);
+    AdBlockFiltersProvider* provider,
+    bool is_for_default_engine) {
+  auto& filters_providers = is_for_default_engine
+                                ? default_engine_filters_providers_
+                                : additional_engine_filters_providers_;
+  auto it = filters_providers.find(provider);
+  DCHECK(it != filters_providers.end());
+  filters_providers.erase(it);
   NotifyObservers();
 }
 
@@ -63,19 +71,29 @@ void AdBlockFiltersProviderManager::OnChanged() {
   NotifyObservers();
 }
 
+// Use LoadDATBufferForEngine instead, for Filter Provider Manager.
 void AdBlockFiltersProviderManager::LoadDATBuffer(
+    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
+        cb) {
+  NOTREACHED();
+}
+
+void AdBlockFiltersProviderManager::LoadDATBufferForEngine(
+    bool is_for_default_engine,
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (task_tracker_.HasTrackedTasks()) {
     // There's already an in-progress load, cancel it.
     task_tracker_.TryCancelAll();
   }
-
+  auto& filters_providers = is_for_default_engine
+                                ? default_engine_filters_providers_
+                                : additional_engine_filters_providers_;
   const auto collect_and_merge = base::BarrierCallback<DATFileDataBuffer>(
-      filters_providers_.size(),
+      filters_providers.size(),
       base::BindOnce(&AdBlockFiltersProviderManager::FinishCombinating,
                      weak_factory_.GetWeakPtr(), std::move(cb)));
-  for (auto* provider : filters_providers_) {
+  for (auto* const provider : filters_providers) {
     task_tracker_.PostTask(
         base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
         base::BindOnce(

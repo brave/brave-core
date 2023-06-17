@@ -12,7 +12,8 @@
 #include "base/files/file_path.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
-#include "brave/components/brave_shields/browser/ad_block_default_filters_provider_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -25,7 +26,9 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     std::string component_id,
     std::string base64_public_key,
     std::string title)
-    : component_id_(component_id), component_updater_service_(cus) {
+    : AdBlockFiltersProvider(true),
+      component_id_(component_id),
+      component_updater_service_(cus) {
   // Can be nullptr in unit tests
   if (cus) {
     RegisterAdBlockFiltersComponent(
@@ -33,7 +36,7 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
         base::BindRepeating(&AdBlockComponentFiltersProvider::OnComponentReady,
                             weak_factory_.GetWeakPtr()));
   }
-  AdBlockDefaultFiltersProviderManager::GetInstance()->AddProvider(this);
+  AddProviderToFilterProviderManager(this);
 }
 
 AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
@@ -45,7 +48,7 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                                       catalog_entry.title) {}
 
 AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {
-  AdBlockDefaultFiltersProviderManager::GetInstance()->RemoveProvider(this);
+  RemoveProviderFromFilterProviderManager(this);
 }
 
 void AdBlockComponentFiltersProvider::UnregisterComponent() {

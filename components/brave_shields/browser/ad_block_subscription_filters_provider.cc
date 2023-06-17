@@ -9,6 +9,7 @@
 
 #include "base/task/thread_pool.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_shields {
@@ -18,7 +19,9 @@ AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
     base::FilePath list_file,
     base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
         on_metadata_retrieved)
-    : list_file_(list_file), on_metadata_retrieved_(on_metadata_retrieved) {}
+    : AdBlockFiltersProvider(false),
+      list_file_(list_file),
+      on_metadata_retrieved_(on_metadata_retrieved) {}
 
 AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
     default;

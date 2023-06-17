@@ -16,10 +16,10 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_default_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_localhost_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
@@ -70,15 +70,25 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
     AdBlockEngine* adblock_engine,
     AdBlockFiltersProvider* filters_provider,
     AdBlockResourceProvider* resource_provider,
-    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
+    bool is_filter_provider_manager)
     : adblock_engine_(adblock_engine),
       filters_provider_(filters_provider),
       resource_provider_(resource_provider),
-      task_runner_(task_runner) {
+      task_runner_(task_runner),
+      is_filter_provider_manager_(is_filter_provider_manager) {
   filters_provider_->AddObserver(this);
-  filters_provider_->LoadDAT(
-      base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
-                     weak_factory_.GetWeakPtr()));
+  if (is_filter_provider_manager_) {
+    static_cast<AdBlockFiltersProviderManager*>(filters_provider_.get())
+        ->LoadDATBufferForEngine(
+            adblock_engine_->IsDefaultEngine(),
+            base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
+                           weak_factory_.GetWeakPtr()));
+  } else {
+    filters_provider_->LoadDAT(
+        base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
+                       weak_factory_.GetWeakPtr()));
+  }
 }
 
 AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
@@ -87,9 +97,17 @@ AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
 }
 
 void AdBlockService::SourceProviderObserver::OnChanged() {
-  filters_provider_->LoadDAT(
-      base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
-                     weak_factory_.GetWeakPtr()));
+  if (is_filter_provider_manager_) {
+    static_cast<AdBlockFiltersProviderManager*>(filters_provider_.get())
+        ->LoadDATBufferForEngine(
+            adblock_engine_->IsDefaultEngine(),
+            base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
+                           weak_factory_.GetWeakPtr()));
+  } else {
+    filters_provider_->LoadDAT(
+        base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
+                       weak_factory_.GetWeakPtr()));
+  }
 }
 
 void AdBlockService::SourceProviderObserver::OnDATLoaded(
@@ -276,11 +294,11 @@ AdBlockService::AdBlockService(
       component_update_service_(cus),
       task_runner_(task_runner),
       default_engine_(std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
-          new AdBlockEngine(),
+          new AdBlockEngine(true /* is_default */),
           base::OnTaskRunnerDeleter(GetTaskRunner()))),
       additional_filters_engine_(
           std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
-              new AdBlockEngine(),
+              new AdBlockEngine(false /* is_default */),
               base::OnTaskRunnerDeleter(GetTaskRunner()))) {
   // Initializes adblock-rust's domain resolution implementation
   adblock::SetDomainResolver(AdBlockServiceDomainResolver);
@@ -321,19 +339,22 @@ AdBlockService::AdBlockService(
           profile_dir_);
   custom_filters_provider_ =
       std::make_unique<AdBlockCustomFiltersProvider>(local_state_);
-  localhost_filters_provider_ =
-      std::make_unique<AdBlockLocalhostFiltersProvider>();
+
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveLocalhostAccessPermission)) {
+    localhost_filters_provider_ =
+        std::make_unique<AdBlockLocalhostFiltersProvider>();
+  }
 
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
-      default_engine_.get(),
-      AdBlockDefaultFiltersProviderManager::GetInstance(),
-      resource_provider_.get(), GetTaskRunner());
+      default_engine_.get(), AdBlockFiltersProviderManager::GetInstance(),
+      resource_provider_.get(), GetTaskRunner(), true);
 
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
           additional_filters_engine_.get(),
           AdBlockFiltersProviderManager::GetInstance(),
-          resource_provider_.get(), GetTaskRunner());
+          resource_provider_.get(), GetTaskRunner(), true);
 }
 
 AdBlockService::~AdBlockService() {
@@ -396,7 +417,6 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(
       prefs::kAdBlockMobileNotificationsListSettingTouched, false);
   registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
-  registry->RegisterStringPref(prefs::kAdBlockLocalhostFilters, std::string());
   registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);

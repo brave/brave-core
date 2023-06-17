@@ -17,12 +17,12 @@ namespace brave_shields {
 
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state)
-    : local_state_(local_state) {
-  AdBlockFiltersProviderManager::GetInstance()->AddProvider(this);
+    : AdBlockFiltersProvider(false), local_state_(local_state) {
+  AddProviderToFilterProviderManager(this);
 }
 
 AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {
-  AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(this);
+  RemoveProviderFromFilterProviderManager(this);
 }
 
 void AdBlockCustomFiltersProvider::HideElementOnHost(

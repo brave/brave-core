@@ -55,11 +55,12 @@ class AdBlockService {
   class SourceProviderObserver : public AdBlockResourceProvider::Observer,
                                  public AdBlockFiltersProvider::Observer {
    public:
-    SourceProviderObserver(
-        AdBlockEngine* adblock_engine,
-        AdBlockFiltersProvider* source_provider,
-        AdBlockResourceProvider* resource_provider,
-        scoped_refptr<base::SequencedTaskRunner> task_runner);
+    SourceProviderObserver(AdBlockEngine* adblock_engine,
+                           AdBlockFiltersProvider* filters_provider,
+                           AdBlockResourceProvider* resource_provider,
+                           scoped_refptr<base::SequencedTaskRunner> task_runner,
+                           bool is_filter_provider_manager = false);
+
     SourceProviderObserver(const SourceProviderObserver&) = delete;
     SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
     ~SourceProviderObserver() override;
@@ -79,6 +80,7 @@ class AdBlockService {
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
+    bool is_filter_provider_manager_;
 
     base::WeakPtrFactory<SourceProviderObserver> weak_factory_{this};
   };

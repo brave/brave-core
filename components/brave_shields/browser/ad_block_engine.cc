@@ -92,7 +92,9 @@ std::string ResourceTypeToString(blink::mojom::ResourceType resource_type) {
 
 namespace brave_shields {
 
-AdBlockEngine::AdBlockEngine() : ad_block_client_(new adblock::Engine()) {
+AdBlockEngine::AdBlockEngine(bool is_default_engine)
+    : ad_block_client_(new adblock::Engine()),
+      is_default_engine_(is_default_engine) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 

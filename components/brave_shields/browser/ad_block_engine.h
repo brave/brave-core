@@ -42,10 +42,12 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   using GetDATFileDataResult =
       brave_component_updater::LoadDATFileDataResult<adblock::Engine>;
 
-  AdBlockEngine();
+  explicit AdBlockEngine(bool is_default_engine);
   AdBlockEngine(const AdBlockEngine&) = delete;
   AdBlockEngine& operator=(const AdBlockEngine&) = delete;
   ~AdBlockEngine();
+
+  bool IsDefaultEngine() { return is_default_engine_; }
 
   void ShouldStartRequest(const GURL& url,
                           blink::mojom::ResourceType resource_type,
@@ -110,6 +112,8 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   raw_ptr<TestObserver> test_observer_ = nullptr;
+
+  bool is_default_engine_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

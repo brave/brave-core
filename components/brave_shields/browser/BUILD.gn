@@ -10,8 +10,6 @@ if (!is_ios) {
       "ad_block_component_filters_provider.h",
       "ad_block_custom_filters_provider.cc",
       "ad_block_custom_filters_provider.h",
-      "ad_block_default_filters_provider_manager.cc",
-      "ad_block_default_filters_provider_manager.h",
       "ad_block_default_resource_provider.cc",
       "ad_block_default_resource_provider.h",
       "ad_block_engine.cc",
