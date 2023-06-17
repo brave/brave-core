@@ -115,9 +115,8 @@ std::string ExtractConversionIdFromText(
     const std::vector<GURL>& redirect_chain,
     const std::string& conversion_url_pattern,
     const ConversionIdPatternMap& conversion_id_patterns) {
-  std::string conversion_id;
   std::string conversion_id_pattern = kConversionsIdPattern.Get();
-  std::string text = html;
+  std::string conversion_url_spec;
 
   const auto iter = conversion_id_patterns.find(conversion_url_pattern);
   if (iter != conversion_id_patterns.cend()) {
@@ -129,18 +128,22 @@ std::string ExtractConversionIdFromText(
           });
 
       if (url_iter == redirect_chain.cend()) {
-        return conversion_id;
+        return {};
       }
 
       const GURL& url = *url_iter;
-      text = url.spec();
+      conversion_url_spec = url.spec();
     }
 
     conversion_id_pattern = conversion_id_pattern_info.id_pattern;
   }
 
+  const std::string& text =
+      conversion_url_spec.empty() ? html : conversion_url_spec;
   re2::StringPiece text_string_piece(text);
   const RE2 r(conversion_id_pattern);
+
+  std::string conversion_id;
   RE2::FindAndConsume(&text_string_piece, r, &conversion_id);
 
   return conversion_id;
