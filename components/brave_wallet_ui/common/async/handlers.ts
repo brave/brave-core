@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { mapLimit } from 'async'
+
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
@@ -284,16 +286,23 @@ handler.on(WalletActions.getAllTokensList.type, async (store) => {
   const api = getAPIProxy()
   const networkList = await getVisibleNetworksList(api)
   const { blockchainRegistry } = api
-  const getAllTokensList = await Promise.all(networkList.map(async (network) => {
-    const list = await blockchainRegistry.getAllTokens(network.chainId, network.coin)
-    return list.tokens.map((token) => {
-      return {
-        ...token,
-        chainId: network.chainId,
-        logo: `chrome://erc-token-images/${token.logo}`
-      }
-    })
-  }))
+  const getAllTokensList = await mapLimit(
+    networkList,
+    10,
+    async (network: BraveWallet.NetworkInfo) => {
+      const list = await blockchainRegistry.getAllTokens(
+        network.chainId,
+        network.coin
+      )
+      return list.tokens.map((token) => {
+        return {
+          ...token,
+          chainId: network.chainId,
+          logo: `chrome://erc-token-images/${token.logo}`
+        }
+      })
+    }
+  )
   const allTokensList = getAllTokensList.flat(1)
   store.dispatch(WalletActions.setAllTokensList(allTokensList))
 })

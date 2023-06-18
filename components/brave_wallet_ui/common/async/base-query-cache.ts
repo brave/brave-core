@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { mapLimit } from 'async'
 import { EntityId } from '@reduxjs/toolkit'
 
 // types
@@ -165,8 +166,10 @@ export class BaseQueryCache {
       const offRampIds: string[] = []
 
       // Get all networks for supported coin types
-      const networkLists: BraveWallet.NetworkInfo[][] = await Promise.all(
-        filteredSupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+      const networkLists: BraveWallet.NetworkInfo[][] = await mapLimit(
+        filteredSupportedCoinTypes,
+        10,
+        async (coin: BraveWallet.CoinType) => {
           const { networks } = await jsonRpcService.getAllNetworks(coin)
 
           // hidden networks for coin
@@ -232,7 +235,7 @@ export class BaseQueryCache {
 
           // all networks
           return networks
-        })
+        }
       )
 
       const networksList = networkLists.flat(1)
@@ -273,38 +276,38 @@ export class BaseQueryCache {
       const visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> =
         {}
 
-      const userTokenListsForNetworks = await Promise.all(
-        Object.entries(networksRegistry.entities).map(
-          async ([networkId, network]) => {
-            if (!network) {
-              return []
-            }
-
-            const fullTokensListForNetwork: BraveWallet.BlockchainToken[] =
-              await fetchUserAssetsForNetwork(braveWalletService, network)
-
-            tokenIdsByChainId[networkId] =
-              fullTokensListForNetwork.map(getAssetIdKey)
-
-            tokenIdsByCoinType[network.coin] = (
-              tokenIdsByCoinType[network.coin] || []
-            ).concat(tokenIdsByChainId[networkId] || [])
-
-            const visibleTokensForNetwork: BraveWallet.BlockchainToken[] =
-              fullTokensListForNetwork.filter((t) => t.visible)
-
-            visibleTokenIdsByChainId[networkId] =
-              visibleTokensForNetwork.map(getAssetIdKey)
-
-            visibleTokenIdsByCoinType[network.coin] = (
-              visibleTokenIdsByCoinType[network.coin] || []
-            ).concat(visibleTokenIdsByChainId[networkId] || [])
-
-            visibleTokenIds.push(...visibleTokenIdsByChainId[networkId])
-
-            return fullTokensListForNetwork
+      const userTokenListsForNetworks = await mapLimit(
+        Object.entries(networksRegistry.entities),
+        10,
+        async ([networkId, network]: [string, BraveWallet.NetworkInfo]) => {
+          if (!network) {
+            return []
           }
-        )
+
+          const fullTokensListForNetwork: BraveWallet.BlockchainToken[] =
+            await fetchUserAssetsForNetwork(braveWalletService, network)
+
+          tokenIdsByChainId[networkId] =
+            fullTokensListForNetwork.map(getAssetIdKey)
+
+          tokenIdsByCoinType[network.coin] = (
+            tokenIdsByCoinType[network.coin] || []
+          ).concat(tokenIdsByChainId[networkId] || [])
+
+          const visibleTokensForNetwork: BraveWallet.BlockchainToken[] =
+            fullTokensListForNetwork.filter((t) => t.visible)
+
+          visibleTokenIdsByChainId[networkId] =
+            visibleTokensForNetwork.map(getAssetIdKey)
+
+          visibleTokenIdsByCoinType[network.coin] = (
+            visibleTokenIdsByCoinType[network.coin] || []
+          ).concat(visibleTokenIdsByChainId[networkId] || [])
+
+          visibleTokenIds.push(...visibleTokenIdsByChainId[networkId])
+
+          return fullTokensListForNetwork
+        }
       )
 
       const userTokensByChainIdRegistry = blockchainTokenEntityAdaptor.setAll(
@@ -355,11 +358,13 @@ async function fetchUserAssetsForNetwork(
   )
 
   // Adds a logo and chainId to each token object
-  const tokenList: BraveWallet.BlockchainToken[] = await Promise.all(
-    tokens.map(async (token) => {
+  const tokenList: BraveWallet.BlockchainToken[] = await mapLimit(
+    tokens,
+    10,
+    async (token: BraveWallet.BlockchainToken) => {
       const updatedToken = await addLogoToToken(token)
       return addChainIdToToken(updatedToken, network.chainId)
-    })
+    }
   )
 
   if (tokenList.length === 0) {

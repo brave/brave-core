@@ -2,7 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
+import { mapLimit } from 'async'
 
 // constants
 import { BraveWallet } from '../../constants/types'
@@ -25,8 +27,14 @@ export enum OverallPinningStatus {
   NO_PINNED_ITEMS
 }
 
+type PinnableNftsState = Array<{
+  canBePinned: boolean
+  token: BraveWallet.BlockchainToken
+}>
+
 export function useNftPin () {
-  const [nonFungibleTokens, setNonFungibleTokens] = React.useState<Array<{ canBePinned: boolean, token: BraveWallet.BlockchainToken }>>([])
+  // state
+  const [nonFungibleTokens, setNonFungibleTokens] = React.useState<PinnableNftsState>([])
   const [pinnableNfts, setPinnableNfts] = React.useState<BraveWallet.BlockchainToken[]>([])
 
   // redux
@@ -111,17 +119,26 @@ export function useNftPin () {
     const tokens = userVisibleTokensInfo.filter((token) => token.isErc721 || token.isNft)
 
     const getTokensSupport = async () => {
-      const isTokenSupportedPromises = tokens.map(token => isTokenPinningSupported(token))
-      const isTokenPinningSupportedResults =
-        (await Promise.all(isTokenSupportedPromises)).map(res => res.result)
-      const nfts = await Promise.all(tokens.map(async (token, idx) => {
-        const canBePinned = (await areSupportedForPinning([token.logo]))
-          && isTokenPinningSupportedResults[idx]
-        return { canBePinned, token }
-      }))
+      const nfts: PinnableNftsState = await mapLimit(
+        tokens,
+        10,
+        async (token: BraveWallet.BlockchainToken) => {
+          const { result: tokenPinningSupported } =
+            await isTokenPinningSupported(token)
+
+          const tokenImagePinningSupported = await areSupportedForPinning([token.logo])
+
+          return {
+            canBePinned: tokenPinningSupported && tokenImagePinningSupported,
+            token
+          }
+        }
+      )
+
       const pinnable = nfts
         .filter(({ canBePinned }) => canBePinned)
         .map(({ token }) => token)
+
       if (!ignore) {
         setNonFungibleTokens(nfts)
         setPinnableNfts(pinnable)

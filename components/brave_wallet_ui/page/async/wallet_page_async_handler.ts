@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { mapLimit } from 'async'
+
 import getWalletPageApiProxy from '../wallet_page_api_proxy'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
@@ -342,8 +344,14 @@ handler.on(WalletPageActions.getNftsPinningStatus.type, async (store, payload: B
   if (!store.getState().wallet.isNftPinningFeatureEnabled) return
 
   const { braveWalletPinService } = getWalletPageApiProxy()
-  const getTokenStatusPromises = payload.map((token) => braveWalletPinService.getTokenStatus(token))
-  const results = await Promise.all(getTokenStatusPromises)
+
+  const results = await mapLimit(
+    payload,
+    10,
+    async (token: BraveWallet.BlockchainToken) =>
+      await braveWalletPinService.getTokenStatus(token)
+  )
+
   const nftsPinningStatus = results.map((result, index) => {
     const status: UpdateNftPinningStatusType = {
       token: payload[index],
