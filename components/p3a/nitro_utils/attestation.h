@@ -32,7 +32,7 @@ void RequestAndVerifyAttestationDocument(
 //
 // These take the cbor serialization of just the attestation document
 // portion of the COSE Sign1 object returned by the AWS Nitro enclave
-// in reponse to remote attestation requests.
+// in response to remote attestation requests.
 //
 // Verify the nonce value passed with the attestation request.
 bool VerifyNonceForTesting(const std::vector<uint8_t>& attestation_bytes,
