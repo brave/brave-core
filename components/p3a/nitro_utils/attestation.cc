@@ -18,6 +18,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/p3a/nitro_utils/cose.h"
+#include "components/cbor/reader.h"
 #include "crypto/random.h"
 #include "net/base/url_util.h"
 #include "net/cert/pki/parsed_certificate.h"
@@ -264,6 +265,27 @@ void RequestAndVerifyAttestationDocument(
       base::BindOnce(&ParseAndVerifyDocument, std::move(url_loader), nonce,
                      std::move(result_callback)),
       kAttestationBodyMaxSize);
+}
+
+bool VerifyNonceForTesting(const std::vector<uint8_t>& attestation_bytes,
+                           const std::vector<uint8_t>& orig_nonce) {
+  auto document = cbor::Reader::Read(attestation_bytes);
+  if (!document.has_value() || !document.value().is_map()) {
+    LOG(ERROR) << "Nitro verification: expected cbor map for test";
+    return false;
+  }
+  return VerifyNonce(document.value().GetMap(), orig_nonce);
+}
+
+bool VerifyUserDataKeyForTesting(
+    const std::vector<uint8_t>& attestation_bytes,
+    scoped_refptr<net::X509Certificate> expected_cert) {
+  auto document = cbor::Reader::Read(attestation_bytes);
+  if (!document.has_value() || !document.value().is_map()) {
+    LOG(ERROR) << "Nitro verification: expected cbor map for test";
+    return false;
+  }
+  return VerifyUserDataKey(expected_cert, document.value().GetMap());
 }
 
 }  // namespace nitro_utils

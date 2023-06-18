@@ -101,6 +101,7 @@ source_set("unit_tests") {
     "message_manager_unittest.cc",
     "metric_log_store_unittest.cc",
     "metric_names_unittest.cc",
+    "nitro_utils/attestation_unittest.cc",
     "nitro_utils/cose_unittest.cc",
     "p2a_protocols_unittest.cc",
     "p3a_service_unittest.cc",
