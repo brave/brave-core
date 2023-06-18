@@ -17,17 +17,32 @@ namespace nitro_utils {
 namespace {
 
 // Trimmed-down cbor+base64 attestation document for testing
-// python-cbor2 base64.b64encode(cbor2.dumps(map_dict, canonical=True))
+// python: base64.b64encode(cbor2.dumps(map_dict, canonical=True))
 constexpr char kShortDocument[] =
+    "pmVub25jZVShkGajO9w8jptiAlBSISId8fsW9WZkaWdlc3RmU0hBMzg0aW1vZHVs"
+    "ZV9pZHgnaS0wYjQ2MzcxODcxOWFkYjI0YS1lbmMwMTg4OTc4NjRhYmFlNWQyaXRp"
+    "bWVzdGFtcBsAAAGIyxyk5Gl1c2VyX2RhdGFYIhIgQwHTmm6+N7JzV75L/9jKxVJK"
+    "msJMA18TN9CiINDyqXpqcHVibGljX2tlefY=";
+constexpr char kExpectedNonce[] = "a19066a33bdc3c8e9b6202505221221df1fb16f5";
+
+// Version of the attestation document with randomized user_data and nonce
+constexpr char kBadDocument[] =
+    "pmVub25jZVRG4z08zx2z0jdL5cLAV9tBGzBcOWZkaWdlc3RmU0hBMzg0aW1vZHVsZV9pZHgn"
+    "aS0wYjQ2MzcxODcxOWFkYjI0YS1lbmMwMTg4OTc4NjRhYmFlNWQyaXRpbWVzdGFtcBsAAAGI"
+    "yxyk5Gl1c2VyX2RhdGFYIgogsn3PzVQFXXUPf6W5qVRUi3bVGRJ2C6PRri1YOt5YwqlqcHVi"
+    "bGljX2tlefY=";
+
+// Version of the attestation document with older user_data scheme
+constexpr char kOldDocument[] =
     "pmVub25jZVShkGajO9w8jptiAlBSISId8fsW9WZkaWdlc3RmU0hBMzg0aW1vZHVs"
     "ZV9pZHgnaS0wYjQ2MzcxODcxOWFkYjI0YS1lbmMwMTg4OTc4NjRhYmFlNWQyaXRp"
     "bWVzdGFtcBsAAAGIyxyk5Gl1c2VyX2RhdGFYT3NoYTI1NjpDAdOabr43snNXvkv/"
     "2MrFUkqawkwDXxM30KIg0PKpejtzaGEyNTY6AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     "AAAAAAAAAAAAAABqcHVibGljX2tlefY=";
-constexpr char kExpectedNonce[] = "a19066a33bdc3c8e9b6202505221221df1fb16f5";
 
-// Version of the attestation document with randomized user_data and nonce
-constexpr char kBadDocument[] =
+// Version of the attestation document with randomized older scheme
+// user_data and randomized nonce
+constexpr char kOldBadDocument[] =
     "pmVub25jZVSYQjMTB+E+8zgs690i18gcDtPF5WZkaWdlc3RmU0hBMzg0aW1vZHVs"
     "ZV9pZHgnaS0wYjQ2MzcxODcxOWFkYjI0YS1lbmMwMTg4OTc4NjRhYmFlNWQyaXRp"
     "bWVzdGFtcBsAAAGIyxyk5Gl1c2VyX2RhdGFYT3NoYTI1NjpZ1l7mBoYUN/QYaRUP"
@@ -86,28 +101,43 @@ TEST_F(NitroAttestationTest, Nonce) {
   auto expected_nonce = FromHex(kExpectedNonce);
   auto bad_document = FromBase64(kBadDocument);
 
-  // Does the document verify against the expected nonce?
+  // Does the test document verify against the expected nonce?
   EXPECT_TRUE(VerifyNonceForTesting(document, expected_nonce));
 
-  // Does the invalid document fail to very against the nonce?
+  // Does the invalid document fail to verify against the nonce?
   EXPECT_FALSE(VerifyNonceForTesting(bad_document, expected_nonce));
 }
 
 TEST_F(NitroAttestationTest, UserData) {
-  // Parse a TLS cert whose fingerprint matches our test
+  // Parse a TLS cert whose fingerprint matches the test
   // attestation document.
   auto cert_bytes = FromBase64(kTLSCert);
   auto cert = net::X509Certificate::CreateFromBytes(cert_bytes);
   ASSERT_TRUE(cert);
 
-  // Test documents to pass for comparison
+  // Does the test document verify against the expected cert fingerprint?
   auto document = FromBase64(kShortDocument);
-  auto bad = FromBase64(kBadDocument);
-
-  // Does the document verify against the expected cert fingerprint?
   EXPECT_TRUE(VerifyUserDataKeyForTesting(document, cert));
 
   // Does the invalid document fail to verify against the same cert?
+  auto bad = FromBase64(kBadDocument);
+  EXPECT_FALSE(VerifyUserDataKeyForTesting(bad, cert));
+}
+
+TEST_F(NitroAttestationTest, OldUserData) {
+  // Parse a TLS cert whose fingerprint matches the test
+  // attestation document.
+  auto cert_bytes = FromBase64(kTLSCert);
+  auto cert = net::X509Certificate::CreateFromBytes(cert_bytes);
+  ASSERT_TRUE(cert);
+
+  // Does the old scheme document verify against the expected
+  // cert fingerprint?
+  auto old = FromBase64(kOldDocument);
+  EXPECT_TRUE(VerifyUserDataKeyForTesting(old, cert));
+
+  // Does the invalid document fail to verify against the same cert?
+  auto bad = FromBase64(kOldBadDocument);
   EXPECT_FALSE(VerifyUserDataKeyForTesting(bad, cert));
 }
 
