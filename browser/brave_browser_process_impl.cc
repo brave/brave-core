@@ -527,12 +527,9 @@ brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
 
 misc_metrics::ProcessMiscMetrics*
 BraveBrowserProcessImpl::process_misc_metrics() {
-#if !BUILDFLAG(IS_ANDROID)
   if (!process_misc_metrics_) {
     process_misc_metrics_ =
         std::make_unique<misc_metrics::ProcessMiscMetrics>(local_state());
   }
-#endif
   return process_misc_metrics_.get();
 }
-

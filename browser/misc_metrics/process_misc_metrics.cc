@@ -23,7 +23,7 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
   vertical_tab_metrics_ = std::make_unique<VerticalTabMetrics>(local_state);
 #else
   privacy_hub_metrics_ =
-      std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state());
+      std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state);
 #endif
 }
 

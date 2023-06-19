@@ -27,7 +27,11 @@ extern const char kVerticalOpenTabsHistogramName[];
 extern const char kVerticalGroupTabsHistogramName[];
 extern const char kVerticalPinnedTabsHistogramName[];
 
-enum class TabCountType { kOpen, kGroup, kPinned };
+enum class TabCountType {
+  kOpen,
+  kGroup,
+  kPinned,
+};
 
 const TabCountType kAllTabCountTypes[] = {
     TabCountType::kOpen, TabCountType::kGroup, TabCountType::kPinned};
@@ -42,12 +46,12 @@ class VerticalTabBrowserMetrics : public TabStripModelObserver {
   VerticalTabBrowserMetrics& operator=(const VerticalTabBrowserMetrics&) =
       delete;
 
+  // TabStripModelObserver:
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
-  bool IsVerticalTabsEnabled() const;
   size_t GetTabCount(TabCountType count_type) const;
 
  private:
@@ -72,7 +76,7 @@ class VerticalTabMetrics : public BrowserListObserver {
 
   void UpdateMetrics();
 
-  // BrowserListObserver
+  // BrowserListObserver:
   void OnBrowserAdded(Browser* browser) override;
   void OnBrowserRemoved(Browser* browser) override;
 
