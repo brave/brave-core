@@ -95,6 +95,7 @@ class VerticalTabStripRegionView : public views::View,
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   void PreferredSizeChanged() override;
+  void AddedToWidget() override;
 
   // TabStripModelObserver:
   // TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
@@ -116,6 +117,7 @@ class VerticalTabStripRegionView : public views::View,
   void OnWidgetDestroying(views::Widget* widget) override;
 
  private:
+  class MouseWatcher;
   class HeaderView;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
@@ -138,6 +140,9 @@ class VerticalTabStripRegionView : public views::View,
   void OnFloatingModePrefChanged();
 
   void ScheduleFloatingModeTimer();
+  void OnMouseExited();
+  void OnMouseEntered();
+  void OnMousePressedInTree();
 
   gfx::Size GetPreferredSizeForState(State state,
                                      bool include_border,
@@ -196,6 +201,8 @@ class VerticalTabStripRegionView : public views::View,
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
+
+  std::unique_ptr<MouseWatcher> mouse_watcher_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
