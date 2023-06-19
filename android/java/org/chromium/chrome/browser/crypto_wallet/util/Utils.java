@@ -1075,6 +1075,8 @@ public class Utils {
                             BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID);
             if (isFileCoinEvmNet) {
                 openAddress("/" + txInfo.txHash, activity, coinType, networkInfo);
+            } else if (coinType == CoinType.FIL) {
+                openAddress("?cid=" + txInfo.txHash, activity, coinType, networkInfo);
             } else {
                 openAddress("/tx/" + txInfo.txHash, activity, coinType, networkInfo);
             }
@@ -1087,7 +1089,7 @@ public class Utils {
         if (blockExplorerUrl.length() > 2) {
             blockExplorerUrl = blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1);
         }
-        if (coinType == CoinType.ETH) {
+        if (coinType == CoinType.ETH || coinType == CoinType.FIL) {
             blockExplorerUrl += toAppend;
         } else if (coinType == CoinType.SOL) {
             int iPos = blockExplorerUrl.indexOf("?cluster=");
