@@ -503,7 +503,7 @@ TEST_F(BravePrefProviderTest, MigrateFPShieldsSettings) {
   while (rule_iterator && rule_iterator->HasNext()) {
     auto rule = rule_iterator->Next();
     EXPECT_NE(
-        rule.secondary_pattern.ToString(),
+        rule->secondary_pattern.ToString(),
         ContentSettingsPattern::FromString("https://balanced/*").ToString());
   }
   rule_iterator.reset();

@@ -17,8 +17,8 @@ class DeviceInfoSyncService;
 
 namespace brave_sync {
 
-// Helper function to break circular dependency between //components/sync/driver
-// and //component/sync_device_info
+// Helper function to break circular dependency between
+// //components/sync/service and //component/sync_device_info
 void ResetSync(syncer::BraveSyncServiceImpl* sync_service_impl,
                syncer::DeviceInfoSyncService* device_info_service,
                base::OnceClosure on_reset_done);

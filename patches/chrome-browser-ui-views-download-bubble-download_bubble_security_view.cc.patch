@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/download/bubble/download_bubble_security_view.cc b/chrome/browser/ui/views/download/bubble/download_bubble_security_view.cc
-index 97b2152c4862ef6f8fbb4593446b9998f44757c6..35b36e4e0838e12b2acd074f31f1bcc932b71b4d 100644
+index a19da849b27e4822b473e9247cb4ced5d50d255a..705b0373f573b9dcd55223a4a9ede64173ae0fa9 100644
 --- a/chrome/browser/ui/views/download/bubble/download_bubble_security_view.cc
 +++ b/chrome/browser/ui/views/download/bubble/download_bubble_security_view.cc
-@@ -327,6 +327,7 @@ void DownloadBubbleSecurityView::UpdateAccessibilityTextAndFocus() {
+@@ -364,6 +364,7 @@ void DownloadBubbleSecurityView::UpdateAccessibilityTextAndFocus() {
    // Announce that the subpage was opened to inform the user about the changes
    // in the UI.
  #if BUILDFLAG(IS_MAC)

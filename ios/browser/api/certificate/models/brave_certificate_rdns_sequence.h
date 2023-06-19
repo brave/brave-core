@@ -18,8 +18,6 @@ OBJC_EXPORT
 @property(nonatomic, readonly) NSArray<NSString*>* organization;
 @property(nonatomic, readonly) NSArray<NSString*>* organizationalUnit;
 @property(nonatomic, readonly) NSString* commonName;
-@property(nonatomic, readonly) NSArray<NSString*>* streetAddress;
-@property(nonatomic, readonly) NSArray<NSString*>* domainComponent;
 @property(nonatomic, readonly) NSString* userId;
 @end
 

@@ -29,8 +29,11 @@ CommanderService* CommanderServiceFactory::GetForBrowserContext(
 }
 
 CommanderServiceFactory::CommanderServiceFactory()
-    : ProfileKeyedServiceFactory("CommanderService",
-                                 ProfileSelections::BuildForAllProfiles()) {}
+    : ProfileKeyedServiceFactory(
+          "CommanderService",
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kOwnInstance)
+              .Build()) {}
 CommanderServiceFactory::~CommanderServiceFactory() = default;
 
 KeyedService* CommanderServiceFactory::BuildServiceInstanceFor(

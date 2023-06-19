@@ -49,7 +49,7 @@ void SequentialUpdateChecker::CheckNext() {
   remaining_ids_.pop_front();
 
   scoped_refptr<UpdateContext> context = new UpdateContext(
-      update_context_->config, update_context_->is_foreground,
+      update_context_->config, absl::nullopt, update_context_->is_foreground,
       update_context_->is_install, {id},
       update_context_->crx_state_change_callback,
       update_context_->notify_observers_callback,

@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index fcd6d94a41f75c0b7fbc6578d50bda340381b3dd..6d0f2a90388a35d38ba3a5b03988c448bae80872 100644
+index 9fa95733b041775e4672724672024297fa9e3741..8c0afba70d46b929ed89f8bc5f2c87d0d3a4615e 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -119,6 +119,7 @@ constexpr HistogramValue kHistogramValue[] = {
-     {ContentSettingsType::ANTI_ABUSE, 96},
-     {ContentSettingsType::THIRD_PARTY_STORAGE_PARTITIONING, 97},
-     {ContentSettingsType::HTTPS_ENFORCED, 98},
-+    BRAVE_HISTOGRAM_VALUE_LIST
- };
+@@ -127,6 +127,7 @@ constexpr auto kHistogramValue = base::MakeFixedFlatMap<ContentSettingsType,
  
- void FilterRulesForType(ContentSettingsForOneType& settings,
+     // As mentioned at the top, please don't forget to update ContentType in
+     // enums.xml when you add entries here!
++    BRAVE_HISTOGRAM_VALUE_LIST
+ });
+ 
+ constexpr int kkHistogramValueMax = std::max_element(

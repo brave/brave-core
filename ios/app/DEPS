@@ -9,7 +9,7 @@ include_rules = [
   "+components/component_updater/component_updater_switches.h",
   "+components/component_updater/installer_policies",
   "+components/prefs",
-  "+components/sync/driver",
+  "+components/sync/service",
   "+components/sync/base",
   "+components/browser_sync",
   "+components/history/core/browser",

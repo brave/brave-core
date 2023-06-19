@@ -133,7 +133,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToLoadTest) {
   console_observer.SetPattern(
       "Not allowed to load local resource: brave://settings/");
 
-  ASSERT_TRUE(ExecuteScript(
+  ASSERT_TRUE(content::ExecJs(
       active_contents(),
       "window.domAutomationController.send(openBraveSettings())"));
   ASSERT_TRUE(console_observer.Wait());
@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   console_observer.SetPattern(
       "Not allowed to load local resource: brave://settings/");
 
-  ASSERT_TRUE(ExecuteScript(
+  ASSERT_TRUE(content::ExecJs(
       active_contents(),
       "window.domAutomationController.send(openBraveSettingsWithNoOpener())"));
   ASSERT_TRUE(console_observer.Wait());
@@ -164,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   console_observer.SetPattern(
       "Not allowed to load local resource: brave://settings/");
 
-  ASSERT_TRUE(ExecuteScript(
+  ASSERT_TRUE(content::ExecJs(
       active_contents(),
       "window.domAutomationController.send(replaceToBraveSettingsDirectly())"));
   ASSERT_TRUE(console_observer.Wait());
@@ -181,9 +181,9 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   console_observer.SetPattern(
       "Not allowed to load local resource: brave://settings/");
 
-  ASSERT_TRUE(ExecuteScript(initial_active_tab,
-                            "window.domAutomationController.send("
-                            "replaceToBraveSettingsIndirectly())"));
+  ASSERT_TRUE(content::ExecJs(initial_active_tab,
+                              "window.domAutomationController.send("
+                              "replaceToBraveSettingsIndirectly())"));
   ASSERT_TRUE(console_observer.Wait());
 }
 
@@ -198,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
       "Not allowed to load local resource: brave://settings/");
 
   ASSERT_TRUE(
-      ExecuteScript(active_contents(), "window.open(\"brave://settings\")"));
+      content::ExecJs(active_contents(), "window.open(\"brave://settings\")"));
   ASSERT_TRUE(console_observer.Wait());
 }
 
@@ -210,7 +210,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToBraveByClick) {
   console_observer.SetPattern(
       "Not allowed to load local resource: brave://settings/");
 
-  ASSERT_TRUE(ExecuteScript(
+  ASSERT_TRUE(content::ExecJs(
       active_contents(),
       "window.domAutomationController.send(gotoBraveSettingsByClick())"));
   ASSERT_TRUE(console_observer.Wait());
@@ -225,7 +225,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   console_observer.SetPattern(
       "Not allowed to load local resource: brave://settings/");
 
-  ASSERT_TRUE(ExecuteScript(
+  ASSERT_TRUE(content::ExecJs(
       active_contents(),
       "window.domAutomationController.send(gotoBraveSettingsByMiddleClick())"));
   ASSERT_TRUE(console_observer.Wait());

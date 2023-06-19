@@ -1,5 +1,5 @@
 diff --git a/sandbox/win/BUILD.gn b/sandbox/win/BUILD.gn
-index 29da59d491ad6cd8eff4df9a66fdcdafa2a17dcf..f57b655be885946d1b0d91f28a894077da41290e 100644
+index 35acb314136dedd089a68e071a14ae78040a68c4..985804a223823dfe4cc75a44b72c9be3e5770590 100644
 --- a/sandbox/win/BUILD.gn
 +++ b/sandbox/win/BUILD.gn
 @@ -173,6 +173,7 @@ static_library("sandbox") {

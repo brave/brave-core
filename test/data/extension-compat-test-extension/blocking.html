@@ -35,6 +35,7 @@ function addImage(src) {
   img.className = 'adImage'
   img.addEventListener('load', onLoad)
   document.body.appendChild(img)
+  return true
 }
 
 // Sets the expectation for the number of images and XHR loaded and blocked
@@ -69,29 +70,32 @@ function onLoad() {
   // For debugging:
   // console.log('sending: ' + JSON.stringify({result, expectedImgLoaded, expectedImgBlocked, numImgBlocked,
   //    numXHRLoaded, expectedXHRLoaded, numXHRBlocked, expectedXHRBlocked}))
-  window.domAutomationController.send(result)
+  return result
 }
 
 function canGetCookie(name, url) {
-  chrome.cookies.get({name, url}, (cookie) => {
-    const success = chrome.runtime.lastError === undefined
-    if (!success) {
-      console.log('=== Can\'t get cookie: ' + JSON.stringify(chrome.runtime.lastError))
-    }
-    window.domAutomationController.send(success)
+  return new Promise(resolve => {
+    chrome.cookies.get({name, url}, (cookie) => {
+      const success = chrome.runtime.lastError === undefined
+      if (!success) {
+        console.log('=== Can\'t get cookie: ' + JSON.stringify(chrome.runtime.lastError))
+      }
+      resolve(success)
+    })
   })
 }
 
 function canSetCookie(name, value, url) {
-  chrome.cookies.set({name, value, url}, (cookie) => {
-    const success = chrome.runtime.lastError === undefined
-    if (!success) {
-      console.log('=== Can\'t set cookie: ' + JSON.stringify(chrome.runtime.lastError))
-    }
-    window.domAutomationController.send(success)
+  return new Promise(resolve => {
+    chrome.cookies.set({name, value, url}, (cookie) => {
+      const success = chrome.runtime.lastError === undefined
+      if (!success) {
+        console.log('=== Can\'t set cookie: ' + JSON.stringify(chrome.runtime.lastError))
+      }
+      resolve(success)
+    })
   })
 }
-
 </script>
 </head>
 <body>

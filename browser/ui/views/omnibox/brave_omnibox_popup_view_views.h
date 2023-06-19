@@ -8,14 +8,14 @@
 
 #include "chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"
 
-class BraveOmniboxPopupViewViews : public OmniboxPopupViewViews {
+class BraveOmniboxPopupViewViews : public OmniboxPopupViewWebUI {
  public:
   METADATA_HEADER(BraveOmniboxPopupViewViews);
 
-  using OmniboxPopupViewViews::OmniboxPopupViewViews;
+  using OmniboxPopupViewWebUI::OmniboxPopupViewWebUI;
   ~BraveOmniboxPopupViewViews() override;
 
-  // OmniboxPopupViewViews:
+  // OmniboxPopupViewWebUI:
   gfx::Rect GetTargetBounds() const override;
 };
 

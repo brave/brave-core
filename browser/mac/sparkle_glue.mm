@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #import "brave/browser/mac/sparkle_glue.h"
 
@@ -8,8 +9,8 @@
 #include <sys/mount.h>
 #include <sys/stat.h>
 
+#include "base/apple/bundle_locations.h"
 #include "base/command_line.h"
-#include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
 #import "base/mac/scoped_nsautorelease_pool.h"
 #import "base/mac/scoped_nsobject.h"
@@ -156,7 +157,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   DCHECK(!su_updater_);
 
   NSString* sparkle_path =
-      [[base::mac::FrameworkBundle() privateFrameworksPath]
+      [[base::apple::FrameworkBundle() privateFrameworksPath]
           stringByAppendingPathComponent:@"Sparkle.framework"];
   DCHECK(sparkle_path);
 
@@ -285,7 +286,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 }
 
 - (void)loadParameters {
-  NSBundle* appBundle = base::mac::OuterBundle();
+  NSBundle* appBundle = base::apple::OuterBundle();
   NSString* appPath = [appBundle bundlePath];
   if (!appPath) {
     // If parameters required for sparkle are missing, don't use it.

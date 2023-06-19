@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/cocoa/main_menu_builder.mm b/chrome/browser/ui/cocoa/main_menu_builder.mm
-index b6ed120bc5ad5d8e6adf03776a884c80e12f41e8..00fd13b42e29de6a050d4e2c0f496c83581249c8 100644
+index b3c5b07b0810a12e7d40fc89461ab3ee89dacea6..809ee797ccce2174fdbc64eeefa915f17ee7fc02 100644
 --- a/chrome/browser/ui/cocoa/main_menu_builder.mm
 +++ b/chrome/browser/ui/cocoa/main_menu_builder.mm
 @@ -111,6 +111,7 @@ base::scoped_nsobject<NSMenuItem> BuildFileMenu(

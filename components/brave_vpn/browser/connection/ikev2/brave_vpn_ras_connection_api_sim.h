@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"

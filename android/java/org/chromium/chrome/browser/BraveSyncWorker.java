@@ -176,8 +176,8 @@ public class BraveSyncWorker {
         BraveSyncWorkerJni.get().requestSync(mNativeBraveSyncWorker);
     }
 
-    public boolean IsFirstSetupComplete() {
-        return BraveSyncWorkerJni.get().isFirstSetupComplete(mNativeBraveSyncWorker);
+    public boolean IsInitialSyncFeatureSetupComplete() {
+        return BraveSyncWorkerJni.get().isInitialSyncFeatureSetupComplete(mNativeBraveSyncWorker);
     }
 
     public void FinalizeSyncSetup() {
@@ -251,7 +251,7 @@ public class BraveSyncWorker {
 
         void finalizeSyncSetup(long nativeBraveSyncWorker);
 
-        boolean isFirstSetupComplete(long nativeBraveSyncWorker);
+        boolean isInitialSyncFeatureSetupComplete(long nativeBraveSyncWorker);
 
         void resetSync(long nativeBraveSyncWorker);
 

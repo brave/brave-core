@@ -108,6 +108,6 @@ void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
 #endif
 
   registry->RegisterDictionaryPref(
-      prefs::kSyncedDefaultPrivateSearchProviderData, base::Value::Dict(),
+      prefs::kSyncedDefaultPrivateSearchProviderData,
       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
 }

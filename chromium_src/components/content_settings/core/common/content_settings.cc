@@ -10,15 +10,22 @@
 // added upstream.
 namespace {
 
-// Do not change the value arbitrarily. This variable is only used for the
-// DCHECK in ContentSettingTypeToHistogramValue function below.
-constexpr int kBraveValuesStart = 1000;
+// Do not change the value arbitrarily. This is used to validate we have a gap
+// between Chromium's and Brave's histograms. This value must be less than 1000
+// as upstream performs a sanity check that the total number of buckets isn't
+// unreasonably large.
+constexpr int kBraveValuesStart = 900;
 
 constexpr int brave_value(int incr) {
   return kBraveValuesStart + incr;
 }
 
 }  // namespace
+
+static_assert(static_cast<int>(ContentSettingsType::NUM_TYPES) <
+                  kBraveValuesStart,
+              "There must a gap between the histograms used by Chromium, and "
+              "the ones used by Brave.");
 
 // clang-format off
 #define BRAVE_HISTOGRAM_VALUE_LIST                                        \
@@ -39,23 +46,12 @@ constexpr int brave_value(int incr) {
   {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, brave_value(14)}
 // clang-format on
 
-#define ContentSettingTypeToHistogramValue \
-  ContentSettingTypeToHistogramValue_ChromiumImpl
-
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
 #include "src/components/content_settings/core/common/content_settings.cc"
 
 #undef RendererContentSettingRules
-#undef ContentSettingTypeToHistogramValue
 #undef BRAVE_HISTOGRAM_VALUE_LIST
-
-int ContentSettingTypeToHistogramValue(ContentSettingsType content_setting,
-                                       size_t* num_values) {
-  DCHECK(static_cast<int>(ContentSettingsType::NUM_TYPES) < kBraveValuesStart);
-  return ContentSettingTypeToHistogramValue_ChromiumImpl(content_setting,
-                                                         num_values);
-}
 
 RendererContentSettingRules::RendererContentSettingRules() = default;
 RendererContentSettingRules::~RendererContentSettingRules() = default;
