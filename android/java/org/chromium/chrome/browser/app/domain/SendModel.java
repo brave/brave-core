@@ -106,9 +106,20 @@ public class SendModel {
         }
     }
 
-    public void sendFilecoinToken(@NonNull final String chainId,
-            @Nullable final BlockchainToken token, @NonNull final String fromAddress,
-            @NonNull final String toAddress, @NonNull final String amount,
+    /**
+     * Sends a given amount of Filecoins to a destination address and creates an unapproved
+     * transaction or notifies the callback with an error message. Coin type of blockchain token
+     * must be {@code CoinType.FIL}.
+     * @param token Filecoin blockchain token containing extra data required to create a
+     *         transaction.
+     * @param fromAddress Source address that sends Filecoins.
+     * @param toAddress Destinations address that receives Filecoins.
+     * @param amount Amount of Filecoins to send.
+     * @param callback Callback used to notify if the transaction has been created correctly.
+     */
+    public void sendFilecoinToken(@Nullable final BlockchainToken token,
+            @Nullable final String fromAddress, @NonNull final String toAddress,
+            @Nullable final String amount,
             @NonNull final Callbacks.Callback3<Boolean, String, String> callback) {
         if (token == null) {
             Log.e(TAG, "Token cannot be null.");
@@ -124,7 +135,7 @@ public class SendModel {
         }
 
         if (token.coin != CoinType.FIL) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Coin type must be `CoinType.FIL`.");
         }
 
         final FilTxData filTxData = new FilTxData();
