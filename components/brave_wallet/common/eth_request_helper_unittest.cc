@@ -764,7 +764,7 @@ TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
 }
 
 TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
-  const std::string json = R"({
+  const std::string json_tmpl = R"({
     "params": [
       "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
       "{
@@ -792,18 +792,34 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
           \"chainId\": 1,
           \"verifyingContract\": \"0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC\",
         },
-        \"message\": {
-          \"from\": {
-            \"name\":\"Cow\", \"wallet\":\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"
-          },
-          \"to\": {
-            \"name\":\"Bob\", \"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"
-          },
-          \"contents\":\"Hello, Bob!\"
-        }
+        \"message\": %s
       }"
     ]
   })";
+
+  std::string json = base::StringPrintf(json_tmpl.c_str(), R"({
+    \"from\": {
+      \"name\":\"Cow\",
+      \"wallet\":\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"
+    },
+    \"to\": {
+      \"name\":\"Bob\",
+      \"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"
+    },
+    \"contents\":\"Hello, Bob!\"
+  })");
+
+  const auto& expected_message =
+      "{\"contents\":\"Hello, "
+      "Bob!\",\"from\":{\"name\":\"Cow\",\"wallet\":"
+      "\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"},\"to\":{\"name\":"
+      "\"Bob\",\"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"}}";
+  const auto& expected_message_to_sign =
+      "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2";
+  const auto& expected_primary_hash =
+      "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e";
+  const auto& expected_domain_hash =
+      "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f";
 
   std::string address;
   std::string message;
@@ -816,12 +832,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
                                           &domain_hash, &primary_hash));
 
   EXPECT_EQ(address, "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
-  EXPECT_EQ(
-      message,
-      "{\"contents\":\"Hello, "
-      "Bob!\",\"from\":{\"name\":\"Cow\",\"wallet\":"
-      "\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"},\"to\":{\"name\":"
-      "\"Bob\",\"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"}}");
+  EXPECT_EQ(message, expected_message);
 
   std::string* ds_name = domain.FindString("name");
   ASSERT_TRUE(ds_name);
@@ -838,14 +849,48 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
             "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC");
 
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(domain_hash)),
-            "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f");
+            expected_domain_hash);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(primary_hash)),
-            "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
+            expected_primary_hash);
   auto message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
       domain_hash, primary_hash);
   ASSERT_TRUE(message_to_sign);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
-            "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");
+            expected_message_to_sign);
+
+  // Test with extra fields in the message.
+  json = base::StringPrintf(json_tmpl.c_str(), R"({
+    \"from\": {
+      \"name\":\"Cow\",
+      \"wallet\":\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"
+    },
+    \"to\": {
+      \"name\":\"Bob\",
+      \"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"
+    },
+    \"contents\":\"Hello, Bob!\",
+    \"foo\":\"bar\"
+  })");
+  EXPECT_TRUE(ParseEthSignTypedDataParams(json, &address, &message, &domain,
+                                          EthSignTypedDataHelper::Version::kV4,
+                                          &domain_hash, &primary_hash));
+  // OK: extraneous message properties are sanitized.
+  EXPECT_EQ(message, expected_message);
+
+  // OK: primary type message hash is unchanged.
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(primary_hash)),
+            expected_primary_hash);
+
+  // OK: domain hash is unchanged.
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(domain_hash)),
+            expected_domain_hash);
+
+  // OK: message bytes to sign are unchanged.
+  message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
+      domain_hash, primary_hash);
+  ASSERT_TRUE(message_to_sign);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
+            expected_message_to_sign);
 }
 
 TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {

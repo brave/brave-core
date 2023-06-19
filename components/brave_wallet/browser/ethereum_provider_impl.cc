@@ -926,7 +926,6 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     std::string address;
     std::string message;
     base::Value::Dict domain;
-    std::vector<uint8_t> message_to_sign;
     std::vector<uint8_t> domain_hash_out;
     std::vector<uint8_t> primary_hash_out;
     if (method == kEthSignTypedDataV4) {
