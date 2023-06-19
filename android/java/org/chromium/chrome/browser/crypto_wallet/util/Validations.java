@@ -7,9 +7,12 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.content.res.Resources;
 
+import androidx.annotation.NonNull;
+
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
@@ -32,11 +35,9 @@ public class Validations {
                 BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
                 String senderAccountAddress, String receiverAccountAddress,
                 Callbacks.Callback2<String, Boolean> callback) {
-            String senderAccountAddressLower =
-                    senderAccountAddress.toLowerCase(Locale.getDefault());
+            String senderAccountAddressLower = senderAccountAddress.toLowerCase(Locale.ENGLISH);
 
-            String receiverAccountAddressLower =
-                    receiverAccountAddress.toLowerCase(Locale.getDefault());
+            String receiverAccountAddressLower = receiverAccountAddress.toLowerCase(Locale.ENGLISH);
 
             Resources resources = ContextUtils.getApplicationContext().getResources();
 
@@ -55,6 +56,15 @@ public class Validations {
                                 }
                                 callback.call(responseMsg, success);
                             });
+                } else if (coinType == CoinType.FIL) {
+                    if (receiverAccountAddress.isEmpty()) {
+                        return;
+                    }
+                    final boolean showErrorMessage = !isValidFilAddress(receiverAccountAddress);
+                    final String errorMessage = showErrorMessage
+                            ? resources.getString(R.string.invalid_fil_address)
+                            : "";
+                    callback.call(errorMessage, showErrorMessage);
                 } else {
                     // Steps to validate:
                     // 1. Valid hex string
@@ -71,10 +81,8 @@ public class Validations {
                     if (!receiverAccountAddress.isEmpty()
                             && bytesReceiverAccountAddress.length
                                     != VALID_ACCOUNT_ADDRESS_BYTE_LENGTH) {
-                        int invalidAddressId = coinType == CoinType.FIL
-                                ? R.string.invalid_fil_address
-                                : R.string.wallet_not_valid_eth_address;
-                        callback.call(resources.getString(invalidAddressId), true);
+                        callback.call(
+                                resources.getString(R.string.wallet_not_valid_eth_address), true);
                         return;
                     }
 
@@ -118,6 +126,20 @@ public class Validations {
                             });
                 }
             });
+        }
+
+        /**
+         * Checks if the Filecoin contract address provided is valid.
+         * @param address Lowercase Filecoin contract address.
+         * @return {@code true} if the Filecoin contract address is valid, {@code false} otherwise.
+         */
+        private boolean isValidFilAddress(@NonNull final String address) {
+            if (!address.startsWith(BraveWalletConstants.FILECOIN_MAINNET)
+                    && !address.startsWith(BraveWalletConstants.FILECOIN_TESTNET)) {
+                return false;
+            }
+            // Secp256k have 41 address length and BLS keys have 86.
+            return (address.length() == 41 || address.length() == 86);
         }
 
         private void checkForKnowContracts(String receiverAccountAddressLower,
