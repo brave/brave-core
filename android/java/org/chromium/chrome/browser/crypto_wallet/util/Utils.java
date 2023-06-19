@@ -429,10 +429,10 @@ public class Utils {
      * ten raised to the power of decimals.
      *
      * @param number Number to be multiplied, represented as a string.
-     * @param decimals Number of decimal to multiply by
+     * @param decimals Number of decimals to multiply by.
      * @return The result of multiplying the number by ten raised to the power of decimals,
-     * expressed as a BigInteger.
-     * @throws ParseException If the input string cannot be parsed as a BigDecimal.
+     * expressed as a {@code BigInteger}.
+     * @throws ParseException If the input string cannot be parsed as a {@code BigDecimal}.
      *
      * <b>Note:</b>: Supposedly, when converting to Wei the result shall always end up with an
      * integer.
