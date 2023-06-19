@@ -10,6 +10,7 @@ import styled, { StyleSheetManager } from 'styled-components'
 import Command from './components/Command'
 import { CommandsCache } from './utils/commandsCache'
 import { match } from './utils/match'
+import { getLocale } from '$web-common/locale'
 
 import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 import { color, font, radius, spacing } from '@brave/leo/tokens/css'
@@ -36,13 +37,24 @@ const SearchContainer = styled.div`
 `
 
 const SearchBox = styled.input`
-  border: 1px solid lightgray;
+  all: unset;
+
+  border: 1px solid ${color.divider.subtle};
   border-top-left-radius: ${radius[8]};
   border-top-right-radius: ${radius[8]};
   background: ${color.container.highlight};
   color: ${color.text.secondary};
   padding: ${spacing[16]} ${spacing[24]} ${spacing[16]} 44px;
   flex: 1;
+
+  &:hover {
+    border: 1px solid ${color.divider.strong};
+  }
+
+  &:focus-visible {
+    box-shadow: 0px 0px 0px 1.5px rgba(255, 255, 255, 0.5),
+    0px 0px 4px 2px #423eee;
+  }
 `
 
 const SearchIcon = styled(Icon)`
@@ -83,7 +95,7 @@ function App() {
         <SearchContainer>
           <SearchIcon name="search" />
           <SearchBox
-            placeholder="Search for a command or shortcut"
+            placeholder={getLocale('shortcutsPageSearchPlaceholder')}
             value={filter}
             onChange={(e) => {
               setFilter(e.target.value)
@@ -95,7 +107,7 @@ function App() {
         ))}
       </CommandsContainer>
       <Button kind="plain-faint" onClick={() => commandsCache.resetAll()}>
-        Reset all to defaults
+        {getLocale('shortcutsPageResetAll')}
       </Button>
     </Container>
   )

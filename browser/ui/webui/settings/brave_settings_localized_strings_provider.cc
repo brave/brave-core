@@ -632,6 +632,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_SITE_SETTINGS_COOKIES_REMOVE_ALL},
 
     {"braveShortcutsPage", IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE},
+    {"shortcutsPageSearchPlaceholder", IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER},
+    {"shortcutsPageResetAll", IDS_SHORTCUTS_PAGE_RESET_ALL},
+    {"shortcutsPageResetCommand", IDS_SHORTCUTS_PAGE_RESET_COMMAND},
+    {"shortcutsPageShortcutHint", IDS_SHORTCUTS_PAGE_SHORTCUT_HINT},
+    {"shortcutsPageShortcutInUse", IDS_SHORTCUTS_PAGE_SHORTCUT_IN_USE},
+    {"shortcutsPageCancelAddShortcut", IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT},
+    {"shortcutsPageSaveAddShortcut", IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT},
+    {"shortcutsPageAddShortcut", IDS_SHORTCUTS_PAGE_ADD_SHORTCUT},
   };
 
   html_source->AddLocalizedStrings(localized_strings);

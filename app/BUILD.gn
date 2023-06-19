@@ -13,10 +13,7 @@ import("//build/config/features.gni")
 import("//build/config/locales.gni")
 
 action("generate_command_metadata") {
-  command_files = [
-    "//chrome/app/chrome_command_ids.h",
-    "//brave/app/brave_command_ids.h",
-  ]
+  command_files = [ "//brave/app/brave_command_ids.h" ]
   cc_template = "command_utils.cc.template"
 
   sources = command_files + [ cc_template ]
@@ -39,8 +36,12 @@ source_set("command_ids") {
 
   deps = [
     "//base",
+    "//brave/components/resources:strings",
     "//chrome/app:command_ids",
+    "//chrome/app:generated_resources",
     "//components/services/screen_ai/buildflags",
+    "//components/strings:components_strings",
+    "//ui/strings:ui_strings",
   ]
 
   if (!is_android) {

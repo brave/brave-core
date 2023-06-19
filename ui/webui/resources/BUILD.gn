@@ -159,6 +159,7 @@ leo_icons = [
   "info-filled.svg",
   "radio-checked.svg",
   "radio-unchecked.svg",
+  "remove-circle-outline.svg",
   "arrow-left.svg",
   "arrow-right.svg",
   "link-normal.svg",

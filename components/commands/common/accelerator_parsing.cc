@@ -124,25 +124,60 @@ ui::KeyEventFlags GetModifierFromKeys(
   }
   return result;
 }
+
+std::string KeyCodeToString(ui::KeyboardCode key_code) {
+  switch (key_code) {
+    case ui::VKEY_LMENU:
+    case ui::VKEY_MENU:
+      return kMenu;
+    case ui::VKEY_RMENU:
+      return kRMenu;
+    case ui::VKEY_NUMPAD0:
+      return "Num0";
+    case ui::VKEY_NUMPAD1:
+      return "Num1";
+    case ui::VKEY_NUMPAD2:
+      return "Num2";
+    case ui::VKEY_NUMPAD3:
+      return "Num3";
+    case ui::VKEY_NUMPAD4:
+      return "Num4";
+    case ui::VKEY_NUMPAD5:
+      return "Num5";
+    case ui::VKEY_NUMPAD6:
+      return "Num6";
+    case ui::VKEY_NUMPAD7:
+      return "Num7";
+    case ui::VKEY_NUMPAD8:
+      return "Num8";
+    case ui::VKEY_NUMPAD9:
+      return "Num9";
+    case ui::VKEY_ADD:
+      return "NumAdd";
+    case ui::VKEY_SUBTRACT:
+      return "NumSubtract";
+    case ui::VKEY_MULTIPLY:
+      return "NumMultiply";
+    case ui::VKEY_DIVIDE:
+      return "NumDivide";
+    case ui::VKEY_DECIMAL:
+      return "NumDecimal";
+    default:
+      auto domcode = ui::UsLayoutKeyboardCodeToDomCode(key_code);
+      ui::DomKey domkey;
+      ui::KeyboardCode out_code;
+      if (!ui::DomCodeToUsLayoutDomKey(domcode, 0, &domkey, &out_code)) {
+        return "Unknown Key: " + base::NumberToString(key_code);
+      }
+      return ui::KeycodeConverter::DomKeyToKeyString(domkey);
+  }
+}
+
 }  // namespace
 
 std::string ToKeysString(const ui::Accelerator& accelerator) {
   std::vector<std::string> parts = GetModifierNames(accelerator.modifiers());
-  auto domcode = ui::UsLayoutKeyboardCodeToDomCode(accelerator.key_code());
-  ui::DomKey domkey;
-  ui::KeyboardCode out_code;
-
-  if (accelerator.key_code() == ui::VKEY_LMENU ||
-      accelerator.key_code() == ui::VKEY_MENU) {
-    parts.push_back(kMenu);
-  } else if (accelerator.key_code() == ui::VKEY_RMENU) {
-    parts.push_back(kRMenu);
-  } else if (!ui::DomCodeToUsLayoutDomKey(domcode, 0, &domkey, &out_code)) {
-    parts.push_back("Unknown Key: " +
-                    base::NumberToString(accelerator.key_code()));
-  } else {
-    parts.push_back(ui::KeycodeConverter::DomKeyToKeyString(domkey));
-  }
+  parts.push_back(KeyCodeToString(accelerator.key_code()));
   return base::JoinString(parts, "+");
 }
 

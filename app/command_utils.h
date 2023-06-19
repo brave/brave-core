@@ -6,8 +6,9 @@
 #ifndef BRAVE_APP_COMMAND_UTILS_H_
 #define BRAVE_APP_COMMAND_UTILS_H_
 
+#include <string>
+
 #include "base/containers/span.h"
-#include "base/strings/string_piece_forward.h"
 
 namespace commands {
 
@@ -19,7 +20,7 @@ base::span<const int> GetCommands();
 
 // Gets a string representing a command. In future this will be translated, but
 // while we're prototyping the feature it will always returns English strings.
-base::StringPiece GetCommandName(int command_id);
+std::string GetCommandName(int command_id);
 
 }  // namespace commands
 

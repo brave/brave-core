@@ -76,7 +76,7 @@ base::flat_map<int, mojom::CommandPtr> ToMojoCommands(
 
 AcceleratorService::AcceleratorService(PrefService* pref_service,
                                        Accelerators default_accelerators)
-    : pref_manager_(pref_service),
+    : pref_manager_(pref_service, commands::GetCommands()),
       default_accelerators_(std::move(default_accelerators)) {
   Initialize();
 }
