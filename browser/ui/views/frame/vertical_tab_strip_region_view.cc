@@ -35,6 +35,7 @@
 #include "ui/compositor/compositor.h"
 #include "ui/compositor/layer.h"
 #include "ui/display/screen.h"
+#include "ui/events/event_observer.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
@@ -44,6 +45,7 @@
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/resize_area.h"
 #include "ui/views/controls/scroll_view.h"
+#include "ui/views/event_monitor.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
@@ -525,6 +527,41 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
 BEGIN_METADATA(VerticalTabStripRegionView, HeaderView, views::View)
 END_METADATA
 
+// Double checks mouse hovered state. When there's border around the region view
+// or window resizable area the mouse enter/exit event might not be correct.
+// Thus, observes mouse events that passes the window.
+class VerticalTabStripRegionView::MouseWatcher : public ui::EventObserver {
+ public:
+  explicit MouseWatcher(VerticalTabStripRegionView* region_view)
+      : region_view_(region_view),
+        event_monitor_(views::EventMonitor::CreateWindowMonitor(
+            this,
+            region_view_->GetWidget()->GetNativeWindow(),
+            {ui::ET_MOUSE_PRESSED, ui::ET_MOUSE_ENTERED,
+             ui::ET_MOUSE_EXITED})) {}
+
+  // ui::EventObserver:
+  void OnEvent(const ui::Event& event) override {
+    switch (event.type()) {
+      case ui::ET_MOUSE_ENTERED:
+        region_view_->OnMouseEntered();
+        break;
+      case ui::ET_MOUSE_PRESSED:
+        region_view_->OnMousePressedInTree();
+        break;
+      case ui::ET_MOUSE_EXITED:
+        region_view_->OnMouseExited();
+        break;
+      default:
+        break;
+    }
+  }
+
+ private:
+  raw_ptr<VerticalTabStripRegionView> region_view_;
+  std::unique_ptr<views::EventMonitor> event_monitor_;
+};
+
 VerticalTabStripRegionView::VerticalTabStripRegionView(
     BrowserView* browser_view,
     TabStripRegionView* region_view)
@@ -905,7 +942,13 @@ void VerticalTabStripRegionView::OnThemeChanged() {
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
-  if (IsMouseHovered() && !mouse_events_for_test_) {
+  OnMouseExited();
+}
+
+void VerticalTabStripRegionView::OnMouseExited() {
+  DCHECK(GetWidget())
+      << "As widget is the event sink, this is expected to be true.";
+  if (GetWidget()->GetRootView()->IsMouseHovered() && !mouse_events_for_test_) {
     // On Windows, when mouse moves into the area which intersects with web
     // view, OnMouseExited() is invoked even mouse is on this view.
     return;
@@ -917,6 +960,10 @@ void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
 }
 
 void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
+  OnMouseEntered();
+}
+
+void VerticalTabStripRegionView::OnMouseEntered() {
   if (!tabs::utils::IsFloatingVerticalTabsEnabled(browser_)) {
     return;
   }
@@ -925,6 +972,23 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
   if (state_ == State::kExpanded)
     return;
 
+  ScheduleFloatingModeTimer();
+}
+
+void VerticalTabStripRegionView::OnMousePressedInTree() {
+  if (!tabs::utils::IsFloatingVerticalTabsEnabled(browser_)) {
+    return;
+  }
+
+  if (!mouse_enter_timer_.IsRunning()) {
+    return;
+  }
+
+  // Restart timer when a user presses something. We consider the mouse press
+  // event as the case where the user explicitly knows what they're going to do.
+  // In this case, expanding vertical tabs could distract them. So we try
+  // resetting the timer.
+  mouse_enter_timer_.Stop();
   ScheduleFloatingModeTimer();
 }
 
@@ -962,6 +1026,11 @@ void VerticalTabStripRegionView::OnBoundsChanged(
 void VerticalTabStripRegionView::PreferredSizeChanged() {
   layout_dirty_ = true;
   views::View::PreferredSizeChanged();
+}
+
+void VerticalTabStripRegionView::AddedToWidget() {
+  View::AddedToWidget();
+  mouse_watcher_ = std::make_unique<MouseWatcher>(this);
 }
 
 void VerticalTabStripRegionView::OnTabStripModelChanged(
@@ -1137,7 +1206,9 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
     return;
   }
 
-  mouse_enter_timer_.Stop();
+  if (mouse_enter_timer_.IsRunning()) {
+    return;
+  }
 
   if (auto* widget = GetWidget();
       !widget || !widget->GetTopLevelWidget()->IsActive()) {
