@@ -202,6 +202,52 @@ class IpfsGetSettingsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class IpfsSetPublicGatewayFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setPublicGateway", UNKNOWN)
+
+ protected:
+  ~IpfsSetPublicGatewayFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsSetResolveMethodFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setResolveMethod", UNKNOWN)
+
+ protected:
+  ~IpfsSetResolveMethodFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsSetGatewayResourcesRedirectEnabledFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setGatewayResourcesRedirectEnabled", UNKNOWN)
+
+ protected:
+  ~IpfsSetGatewayResourcesRedirectEnabledFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsSetDNSLinkRedirectEnabledFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setDNSLinkRedirectEnabled", UNKNOWN)
+
+ protected:
+  ~IpfsSetDNSLinkRedirectEnabledFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsSetGatewayFallbackEnabledFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.setGatewayFallbackEnabled", UNKNOWN)
+
+ protected:
+  ~IpfsSetGatewayFallbackEnabledFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

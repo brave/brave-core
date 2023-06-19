@@ -354,6 +354,116 @@
             ]
           }
         ]
+      }, {
+        "name": "setResolveMethod",
+        "type": "function",
+        "description": "Returns list of ipfs settings",
+        "parameters": [
+          {
+            "name": "resolve_method",
+            "type": "string",
+            "description": "ask/disabled/gateway/local"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with status",
+            "parameters": [
+              {
+                "name": "status",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "setPublicGateway",
+        "type": "function",
+        "description": "Returns list of ipfs settings",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "Public gateway url"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with status",
+            "parameters": [
+              {
+                "name": "status",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "setGatewayResourcesRedirectEnabled",
+        "type": "function",
+        "description": "Returns list of ipfs settings",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "description": "value"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with status",
+            "parameters": [
+              {
+                "name": "status",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "setDNSLinkRedirectEnabled",
+        "type": "function",
+        "description": "Returns list of ipfs settings",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "description": "value"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with status",
+            "parameters": [
+              {
+                "name": "status",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "setGatewayFallbackEnabled",
+        "type": "function",
+        "description": "Returns list of ipfs settings",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "description": "value"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with status",
+            "parameters": [
+              {
+                "name": "status",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

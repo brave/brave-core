@@ -494,7 +494,7 @@ ExtensionFunction::ResponseAction IpfsGetSettingsFunction::Run() {
       resolve_method_str = "local";
       break;
     case IPFSResolveMethodTypes::IPFS_GATEWAY:
-      resolve_method_str = "remote";
+      resolve_method_str = "gateway";
       break;
     case IPFSResolveMethodTypes::IPFS_ASK:
       resolve_method_str = "ask";
@@ -503,12 +503,106 @@ ExtensionFunction::ResponseAction IpfsGetSettingsFunction::Run() {
       resolve_method_str = "disabled";
       break;
   }
-  response.Set("ipfs_resolve_method", resolve_method_str);
+  response.Set("resolve_method", resolve_method_str);
 
   std::string json_string;
   base::JSONWriter::Write(response, &json_string);
 
   return RespondNow(WithArguments(json_string));
+}
+
+ExtensionFunction::ResponseAction IpfsSetPublicGatewayFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetPublicGateway::Params> params =
+      ipfs::SetPublicGateway::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  GURL url(params->url);
+  if (!url.is_valid()) {
+    return RespondNow(Error("Wrong url format"));
+  }
+
+  prefs->SetString(kIPFSPublicGatewayAddress, params->url);
+  return RespondNow(WithArguments(true));
+}
+
+ExtensionFunction::ResponseAction IpfsSetResolveMethodFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetResolveMethod::Params> params =
+      ipfs::SetResolveMethod::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  IPFSResolveMethodTypes resolve_method;
+  if (params->resolve_method == "ask") {
+    resolve_method = IPFSResolveMethodTypes::IPFS_ASK;
+  } else if (params->resolve_method == "local") {
+    resolve_method = IPFSResolveMethodTypes::IPFS_LOCAL;
+  } else if (params->resolve_method == "gateway") {
+    resolve_method = IPFSResolveMethodTypes::IPFS_GATEWAY;
+  } else if (params->resolve_method == "disabled") {
+    resolve_method = IPFSResolveMethodTypes::IPFS_DISABLED;
+  } else {
+    return RespondNow(Error("Wrong arguments"));
+  }
+
+  prefs->SetInteger(kIPFSResolveMethod, static_cast<int>(resolve_method));
+  return RespondNow(WithArguments(true));
+}
+
+ExtensionFunction::ResponseAction IpfsSetDNSLinkRedirectEnabledFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetDNSLinkRedirectEnabled::Params> params =
+      ipfs::SetDNSLinkRedirectEnabled::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  prefs->SetBoolean(kIPFSAutoRedirectDNSLink, params->value);
+  return RespondNow(WithArguments(true));
+}
+
+ExtensionFunction::ResponseAction
+IpfsSetGatewayResourcesRedirectEnabledFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetGatewayResourcesRedirectEnabled::Params> params =
+      ipfs::SetGatewayResourcesRedirectEnabled::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  prefs->SetBoolean(kIPFSAutoRedirectGateway, params->value);
+  return RespondNow(WithArguments(true));
+}
+
+ExtensionFunction::ResponseAction IpfsSetGatewayFallbackEnabledFunction::Run() {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
+
+  absl::optional<ipfs::SetGatewayFallbackEnabled::Params> params =
+      ipfs::SetGatewayFallbackEnabled::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  prefs->SetBoolean(kIPFSAutoFallbackToGateway, params->value);
+  return RespondNow(WithArguments(true));
 }
 
 }  // namespace api
