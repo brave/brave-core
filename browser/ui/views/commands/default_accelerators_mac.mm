@@ -53,6 +53,13 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
   NSString* keyEquivalent = item.keyEquivalent;
   DVLOG(2) << __FUNCTION__ << item.tag << " > "
            << base::SysNSStringToUTF16(keyEquivalent);
+
+  const unsigned short charCode = [keyEquivalent characterAtIndex:0];
+  const int keyCode = ui::MacKeyCodeForWindowsKeyCode(
+      static_cast<ui::KeyboardCode>(charCode), /*flags=*/0,
+      /*us_keyboard_shifted_character=*/nullptr,
+      /*keyboard_character=*/nullptr);
+
   NSEvent* keyEvent = [NSEvent keyEventWithType:NSEventTypeKeyDown
                                        location:NSZeroPoint
                                   modifierFlags:0
@@ -62,7 +69,7 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
                                      characters:keyEquivalent
                     charactersIgnoringModifiers:keyEquivalent
                                       isARepeat:NO
-                                        keyCode:0];
+                                        keyCode:keyCode];
 
   auto modifiers = ui::EventFlagsFromModifiers(item.keyEquivalentModifierMask);
   if (item.keyEquivalentModifierMask & NSEventModifierFlagFunction) {
