@@ -103,11 +103,12 @@ public class BraveStatsUtil {
 
     public static void showBraveStats() {
         try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             BraveStatsBottomSheetDialogFragment braveStatsBottomSheetDialogFragment =
                     BraveStatsBottomSheetDialogFragment.newInstance();
             braveStatsBottomSheetDialogFragment.show(
-                    BraveActivity.getBraveActivity().getSupportFragmentManager(),
-                    STATS_FRAGMENT_TAG);
+                    activity.getSupportFragmentManager(), STATS_FRAGMENT_TAG);
+            activity.getPrivacyHubMetrics().recordView();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showBraveStats " + e);
         }

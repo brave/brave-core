@@ -110,6 +110,7 @@ import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
+import org.chromium.chrome.browser.misc_metrics.PrivacyHubMetricsFactory;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
@@ -183,6 +184,7 @@ import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.misc_metrics.mojom.PrivacyHubMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
@@ -246,6 +248,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private BraveWalletService mBraveWalletService;
     private KeyringService mKeyringService;
     private JsonRpcService mJsonRpcService;
+    private PrivacyHubMetrics mPrivacyHubMetrics;
     private SwapService mSwapService;
     private WalletModel mWalletModel;
     private BlockchainRegistry mBlockchainRegistry;
@@ -1307,6 +1310,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         startActivity(braveWalletIntent);
     }
 
+    public PrivacyHubMetrics getPrivacyHubMetrics() {
+        return mPrivacyHubMetrics;
+    }
+
     private void checkForYandexSE() {
         String countryCode = Locale.getDefault().getCountry();
         if (yandexRegions.contains(countryCode)) {
@@ -1947,6 +1954,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
+    private void initPrivacyHubMetrics() {
+        if (mPrivacyHubMetrics != null) {
+            return;
+        }
+
+        mPrivacyHubMetrics = PrivacyHubMetricsFactory.getInstance().getMetricsService(this);
+        mPrivacyHubMetrics.recordEnabledStatus(
+                OnboardingPrefManager.getInstance().isBraveStatsEnabled());
+    }
+
     private void initSwapService() {
         if (mSwapService != null) {
             return;
@@ -1963,6 +1980,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         InitBraveWalletService();
         InitKeyringService();
         InitJsonRpcService();
+        initPrivacyHubMetrics();
         initSwapService();
         setupWalletModel();
     }
@@ -1976,6 +1994,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (mTxService != null) mTxService.close();
         if (mEthTxManagerProxy != null) mEthTxManagerProxy.close();
         if (mSolanaTxManagerProxy != null) mSolanaTxManagerProxy.close();
+        if (mPrivacyHubMetrics != null) mPrivacyHubMetrics.close();
         if (mBraveWalletService != null) mBraveWalletService.close();
         mKeyringService = null;
         mBlockchainRegistry = null;
@@ -1984,6 +2003,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         mEthTxManagerProxy = null;
         mSolanaTxManagerProxy = null;
         mAssetRatioService = null;
+        mPrivacyHubMetrics = null;
         mBraveWalletService = null;
     }
 
