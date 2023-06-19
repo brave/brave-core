@@ -140,7 +140,7 @@ namespace brave {
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-#if BUILDFLAG(ENABLE_WIDEVINE)
+#if BUILDFLAG(ENABLE_WIDEVINE) && !BUILDFLAG(IS_ANDROID)
   RegisterWidevineProfilePrefsForMigration(registry);
 #endif
 

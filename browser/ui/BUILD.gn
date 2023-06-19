@@ -821,7 +821,7 @@ source_set("ui") {
 
       deps += [ "//third_party/widevine/cdm:buildflags" ]
 
-      if (enable_widevine) {
+      if (enable_widevine && !is_android) {
         deps += [ "//brave/browser/widevine" ]
       }
     }

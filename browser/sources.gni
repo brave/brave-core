@@ -380,7 +380,7 @@ if (enable_brave_wayback_machine) {
   brave_chrome_browser_deps += [ "//brave/components/brave_wayback_machine" ]
 }
 
-if (enable_widevine) {
+if (enable_widevine && !is_android) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_drm_tab_helper.cc",
     "//brave/browser/brave_drm_tab_helper.h",
