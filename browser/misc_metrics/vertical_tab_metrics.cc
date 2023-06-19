@@ -101,11 +101,10 @@ void VerticalTabBrowserMetrics::OnTabStripModelChanged(
   change_callback_.Run();
 }
 
-bool VerticalTabBrowserMetrics::IsVerticalTabsEnabled() const {
-  return vertical_tabs_enabled_;
-}
-
 size_t VerticalTabBrowserMetrics::GetTabCount(TabCountType count_type) const {
+  if (!vertical_tabs_enabled_) {
+    return 0;
+  }
   return counts_.at(count_type);
 }
 
@@ -132,17 +131,6 @@ void VerticalTabMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 void VerticalTabMetrics::UpdateMetrics() {
-  bool is_vertical_tabs_enabled = false;
-  for (const auto& [session_id, browser_metrics] : browser_metrics_) {
-    if (browser_metrics->IsVerticalTabsEnabled()) {
-      is_vertical_tabs_enabled = true;
-    }
-  }
-  if (!is_vertical_tabs_enabled) {
-    // Do not report if vertical tabs is not enabled on any of the
-    // active windows/profiles.
-    return;
-  }
   // Add up tab count totals from all windows
   base::flat_map<TabCountType, size_t> current_counts;
   for (const auto& [session_id, browser_metrics] : browser_metrics_) {
@@ -167,14 +155,12 @@ void VerticalTabMetrics::OnBrowserAdded(Browser* browser) {
     return;
   }
   Profile* profile = browser->profile();
-  if (!profile || profile->IsOffTheRecord()) {
+  if (!profile || profile->IsOffTheRecord() || !profile->IsRegularProfile()) {
     // Do not monitor incognito windows.
     return;
   }
   PrefService* profile_prefs = profile->GetPrefs();
-  if (!profile_prefs) {
-    return;
-  }
+  CHECK(profile_prefs);
   SessionID session_id = browser->session_id();
   browser_metrics_[session_id] = std::make_unique<VerticalTabBrowserMetrics>(
       profile_prefs, base::BindRepeating(&VerticalTabMetrics::UpdateMetrics,

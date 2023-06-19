@@ -186,10 +186,13 @@ misc_metrics::MenuMetrics* TestingBraveBrowserProcess::menu_metrics() {
   return nullptr;
 }
 
-misc_metrics::VerticalTabMetrics* TestingBraveBrowserProcess::vertical_tab_metrics() {
+#if !BUILDFLAG(IS_ANDROID)
+misc_metrics::VerticalTabMetrics*
+TestingBraveBrowserProcess::vertical_tab_metrics() {
   NOTREACHED();
   return nullptr;
 }
+#endif
 
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {

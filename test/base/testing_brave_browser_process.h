@@ -87,7 +87,9 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
 #endif
   misc_metrics::MenuMetrics* menu_metrics() override;
+#if !BUILDFLAG(IS_ANDROID)
   misc_metrics::VerticalTabMetrics* vertical_tab_metrics() override;
+#endif
 
   // Populate the mock process with services. Consumer is responsible for
   // cleaning these up after completion of a test.
