@@ -1,5 +1,5 @@
 diff --git a/components/history/core/browser/sync/typed_url_sync_bridge.cc b/components/history/core/browser/sync/typed_url_sync_bridge.cc
-index b78d8cc500104bece00ca08df2dc8f87dfd448db..62be48c553cae6c4412f327458540e3f5eaaba89 100644
+index 67bbc6a3cb5908c075c88b5e3f117101bcdbe84c..6d681db61bd170a731f9a0299cfcfd286c1252cd 100644
 --- a/components/history/core/browser/sync/typed_url_sync_bridge.cc
 +++ b/components/history/core/browser/sync/typed_url_sync_bridge.cc
 @@ -386,6 +386,7 @@ void TypedURLSyncBridge::OnURLVisited(HistoryBackend* history_backend,

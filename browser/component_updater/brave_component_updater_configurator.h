@@ -22,6 +22,7 @@ class PrefService;
 
 namespace base {
 class CommandLine;
+class FilePath;
 }
 
 namespace net {
@@ -65,6 +66,7 @@ class BraveConfigurator : public update_client::Configurator {
   GetProtocolHandlerFactory() const override;
   absl::optional<bool> IsMachineExternallyManaged() const override;
   update_client::UpdaterStateProvider GetUpdaterStateProvider() const override;
+  absl::optional<base::FilePath> GetCrxCachePath() const override;
 
  private:
   friend class base::RefCountedThreadSafe<BraveConfigurator>;

@@ -23,8 +23,12 @@ SharedPinnedTabServiceFactory* SharedPinnedTabServiceFactory::GetInstance() {
 }
 
 SharedPinnedTabServiceFactory::SharedPinnedTabServiceFactory()
-    : ProfileKeyedServiceFactory("SharedPinnedTabService",
-                                 ProfileSelections::BuildForAllProfiles()) {}
+    : ProfileKeyedServiceFactory(
+          "SharedPinnedTabService",
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kOwnInstance)
+              .WithGuest(ProfileSelection::kOwnInstance)
+              .Build()) {}
 
 SharedPinnedTabServiceFactory::~SharedPinnedTabServiceFactory() {}
 

@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/values.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "extensions/common/extension.h"
-#include "extensions/common/value_builder.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class Mv2WarningUnitTest : public testing::Test {
@@ -19,13 +19,14 @@ TEST(Mv2WarningTest, ExtensionManifestVersions) {
   main_extra_parts.PreProfileInit();
 
   auto get_manifest = [](absl::optional<int> manifest_version) {
-    extensions::DictionaryBuilder builder;
-    builder.Set("name", "My Extension")
-        .Set("version", "0.1")
-        .Set("description", "An awesome extension");
-    if (manifest_version)
-      builder.Set("manifest_version", *manifest_version);
-    return builder.Build();
+    base::Value::Dict dict;
+    dict.Set("name", "My Extension");
+    dict.Set("version", "0.1");
+    dict.Set("description", "An awesome extension");
+    if (manifest_version) {
+      dict.Set("manifest_version", *manifest_version);
+    }
+    return dict;
   };
 
   std::string error;

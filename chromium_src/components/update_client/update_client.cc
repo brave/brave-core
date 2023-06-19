@@ -18,7 +18,7 @@ scoped_refptr<UpdateClient> UpdateClientFactory(
   VLOG(3) << "Brave UpdateClientFactory called";
   return base::MakeRefCounted<UpdateClientImpl>(
       config, base::MakeRefCounted<PingManager>(config),
-      &SequentialUpdateChecker::Create);
+      base::BindRepeating(&SequentialUpdateChecker::Create));
 }
 
 }  // namespace update_client

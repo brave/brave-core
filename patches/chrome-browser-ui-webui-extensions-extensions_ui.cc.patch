@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index df0c1982de2e009c1d3afe96ec186d3d1ef8b041..02636e54f4cc10a46ea62305b20b795bfaddd790 100644
+index 57175d99916f76c4af2a3c74422b9871ca50e267..e68c02a50035dbd8056a7a04c9596c864ab77f09 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -409,6 +409,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -414,6 +414,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
        base::FeatureList::IsEnabled(
            extensions_features::kExtensionsMenuAccessControlWithPermittedSites));
  

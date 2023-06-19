@@ -37,7 +37,10 @@ AcceleratorService* AcceleratorServiceFactory::GetForContext(
 AcceleratorServiceFactory::AcceleratorServiceFactory()
     : ProfileKeyedServiceFactory(
           "AcceleratorServiceFactory",
-          ProfileSelections::BuildRedirectedToOriginal()) {}
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kRedirectedToOriginal)
+              .WithGuest(ProfileSelection::kRedirectedToOriginal)
+              .Build()) {}
 
 AcceleratorServiceFactory::~AcceleratorServiceFactory() = default;
 

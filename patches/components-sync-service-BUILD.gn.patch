@@ -1,0 +1,10 @@
+diff --git a/components/sync/service/BUILD.gn b/components/sync/service/BUILD.gn
+index 7f62d4784bf53456952c6a0413a051865abee143..8df72bdd087a2f7824dff9d35d5060b1b3fc3b76 100644
+--- a/components/sync/service/BUILD.gn
++++ b/components/sync/service/BUILD.gn
+@@ -100,4 +100,5 @@ static_library("service") {
+   ]
+ 
+   configs += [ "//build/config/compiler:wexit_time_destructors" ]
++  sources += brave_components_sync_driver_sources deps += brave_components_sync_driver_deps
+ }

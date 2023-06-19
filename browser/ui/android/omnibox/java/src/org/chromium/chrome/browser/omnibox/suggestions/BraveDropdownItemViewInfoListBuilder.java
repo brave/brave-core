@@ -43,9 +43,8 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private Context mContext;
 
     BraveDropdownItemViewInfoListBuilder(@NonNull Supplier<Tab> tabSupplier,
-            BookmarkState bookmarkState, @NonNull ActionChipsDelegate actionChipsDelegate,
-            OpenHistoryClustersDelegate openHistoryClustersDelegate) {
-        super(tabSupplier, bookmarkState, actionChipsDelegate, openHistoryClustersDelegate);
+            BookmarkState bookmarkState, OpenHistoryClustersDelegate openHistoryClustersDelegate) {
+        super(tabSupplier, bookmarkState, openHistoryClustersDelegate);
 
         mActivityTabSupplier = tabSupplier;
     }

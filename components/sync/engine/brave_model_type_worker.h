@@ -6,9 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_MODEL_TYPE_WORKER_H_
 #define BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_MODEL_TYPE_WORKER_H_
 
-#include <memory>
-
 #include "base/feature_list.h"
+#include "base/gtest_prod_util.h"
 #include "components/sync/base/model_type.h"
 #include "components/sync/base/passphrase_enums.h"
 #include "components/sync/engine/commit_and_get_updates_types.h"

@@ -12,8 +12,8 @@
 #include "base/android/jni_weak_ref.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
-#include "components/sync/driver/sync_service.h"
-#include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_service_observer.h"
 
 class Profile;
 
@@ -43,7 +43,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   void FinalizeSyncSetup(JNIEnv* env);
 
-  bool IsFirstSetupComplete(JNIEnv* env);
+  bool IsInitialSyncFeatureSetupComplete(JNIEnv* env);
 
   void ResetSync(JNIEnv* env);
 

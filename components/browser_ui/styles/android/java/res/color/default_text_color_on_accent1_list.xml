@@ -6,5 +6,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:alpha="@dimen/default_disabled_alpha" android:color="@macro/default_text_color"
         android:state_enabled="false" />
-    <item android:color="@color/baseline_primary_0"/>
+    <item android:color="@color/baseline_primary_100"/>
 </selector>

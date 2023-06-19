@@ -23,7 +23,7 @@ constexpr std::string GetProductNameAndVersionForUserAgent() {
 }
 
 // We use |nightly| instead of |canary|.
-constexpr std::string GetChannelString(Channel channel) {
+constexpr base::StringPiece GetChannelString(Channel channel) {
   if (channel == Channel::CANARY) {
     return "nightly";
   }

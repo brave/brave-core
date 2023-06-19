@@ -99,10 +99,11 @@ void TopSitesProvider::AddMatch(const std::u16string& match_string,
                                 const ACMatchClassifications& styles) {
   static const std::u16string kScheme(u"https://");
   AutocompleteMatch match(this, kRelevance, false,
-                          AutocompleteMatchType::NAVSUGGEST);
+                          AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED);
   match.fill_into_edit = match_string;
   match.destination_url = GURL(kScheme + match_string);
   match.contents = match_string;
   match.contents_class = styles;
+  match.keyword = u"brave";
   matches_.push_back(match);
 }

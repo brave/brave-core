@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BOOKMARK_BOOKMARK_PREFS_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_BOOKMARK_BOOKMARK_PREFS_SERVICE_FACTORY_H_
 
+#include "base/gtest_prod_util.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 namespace base {

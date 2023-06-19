@@ -27,8 +27,8 @@ class OmniboxAutocompleteTest : public InProcessBrowserTest {
   }
   OmniboxViewViews* omnibox_view() { return location_bar()->omnibox_view(); }
   OmniboxEditModel* edit_model() { return omnibox_view()->model(); }
-  OmniboxPopupViewViews* popup_view() {
-    return omnibox_view()->GetPopupContentsViewForTesting();
+  OmniboxPopupView* popup_view() {
+    return omnibox_view()->GetPopupViewForTesting();
   }
 };
 

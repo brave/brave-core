@@ -1,0 +1,12 @@
+diff --git a/components/browser_ui/settings/android/BUILD.gn b/components/browser_ui/settings/android/BUILD.gn
+index d97f250e7f2c1621d5f2805c8add77b0cb271321..bc2352cb5cb22e10a0f2a9b48b7f849f15086167 100644
+--- a/components/browser_ui/settings/android/BUILD.gn
++++ b/components/browser_ui/settings/android/BUILD.gn
+@@ -48,6 +48,7 @@ android_library("java") {
+   ]
+   resources_package = "org.chromium.components.browser_ui.settings"
+   annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
++  import("//brave/components/browser_ui/settings/android/sources.gni") sources += brave_components_browser_ui_settings_android_java_sources
+ }
+ 
+ android_resources("java_resources") {

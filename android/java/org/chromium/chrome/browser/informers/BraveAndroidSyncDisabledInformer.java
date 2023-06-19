@@ -50,7 +50,7 @@ public class BraveAndroidSyncDisabledInformer {
             return;
         }
 
-        boolean brave_sync_is_enabled = SyncService.get().isFirstSetupComplete();
+        boolean brave_sync_is_enabled = SyncService.get().isInitialSyncFeatureSetupComplete();
         boolean android_system_sync_disabled = !ContentResolver.getMasterSyncAutomatically();
 
         if (!brave_sync_is_enabled || !android_system_sync_disabled) {

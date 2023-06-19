@@ -80,7 +80,7 @@ components/brave_referrals/browser/brave_referrals_service* @simonhong
 
 # Brave Sync
 components/brave_sync/ @brave/sync-reviewers
-components/sync/driver/ @brave/sync-reviewers
+components/sync/service/ @brave/sync-reviewers
 chromium_src/components/sync/ @brave/sync-reviewers
 chromium_src/components/sync_device_info/device_info_sync_bridge.cc @brave/sync-reviewers
 

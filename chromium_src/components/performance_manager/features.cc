@@ -12,7 +12,6 @@ namespace performance_manager::features {
 
 #if !BUILDFLAG(IS_ANDROID)
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kBatterySaverModeAvailable, base::FEATURE_ENABLED_BY_DEFAULT},
     {kHeuristicMemorySaver, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 #endif

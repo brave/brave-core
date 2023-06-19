@@ -74,7 +74,7 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) bool canSyncFeatureStart;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
-@property(nonatomic, readonly) bool isFirstSetupComplete;
+@property(nonatomic, readonly) bool isInitialSyncFeatureSetupComplete;
 @property(nonatomic) bool isSyncAccountDeletedNoticePending;
 @property(nonatomic, readonly) bool isFailedDecryptSeedNoticeDismissed;
 

@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/tools/bundle_js.gni b/ui/webui/resources/tools/bundle_js.gni
+index 6ef57e0cd1de46342a9fc8892fb121b7b2222265..79fb3fbc77e63eb4a9914c094ce7a3882a8aa904 100644
+--- a/ui/webui/resources/tools/bundle_js.gni
++++ b/ui/webui/resources/tools/bundle_js.gni
+@@ -102,6 +102,7 @@ template("bundle_js") {
+     external_paths += [ "//resources/polymer/v3_0/|$polymer_path" ]
+ 
+     if (!is_chrome_untrusted) {
++      brave_resources_path = rebase_path("$root_gen_dir/brave/ui/webui/resources/tsc/", root_build_dir) external_paths += [ "chrome://resources/brave/|$brave_resources_path", "//resources/brave/|$brave_resources_path" ]
+       external_paths += [ "chrome://resources/|$resources_path" ]
+     }
+     external_paths += [ "//resources/|$resources_path" ]

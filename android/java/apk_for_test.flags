@@ -687,6 +687,7 @@
 }
 
 -keep class org.chromium.chrome.browser.flags.CachedFlag {
+    *** mDefaultValue;
     <init>(...);
 }
 

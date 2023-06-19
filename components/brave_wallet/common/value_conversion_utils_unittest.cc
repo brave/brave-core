@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -76,7 +76,7 @@ constexpr char kNetworkDataValue[] = R"({
 
 TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
   {
-    auto value = base::JSONReader::Read(kNetworkDataValue).value();
+    auto value = base::test::ParseJson(kNetworkDataValue);
     mojom::NetworkInfoPtr chain = ParseEip3085Payload(value);
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
@@ -104,11 +104,9 @@ TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
     EXPECT_FALSE(chain->is_eip1559);
   }
   {
-    mojom::NetworkInfoPtr chain =
-        ParseEip3085Payload(base::JSONReader::Read(R"({
+    mojom::NetworkInfoPtr chain = ParseEip3085Payload(base::test::ParseJson(R"({
       "chainId": "0x5"
-    })")
-                                .value());
+    })"));
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
     ASSERT_TRUE(chain->chain_name.empty());
@@ -125,19 +123,19 @@ TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
 
   {
     mojom::NetworkInfoPtr chain =
-        ParseEip3085Payload(base::JSONReader::Read(R"({})").value());
+        ParseEip3085Payload(base::test::ParseJson(R"({})"));
     ASSERT_FALSE(chain);
   }
   {
     mojom::NetworkInfoPtr chain =
-        ParseEip3085Payload(base::JSONReader::Read(R"([])").value());
+        ParseEip3085Payload(base::test::ParseJson(R"([])"));
     ASSERT_FALSE(chain);
   }
 }
 
 TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
   {
-    auto value = base::JSONReader::Read(kNetworkDataValue).value();
+    auto value = base::test::ParseJson(kNetworkDataValue);
     mojom::NetworkInfoPtr chain = ValueToNetworkInfo(value);
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
@@ -168,8 +166,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
     EXPECT_TRUE(chain->is_eip1559);
   }
   {
-    mojom::NetworkInfoPtr chain = ValueToNetworkInfo(
-        base::JSONReader::Read(R"({"chainId": "0x5" })").value());
+    mojom::NetworkInfoPtr chain =
+        ValueToNetworkInfo(base::test::ParseJson(R"({"chainId": "0x5" })"));
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
     ASSERT_TRUE(chain->chain_name.empty());
@@ -186,12 +184,12 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
 
   {
     mojom::NetworkInfoPtr chain =
-        ValueToNetworkInfo(base::JSONReader::Read(R"({})").value());
+        ValueToNetworkInfo(base::test::ParseJson(R"({})"));
     ASSERT_FALSE(chain);
   }
   {
     mojom::NetworkInfoPtr chain =
-        ValueToNetworkInfo(base::JSONReader::Read(R"([])").value());
+        ValueToNetworkInfo(base::test::ParseJson(R"([])"));
     ASSERT_FALSE(chain);
   }
 }
@@ -247,22 +245,22 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
   }
 
   {
-    auto data_value = *base::JSONReader::Read(kNetworkDataValue);
+    auto data_value = base::test::ParseJson(kNetworkDataValue);
     EXPECT_EQ(ValueToNetworkInfo(data_value)->coin, mojom::CoinType::ETH);
 
-    data_value.SetIntKey("coin", static_cast<int>(mojom::CoinType::ETH));
+    data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::ETH));
     EXPECT_EQ(ValueToNetworkInfo(data_value)->coin, mojom::CoinType::ETH);
 
-    data_value.SetIntKey("coin", static_cast<int>(mojom::CoinType::SOL));
+    data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::SOL));
     EXPECT_EQ(ValueToNetworkInfo(data_value)->coin, mojom::CoinType::SOL);
 
-    data_value.SetIntKey("coin", static_cast<int>(mojom::CoinType::FIL));
+    data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::FIL));
     EXPECT_EQ(ValueToNetworkInfo(data_value)->coin, mojom::CoinType::FIL);
   }
 }
 
 TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
-  absl::optional<base::Value> json_value = base::JSONReader::Read(R"({
+  auto json_value = base::test::ParseJsonDict(R"({
       "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
       "name": "Basic Attention Token",
       "symbol": "BAT",
@@ -276,24 +274,23 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "token_id": "",
       "coingecko_id": ""
   })");
-  ASSERT_TRUE(json_value);
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
       "bat.png", true, false, false, false, "BAT", 18, true, "", "", "0x1",
       mojom::CoinType::ETH);
 
-  mojom::BlockchainTokenPtr token = ValueToBlockchainToken(
-      json_value->GetDict(), "0x1", mojom::CoinType::ETH);
+  mojom::BlockchainTokenPtr token =
+      ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 
   // Test input value with required keys.
-  TestValueToBlockchainTokenFailCases(json_value->GetDict(),
-                                      {"address", "name", "symbol", "is_erc20",
-                                       "is_erc721", "decimals", "visible"});
+  TestValueToBlockchainTokenFailCases(
+      json_value, {"address", "name", "symbol", "is_erc20", "is_erc721",
+                   "decimals", "visible"});
 
   // Test input value with optional keys.
-  base::Value::Dict optional_value = json_value->GetDict().Clone();
+  base::Value::Dict optional_value = json_value.Clone();
   optional_value.Remove("logo");
   optional_value.Remove("token_id");
   optional_value.Remove("coingecko_id");
@@ -301,7 +298,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   token = ValueToBlockchainToken(optional_value, "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 
-  json_value = base::JSONReader::Read(R"({
+  json_value = base::test::ParseJsonDict(R"({
       "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
       "name": "Crypto Kitties",
       "symbol": "CK",
@@ -313,19 +310,17 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "decimals": 0,
       "visible": true
   })");
-  ASSERT_TRUE(json_value);
 
   expected_token = mojom::BlockchainToken::New(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "Crypto Kitties",
       "CryptoKitties-Kitty-13733.svg", false, true, false, true, "CK", 0, true,
       "", "", "0x1", mojom::CoinType::ETH);
 
-  token = ValueToBlockchainToken(json_value->GetDict(), "0x1",
-                                 mojom::CoinType::ETH);
+  token = ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 
   // Test is_erc1155 is parsed
-  json_value = base::JSONReader::Read(R"({
+  json_value = base::test::ParseJsonDict(R"({
       "address": "0x28472a58A490c5e09A238847F66A68a47cC76f0f",
       "name": "ADIDAS",
       "symbol": "ADIDAS",
@@ -337,15 +332,13 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "decimals": 0,
       "visible": true
   })");
-  ASSERT_TRUE(json_value);
 
   expected_token = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
       false, false, true, true, "ADIDAS", 0, true, "", "", "0x1",
       mojom::CoinType::ETH);
 
-  token = ValueToBlockchainToken(json_value->GetDict(), "0x1",
-                                 mojom::CoinType::ETH);
+  token = ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 }
 

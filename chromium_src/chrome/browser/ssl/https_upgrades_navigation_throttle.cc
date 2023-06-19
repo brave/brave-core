@@ -69,7 +69,7 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
   interstitial_state.enabled_by_pref =
       (base::FeatureList::IsEnabled(features::kHttpsFirstModeV2) && prefs &&
        prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) ||
-      brave_shields::ShouldForceHttps(map, request_url);
+      (map && brave_shields::ShouldForceHttps(map, request_url));
 
   StatefulSSLHostStateDelegate* state =
       static_cast<StatefulSSLHostStateDelegate*>(
@@ -91,9 +91,9 @@ HttpsUpgradesNavigationThrottle::MaybeCreateThrottleFor(
 
   bool https_upgrades_enabled =
       interstitial_state.enabled_by_pref ||
-      brave_shields::ShouldUpgradeToHttps(
-          map, request_url,
-          g_brave_browser_process->https_upgrade_exceptions_service());
+      (map && brave_shields::ShouldUpgradeToHttps(
+                  map, request_url,
+                  g_brave_browser_process->https_upgrade_exceptions_service()));
   if (!https_upgrades_enabled) {
     return nullptr;
   }

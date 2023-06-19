@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "content/public/renderer/render_frame.h"

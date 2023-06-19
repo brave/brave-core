@@ -20,7 +20,7 @@ source_set("skus") {
     "//components/keyed_service/core",
     "//components/keyed_service/ios:ios",
     "//components/pref_registry",
-    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/shared/model/browser_state",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
   ]

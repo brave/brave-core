@@ -51,7 +51,7 @@
 
 #if defined(USE_AURA)
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
-#include "ui/aura/test/ui_controls_factory_aura.h"
+#include "ui/aura/test/ui_controls_aurawin.h"
 #include "ui/aura/window.h"
 #endif
 
@@ -637,19 +637,11 @@ class VerticalTabStripDragAndDropBrowserTest
     VerticalTabStripBrowserTest::SetUpOnMainThread();
 
 #if BUILDFLAG(IS_WIN)
-    auto* root_window =
-        browser_view()->GetWidget()->GetNativeWindow()->GetRootWindow();
-    ui_controls::InstallUIControlsAura(
-        aura::test::CreateUIControlsAura(root_window->GetHost()));
+    aura::test::EnableUIControlsAuraWin();
 
     auto* widget_delegate_view =
         browser_view()->vertical_tab_strip_widget_delegate_view_.get();
     ASSERT_TRUE(widget_delegate_view);
-
-    root_window =
-        widget_delegate_view->GetWidget()->GetNativeWindow()->GetRootWindow();
-    ui_controls::InstallUIControlsAura(
-        aura::test::CreateUIControlsAura(root_window->GetHost()));
 #endif  // defined(IS_WIN)
 
 #if BUILDFLAG(IS_OZONE)
@@ -662,7 +654,9 @@ class VerticalTabStripDragAndDropBrowserTest
     ui::OzonePlatform::InitializeForUI(params);
 #endif
 
+#if !BUILDFLAG(IS_WIN)
     ui_controls::EnableUIControls();
+#endif
 
     ToggleVerticalTabStrip();
 

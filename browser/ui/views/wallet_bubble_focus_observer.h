@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/gtest_prod_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/view_observer.h"

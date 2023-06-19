@@ -28,6 +28,7 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLocalState;
+import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
@@ -412,5 +413,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         };
         mFirstRunFlowSequencer.start();
         onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public int getSecondaryActivity() {
+        return SecondaryActivity.FIRST_RUN;
     }
 }

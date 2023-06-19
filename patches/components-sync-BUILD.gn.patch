@@ -1,5 +1,5 @@
 diff --git a/components/sync/BUILD.gn b/components/sync/BUILD.gn
-index 4abd44acf29affb5f69f5914d74d7b64ba45a71b..fc67db0d508b76c2a923ee73a032d15c6be69973 100644
+index 47e5deb481114020c4118628051cf1bdf2eb7fbc..e6877c3dff4e9fc3fbd8488fda2ef43e3319f349 100644
 --- a/components/sync/BUILD.gn
 +++ b/components/sync/BUILD.gn
 @@ -19,6 +19,7 @@ group("sync") {

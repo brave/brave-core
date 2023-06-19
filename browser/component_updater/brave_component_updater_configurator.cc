@@ -204,4 +204,8 @@ update_client::UpdaterStateProvider BraveConfigurator::GetUpdaterStateProvider()
   return configurator_impl_.GetUpdaterStateProvider();
 }
 
+absl::optional<base::FilePath> BraveConfigurator::GetCrxCachePath() const {
+  return absl::nullopt;
+}
+
 }  // namespace component_updater

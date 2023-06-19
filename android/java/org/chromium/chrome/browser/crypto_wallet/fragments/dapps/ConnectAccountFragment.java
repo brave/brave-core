@@ -152,8 +152,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     private void onFaviconAvailable(GURL pageUrl, Bitmap favicon) {
         if (favicon == null) {
             if (mDefaultFaviconHelper == null) mDefaultFaviconHelper = new DefaultFaviconHelper();
-            favicon = mDefaultFaviconHelper.getDefaultFaviconBitmap(
-                    getActivity().getResources(), pageUrl, true);
+            favicon = mDefaultFaviconHelper.getDefaultFaviconBitmap(getActivity(), pageUrl, true);
         }
         mFavicon.setImageBitmap(favicon);
         mFavicon.setVisibility(View.VISIBLE);
