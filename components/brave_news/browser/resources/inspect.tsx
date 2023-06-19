@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 
-import { BraveNewsController, Channel } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
+import { BraveNewsController, Channel,FeedItem } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import styled from 'styled-components'
 import { Info, generateFeed } from './buildFeed'
 import Elements from './Elements'
@@ -18,7 +18,7 @@ export const api = BraveNewsController.getRemote()
 window['api'] = api
 
 const signalsPromise = api.getSignals().then((r) => r.signals)
-const feedPromise = api.getFeed().then((r) => r.feed)
+const feedPromise = api.getRawFeed().then((r) => r.items) as Promise<FeedItem[]>
 const channelsPromise = api.getChannels().then((r) => Object.values(r.channels) as Channel[])
 const suggestionsPromise = api
   .getSuggestedPublisherIds()
@@ -27,11 +27,7 @@ const publishersPromise = api.getPublishers().then((r) => r.publishers)
 
 const articlesPromise = (async () => {
   const feed = await feedPromise
-  return feed.pages.flatMap((p) =>
-    p.items.flatMap((pageItem) =>
-      pageItem.items.filter((i) => i.article).map((i) => i.article!.data)
-    )
-  )
+  return feed.filter((i) => i.article).map((i) => i.article!.data)
 })()
 
 const suggestedPublishersPromise = (async () => {

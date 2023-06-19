@@ -7,7 +7,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
-#include "brave/components/brave_news/browser/feed_controller.h"
+#include "brave/components/brave_news/browser/raw_feed_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
@@ -22,7 +22,7 @@ class SignalsController {
  public:
   SignalsController(PublishersController* publishers_controller,
                     ChannelsController* channels_controller,
-                    FeedController* feed_controller,
+                    RawFeedController* feed_controller,
                     PrefService* prefs,
                     history::HistoryService* history_service);
   SignalsController(const SignalsController&) = delete;
@@ -40,7 +40,7 @@ class SignalsController {
 
   raw_ptr<PublishersController> publishers_controller_;
   raw_ptr<ChannelsController> channels_controller_;
-  raw_ptr<FeedController> feed_controller_;
+  raw_ptr<RawFeedController> feed_controller_;
   raw_ptr<PrefService> prefs_;
   raw_ptr<history::HistoryService> history_service_;
 };

@@ -117,7 +117,7 @@ BraveNewsController::BraveNewsController(
                               history_service),
       signals_controller_(&publishers_controller_,
                           &channels_controller_,
-                          &feed_controller_,
+                          &raw_feed_controller_,
                           prefs_,
                           history_service),
       publishers_observation_(this),
@@ -187,7 +187,7 @@ void BraveNewsController::GetRawFeed(GetRawFeedCallback callback) {
     return;
   }
 
-  // raw_feed_controller_.GetOrFetchFeed(std::move(callback));
+  raw_feed_controller_.GetOrFetchFeed(std::move(callback));
 }
 
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {

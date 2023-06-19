@@ -15,6 +15,11 @@ const ImageContainer = styled.div`
   width: 128px;
 `
 
+const Description = styled.p`
+  max-height: 50px;
+  overflow: hidden;
+`
+
 export default function InlineCard({ article, isDiscover }: { article: FeedItemMetadata, isDiscover: boolean }) {
   return (
     <Card onClick={() => window.open(article.url.url, '_blank')}>
@@ -26,7 +31,7 @@ export default function InlineCard({ article, isDiscover }: { article: FeedItemM
           Inline:
           <b>{article.title}</b> ({isDiscover ? 'discovering' : 'normal'})
           <div>Publisher: {article.publisherName}</div>
-          <p>{article.description}</p>
+          <Description>{article.description}</Description>
         </div>
       </Row>
     </Card>

@@ -7,6 +7,10 @@ import Image from './Image'
 const BigText = styled.div`
   font: var(--leo-font-heading-h3);
 `
+const Description = styled.p`
+  max-height: 150px;
+  overflow: hidden;
+`
 
 export default function HeroCard({ article }: { article: FeedItemMetadata }) {
   return (
@@ -16,7 +20,7 @@ export default function HeroCard({ article }: { article: FeedItemMetadata }) {
         Hero:
         <b>{article.title}</b>
         <div>Publisher: {article.publisherName}</div>
-        <p>{article.description}</p>
+        <Description>{article.description}</Description>
       </Card>
     </BigText>
   )

@@ -128,11 +128,14 @@ const generateBlock = (info: Info, block: { type: 'default' } | { type: 'channel
   return elements
 }
 
-export const generateCluster = (info: Info, channelOrTopic: string): Elements => {
+export const generateCluster = (info: Info, channelOrTopic: string): Elements | undefined => {
+  const elements = generateBlock(info, { type: 'channel', id: channelOrTopic })
+  if (!elements.length) return
+
   return {
     type: 'cluster',
     clusterType: { type: 'channel', id: channelOrTopic },
-    elements: generateBlock(info, { type: 'channel', id: channelOrTopic })
+    elements
   }
 }
 

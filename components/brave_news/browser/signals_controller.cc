@@ -28,15 +28,11 @@ namespace brave_news {
 
 namespace {
 
-std::vector<mojom::FeedItemMetadataPtr> GetArticles(mojom::FeedPtr feed) {
+std::vector<mojom::FeedItemMetadataPtr> GetArticles(FeedItems feed) {
   std::vector<mojom::FeedItemMetadataPtr> articles;
-  for (const auto& page : feed->pages) {
-    for (const auto& page_item : page->items) {
-      for (const auto& item : page_item->items) {
-        if (item->is_article()) {
-          articles.push_back(std::move(item->get_article()->data));
-        }
-      }
+  for (const auto& item : feed) {
+    if (item->is_article()) {
+      articles.push_back(std::move(item->get_article()->data));
     }
   }
   return articles;
@@ -63,7 +59,7 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& data) {
 SignalsController::SignalsController(
     PublishersController* publishers_controller,
     ChannelsController* channels_controller,
-    FeedController* feed_controller,
+    RawFeedController* feed_controller,
     PrefService* prefs,
     history::HistoryService* history_service)
     : publishers_controller_(publishers_controller),
@@ -77,7 +73,7 @@ SignalsController::~SignalsController() = default;
 void SignalsController::GetSignals(SignalsCallback callback) {
   feed_controller_->GetOrFetchFeed(base::BindOnce(
       [](SignalsController* controller, SignalsCallback callback,
-         mojom::FeedPtr feed) {
+         FeedItems feed) {
         auto articles = GetArticles(std::move(feed));
         history::QueryOptions options;
         options.SetRecentDayRange(21);
