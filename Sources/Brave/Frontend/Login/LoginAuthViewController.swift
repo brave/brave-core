@@ -29,8 +29,10 @@ class LoginAuthViewController: UITableViewController {
     super.viewWillAppear(animated)
 
     if requiresAuthentication, Preferences.Privacy.lockWithPasscode.value {
-      askForAuthentication() { [weak self] status in
-        self?.navigationController?.popViewController(animated: true)
+      askForAuthentication() { [weak self] success in
+        if !success {
+          self?.navigationController?.popViewController(animated: true)
+        }
       }
     }
     
