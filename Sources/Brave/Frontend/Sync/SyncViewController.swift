@@ -33,13 +33,15 @@ class SyncViewController: UIViewController {
     super.viewWillAppear(animated)
     
     if requiresAuthentication {
-      askForAuthentication() { [weak self] status in
+      askForAuthentication() { [weak self] success in
         guard let self else { return }
         
-        if isModallyPresented {
-          self.dismiss(animated: true)
-        } else {
-          self.navigationController?.popViewController(animated: true)
+        if !success {
+          if isModallyPresented {
+            self.dismiss(animated: true)
+          } else {
+            self.navigationController?.popViewController(animated: true)
+          }
         }
       }
     }
