@@ -15,7 +15,7 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/install_utils.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service_main.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/interactive_main.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_tray_runner.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/wireguard_tunnel_service.h"
 #include "chrome/install_static/product_install_details.h"
 #include "components/crash/core/app/crash_switches.h"
@@ -90,7 +90,7 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
   }
   if (command_line->HasSwitch(
           brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName)) {
-    return brave_vpn::InteractiveMain::GetInstance()->Run();
+    return brave_vpn::StatusTrayRunner::GetInstance()->Run();
   }
 
   // System level command line. Makes registeration and configuration for

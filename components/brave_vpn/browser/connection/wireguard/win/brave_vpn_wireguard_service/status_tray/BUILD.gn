@@ -7,10 +7,10 @@ source_set("status_tray") {
   sources = [
     "brave_vpn_tray_command_ids.h",
     "brave_vpn_tray_strings_en.h",
-    "interactive_main.cc",
-    "interactive_main.h",
-    "interactive_utils.cc",
-    "interactive_utils.h",
+    "status_tray_runner.cc",
+    "status_tray_runner.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   public_deps = [ "//skia" ]
