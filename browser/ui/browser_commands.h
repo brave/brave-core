@@ -16,8 +16,6 @@ bool HasSelectedURL(Browser* browser);
 void CleanAndCopySelectedURL(Browser* browser);
 void NewOffTheRecordWindowTor(Browser*);
 void NewTorConnectionForSite(Browser*);
-void AddNewProfile();
-void OpenGuestProfile();
 void ShowWalletBubble(Browser* browser);
 void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);
