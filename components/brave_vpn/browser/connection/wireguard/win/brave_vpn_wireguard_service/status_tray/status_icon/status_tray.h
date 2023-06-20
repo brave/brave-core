@@ -16,22 +16,22 @@
 
 namespace brave_vpn {
 
-class StatusIconWin;
+class StatusIcon;
 
-class StatusTrayWin {
+class StatusTray {
  public:
-  StatusTrayWin();
+  StatusTray();
 
-  StatusTrayWin(const StatusTrayWin&) = delete;
-  StatusTrayWin& operator=(const StatusTrayWin&) = delete;
+  StatusTray(const StatusTray&) = delete;
+  StatusTray& operator=(const StatusTray&) = delete;
 
-  ~StatusTrayWin();
+  ~StatusTray();
 
   static bool IconWindowExists();
 
   void CreateStatusIcon(const gfx::ImageSkia& image,
                         const std::u16string& tool_tip);
-  StatusIconWin* GetStatusIcon();
+  StatusIcon* GetStatusIcon();
 
  private:
   // Static callback invoked when a message comes in to our messaging window.
@@ -51,15 +51,13 @@ class StatusTrayWin {
   HMODULE instance_;
 
   // The window used for processing events.
-  brave::win::ScopedHWND window_;
+  win::ScopedHWND window_;
 
   // The message ID of the "TaskbarCreated" message, sent to us when we need to
   // reset our status icons.
   UINT taskbar_created_message_;
 
-  // Manages changes performed on a background thread to manipulate visibility
-  // of notification icons.
-  std::unique_ptr<StatusIconWin> status_icon_;
+  std::unique_ptr<StatusIcon> status_icon_;
 };
 
 }  // namespace brave_vpn

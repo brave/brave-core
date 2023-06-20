@@ -22,13 +22,10 @@ namespace brave_vpn {
 static const UINT kStatusIconMessage = WM_APP + 1;
 
 namespace {
-// |kBaseIconId| is 2 to avoid conflicts with plugins that hard-code id 1.
-const UINT kBaseIconId = 2;
-
-constexpr base::FilePath::CharType kStatusTrayWindowName[] =
-    FILE_PATH_LITERAL("BraveVpn_StatusTrayWindow");
-constexpr base::FilePath::CharType kStatusTrayWindowClass[] =
-    FILE_PATH_LITERAL("BraveVpn_StatusTrayWindowClass");
+constexpr base::FilePath::CharType kStatusTraydowName[] =
+    FILE_PATH_LITERAL("BraveVpn_StatusTraydow");
+constexpr base::FilePath::CharType kStatusTraydowClass[] =
+    FILE_PATH_LITERAL("BraveVpn_StatusTraydowClass");
 
 const base::FilePath::CharType kBraveVpnTaskbarMessageName[] =
     FILE_PATH_LITERAL("TaskbarCreated");
@@ -41,13 +38,13 @@ gfx::Point GetCursorScreenPoint() {
 
 }  // namespace
 
-StatusTrayWin::StatusTrayWin() : atom_(0), instance_(NULL) {
+StatusTray::StatusTray() : atom_(0), instance_(NULL) {
   // Register our window class
   WNDCLASSEX window_class;
   base::win::InitializeWindowClass(
-      kStatusTrayWindowClass,
-      &base::win::WrappedWindowProc<StatusTrayWin::WndProcStatic>, 0, 0, 0,
-      NULL, NULL, NULL, NULL, NULL, &window_class);
+      kStatusTraydowClass,
+      &base::win::WrappedWindowProc<StatusTray::WndProcStatic>, 0, 0, 0, NULL,
+      NULL, NULL, NULL, NULL, &window_class);
   instance_ = window_class.hInstance;
   atom_ = RegisterClassEx(&window_class);
   CHECK(atom_);
@@ -60,43 +57,41 @@ StatusTrayWin::StatusTrayWin() : atom_(0), instance_(NULL) {
   // create a hidden WS_POPUP window instead of an HWND_MESSAGE window, because
   // only top-level windows such as popups can receive broadcast messages like
   // "TaskbarCreated".
-  window_.reset(CreateWindow(MAKEINTATOM(atom_), kStatusTrayWindowName,
-                             WS_POPUP, 0, 0, 0, 0, 0, 0, instance_, 0));
+  window_.reset(CreateWindow(MAKEINTATOM(atom_), kStatusTraydowName, WS_POPUP,
+                             0, 0, 0, 0, 0, 0, instance_, 0));
   gfx::CheckWindowCreated(window_.get(), ::GetLastError());
   gfx::SetWindowUserData(window_.get(), this);
 }
 
-StatusTrayWin::~StatusTrayWin() {
+StatusTray::~StatusTray() {
   window_.reset();  // window must be destroyed before unregistering class.
   if (atom_) {
     UnregisterClass(MAKEINTATOM(atom_), instance_);
   }
 }
 
-bool StatusTrayWin::IconWindowExists() {
-  return FindWindowEx(nullptr, nullptr, kStatusTrayWindowClass,
-                      kStatusTrayWindowName) != NULL;
+bool StatusTray::IconWindowExists() {
+  return FindWindowEx(nullptr, nullptr, kStatusTraydowClass,
+                      kStatusTraydowName) != NULL;
 }
 
-StatusIconWin* StatusTrayWin::GetStatusIcon() {
+StatusIcon* StatusTray::GetStatusIcon() {
   return status_icon_.get();
 }
 
-void StatusTrayWin::CreateStatusIcon(const gfx::ImageSkia& image,
-                                     const std::u16string& tool_tip) {
-  status_icon_ = std::make_unique<StatusIconWin>(
-      this, kBaseIconId, window_.get(), kStatusIconMessage);
-
-  status_icon_->SetImage(image);
-  status_icon_->SetToolTip(tool_tip);
+void StatusTray::CreateStatusIcon(const gfx::ImageSkia& image,
+                                  const std::u16string& tooltip) {
+  status_icon_ =
+      std::make_unique<StatusIcon>(window_.get(), kStatusIconMessage);
+  status_icon_->UpdateState(image, tooltip);
 }
 
-LRESULT CALLBACK StatusTrayWin::WndProcStatic(HWND hwnd,
-                                              UINT message,
-                                              WPARAM wparam,
-                                              LPARAM lparam) {
-  StatusTrayWin* msg_wnd =
-      reinterpret_cast<StatusTrayWin*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+LRESULT CALLBACK StatusTray::WndProcStatic(HWND hwnd,
+                                           UINT message,
+                                           WPARAM wparam,
+                                           LPARAM lparam) {
+  StatusTray* msg_wnd =
+      reinterpret_cast<StatusTray*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
   if (msg_wnd) {
     return msg_wnd->WndProc(hwnd, message, wparam, lparam);
   } else {
@@ -104,10 +99,10 @@ LRESULT CALLBACK StatusTrayWin::WndProcStatic(HWND hwnd,
   }
 }
 
-LRESULT CALLBACK StatusTrayWin::WndProc(HWND hwnd,
-                                        UINT message,
-                                        WPARAM wparam,
-                                        LPARAM lparam) {
+LRESULT CALLBACK StatusTray::WndProc(HWND hwnd,
+                                     UINT message,
+                                     WPARAM wparam,
+                                     LPARAM lparam) {
   if (message == taskbar_created_message_) {
     // We need to reset an icon because the taskbar went away.
     if (status_icon_) {

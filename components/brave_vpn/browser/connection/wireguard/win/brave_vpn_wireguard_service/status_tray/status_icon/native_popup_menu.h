@@ -15,32 +15,29 @@
 
 namespace brave_vpn {
 
-class NativePopupMenuWin {
+class NativePopupMenu {
  public:
-  explicit NativePopupMenuWin(ui::MenuModel* model);
+  explicit NativePopupMenu(ui::MenuModel* model);
 
-  NativePopupMenuWin(const NativePopupMenuWin&) = delete;
-  NativePopupMenuWin& operator=(const NativePopupMenuWin&) = delete;
-  ~NativePopupMenuWin();
+  NativePopupMenu(const NativePopupMenu&) = delete;
+  NativePopupMenu& operator=(const NativePopupMenu&) = delete;
+  ~NativePopupMenu();
 
   HMENU GetWeakMenuHandle();
 
  private:
-  void AddMenuItemAt(size_t menu_index, size_t model_index);
-  void AddSeparatorItemAt(size_t menu_index, size_t model_index);
+  void AddMenuItemAt(size_t menu_index);
+  void AddSeparatorItemAt(size_t menu_index);
   void ResetNativeMenu();
-  void Rebuild();
+  void Build();
 
   // An object that collects all of the data associated with an individual menu
   // item.
   struct ItemData;
   std::vector<std::unique_ptr<ItemData>> items_;
 
-  // Our attached model and delegate.
   raw_ptr<ui::MenuModel> model_;
-  brave::win::ScopedHMENU popup_menu_;
-  // The index of the first item in the model in the menu.
-  size_t first_item_index_;
+  win::ScopedHMENU popup_menu_;
 };
 
 }  // namespace brave_vpn

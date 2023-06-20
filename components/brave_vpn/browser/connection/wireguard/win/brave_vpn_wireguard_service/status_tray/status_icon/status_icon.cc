@@ -5,30 +5,34 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
 #include "base/logging.h"
 #include "base/strings/string_util_win.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/native_popup_menu.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/icon_util.h"
 
 namespace brave_vpn {
+namespace {
+std::unique_ptr<NOTIFYICONDATA> GetIconData(HWND window, UINT uFlags = 0) {
+  return std::make_unique<NOTIFYICONDATA>(
+      NOTIFYICONDATA{.cbSize = sizeof(NOTIFYICONDATA),
+                     .hWnd = window,
+                     .uID = 2,  // Use 2 to avoid conflicts with other apps.
+                     .uFlags = uFlags});
+}
+}  // namespace
 
-StatusIconWin::StatusIconWin(StatusTrayWin* tray,
-                             UINT id,
-                             HWND window,
-                             UINT message)
-    : tray_(tray), icon_id_(id), window_(window), message_id_(message) {
-  NOTIFYICONDATA icon_data;
-  InitIconData(&icon_data);
-  icon_data.uFlags = NIF_MESSAGE;
-  icon_data.uCallbackMessage = message_id_;
-  BOOL result = Shell_NotifyIcon(NIM_ADD, &icon_data);
+StatusIcon::StatusIcon(HWND window, UINT message)
+    : window_(window), message_id_(message) {
+  auto icon_data = GetIconData(window_, NIF_MESSAGE);
+  icon_data->uCallbackMessage = message_id_;
+  BOOL result = Shell_NotifyIcon(NIM_ADD, icon_data.get());
   // This can happen if the explorer process isn't running when we try to
   // create the icon for some reason (for example, at startup).
   if (!result) {
@@ -36,15 +40,14 @@ StatusIconWin::StatusIconWin(StatusTrayWin* tray,
   }
 }
 
-StatusIconWin::~StatusIconWin() {
-  // Remove our icon.
-  NOTIFYICONDATA icon_data;
-  InitIconData(&icon_data);
-  Shell_NotifyIcon(NIM_DELETE, &icon_data);
+StatusIcon::~StatusIcon() {
+  // Remove our icon
+  auto icon_data = GetIconData(window_);
+  Shell_NotifyIcon(NIM_DELETE, icon_data.get());
 }
 
-void StatusIconWin::HandleClickEvent(const gfx::Point& cursor_pos,
-                                     bool left_mouse_click) {
+void StatusIcon::HandleClickEvent(const gfx::Point& cursor_pos,
+                                  bool left_mouse_click) {
   if (!menu_model_) {
     return;
   }
@@ -55,13 +58,13 @@ void StatusIconWin::HandleClickEvent(const gfx::Point& cursor_pos,
     return;
   }
   menu_model_->MenuWillShow();
-  popup_menu_ = std::make_unique<NativePopupMenuWin>(menu_model_.get());
+  popup_menu_ = std::make_unique<NativePopupMenu>(menu_model_.get());
 
   TrackPopupMenuEx(popup_menu_->GetWeakMenuHandle(), TPM_BOTTOMALIGN,
                    cursor_pos.x(), cursor_pos.y(), window_, NULL);
 }
 
-void StatusIconWin::OnMenuCommand(int index, int event_flags) {
+void StatusIcon::OnMenuCommand(int index, int event_flags) {
   DCHECK(menu_model_.get());
   if (!menu_model_->delegate()) {
     return;
@@ -69,69 +72,50 @@ void StatusIconWin::OnMenuCommand(int index, int event_flags) {
   menu_model_->ExecuteCommand(menu_model_->GetCommandIdAt(index), event_flags);
 }
 
-void StatusIconWin::ResetIcon() {
-  NOTIFYICONDATA icon_data;
-  InitIconData(&icon_data);
-  // Delete any previously existing icon.
-  Shell_NotifyIcon(NIM_DELETE, &icon_data);
-  InitIconData(&icon_data);
-  icon_data.uFlags = NIF_MESSAGE;
-  icon_data.uCallbackMessage = message_id_;
-  icon_data.hIcon = icon_.get();
-  // If we have an image, then set the NIF_ICON flag, which tells
-  // Shell_NotifyIcon() to set the image for the status icon it creates.
-  if (icon_data.hIcon) {
-    icon_data.uFlags |= NIF_ICON;
+void StatusIcon::ResetIcon() {
+  {
+    auto delete_data = GetIconData(window_);
+    // Delete any previously existing icon.
+    Shell_NotifyIcon(NIM_DELETE, delete_data.get());
   }
-  // Re-add our icon.
-  BOOL result = Shell_NotifyIcon(NIM_ADD, &icon_data);
-  if (!result) {
+
+  auto icon_data = GetIconData(window_, NIF_MESSAGE);
+  icon_data->uCallbackMessage = message_id_;
+  if (icon_.get()) {
+    icon_data->hIcon = icon_.get();
+    icon_data->uFlags |= NIF_ICON;
+  }
+  if (!Shell_NotifyIcon(NIM_ADD, icon_data.get())) {
     LOG(WARNING) << "Unable to re-create status tray icon.";
   }
 }
 
-void StatusIconWin::SetImage(const gfx::ImageSkia& image) {
-  // Create the icon.
-  NOTIFYICONDATA icon_data;
-  InitIconData(&icon_data);
-  icon_data.uFlags = NIF_ICON;
+void StatusIcon::SetImage(const gfx::ImageSkia& image) {
   icon_ = IconUtil::CreateHICONFromSkBitmap(*image.bitmap());
-  icon_data.hIcon = icon_.get();
-  BOOL result = Shell_NotifyIcon(NIM_MODIFY, &icon_data);
-  if (!result) {
+  auto icon_data = GetIconData(window_, NIF_ICON);
+  icon_data->hIcon = icon_.get();
+  if (!Shell_NotifyIcon(NIM_MODIFY, icon_data.get())) {
     LOG(WARNING) << "Error setting status tray icon image";
   }
 }
 
-void StatusIconWin::SetToolTip(const std::u16string& tool_tip) {
-  // Create the icon.
-  NOTIFYICONDATA icon_data;
-  InitIconData(&icon_data);
-  icon_data.uFlags = NIF_TIP;
-  wcscpy_s(icon_data.szTip, base::as_wcstr(tool_tip));
-  BOOL result = Shell_NotifyIcon(NIM_MODIFY, &icon_data);
-  if (!result) {
+void StatusIcon::SetToolTip(const std::u16string& tool_tip) {
+  auto icon_data = GetIconData(window_, NIF_TIP);
+  wcscpy_s(icon_data->szTip, base::as_wcstr(tool_tip));
+  if (!Shell_NotifyIcon(NIM_MODIFY, icon_data.get())) {
     LOG(WARNING) << "Unable to set tooltip for status tray icon";
   }
 }
 
-void StatusIconWin::UpdateState(const gfx::ImageSkia& image,
-                                const std::u16string& tool_tip) {
+void StatusIcon::UpdateState(const gfx::ImageSkia& image,
+                             const std::u16string& tool_tip) {
   ResetIcon();
   SetImage(image);
   SetToolTip(tool_tip);
 }
 
-void StatusIconWin::SetContextMenu(std::unique_ptr<TrayMenuModel> menu) {
+void StatusIcon::SetContextMenu(std::unique_ptr<TrayMenuModel> menu) {
   menu_model_ = std::move(menu);
-}
-
-void StatusIconWin::InitIconData(NOTIFYICONDATA* icon_data) {
-  memset(icon_data, 0, sizeof(NOTIFYICONDATA));
-  icon_data->cbSize = sizeof(NOTIFYICONDATA);
-
-  icon_data->hWnd = window_;
-  icon_data->uID = icon_id_;
 }
 
 }  // namespace brave_vpn
