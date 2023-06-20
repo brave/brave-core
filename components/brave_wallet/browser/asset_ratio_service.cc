@@ -109,6 +109,18 @@ absl::optional<std::string> ChainIdToStripeChainId(
   return chain_id_lookup->at(chain_id);
 }
 
+base::flat_map<std::string, std::string> MakeBraveServicesKeyHeader() {
+  base::flat_map<std::string, std::string> request_headers;
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
+  if (env->HasVar("BRAVE_SERVICES_KEY")) {
+    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
+  }
+  request_headers["x-brave-key"] = std::move(brave_key);
+
+  return request_headers;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -304,17 +316,9 @@ void AssetRatioService::GetPrice(
       &AssetRatioService::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
       from_assets_lower, to_assets_lower, std::move(callback));
 
-  base::flat_map<std::string, std::string> request_headers;
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
-  if (env->HasVar("BRAVE_SERVICES_KEY")) {
-    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
-  }
-  request_headers[kBraveServicesKeyHeader] = std::move(brave_key);
-
   api_request_helper_->Request(
       "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
-      std::move(internal_callback), request_headers,
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -377,7 +381,7 @@ void AssetRatioService::GetStripeBuyURL(
 
   api_request_helper_->Request(
       "POST", url, json_payload, "application/json",
-      std::move(internal_callback), {},
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
       {.auto_retry_on_network_change = true, .enable_cache = false});
 }
 
@@ -427,7 +431,7 @@ void AssetRatioService::GetPriceHistory(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetPriceHistoryURL(asset_lower, vs_asset_lower, timeframe), "", "",
-      std::move(internal_callback), {},
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -449,7 +453,7 @@ void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
 // static
 GURL AssetRatioService::GetTokenInfoURL(const std::string& contract_address) {
   std::string spec = base::StringPrintf(
-      "%s/v2/etherscan/"
+      "%s/v3/etherscan/"
       "passthrough?module=token&action=tokeninfo&contractaddress=%s",
       base_url_for_test_.is_empty() ? kAssetRatioBaseURL
                                     : base_url_for_test_.spec().c_str(),
@@ -464,7 +468,7 @@ void AssetRatioService::GetTokenInfo(const std::string& contract_address,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetTokenInfoURL(contract_address), "", "",
-      std::move(internal_callback), {},
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -501,7 +505,7 @@ void AssetRatioService::GetCoinMarkets(const std::string& vs_asset,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetCoinMarketsURL(vs_asset_lower, limit), "", "",
-      std::move(internal_callback), {},
+      std::move(internal_callback), MakeBraveServicesKeyHeader(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 

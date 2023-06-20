@@ -418,7 +418,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryURL) {
 TEST_F(AssetRatioServiceUnitTest, GetTokenInfoURL) {
   std::string url(kAssetRatioBaseURL);
   EXPECT_EQ(url +
-                "/v2/etherscan/"
+                "/v3/etherscan/"
                 "passthrough?module=token&action=tokeninfo&contractaddress="
                 "0xdac17f958d2ee523a2206206994597c13d831ec7",
             AssetRatioService::GetTokenInfoURL(
