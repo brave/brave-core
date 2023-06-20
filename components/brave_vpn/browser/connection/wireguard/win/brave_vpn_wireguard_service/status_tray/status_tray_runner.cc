@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/interactive_main.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_tray_runner.h"
 
 #include <wrl/client.h>
 
@@ -16,12 +16,12 @@
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/wireguard_utils.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_strings_en.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/interactive_utils.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_strings_en.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/resources/resource.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
@@ -62,16 +62,16 @@ gfx::ImageSkia GetStatusTrayIcon(bool connected, bool error) {
 
 }  // namespace
 
-InteractiveMain* InteractiveMain::GetInstance() {
-  static base::NoDestructor<InteractiveMain> instance;
+StatusTrayRunner* StatusTrayRunner::GetInstance() {
+  static base::NoDestructor<StatusTrayRunner> instance;
   return instance.get();
 }
 
-InteractiveMain::InteractiveMain() = default;
+StatusTrayRunner::StatusTrayRunner() = default;
 
-InteractiveMain::~InteractiveMain() = default;
+StatusTrayRunner::~StatusTrayRunner() = default;
 
-void InteractiveMain::SetupStatusIcon() {
+void StatusTrayRunner::SetupStatusIcon() {
   status_tray_ = std::make_unique<StatusTrayWin>();
   auto connected = wireguard::IsBraveVPNWireguardTunnelServiceRunning();
   status_tray_->CreateStatusIcon(GetStatusTrayIcon(connected, false),
@@ -80,19 +80,19 @@ void InteractiveMain::SetupStatusIcon() {
       std::make_unique<BraveVpnMenuModel>(this));
 }
 
-void InteractiveMain::ExecuteCommand(int command_id, int event_flags) {
+void StatusTrayRunner::ExecuteCommand(int command_id, int event_flags) {
   switch (command_id) {
     case IDC_BRAVE_VPN_TRAY_EXIT_ICON:
       SignalExit();
       break;
     case IDC_BRAVE_VPN_TRAY_CONNECT_VPN_ITEM:
       wireguard::EnableBraveVpnWireguardService(
-          "", base::BindOnce(&InteractiveMain::OnConnected,
+          "", base::BindOnce(&StatusTrayRunner::OnConnected,
                              weak_factory_.GetWeakPtr()));
       break;
     case IDC_BRAVE_VPN_TRAY_DISCONNECT_VPN_ITEM:
       wireguard::DisableBraveVpnWireguardService(base::BindOnce(
-          &InteractiveMain::OnDisconnected, weak_factory_.GetWeakPtr()));
+          &StatusTrayRunner::OnDisconnected, weak_factory_.GetWeakPtr()));
       break;
     case IDC_BRAVE_VPN_TRAY_MANAGE_ACCOUNT_ITEM:
       OpenURLInBrowser(kBraveAccountURL);
@@ -103,7 +103,7 @@ void InteractiveMain::ExecuteCommand(int command_id, int event_flags) {
   }
 }
 
-void InteractiveMain::OnMenuWillShow(ui::SimpleMenuModel* source) {
+void StatusTrayRunner::OnMenuWillShow(ui::SimpleMenuModel* source) {
   auto connected = wireguard::IsBraveVPNWireguardTunnelServiceRunning();
   source->Clear();
   source->AddItem(IDC_BRAVE_VPN_TRAY_STATUS_ITEM, GetVpnStatusLabel(connected));
@@ -123,12 +123,12 @@ void InteractiveMain::OnMenuWillShow(ui::SimpleMenuModel* source) {
   source->AddItem(IDC_BRAVE_VPN_TRAY_EXIT_ICON, brave::kBraveVpnRemoveItemName);
 }
 
-void InteractiveMain::OnConnected(bool success) {
+void StatusTrayRunner::OnConnected(bool success) {
   VLOG(1) << __func__ << ":" << success;
   UpdateIconState(!success);
 }
 
-void InteractiveMain::UpdateIconState(bool error) {
+void StatusTrayRunner::UpdateIconState(bool error) {
   if (!status_tray_ || !status_tray_->GetStatusIcon()) {
     return;
   }
@@ -138,12 +138,12 @@ void InteractiveMain::UpdateIconState(bool error) {
       GetStatusIconTooltip(connected, error));
 }
 
-void InteractiveMain::OnDisconnected(bool success) {
+void StatusTrayRunner::OnDisconnected(bool success) {
   VLOG(1) << __func__ << ":" << success;
   UpdateIconState(!success);
 }
 
-HRESULT InteractiveMain::Run() {
+HRESULT StatusTrayRunner::Run() {
   if (!wireguard::GetLastUsedConfigPath().has_value() ||
       StatusTrayWin::IconWindowExists()) {
     return S_OK;
@@ -159,7 +159,7 @@ HRESULT InteractiveMain::Run() {
   return S_OK;
 }
 
-void InteractiveMain::SignalExit() {
+void StatusTrayRunner::SignalExit() {
   status_tray_.reset();
   std::move(quit_).Run();
 }

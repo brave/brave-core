@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_INTERACTIVE_MAIN_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_INTERACTIVE_MAIN_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_STATUS_TRAY_RUNNER_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_STATUS_TRAY_RUNNER_H_
 
 #include <memory>
 
@@ -22,12 +22,12 @@ namespace brave_vpn {
 
 class StatusTrayWin;
 
-class InteractiveMain : public BraveVpnMenuModel::Delegate {
+class StatusTrayRunner : public BraveVpnMenuModel::Delegate {
  public:
-  static InteractiveMain* GetInstance();
+  static StatusTrayRunner* GetInstance();
 
-  InteractiveMain(const InteractiveMain&) = delete;
-  InteractiveMain& operator=(const InteractiveMain&) = delete;
+  StatusTrayRunner(const StatusTrayRunner&) = delete;
+  StatusTrayRunner& operator=(const StatusTrayRunner&) = delete;
 
   void SetupStatusIcon();
 
@@ -38,10 +38,10 @@ class InteractiveMain : public BraveVpnMenuModel::Delegate {
   void OnMenuWillShow(ui::SimpleMenuModel* source) override;
 
  private:
-  friend class base::NoDestructor<InteractiveMain>;
+  friend class base::NoDestructor<StatusTrayRunner>;
 
-  InteractiveMain();
-  ~InteractiveMain() override;
+  StatusTrayRunner();
+  ~StatusTrayRunner() override;
 
   void UpdateIconState(bool error);
   void OnConnected(bool success);
@@ -49,9 +49,9 @@ class InteractiveMain : public BraveVpnMenuModel::Delegate {
 
   std::unique_ptr<StatusTrayWin> status_tray_;
   base::OnceClosure quit_;
-  base::WeakPtrFactory<InteractiveMain> weak_factory_{this};
+  base::WeakPtrFactory<StatusTrayRunner> weak_factory_{this};
 };
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_INTERACTIVE_MAIN_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_STATUS_TRAY_RUNNER_H_
