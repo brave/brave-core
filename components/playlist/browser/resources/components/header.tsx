@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import styled  from 'styled-components'
+import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
@@ -16,7 +16,7 @@ import PlaylistInfo from './playlistInfo'
 
 const StyledLink = styled(Link)<{}>`
   text-decoration: none;
-  color:unset
+  color: unset;
 `
 
 interface HeaderProps {
@@ -24,16 +24,21 @@ interface HeaderProps {
 }
 
 const GradientIcon = styled(Icon)<{}>`
- --leo-icon-color: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);;
+  --leo-icon-color: linear-gradient(
+    314.42deg,
+    #fa7250 8.49%,
+    #ff1893 43.72%,
+    #a78aff 99.51%
+  );
 `
 
 const ColoredIcon = styled(Icon)<{ colorGetter: (colorSet: any) => any }>`
   @media (prefers-color-scheme: light) {
-    color: ${({colorGetter}) => colorGetter(color.light)}
+    color: ${({ colorGetter }) => colorGetter(color.light)};
   }
 
   @media (prefers-color-scheme: dark) {
-    color: ${({colorGetter}) => colorGetter(color.dark)}
+    color: ${({ colorGetter }) => colorGetter(color.dark)};
   }
 `
 
@@ -45,11 +50,11 @@ const ProductNameContainer = styled.div<{}>`
 
 const ColoredSpan = styled.span<{ colorGetter: (colorSet: any) => any }>`
   @media (prefers-color-scheme: light) {
-    color: ${({colorGetter}) => colorGetter(color.light)}
+    color: ${({ colorGetter }) => colorGetter(color.light)};
   }
 
   @media (prefers-color-scheme: dark) {
-    color: ${({colorGetter}) => colorGetter(color.dark)}
+    color: ${({ colorGetter }) => colorGetter(color.dark)};
   }
 `
 
@@ -72,29 +77,38 @@ const HeaderContainer = styled.div<{}>`
   }
 `
 
-export default function Header ({playlist} : HeaderProps) {
+export default function Header ({ playlist }: HeaderProps) {
   return (
     <HeaderContainer>
-      { playlist && 
+      {playlist && (
         <>
-          <StyledLink to="/">
-            <ColoredIcon name="arrow-left" colorGetter={ colorSet => colorSet.icon.default }/> 
+          <StyledLink to='/'>
+            <ColoredIcon
+              name='arrow-left'
+              colorGetter={colorSet => colorSet.icon.default}
+            />
           </StyledLink>
-          <PlaylistInfo isDefaultPlaylist={playlist.id === 'default'}
-                        itemCount={playlist.items.length}
-                        playlistName={playlist.name}
-                        totalDuration={0} />
+          <PlaylistInfo
+            isDefaultPlaylist={playlist.id === 'default'}
+            itemCount={playlist.items.length}
+            playlistName={playlist.name}
+            totalDuration={0}
+          />
         </>
-      }
-      { !playlist &&
+      )}
+      {!playlist && (
         <>
-          <GradientIcon name="product-playlist-bold-add" /> 
+          <GradientIcon name='product-playlist-bold-add' />
           <ProductNameContainer>
-              <ColoredSpan colorGetter={ colorSet =>  colorSet.text.secondary }>Brave</ColoredSpan>
-              <ColoredSpan colorGetter={ colorSet => colorSet.text.primary }>Playlist</ColoredSpan>
+            <ColoredSpan colorGetter={colorSet => colorSet.text.secondary}>
+              Brave
+            </ColoredSpan>
+            <ColoredSpan colorGetter={colorSet => colorSet.text.primary}>
+              Playlist
+            </ColoredSpan>
           </ProductNameContainer>
         </>
-      }
+      )}
     </HeaderContainer>
   )
 }

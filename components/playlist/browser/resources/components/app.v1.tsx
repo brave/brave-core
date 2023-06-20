@@ -38,44 +38,61 @@ const SectionWrapper = styled.section`
 
 function App (props: Props) {
   return (
-  <>
-    <HeaderWrapper>
-      <Route path={["/playlist/:playlistId"]} children={({match}) => {
-        return <Header playlist={props.playlistData.lists.find(playlist => playlist.id === match?.params.playlistId)}/>
-      }}></Route>
-    </HeaderWrapper>
-    <SectionWrapper>
-      <Switch>
-        <Route path="/playlist/:playlistId" render={({match})=>{
-          console.log(match?.params.playlistId)
-          return (
-            <>
-              <VideoFrame playing={!!props.playlistData.lastPlayerState?.playing} />
-              {
-                props.playlistData.lists.find((playlist) => playlist.id === match?.params.playlistId)?.items.map(item => <PlaylistItem id={item.id} name={item.name} thumbnailUrl={item.thumbnailPath.url} onClick={()=>{}} />)
-              }
-            </>
-          )
-        }}>
-        </Route>
-        <Route path="/"> 
-          <PlaylistsCatalog playlists={props.playlistData.lists} />
-        </Route>
-      </Switch>
-    </SectionWrapper>
-  </>
+    <>
+      <HeaderWrapper>
+        <Route
+          path={['/playlist/:playlistId']}
+          children={({ match }) => {
+            return (
+              <Header
+                playlist={props.playlistData.lists.find(
+                  playlist => playlist.id === match?.params.playlistId
+                )}
+              />
+            )
+          }}
+        ></Route>
+      </HeaderWrapper>
+      <SectionWrapper>
+        <Switch>
+          <Route
+            path='/playlist/:playlistId'
+            render={({ match }) => {
+              console.log(match?.params.playlistId)
+              return (
+                <>
+                  <VideoFrame
+                    playing={!!props.playlistData.lastPlayerState?.playing}
+                  />
+                  {props.playlistData.lists
+                    .find(playlist => playlist.id === match?.params.playlistId)
+                    ?.items.map(item => (
+                      <PlaylistItem
+                        id={item.id}
+                        name={item.name}
+                        thumbnailUrl={item.thumbnailPath.url}
+                        onClick={() => {}}
+                      />
+                    ))}
+                </>
+              )
+            }}
+          ></Route>
+          <Route path='/'>
+            <PlaylistsCatalog playlists={props.playlistData.lists} />
+          </Route>
+        </Switch>
+      </SectionWrapper>
+    </>
   )
 }
 
 export const mapStateToProps = (state: Playlist.ApplicationState) => ({
-    playlistData: state.playlistData
-  })
-  
-export const mapDispatchToProps = (dispatch: Dispatch) => ({
-actions: bindActionCreators(playlistActions, dispatch)
+  playlistData: state.playlistData
 })
 
-export default connect(
-mapStateToProps,
-mapDispatchToProps
-)(App)
+export const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators(playlistActions, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

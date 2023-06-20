@@ -19,20 +19,21 @@ import App from '../components/app.v1'
 export default {
   title: 'Playlist/Panel',
   decorators: [
-    (Story: any) => 
-    <BrowserRouter>
-      <Provider store={store}>
-        <BraveCoreThemeProvider dark={DarkTheme} light={Theme}>
+    (Story: any) => (
+      <BrowserRouter>
+        <Provider store={store}>
+          <BraveCoreThemeProvider dark={DarkTheme} light={Theme}>
             <Story />
-        </BraveCoreThemeProvider>
-      </Provider>
-    </BrowserRouter>,
+          </BraveCoreThemeProvider>
+        </Provider>
+      </BrowserRouter>
+    ),
     (Story: any) => (
       <div
         style={{
           fontFamily: 'Poppins',
           width: '100%',
-          minHeight: '100vh',
+          minHeight: '100vh'
         }}
       >
         <Story />
@@ -43,7 +44,7 @@ export default {
 }
 
 export const AppV1 = () => {
-  return (<App />)
+  return <App />
 }
 
 getAllActions().playlistLoaded(mockData)

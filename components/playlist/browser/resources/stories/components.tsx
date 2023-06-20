@@ -21,21 +21,21 @@ import { mockData } from './mockData'
 export default {
   title: 'Playlist/Components',
   decorators: [
-    (Story: any) => <Provider store={store}>
-    <BrowserRouter>
-      <BraveCoreThemeProvider
-        dark={DarkTheme}
-        light={Theme}>
-          <Story />
-      </BraveCoreThemeProvider>
-    </BrowserRouter>
-    </Provider>,
+    (Story: any) => (
+      <Provider store={store}>
+        <BrowserRouter>
+          <BraveCoreThemeProvider dark={DarkTheme} light={Theme}>
+            <Story />
+          </BraveCoreThemeProvider>
+        </BrowserRouter>
+      </Provider>
+    ),
     (Story: any) => (
       <div
         style={{
           fontFamily: 'Poppins',
           width: '100%',
-          minHeight: '100vh',
+          minHeight: '100vh'
         }}
       >
         <Story />
@@ -46,5 +46,5 @@ export default {
 }
 
 export const Catalog = () => {
-    return <PlaylistsCatalog playlists={mockData}></PlaylistsCatalog>
+  return <PlaylistsCatalog playlists={mockData}></PlaylistsCatalog>
 }

@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
 import { color } from '@brave/leo/tokens/css'
@@ -26,25 +26,39 @@ interface ThumbnailProps {
 
 const StyledLink = styled(Link)<{}>`
   text-decoration: none;
-  color:unset
+  color: unset;
 `
 
 const PlaylistContainer = styled.div<ThumbnailProps>`
   /* Default Playlist background */
-  ${ p => p.isDefaultPlaylist && css`background: linear-gradient(150.64deg, #322FB4 0%, #3835CA 100%);`}
+  ${p =>
+    p.isDefaultPlaylist &&
+    css`
+      background: linear-gradient(150.64deg, #322fb4 0%, #3835ca 100%);
+    `}
 
   /* Default background for playlist without thumbnail */
-  ${ p => !p.isDefaultPlaylist && !p.thumbnailUrl && css`background-color: ${color.light.container.highlight};`}
+  ${p =>
+    !p.isDefaultPlaylist &&
+    !p.thumbnailUrl &&
+    css`
+      background-color: ${color.light.container.highlight};
+    `}
 
   /* Playlist with Thumbnail*/
-  ${ p => !p.isDefaultPlaylist && p.thumbnailUrl && css`
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${ p.thumbnailUrl });
-      background-size: cover;` }
+  ${p =>
+    !p.isDefaultPlaylist &&
+    p.thumbnailUrl &&
+    css`
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url(${p.thumbnailUrl});
+      background-size: cover;
+    `}
   border-radius: 8px;
   padding: 8px;
 
-  position:relative;
-  display:flex;
+  position: relative;
+  display: flex;
   gap: 16px;
 `
 
@@ -56,22 +70,37 @@ const PlayLaterCardOverlay = styled.div<{}>`
 `
 
 const ColoredPlaylistInfo = styled(PlaylistInfo)<{ hasBackground: boolean }>`
-  color: ${ ({hasBackground}) => hasBackground ? color.dark.text.primary : color.light.text.primary };
+  color: ${({ hasBackground }) =>
+    hasBackground ? color.dark.text.primary : color.light.text.primary};
 `
 
 const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
   /* Default Playlist icon */
-  ${ p => p.isDefaultPlaylist && css`background-color: ${color.light.interaction.buttonPrimaryBackground}; color: white;` }
+  ${p =>
+    p.isDefaultPlaylist &&
+    css`
+      background-color: ${color.light.interaction.buttonPrimaryBackground};
+      color: white;
+    `}
 
   /* Default icon for playlist without thumbnail */
-  ${ p => !p.isDefaultPlaylist && !p.thumbnailUrl && css`background-color: ${color.light.container.background}; `}
+  ${p =>
+    !p.isDefaultPlaylist &&
+    !p.thumbnailUrl &&
+    css`
+      background-color: ${color.light.container.background};
+    `}
 
   /* Playlist with Thumbnail*/
-  ${ p => !p.isDefaultPlaylist && !!p.thumbnailUrl && css`
-    background-image: url(${p.thumbnailUrl}); 
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;` }
+  ${p =>
+    !p.isDefaultPlaylist &&
+    !!p.thumbnailUrl &&
+    css`
+      background-image: url(${p.thumbnailUrl});
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    `}
 
   width: 80px;
   height: 80px;
@@ -80,32 +109,32 @@ const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
   justify-content: center;
   align-items: center;
 `
-function PlaylistThumbnail (props : ThumbnailProps) {
-    return (
-      <PlaylistThumbnailContainer {...props}>
-        {
-          (props.isDefaultPlaylist || !props.thumbnailUrl) && 
-          <Icon name={props.isDefaultPlaylist ? "history" : "product-playlist"} />
-        }
-      </PlaylistThumbnailContainer>
-    )
+function PlaylistThumbnail (props: ThumbnailProps) {
+  return (
+    <PlaylistThumbnailContainer {...props}>
+      {(props.isDefaultPlaylist || !props.thumbnailUrl) && (
+        <Icon name={props.isDefaultPlaylist ? 'history' : 'product-playlist'} />
+      )}
+    </PlaylistThumbnailContainer>
+  )
 }
 
 // A card UI for representing a playlist.
-function PlaylistCard ({playlist} : {playlist: PlaylistMojo.Playlist}) {
+function PlaylistCard ({ playlist }: { playlist: PlaylistMojo.Playlist }) {
   const isDefaultPlaylist = React.useMemo(() => {
-    return playlist.id === "default"
+    return playlist.id === 'default'
   }, [playlist])
 
   const thumbnailUrl = React.useMemo(() => {
-    if (!playlist.items) return undefined 
+    if (!playlist.items) return undefined
 
-    return playlist.items?.find(item => item.thumbnailPath?.url)?.thumbnailPath.url
+    return playlist.items?.find(item => item.thumbnailPath?.url)?.thumbnailPath
+      .url
   }, [playlist, playlist.items])
 
   const hasBackground = React.useMemo(() => {
     return isDefaultPlaylist || !!thumbnailUrl
-  }, [isDefaultPlaylist, thumbnailUrl]);
+  }, [isDefaultPlaylist, thumbnailUrl])
 
   const totalDuration = React.useMemo(() => {
     // TODO(sko) Duration value is not correct now.
@@ -121,14 +150,22 @@ function PlaylistCard ({playlist} : {playlist: PlaylistMojo.Playlist}) {
 
   return (
     <StyledLink to={`/playlist/${playlist.id}`}>
-      <PlaylistContainer isDefaultPlaylist={ isDefaultPlaylist } thumbnailUrl={thumbnailUrl} >
-        { isDefaultPlaylist && <PlayLaterCardOverlay /> }
-        <PlaylistThumbnail isDefaultPlaylist={ isDefaultPlaylist } thumbnailUrl={thumbnailUrl} />
-        <ColoredPlaylistInfo playlistName={playlist.name}
-                             isDefaultPlaylist={isDefaultPlaylist}
-                             itemCount={playlist.items.length}
-                             totalDuration={totalDuration}
-                             hasBackground={hasBackground} />
+      <PlaylistContainer
+        isDefaultPlaylist={isDefaultPlaylist}
+        thumbnailUrl={thumbnailUrl}
+      >
+        {isDefaultPlaylist && <PlayLaterCardOverlay />}
+        <PlaylistThumbnail
+          isDefaultPlaylist={isDefaultPlaylist}
+          thumbnailUrl={thumbnailUrl}
+        />
+        <ColoredPlaylistInfo
+          playlistName={playlist.name}
+          isDefaultPlaylist={isDefaultPlaylist}
+          itemCount={playlist.items.length}
+          totalDuration={totalDuration}
+          hasBackground={hasBackground}
+        />
       </PlaylistContainer>
     </StyledLink>
   )
@@ -141,9 +178,12 @@ const PlaylistsCatalogFlexBox = styled.div<{}>`
 `
 
 // A catalog that shows all playlists
-export default function PlaylistsCatalog ({playlists}: CatalogProps) {
-    return (
-      <PlaylistsCatalogFlexBox>
-        { playlists.map((playlist: PlaylistMojo.Playlist) => { return <PlaylistCard key={playlist.id} playlist={ playlist }/> }) }
-      </PlaylistsCatalogFlexBox>)
+export default function PlaylistsCatalog ({ playlists }: CatalogProps) {
+  return (
+    <PlaylistsCatalogFlexBox>
+      {playlists.map((playlist: PlaylistMojo.Playlist) => {
+        return <PlaylistCard key={playlist.id} playlist={playlist} />
+      })}
+    </PlaylistsCatalogFlexBox>
+  )
 }
