@@ -130,21 +130,22 @@ std::vector<uint8_t> EthSignTypedDataHelper::GetTypeHash(
   return std::vector<uint8_t>(type_hash.begin(), type_hash.end());
 }
 
-absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::HashStruct(
-    const std::string primary_type_name,
-    const base::Value::Dict& data) const {
+absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
+EthSignTypedDataHelper::HashStruct(const std::string primary_type_name,
+                                   const base::Value::Dict& data) const {
   auto encoded_data = EncodeData(primary_type_name, data);
   if (!encoded_data) {
     return absl::nullopt;
   }
-  return KeccakHash(*encoded_data);
+  return std::make_pair(KeccakHash(encoded_data->first),
+                        std::move(encoded_data->second));
 }
 
 // Encode the json data by the its type defined in json custom types starting
 // from primary type. See unittests for some examples.
-absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
-    const std::string& primary_type_name,
-    const base::Value::Dict& data) const {
+absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
+EthSignTypedDataHelper::EncodeData(const std::string& primary_type_name,
+                                   const base::Value::Dict& data) const {
   const auto* primary_type = types_.FindList(primary_type_name);
   if (!primary_type) {
     return absl::nullopt;
@@ -153,6 +154,8 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
 
   const std::vector<uint8_t> type_hash = GetTypeHash(primary_type_name);
   result.insert(result.end(), type_hash.begin(), type_hash.end());
+
+  base::Value::Dict sanitized_data;
 
   for (const auto& item : *primary_type) {
     const auto& field = item.GetDict();
@@ -168,6 +171,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
         return absl::nullopt;
       }
       result.insert(result.end(), encoded_field->begin(), encoded_field->end());
+      sanitized_data.Set(*name_str, value->Clone());
     } else {
       if (version_ == Version::kV4) {
         for (size_t i = 0; i < 32; ++i) {
@@ -176,7 +180,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
       }
     }
   }
-  return result;
+  return std::make_pair(result, std::move(sanitized_data));
 }
 
 // Encode each field of a custom type, if a field is also a custom type it
@@ -355,20 +359,20 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     if (!encoded_data) {
       return absl::nullopt;
     }
-    std::vector<uint8_t> encoded_value = KeccakHash(*encoded_data);
+    std::vector<uint8_t> encoded_value = KeccakHash(encoded_data->first);
 
     result.insert(result.end(), encoded_value.begin(), encoded_value.end());
   }
   return result;
 }
 
-absl::optional<std::vector<uint8_t>>
+absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
 EthSignTypedDataHelper::GetTypedDataDomainHash(
     const base::Value::Dict& domain_separator) const {
   return HashStruct("EIP712Domain", domain_separator);
 }
 
-absl::optional<std::vector<uint8_t>>
+absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
 EthSignTypedDataHelper::GetTypedDataPrimaryHash(
     const std::string& primary_type_name,
     const base::Value::Dict& message) const {
