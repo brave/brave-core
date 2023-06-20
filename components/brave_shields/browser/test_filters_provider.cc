@@ -14,11 +14,11 @@ namespace brave_shields {
 
 TestFiltersProvider::TestFiltersProvider(const std::string& rules,
                                          const std::string& resources)
-    : AdBlockFiltersProvider(false), rules_(rules), resources_(resources) {}
+    : AdBlockFiltersProvider(true), rules_(rules), resources_(resources) {}
 
 TestFiltersProvider::TestFiltersProvider(const base::FilePath& dat_location,
                                          const std::string& resources)
-    : AdBlockFiltersProvider(false), resources_(resources) {
+    : AdBlockFiltersProvider(true), resources_(resources) {
   CHECK(!dat_location.empty());
 
   dat_buffer_ = brave_component_updater::ReadDATFileData(dat_location);
