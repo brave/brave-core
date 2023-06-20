@@ -729,15 +729,15 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
   auto* registry = BlockchainRegistry::GetInstance();
 
   // Before parsing the list, an empty list should be returned (no crash)
-  base::RunLoop pre_parsing_run_loop;
+  auto run_loop = std::make_unique<base::RunLoop>();
   registry->GetBuyTokens(
       mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_TRUE(token_list.empty());
-            pre_parsing_run_loop.Quit();
+            run_loop->Quit();
           }));
-  pre_parsing_run_loop.Run();
+  run_loop->Run();
 
   absl::optional<OnRampTokensListMap> on_ramp_token_lists =
       ParseOnRampTokensListMap(on_ramp_token_lists_json);
@@ -745,27 +745,27 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
   registry->UpdateOnRampTokenLists(std::move(*on_ramp_token_lists));
 
   // Get Ramp buy tokens
-  base::RunLoop run_loop3;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetBuyTokens(
       mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Ethereum");
-            run_loop3.Quit();
+            run_loop->Quit();
           }));
-  run_loop3.Run();
+  run_loop->Run();
 
-  base::RunLoop run_loop4;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetBuyTokens(
       mojom::OnRampProvider::kRamp, mojom::kPolygonMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Polygon");
-            run_loop4.Quit();
+            run_loop->Quit();
           }));
-  run_loop4.Run();
+  run_loop->Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
@@ -778,7 +778,7 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   registry->UpdateOnRampTokenLists(std::move(*on_ramp_token_lists));
 
   // Ethereum mainnet tokens are present
-  base::RunLoop run_loop;
+  auto run_loop = std::make_unique<base::RunLoop>();
   registry->GetProvidersBuyTokens(
       {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kSardine,
        mojom::OnRampProvider::kTransak,
@@ -787,12 +787,12 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_EQ(token_list.size(), 4UL);
-            run_loop.Quit();
+            run_loop->Quit();
           }));
-  run_loop.Run();
+  run_loop->Run();
 
   // Polygon mainnet token is present
-  base::RunLoop run_loop2;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetProvidersBuyTokens(
       {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kSardine,
        mojom::OnRampProvider::kTransak,
@@ -802,21 +802,21 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_EQ(token_list.size(), 1UL);
             EXPECT_EQ(token_list[0]->chain_id, mojom::kPolygonMainnetChainId);
-            run_loop2.Quit();
+            run_loop->Quit();
           }));
-  run_loop2.Run();
+  run_loop->Run();
 
   // Optimism mainnet token is present for transak
-  base::RunLoop run_loop3;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetProvidersBuyTokens(
       {mojom::OnRampProvider::kTransak}, mojom::kOptimismMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_EQ(token_list.size(), 1UL);
             EXPECT_EQ(token_list[0]->chain_id, mojom::kOptimismMainnetChainId);
-            run_loop3.Quit();
+            run_loop->Quit();
           }));
-  run_loop3.Run();
+  run_loop->Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetSellTokens) {
@@ -824,15 +824,15 @@ TEST(BlockchainRegistryUnitTest, GetSellTokens) {
   auto* registry = BlockchainRegistry::GetInstance();
 
   // Before parsing the list, an empty list should be returned
-  base::RunLoop pre_parsing_run_loop;
+  auto run_loop = std::make_unique<base::RunLoop>();
   registry->GetSellTokens(
       mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_TRUE(token_list.empty());
-            pre_parsing_run_loop.Quit();
+            run_loop->Quit();
           }));
-  pre_parsing_run_loop.Run();
+  run_loop->Run();
 
   absl::optional<OffRampTokensListMap> off_ramp_token_lists =
       ParseOffRampTokensListMap(off_ramp_token_lists_json);
@@ -840,38 +840,38 @@ TEST(BlockchainRegistryUnitTest, GetSellTokens) {
   registry->UpdateOffRampTokenLists(std::move(*off_ramp_token_lists));
 
   // Get Ramp sell tokens
-  base::RunLoop run_loop1;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetSellTokens(
       mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Ethereum");
-            run_loop1.Quit();
+            run_loop->Quit();
           }));
-  run_loop1.Run();
+  run_loop->Run();
 
-  base::RunLoop run_loop2;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetSellTokens(
       mojom::OffRampProvider::kRamp, mojom::kPolygonMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Polygon");
-            run_loop2.Quit();
+            run_loop->Quit();
           }));
-  run_loop2.Run();
+  run_loop->Run();
 
-  base::RunLoop run_loop3;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetSellTokens(
       mojom::OffRampProvider::kRamp, mojom::kSolanaMainnet,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
             EXPECT_EQ(token_list[0]->name, "Solana");
-            run_loop3.Quit();
+            run_loop->Quit();
           }));
-  run_loop3.Run();
+  run_loop->Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
@@ -879,13 +879,13 @@ TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
   auto* registry = BlockchainRegistry::GetInstance();
 
   // Before parsing the list, an empty list should be returned
-  base::RunLoop pre_parsing_run_loop;
+  auto run_loop = std::make_unique<base::RunLoop>();
   registry->GetOnRampCurrencies(base::BindLambdaForTesting(
       [&](std::vector<mojom::OnRampCurrencyPtr> currency_list) {
         EXPECT_TRUE(currency_list.empty());
-        pre_parsing_run_loop.Quit();
+        run_loop->Quit();
       }));
-  pre_parsing_run_loop.Run();
+  run_loop->Run();
 
   absl::optional<std::vector<mojom::OnRampCurrency>> on_ramp_currency_lists =
       ParseOnRampCurrencyLists(on_ramp_currency_lists_json);
@@ -893,7 +893,7 @@ TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
   registry->UpdateOnRampCurrenciesLists(std::move(*on_ramp_currency_lists));
 
   // After parsing the list, we should have some currencies
-  base::RunLoop run_loop;
+  run_loop = std::make_unique<base::RunLoop>();
   registry->GetOnRampCurrencies(base::BindLambdaForTesting(
       [&](std::vector<mojom::OnRampCurrencyPtr> currency_list) {
         EXPECT_NE(currency_list.size(), 0UL);
@@ -901,9 +901,9 @@ TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
         EXPECT_EQ(currency_list[0]->currency_name, "Argentine Peso");
         EXPECT_EQ(currency_list[1]->currency_code, "USD");
         EXPECT_EQ(currency_list[1]->currency_name, "US Dollar");
-        run_loop.Quit();
+        run_loop->Quit();
       }));
-  run_loop.Run();
+  run_loop->Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworks) {
