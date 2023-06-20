@@ -16,7 +16,8 @@ class Browser;
 
 class BraveNewsInternalsUI : public content::WebUIController {
  public:
-  explicit BraveNewsInternalsUI(content::WebUI* web_ui, const std::string& host);
+  explicit BraveNewsInternalsUI(content::WebUI* web_ui,
+                                const std::string& host);
   BraveNewsInternalsUI(const BraveNewsInternalsUI&) = delete;
   BraveNewsInternalsUI& operator=(const BraveNewsInternalsUI&) = delete;
   ~BraveNewsInternalsUI() override;

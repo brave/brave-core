@@ -192,17 +192,19 @@ void RawFeedController::UpdateRemoteIfChanged() {
             controller->channels_controller_->GetChannelLocales(), publishers);
         VLOG(1) << __FUNCTION__ << " - going to fetch feed items for "
                 << locales.size() << " locales.";
-        auto check_completed_callback =
-            base::BarrierCallback<bool>(locales.size(), base::BindOnce(
-            [](RawFeedController* controller, std::vector<bool> updates) {
-              if (base::ranges::any_of(
-                      updates, [](bool has_update) { return has_update; })) {
-                // TODO(fallaciousreasoning): Only fetch the specific feed
-                // which changes.
-                controller->EnsureFeedIsUpdating();
-              }
-            },
-            base::Unretained(controller)));
+        auto check_completed_callback = base::BarrierCallback<bool>(
+            locales.size(),
+            base::BindOnce(
+                [](RawFeedController* controller, std::vector<bool> updates) {
+                  if (base::ranges::any_of(updates, [](bool has_update) {
+                        return has_update;
+                      })) {
+                    // TODO(fallaciousreasoning): Only fetch the specific feed
+                    // which changes.
+                    controller->EnsureFeedIsUpdating();
+                  }
+                },
+                base::Unretained(controller)));
 
         for (const auto& locale : locales) {
           auto it = controller->locale_feed_etags_.find(locale);

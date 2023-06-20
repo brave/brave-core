@@ -929,6 +929,8 @@ source_set("ui") {
       "views/wallet_bubble_focus_observer.h",
       "wallet_bubble_manager_delegate_impl.cc",
       "wallet_bubble_manager_delegate_impl.h",
+      "webui/brave_news_internals/brave_news_internals_ui.cc",
+      "webui/brave_news_internals/brave_news_internals_ui.h",
       "webui/brave_wallet/ledger/ledger_ui.cc",
       "webui/brave_wallet/ledger/ledger_ui.h",
       "webui/brave_wallet/market/market_ui.cc",
@@ -945,8 +947,6 @@ source_set("ui") {
       "webui/brave_wallet/wallet_page_ui.h",
       "webui/brave_wallet/wallet_panel_ui.cc",
       "webui/brave_wallet/wallet_panel_ui.h",
-      "webui/brave_news_internals/brave_news_internals_ui.cc",
-      "webui/brave_news_internals/brave_news_internals_ui.h",
     ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
@@ -954,6 +954,8 @@ source_set("ui") {
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/browser/ui/webui/brave_wallet/panel_handler",
+      "//brave/components/brave_news/browser",
+      "//brave/components/brave_news/browser/resources:generated_resources",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",
@@ -967,8 +969,6 @@ source_set("ui") {
       "//brave/components/resources:strings_grit",
       "//components/permissions",
       "//components/pref_registry",
-      "//brave/components/brave_news/browser",
-      "//brave/components/brave_news/browser/resources:generated_resources",
     ]
   }
   if (is_android) {

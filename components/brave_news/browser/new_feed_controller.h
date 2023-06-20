@@ -35,8 +35,7 @@ class NewFeedController : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* publishers) override;
 
  private:
-  void FetchCombinedFeed(Publishers publishers,
-                         GetFeedItemsCallback callback);
+  void FetchCombinedFeed(Publishers publishers, GetFeedItemsCallback callback);
   void NotifyUpdateDone();
 
   raw_ptr<PublishersController> publishers_controller_ = nullptr;

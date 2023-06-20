@@ -14,11 +14,11 @@
 #include "components/grit/brave_components_resources.h"
 
 BraveNewsInternalsUI::BraveNewsInternalsUI(content::WebUI* web_ui,
-                                       const std::string& host)
+                                           const std::string& host)
     : content::WebUIController(web_ui) {
   auto* source = CreateAndAddWebUIDataSource(
-      web_ui, host, kBraveNewsInternalsGenerated, kBraveNewsInternalsGeneratedSize,
-      IDR_BRAVE_NEWS_INTERNALS_HTML);
+      web_ui, host, kBraveNewsInternalsGenerated,
+      kBraveNewsInternalsGeneratedSize, IDR_BRAVE_NEWS_INTERNALS_HTML);
   DCHECK(source);
 }
 

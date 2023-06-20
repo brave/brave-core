@@ -64,22 +64,22 @@ repack("resources") {
     sources += [
       "$root_gen_dir/brave/components/brave_adblock/adblock_internals/resources/brave_adblock_internals_generated.pak",
       "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
+      "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak",
       "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
       "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
-      "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak",
     ]
   }
 
   if (!is_android && !is_ios) {
     deps += [
       "//brave/components/brave_new_tab_ui:generated_resources",
+      "//brave/components/brave_news/browser/resources:generated_resources",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_shields/resources/cookie_list_opt_in:cookie_list_opt_in_generated",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/speedreader/resources/panel:generated_resources",
       "//brave/components/webcompat_reporter/ui:generated_resources",
-      "//brave/components/brave_news/browser/resources:generated_resources",
     ]
 
     sources += [
