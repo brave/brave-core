@@ -26,6 +26,7 @@ import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
@@ -403,7 +404,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
         List<AccountInfo> accountInfos = mSharedData.getAccounts().getValue();
         for (AccountInfo accountInfo : accountInfos) {
             if (accountInfo.accountId.coin == networkToBeSetAsSelected.coin) {
-                return true;
+                if (accountInfo.accountId.coin != CoinType.FIL
+                        || AssetUtils.getKeyring(CoinType.FIL, networkToBeSetAsSelected.chainId)
+                                == accountInfo.accountId.keyringId) {
+                    return true;
+                }
             }
         }
         return false;
