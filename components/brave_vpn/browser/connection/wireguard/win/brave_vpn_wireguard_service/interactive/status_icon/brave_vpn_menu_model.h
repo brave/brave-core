@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INTERACTIVE_BRAVE_VPN_MENU_MODEL_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INTERACTIVE_BRAVE_VPN_MENU_MODEL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INTERACTIVE_STATUS_ICON_BRAVE_VPN_MENU_MODEL_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INTERACTIVE_STATUS_ICON_BRAVE_VPN_MENU_MODEL_H_
 
 #include "base/memory/raw_ptr.h"
 #include "ui/base/models/simple_menu_model.h"
@@ -16,10 +16,8 @@ class BraveVpnMenuModel : public ui::SimpleMenuModel,
  public:
   class Delegate {
    public:
-    // Performs the action associates with the specified command id.
-    // The passed |event_flags| are the flags from the event which issued this
-    // command and they can be examined to find modifier keys.
     virtual void ExecuteCommand(int command_id, int event_flags) = 0;
+    virtual void OnMenuWillShow(ui::SimpleMenuModel* source) = 0;
 
    protected:
     virtual ~Delegate() {}
@@ -34,10 +32,9 @@ class BraveVpnMenuModel : public ui::SimpleMenuModel,
   ~BraveVpnMenuModel() override;
   Delegate* delegate() { return delegate_; }
 
-  void RebuildMenu(bool vpn_connected);
-
   // Overridden from ui::SimpleMenuModel::Delegate:
   void ExecuteCommand(int command_id, int event_flags) override;
+  void OnMenuWillShow(ui::SimpleMenuModel* source) override;
 
  protected:
   void set_delegate(Delegate* delegate) { delegate_ = delegate; }
@@ -48,4 +45,4 @@ class BraveVpnMenuModel : public ui::SimpleMenuModel,
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INTERACTIVE_BRAVE_VPN_MENU_MODEL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INTERACTIVE_STATUS_ICON_BRAVE_VPN_MENU_MODEL_H_

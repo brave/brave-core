@@ -20,8 +20,8 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/brave_vpn_tray_command_ids.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/interactive_utils.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/resources/resource.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon_win.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_tray_win.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/status_icon.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/status_tray.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
@@ -30,6 +30,12 @@ namespace {
 
 constexpr char kBraveAccountURL[] = "http://account.brave.com/";
 constexpr char kAboutBraveVPNURL[] = "https://brave.com/firewall-vpn/";
+
+std::u16string GetVpnStatusLabel(bool active) {
+  std::u16string label = brave::kBraveVpnStatusItemName;
+  label += (active ? brave::kBraveVpnActiveText : brave::kBraveVpnInactiveText);
+  return label;
+}
 
 std::u16string GetStatusIconTooltip(bool connected, bool error) {
   if (error) {
@@ -95,6 +101,26 @@ void InteractiveMain::ExecuteCommand(int command_id, int event_flags) {
       OpenURLInBrowser(kAboutBraveVPNURL);
       break;
   }
+}
+
+void InteractiveMain::OnMenuWillShow(ui::SimpleMenuModel* source) {
+  auto connected = wireguard::IsBraveVPNWireguardTunnelServiceRunning();
+  source->Clear();
+  source->AddItem(IDC_BRAVE_VPN_TRAY_STATUS_ITEM, GetVpnStatusLabel(connected));
+  source->SetEnabledAt(0, false);
+  if (connected) {
+    source->AddItem(IDC_BRAVE_VPN_TRAY_DISCONNECT_VPN_ITEM,
+                    brave::kBraveVpnDisconnectItemName);
+  } else {
+    source->AddItem(IDC_BRAVE_VPN_TRAY_CONNECT_VPN_ITEM,
+                    brave::kBraveVpnConnectItemName);
+  }
+  source->AddSeparator(ui::NORMAL_SEPARATOR);
+  source->AddItem(IDC_BRAVE_VPN_TRAY_MANAGE_ACCOUNT_ITEM,
+                  brave::kBraveVpnManageAccountItemName);
+  source->AddItem(IDC_BRAVE_VPN_TRAY_ABOUT_ITEM, brave::kBraveVpnAboutItemName);
+  source->AddSeparator(ui::NORMAL_SEPARATOR);
+  source->AddItem(IDC_BRAVE_VPN_TRAY_EXIT_ICON, brave::kBraveVpnRemoveItemName);
 }
 
 void InteractiveMain::OnConnected(bool success) {

@@ -3,17 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon_win.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/status_icon.h"
 
 #include <string>
 #include <utility>
 
 #include "base/logging.h"
 #include "base/strings/string_util_win.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/wireguard_utils.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/brave_vpn_menu_model.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/native_popup_menu_win.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_tray_win.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/brave_vpn_menu_model.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/native_popup_menu.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/status_tray.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/icon_util.h"
@@ -55,9 +54,7 @@ void StatusIconWin::HandleClickEvent(const gfx::Point& cursor_pos,
   if (!SetForegroundWindow(window_)) {
     return;
   }
-
-  menu_model_->RebuildMenu(
-      brave_vpn::wireguard::IsBraveVPNWireguardTunnelServiceRunning());
+  menu_model_->MenuWillShow();
   popup_menu_ = std::make_unique<NativePopupMenuWin>(menu_model_.get());
 
   TrackPopupMenuEx(popup_menu_->GetWeakMenuHandle(), TPM_BOTTOMALIGN,
