@@ -3,24 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/brave_vpn_menu_model.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// BraveVpnMenuModel, public:
+// TrayMenuModel, public:
 namespace brave_vpn {
 
-BraveVpnMenuModel::BraveVpnMenuModel(Delegate* delegate)
+TrayMenuModel::TrayMenuModel(Delegate* delegate)
     : ui::SimpleMenuModel(this), delegate_(delegate) {}
 
-BraveVpnMenuModel::~BraveVpnMenuModel() {}
+TrayMenuModel::~TrayMenuModel() {}
 
-void BraveVpnMenuModel::ExecuteCommand(int command_id, int event_flags) {
+void TrayMenuModel::ExecuteCommand(int command_id, int event_flags) {
   if (delegate_) {
     delegate_->ExecuteCommand(command_id, event_flags);
   }
 }
 
-void BraveVpnMenuModel::OnMenuWillShow(ui::SimpleMenuModel* source) {
+void TrayMenuModel::OnMenuWillShow(ui::SimpleMenuModel* source) {
   if (delegate_) {
     delegate_->OnMenuWillShow(source);
   }

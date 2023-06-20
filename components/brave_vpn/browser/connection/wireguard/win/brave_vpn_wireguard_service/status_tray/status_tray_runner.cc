@@ -77,7 +77,7 @@ void StatusTrayRunner::SetupStatusIcon() {
   status_tray_->CreateStatusIcon(GetStatusTrayIcon(connected, false),
                                  GetStatusIconTooltip(connected, false));
   status_tray_->GetStatusIcon()->SetContextMenu(
-      std::make_unique<BraveVpnMenuModel>(this));
+      std::make_unique<TrayMenuModel>(this));
 }
 
 void StatusTrayRunner::ExecuteCommand(int command_id, int event_flags) {

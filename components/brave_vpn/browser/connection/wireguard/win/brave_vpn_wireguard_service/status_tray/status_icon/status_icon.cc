@@ -10,7 +10,7 @@
 
 #include "base/logging.h"
 #include "base/strings/string_util_win.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/brave_vpn_menu_model.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/native_popup_menu.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
 #include "ui/gfx/geometry/point.h"
@@ -122,7 +122,7 @@ void StatusIconWin::UpdateState(const gfx::ImageSkia& image,
   SetToolTip(tool_tip);
 }
 
-void StatusIconWin::SetContextMenu(std::unique_ptr<BraveVpnMenuModel> menu) {
+void StatusIconWin::SetContextMenu(std::unique_ptr<TrayMenuModel> menu) {
   menu_model_ = std::move(menu);
 }
 

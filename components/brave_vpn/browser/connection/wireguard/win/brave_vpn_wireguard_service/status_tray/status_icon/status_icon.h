@@ -23,7 +23,7 @@ namespace brave_vpn {
 
 class NativePopupMenuWin;
 class StatusTrayWin;
-class BraveVpnMenuModel;
+class TrayMenuModel;
 
 class StatusIconWin {
  public:
@@ -46,7 +46,7 @@ class StatusIconWin {
   void UpdateState(const gfx::ImageSkia& image, const std::u16string& tool_tip);
   void SetImage(const gfx::ImageSkia& image);
   void SetToolTip(const std::u16string& tool_tip);
-  void SetContextMenu(std::unique_ptr<BraveVpnMenuModel> menu);
+  void SetContextMenu(std::unique_ptr<TrayMenuModel> menu);
   void OnMenuCommand(int index, int event_flags);
 
  private:
@@ -71,7 +71,7 @@ class StatusIconWin {
   base::win::ScopedHICON icon_;
   std::unique_ptr<NativePopupMenuWin> popup_menu_;
   // Context menu, if any.
-  std::unique_ptr<BraveVpnMenuModel> menu_model_;
+  std::unique_ptr<TrayMenuModel> menu_model_;
 };
 
 }  // namespace brave_vpn
