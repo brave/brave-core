@@ -1,7 +1,14 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { render } from 'react-dom'
 
-import { BraveNewsController, Channel, FeedItem } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
+import {
+  BraveNewsController, Channel
+} from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import styled from 'styled-components'
 import { Info, generateFeed } from './buildFeed'
 import Elements from './Elements'
@@ -19,41 +26,43 @@ const Container = styled.div`
   }
 `
 
-export const api = BraveNewsController.getRemote()
+export const api = BraveNewsController.getRemote();
 
 const signalsPromise = api.getSignals().then((r) => r.signals)
-const feedPromise = api.getRawFeed().then((r) => r.items) as Promise<FeedItem[]>
-const channelsPromise = api.getChannels().then((r) => Object.values(r.channels) as Channel[])
+const feedPromise = api.getRawFeed().then((r) => r.items)
+const channelsPromise = api
+  .getChannels()
+  .then((r) => Object.values(r.channels));
 const suggestionsPromise = api
-.getSuggestedPublisherIds()
-.then((r) => r.suggestedPublisherIds)
-const publishersPromise = api.getPublishers().then((r) => r.publishers)
+  .getSuggestedPublisherIds()
+  .then((r) => r.suggestedPublisherIds);
+const publishersPromise = api.getPublishers().then((r) => r.publishers);
 
 const articlesPromise = (async () => {
   const feed = await feedPromise
   return feed.filter((i) => i.article).map((i) => i.article!.data)
-})()
+})();
 
 const suggestedPublishersPromise = (async () => {
   const publishers = await publishersPromise
   const suggestions = await suggestionsPromise
   return suggestions.map((s) => publishers[s])
-})()
+})();
 
-const infoPromise: Promise<Info> = (async () => {
+const infoPromise = (async (): Promise<Info> => {
   return {
     publishers: await publishersPromise,
     suggested: await suggestedPublishersPromise,
-    channels: await channelsPromise,
+    channels: await channelsPromise as Channel[],
     articles: await articlesPromise,
     signals: await signalsPromise
   }
-})()
+})();
 
 // Expose the api and info on the window object, so we can use them from the
 // console.
-window['api'] = api
-infoPromise.then(i => window['info'] = i)
+(window as any).api = api
+infoPromise.then((i) => ((window as any).info = i))
 
 function usePromise<T>(promise: Promise<T>, defaultValue: T, deps: any[]) {
   const [result, setResult] = React.useState<T | undefined>(defaultValue)
@@ -71,7 +80,8 @@ function usePromise<T>(promise: Promise<T>, defaultValue: T, deps: any[]) {
 function App() {
   const info = usePromise(infoPromise, undefined, [])
 
-  const feedElements = React.useMemo(() => info && generateFeed(info), [info]) ?? []
+  const feedElements =
+    React.useMemo(() => info && generateFeed(info), [info]) ?? []
 
   return (
     <div
@@ -83,7 +93,7 @@ function App() {
     >
       <Container>
         <div>
-          <Config/>
+          <Config />
         </div>
         <Elements elements={feedElements} signals={info?.signals ?? {}} />
       </Container>

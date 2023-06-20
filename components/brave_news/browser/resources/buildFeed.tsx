@@ -1,3 +1,7 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 import {
   Channel,
   FeedItemMetadata,
@@ -8,24 +12,24 @@ import { normal, pickWeighted, project, tossCoin } from './pick'
 import { ArticleElements, Elements } from './model'
 
 export interface FeedSettings {
-  blockMinInline: number;
-  blockMaxInline: number;
+  blockMinInline: number
+  blockMaxInline: number
 
-  inlineDiscoveryRatio: number;
+  inlineDiscoveryRatio: number
 
-  specialCardEveryN: number;
+  specialCardEveryN: number
 
-  adsToDiscoverRatio: number;
+  adsToDiscoverRatio: number
 
-  sourceSubscribedMin: number;
-  sourceSubscribedMax: number;
+  sourceSubscribedMin: number
+  sourceSubscribedMax: number
 
-  channelSubscribedMax: number;
-  channelSubscribedMin: number;
-  channelVisitsMin: number;
-  channelVisitsMax: number;
+  channelSubscribedMax: number
+  channelSubscribedMin: number
+  channelVisitsMin: number
+  channelVisitsMax: number
 
-  sourcesVisitsMin: number;
+  sourcesVisitsMin: number
 }
 
 export const defaultFeedSettings = {
@@ -51,9 +55,9 @@ export const loadSetting = (name: keyof FeedSettings) => {
 const getSettings = (): FeedSettings => {
   const result: FeedSettings = {} as any
   for (const key of Object.keys(defaultFeedSettings)) {
-    result[key] = loadSetting(key as keyof FeedSettings);
+    result[key] = loadSetting(key as keyof FeedSettings)
   }
-  return result;
+  return result
 }
 
 const settings = getSettings()
@@ -68,7 +72,7 @@ export interface Info {
 }
 
 export const unvisited = (articles: FeedItemMetadata[], info: Info) => {
-  return articles.filter(a => {
+  return articles.filter((a) => {
     const signal = info.signals[a.url.url]
 
     // No signal means we haven't visited the article
@@ -90,9 +94,12 @@ export const getWeight = (article: FeedItemMetadata, { signals }: Info) => {
     : settings.channelSubscribedMin
 
   return (
-    (settings.sourcesVisitsMin + signal.sourceVisits * (1 - settings.sourcesVisitsMin)) *
+    (settings.sourcesVisitsMin +
+      signal.sourceVisits * (1 - settings.sourcesVisitsMin)) *
     signal.popRecency *
-    (signal.sourceSubscribed ? settings.sourceSubscribedMax : settings.sourceSubscribedMin) *
+    (signal.sourceSubscribed
+      ? settings.sourceSubscribedMax
+      : settings.sourceSubscribedMin) *
     channelSubscribedWeighting
   )
 }
@@ -106,28 +113,40 @@ export const getChannelWeight = (channel: Channel, { signals }: Info) => {
     ? settings.channelSubscribedMax
     : settings.channelSubscribedMin
 
-  const visitWeighting = project(signal.channelVisits, settings.channelVisitsMin, settings.channelVisitsMax)
-  return subscribedWeighting * visitWeighting;
+  const visitWeighting = project(
+    signal.channelVisits,
+    settings.channelVisitsMin,
+    settings.channelVisitsMax
+  )
+  return subscribedWeighting * visitWeighting
 }
 
-const generateBlock = (info: Info, block: { type: 'default' } | { type: 'channel', id: string }): ArticleElements[] => {
-  const articles = block.type === 'default'
-    ? [...info.articles]
-    : info.articles.filter(a => {
-      const publisher = info.publishers[a.publisherId]
-      return publisher.locales.flatMap(l => l.channels).includes(block.id)
-    });
+const generateBlock = (
+  info: Info,
+  block: { type: 'default' } | { type: 'channel'; id: string }
+): ArticleElements[] => {
+  const articles =
+    block.type === 'default'
+      ? [...info.articles]
+      : info.articles.filter((a) => {
+          const publisher = info.publishers[a.publisherId]
+          return publisher.locales.flatMap((l) => l.channels).includes(block.id)
+        })
 
   const elements: ArticleElements[] = []
-  const count = project(normal(), settings.blockMinInline, settings.blockMaxInline)
+  const count = project(
+    normal(),
+    settings.blockMinInline,
+    settings.blockMaxInline
+  )
 
   if (!articles.length) {
-    console.error("No articles for block", block)
+    console.error('No articles for block', block)
     return []
   }
 
   elements.push({
-    article: pickWeighted(articles, i => getWeight(i, info)),
+    article: pickWeighted(articles, (i) => getWeight(i, info)),
     type: 'hero'
   })
 
@@ -141,7 +160,7 @@ const generateBlock = (info: Info, block: { type: 'default' } | { type: 'channel
       if (discoverable.length) {
         elements.push({
           type: 'inline',
-          article: pickWeighted(discoverable, i => i.score),
+          article: pickWeighted(discoverable, (i) => i.score),
           isDiscover: true
         })
         continue
@@ -150,7 +169,7 @@ const generateBlock = (info: Info, block: { type: 'default' } | { type: 'channel
 
     elements.push({
       type: 'inline',
-      article: pickWeighted(articles, i => getWeight(i, info)),
+      article: pickWeighted(articles, (i) => getWeight(i, info)),
       isDiscover: false
     })
   }
@@ -164,7 +183,10 @@ const generateBlock = (info: Info, block: { type: 'default' } | { type: 'channel
   return elements
 }
 
-export const generateCluster = (info: Info, channelOrTopic: string): Elements | undefined => {
+export const generateCluster = (
+  info: Info,
+  channelOrTopic: string
+): Elements | undefined => {
   const elements = generateBlock(info, { type: 'channel', id: channelOrTopic })
   if (!elements.length) return
 
@@ -176,19 +198,26 @@ export const generateCluster = (info: Info, channelOrTopic: string): Elements | 
 }
 
 export const generateRandomCluster = (info: Info) => {
-  const randomChannel = pickWeighted([...info.channels], c => getChannelWeight(c, info))
+  const randomChannel = pickWeighted([...info.channels], (c) =>
+    getChannelWeight(c, info)
+  )
   return generateCluster(info, randomChannel.channelName)
 }
 
-export const generateAd = (info: Info, iteration: number): Elements | undefined => {
+export const generateAd = (
+  info: Info,
+  iteration: number
+): Elements | undefined => {
   if (iteration % settings.specialCardEveryN !== 0) {
     return
   }
 
-  return tossCoin(settings.adsToDiscoverRatio) ? { type: 'advert' } : {
-    type: 'discover',
-    publishers: info.suggested.splice(0, 3)
-  }
+  return tossCoin(settings.adsToDiscoverRatio)
+    ? { type: 'advert' }
+    : {
+        type: 'discover',
+        publishers: info.suggested.splice(0, 3)
+      }
 }
 
 export const generateFeed = (info: Info) => {
@@ -221,7 +250,7 @@ export const generateFeed = (info: Info) => {
     iteration++
 
     const items = Array.isArray(generated) ? generated : [generated]
-    result.push(...items.filter(i => i))
+    result.push(...items.filter((i) => i))
   }
   return result
 }

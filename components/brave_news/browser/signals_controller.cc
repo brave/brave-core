@@ -6,7 +6,9 @@
 #include "brave/components/brave_news/browser/signals_controller.h"
 
 #include <cstdint>
+#include <string>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
@@ -92,7 +94,7 @@ void SignalsController::OnGotHistory(
     std::vector<mojom::FeedItemMetadataPtr> articles,
     SignalsCallback callback,
     history::QueryResults results) {
-  // TODO: Actually get the locale.
+  // TODO(fallaciousreasoning): Actually get the locale.
   const char locale[] = "en_US";
 
   auto& publishers = publishers_controller_->GetLastPublishers();
@@ -123,7 +125,6 @@ void SignalsController::OnGotHistory(
     publisher_visits[publisher_id] += history_it->second;
     total_publisher_visits += history_it->second;
 
-    // TODO: Work out why find isn't working
     for (const auto& locale_info : publisher->locales) {
       if (locale_info->locale != locale) {
         continue;
@@ -157,7 +158,7 @@ void SignalsController::OnGotHistory(
 
         publisher->user_enabled_status == mojom::UserEnabled::ENABLED,
         publisher_visits.at(article->publisher_id) /
-            (double)total_publisher_visits,
+            static_cast<double>(total_publisher_visits),
         GetPopRecency(article));
   }
 
@@ -167,11 +168,10 @@ void SignalsController::OnGotHistory(
     signals[channel.first] = mojom::Signal::New(
         false,
         channels_controller_->GetChannelSubscribed(locale, channel.first),
-        visits / total_channel_visits,
+        visits / static_cast<double>(total_channel_visits),
 
         false, 0, 0);
   }
-  LOG(ERROR) << "TCV: " << total_channel_visits;
 
   std::move(callback).Run(std::move(signals));
 }

@@ -1,9 +1,16 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 export const tossCoin = (weight = 0.5) => Math.random() < weight
 
-export const project = (n: number, min: number, max: number) => (max - min) * n + min
+export const project = (n: number, min: number, max: number) =>
+  (max - min) * n + min
 
 export const normal = (skew = 1) => {
-  let u = 0, v = 0;
+  let u = 0;
+    let v = 0
   while (u === 0) u = Math.random()
   while (v === 0) v = Math.random()
 
@@ -27,17 +34,19 @@ export const pickRandom = (minOrMax: number, max?: number) => {
   return project(Math.random(), minOrMax, max)
 }
 
+export const pickRandomInt = (minOrMax: number, max?: number) =>
+  Math.floor(pickRandom(minOrMax, max))
 
-export const pickRandomInt = (minOrMax: number, max?: number) => Math.floor(pickRandom(minOrMax, max))
+export const pickNormal = <T>(items: T[]) =>
+  items.splice(Math.floor(project(normal(), 0, items.length)))[0]
 
-export const pickNormal = <T>(items: T[]) => items.splice(Math.floor(project(normal(), 0, items.length)))[0]
-
-export const pickUniform = <T>(items: T[]) => items.splice(pickRandomInt(items.length), 1)[0];
+export const pickUniform = <T>(items: T[]) =>
+  items.splice(pickRandomInt(items.length), 1)[0]
 
 export const pickWeighted = <T>(items: T[], getWeight: (item: T) => number) => {
   const total = items.reduce((prev, next) => prev + getWeight(next), 0)
 
-  const value = pickRandom(total);
+  const value = pickRandom(total)
   let current = 0
   for (const item of items) {
     current += getWeight(item)
@@ -48,5 +57,5 @@ export const pickWeighted = <T>(items: T[], getWeight: (item: T) => number) => {
     }
   }
 
-  throw new Error("No items!")
+  throw new Error('No items!')
 }

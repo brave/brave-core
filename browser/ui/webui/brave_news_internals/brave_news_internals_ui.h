@@ -7,12 +7,11 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEWS_INTERNALS_BRAVE_NEWS_INTERNALS_UI_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-
-class Browser;
 
 class BraveNewsInternalsUI : public content::WebUIController {
  public:

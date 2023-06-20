@@ -5,11 +5,13 @@
 
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 
+#include <string>
+#include <utility>
+
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/resources/grit/brave_news_internals_generated_map.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 

@@ -7,7 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_RAW_FEED_CONTROLLER_H_
 
 #include <memory>
+#include <string>
 #include <vector>
+
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
