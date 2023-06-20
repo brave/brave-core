@@ -132,7 +132,7 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
   }
 
   void SetRequestOTRPref(RequestOTRService::RequestOTRActionOption value) {
-    browser()->profile()->GetPrefs()->SetInteger(prefs::kRequestOTRActionOption,
+    browser()->profile()->GetPrefs()->SetInteger(kRequestOTRActionOption,
                                                  static_cast<int>(value));
   }
 

@@ -147,7 +147,7 @@
           "Enable Request-OTR Tab",                                           \
           "Suggest going off-the-record when visiting potentially sensitive " \
           "URLs",                                                             \
-          kOsDesktop,                                                         \
+          kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(request_otr::features::kBraveRequestOTRTab),     \
       }))
 

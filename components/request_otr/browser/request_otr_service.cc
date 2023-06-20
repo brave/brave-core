@@ -55,7 +55,7 @@ bool RequestOTRService::ShouldBlock(const GURL& url) const {
 
 // static
 void RequestOTRService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterIntegerPref(prefs::kRequestOTRActionOption,
+  registry->RegisterIntegerPref(kRequestOTRActionOption,
                                 static_cast<int>(RequestOTRActionOption::kAsk));
 }
 

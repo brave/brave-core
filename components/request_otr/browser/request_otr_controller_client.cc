@@ -62,7 +62,7 @@ void RequestOTRControllerClient::Proceed() {
   if (dont_warn_again_) {
     if (PrefService* prefs = GetPrefService()) {
       prefs->SetInteger(
-          prefs::kRequestOTRActionOption,
+          kRequestOTRActionOption,
           static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever));
     }
   }
@@ -78,7 +78,7 @@ void RequestOTRControllerClient::ProceedOTR() {
   if (dont_warn_again_) {
     if (PrefService* prefs = GetPrefService()) {
       prefs->SetInteger(
-          prefs::kRequestOTRActionOption,
+          kRequestOTRActionOption,
           static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever));
     }
   }

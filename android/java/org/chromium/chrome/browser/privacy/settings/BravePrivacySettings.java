@@ -158,6 +158,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mHttpsFirstModePref;
     private BraveDialogPreference mHttpsUpgradePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
+    private BraveDialogPreference mRequestOtrPref;
     private ChromeSwitchPreference mBlockScriptsPref;
     private ChromeSwitchPreference mForgetFirstPartyStoragePref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
@@ -295,6 +296,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mFingerprintingProtectionPref =
                 (BraveDialogPreference) findPreference(PREF_FINGERPRINTING_PROTECTION);
         mFingerprintingProtectionPref.setOnPreferenceChangeListener(this);
+
+        mRequestOtrPref = (BraveDialogPreference) findPreference(PREF_REQUEST_OTR);
+        mRequestOtrPref.setOnPreferenceChangeListener(this);
 
         mFingerprntLanguagePref =
                 (ChromeSwitchPreference) findPreference(PREF_FINGERPRINT_LANGUAGE);
@@ -525,35 +529,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 }
             }
         } else if (PREF_REQUEST_OTR.equals(key)) {
-TODO
-            if (newValue instanceof String) {
-                final String newStringValue = String.valueOf(newValue);
-                switch (newStringValue) {
-                    case BraveShieldsContentSettings.BLOCK_RESOURCE:
-                        BraveShieldsContentSettings.setFingerprintingPref(newStringValue);
-                        mFingerprintingProtectionPref.setSummary(
-                                getActivity().getResources().getString(
-                                        R.string.block_fingerprinting_option_1));
-                        mFingerprintingProtectionPref.setCheckedIndex(0);
-                        break;
-                    case BraveShieldsContentSettings.DEFAULT:
-                        BraveShieldsContentSettings.setFingerprintingPref(newStringValue);
-                        mFingerprintingProtectionPref.setSummary(
-                                getActivity().getResources().getString(
-                                        R.string.block_fingerprinting_option_2));
-                        mFingerprintingProtectionPref.setCheckedIndex(1);
-                        break;
-                    case BraveShieldsContentSettings.ALLOW_RESOURCE:
-                    default:
-                        BraveShieldsContentSettings.setFingerprintingPref(
-                                BraveShieldsContentSettings.ALLOW_RESOURCE);
-                        mFingerprintingProtectionPref.setSummary(
-                                getActivity().getResources().getString(
-                                        R.string.block_fingerprinting_option_3));
-                        mFingerprintingProtectionPref.setCheckedIndex(2);
-                        break;
-                }
-            }
+            // UserPrefs.get(Profile.getLastUsedRegularProfile()).setInteger(BravePref.REQUEST_OTR_ACTION_OPTION,
+            // newValue); setRequestOtrPref();
         } else if (PREF_FINGERPRINT_LANGUAGE.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.REDUCE_LANGUAGE_ENABLED, (boolean) newValue);
@@ -727,6 +704,8 @@ TODO
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_3));
         }
 
+        // setRequestOtrPref();
+
         if (httpsUpgradePref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mHttpsUpgradePref.setCheckedIndex(0);
             mHttpsUpgradePref.setSummary(
@@ -830,6 +809,24 @@ TODO
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_SNS)) {
             removePreferenceIfPresent(PREF_SNS);
+        }
+    }
+
+    private void setRequestOtrPref() {
+        int requestOtrPrefValue = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                          .getInteger(BravePref.REQUEST_OTR_ACTION_OPTION);
+        if (requestOtrPrefValue == BraveShieldsContentSettings.ASK) {
+            mRequestOtrPref.setCheckedIndex(0);
+            mRequestOtrPref.setSummary(
+                    getActivity().getResources().getString(R.string.request_otr_option_1));
+        } else if (requestOtrPrefValue == BraveShieldsContentSettings.ALWAYS) {
+            mRequestOtrPref.setCheckedIndex(1);
+            mRequestOtrPref.setSummary(
+                    getActivity().getResources().getString(R.string.request_otr_option_2));
+        } else if (requestOtrPrefValue == BraveShieldsContentSettings.NEVER) {
+            mRequestOtrPref.setCheckedIndex(2);
+            mRequestOtrPref.setSummary(
+                    getActivity().getResources().getString(R.string.request_otr_option_3));
         }
     }
 
