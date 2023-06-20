@@ -437,7 +437,7 @@ public class Utils {
      * <b>Note:</b>: Supposedly, when converting to Wei the result shall always end up with an
      * integer.
      */
-    public static BigInteger multiplyByDecimals(String number, int decimals) throws ParseException {
+    public static BigInteger multiplyByDecimals(@NonNull final String number, final int decimals) throws ParseException {
         NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
         ParsePosition parsePosition = new ParsePosition(0);
         BigDecimal parsed = null;
