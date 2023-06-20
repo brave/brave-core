@@ -124,8 +124,7 @@ export const ConnectedPanel = (props: Props) => {
 
   const {
     data: spotPriceRegistry,
-    isLoading: isLoadingSpotPrices,
-    isFetching: isFetchingSpotPrices
+    isLoading: isLoadingSpotPrices
   } = useGetTokenSpotPricesQuery(
     networkTokenPriceIds.length ? { ids: networkTokenPriceIds } : skipToken,
     querySubscriptionOptions60s
@@ -232,8 +231,7 @@ export const ConnectedPanel = (props: Props) => {
       isLoadingBalances ||
       isFetchingBalances ||
       !spotPriceRegistry ||
-      isLoadingSpotPrices ||
-      isFetchingSpotPrices
+      isLoadingSpotPrices
     ) {
       return Amount.empty()
     }
@@ -247,8 +245,7 @@ export const ConnectedPanel = (props: Props) => {
     isLoadingBalances,
     isFetchingBalances,
     spotPriceRegistry,
-    isLoadingSpotPrices,
-    isFetchingSpotPrices
+    isLoadingSpotPrices
   ])
 
   const isConnected = React.useMemo((): boolean => {

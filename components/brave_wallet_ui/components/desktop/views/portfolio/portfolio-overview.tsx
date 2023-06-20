@@ -242,8 +242,7 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
 
   const {
     data: spotPriceRegistry,
-    isLoading: isLoadingSpotPrices,
-    isFetching: isFetchingSpotPrices
+    isLoading: isLoadingSpotPrices
   } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
@@ -259,7 +258,7 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
       return Amount.empty()
     }
 
-    if (isLoadingSpotPrices || isFetchingSpotPrices) {
+    if (isLoadingSpotPrices) {
       return Amount.empty()
     }
 
@@ -281,7 +280,6 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
       visibleAssetOptions,
       spotPriceRegistry,
       isLoadingSpotPrices,
-      isFetchingSpotPrices,
       allNetworksAreHidden
     ])
 
@@ -504,13 +502,12 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
                 hideBalances={hidePortfolioBalances}
                 spotPrice={
                   spotPriceRegistry &&
-                    !isLoadingSpotPrices &&
-                    !isFetchingSpotPrices
-                      ? getTokenPriceAmountFromRegistry(
-                          spotPriceRegistry,
-                          item.asset
-                        ).format()
-                      : ''
+                    !isLoadingSpotPrices
+                    ? getTokenPriceAmountFromRegistry(
+                      spotPriceRegistry,
+                      item.asset
+                    ).format()
+                    : ''
                 }
               />
             }

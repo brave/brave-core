@@ -150,8 +150,7 @@ const AssetsPanel = (props: Props) => {
 
   const {
     data: spotPriceRegistry,
-    isLoading: isLoadingSpotPrices,
-    isFetching: isFetchingSpotPrices
+    isLoading: isLoadingSpotPrices
   } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length && !isLoadingBalances && !isFetchingBalances
       ? { ids: tokenPriceIds }
@@ -180,9 +179,9 @@ const AssetsPanel = (props: Props) => {
           }
           token={token}
           spotPrice={
-            spotPriceRegistry && !isLoadingSpotPrices && !isFetchingSpotPrices
+            spotPriceRegistry && !isLoadingSpotPrices
               ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)
-                  .format()
+                .format()
               : ''
           }
           isPanel={true}

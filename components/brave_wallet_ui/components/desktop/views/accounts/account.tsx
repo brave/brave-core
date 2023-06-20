@@ -202,8 +202,7 @@ export const Account = () => {
 
   const {
     data: spotPriceRegistry,
-    isLoading: isLoadingSpotPrices,
-    isFetching: isFetchingSpotPrices
+    isLoading: isLoadingSpotPrices
   } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length ? { ids: tokenPriceIds } : skipToken,
     querySubscriptionOptions60s
@@ -324,9 +323,9 @@ export const Account = () => {
             showSellModal={() => onClickShowSellModal(item)}
             isSellSupported={checkIsAssetSellSupported(item)}
             spotPrice={
-              spotPriceRegistry && !isLoadingSpotPrices && !isFetchingSpotPrices
+              spotPriceRegistry && !isLoadingSpotPrices
                 ? getTokenPriceAmountFromRegistry(spotPriceRegistry, item)
-                    .format()
+                  .format()
                 : ''
             }
           />
