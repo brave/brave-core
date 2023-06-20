@@ -172,7 +172,7 @@ GURL AssetRatioService::GetPriceURL(
   std::string from = VectorToCommaSeparatedList(from_assets);
   std::string to = VectorToCommaSeparatedList(to_assets);
   std::string spec = base::StringPrintf(
-      "%sv2/relative/provider/coingecko/%s/%s/%s",
+      "%s/v2/relative/provider/coingecko/%s/%s/%s",
       base_url_for_test_.is_empty() ? kAssetRatioBaseURL
                                     : base_url_for_test_.spec().c_str(),
       from.c_str(), to.c_str(), TimeFrameKeyToString(timeframe).c_str());
@@ -185,7 +185,7 @@ GURL AssetRatioService::GetPriceHistoryURL(
     const std::string& vs_asset,
     brave_wallet::mojom::AssetPriceTimeframe timeframe) {
   std::string spec = base::StringPrintf(
-      "%sv2/history/coingecko/%s/%s/%s",
+      "%s/v2/history/coingecko/%s/%s/%s",
       base_url_for_test_.is_empty() ? kAssetRatioBaseURL
                                     : base_url_for_test_.spec().c_str(),
       asset.c_str(), vs_asset.c_str(), TimeFrameKeyToString(timeframe).c_str());
@@ -366,7 +366,7 @@ void AssetRatioService::GetStripeBuyURL(
 
   const std::string json_payload = GetJSON(payload);
 
-  GURL url = GURL(base::StringPrintf("%sv2/stripe/onramp_sessions",
+  GURL url = GURL(base::StringPrintf("%s/v2/stripe/onramp_sessions",
                                      base_url_for_test_.is_empty()
                                          ? kAssetRatioBaseURL
                                          : base_url_for_test_.spec().c_str()));
@@ -449,7 +449,7 @@ void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
 // static
 GURL AssetRatioService::GetTokenInfoURL(const std::string& contract_address) {
   std::string spec = base::StringPrintf(
-      "%sv2/etherscan/"
+      "%s/v2/etherscan/"
       "passthrough?module=token&action=tokeninfo&contractaddress=%s",
       base_url_for_test_.is_empty() ? kAssetRatioBaseURL
                                     : base_url_for_test_.spec().c_str(),
@@ -483,7 +483,7 @@ void AssetRatioService::OnGetTokenInfo(GetTokenInfoCallback callback,
 // static
 GURL AssetRatioService::GetCoinMarketsURL(const std::string& vs_asset,
                                           const uint8_t limit) {
-  GURL url = GURL(base::StringPrintf("%sv2/market/provider/coingecko",
+  GURL url = GURL(base::StringPrintf("%s/v2/market/provider/coingecko",
                                      base_url_for_test_.is_empty()
                                          ? kAssetRatioBaseURL
                                          : base_url_for_test_.spec().c_str()));

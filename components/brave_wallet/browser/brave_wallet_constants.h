@@ -19,7 +19,7 @@ namespace brave_wallet {
 
 constexpr char kBraveServicesKeyHeader[] = "x-brave-key";
 
-constexpr char kAssetRatioBaseURL[] = "https://ratios.rewards.brave.com/";
+constexpr char kAssetRatioBaseURL[] = "https://ratios.wallet.brave.com";
 
 constexpr uint256_t kDefaultSendEthGasLimit = 21000;
 constexpr uint256_t kDefaultERC20TransferGasLimit = 300000;
