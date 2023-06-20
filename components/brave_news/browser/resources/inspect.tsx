@@ -5,6 +5,7 @@ import { BraveNewsController, Channel, FeedItem } from 'gen/brave/components/bra
 import styled from 'styled-components'
 import { Info, generateFeed } from './buildFeed'
 import Elements from './Elements'
+import Config from './configureWeights'
 
 const Container = styled.div`
   display: flex;
@@ -75,6 +76,9 @@ function App() {
       }}
     >
       <Container>
+        <div>
+          <Config/>
+        </div>
         <Elements elements={feedElements} signals={info?.signals ?? {}} />
       </Container>
     </div>

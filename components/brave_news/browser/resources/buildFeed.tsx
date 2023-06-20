@@ -7,21 +7,53 @@ import {
 import { normal, pickWeighted, project, tossCoin } from './pick'
 import { ArticleElements, Elements } from './model'
 
-const blockMinInline = 1
-const blockMaxInline = 5
-const inlineDiscoveryRatio = 0.25
-const specialCardEveryN = 2
-const adsToDiscoverRatio = 0.5
+export interface FeedSettings {
+  blockMinInline: number;
+  blockMaxInline: number;
 
-const sourceSubscribedMin = 1/1e5
-const sourceSubscribedMax = 1
+  inlineDiscoveryRatio: number;
 
-const channelSubscribedMin = 0.01
-const channelSubscribedMax = 1
-const channelVisitsMin = 0.5;
-const channelVisitsMax = 1;
+  specialCardEveryN: number;
 
-const sourcesVisitsMin = 0.2
+  adsToDiscoverRatio: number;
+
+  sourceSubscribedMin: number;
+  sourceSubscribedMax: number;
+
+  channelSubscribedMax: number;
+  channelSubscribedMin: number;
+  channelVisitsMin: number;
+  channelVisitsMax: number;
+
+  sourcesVisitsMin: number;
+}
+
+export const defaultFeedSettings = {
+  blockMinInline: 1,
+  blockMaxInline: 5,
+  inlineDiscoveryRatio: 0.25,
+  specialCardEveryN: 2,
+  adsToDiscoverRatio: 0.5,
+  sourceSubscribedMin: 1 / 1e5,
+  sourceSubscribedMax: 1,
+  channelSubscribedMin: 0.01,
+  channelSubscribedMax: 1,
+  channelVisitsMin: 0.5,
+  channelVisitsMax: 1,
+  sourcesVisitsMin: 0.2
+}
+
+const getSettings = (): FeedSettings => {
+  const result: FeedSettings = {} as any
+  for (const [key, value] of Object.entries(defaultFeedSettings)) {
+    const saved = parseFloat(localStorage.getItem(key) || '') || value
+    result[key] = saved;
+  }
+  return result;
+}
+
+const settings = getSettings()
+console.log(settings)
 
 export interface Info {
   publishers: { [id: string]: Publisher }
@@ -50,13 +82,13 @@ export const getWeight = (article: FeedItemMetadata, { signals }: Info) => {
   if (signal.blocked) return 0
 
   const channelSubscribedWeighting = signal.channelSubscribed
-    ? channelSubscribedMax
-    : channelSubscribedMin
+    ? settings.channelSubscribedMax
+    : settings.channelSubscribedMin
 
   return (
-    (sourcesVisitsMin + signal.sourceVisits * (1 - sourcesVisitsMin)) *
+    (settings.sourcesVisitsMin + signal.sourceVisits * (1 - settings.sourcesVisitsMin)) *
     signal.popRecency *
-    (signal.sourceSubscribed ? sourceSubscribedMax : sourceSubscribedMin) *
+    (signal.sourceSubscribed ? settings.sourceSubscribedMax : settings.sourceSubscribedMin) *
     channelSubscribedWeighting
   )
 }
@@ -67,10 +99,10 @@ export const getChannelWeight = (channel: Channel, { signals }: Info) => {
   if (signal.blocked) return 0
 
   const subscribedWeighting = signal.channelSubscribed
-    ? channelSubscribedMax
-    : channelSubscribedMin
+    ? settings.channelSubscribedMax
+    : settings.channelSubscribedMin
 
-  const visitWeighting = project(signal.channelVisits, channelVisitsMin, channelVisitsMax)
+  const visitWeighting = project(signal.channelVisits, settings.channelVisitsMin, settings.channelVisitsMax)
   return subscribedWeighting * visitWeighting;
 }
 
@@ -83,7 +115,7 @@ const generateBlock = (info: Info, block: { type: 'default' } | { type: 'channel
     });
 
   const elements: ArticleElements[] = []
-  const count = project(normal(), blockMinInline, blockMaxInline)
+  const count = project(normal(), settings.blockMinInline, settings.blockMaxInline)
 
   if (!articles.length) {
     console.error("No articles for block", block)
@@ -97,7 +129,7 @@ const generateBlock = (info: Info, block: { type: 'default' } | { type: 'channel
 
   for (let i = 0; i < count && articles.length > 0; ++i) {
     // Note: Only default blocks can have discover cards.
-    const discover = tossCoin(inlineDiscoveryRatio)
+    const discover = tossCoin(settings.inlineDiscoveryRatio)
 
     // If this is a discover inline card, then we should pick the most popular unvisited article, by popularity
     if (discover) {
@@ -145,11 +177,11 @@ export const generateRandomCluster = (info: Info) => {
 }
 
 export const generateAd = (info: Info, iteration: number): Elements | undefined => {
-  if (iteration % specialCardEveryN !== 0) {
+  if (iteration % settings.specialCardEveryN !== 0) {
     return
   }
 
-  return tossCoin(adsToDiscoverRatio) ? { type: 'advert' } : {
+  return tossCoin(settings.adsToDiscoverRatio) ? { type: 'advert' } : {
     type: 'discover',
     publishers: info.suggested.splice(0, 3)
   }
