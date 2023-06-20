@@ -45,8 +45,9 @@ PredictionMap LinearModel::Predict(const VectorData& x) const {
   return predictions;
 }
 
-PredictionMap LinearModel::GetTopPredictions(const VectorData& x,
-                                             const int top_count) const {
+PredictionMap LinearModel::GetTopPredictions(
+    const VectorData& x,
+    absl::optional<size_t> top_count) const {
   const PredictionMap prediction_map = Predict(x);
   const PredictionMap prediction_map_softmax = Softmax(prediction_map);
   std::vector<std::pair<double, std::string>> prediction_order;
@@ -56,8 +57,8 @@ PredictionMap LinearModel::GetTopPredictions(const VectorData& x,
   }
   base::ranges::sort(base::Reversed(prediction_order));
   PredictionMap top_predictions;
-  if (top_count > 0) {
-    prediction_order.resize(top_count);
+  if (top_count && *top_count < prediction_order.size()) {
+    prediction_order.resize(*top_count);
   }
   for (const auto& prediction_order_item : prediction_order) {
     top_predictions[prediction_order_item.second] = prediction_order_item.first;

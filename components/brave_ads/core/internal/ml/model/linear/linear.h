@@ -11,6 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::ml {
 
@@ -32,8 +33,9 @@ class LinearModel final {
 
   PredictionMap Predict(const VectorData& x) const;
 
-  PredictionMap GetTopPredictions(const VectorData& x,
-                                  int top_count = -1) const;
+  PredictionMap GetTopPredictions(
+      const VectorData& x,
+      absl::optional<size_t> top_count = absl::nullopt) const;
 
  private:
   std::map<std::string, VectorData> weights_;
