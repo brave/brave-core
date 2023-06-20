@@ -181,7 +181,7 @@ public class ParsedTransactionFees {
                     ? Utils.fromWei(Long.toString(solFeeEstimatesFee), networkDecimals)
                     : 0.0d;
         } else {
-            // In common for Eth and Fil as calculations are the same.
+            // Gas fee calculations for Eth and Fil use the same logic.
             gasFee = Utils.fromHexWei(isEIP1559Transaction
                             ? Utils.multiplyHexBN(maxFeePerGas, gasLimit)
                             : Utils.multiplyHexBN(gasPrice, gasLimit),
