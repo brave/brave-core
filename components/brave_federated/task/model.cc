@@ -6,7 +6,6 @@
 #include "brave/components/brave_federated/task/model.h"
 
 #include <cmath>
-#include <cstddef>
 #include <numeric>
 #include <utility>
 

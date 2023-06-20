@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -20,7 +19,7 @@
 namespace brave_federated {
 
 class Model;
-class Task;
+struct PerformanceReport;
 using ModelWeights = std::tuple<Weights, float>;
 
 class FederatedTaskHandler final {

@@ -18,7 +18,6 @@
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "net/base/backoff_entry.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace network {
 
@@ -30,6 +29,7 @@ namespace brave_federated {
 
 class CommunicationAdapter;
 class EligibilityService;
+struct ModelSpec;
 
 class LearningService : public EligibilityObserver {
  public:

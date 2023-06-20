@@ -6,6 +6,7 @@
 #include "brave/components/brave_federated/task/model_util.h"
 
 #include <cmath>
+
 #include "base/check_op.h"
 
 namespace brave_federated {
