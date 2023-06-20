@@ -15,6 +15,7 @@ import Combine
 import Then
 import BraveShared
 import BraveCore
+import Growth
 
 /// Powers the Brave News feed.
 public class FeedDataSource: ObservableObject {
@@ -876,18 +877,12 @@ public class FeedDataSource: ObservableObject {
     let hiddenSources = Set(overridenSources.filter { !$0.enabled }.map(\.publisherID))
     let followedChannels = Preferences.BraveNews.followedChannels.value
     
-    let rules: [FeedSequenceElement] = [
-      .sponsor,
-      .fillUsing(
-        FilteredFillStrategy(isIncluded: { $0.source.category == Self.topNewsCategory }),
-        fallback: DefaultFillStrategy(),
-        [
-          .headline(paired: false)
-        ]),
-      .braveAd,
-      .repeating([
+    func createRepeatingFeedElements(withRatingCard: Bool) -> [FeedSequenceElement] {
+      let ratedNewsRow: FeedSequenceElement = withRatingCard ? .headlineRating : .headline(paired: true)
+      
+      return [
         .repeating([.headline(paired: false)], times: 2),
-        .headline(paired: true),
+        ratedNewsRow,
         .partner,
         .categoryGroup,
         .repeating([.headline(paired: false)], times: 2),
@@ -908,7 +903,25 @@ public class FeedDataSource: ObservableObject {
             .headline(paired: true),
             .headline(paired: false),
           ]),
-      ]),
+      ]
+    }
+    
+    let rules: [FeedSequenceElement] = [
+      .sponsor,
+      .fillUsing(
+        FilteredFillStrategy(isIncluded: { $0.source.category == Self.topNewsCategory }),
+        fallback: DefaultFillStrategy(),
+        [
+          .headline(paired: false)
+        ]),
+      .braveAd,
+      .repeating(
+        createRepeatingFeedElements(withRatingCard: AppReviewManager.shared.shouldShowNewsRatingCard()),
+        times: 1
+      ),
+      .repeating(
+        createRepeatingFeedElements(withRatingCard: false)
+      ),
     ]
     
     Task { @MainActor in
@@ -963,6 +976,9 @@ enum FeedSequenceElement {
   /// Displays an `article` type item in a headline card. Can also be displayed as two (smaller) paired
   /// headlines
   case headline(paired: Bool)
+  /// Displays an `article` type item in a headline card and rating card. It will be displayed as two (smaller) paired
+  /// card headline and rate card
+  case headlineRating
   /// Displays a list of `article` typed items with the same category in a vertical list.
   case categoryGroup
   /// Displays a list of `article` typed items with the same source. It can optionally be displayed as a

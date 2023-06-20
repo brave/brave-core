@@ -630,6 +630,19 @@ class NewTabPageViewController: UIViewController {
     case .inlineContentAdAction(.toggledSource, _):
       // Inline content ads have no source
       break
+    case .rateCardAction(.rateBrave):
+      Preferences.Review.newsCardShownDate.value = Date()
+      guard let writeReviewURL = URL(
+        string: "https://itunes.apple.com/app/id1052879175?action=write-review") else {
+        return
+      }
+      UIApplication.shared.open(writeReviewURL)
+      feedDataSource.setNeedsReloadCards()
+      loadFeedContents()
+    case .rateCardAction(.hideCard):
+      Preferences.Review.newsCardShownDate.value = Date()
+      feedDataSource.setNeedsReloadCards()
+      loadFeedContents()
     }
   }
 

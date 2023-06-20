@@ -213,6 +213,14 @@ extension FeedCardGenerator {
             [.headline($0)]
           }
         }
+      case .headlineRating:
+        if articles.isEmpty { return [] }
+        let imageExists = { (item: FeedItem) -> Bool in
+          item.content.imageURL != nil
+        }
+        return fillStrategy.next(from: &articles, where: imageExists).map {
+          [.headlineRatingCardPair($0)]
+        }
       case .categoryGroup:
         return categoryGroupFillStrategy.next(3, from: &articles).map {
           let title = $0.first?.source.category ?? ""

@@ -40,6 +40,8 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     case itemAction(FeedItemAction, context: FeedItemActionContext)
     /// The user performed an action on an inline content ad
     case inlineContentAdAction(FeedItemAction, ad: InlineContentAd)
+    /// The user performed an action on an Rate brave card
+    case rateCardAction(RatingCardAction)
   }
 
   let dataSource: FeedDataSource
@@ -70,6 +72,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     collectionView.register(FeedCardCell<BraveNewsEmptyFeedView>.self)
     collectionView.register(FeedCardCell<HeadlineCardView>.self)
     collectionView.register(FeedCardCell<SmallHeadlinePairCardView>.self)
+    collectionView.register(FeedCardCell<SmallHeadlineRatePairCardView>.self)
     collectionView.register(FeedCardCell<VerticalFeedGroupView>.self)
     collectionView.register(FeedCardCell<HorizontalFeedGroupView>.self)
     collectionView.register(FeedCardCell<DealsFeedGroupView>.self)
@@ -220,6 +223,10 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
           self?.recordWeeklyAdsViewedP3A(adViewed: true)
         }
       }
+      if case .headlineRatingCardPair = card {
+        // The rating card is presented
+        Preferences.Review.newsCardShownDate.value = Date()
+      }
     }
   }
   
@@ -335,6 +342,15 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.second)
       cell.content.actionHandler = handler(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
       cell.content.contextMenu = contextMenu(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
+      return cell
+    case .headlineRatingCardPair(let item):
+      let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlineRatePairCardView>
+      cell.content.smallHeadlineRateCardViews.smallHeadline.feedView.setupWithItem(item)
+      cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
+      cell.content.rateCardActionHandler = { [weak self] action in
+        self?.actionHandler(.rateCardAction(action))
+      }
+      cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
       return cell
     case .group(let items, let title, let direction, _):
       let groupView: FeedGroupView

@@ -19,7 +19,7 @@ public class AppReviewManager: ObservableObject {
     static let firstThreshold = 14
     static let secondThreshold = 41
     static let lastThreshold = 121
-    static let minimumDaysBetweenReviewRequest = 60
+    static let minDaysBetweenReviewRequest = 60
 
     // Revised Review Constants
     static let launchCountLimit = 5
@@ -28,7 +28,10 @@ public class AppReviewManager: ObservableObject {
     static let dappConnectionPeriod = AppConstants.buildChannel.isPublic ? 7.days : 7.minutes
     static let daysInUseMaxPeriod = AppConstants.buildChannel.isPublic ? 7.days : 7.minutes
     static let daysInUseRequiredPeriod = 4
-    static let revisedMinimumDaysBetweenReviewRequest = 30
+    static let revisedMinDaysBetweenReviewRequest = 30
+    
+    // New Rating Card
+    static let minDaysBetweenRatingCardPresented = 7
   }
   
   /// A enumeration for which type of App Review Logic will be used
@@ -50,6 +53,9 @@ public class AppReviewManager: ObservableObject {
     // Checking various main criteria and sub criteria
     // Performing Rating Request in App Launch
     case revisedCrossPlatform
+    // Logic which will be used for displaying Rating Card
+    // in news feed that will navigate user to AppStore
+    case newsRatingCard
     
     var mainCriteria: [AppReviewMainCriteriaType] {
       switch self {
@@ -59,6 +65,8 @@ public class AppReviewManager: ObservableObject {
         return [.launchCount, .daysInUse, .sessionCrash]
       case .revisedCrossPlatform:
         return [.launchCount, .daysInUse, .sessionCrash, .daysInBetweenReview]
+      case .newsRatingCard:
+        return [.launchCount, .daysInUse]
       }
     }
     
@@ -71,6 +79,8 @@ public class AppReviewManager: ObservableObject {
                 .numberOfPlaylistItems, .syncEnabledWithTabSync]
       case .revisedCrossPlatform:
         return [.numberOfBookmarks, .paidVPNSubscription]
+      case .newsRatingCard:
+        return []
       }
     }
   }
@@ -107,7 +117,7 @@ public class AppReviewManager: ObservableObject {
       return
     }
     
-    if shouldRequestReview(for: logicType) {
+    if checkLogicCriteriaSatisfied(for: logicType) {
       guard AppConstants.buildChannel.isPublic else {
         let alert = UIAlertController(
           title: "Show App Rating",
@@ -129,7 +139,7 @@ public class AppReviewManager: ObservableObject {
   
   // MARK: Review Request Inquiry
 
-  public func shouldRequestReview(for logicType: AppReviewLogicType, date: Date = Date()) -> Bool {
+  public func checkLogicCriteriaSatisfied(for logicType: AppReviewLogicType, date: Date = Date()) -> Bool {
     // All of the main criterias should be met before additional situation can be checked
     let mainCriteriaSatisfied = logicType.mainCriteria.allSatisfy({ criteria in
       checkMainCriteriaSatisfied(for: criteria, date: date)
@@ -144,6 +154,28 @@ public class AppReviewManager: ObservableObject {
     }
     
     return mainCriteriaSatisfied && subCriteriaSatisfied
+  }
+  
+  public func shouldShowNewsRatingCard() -> Bool {
+    // Check if main and sub criteria is satisfied for new rating card presentation
+    guard checkLogicCriteriaSatisfied(for: .newsRatingCard) else {
+      return false
+    }
+    
+    // Check at least minDaysBetweenRatingCardPresented days passed since last card presentation
+    var daysSinceLastRequest = 0
+    if let previousRequest = Preferences.Review.newsCardShownDate.value {
+      daysSinceLastRequest = Calendar.current.dateComponents([.day], from: previousRequest, to: Date()).day ?? 0
+    } else {
+      // First presentation Date, no recorded presentation
+      return true
+    }
+    
+    if abs(daysSinceLastRequest) < Constants.minDaysBetweenRatingCardPresented {
+      return false
+    }
+    
+    return true
   }
   
   // MARK: Review Criteria Process
@@ -195,10 +227,10 @@ public class AppReviewManager: ObservableObject {
       if let previousRequest = Preferences.Review.lastReviewDate.value {
         daysSinceLastRequest = Calendar.current.dateComponents([.day], from: previousRequest, to: date).day ?? 0
       } else {
-        daysSinceLastRequest = Constants.minimumDaysBetweenReviewRequest
+        daysSinceLastRequest = Constants.minDaysBetweenReviewRequest
       }
 
-      if launchCount <= threshold || daysSinceLastRequest < Constants.minimumDaysBetweenReviewRequest {
+      if launchCount <= threshold || daysSinceLastRequest < Constants.minDaysBetweenReviewRequest {
         return false
       }
 
@@ -229,7 +261,7 @@ public class AppReviewManager: ObservableObject {
         return true
       }
 
-      if daysSinceLastRequest < Constants.revisedMinimumDaysBetweenReviewRequest {
+      if daysSinceLastRequest < Constants.revisedMinDaysBetweenReviewRequest {
         return false
       }
 
