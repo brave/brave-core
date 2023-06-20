@@ -13,17 +13,20 @@ const Container = styled.div`
   gap: var(--leo-spacing-8);
   max-width: 800px;
   margin: 0 auto;
+
+  :global body {
+    overflow-x: hidden;
+  }
 `
 
 export const api = BraveNewsController.getRemote()
-window['api'] = api
 
 const signalsPromise = api.getSignals().then((r) => r.signals)
 const feedPromise = api.getRawFeed().then((r) => r.items) as Promise<FeedItem[]>
 const channelsPromise = api.getChannels().then((r) => Object.values(r.channels) as Channel[])
 const suggestionsPromise = api
-  .getSuggestedPublisherIds()
-  .then((r) => r.suggestedPublisherIds)
+.getSuggestedPublisherIds()
+.then((r) => r.suggestedPublisherIds)
 const publishersPromise = api.getPublishers().then((r) => r.publishers)
 
 const articlesPromise = (async () => {
@@ -47,6 +50,9 @@ const infoPromise: Promise<Info> = (async () => {
   }
 })()
 
+// Expose the api and info on the window object, so we can use them from the
+// console.
+window['api'] = api
 infoPromise.then(i => window['info'] = i)
 
 function usePromise<T>(promise: Promise<T>, defaultValue: T, deps: any[]) {

@@ -43,11 +43,15 @@ export const defaultFeedSettings = {
   sourcesVisitsMin: 0.2
 }
 
+export const loadSetting = (name: keyof FeedSettings) => {
+  const saved = parseFloat(localStorage.getItem(name) || '')
+  return isNaN(saved) ? defaultFeedSettings[name] : saved
+}
+
 const getSettings = (): FeedSettings => {
   const result: FeedSettings = {} as any
-  for (const [key, value] of Object.entries(defaultFeedSettings)) {
-    const saved = parseFloat(localStorage.getItem(key) || '') || value
-    result[key] = saved;
+  for (const key of Object.keys(defaultFeedSettings)) {
+    result[key] = loadSetting(key as keyof FeedSettings);
   }
   return result;
 }

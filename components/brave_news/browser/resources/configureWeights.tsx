@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState } from "react";
 import styled from "styled-components";
-import { defaultFeedSettings } from "./buildFeed";
+import { FeedSettings, defaultFeedSettings, loadSetting } from "./buildFeed";
 import Button from '@brave/leo/react/button'
 
 const Column = styled.div`
@@ -11,15 +11,17 @@ const Column = styled.div`
 `
 
 function Tweaker(props: { name: string, defaultValue: number }) {
-  const [value, setValue] = useState(parseFloat(localStorage.getItem(props.name) || '') || props.defaultValue);
+  const [value, setValue] = useState(loadSetting(props.name as keyof FeedSettings));
 
+  const set = (v: string | number) => {
+    setValue(v as any)
+    const asNum = parseFloat('' + v)
+    localStorage.setItem(props.name, '' + (isNaN(asNum) ? props.defaultValue : asNum))
+  }
   return <label>
     {props.name}:&nbsp;
-    <input type="text" value={value} onChange={e => {
-      setValue(e.target.value as any)
-      const asNum = parseFloat(e.target.value)
-      localStorage.setItem(props.name, '' + (isNaN(asNum) ? props.defaultValue : asNum))
-    }} />
+    <input type="text" value={value} onChange={e => set(e.target.value)} />
+    {value != props.defaultValue && <Button size='tiny' kind='plain' onClick={() => set(props.defaultValue)}>Reset</Button>}
   </label>
 }
 
