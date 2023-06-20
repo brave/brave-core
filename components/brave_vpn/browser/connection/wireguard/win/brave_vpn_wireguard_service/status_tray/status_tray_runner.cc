@@ -72,12 +72,14 @@ StatusTrayRunner::StatusTrayRunner() = default;
 StatusTrayRunner::~StatusTrayRunner() = default;
 
 void StatusTrayRunner::SetupStatusIcon() {
-  status_tray_ = std::make_unique<StatusTrayWin>();
+  status_tray_ = std::make_unique<StatusTray>();
   auto connected = wireguard::IsBraveVPNWireguardTunnelServiceRunning();
   status_tray_->CreateStatusIcon(GetStatusTrayIcon(connected, false),
                                  GetStatusIconTooltip(connected, false));
-  status_tray_->GetStatusIcon()->SetContextMenu(
-      std::make_unique<TrayMenuModel>(this));
+  auto* status_icon = status_tray_->GetStatusIcon();
+  if (status_icon) {
+    status_icon->SetContextMenu(std::make_unique<TrayMenuModel>(this));
+  }
 }
 
 void StatusTrayRunner::ExecuteCommand(int command_id, int event_flags) {
@@ -145,7 +147,7 @@ void StatusTrayRunner::OnDisconnected(bool success) {
 
 HRESULT StatusTrayRunner::Run() {
   if (!wireguard::GetLastUsedConfigPath().has_value() ||
-      StatusTrayWin::IconWindowExists()) {
+      StatusTray::IconWindowExists()) {
     return S_OK;
   }
 

@@ -10,7 +10,7 @@
 
 #include "base/scoped_generic.h"
 
-namespace brave {
+namespace brave_vpn {
 
 namespace win {
 
@@ -28,9 +28,9 @@ template <class T>
 using ScopedHMENUObject =
     base::ScopedGeneric<T, internal::ScopedHMENUObjectTraits<T>>;
 
-typedef brave::win::ScopedHMENUObject<HMENU> ScopedHMENU;
+typedef ScopedHMENUObject<HMENU> ScopedHMENU;
 
 }  // namespace win
-}  // namespace brave
+}  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_COMMON_SCOPED_HMENU_H_

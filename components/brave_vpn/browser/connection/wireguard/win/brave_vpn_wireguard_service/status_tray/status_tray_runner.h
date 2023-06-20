@@ -20,7 +20,7 @@ class SimpleMenuModel;
 
 namespace brave_vpn {
 
-class StatusTrayWin;
+class StatusTray;
 
 class StatusTrayRunner : public TrayMenuModel::Delegate {
  public:
@@ -48,7 +48,7 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
   void OnConnected(bool success);
   void OnDisconnected(bool success);
 
-  std::unique_ptr<StatusTrayWin> status_tray_;
+  std::unique_ptr<StatusTray> status_tray_;
   base::OnceClosure quit_;
   base::WeakPtrFactory<StatusTrayRunner> weak_factory_{this};
 };
