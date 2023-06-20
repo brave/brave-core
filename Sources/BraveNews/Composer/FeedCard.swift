@@ -34,6 +34,8 @@ public enum FeedCard: Hashable {
   case headline(_ feed: FeedItem)
   /// A pair of `headline` items that should be displayed side by side horizontally with equal sizes
   case headlinePair(_ pair: FeedPair)
+  /// A pair of `headline` and `rating card` items where first item is a headline and second item is rating card
+  case headlineRatingCardPair(_ feed: FeedItem)
   /// A group of items that can be displayed in a number of different configurations
   case group(_ feeds: [FeedItem], title: String, direction: NSLayoutConstraint.Axis, displayBrand: Bool)
   /// A numbered group of items which will always be displayed in a vertical list.
@@ -50,7 +52,7 @@ public enum FeedCard: Hashable {
       return FeedItemView.Layout.partner.estimatedHeight(for: width)
     case .ad:
       return FeedItemView.Layout.ad.estimatedHeight(for: width)
-    case .headlinePair:
+    case .headlinePair, .headlineRatingCardPair:
       return 300
     case .group, .numbered, .deals:
       return 400
@@ -64,6 +66,8 @@ public enum FeedCard: Hashable {
       return [item]
     case .headlinePair(let pair):
       return [pair.first, pair.second]
+    case .headlineRatingCardPair(let item):
+      return [item]
     case .group(let items, _, _, _), .numbered(let items, _), .deals(let items, _):
       return items
     case .ad:
@@ -85,6 +89,8 @@ public enum FeedCard: Hashable {
       } else {
         return .headlinePair(.init(pair.first, replacementItem))
       }
+    case .headlineRatingCardPair:
+      return .headlineRatingCardPair(replacementItem)
     case .sponsor:
       return .sponsor(replacementItem)
     case .numbered(var feeds, let title):

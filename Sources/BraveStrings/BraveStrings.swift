@@ -3671,6 +3671,41 @@ extension Strings {
       value: "Similar to %@",
       comment: "Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac'"
     )
+    public static let rateBraveCardRateActionTitle = NSLocalizedString(
+      "today.rateBraveCardRateActionTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Rate Brave",
+      comment: "Button title / Title for long press action that will perform an action which open AppStore Rate screen"
+    )
+    public static let rateBraveCardHideActionTitle = NSLocalizedString(
+      "today.rateBraveCardHideActionTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Hide",
+      comment: "Title for long press action that will hide Brave Rate Card"
+    )
+    public static let rateBraveCardActionSheetTitle = NSLocalizedString(
+      "today.rateBraveCardActionSheetTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Rate Brave in AppStore",
+      comment: "Title for long press action sheet list which has item for rate / hide"
+    )
+    public static let rateBraveCardTitle = NSLocalizedString(
+      "today.rateBraveCardTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Liking Brave?",
+      comment: "Title shown on the Rate Brave Card "
+    )
+    public static let rateBraveCardSubtitle = NSLocalizedString(
+      "today.rateBraveCardSubtitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Tell us what you think!",
+      comment: "Subtitle shown on the Rate Brave Card"
+    )
   }
 }
 

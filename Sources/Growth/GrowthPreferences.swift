@@ -41,5 +41,7 @@ extension Preferences {
     /// Review Threshold (the total amount of launches needed for the next review to show up) Default Value first Threashold which will be 14
     public static let threshold = Option<Int>(key: "review.threshold", default: 14)
     public static let lastReviewDate = Option<Date?>(key: "review.last-date", default: nil)
+    /// The date when the rating card in news feed is shown
+    public static let newsCardShownDate = Option<Date?>(key: "review.news-card", default: nil)
   }
 }

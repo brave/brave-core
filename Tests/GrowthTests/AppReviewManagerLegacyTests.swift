@@ -34,7 +34,7 @@ class AppReviewManagerLegacyTests: XCTestCase {
     XCTAssertNil(lastReviewDate)
     XCTAssertEqual(threshold, AppReviewManager.Constants.firstThreshold)
 
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .legacy, date: date)) //legacyShouldRequestReview(date: date))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: date)) //legacyShouldRequestReview(date: date))
 
     XCTAssertEqual(launchCount, 1, "Launch count shouldn't change after review request.")
     XCTAssertNil(lastReviewDate)
@@ -46,7 +46,7 @@ class AppReviewManagerLegacyTests: XCTestCase {
     // First threshold
     for i in 2...AppReviewManager.Constants.firstThreshold {
       simulateLaunch()
-      XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .legacy ))
+      XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy ))
 
       XCTAssertNil(lastReviewDate)
       XCTAssertEqual(threshold, AppReviewManager.Constants.firstThreshold)
@@ -57,7 +57,7 @@ class AppReviewManagerLegacyTests: XCTestCase {
 
     simulateLaunch()
     // Next app launch triggers the review
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .legacy, date: firstDate))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: firstDate))
 
     XCTAssertEqual(lastReviewDate, firstDate)
     XCTAssertEqual(threshold, AppReviewManager.Constants.secondThreshold)
@@ -65,7 +65,7 @@ class AppReviewManagerLegacyTests: XCTestCase {
     // Second threshold
     for i in launchCount..<AppReviewManager.Constants.secondThreshold {
       simulateLaunch()
-      XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .legacy))
+      XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy))
       XCTAssertEqual(lastReviewDate, firstDate)
       XCTAssertEqual(threshold, AppReviewManager.Constants.secondThreshold)
       XCTAssertEqual(launchCount, i + 1)
@@ -74,7 +74,7 @@ class AppReviewManagerLegacyTests: XCTestCase {
     // Enough launches passed but not enough time between app reviews.
     let secondDate = dateFrom(string: "2019-01-14")
     simulateLaunch()
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .legacy, date: secondDate))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: secondDate))
 
     XCTAssertEqual(lastReviewDate, firstDate)
     XCTAssertEqual(threshold, AppReviewManager.Constants.secondThreshold)
@@ -85,25 +85,25 @@ class AppReviewManagerLegacyTests: XCTestCase {
 
     Preferences.Review.launchCount.value = AppReviewManager.Constants.firstThreshold + 3
 
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .legacy, date: firstDate))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: firstDate))
 
     // Second threshold, no date change
     Preferences.Review.launchCount.value = AppReviewManager.Constants.secondThreshold + 3
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .legacy, date: firstDate))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: firstDate))
 
     // Second threshold, date change
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .legacy, date: dateFrom(string: "2019-04-01")))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: dateFrom(string: "2019-04-01")))
 
     // Second threshold, not enough date interval
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .legacy, date: dateFrom(string: "2019-05-01")))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: dateFrom(string: "2019-05-01")))
 
     // Third threshold, good launch count and date
     Preferences.Review.launchCount.value = AppReviewManager.Constants.lastThreshold + 3
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .legacy, date: dateFrom(string: "2019-11-20")))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: dateFrom(string: "2019-11-20")))
 
     // Date and launch count far away in the future
     Preferences.Review.launchCount.value = AppReviewManager.Constants.lastThreshold + 1000
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .legacy, date: dateFrom(string: "2022-01-01")))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: dateFrom(string: "2022-01-01")))
 
   }
 

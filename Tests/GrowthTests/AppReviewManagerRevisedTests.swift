@@ -45,9 +45,12 @@ class AppReviewManagerTests: XCTestCase {
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: false, passingCriteria: .paidVPNSubscription)
     
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revised))
     
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revisedCrossPlatform))
+    
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .newsRatingCard))
+
     
     // Number Of Bookmarks
     resetAppReviewConstants()
@@ -55,9 +58,12 @@ class AppReviewManagerTests: XCTestCase {
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: false, passingCriteria: .numberOfBookmarks)
     
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revised))
     
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revisedCrossPlatform))
+    
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .newsRatingCard))
+
 
     
     // Sync Tab Sync Enabled
@@ -67,19 +73,22 @@ class AppReviewManagerTests: XCTestCase {
     generateSubCriterias(failing: false, passingCriteria: .syncEnabledWithTabSync)
     
     // Number Of Playlist Items
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revised))
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revisedCrossPlatform))
 
-    
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .newsRatingCard))
+
     resetAppReviewConstants()
     
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: false, passingCriteria: .numberOfPlaylistItems)
     
-    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revised))
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revisedCrossPlatform))
+    
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .newsRatingCard))
   }
   
   func testRevisedReviewFailigMainCriteriaPassingVPNSubCriteria() {
@@ -88,9 +97,11 @@ class AppReviewManagerTests: XCTestCase {
     generateMainCriterias(passing: false, failingCriteria: nil)
     generateSubCriterias(failing: false, passingCriteria: nil)
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revised))
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revisedCrossPlatform))
+    
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .newsRatingCard))
   }
   
   func testRevisedReviewPassingMainCriteriaFailingVPNSubCriteria() {
@@ -99,10 +110,11 @@ class AppReviewManagerTests: XCTestCase {
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: true, passingCriteria: nil)
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revised))
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revisedCrossPlatform))
 
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .newsRatingCard))
   }
   
   func testRevisedReviewFailigMainCriteriaFailingVPNSubCriteria() {
@@ -111,9 +123,11 @@ class AppReviewManagerTests: XCTestCase {
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: true, passingCriteria: nil)
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revised))
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revisedCrossPlatform))
+    
+    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .newsRatingCard))
   }
   
   func testRevisedReviewFailingMainCriteriaDaysInBetween() {
@@ -122,9 +136,30 @@ class AppReviewManagerTests: XCTestCase {
     generateMainCriterias(passing: false, failingCriteria: .daysInBetweenReview)
     generateSubCriterias(failing: false, passingCriteria: .numberOfBookmarks)
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revised))
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .revisedCrossPlatform))
+    
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .newsRatingCard))
+  }
+  
+  func testShouldShowNewsRatingCard() {
+    resetAppReviewConstants()
+    
+    generateMainCriterias(passing: true, failingCriteria: nil)
+
+    // Fresh Criteria car never shown
+    XCTAssertTrue(AppReviewManager.shared.shouldShowNewsRatingCard())
+    
+    Preferences.Review.newsCardShownDate.value = Date() + 5.days
+    
+    // Less than week passed for next card
+    XCTAssertFalse(AppReviewManager.shared.shouldShowNewsRatingCard())
+
+    Preferences.Review.newsCardShownDate.value = Date() + 10.days
+
+    // More than a week passed since previous card reveal
+    XCTAssertTrue(AppReviewManager.shared.shouldShowNewsRatingCard())
   }
   
   private func resetAppReviewConstants() {
@@ -139,6 +174,7 @@ class AppReviewManagerTests: XCTestCase {
     Preferences.Chromium.syncEnabled.reset()
     Preferences.Chromium.syncOpenTabsEnabled.reset()
     Preferences.Review.lastReviewDate.value = nil
+    Preferences.Review.newsCardShownDate.value = nil
   }
   
   private func generateDaysOfUse(active: Bool) {

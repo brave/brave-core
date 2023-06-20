@@ -365,6 +365,47 @@ extension FeedItemView {
         ]
       )
     )
+    
+    /// Defines a feed item layout where the logo resides on the top wth leading alignment
+    /// and  underneath is a padded label stack with the title,
+    /// description, space and finally the button
+    ///
+    /// ```
+    /// ╭─────────────────╮
+    /// │                 │
+    /// │ logo            │
+    /// │ title           │
+    /// │ description     │
+    /// ├─────────────────┤
+    /// ├─────────────────┤
+    /// │ action button   │
+    /// ╰─────────────────╯
+    /// ```
+    ///
+    static let rateCard = Layout(
+      root: .init(
+        axis: .vertical,
+        padding: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0),
+        alignment: .leading,
+        children: [
+          .customSpace(12),
+          .thumbnail(.fixedSize(CGSize(width: 32, height: 32))),
+          .stack(
+            .init(
+              axis: .vertical,
+              spacing: 8,
+              padding: UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 12),
+              children: [
+                .title(.init(numberOfLines: 2, font: .systemFont(ofSize: 18.0, weight: .semibold))),
+                .description(.init(numberOfLines: 3, font: .systemFont(ofSize: 16.0, weight: .medium))),
+                .flexibleSpace(minHeight: 36),
+                .callToActionButton
+              ]
+            )
+          ),
+        ]
+      )
+    )
 
     /// Uses the same layout as a `brandedHeadline` but includes a promoted button
     static let partner = Layout(
