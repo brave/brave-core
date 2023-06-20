@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/status_tray.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_tray_win.h"
 
 #include <commctrl.h>
 #include <wrl/client.h>
@@ -13,11 +13,10 @@
 #include "base/files/file_path.h"
 #include "base/win/windows_types.h"
 #include "base/win/wrapped_window_proc.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/status_icon.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/brave_vpn_menu_model.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon_win.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/win/hwnd_util.h"
-
-namespace brave_vpn {
 
 static const UINT kStatusIconMessage = WM_APP + 1;
 
@@ -131,5 +130,3 @@ LRESULT CALLBACK StatusTrayWin::WndProc(HWND hwnd,
   }
   return ::DefWindowProc(hwnd, message, wparam, lparam);
 }
-
-}  // namespace brave_vpn
