@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -33,20 +34,20 @@ class EthSignTypedDataHelper {
   void SetVersion(Version version);
 
   std::vector<uint8_t> GetTypeHash(const std::string primary_type_name) const;
-  absl::optional<std::vector<uint8_t>> HashStruct(
+  absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> HashStruct(
       const std::string primary_type_name,
       const base::Value::Dict& data) const;
-  absl::optional<std::vector<uint8_t>> EncodeData(
+  absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> EncodeData(
       const std::string& primary_type_name,
       const base::Value::Dict& data) const;
   static absl::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
       const std::vector<uint8_t>& domain_hash,
       const std::vector<uint8_t>& primary_hash);
-  absl::optional<std::vector<uint8_t>> GetTypedDataPrimaryHash(
-      const std::string& primary_type_name,
-      const base::Value::Dict& message) const;
-  absl::optional<std::vector<uint8_t>> GetTypedDataDomainHash(
-      const base::Value::Dict& domain_separator) const;
+  absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
+  GetTypedDataPrimaryHash(const std::string& primary_type_name,
+                          const base::Value::Dict& message) const;
+  absl::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
+  GetTypedDataDomainHash(const base::Value::Dict& domain_separator) const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypes);
