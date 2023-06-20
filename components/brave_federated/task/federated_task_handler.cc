@@ -65,13 +65,4 @@ void FederatedTaskHandler::SetTestData(const DataSet& test_data) {
   test_data_ = test_data;
 }
 
-void FederatedTaskHandler::SetWeights(const ModelWeights& weights) {
-  model_->SetWeights(std::get<0>(weights));
-  model_->SetBias(std::get<1>(weights));
-}
-
-ModelWeights FederatedTaskHandler::GetWeights() const {
-  return std::make_tuple(model_->GetWeights(), model_->GetBias());
-}
-
 }  // namespace brave_federated

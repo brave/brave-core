@@ -20,7 +20,7 @@ class SyntheticDataset {
   explicit SyntheticDataset(int number_of_samples);
   SyntheticDataset(const SyntheticDataset& synthetic_dataset);
 
-  explicit SyntheticDataset(DataSet data_points);
+  explicit SyntheticDataset(const DataSet& data_points);
   SyntheticDataset(const std::vector<Weights>& weights,
                    const std::vector<float>& bias,
                    int num_features,
@@ -38,7 +38,7 @@ class SyntheticDataset {
   std::vector<Weights> GetDefaultWeights();
   std::vector<float> GetDefaultBias();
 
-  DataSet data_points_;
+  DataSet data_points_ = {};
 };
 
 }  // namespace brave_federated

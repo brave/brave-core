@@ -94,8 +94,8 @@ class Model {
   const float learning_rate_;
   const float threshold_;
 
-  Weights weights_;
-  float bias_;
+  Weights weights_ = {};
+  float bias_ = 0.0;
 };
 
 }  // namespace brave_federated

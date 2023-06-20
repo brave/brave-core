@@ -33,17 +33,14 @@ class FederatedTaskHandler final {
   void SetTrainingData(const DataSet& training_data);
   void SetTestData(const DataSet& test_data);
 
-  void SetWeights(const ModelWeights& weights);
-  ModelWeights GetWeights() const;
-
  private:
   PerformanceReport Evaluate();
   PerformanceReport Train();
 
-  Task task_;
-  std::unique_ptr<Model> model_;
-  DataSet training_data_;
-  DataSet test_data_;
+  const Task task_;
+  const std::unique_ptr<Model> model_;
+  DataSet training_data_ = {};
+  DataSet test_data_ = {};
 };
 
 }  // namespace brave_federated
