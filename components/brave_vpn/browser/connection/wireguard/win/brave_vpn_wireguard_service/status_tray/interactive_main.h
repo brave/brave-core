@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INTERACTIVE_INTERACTIVE_MAIN_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INTERACTIVE_INTERACTIVE_MAIN_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_INTERACTIVE_MAIN_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_INTERACTIVE_MAIN_H_
 
 #include <memory>
 
@@ -12,7 +12,7 @@
 #include "base/win/registry.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/common/win/brave_windows_service_watcher.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/brave_vpn_menu_model.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/brave_vpn_menu_model.h"
 
 namespace ui {
 class SimpleMenuModel;
@@ -54,4 +54,4 @@ class InteractiveMain : public BraveVpnMenuModel::Delegate {
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INTERACTIVE_INTERACTIVE_MAIN_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_INTERACTIVE_MAIN_H_

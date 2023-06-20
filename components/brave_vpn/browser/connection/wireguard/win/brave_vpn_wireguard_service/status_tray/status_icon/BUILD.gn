@@ -18,7 +18,7 @@ source_set("status_icon") {
   public_deps = [ "//skia" ]
 
   deps = [
-    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/common",
+    "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/common",
     "//ui/base",
     "//ui/gfx",
   ]

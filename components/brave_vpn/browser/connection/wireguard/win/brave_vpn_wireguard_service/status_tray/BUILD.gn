@@ -3,10 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("interactive") {
+source_set("status_tray") {
   sources = [
-    "brave_vpn_interactive_strings_en.h",
     "brave_vpn_tray_command_ids.h",
+    "brave_vpn_tray_strings_en.h",
     "interactive_main.cc",
     "interactive_main.h",
     "interactive_utils.cc",
