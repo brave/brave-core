@@ -78,6 +78,14 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
     PLOG(ERROR) << "Failed to initialize COM";
     return -1;
   }
+  // User level command line. In this mode creates an invisible window and sets
+  // an icon in the status tray to interact with the user. The icon shows a
+  // pop-up menu to control the connection of the Wireguard VPN without
+  // interacting with the browser.
+  if (command_line->HasSwitch(
+          brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName)) {
+    return brave_vpn::StatusTrayRunner::GetInstance()->Run();
+  }
 
   // System level command line. In this mode, loads the tunnel.dll and passes it
   // the path to the config. all control of the service is given to tunnel.dll,
@@ -87,10 +95,6 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
     return brave_vpn::wireguard::RunWireguardTunnelService(
         command_line->GetSwitchValuePath(
             brave_vpn::kBraveVpnWireguardServiceConnectSwitchName));
-  }
-  if (command_line->HasSwitch(
-          brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName)) {
-    return brave_vpn::StatusTrayRunner::GetInstance()->Run();
   }
 
   // System level command line. Makes registeration and configuration for

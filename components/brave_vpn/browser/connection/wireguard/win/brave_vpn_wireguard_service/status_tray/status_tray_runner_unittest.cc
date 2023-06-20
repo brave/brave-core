@@ -48,7 +48,7 @@ class StatusTrayRunnerTest : public testing::Test {
   }
 };
 
-TEST_F(StatusTrayRunnerTest, Rebuild) {
+TEST_F(StatusTrayRunnerTest, RebuildMenu) {
   TrayMenuModel menu_model(StatusTrayRunner::GetInstance());
   EXPECT_EQ(menu_model.GetItemCount(), 0u);
 
