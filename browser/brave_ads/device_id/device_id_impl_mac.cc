@@ -50,15 +50,15 @@ std::string FindBSDNameOfSystemDisk() {
                                                 base::BlockingType::MAY_BLOCK);
 
   struct statfs* mounted_volumes;
-  const int count = getmntinfo(&mounted_volumes, 0);
+  const int count = getmntinfo_r_np(&mounted_volumes, 0);
   if (count == 0) {
     return {};
   }
 
   for (int i = 0; i < count; i++) {
-    struct statfs* volume = &mounted_volumes[i];
-    if (std::string(volume->f_mntonname) == kRootDirectory) {
-      return std::string(volume->f_mntfromname);
+    const struct statfs& volume = mounted_volumes[i];
+    if (std::string(volume.f_mntonname) == kRootDirectory) {
+      return std::string(volume.f_mntfromname);
     }
   }
 
