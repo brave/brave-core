@@ -24,8 +24,10 @@ import { AccountListItem } from '../account-list-item/account-list-item'
 
 // Styled Components
 import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
+import { BraveWallet } from '../../../../../constants/types'
 
 interface Props {
+  asset: BraveWallet.BlockchainToken | undefined
   onSelectAddress: (value: string) => void
   disabled: boolean
 }
@@ -33,7 +35,7 @@ interface Props {
 const ACCOUNT_SELECTOR_BUTTON_ID = 'account-selector-button-id'
 
 export const AccountSelector = (props: Props) => {
-  const { onSelectAddress, disabled } = props
+  const { asset, onSelectAddress, disabled } = props
 
   // Selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
@@ -63,12 +65,18 @@ export const AccountSelector = (props: Props) => {
     if (!selectedNetwork || !selectedAccount) {
       return []
     }
+
     return accounts.filter(
       (account) =>
         account.accountId.coin === selectedNetwork.coin &&
-        account.accountId.keyringId === selectedAccount.accountId.keyringId
+        account.accountId.keyringId === selectedAccount.accountId.keyringId ||
+        ((asset?.contractAddress === "") && 
+        ((selectedNetwork.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID &&
+          account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin) ||
+         (selectedNetwork.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
+          account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet))
     )
-  }, [accounts, selectedNetwork, selectedAccount])
+  }, [accounts, selectedNetwork, selectedAccount, asset])
 
   // Hooks
   useOnClickOutside(
