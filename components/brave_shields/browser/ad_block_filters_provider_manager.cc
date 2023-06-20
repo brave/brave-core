@@ -82,10 +82,6 @@ void AdBlockFiltersProviderManager::LoadDATBufferForEngine(
     bool is_for_default_engine,
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
-  if (task_tracker_.HasTrackedTasks()) {
-    // There's already an in-progress load, cancel it.
-    task_tracker_.TryCancelAll();
-  }
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
