@@ -28,3 +28,16 @@ source_set("status_tray") {
 
   libs = [ "Shell32.lib" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "status_tray_runner_unittest.cc" ]
+  public_deps = [ "//skia" ]
+  deps = [
+    ":status_tray",
+    "status_icon",
+    "//testing/gtest",
+    "//ui/base",
+  ]
+}

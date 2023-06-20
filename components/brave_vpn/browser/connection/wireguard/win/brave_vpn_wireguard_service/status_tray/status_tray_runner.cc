@@ -73,7 +73,7 @@ StatusTrayRunner::~StatusTrayRunner() = default;
 
 void StatusTrayRunner::SetupStatusIcon() {
   status_tray_ = std::make_unique<StatusTray>();
-  auto connected = wireguard::IsBraveVPNWireguardTunnelServiceRunning();
+  auto connected = IsTunnelServiceRunning();
   status_tray_->CreateStatusIcon(GetStatusTrayIcon(connected, false),
                                  GetStatusIconTooltip(connected, false));
   auto* status_icon = status_tray_->GetStatusIcon();
@@ -105,8 +105,15 @@ void StatusTrayRunner::ExecuteCommand(int command_id, int event_flags) {
   }
 }
 
+bool StatusTrayRunner::IsTunnelServiceRunning() const {
+  if (service_running_for_testing_.has_value()) {
+    return service_running_for_testing_.value();
+  }
+  return wireguard::IsBraveVPNWireguardTunnelServiceRunning();
+}
+
 void StatusTrayRunner::OnMenuWillShow(ui::SimpleMenuModel* source) {
-  auto connected = wireguard::IsBraveVPNWireguardTunnelServiceRunning();
+  auto connected = IsTunnelServiceRunning();
   source->Clear();
   source->AddItem(IDC_BRAVE_VPN_TRAY_STATUS_ITEM, GetVpnStatusLabel(connected));
   source->SetEnabledAt(0, false);
@@ -134,7 +141,7 @@ void StatusTrayRunner::UpdateIconState(bool error) {
   if (!status_tray_ || !status_tray_->GetStatusIcon()) {
     return;
   }
-  auto connected = wireguard::IsBraveVPNWireguardTunnelServiceRunning();
+  auto connected = IsTunnelServiceRunning();
   status_tray_->GetStatusIcon()->UpdateState(
       GetStatusTrayIcon(connected, error),
       GetStatusIconTooltip(connected, error));
@@ -153,10 +160,10 @@ HRESULT StatusTrayRunner::Run() {
 
   base::SingleThreadTaskExecutor task_executor(base::MessagePumpType::UI);
   base::ThreadPoolInstance::CreateAndStartWithDefaultParams(
-      "Brave VPN Wireguard interactive process");
+      "Brave VPN Wireguard status tray process");
+  SetupStatusIcon();
   base::RunLoop loop;
   quit_ = loop.QuitClosure();
-  SetupStatusIcon();
   loop.Run();
   return S_OK;
 }

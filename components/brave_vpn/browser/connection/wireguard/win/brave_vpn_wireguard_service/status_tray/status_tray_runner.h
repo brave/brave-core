@@ -9,10 +9,9 @@
 #include <memory>
 
 #include "base/no_destructor.h"
-#include "base/win/registry.h"
 #include "base/win/windows_types.h"
-#include "brave/components/brave_vpn/browser/connection/common/win/brave_windows_service_watcher.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ui {
 class SimpleMenuModel;
@@ -29,14 +28,11 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
   StatusTrayRunner(const StatusTrayRunner&) = delete;
   StatusTrayRunner& operator=(const StatusTrayRunner&) = delete;
 
-  void SetupStatusIcon();
-
   HRESULT Run();
-  void SignalExit();
 
-  // TrayMenuModel::Delegate
-  void ExecuteCommand(int command_id, int event_flags) override;
-  void OnMenuWillShow(ui::SimpleMenuModel* source) override;
+  void SetTunnelServiceRunningForTesting(bool value) {
+    service_running_for_testing_ = value;
+  }
 
  private:
   friend class base::NoDestructor<StatusTrayRunner>;
@@ -44,10 +40,18 @@ class StatusTrayRunner : public TrayMenuModel::Delegate {
   StatusTrayRunner();
   ~StatusTrayRunner() override;
 
+  bool IsTunnelServiceRunning() const;
+  void SetupStatusIcon();
+  void SignalExit();
   void UpdateIconState(bool error);
   void OnConnected(bool success);
   void OnDisconnected(bool success);
 
+  // TrayMenuModel::Delegate
+  void ExecuteCommand(int command_id, int event_flags) override;
+  void OnMenuWillShow(ui::SimpleMenuModel* source) override;
+
+  absl::optional<bool> service_running_for_testing_;
   std::unique_ptr<StatusTray> status_tray_;
   base::OnceClosure quit_;
   base::WeakPtrFactory<StatusTrayRunner> weak_factory_{this};
