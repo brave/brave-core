@@ -158,9 +158,9 @@ public class ParsedTransactionFees {
         } else {
             String result;
             try {
-                BigInteger minued = new BigInteger(maxFeePerGasDecimal);
+                BigInteger minuend = new BigInteger(maxFeePerGasDecimal);
                 BigInteger subtrahend = new BigInteger(maxPriorityFeePerGasDecimal);
-                BigInteger gasPrice = minued.subtract(subtrahend);
+                BigInteger gasPrice = minuend.subtract(subtrahend);
                 result = "0x" + gasPrice.toString(16);
             } catch (NumberFormatException nfe) {
                 result = "";
