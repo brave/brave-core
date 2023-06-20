@@ -11,14 +11,10 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
-class DatabaseContributionQueuePublishers : public DatabaseTable {
+class DatabaseContributionQueuePublishers {
  public:
-  explicit DatabaseContributionQueuePublishers(LedgerImpl& ledger);
-  ~DatabaseContributionQueuePublishers() override;
-
   void InsertOrUpdate(const std::string& id,
                       std::vector<mojom::ContributionQueuePublisherPtr> list,
                       LegacyResultCallback callback);
@@ -31,7 +27,6 @@ class DatabaseContributionQueuePublishers : public DatabaseTable {
                              ContributionQueuePublishersListCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_CONTRIBUTION_QUEUE_PUBLISHERS_H_

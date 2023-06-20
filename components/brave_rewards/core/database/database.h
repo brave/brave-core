@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 #include "base/functional/callback_forward.h"
-#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_balance_report.h"
@@ -35,14 +34,11 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace database {
+namespace brave_rewards::internal::database {
 
 class Database {
  public:
-  explicit Database(LedgerImpl& ledger);
+  Database();
   virtual ~Database();
 
   void Initialize(LegacyResultCallback callback);
@@ -351,7 +347,6 @@ class Database {
       GetUnblindedTokenListCallback callback);
 
  private:
-  const raw_ref<LedgerImpl> ledger_;
   DatabaseInitialize initialize_;
   DatabaseActivityInfo activity_info_;
   DatabaseBalanceReport balance_report_;
@@ -372,7 +367,6 @@ class Database {
   DatabaseUnblindedToken unblinded_token_;
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_H_

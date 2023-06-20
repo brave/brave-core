@@ -10,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
 
@@ -166,20 +165,13 @@
 //   }
 // ]
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
 using GetCapabilitiesCallback =
     base::OnceCallback<void(mojom::Result, internal::uphold::Capabilities)>;
 
 class GetCapabilities {
  public:
-  explicit GetCapabilities(LedgerImpl& ledger);
-  ~GetCapabilities();
-
   void Request(const std::string& token, GetCapabilitiesCallback callback);
 
  private:
@@ -197,12 +189,8 @@ class GetCapabilities {
       const mojom::UrlResponse& response);
 
   CapabilityMap ParseBody(const std::string& body);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::uphold
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_GET_CAPABILITIES_GET_CAPABILITIES_H_

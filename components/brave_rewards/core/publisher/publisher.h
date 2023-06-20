@@ -11,23 +11,15 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 class Publisher {
  public:
-  explicit Publisher(LedgerImpl& ledger);
-
-  ~Publisher();
-
   bool ShouldFetchServerPublisherInfo(mojom::ServerPublisherInfo* server_info);
 
   void FetchServerPublisherInfo(
@@ -197,7 +189,6 @@ class Publisher {
       bool use_prefix_list,
       database::GetServerPublisherInfoCallback callback);
 
-  const raw_ref<LedgerImpl> ledger_;
   PublisherPrefixListUpdater prefix_list_updater_;
   ServerPublisherFetcher server_publisher_fetcher_;
 
@@ -207,7 +198,6 @@ class Publisher {
   FRIEND_TEST_ALL_PREFIXES(PublisherTest, synopsisNormalizerInternal);
 };
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_H_

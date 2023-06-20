@@ -30,10 +30,7 @@
 // }
 // clang-format on
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostOAuthUphold;
 
@@ -48,8 +45,7 @@ class PostOAuthUphold final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  PostOAuthUphold(LedgerImpl& ledger, std::string&& code);
-  ~PostOAuthUphold() override;
+  explicit PostOAuthUphold(std::string&& code);
 
  private:
   absl::optional<std::string> Url() const override;
@@ -62,7 +58,6 @@ class PostOAuthUphold final : public RequestBuilder,
   std::string code_;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_UPHOLD_POST_OAUTH_POST_OAUTH_UPHOLD_H_

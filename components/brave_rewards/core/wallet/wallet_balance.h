@@ -9,19 +9,12 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace wallet {
+namespace brave_rewards::internal::wallet {
 
 class WalletBalance {
  public:
-  explicit WalletBalance(LedgerImpl& ledger);
-  ~WalletBalance();
-
   void Fetch(FetchBalanceCallback callback);
 
  private:
@@ -33,10 +26,7 @@ class WalletBalance {
                                     FetchBalanceCallback callback,
                                     mojom::Result result,
                                     double balance);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace wallet
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::wallet
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_BALANCE_H_

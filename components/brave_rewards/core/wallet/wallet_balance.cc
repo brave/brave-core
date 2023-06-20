@@ -12,36 +12,33 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal::wallet {
 
 namespace {
-std::string GetConnectedWalletType(LedgerImpl& ledger) {
-  return GetWalletIf(ledger, constant::kWalletBitflyer,
+std::string GetConnectedWalletType() {
+  return GetWalletIf(constant::kWalletBitflyer,
                      {mojom::WalletStatus::kConnected})
              ? constant::kWalletBitflyer
-         : GetWalletIf(ledger, constant::kWalletGemini,
+         : GetWalletIf(constant::kWalletGemini,
                        {mojom::WalletStatus::kConnected})
              ? constant::kWalletGemini
-         : GetWalletIf(ledger, constant::kWalletUphold,
+         : GetWalletIf(constant::kWalletUphold,
                        {mojom::WalletStatus::kConnected})
              ? constant::kWalletUphold
              : "";
 }
 }  // namespace
 
-WalletBalance::WalletBalance(LedgerImpl& ledger) : ledger_(ledger) {}
-
-WalletBalance::~WalletBalance() = default;
-
 void WalletBalance::Fetch(FetchBalanceCallback callback) {
   auto tokens_callback =
       base::BindOnce(&WalletBalance::OnGetUnblindedTokens,
                      base::Unretained(this), std::move(callback));
 
-  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
+  ledger().database()->GetSpendableUnblindedTokensByBatchTypes(
       {mojom::CredsBatchType::PROMOTION},
       [callback = std::make_shared<decltype(tokens_callback)>(std::move(
            tokens_callback))](std::vector<mojom::UnblindedTokenPtr> list) {
@@ -61,16 +58,15 @@ void WalletBalance::OnGetUnblindedTokens(
   balance->total = total;
   balance->wallets.emplace(constant::kWalletUnBlinded, balance->total);
 
-  const auto wallet_type = GetConnectedWalletType(*ledger_);
+  const auto wallet_type = GetConnectedWalletType();
   if (wallet_type.empty()) {
     return std::move(callback).Run(std::move(balance));
   }
 
   wallet::FetchBalance(
-      *ledger_, wallet_type,
-      base::BindOnce(&WalletBalance::OnFetchExternalWalletBalance,
-                     base::Unretained(this), wallet_type, std::move(balance),
-                     std::move(callback)));
+      wallet_type, base::BindOnce(&WalletBalance::OnFetchExternalWalletBalance,
+                                  base::Unretained(this), wallet_type,
+                                  std::move(balance), std::move(callback)));
 }
 
 void WalletBalance::OnFetchExternalWalletBalance(const std::string& wallet_type,

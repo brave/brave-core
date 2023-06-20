@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
@@ -27,13 +28,7 @@
 
 namespace brave_rewards::internal::uphold {
 
-Uphold::Uphold(LedgerImpl& ledger)
-    : ledger_(ledger),
-      card_(ledger),
-      connect_wallet_(ledger),
-      get_wallet_(ledger),
-      transfer_(ledger),
-      uphold_server_(ledger) {}
+Uphold::Uphold() = default;
 
 Uphold::~Uphold() = default;
 
@@ -74,7 +69,7 @@ void Uphold::ContributionCompleted(LegacyResultCallback callback,
     SaveTransferFee(contribution_id, fee);
 
     if (!publisher_key.empty()) {
-      ledger_->database()->UpdateContributionInfoContributedAmount(
+      ledger().database()->UpdateContributionInfoContributedAmount(
           contribution_id, publisher_key, callback);
       return;
     }
@@ -226,26 +221,26 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
 }
 
 mojom::ExternalWalletPtr Uphold::GetWallet() {
-  return wallet::GetWallet(*ledger_, constant::kWalletUphold);
+  return wallet::GetWallet(constant::kWalletUphold);
 }
 
 mojom::ExternalWalletPtr Uphold::GetWalletIf(
     const std::set<mojom::WalletStatus>& statuses) {
-  return wallet::GetWalletIf(*ledger_, constant::kWalletUphold, statuses);
+  return wallet::GetWalletIf(constant::kWalletUphold, statuses);
 }
 
 bool Uphold::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return wallet::SetWallet(*ledger_, std::move(wallet));
+  return wallet::SetWallet(std::move(wallet));
 }
 
 mojom::ExternalWalletPtr Uphold::TransitionWallet(
     mojom::ExternalWalletPtr wallet,
     mojom::WalletStatus to) {
-  return wallet::TransitionWallet(*ledger_, std::move(wallet), to);
+  return wallet::TransitionWallet(std::move(wallet), to);
 }
 
 bool Uphold::LogOutWallet(const std::string& notification) {
-  return wallet::LogOutWallet(*ledger_, constant::kWalletUphold, notification);
+  return wallet::LogOutWallet(constant::kWalletUphold, notification);
 }
 
 void Uphold::RemoveTransferFee(const std::string& contribution_id) {

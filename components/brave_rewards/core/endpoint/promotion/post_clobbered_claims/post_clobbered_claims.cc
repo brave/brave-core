@@ -9,18 +9,12 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-PostClobberedClaims::PostClobberedClaims(LedgerImpl& ledger)
-    : ledger_(ledger) {}
-
-PostClobberedClaims::~PostClobberedClaims() = default;
+namespace brave_rewards::internal::endpoint::promotion {
 
 std::string PostClobberedClaims::GetUrl() {
   return GetServerUrl("/v2//promotions/reportclobberedclaims");
@@ -66,7 +60,7 @@ void PostClobberedClaims::Request(base::Value::List corrupted_claims,
   request->content = GeneratePayload(std::move(corrupted_claims));
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
+  ledger().LoadURL(std::move(request), url_callback);
 }
 
 void PostClobberedClaims::OnRequest(mojom::UrlResponsePtr response,
@@ -76,6 +70,4 @@ void PostClobberedClaims::OnRequest(mojom::UrlResponsePtr response,
   callback(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

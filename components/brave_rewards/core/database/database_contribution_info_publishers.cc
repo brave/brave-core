@@ -10,24 +10,17 @@
 #include "brave/components/brave_rewards/core/database/database_contribution_info_publishers.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
 const char kTableName[] = "contribution_info_publishers";
 
 }  // namespace
-
-DatabaseContributionInfoPublishers::DatabaseContributionInfoPublishers(
-    LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
-
-DatabaseContributionInfoPublishers::~DatabaseContributionInfoPublishers() =
-    default;
 
 void DatabaseContributionInfoPublishers::InsertOrUpdate(
     mojom::DBTransaction* transaction,
@@ -89,7 +82,7 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
       &DatabaseContributionInfoPublishers::OnGetRecordByContributionList, this,
       _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
@@ -159,7 +152,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
       &DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap,
       this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
@@ -225,8 +218,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

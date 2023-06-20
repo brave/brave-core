@@ -10,22 +10,17 @@
 #include "brave/components/brave_rewards/core/database/database_sku_order.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
 const char kTableName[] = "sku_order";
 
 }  // namespace
-
-DatabaseSKUOrder::DatabaseSKUOrder(LedgerImpl& ledger)
-    : DatabaseTable(ledger), items_(ledger) {}
-
-DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
 void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
                                       LegacyResultCallback callback) {
@@ -61,7 +56,7 @@ void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
@@ -89,7 +84,7 @@ void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::GetRecord(const std::string& order_id,
@@ -126,7 +121,7 @@ void DatabaseSKUOrder::GetRecord(const std::string& order_id,
   auto transaction_callback =
       std::bind(&DatabaseSKUOrder::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::OnGetRecord(mojom::DBCommandResponsePtr response,
@@ -209,7 +204,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
   auto transaction_callback =
       std::bind(&DatabaseSKUOrder::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
@@ -239,8 +234,7 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

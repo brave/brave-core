@@ -12,6 +12,7 @@
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 namespace brave_rewards::internal {
 
@@ -30,7 +31,7 @@ void GeminiTransfer::CommitTransaction(
   DCHECK(!transaction->transaction_id.empty());
 
   const auto wallet =
-      ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
+      ledger().gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
@@ -39,7 +40,7 @@ void GeminiTransfer::CommitTransaction(
       base::BindOnce(&GeminiTransfer::OnCommitTransaction,
                      base::Unretained(this), std::move(callback));
 
-  RequestFor<PostCommitTransactionGemini>(*ledger_, std::move(wallet->token),
+  RequestFor<PostCommitTransactionGemini>(std::move(wallet->token),
                                           std::move(wallet->address),
                                           std::move(transaction))
       .Send(std::move(on_commit_transaction));
@@ -48,7 +49,7 @@ void GeminiTransfer::CommitTransaction(
 void GeminiTransfer::OnCommitTransaction(
     ResultCallback callback,
     endpoints::PostCommitTransactionGemini::Result&& result) const {
-  if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected})) {
+  if (!ledger().gemini()->GetWalletIf({mojom::WalletStatus::kConnected})) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
@@ -58,7 +59,7 @@ void GeminiTransfer::OnCommitTransaction(
         return std::move(callback).Run(
             mojom::Result::RETRY_PENDING_TRANSACTION_LONG);
       case PostCommitTransactionGemini::Error::kAccessTokenExpired:
-        if (!ledger_->gemini()->LogOutWallet()) {
+        if (!ledger().gemini()->LogOutWallet()) {
           BLOG(0, "Failed to disconnect " << constant::kWalletGemini
                                           << " wallet!");
         }

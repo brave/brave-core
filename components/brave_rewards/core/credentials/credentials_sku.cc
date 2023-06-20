@@ -18,6 +18,7 @@
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 using std::placeholders::_1;
 
@@ -31,21 +32,21 @@ bool IsPublicKeyValid(const std::string& public_key) {
   }
 
   std::vector<std::string> keys;
-  if (_environment == mojom::Environment::PRODUCTION) {
+  if (ledger().GetEnvironment() == mojom::Environment::PRODUCTION) {
     keys = {
         "yr4w9Y0XZQISBOToATNEl5ADspDUgm7cBSOhfYgPWx4=",  // AC
         "PGLvfpIn8QXuQJEtv2ViQSWw2PppkhexKr1mlvwCpnM="   // User funds
     };
   }
 
-  if (_environment == mojom::Environment::STAGING) {
+  if (ledger().GetEnvironment() == mojom::Environment::STAGING) {
     keys = {
         "mMMWZrWPlO5b9IB8vF5kUJW4f7ULH1wuEop3NOYqNW0=",  // AC
         "CMezK92X5wmYHVYpr22QhNsTTq6trA/N9Alw+4cKyUY="   // User funds
     };
   }
 
-  if (_environment == mojom::Environment::DEVELOPMENT) {
+  if (ledger().GetEnvironment() == mojom::Environment::DEVELOPMENT) {
     keys = {
         "RhfxGp4pT0Kqe2zx4+q+L6lwC3G9v3fIj1L+PbINNzw=",  // AC
         "nsSoWgGMJpIiCGVdYrne03ldQ4zqZOMERVD5eSPhhxc="   // User funds
@@ -72,11 +73,6 @@ std::string ConvertItemTypeToString(const std::string& type) {
 
 namespace credential {
 
-CredentialsSKU::CredentialsSKU(LedgerImpl& ledger)
-    : ledger_(ledger), common_(ledger), payment_server_(ledger) {}
-
-CredentialsSKU::~CredentialsSKU() = default;
-
 void CredentialsSKU::Start(const CredentialsTrigger& trigger,
                            ResultCallback callback) {
   DCHECK_EQ(trigger.data.size(), 2ul);
@@ -90,7 +86,7 @@ void CredentialsSKU::Start(const CredentialsTrigger& trigger,
       base::BindOnce(&CredentialsSKU::OnStart, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->GetCredsBatchByTrigger(
+  ledger().database()->GetCredsBatchByTrigger(
       trigger.id, trigger.type,
       [callback = std::make_shared<decltype(get_callback)>(
            std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -116,7 +112,7 @@ void CredentialsSKU::OnStart(ResultCallback callback,
           base::BindOnce(&CredentialsSKU::Claim, base::Unretained(this),
                          std::move(callback), trigger);
 
-      ledger_->database()->GetCredsBatchByTrigger(
+      ledger().database()->GetCredsBatchByTrigger(
           trigger.id, trigger.type,
           [callback = std::make_shared<decltype(get_callback)>(
                std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -133,7 +129,7 @@ void CredentialsSKU::OnStart(ResultCallback callback,
           base::BindOnce(&CredentialsSKU::Unblind, base::Unretained(this),
                          std::move(callback), trigger);
 
-      ledger_->database()->GetCredsBatchByTrigger(
+      ledger().database()->GetCredsBatchByTrigger(
           trigger.id, trigger.type,
           [callback = std::make_shared<decltype(get_callback)>(
                std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -173,7 +169,7 @@ void CredentialsSKU::OnBlind(ResultCallback callback,
       base::BindOnce(&CredentialsSKU::Claim, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->GetCredsBatchByTrigger(
+  ledger().database()->GetCredsBatchByTrigger(
       trigger.id, trigger.type,
       [callback = std::make_shared<decltype(get_callback)>(
            std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -209,7 +205,7 @@ void CredentialsSKU::Claim(ResultCallback callback,
         base::BindOnce(&CredentialsSKU::RetryPreviousStepSaved,
                        base::Unretained(this), std::move(callback));
 
-    ledger_->database()->UpdateCredsBatchStatus(
+    ledger().database()->UpdateCredsBatchStatus(
         trigger.id, trigger.type, mojom::CredsBatchStatus::NONE,
         [callback = std::make_shared<decltype(save_callback)>(
              std::move(save_callback))](mojom::Result result) {
@@ -242,7 +238,7 @@ void CredentialsSKU::OnClaim(ResultCallback callback,
       base::BindOnce(&CredentialsSKU::ClaimStatusSaved, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->UpdateCredsBatchStatus(
+  ledger().database()->UpdateCredsBatchStatus(
       trigger.id, trigger.type, mojom::CredsBatchStatus::CLAIMED,
       [callback =
            std::make_shared<decltype(save_callback)>(std::move(save_callback))](
@@ -288,7 +284,7 @@ void CredentialsSKU::OnFetchSignedCreds(ResultCallback callback,
       base::BindOnce(&CredentialsSKU::SignedCredsSaved, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->SaveSignedCreds(
+  ledger().database()->SaveSignedCreds(
       std::move(batch), [callback = std::make_shared<decltype(get_callback)>(
                              std::move(get_callback))](mojom::Result result) {
         std::move(*callback).Run(result);
@@ -308,7 +304,7 @@ void CredentialsSKU::SignedCredsSaved(ResultCallback callback,
       base::BindOnce(&CredentialsSKU::Unblind, base::Unretained(this),
                      std::move(callback), trigger);
 
-  ledger_->database()->GetCredsBatchByTrigger(
+  ledger().database()->GetCredsBatchByTrigger(
       trigger.id, trigger.type,
       [callback = std::make_shared<decltype(get_callback)>(
            std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
@@ -332,7 +328,7 @@ void CredentialsSKU::Unblind(ResultCallback callback,
   }
 
   std::vector<std::string> unblinded_encoded_creds;
-  if (is_testing) {
+  if (ledger().GetTesting()) {
     unblinded_encoded_creds = UnBlindCredsMock(*creds);
   } else {
     auto result = UnBlindCreds(*creds);
@@ -364,7 +360,7 @@ void CredentialsSKU::Completed(ResultCallback callback,
     return;
   }
 
-  ledger_->client()->UnblindedTokensReady();
+  ledger().client()->UnblindedTokensReady();
   std::move(callback).Run(result);
 }
 
@@ -405,7 +401,7 @@ void CredentialsSKU::OnRedeemTokens(
     id = redeem.order_id;
   }
 
-  ledger_->database()->MarkUnblindedTokensAsSpent(token_id_list, redeem.type,
+  ledger().database()->MarkUnblindedTokensAsSpent(token_id_list, redeem.type,
                                                   id, callback);
 }
 

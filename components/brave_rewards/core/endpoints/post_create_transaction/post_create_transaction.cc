@@ -8,13 +8,12 @@
 #include <utility>
 
 namespace brave_rewards::internal::endpoints {
+
 PostCreateTransaction::PostCreateTransaction(
-    LedgerImpl& ledger,
     std::string&& token,
     std::string&& address,
     mojom::ExternalTransactionPtr transaction)
-    : RequestBuilder(ledger),
-      token_(std::move(token)),
+    : token_(std::move(token)),
       address_(std::move(address)),
       transaction_(std::move(transaction)) {
   DCHECK(transaction_);

@@ -14,6 +14,7 @@
 #include "brave/components/brave_rewards/core/common/security_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
@@ -80,17 +81,15 @@ Result PatchWallets::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-PatchWallets::PatchWallets(LedgerImpl& ledger, std::string&& geo_country)
-    : RequestBuilder(ledger), geo_country_(std::move(geo_country)) {}
-
-PatchWallets::~PatchWallets() = default;
+PatchWallets::PatchWallets(std::string&& geo_country)
+    : geo_country_(std::move(geo_country)) {}
 
 const char* PatchWallets::Path() const {
   return "/v4/wallets/%s";
 }
 
 absl::optional<std::string> PatchWallets::Url() const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;
@@ -108,7 +107,7 @@ mojom::UrlMethod PatchWallets::Method() const {
 
 absl::optional<std::vector<std::string>> PatchWallets::Headers(
     const std::string& content) const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;

@@ -11,19 +11,15 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 enum class GetSKUTransactionError { kDatabaseError, kTransactionNotFound };
 
 using GetSKUTransactionCallback = std::function<void(
     base::expected<mojom::SKUTransactionPtr, GetSKUTransactionError>)>;
 
-class DatabaseSKUTransaction : public DatabaseTable {
+class DatabaseSKUTransaction {
  public:
-  explicit DatabaseSKUTransaction(LedgerImpl& ledger);
-  ~DatabaseSKUTransaction() override;
-
   void InsertOrUpdate(mojom::SKUTransactionPtr info,
                       LegacyResultCallback callback);
 
@@ -39,7 +35,6 @@ class DatabaseSKUTransaction : public DatabaseTable {
                    GetSKUTransactionCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SKU_TRANSACTION_H_

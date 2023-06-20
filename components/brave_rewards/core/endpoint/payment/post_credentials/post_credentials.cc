@@ -11,15 +11,10 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
-
-PostCredentials::PostCredentials(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PostCredentials::~PostCredentials() = default;
+namespace brave_rewards::internal::endpoint::payment {
 
 std::string PostCredentials::GetUrl(const std::string& order_id) {
   const std::string path =
@@ -80,7 +75,7 @@ void PostCredentials::Request(const std::string& order_id,
   request->content = GeneratePayload(item_id, type, std::move(blinded_creds));
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostCredentials::OnRequest(PostCredentialsCallback callback,
@@ -90,6 +85,4 @@ void PostCredentials::OnRequest(PostCredentialsCallback callback,
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
-}  // namespace payment
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::payment

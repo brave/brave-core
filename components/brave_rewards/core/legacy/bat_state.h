@@ -10,20 +10,14 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
 #include "brave/components/brave_rewards/core/legacy/wallet_info_properties.h"
 
 namespace brave_rewards::internal {
 
-class LedgerImpl;
-
 class LegacyBatState {
  public:
-  explicit LegacyBatState(LedgerImpl& ledger);
-  ~LegacyBatState();
-
   void Load(LegacyResultCallback callback);
 
   bool GetRewardsMainEnabled() const;
@@ -51,7 +45,6 @@ class LegacyBatState {
               mojom::Result result,
               const std::string& data);
 
-  const raw_ref<LedgerImpl> ledger_;
   ClientProperties state_;
 };
 

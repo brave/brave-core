@@ -10,14 +10,11 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::uphold {
-
-PatchCard::PatchCard(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PatchCard::~PatchCard() = default;
 
 std::string PatchCard::GetUrl(const std::string& address) {
   return GetServerUrl("/v0/me/cards/" + address);
@@ -60,7 +57,7 @@ void PatchCard::Request(const std::string& token,
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PATCH;
 
-  ledger_->LoadURL(std::move(request),
+  ledger().LoadURL(std::move(request),
                    base::BindOnce(&PatchCard::OnRequest, base::Unretained(this),
                                   std::move(callback)));
 }

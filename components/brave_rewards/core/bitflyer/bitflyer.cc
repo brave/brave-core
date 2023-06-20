@@ -14,6 +14,7 @@
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_server.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/bitflyer_transfer.h"
@@ -23,12 +24,7 @@
 
 namespace brave_rewards::internal::bitflyer {
 
-Bitflyer::Bitflyer(LedgerImpl& ledger)
-    : ledger_(ledger),
-      connect_wallet_(ledger),
-      get_wallet_(ledger),
-      transfer_(ledger),
-      bitflyer_server_(ledger) {}
+Bitflyer::Bitflyer() = default;
 
 Bitflyer::~Bitflyer() = default;
 
@@ -69,7 +65,7 @@ void Bitflyer::ContributionCompleted(LegacyResultCallback callback,
     SaveTransferFee(contribution_id, fee);
 
     if (!publisher_key.empty()) {
-      ledger_->database()->UpdateContributionInfoContributedAmount(
+      ledger().database()->UpdateContributionInfoContributedAmount(
           contribution_id, publisher_key, callback);
       return;
     }
@@ -212,20 +208,20 @@ void Bitflyer::OnTransferFeeTimerElapsed(const std::string& id,
 }
 
 mojom::ExternalWalletPtr Bitflyer::GetWallet() {
-  return wallet::GetWallet(*ledger_, constant::kWalletBitflyer);
+  return wallet::GetWallet(constant::kWalletBitflyer);
 }
 
 mojom::ExternalWalletPtr Bitflyer::GetWalletIf(
     const std::set<mojom::WalletStatus>& statuses) {
-  return wallet::GetWalletIf(*ledger_, constant::kWalletBitflyer, statuses);
+  return wallet::GetWalletIf(constant::kWalletBitflyer, statuses);
 }
 
 bool Bitflyer::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return wallet::SetWallet(*ledger_, std::move(wallet));
+  return wallet::SetWallet(std::move(wallet));
 }
 
 bool Bitflyer::LogOutWallet() {
-  return wallet::LogOutWallet(*ledger_, constant::kWalletBitflyer);
+  return wallet::LogOutWallet(constant::kWalletBitflyer);
 }
 
 void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {

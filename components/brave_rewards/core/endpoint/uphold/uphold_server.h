@@ -14,16 +14,10 @@
 #include "brave/components/brave_rewards/core/endpoint/uphold/post_cards/post_cards.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
 class UpholdServer {
  public:
-  explicit UpholdServer(LedgerImpl& ledger);
-  ~UpholdServer();
-
   uphold::GetCapabilities& get_capabilities() { return get_capabilities_; }
 
   uphold::GetCards& get_cards() { return get_cards_; }
@@ -45,7 +39,6 @@ class UpholdServer {
   uphold::PatchCard patch_card_;
 };
 
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_UPHOLD_SERVER_H_
