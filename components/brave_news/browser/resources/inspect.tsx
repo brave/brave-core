@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 
-import { BraveNewsController, Channel,FeedItem } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
+import { BraveNewsController, Channel, FeedItem } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import styled from 'styled-components'
 import { Info, generateFeed } from './buildFeed'
 import Elements from './Elements'
@@ -75,7 +75,7 @@ function App() {
       }}
     >
       <Container>
-        <Elements elements={feedElements} />
+        <Elements elements={feedElements} signals={info?.signals ?? {}} />
       </Container>
     </div>
   )

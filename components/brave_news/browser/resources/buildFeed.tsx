@@ -13,10 +13,10 @@ const inlineDiscoveryRatio = 0.25
 const specialCardEveryN = 2
 const adsToDiscoverRatio = 0.5
 
-const sourceSubscribedMin = 0.05
+const sourceSubscribedMin = 1/1e5
 const sourceSubscribedMax = 1
 
-const channelSubscribedMin = 0.75
+const channelSubscribedMin = 0.01
 const channelSubscribedMax = 1
 const channelVisitsMin = 0.5;
 const channelVisitsMax = 1;

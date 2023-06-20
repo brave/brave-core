@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {
-  FeedItemMetadata
-} from '../../../../../out/Component/gen/brave/components/brave_news/common/brave_news.mojom.m'
+  FeedItemMetadata, Signal
+} from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import Card from './card'
 import * as React from 'react'
 import Image from './Image'
@@ -9,10 +9,14 @@ import Image from './Image'
 const Row = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 16px;
 `
 
 const ImageContainer = styled.div`
-  width: 128px;
+  --width: 128px;
+
+  min-width: var(--width);
+  max-width: var(--width);
 `
 
 const Description = styled.p`
@@ -20,7 +24,7 @@ const Description = styled.p`
   overflow: hidden;
 `
 
-export default function InlineCard({ article, isDiscover }: { article: FeedItemMetadata, isDiscover: boolean }) {
+export default function InlineCard({ article, isDiscover, signal }: { article: FeedItemMetadata, isDiscover: boolean, signal: Signal }) {
   return (
     <Card onClick={() => window.open(article.url.url, '_blank')}>
       <Row>
@@ -31,6 +35,9 @@ export default function InlineCard({ article, isDiscover }: { article: FeedItemM
           Inline:
           <b>{article.title}</b> ({isDiscover ? 'discovering' : 'normal'})
           <div>Publisher: {article.publisherName}</div>
+          <pre>
+            ({JSON.stringify(signal, null, 4)})
+          </pre>
           <Description>{article.description}</Description>
         </div>
       </Row>

@@ -1,14 +1,16 @@
 import * as React from 'react'
-import { useUnpaddedImageUrl } from '../../../brave_new_tab_ui/components/default/braveNews/useUnpaddedImageUrl'
+import { useLazyUnpaddedImageUrl } from '../../../brave_new_tab_ui/components/default/braveNews/useUnpaddedImageUrl'
 import styled from 'styled-components'
 
 const Img = styled('img')`
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 `
 
 export default function Image(props: { url: string }) {
-  if (true || !props.url) return null
+  if (!props.url) return null
 
-  const src = useUnpaddedImageUrl(props.url)
-  return <Img src={src} />
+  const { setElementRef, url } = useLazyUnpaddedImageUrl(props.url, {})
+  return <Img ref={setElementRef} src={url} />
 }
