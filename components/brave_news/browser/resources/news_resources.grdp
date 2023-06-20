@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-    <include name="IDR_BRAVE_NEWS_INSPECT_HTML" file="../brave_news/browser/resources/inspect.html" type="BINDATA" />
+    <include name="IDR_BRAVE_NEWS_INTERNALS_HTML" file="../brave_news/browser/resources/internals.html" type="BINDATA" />
 </grit-part>

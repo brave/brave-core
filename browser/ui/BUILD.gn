@@ -945,8 +945,8 @@ source_set("ui") {
       "webui/brave_wallet/wallet_page_ui.h",
       "webui/brave_wallet/wallet_panel_ui.cc",
       "webui/brave_wallet/wallet_panel_ui.h",
-      "webui/brave_news_inspect/brave_news_inspect_ui.cc",
-      "webui/brave_news_inspect/brave_news_inspect_ui.h",
+      "webui/brave_news_internals/brave_news_internals_ui.cc",
+      "webui/brave_news_internals/brave_news_internals_ui.h",
     ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",

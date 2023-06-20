@@ -14,7 +14,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
-#include "brave/browser/ui/webui/brave_news_inspect/brave_news_inspect_ui.h"
+#include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
@@ -152,8 +152,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new brave_rewards::TipPanelUI(web_ui);
   } else if (base::FeatureList::IsEnabled(
                  brave_news::features::kBraveNewsFeedUpdate) &&
-             host == kBraveNewsInspectHost) {
-    return new BraveNewsInspectUI(web_ui, url.host());
+             host == kBraveNewsInternalsHost) {
+    return new BraveNewsInternalsUI(web_ui, url.host());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
@@ -206,7 +206,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if !BUILDFLAG(IS_ANDROID)
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
-       url.host_piece() == kBraveNewsInspectHost) ||
+       url.host_piece() == kBraveNewsInternalsHost) ||
 #endif
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost &&

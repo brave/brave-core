@@ -34,7 +34,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
-#include "brave/browser/ui/webui/brave_news_inspect/brave_news_inspect_ui.h"
+#include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_federated/features.h"
@@ -560,7 +560,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 
   if (base::FeatureList::IsEnabled(
           brave_news::features::kBraveNewsFeedUpdate)) {
-    registry.ForWebUI<BraveNewsInspectUI>()
+    registry.ForWebUI<BraveNewsInternalsUI>()
         .Add<brave_news::mojom::BraveNewsController>();
   }
 }

@@ -66,7 +66,7 @@ repack("resources") {
       "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
       "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
       "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
-      "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_inspect_generated.pak",
+      "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak",
     ]
   }
 

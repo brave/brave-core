@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEWS_INSPECT_BRAVE_NEWS_INSPECT_UI_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEWS_INSPECT_BRAVE_NEWS_INSPECT_UI_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEWS_INTERNALS_BRAVE_NEWS_INTERNALS_UI_H_
+#define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEWS_INTERNALS_BRAVE_NEWS_INTERNALS_UI_H_
 
 #include <memory>
 
@@ -14,12 +14,12 @@
 
 class Browser;
 
-class BraveNewsInspectUI : public content::WebUIController {
+class BraveNewsInternalsUI : public content::WebUIController {
  public:
-  explicit BraveNewsInspectUI(content::WebUI* web_ui, const std::string& host);
-  BraveNewsInspectUI(const BraveNewsInspectUI&) = delete;
-  BraveNewsInspectUI& operator=(const BraveNewsInspectUI&) = delete;
-  ~BraveNewsInspectUI() override;
+  explicit BraveNewsInternalsUI(content::WebUI* web_ui, const std::string& host);
+  BraveNewsInternalsUI(const BraveNewsInternalsUI&) = delete;
+  BraveNewsInternalsUI& operator=(const BraveNewsInternalsUI&) = delete;
+  ~BraveNewsInternalsUI() override;
 
   void BindInterface(
       mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
@@ -28,4 +28,4 @@ class BraveNewsInspectUI : public content::WebUIController {
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_NEWS_INSPECT_BRAVE_NEWS_INSPECT_UI_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_NEWS_INTERNALS_BRAVE_NEWS_INTERNALS_UI_H_
