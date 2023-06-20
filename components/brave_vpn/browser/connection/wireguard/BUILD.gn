@@ -28,6 +28,6 @@ group("unit_tests") {
   testonly = true
   deps = []
   if (is_win) {
-    deps += [ "win/brave_vpn_wireguard_service/interactive:unit_tests" ]
+    # deps += [ "win/brave_vpn_wireguard_service/interactive:unit_tests" ]
   }
 }

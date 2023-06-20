@@ -12,7 +12,11 @@
 #include "base/win/registry.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/common/win/brave_windows_service_watcher.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/brave_vpn_menu_model.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/interactive/status_icon/brave_vpn_menu_model.h"
+
+namespace ui {
+class SimpleMenuModel;
+}  // namespace ui
 
 namespace brave_vpn {
 
@@ -31,6 +35,7 @@ class InteractiveMain : public BraveVpnMenuModel::Delegate {
   void SignalExit();
   // BraveVpnMenuModel::Delegate
   void ExecuteCommand(int command_id, int event_flags) override;
+  void OnMenuWillShow(ui::SimpleMenuModel* source) override;
 
  private:
   friend class base::NoDestructor<InteractiveMain>;

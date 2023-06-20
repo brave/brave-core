@@ -6,19 +6,11 @@
 source_set("interactive") {
   sources = [
     "brave_vpn_interactive_strings_en.h",
-    "brave_vpn_menu_model.cc",
-    "brave_vpn_menu_model.h",
     "brave_vpn_tray_command_ids.h",
     "interactive_main.cc",
     "interactive_main.h",
     "interactive_utils.cc",
     "interactive_utils.h",
-    "native_popup_menu_win.cc",
-    "native_popup_menu_win.h",
-    "status_icon_win.cc",
-    "status_icon_win.h",
-    "status_tray_win.cc",
-    "status_tray_win.h",
   ]
 
   public_deps = [ "//skia" ]
@@ -26,6 +18,7 @@ source_set("interactive") {
   deps = [
     "common",
     "resources",
+    "status_icon",
     "//base",
     "//brave/components/brave_vpn/browser/connection/common/win",
     "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common",
@@ -34,16 +27,4 @@ source_set("interactive") {
   ]
 
   libs = [ "Shell32.lib" ]
-}
-
-source_set("unit_tests") {
-  testonly = true
-
-  sources = [ "brave_vpn_menu_model_unittest.cc" ]
-  public_deps = [ "//skia" ]
-  deps = [
-    ":interactive",
-    "//testing/gtest",
-    "//ui/base",
-  ]
 }
