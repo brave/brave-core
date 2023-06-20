@@ -24,7 +24,7 @@ interface ThumbnailProps {
   thumbnailUrl: string | undefined
 }
 
-const StyledLink = styled(Link)<{}>`
+const StyledLink = styled(Link)`
   text-decoration: none;
   color: unset;
 `
@@ -42,7 +42,7 @@ const PlaylistContainer = styled.div<ThumbnailProps>`
     !p.isDefaultPlaylist &&
     !p.thumbnailUrl &&
     css`
-      background-color: ${color.light.container.highlight};
+      background-color: ${color.container.highlight};
     `}
 
   /* Playlist with Thumbnail*/
@@ -62,7 +62,7 @@ const PlaylistContainer = styled.div<ThumbnailProps>`
   gap: 16px;
 `
 
-const PlayLaterCardOverlay = styled.div<{}>`
+const PlayLaterCardOverlay = styled.div`
   position: absolute;
   top: 0;
   right: 0;
@@ -71,7 +71,7 @@ const PlayLaterCardOverlay = styled.div<{}>`
 
 const ColoredPlaylistInfo = styled(PlaylistInfo)<{ hasBackground: boolean }>`
   color: ${({ hasBackground }) =>
-    hasBackground ? color.dark.text.primary : color.light.text.primary};
+    hasBackground ? color.dark.text.primary : color.text.primary};
 `
 
 const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
@@ -79,7 +79,7 @@ const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
   ${p =>
     p.isDefaultPlaylist &&
     css`
-      background-color: ${color.light.interaction.buttonPrimaryBackground};
+      background-color: ${color.interaction.buttonPrimaryBackground};
       color: white;
     `}
 
@@ -88,7 +88,7 @@ const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
     !p.isDefaultPlaylist &&
     !p.thumbnailUrl &&
     css`
-      background-color: ${color.light.container.background};
+      background-color: ${color.container.background};
     `}
 
   /* Playlist with Thumbnail*/
@@ -121,9 +121,7 @@ function PlaylistThumbnail (props: ThumbnailProps) {
 
 // A card UI for representing a playlist.
 function PlaylistCard ({ playlist }: { playlist: PlaylistMojo.Playlist }) {
-  const isDefaultPlaylist = React.useMemo(() => {
-    return playlist.id === 'default'
-  }, [playlist])
+  const isDefaultPlaylist = playlist.id === 'default'
 
   const thumbnailUrl = React.useMemo(() => {
     if (!playlist.items) return undefined
@@ -132,9 +130,7 @@ function PlaylistCard ({ playlist }: { playlist: PlaylistMojo.Playlist }) {
       .url
   }, [playlist, playlist.items])
 
-  const hasBackground = React.useMemo(() => {
-    return isDefaultPlaylist || !!thumbnailUrl
-  }, [isDefaultPlaylist, thumbnailUrl])
+  const hasBackground = isDefaultPlaylist || !!thumbnailUrl
 
   const totalDuration = React.useMemo(() => {
     // TODO(sko) Duration value is not correct now.
@@ -171,7 +167,7 @@ function PlaylistCard ({ playlist }: { playlist: PlaylistMojo.Playlist }) {
   )
 }
 
-const PlaylistsCatalogFlexBox = styled.div<{}>`
+const PlaylistsCatalogFlexBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;

@@ -9,9 +9,6 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { BrowserRouter } from 'react-router-dom'
 
 import '@brave/leo/tokens/css/variables.css'
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
 
 import PlaylistsCatalog from '../components/playlistsCatalog'
 import store from '../store'
@@ -24,9 +21,7 @@ export default {
     (Story: any) => (
       <Provider store={store}>
         <BrowserRouter>
-          <BraveCoreThemeProvider dark={DarkTheme} light={Theme}>
-            <Story />
-          </BraveCoreThemeProvider>
+          <Story />
         </BrowserRouter>
       </Provider>
     ),

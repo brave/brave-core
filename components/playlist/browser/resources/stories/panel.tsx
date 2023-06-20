@@ -7,10 +7,7 @@ import * as React from 'react'
 import { Provider } from 'react-redux'
 import { withKnobs } from '@storybook/addon-knobs'
 
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
 import store from '../store'
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
 import { getAllActions } from '../api/getAllActions'
 import { mockData } from './mockData'
 import { BrowserRouter } from 'react-router-dom'
@@ -22,9 +19,7 @@ export default {
     (Story: any) => (
       <BrowserRouter>
         <Provider store={store}>
-          <BraveCoreThemeProvider dark={DarkTheme} light={Theme}>
-            <Story />
-          </BraveCoreThemeProvider>
+          <Story />
         </Provider>
       </BrowserRouter>
     ),
