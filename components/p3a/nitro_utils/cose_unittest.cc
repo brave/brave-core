@@ -116,7 +116,7 @@ constexpr char kExampleDocument[] =
 
 class CoseSign1Test : public testing::Test {
  public:
-  CoseSign1Test() {}
+  CoseSign1Test() = default;
 
  protected:
   std::vector<uint8_t> LoadExampleDocument() {
@@ -189,7 +189,7 @@ TEST_F(CoseSign1Test, BadSignature) {
                  parsed_document.GetArray().end() - 1,
                  std::back_inserter(doc_arr),
                  [](const cbor::Value& val) { return val.Clone(); });
-  doc_arr.push_back(cbor::Value("bad signature"));
+  doc_arr.emplace_back("bad signature");
 
   EXPECT_FALSE(
       cose_sign1.DecodeFromBytes(SerializeDocument(cbor::Value(doc_arr))));
