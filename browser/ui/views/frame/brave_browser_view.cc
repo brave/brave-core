@@ -422,7 +422,8 @@ void BraveBrowserView::HideReaderModeToolbar() {
 }
 
 void BraveBrowserView::OpenAiChatPanel() {
-  side_panel_coordinator()->Show(SidePanelEntryId::kChatUI);
+  SidePanelUI::GetSidePanelUIForBrowser(browser_.get())
+      ->Show(SidePanelEntryId::kChatUI);
 }
 
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)

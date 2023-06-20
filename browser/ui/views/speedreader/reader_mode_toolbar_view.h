@@ -8,13 +8,21 @@
 
 #include <memory>
 
-#include "content/public/browser/browser_context.h"
 #include "ui/views/controls/webview/webview.h"
+
+namespace content {
+class BrowserContext;
+}
 
 class ReaderModeToolbarView : public views::View {
  public:
   explicit ReaderModeToolbarView(content::BrowserContext* browser_context);
   ~ReaderModeToolbarView() override;
+
+  ReaderModeToolbarView(const ReaderModeToolbarView&) = delete;
+  ReaderModeToolbarView(ReaderModeToolbarView&&) = delete;
+  ReaderModeToolbarView& operator=(const ReaderModeToolbarView&) = delete;
+  ReaderModeToolbarView& operator=(ReaderModeToolbarView&&) = delete;
 
   content::WebContents* GetWebContentsForTesting();
 

@@ -23,8 +23,12 @@ class WebContents;
 
 namespace speedreader {
 
+// Browser-wide singleton that provides Text-to-speech functionality for
+// speedreader.
 class TtsPlayer {
  public:
+  // Delegate for getting a text content of the WebContents for playing.
+  // TtsPlayer owns this in unique_ptr.
   struct Delegate {
     virtual ~Delegate() = default;
 
@@ -47,6 +51,9 @@ class TtsPlayer {
     ~Observer() override = default;
   };
 
+  // Provides tts control fucntions for specified WebContents (provided by
+  // TtsPlayer::GetControllerFor). Controller is a part of TtsPlayer and has
+  // same lifetime.
   class Controller : public content::WebContentsObserver,
                      public content::UtteranceEventDelegate {
    public:

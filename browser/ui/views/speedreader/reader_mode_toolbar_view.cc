@@ -9,6 +9,7 @@
 
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "content/public/browser/browser_context.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "url/gurl.h"
