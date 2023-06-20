@@ -24,21 +24,18 @@ import {
   BookmarkBook,
   HistoryIcon
 } from 'brave-ui/components/icons'
-import BraveTalkItem from './braveTalkItem'
+
+import BraveTalkIcon from './braveTalkIcon'
 
 // Helpers
 import { getLocale } from '../../../../common/locale'
-import { DismissBraveTalkPromptPayload } from '../../../actions/new_tab_actions'
 
-export type OnDismissBraveTalkPrompt = (payload: DismissBraveTalkPromptPayload) => unknown
 export interface Props {
   textDirection: string
   supportsBraveTalk: boolean
-  showBraveTalkPrompt: boolean
   backgroundImageInfo: NewTab.BackgroundWallpaper | undefined
   showPhotoInfo: boolean
   onClickSettings: () => any
-  onDismissBraveTalkPrompt: OnDismissBraveTalkPrompt
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
@@ -85,8 +82,10 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
             <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
               <HistoryIcon />
             </IconLink>
-            {supportsBraveTalk &&
-              <BraveTalkItem {...this.props} />
+            { supportsBraveTalk &&
+              <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
+                <BraveTalkIcon />
+              </IconLink>
             }
           </Navigation>
         </S.GridItemNavigation>

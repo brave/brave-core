@@ -277,12 +277,6 @@
       <message name="IDS_BRAVE_TALK_PROMPT_TITLE" desc="Title for prompt about Brave Talk">
         You can start a private call in Brave.
       </message>
-      <message name="IDS_BRAVE_TALK_PROMPT_DESCRIPTION" desc="Description for prompt about Brave Talk">
-        Start unlimited calls with friends and colleagues in Brave Talk.
-      </message>
-      <message name="IDS_BRAVE_TALK_PROMPT_ACTION" desc="Button text for prompt about Brave Talk">
-        Try it out
-      </message>
 
       <message name="IDS_BRAVE_NEWS_TITLE" translateable="false" desc="Title for Brave News news feed section">
         Brave News
