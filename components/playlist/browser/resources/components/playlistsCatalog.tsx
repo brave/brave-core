@@ -124,11 +124,9 @@ function PlaylistCard ({ playlist }: { playlist: PlaylistMojo.Playlist }) {
   const isDefaultPlaylist = playlist.id === 'default'
 
   const thumbnailUrl = React.useMemo(() => {
-    if (!playlist.items) return undefined
-
     return playlist.items?.find(item => item.thumbnailPath?.url)?.thumbnailPath
       .url
-  }, [playlist, playlist.items])
+  }, [playlist])
 
   const hasBackground = isDefaultPlaylist || !!thumbnailUrl
 
@@ -137,12 +135,10 @@ function PlaylistCard ({ playlist }: { playlist: PlaylistMojo.Playlist }) {
     //  * We need to update duration when Playlist player plays a video
     //  * Check if duration is converted well. the duration value is formatted
     //    as string based on base::Time.
-    if (!playlist.items?.length) return 0
-
-    return playlist.items.reduce((sum, item) => {
+    return playlist.items?.reduce((sum, item) => {
       return sum + parseInt(item.duration)
     }, 0)
-  }, [playlist, playlist.items])
+  }, [playlist])
 
   return (
     <StyledLink to={`/playlist/${playlist.id}`}>

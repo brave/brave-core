@@ -52,7 +52,7 @@ export default function PlaylistInfo ({
       <PlaylistDetail>{itemCount} items</PlaylistDetail>
       <>{!!totalDuration && <PlaylistDetail>{totalDuration}</PlaylistDetail>}</>
       <>
-        {(itemCount ||
+        {(!!itemCount ||
           false) /* TODO(sko) We can't get the file size for now */ && (
           <PlaylistDetail>300 mb</PlaylistDetail>
         )}
