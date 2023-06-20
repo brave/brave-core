@@ -134,18 +134,6 @@ void NewTorConnectionForSite(Browser* browser) {
 #endif
 }
 
-void AddNewProfile() {
-  ProfilePicker::Show(ProfilePicker::Params::FromEntryPoint(
-      ProfilePicker::EntryPoint::kProfileMenuManageProfiles));
-}
-
-void OpenGuestProfile() {
-  PrefService* service = g_browser_process->local_state();
-  DCHECK(service);
-  DCHECK(service->GetBoolean(prefs::kBrowserGuestModeEnabled));
-  profiles::SwitchToGuestProfile(base::DoNothing());
-}
-
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
