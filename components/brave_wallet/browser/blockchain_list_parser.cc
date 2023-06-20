@@ -17,6 +17,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
+namespace brave_wallet {
+
 namespace {
 
 bool ParseResultFromDict(const base::Value::Dict* response_dict,
@@ -71,16 +73,16 @@ std::string EmptyIfNull(const std::string* str) {
   return "";
 }
 
-absl::optional<brave_wallet::mojom::OnRampProvider> ParseProvider(
+absl::optional<mojom::OnRampProvider> ParseProvider(
     const std::string& provider_str) {
   if (provider_str == "ramp") {
-    return brave_wallet::mojom::OnRampProvider::kRamp;
+    return mojom::OnRampProvider::kRamp;
   } else if (provider_str == "sardine") {
-    return brave_wallet::mojom::OnRampProvider::kSardine;
+    return mojom::OnRampProvider::kSardine;
   } else if (provider_str == "transak") {
-    return brave_wallet::mojom::OnRampProvider::kTransak;
+    return mojom::OnRampProvider::kTransak;
   } else if (provider_str == "stripe") {
-    return brave_wallet::mojom::OnRampProvider::kStripe;
+    return mojom::OnRampProvider::kStripe;
   }
 
   return absl::nullopt;
@@ -88,11 +90,11 @@ absl::optional<brave_wallet::mojom::OnRampProvider> ParseProvider(
 
 void AddDappListToMap(
     const std::string& key,
-    const brave_wallet::blockchain_lists::DappList& dapp_list_from_component,
-    brave_wallet::DappListMap* dapp_lists) {
-  std::vector<brave_wallet::mojom::DappPtr> dapp_list;
+    const blockchain_lists::DappList& dapp_list_from_component,
+    DappListMap* dapp_lists) {
+  std::vector<mojom::DappPtr> dapp_list;
   for (const auto& dapp_from_component : dapp_list_from_component.results) {
-    auto dapp = brave_wallet::mojom::Dapp::New();
+    auto dapp = mojom::Dapp::New();
     dapp->range = dapp_list_from_component.range;
 
     uint32_t dapp_id;
@@ -149,15 +151,13 @@ void AddDappListToMap(
 template <typename RampProvider>
 void AddTokenListToMap(
     RampProvider provider,
-    const std::vector<brave_wallet::blockchain_lists::Token>&
-        token_list_from_component,
-    base::flat_map<RampProvider,
-                   std::vector<brave_wallet::mojom::BlockchainTokenPtr>>*
+    const std::vector<blockchain_lists::Token>& token_list_from_component,
+    base::flat_map<RampProvider, std::vector<mojom::BlockchainTokenPtr>>*
         supported_tokens_list_map) {
-  std::vector<brave_wallet::mojom::BlockchainTokenPtr> token_list;
+  std::vector<mojom::BlockchainTokenPtr> token_list;
 
   for (const auto& token : token_list_from_component) {
-    auto blockchain_token = brave_wallet::mojom::BlockchainToken::New();
+    auto blockchain_token = mojom::BlockchainToken::New();
     blockchain_token->contract_address = token.contract_address;
     blockchain_token->name = token.name;
     blockchain_token->logo = token.logo;
@@ -171,8 +171,7 @@ void AddTokenListToMap(
     blockchain_token->token_id = token.token_id;
     blockchain_token->coingecko_id = token.coingecko_id;
     blockchain_token->chain_id = token.chain_id;
-    blockchain_token->coin =
-        static_cast<brave_wallet::mojom::CoinType>(token.coin);
+    blockchain_token->coin = static_cast<mojom::CoinType>(token.coin);
     token_list.push_back(std::move(blockchain_token));
   }
 
@@ -180,8 +179,6 @@ void AddTokenListToMap(
 }
 
 }  // namespace
-
-namespace brave_wallet {
 
 bool ParseTokenList(const std::string& json,
                     TokenListMap* token_list_map,
