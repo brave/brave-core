@@ -47,12 +47,12 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
 
   std::vector<std::string> segments;
   for (const auto& item : *segments_list) {
-    const std::string& segment = item.GetString();
-    if (segment.empty()) {
+    const std::string* segment = item.GetIfString();
+    if (!segment || segment->empty()) {
       return base::unexpected("Failed to load from JSON, empty segment found");
     }
 
-    segments.push_back(segment);
+    segments.push_back(*segment);
   }
 
   // Parsing field: "segment_keywords"
@@ -67,8 +67,16 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
 
     purchase_intent_segment_keyword.keywords = keywords;
 
+    if (!indexes.is_list()) {
+      return base::unexpected(
+          "Failed to load from JSON, indexes not of type list");
+    }
+
     for (const auto& index : indexes.GetList()) {
-      CHECK(index.is_int());
+      if (!index.is_int()) {
+        return base::unexpected(
+            "Failed to load from JSON, index not of type int");
+      }
 
       if (index.GetInt() >= static_cast<int>(segments.size())) {
         return base::unexpected(
@@ -91,6 +99,10 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   }
 
   for (const auto [keywords, weight] : *funnel_keywords_dict) {
+    if (!weight.is_int()) {
+      return base::unexpected(
+          "Failed to load from JSON, funnel weight not of type int");
+    }
     PurchaseIntentFunnelKeywordInfo purchase_intent_funnel_keyword;
     purchase_intent_funnel_keyword.keywords = keywords;
     purchase_intent_funnel_keyword.weight = weight.GetInt();
@@ -117,12 +129,15 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
         item_dict.FindList("segments");
     if (!funnel_site_segments_list) {
       return base::unexpected(
-          "Failed to load from JSON, funnel site segments not of tyoe list");
+          "Failed to load from JSON, funnel site segments not of type list");
     }
 
     std::vector<std::string> purchase_intent_segments;
     for (const auto& segment : *funnel_site_segments_list) {
-      CHECK(segment.is_int());
+      if (!segment.is_int()) {
+        return base::unexpected(
+            "Failed to load from JSON, funnel site segment not of type int");
+      }
       purchase_intent_segments.push_back(segments.at(segment.GetInt()));
     }
 
@@ -134,7 +149,10 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
     }
 
     for (const auto& site : *sites_list) {
-      CHECK(site.is_string());
+      if (!site.is_string()) {
+        return base::unexpected(
+            "Failed to load from JSON, funnel site not of type string");
+      }
 
       PurchaseIntentSiteInfo purchase_intent_site;
       purchase_intent_site.segments = purchase_intent_segments;
