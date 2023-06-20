@@ -496,13 +496,13 @@ bool ParseEthSignTypedDataParams(const std::string& json,
     return false;
   }
 
-  *domain_hash_out = domain_hash->first;
-  *domain_out = std::move(domain_hash->second);
-
   auto primary_hash = helper->GetTypedDataPrimaryHash(*primary_type, *message);
   if (!primary_hash) {
     return false;
   }
+
+  *domain_hash_out = domain_hash->first;
+  *domain_out = std::move(domain_hash->second);
 
   *primary_hash_out = primary_hash->first;
   if (!base::JSONWriter::Write(std::move(primary_hash->second), message_out)) {
