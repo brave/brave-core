@@ -15,13 +15,9 @@
 namespace brave_shields {
 
 AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider()
-    : AdBlockFiltersProvider(true) {
-  AddProviderToFilterProviderManager(this);
-}
+    : AdBlockFiltersProvider(true) {}
 
-AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() {
-  RemoveProviderFromFilterProviderManager(this);
-}
+AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() {}
 
 void AdBlockLocalhostFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>

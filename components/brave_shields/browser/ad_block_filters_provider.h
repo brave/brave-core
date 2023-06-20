@@ -44,9 +44,6 @@ class AdBlockFiltersProvider {
   virtual void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) = 0;
-  void AddProviderToFilterProviderManager(AdBlockFiltersProvider* provider);
-  void RemoveProviderFromFilterProviderManager(
-      AdBlockFiltersProvider* provider);
   void NotifyObservers();
 
  private:

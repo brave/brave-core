@@ -12,9 +12,15 @@
 namespace brave_shields {
 
 AdBlockFiltersProvider::AdBlockFiltersProvider(bool engine_is_default)
-    : engine_is_default_(engine_is_default) {}
+    : engine_is_default_(engine_is_default) {
+  AdBlockFiltersProviderManager::GetInstance()->AddProvider(this,
+                                                            engine_is_default_);
+}
 
-AdBlockFiltersProvider::~AdBlockFiltersProvider() = default;
+AdBlockFiltersProvider::~AdBlockFiltersProvider() {
+  AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
+      this, engine_is_default_);
+}
 
 void AdBlockFiltersProvider::AddObserver(
     AdBlockFiltersProvider::Observer* observer) {
@@ -42,18 +48,6 @@ void AdBlockFiltersProvider::LoadDAT(
 
 base::WeakPtr<AdBlockFiltersProvider> AdBlockFiltersProvider::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
-}
-
-void AdBlockFiltersProvider::AddProviderToFilterProviderManager(
-    AdBlockFiltersProvider* provider) {
-  AdBlockFiltersProviderManager::GetInstance()->AddProvider(provider,
-                                                            engine_is_default_);
-}
-
-void AdBlockFiltersProvider::RemoveProviderFromFilterProviderManager(
-    AdBlockFiltersProvider* provider) {
-  AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
-      provider, engine_is_default_);
 }
 
 }  // namespace brave_shields

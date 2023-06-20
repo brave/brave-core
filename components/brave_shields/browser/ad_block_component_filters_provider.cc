@@ -36,7 +36,6 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
         base::BindRepeating(&AdBlockComponentFiltersProvider::OnComponentReady,
                             weak_factory_.GetWeakPtr()));
   }
-  AddProviderToFilterProviderManager(this);
 }
 
 AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
@@ -47,9 +46,7 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                                       catalog_entry.base64_public_key,
                                       catalog_entry.title) {}
 
-AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {
-  RemoveProviderFromFilterProviderManager(this);
-}
+AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {}
 
 void AdBlockComponentFiltersProvider::UnregisterComponent() {
   // Can be nullptr in unit tests

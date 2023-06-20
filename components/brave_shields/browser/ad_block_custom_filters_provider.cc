@@ -17,13 +17,9 @@ namespace brave_shields {
 
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state)
-    : AdBlockFiltersProvider(false), local_state_(local_state) {
-  AddProviderToFilterProviderManager(this);
-}
+    : AdBlockFiltersProvider(false), local_state_(local_state) {}
 
-AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {
-  RemoveProviderFromFilterProviderManager(this);
-}
+AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
 
 void AdBlockCustomFiltersProvider::HideElementOnHost(
     const std::string& css_selector,
