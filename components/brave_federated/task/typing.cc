@@ -5,10 +5,6 @@
 
 #include "brave/components/brave_federated/task/typing.h"
 
-#include <vector>
-
-#include "brave/components/brave_federated/task/model.h"
-
 namespace brave_federated {
 
 Task::Task(const TaskId& task_id,

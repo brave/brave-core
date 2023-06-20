@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_federated/task/federated_task_handler.h"
 
-#include <list>
 #include <map>
 #include <utility>
 
@@ -13,7 +12,6 @@
 #include "base/logging.h"
 
 #include "brave/components/brave_federated/task/model.h"
-#include "brave/components/brave_federated/task/typing.h"
 
 namespace brave_federated {
 
