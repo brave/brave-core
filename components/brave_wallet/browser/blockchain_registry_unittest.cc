@@ -801,6 +801,7 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_EQ(token_list.size(), 1UL);
+            EXPECT_EQ(token_list[0]->chain_id, mojom::kPolygonMainnetChainId);
             run_loop2.Quit();
           }));
   run_loop2.Run();
@@ -812,6 +813,7 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_EQ(token_list.size(), 1UL);
+            EXPECT_EQ(token_list[0]->chain_id, mojom::kOptimismMainnetChainId);
             run_loop3.Quit();
           }));
   run_loop3.Run();
