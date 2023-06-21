@@ -79,7 +79,6 @@ import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
-import org.chromium.chrome.browser.BraveAdaptiveCaptchaUtils;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
@@ -155,6 +154,7 @@ import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
+import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
@@ -165,6 +165,7 @@ import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
@@ -240,6 +241,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final int DAYS_4 = 4;
     private static final int DAYS_5 = 5;
     private static final int DAYS_12 = 12;
+
+    public static final int MAX_FAILED_CAPTCHA_ATTEMPTS = 10;
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
@@ -858,6 +861,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void onPreferenceChange() {
+        String captchaID = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                   .getString(BravePref.SCHEDULED_CAPTCHA_ID);
+        String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                   .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
+        if (BraveQAPreferences.shouldVlogRewards()) {
+            Log.e(AdaptiveCaptchaHelper.TAG,
+                    "captchaID : " + captchaID + " Payment ID : " + paymentID);
+        }
         maybeSolveAdaptiveCaptcha();
     }
 
@@ -883,7 +894,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                    .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
         if (!TextUtils.isEmpty(captchaID) && !TextUtils.isEmpty(paymentID)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
-            BraveAdaptiveCaptchaUtils.solveCaptcha(captchaID, paymentID);
+            AdaptiveCaptchaHelper.startAttestation(captchaID, paymentID);
         }
     }
 
@@ -899,15 +910,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         if (UserPrefs.get(Profile.getLastUsedRegularProfile())
                         .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
-                >= 10) {
+                >= MAX_FAILED_CAPTCHA_ATTEMPTS) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, true);
         }
 
-        Log.e("adaptive captcha",
-                "Failed attempts : "
-                        + UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                  .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
+        if (BraveQAPreferences.shouldVlogRewards()) {
+            Log.e(AdaptiveCaptchaHelper.TAG,
+                    "Failed attempts : "
+                            + UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                      .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
+        }
         if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
                         .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
             maybeSolveAdaptiveCaptcha();

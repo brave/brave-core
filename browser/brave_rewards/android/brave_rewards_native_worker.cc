@@ -279,6 +279,28 @@ BraveRewardsNativeWorker::GetCaptchaSolutionURL(
 }
 
 base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetAttestationURL(JNIEnv* env) {
+  const std::string path = "/v1/attestations/android";
+  std::string captcha_solution_url =
+      brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
+
+  return base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetAttestationURLWithPaymentId(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& paymentId) {
+  const std::string path = base::StringPrintf(
+      "/v1/attestations/android/%s",
+      base::android::ConvertJavaStringToUTF8(env, paymentId).c_str());
+  std::string captcha_solution_url =
+      brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
+
+  return base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
+}
+
+base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetPublisherName(JNIEnv* env, uint64_t tabId) {
   base::android::ScopedJavaLocalRef<jstring> res =
     base::android::ConvertUTF8ToJavaString(env, "");

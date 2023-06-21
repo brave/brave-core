@@ -17,7 +17,6 @@ import("//components/feed/features.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/BraveAdaptiveCaptchaUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
@@ -306,6 +305,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsBannerInfo.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/CountrySelectionSpinnerAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/rewards/adaptive_captcha/AdaptiveCaptchaHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/tipping/MonthlyContributionToolTip.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/tipping/RewardsTippingBannerActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/tipping/RewardsTippingPanelFragment.java",
