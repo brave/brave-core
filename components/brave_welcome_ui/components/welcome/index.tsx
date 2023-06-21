@@ -10,7 +10,7 @@ import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import Button from '$web-components/button'
 
-import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl } from '../../api/welcome_browser_proxy'
+import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl, P3APhase } from '../../api/welcome_browser_proxy'
 import WebAnimationPlayer from '../../api/web_animation_player'
 
 import DataContext from '../../state/context'
@@ -32,14 +32,14 @@ function Welcome () {
   }
 
   const handleSetAsDefaultBrowser = () => {
-    WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.DefaultBrowser, isFinished: false, isSkipped: false })
     DefaultBrowserBrowserProxyImpl.getInstance().setAsDefaultBrowser()
     goToImportThemeOrBrowser()
+    WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Import)
     scenes?.s1.play()
   }
 
   const handleSkip = () => {
-    WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.DefaultBrowser, isFinished: false, isSkipped: true })
+    WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Import)
     goToImportThemeOrBrowser()
     scenes?.s1.play()
   }

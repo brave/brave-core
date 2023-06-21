@@ -101,7 +101,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Wallet.SolProvider.2",
     "Brave.Wallet.SolTransactionSent",
     "Brave.Wallet.UsageWeekly",
-    "Brave.Welcome.InteractionStatus",
+    "Brave.Welcome.InteractionStatus.2",
 
     // IPFS
     "Brave.IPFS.IPFSCompanionInstalled",
