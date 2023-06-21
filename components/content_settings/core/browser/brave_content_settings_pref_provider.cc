@@ -595,7 +595,8 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
     RuleMetaData metadata;
     metadata.set_last_modified(modified_time);
     metadata.set_last_visited(last_visited);
-    metadata.set_expiration(constraints.expiration());
+    metadata.SetExpirationAndLifetime(constraints.expiration(),
+                                      base::TimeDelta());
     metadata.set_session_model(constraints.session_model());
 
     GetPref(content_type)
@@ -656,7 +657,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     //
     // PS: kGoogleLoginControlType preference might not be registered for tests.
     RuleMetaData metadata;
-    metadata.set_expiration(base::Time());
+    metadata.SetExpirationAndLifetime(base::Time(), base::TimeDelta());
     metadata.set_session_model(content_settings::SessionModel::Durable);
     const auto google_auth_rule = std::make_unique<OwnedRule>(
         google_sign_in_permission::GetGoogleAuthPattern(),
@@ -685,7 +686,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
           google_sign_in_content_setting_it->Next();
 
       RuleMetaData metadata;
-      metadata.set_expiration(google_sign_in_rule->metadata.expiration());
+      metadata.SetExpirationAndLifetime(
+          google_sign_in_rule->metadata.expiration(), base::TimeDelta());
       metadata.set_session_model(google_sign_in_rule->metadata.session_model());
       // The embedding pattern for the cookie rule will be the primary pattern
       // for the BRAVE_GOOGLE_SIGN_IN permission.
@@ -761,7 +763,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     // Shields down.
     if (ValueToContentSetting(shield_rule->value()) == CONTENT_SETTING_BLOCK) {
       RuleMetaData metadata;
-      metadata.set_expiration(base::Time());
+      metadata.SetExpirationAndLifetime(base::Time(), base::TimeDelta());
       metadata.set_session_model(content_settings::SessionModel::Durable);
 
       rules.emplace_back(std::make_unique<OwnedRule>(
