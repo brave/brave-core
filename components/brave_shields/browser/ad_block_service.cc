@@ -267,11 +267,6 @@ AdBlockCustomFiltersProvider* AdBlockService::custom_filters_provider() {
   return custom_filters_provider_.get();
 }
 
-AdBlockLocalhostFiltersProvider* AdBlockService::localhost_filters_provider() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return localhost_filters_provider_.get();
-}
-
 AdBlockSubscriptionServiceManager*
 AdBlockService::subscription_service_manager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

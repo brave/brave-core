@@ -119,7 +119,6 @@ class AdBlockService {
   AdBlockRegionalServiceManager* regional_service_manager();
   AdBlockSubscriptionServiceManager* subscription_service_manager();
   AdBlockCustomFiltersProvider* custom_filters_provider();
-  AdBlockLocalhostFiltersProvider* localhost_filters_provider();
 
   void EnableTag(const std::string& tag, bool enabled);
 
