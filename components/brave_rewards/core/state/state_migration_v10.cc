@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
@@ -18,11 +19,13 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace brave_rewards::internal {
+using endpoints::GetWallet;
+using endpoints::RequestFor;
+
 namespace state {
 
 StateMigrationV10::StateMigrationV10(RewardsEngineImpl& engine)
-    : engine_(engine),
-      get_wallet_{std::make_unique<endpoint::promotion::GetWallet>(engine)} {}
+    : engine_(engine) {}
 
 StateMigrationV10::~StateMigrationV10() = default;
 
@@ -67,14 +70,17 @@ void StateMigrationV10::Migrate(LegacyResultCallback callback) {
         break;
       }
 
-      auto wallet_info_endpoint_callback = std::bind(
-          &StateMigrationV10::OnGetWallet, this, _1, _2, _3, callback);
+      auto wallet_info_endpoint_callback =
+          base::BindOnce(&StateMigrationV10::OnGetWallet,
+                         base::Unretained(this), std::move(callback));
 
       if (is_testing) {
-        return wallet_info_endpoint_callback(mojom::Result::FAILED,
-                                             std::string{}, false);
+        return std::move(wallet_info_endpoint_callback)
+            .Run(
+                base::unexpected(mojom::GetWalletError::kUnexpectedStatusCode));
       } else {
-        return get_wallet_->Request(std::move(wallet_info_endpoint_callback));
+        return RequestFor<GetWallet>(*engine_).Send(
+            std::move(wallet_info_endpoint_callback));
       }
     }
     case 3:  // mojom::WalletStatus::DISCONNECTED_NOT_VERIFIED
@@ -104,10 +110,8 @@ void StateMigrationV10::Migrate(LegacyResultCallback callback) {
                : mojom::Result::FAILED);
 }
 
-void StateMigrationV10::OnGetWallet(mojom::Result result,
-                                    const std::string& custodian,
-                                    bool linked,
-                                    LegacyResultCallback callback) {
+void StateMigrationV10::OnGetWallet(LegacyResultCallback callback,
+                                    endpoints::GetWallet::Result&& result) {
   auto uphold_wallet = engine_->uphold()->GetWallet();
   if (!uphold_wallet) {
     BLOG(0, "Uphold wallet is null!");
@@ -119,8 +123,13 @@ void StateMigrationV10::OnGetWallet(mojom::Result result,
   DCHECK(!uphold_wallet->token.empty());
   DCHECK(!uphold_wallet->address.empty());
 
-  if (result != mojom::Result::OK || custodian != constant::kWalletUphold ||
-      !linked) {  // deemed semi-VERIFIED || semi-VERIFIED
+  const auto is_semi_verified = [](auto result) {
+    const auto [custodian, linked] = std::move(result);
+    return custodian != constant::kWalletUphold || !linked;
+  };
+
+  // deemed semi-VERIFIED || semi-VERIFIED
+  if (!result.has_value() || is_semi_verified(std::move(result.value()))) {
     uphold_wallet->status =
         static_cast<mojom::WalletStatus>(5);  // mojom::WalletStatus::PENDING
     uphold_wallet->address = "";

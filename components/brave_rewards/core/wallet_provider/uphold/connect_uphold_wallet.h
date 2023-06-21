@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth/post_oauth_uphold.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
@@ -55,7 +54,7 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
 
   void OnGetCapabilities(mojom::Result, Capabilities) const;
 
-  base::RepeatingTimer eligibility_checker_;
+  base::RetainingOneShotTimer eligibility_checker_;
 };
 
 }  // namespace brave_rewards::internal::uphold

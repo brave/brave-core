@@ -2605,6 +2605,12 @@ void RewardsServiceImpl::ExternalWalletReconnected() {
   }
 }
 
+void RewardsServiceImpl::ExternalWalletDisconnected() {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletDisconnected();
+  }
+}
+
 void RewardsServiceImpl::DeleteLog(DeleteLogCallback callback) {
   diagnostic_log_->Delete(
       base::BindOnce(&RewardsServiceImpl::OnDiagnosticLogDeleted, AsWeakPtr(),

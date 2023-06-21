@@ -1424,4 +1424,8 @@ static const auto kOneDay =
   // Not used on iOS
 }
 
+- (void)externalWalletDisconnected {
+  // Not used on iOS
+}
+
 @end

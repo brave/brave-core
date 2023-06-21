@@ -509,6 +509,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void ExternalWalletReconnected() override;
 
+  void ExternalWalletDisconnected() override;
+
   void DeleteLog(DeleteLogCallback callback) override;
 
   // end mojom::RewardsEngineClient

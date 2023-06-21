@@ -322,6 +322,8 @@ void TestRewardsEngineClient::ExternalWalletLoggedOut() {}
 
 void TestRewardsEngineClient::ExternalWalletReconnected() {}
 
+void TestRewardsEngineClient::ExternalWalletDisconnected() {}
+
 void TestRewardsEngineClient::DeleteLog(DeleteLogCallback callback) {
   std::move(callback).Run(mojom::Result::OK);
 }

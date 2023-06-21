@@ -197,6 +197,10 @@ function onExternalWalletLoggedOut () {
   actions.getBalance()
 }
 
+function onExternalWalletDisconnected () {
+  actions.getUserType()
+}
+
 function unblindedTokensReady () {
   actions.getBalance()
 }
@@ -281,6 +285,7 @@ Object.defineProperty(window, 'brave_rewards', {
     onGetExternalWallet,
     onConnectExternalWallet,
     onExternalWalletLoggedOut,
+    onExternalWalletDisconnected,
     unblindedTokensReady,
     monthlyReport,
     reconcileStampReset,

@@ -136,3 +136,7 @@ chrome.braveRewards.onPromotionFinish.addListener((result: number, promotion: Ne
 chrome.braveRewards.onCompleteReset.addListener((properties: { success: boolean }) => {
   getActions().onCompleteReset(properties.success)
 })
+
+chrome.braveRewards.onExternalWalletLoggedOut.addListener(fetchRewardsData)
+
+chrome.braveRewards.onExternalWalletDisconnected.addListener(fetchRewardsData)
