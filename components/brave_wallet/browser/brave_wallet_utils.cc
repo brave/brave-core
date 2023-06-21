@@ -173,7 +173,7 @@ const mojom::NetworkInfo* GetOptimismMainnet() {
        "Ether",
        18,
        brave_wallet::mojom::CoinType::ETH,
-       false});
+       true});
   return network_info.get();
 }
 
