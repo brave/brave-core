@@ -17,6 +17,8 @@ AdBlockFiltersProvider::AdBlockFiltersProvider(bool engine_is_default)
                                                             engine_is_default_);
 }
 
+AdBlockFiltersProvider::AdBlockFiltersProvider() = default;
+
 AdBlockFiltersProvider::~AdBlockFiltersProvider() {
   AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
       this, engine_is_default_);

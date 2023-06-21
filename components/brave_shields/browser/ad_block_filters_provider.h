@@ -26,6 +26,8 @@ class AdBlockFiltersProvider {
   };
 
   explicit AdBlockFiltersProvider(bool engine_is_default);
+  // Used by AdblockFiltersProviderManager
+  AdBlockFiltersProvider();
   AdBlockFiltersProvider(const AdBlockFiltersProvider&) = delete;
   AdBlockFiltersProvider& operator=(const AdBlockFiltersProvider&) = delete;
   virtual ~AdBlockFiltersProvider();

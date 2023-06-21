@@ -40,8 +40,7 @@ AdBlockFiltersProviderManager* AdBlockFiltersProviderManager::GetInstance() {
   return instance.get();
 }
 
-AdBlockFiltersProviderManager::AdBlockFiltersProviderManager()
-    : AdBlockFiltersProvider(false) {}
+AdBlockFiltersProviderManager::AdBlockFiltersProviderManager() = default;
 
 AdBlockFiltersProviderManager::~AdBlockFiltersProviderManager() = default;
 
