@@ -339,11 +339,15 @@ RewardsServiceImpl::~RewardsServiceImpl() {
 }
 
 void RewardsServiceImpl::ConnectionClosed() {
+  BLOG(0, "Restarting ledger process after disconnect");
+
+  Reset();
+
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&RewardsServiceImpl::StartLedgerProcessIfNecessary,
                      AsWeakPtr()),
-      base::Seconds(1));
+      base::Seconds(10));
 }
 
 bool RewardsServiceImpl::IsInitialized() {
@@ -461,6 +465,10 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
 }
 
 void RewardsServiceImpl::OnLedgerCreated() {
+  if (!Connected()) {
+    return;
+  }
+
   SetEnvironment(GetDefaultServerEnvironment());
   SetDebug(false);
   HandleFlags(RewardsFlags::ForCurrentProcess());
@@ -478,7 +486,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
   auto on_start = [](base::WeakPtr<RewardsServiceImpl> self,
                      std::string country,
                      CreateRewardsWalletCallback callback) {
-    if (!self) {
+    if (!self || !self->Connected()) {
       std::move(callback).Run(CreateRewardsWalletResult::kUnexpected);
       return;
     }
@@ -2121,7 +2129,7 @@ void RewardsServiceImpl::SetLedgerStateTargetVersionForTesting(int version) {
 }
 
 void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
-  if (!ledger_for_testing_) {
+  if (!ledger_for_testing_ || !Connected()) {
     return;
   }
 
@@ -2142,7 +2150,7 @@ void RewardsServiceImpl::StartContributionsForTesting() {
 }
 
 void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
-  if (!ledger_.is_bound()) {
+  if (!Connected()) {
     return DeferCallback(FROM_HERE, std::move(callback),
                          GetDefaultServerEnvironment());
   }
@@ -2154,31 +2162,52 @@ p3a::ConversionMonitor* RewardsServiceImpl::GetP3AConversionMonitor() {
 }
 
 void RewardsServiceImpl::GetDebug(GetDebugCallback callback) {
+  if (!Connected()) {
+    return;
+  }
   ledger_->GetDebug(std::move(callback));
 }
 
 void RewardsServiceImpl::GetReconcileInterval(
     GetReconcileIntervalCallback callback) {
+  if (!Connected()) {
+    return;
+  }
   ledger_->GetReconcileInterval(std::move(callback));
 }
 
 void RewardsServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
+  if (!Connected()) {
+    return;
+  }
   ledger_->GetRetryInterval(std::move(callback));
 }
 
 void RewardsServiceImpl::SetEnvironment(mojom::Environment environment) {
+  if (!Connected()) {
+    return;
+  }
   ledger_->SetEnvironment(environment);
 }
 
 void RewardsServiceImpl::SetDebug(bool debug) {
+  if (!Connected()) {
+    return;
+  }
   ledger_->SetDebug(debug);
 }
 
 void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
+  if (!Connected()) {
+    return;
+  }
   ledger_->SetReconcileInterval(interval);
 }
 
 void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
+  if (!Connected()) {
+    return;
+  }
   ledger_->SetRetryInterval(interval);
 }
 
@@ -2402,6 +2431,10 @@ void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
 }
 
 void RewardsServiceImpl::GetAllContributionsForP3A() {
+  if (!Connected()) {
+    return;
+  }
+
   ledger_->GetAllContributions(base::BindOnce(
       &RewardsServiceImpl::OnRecordBackendP3AStatsContributions, AsWeakPtr()));
 }
