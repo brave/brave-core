@@ -35,12 +35,16 @@ class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
     if self._browser:
       rebasing_profile = '--update-source-profile' in self._browser.startup_args
       if rebasing_profile:
-        # Disable session restore via settingsPrivate API.
-        t = self._browser.tabs[-1]
+        # Enable session restore via settingsPrivate API.
+        t = self._browser.tabs.New()
         t.Navigate('chrome://settings')
         t.WaitForDocumentReadyStateToBeInteractiveOrBetter()
         t.EvaluateJavaScript(
-            'chrome.settingsPrivate.setPref("session.restore_on_startup", 5)')
+            'chrome.settingsPrivate.setPref("session.restore_on_startup", 6)')
+        time.sleep(2)
+        t.Close()
+        while len(self._browser.tabs) > 1:
+          self._browser.tabs[-1].Close()
         time.sleep(2)
 
     super(shared_page_state.SharedDesktopPageState, self)._StopBrowser()
@@ -92,4 +96,4 @@ class BraveLoadingDesktopStorySet(story.StorySet):
                 cache_temperature=temp,
                 tags=page_tags,
                 name=page_name,
-                perform_final_navigation=True))
+                perform_final_navigation=False))

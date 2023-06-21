@@ -156,7 +156,7 @@ class RunableConfiguration:
 
     rebase_benchmark = BenchmarkConfig()
     rebase_benchmark.name = 'loading.desktop.brave'
-    rebase_benchmark.stories = ['BraveSearch_cold']
+    rebase_benchmark.stories = ['Brave_SERP_cold']
     rebase_benchmark.pageset_repeat = 1
 
     REBASE_TIMEOUT = 120
