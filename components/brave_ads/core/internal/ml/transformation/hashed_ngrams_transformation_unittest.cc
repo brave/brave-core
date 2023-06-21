@@ -15,6 +15,20 @@ namespace brave_ads::ml {
 
 class BraveAdsHashedNGramsTransformationTest : public UnitTestBase {};
 
+TEST_F(BraveAdsHashedNGramsTransformationTest, WrongInputDataTest) {
+  // Arrange
+  const std::unique_ptr<Data> vector_data =
+      std::make_unique<VectorData>(std::vector<float>(1.0F));
+
+  const HashedNGramsTransformation hashed_ngrams;
+
+  // Act
+  const std::unique_ptr<Data> output_data = hashed_ngrams.Apply(vector_data);
+
+  // Assert
+  EXPECT_FALSE(output_data.get());
+}
+
 TEST_F(BraveAdsHashedNGramsTransformationTest, HashingTest) {
   // Arrange
   constexpr size_t kDefaultBucketCount = 10'000;
