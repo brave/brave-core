@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/browser/ad_block_subscription_filters_provider.h"
 
+#include <string>
 #include <utility>
 
 #include "base/task/thread_pool.h"
@@ -34,6 +35,10 @@ void AdBlockSubscriptionFiltersProvider::LoadDATBuffer(
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_),
       base::BindOnce(&AdBlockSubscriptionFiltersProvider::OnDATFileDataReady,
                      weak_factory_.GetWeakPtr(), std::move(cb)));
+}
+
+std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
+  return "AdBlockSubscriptionFiltersProvider";
 }
 
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(

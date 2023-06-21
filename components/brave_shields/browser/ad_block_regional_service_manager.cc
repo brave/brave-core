@@ -159,9 +159,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
           existing_provider == regional_filters_providers_.end()) {
         auto regional_filters_provider =
             std::make_unique<AdBlockComponentFiltersProvider>(
-                component_update_service_, *catalog_entry);
-        AdBlockFiltersProviderManager::GetInstance()->AddProvider(
-            regional_filters_provider.get(), false);
+                component_update_service_, *catalog_entry, false);
         regional_filters_providers_.insert(
             {uuid, std::move(regional_filters_provider)});
       }
@@ -242,15 +240,11 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     DCHECK(it == regional_filters_providers_.end());
     auto regional_filters_provider =
         std::make_unique<AdBlockComponentFiltersProvider>(
-            component_update_service_, *catalog_entry);
-    AdBlockFiltersProviderManager::GetInstance()->AddProvider(
-        regional_filters_provider.get(), false);
+            component_update_service_, *catalog_entry, false);
     regional_filters_providers_.insert(
         {uuid, std::move(regional_filters_provider)});
   } else {
     DCHECK(it != regional_filters_providers_.end());
-    AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
-        it->second.get(), false);
     it->second->UnregisterComponent();
     regional_filters_providers_.erase(it);
   }

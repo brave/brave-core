@@ -45,6 +45,8 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
 
   void OnListAvailable();
 
+  std::string GetNameForDebugging() override;
+
  private:
   base::FilePath list_file_;
 
