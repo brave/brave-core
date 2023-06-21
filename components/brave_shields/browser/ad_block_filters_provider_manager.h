@@ -28,7 +28,7 @@ namespace brave_shields {
 // AdBlockFiltersProvider::Observer. It is used to observe multiple provider
 // sources and combine their filter lists into a single compound filter list.
 // Note that AdBlockFiltersProviderManager should technically not inherit from
-// AdBlockFiltersProvider since it manages multiple providers and is not a 
+// AdBlockFiltersProvider since it manages multiple providers and is not a
 // filters provider itself. However, SourceProviderObserver needs it to be so
 // for now because AdBlockFiltersProviderManager cannot be used for combining
 // DAT files.
