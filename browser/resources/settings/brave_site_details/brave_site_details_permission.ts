@@ -23,6 +23,7 @@ const iconMap = {
   'settings:serial-port': 'cpu-chip', // serial ports
   'settings:save-original': 'file-edit', // file editing
   'settings:hid-device': 'sparkles', // hid devices
+  'settings:protected-content': 'key-lock', // protected content ids
   'settings:clipboard': 'copy', // clipboard
   'settings:payment-handler': 'credit-card', // payment handlers
   'settings:bluetooth-scanning': 'bluetooth', // bluetooth scanning
