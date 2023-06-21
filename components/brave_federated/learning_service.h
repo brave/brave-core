@@ -31,6 +31,9 @@ class CommunicationAdapter;
 class EligibilityService;
 struct ModelSpec;
 
+// This service manages the collection and execution of federated
+// learning tasks in the Browser. It is also responsible for enforcing the
+// eligibility criteria (see EligibilityService) on task execution.
 class LearningService : public EligibilityObserver {
  public:
   LearningService(

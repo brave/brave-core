@@ -7,22 +7,6 @@
 
 namespace brave_federated {
 
-Vector LinearAlgebraUtil::SubtractVector(Vector vector_1, Vector vector_2) {
-  Eigen::Map<Eigen::VectorXf> vector_1_eigen(vector_1.data(), vector_1.size());
-  Eigen::Map<Eigen::VectorXf> vector_2_eigen(vector_2.data(), vector_2.size());
-  vector_1_eigen -= vector_2_eigen;
-
-  return MatrixXfToVector(vector_1_eigen);
-}
-
-Vector LinearAlgebraUtil::MultiplyMatrixVector(Matrix matrix, Vector vector) {
-  Eigen::MatrixXf matrix_eigen = MatrixToMatrixXf(matrix);
-  Eigen::Map<Eigen::VectorXf> vector_eigen(vector.data(), vector.size());
-
-  Eigen::MatrixXf result = matrix_eigen * vector_eigen;
-  return MatrixXfToVector(result);
-}
-
 Vector LinearAlgebraUtil::AddVectorScalar(Vector vector, float scalar) {
   Eigen::Map<Eigen::VectorXf> vector_eigen(vector.data(), vector.size());
 
@@ -40,6 +24,14 @@ Vector LinearAlgebraUtil::AddVectors(Vector vector_1, Vector vector_2) {
   return MatrixXfToVector(vector_1_eigen);
 }
 
+Vector LinearAlgebraUtil::SubtractVector(Vector vector_1, Vector vector_2) {
+  Eigen::Map<Eigen::VectorXf> vector_1_eigen(vector_1.data(), vector_1.size());
+  Eigen::Map<Eigen::VectorXf> vector_2_eigen(vector_2.data(), vector_2.size());
+  vector_1_eigen -= vector_2_eigen;
+
+  return MatrixXfToVector(vector_1_eigen);
+}
+
 Vector LinearAlgebraUtil::MultiplyVectorScalar(Vector vector, float scalar) {
   Eigen::Map<Eigen::VectorXf> vector_eigen(vector.data(), vector.size());
 
@@ -47,6 +39,14 @@ Vector LinearAlgebraUtil::MultiplyVectorScalar(Vector vector, float scalar) {
   array *= scalar;
   vector_eigen = array.matrix();
   return MatrixXfToVector(vector_eigen);
+}
+
+Vector LinearAlgebraUtil::MultiplyMatrixVector(Matrix matrix, Vector vector) {
+  Eigen::MatrixXf matrix_eigen = MatrixToMatrixXf(matrix);
+  Eigen::Map<Eigen::VectorXf> vector_eigen(vector.data(), vector.size());
+
+  Eigen::MatrixXf result = matrix_eigen * vector_eigen;
+  return MatrixXfToVector(result);
 }
 
 Matrix LinearAlgebraUtil::TransposeMatrix(Matrix matrix) {

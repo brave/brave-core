@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/files/file_util.h"
+#include "base/json/json_value_converter.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "net/base/backoff_entry.h"
