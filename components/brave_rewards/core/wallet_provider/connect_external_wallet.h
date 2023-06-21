@@ -11,6 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_rewards/core/endpoints/get_wallet/get_wallet.h"
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -50,6 +51,10 @@ class ConnectExternalWallet {
   base::expected<std::string, mojom::ConnectExternalWalletError> GetCode(
       const base::flat_map<std::string, std::string>& query_parameters,
       const std::string& current_one_time_string) const;
+
+  void CheckLinkage();
+
+  void CheckLinkageCallback(endpoints::GetWallet::Result&& result);
 };
 
 }  // namespace wallet_provider

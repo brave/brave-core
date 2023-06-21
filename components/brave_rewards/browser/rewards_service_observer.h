@@ -75,6 +75,8 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnExternalWalletReconnected() {}
 
+  virtual void OnExternalWalletDisconnected() {}
+
   virtual void OnUnblindedTokensReady(RewardsService* rewards_service) {}
 
   virtual void ReconcileStampReset() {}

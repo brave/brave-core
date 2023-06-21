@@ -135,6 +135,8 @@ class MockLedgerClient : public mojom::LedgerClient {
 
   MOCK_METHOD0(ExternalWalletReconnected, void());
 
+  MOCK_METHOD0(ExternalWalletDisconnected, void());
+
   MOCK_METHOD1(DeleteLog, void(DeleteLogCallback));
 
   void EncryptString(const std::string& value,

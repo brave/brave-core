@@ -182,7 +182,8 @@ TEST_P(TransitionWalletTransition, Paths) {
     if (to == mojom::WalletStatus::kConnected) {
       EXPECT_FALSE(to_wallet->activity_url.empty());
     } else {
-      EXPECT_TRUE(to == mojom::WalletStatus::kLoggedOut);
+      EXPECT_TRUE(to == mojom::WalletStatus::kNotConnected ||
+                  to == mojom::WalletStatus::kLoggedOut);
 
       EXPECT_TRUE(to_wallet->activity_url.empty());
 
@@ -261,11 +262,12 @@ INSTANTIATE_TEST_SUITE_P(
       "kLoggedOut__kNotConnected",
       []{
         auto wallet = mojom::ExternalWallet::New();
+        wallet->type = constant::kWalletUphold;
         wallet->status = mojom::WalletStatus::kLoggedOut;
         return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
       }(),
       mojom::WalletStatus::kNotConnected,
-      false
+      true
     },
     TransitionWalletTransitionParamType{
       "kLoggedOut__kLoggedOut",
@@ -316,11 +318,12 @@ INSTANTIATE_TEST_SUITE_P(
       "kConnected__kNotConnected",
       []{
         auto wallet = mojom::ExternalWallet::New();
+        wallet->type = constant::kWalletUphold;
         wallet->status = mojom::WalletStatus::kConnected;
         return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
       }(),
       mojom::WalletStatus::kNotConnected,
-      false
+      true
     },
     TransitionWalletTransitionParamType{
       "kConnected__kLoggedOut",

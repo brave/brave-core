@@ -160,6 +160,10 @@ declare namespace chrome.braveRewards {
     addListener: (callback: () => void) => void
   }
 
+  const onExternalWalletDisconnected: {
+    addListener: (callback: () => void) => void
+  }
+
   const recordNTPPanelTrigger: () => void
 
   const openRewardsPanel: () => void

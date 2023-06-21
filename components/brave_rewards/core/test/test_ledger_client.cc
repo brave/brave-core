@@ -310,6 +310,8 @@ void TestLedgerClient::ExternalWalletLoggedOut() {}
 
 void TestLedgerClient::ExternalWalletReconnected() {}
 
+void TestLedgerClient::ExternalWalletDisconnected() {}
+
 void TestLedgerClient::DeleteLog(DeleteLogCallback callback) {
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }

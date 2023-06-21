@@ -169,6 +169,8 @@ class TestLedgerClient : public mojom::LedgerClient {
 
   void ExternalWalletReconnected() override;
 
+  void ExternalWalletDisconnected() override;
+
   void DeleteLog(DeleteLogCallback callback) override;
 
   void EncryptString(const std::string& value,

@@ -217,6 +217,12 @@ export function createHost (): Host {
     }).catch(console.error)
   }
 
+  function updateUserType () {
+    apiAdapter.getUserType().then((userType) => {
+      stateManager.update({ userType })
+    })
+  }
+
   function updateNotifications () {
     apiAdapter.getNotifications().then((notifications) => {
       const { userType } = stateManager.getState()
@@ -319,6 +325,9 @@ export function createHost (): Host {
     chrome.braveRewards.onReconcileComplete.addListener(updateBalance)
     chrome.braveRewards.onUnblindedTokensReady.addListener(updateBalance)
     chrome.braveRewards.onExternalWalletLoggedOut.addListener(updateBalance)
+
+    // Update user type when the user's wallet is disconnected.
+    chrome.braveRewards.onExternalWalletDisconnected.addListener(updateUserType)
 
     // Update the notification list when notifications are added or removed.
     chrome.rewardsNotifications.onAllNotificationsDeleted.addListener(

@@ -9,7 +9,6 @@
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_available/get_available.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_captcha/get_captcha.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_signed_creds/get_signed_creds.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/get_wallet/get_wallet.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_bat_loss/post_bat_loss.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_captcha/post_captcha.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_clobbered_claims/post_clobbered_claims.h"
@@ -45,8 +44,6 @@ class PromotionServer {
 
   promotion::PostBatLoss& post_bat_loss() { return post_bat_loss_; }
 
-  promotion::GetWallet& get_wallet() { return get_wallet_; }
-
   promotion::PostCaptcha& post_captcha() { return post_captcha_; }
 
   promotion::GetCaptcha& get_captcha() { return get_captcha_; }
@@ -73,7 +70,6 @@ class PromotionServer {
   promotion::GetSignedCreds get_signed_creds_;
   promotion::PostClobberedClaims post_clobbered_claims_;
   promotion::PostBatLoss post_bat_loss_;
-  promotion::GetWallet get_wallet_;
   promotion::PostCaptcha post_captcha_;
   promotion::GetCaptcha get_captcha_;
   promotion::PutCaptcha put_captcha_;
