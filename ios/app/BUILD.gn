@@ -82,7 +82,6 @@ source_set("app") {
     "//ios/chrome/browser/shared/public/commands",
     "//ios/chrome/browser/sync",
     "//ios/chrome/browser/ui/webui:webui_internal",
-    "//ios/chrome/browser/undo",
     "//ios/chrome/common",
     "//ios/public/provider/chrome/browser/font:font_api",
     "//ios/public/provider/chrome/browser/overrides:overrides_api",
