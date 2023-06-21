@@ -317,7 +317,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         networkAdapter.mNetworkTitleSize = 14;
         networkSpinner.setAdapter(networkAdapter);
         LinearLayout advancedSection = dialog.findViewById(R.id.advanced_section);
-        View tvDecimalTital = dialog.findViewById(R.id.token_decimals_title);
+        View tvDecimalTitle = dialog.findViewById(R.id.token_decimals_title);
         EditText tokenDecimalsEdit = dialog.findViewById(R.id.token_decimals);
         TextView tvAddressTitle = dialog.findViewById(R.id.token_contract_address_title);
         LiveDataUtil.observeOnce(mWalletModel.getNetworkModel().mCryptoNetworks,
@@ -332,9 +332,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                 } else {
                     if (network.coin == CoinType.SOL) {
                         if (mNftsOnly) {
-                            AndroidUtils.gone(tvDecimalTital, tokenDecimalsEdit);
+                            AndroidUtils.gone(tvDecimalTitle, tokenDecimalsEdit);
                         } else {
-                            AndroidUtils.show(tvDecimalTital, tokenDecimalsEdit);
+                            AndroidUtils.show(tvDecimalTitle, tokenDecimalsEdit);
                         }
                         tvAddressTitle.setText(getString(mNftsOnly
                                         ? R.string.wallet_add_custom_asset_token_address
