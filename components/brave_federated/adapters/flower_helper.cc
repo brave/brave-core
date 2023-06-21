@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/third_party/flower/src/brave/flwr/serde.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/fleet.pb.h"
@@ -56,9 +57,9 @@ absl::optional<Task> ParseTask(const flower::TaskIns& task_instruction) {
   }
   flower::ServerMessage message = flower_task.legacy_server_message();
 
+  Configs config;
   TaskType type;
   std::vector<Weights> parameters;
-  Configs config;
   if (message.has_fit_ins()) {
     type = TaskType::kTraining;
 
@@ -132,24 +133,30 @@ std::string BuildUploadTaskResultsPayload(const TaskResult& result) {
   const PerformanceReport report = result.GetReport();
 
   flower::Task flower_task;
-  // Client Message Creation
+
   flower::ClientMessage client_message;
-  if (task_type == TaskType::kTraining) {
-    flower::ClientMessage_FitRes fit_res;
-    fit_res.set_num_examples(report.dataset_size);
-    *fit_res.mutable_parameters() = GetParametersFromVectors(report.parameters);
-    if (!report.metrics.empty()) {
-      *fit_res.mutable_metrics() = MetricsToProto(report.metrics);
+  switch (task_type) {
+    case TaskType::kTraining: {
+      flower::ClientMessage_FitRes fit_res;
+      fit_res.set_num_examples(report.dataset_size);
+      *fit_res.mutable_parameters() =
+          GetParametersFromVectors(report.parameters);
+      if (!report.metrics.empty()) {
+        *fit_res.mutable_metrics() = MetricsToProto(report.metrics);
+      }
+      *client_message.mutable_fit_res() = fit_res;
+      break;
     }
-    *client_message.mutable_fit_res() = fit_res;
-  } else {
-    flower::ClientMessage_EvaluateRes eval_res;
-    eval_res.set_num_examples(report.dataset_size);
-    eval_res.set_loss(report.loss);
-    if (!report.metrics.empty()) {
-      *eval_res.mutable_metrics() = MetricsToProto(report.metrics);
+    case TaskType::kEvaluation: {
+      flower::ClientMessage_EvaluateRes eval_res;
+      eval_res.set_num_examples(report.dataset_size);
+      eval_res.set_loss(report.loss);
+      if (!report.metrics.empty()) {
+        *eval_res.mutable_metrics() = MetricsToProto(report.metrics);
+      }
+      *client_message.mutable_evaluate_res() = eval_res;
+      break;
     }
-    *client_message.mutable_evaluate_res() = eval_res;
   }
   flower_task.add_ancestry(task_id.id);
 

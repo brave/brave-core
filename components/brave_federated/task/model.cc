@@ -87,7 +87,6 @@ std::vector<float> Model::Predict(const DataSet& dataset) {
     for (size_t j = 0; j < dataset.at(i).size(); j++) {
       z += weights_.at(j) * dataset.at(i).at(j);
     }
-    CHECK_EQ(dataset.at(i).size(), weights_.size());
     z += bias_;
 
     prediction.at(i) = SigmoidActivation(z);
@@ -105,10 +104,10 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   }
   CHECK_LE(GetBatchSize(), train_dataset.size());
 
-  auto data_prep_cumulative_duration = base::TimeDelta();
-  auto training_cumulative_duration = base::TimeDelta();
+  auto data_prep_duration = base::TimeDelta();
+  auto training_duration = base::TimeDelta();
 
-  auto data_start_ts = base::ThreadTicks::Now();
+  auto data_start_thread_ticks = base::ThreadTicks::Now();
 
   int features = train_dataset.at(0).size() - 1;
   std::vector<float> data_indices(train_dataset.size());
@@ -117,24 +116,23 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   }
 
   Weights d_w(features);
-  std::vector<float> err(batch_size_, 10000);
   Weights p_w(features);
+  std::vector<float> err(batch_size_, 10000);
   float training_loss = 0.0;
 
-  auto data_end_ts = base::ThreadTicks::Now();
-
-  data_prep_cumulative_duration += base::TimeDelta(data_end_ts - data_start_ts);
+  data_prep_duration +=
+      base::TimeDelta(base::ThreadTicks::Now() - data_start_thread_ticks);
 
   for (int iteration = 0; iteration < num_iterations_; iteration++) {
-    data_start_ts = base::ThreadTicks::Now();
+    data_start_thread_ticks = base::ThreadTicks::Now();
     base::RandomShuffle(data_indices.begin(), data_indices.end());
 
     DataSet x(batch_size_, std::vector<float>(features));
     std::vector<float> y(batch_size_);
 
-    auto exec_start_ts = base::ThreadTicks::Now();
+    auto execution_start_thread_ticks = base::ThreadTicks::Now();
     for (int i = 0; i < batch_size_; i++) {
-      std::vector<float> point = train_dataset[data_indices.at(i)];
+      std::vector<float> point = train_dataset.at(data_indices.at(i));
       y.at(i) = point.back();
       point.pop_back();
       x.at(i) = point;
@@ -161,25 +159,20 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     if (iteration % 250 == 0) {
       training_loss = ComputeNegativeLogLikelihood(y, Predict(x));
     }
-    auto exec_end_ts = base::ThreadTicks::Now();
 
-    data_prep_cumulative_duration +=
-        base::TimeDelta(exec_start_ts - data_start_ts);
-    training_cumulative_duration +=
-        base::TimeDelta(exec_end_ts - exec_start_ts);
+    data_prep_duration +=
+        base::TimeDelta(execution_start_thread_ticks - data_start_thread_ticks);
+    training_duration += base::TimeDelta(base::ThreadTicks::Now() -
+                                         execution_start_thread_ticks);
   }
 
   float accuracy = training_loss;
 
-  std::map<std::string, double> metrics = std::map<std::string, double>();
-  metrics.insert({"data_prep_duration_in_seconds",
-                  data_prep_cumulative_duration.InSecondsF()});
-  metrics.insert({"training_duration_in_seconds",
-                  training_cumulative_duration.InSecondsF()});
+  std::map<std::string, double> metrics = {
+      {"data_prep_duration_in_seconds", data_prep_duration.InSecondsF()},
+      {"training_duration_in_seconds", training_duration.InSecondsF()}};
 
-  std::vector<Weights> reported_model;
-  reported_model.push_back(weights_);
-  reported_model.push_back({bias_});
+  std::vector<Weights> reported_model = {weights_, {bias_}};
   return PerformanceReport(train_dataset.size(),  // dataset_size
                            training_loss,         // loss
                            accuracy,              // accuracy
@@ -221,20 +214,17 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
       total_correct++;
     }
   }
-  float accuracy = total_correct * 1.0 / test_dataset.size();
+  float accuracy = total_correct / test_dataset.size();
   float test_loss =
       ComputeNegativeLogLikelihood(ground_truth, Predict(features));
 
-  auto exec_end_ts = base::ThreadTicks::Now();
-
   auto data_prep_duration = base::TimeDelta(exec_start_ts - data_start_ts);
-  auto evaluation_duration = base::TimeDelta(exec_end_ts - exec_start_ts);
+  auto evaluation_duration =
+      base::TimeDelta(base::ThreadTicks::Now() - exec_start_ts);
 
-  std::map<std::string, double> metrics = std::map<std::string, double>();
-  metrics.insert(
-      {"data_prep_duration_in_seconds", data_prep_duration.InSecondsF()});
-  metrics.insert(
-      {"evaluation_duration_in_seconds", evaluation_duration.InSecondsF()});
+  std::map<std::string, double> metrics = {
+      {"data_prep_duration_in_seconds", data_prep_duration.InSecondsF()},
+      {"evaluation_duration_in_seconds", evaluation_duration.InSecondsF()}};
 
   return PerformanceReport(test_dataset.size(),  // dataset_size
                            test_loss,            // loss

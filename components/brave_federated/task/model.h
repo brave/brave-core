@@ -69,6 +69,10 @@ struct PerformanceReport {
   ~PerformanceReport();
 };
 
+// This class implements basic linear model functionality to support training
+// and evaluation of federated learning tasks in the Browser. Results are
+// returned as a PerformanceReport, which includes the loss, accuracy and
+// parameters of the model, together with any additional metadata.
 class Model {
  public:
   explicit Model(const ModelSpec& model_spec);

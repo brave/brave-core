@@ -15,6 +15,11 @@
 
 namespace brave_federated {
 
+namespace {
+const int kMaxDay = 7;
+const int kMaxTime = 144;
+}  // namespace
+
 SyntheticDataset::SyntheticDataset(const DataSet& data_points)
     : data_points_(std::move(data_points)) {}
 
@@ -23,36 +28,31 @@ SyntheticDataset::SyntheticDataset(
     const std::vector<float>& bias,
     int num_features,
     size_t size) {
-  // Generate time of day and day of week uniformly.
-  const int max_day = 7;
-  const int max_time = 144;
-
   std::vector<float> cov_x(num_features, 0.0);
-  for (int j = 0; j < num_features; j++) {
-    cov_x[j] = pow((j + 1), -1.2);
+  for (int i = 0; i < num_features; i++) {
+    cov_x[i] = pow((i + 1), -1.2);
   }
 
   std::vector<float> mean_x(num_features, 0.0);
-
   std::vector<std::vector<float>> xs(size,
                                      std::vector<float>(num_features, 0.0));
 
-  for (size_t j = 0; j < size; j++) {
-    int day_index = base::RandInt(0, max_day);
-    int time_index = base::RandInt(0, max_time);
+  for (size_t i = 0; i < size; i++) {
+    int day_index = base::RandInt(0, kMaxDay);
+    int time_index = base::RandInt(0, kMaxTime);
 
-    xs[j][0] = sin(day_index * 2.0 * M_PI / 7.0);
-    xs[j][1] = cos(day_index * 2.0 * M_PI / 7.0);
+    xs[i][0] = sin(day_index * 2.0 * M_PI / 7.0);
+    xs[i][1] = cos(day_index * 2.0 * M_PI / 7.0);
 
-    xs[j][2] = sin(time_index * 2.0 * M_PI / 144.0);
-    xs[j][3] = cos(time_index * 2.0 * M_PI / 144.0);
+    xs[i][2] = sin(time_index * 2.0 * M_PI / 144.0);
+    xs[i][3] = cos(time_index * 2.0 * M_PI / 144.0);
   }
 
   base::RandomBitGenerator generator;
   for (int i = 4; i < num_features; i++) {
-    std::normal_distribution<float> normal_i(mean_x[i], cov_x[i]);
+    std::normal_distribution<float> normal_distribution(mean_x[i], cov_x[i]);
     for (size_t j = 0; j < size; j++) {
-      xs[j][i] = normal_i(generator);
+      xs[j][i] = normal_distribution(generator);
     }
   }
 
@@ -60,7 +60,7 @@ SyntheticDataset::SyntheticDataset(
   for (size_t i = 0; i < size; i++) {
     std::vector<float> ys = LinearAlgebraUtil::AddVectors(
         LinearAlgebraUtil::MultiplyMatrixVector(weights, xs[i]), bias);
-    DCHECK_EQ(ys.size(), 2U);
+    CHECK_EQ(ys.size(), 2U);
 
     float y_max = 0.0;
     if (Softmax(ys[0]) >= Softmax(ys[1])) {
