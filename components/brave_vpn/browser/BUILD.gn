@@ -71,7 +71,7 @@ source_set("unit_tests") {
   ]
   if (!is_android) {
     deps += [
-      "connection/ikev2:unit_tests",
+      "connection:unit_tests",
       "//brave/components/brave_vpn/browser/connection/ikev2:sim",
     ]
   }
