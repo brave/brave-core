@@ -72,6 +72,7 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.DisplayAdsTable;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.url.mojom.Url;
@@ -398,20 +399,23 @@ public class CardBuilderFeedCard {
                         Handler handler = new Handler(Looper.getMainLooper());
                         executor.execute(() -> {
                             try {
-                                int tabId =
-                                        BraveActivity.getBraveActivity().getActivityTab().getId();
-                                DatabaseHelper dbHelper = DatabaseHelper.getInstance();
-                                DisplayAdsTable posTabAd = dbHelper.getDisplayAd(position, tabId);
-                                handler.post(() -> {
-                                    if (posTabAd != null) {
-                                        createAdFromTable(posTabAd);
-                                    } else {
-                                        mBraveNewsController.getDisplayAd(adData -> {
-                                            BraveNewsUtils.putToDisplayAdsMap(position, adData);
-                                            createdDisplayAdCard(adData);
-                                        });
-                                    }
-                                });
+                                Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                                if (tab != null) {
+                                    int tabId = tab.getId();
+                                    DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+                                    DisplayAdsTable posTabAd =
+                                            dbHelper.getDisplayAd(position, tabId);
+                                    handler.post(() -> {
+                                        if (posTabAd != null) {
+                                            createAdFromTable(posTabAd);
+                                        } else {
+                                            mBraveNewsController.getDisplayAd(adData -> {
+                                                BraveNewsUtils.putToDisplayAdsMap(position, adData);
+                                                createdDisplayAdCard(adData);
+                                            });
+                                        }
+                                    });
+                                }
                             } catch (BraveActivity.BraveActivityNotFoundException e) {
                                 Log.e(TAG, "createCard DISPLAY_AD " + e);
                             }
