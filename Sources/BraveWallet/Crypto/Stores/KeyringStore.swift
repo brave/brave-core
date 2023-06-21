@@ -106,6 +106,20 @@ public class KeyringStore: ObservableObject {
   
   /// The origin of the active tab (if applicable). Used for fetching/selecting network for the DApp origin.
   public var origin: URLOrigin?
+  
+  /// Internal flag kept for when `setSelectedAccount` is executing so we can wait for
+  /// completion before reacting to observed changes. Ex. chain changed event fires after
+  /// `setSelectedAccount` changes network, but before it can set the new account.
+  private var isUpdatingSelectedAccount = false {
+    didSet {
+      if !isUpdatingSelectedAccount {
+        // in case the chain did change while we were
+        // updating our selected account we should
+        // validate our current `selectedAccount`
+        updateKeyringInfo()
+      }
+    }
+  }
 
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
@@ -178,6 +192,8 @@ public class KeyringStore: ObservableObject {
   
   private func setSelectedAccount(to account: BraveWallet.AccountInfo) {
     Task { @MainActor in
+      self.isUpdatingSelectedAccount = true
+      defer { self.isUpdatingSelectedAccount = false }
       var selectedCoin = await walletService.selectedCoin()
       if selectedCoin != account.coin {
         walletService.setSelectedCoin(account.coin)
@@ -457,7 +473,14 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
 extension KeyringStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     walletService.setSelectedCoin(coin)
-    updateKeyringInfo()
+    if !isUpdatingSelectedAccount {
+      // Potential race condition when switching to a non-selected account for new coin type.
+      // ex. Sol Account 1 selected for SOL, Eth Account 1 selected for ETH. SOL coin selected.
+      // Switching from Sol Account 1 to Eth Account 2, `updateKeyring` may assign Eth Account 1
+      // before `setSelectAccount` updates the core selected account to Eth Account 2, causing
+      // a potential loop.
+      updateKeyringInfo()
+    }
   }
   
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
