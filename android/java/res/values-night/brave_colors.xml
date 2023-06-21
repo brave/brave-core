@@ -210,6 +210,17 @@
     <color name="terms_of_service_text_color_default">#878DA6</color>
     <color name="tipping_warning_default_background">#052743</color>
     <color name="tipping_logout_warning_background_color">#332500</color>
-
-
+    <color name="rewards_private_ads_icon_color1">#111217</color>
+    <color name="rewards_private_ads_icon_color2">#8389DF</color>
+    <color name="rewards_private_ads_icon_color3">#545A71</color>
+    <color name="rewards_private_ads_icon_color4">#4C53AD</color>
+    <color name="rewards_private_ads_icon_color5">#262A33</color>
+    <color name="rewards_private_ads_icon_color6">#D292FD</color>
+    <color name="rewards_private_ads_icon_color7">#784A91</color>
+    <color name="rewards_private_ads_icon_color8">#85CCFF</color>
+    <color name="rewards_private_ads_icon_color9">#0C5FA3</color>
+    <color name="rewards_private_ads_icon_color10">#FFBEDF</color>
+    <color name="rewards_private_ads_icon_color11">#AF1769</color>
+    <color name="rewards_private_ads_icon_color12">#AF1769</color>
+    <color name="rewards_private_ads_icon_color13">#0C5FA3</color>
 </resources>
