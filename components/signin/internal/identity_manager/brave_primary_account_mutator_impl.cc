@@ -16,17 +16,13 @@ namespace signin {
 
 BravePrimaryAccountMutatorImpl::BravePrimaryAccountMutatorImpl(
     AccountTrackerService* account_tracker,
-    ProfileOAuth2TokenService* token_service,
     PrimaryAccountManager* primary_account_manager,
     PrefService* pref_service,
-    SigninClient* signin_client,
-    signin::AccountConsistencyMethod account_consistency)
+    SigninClient* signin_client)
     : PrimaryAccountMutatorImpl(account_tracker,
-                                token_service,
                                 primary_account_manager,
                                 pref_service,
-                                signin_client,
-                                account_consistency) {}
+                                signin_client) {}
 
 BravePrimaryAccountMutatorImpl::~BravePrimaryAccountMutatorImpl() = default;
 
