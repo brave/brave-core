@@ -68,7 +68,8 @@ bool TextProcessing::SetPipeline(base::Value::Dict dict) {
   return is_initialized_;
 }
 
-PredictionMap TextProcessing::Apply(std::unique_ptr<Data> input_data) const {
+absl::optional<PredictionMap> TextProcessing::Apply(
+    std::unique_ptr<Data> input_data) const {
   std::unique_ptr<Data> current_data = std::move(input_data);
   CHECK(current_data);
 
@@ -92,15 +93,19 @@ PredictionMap TextProcessing::Apply(std::unique_ptr<Data> input_data) const {
   return linear_model_.GetTopPredictions(*vector_data);
 }
 
-PredictionMap TextProcessing::GetTopPredictions(
+absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
     const std::string& content) const {
   std::string stripped_content = StripNonAlphaCharacters(content);
-  const PredictionMap predictions =
+  const absl::optional<PredictionMap> predictions =
       Apply(std::make_unique<TextData>(std::move(stripped_content)));
+  if (!predictions) {
+    return {};
+  }
+
   const double expected_prob =
-      1.0 / std::max(1.0, static_cast<double>(predictions.size()));
+      1.0 / std::max(1.0, static_cast<double>(predictions->size()));
   PredictionMap rtn;
-  for (auto const& prediction : predictions) {
+  for (auto const& prediction : *predictions) {
     if (prediction.second > expected_prob) {
       rtn[prediction.first] = prediction.second;
     }
@@ -108,7 +113,8 @@ PredictionMap TextProcessing::GetTopPredictions(
   return rtn;
 }
 
-PredictionMap TextProcessing::ClassifyPage(const std::string& content) const {
+absl::optional<PredictionMap> TextProcessing::ClassifyPage(
+    const std::string& content) const {
   if (!IsInitialized()) {
     return {};
   }

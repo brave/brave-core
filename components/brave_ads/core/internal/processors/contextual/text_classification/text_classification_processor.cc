@@ -54,18 +54,24 @@ void TextClassificationProcessor::Process(const std::string& text) {
       resource_->get();
   CHECK(text_processing);
 
-  const TextClassificationProbabilityMap probabilities =
+  const absl::optional<TextClassificationProbabilityMap> probabilities =
       text_processing->ClassifyPage(text);
-  if (probabilities.empty()) {
+
+  if (!probabilities) {
+    return BLOG(0, "Text classification pipeline is broken");
+  }
+
+  if (probabilities->empty()) {
     return BLOG(1, "Text not classified as not enough content");
   }
 
-  const std::string segment = GetTopSegmentFromPageProbabilities(probabilities);
+  const std::string segment =
+      GetTopSegmentFromPageProbabilities(*probabilities);
   CHECK(!segment.empty());
   BLOG(1, "Classified text with the top segment as " << segment);
 
   ClientStateManager::GetInstance()
-      .AppendTextClassificationProbabilitiesToHistory(probabilities);
+      .AppendTextClassificationProbabilitiesToHistory(*probabilities);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

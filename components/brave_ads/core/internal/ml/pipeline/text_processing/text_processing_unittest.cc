@@ -76,12 +76,14 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
       std::move(transformations), std::move(linear_model));
 
   // Act
-  const PredictionMap predictions = pipeline.GetTopPredictions(kTestString);
-  ASSERT_TRUE(!predictions.empty());
-  ASSERT_LE(predictions.size(), 3U);
+  const absl::optional<PredictionMap> predictions =
+      pipeline.GetTopPredictions(kTestString);
+  ASSERT_TRUE(predictions);
+  ASSERT_TRUE(!predictions->empty());
+  ASSERT_LE(predictions->size(), 3U);
 
   // Assert
-  for (const auto& prediction : predictions) {
+  for (const auto& prediction : *predictions) {
     EXPECT_TRUE(prediction.second > -kTolerance &&
                 prediction.second < 1.0 + kTolerance);
   }
@@ -110,9 +112,10 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
   for (size_t i = 0; i < train_texts.size(); i++) {
     std::unique_ptr<Data> text_data =
         std::make_unique<TextData>(train_texts[i]);
-    const PredictionMap prediction_map =
+    const absl::optional<PredictionMap> prediction_map =
         text_processing_pipeline.Apply(std::move(text_data));
-    prediction_maps[i] = prediction_map;
+    ASSERT_TRUE(prediction_map);
+    prediction_maps[i] = *prediction_map;
   }
 
   // Assert
@@ -183,15 +186,16 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
 
   // Act
-  const PredictionMap predictions =
+  const absl::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(kTestPage);
 
   // Assert
-  ASSERT_TRUE(predictions.size());
-  ASSERT_LT(predictions.size(), kMaxPredictionsSize);
-  ASSERT_TRUE(predictions.count("crypto-crypto"));
-  for (const auto& prediction : predictions) {
-    EXPECT_TRUE(prediction.second <= predictions.at("crypto-crypto"));
+  ASSERT_TRUE(predictions);
+  ASSERT_TRUE(predictions->size());
+  ASSERT_LT(predictions->size(), kMaxPredictionsSize);
+  ASSERT_TRUE(predictions->count("crypto-crypto"));
+  for (const auto& prediction : *predictions) {
+    EXPECT_TRUE(prediction.second <= predictions->at("crypto-crypto"));
   }
 }
 
@@ -214,15 +218,16 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   ASSERT_TRUE(text);
 
   // Act
-  const PredictionMap predictions =
+  const absl::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(*text);
 
   // Assert
-  ASSERT_GT(predictions.size(), kMinPredictionsSize);
-  ASSERT_LT(predictions.size(), kMaxPredictionsSize);
-  ASSERT_TRUE(predictions.count("crypto-crypto"));
-  for (const auto& prediction : predictions) {
-    EXPECT_TRUE(prediction.second <= predictions.at("crypto-crypto"));
+  ASSERT_TRUE(predictions);
+  ASSERT_GT(predictions->size(), kMinPredictionsSize);
+  ASSERT_LT(predictions->size(), kMaxPredictionsSize);
+  ASSERT_TRUE(predictions->count("crypto-crypto"));
+  for (const auto& prediction : *predictions) {
+    EXPECT_TRUE(prediction.second <= predictions->at("crypto-crypto"));
   }
 }
 
