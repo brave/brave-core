@@ -89,7 +89,7 @@ public class NetworkSelectorActivity
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_network_selector);
         mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setTitle(R.string.brave_wallet_network_activity_title);
+        mToolbar.setTitle(R.string.brave_wallet_select_network_title);
         mToolbar.setOnMenuItemClickListener(item -> {
             launchAddNetwork();
             return true;
