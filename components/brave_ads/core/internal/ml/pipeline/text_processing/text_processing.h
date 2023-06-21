@@ -40,7 +40,7 @@ class TextProcessing final {
   void SetPipeline(PipelineInfo pipeline);
   bool SetPipeline(base::Value::Dict dict);
 
-  PredictionMap Apply(const std::unique_ptr<Data>& input_data) const;
+  PredictionMap Apply(std::unique_ptr<Data> input_data) const;
 
   PredictionMap GetTopPredictions(const std::string& content) const;
 

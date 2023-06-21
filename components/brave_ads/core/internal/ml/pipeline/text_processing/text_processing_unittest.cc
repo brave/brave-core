@@ -108,10 +108,10 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
   for (size_t i = 0; i < train_texts.size(); i++) {
-    const std::unique_ptr<Data> text_data =
+    std::unique_ptr<Data> text_data =
         std::make_unique<TextData>(train_texts[i]);
     const PredictionMap prediction_map =
-        text_processing_pipeline.Apply(text_data);
+        text_processing_pipeline.Apply(std::move(text_data));
     prediction_maps[i] = prediction_map;
   }
 

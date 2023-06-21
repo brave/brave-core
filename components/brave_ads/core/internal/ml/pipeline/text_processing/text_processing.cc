@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/check.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
@@ -68,23 +68,25 @@ bool TextProcessing::SetPipeline(base::Value::Dict dict) {
   return is_initialized_;
 }
 
-PredictionMap TextProcessing::Apply(
-    const std::unique_ptr<Data>& input_data) const {
+PredictionMap TextProcessing::Apply(std::unique_ptr<Data> input_data) const {
+  std::unique_ptr<Data> current_data = std::move(input_data);
+  CHECK(current_data);
+
   const size_t transformation_count = transformations_.size();
-
-  if (transformation_count == 0) {
-    CHECK(input_data->GetType() == DataType::kVector);
-    const VectorData* const vector_data =
-        static_cast<VectorData*>(input_data.get());
-    return linear_model_.GetTopPredictions(*vector_data);
-  }
-
-  std::unique_ptr<Data> current_data = transformations_[0]->Apply(input_data);
-  for (size_t i = 1; i < transformation_count; ++i) {
+  for (size_t i = 0; i < transformation_count; ++i) {
     current_data = transformations_[i]->Apply(current_data);
+    if (!current_data) {
+      BLOG(0, "TextProcessing transformation failed");
+      return {};
+    }
   }
 
-  CHECK(current_data->GetType() == DataType::kVector);
+  // TODO(https://github.com/brave/brave-browser/issues/31180): Refactor
+  // TextProcessing to make it more reliable.
+  if (current_data->GetType() != DataType::kVector) {
+    BLOG(0, "LinearModel input not of type vector");
+    return {};
+  }
   const VectorData* const vector_data =
       static_cast<VectorData*>(current_data.get());
   return linear_model_.GetTopPredictions(*vector_data);
