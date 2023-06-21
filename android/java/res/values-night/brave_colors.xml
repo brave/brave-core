@@ -16,6 +16,8 @@
     <!-- Theme colors -->
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
     <color name="brave_link">#A0A5EB</color>
+    <color name="brave_button_color">#4C54D2</color>
+    <color name="brave_button_pressed">#575CA4</color>
 
     <color name="onboarding_text_color">#F0F2FF</color>
     <color name="onboarding_bg_color">#1E2029</color>
@@ -48,6 +50,7 @@
     <!-- Text colors -->
     <color name="brave_theme_subtitle_text">#C2C4CF</color>
     <color name="brave_theme_hint_text">#84889C</color>
+    <color name="brave_text_button_color">#A0A5EB</color>
 
     <!-- Set Default Browser colors -->
     <color name="set_default_bottom_sheet_bg_color">#1E2029</color>

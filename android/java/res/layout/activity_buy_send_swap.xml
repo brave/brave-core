@@ -466,7 +466,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/wallet_dex_aggregator"
-            app:drawableTint="@color/brave_action_color"
+            app:drawableTint="@color/brave_text_button_color"
             android:drawablePadding="8dp"
             android:gravity="center"
             android:textSize="14sp"

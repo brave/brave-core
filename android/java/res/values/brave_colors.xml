@@ -42,6 +42,7 @@
     <color name="brave_theme_error">#cc0000</color>
     <color name="brave_theme_success">#51cf66</color>
     <color name="brave_theme_error_txt">#E32444</color>
+    <color name="brave_text_button_color">#4C54D2</color>
 
     <!-- Onboarding colors -->
     <color name="onboarding_orange">#fb542b</color>
@@ -94,8 +95,9 @@
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
-    <color name="brave_wallet_button_pressed">#737ADE</color>
     <color name="brave_add_widget_button_pressed">#737ADE</color>
+    <color name="brave_button_color">#4C54D2</color>
+    <color name="brave_button_pressed">#7278C5</color>
 
     <!-- Brave news colors -->
     <!-- <color name="card_background">#DC353535</color> -->    
