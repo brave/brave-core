@@ -145,36 +145,33 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   // ERC20
   std::string json(R"(
     {
-      "payload": {
-        "status": "1",
-        "message": "OK",
-        "result": [{
-          "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "tokenName": "Tether USD",
-          "symbol": "USDT",
-          "divisor": "6",
-          "tokenType": "ERC20",
-          "totalSupply": "39828710009874796",
-          "blueCheckmark": "true",
-          "description": "Tether gives you the joint benefits of open...",
-          "website": "https://tether.to/",
-          "email": "support@tether.to",
-          "blog": "https://tether.to/category/announcements/",
-          "reddit": "",
-          "slack": "",
-          "facebook": "",
-          "twitter": "https://twitter.com/Tether_to",
-          "bitcointalk": "",
-          "github": "",
-          "telegram": "",
-          "wechat": "",
-          "linkedin": "",
-          "discord": "",
-          "whitepaper": "https://path/to/TetherWhitePaper.pdf",
-          "tokenPriceUSD": "1.000000000000000000"
-        }]
-      },
-      "lastUpdated": "2021-12-09T22:02:23.187Z"
+      "status": "1",
+      "message": "OK",
+      "result": [{
+        "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "tokenName": "Tether USD",
+        "symbol": "USDT",
+        "divisor": "6",
+        "tokenType": "ERC20",
+        "totalSupply": "39828710009874796",
+        "blueCheckmark": "true",
+        "description": "Tether gives you the joint benefits of open...",
+        "website": "https://tether.to/",
+        "email": "support@tether.to",
+        "blog": "https://tether.to/category/announcements/",
+        "reddit": "",
+        "slack": "",
+        "facebook": "",
+        "twitter": "https://twitter.com/Tether_to",
+        "bitcointalk": "",
+        "github": "",
+        "telegram": "",
+        "wechat": "",
+        "linkedin": "",
+        "discord": "",
+        "whitepaper": "https://path/to/TetherWhitePaper.pdf",
+        "tokenPriceUSD": "1.000000000000000000"
+      }]
     }
   )");
 
@@ -190,18 +187,15 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   // ERC721
   json = (R"(
     {
-      "payload": {
-        "status": "1",
-        "message": "OK",
-        "result": [{
-          "contractAddress": "0x0e3a2a1f2146d86a604adc220b4967a898d7fe07",
-          "tokenName": "Gods Unchained Cards",
-          "symbol": "CARD",
-          "divisor": "0",
-          "tokenType": "ERC721"
-        }]
-      },
-      "lastUpdated": "2021-12-09T22:02:23.187Z"
+      "status": "1",
+      "message": "OK",
+      "result": [{
+        "contractAddress": "0x0e3a2a1f2146d86a604adc220b4967a898d7fe07",
+        "tokenName": "Gods Unchained Cards",
+        "symbol": "CARD",
+        "divisor": "0",
+        "tokenType": "ERC721"
+      }]
     }
   )");
   expected_token = mojom::BlockchainToken::New(
@@ -214,18 +208,15 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
 
   const std::string valid_json = (R"(
     {
-      "payload": {
-        "status": "1",
-        "message": "OK",
-        "result": [{
-          "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "tokenName": "Tether USD",
-          "symbol": "USDT",
-          "divisor": "6",
-          "tokenType": "ERC20"
-        }]
-      },
-      "lastUpdated": "2021-12-09T22:02:23.187Z"
+      "status": "1",
+      "message": "OK",
+      "result": [{
+        "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "tokenName": "Tether USD",
+        "symbol": "USDT",
+        "divisor": "6",
+        "tokenType": "ERC20"
+      }]
     }
   )");
   ASSERT_TRUE(
@@ -244,18 +235,15 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   // Invalid decimals.
   json = (R"(
     {
-      "payload": {
-        "status": "1",
-        "message": "OK",
-        "result": [{
-          "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "tokenName": "Tether USD",
-          "symbol": "USDT",
-          "divisor": "NOT A NUMBER",
-          "tokenType": "ERC20"
-        }]
-      },
-      "lastUpdated": "2021-12-09T22:02:23.187Z"
+      "status": "1",
+      "message": "OK",
+      "result": [{
+        "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "tokenName": "Tether USD",
+        "symbol": "USDT",
+        "divisor": "NOT A NUMBER",
+        "tokenType": "ERC20"
+      }]
     }
   )");
   EXPECT_FALSE(ParseTokenInfo(ParseJson(json), "0x1", mojom::CoinType::ETH))

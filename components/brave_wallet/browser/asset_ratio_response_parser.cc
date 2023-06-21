@@ -181,11 +181,10 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
     return nullptr;
   }
 
-  if (token_info->payload.result.size() != 1) {
+  if (token_info->result.size() != 1) {
     return nullptr;
   }
-  const api::asset_ratio::TokenInfoResult& result =
-      token_info->payload.result.front();
+  const api::asset_ratio::TokenInfoResult& result = token_info->result.front();
 
   int decimals = 0;
   const auto eth_addr = EthAddress::FromHex(result.contract_address);
