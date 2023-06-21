@@ -16,7 +16,7 @@ class CollapsedURLBarView: UIView {
     $0.isUserInteractionEnabled = false
   }
   
-  private let lockImageView = ToolbarButton(top: true).then {
+  private let lockImageView = ToolbarButton().then {
     $0.setImage(UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil), for: .normal)
     $0.isHidden = true
     $0.tintColor = .bravePrimary

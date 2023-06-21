@@ -425,6 +425,7 @@ extension Strings {
   public static let tabToolbarPlaylistButtonAccessibilityLabel = NSLocalizedString("TabToolbarPlaylistButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Playlist", comment: "Accessibility Label for the tab toolbar Playlist button")
   public static let tabToolbarAddToPlaylistButtonAccessibilityLabel = NSLocalizedString("tabToolbarAddToPlaylistButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Add to Playlist", comment: "Accessibility Label for the tab toolbar Add to Playlist button")
   public static let tabToolbarReloadButtonAccessibilityLabel = NSLocalizedString("TabToolbarReloadButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Reload", comment: "Accessibility Label for the tab toolbar Reload button")
+  public static let tabToolbarVoiceSearchButtonAccessibilityLabel = NSLocalizedString("tabToolbarVoiceSearchButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Voice Search", comment: "Accessibility Label for the tab toolbar Reload button")
   public static let tabToolbarSearchAddressPlaceholderText = NSLocalizedString("TabToolbarSearchAddressPlaceholderText", tableName: "BraveShared", bundle: .module, value: "Search or enter address", comment: "The text shown in the URL bar on about:home")
   public static let tabToolbarWarningImageAccessibilityLabel = NSLocalizedString("TabToolbarWarningImageAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Insecure connection", comment: "Accessibility label for the lock icon, which is only present if the connection is insecure")
   public static let tabToolbarLockImageAccessibilityLabel = NSLocalizedString("TabToolbarLockImageAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Secure connection", comment: "Accessibility label for the lock icon, which is only present if the connection is secure")
@@ -4366,6 +4367,44 @@ extension Strings {
         value: "Open",
         comment: "Open Tab action title")
 
+  }
+}
+
+// MARK: - Voice Search
+
+extension Strings {
+  public struct VoiceSearch {
+    public static let screenTitle =
+      NSLocalizedString(
+        "voice.search.screenn.title",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Voice Search",
+        comment: "Title for screen to search using voice.")
+    
+    public static let screenDisclaimer =
+      NSLocalizedString(
+        "voice.search.screen.disclaimer",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Brave does not store or share your voice searches.",
+        comment: "Disclaimer for screen to search using voice.")
+    
+    public static let microphoneAccessRequiredWarningTitle =
+      NSLocalizedString(
+        "voice.search.microphone.title.required",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Microphone Access Required",
+        comment: "Title for warning alert microphone access is required.")
+    
+    public static let microphoneAccessRequiredWarningDescription =
+      NSLocalizedString(
+        "voice.search.microphone.description.required",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Please allow Microphone Access in iOS System Settings for Brave to use anonymous voice search.",
+        comment: "Explanation for warning alert why the microphone access required.")
   }
 }
 
