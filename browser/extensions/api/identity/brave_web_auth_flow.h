@@ -46,7 +46,8 @@ class BraveWebAuthFlow : public WebAuthFlow::Delegate {
       CompleteFunctionWithResultCallback complete_with_result_callback,
       const std::string& oauth2_client_id,
       ExtensionTokenKey token_key,
-      bool interactive);
+      bool interactive,
+      bool user_gesture);
 
  private:
   static absl::optional<std::string> token_for_testing_;
