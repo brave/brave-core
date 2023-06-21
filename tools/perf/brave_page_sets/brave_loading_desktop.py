@@ -29,7 +29,7 @@ class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
   def _StartBrowser(self, page):
     super(shared_page_state.SharedDesktopPageState, self)._StartBrowser(page)
     # Wait a fixed time to finish all startup work.
-    time.sleep(10)
+    # time.sleep(10)
 
   def _StopBrowser(self):
     if self._browser:
@@ -65,6 +65,7 @@ class BraveLoadingDesktopStorySet(story.StorySet):
     self.AddStories(['typical'],
                     [('https://example.com/', 'example.com'),
                      ('https://search.brave.com/', 'BraveSearch'),
+                     ('https://search.brave.com/search?q=bitcoin&source=web&force_show_ads=1', 'Brave_SERP'),
                      ('https://en.wikipedia.org/wiki/HCard', 'wikipedia.com'),
                      ('https://www.economist.com/', 'Economist'),
                      ('https://www.ign.com/', 'IGN')], cache_temperatures)

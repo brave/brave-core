@@ -1,0 +1,62 @@
+{
+  "configurations": [
+    {
+      "target" : "v1.55.1",
+      "label": "default_v1.55.1",
+      "browser-type": "brave",
+      "profile": "brave-typical-v1.46.52",
+      "extra-browser-args": [],
+      "extra-benchmark-args": [],
+    },
+    {
+      "target" : "v1.55.1",
+      "label": "ads_in_process_v1.55.1",
+      "browser-type": "brave",
+      "profile": "brave-typical-v1.46.52",
+      "extra-browser-args": ["--enable-features=ShouldLaunchBraveAdsAsInProcessService"],
+      "extra-benchmark-args": [],
+    },
+    {
+      "target" : "v1.55.1",
+      "label": "all_features_v1.55.1",
+      "browser-type": "brave",
+      "profile": "brave-typical-v1.46.52",
+      "extra-browser-args": ["--enable-features=ShouldAlwaysTriggerBraveSearchResultAdEvents,ShouldAlwaysRunBraveAdsService,ShouldLaunchBraveAdsAsInProcessService"],
+      "extra-benchmark-args": [],
+    },
+  ],
+  "benchmarks": [
+    {
+      "name": "loading.desktop.brave",
+      "pageset-repeat": 10,
+      "stories": [
+        "example.com_cold",
+        "wikipedia.com_cold",
+        "IGN_warm",
+        "Brave_SERP_cold",
+      ]
+    },
+    {
+      "name": "system_health.memory_desktop",
+      "pageset-repeat": 10,
+      "stories": [
+        "load:chrome:blank",
+        "browse:news:hackernews:2020",
+        "load:media:youtube:2018",
+      ]
+    },
+    {
+      "name": "system_health.common_desktop",
+      "pageset-repeat": 10,
+      "stories": [
+        "load:chrome:blank",
+        "load:chrome:blank",
+        "load:media:youtube:2018",
+      ]
+    },
+    {
+      "name": "speedometer2",
+      "pageset-repeat": 1
+    }
+  ]
+}
