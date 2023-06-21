@@ -56,7 +56,7 @@ CommanderService::CommanderService(Profile* profile)
   command_sources_.push_back(std::make_unique<BraveSimpleCommandSource>());
   command_sources_.push_back(std::make_unique<BookmarkCommandSource>());
   command_sources_.push_back(std::make_unique<WindowCommandSource>());
-  command_sources_.push_back(std::make_unique<TabCommandSource>());
+  command_sources_.push_back(std::make_unique<BraveTabCommandSource>());
 }
 
 CommanderService::~CommanderService() = default;
