@@ -172,11 +172,7 @@ export function RewardsOptIn (props: Props) {
         {getString('onboardingEarnText')}
       </style.optInText>
       <style.mainAction>
-        <button
-          onClick={onEnableClick}
-          data-test-id='opt-in-button'
-          autoFocus
-        >
+        <button onClick={onEnableClick} data-test-id='opt-in-button'>
           {getString('onboardingStartUsingRewards')}
         </button>
       </style.mainAction>
