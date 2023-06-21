@@ -17,12 +17,14 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
+#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_widget.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "build/build_config.h"
@@ -83,6 +85,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     auto* sidebar_container_view =
         static_cast<SidebarContainerView*>(controller()->sidebar());
     return sidebar_container_view->GetEventDetectWidget()->widget_.get();
+  }
+
+  views::Widget* GetSidePanelResizeWidget() {
+    return GetSidePanel()->resize_widget_->GetWidget();
   }
 
   raw_ptr<SidebarItemsContentsView> GetSidebarItemsContentsView(
@@ -366,6 +372,61 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PrefsMigrationTest) {
                   ->IsDefaultValue());
   EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
                   ->IsDefaultValue());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  EXPECT_EQ(kDefaultSidePanelWidth,
+            prefs->GetInteger(sidebar::kSidePanelWidth));
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() != 0; }));
+
+  // Test smaller panel width than default(minimum) and check smaller than
+  // default is not applied. Positive offset value is for reducing width.
+  GetSidePanel()->OnResize(30, true);
+  // Check panel width is not changed.
+  EXPECT_EQ(kDefaultSidePanelWidth,
+            prefs->GetInteger(sidebar::kSidePanelWidth));
+
+  // On right-side sidebar position, side panel's x and resize widget's x is
+  // same.
+  EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().x(),
+            GetSidePanelResizeWidget()->GetWindowBoundsInScreen().x());
+
+  // Increase panel width and check resize handle widget's position.
+  // Negative offset value is for increasing width.
+  GetSidePanel()->OnResize(-20, true);
+  EXPECT_EQ(kDefaultSidePanelWidth + 20,
+            prefs->GetInteger(sidebar::kSidePanelWidth));
+  EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().x(),
+            GetSidePanelResizeWidget()->GetWindowBoundsInScreen().x());
+
+  // Set sidebar on left side.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().right(),
+            GetSidePanelResizeWidget()->GetWindowBoundsInScreen().right());
+
+  // Increse panel width and check width and resize handle position .
+  // Positive offset value is for increasing width in left-sided sidebar.
+  GetSidePanel()->OnResize(20, true);
+  EXPECT_EQ(kDefaultSidePanelWidth + 40,
+            prefs->GetInteger(sidebar::kSidePanelWidth));
+  EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().right(),
+            GetSidePanelResizeWidget()->GetWindowBoundsInScreen().right());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  // Check that 40px increased width is persisted properly.
+  constexpr int kExpectedPanelWidth = kDefaultSidePanelWidth + 40;
+  EXPECT_EQ(kExpectedPanelWidth, prefs->GetInteger(sidebar::kSidePanelWidth));
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() != 0; }));
+  EXPECT_EQ(kExpectedPanelWidth, GetSidePanel()->width());
 }
 
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {

@@ -6,6 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
 
+#include <memory>
+
+#include "base/memory/raw_ptr.h"
+#include "components/prefs/pref_member.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/resize_area_delegate.h"
@@ -13,6 +18,11 @@
 #include "ui/views/view_observer.h"
 
 class BrowserView;
+class SidePanelResizeWidget;
+
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
 
 // Replacement for chromium's SidePanel which defines a
 // unique inset and border style compared to Brave
@@ -44,21 +54,30 @@ class BraveSidePanel : public views::View,
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
 
-  void SetMinimumSidePanelContentsWidthForTesting(int width) {}
-
- private:
-  void UpdateVisibility();
-  void UpdateBorder();
-
   // views::View:
   void ChildVisibilityChanged(View* child) override;
   void OnThemeChanged() override;
+  gfx::Size GetMinimumSize() const override;
+  void AddedToWidget() override;
+
+  void SetMinimumSidePanelContentsWidthForTesting(int width) {}
+
+ private:
+  friend class sidebar::SidebarBrowserTest;
+
+  void UpdateVisibility();
+  void UpdateBorder();
+  void OnSidebarWidthChanged();
 
   // views::ViewObserver:
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
-  HorizontalAlignment horizontal_alighment_ = kHorizontalAlignLeft;
+  HorizontalAlignment horizontal_alignment_ = kHorizontalAlignLeft;
+  absl::optional<int> starting_width_on_resize_;
+  raw_ptr<BrowserView> browser_view_ = nullptr;
+  IntegerPrefMember sidebar_width_;
+  std::unique_ptr<SidePanelResizeWidget> resize_widget_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_

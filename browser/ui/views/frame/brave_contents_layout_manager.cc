@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 
-#include <vector>
+#include <algorithm>
 
 #include "ui/views/view.h"
 
@@ -23,42 +23,31 @@ BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
 void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   DCHECK(host_ == contents_container);
 
-  int contents_height = contents_container->height();
+  // Use upstream layout logic when sidebar is not shown.
+  if (!sidebar_container_view_->GetVisible()) {
+    return ContentsLayoutManager::Layout(contents_container);
+  }
+
+  int proposed_sidebar_width =
+      sidebar_container_view_->GetPreferredSize().width();
   int contents_width = contents_container->width();
 
-  std::vector<views::View*> left_side_candidate_views;
-  std::vector<views::View*> right_side_candidate_views;
-  if (sidebar_on_left_) {
-    left_side_candidate_views.push_back(sidebar_container_view_);
-  } else {
-    right_side_candidate_views.push_back(sidebar_container_view_);
+  // Guarantee 20% width for contents at least.
+  if ((contents_width - proposed_sidebar_width) <= contents_width * 0.2) {
+    proposed_sidebar_width = std::min(static_cast<int>(contents_width * 0.8),
+                                      proposed_sidebar_width);
+  }
+  contents_width -= proposed_sidebar_width;
+
+  int sidebar_x = 0;
+  if (!sidebar_on_left_) {
+    sidebar_x =
+        contents_container->GetLocalBounds().right() - proposed_sidebar_width;
   }
 
-  int taken_left_width = 0;
-  for (auto* view : left_side_candidate_views) {
-    if (!view || !view->GetVisible())
-      continue;
-
-    auto width = view->GetPreferredSize().width();
-    const gfx::Rect bounds(taken_left_width, 0, width, contents_height);
-    view->SetBoundsRect(host_->GetMirroredRect(bounds));
-    taken_left_width += width;
-  }
-  contents_width -= taken_left_width;
-
-  int taken_right_width = 0;
-  int right_side_x = contents_container->GetLocalBounds().right();
-  for (auto* view : right_side_candidate_views) {
-    if (!view || !view->GetVisible())
-      continue;
-
-    auto width = view->GetPreferredSize().width();
-    right_side_x -= width;
-    taken_right_width += width;
-    const gfx::Rect bounds(right_side_x, 0, width, contents_height);
-    view->SetBoundsRect(host_->GetMirroredRect(bounds));
-  }
-  contents_width -= taken_right_width;
+  const int contents_height = contents_container->height();
+  const gfx::Rect bounds(sidebar_x, 0, proposed_sidebar_width, contents_height);
+  sidebar_container_view_->SetBoundsRect(host_->GetMirroredRect(bounds));
 
   gfx::Size container_size(contents_width, contents_height);
   gfx::Rect new_devtools_bounds;
@@ -67,8 +56,8 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   ApplyDevToolsContentsResizingStrategy(
       strategy_, container_size, &new_devtools_bounds, &new_contents_bounds);
 
-  new_devtools_bounds.Offset(taken_left_width, 0);
-  new_contents_bounds.Offset(taken_left_width, 0);
+  new_devtools_bounds.Offset(sidebar_on_left_ ? proposed_sidebar_width : 0, 0);
+  new_contents_bounds.Offset(sidebar_on_left_ ? proposed_sidebar_width : 0, 0);
   // DevTools cares about the specific position, so we have to compensate RTL
   // layout here.
   devtools_view_->SetBoundsRect(host_->GetMirroredRect(new_devtools_bounds));

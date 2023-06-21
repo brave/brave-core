@@ -14,6 +14,10 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#include "brave/components/sidebar/pref_names.h"
+#endif
+
 namespace brave {
 
 const std::vector<const char*>& GetBravePersistentPrefNames() {
@@ -23,6 +27,9 @@ const std::vector<const char*>& GetBravePersistentPrefNames() {
         brave_tabs::kVerticalTabsExpandedWidth,
         brave_tabs::kVerticalTabsEnabled, brave_tabs::kVerticalTabsCollapsed,
         brave_tabs::kVerticalTabsFloatingEnabled,
+#endif
+#if defined(TOOLKIT_VIEWS)
+        sidebar::kSidePanelWidth,
 #endif
   });
 
