@@ -276,6 +276,9 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     }
 
     private void updateSummaries() {
+        if (getActivity() == null) {
+            return;
+        }
         List<BraveVpnServerRegion> vpnServerRegions =
                 BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getServerRegions());
         String serverLocation = "";
