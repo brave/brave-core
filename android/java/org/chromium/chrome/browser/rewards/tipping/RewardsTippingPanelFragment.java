@@ -108,6 +108,7 @@ public class RewardsTippingPanelFragment
     private TextView mUsdSymbol1;
     private TextView mUsdSymbol2;
     private boolean mEnoughFundWarningShown;
+    private TextView mCustodianText;
 
     public static RewardsTippingPanelFragment newInstance(int tabId, String web3Url) {
         RewardsTippingPanelFragment fragment = new RewardsTippingPanelFragment();
@@ -162,6 +163,7 @@ public class RewardsTippingPanelFragment
         mSendButton = view.findViewById(R.id.send_tip_button);
         mWeb3WalletButton = view.findViewById(R.id.use_web3_wallet_button);
         mTipProgressBar = view.findViewById(R.id.send_tip_progress_bar);
+        mCustodianText = view.findViewById(R.id.custodian_text);
 
         init(view);
         setBalanceText(view);
@@ -247,12 +249,15 @@ public class RewardsTippingPanelFragment
             try {
                 mExternalWallet = new BraveRewardsExternalWallet(externalWallet);
                 walletStatus = mExternalWallet.getStatus();
-
-                if (walletStatus == WalletStatus.LOGGED_OUT) {
-                    setLogoutStateMessage();
+                if (walletStatus != WalletStatus.NOT_CONNECTED) {
+                    if (walletStatus == WalletStatus.LOGGED_OUT) {
+                        setLogoutStateMessage();
+                    } else {
+                        int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(mCurrentTabId);
+                        setPublisherNoteText(pubStatus, walletStatus);
+                    }
                 } else {
-                    int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(mCurrentTabId);
-                    setPublisherNoteText(pubStatus, walletStatus);
+                    mCustodianText.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 mExternalWallet = null;
@@ -566,9 +571,8 @@ public class RewardsTippingPanelFragment
             custodianName = R.string.gemini;
         }
 
-        TextView custodian = view.findViewById(R.id.custodian_text);
-        custodian.setText(custodianName);
-        custodian.setCompoundDrawablesWithIntrinsicBounds(custodianIcon, 0, 0, 0);
+        mCustodianText.setText(custodianName);
+        mCustodianText.setCompoundDrawablesWithIntrinsicBounds(custodianIcon, 0, 0, 0);
     }
 
     private void initTipChoice(boolean isBat) {
