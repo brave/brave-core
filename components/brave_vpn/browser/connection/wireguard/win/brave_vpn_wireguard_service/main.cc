@@ -13,9 +13,9 @@
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/brave_wireguard_service_crash_reporter_client.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/install_utils.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service_main.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/wireguard_tunnel_service.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/install_utils.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/wireguard_service_runner.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
 #include "chrome/install_static/product_install_details.h"
 #include "components/crash/core/app/crash_switches.h"
 #include "components/crash/core/app/crashpad.h"
@@ -77,6 +77,10 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
     PLOG(ERROR) << "Failed to initialize COM";
     return -1;
   }
+
+  // System level command line. In this mode, loads the tunnel.dll and passes it
+  // the path to the config. all control of the service is given to tunnel.dll,
+  // stops when execution returns.
   if (command_line->HasSwitch(
           brave_vpn::kBraveVpnWireguardServiceConnectSwitchName)) {
     return brave_vpn::wireguard::RunWireguardTunnelService(
@@ -84,19 +88,22 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
             brave_vpn::kBraveVpnWireguardServiceConnectSwitchName));
   }
 
-  // Register and configure windows service.
+  // System level command line. Makes registeration and configuration for
+  // BraveVPNWireguardService windows service. Used by the installer.
   if (command_line->HasSwitch(
           brave_vpn::kBraveVpnWireguardServiceInstallSwitchName)) {
     auto success = brave_vpn::InstallBraveWireguardService();
     return success ? 0 : 1;
   }
 
+  // System level command line. Unregisters BraveVPNWireguardService
+  // windows service and removes stored data. Used by the uninstaller.
   if (command_line->HasSwitch(
           brave_vpn::kBraveVpnWireguardServiceUnnstallSwitchName)) {
     auto success = brave_vpn::UninstallBraveWireguardService();
     return success ? 0 : 1;
   }
 
-  // Run the service.
-  return brave_vpn::ServiceMain::GetInstance()->Start();
+  // Runs BraveVpnWireguardService, called by system SCM.
+  return brave_vpn::WireguardServiceRunner::GetInstance()->RunAsService();
 }

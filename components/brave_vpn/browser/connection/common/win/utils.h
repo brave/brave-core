@@ -14,6 +14,7 @@
 namespace brave_vpn {
 HRESULT HRESULTFromLastError();
 bool IsWindowsServiceRunning(const std::wstring& service_name);
+DWORD GetWindowsServiceStatus(const std::wstring& service_name);
 bool SetServiceFailureActions(SC_HANDLE service);
 }  // namespace brave_vpn
 
