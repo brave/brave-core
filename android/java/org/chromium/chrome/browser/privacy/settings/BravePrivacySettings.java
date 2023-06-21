@@ -529,8 +529,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 }
             }
         } else if (PREF_REQUEST_OTR.equals(key)) {
-            // UserPrefs.get(Profile.getLastUsedRegularProfile()).setInteger(BravePref.REQUEST_OTR_ACTION_OPTION,
-            // newValue); setRequestOtrPref();
+            setRequestOtrPref();
         } else if (PREF_FINGERPRINT_LANGUAGE.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.REDUCE_LANGUAGE_ENABLED, (boolean) newValue);
@@ -704,7 +703,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_3));
         }
 
-        // setRequestOtrPref();
+        setRequestOtrPref();
 
         if (httpsUpgradePref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mHttpsUpgradePref.setCheckedIndex(0);
