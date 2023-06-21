@@ -11,7 +11,7 @@
 #define __WRL_CLASSIC_COM_STRICT__
 #endif  // __WRL_CLASSIC_COM_STRICT__
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service_main.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/wireguard_service_runner.h"
 
 #include <atlsecurity.h>
 #include <sddl.h>
@@ -25,30 +25,25 @@
 #include "base/task/single_thread_task_executor.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/win/scoped_com_initializer.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/brave_wireguard_manager.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/wireguard_utils.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/brave_wireguard_manager.h"
 
 namespace brave_vpn {
 
-ServiceMain* ServiceMain::GetInstance() {
-  static base::NoDestructor<ServiceMain> instance;
+WireguardServiceRunner* WireguardServiceRunner::GetInstance() {
+  static base::NoDestructor<WireguardServiceRunner> instance;
   return instance.get();
 }
 
-// Start() is the entry point called by WinMain.
-int ServiceMain::Start() {
-  return (this->*run_routine_)();
-}
-
-void ServiceMain::CreateWRLModule() {
+void WireguardServiceRunner::CreateWRLModule() {
   Microsoft::WRL::Module<Microsoft::WRL::OutOfProc>::Create(
-      this, &ServiceMain::SignalExit);
+      this, &WireguardServiceRunner::SignalExit);
 }
 
-// When _ServiceMain gets called, it initializes COM, and then calls Run().
-// Run() initializes security, then calls RegisterClassObject().
-HRESULT ServiceMain::RegisterClassObject() {
+// When _WireguardServiceRunner gets called, it initializes COM, and then calls
+// Run(). Run() initializes security, then calls RegisterClassObject().
+HRESULT WireguardServiceRunner::RegisterClassObject() {
   auto& module = Microsoft::WRL::Module<Microsoft::WRL::OutOfProc>::GetModule();
 
   // We hand-register a unique CLSID for each Chrome channel.
@@ -91,7 +86,7 @@ HRESULT ServiceMain::RegisterClassObject() {
   return hr;
 }
 
-void ServiceMain::UnregisterClassObject() {
+void WireguardServiceRunner::UnregisterClassObject() {
   auto& module = Microsoft::WRL::Module<Microsoft::WRL::OutOfProc>::GetModule();
   const HRESULT hr =
       module.UnregisterCOMObject(nullptr, cookies_, std::size(cookies_));
@@ -100,23 +95,21 @@ void ServiceMain::UnregisterClassObject() {
   }
 }
 
-ServiceMain::ServiceMain()
-    : run_routine_(&ServiceMain::RunAsService),
-      service_status_handle_(nullptr),
-      service_status_() {
+WireguardServiceRunner::WireguardServiceRunner()
+    : service_status_handle_(nullptr), service_status_() {
   service_status_.dwServiceType = SERVICE_WIN32_OWN_PROCESS;
   service_status_.dwCurrentState = SERVICE_STOPPED;
   service_status_.dwControlsAccepted = SERVICE_ACCEPT_STOP;
 }
 
-ServiceMain::~ServiceMain() = default;
+WireguardServiceRunner::~WireguardServiceRunner() = default;
 
-int ServiceMain::RunAsService() {
+int WireguardServiceRunner::RunAsService() {
   const std::wstring& service_name(
       brave_vpn::GetBraveVpnWireguardServiceName());
   const SERVICE_TABLE_ENTRY dispatch_table[] = {
       {const_cast<LPTSTR>(service_name.c_str()),
-       &ServiceMain::ServiceMainEntry},
+       &WireguardServiceRunner::WireguardServiceRunnerEntry},
       {nullptr, nullptr}};
 
   if (!::StartServiceCtrlDispatcher(dispatch_table)) {
@@ -128,10 +121,10 @@ int ServiceMain::RunAsService() {
   return service_status_.dwWin32ExitCode;
 }
 
-void ServiceMain::ServiceMainImpl() {
+void WireguardServiceRunner::WireguardServiceRunnerImpl() {
   service_status_handle_ = ::RegisterServiceCtrlHandler(
       brave_vpn::GetBraveVpnWireguardServiceName().c_str(),
-      &ServiceMain::ServiceControlHandler);
+      &WireguardServiceRunner::ServiceControlHandler);
   if (service_status_handle_ == nullptr) {
     VLOG(1) << "RegisterServiceCtrlHandler failed";
     return;
@@ -160,8 +153,8 @@ void ServiceMain::ServiceMainImpl() {
 }
 
 // static
-void ServiceMain::ServiceControlHandler(DWORD control) {
-  ServiceMain* self = ServiceMain::GetInstance();
+void WireguardServiceRunner::ServiceControlHandler(DWORD control) {
+  WireguardServiceRunner* self = WireguardServiceRunner::GetInstance();
   switch (control) {
     case SERVICE_CONTROL_STOP:
       self->SignalExit();
@@ -173,17 +166,19 @@ void ServiceMain::ServiceControlHandler(DWORD control) {
 }
 
 // static
-void WINAPI ServiceMain::ServiceMainEntry(DWORD argc, wchar_t* argv[]) {
-  ServiceMain::GetInstance()->ServiceMainImpl();
+void WINAPI
+WireguardServiceRunner::WireguardServiceRunnerEntry(DWORD argc,
+                                                    wchar_t* argv[]) {
+  WireguardServiceRunner::GetInstance()->WireguardServiceRunnerImpl();
 }
 
-void ServiceMain::SetServiceStatus(DWORD state) {
+void WireguardServiceRunner::SetServiceStatus(DWORD state) {
   ::InterlockedExchange(&service_status_.dwCurrentState, state);
   ::SetServiceStatus(service_status_handle_, &service_status_);
 }
 
 // static
-HRESULT ServiceMain::InitializeComSecurity() {
+HRESULT WireguardServiceRunner::InitializeComSecurity() {
   CDacl dacl;
   constexpr auto com_rights_execute_local =
       COM_RIGHTS_EXECUTE | COM_RIGHTS_EXECUTE_LOCAL;
@@ -225,7 +220,7 @@ HRESULT ServiceMain::InitializeComSecurity() {
       nullptr);
 }
 
-HRESULT ServiceMain::Run() {
+HRESULT WireguardServiceRunner::Run() {
   HRESULT hr = InitializeComSecurity();
   if (FAILED(hr)) {
     return hr;
@@ -245,7 +240,7 @@ HRESULT ServiceMain::Run() {
   return S_OK;
 }
 
-void ServiceMain::SignalExit() {
+void WireguardServiceRunner::SignalExit() {
   std::move(quit_).Run();
 }
 

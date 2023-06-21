@@ -19,8 +19,9 @@
 #include "base/win/com_init_util.h"
 #include "base/win/registry.h"
 #include "base/win/scoped_bstr.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/brave_wireguard_manager_idl.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common/service_constants.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/brave_wireguard_manager_idl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
@@ -76,6 +77,12 @@ absl::optional<base::FilePath> GetLastUsedConfigPath() {
     return absl::nullopt;
   }
   return base::FilePath(value);
+}
+
+bool IsBraveVPNWireguardTunnelServiceRunning() {
+  auto status =
+      GetWindowsServiceStatus(GetBraveVpnWireguardTunnelServiceName());
+  return status == SERVICE_RUNNING || status == SERVICE_START_PENDING;
 }
 
 absl::optional<std::string> CreateWireguardConfig(

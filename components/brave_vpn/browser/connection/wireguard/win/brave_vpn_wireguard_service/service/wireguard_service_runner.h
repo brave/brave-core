@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_MAIN_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_MAIN_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_WIREGUARD_SERVICE_RUNNER_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_WIREGUARD_SERVICE_RUNNER_H_
 
 #include <wrl/client.h>
 
@@ -14,58 +14,55 @@
 
 namespace brave_vpn {
 
-class ServiceMain {
+class WireguardServiceRunner {
  public:
-  static ServiceMain* GetInstance();
+  static WireguardServiceRunner* GetInstance();
 
-  ServiceMain(const ServiceMain&) = delete;
-  ServiceMain& operator=(const ServiceMain&) = delete;
+  WireguardServiceRunner(const WireguardServiceRunner&) = delete;
+  WireguardServiceRunner& operator=(const WireguardServiceRunner&) = delete;
 
-  // Start() is the entry point called by WinMain.
-  int Start();
+  int RunAsService();
+
+  void SignalExit();
+
+ private:
+  friend class base::NoDestructor<WireguardServiceRunner>;
+
+  WireguardServiceRunner();
+  ~WireguardServiceRunner();
+
+  // Handles object registration, message loop, and unregistration. Returns
+  // when all registered objects are released.
+  HRESULT Run();
 
   // Creates an out-of-proc WRL Module.
   void CreateWRLModule();
+
+  // Unregisters the Service COM class factory object.
+  void UnregisterClassObject();
 
   // Registers the Service COM class factory object so other applications can
   // connect to it. Returns the registration status.
   HRESULT RegisterClassObject();
 
-  // Unregisters the Service COM class factory object.
-  void UnregisterClassObject();
-  void SignalExit();
-
- private:
-  friend class base::NoDestructor<ServiceMain>;
-
-  ServiceMain();
-  ~ServiceMain();
-
-  // This function handshakes with the service control manager and starts
-  // the service.
-  int RunAsService();
-
   // Runs the service on the service thread.
-  void ServiceMainImpl();
+  void WireguardServiceRunnerImpl();
 
   // The control handler of the service.
   static void WINAPI ServiceControlHandler(DWORD control);
 
   // The main service entry point.
-  static void WINAPI ServiceMainEntry(DWORD argc, wchar_t* argv[]);
+  static void WINAPI WireguardServiceRunnerEntry(DWORD argc, wchar_t* argv[]);
 
   // Calls ::SetServiceStatus().
   void SetServiceStatus(DWORD state);
 
-  // Handles object registration, message loop, and unregistration. Returns
-  // when all registered objects are released.
-  HRESULT Run();
   // Calls ::CoInitializeSecurity to allow all users to create COM objects
   // within the server.
   static HRESULT InitializeComSecurity();
 
   // The action routine to be executed.
-  int (ServiceMain::*run_routine_)();
+  int (WireguardServiceRunner::*run_routine_)();
 
   // Identifier of registered class objects used for unregistration.
   DWORD cookies_[1] = {};
@@ -76,4 +73,4 @@ class ServiceMain {
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_MAIN_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_WIREGUARD_SERVICE_RUNNER_H_
