@@ -22,6 +22,9 @@ class Model;
 struct PerformanceReport;
 using ModelWeights = std::tuple<Weights, float>;
 
+// This class is a wrapper around the federated learning Task and its Model. It
+// provides the interface to set training and test data, run the federated
+// learning Task and get the TaskResult.
 class FederatedTaskHandler final {
  public:
   FederatedTaskHandler(const Task& task, std::unique_ptr<Model> model);
