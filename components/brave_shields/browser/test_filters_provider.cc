@@ -28,6 +28,10 @@ TestFiltersProvider::TestFiltersProvider(const base::FilePath& dat_location,
 
 TestFiltersProvider::~TestFiltersProvider() = default;
 
+std::string TestFiltersProvider::GetNameForDebugging() {
+  return "TestFiltersProvider";
+}
+
 void TestFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {

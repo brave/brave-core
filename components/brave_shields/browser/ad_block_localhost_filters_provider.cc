@@ -19,6 +19,10 @@ AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider()
 
 AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() {}
 
+std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
+  return "AdBlockLocalhostFiltersProvider";
+}
+
 void AdBlockLocalhostFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {

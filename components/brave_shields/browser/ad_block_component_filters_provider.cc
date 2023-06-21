@@ -25,8 +25,9 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     component_updater::ComponentUpdateService* cus,
     std::string component_id,
     std::string base64_public_key,
-    std::string title)
-    : AdBlockFiltersProvider(true),
+    std::string title,
+    bool is_default_engine)
+    : AdBlockFiltersProvider(is_default_engine),
       component_id_(component_id),
       component_updater_service_(cus) {
   // Can be nullptr in unit tests
@@ -38,13 +39,19 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
   }
 }
 
+std::string AdBlockComponentFiltersProvider::GetNameForDebugging() {
+  return "AdBlockComponentFiltersProvider";
+}
+
 AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     component_updater::ComponentUpdateService* cus,
-    const FilterListCatalogEntry& catalog_entry)
+    const FilterListCatalogEntry& catalog_entry,
+    bool is_default_engine)
     : AdBlockComponentFiltersProvider(cus,
                                       catalog_entry.component_id,
                                       catalog_entry.base64_public_key,
-                                      catalog_entry.title) {}
+                                      catalog_entry.title,
+                                      is_default_engine) {}
 
 AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {}
 

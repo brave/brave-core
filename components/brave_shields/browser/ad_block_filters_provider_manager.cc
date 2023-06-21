@@ -66,6 +66,10 @@ void AdBlockFiltersProviderManager::RemoveProvider(
   NotifyObservers();
 }
 
+std::string AdBlockFiltersProviderManager::GetNameForDebugging() {
+  return "AdBlockCustomFiltersProvider";
+}
+
 void AdBlockFiltersProviderManager::OnChanged() {
   NotifyObservers();
 }

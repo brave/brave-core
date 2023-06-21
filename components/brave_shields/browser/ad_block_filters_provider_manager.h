@@ -58,6 +58,8 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   void RemoveProvider(AdBlockFiltersProvider* provider,
                       bool is_for_default_engine);
 
+  std::string GetNameForDebugging() override;
+
  private:
   friend base::NoDestructor<AdBlockFiltersProviderManager>;
 

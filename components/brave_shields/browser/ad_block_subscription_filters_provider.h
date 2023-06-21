@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_SUBSCRIPTION_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_SUBSCRIPTION_FILTERS_PROVIDER_H_
 
+#include <string>
+
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"

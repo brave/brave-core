@@ -29,6 +29,10 @@ void AdBlockCustomFiltersProvider::HideElementOnHost(
                       '\n');
 }
 
+std::string AdBlockCustomFiltersProvider::GetNameForDebugging() {
+  return "AdBlockCustomFiltersProvider";
+}
+
 void AdBlockCustomFiltersProvider::CreateSiteExemption(
     const std::string& host) {
   std::string custom_filters = GetCustomFilters();

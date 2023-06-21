@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_FILTERS_PROVIDER_H_
 
+#include <string>
+
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -39,6 +41,8 @@ class AdBlockFiltersProvider {
                                        const DATFileDataBuffer& dat_buf)>);
 
   base::WeakPtr<AdBlockFiltersProvider> AsWeakPtr();
+
+  virtual std::string GetNameForDebugging() = 0;
 
  protected:
   bool engine_is_default_;

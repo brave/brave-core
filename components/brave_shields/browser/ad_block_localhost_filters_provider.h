@@ -37,6 +37,8 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
   // AdBlockFiltersProvider
   void AddObserver(AdBlockFiltersProvider::Observer* observer);
 
+  std::string GetNameForDebugging() override;
+
  private:
   SEQUENCE_CHECKER(sequence_checker_);
 };
