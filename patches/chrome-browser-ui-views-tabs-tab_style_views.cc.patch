@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 1994d1a97772eeaa2db869549a737b7e2889dadd..af23022bab37f1898dae0cd7beac751d42fe0b95 100644
+index 1994d1a97772eeaa2db869549a737b7e2889dadd..7a0e12c38774d5f2599348e676ed43733646745d 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
 @@ -126,6 +126,7 @@ class GM2TabStyleViews : public TabStyleViews {
@@ -14,7 +14,7 @@ index 1994d1a97772eeaa2db869549a737b7e2889dadd..af23022bab37f1898dae0cd7beac751d
    const ShapeModifier shape_modifier = GetShapeModifier(path_type);
    const bool extend_left_to_bottom = shape_modifier & kNoLowerLeftArc;
    const bool extend_right_to_bottom = shape_modifier & kNoLowerRightArc;
-+  bottom_radius = 0;
++  extension_corner_radius = 0;
  
    SkPath path;
  
