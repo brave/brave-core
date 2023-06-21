@@ -130,6 +130,8 @@ export const PortfolioAsset = (props: Props) => {
   const selectedAssetPriceHistory = useUnsafePageSelector(PageSelectors.selectedAssetPriceHistory)
   const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
+  const hiddenNfts =
+    useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokens)
 
   // queries
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
@@ -144,10 +146,10 @@ export const PortfolioAsset = (props: Props) => {
   const { data: transactionsByNetwork = [] } = useGetTransactionsQuery(
     selectedAsset
       ? {
-          address: null,
-          chainId: selectedAsset.chainId,
-          coinType: selectedAsset.coin
-        }
+        address: null,
+        chainId: selectedAsset.chainId,
+        coinType: selectedAsset.coin
+      }
       : skipToken
   )
 
@@ -233,13 +235,22 @@ export const PortfolioAsset = (props: Props) => {
     if (!contractOrSymbol) {
       return undefined
     }
-    const userToken = userVisibleTokensInfo.find((token) =>
+    const userToken = [...userVisibleTokensInfo, ...hiddenNfts]
+    .find((token) =>
       tokenId
         ? token.tokenId === tokenId && token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol
         : token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol ||
         token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol && token.contractAddress === '')
     return userToken
-  }, [userVisibleTokensInfo, selectedTimeline, chainIdOrMarketSymbol, contractOrSymbol, tokenId, isShowingMarketData])
+  }, [
+    userVisibleTokensInfo,
+    selectedTimeline,
+    chainIdOrMarketSymbol,
+    contractOrSymbol,
+    tokenId,
+    isShowingMarketData,
+    hiddenNfts
+  ])
 
   const tokenPriceIds = React.useMemo(() =>
     userAssetList
