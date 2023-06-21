@@ -17,7 +17,6 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/win/com_init_util.h"
-#include "base/win/registry.h"
 #include "base/win/scoped_bstr.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service/brave_wireguard_manager_idl.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
@@ -27,8 +26,6 @@
 namespace brave_vpn {
 
 namespace {
-
-constexpr wchar_t kBraveWireguardConfigValueName[] = L"ConfigPath";
 
 // Template for wireguard config generation.
 constexpr char kWireguardConfigTemplate[] = R"(
@@ -45,39 +42,6 @@ constexpr char kWireguardConfigTemplate[] = R"(
 }  // namespace
 
 namespace wireguard {
-
-bool UpdateLastUsedConfigPath(const base::FilePath& config_path) {
-  base::win::RegKey storage;
-  if (storage.Create(
-          HKEY_LOCAL_MACHINE,
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-          KEY_SET_VALUE) != ERROR_SUCCESS) {
-    return false;
-  }
-  if (storage.WriteValue(kBraveWireguardConfigValueName,
-                         config_path.value().c_str()) != ERROR_SUCCESS) {
-    return false;
-  }
-  return true;
-}
-
-// Returns last used config path.
-// We keep config file between launches to be able to reuse it outside of Brave.
-absl::optional<base::FilePath> GetLastUsedConfigPath() {
-  base::win::RegKey storage;
-  if (storage.Open(
-          HKEY_LOCAL_MACHINE,
-          brave_vpn::GetBraveVpnWireguardServiceRegistryStoragePath().c_str(),
-          KEY_QUERY_VALUE) != ERROR_SUCCESS) {
-    return absl::nullopt;
-  }
-  std::wstring value;
-  if (storage.ReadValue(L"ConfigPath", &value) != ERROR_SUCCESS ||
-      value.empty()) {
-    return absl::nullopt;
-  }
-  return base::FilePath(value);
-}
 
 bool IsBraveVPNWireguardTunnelServiceRunning() {
   auto status =

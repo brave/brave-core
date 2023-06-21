@@ -7,26 +7,37 @@
 #define BRAVE_BROWSER_UI_TOOLBAR_BRAVE_VPN_MENU_MODEL_H_
 
 #include "base/memory/raw_ptr.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/models/simple_menu_model.h"
 
 class Browser;
+class PrefService;
 
 class BraveVPNMenuModel : public ui::SimpleMenuModel,
                           public ui::SimpleMenuModel::Delegate {
  public:
-  explicit BraveVPNMenuModel(Browser* browser);
+  explicit BraveVPNMenuModel(Browser* browser, PrefService* profile_prefs);
   ~BraveVPNMenuModel() override;
 
   BraveVPNMenuModel(const BraveVPNMenuModel&) = delete;
   BraveVPNMenuModel& operator=(const BraveVPNMenuModel&) = delete;
 
+  void SetTrayIconEnabledForTesting(bool value) {
+    tray_icon_enabled_for_testing_ = value;
+  }
+
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNMenuModelUnitTest, BuildMenu);
+
   // ui::SimpleMenuModel::Delegate override:
   void ExecuteCommand(int command_id, int event_flags) override;
 
   void Build();
   bool IsBraveVPNButtonVisible() const;
+  bool IsTrayIconEnabled() const;
 
+  absl::optional<bool> tray_icon_enabled_for_testing_;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
 };
 

@@ -11,10 +11,13 @@ source_set("win") {
   sources = [
     "service_constants.cc",
     "service_constants.h",
+    "storage_utils.cc",
+    "storage_utils.h",
   ]
   deps = [
     "//base",
     "//brave/components/brave_vpn/common/buildflags",
     "//chrome/install_static:install_static_util",
+    "//third_party/abseil-cpp:absl",
   ]
 }

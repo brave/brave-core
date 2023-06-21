@@ -243,15 +243,16 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
     UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, false);
     UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, false);
     UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, false);
+    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON, false);
     UpdateCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK, false);
     UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, false);
     UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, false);
     UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, false);
     return;
   }
-
   UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, true);
   UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, true);
+  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON, true);
   UpdateCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK, true);
   UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, true);
   UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, true);
@@ -352,6 +353,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_BRAVE_VPN_PANEL:
       brave::ShowBraveVPNBubble(&*browser_);
+      break;
+    case IDC_TOGGLE_BRAVE_VPN_TRAY_ICON:
+      brave::ToggleBraveVPNTrayIcon();
       break;
     case IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON:
       brave::ToggleBraveVPNButton(&*browser_);

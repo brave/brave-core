@@ -14,6 +14,7 @@ source_set("brave_app_menu_unit_test") {
   ]
 
   sources = [
+    "//brave/browser/ui/toolbar/brave_vpn_menu_model_unittest.cc",
     "//chrome/browser/ui/toolbar/recent_tabs_builder_test_helper.cc",
     "//chrome/browser/ui/toolbar/recent_tabs_builder_test_helper.h",
     "//chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc",
@@ -24,6 +25,9 @@ source_set("brave_app_menu_unit_test") {
   ]
 
   deps = [
+    "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/app:generate_command_metadata",
+    "//brave/components/brave_vpn/common",
     "//build:chromeos_buildflags",
     "//chrome/app:command_ids",
     "//chrome/browser/ui:ui",

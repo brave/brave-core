@@ -16,6 +16,7 @@
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "chrome/installer/util/install_service_work_item.h"
 
 namespace brave_vpn {
