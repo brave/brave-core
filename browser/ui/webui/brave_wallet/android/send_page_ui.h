@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_SWAP_PAGE_UI_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_SWAP_PAGE_UI_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_SEND_PAGE_UI_H_
+#define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_SEND_PAGE_UI_H_
 
 #include <memory>
 #include <string>
@@ -15,13 +15,13 @@
 #include "ui/webui/mojo_web_ui_controller.h"
 
 class AndroidWalletPageHandler;
-class SwapPageUI : public ui::MojoWebUIController,
+class SendPageUI : public ui::MojoWebUIController,
                    public brave_wallet::mojom::PageHandlerFactory {
  public:
-  explicit SwapPageUI(content::WebUI* web_ui, const std::string& name);
-  SwapPageUI(const SwapPageUI&) = delete;
-  SwapPageUI& operator=(const SwapPageUI&) = delete;
-  ~SwapPageUI() override;
+  explicit SendPageUI(content::WebUI* web_ui, const std::string& name);
+  SendPageUI(const SendPageUI&) = delete;
+  SendPageUI& operator=(const SendPageUI&) = delete;
+  ~SendPageUI() override;
 
   // Instantiates the implementor of the mojom::PageHandlerFactory mojo
   // interface passing the pending receiver that will be internally bound.
@@ -72,4 +72,4 @@ class SwapPageUI : public ui::MojoWebUIController,
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_SWAP_PAGE_UI_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_SEND_PAGE_UI_H_

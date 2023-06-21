@@ -198,6 +198,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/android/send_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
@@ -676,6 +677,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_wallet::mojom::PageHandlerFactory, SendPageUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, SwapPageUI>(map);
 #endif

@@ -54,6 +54,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/ui/webui/brave_wallet/android/send_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #endif
@@ -182,6 +183,14 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
                                                content::kBraveUIScheme,
                                                kWalletSwapPagePath))) {
     return new SwapPageUI(web_ui, url.host());
+  } else if (url.is_valid() &&
+             (url.spec() == base::StringPrintf("%s://%s",
+                                               content::kChromeUIScheme,
+                                               kWalletSendPagePath) ||
+              url.spec() == base::StringPrintf("%s://%s",
+                                               content::kBraveUIScheme,
+                                               kWalletSendPagePath))) {
+    return new SendPageUI(web_ui, url.host());
 #endif
   }
   return nullptr;
@@ -204,10 +213,14 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() &&
-       (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
+       ((url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
                                          kWalletSwapPagePath) ||
         url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
-                                         kWalletSwapPagePath))) ||
+                                         kWalletSwapPagePath)) ||
+        (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
+                                         kWalletSendPagePath) ||
+        url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
+                                         kWalletSendPagePath)))) ||
 #else
       ((url.host_piece() == kWalletPanelHost ||
         url.host_piece() == kWalletPageHost) &&

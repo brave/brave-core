@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_SWAP_PAGE_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_SWAP_PAGE_HANDLER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_PAGE_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_PAGE_HANDLER_H_
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/webui/brave_wallet/page_handler/wallet_page_handler.h"
@@ -12,16 +12,16 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
-class SwapPageHandler : WalletPageHandler {
+class AndroidWalletPageHandler : WalletPageHandler {
  public:
-  SwapPageHandler(
+  AndroidWalletPageHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
       Profile* profile,
       ui::MojoWebUIController* webui_controller);
 
-  SwapPageHandler(const SwapPageHandler&) = delete;
-  SwapPageHandler& operator=(const SwapPageHandler&) = delete;
-  ~SwapPageHandler() override;
+  AndroidWalletPageHandler(const AndroidWalletPageHandler&) = delete;
+  AndroidWalletPageHandler& operator=(const AndroidWalletPageHandler&) = delete;
+  ~AndroidWalletPageHandler() override;
 
   void ShowApprovePanelUI() override;
 
@@ -29,4 +29,4 @@ class SwapPageHandler : WalletPageHandler {
   raw_ptr<ui::MojoWebUIController> const webui_controller_;
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_SWAP_PAGE_HANDLER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_PAGE_HANDLER_H_

@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/brave_wallet/android/swap_page_handler.h"
+#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_handler.h"
 
 #include <utility>
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 
-SwapPageHandler::SwapPageHandler(
+AndroidWalletPageHandler::AndroidWalletPageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
     Profile* profile,
     ui::MojoWebUIController* webui_controller)
@@ -18,9 +18,9 @@ SwapPageHandler::SwapPageHandler(
   DCHECK(webui_controller_);
 }
 
-SwapPageHandler::~SwapPageHandler() = default;
+AndroidWalletPageHandler::~AndroidWalletPageHandler() = default;
 
-void SwapPageHandler::ShowApprovePanelUI() {
+void AndroidWalletPageHandler::ShowApprovePanelUI() {
   if (!webui_controller_) {
     return;
   }
