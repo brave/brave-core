@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"

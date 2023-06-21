@@ -58,7 +58,7 @@ void TextClassificationProcessor::Process(const std::string& text) {
       text_processing->ClassifyPage(text);
 
   if (!probabilities) {
-    return BLOG(0, "Text classification pipeline is broken");
+    return BLOG(0, "Text classification failed due to an invalid model");
   }
 
   if (probabilities->empty()) {

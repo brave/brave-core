@@ -77,16 +77,16 @@ absl::optional<PredictionMap> TextProcessing::Apply(
   for (size_t i = 0; i < transformation_count; ++i) {
     current_data = transformations_[i]->Apply(current_data);
     if (!current_data) {
-      BLOG(0, "TextProcessing transformation failed");
-      return {};
+      BLOG(0, "TextProcessing transformation failed due to an invalid model");
+      return absl::nullopt;
     }
   }
 
   // TODO(https://github.com/brave/brave-browser/issues/31180): Refactor
   // TextProcessing to make it more reliable.
   if (current_data->GetType() != DataType::kVector) {
-    BLOG(0, "LinearModel input not of type vector");
-    return {};
+    BLOG(0, "Linear model predictions failed due to an invalid model");
+    return absl::nullopt;
   }
   const VectorData* const vector_data =
       static_cast<VectorData*>(current_data.get());
@@ -99,13 +99,13 @@ absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
   const absl::optional<PredictionMap> predictions =
       Apply(std::make_unique<TextData>(std::move(stripped_content)));
   if (!predictions) {
-    return {};
+    return absl::nullopt;
   }
 
   const double expected_prob =
       1.0 / std::max(1.0, static_cast<double>(predictions->size()));
   PredictionMap rtn;
-  for (auto const& prediction : *predictions) {
+  for (const auto& prediction : *predictions) {
     if (prediction.second > expected_prob) {
       rtn[prediction.first] = prediction.second;
     }
@@ -116,7 +116,7 @@ absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
 absl::optional<PredictionMap> TextProcessing::ClassifyPage(
     const std::string& content) const {
   if (!IsInitialized()) {
-    return {};
+    return PredictionMap{};
   }
 
   return GetTopPredictions(content);

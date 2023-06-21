@@ -31,13 +31,18 @@ class LinearModel final {
 
   ~LinearModel();
 
-  PredictionMap Predict(const VectorData& x) const;
+  PredictionMap Predict(const VectorData& data) const;
 
-  PredictionMap GetTopPredictions(
-      const VectorData& x,
-      absl::optional<size_t> top_count = absl::nullopt) const;
+  PredictionMap GetTopPredictions(const VectorData& data) const;
+
+  PredictionMap GetTopCountPredictions(const VectorData& data,
+                                       size_t top_count) const;
 
  private:
+  PredictionMap GetTopCountPredictionsImpl(
+      const VectorData& data,
+      absl::optional<size_t> top_count) const;
+
   std::map<std::string, VectorData> weights_;
   std::map<std::string, double> biases_;
 };
