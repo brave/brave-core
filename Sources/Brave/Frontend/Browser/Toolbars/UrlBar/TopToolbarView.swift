@@ -12,17 +12,10 @@ import DesignSystem
 import BraveUI
 import BraveCore
 
-private struct TopToolbarViewUX {
-  static let locationPadding: CGFloat = 8
-  static let locationHeight: CGFloat = 34
-  static let textFieldCornerRadius: CGFloat = 8
-  static let progressBarHeight: CGFloat = 3
-}
-
 protocol TopToolbarDelegate: AnyObject {
   func topToolbarDidPressTabs(_ topToolbar: TopToolbarView)
   func topToolbarDidPressReaderMode(_ topToolbar: TopToolbarView)
-  /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
+  // Returns whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
   func topToolbarDidLongPressReaderMode(_ topToolbar: TopToolbarView) -> Bool
   func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView)
   func topToolbarDidPressPlaylistMenuAction(_ urlBar: TopToolbarView, action: PlaylistURLBarButton.MenuAction)
@@ -40,8 +33,8 @@ protocol TopToolbarDelegate: AnyObject {
   func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView)
   func topToolbarDidLongPressBraveRewardsButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView)
-
   func topToolbarDidLongPressReloadButton(_ urlBar: TopToolbarView, from button: UIButton)
+  func topToolbarDidPressVoiceSearchButton(_ urlBar: TopToolbarView)
   func topToolbarDidPressStop(_ urlBar: TopToolbarView)
   func topToolbarDidPressReload(_ urlBar: TopToolbarView)
   func topToolbarDidPressQrCodeButton(_ urlBar: TopToolbarView)
@@ -50,28 +43,49 @@ protocol TopToolbarDelegate: AnyObject {
 }
 
 class TopToolbarView: UIView, ToolbarProtocol {
-  weak var delegate: TopToolbarDelegate?
+  
+  // MARK: UX
+  
+  struct UX {
+    static let locationPadding: CGFloat = 8
+    static let locationHeight: CGFloat = 34
+    static let textFieldCornerRadius: CGFloat = 8
+    static let progressBarHeight: CGFloat = 3
+  }
+  
+  // MARK: URLBarButton
+  
+  enum URLBarButton {
+    case wallet
+    case playlist
+    case readerMode
+  }
+  
+  // MARK: Internal
+  
   var helper: ToolbarHelper?
+
+  weak var delegate: TopToolbarDelegate?
+  weak var tabToolbarDelegate: ToolbarDelegate?
   
   private var cancellables: Set<AnyCancellable> = []
+  private var privateModeCancellable: AnyCancellable?
+  
+  private(set) var displayTabTraySwipeGestureRecognizer: UISwipeGestureRecognizer?
 
-  // MARK: - ToolbarProtocol properties
+  // MARK: State
 
-  weak var tabToolbarDelegate: ToolbarDelegate?
-
-  // MARK: - State
-
-  var isTransitioning: Bool = false {
+  private var isTransitioning: Bool = false {
     didSet {
       if isTransitioning {
         // Cancel any pending/in-progress animations related to the progress bar
-        self.progressBar.setProgress(1, animated: false)
-        self.progressBar.alpha = 0.0
+        progressBar.setProgress(1, animated: false)
+        progressBar.alpha = 0.0
       }
     }
   }
 
-  var toolbarIsShowing = false
+  private var toolbarIsShowing = false
 
   /// Overlay mode is the state where the lock/reader icons are hidden, the home panels are shown,
   /// and the Cancel button is visible (allowing the user to leave overlay mode). Overlay mode
@@ -92,83 +106,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     get { return locationView.secureContentState }
     set { locationView.secureContentState = newValue }
   }
-
-  // MARK: - Views
-  fileprivate var locationTextField: UrlBarTextField?
-
-  lazy var locationView: TabLocationView = {
-    let locationView = TabLocationView()
-    locationView.translatesAutoresizingMaskIntoConstraints = false
-    locationView.readerModeState = ReaderModeState.unavailable
-    locationView.delegate = self
-    return locationView
-  }()
-
-  lazy var locationContainer: UIView = {
-    let locationContainer = LocationContainerView()
-    locationContainer.translatesAutoresizingMaskIntoConstraints = false
-    locationContainer.backgroundColor = .clear
-    return locationContainer
-  }()
-
-  private var qrCodeButton = UIButton().then {
-    $0.setImage(UIImage(named: "recent-search-qrcode", in: .module, compatibleWith: nil)!, for: .normal)
-    $0.imageView?.contentMode = .scaleAspectFit
-    $0.accessibilityLabel = Strings.quickActionScanQRCode
-  }
-
-  let tabsButton = TabsButton()
-
-  fileprivate lazy var progressBar: GradientProgressBar = {
-    let progressBar = GradientProgressBar()
-    progressBar.clipsToBounds = false
-    progressBar.setGradientColors(startColor: .braveBlurpleTint, endColor: .braveBlurpleTint)
-    return progressBar
-  }()
-
-  fileprivate lazy var cancelButton: UIButton = {
-    let cancelButton = InsetButton()
-    cancelButton.setTitle(Strings.cancelButtonTitle, for: .normal)
-    cancelButton.setTitleColor(UIColor.secondaryBraveLabel, for: .normal)
-    cancelButton.accessibilityIdentifier = "topToolbarView-cancel"
-    cancelButton.addTarget(self, action: #selector(didClickCancel), for: .touchUpInside)
-    cancelButton.setContentCompressionResistancePriority(.required, for: .horizontal)
-    cancelButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-    return cancelButton
-  }()
-
-  fileprivate lazy var scrollToTopButton: UIButton = {
-    let button = UIButton()
-    button.addTarget(self, action: #selector(tappedScrollToTopArea), for: .touchUpInside)
-    return button
-  }()
-
-  lazy var bookmarkButton = ToolbarButton(top: true).then {
-    $0.setImage(UIImage(braveSystemNamed: "leo.book.open-alternative-2"), for: .normal)
-    $0.accessibilityLabel = Strings.bookmarksMenuItem
-    $0.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
-  }
-
-  var forwardButton = ToolbarButton(top: true)
-  var shareButton = ToolbarButton(top: true)
-  var addTabButton = ToolbarButton(top: true)
-  // Do nothing with this, just required for protocol conformance
-  var searchButton = ToolbarButton(top: true)
-  lazy var menuButton = MenuButton(top: true).then {
-    $0.accessibilityIdentifier = "topToolbarView-menuButton"
-  }
-
-  var backButton: ToolbarButton = {
-    let backButton = ToolbarButton(top: true)
-    backButton.accessibilityIdentifier = "TopToolbarView.backButton"
-    return backButton
-  }()
-
-  lazy var actionButtons: [UIButton] =
-    [
-      self.shareButton, self.tabsButton, self.bookmarkButton,
-      self.forwardButton, self.backButton, self.menuButton,
-    ].compactMap { $0 }
   
   var isURLBarEnabled = true {
     didSet {
@@ -178,38 +115,121 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
   }
 
-  /// Update the shields icon based on whether or not shields are enabled for this site
-  func refreshShieldsStatus() {
-    // Default on
-    var shieldIcon = "brave.logo"
-    let shieldsOffIcon = "brave.logo.greyscale"
-    if let currentURL = currentURL {
-      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-      let domain = Domain.getOrCreate(forUrl: currentURL, persistent: !isPrivateBrowsing)
-      if domain.areAllShieldsOff {
-        shieldIcon = shieldsOffIcon
-      }
-      if currentURL.isLocal || currentURL.isLocalUtility {
-        shieldIcon = shieldsOffIcon
-      }
-    } else {
-      shieldIcon = shieldsOffIcon
-    }
+  // MARK: Views
+  
+  private var locationTextField: AutocompleteTextField?
 
-    locationView.shieldsButton.setImage(UIImage(sharedNamed: shieldIcon), for: .normal)
+  lazy var locationView = TabLocationView().then {
+    $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.readerModeState = ReaderModeState.unavailable
+    $0.delegate = self
   }
 
-  private var privateModeCancellable: AnyCancellable?
-  private func updateColors(_ isPrivateBrowsing: Bool) {
-    if isPrivateBrowsing {
-      backgroundColor = .privateModeBackground
-    } else {
-      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
+  let tabsButton = TabsButton()
+
+  private lazy var progressBar = GradientProgressBar().then {
+    $0.clipsToBounds = false
+    $0.setGradientColors(startColor: .braveBlurpleTint, endColor: .braveBlurpleTint)
+  }
+
+  private lazy var cancelButton = InsetButton().then {
+    $0.setTitle(Strings.cancelButtonTitle, for: .normal)
+    $0.setTitleColor(UIColor.secondaryBraveLabel, for: .normal)
+    $0.accessibilityIdentifier = "topToolbarView-cancel"
+    $0.addTarget(self, action: #selector(didClickCancel), for: .touchUpInside)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+  }
+
+  private lazy var scrollToTopButton = UIButton().then {
+    $0.addTarget(self, action: #selector(tappedScrollToTopArea), for: .touchUpInside)
+  }
+
+  private lazy var bookmarkButton = ToolbarButton().then {
+    $0.setImage(UIImage(braveSystemNamed: "leo.book.open-alternative-2"), for: .normal)
+    $0.accessibilityLabel = Strings.bookmarksMenuItem
+    $0.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
+  }
+
+  var forwardButton = ToolbarButton()
+  var shareButton = ToolbarButton()
+  var addTabButton = ToolbarButton()
+  var searchButton = ToolbarButton()
+  lazy var menuButton = MenuButton().then {
+    $0.accessibilityIdentifier = "topToolbarView-menuButton"
+  }
+
+  var backButton: ToolbarButton = {
+    let backButton = ToolbarButton()
+    backButton.accessibilityIdentifier = "TopToolbarView.backButton"
+    return backButton
+  }()
+  
+  lazy var actionButtons: [UIButton] = [
+    shareButton, tabsButton, bookmarkButton,
+    forwardButton, backButton, menuButton,
+  ].compactMap { $0 }
+
+  private let mainStackView = UIStackView().then {
+    $0.spacing = 8
+    $0.isLayoutMarginsRelativeArrangement = true
+    $0.insetsLayoutMarginsFromSafeArea = false
+  }
+
+  private let leadingItemsStackView = UIStackView().then {
+    $0.distribution = .fillEqually
+    $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.spacing = 8
+  }
+  
+  private let trailingItemsStackView = UIStackView().then {
+    $0.distribution = .fillEqually
+    $0.spacing = 8
+  }
+
+  /// The currently visible URL bar button beside the refresh button.
+  private(set) var currentURLBarButton: URLBarButton? {
+    didSet {
+      locationView.walletButton.isHidden = currentURLBarButton != .wallet
+      locationView.playlistButton.isHidden = currentURLBarButton != .playlist
+      locationView.readerModeButton.isHidden = currentURLBarButton != .readerMode
     }
   }
   
-  private(set) var displayTabTraySwipeGestureRecognizer: UISwipeGestureRecognizer?
+  private var locationTextContentView: UIStackView?
+  
+  private lazy var qrCodeButton = ToolbarButton().then {
+    $0.accessibilityIdentifier = "TabToolbar.qrCodeButton"
+    $0.isAccessibilityElement = true
+    $0.accessibilityLabel = Strings.quickActionScanQRCode
+    $0.setImage(UIImage(braveSystemNamed: "leo.qr.code", compatibleWith: nil), for: .normal)
+    $0.tintColor = .braveLabel
+    $0.addTarget(self, action: #selector(topToolbarDidPressQrCodeButton), for: .touchUpInside)
+  }
+  
+  private lazy var voiceSearchButton = ToolbarButton().then {
+    $0.accessibilityIdentifier = "TabToolbar.voiceSearchButton"
+    $0.isAccessibilityElement = true
+    $0.accessibilityLabel = Strings.tabToolbarVoiceSearchButtonAccessibilityLabel
+    $0.setImage(UIImage(braveSystemNamed: "leo.microphone", compatibleWith: nil), for: .normal)
+    $0.tintColor = .braveLabel
+    $0.addTarget(self, action: #selector(topToolbarDidPressVoiceSearchButton), for: .touchUpInside)
+  }
+  
+  private lazy var locationBarOptionsStackView = UIStackView().then {
+    $0.alignment = .center
+    $0.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3)
+    $0.isLayoutMarginsRelativeArrangement = true
+    $0.insetsLayoutMarginsFromSafeArea = false
+  }
+  
+  lazy var locationContainer = UIView().then {
+    $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.backgroundColor = .clear
+  }
 
+  // MARK: Lifecycle
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -237,7 +257,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     leadingItemsStackView.addArrangedSubview(bookmarkButton)
 
     [backButton, forwardButton].forEach {
-      $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+      $0.contentEdgeInsets = UIEdgeInsets(
+        top: 0, left: UX.locationPadding, bottom: 0, right: UX.locationPadding)
     }
     bookmarkButton.contentEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 2)
     
@@ -286,23 +307,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     fatalError()
   }
 
-  private let mainStackView = UIStackView().then {
-    $0.spacing = 8
-    $0.isLayoutMarginsRelativeArrangement = true
-    $0.insetsLayoutMarginsFromSafeArea = false
-  }
-
-  private let leadingItemsStackView = UIStackView().then {
-    $0.distribution = .fillEqually
-    $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.spacing = 8
-  }
-  
-  private let trailingItemsStackView = UIStackView().then {
-    $0.distribution = .fillEqually
-    $0.spacing = 8
-  }
-
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     helper?.updateForTraitCollection(traitCollection, additionalButtons: [bookmarkButton])
@@ -324,7 +328,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   
   private func setupConstraints() {
     locationContainer.snp.remakeConstraints {
-      $0.top.bottom.equalToSuperview().inset(8)
+      $0.top.bottom.equalToSuperview().inset(UX.locationPadding)
     }
 
     mainStackView.snp.remakeConstraints { make in
@@ -338,69 +342,100 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
 
     progressBar.snp.makeConstraints { make in
-      make.top.equalTo(self.snp.bottom).inset(TopToolbarViewUX.progressBarHeight / 2)
-      make.height.equalTo(TopToolbarViewUX.progressBarHeight)
+      make.top.equalTo(self.snp.bottom).inset(UX.progressBarHeight / 2)
+      make.height.equalTo(UX.progressBarHeight)
       make.left.right.equalTo(self)
     }
 
     locationView.snp.makeConstraints { make in
       make.edges.equalTo(self.locationContainer)
-      make.height.greaterThanOrEqualTo(TopToolbarViewUX.locationHeight)
+      make.height.greaterThanOrEqualTo(UX.locationHeight)
     }
   }
   
   override func layoutSubviews() {
     super.layoutSubviews()
     // Increase the inset of the main stack view if there's no additional space from safe areas
-    let horizontalInset: CGFloat = safeAreaInsets.left > 0 ? 0 : 8
+    let horizontalInset: CGFloat = safeAreaInsets.left > 0 ? 0 : UX.locationPadding
     mainStackView.layoutMargins = .init(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
   }
   
+  override func becomeFirstResponder() -> Bool {
+    return self.locationTextField?.becomeFirstResponder() ?? false
+  }
+  
+  private func updateColors(_ isPrivateBrowsing: Bool) {
+    if isPrivateBrowsing {
+      backgroundColor = .privateModeBackground
+    } else {
+      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
+    }
+  }
+    
   /// Created whenever the location bar on top is selected
-  ///     it is "converted" from static to actual TextField
-  private func createLocationTextField() {
+  /// it is "converted" from static to actual TextField
+  private func createLocationTextFieldContainer() {
     guard locationTextField == nil else { return }
 
-    locationTextField = UrlBarTextField()
+    locationTextField = AutocompleteTextField()
 
     guard let locationTextField = locationTextField else { return }
 
-    locationTextField.backgroundColor = .braveBackground
-    locationTextField.translatesAutoresizingMaskIntoConstraints = false
-    locationTextField.autocompleteDelegate = self
-    locationTextField.keyboardType = .webSearch
-    locationTextField.autocorrectionType = .no
-    locationTextField.autocapitalizationType = .none
-    locationTextField.smartDashesType = .no
-    locationTextField.returnKeyType = .go
-    locationTextField.clearButtonMode = .whileEditing
-    locationTextField.textAlignment = .left
-    locationTextField.font = .preferredFont(forTextStyle: .body)
-    locationTextField.accessibilityIdentifier = "address"
-    locationTextField.accessibilityLabel = Strings.URLBarViewLocationTextViewAccessibilityLabel
-    locationTextField.attributedPlaceholder = self.locationView.placeholder
-    locationTextField.rightView = qrCodeButton
-    locationTextField.rightViewMode = .never
+    locationTextField.do {
+      $0.backgroundColor = .braveBackground
+      $0.translatesAutoresizingMaskIntoConstraints = false
+      $0.autocompleteDelegate = self
+      $0.keyboardType = .webSearch
+      $0.autocorrectionType = .no
+      $0.autocapitalizationType = .none
+      $0.smartDashesType = .no
+      $0.returnKeyType = .go
+      $0.clearButtonMode = .whileEditing
+      $0.textAlignment = .left
+      $0.font = .preferredFont(forTextStyle: .body)
+      $0.accessibilityIdentifier = "address"
+      $0.accessibilityLabel = Strings.URLBarViewLocationTextViewAccessibilityLabel
+      $0.attributedPlaceholder = self.locationView.placeholder
+      $0.clearButtonMode = .whileEditing
+      $0.rightViewMode = .never
+    }
     
     let dragInteraction = UIDragInteraction(delegate: self)
     locationTextField.addInteraction(dragInteraction)
 
-    locationContainer.addSubview(locationTextField)
-    locationTextField.snp.remakeConstraints { make in
-      let insets = UIEdgeInsets(
-        top: 0, left: TopToolbarViewUX.locationPadding,
-        bottom: 0, right: TopToolbarViewUX.locationPadding)
-      make.edges.equalTo(self.locationView).inset(insets)
+    let optionSubviews = [qrCodeButton, voiceSearchButton]
+    optionSubviews.forEach {
+      ($0 as? UIButton)?.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+      $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+      $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+      locationBarOptionsStackView.addArrangedSubview($0)
     }
+      
+    let subviews = [locationTextField, locationBarOptionsStackView]
+    locationTextContentView = UIStackView(arrangedSubviews: subviews).then {
+      $0.layoutMargins = UIEdgeInsets(top: 2, left: 8, bottom: 2, right: 0)
+      $0.isLayoutMarginsRelativeArrangement = true
+      $0.insetsLayoutMarginsFromSafeArea = false
+      $0.spacing = 8
+      $0.setCustomSpacing(4, after: locationTextField)
+    }
+    
+    guard let locationTextContentView = locationTextContentView else { return }
 
-    qrCodeButton.addTarget(self, action: #selector(topToolbarDidPressQrCodeButton), for: .touchUpInside)
+    locationContainer.addSubview(locationTextContentView)
+
+    locationTextContentView.snp.remakeConstraints {
+      let insets = UIEdgeInsets(
+        top: 0, left: UX.locationPadding,
+        bottom: 0, right: UX.locationPadding)
+      $0.edges.equalTo(locationContainer).inset(insets)
+    }
   }
-
-  override func becomeFirstResponder() -> Bool {
-    return self.locationTextField?.becomeFirstResponder() ?? false
-  }
-
+  
   private func removeLocationTextField() {
+    locationTextContentView?.removeFromSuperview()
+    locationTextContentView = nil
+    
     locationTextField?.removeFromSuperview()
     locationTextField = nil
   }
@@ -419,16 +454,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
     updateViewsForOverlayModeAndToolbarChanges()
   }
 
-  func updateAlphaForSubviews(_ alpha: CGFloat) {
-    locationContainer.alpha = alpha
-    self.alpha = alpha
-  }
-
   func currentProgress() -> Float {
     return progressBar.progress
   }
-
-  static let psuedoProgressValue: Float = 0.1
 
   func updateProgressBar(_ progress: Float) {
     progressBar.alpha = 1
@@ -469,21 +497,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
   }
   
-  enum URLBarButton {
-    case wallet
-    case playlist
-    case readerMode
-  }
-  
-  /// The currently visible URL bar button beside the refresh button.
-  private(set) var currentURLBarButton: URLBarButton? {
-    didSet {
-      locationView.walletButton.isHidden = currentURLBarButton != .wallet
-      locationView.playlistButton.isHidden = currentURLBarButton != .playlist
-      locationView.readerModeButton.isHidden = currentURLBarButton != .readerMode
-    }
-  }
-
   func setAutocompleteSuggestion(_ suggestion: String?) {
     locationTextField?.setAutocompleteSuggestion(suggestion)
   }
@@ -516,7 +529,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   }
 
   func enterOverlayMode(_ locationText: String?, pasted: Bool, search: Bool) {
-    createLocationTextField()
+    createLocationTextFieldContainer()
     updateForTraitCollection()
 
     // Show the overlay mode UI, which includes hiding the locationView and replacing it
@@ -533,7 +546,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     if pasted {
       // Clear any existing text, focus the field, then set the actual pasted text.
       // This avoids highlighting all of the text.
-      self.locationTextField?.text = ""
+      locationTextField?.text = ""
       DispatchQueue.main.async {
         self.locationTextField?.becomeFirstResponder()
         self.setLocation(locationText, search: search)
@@ -546,6 +559,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
         self.locationTextField?.selectAll(nil)
       }
     }
+    
+    setNeedsUpdateConstraints()
   }
 
   func leaveOverlayMode(didCancel cancel: Bool = false) {
@@ -598,16 +613,36 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   private func updateLocationBarRightView(showQrCodeButton: Bool) {
     if RecentSearchQRCodeScannerController.hasCameraSupport {
-      locationTextField?.clearButtonMode = showQrCodeButton ? .never : .whileEditing
-      locationTextField?.rightViewMode = showQrCodeButton ? .always : .never
+      qrCodeButton.isHidden = !showQrCodeButton
     } else {
-      locationTextField?.clearButtonMode = .whileEditing
+      qrCodeButton.isHidden = true
     }
+    
+    locationBarOptionsStackView.isHidden = !showQrCodeButton
   }
 
-  func didClickAddTab() {
-    delegate?.topToolbarDidPressTabs(self)
+  /// Update the shields icon based on whether or not shields are enabled for this site
+  func refreshShieldsStatus() {
+    // Default on
+    var shieldIcon = "brave.logo"
+    let shieldsOffIcon = "brave.logo.greyscale"
+    if let currentURL = currentURL {
+      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+      let domain = Domain.getOrCreate(forUrl: currentURL, persistent: !isPrivateBrowsing)
+      if domain.areAllShieldsOff {
+        shieldIcon = shieldsOffIcon
+      }
+      if currentURL.isLocal || currentURL.isLocalUtility {
+        shieldIcon = shieldsOffIcon
+      }
+    } else {
+      shieldIcon = shieldsOffIcon
+    }
+
+    locationView.shieldsButton.setImage(UIImage(sharedNamed: shieldIcon), for: .normal)
   }
+  
+  // MARK: Actions
 
   @objc func didClickCancel() {
     leaveOverlayMode(didCancel: true)
@@ -634,12 +669,17 @@ class TopToolbarView: UIView, ToolbarProtocol {
     leaveOverlayMode(didCancel: true)
   }
   
+  @objc func topToolbarDidPressVoiceSearchButton() {
+    leaveOverlayMode(didCancel: true)
+    delegate?.topToolbarDidPressVoiceSearchButton(self)
+  }
+  
   @objc private func swipedLocationView() {
     delegate?.topToolbarDidPressTabs(self)
   }
 }
 
-// MARK: - PreferencesObserver
+// MARK:  PreferencesObserver
 
 extension TopToolbarView: PreferencesObserver {
   func preferencesDidChange(for key: String) {
@@ -647,7 +687,7 @@ extension TopToolbarView: PreferencesObserver {
   }
 }
 
-// MARK: - TabLocationViewDelegate
+// MARK:  TabLocationViewDelegate
 
 extension TopToolbarView: TabLocationViewDelegate {
   func tabLocationViewDidTapShieldsButton(_ urlBar: TabLocationView) {
@@ -697,6 +737,10 @@ extension TopToolbarView: TabLocationViewDelegate {
   func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton) {
     delegate?.topToolbarDidLongPressReloadButton(self, from: button)
   }
+  
+  func tabLocationViewDidTapVoiceSearch(_ tabLocationView: TabLocationView) {
+    delegate?.topToolbarDidPressVoiceSearchButton(self)
+  }
 
   func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView) {
     delegate?.topToolbarDidPressReaderMode(self)
@@ -719,7 +763,7 @@ extension TopToolbarView: TabLocationViewDelegate {
   }
 }
 
-// MARK: - AutocompleteTextFieldDelegate
+// MARK:  AutocompleteTextFieldDelegate
 
 extension TopToolbarView: AutocompleteTextFieldDelegate {
   func autocompleteTextFieldShouldReturn(_ autocompleteTextField: AutocompleteTextField) -> Bool {

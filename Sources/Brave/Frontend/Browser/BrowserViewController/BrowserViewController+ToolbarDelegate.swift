@@ -531,6 +531,72 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidPressQrCodeButton(_ urlBar: TopToolbarView) {
     scanQRCode()
   }
+  
+  func topToolbarDidPressVoiceSearchButton(_ urlBar: TopToolbarView) {
+    Task { @MainActor in
+      let speechRecognizer = SpeechRecognizer()
+
+      onPendingRequestUpdatedCancellable = speechRecognizer.$finalizedRecognition.sink { [weak self] finalizedRecognition in
+        guard let self else { return }
+        
+        if finalizedRecognition.status {
+          stopVoiceSearch(searchQuery: finalizedRecognition.searchQuery)
+        }
+      }
+      
+      let permissionStatus = await speechRecognizer.askForUserPermission()
+          
+      if permissionStatus {
+        openVoiceSearch(speechRecognizer: speechRecognizer)
+      } else {
+        showNoMicrophoneWarning()
+      }
+    }
+    
+    func openVoiceSearch(speechRecognizer: SpeechRecognizer) {
+      // Pause active playing in PiP when Audio Search is enabled
+      if let pipMediaPlayer = PlaylistCarplayManager.shared.mediaPlayer?.pictureInPictureController?.playerLayer.player {
+        pipMediaPlayer.pause()
+      }
+      
+      voiceSearchViewController = PopupViewController(rootView: VoiceSearchInputView(speechModel: speechRecognizer))
+      
+      if let voiceSearchController = voiceSearchViewController {
+        voiceSearchController.modalTransitionStyle = .crossDissolve
+        voiceSearchController.modalPresentationStyle = .overFullScreen
+        present(voiceSearchController, animated: true)
+      }
+    }
+    
+    func showNoMicrophoneWarning() {
+      let alertController = UIAlertController(
+        title: Strings.VoiceSearch.microphoneAccessRequiredWarningTitle,
+        message: Strings.VoiceSearch.microphoneAccessRequiredWarningDescription,
+        preferredStyle: .alert)
+      
+      let settingsAction = UIAlertAction(
+        title: Strings.settings,
+        style: .default) { _ in
+          let url = URL(string: UIApplication.openSettingsURLString)!
+          UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      }
+      
+      let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel, handler: nil)
+
+      alertController.addAction(settingsAction)
+      alertController.addAction(cancelAction)
+      
+      present(alertController, animated: true)
+    }
+  }
+  
+  func stopVoiceSearch(searchQuery: String? = nil) {
+    voiceSearchViewController?.dismiss(animated: true) {
+      if let query = searchQuery {
+        self.submitSearchText(query)
+      }
+    }
+  }
 
   func topToolbarDidTapWalletButton(_ urlBar: TopToolbarView) {
     guard let selectedTab = tabManager.selectedTab else {

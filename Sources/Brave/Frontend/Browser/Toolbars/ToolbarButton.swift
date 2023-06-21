@@ -22,10 +22,7 @@ class ToolbarButton: UIButton {
   fileprivate var primaryTintColor: UIColor?
   fileprivate var disabledTintColor: UIColor?
 
-  let top: Bool
-
-  required init(top: Bool) {
-    self.top = top
+  required init() {
     super.init(frame: .zero)
     adjustsImageWhenHighlighted = false
     imageView?.contentMode = .scaleAspectFit

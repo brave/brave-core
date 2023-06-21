@@ -16,7 +16,7 @@ import os.log
 /// The MediaPlayer is then passed to any controller that needs to use it.
 public class PlaylistCarplayManager: NSObject {
   private var carPlayStatusObservers = [Any]()
-  private weak var mediaPlayer: MediaPlayer?
+  private(set) weak var mediaPlayer: MediaPlayer?
   private(set) var isCarPlayAvailable = false
 
   private var carPlayController: PlaylistCarplayController?
