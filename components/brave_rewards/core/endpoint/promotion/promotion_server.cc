@@ -15,7 +15,6 @@ PromotionServer::PromotionServer(LedgerImpl& ledger)
       get_signed_creds_(ledger),
       post_clobbered_claims_(ledger),
       post_bat_loss_(ledger),
-      get_wallet_(ledger),
       post_captcha_(ledger),
       get_captcha_(ledger),
       put_captcha_(ledger),

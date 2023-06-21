@@ -269,6 +269,8 @@ interface LedgerClient {
 
   ExternalWalletReconnected();
 
+  ExternalWalletDisconnected();
+
   DeleteLog() => (Result result);
 
   [Sync]

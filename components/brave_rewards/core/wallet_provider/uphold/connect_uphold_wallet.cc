@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/containers/contains.h"
+#include "base/time/time.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/endpoints/post_connect/uphold/post_connect_uphold.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
@@ -29,8 +29,11 @@ namespace uphold {
 
 ConnectUpholdWallet::ConnectUpholdWallet(LedgerImpl& ledger)
     : ConnectExternalWallet(ledger) {
-  eligibility_checker_.Start(FROM_HERE, base::Minutes(is_testing ? 3 : 15),
-                             this, &ConnectUpholdWallet::CheckEligibility);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&ConnectUpholdWallet::CheckEligibility,
+                     base::Unretained(this)),
+      base::Seconds(30));
 }
 
 ConnectUpholdWallet::~ConnectUpholdWallet() = default;

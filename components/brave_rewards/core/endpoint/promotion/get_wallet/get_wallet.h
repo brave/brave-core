@@ -8,68 +8,58 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/ledger_endpoints.mojom.h"
+#include "brave/components/brave_rewards/core/endpoints/request_builder.h"
+#include "brave/components/brave_rewards/core/endpoints/response_handler.h"
+#include "brave/components/brave_rewards/core/endpoints/result_for.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // GET /v3/wallet/{payment_id}
 //
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_NOT_FOUND (404)
-//
 // Response body:
 // {
-//     "paymentId": "368d87a3-7749-4ebb-9f3a-2882c99078c7",
-//     "depositAccountProvider": {
-//         "name": "uphold",
-//         "id": "",
-//         "linkingId": "4668ba96-7129-5e85-abdc-0c144ab78834"
-//     },
-//     "walletProvider": {
-//         "id": "",
-//         "name": "brave"
-//     },
-//     "altcurrency": "BAT",
-//     "publicKey":
-//     "ae55f61fa5b2870c0ee3633004c6d7a40adb5694c73d05510d8179cec8a3403a"
+//   "altcurrency": "BAT",
+//   "depositAccountProvider": {
+//     "id": "2d7519f4-cb7b-41b7-9f33-9d716f2e7915",
+//     "linkingId": "2698ba94-7129-5a85-abcd-0c166ab75189",
+//     "name": "uphold"
+//   },
+//   "paymentId": "f6d73e13-abcd-56fc-ab96-f4c3efcc7185",
+//   "publicKey": "33a7887a935977de43a1495281142b872e2b0e94bf25a18aed7272b397759184",
+//   "walletProvider": {
+//     "id": "",
+//     "name": "brave"
+//   }
 // }
 
 namespace brave_rewards::internal {
 class LedgerImpl;
 
-namespace endpoint {
-namespace promotion {
+namespace endpoints {
 
-using GetWalletCallback = std::function<
-    void(mojom::Result result, const std::string& custodian, bool linked)>;
+class GetWallet;
 
-class GetWallet {
- public:
-  explicit GetWallet(LedgerImpl& ledger);
-  ~GetWallet();
-
-  void Request(GetWalletCallback callback) const;
-
- private:
-  std::string GetUrl() const;
-
-  void OnRequest(mojom::UrlResponsePtr response,
-                 GetWalletCallback callback) const;
-
-  mojom::Result CheckStatusCode(int status_code) const;
-
-  mojom::Result ParseBody(const std::string& body,
-                          std::string* custodian,
-                          bool* linked) const;
-
-  const raw_ref<LedgerImpl> ledger_;
+template <>
+struct ResultFor<GetWallet> {
+  using Value = std::pair<std::string /* wallet provider */, bool /* linked */>;
+  using Error = mojom::GetWalletError;
 };
 
-}  // namespace promotion
-}  // namespace endpoint
+class GetWallet final : public RequestBuilder,
+                        public ResponseHandler<GetWallet> {
+ public:
+  static Result ProcessResponse(const mojom::UrlResponse& response);
+
+  explicit GetWallet(LedgerImpl& ledger);
+  ~GetWallet() override;
+
+ private:
+  absl::optional<std::string> Url() const override;
+  mojom::UrlMethod Method() const override;
+};
+
+}  // namespace endpoints
 }  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_WALLET_GET_WALLET_H_

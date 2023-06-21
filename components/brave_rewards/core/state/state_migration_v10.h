@@ -26,13 +26,10 @@ class StateMigrationV10 {
   void Migrate(LegacyResultCallback callback);
 
  private:
-  void OnGetWallet(mojom::Result result,
-                   const std::string& custodian,
-                   bool linked,
-                   LegacyResultCallback callback);
+  void OnGetWallet(LegacyResultCallback callback,
+                   endpoints::GetWallet::Result&& result);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<endpoint::promotion::GetWallet> get_wallet_;
 };
 
 }  // namespace state

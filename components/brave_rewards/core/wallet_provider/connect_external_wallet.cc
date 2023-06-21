@@ -8,22 +8,34 @@
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "base/functional/bind.h"
+#include "base/location.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/logging/event_log_util.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal {
-
+using endpoints::GetWallet;
 using endpoints::PostConnect;
+using endpoints::RequestFor;
 using wallet::GetWalletIf;
 
 namespace wallet_provider {
 
 ConnectExternalWallet::ConnectExternalWallet(LedgerImpl& ledger)
-    : ledger_(ledger) {}
+    : ledger_(ledger) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&ConnectExternalWallet::CheckLinkage,
+                     base::Unretained(this)),
+      base::Seconds(30));
+}
 
 ConnectExternalWallet::~ConnectExternalWallet() = default;
 
@@ -115,6 +127,38 @@ ConnectExternalWallet::GetCode(
   }
 
   return query_parameters.at("code");
+}
+
+void ConnectExternalWallet::CheckLinkage() {
+  if (GetWalletIf(
+          *ledger_, WalletType(),
+          {mojom::WalletStatus::kConnected, mojom::WalletStatus::kLoggedOut})) {
+    RequestFor<GetWallet>(*ledger_).Send(base::BindOnce(
+        &ConnectExternalWallet::CheckLinkageCallback, base::Unretained(this)));
+  }
+}
+
+void ConnectExternalWallet::CheckLinkageCallback(
+    endpoints::GetWallet::Result&& result) {
+  auto wallet = GetWalletIf(
+      *ledger_, WalletType(),
+      {mojom::WalletStatus::kConnected, mojom::WalletStatus::kLoggedOut});
+  if (!wallet) {
+    return;
+  }
+
+  if (result.has_value()) {
+    const auto [wallet_type, linked] = std::move(result.value());
+    // if (wallet_type == WalletType() && !linked) {
+    //  {kConnected, kLoggedOut} ==> kNotConnected
+    if (wallet::TransitionWallet(*ledger_, std::move(wallet),
+                                 mojom::WalletStatus::kNotConnected)) {
+      ledger_->client()->ExternalWalletDisconnected();
+    } else {
+      BLOG(0, "Failed to transition " << WalletType() << " wallet state!");
+    }
+    //}
+  }
 }
 
 void ConnectExternalWallet::OnConnect(

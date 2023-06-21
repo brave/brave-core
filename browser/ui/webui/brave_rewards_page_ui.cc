@@ -241,6 +241,8 @@ class RewardsDOMHandler
 
   void OnExternalWalletLoggedOut() override;
 
+  void OnExternalWalletDisconnected() override;
+
   void OnRewardsWalletUpdated() override;
 
   void OnUnblindedTokensReady(
@@ -1655,6 +1657,15 @@ void RewardsDOMHandler::OnExternalWalletLoggedOut() {
   }
 
   CallJavascriptFunction("brave_rewards.onExternalWalletLoggedOut");
+}
+
+void RewardsDOMHandler::OnExternalWalletDisconnected() {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  GetUserType(base::Value::List());
+  GetExternalWallet(base::Value::List());
 }
 
 void RewardsDOMHandler::OnRewardsWalletUpdated() {
