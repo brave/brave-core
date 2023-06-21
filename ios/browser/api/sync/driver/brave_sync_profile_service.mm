@@ -38,9 +38,7 @@ std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
         {syncer::UserSelectableType::kApps, BraveSyncUserSelectableTypes_APPS},
         {syncer::UserSelectableType::kReadingList,
          BraveSyncUserSelectableTypes_READING_LIST},
-        {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS},
-        {syncer::UserSelectableType::kWifiConfigurations,
-         BraveSyncUserSelectableTypes_WIFI_CONFIGURATIONS}};
+        {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS}};
 
 syncer::UserSelectableTypeSet user_types_from_options(
     BraveSyncUserSelectableTypes options) {
