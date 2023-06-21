@@ -9,26 +9,30 @@
 #include <memory>
 #include <string>
 
+#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
-class AndroidWalletPageHandler;
-class SwapPageUI : public ui::MojoWebUIController,
+template <typename T> 
+class AndroidWalletPageUI : public ui::MojoWebUIController,
                    public brave_wallet::mojom::PageHandlerFactory {
  public:
-  explicit SwapPageUI(content::WebUI* web_ui, const std::string& name);
-  SwapPageUI(const SwapPageUI&) = delete;
-  SwapPageUI& operator=(const SwapPageUI&) = delete;
-  ~SwapPageUI() override;
-
+  explicit AndroidWalletPageUI(content::WebUI* web_ui, const std::string& name, 
+        const base::span<const webui::ResourcePath>& resources,
+        const int& default_resource);
+  AndroidWalletPageUI(const AndroidWalletPageUI&) = delete;
+  AndroidWalletPageUI& operator=(const AndroidWalletPageUI&) = delete;
+  ~AndroidWalletPageUI() override;
+  
   // Instantiates the implementor of the mojom::PageHandlerFactory mojo
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver);
-
- private:
+  protected:
+  private:
   // brave_wallet::mojom::PageHandlerFactory:
   void CreatePageHandler(
       mojo::PendingRemote<brave_wallet::mojom::Page> page,
@@ -63,12 +67,34 @@ class SwapPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
           ipfs_service_receiver) override;
 
-  std::unique_ptr<AndroidWalletPageHandler> page_handler_;
+  std::unique_ptr<T> page_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
 
   mojo::Receiver<brave_wallet::mojom::PageHandlerFactory>
       page_factory_receiver_{this};
+  base::span<const webui::ResourcePath> resources_;
+  int default_resource_;
+};
 
+class SwapPageUI : public AndroidWalletPageUI<SwapPageHandler> {
+public:
+  explicit SwapPageUI(content::WebUI* web_ui, const std::string& name);
+  SwapPageUI(const SwapPageUI&) = delete;
+  SwapPageUI& operator=(const SwapPageUI&) = delete;
+  ~SwapPageUI() override = default;
+  void BindInterface(
+      mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver);
+  WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class SendPageUI : public AndroidWalletPageUI<SendPageHandler> {
+public:
+  explicit SendPageUI(content::WebUI* web_ui, const std::string& name);
+  SendPageUI(const SendPageUI&) = delete;
+  SendPageUI& operator=(const SendPageUI&) = delete;
+  ~SendPageUI() override = default;
+  void BindInterface(
+      mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver);
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 

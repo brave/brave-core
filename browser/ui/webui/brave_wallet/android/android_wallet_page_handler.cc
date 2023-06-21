@@ -9,7 +9,8 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 
-AndroidWalletPageHandler::AndroidWalletPageHandler(
+template <typename T> 
+AndroidWalletPageHandler<T>::AndroidWalletPageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
     Profile* profile,
     ui::MojoWebUIController* webui_controller)
@@ -17,13 +18,31 @@ AndroidWalletPageHandler::AndroidWalletPageHandler(
       webui_controller_(webui_controller) {
   DCHECK(webui_controller_);
 }
+template <typename T> 
+AndroidWalletPageHandler<T>::~AndroidWalletPageHandler() = default;
 
-AndroidWalletPageHandler::~AndroidWalletPageHandler() = default;
-
-void AndroidWalletPageHandler::ShowApprovePanelUI() {
+template <typename T> 
+void AndroidWalletPageHandler<T>::ShowApprovePanelUI() {
   if (!webui_controller_) {
     return;
   }
 
   ::brave_wallet::ShowPanel(webui_controller_->web_ui()->GetWebContents());
+}
+
+
+SendPageHandler::SendPageHandler(
+    mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
+    Profile* profile,
+    ui::MojoWebUIController* webui_controller) 
+     : AndroidWalletPageHandler<SendPageHandler>(std::move(receiver), profile, webui_controller) {
+
+}
+
+SwapPageHandler::SwapPageHandler(
+    mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
+    Profile* profile,
+    ui::MojoWebUIController* webui_controller) 
+     : AndroidWalletPageHandler<SwapPageHandler>(std::move(receiver), profile, webui_controller) {
+
 }

@@ -54,8 +54,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/ui/webui/brave_wallet/android/send_page_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #endif
 

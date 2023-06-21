@@ -198,8 +198,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/webui/brave_wallet/android/send_page_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
