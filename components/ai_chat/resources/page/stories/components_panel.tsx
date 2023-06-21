@@ -18,6 +18,7 @@ import InputBox from '../components/input_box'
 import { useInput } from '../state/hooks'
 import { CharacterType, ConversationTurnVisibility  } from '../api/page_handler'
 import PrivacyMessage from '../components/privacy_message'
+import SiteTitle from '../components/site_title'
 
 const DATA = [
   {text: 'What is pointer compression?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },
@@ -94,11 +95,16 @@ export const _Main = (props: StoryProps) => {
     />
   )
 
+  const siteTitle = (
+    <SiteTitle siteInfo={{ title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass" }} favIconUrl="" />
+  )
+
   return (
     <div className={styles.container}>
       <Main
         conversationList={conversationList}
         inputBox={inputBox}
+        siteTitle={siteTitle}
       />
     </div>
   )

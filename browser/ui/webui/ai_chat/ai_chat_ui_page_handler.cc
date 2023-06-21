@@ -10,15 +10,22 @@
 #include <vector>
 
 #include "base/notreached.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
+#include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
+
+namespace {
+constexpr uint32_t kDesiredFaviconSizePixels = 32;
+}  // namespace
 
 namespace ai_chat {
 
@@ -59,6 +66,9 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     // StandaloneAIChatConverser can also implement and be instantiated here.
     NOTIMPLEMENTED();
   }
+
+  favicon_service_ = FaviconServiceFactory::GetForProfile(
+      profile_, ServiceAccessType::EXPLICIT_ACCESS);
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -131,6 +141,17 @@ void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
       ai_chat::prefs::kBraveChatAutoGenerateQuestions, value);
 }
 
+void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
+  mojom::SiteInfo site_info;
+
+  if (active_chat_tab_helper_) {
+    site_info.title =
+        base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
+  }
+
+  std::move(callback).Run(site_info.Clone());
+}
+
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
                                    true);
@@ -158,6 +179,31 @@ void AIChatUIPageHandler::OnSuggestedQuestionsChanged(
   }
 }
 
+void AIChatUIPageHandler::OnFaviconImageDataChanged() {
+  if (page_.is_bound()) {
+    auto on_favicon_data =
+        [](base::SafeRef<AIChatUIPageHandler> page_handler,
+           const absl::optional<std::vector<uint8_t>>& bytes) {
+          if (bytes.has_value()) {
+            page_handler->page_->OnFaviconImageDataChanged(bytes.value());
+          }
+        };
+
+    GetFaviconImageData(
+        base::BindOnce(on_favicon_data, weak_ptr_factory_.GetSafeRef()));
+  }
+}
+
+void AIChatUIPageHandler::OnPageLoaded() {
+  mojom::SiteInfo site_info;
+
+  if (active_chat_tab_helper_) {
+    site_info.title =
+        base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
+    page_->OnSiteInfoChanged(site_info.Clone());
+  }
+}
+
 void AIChatUIPageHandler::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -181,6 +227,38 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
     // Reset state
     page_->OnTargetTabChanged();
   }
+}
+
+void AIChatUIPageHandler::GetFaviconImageData(
+    GetFaviconImageDataCallback callback) {
+  if (!active_chat_tab_helper_) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  const GURL active_page_url =
+      active_chat_tab_helper_->web_contents()->GetLastCommittedURL();
+  favicon_base::IconTypeSet icon_types{favicon_base::IconType::kFavicon,
+                                       favicon_base::IconType::kTouchIcon};
+
+  auto on_favicon_available =
+      [](GetFaviconImageDataCallback callback,
+         const favicon_base::FaviconRawBitmapResult& result) {
+        if (!result.is_valid()) {
+          std::move(callback).Run(absl::nullopt);
+          return;
+        }
+
+        scoped_refptr<base::RefCountedMemory> bytes = result.bitmap_data;
+        std::vector<uint8_t> buffer(bytes->front_as<uint8_t>(),
+                                    bytes->front_as<uint8_t>() + bytes->size());
+        std::move(callback).Run(std::move(buffer));
+      };
+
+  favicon_service_->GetRawFaviconForPageURL(
+      active_page_url, icon_types, kDesiredFaviconSizePixels, true,
+      base::BindOnce(on_favicon_available, std::move(callback)),
+      &favicon_task_tracker_);
 }
 
 void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {

@@ -19,6 +19,7 @@
 #include "brave/components/ai_chat/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/pref_names.h"
+#include "components/favicon/content/content_favicon_driver.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -48,6 +49,8 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents)
       std::make_unique<AIChatAPI>(web_contents->GetBrowserContext()
                                       ->GetDefaultStoragePartition()
                                       ->GetURLLoaderFactoryForBrowserProcess());
+  favicon::ContentFaviconDriver::FromWebContents(web_contents)
+      ->AddObserver(this);
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
@@ -456,6 +459,17 @@ void AIChatTabHelper::DidFinishNavigation(
   current_navigation_id_ = navigation_handle->GetNavigationId();
 }
 
+void AIChatTabHelper::OnFaviconUpdated(
+    favicon::FaviconDriver* favicon_driver,
+    NotificationIconType notification_icon_type,
+    const GURL& icon_url,
+    bool icon_url_changed,
+    const gfx::Image& image) {
+  for (Observer& obs : observers_) {
+    obs.OnFaviconImageDataChanged();
+  }
+}
+
 void AIChatTabHelper::PrimaryPageChanged(content::Page& page) {
   CleanUp();
 }
@@ -466,10 +480,16 @@ void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   // check if content is available at, then start a queue and make
   // sure we don't have multiple async distills going on at the same time.
   MaybeGeneratePageText();
+
+  for (Observer& obs : observers_) {
+    obs.OnPageLoaded();
+  }
 }
 
 void AIChatTabHelper::WebContentsDestroyed() {
   CleanUp();
+  favicon::ContentFaviconDriver::FromWebContents(web_contents())
+      ->RemoveObserver(this);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

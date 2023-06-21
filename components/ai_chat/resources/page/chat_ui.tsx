@@ -19,6 +19,7 @@ import InputBox from './components/input_box'
 import PrivacyMessage from './components/privacy_message'
 import { useConversationHistory, useInput, useAgreement } from './state/hooks'
 import getPageHandlerInstance from './api/page_handler'
+import SiteTitle from './components/site_title'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
@@ -73,11 +74,19 @@ function App () {
     />
   )
 
+  const siteTitle = (
+    <SiteTitle
+      siteInfo={model.siteInfo}
+      favIconUrl={model.favIconUrl}
+    />
+  )
+
   return (
     <BraveCoreThemeProvider>
       <Main
         conversationList={conversationList}
         inputBox={inputBox}
+        siteTitle={siteTitle}
       />
     </BraveCoreThemeProvider>
   )

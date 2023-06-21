@@ -5,6 +5,8 @@
 
 module ai_chat.mojom;
 
+import "url/mojom/url.mojom";
+
 enum CharacterType {
   HUMAN,
   ASSISTANT
@@ -13,6 +15,10 @@ enum CharacterType {
 enum ConversationTurnVisibility {
   VISIBLE,
   HIDDEN // does not get added to chat history, used as a flag internally
+};
+
+struct SiteInfo {
+  string title;
 };
 
 // Represents a single turn in a conversation.
@@ -39,6 +45,8 @@ interface PageHandler {
   SubmitHumanConversationEntry(string input);
   MarkAgreementAccepted();
   SetAutoGenerateQuestions(bool can_auto_generate_questions);
+  GetSiteInfo() => (SiteInfo site_info);
+  GetFaviconImageData() => (array<uint8>? favicon_image_data);
 };
 
 interface ChatUIPage {
@@ -51,4 +59,6 @@ interface ChatUIPage {
   // Event for when active tab changes, if it is the target of this chat
   // conversation.
   OnTargetTabChanged();
+  OnSiteInfoChanged(SiteInfo info);
+  OnFaviconImageDataChanged(array<uint8> favicon_image_data);
 };

@@ -270,6 +270,8 @@ leo_icons = [
   "product-ipfs-outline.svg",
   "web3.svg",
   "shield-star.svg",
+  "product-brave-ai.svg",
+  "user-circle.svg",
 ]
 
 if (enable_brave_vpn_panel) {

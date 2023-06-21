@@ -7,6 +7,7 @@ import * as React from 'react'
 import classnames from 'classnames'
 import Button from '@brave/leo/react/button'
 import Checkbox from '@brave/leo/react/checkbox'
+import Icon from '@brave/leo/react/icon'
 
 import styles from './style.module.scss'
 import { ConversationTurn, CharacterType } from '../../api/page_handler'
@@ -41,23 +42,34 @@ function ConversationList (props: ConversationListProps) {
   return (
     <div className={styles.list}>
       {props.list.map((turn, id) => {
-        const turnClass = classnames({
-          [styles.turnAI]: turn.characterType === CharacterType.ASSISTANT,
-          [styles.turnHuman]: turn.characterType === CharacterType.HUMAN,
-        })
-
         const isLastEntry = (id === (props.list.length - 1))
         const isLoading = isLastEntry && props.isLoading
         const elementRef = isLastEntry
           ? lastConversationEntryElementRef
           : null
 
+        const isHuman = turn.characterType === CharacterType.HUMAN
+        const isAIAssistant = turn.characterType === CharacterType.ASSISTANT
+
+        const turnClass = classnames({
+          [styles.turnAI]: isAIAssistant,
+          [styles.turnHuman]: isHuman,
+        })
+
+        const avatarStyles = classnames({
+          [styles.avatarAI]: isAIAssistant,
+          [styles.avatarHuman]: isHuman
+        })
+
         return (
           <div key={id} ref={elementRef} className={turnClass}>
-            <p>
+            <div className={avatarStyles}>
+              <Icon name={isHuman ? 'user-circle' : 'product-brave-ai'} />
+            </div>
+            <div className={styles.message}>
               {turn.text}
               {isLoading && <span className={styles.caret}/>}
-            </p>
+            </div>
           </div>
         )
       })}

@@ -17,7 +17,9 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
+#include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
@@ -60,7 +62,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src 'self' chrome-untrusted://resources;");
+      "img-src 'self' blob: chrome-untrusted://resources;");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       "font-src 'self' data: chrome-untrusted://resources;");

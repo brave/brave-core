@@ -6,5 +6,6 @@
 import { provideStrings } from '../../../../../.storybook/locale'
 
 provideStrings({
-  summarizeFailedLabel: 'The summarizer feature is currently available only for select articles and other long-form web pages.'
+  summarizeFailedLabel: 'The summarizer feature is currently available only for select articles and other long-form web pages.',
+  placeholderLabel: 'Ask Brave AI'
 })

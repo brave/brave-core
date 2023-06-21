@@ -4,8 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import getPageHandlerInstance, { ConversationTurn } from '../api/page_handler'
+import getPageHandlerInstance, { ConversationTurn, SiteInfo } from '../api/page_handler'
 import { loadTimeData } from '$web-common/loadTimeData'
+
+function toBlobURL (data: number[] | null) {
+  if (!data) return null
+
+  const blob = new Blob([new Uint8Array(data)], { type: 'image/*' })
+  return URL.createObjectURL(blob)
+}
 
 export function useConversationHistory() {
   const [conversationHistory, setConversationHistory] = React.useState<ConversationTurn[]>([])
@@ -13,6 +20,8 @@ export function useConversationHistory() {
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
   const [userAllowsAutoGenerating, setUserAllowsAutoGeneratingState] = React.useState(false)
+  const [siteInfo, setSiteInfo] = React.useState<undefined | SiteInfo>(undefined)
+  const [favIconUrl, setFavIconUrl] = React.useState<null | string>(null)
 
   const getConversationHistory = () => {
     getPageHandlerInstance().pageHandler.getConversationHistory().then(res => setConversationHistory(res.conversationHistory))
@@ -34,6 +43,18 @@ export function useConversationHistory() {
     getPageHandlerInstance().pageHandler.generateQuestions()
   }
 
+  const getSiteInfo = () => {
+    getPageHandlerInstance().pageHandler.getSiteInfo().then(({ siteInfo }) => {
+      setSiteInfo(siteInfo)
+    })
+  }
+
+  const getFaviconData = () => {
+    getPageHandlerInstance().pageHandler.getFaviconImageData().then((data) => {
+      setFavIconUrl(toBlobURL(data.faviconImageData))
+    })
+  }
+
   const initialiseForTargetTab = () => {
     // Replace state from backend
     // TODO(petemill): Perhaps we need a simple GetState mojom function
@@ -41,6 +62,8 @@ export function useConversationHistory() {
     // don't need to call multiple functions or handle multiple events.
     getConversationHistory()
     getSuggestedQuestions()
+    getSiteInfo()
+    getFaviconData()
   }
 
   React.useEffect(() => {
@@ -60,6 +83,9 @@ export function useConversationHistory() {
 
     // When the target tab changes, clean tab-specific data
     getPageHandlerInstance().callbackRouter.onTargetTabChanged.addListener(initialiseForTargetTab)
+
+    getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
+    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: SiteInfo) => setSiteInfo(siteInfo))
   }, [])
 
   return {
@@ -68,8 +94,10 @@ export function useConversationHistory() {
     suggestedQuestions,
     canGenerateQuestions,
     userAllowsAutoGenerating,
+    siteInfo,
+    favIconUrl,
     generateSuggestedQuestions,
-    setUserAllowsAutoGenerating
+    setUserAllowsAutoGenerating,
   }
 }
 
