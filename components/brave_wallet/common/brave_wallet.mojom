@@ -678,6 +678,7 @@ struct BlockchainToken {
   bool is_erc721;
   bool is_erc1155;
   bool is_nft;
+  bool is_spam;
   string symbol;
   int32 decimals;
   bool visible = true;
@@ -1651,6 +1652,9 @@ interface BraveWalletService {
   // Sets whether or not an asset is visible.
   // This asset could be a token from BlockchainRegistry or a custom token.
   SetUserAssetVisible(BlockchainToken token, bool visible) => (bool success);
+
+  // Sets the spam status of a token
+  SetAssetSpamStatus(BlockchainToken token, bool status) => (bool success);
 
   // Check if the external wallet is installed (Only check installation state
   // regardless of internal state)

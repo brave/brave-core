@@ -420,6 +420,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   value.Set("is_erc721", token->is_erc721);
   value.Set("is_erc1155", token->is_erc1155);
   value.Set("is_nft", token->is_nft);
+  value.Set("is_spam", token->is_spam);
   value.Set("decimals", token->decimals);
   value.Set("visible", true);
   value.Set("token_id", token->token_id);
@@ -575,6 +576,46 @@ bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
   }
 
   it->GetDict().Set("visible", visible);
+  return true;
+}
+
+void BraveWalletService::SetAssetSpamStatus(
+    mojom::BlockchainTokenPtr token,
+    bool is_spam,
+    SetAssetSpamStatusCallback callback) {
+  std::move(callback).Run(SetAssetSpamStatus(std::move(token), is_spam));
+}
+
+bool BraveWalletService::SetAssetSpamStatus(mojom::BlockchainTokenPtr token,
+                                            bool is_spam) {
+  DCHECK(token);
+
+  absl::optional<std::string> address = GetUserAssetAddress(
+      token->contract_address, token->coin, token->chain_id);
+  if (!address) {
+    return false;
+  }
+
+  const std::string network_id =
+      GetNetworkId(profile_prefs_, token->coin, token->chain_id);
+  if (network_id.empty()) {
+    return false;
+  }
+
+  ScopedDictPrefUpdate update(profile_prefs_, kBraveWalletUserAssets);
+  auto* user_assets_list = update->FindListByDottedPath(
+      base::StrCat({GetPrefKeyForCoinType(token->coin), ".", network_id}));
+  if (!user_assets_list) {
+    return false;
+  }
+
+  auto it = FindAsset(user_assets_list, *address, token->token_id,
+                      ShouldCheckTokenId(token));
+  if (it == user_assets_list->end()) {
+    return false;
+  }
+
+  it->GetDict().Set("is_spam", is_spam);
   return true;
 }
 
@@ -1060,6 +1101,42 @@ void BraveWalletService::MigrateUserAssetsAddIsERC1155(PrefService* prefs) {
     }
   }
   prefs->SetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated, true);
+}
+
+void BraveWalletService::MigrateUserAssetsAddIsSpam(PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated)) {
+    return;
+  }
+
+  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
+    prefs->SetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated, true);
+    return;
+  }
+
+  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
+  base::Value::Dict& user_assets_pref = update.Get();
+
+  for (auto user_asset_dict_per_cointype : user_assets_pref) {
+    if (!user_asset_dict_per_cointype.second.is_dict()) {
+      continue;
+    }
+    for (auto user_asset_list_per_chain :
+         user_asset_dict_per_cointype.second.GetDict()) {
+      if (!user_asset_list_per_chain.second.is_list()) {
+        continue;
+      }
+      for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
+        auto* asset = user_asset.GetIfDict();
+        if (!asset) {
+          continue;
+        }
+        if (!asset->FindBool("is_spam")) {
+          asset->Set("is_spam", false);
+        }
+      }
+    }
+  }
+  prefs->SetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated, true);
 }
 
 // static

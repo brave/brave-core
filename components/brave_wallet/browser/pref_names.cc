@@ -51,6 +51,8 @@ const char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
 const char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
     "brave.wallet.deprecated_ethereum_test_networks_migrated";
+const char kBraveWalletUserAssetsAddIsSpamMigrated[] =
+    "brave.wallet.user.assets.add_is_spam_migrated";
 const char kBraveWalletAutoLockMinutes[] = "brave.wallet.auto_lock_minutes";
 const char kSupportEip1559OnLocalhostChain[] =
     "brave.wallet.support_eip1559_on_localhost_chain";

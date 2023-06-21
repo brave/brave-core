@@ -89,6 +89,7 @@ class BraveWalletService : public KeyedService,
   static void MigrateUserAssetsAddIsNFT(PrefService* profile_prefs);
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
   static void MigrateUserAssetsAddIsERC1155(PrefService* profile_prefs);
+  static void MigrateUserAssetsAddIsSpam(PrefService* profile_prefs);
 
   static bool AddUserAsset(mojom::BlockchainTokenPtr token,
                            PrefService* profile_prefs);
@@ -125,6 +126,9 @@ class BraveWalletService : public KeyedService,
   void SetUserAssetVisible(mojom::BlockchainTokenPtr token,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;
+  void SetAssetSpamStatus(mojom::BlockchainTokenPtr token,
+                          bool is_spam,
+                          SetAssetSpamStatusCallback callback) override;
   void IsExternalWalletInstalled(mojom::ExternalWalletType,
                                  IsExternalWalletInstalledCallback) override;
   void IsExternalWalletInitialized(
@@ -317,6 +321,7 @@ class BraveWalletService : public KeyedService,
   bool AddUserAsset(mojom::BlockchainTokenPtr token);
   bool RemoveUserAsset(mojom::BlockchainTokenPtr token);
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
+  bool SetAssetSpamStatus(mojom::BlockchainTokenPtr token, bool is_spam);
   mojom::BlockchainTokenPtr GetUserAsset(const std::string& contract_address,
                                          const std::string& token_id,
                                          bool is_nft,

@@ -493,6 +493,7 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
         isErc721: false,
         isErc1155: false,
         isNft: false,
+        isSpam: false,
         logo: network.iconUrls[0] ?? '',
         name: network.symbolName,
         symbol: network.symbol,

@@ -269,6 +269,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "is_erc721": false,
       "is_erc1155": false,
       "is_nft": false,
+      "is_spam": false,  // Added this field
       "decimals": 18,
       "visible": true,
       "token_id": "",
@@ -277,8 +278,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-      "bat.png", true, false, false, false, "BAT", 18, true, "", "", "0x1",
-      mojom::CoinType::ETH);
+      "bat.png", true, false, false, false, false, "BAT", 18, true, "", "",
+      "0x1", mojom::CoinType::ETH);
 
   mojom::BlockchainTokenPtr token =
       ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
@@ -307,14 +308,15 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "is_erc721": true,
       "is_erc1155": false,
       "is_nft": true,
+      "is_spam": true,
       "decimals": 0,
       "visible": true
   })");
 
   expected_token = mojom::BlockchainToken::New(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "Crypto Kitties",
-      "CryptoKitties-Kitty-13733.svg", false, true, false, true, "CK", 0, true,
-      "", "", "0x1", mojom::CoinType::ETH);
+      "CryptoKitties-Kitty-13733.svg", false, true, false, true, true, "CK", 0,
+      true, "", "", "0x1", mojom::CoinType::ETH);
 
   token = ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
@@ -329,13 +331,14 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "is_erc721": false,
       "is_erc1155": true,
       "is_nft": true,
+      "is_spam": false,
       "decimals": 0,
       "visible": true
   })");
 
   expected_token = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
-      false, false, true, true, "ADIDAS", 0, true, "", "", "0x1",
+      false, false, true, true, false, "ADIDAS", 0, true, "", "", "0x1",
       mojom::CoinType::ETH);
 
   token = ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);

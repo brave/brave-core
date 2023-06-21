@@ -112,6 +112,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       isErc721: false,
       isErc1155: false,
       isNft: false,
+      isSpam: false,
       logo: selectedNetwork.iconUrls[0] ?? '',
       name: selectedNetwork.symbolName,
       symbol: selectedNetwork.symbol,
