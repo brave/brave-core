@@ -304,7 +304,6 @@
     <color name="custodian_name_color">#585C6D</color>
     <color name="tipping_error_alert_message_background_color">#FDF3F5</color>
     <color name="tipping_use_web3_button_border_color">#E2E2FC</color>
-    <color name="verification_tick_mark_background">#5F5CF1</color>
     <color name="bottomsheet_top_bar_color">#000000</color>
     <color name="send_contribution_button_color">#A8ADBF</color>
     <color name="custodian_text_background_color">#F4F6F8</color>

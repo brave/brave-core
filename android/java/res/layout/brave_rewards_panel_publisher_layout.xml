@@ -69,7 +69,7 @@
                 android:background="@drawable/unverified_48_rounded_bg"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="12sp"
-                app:drawableStartCompat="@drawable/ic_unverified_state" />
+                app:drawableStartCompat="@drawable/rewards_unverified_tick_icon" />
 
             <FrameLayout
                 android:layout_width="wrap_content"

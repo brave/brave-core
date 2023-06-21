@@ -74,7 +74,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/tipping_publisher_name"
                 app:layout_constraintStart_toEndOf="@id/tipping_publisher_name"
                 app:layout_constraintTop_toTopOf="@id/tipping_publisher_name"
-                app:srcCompat="@drawable/verification_tick_mark" />
+                app:srcCompat="@drawable/rewards_verified_tick_icon" />
 
             <TextView
                 android:id="@+id/tipping_details_description"
