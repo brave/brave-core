@@ -747,7 +747,6 @@ TEST(BraveWalletUtilsUnitTest, GetKnownChain) {
   const base::flat_set<std::string> non_eip1559_networks = {
       brave_wallet::mojom::kLocalhostChainId,
       brave_wallet::mojom::kBinanceSmartChainMainnetChainId,
-      brave_wallet::mojom::kOptimismMainnetChainId,
       brave_wallet::mojom::kAuroraMainnetChainId};
 
   auto known_chains = brave_wallet::GetAllKnownNetworksForTesting();
