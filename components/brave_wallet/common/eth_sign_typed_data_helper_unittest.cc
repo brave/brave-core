@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
@@ -160,19 +161,19 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
   ASSERT_TRUE(helper);
   auto encoded_mail_v4 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_mail_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_mail_v4)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_mail_v4->first)),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2"
             "fc71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd"
             "54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aa"
             "df3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8");
   auto data_mail_hash_v4 = helper->HashStruct("Mail", data_dict);
   ASSERT_TRUE(data_mail_hash_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*data_mail_hash_v4)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(data_mail_hash_v4->first)),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
   auto encoded_person_v4 =
       helper->EncodeData("Person", *(data_dict.FindDict("to")));
   ASSERT_TRUE(encoded_person_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_person_v4)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_person_v4->first)),
             "b9d8c78acf9b987311de6c7b45bb6a9c8e1bf361fa7fd3467a2163f994c79500"
             "28cac318a86c8a0a6a9156c2dba2c8c2363677ba0514ef616592d81557e679b600"
             "0000000000000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
@@ -184,10 +185,26 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
   EXPECT_EQ(encoded_mail_v4, encoded_mail_v3);
   auto encoded_person_v3 =
       helper->EncodeData("Person", *(data_dict.FindDict("to")));
-  EXPECT_EQ(encoded_person_v4, encoded_person_v3);
+  EXPECT_EQ(encoded_person_v4->first, encoded_person_v3->first);
 
   // Invalid primary type name
   EXPECT_FALSE(helper->EncodeData("Brave", data_dict));
+
+  // Extra fields in data should be ignored
+  data_dict.Set("extra", base::Value("extra"));
+  data_mail_hash_v4 = helper->HashStruct("Mail", data_dict);
+  ASSERT_TRUE(data_mail_hash_v4);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(data_mail_hash_v4->first)),
+            "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
+
+  std::string sanitized_data_mail_v4;
+  base::JSONWriter::Write(data_mail_hash_v4->second, &sanitized_data_mail_v4);
+  EXPECT_EQ(
+      sanitized_data_mail_v4,
+      "{\"contents\":\"Hello, "
+      "Bob!\",\"from\":{\"name\":\"Cow\",\"wallet\":"
+      "\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"},\"to\":{\"name\":"
+      "\"Bob\",\"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"}}");
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodedData) {
@@ -259,7 +276,7 @@ TEST(EthSignedTypedDataHelperUnitTest, RecursiveCustomTypes) {
   ASSERT_TRUE(helper);
   auto encoded_data_v4 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data_v4)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data_v4->first)),
             "66658e9662034bcd21df657297dab8ba47f0ae05dd8aa253cc935d9aacfd9d10fc"
             "71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd54"
             "f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf"
@@ -270,7 +287,7 @@ TEST(EthSignedTypedDataHelperUnitTest, RecursiveCustomTypes) {
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
   auto encoded_data_v3 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v3);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data_v3)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data_v3->first)),
             "66658e9662034bcd21df657297dab8ba47f0ae05dd8aa253cc935d9aacfd9d10fc"
             "71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd54"
             "f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf"
@@ -305,7 +322,7 @@ TEST(EthSignedTypedDataHelperUnitTest, MissingFieldInData) {
   ASSERT_TRUE(helper);
   auto encoded_data_v4 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data_v4)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data_v4->first)),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac200"
             "00000000000000000000000000000000000000000000000000000000000000cd54"
             "f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf"
@@ -315,7 +332,7 @@ TEST(EthSignedTypedDataHelperUnitTest, MissingFieldInData) {
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
   auto encoded_data_v3 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v3);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data_v3)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data_v3->first)),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2cd"
             "54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aa"
             "df3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8");
@@ -352,7 +369,7 @@ TEST(EthSignedTypedDataHelperUnitTest, ArrayTypes) {
   ASSERT_TRUE(helper);
   auto encoded_data = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*encoded_data)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data->first)),
             "dd57d9596af52b430ced3d5b52d4e3d5dccfdf3e0572db1dcf526baad311fbd1fc"
             "71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c86447"
             "52e282fcf7fda2a1198d94a0fdc47c09b694e927a40403469fa89f10bbda2b6bac"
@@ -814,15 +831,15 @@ TEST(EthSignedTypedDataHelperUnitTest, GetTypedDataMessageToSign) {
   ASSERT_TRUE(ds_hash);
   auto domain_hash = helper->GetTypedDataDomainHash(ds_value.GetDict());
   ASSERT_TRUE(domain_hash);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*domain_hash)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(domain_hash->first)),
             "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f");
   auto primary_hash =
       helper->GetTypedDataPrimaryHash("Mail", data_value.GetDict());
   ASSERT_TRUE(primary_hash);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*primary_hash)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(primary_hash->first)),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
-  auto message_to_sign =
-      helper->GetTypedDataMessageToSign(*domain_hash, *primary_hash);
+  auto message_to_sign = helper->GetTypedDataMessageToSign(domain_hash->first,
+                                                           primary_hash->first);
   ASSERT_TRUE(message_to_sign);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
             "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");
