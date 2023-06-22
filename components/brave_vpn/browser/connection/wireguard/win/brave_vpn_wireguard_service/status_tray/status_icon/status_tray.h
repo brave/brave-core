@@ -11,7 +11,7 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/common/scoped_hwnd.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/utils/scoped_hwnd.h"
 #include "ui/gfx/image/image_skia.h"
 
 namespace brave_vpn {

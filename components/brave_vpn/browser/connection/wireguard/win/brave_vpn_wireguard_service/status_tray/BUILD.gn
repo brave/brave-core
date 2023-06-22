@@ -9,16 +9,14 @@ source_set("status_tray") {
     "brave_vpn_tray_strings_en.h",
     "status_tray_runner.cc",
     "status_tray_runner.h",
-    "utils.cc",
-    "utils.h",
   ]
 
   public_deps = [ "//skia" ]
 
   deps = [
-    "common",
     "resources",
     "status_icon",
+    "utils",
     "//base",
     "//brave/components/brave_vpn/browser/connection/common/win",
     "//brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/common",
