@@ -58,6 +58,7 @@ import {
 import { WalletPageActions } from '../../page/actions'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 import { IPFS_PROTOCOL, isIpfs, stripERC20TokenImageURL } from '../../utils/string-utils'
+import { toTxDataUnion } from '../../utils/tx-utils'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -962,7 +963,6 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
     await apiProxy.braveWalletService.getChainIdForActiveOrigin(
       BraveWallet.CoinType.ETH)
 
-  let addResult
   const txData: BraveWallet.TxData = {
     nonce: '',
     // Estimated by eth_tx_service if value is '' for legacy transactions
@@ -986,28 +986,23 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
       maxFeePerGas: payload.maxFeePerGas || '',
       gasEstimation: undefined
     }
-    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-    const txDataUnion: BraveWallet.TxDataUnion = { ethTxData1559: txData1559 }
-    addResult = await apiProxy.txService.addUnapprovedTransaction(
-      txDataUnion,
-      payload.fromAccount.address,
-      null,
-      null
-    )
-  } else {
-    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-    const txDataUnion: BraveWallet.TxDataUnion = { ethTxData: txData }
-    addResult = await apiProxy.txService.addUnapprovedTransaction(
-      txDataUnion,
+    return await apiProxy.txService.addUnapprovedTransaction(
+      toTxDataUnion({ ethTxData1559: txData1559 }),
       payload.fromAccount.address,
       null,
       null
     )
   }
-  return addResult
+
+  return await apiProxy.txService.addUnapprovedTransaction(
+    toTxDataUnion({ ethTxData: txData }),
+    payload.fromAccount.address,
+    null,
+    null
+  )
 }
 
-export async function sendFilTransaction (payload: SendFilTransactionParams) {
+export async function sendFilTransaction(payload: SendFilTransactionParams) {
   const apiProxy = getAPIProxy()
   const filTxData: BraveWallet.FilTxData = {
     nonce: payload.nonce || '',
@@ -1019,41 +1014,55 @@ export async function sendFilTransaction (payload: SendFilTransactionParams) {
     from: payload.fromAccount.address,
     value: payload.value
   }
-  // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-  return await apiProxy.txService.addUnapprovedTransaction({ filTxData: filTxData }, payload.from, null, null)
+  return await apiProxy.txService.addUnapprovedTransaction(
+    toTxDataUnion({ filTxData: filTxData }),
+    payload.fromAccount.address,
+    null,
+    null
+  )
 }
 
-export async function sendSolTransaction (payload: SendSolTransactionParams) {
+export async function sendSolTransaction(payload: SendSolTransactionParams) {
   const { solanaTxManagerProxy, txService } = getAPIProxy()
   const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(
     payload.fromAccount.address,
     payload.to,
     BigInt(payload.value)
   )
-  // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-  return await txService.addUnapprovedTransaction({ solanaTxData: value.txData }, payload.from, null, null)
+  return await txService.addUnapprovedTransaction(
+    toTxDataUnion({ solanaTxData: value.txData ?? undefined }),
+    payload.fromAccount.address,
+    null,
+    null
+  )
 }
 
 export async function sendSPLTransaction (payload: BraveWallet.SolanaTxData) {
   const { txService } = getAPIProxy()
-  // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-  return await txService.addUnapprovedTransaction({ solanaTxData: payload }, payload.feePayer, null, null)
+  return await txService.addUnapprovedTransaction(
+    toTxDataUnion({ solanaTxData: payload }),
+    payload.feePayer,
+    null,
+    null
+  )
 }
 
-export async function sendSolanaSerializedTransaction (payload: SolanaSerializedTransactionParams) {
+export async function sendSolanaSerializedTransaction(
+  payload: SolanaSerializedTransactionParams
+) {
   const { solanaTxManagerProxy, txService } = getAPIProxy()
-  const result = await solanaTxManagerProxy.makeTxDataFromBase64EncodedTransaction(
-    payload.encodedTransaction,
-    payload.txType,
-    payload.sendOptions || null
-  )
+  const result =
+    await solanaTxManagerProxy.makeTxDataFromBase64EncodedTransaction(
+      payload.encodedTransaction,
+      payload.txType,
+      payload.sendOptions || null
+    )
   if (result.error !== BraveWallet.ProviderError.kSuccess) {
     console.error(`Failed to sign Solana message: ${result.errorMessage}`)
     return { success: false, errorMessage: result.errorMessage, txMetaId: '' }
   } else {
     return await txService.addUnapprovedTransaction(
-      // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-      { solanaTxData: result.txData },
+      toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
       payload.from,
       null,
       payload.groupId || null

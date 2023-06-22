@@ -328,6 +328,12 @@ handler.on(PanelActions.signMessageProcessed.type, async (store: Store, payload:
   apiProxy.panelHandler.closeUI()
 })
 
+function toByteArrayStringUnion<D extends keyof BraveWallet.ByteArrayStringUnion>(
+  unionItem: Pick<BraveWallet.ByteArrayStringUnion, D>
+) {
+  return Object.assign({}, unionItem) as BraveWallet.ByteArrayStringUnion
+}
+
 handler.on(PanelActions.signMessageHardware.type, async (store, messageData: SerializableSignMessageRequest) => {
   const apiProxy = getWalletPanelApiProxy()
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
@@ -367,9 +373,10 @@ handler.on(PanelActions.signMessageHardware.type, async (store, messageData: Ser
   }
   let signature: BraveWallet.ByteArrayStringUnion | undefined
   if (signed.success) {
-    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-    signature = hardwareAccount.coin === BraveWallet.CoinType.SOL
-      ? { bytes: signed.payload as Buffer } : { str: signed.payload as string }
+    signature =
+      hardwareAccount.accountId.coin === BraveWallet.CoinType.SOL
+        ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
+        : toByteArrayStringUnion({ str: signed.payload as string })
   }
   const payload: SignMessageProcessedPayload =
     signed.success
@@ -429,10 +436,12 @@ handler.on(PanelActions.signTransactionHardware.type, async (store, messageData:
   }
   let signature: BraveWallet.ByteArrayStringUnion | undefined
   if (signed.success) {
-    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-    signature = hardwareAccount.coin === BraveWallet.CoinType.SOL
-      ? { bytes: signed.payload as Buffer } : { str: signed.payload as string }
+    signature =
+      hardwareAccount.accountId.coin === BraveWallet.CoinType.SOL
+        ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
+        : toByteArrayStringUnion({ str: signed.payload as string })
   }
+
   const payload: SignMessageProcessedPayload =
     signed.success
       ? { approved: signed.success, id: messageData.id, signature: signature }
@@ -479,7 +488,7 @@ handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageD
   await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
   // Send serialized requests to hardware keyring to sign.
-  let payload: SignAllTransactionsProcessedPayload = { approved: true, id: messageData.id, signatures: [] }
+  const payload: SignAllTransactionsProcessedPayload = { approved: true, id: messageData.id, signatures: [] }
   for (const rawMessage of messageData.rawMessages) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, rawMessage, messageData.coin, () => {
@@ -495,9 +504,10 @@ handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageD
       payload.error = signed.error as string
       break
     }
-    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-    const signature: BraveWallet.ByteArrayStringUnion = hardwareAccount.coin === BraveWallet.CoinType.SOL
-      ? { bytes: signed.payload as Buffer } : { str: signed.payload as string }
+    const signature: BraveWallet.ByteArrayStringUnion =
+      hardwareAccount.accountId.coin === BraveWallet.CoinType.SOL
+        ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
+        : toByteArrayStringUnion({ str: signed.payload as string })
     payload.signatures?.push(signature)
   }
 
