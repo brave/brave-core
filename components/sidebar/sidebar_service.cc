@@ -86,6 +86,7 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
           ? static_cast<int>(ShowSidebarOption::kShowNever)
           : static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
+  registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
 }
 
 SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
