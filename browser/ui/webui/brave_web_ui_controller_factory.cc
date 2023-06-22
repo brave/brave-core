@@ -174,22 +174,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(IS_ANDROID)
-  } else if (url.is_valid() &&
-             (url.spec() == base::StringPrintf("%s://%s",
-                                               content::kChromeUIScheme,
-                                               kWalletSwapPagePath) ||
-              url.spec() == base::StringPrintf("%s://%s",
-                                               content::kBraveUIScheme,
-                                               kWalletSwapPagePath))) {
-    return new SwapPageUI(web_ui, url.host());
-  } else if (url.is_valid() &&
-             (url.spec() == base::StringPrintf("%s://%s",
-                                               content::kChromeUIScheme,
-                                               kWalletSendPagePath) ||
-              url.spec() == base::StringPrintf("%s://%s",
-                                               content::kBraveUIScheme,
-                                               kWalletSendPagePath))) {
-    return new SendPageUI(web_ui, url.host());
+  } else if (url.is_valid() && url.host() == kWalletPageHost) {
+    return new AndroidWalletPageUI(web_ui, url);
 #endif
   }
   return nullptr;
@@ -211,15 +197,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if BUILDFLAG(IS_ANDROID)
-      (url.is_valid() &&
-       ((url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
-                                          kWalletSwapPagePath) ||
-         url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
-                                          kWalletSwapPagePath)) ||
-        (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
-                                          kWalletSendPagePath) ||
-         url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
-                                          kWalletSendPagePath)))) ||
+      (url.is_valid() && url.host_piece() == kWalletPageHost &&
+       (url.path() == kWalletSwapPagePath ||
+        url.path() == kWalletSendPagePath)) ||
 #else
       ((url.host_piece() == kWalletPanelHost ||
         url.host_piece() == kWalletPageHost) &&

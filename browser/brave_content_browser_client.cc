@@ -677,9 +677,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
 #if BUILDFLAG(IS_ANDROID)
   content::RegisterWebUIControllerInterfaceBinder<
-      brave_wallet::mojom::PageHandlerFactory, SendPageUI>(map);
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_wallet::mojom::PageHandlerFactory, SwapPageUI>(map);
+      brave_wallet::mojom::PageHandlerFactory, AndroidWalletPageUI>(map);
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
