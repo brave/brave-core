@@ -141,7 +141,7 @@ source_set("unit_tests") {
       "//base/test:test_support",
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
-      "//chrome/browser/ui/views",
+      "//chrome/browser/ui",
       "//testing/gtest",
     ]
   }
