@@ -52,7 +52,7 @@ void BraveWebMainParts::PreCreateMainMessageLoop() {
       resources_pack_path, ui::k100Percent);
 
   base::FilePath brave_pack_path;
-  base::PathService::Get(base::DIR_MODULE, &brave_pack_path);
+  base::PathService::Get(base::DIR_ASSETS, &brave_pack_path);
   brave_pack_path = brave_pack_path.AppendASCII("brave_resources.pak");
   ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
       brave_pack_path, ui::kScaleFactorNone);
