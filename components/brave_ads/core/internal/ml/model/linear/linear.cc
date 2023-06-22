@@ -32,10 +32,10 @@ LinearModel& LinearModel::operator=(LinearModel&& other) noexcept = default;
 
 LinearModel::~LinearModel() = default;
 
-PredictionMap LinearModel::Predict(const VectorData& x) const {
+PredictionMap LinearModel::Predict(const VectorData& data) const {
   PredictionMap predictions;
   for (const auto& kv : weights_) {
-    double prediction = kv.second * x;
+    double prediction = kv.second * data;
     const auto iter = biases_.find(kv.first);
     if (iter != biases_.cend()) {
       prediction += iter->second;
@@ -45,9 +45,19 @@ PredictionMap LinearModel::Predict(const VectorData& x) const {
   return predictions;
 }
 
-PredictionMap LinearModel::GetTopPredictions(const VectorData& x,
-                                             const int top_count) const {
-  const PredictionMap prediction_map = Predict(x);
+PredictionMap LinearModel::GetTopPredictions(const VectorData& data) const {
+  return GetTopCountPredictionsImpl(data, absl::nullopt);
+}
+
+PredictionMap LinearModel::GetTopCountPredictions(const VectorData& data,
+                                                  size_t top_count) const {
+  return GetTopCountPredictionsImpl(data, top_count);
+}
+
+PredictionMap LinearModel::GetTopCountPredictionsImpl(
+    const VectorData& data,
+    absl::optional<size_t> top_count) const {
+  const PredictionMap prediction_map = Predict(data);
   const PredictionMap prediction_map_softmax = Softmax(prediction_map);
   std::vector<std::pair<double, std::string>> prediction_order;
   prediction_order.reserve(prediction_map_softmax.size());
@@ -56,8 +66,8 @@ PredictionMap LinearModel::GetTopPredictions(const VectorData& x,
   }
   base::ranges::sort(base::Reversed(prediction_order));
   PredictionMap top_predictions;
-  if (top_count > 0) {
-    prediction_order.resize(top_count);
+  if (top_count && *top_count < prediction_order.size()) {
+    prediction_order.resize(*top_count);
   }
   for (const auto& prediction_order_item : prediction_order) {
     top_predictions[prediction_order_item.second] = prediction_order_item.first;

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
 namespace brave_ads::ml {
@@ -17,7 +18,14 @@ NormalizationTransformation::NormalizationTransformation()
 
 std::unique_ptr<Data> NormalizationTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {
-  CHECK(input_data->GetType() == DataType::kVector);
+  CHECK(input_data);
+
+  // TODO(https://github.com/brave/brave-browser/issues/31180): Refactor
+  // TextProcessing to make it more reliable.
+  if (input_data->GetType() != DataType::kVector) {
+    BLOG(0, "NormalizationTransformation input not of type vector");
+    return {};
+  }
 
   auto* vector_data = static_cast<VectorData*>(input_data.get());
 

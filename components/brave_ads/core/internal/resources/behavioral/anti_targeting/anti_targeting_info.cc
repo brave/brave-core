@@ -50,6 +50,10 @@ AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
 
     std::set<GURL> anti_targeting_sites;
     for (const auto& site : sites.GetList()) {
+      if (!site.is_string()) {
+        return base::unexpected(
+            "Failed to load from JSON, site not of type string");
+      }
       anti_targeting_sites.insert(GURL(site.GetString()));
     }
 

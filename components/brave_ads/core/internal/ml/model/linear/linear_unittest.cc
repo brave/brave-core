@@ -119,9 +119,9 @@ TEST_F(BraveAdsLinearTest, TopPredictionsTest) {
   // Act
   const PredictionMap predictions_1 = linear_biased.GetTopPredictions(point_1);
   const PredictionMap predictions_2 =
-      linear_biased.GetTopPredictions(point_2, kPredictionLimits[0]);
+      linear_biased.GetTopCountPredictions(point_2, kPredictionLimits[0]);
   const PredictionMap predictions_3 =
-      linear_biased.GetTopPredictions(point_3, kPredictionLimits[1]);
+      linear_biased.GetTopCountPredictions(point_3, kPredictionLimits[1]);
 
   // Assert
   ASSERT_EQ(weights.size(), predictions_1.size());

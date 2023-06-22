@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/embedding_pipeline_info.h"
 
 namespace {
@@ -59,7 +58,9 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
     std::vector<float> embedding;
     embedding.reserve(list->size());
     for (const base::Value& item : *list) {
-      CHECK(item.is_double());
+      if (!item.is_double() && !item.is_int()) {
+        return absl::nullopt;
+      }
 
       embedding.push_back(static_cast<float>(item.GetDouble()));
     }
