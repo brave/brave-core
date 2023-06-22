@@ -213,13 +213,13 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() &&
        ((url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
-                                         kWalletSwapPagePath) ||
-        url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
-                                         kWalletSwapPagePath)) ||
+                                          kWalletSwapPagePath) ||
+         url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
+                                          kWalletSwapPagePath)) ||
         (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
-                                         kWalletSendPagePath) ||
-        url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
-                                         kWalletSendPagePath)))) ||
+                                          kWalletSendPagePath) ||
+         url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
+                                          kWalletSendPagePath)))) ||
 #else
       ((url.host_piece() == kWalletPanelHost ||
         url.host_piece() == kWalletPageHost) &&

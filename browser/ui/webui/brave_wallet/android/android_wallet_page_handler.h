@@ -12,7 +12,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
-template <typename T> 
+template <typename T>
 class AndroidWalletPageHandler : WalletPageHandler {
  public:
   AndroidWalletPageHandler(
@@ -40,11 +40,10 @@ class SendPageHandler : public AndroidWalletPageHandler<SendPageHandler> {
   SendPageHandler(const SendPageHandler&) = delete;
   SendPageHandler& operator=(const SendPageHandler&) = delete;
   ~SendPageHandler() override = default;
-
 };
 class SwapPageHandler : public AndroidWalletPageHandler<SwapPageHandler> {
-  public:
-    SwapPageHandler(
+ public:
+  SwapPageHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
       Profile* profile,
       ui::MojoWebUIController* webui_controller);
@@ -52,7 +51,6 @@ class SwapPageHandler : public AndroidWalletPageHandler<SwapPageHandler> {
   SwapPageHandler(const SwapPageHandler&) = delete;
   SwapPageHandler& operator=(const SwapPageHandler&) = delete;
   ~SwapPageHandler() override = default;
-
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_ANDROID_PAGE_HANDLER_H_

@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_send_page_generated_map.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
 #include "brave/components/l10n/common/localization_util.h"
 
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
@@ -42,13 +42,15 @@
 #include "base/command_line.h"
 
 template <typename T>
-AndroidWalletPageUI<T>::AndroidWalletPageUI(content::WebUI* web_ui, const std::string& name, 
-        const base::span<const webui::ResourcePath>& resources,
-        const int& default_resource)
+AndroidWalletPageUI<T>::AndroidWalletPageUI(
+    content::WebUI* web_ui,
+    const std::string& name,
+    const base::span<const webui::ResourcePath>& resources,
+    const int& default_resource)
     : ui::MojoWebUIController(web_ui,
                               true /* Needed for webui browser tests */),
-                              resources_(resources),
-                              default_resource_(default_resource) {
+      resources_(resources),
+      default_resource_(default_resource) {
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
       content::WebUIDataSource::CreateAndAdd(profile, kWalletPageHost);
@@ -61,8 +63,7 @@ AndroidWalletPageUI<T>::AndroidWalletPageUI(content::WebUI* web_ui, const std::s
   }
 
   // Add required resources.
-  webui::SetupWebUIDataSource(
-        source, resources_,default_resource_);
+  webui::SetupWebUIDataSource(source, resources_, default_resource_);
 
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
@@ -82,8 +83,6 @@ AndroidWalletPageUI<T>::AndroidWalletPageUI(content::WebUI* web_ui, const std::s
 
 template <typename T>
 AndroidWalletPageUI<T>::~AndroidWalletPageUI() = default;
-
-
 
 template <typename T>
 void AndroidWalletPageUI<T>::BindInterface(
@@ -132,8 +131,7 @@ void AndroidWalletPageUI<T>::CreatePageHandler(
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
-  page_handler_ = std::make_unique<T>(std::move(page_receiver),
-                                                    profile, this);
+  page_handler_ = std::make_unique<T>(std::move(page_receiver), profile, this);
   wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
       std::move(wallet_receiver), profile);
 
@@ -141,7 +139,7 @@ void AndroidWalletPageUI<T>::CreatePageHandler(
       profile, std::move(json_rpc_service_receiver));
   brave_wallet::BitcoinWalletServiceFactory::BindForContext(
       profile, std::move(bitcoin_rpc_service_receiver));
-  brave_wallet::SwapServiceFactory::BindForContext(//TODO
+  brave_wallet::SwapServiceFactory::BindForContext(  // TODO
       profile, std::move(swap_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(
       profile, std::move(asset_ratio_service_receiver));
@@ -171,24 +169,28 @@ void AndroidWalletPageUI<T>::CreatePageHandler(
   LOG(INFO) << "!!! AndroidWalletPageUI<T>::CreatePageHandler";
 }
 
-SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name) 
-  : AndroidWalletPageUI<SwapPageHandler>(web_ui, name, 
-        base::make_span(kBraveWalletSwapPageGenerated, kBraveWalletSwapPageGeneratedSize),
-        IDR_BRAVE_WALLET_SWAP_PAGE_HTML) {    
-}
+SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name)
+    : AndroidWalletPageUI<SwapPageHandler>(
+          web_ui,
+          name,
+          base::make_span(kBraveWalletSwapPageGenerated,
+                          kBraveWalletSwapPageGeneratedSize),
+          IDR_BRAVE_WALLET_SWAP_PAGE_HTML) {}
 
 void SwapPageUI::BindInterface(
-      mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver) {
-    AndroidWalletPageUI<SwapPageHandler>::BindInterface(std::move(receiver));
+    mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver) {
+  AndroidWalletPageUI<SwapPageHandler>::BindInterface(std::move(receiver));
 }
 
-SendPageUI::SendPageUI(content::WebUI* web_ui, const std::string& name) 
-  : AndroidWalletPageUI<SendPageHandler>(web_ui, name, 
-        base::make_span(kBraveWalletSendPageGenerated, kBraveWalletSendPageGeneratedSize),
-        IDR_BRAVE_WALLET_SEND_PAGE_HTML) {
-}
+SendPageUI::SendPageUI(content::WebUI* web_ui, const std::string& name)
+    : AndroidWalletPageUI<SendPageHandler>(
+          web_ui,
+          name,
+          base::make_span(kBraveWalletSendPageGenerated,
+                          kBraveWalletSendPageGeneratedSize),
+          IDR_BRAVE_WALLET_SEND_PAGE_HTML) {}
 
 void SendPageUI::BindInterface(
-      mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver) {
-    AndroidWalletPageUI<SendPageHandler>::BindInterface(std::move(receiver));
+    mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver) {
+  AndroidWalletPageUI<SendPageHandler>::BindInterface(std::move(receiver));
 }
