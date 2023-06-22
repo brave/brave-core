@@ -31,10 +31,11 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     private List<NetworkInfo> mNetworkInfos;
     private ExecutorService mExecutor;
     private Handler mHandler;
+    public float mNetworkTitleSize;
 
-    public NetworkSpinnerAdapter(Context applicationContext, List<NetworkInfo> networkInfos) {
-        this.context = applicationContext;
-        inflater = (LayoutInflater.from(applicationContext));
+    public NetworkSpinnerAdapter(Context context, List<NetworkInfo> networkInfos) {
+        this.context = context;
+        inflater = (LayoutInflater.from(context));
         mNetworkInfos = networkInfos;
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
@@ -69,6 +70,9 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
         view = inflater.inflate(R.layout.selected_network_item, viewGroup, false);
         TextView name = view.findViewById(R.id.network_name_text);
         name.setText(mNetworkInfos.get(position).chainName);
+        if (mNetworkTitleSize > 0) {
+            name.setTextSize(mNetworkTitleSize);
+        }
         return view;
     }
 
