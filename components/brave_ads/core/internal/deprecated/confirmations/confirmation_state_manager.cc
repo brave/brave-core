@@ -221,6 +221,10 @@ void ConfirmationStateManager::Save() {
 
 absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
     const base::Value::Dict& dict) const {
+  if (!wallet_.IsValid()) {
+    return absl::nullopt;
+  }
+
   OptedInInfo opted_in;
 
   // Token
@@ -266,7 +270,6 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
         return absl::nullopt;
       }
 
-      CHECK(wallet_.IsValid());
       const absl::optional<std::string> signature =
           crypto::Sign(*unblinded_token_base64, wallet_.secret_key);
       if (!signature) {
@@ -497,8 +500,7 @@ bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
   privacy::UnblindedTokenList filtered_unblinded_tokens =
       privacy::UnblindedTokensFromValue(*list);
 
-  if (!filtered_unblinded_tokens.empty()) {
-    CHECK(wallet_.IsValid());
+  if (wallet_.IsValid() && !filtered_unblinded_tokens.empty()) {
     const std::string public_key = wallet_.public_key;
 
     filtered_unblinded_tokens.erase(
