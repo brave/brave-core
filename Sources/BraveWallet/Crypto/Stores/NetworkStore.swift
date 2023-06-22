@@ -23,21 +23,6 @@ public class NetworkStore: ObservableObject {
   
   @Published private(set) var allChains: [BraveWallet.NetworkInfo] = []
   @Published private(set) var customChains: [BraveWallet.NetworkInfo] = []
-  
-  /// The primary networks from `allChains`
-  var primaryNetworks: [BraveWallet.NetworkInfo] {
-    allChains
-      .filter { WalletConstants.primaryNetworkChainIds.contains($0.chainId) }
-  }
-  
-  // The secondary networks from `allChains`
-  var secondaryNetworks: [BraveWallet.NetworkInfo] {
-    allChains
-      .filter {
-        !WalletConstants.primaryNetworkChainIds.contains($0.chainId)
-        && !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId)
-      }
-  }
 
   @Published private(set) var defaultSelectedChainId: String = BraveWallet.MainnetChainId
   var defaultSelectedChain: BraveWallet.NetworkInfo {
@@ -357,5 +342,27 @@ extension NetworkStore: BraveWalletKeyringServiceObserver {
   }
   
   public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
+  }
+}
+
+extension Array where Element == BraveWallet.NetworkInfo {
+  /// Returns the primary networks in Self.
+  var primaryNetworks: [BraveWallet.NetworkInfo] {
+    filter { WalletConstants.primaryNetworkChainIds.contains($0.chainId) }
+  }
+  
+  /// Returns the secondary networks in Self.
+  var secondaryNetworks: [BraveWallet.NetworkInfo] {
+    filter {
+      !WalletConstants.primaryNetworkChainIds.contains($0.chainId)
+      && !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId)
+    }
+  }
+  
+  /// Returns the known test networks in Self.
+  var testNetworks: [BraveWallet.NetworkInfo] {
+    filter {
+      WalletConstants.supportedTestNetworkChainIds.contains($0.chainId)
+    }
   }
 }

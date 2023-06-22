@@ -10,6 +10,7 @@ import Strings
 
 struct AssetSearchView: View {
   var keyringStore: KeyringStore
+  @ObservedObject var networkStore: NetworkStore
   var cryptoStore: CryptoStore
   var userAssetsStore: UserAssetsStore
   
@@ -18,23 +19,37 @@ struct AssetSearchView: View {
   @State private var allAssets: [AssetViewModel] = []
   @State private var allNFTMetadata: [String: NFTMetadata] = [:]
   @State private var query = ""
-  @State private var networkFilter: NetworkFilter = .allNetworks
+  @State private var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = []
   @State private var isPresentingNetworkFilter = false
+  
+  public init(
+    keyringStore: KeyringStore,
+    cryptoStore: CryptoStore,
+    userAssetsStore: UserAssetsStore
+  ) {
+    self.keyringStore = keyringStore
+    self.networkStore = cryptoStore.networkStore
+    self.cryptoStore = cryptoStore
+    self.userAssetsStore = userAssetsStore
+  }
 
   private var filteredTokens: [AssetViewModel] {
-    let allAssets: [AssetViewModel]
-    switch networkFilter {
-    case .allNetworks:
-      allAssets = self.allAssets
-    case .network(let network):
-      allAssets = self.allAssets.filter { $0.network.chainId == network.chainId }
-    }
-    let normalizedQuery = query.lowercased()
-    if normalizedQuery.isEmpty {
+    let filterByNetwork = !networkFilters.allSatisfy(\.isSelected)
+    let filterByQuery = !query.isEmpty
+    if !filterByNetwork && !filterByQuery {
       return allAssets
     }
-    return allAssets.filter {
-      $0.token.symbol.lowercased().contains(normalizedQuery) || $0.token.name.lowercased().contains(normalizedQuery)
+    let selectedNetworks = networkFilters.filter(\.isSelected)
+    let normalizedQuery = query.lowercased()
+    return allAssets.filter { asset in
+      if filterByNetwork,
+         !selectedNetworks.contains(where: { asset.network.chainId == $0.model.chainId }) {
+        return false
+      }
+      if filterByQuery {
+        return asset.token.symbol.lowercased().contains(normalizedQuery) || asset.token.name.lowercased().contains(normalizedQuery)
+      }
+      return true
     }
   }
   
@@ -42,18 +57,19 @@ struct AssetSearchView: View {
     Button(action: {
       self.isPresentingNetworkFilter = true
     }) {
-      HStack {
-        Image(braveSystemName: "leo.list")
-        Text(networkFilter.title)
-      }
-      .font(.footnote.weight(.medium))
-      .foregroundColor(Color(.braveBlurpleTint))
+      Image(braveSystemName: "leo.tune")
+        .font(.footnote.weight(.medium))
+        .foregroundColor(Color(.braveBlurpleTint))
+        .clipShape(Rectangle())
     }
     .sheet(isPresented: $isPresentingNetworkFilter) {
       NavigationView {
         NetworkFilterView(
-          networkFilter: $networkFilter,
-          networkStore: cryptoStore.networkStore
+          networks: networkFilters,
+          networkStore: cryptoStore.networkStore,
+          saveAction: { networkFilters in
+            self.networkFilters = networkFilters
+          }
         )
       }
       .onDisappear {
@@ -160,6 +176,15 @@ struct AssetSearchView: View {
       Task { @MainActor in
         self.allAssets = await userAssetsStore.allAssets()
         self.allNFTMetadata = await userAssetsStore.allNFTMetadata()
+        self.networkFilters = networkStore.allChains.map {
+          .init(isSelected: true, model: $0)
+        }
+      }
+    }
+    .onChange(of: networkStore.allChains) { allChains in
+      self.networkFilters = allChains.map { network in
+        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
+        return .init(isSelected: existingSelectionValue ?? true, model: network)
       }
     }
   }

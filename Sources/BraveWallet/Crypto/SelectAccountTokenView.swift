@@ -83,18 +83,19 @@ struct SelectAccountTokenView: View {
     Button(action: {
       self.isPresentingNetworkFilter = true
     }) {
-      HStack {
-        Image(braveSystemName: "leo.list")
-        Text(store.networkFilter.title)
-      }
-      .font(.footnote.weight(.medium))
-      .foregroundColor(Color(.braveBlurpleTint))
+      Image(braveSystemName: "leo.tune")
+        .font(.footnote.weight(.medium))
+        .foregroundColor(Color(.braveBlurpleTint))
+        .clipShape(Rectangle())
     }
     .sheet(isPresented: $isPresentingNetworkFilter) {
       NavigationView {
         NetworkFilterView(
-          networkFilter: $store.networkFilter,
-          networkStore: networkStore
+          networks: store.networkFilters,
+          networkStore: networkStore,
+          saveAction: { selectedNetworks in
+            store.networkFilters = selectedNetworks
+          }
         )
       }
       .onDisappear {

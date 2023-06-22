@@ -25,15 +25,15 @@ struct NetworkSelectionView: View {
     self.store = networkSelectionStore
   }
   
-  private var selectedNetwork: NetworkPresentation.Network {
+  private var selectedNetwork: BraveWallet.NetworkInfo {
     switch store.mode {
     case let .select(isForOrigin):
       if isForOrigin {
-        return .network(networkStore.selectedChainForOrigin)
+        return networkStore.selectedChainForOrigin
       }
-      return .network(networkStore.defaultSelectedChain)
+      return networkStore.defaultSelectedChain
     case .formSelection:
-      return .network(store.networkSelectionInForm ?? .init())
+      return store.networkSelectionInForm ?? .init()
     }
   }
   
@@ -47,16 +47,12 @@ struct NetworkSelectionView: View {
   var body: some View {
     NetworkSelectionRootView(
       navigationTitle: navigationTitle,
-      selectedNetwork: selectedNetwork,
-      primaryNetworks: store.primaryNetworks,
-      secondaryNetworks: store.secondaryNetworks,
+      selectedNetworks: [selectedNetwork],
+      allNetworks: networkStore.allChains,
       selectNetwork: { network in
         selectNetwork(network)
       }
     )
-    .onAppear {
-      store.update()
-    }
     .background(
       Color.clear
         .alert(
@@ -94,9 +90,9 @@ struct NetworkSelectionView: View {
     )
   }
   
-  private func selectNetwork(_ presentation: NetworkPresentation.Network) {
+  private func selectNetwork(_ network: BraveWallet.NetworkInfo) {
     Task { @MainActor in
-      if await store.selectNetwork(presentation) {
+      if await store.selectNetwork(network) {
         presentationMode.dismiss()
       }
     }

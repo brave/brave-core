@@ -16,8 +16,9 @@ class TransactionsActivityStore: ObservableObject {
       update()
     }
   }
-  @Published var networkFilter: NetworkFilter = .allNetworks {
+  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
     didSet {
+      guard !oldValue.isEmpty else { return } // initial assignment to `networkFilters`
       update()
     }
   }
@@ -57,6 +58,7 @@ class TransactionsActivityStore: ObservableObject {
     
     keyringService.add(self)
     txService.add(self)
+    walletService.add(self)
 
     Task { @MainActor in
       self.currencyCode = await walletService.defaultBaseCurrency()
@@ -71,16 +73,14 @@ class TransactionsActivityStore: ObservableObject {
         for: WalletConstants.supportedCoinTypes
       )
       let allAccountInfos = allKeyrings.flatMap(\.accountInfos)
-      var networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
-      
-      switch networkFilter {
-      case .allNetworks:
-        for coin in WalletConstants.supportedCoinTypes {
-          networksForCoin[coin] = await rpcService.allNetworks(coin)
+      // setup network filters if not currently setup
+      if self.networkFilters.isEmpty {
+        self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map {
+          .init(isSelected: true, model: $0)
         }
-      case .network(let networkInfo):
-        networksForCoin = [networkInfo.coin: [networkInfo]]
       }
+      let networks = networkFilters.filter(\.isSelected).map(\.model)
+      let networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = Dictionary(grouping: networks, by: \.coin)
       
       let chainIdsForCoin = networksForCoin.mapValues { networks in
         networks.map(\.chainId)
@@ -231,4 +231,32 @@ extension TransactionsActivityStore: BraveWalletTxServiceObserver {
   func onTxServiceReset() {
     update()
   }
+}
+
+extension TransactionsActivityStore: BraveWalletBraveWalletServiceObserver {
+  func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) { }
+  
+  func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) { }
+  
+  func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) { }
+  
+  func onDefaultBaseCurrencyChanged(_ currency: String) { }
+  
+  func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) { }
+  
+  func onNetworkListChanged() {
+    Task { @MainActor in
+      // A network was added or removed, update our network filters for the change.
+      self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map { network in
+        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
+        return .init(isSelected: existingSelectionValue ?? true, model: network)
+      }
+    }
+  }
+  
+  func onDiscoverAssetsStarted() { }
+  
+  func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) { }
+  
+  func onResetWallet() { }
 }

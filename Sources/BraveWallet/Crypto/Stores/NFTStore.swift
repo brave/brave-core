@@ -25,8 +25,9 @@ public class NFTStore: ObservableObject {
   /// The users visible NFTs
   @Published private(set) var userVisibleNFTs: [NFTAssetViewModel] = []
   /// The network filter in NFT tab
-  @Published var networkFilter: NetworkFilter = .allNetworks {
+  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
     didSet {
+      guard !oldValue.isEmpty else { return } // initial assignment to `networkFilters`
       update()
     }
   }
@@ -85,14 +86,13 @@ public class NFTStore: ObservableObject {
   func update() {
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in
-      let networks: [BraveWallet.NetworkInfo]
-      switch networkFilter {
-      case .allNetworks:
-        networks = await self.rpcService.allNetworksForSupportedCoins()
-          .filter { !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId) }
-      case let .network(network):
-        networks = [network]
+      // setup network filters if not currently setup
+      if self.networkFilters.isEmpty {
+        self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map {
+          .init(isSelected: !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId), model: $0)
+        }
       }
+      let networks: [BraveWallet.NetworkInfo] = self.networkFilters.filter(\.isSelected).map(\.model)
       let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: networks)
       var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
       for networkAssets in allVisibleUserAssets {
@@ -223,6 +223,14 @@ extension NFTStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onNetworkListChanged() {
+    Task { @MainActor in
+      // A network was added or removed, update our network filters for the change.
+      self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map { network in
+        let defaultValue = !WalletConstants.supportedTestNetworkChainIds.contains(network.chainId)
+        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
+        return .init(isSelected: existingSelectionValue ?? defaultValue, model: network)
+      }
+    }
   }
   
   public func onDiscoverAssetsStarted() {

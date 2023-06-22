@@ -314,10 +314,15 @@ import BraveCore
       )
     ]
     // all networks
-    store.networkFilter = .allNetworks
+    store.networkFilters = [
+      .init(isSelected: true, model: .mockMainnet),
+      .init(isSelected: true, model: .mockGoerli),
+      .init(isSelected: true, model: .mockSolana),
+      .init(isSelected: true, model: .mockSolanaTestnet)
+    ]
     XCTAssertEqual(store.filteredAccountSections, store.accountSections)
     // Ethereum mainnet
-    store.networkFilter = .network(.mockMainnet)
+    store.networkFilters = [.init(isSelected: true, model: .mockMainnet)]
     XCTAssertEqual(store.filteredAccountSections.count, 1)
     XCTAssertEqual(store.filteredAccountSections, [
       .init(
@@ -332,7 +337,7 @@ import BraveCore
       )
     ])
     // Solana mainnet
-    store.networkFilter = .network(.mockSolana)
+    store.networkFilters = [.init(isSelected: true, model: .mockSolana)]
     XCTAssertEqual(store.filteredAccountSections.count, 1)
     XCTAssertEqual(store.filteredAccountSections, [
       .init(

@@ -127,7 +127,7 @@ class UserAssetsStoreTests: XCTestCase {
     }
   }
   
-  func testUpdateWithNetworkFilter() {
+  @MainActor func testUpdateWithNetworkFilter() async {
     let (keyringService, rpcService, blockchainRegistry, assetRatioService) = setupServices()
     
     let mockAssetManager = TestableWalletUserAssetManager()
@@ -170,6 +170,17 @@ class UserAssetsStoreTests: XCTestCase {
       userAssetManager: mockAssetManager
     )
     
+    // Initial update() with all networks
+    let setupException = expectation(description: "setup")
+    userAssetsStore.$assetStores
+      .dropFirst() // initial
+      .sink { userVisibleNFTs in
+        setupException.fulfill()
+      }.store(in: &cancellables)
+    userAssetsStore.update()
+    await fulfillment(of: [setupException], timeout: 1)
+    cancellables.removeAll()
+    
     let assetStoresException = expectation(description: "userAssetsStore-assetStores")
     userAssetsStore.$assetStores
       .dropFirst()
@@ -192,10 +203,8 @@ class UserAssetsStoreTests: XCTestCase {
       .store(in: &cancellables)
     
     // network filter assignment should call `update()` and update `assetStores`
-    userAssetsStore.networkFilter = .network(.mockMainnet)
+    userAssetsStore.networkFilters = [.init(isSelected: true, model: .mockMainnet)]
     
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    await fulfillment(of: [assetStoresException], timeout: 1)
   }
 }
