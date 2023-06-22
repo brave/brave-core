@@ -1001,6 +1001,11 @@ window.__firefox__.execute(function($) {
    * If no polling is needed, simply create the stylesheet.
    */
   const startPolling = async () => {
+    // Ensure the body is not editable
+    if (document.body.contentEditable === "true") {
+      // If we have this attribute, we don't want to use CF
+      return
+    }
     // 1. First create the stylesheet
     createStylesheet()
 
