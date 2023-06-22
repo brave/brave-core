@@ -177,7 +177,7 @@ TEST_F(CommanderProviderTest, ItemsAreConvertedToMatches) {
     // scrolling through the commands doesn't affect what the user typed.
     EXPECT_EQ(u":> Hello World", match.fill_into_edit);
     // Check the matches have actions.
-    EXPECT_NE(0u, match.actions.size());
+    EXPECT_TRUE(match.takeover_action);
   }
 }
 
