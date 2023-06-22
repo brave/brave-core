@@ -26,7 +26,7 @@ import postMessageToPlayer from '../api/playerApi'
 import { types } from '../constants/playlist_types'
 
 interface Props {
-  actions: any
+  actions: typeof playlistActions 
   playlistData: Playlist.State
 }
 

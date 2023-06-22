@@ -93,7 +93,8 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      std::string("img-src 'self' chrome-untrusted://playlist-data;"));
+      std::string("img-src 'self' chrome-untrusted://playlist-data "
+                  "chrome-untrusted://resources;"));
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(
