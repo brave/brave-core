@@ -189,17 +189,6 @@ void BraveTab::UpdateIconVisibility() {
       showing_icon_ = !showing_alert_indicator_ && !showing_close_button_;
     }
   }
-
-  // Supplement extra left side padding by updating border.
-  // Upstream gives extra padding to balance with right side padding space but
-  // it's gone when tab doesn't have sufficient available width. In our case,
-  // As we have more narrow left & right padding than upstream, icon seems stick
-  // to left side when extra padding is not used.
-  // We only need to do that when |extra_padding_before_content_| is false.
-  // We update border here because |extra_padding_before_content_| is updated
-  // by Tab::UpdateIconVisibility(). After that layout happens. So, it's good
-  // time to update border now.
-  // UpdateBorder();
 }
 
 void BraveTab::ViewHierarchyChanged(
@@ -299,33 +288,9 @@ void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
     return;
   }
 
-  if (!ShouldRenderAsNormalTab()) {
-    // In case it's pinned tab, use the same calculation with the upstream.
-    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
-    return;
-  }
-
-  auto* browser_view =
-      BrowserView::GetBrowserViewForBrowser(controller_->GetBrowser());
-  if (!browser_view) {
-    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
-    return;
-  }
-
-  auto* widget_delegate_view = static_cast<BraveBrowserView*>(browser_view)
-                                   ->vertical_tab_strip_widget_delegate_view();
-  CHECK(widget_delegate_view);
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
-  CHECK(region_view);
-
-  if (region_view->state() == VerticalTabStripRegionView::State::kFloating) {
-    // In case we're in floating mode, set the same left padding with the one
-    // we use for the collapsed state, so that the favicon doesn't moves left
-    // and right.
-    bounds->set_x((tabs::kVerticalTabMinWidth - gfx::kFaviconSize) / 2);
-  }
-
-  // For else cases(non-pinned tabs), we don't do anything just like upstream.
+  // We keep favicon on fixed position so that it won't move left and right
+  // during animation.
+  bounds->set_x((tabs::kVerticalTabMinWidth - gfx::kFaviconSize) / 2);
 }
 
 bool BraveTab::ShouldRenderAsNormalTab() const {

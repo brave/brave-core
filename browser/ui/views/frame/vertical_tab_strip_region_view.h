@@ -57,6 +57,8 @@ class VerticalTabStripRegionView : public views::View,
   ~VerticalTabStripRegionView() override;
 
   State state() const { return state_; }
+  State last_state() const { return last_state_; }
+  bool is_animating() const { return width_animation_.is_animating(); }
 
   const TabStrip* tab_strip() const {
     return original_region_view_->tab_strip_;
@@ -184,6 +186,7 @@ class VerticalTabStripRegionView : public views::View,
   const raw_ptr<const TabStyle> tab_style_;
 
   State state_ = State::kExpanded;
+  State last_state_ = State::kExpanded;
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember collapsed_pref_;

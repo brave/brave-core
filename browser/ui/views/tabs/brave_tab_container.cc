@@ -12,6 +12,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -284,9 +285,8 @@ void BraveTabContainer::UpdateLayoutOrientation() {
 
   layout_helper_->set_use_vertical_tabs(
       tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()));
-  // When these two prefs are true, vertical tabs could be in floating mode.
-  layout_helper_->set_floating_mode(*vertical_tabs_floating_mode_enabled_ &&
-                                    *vertical_tabs_collapsed_);
+  layout_helper_->set_tab_strip(
+      static_cast<BraveTabStrip*>(base::to_address(tab_slot_controller_)));
   InvalidateLayout();
 }
 

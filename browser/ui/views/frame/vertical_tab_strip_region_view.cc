@@ -710,7 +710,8 @@ void VerticalTabStripRegionView::SetState(State state) {
     return;
 
   mouse_enter_timer_.Stop();
-  state_ = state;
+
+  last_state_ = std::exchange(state_, state);
 
   auto tab_strip = original_region_view_->tab_strip_;
   tab_strip->SetAvailableWidthCallback(base::BindRepeating(
