@@ -119,6 +119,8 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
+  ScopedResourceAsyncManagerForTesting scoped_async_resource_manager_;
+
   NiceMock<AdsClientMock> ads_client_mock_;
 
   NiceMock<PlatformHelperMock> platform_helper_mock_;

@@ -11,11 +11,16 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
 class GURL;
 
 namespace brave_ads {
+
+namespace ml::pipeline {
+struct TextEmbeddingInfo;
+}  // namespace ml::pipeline
 
 class TextEmbeddingResource;
 
@@ -34,12 +39,16 @@ class TextEmbeddingProcessor final : public TabManagerObserver {
   void Process(const std::string& html);
 
  private:
+  void OnEmbedText(const ml::pipeline::TextEmbeddingInfo& text_embedding);
+
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
   const raw_ref<TextEmbeddingResource> resource_;
+
+  base::WeakPtrFactory<TextEmbeddingProcessor> weak_factory_{this};
 };
 
 }  // namespace brave_ads

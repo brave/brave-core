@@ -146,6 +146,7 @@ class BraveAdsTopSegmentsTest
 
     for (const auto& text : texts) {
       text_classification_processor_->Process(text);
+      task_environment_.RunUntilIdle();
     }
   }
 

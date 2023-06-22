@@ -8,15 +8,14 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"
-#include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
 namespace brave_ads {
 
@@ -36,6 +35,20 @@ TextClassificationResource::~TextClassificationResource() {
   AdsClientHelper::RemoveObserver(this);
 }
 
+void TextClassificationResource::ClassifyPage(const std::string& text,
+                                              ClassifyPageCallback callback) {
+  if (!DidLoad() || !IsInitialized()) {
+    BLOG(1,
+         "Failed to process text classification as resource not initialized");
+    return std::move(callback).Run({});
+  }
+
+  text_processing_pipeline_->Get()
+      .AsyncCall(&TextProcessingRefCountedProxy::ClassifyPage)
+      .WithArgs(text)
+      .Then(std::move(callback));
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void TextClassificationResource::MaybeLoad() {
@@ -51,29 +64,42 @@ void TextClassificationResource::MaybeLoadOrReset() {
 void TextClassificationResource::Load() {
   did_load_ = true;
 
-  LoadAndParseResource(kTextClassificationResourceId,
-                       kTextClassificationResourceVersion.Get(),
-                       base::BindOnce(&TextClassificationResource::LoadCallback,
-                                      weak_factory_.GetWeakPtr()));
+  AdsClientHelper::GetInstance()->LoadFileResource(
+      kTextClassificationResourceId, kTextClassificationResourceVersion.Get(),
+      base::BindOnce(&TextClassificationResource::OnLoadFileResource,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void TextClassificationResource::OnLoadFileResource(base::File file) {
+  if (!file.IsValid() || !manifest_version_) {
+    return;
+  }
+
+  text_processing_pipeline_.emplace();
+  text_processing_pipeline_->Get()
+      .AsyncCall(&TextProcessingRefCountedProxy::Load)
+      .WithArgs(std::move(file), *manifest_version_)
+      .Then(base::BindOnce(&TextClassificationResource::LoadCallback,
+                           weak_factory_.GetWeakPtr()));
 }
 
 void TextClassificationResource::LoadCallback(
-    ResourceParsingErrorOr<ml::pipeline::TextProcessing> result) {
+    base::expected<bool, std::string> result) {
   if (!result.has_value()) {
-    return BLOG(0, "Failed to initialize " << kTextClassificationResourceId
-                                           << " text classification resource ("
-                                           << result.error() << ")");
+    BLOG(0, "Failed to initialize " << kTextClassificationResourceId
+                                    << " text classification resource ("
+                                    << result.error() << ")");
+    return text_processing_pipeline_.reset();
   }
 
-  if (!result.value().IsInitialized()) {
-    return BLOG(1, kTextClassificationResourceId
-                       << " text classification resource is not available");
+  if (!result.value()) {
+    BLOG(1, kTextClassificationResourceId
+                << " text classification resource is not available");
+    return text_processing_pipeline_.reset();
   }
 
   BLOG(1, "Successfully loaded " << kTextClassificationResourceId
                                  << " text classification resource");
-
-  text_processing_pipeline_ = std::move(result).value();
 
   BLOG(1, "Successfully initialized "
               << kTextClassificationResourceId

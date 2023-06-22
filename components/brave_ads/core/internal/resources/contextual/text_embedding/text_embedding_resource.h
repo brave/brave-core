@@ -8,13 +8,18 @@
 
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
+#include "brave/components/brave_ads/core/internal/resources/async/resource_async_handler.h"
+#include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/embedding_processing_ref_counted_proxy.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
+
+using EmbedTextCallback =
+    base::OnceCallback<void(const ml::pipeline::TextEmbeddingInfo&)>;
 
 class TextEmbeddingResource final : public AdsClientNotifierObserver {
  public:
@@ -32,9 +37,7 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
     return static_cast<bool>(embedding_processing_);
   }
 
-  const absl::optional<ml::pipeline::EmbeddingProcessing>& get() const {
-    return embedding_processing_;
-  }
+  void EmbedText(const std::string& text, EmbedTextCallback callback) const;
 
  private:
   void MaybeLoad();
@@ -42,8 +45,8 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
 
   bool DidLoad() const { return did_load_; }
   void Load();
-  void LoadCallback(
-      ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result);
+  void OnLoadFileResource(base::File file);
+  void LoadCallback(base::expected<bool, std::string> result);
 
   void MaybeReset();
   void Reset();
@@ -54,7 +57,8 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
   void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                           const std::string& id) override;
 
-  absl::optional<ml::pipeline::EmbeddingProcessing> embedding_processing_;
+  absl::optional<ResourceAsyncHandler<EmbeddingProcessingRefCountedProxy>>
+      embedding_processing_;
 
   bool did_load_ = false;
   absl::optional<std::string> manifest_version_;

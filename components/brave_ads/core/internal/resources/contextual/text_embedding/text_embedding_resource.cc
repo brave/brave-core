@@ -12,10 +12,9 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
+#include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/embedding_processing_ref_counted_proxy.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"
-#include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
 namespace brave_ads {
 
@@ -35,6 +34,18 @@ TextEmbeddingResource::~TextEmbeddingResource() {
   AdsClientHelper::RemoveObserver(this);
 }
 
+void TextEmbeddingResource::EmbedText(const std::string& text,
+                                      EmbedTextCallback callback) const {
+  if (!DidLoad() || !embedding_processing_) {
+    return;
+  }
+
+  embedding_processing_->Get()
+      .AsyncCall(&EmbeddingProcessingRefCountedProxy::EmbedText)
+      .WithArgs(text)
+      .Then(std::move(callback));
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void TextEmbeddingResource::MaybeLoad() {
@@ -50,29 +61,42 @@ void TextEmbeddingResource::MaybeLoadOrReset() {
 void TextEmbeddingResource::Load() {
   did_load_ = true;
 
-  LoadAndParseResource(kTextEmbeddingResourceId,
-                       kTextEmbeddingResourceVersion.Get(),
-                       base::BindOnce(&TextEmbeddingResource::LoadCallback,
-                                      weak_factory_.GetWeakPtr()));
+  AdsClientHelper::GetInstance()->LoadFileResource(
+      kTextEmbeddingResourceId, kTextEmbeddingResourceVersion.Get(),
+      base::BindOnce(&TextEmbeddingResource::OnLoadFileResource,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void TextEmbeddingResource::OnLoadFileResource(base::File file) {
+  if (!file.IsValid() || !manifest_version_) {
+    return;
+  }
+
+  embedding_processing_.emplace();
+  embedding_processing_->Get()
+      .AsyncCall(&EmbeddingProcessingRefCountedProxy::Load)
+      .WithArgs(std::move(file), *manifest_version_)
+      .Then(base::BindOnce(&TextEmbeddingResource::LoadCallback,
+                           weak_factory_.GetWeakPtr()));
 }
 
 void TextEmbeddingResource::LoadCallback(
-    ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result) {
+    base::expected<bool, std::string> result) {
   if (!result.has_value()) {
-    return BLOG(0, "Failed to initialize " << kTextEmbeddingResourceId
-                                           << " text embedding resource ("
-                                           << result.error() << ")");
+    BLOG(0, "Failed to initialize " << kTextEmbeddingResourceId
+                                    << " text embedding resource ("
+                                    << result.error() << ")");
+    return embedding_processing_.reset();
   }
 
-  if (!result.value().IsInitialized()) {
-    return BLOG(1, kTextEmbeddingResourceId
-                       << " text embedding resource is not available");
+  if (!result.value()) {
+    BLOG(1, kTextEmbeddingResourceId
+                << " text embedding resource is not available");
+    return embedding_processing_.reset();
   }
 
   BLOG(1, "Successfully loaded " << kTextEmbeddingResourceId
                                  << " text embedding resource");
-
-  embedding_processing_ = std::move(result).value();
 
   BLOG(1, "Successfully initialized " << kTextEmbeddingResourceId
                                       << " text embedding resource version "

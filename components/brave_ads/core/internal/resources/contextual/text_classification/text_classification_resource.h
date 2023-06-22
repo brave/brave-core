@@ -9,12 +9,17 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
+#include "brave/components/brave_ads/core/internal/resources/async/resource_async_handler.h"
+#include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_processing_ref_counted_proxy.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
+
+using ClassifyPageCallback =
+    base::OnceCallback<void(const TextClassificationProbabilityMap&)>;
 
 class TextClassificationResource final : public AdsClientNotifierObserver {
  public:
@@ -34,9 +39,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
     return static_cast<bool>(text_processing_pipeline_);
   }
 
-  const absl::optional<ml::pipeline::TextProcessing>& get() const {
-    return text_processing_pipeline_;
-  }
+  void ClassifyPage(const std::string& text, ClassifyPageCallback callback);
 
  private:
   void MaybeLoad();
@@ -44,8 +47,8 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   bool DidLoad() const { return did_load_; }
   void Load();
-  void LoadCallback(
-      ResourceParsingErrorOr<ml::pipeline::TextProcessing> result);
+  void OnLoadFileResource(base::File file);
+  void LoadCallback(base::expected<bool, std::string> result);
 
   void MaybeReset();
   void Reset();
@@ -56,7 +59,8 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
   void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                           const std::string& id) override;
 
-  absl::optional<ml::pipeline::TextProcessing> text_processing_pipeline_;
+  absl::optional<ResourceAsyncHandler<TextProcessingRefCountedProxy>>
+      text_processing_pipeline_;
 
   bool did_load_ = false;
   absl::optional<std::string> manifest_version_;

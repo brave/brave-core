@@ -11,12 +11,10 @@
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -40,12 +38,15 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
     return BLOG(1, "No text available for embedding");
   }
 
-  const absl::optional<ml::pipeline::EmbeddingProcessing>&
-      embedding_processing = resource_->get();
-  CHECK(embedding_processing);
+  resource_->EmbedText(text,
+                       base::BindOnce(&TextEmbeddingProcessor::OnEmbedText,
+                                      weak_factory_.GetWeakPtr()));
+}
 
-  const ml::pipeline::TextEmbeddingInfo text_embedding =
-      embedding_processing->EmbedText(text);
+///////////////////////////////////////////////////////////////////////////////
+
+void TextEmbeddingProcessor::OnEmbedText(
+    const ml::pipeline::TextEmbeddingInfo& text_embedding) {
   if (text_embedding.embedding.empty()) {
     return BLOG(1, "Text embedding is empty");
   }
@@ -75,8 +76,6 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
             }));
       }));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void TextEmbeddingProcessor::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,

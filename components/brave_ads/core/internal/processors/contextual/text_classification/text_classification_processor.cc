@@ -47,15 +47,17 @@ TextClassificationProcessor::~TextClassificationProcessor() {
 
 void TextClassificationProcessor::Process(const std::string& text) {
   if (!resource_->IsInitialized()) {
-    return;
+    return BLOG(
+        1, "Failed to process text classification as resource not initialized");
   }
 
-  const absl::optional<ml::pipeline::TextProcessing>& text_processing =
-      resource_->get();
-  CHECK(text_processing);
+  resource_->ClassifyPage(
+      text, base::BindOnce(&TextClassificationProcessor::OnClassifyPage,
+                           weak_factory_.GetWeakPtr()));
+}
 
-  const TextClassificationProbabilityMap probabilities =
-      text_processing->ClassifyPage(text);
+void TextClassificationProcessor::OnClassifyPage(
+    const TextClassificationProbabilityMap& probabilities) const {
   if (probabilities.empty()) {
     return BLOG(1, "Text not classified as not enough content");
   }
