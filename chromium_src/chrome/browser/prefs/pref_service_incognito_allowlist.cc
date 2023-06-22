@@ -11,12 +11,19 @@
 #include "chrome/common/pref_names.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 
+#if defined(TOOLKIT_VIEWS)
+#include "brave/components/sidebar/pref_names.h"
+#endif
+
 namespace {
 
 const std::vector<const char*>& GetBravePersistentPrefNames() {
   static base::NoDestructor<std::vector<const char*>> brave_allowlist({
 #if !BUILDFLAG(IS_ANDROID)
     prefs::kSidePanelHorizontalAlignment, kTabMuteIndicatorNotClickable,
+#endif
+#if defined(TOOLKIT_VIEWS)
+        sidebar::kSidePanelWidth,
 #endif
   });
 

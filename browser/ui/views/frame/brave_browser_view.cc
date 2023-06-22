@@ -218,7 +218,10 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     contents_container_->SetLayoutManager(
         std::make_unique<BraveContentsLayoutManager>(
             devtools_web_view_, contents_web_view_, sidebar_container_view_));
+
+#if defined(USE_AURA)
     sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
+#endif
 
     pref_change_registrar_.Add(
         prefs::kSidePanelHorizontalAlignment,

@@ -84,7 +84,10 @@ class BraveBrowserView : public BrowserView,
   void OnThemeChanged() override;
   TabSearchBubbleHost* GetTabSearchBubbleHost() override;
 
+#if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
+#endif
+
   bool IsSidebarVisible() const;
 
   VerticalTabStripWidgetDelegateView*
@@ -138,10 +141,13 @@ class BraveBrowserView : public BrowserView,
 
   bool closing_confirm_dialog_activated_ = false;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
-  raw_ptr<views::View> sidebar_host_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<VerticalTabStripWidgetDelegateView>
       vertical_tab_strip_widget_delegate_view_ = nullptr;
+
+#if defined(USE_AURA)
+  raw_ptr<views::View> sidebar_host_view_ = nullptr;
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNPanelController vpn_panel_controller_{this};
