@@ -13,7 +13,7 @@
 #include "base/memory/weak_ptr.h"
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/common/brave_vpn_wireguard_profile_credentials.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/credentials/brave_vpn_wireguard_profile_credentials.h"
 #include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
 
 class PrefService;

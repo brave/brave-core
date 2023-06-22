@@ -10,7 +10,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/common/constants.h"
+#include "brave/components/brave_vpn/common/wireguard/constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {

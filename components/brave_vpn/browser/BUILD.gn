@@ -54,7 +54,7 @@ source_set("unit_tests") {
     "//base",
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/browser/connection:common",
-    "//brave/components/brave_vpn/browser/connection/wireguard/common:unit_tests",
+    "//brave/components/brave_vpn/browser/connection/wireguard/credentials:unit_tests",
     "//brave/components/brave_vpn/common",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
