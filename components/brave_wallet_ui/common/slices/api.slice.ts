@@ -80,7 +80,7 @@ import {
   hasEIP1559Support
 } from '../../utils/network-utils'
 import Amount from '../../utils/amount'
-import { shouldReportTransactionP3A } from '../../utils/tx-utils'
+import { shouldReportTransactionP3A, toTxDataUnion } from '../../utils/tx-utils'
 import {
   makeSerializableTransaction
 } from '../../utils/model-serialization-utils'
@@ -1592,10 +1592,6 @@ export function createWalletApi (
               signedTransaction: ''
             }
 
-            // google closure is ok with undefined for other fields
-            // but mojom runtime is not
-            const txDataUnion = { ethTxData: txData } as BraveWallet.TxDataUnion
-
             const txData1559: BraveWallet.TxData1559 = {
               baseData: txData,
               chainId,
@@ -1606,17 +1602,14 @@ export function createWalletApi (
               gasEstimation: undefined
             }
 
-            const txDataUnion1559 = {
-              ethTxData1559: txData1559
-            } as BraveWallet.TxDataUnion
-
-            const { errorMessage, success } =
-              await txService.addUnapprovedTransaction(
-                isEIP1559 ? txDataUnion1559 : txDataUnion,
-                payload.fromAccount.address,
-                null,
-                null
-              )
+            const { errorMessage, success } = await txService.addUnapprovedTransaction(
+              isEIP1559
+                ? toTxDataUnion({ ethTxData1559: txData1559 })
+                : toTxDataUnion({ ethTxData: txData }),
+              payload.fromAccount.address,
+              null,
+              null
+            )
 
             if (!success && errorMessage) {
               return {
@@ -1663,9 +1656,7 @@ export function createWalletApi (
 
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
-                // google closure is ok with undefined for other fields
-                // but mojom runtime is not
-                { filTxData: filTxData } as BraveWallet.TxDataUnion,
+                toTxDataUnion({ filTxData: filTxData }),
                 payload.fromAccount.address,
                 null,
                 null
@@ -1724,7 +1715,7 @@ export function createWalletApi (
 
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
-                { solanaTxData: txData } as BraveWallet.TxDataUnion,
+                toTxDataUnion({ solanaTxData: txData ?? undefined}),
                 payload.fromAccount.address,
                 null,
                 null
@@ -1884,9 +1875,7 @@ export function createWalletApi (
 
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
-                {
-                  solanaTxData: txData
-                } as BraveWallet.TxDataUnion,
+                toTxDataUnion({ solanaTxData: txData }),
                 txData.feePayer,
                 null,
                 null
