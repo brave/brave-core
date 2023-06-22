@@ -243,9 +243,6 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
           base::BindRepeating(
               &AdBlockSubscriptionServiceManager::OnListMetadata,
               weak_ptr_factory_.GetWeakPtr(), sub_url));
-
-  AdBlockFiltersProviderManager::GetInstance()->AddProvider(
-      subscription_filters_provider.get());
   subscription_filters_providers_.insert(
       std::make_pair(sub_url, std::move(subscription_filters_provider)));
 
@@ -287,15 +284,11 @@ void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
             base::BindRepeating(
                 &AdBlockSubscriptionServiceManager::OnListMetadata,
                 weak_ptr_factory_.GetWeakPtr(), sub_url));
-    AdBlockFiltersProviderManager::GetInstance()->AddProvider(
-        subscription_filters_provider.get());
     subscription_filters_provider->OnListAvailable();
     subscription_filters_providers_.insert(
         {sub_url, std::move(subscription_filters_provider)});
   } else {
     DCHECK(it != subscription_filters_providers_.end());
-    AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
-        it->second.get());
     subscription_filters_providers_.erase(it);
   }
 
@@ -307,8 +300,6 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto it = subscription_filters_providers_.find(sub_url);
   if (it != subscription_filters_providers_.end()) {
-    AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
-        it->second.get());
     subscription_filters_providers_.erase(it);
   }
   ClearSubscriptionPrefs(sub_url);
@@ -436,9 +427,6 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
                 base::BindRepeating(
                     &AdBlockSubscriptionServiceManager::OnListMetadata,
                     weak_ptr_factory_.GetWeakPtr(), sub_url));
-
-        AdBlockFiltersProviderManager::GetInstance()->AddProvider(
-            subscription_filters_provider.get());
         subscription_filters_provider->OnListAvailable();
         subscription_filters_providers_.insert(
             std::make_pair(sub_url, std::move(subscription_filters_provider)));

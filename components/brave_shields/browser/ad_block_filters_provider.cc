@@ -7,11 +7,22 @@
 
 #include <utility>
 
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
+
 namespace brave_shields {
+
+AdBlockFiltersProvider::AdBlockFiltersProvider(bool engine_is_default)
+    : engine_is_default_(engine_is_default) {
+  AdBlockFiltersProviderManager::GetInstance()->AddProvider(this,
+                                                            engine_is_default_);
+}
 
 AdBlockFiltersProvider::AdBlockFiltersProvider() = default;
 
-AdBlockFiltersProvider::~AdBlockFiltersProvider() = default;
+AdBlockFiltersProvider::~AdBlockFiltersProvider() {
+  AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
+      this, engine_is_default_);
+}
 
 void AdBlockFiltersProvider::AddObserver(
     AdBlockFiltersProvider::Observer* observer) {

@@ -12,6 +12,8 @@
 #include "base/files/file_path.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -23,8 +25,11 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     component_updater::ComponentUpdateService* cus,
     std::string component_id,
     std::string base64_public_key,
-    std::string title)
-    : component_id_(component_id), component_updater_service_(cus) {
+    std::string title,
+    bool is_default_engine)
+    : AdBlockFiltersProvider(is_default_engine),
+      component_id_(component_id),
+      component_updater_service_(cus) {
   // Can be nullptr in unit tests
   if (cus) {
     RegisterAdBlockFiltersComponent(
@@ -34,15 +39,21 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
   }
 }
 
+std::string AdBlockComponentFiltersProvider::GetNameForDebugging() {
+  return "AdBlockComponentFiltersProvider";
+}
+
 AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     component_updater::ComponentUpdateService* cus,
-    const FilterListCatalogEntry& catalog_entry)
+    const FilterListCatalogEntry& catalog_entry,
+    bool is_default_engine)
     : AdBlockComponentFiltersProvider(cus,
                                       catalog_entry.component_id,
                                       catalog_entry.base64_public_key,
-                                      catalog_entry.title) {}
+                                      catalog_entry.title,
+                                      is_default_engine) {}
 
-AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() = default;
+AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {}
 
 void AdBlockComponentFiltersProvider::UnregisterComponent() {
   // Can be nullptr in unit tests

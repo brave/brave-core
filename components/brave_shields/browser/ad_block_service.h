@@ -45,6 +45,7 @@ class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
 class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersProvider;
+class AdBlockLocalhostFiltersProvider;
 class AdBlockFilterListCatalogProvider;
 class AdBlockSubscriptionServiceManager;
 
@@ -54,11 +55,12 @@ class AdBlockService {
   class SourceProviderObserver : public AdBlockResourceProvider::Observer,
                                  public AdBlockFiltersProvider::Observer {
    public:
-    SourceProviderObserver(
-        AdBlockEngine* adblock_engine,
-        AdBlockFiltersProvider* source_provider,
-        AdBlockResourceProvider* resource_provider,
-        scoped_refptr<base::SequencedTaskRunner> task_runner);
+    SourceProviderObserver(AdBlockEngine* adblock_engine,
+                           AdBlockFiltersProvider* filters_provider,
+                           AdBlockResourceProvider* resource_provider,
+                           scoped_refptr<base::SequencedTaskRunner> task_runner,
+                           bool is_filter_provider_manager = false);
+
     SourceProviderObserver(const SourceProviderObserver&) = delete;
     SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
     ~SourceProviderObserver() override;
@@ -78,6 +80,7 @@ class AdBlockService {
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
+    bool is_filter_provider_manager_;
 
     base::WeakPtrFactory<SourceProviderObserver> weak_factory_{this};
   };
@@ -168,6 +171,8 @@ class AdBlockService {
   std::unique_ptr<AdBlockDefaultResourceProvider> resource_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockCustomFiltersProvider> custom_filters_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockLocalhostFiltersProvider> localhost_filters_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockComponentFiltersProvider> default_filters_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);

@@ -433,11 +433,26 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRule) {
   // Add adblock rule to block localhost.
   std::string test_domain = "localhost";
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   auto rule = base::StrCat({"||", test_domain, "^"});
   AddAdblockRule(rule);
   // The image won't show up because of adblock rule.
   CheckNoPromptFlow(false, target_url);
+}
+
+// Test that badfiltering a localhost adblock rule makes permission come up.
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRuleBadfilter) {
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+
+  auto adblock_rule = base::StrCat({"||", test_domain, "^"});
+  auto badfilter_rule = base::StrCat({"\n", adblock_rule, "$badfilter"});
+  auto rules = adblock_rule + badfilter_rule;
+  AddAdblockRule(rules);
+  CheckAskAndAcceptFlow(target_url);
 }
 
 // Test that localhost connections from website not on allowlist
@@ -449,7 +464,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebsiteNotOnAllowlist) {
   localhost_permission_component_->SetAllowedDomainsForTesting(
       {base::StrCat({kTestEmbeddingDomain, "\n", "#b.com"})});
   embedding_url_ = https_server_->GetURL("b.com", kSimplePage);
-  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   CheckNoPromptFlow(false, target_url);
 }
 
@@ -461,7 +477,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest,
   // Clear out the allowlist.
   localhost_permission_component_->SetAllowedDomainsForTesting({""});
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   SetCurrentStatus(ContentSetting::CONTENT_SETTING_ALLOW);
   // Load subresource, should succeed.
   InsertImage(target_url.spec(), true);
@@ -474,7 +491,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebsitePartOfETLDP1) {
   std::string test_domain = "localhost";
   embedding_url_ = https_server_->GetURL(
       base::StrCat({"test1.", kTestEmbeddingDomain}), kSimplePage);
-  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   CheckAskAndAcceptFlow(target_url);
   embedding_url_ = https_server_->GetURL(
       base::StrCat({"test2.", kTestEmbeddingDomain}), kSimplePage);
@@ -487,7 +505,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRuleException) {
   // Add adblock rule to block localhost.
   std::string test_domain = "localhost";
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
   auto original_rule = base::StrCat({"||", test_domain, "^", "\n"});
   auto exception_rule = base::StrCat({"@@||", test_domain, "^"});
   auto rules = original_rule + exception_rule;
