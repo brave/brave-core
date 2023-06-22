@@ -45,12 +45,32 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 BraveTabStrip::~BraveTabStrip() = default;
 
 bool BraveTabStrip::IsVerticalTabsFloating() const {
-  DCHECK(ShouldShowVerticalTabs())
-      << "This method should be called when vertical tab strip is enabled";
+  if (!ShouldShowVerticalTabs()) {
+    // Can happen when switching the orientation
+    return false;
+  }
 
-  const auto* prefs = controller_->GetProfile()->GetPrefs();
-  return prefs->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled) &&
-         prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed);
+  auto* browser = GetBrowser();
+  DCHECK(browser);
+  auto* browser_view = static_cast<BraveBrowserView*>(
+      BrowserView::GetBrowserViewForBrowser(browser));
+  if (!browser_view) {
+    // Could be null during the start-up.
+    return false;
+  }
+
+  auto* vertical_region_view =
+      browser_view->vertical_tab_strip_widget_delegate_view()
+          ->vertical_tab_strip_region_view();
+  DCHECK(vertical_region_view);
+
+  return vertical_region_view->state() ==
+             VerticalTabStripRegionView::State::kFloating ||
+         (vertical_region_view->is_animating() &&
+          vertical_region_view->last_state() ==
+              VerticalTabStripRegionView::State::kFloating &&
+          vertical_region_view->state() ==
+              VerticalTabStripRegionView::State::kCollapsed);
 }
 
 bool BraveTabStrip::ShouldDrawStrokes() const {
