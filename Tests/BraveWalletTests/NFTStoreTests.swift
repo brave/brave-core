@@ -127,7 +127,7 @@ class NFTStoreTests: XCTestCase {
     }
   }
   
-  func testUpdateAfterNetworkFilter() {
+  @MainActor func testUpdateAfterNetworkFilter() async {
     let ethNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let solNetwork: BraveWallet.NetworkInfo = .mockSolana
     let mockSolUserAssets: [BraveWallet.BlockchainToken] = [
@@ -203,9 +203,20 @@ class NFTStoreTests: XCTestCase {
       userAssetManager: mockAssetManager
     )
     
-    // test that `update()` will assign new value to `userVisibleNFTs` publisher
+    // Initial update() with all networks
+    let setupException = expectation(description: "setup")
+    store.$userVisibleNFTs
+      .dropFirst() // initial
+      .collect(2) // empty nfts, populated nfts
+      .sink { userVisibleNFTs in
+        setupException.fulfill()
+      }.store(in: &cancellables)
+    store.update()
+    await fulfillment(of: [setupException], timeout: 1)
+    cancellables.removeAll()
+    
+    // Test that `update()` will assign new value to `userVisibleNFTs` publisher
     let userVisibleNFTsException = expectation(description: "update-userVisibleNFTs")
-    XCTAssertTrue(store.userVisibleNFTs.isEmpty)  // Initial state
     store.$userVisibleNFTs
       .dropFirst()
       .collect(2)
@@ -223,9 +234,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockSolMetadata.description)
       }.store(in: &cancellables)
     
-    store.networkFilter = .network(solNetwork)
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    store.networkFilters = [.init(isSelected: true, model: solNetwork)]
+    await fulfillment(of: [userVisibleNFTsException], timeout: 1)
   }
 }

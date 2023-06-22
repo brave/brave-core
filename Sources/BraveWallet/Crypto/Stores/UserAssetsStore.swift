@@ -52,6 +52,12 @@ public class AssetStore: ObservableObject, Equatable {
 public class UserAssetsStore: ObservableObject {
   @Published private(set) var assetStores: [AssetStore] = []
   @Published var isSearchingToken: Bool = false
+  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
+    didSet {
+      guard !oldValue.isEmpty else { return } // initial assignment to `networkFilters`
+      update()
+    }
+  }
 
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let rpcService: BraveWalletJsonRpcService
@@ -79,21 +85,15 @@ public class UserAssetsStore: ObservableObject {
     self.keyringService.add(self)
   }
   
-  @Published var networkFilter: NetworkFilter = .allNetworks {
-    didSet {
-      update()
-    }
-  }
-  
   func update() {
     Task { @MainActor in
-      let networks: [BraveWallet.NetworkInfo]
-      switch networkFilter {
-      case .allNetworks:
-        networks = await self.rpcService.allNetworksForSupportedCoins()
-      case let .network(network):
-        networks = [network]
+      // setup network filters if not currently setup
+      if self.networkFilters.isEmpty {
+        self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map {
+          .init(isSelected: true, model: $0)
+        }
       }
+      let networks: [BraveWallet.NetworkInfo] = self.networkFilters.filter(\.isSelected).map(\.model)
       let allUserAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: networks)
       var allTokens = await self.blockchainRegistry.allTokens(in: networks)
       // Filter `allTokens` to remove any tokens existing in `allUserAssets`. This is possible for ERC721 tokens in the registry without a `tokenId`, which requires the user to add as a custom token
@@ -261,4 +261,32 @@ extension UserAssetsStore: BraveWalletKeyringServiceObserver {
   
   public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
   }
+}
+
+extension UserAssetsStore: BraveWalletBraveWalletServiceObserver {
+  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) { }
+  
+  public func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) { }
+  
+  public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) { }
+  
+  public func onDefaultBaseCurrencyChanged(_ currency: String) { }
+  
+  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) { }
+  
+  public func onNetworkListChanged() {
+    Task { @MainActor in
+      // A network was added or removed, update our network filters for the change.
+      self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map { network in
+        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
+        return .init(isSelected: existingSelectionValue ?? true, model: network)
+      }
+    }
+  }
+  
+  public func onDiscoverAssetsStarted() { }
+  
+  public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) { }
+  
+  public func onResetWallet() { }
 }

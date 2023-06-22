@@ -36,7 +36,7 @@ class SelectAccountTokenStore: ObservableObject {
     let tokenBalances: [TokenBalance]
   }
   
-  @Published var networkFilter: NetworkFilter = .allNetworks
+  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = []
   private var allNetworks: [BraveWallet.NetworkInfo] = []
   
   @Published var isLoadingBalances = false
@@ -45,13 +45,7 @@ class SelectAccountTokenStore: ObservableObject {
   @Published var accountSections: [AccountSection] = []
   
   var filteredAccountSections: [AccountSection] {
-    let networks: [BraveWallet.NetworkInfo]
-    switch networkFilter {
-    case .allNetworks:
-      networks = allNetworks
-    case let .network(network):
-      networks = [network]
-    }
+    let networks = networkFilters.filter(\.isSelected).map(\.model)
     var filteredAccountSections: [AccountSection] = []
     for accountSection in accountSections {
       guard networks.contains(where: { $0.coin == accountSection.account.coin }) else {
@@ -71,7 +65,7 @@ class SelectAccountTokenStore: ObservableObject {
             return true
           }
       )
-      if shouldShowSection(accountSection) {
+      if shouldShowSection(updatedAccountSection) {
         filteredAccountSections.append(updatedAccountSection)
       }
     }
@@ -134,13 +128,21 @@ class SelectAccountTokenStore: ObservableObject {
   
   func resetFilters() {
     isHidingZeroBalances = true
-    networkFilter = .allNetworks
+    networkFilters = allNetworks.map {
+      .init(isSelected: true, model: $0)
+    }
   }
   
   @MainActor func update() async {
     let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
     let allNetworks = await rpcService.allNetworksForSupportedCoins()
     self.allNetworks = allNetworks
+    // setup network filters if not currently setup
+    if self.networkFilters.isEmpty {
+      self.networkFilters = allNetworks.map {
+        .init(isSelected: true, model: $0)
+      }
+    }
     let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: allNetworks).flatMap { $0.tokens }
     guard !Task.isCancelled else { return }
     self.accountSections = allKeyrings.flatMap { keyring in
@@ -306,7 +308,15 @@ extension SelectAccountTokenStore: BraveWalletBraveWalletServiceObserver {
   
   func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) { }
   
-  func onNetworkListChanged() { }
+  func onNetworkListChanged() {
+    Task { @MainActor in
+      // A network was added or removed, update our network filters for the change.
+      self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map { network in
+        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
+        return .init(isSelected: existingSelectionValue ?? true, model: network)
+      }
+    }
+  }
   
   func onDiscoverAssetsStarted() { }
   

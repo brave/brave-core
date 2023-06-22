@@ -103,18 +103,19 @@ struct NFTView: View {
     Button(action: {
       self.isPresentingNetworkFilter = true
     }) {
-      HStack {
-        Image(braveSystemName: "leo.list")
-        Text(nftStore.networkFilter.title)
-      }
-      .font(.footnote.weight(.medium))
-      .foregroundColor(Color(.braveBlurpleTint))
+      Image(braveSystemName: "leo.tune")
+        .font(.footnote.weight(.medium))
+        .foregroundColor(Color(.braveBlurpleTint))
+        .clipShape(Rectangle())
     }
     .sheet(isPresented: $isPresentingNetworkFilter) {
       NavigationView {
         NetworkFilterView(
-          networkFilter: $nftStore.networkFilter,
-          networkStore: networkStore
+          networks: nftStore.networkFilters,
+          networkStore: networkStore,
+          saveAction: { selectedNetworks in
+            nftStore.networkFilters = selectedNetworks
+          }
         )
       }
       .onDisappear {

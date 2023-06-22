@@ -99,12 +99,10 @@ struct EditUserAssetsView: View {
     Button(action: {
       self.isPresentingNetworkFilter = true
     }) {
-      HStack {
-        Image(braveSystemName: "leo.list")
-        Text(userAssetsStore.networkFilter.title)
-      }
-      .font(.footnote.weight(.medium))
-      .foregroundColor(Color(.braveBlurpleTint))
+      Image(braveSystemName: "leo.tune")
+        .font(.footnote.weight(.medium))
+        .foregroundColor(Color(.braveBlurpleTint))
+        .clipShape(Rectangle())
     }
   }
   
@@ -212,8 +210,11 @@ struct EditUserAssetsView: View {
     .background(Color.clear.sheet(isPresented: $isPresentingNetworkFilter) {
       NavigationView {
         NetworkFilterView(
-          networkFilter: $userAssetsStore.networkFilter,
-          networkStore: networkStore
+          networks: userAssetsStore.networkFilters,
+          networkStore: networkStore,
+          saveAction: { selectedNetworks in
+            userAssetsStore.networkFilters = selectedNetworks
+          }
         )
       }
       .onDisappear {

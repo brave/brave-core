@@ -47,20 +47,6 @@ struct BalanceTimePrice: DataPoint, Equatable {
   }
 }
 
-public enum NetworkFilter: Equatable {
-  case allNetworks
-  case network(BraveWallet.NetworkInfo)
-  
-  var title: String {
-    switch self {
-    case .allNetworks:
-      return Strings.Wallet.allNetworksTitle
-    case let .network(network):
-      return network.chainName
-    }
-  }
-}
-
 /// A store containing data around the users assets
 public class PortfolioStore: ObservableObject {
   /// The dollar amount of your portfolio
@@ -88,8 +74,9 @@ public class PortfolioStore: ObservableObject {
     }
   }
   
-  @Published var networkFilter: NetworkFilter = .allNetworks {
+  @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
     didSet {
+      guard !oldValue.isEmpty else { return } // initial assignment to `networkFilters`
       update()
     }
   }
@@ -158,14 +145,13 @@ public class PortfolioStore: ObservableObject {
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in
       self.isLoadingBalances = true
-      let networks: [BraveWallet.NetworkInfo]
-      switch networkFilter {
-      case .allNetworks:
-        networks = await self.rpcService.allNetworksForSupportedCoins()
-          .filter { !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId) }
-      case let .network(network):
-        networks = [network]
+      // setup network filters if not currently setup
+      if self.networkFilters.isEmpty {
+        self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map {
+          .init(isSelected: !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId), model: $0)
+        }
       }
+      let networks: [BraveWallet.NetworkInfo] = self.networkFilters.filter(\.isSelected).map(\.model)
       struct NetworkAssets: Equatable {
         let network: BraveWallet.NetworkInfo
         let tokens: [BraveWallet.BlockchainToken]
@@ -367,6 +353,14 @@ extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
   }
 
   public func onNetworkListChanged() {
+    Task { @MainActor in
+      // A network was added or removed, update our network filters for the change.
+      self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map { network in
+        let defaultValue = !WalletConstants.supportedTestNetworkChainIds.contains(network.chainId)
+        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
+        return .init(isSelected: existingSelectionValue ?? defaultValue, model: network)
+      }
+    }
   }
   
   public func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {

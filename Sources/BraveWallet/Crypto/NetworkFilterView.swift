@@ -6,69 +6,94 @@
 import BraveCore
 import SwiftUI
 import BraveShared
+import Preferences
+
+struct Selectable<T: Identifiable & Equatable>: Equatable, Identifiable {
+  let isSelected: Bool
+  let model: T
+  
+  var id: T.ID { model.id }
+}
 
 struct NetworkFilterView: View {
   
-  @Binding var networkFilter: NetworkFilter
+  @State var networks: [Selectable<BraveWallet.NetworkInfo>]
   @ObservedObject var networkStore: NetworkStore
+  let saveAction: ([Selectable<BraveWallet.NetworkInfo>]) -> Void
   
-  @State private(set) var primaryNetworks: [NetworkPresentation] = []
-  @State private(set) var secondaryNetworks: [NetworkPresentation] = []
   @Environment(\.presentationMode) @Binding private var presentationMode
   
-  private var selectedNetwork: NetworkPresentation.Network {
-    switch networkFilter {
-    case .allNetworks:
-      return .allNetworks
-    case let .network(network):
-      return .network(network)
-    }
+  init(
+    networks: [Selectable<BraveWallet.NetworkInfo>],
+    networkStore: NetworkStore,
+    saveAction: @escaping ([Selectable<BraveWallet.NetworkInfo>]) -> Void
+  ) {
+    self._networks = .init(initialValue: networks)
+    self.networkStore = networkStore
+    self.saveAction = saveAction
+  }
+  
+  private var allSelected: Bool {
+    networks
+      .filter {
+        if !Preferences.Wallet.showTestNetworks.value {
+          return !WalletConstants.supportedTestNetworkChainIds.contains($0.model.chainId)
+        }
+        return true
+      }
+      .allSatisfy(\.isSelected)
   }
   
   var body: some View {
     NetworkSelectionRootView(
       navigationTitle: Strings.Wallet.networkFilterTitle,
-      selectedNetwork: selectedNetwork,
-      primaryNetworks: primaryNetworks,
-      secondaryNetworks: secondaryNetworks,
+      selectedNetworks: networks.filter(\.isSelected).map(\.model),
+      allNetworks: networks.map(\.model),
       selectNetwork: selectNetwork
     )
-    .onAppear {
-      fetchNetworks()
+    .toolbar {
+      ToolbarItem(placement: .confirmationAction) {
+        Button(action: {
+          saveAction(networks)
+          presentationMode.dismiss()
+        }) {
+          Text(Strings.Wallet.saveButtonTitle)
+            .foregroundColor(Color(.braveBlurpleTint))
+        }
+      }
+    }
+    .toolbar {
+      ToolbarItemGroup(placement: .bottomBar) {
+        Spacer()
+        Button(action: selectAll) {
+          Text(allSelected ? Strings.Wallet.deselectAllButtonTitle : Strings.Wallet.selectAllButtonTitle)
+            .foregroundColor(Color(.braveBlurpleTint))
+        }
+      }
     }
   }
   
-  private func fetchNetworks() {
-    let primaryNetworks = networkStore.primaryNetworks
-      .map { network in
-        let subNetworks = networkStore.subNetworks(for: network)
-        return NetworkPresentation(
-          network: .network(network),
-          subNetworks: subNetworks.count > 1 ? subNetworks : [],
-          isPrimaryNetwork: true
-        )
+  private func selectNetwork(_ network: BraveWallet.NetworkInfo) {
+    DispatchQueue.main.async {
+      if let index = networks.firstIndex(
+        where: { $0.model.chainId == network.chainId && $0.model.coin == network.coin }
+      ) {
+        networks[index] = .init(isSelected: !networks[index].isSelected, model: networks[index].model)
       }
-    self.primaryNetworks = [.allNetworks] + primaryNetworks
-
-    self.secondaryNetworks = networkStore.secondaryNetworks
-      .map { network in
-        NetworkPresentation(
-          network: .network(network),
-          subNetworks: [],
-          isPrimaryNetwork: false
-        )
-      }
+    }
   }
   
-  private func selectNetwork(_ network: NetworkPresentation.Network) {
+  private func selectAll() {
     DispatchQueue.main.async {
-      switch network {
-      case .allNetworks:
-        networkFilter = .allNetworks
-      case let .network(network):
-        networkFilter = .network(network)
+      networks = networks.map {
+        // don't select test networks if they are hidden
+        if !Preferences.Wallet.showTestNetworks.value {
+          let isTestnet = WalletConstants.supportedTestNetworkChainIds.contains($0.model.chainId)
+          return .init(isSelected: !isTestnet && !allSelected, model: $0.model)
+        } else {
+          return .init(isSelected: !allSelected, model: $0.model)
+        }
       }
-      presentationMode.dismiss()
     }
   }
 }
