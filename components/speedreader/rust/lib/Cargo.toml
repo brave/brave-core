@@ -20,7 +20,7 @@ include = [
 [dependencies]
 flate2 = { version = "1.0.25", features = ["rust_backend"], default-features = false }
 html5ever = "0.25.1"
-kuchiki = { git = "https://github.com/brave/kuchiki", branch = "speedreader" }
+kuchiki = { git = "https://github.com/brave/kuchiki", rev = "589eadca2c1d06ddda2919354590bfe1ace88a43" }
 lol_html = "0.2.0"
 regex = "1"
 serde_json = "1.0.70"
