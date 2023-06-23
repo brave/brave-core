@@ -11,7 +11,6 @@
 #include "base/check_op.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
-#include "base/time/time.h"
 #include "brave/components/brave_federated/communication_adapter.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
@@ -47,7 +46,7 @@ LearningService::LearningService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
       eligibility_service_(eligibility_service) {
-  DCHECK(!init_task_timer_);
+  CHECK(!init_task_timer_);
 
   std::string data_resource;
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
@@ -58,18 +57,15 @@ LearningService::LearningService(
     data_resource = static_cast<std::string>(
         resource_bundle.GetRawDataResource(IDR_BRAVE_FEDERATED_CONFIG));
   }
-  DCHECK_GT(data_resource.size(), 0U);
+  CHECK_GT(data_resource.size(), 0U);
 
-  lsc_ = std::make_unique<LearningServiceConfig>(data_resource);
-  const net::BackoffEntry::Policy reconnect_policy = lsc_->GetReconnectPolicy();
-  const net::BackoffEntry::Policy request_task_policy =
-      lsc_->GetRequestTaskPolicy();
+  learning_service_config_ =
+      std::make_unique<LearningServiceConfig>(data_resource);
   const net::BackoffEntry::Policy post_results_policy =
-      lsc_->GetPostResultsPolicy();
-  model_spec_ = std::make_unique<ModelSpec>(lsc_->GetModelSpec());
+      learning_service_config_->GetPostResultsPolicy();
+  model_spec_ =
+      std::make_unique<ModelSpec>(learning_service_config_->GetModelSpec());
 
-  communication_adapter_ = std::make_unique<CommunicationAdapter>(
-      url_loader_factory_, reconnect_policy, request_task_policy);
   post_results_policy_ =
       std::make_unique<const net::BackoffEntry::Policy>(post_results_policy);
   post_results_backoff_entry_ =
@@ -92,9 +88,9 @@ LearningService::~LearningService() {
 }
 
 void LearningService::Init() {
-  DCHECK(url_loader_factory_);
-  DCHECK(eligibility_service_);
-  DCHECK(init_task_timer_);
+  CHECK(url_loader_factory_);
+  CHECK(eligibility_service_);
+  CHECK(init_task_timer_);
 
   VLOG(1) << "Initializing federated learning service.";
   eligibility_observation_.Observe(eligibility_service_);
@@ -121,6 +117,7 @@ void LearningService::StartParticipating() {
   }
 
   participating_ = true;
+  StartCommunicationAdapter();
   GetTasks();
 }
 
@@ -130,20 +127,27 @@ void LearningService::StopParticipating() {
   }
 
   participating_ = false;
+  communication_adapter_.reset();
   reconnect_timer_.reset();
 }
 
 void LearningService::GetTasks() {
+  if (communication_adapter_ == nullptr) {
+    VLOG(2) << "Communication adapter not initialized";
+    return;
+  }
+
   communication_adapter_->GetTasks(base::BindOnce(
       &LearningService::HandleTasksOrReconnect, weak_factory_.GetWeakPtr()));
 }
 
-void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
+void LearningService::HandleTasksOrReconnect(TaskList tasks,
+                                             base::TimeDelta reconnect) {
   if (tasks.empty()) {
     reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
-    reconnect_timer_->Start(FROM_HERE, base::Seconds(reconnect), this,
+    reconnect_timer_->Start(FROM_HERE, reconnect, this,
                             &LearningService::GetTasks);
-    VLOG(2) << "No tasks available, reconnecting in " << reconnect << "s";
+    VLOG(2) << "No tasks available, reconnecting in " << reconnect;
     return;
   }
 
@@ -186,6 +190,11 @@ void LearningService::OnTaskResultComputed(absl::optional<TaskResult> result) {
     return;
   }
 
+  if (communication_adapter_ == nullptr) {
+    VLOG(2) << "Communication adapter not initialized";
+    return;
+  }
+
   communication_adapter_->UploadTaskResult(
       result.value(), base::BindOnce(&LearningService::OnUploadTaskResults,
                                      weak_factory_.GetWeakPtr()));
@@ -205,7 +214,17 @@ void LearningService::OnUploadTaskResults(TaskResultResponse response) {
   reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
   reconnect_timer_->Start(FROM_HERE, reconnect, this,
                           &LearningService::GetTasks);
-  VLOG(2) << "Reconnecting in " << reconnect.InSeconds() << "s";
+  VLOG(2) << "Reconnecting in " << reconnect;
+}
+
+void LearningService::StartCommunicationAdapter() {
+  const net::BackoffEntry::Policy reconnect_policy =
+      learning_service_config_->GetReconnectPolicy();
+  const net::BackoffEntry::Policy request_task_policy =
+      learning_service_config_->GetRequestTaskPolicy();
+
+  communication_adapter_ = std::make_unique<CommunicationAdapter>(
+      url_loader_factory_, reconnect_policy, request_task_policy);
 }
 
 }  // namespace brave_federated

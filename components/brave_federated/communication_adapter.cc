@@ -10,6 +10,7 @@
 
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
+#include "base/time/time.h"
 #include "brave/components/brave_federated/adapters/flower_helper.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/task/typing.h"
@@ -91,7 +92,7 @@ void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
 
   VLOG(2) << "Requesting tasks list " << request->method << " " << request->url;
 
-  const std::string& payload = BuildGetTasksPayload();
+  const std::string payload = BuildGetTasksPayload();
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
@@ -106,15 +107,18 @@ void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
 void CommunicationAdapter::OnGetTasks(
     GetTaskCallback callback,
     const std::unique_ptr<std::string> response_body) {
+  CHECK(url_loader_);
+  CHECK(url_loader_->ResponseInfo());
+
   bool failed_request =
       !url_loader_->ResponseInfo() || !url_loader_->ResponseInfo()->headers;
   reconnect_backoff_entry_->InformOfRequest(!failed_request);
-  int64_t reconnect_delay_in_seconds =
-      reconnect_backoff_entry_->GetTimeUntilRelease().InSeconds();
+  base::TimeDelta reconnect_delay_in_seconds =
+      reconnect_backoff_entry_->GetTimeUntilRelease();
 
   if (failed_request) {
     VLOG(1) << "Failed to request tasks, retrying in "
-            << reconnect_delay_in_seconds << "s";
+            << reconnect_delay_in_seconds;
     return std::move(callback).Run({}, reconnect_delay_in_seconds);
   }
 
@@ -126,11 +130,11 @@ void CommunicationAdapter::OnGetTasks(
         ParseTaskListFromResponseBody(*response_body);
 
     request_task_backoff_entry_->InformOfRequest(task_list.has_value());
-    int64_t request_task_delay_in_seconds =
-        request_task_backoff_entry_->GetTimeUntilRelease().InSeconds();
+    base::TimeDelta request_task_delay_in_seconds =
+        request_task_backoff_entry_->GetTimeUntilRelease();
     if (!task_list.has_value()) {
       VLOG(1) << "No tasks received from FL service, retrying in "
-              << request_task_delay_in_seconds << "s";
+              << request_task_delay_in_seconds;
       return std::move(callback).Run({}, request_task_delay_in_seconds);
     }
 
@@ -157,7 +161,7 @@ void CommunicationAdapter::UploadTaskResult(const TaskResult& result,
 
   VLOG(2) << "Posting Task results " << request->method << " " << request->url;
 
-  const std::string& payload = BuildUploadTaskResultsPayload(result);
+  const std::string payload = BuildUploadTaskResultsPayload(result);
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
@@ -172,6 +176,9 @@ void CommunicationAdapter::UploadTaskResult(const TaskResult& result,
 void CommunicationAdapter::OnUploadTaskResult(
     UploadResultCallback callback,
     std::unique_ptr<std::string> response_body) {
+  CHECK(url_loader_);
+  CHECK(url_loader_->ResponseInfo());
+
   if (!url_loader_->ResponseInfo() || !url_loader_->ResponseInfo()->headers) {
     VLOG(1) << "Failed to post task results";
     TaskResultResponse response(/*successful*/ false);

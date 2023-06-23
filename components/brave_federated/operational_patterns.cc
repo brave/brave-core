@@ -70,8 +70,8 @@ OperationalPatterns::OperationalPatterns(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : pref_service_(pref_service), url_loader_factory_(url_loader_factory) {
-  DCHECK(pref_service_);
-  DCHECK(url_loader_factory_);
+  CHECK(pref_service_);
+  CHECK(url_loader_factory_);
 }
 
 OperationalPatterns::~OperationalPatterns() = default;
@@ -83,8 +83,8 @@ void OperationalPatterns::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 void OperationalPatterns::Start() {
-  DCHECK(!mock_task_timer_);
-  DCHECK(!collection_timer_);
+  CHECK(!mock_task_timer_);
+  CHECK(!collection_timer_);
 
   const int collection_id_lifetime =
       brave_federated::features::GetCollectionIdLifetimeInSeconds();
@@ -114,8 +114,8 @@ void OperationalPatterns::Start() {
 }
 
 void OperationalPatterns::Stop() {
-  DCHECK(mock_task_timer_);
-  DCHECK(collection_timer_);
+  CHECK(mock_task_timer_);
+  CHECK(collection_timer_);
 
   VLOG(1) << "Stopping operational patterns";
   is_running_ = false;
@@ -183,7 +183,7 @@ void OperationalPatterns::OnRepeatingCollectionTimerFired() {
 }
 
 void OperationalPatterns::StopRepeatingCollectionTimer() {
-  DCHECK(collection_timer_);
+  CHECK(collection_timer_);
 
   VLOG(2) << "Stop Repeating Collection Timer";
 
@@ -220,7 +220,7 @@ void OperationalPatterns::OnMockTaskTimerFired() {
 }
 
 void OperationalPatterns::StopMockTaskTimer() {
-  DCHECK(mock_task_timer_);
+  CHECK(mock_task_timer_);
 
   VLOG(2) << "Stop Mock Task Timer";
 
@@ -228,7 +228,7 @@ void OperationalPatterns::StopMockTaskTimer() {
 }
 
 void OperationalPatterns::MaybeRestartMockTaskTimer() {
-  DCHECK(mock_task_timer_);
+  CHECK(mock_task_timer_);
 
   if (mock_task_timer_->IsRunning()) {
     VLOG(2) << "Mock Task Timer already running";
