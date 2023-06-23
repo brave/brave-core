@@ -97,7 +97,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     super.viewDidLoad()
 
     title = Strings.VPN.vpnName
-    NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged),
+    NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged(_:)),
                                            name: .NEVPNStatusDidChange, object: nil)
     
     let switchView = SwitchAccessoryView(initialValue: BraveVPN.isConnected, valueChange: { vpnOn in
@@ -304,7 +304,23 @@ public class BraveVPNSettingsViewController: TableViewController {
     present(alert, animated: true)
   }
 
-  @objc func vpnConfigChanged() {
-    vpnConnectionStatusSwitch?.isOn = BraveVPN.isConnected
+  @objc func vpnConfigChanged(_ notification: NSNotification) {
+    guard let vpnConnection = notification.object as? NEVPNConnection else {
+      return
+    }
+        
+    switch vpnConnection.status {
+    case.connecting, .disconnecting, .reasserting:
+      isLoading = true
+    case .invalid:
+      vpnConnectionStatusSwitch?.isOn = false
+    case .connected, .disconnected:
+      vpnConnectionStatusSwitch?.isOn = BraveVPN.isConnected
+    @unknown default:
+      assertionFailure()
+      break
+    }
+    
+    isLoading = false
   }
 }
