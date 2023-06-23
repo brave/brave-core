@@ -22,14 +22,12 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/status_tray/utils/utils.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
 namespace {
-
-constexpr char kBraveAccountURL[] = "https://account.brave.com/";
-constexpr char kAboutBraveVPNURL[] = "https://brave.com/firewall-vpn/";
 
 std::u16string GetVpnStatusLabel(bool active) {
   std::u16string label = brave::kBraveVpnStatusItemName;
@@ -97,10 +95,10 @@ void StatusTrayRunner::ExecuteCommand(int command_id, int event_flags) {
           &StatusTrayRunner::OnDisconnected, weak_factory_.GetWeakPtr()));
       break;
     case IDC_BRAVE_VPN_TRAY_MANAGE_ACCOUNT_ITEM:
-      OpenURLInBrowser(kBraveAccountURL);
+      OpenURLInBrowser(kManageUrlProd);
       break;
     case IDC_BRAVE_VPN_TRAY_ABOUT_ITEM:
-      OpenURLInBrowser(kAboutBraveVPNURL);
+      OpenURLInBrowser(kAboutUrl);
       break;
   }
 }
