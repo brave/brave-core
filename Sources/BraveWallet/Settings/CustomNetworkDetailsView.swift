@@ -11,6 +11,7 @@ import BraveUI
 
 struct NetworkInputItem: Identifiable {
   var input: String
+  var isSelected: Bool = false
   var error: String?
   var id = UUID()
 }
@@ -119,7 +120,7 @@ class CustomNetworkModel: ObservableObject, Identifiable {
     }
   }
 
-  @Published var rpcUrls: [NetworkInputItem] = [NetworkInputItem(input: "")] {
+  @Published var rpcUrls: [NetworkInputItem] = [NetworkInputItem(input: "", isSelected: true)] {
     didSet {
       // we only care the set on each item's `input`
       if rpcUrls.reduce("", { $0 + $1.input }) != oldValue.reduce("", { $0 + $1.input }) {
@@ -213,7 +214,16 @@ class CustomNetworkModel: ObservableObject, Identifiable {
     self.networkSymbol.input = network.symbol
     self.networkDecimals.input = String(network.decimals)
     if !network.rpcEndpoints.isEmpty {
-      self.rpcUrls = network.rpcEndpoints.compactMap { NetworkInputItem(input: $0.absoluteString) }
+      var result: [NetworkInputItem] = []
+      for (index, endpoint) in network.rpcEndpoints.enumerated() {
+        result.append(
+          NetworkInputItem(
+            input: endpoint.absoluteString,
+            isSelected: index == network.activeRpcEndpointIndex
+          )
+        )
+      }
+      self.rpcUrls = result
     } else if mode.isViewMode {
       self.rpcUrls = []
     }
@@ -338,7 +348,8 @@ struct CustomNetworkDetailsView: View {
           ForEach($model.rpcUrls) { $url in
             networkTextField(
               placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
-              item: $url
+              item: $url,
+              showRadioButton: true
             )
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -412,19 +423,31 @@ struct CustomNetworkDetailsView: View {
     )
   }
   
-  @ViewBuilder private func networkTextField(placeholder: String, item: Binding<NetworkInputItem>) -> some View {
-    if model.mode.isViewMode {
-      Text(item.wrappedValue.input)
-        .contextMenu {
-          Button(action: { UIPasteboard.general.string = item.wrappedValue.input }) {
-            Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "leo.copy.plain-text")
+  @ViewBuilder private func networkTextField(placeholder: String, item: Binding<NetworkInputItem>, showRadioButton: Bool = false) -> some View {
+    HStack {
+      if showRadioButton {
+        NetworkRadioButton(
+          checked: item.isSelected,
+          isDisabled: Binding(get: { item.input.wrappedValue.isEmpty || model.mode.isViewMode }, set: { _, _ in }),
+          onTapped: {
+            for index in model.rpcUrls.indices where model.rpcUrls[index].id != item.id {
+              model.rpcUrls[index].isSelected = !item.isSelected.wrappedValue
+            }
+          })
+      }
+      if model.mode.isViewMode {
+        Text(item.wrappedValue.input)
+          .contextMenu {
+            Button(action: { UIPasteboard.general.string = item.wrappedValue.input }) {
+              Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "leo.copy.plain-text")
+            }
           }
-        }
-    } else {
-      NetworkTextField(
-        placeholder: placeholder,
-        item: item
-      )
+      } else {
+        NetworkTextField(
+          placeholder: placeholder,
+          item: item
+        )
+      }
     }
   }
 
@@ -491,12 +514,13 @@ struct CustomNetworkDetailsView: View {
         return nil
       }
     })
+    let activeRpcEndpointIndex = model.rpcUrls.firstIndex(where: { $0.isSelected }) ?? 0
     let network: BraveWallet.NetworkInfo = .init(
       chainId: chainIdInHex,
       chainName: model.networkName.input,
       blockExplorerUrls: blockExplorerUrls,
       iconUrls: iconUrls,
-      activeRpcEndpointIndex: 0,
+      activeRpcEndpointIndex: Int32(activeRpcEndpointIndex),
       rpcEndpoints: rpcEndpoints,
       symbol: model.networkSymbol.input,
       symbolName: model.networkSymbol.input,
@@ -511,6 +535,25 @@ struct CustomNetworkDetailsView: View {
       }
       presentationMode.dismiss()
     }
+  }
+}
+
+struct NetworkRadioButton: View {
+  @Binding var checked: Bool
+  @Binding var isDisabled: Bool
+  var onTapped: () -> Void
+  
+  var body: some View {
+    Image(uiImage: UIImage(braveSystemNamed: checked ? "leo.check.circle-outline" : "leo.radio.unchecked")!)
+      .renderingMode(.template)
+      .foregroundColor(Color(checked ? .braveBlurpleTint : .braveDisabled))
+      .font(.title3)
+      .onTapGesture {
+        if !self.isDisabled && !checked {
+          self.checked = true
+          self.onTapped()
+        }
+      }
   }
 }
 
