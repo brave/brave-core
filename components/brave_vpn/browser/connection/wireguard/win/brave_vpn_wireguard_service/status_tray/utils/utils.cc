@@ -28,7 +28,7 @@ std::unique_ptr<gfx::ImageFamily> GetAppIconImageFamily(int icon_id) {
 }
 }  // namespace
 
-gfx::ImageSkia GetIconFromResources(int icon_id, gfx::Size size) {
+gfx::ImageSkia GetIconFromResources(int icon_id, const gfx::Size& size) {
   std::unique_ptr<gfx::ImageFamily> family = GetAppIconImageFamily(icon_id);
   DCHECK(family);
   if (!family) {
