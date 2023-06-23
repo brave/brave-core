@@ -245,7 +245,7 @@ public class Utils {
         if (activityType == BuySendSwapActivity.ActivityType.SWAP_V2) {
             try {
                 BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
-                        BraveActivity.BRAVE_SWAP_URL);
+                        BraveActivity.BRAVE_SWAP_URL, true);
                 TabUtils.bringChromeTabbedActivityToTheTop(activity);
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "on Swap tab: " + e);

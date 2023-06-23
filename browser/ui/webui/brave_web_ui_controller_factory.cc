@@ -53,7 +53,9 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #endif
 
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -265,6 +267,21 @@ bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
   return false;
 }
 
+#if BUILDFLAG(IS_ANDROID)
+bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,
+                            const GURL& url) {
+  if (!url.is_valid() || url.host() != kWalletPageHost) {
+    return false;
+  }
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (!profile) {
+    return false;
+  }
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(profile);
+  return keyring_service && keyring_service->IsLockedSync();
+}
+#endif  // BUILDFLAG(IS_ANDROID)
 }  // namespace
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
@@ -273,6 +290,11 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
   if (ShouldBlockRewardsWebUI(browser_context, url)) {
     return WebUI::kNoWebUI;
   }
+#if BUILDFLAG(IS_ANDROID)
+  if (ShouldBlockWalletWebUI(browser_context, url)) {
+    return WebUI::kNoWebUI;
+  }
+#endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url))
     return WebUI::kNoWebUI;

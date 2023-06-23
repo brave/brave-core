@@ -1539,15 +1539,22 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
-    public Tab openNewOrSelectExistingTab(String url) {
+    public Tab openNewOrSelectExistingTab(String url, boolean refresh) {
         TabModel tabModel = getCurrentTabModel();
         int tabRewardsIndex = TabModelUtils.getTabIndexByUrl(tabModel, url);
         Tab tab = selectExistingTab(url);
         if (tab != null) {
+            if (refresh) {
+                tab.reload();
+            }
             return tab;
         } else { // Open a new tab
             return getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         }
+    }
+
+    public Tab openNewOrSelectExistingTab(String url) {
+        return openNewOrSelectExistingTab(url, false);
     }
 
     private void clearWalletModelServices() {
